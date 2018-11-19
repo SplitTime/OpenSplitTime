@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
@@ -7,10 +9,12 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
   let(:keys) { proto_records.first.to_h.keys }
   let(:children) { subject_proto_record.children }
   let(:time_points) { event.required_time_points }
+  let(:start_time) { event.start_time }
 
   describe '#transform' do
     context 'when given valid data using elapsed times' do
       let(:event) { build_stubbed(:event_with_standard_splits, id: 1, splits_count: 5) }
+
       let(:structs) { [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: 'Chris', Last_name: 'Dickey', Gender: 'male', Age: 43, State_code: 'CO', Country_code: 'US',
                                       Start_Offset: '00:00:00',
                                       Dry_Fork_Outbound_In: '02:48:54', Dry_Fork_Outbound_Out: '02:50:19',
@@ -68,7 +72,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 10134, 10219, 38043, 38600, 69519, 70104, 80647])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 10134, 10219, 38043, 38600, 69519, 70104, 80647].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5, 6, 7])
         end
       end
@@ -83,23 +87,8 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 34824, 35446, 60516, 60522, 70742])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 34824, 35446, 60516, 60522, 70742].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 3, 4, 5, 6, 7])
-        end
-      end
-
-      context 'for a proto_record whose start split_time is not zero' do
-        let(:subject_proto_record) { proto_records.third }
-
-        it 'sets effort offset and sets start split_time to zero' do
-          time_points = event.required_time_points
-          expect(children.size).to eq(8)
-          expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 10134, 10219, 38043, 38600, 69519, 70104, 80647])
-          expect(subject_proto_record[:start_offset]).to eq(-1800)
         end
       end
 
@@ -113,7 +102,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 9983, 10064])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 9983, 10064].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2])
           expect(children.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true])
         end
@@ -179,7 +168,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
           expect(children.map { |pr| pr[:military_time] }).to eq(%w(10:00:00 20:34:03 20:43:20 08:24:07))
-          expect(children.map { |pr| pr[:time_from_start] }).to all be_nil
+          expect(children.map { |pr| pr[:absolute_time] }).to all be_nil
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3])
         end
       end
@@ -223,7 +212,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 34824, 56342, 57600, 72000, 86399])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 34824, 56342, 57600, 72000, 86399].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5])
         end
       end
@@ -239,7 +228,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 54000, 72061])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 54000, 72061].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 2, 5])
         end
       end
@@ -254,7 +243,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
           expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
           expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
           expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:time_from_start] }).to eq([0, 31224, 49142, 50400, 64800])
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([3600, 31224, 49142, 50400, 64800].map { |e| start_time + e })
           expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4])
         end
       end

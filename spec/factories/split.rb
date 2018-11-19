@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   sequence(:distance_from_start) do |d|
     d * 10000
@@ -25,29 +27,20 @@ FactoryBot.define do
       longitude { rand(-140..140) }
     end
 
-    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
-  end
+    trait :start do
+      base_name 'Start Split'
+      distance_from_start 0
+      vert_gain_from_start 0
+      vert_loss_from_start 0
+      sub_split_bitmap 1
+      kind :start
+    end
 
-  factory :start_split, class: Split do
-    base_name 'Start Split'
-    distance_from_start 0
-    vert_gain_from_start 0
-    vert_loss_from_start 0
-    sub_split_bitmap 1
-    kind :start
-    course
-
-    after(:build, :stub) { |split| split.send(:parameterize_base_name) }
-  end
-
-  factory :finish_split, class: Split do
-    base_name 'Finish Split'
-    distance_from_start
-    vert_gain_from_start
-    vert_loss_from_start
-    sub_split_bitmap 1
-    kind :finish
-    course
+    trait :finish do
+      base_name 'Finish Split'
+      sub_split_bitmap 1
+      kind :finish
+    end
 
     after(:build, :stub) { |split| split.send(:parameterize_base_name) }
   end

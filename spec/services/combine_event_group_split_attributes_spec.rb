@@ -9,14 +9,14 @@ RSpec.describe CombineEventGroupSplitAttributes do
     let(:event_1) { build_stubbed(:event, splits: event_1_splits) }
     let(:event_2) { build_stubbed(:event, splits: event_2_splits) }
 
-    let(:event_1_split_1) { build_stubbed(:start_split, base_name: 'Start', latitude: 40, longitude: -105) }
+    let(:event_1_split_1) { build_stubbed(:split, :start, base_name: 'Start', latitude: 40, longitude: -105) }
     let(:event_1_split_2) { build_stubbed(:split, base_name: 'Aid 1') }
     let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2') }
-    let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish', latitude: 40, longitude: -105) }
+    let(:event_1_split_4) { build_stubbed(:split, :finish, base_name: 'Finish', latitude: 40, longitude: -105) }
 
-    let(:event_2_split_1) { build_stubbed(:start_split, base_name: 'Start', latitude: 40, longitude: -105) }
+    let(:event_2_split_1) { build_stubbed(:split, :start, base_name: 'Start', latitude: 40, longitude: -105) }
     let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2') }
-    let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish', latitude: 40, longitude: -105) }
+    let(:event_2_split_3) { build_stubbed(:split, :finish, base_name: 'Finish', latitude: 40, longitude: -105) }
 
     let(:event_1_splits) { [event_1_split_1, event_1_split_2, event_1_split_3, event_1_split_4] }
     let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
@@ -178,8 +178,8 @@ RSpec.describe CombineEventGroupSplitAttributes do
 
     context 'when the events in the group have start in a different location from finish' do
       let(:event_group) { build_stubbed(:event_group, events: [event_1, event_2]) }
-      let(:event_1_split_4) { build_stubbed(:finish_split, base_name: 'Finish', latitude: 41, longitude: -106) }
-      let(:event_2_split_3) { build_stubbed(:finish_split, base_name: 'Finish', latitude: 41, longitude: -106) }
+      let(:event_1_split_4) { build_stubbed(:split, :finish, base_name: 'Finish', latitude: 41, longitude: -106) }
+      let(:event_2_split_3) { build_stubbed(:split, :finish, base_name: 'Finish', latitude: 41, longitude: -106) }
 
       it 'returns an array with matching split names grouped together' do
         expected = [{

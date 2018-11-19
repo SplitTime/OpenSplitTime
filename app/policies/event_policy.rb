@@ -25,6 +25,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def summary?
+    user.authorized_to_edit?(event)
+  end
+
   def import?
     user.authorized_to_edit?(event)
   end
@@ -54,6 +58,10 @@ class EventPolicy < ApplicationPolicy
   end
 
   def update_start_time?
+    user.authorized_to_edit?(event)
+  end
+
+  def export_finishers?
     user.authorized_to_edit?(event)
   end
 

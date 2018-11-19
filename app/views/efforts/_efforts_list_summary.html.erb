@@ -1,0 +1,29 @@
+<% # Requires local parameter view_object %>
+
+<table class="table table-tight">
+  <thead>
+  <tr>
+    <th>Rank</th>
+    <th>Name</th>
+    <th>Bib</th>
+    <th>Category</th>
+    <th>Status</th>
+    <th>Last Recorded</th>
+    <th>Time of Day</th>
+    <th>Elapsed Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% view_object.ranked_effort_rows.each do |effort_row| %>
+    <td><%= effort_row.display_overall_rank %></td>
+    <td><%= effort_row.full_name %></td>
+    <td><%= effort_row.bib_number %></td>
+    <td><%= effort_row.bio_historic %></td>
+    <td><%= effort_row.run_status %></td>
+    <td><%= last_reported_location(effort_row) %></td>
+    <td><%= last_reported_time_of_day(effort_row) %></td>
+    <td><%= last_reported_elapsed_time(effort_row) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,7 +1,9 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :podium, :series, :place, :analyze, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
   before_action :set_event, except: [:index, :new, :create, :series]
-  after_action :verify_authorized, except: [:index, :show, :spread, :podium, :series, :place, :analyze, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
+
+  MAX_SUMMARY_EFFORTS = 1000
 
   def index
     @events = policy_class::Scope.new(current_user, controller_class).viewable
@@ -81,6 +83,13 @@ class EventsController < ApplicationController
                   filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
+  end
+
+
+  def summary
+    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
+    params[:per_page] ||= MAX_SUMMARY_EFFORTS
+    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
   def podium
@@ -172,15 +181,37 @@ class EventsController < ApplicationController
     session[:return_to] = event_path(@event)
   end
 
+  def export_finishers
+    authorize @event
+    params[:per_page] = @event.efforts.size # Get all efforts without pagination
+    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
+    respond_to do |format|
+      format.csv do
+        options = {}
+        export_format = :finishers
+        current_time = Time.current.in_time_zone(@event.home_time_zone)
+        records = @presenter.ranked_effort_rows.select(&:finished?)
+        csv_stream = render_to_string(partial: 'finishers.csv.ruby', locals: {current_time: current_time, records: records, options: options})
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+      end
+    end
+  end
+
   def export_to_ultrasignup
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @event_display = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
+    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.csv do
-        csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby')
+        options = {}
+        export_format = :ultrasignup
+        current_time = Time.current.in_time_zone(@event.home_time_zone)
+        records = @presenter.ranked_effort_rows
+        options[:event_finished] = @presenter.event_finished?
+        csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby', locals: {current_time: current_time, records: records, options: options})
         send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-for-ultrasignup-#{Date.today}.csv")
+                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
       end
     end
   end

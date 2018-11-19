@@ -1,12 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::SetEffortStatus do
-  before { FactoryBot.reload }
-
   subject { Interactors::SetEffortStatus.new(effort, times_container: times_container) }
   let(:event) { build_stubbed(:event_functional, efforts_count: 1) }
   let(:effort) { event.efforts.first }
+  let(:split_times) { effort.split_times }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
+
+  before { FactoryBot.reload }
 
   describe '#initialize' do
     context 'when an effort is provided' do
@@ -26,7 +29,7 @@ RSpec.describe Interactors::SetEffortStatus do
 
   describe '#set_data_status' do
     before do
-      expect(effort.split_times.map(&:data_status)).to all eq(nil)
+      expect(split_times.map(&:data_status)).to all eq(nil)
       expect(effort.data_status).to eq(nil)
     end
 
@@ -42,65 +45,66 @@ RSpec.describe Interactors::SetEffortStatus do
     context 'when split_times fall within expected ranges' do
       it 'sets data_status of all split_times and effort to "good"' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to all eq('good')
+        expect(split_times.map(&:data_status)).to all eq('good')
         expect(effort.data_status).to eq('good')
       end
     end
 
     context 'when one split_time is questionable' do
-      before { effort.split_times.second.time_from_start = 2000 }
+      before { split_times.second.absolute_time -= 1.hour }
 
       it 'sets data_status of all split_times correctly and sets effort to "questionable"' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to eq(%w[good questionable good good good good])
+        expect(split_times.map(&:data_status)).to eq(%w[good questionable good good good good])
         expect(effort.data_status).to eq('questionable')
       end
     end
 
     context 'when one split_time is questionable and one is bad' do
-      before { effort.split_times.second.time_from_start = 100 }
-      before { effort.split_times.third.time_from_start = 2000 }
+      before { split_times.second.time_from_start -= 2.hours }
+      before { split_times.third.time_from_start -= 1.hour }
 
       it 'sets data_status of all split_times correctly and sets effort to "bad"' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to eq(%w[good bad questionable good good good])
+        expect(split_times.map(&:data_status)).to eq(%w[good bad questionable good good good])
         expect(effort.data_status).to eq('bad')
       end
     end
 
     context 'when a split_time has stopped_here: true' do
-      before { effort.split_times.third.stopped_here = true }
+      before { split_times.third.stopped_here = true }
 
       it 'sets data_status of all subsequent split_times to "bad"' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to eq(%w[good good good bad bad bad])
+        expect(split_times.map(&:data_status)).to eq(%w[good good good bad bad bad])
         expect(effort.data_status).to eq('bad')
       end
     end
 
     context 'when all split_times are confirmed' do
-      before { effort.split_times.third.time_from_start = 100 } # Bad time
-      before { effort.split_times.each { |st| st.data_status = :confirmed } }
+      before { split_times.third.time_from_start -= 2.hours } # Bad time
+      before { split_times.each { |st| st.data_status = :confirmed } }
 
       it 'sets data_status of the effort to "good"' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to all eq('confirmed')
+        expect(split_times.map(&:data_status)).to all eq('confirmed')
         expect(effort.data_status).to eq('good')
       end
     end
 
     context 'when split_times have data_status set incorrectly' do
       before do
-        effort.split_times.third.time_from_start = 100 # bad time
+        split_times.third.time_from_start -= 2.hours # bad time
+        effort.data_status = :good
         pre_set_statuses = %w[bad questionable good questionable good bad]
-        effort.split_times.zip(pre_set_statuses).each do |st, status|
+        split_times.zip(pre_set_statuses).each do |st, status|
           st.data_status = status
         end
       end
 
-      it 'sets data_status of the effort to "good"' do
+      it 'sets data_status of the split_times and effort correctly' do
         subject.perform
-        expect(effort.split_times.map(&:data_status)).to eq(%w[good good bad good good good])
+        expect(split_times.map(&:data_status)).to eq(%w[good good bad good good good])
         expect(effort.data_status).to eq('bad')
       end
     end
@@ -111,17 +115,17 @@ RSpec.describe Interactors::SetEffortStatus do
       context 'when all times are good' do
         it 'sets all data_status attributes to "good"' do
           subject.perform
-          expect(effort.split_times.map(&:data_status)).to all eq('good')
+          expect(split_times.map(&:data_status)).to all eq('good')
           expect(effort.data_status).to eq('good')
         end
       end
 
       context 'when not all times are good' do
-        before { effort.split_times[6].time_from_start = 100 }
+        before { split_times[6].time_from_start -= 2.hours }
 
         it 'works as expected' do
           subject.perform
-          expect(effort.split_times.map(&:data_status)).to eq(['good'] * 6 + ['bad'] + ['good'] * 5)
+          expect(split_times.map(&:data_status)).to eq(['good'] * 6 + ['bad'] + ['good'] * 5)
           expect(effort.data_status).to eq('bad')
         end
       end

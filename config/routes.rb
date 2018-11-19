@@ -64,22 +64,25 @@ Rails.application.routes.draw do
       put :set_data_status
       get :split_raw_times
       get :traffic
-      put :start_ready_efforts
+      put :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
+      delete :delete_duplicate_raw_times
     end
   end
 
   resources :events do
     collection { get :series }
     member do
+      get :admin
       get :drop_list
       get :edit_start_time
+      get :export_finishers
       get :export_to_ultrasignup
       get :podium
       get :reconcile
       get :spread
-      get :admin
+      get :summary
       post :create_people
       put :associate_people
       put :set_stops

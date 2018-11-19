@@ -55,7 +55,7 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
 
       it 'returns rows with effort headers transformed to match the database' do
         expect(first_proto_record.to_h.keys)
-            .to match_array(%i(first_name last_name gender state_code country_code event_id))
+            .to match_array(%i(first_name last_name gender state_code country_code event_id scheduled_start_time))
       end
 
       it 'assigns event.id to :event_id' do

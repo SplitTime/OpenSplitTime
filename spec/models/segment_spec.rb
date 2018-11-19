@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Segment, type: :model do
   let(:lap_1) { 1 }
   let(:lap_2) { 2 }
-  let(:start) { build_stubbed(:start_split, course_id: 10) }
+  let(:start) { build_stubbed(:split, :start, course_id: 10) }
   let(:aid_1) { build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
   let(:aid_2) { build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
   let(:aid_3) { build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
-  let(:finish) { build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
+  let(:finish) { build_stubbed(:split, :finish, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
   let(:lap_1_start_to_lap_1_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                                        end_lap: 1, end_split: aid_1, end_in_out: 'in') }
   let(:lap_1_start_to_lap_1_aid_2) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',

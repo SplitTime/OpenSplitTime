@@ -1,12 +1,19 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-# t.string   "name"
-# t.integer  "organization_id"
-# t.boolean  "available_live",  default: false
-# t.boolean  "auto_live_times", default: false
-# t.boolean  "concealed",       default: false
-# t.string   "slug"
-# t.boolean  "monitor_pacers", default: false
+# t.string "name"
+# t.integer "organization_id"
+# t.boolean "available_live", default: false
+# t.boolean "auto_live_times", default: true
+# t.boolean "concealed", default: true
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.integer "created_by"
+# t.integer "updated_by"
+# t.string "slug"
+# t.integer "data_entry_grouping_strategy", default: 0
+# t.boolean "monitor_pacers", default: false
 
 RSpec.describe EventGroup, type: :model do
 
@@ -73,9 +80,9 @@ RSpec.describe EventGroup, type: :model do
         partners = []
         100.times { partners << event_group.pick_partner_with_banner }
         partners_count = partners.count_by(&:id)
-        expect(partners_count[weighted_partner.id]).to be > 50
+        expect(partners_count[weighted_partner.id]).to be > 40
         unweighted_partners.each do |unweighted_partner|
-          expect(partners_count[unweighted_partner.id]).to be_between(1, 20).inclusive
+          expect(partners_count[unweighted_partner.id] || 0).to be_between(0, 20).inclusive
         end
       end
     end

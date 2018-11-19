@@ -1,81 +1,106 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-# t.integer  "effort_id"
-# t.integer  "split_id"
-# t.float    "time_from_start" (stored as seconds.fractions of a second elapsed)
-# t.integer  "data_status"
-# t.integer  "sub_split_bitkey"
-# t.boolean  "pacer"
-# t.string   "remarks"
+require 'rails_helper'
+include BitkeyDefinitions
+
+# t.integer "effort_id", null: false
+# t.integer "split_id", null: false
+# t.integer "data_status"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
+# t.integer "created_by"
+# t.integer "updated_by"
+# t.integer "sub_split_bitkey"
+# t.boolean "pacer"
+# t.string "remarks"
+# t.integer "lap"
+# t.boolean "stopped_here", default: false
+# t.datetime "absolute_time"
 
 RSpec.describe SplitTime, kind: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   describe 'validations' do
     context 'for validations that do not depend on existing records in the database' do
+      subject(:split_time) { build_stubbed(:split_time, effort: effort, split: start_split, bitkey: in_bitkey, absolute_time: event.start_time) }
       let(:course) { build_stubbed(:course) }
-      let(:start_split) { build_stubbed(:start_split, course: course) }
+      let(:start_split) { build_stubbed(:split, :start, course: course) }
       let(:intermediate_split) { build_stubbed(:split, course: course) }
       let(:event) { build_stubbed(:event, course: course) }
       let(:effort) { build_stubbed(:effort, event: event) }
 
       it 'is valid when created with an effort, a split, a sub_split, a time_from_start, and a lap' do
-        split_time = build_stubbed(:split_time, effort: effort, split: start_split)
-
         expect(split_time.effort).to be_present
         expect(split_time.split).to be_present
         expect(split_time.sub_split).to be_present
-        expect(split_time.time_from_start).to be_present
+        expect(split_time.absolute_time).to be_present
         expect(split_time.lap).to be_present
         expect(split_time).to be_valid
       end
 
-      it 'is invalid without an effort' do
-        split_time = build_stubbed(:split_time, effort: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:effort]).to include("can't be blank")
+      context 'when no effort exists' do
+        before { split_time.effort = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:effort]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a split_id' do
-        split_time = build_stubbed(:split_time, split: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:split]).to include("can't be blank")
+      context 'when no split exists' do
+        before { split_time.split = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:split]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a sub_split_bitkey' do
-        split_time = build_stubbed(:split_time, sub_split_bitkey: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
+      context 'when no sub_split_bitkey exists' do
+        before { split_time.sub_split_bitkey = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:sub_split_bitkey]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a time_from_start' do
-        split_time = build_stubbed(:split_time, time_from_start: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:time_from_start]).to include("can't be blank")
+      context 'when no absolute_time exists' do
+        before { split_time.absolute_time = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:absolute_time]).to include("can't be blank")
+        end
       end
 
-      it 'is invalid without a lap' do
-        split_time = build_stubbed(:split_time, lap: nil)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:lap]).to include("can't be blank")
+      context 'when no lap exists' do
+        before { split_time.lap = nil }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:lap]).to include("can't be blank")
+        end
       end
     end
 
     context 'for validations that rely on existing records in the database' do
       let(:course) { create(:course) }
-      let(:start_split) { create(:start_split, course: course) }
+      let(:start_split) { create(:split, :start, course: course) }
       let(:intermediate_split) { create(:split, course: course) }
       let(:event) { create(:event, course: course) }
       let(:effort) { build(:effort, event: event) }
 
-      it 'does not allow more than one of a given split_id/sub_split/lap combination within an effort' do
-        create(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
+      before { create(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 1.hour) }
+
+      context 'when more than one of a given time_point exists within an effort' do
+        let(:split_time) { build_stubbed(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 2.hours) }
+
+        it 'is invalid' do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:split_id]).to include('only one of any given time_point permitted within an effort')
+        end
       end
 
       it 'allows within an effort one of a given split_id/lap combination for each sub_split' do
@@ -109,297 +134,275 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
-  describe '#elapsed time' do
-    it 'returns nil when time_from_start is nil' do
-      split_time = build_stubbed(:split_time, time_from_start: nil)
-      expect(split_time.elapsed_time).to be_nil
+  describe 'virtual time attributes' do
+    subject(:split_time) { effort.ordered_split_times.second }
+    let(:effort) { event.efforts.first }
+    let(:event) { build_stubbed(:event_functional, efforts_count: 1) }
+    let(:start_split_time) { effort.ordered_split_times.first }
+    let(:effort_start_time) { event.start_time + start_offset }
+    let(:start_offset) { 0 }
+    let(:absolute_time) { effort_start_time + elapsed_seconds }
+    let(:event_time_zone) { ActiveSupport::TimeZone.new(event.home_time_zone) }
+
+    before do
+      start_split_time.absolute_time = effort_start_time
+      split_time.absolute_time = absolute_time
     end
 
-    it 'returns time in hh:mm:ss format when time_from_start is present' do
-      split_time = build_stubbed(:split_time, time_from_start: 4530)
-      expect(split_time.elapsed_time).to eq('01:15:30')
-    end
+    describe '#elapsed time' do
+      context 'when absolute_time is nil' do
+        let(:absolute_time) { nil }
 
-    it 'returns time in hh:mm:ss format when time_from_start is less than one hour' do
-      split_time = build_stubbed(:split_time, time_from_start: 950)
-      expect(split_time.elapsed_time).to eq('00:15:50')
-    end
-
-    it 'returns time in hh:mm:ss format when time_from_start is less than one minute' do
-      split_time = build_stubbed(:split_time, time_from_start: 45)
-      expect(split_time.elapsed_time).to eq('00:00:45')
-    end
-
-    it 'returns time in hh:mm:ss format when time_from_start is greater than 24 hours' do
-      split_time = build_stubbed(:split_time, time_from_start: 100000)
-      expect(split_time.elapsed_time).to eq('27:46:40')
-    end
-
-    it 'returns time in hh:mm:ss format when time_from_start is greater than 100 hours' do
-      split_time = build_stubbed(:split_time, time_from_start: 500000)
-      expect(split_time.elapsed_time).to eq('138:53:20')
-    end
-
-    it 'returns time in hh:mm:ss.xx format when with_fractionals: true is used' do
-      split_time = build_stubbed(:split_time, time_from_start: 4530.55)
-      expect(split_time.elapsed_time(with_fractionals: true)).to eq('01:15:30.55')
-    end
-
-    it 'rounds fractional seconds when with_fractionals: is not true' do
-      split_time = build_stubbed(:split_time, time_from_start: 4530.55)
-      expect(split_time.elapsed_time).to eq('01:15:31')
-    end
-  end
-
-  describe '#elapsed_time=' do
-    it 'removes an existing time_from_start when passed a nil value' do
-      split_time = build_stubbed(:split_time, time_from_start: 100000)
-      split_time.elapsed_time = nil
-      expect(split_time.time_from_start).to be_nil
-    end
-
-    it 'removes an existing time_from_start when passed an empty string' do
-      split_time = build_stubbed(:split_time, time_from_start: 100000)
-      split_time.elapsed_time = ''
-      expect(split_time.time_from_start).to be_nil
-    end
-
-    it 'sets time_from_start properly when passed a string representing less than one minute' do
-      split_time = build_stubbed(:split_time)
-      split_time.elapsed_time = '00:00:25'
-      expect(split_time.time_from_start).to eq(25)
-    end
-
-    it 'sets time_from_start properly when passed a string representing less than one hour' do
-      split_time = build_stubbed(:split_time)
-      split_time.elapsed_time = '00:30:25'
-      expect(split_time.time_from_start).to eq(1825)
-    end
-
-    it 'sets time_from_start properly when passed a string representing more than one hour' do
-      split_time = build_stubbed(:split_time)
-      split_time.elapsed_time = '01:15:25'
-      expect(split_time.time_from_start).to eq(4525)
-    end
-
-    it 'sets time_from_start properly when passed a string representing more than 24 hours' do
-      split_time = build_stubbed(:split_time)
-      split_time.elapsed_time = '27:46:45'
-      expect(split_time.time_from_start).to eq(100005)
-    end
-
-    it 'sets time_from_start properly when passed a string representing more than 100 hours' do
-      split_time = build_stubbed(:split_time)
-      split_time.elapsed_time = '138:53:25'
-      expect(split_time.time_from_start).to eq(500005)
-    end
-  end
-
-  describe '#day_and_time' do
-    let(:event) { build_stubbed(:event, start_time: Time.current) }
-
-    context 'when start_offset is zero' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
-
-      it 'returns nil when time_from_start is nil' do
-        split_time = build_stubbed(:split_time, time_from_start: nil)
-        expect(split_time.day_and_time).to be_nil
+        it 'returns nil' do
+          expect(split_time.elapsed_time).to be_nil
+        end
       end
 
-      it 'returns a day and time equal to event start_time if time_from_start and start_offset are zero' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 0)
-        expect(split_time.day_and_time).to eq(effort.start_time)
+      context 'when absolute_time is present' do
+        let(:elapsed_seconds) { 4530 }
+
+        it 'returns time in hh:mm:ss format' do
+          expect(split_time.elapsed_time).to eq('01:15:30')
+        end
       end
 
-      it 'returns a day and time equal to event start_time plus time_from_start when start_offset is zero' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 1.hour)
-        expect(split_time.day_and_time).to eq(effort.start_time + 1.hour)
+      context 'when time_from_start is less than one hour' do
+        let(:elapsed_seconds) { 950 }
+
+        it 'returns time in hh:mm:ss format ' do
+          expect(split_time.elapsed_time).to eq('00:15:50')
+        end
       end
 
-      it 'returns correct day and time when time_from_start is greater than 24 hours' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 27.hours)
-        expect(split_time.day_and_time).to eq(effort.start_time + 27.hours)
+      context 'when time_from_start is less than one minutea' do
+        let(:elapsed_seconds) { 45 }
+
+        it 'returns time in hh:mm:ss format ' do
+          expect(split_time.elapsed_time).to eq('00:00:45')
+        end
       end
 
-      it 'returns correct day and time when time_from_start is greater than 100 hours' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 127.hours)
-        expect(split_time.day_and_time).to eq(effort.start_time + 127.hours)
+      context 'when time_from_start is greater than 24 hours' do
+        let(:elapsed_seconds) { 100_000 }
+
+        it 'returns time in hh:mm:ss format ' do
+          expect(split_time.elapsed_time).to eq('27:46:40')
+        end
+      end
+
+      context 'when time_from_start is greater than 100 hours' do
+        let(:elapsed_seconds) { 500_000 }
+
+        it 'returns time in hh:mm:ss format ' do
+          expect(split_time.elapsed_time).to eq('138:53:20')
+        end
+      end
+
+      context 'when with_fractionals: true is used' do
+        let(:elapsed_seconds) { 4530.55 }
+        let(:with_fractionals) { true }
+
+        it 'returns time in hh:mm:ss.xx format' do
+          expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:30.55')
+        end
+      end
+
+      context 'when with_fractionals: true is used' do
+        let(:elapsed_seconds) { 4530.55 }
+        let(:with_fractionals) { false }
+
+        it 'returns time in hh:mm:ss.xx format' do
+          expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:31')
+        end
+      end
+
+      context 'when the start split_time is not the same as the event.start_time' do
+        let(:elapsed_seconds) { 1.hour }
+        let(:start_offset) { -2.hours }
+
+        it 'returns time based on time elapsed from the start split_time' do
+          expect(start_split_time.absolute_time).not_to eq(event.start_time)
+          expect(split_time.elapsed_time).to eq('01:00:00')
+        end
       end
     end
 
-    context 'when start_offset is greater than zero' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 1.hour) }
+    describe '#elapsed_time=' do
+      let(:elapsed_seconds) { 1.hour }
 
-      it 'returns correct day and time' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 2.hours)
-        expect(split_time.day_and_time).to eq(event.start_time + 3.hours)
+      context 'when passed a nil value' do
+        it 'removes an existing absolute_time' do
+          split_time.elapsed_time = nil
+          expect(split_time.absolute_time).to be_nil
+        end
+      end
+
+      context 'when passed an empty string' do
+        it 'removes an existing absolute_time' do
+          split_time.elapsed_time = ''
+          expect(split_time.absolute_time).to be_nil
+        end
+      end
+
+      context 'when passed a string representing less than one minute' do
+        it 'sets absolute_time properly' do
+          split_time.elapsed_time = '00:00:25'
+          expect(split_time.absolute_time).to eq(effort_start_time + 25.seconds)
+        end
+      end
+
+      context 'when passed a string representing less than one hour' do
+        it 'sets absolute_time properly' do
+          split_time.elapsed_time = '00:30:25'
+          expect(split_time.absolute_time).to eq(effort_start_time + 30.minutes + 25.seconds)
+        end
+      end
+
+      context 'when passed a string representing more than one hour' do
+        it 'sets absolute_time properly' do
+          split_time.elapsed_time = '01:15:25'
+          expect(split_time.absolute_time).to eq(effort_start_time + 1.hour + 15.minutes + 25.seconds)
+        end
+      end
+
+      context 'when passed a string representing more than 24 hours' do
+        it 'sets absolute_time properly' do
+          split_time.elapsed_time = '27:46:45'
+          expect(split_time.absolute_time).to eq(effort_start_time + 27.hours + 46.minutes + 45.seconds)
+        end
+      end
+
+      context 'when passed a string representing more than 100 hours' do
+        it 'sets absolute_time properly' do
+          split_time.elapsed_time = '138:53:20'
+          expect(split_time.absolute_time).to eq(effort_start_time + 138.hours + 53.minutes + 20.seconds)
+        end
+      end
+
+      context 'when the start split_time is not the same as the event.start_time' do
+        let(:start_offset) { -2.hours }
+
+        it 'sets absolute_time based on start split_time' do
+          split_time.elapsed_time = '05:00:00'
+          expect(split_time.absolute_time).to eq(effort_start_time + 5.hours)
+        end
+      end
+
+      context 'when no starting split time exists' do
+        before { start_split_time.absolute_time = nil }
+
+        it 'returns without modifying the absolute time' do
+          split_time.elapsed_time = '05:00:00'
+          expect(split_time.absolute_time).to eq(effort_start_time + 1.hour)
+        end
+      end
+
+      context 'when the subject is a starting split time' do
+        it 'returns without modifying the absolute time' do
+          start_split_time.elapsed_time = '05:00:00'
+          expect(start_split_time.absolute_time).to eq(effort_start_time)
+        end
       end
     end
 
-    context 'when start_offset is less than zero' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: -1.hour) }
+    describe '#day_and_time' do
+      context 'when absolute_time is nil' do
+        let(:absolute_time) { nil }
 
-      it 'returns correct day and time when start_offset is less than zero' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 2.hours)
-        expect(split_time.day_and_time).to eq(event.start_time + 1.hour)
-      end
-    end
-  end
-
-  describe '#day_and_time=' do
-    let(:event) { build_stubbed(:event, start_time: Time.current) }
-
-    it 'sets time_from_start to nil if passed a nil value' do
-      split_time = build_stubbed(:split_time, time_from_start: 1000)
-      split_time.day_and_time = nil
-      expect(split_time.time_from_start).to be_nil
-    end
-
-    context 'when the effort.start_offset is zero' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
-
-      it 'sets time_from_start to zero if passed the event start_time when start_offset is zero' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time
-        expect(split_time.time_from_start).to eq(0)
+        it 'returns nil' do
+          expect(split_time.day_and_time).to be_nil
+        end
       end
 
-      it 'sets time_from_start properly if passed a TimeInZone object' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 9.hours
-        expect(split_time.time_from_start).to eq(9.hours)
-      end
+      context 'when absolute_time exists' do
+        let(:absolute_time) { '2018-10-30 12:00:00' }
 
-      it 'sets time_from_start properly if passed a TimeInZone object that is more than 24 hours ahead' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 33.hours
-        expect(split_time.time_from_start).to eq(33.hours)
-      end
-
-      it 'sets time_from_start properly if passed a TimeInZone object that is more than 100 hours ahead' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 105.hours
-        expect(split_time.time_from_start).to eq(105.hours)
+        it 'returns a day and time in the event home time zone' do
+          expect(split_time.day_and_time).to eq(absolute_time)
+          expect(split_time.day_and_time.time_zone).to eq(ActiveSupport::TimeZone.new(event.home_time_zone))
+        end
       end
     end
 
-    context 'when the effort.start_offset is positive' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 1.hour) }
+    describe '#day_and_time=' do
+      let(:elapsed_seconds) { 1.hour }
 
-      it 'sets time_from_start to zero if passed the event start_time plus the effort start offset' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 1.hour
-        expect(split_time.time_from_start).to eq(0)
+      context 'when passed a nil value' do
+        it 'sets absolute_time to nil' do
+          split_time.day_and_time = nil
+          expect(split_time.absolute_time).to be_nil
+        end
       end
 
-      it 'sets time_from_start properly if passed a TimeInZone object' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 3.hours
-        expect(split_time.time_from_start).to eq(2.hours)
-      end
-    end
-
-    context 'when the effort.start_offset is negative' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: -1.hour) }
-
-      it 'sets time_from_start properly if passed a TimeInZone object' do
-        split_time = build_stubbed(:split_time, effort: effort)
-        split_time.day_and_time = event.start_time + 3.hours
-        expect(split_time.time_from_start).to eq(4.hours)
-      end
-    end
-  end
-
-  describe '#military time' do
-    let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)', start_time_in_home_zone: '2017-07-01 06:00:00') }
-
-    it 'returns nil if time_from_start is nil' do
-      split_time = build_stubbed(:split_time, time_from_start: nil)
-      expect(split_time.military_time).to be_nil
-    end
-
-    context 'when effort.start_offset is zero' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
-
-      it 'returns military time in hh:mm:ss format when time_from_start is present' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 0)
-        expect(split_time.military_time).to eq('06:00:00')
+      context 'when passed an empty string' do
+        it 'sets absolute_time to nil' do
+          split_time.day_and_time = ''
+          expect(split_time.absolute_time).to be_nil
+        end
       end
 
-      it 'returns military time in hh:mm:ss format when time_from_start does not roll into following day' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 1800)
-        expect(split_time.military_time).to eq('06:30:00')
-      end
+      context 'when passed a datetime string' do
+        let(:local_datetime) { '2018-10-30 08:00:00' }
 
-      it 'returns military time in hh:mm:ss format when result is in the hour before midnight' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 64740)
-        expect(split_time.military_time).to eq('23:59:00')
-      end
-
-      it 'returns military time in hh:mm:ss format when result is in the hour after midnight' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 64860)
-        expect(split_time.military_time).to eq('00:01:00')
-      end
-
-      it 'returns military time in hh:mm:ss format when time_from_start rolls into following day' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 72000)
-        expect(split_time.military_time).to eq('02:00:00')
-      end
-
-      it 'returns military time in hh:mm:ss format when time_from_start rolls over multiple days' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 302400)
-        expect(split_time.military_time).to eq('18:00:00')
+        it 'sets absolute_time to the UTC equivalent' do
+          split_time.day_and_time = local_datetime
+          expect(split_time.absolute_time).to eq(event_time_zone.parse(local_datetime))
+        end
       end
     end
 
-    context 'when effort.start_offset is positive' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: 30.minutes) }
+    describe '#military time' do
+      let(:expected_day_and_time) { (effort_start_time + elapsed_seconds).in_time_zone(event_time_zone) }
+      let(:expected_military_time) { expected_day_and_time.strftime('%H:%M:%S') }
 
-      it 'properly accounts for a positive effort offset' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 30.minutes)
-        expect(split_time.military_time).to eq('07:00:00')
+      context 'when absolute_time is nil' do
+        let(:absolute_time) { nil }
+
+        it 'returns nil' do
+          expect(split_time.military_time).to be_nil
+        end
+      end
+
+      context 'when absolute_time is present' do
+        let(:elapsed_seconds) { 3600 }
+
+        it 'returns military time in hh:mm:ss format' do
+          expect(split_time.military_time).to eq(expected_military_time)
+        end
       end
     end
 
-    context 'when effort.start_offset is negative' do
-      let(:effort) { build_stubbed(:effort, event: event, start_offset: -30.minutes) }
+    describe '#military_time=' do
+      let(:elapsed_seconds) { 1.hour }
 
-      it 'properly accounts for a negative effort offset' do
-        split_time = build_stubbed(:split_time, effort: effort, time_from_start: 1.hour)
-        expect(split_time.military_time).to eq('06:30:00')
+      context 'when passed a nil value' do
+        let(:military_time) { nil }
+
+        it 'sets absolute_time to nil' do
+          split_time.military_time = military_time
+          expect(split_time.absolute_time).to be_nil
+        end
       end
-    end
-  end
 
-  describe '#military_time=' do
-    let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)', start_time_in_home_zone: '2017-07-01 06:00:00') }
-    let(:effort) { build_stubbed(:effort, event: event, start_offset: 0) }
+      context 'when passed an empty string' do
+        let(:military_time) { '' }
 
-    it 'sets time_from_start to nil if passed a nil value' do
-      split_time = build_stubbed(:split_time, effort: effort, time_from_start: 1000)
-      split_time.military_time = nil
-      expect(split_time.time_from_start).to be_nil
-    end
+        it 'sets absolute_time to nil' do
+          split_time.military_time = military_time
+          expect(split_time.absolute_time).to be_nil
+        end
+      end
 
-    it 'sets time_from_start to nil if passed an empty string' do
-      split_time = build_stubbed(:split_time, effort: effort, time_from_start: 1000)
-      split_time.military_time = ''
-      expect(split_time.time_from_start).to be_nil
-    end
+      context 'when passed a military time string' do
+        let(:military_time) { '06:05:00' }
 
-    it 'calls IntendedTimeCalculator with correct information if passed a present string' do
-      lap = 1
-      split_id = 101
-      bitkey = in_bitkey
-      time_point = TimePoint.new(lap, split_id, bitkey)
-      military_time = '06:05:00'
-      split_time = build_stubbed(:split_time, effort: effort, time_point: time_point)
-      allow(split_time).to receive(:event_start_time).and_return(DateTime.parse('2017-07-01 06:00:00'))
-      allow(IntendedTimeCalculator).to receive(:day_and_time).and_return(DateTime.parse('2017-07-01 08:00:00'))
-      split_time.military_time = military_time
-      expect(IntendedTimeCalculator).to have_received(:day_and_time).with(military_time: military_time,
-                                                                          effort: effort,
-                                                                          time_point: time_point)
+        it 'calls IntendedTimeCalculator with correct information' do
+          expect(IntendedTimeCalculator).to receive(:day_and_time).with(military_time: military_time,
+                                                                        effort: effort,
+                                                                        time_point: split_time.time_point)
+          split_time.military_time = military_time
+        end
+      end
     end
   end
 

@@ -9,7 +9,7 @@ class SplitParameters < BaseParameters
      :elevation, :elevation_in_preferred_units, :name_extensions, :sub_split_kinds]
   end
 
-  def self.csv_attributes
+  def self.csv_export_attributes
     %w(base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_kinds)
   end
 

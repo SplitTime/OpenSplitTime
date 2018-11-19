@@ -10,6 +10,9 @@ class Api::V1::EffortsController < ApiController
     authorize @resource
 
     effort = Effort.where(id: @resource).includes(event: :splits, split_times: :split).first
+    effort.ordered_split_times.each_cons(2) do |begin_st, end_st|
+      end_st.segment_time ||= end_st.absolute_time - begin_st.absolute_time
+    end
     presenter = EffortWithTimesRowPresenter.new(effort: effort)
     render json: presenter, include: :effort_times_row, serializer: EffortWithTimesRowSerializer
   end

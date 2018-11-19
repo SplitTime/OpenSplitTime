@@ -49,7 +49,7 @@ gem 'webpacker', '~> 3.0'
 gem 'gpx'
 gem 'activerecord-import'
 gem 'skylight', '~> 1.6'
-
+gem 'local_time'
 
 group :development do
   gem 'bullet'

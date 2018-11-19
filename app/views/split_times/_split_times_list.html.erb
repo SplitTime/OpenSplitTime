@@ -36,9 +36,7 @@
       <% end %>
       <% if view_object.multiple_laps? %>
         <td class="text-right">
-          <% if row.finish? %>
-            <%= strong_conditional time_format_hhmmss(view_object.lap_time(row.lap)), true %>
-          <% end %>
+          <% if row.finish? %><%= strong_conditional lap_time_text(view_object, row), true %><% end %>
         </td>
       <% end %>
       <%= render 'split_times/actions_confirm_delete', view_object: view_object, lap_split_row: row %>

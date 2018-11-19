@@ -20,9 +20,7 @@ module Interactors
 
     def perform!
       unless errors.present?
-        existing_start_time = effort.start_time
         effort.event = new_event
-        effort.start_time = existing_start_time
         split_times.each { |st| st.split = splits_by_distance[st.distance_from_start_of_lap] }
         save_changes
       end

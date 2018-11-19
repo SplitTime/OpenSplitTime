@@ -33,7 +33,7 @@ RSpec.describe Interactors::ChangeEventCourse do
   describe '#perform!' do
     let(:event) { create(:event, course: old_course) }
     let!(:old_course) { create(:course, splits: old_splits) }
-    let(:old_split_1) { create(:start_split) }
+    let(:old_split_1) { create(:split, :start) }
     let(:old_split_2) { create(:split, distance_from_start: 10000) }
     let(:old_split_3) { create(:split, distance_from_start: 20000) }
     let(:old_splits) { [old_split_1, old_split_2, old_split_3] }
@@ -41,7 +41,7 @@ RSpec.describe Interactors::ChangeEventCourse do
 
     context 'when the new course has splits with the same distances as the old' do
       let(:new_course) { create(:course, splits: new_splits) }
-      let(:new_split_1) { create(:start_split) }
+      let(:new_split_1) { create(:split, :start) }
       let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
       let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
       let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }
@@ -64,6 +64,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
 
       it 'changes the split_ids of event split_times to the corresponding split_ids of the new course' do
+        efforts.first.reload
         sub_splits = new_course.sub_splits.first(efforts.first.split_times.size)
         efforts.each do |effort|
           effort.reload

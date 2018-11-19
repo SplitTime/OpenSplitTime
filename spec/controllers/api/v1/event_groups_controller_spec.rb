@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
   let(:event_group) { create(:event_group, data_entry_grouping_strategy: 'location_grouped') }
   let(:type) { 'event_groups' }
   let(:stub_combined_split_attributes) { true }
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   before do
     if stub_combined_split_attributes
@@ -117,15 +116,15 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:course_1) { create(:course) }
           let(:course_2) { create(:course) }
 
-          let(:event_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
           let(:event_1_split_2) { create(:split, course: course_1, base_name: 'Aid 1', latitude: 41, longitude: -106) }
           let(:event_1_split_3) { create(:split, course: course_1, base_name: 'Aid 2', latitude: 42, longitude: -107) }
-          let(:event_1_split_4) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_1_split_4) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 40, longitude: -105) }
           let(:event_1_splits) { [event_1_split_1, event_1_split_2, event_1_split_3, event_1_split_4] }
 
-          let(:event_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+          let(:event_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
           let(:event_2_split_2) { create(:split, course: course_2, base_name: 'Aid 2', latitude: 42, longitude: -107) }
-          let(:event_2_split_3) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
+          let(:event_2_split_3) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
           let(:event_2_splits) { [event_2_split_1, event_2_split_2, event_2_split_3] }
 
           let(:event_1_id) { event_1.id.to_s }
@@ -520,9 +519,9 @@ RSpec.describe Api::V1::EventGroupsController do
 
           it 'sends messages to Interactors::SetEffortStatus with the efforts associated with the modified split_times' do
             allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
-            post :import, params: request_params
+            make_request
 
-            expect(Interactors::SetEffortStatus).to have_received(:perform).exactly(2).times
+            expect(Interactors::SetEffortStatus).to have_received(:perform)
           end
         end
       end
@@ -538,9 +537,9 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event) { create(:event, event_group: event_group, course: course, home_time_zone: 'Arizona') }
     let!(:effort_1) { create(:effort, event: event, bib_number: 111) }
     let!(:effort_2) { create(:effort, event: event, bib_number: 112) }
-    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:start_split) { create(:split, :start, course: course, base_name: 'Start') }
     let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
-    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let!(:finish_split) { create(:split, :finish, course: course, base_name: 'Finish') }
     let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: start_split, bitkey: in_bitkey, time_from_start: 0) }
     let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: aid_split, bitkey: in_bitkey, time_from_start: 5000) }
 
@@ -663,9 +662,9 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_1) { create(:event, event_group: event_group, course: course) }
     let!(:event_2) { create(:event, event_group: event_group, course: course) }
 
-    let!(:start_split) { create(:start_split, course: course, base_name: 'Start') }
+    let!(:start_split) { create(:split, :start, course: course, base_name: 'Start') }
     let!(:aid_split) { create(:split, course: course, base_name: 'Aid 1') }
-    let!(:finish_split) { create(:finish_split, course: course, base_name: 'Finish') }
+    let!(:finish_split) { create(:split, :finish, course: course, base_name: 'Finish') }
     let(:splits) { [start_split, aid_split, finish_split] }
 
     let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }
@@ -883,31 +882,34 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:course_2) { create(:course) }
     let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
     let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
+    let(:start_time_1) { event_1.start_time_in_home_zone }
+    let(:start_time_2) { event_2.start_time_in_home_zone }
 
-    let!(:course_1_start_split) { create(:start_split, course: course_1, base_name: 'Start') }
+    let!(:course_1_start_split) { create(:split, :start, course: course_1, base_name: 'Start') }
     let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }
-    let!(:course_1_finish_split) { create(:finish_split, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
+    let!(:course_1_finish_split) { create(:split, :finish, course: course_1, base_name: 'Finish', distance_from_start: 20000) }
     let(:course_1_splits) { [course_1_start_split, course_1_aid_1_split, course_1_finish_split] }
 
-    let!(:course_2_start_split) { create(:start_split, course: course_2, base_name: 'Start') }
+    let!(:course_2_start_split) { create(:split, :start, course: course_2, base_name: 'Start') }
     let!(:course_2_aid_1_split) { create(:split, course: course_2, base_name: 'Aid 1', distance_from_start: 10000) }
     let!(:course_2_aid_2_split) { create(:split, course: course_2, base_name: 'Aid 2', distance_from_start: 20000) }
-    let!(:course_2_finish_split) { create(:finish_split, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
+    let!(:course_2_finish_split) { create(:split, :finish, course: course_2, base_name: 'Finish', distance_from_start: 30000) }
     let(:course_2_splits) { [course_2_start_split, course_2_aid_1_split, course_2_aid_2_split, course_2_finish_split] }
 
     let!(:effort_1) { create(:effort, event: event_1, bib_number: 111) }
     let!(:effort_2) { create(:effort, event: event_2, bib_number: 112) }
 
-    let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: course_1_start_split, bitkey: in_bitkey, time_from_start: 0) }
-    let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: in_bitkey, time_from_start: 5000) }
-    let!(:effort_1_split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: out_bitkey, time_from_start: 6000) }
-    let!(:effort_1_split_time_4) { create(:split_time, effort: effort_1, lap: 1, split: course_1_finish_split, bitkey: in_bitkey, time_from_start: 10000) }
-    let!(:effort_2_split_time_1) { create(:split_time, effort: effort_2, lap: 1, split: course_2_start_split, bitkey: in_bitkey, time_from_start: 0) }
-    let!(:effort_2_split_time_2) { create(:split_time, effort: effort_2, lap: 1, split: course_2_aid_1_split, bitkey: in_bitkey, time_from_start: 7000) }
+    let!(:effort_1_split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: course_1_start_split, bitkey: in_bitkey, absolute_time: start_time_1 + 0) }
+    let!(:effort_1_split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: in_bitkey, absolute_time: start_time_1 + 5000) }
+    let!(:effort_1_split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: course_1_aid_1_split, bitkey: out_bitkey, absolute_time: start_time_1 + 6000) }
+    let!(:effort_1_split_time_4) { create(:split_time, effort: effort_1, lap: 1, split: course_1_finish_split, bitkey: in_bitkey, absolute_time: start_time_1 + 10000) }
+    let!(:effort_2_split_time_1) { create(:split_time, effort: effort_2, lap: 1, split: course_2_start_split, bitkey: in_bitkey, absolute_time: start_time_2 + 0) }
+    let!(:effort_2_split_time_2) { create(:split_time, effort: effort_2, lap: 1, split: course_2_aid_1_split, bitkey: in_bitkey, absolute_time: start_time_2 + 7000) }
 
     before do
       event_1.splits << course_1_splits
       event_2.splits << course_2_splits
+      effort_1.reload
     end
 
     context 'when data is valid and force_submit is true' do
@@ -917,18 +919,19 @@ RSpec.describe Api::V1::EventGroupsController do
 
       via_login_and_jwt do
         it 'overwrites existing duplicate split_times, creates raw_times, and does not return raw_time_rows' do
-          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          expect(effort_1.split_times.map(&:absolute_time)).to match_array([start_time_1 + 0, start_time_1 + 5000, start_time_1 + 6000, start_time_1 + 10000])
           response = make_request
+          expect(response.status).to eq(201)
           result = JSON.parse(response.body)
           expect(result.dig('data', 'rawTimeRows')).to eq([])
           effort_1.reload
-          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 3600, 3900, 10000])
+          expect(effort_1.split_times.map(&:absolute_time)).to match_array([start_time_1 + 0, start_time_1 + 3600, start_time_1 + 3900, start_time_1 + 10000])
           expect(RawTime.count).to eq(2)
         end
       end
     end
 
-    context 'when data is valid and force_submit is false' do
+    context 'when data is valid but duplicates exist and force_submit is false' do
       let(:raw_time_attributes_1) { {bib_number: '111', entered_time: '09:00:00', split_name: 'Aid 1', sub_split_kind: 'in', source: 'Live Entry (1)'} }
       let(:raw_time_attributes_2) { {bib_number: '111', entered_time: '09:05:00', split_name: 'Aid 1', sub_split_kind: 'out', source: 'Live Entry (1)'} }
       let(:force_submit) { 'false' }
@@ -965,12 +968,12 @@ RSpec.describe Api::V1::EventGroupsController do
 
       via_login_and_jwt do
         it 'does not overwrite existing duplicate split_times, does not create raw_times, and returns raw_time_rows' do
-          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          expect(effort_1.split_times.map(&:absolute_time)).to match_array([start_time_1 + 0, start_time_1 + 5000, start_time_1 + 6000, start_time_1 + 10000])
           response = make_request
           result = JSON.parse(response.body)
           expect(result.dig('data', 'rawTimeRows')).to eq(expected)
           effort_1.reload
-          expect(effort_1.split_times.map(&:time_from_start)).to match_array([0, 5000, 6000, 10000])
+          expect(effort_1.split_times.map(&:absolute_time)).to match_array([start_time_1 + 0, start_time_1 + 5000, start_time_1 + 6000, start_time_1 + 10000])
           expect(RawTime.count).to eq(0)
         end
       end

@@ -36,6 +36,7 @@ module TimeFormats
   end
 
   def offset_format_xxhyym(time_in_seconds)
+    return '--' unless time_in_seconds
     indicator = time_in_seconds.negative? ? '-' : '+'
     indicator + time_formatter(time_in_seconds, '%02dh%02dm', 'hm', '00:00', false)
   end

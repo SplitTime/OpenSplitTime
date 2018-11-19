@@ -33,16 +33,17 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   def filtered_raw_times
     return @filtered_raw_times if defined?(@filtered_raw_times)
-    scoped_raw_times = raw_times.where(filter_hash).search(search_text).with_relation_ids(sort: sort_hash)
-                           .select { |raw_time| matches_criteria?(raw_time) }
-    scoped_raw_times.each do |raw_time|
+    @filtered_raw_times = raw_times.where(filter_hash).search(search_text)
+                              .with_relation_ids(sort: sort_hash)
+                              .select { |raw_time| matches_criteria?(raw_time) }
+                              .paginate(page: page, per_page: per_page)
+    @filtered_raw_times.each do |raw_time|
       raw_time.effort = raw_time.has_effort_id? ? indexed_efforts[raw_time.effort_id] : nil
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
       raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
       raw_time.creator = raw_time.created_by? ? indexed_users[raw_time.created_by] : nil
       raw_time.puller = raw_time.pulled_by? ? indexed_users[raw_time.pulled_by] : nil
     end
-    @filtered_raw_times = scoped_raw_times.paginate(page: page, per_page: per_page)
   end
 
   def filtered_raw_times_count
@@ -74,7 +75,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def user_ids
-    @user_ids ||= raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
+    @user_ids ||= filtered_raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
   end
 
   def matches_criteria?(raw_time)
@@ -91,7 +92,7 @@ class EventGroupRawTimesPresenter < BasePresenter
       true
     end
   end
-  
+
   def matches_pulled_criteria?(raw_time)
     case params[:pulled]&.to_boolean
     when true

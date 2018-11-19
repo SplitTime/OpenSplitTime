@@ -18,7 +18,7 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
   end
 
   def event_split_header_data
-    event_presenter.split_header_data
+    event_presenter.split_header_data.first(time_cluster_count)
   end
 
   def event_short_name
@@ -28,6 +28,10 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
   private
 
   attr_reader :params
+
+  def time_cluster_count
+    effort_times_row.time_clusters.size
+  end
 
   def event_presenter
     @event_presenter ||= EventSpreadDisplay.new(event: event, params: {display_style: 'all'})

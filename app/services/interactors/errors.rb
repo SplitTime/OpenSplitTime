@@ -12,6 +12,11 @@ module Interactors
        detail: {exception: exception}}
     end
 
+    def database_error(error_message)
+      {title: 'A database error occurred',
+       detail: {error_message: error_message}}
+    end
+
     def cannot_unstart_error(effort)
       {title: "Cannot mark #{effort} as DNS",
        detail: {messages: ['The effort has one or more intermediate or finish times recorded. Times must be deleted from the effort view.']}}
@@ -27,6 +32,11 @@ module Interactors
        detail: {messages: ["#{split_name} is invalid; valid names are: #{valid_split_names.to_sentence}"]}}
     end
 
+    def invalid_start_time_error(start_time)
+      {title: 'Invalid start time',
+       detail: {messages: ["#{start_time} is not a valid start_time"]}}
+    end
+
     def lap_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
@@ -34,12 +44,12 @@ module Interactors
 
     def missing_effort_error
       {title: 'Missing effort',
-      detail: {messages: ['The raw_time is missing an effort']}}
+       detail: {messages: ['The raw_time is missing an effort']}}
     end
 
     def missing_new_split_time_error(raw_time)
       {title: 'Raw time does not contain a new_split_time',
-      detail: {messages: ["#{raw_time} does not have a new_split_time"]}}
+       detail: {messages: ["#{raw_time} does not have a new_split_time"]}}
     end
 
     def raw_time_mismatch_error
@@ -50,6 +60,11 @@ module Interactors
     def sub_split_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because sub splits do not coincide"]}}
+    end
+
+    def multiple_event_groups_error(event_group_ids)
+      {title: 'Efforts are from multiple event groups',
+       detail: {messages: ["Attempted to start efforts from multiple event_groups: #{event_group_ids.to_sentence}"]}}
     end
 
     def mismatched_organization_error(old_event_group, new_event_group)

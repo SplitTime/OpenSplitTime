@@ -60,6 +60,8 @@
                                 method: :put,
                                 data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
                                         'at the last aid station for which times are available. Are you sure you want to proceed?'} %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to 'Export finishers list', export_finishers_event_path(event, format: :csv) %></li>
                 <li><%= link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(event, format: :csv) %></li>
                 <li role="separator" class="divider"></li>
                 <li><%= link_to 'Delete event', event_path(event, referrer_path: roster_event_group_path),

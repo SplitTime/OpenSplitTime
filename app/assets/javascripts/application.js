@@ -23,6 +23,7 @@
 //= require bootstrap-datetimepicker
 //= require vue
 //= require vue-router
+//= require local-time
 //= require_tree .
 
 Vue.use( VueRouter );

@@ -90,6 +90,7 @@ class EnrichRawTimeRow
   end
 
   def effort
+    return @effort if defined?(@effort)
     @effort = raw_time_row.effort || Effort.where(event: event_group.events, bib_number: bib_number)
                                          .includes(event: :splits, split_times: :split).first
   end

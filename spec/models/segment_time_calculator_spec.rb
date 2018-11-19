@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SegmentTimeCalculator do
   let(:stat_threshold) { SegmentTimeCalculator::STATS_CALC_THRESHOLD }
-  let(:start) { build_stubbed(:start_split, course_id: 10) }
+  let(:start) { build_stubbed(:split, :start, course_id: 10) }
   let(:aid_1) { build_stubbed(:split, base_name: 'Aid 1', course_id: 10, distance_from_start: 10000, vert_gain_from_start: 1000, vert_loss_from_start: 500) }
   let(:aid_2) { build_stubbed(:split, base_name: 'Aid 2', course_id: 10, distance_from_start: 25000, vert_gain_from_start: 2500, vert_loss_from_start: 1250) }
   let(:aid_3) { build_stubbed(:split, base_name: 'Aid 3', course_id: 10, distance_from_start: 45000, vert_gain_from_start: 4500, vert_loss_from_start: 2250) }
-  let(:finish) { build_stubbed(:finish_split, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
+  let(:finish) { build_stubbed(:split, :finish, course_id: 10, distance_from_start: 70000, vert_gain_from_start: 7000, vert_loss_from_start: 3500) }
   let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                              end_lap: 1, end_split: start, end_in_out: 'in') }
   let(:lap_1_start_to_lap_1_aid_1) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
@@ -51,7 +53,7 @@ RSpec.describe SegmentTimeCalculator do
 
   describe '#typical_time (terrain)' do
     let(:distance_factor) { SegmentTimeCalculator::DISTANCE_FACTOR }
-    let(:vert_gain_factor) { SegmentTimeCalculator::VERT_GAIN_FACTOR }
+    let(:vert_gain_factor) { SegmentTimeCalculator::UP_VERT_GAIN_FACTOR }
 
     it 'calculates a segment time in seconds using the specified calc_model' do
       segment = lap_1_start_to_lap_1_aid_1

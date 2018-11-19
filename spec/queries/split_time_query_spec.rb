@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+include BitkeyDefinitions
+include FeatureMacros
 
 RSpec.describe SplitTimeQuery do
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:lap_1) { 1 }
 
   describe '.typical_segment_time' do
@@ -28,12 +30,12 @@ RSpec.describe SplitTimeQuery do
     let(:start_split) { Split.find_by(base_name: 'Start') }
     let(:cunningham_split) { Split.find_by(base_name: 'Cunningham') }
     let(:maggie_split) { Split.find_by(base_name: 'Maggie') }
-    let(:start) { TimePoint.new(lap_1, start_split.id, in_bitkey)}
-    let(:cunningham_in) { TimePoint.new(lap_1, cunningham_split.id, in_bitkey)}
-    let(:maggie_in) { TimePoint.new(lap_1, maggie_split.id, in_bitkey)}
-    let(:maggie_out) { TimePoint.new(lap_1, maggie_split.id, out_bitkey)}
-    let(:start_to_cunningham_in) { Segment.new(begin_point: start, end_point: cunningham_in)}
-    let(:in_aid_maggie) { Segment.new(begin_point: maggie_in, end_point: maggie_out)}
+    let(:start) { TimePoint.new(lap_1, start_split.id, in_bitkey) }
+    let(:cunningham_in) { TimePoint.new(lap_1, cunningham_split.id, in_bitkey) }
+    let(:maggie_in) { TimePoint.new(lap_1, maggie_split.id, in_bitkey) }
+    let(:maggie_out) { TimePoint.new(lap_1, maggie_split.id, out_bitkey) }
+    let(:start_to_cunningham_in) { Segment.new(begin_point: start, end_point: cunningham_in) }
+    let(:in_aid_maggie) { Segment.new(begin_point: maggie_in, end_point: maggie_out) }
 
     it 'returns average time and count for a course segment' do
       segment = start_to_cunningham_in
@@ -62,6 +64,63 @@ RSpec.describe SplitTimeQuery do
       time, count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
       expect(time).to be_within(50).of(200)
       expect(count).to eq(2)
+    end
+  end
+
+  describe '.split_traffic' do
+    subject { ActiveRecord::Base.connection.execute(query) }
+    let(:query) { SplitTimeQuery.split_traffic(event_group: event_group, split_name: split_name, band_width: band_width) }
+    let(:event_group) { EventGroup.first }
+
+    before do
+      FactoryBot.reload
+      create_hardrock_event
+    end
+    after { clean_up_database }
+
+    context 'for a split close to the start' do
+      let(:split_name) { 'Cunningham' }
+      let(:band_width) { 1.hour }
+
+      it 'returns a hash with time intervals and effort counts in and out' do
+        expect(subject.cmd_status).to eq('SELECT 2')
+        result = subject.to_a
+        expect(result.size).to eq(2)
+        expect(result.map { |row| row['start_time'] }).to eq(['Fri 08:00', 'Fri 09:00'])
+        expect(result.map { |row| row['end_time'] }).to eq(['Fri 09:00', 'Fri 10:00'])
+        expect(result.map { |row| row['in_count'] }).to eq([6, 1])
+        expect(result.map { |row| row['out_count'] }).to eq([6, 1])
+      end
+    end
+
+    context 'for a split extending over multiple days' do
+      let(:split_name) { 'Engineer' }
+      let(:band_width) { 1.hour }
+
+      it 'returns a hash with time intervals reflecting multiple days' do
+        expect(subject.cmd_status).to eq('SELECT 7')
+        result = subject.to_a
+        expect(result.size).to eq(7)
+        expect(result.map { |row| row['start_time'] }).to eq(['Fri 19:00', 'Fri 20:00', 'Fri 21:00', 'Fri 22:00', 'Fri 23:00', 'Sat 00:00', 'Sat 01:00'])
+        expect(result.map { |row| row['end_time'] }).to eq(['Fri 20:00', 'Fri 21:00', 'Fri 22:00', 'Fri 23:00', 'Sat 00:00', 'Sat 01:00', 'Sat 02:00'])
+        expect(result.map { |row| row['in_count'] }).to eq([1, 3, 0, 1, 1, 0, 1])
+        expect(result.map { |row| row['out_count'] }).to eq([1, 2, 1, 1, 1, 0, 1])
+      end
+    end
+
+    context 'for a split with leading or trailing intervals having 0 count' do
+      let(:split_name) { 'Cunningham' }
+      let(:band_width) { 30.minutes }
+
+      it 'eliminates the leading and trailing intervals' do
+        expect(subject.cmd_status).to eq('SELECT 3')
+        result = subject.to_a
+        expect(result.size).to eq(3)
+        expect(result.map { |row| row['start_time'] }).to eq(['Fri 08:00', 'Fri 08:30', 'Fri 09:00'])
+        expect(result.map { |row| row['end_time'] }).to eq(['Fri 08:30', 'Fri 09:00', 'Fri 09:30'])
+        expect(result.map { |row| row['in_count'] }).to eq([4, 2, 1])
+        expect(result.map { |row| row['out_count'] }).to eq([4, 2, 1])
+      end
     end
   end
 end

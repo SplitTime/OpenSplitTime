@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe VerifyRawTimeRow do
@@ -6,19 +8,20 @@ RSpec.describe VerifyRawTimeRow do
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
   let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_in_home_zone: '2018-06-23 06:00:00', laps_required: 1) }
+  let(:start_time) { event&.start_time || DateTime.parse('2018-10-31 08:00:00') }
   let(:course) { build_stubbed(:course) }
   let(:effort) { build_stubbed(:effort, event: event, split_times: split_times, bib_number: 10) }
-  let(:start_split) { build_stubbed(:start_split, course: course, base_name: 'Start') }
+  let(:start_split) { build_stubbed(:split, :start, course: course, base_name: 'Start') }
   let(:cunningham_split) { build_stubbed(:split, course: course, base_name: 'Cunningham', distance_from_start: 10000) }
   let(:maggie_split) { build_stubbed(:split, course: course, base_name: 'Maggie', distance_from_start: 20000) }
   let(:splits) { [start_split, cunningham_split, maggie_split] }
   let(:expected_lap_splits) { event.required_lap_splits }
 
-  let(:split_time_1) { build_stubbed(:split_time, split: start_split, bitkey: 1, time_from_start: 0) }
-  let(:split_time_2) { build_stubbed(:split_time, split: cunningham_split, bitkey: 1, time_from_start: 7200) }
-  let(:split_time_3) { build_stubbed(:split_time, split: cunningham_split, bitkey: 64, time_from_start: 7300) }
-  let(:split_time_4) { build_stubbed(:split_time, split: maggie_split, bitkey: 1, time_from_start: 15000) }
-  let(:split_time_5) { build_stubbed(:split_time, split: maggie_split, bitkey: 64, time_from_start: 15100) }
+  let(:split_time_1) { build_stubbed(:split_time, split: start_split, bitkey: 1, absolute_time: start_time + 0) }
+  let(:split_time_2) { build_stubbed(:split_time, split: cunningham_split, bitkey: 1, absolute_time: start_time + 7200) }
+  let(:split_time_3) { build_stubbed(:split_time, split: cunningham_split, bitkey: 64, absolute_time: start_time + 7300) }
+  let(:split_time_4) { build_stubbed(:split_time, split: maggie_split, bitkey: 1, absolute_time: start_time + 15000) }
+  let(:split_time_5) { build_stubbed(:split_time, split: maggie_split, bitkey: 64, absolute_time: start_time + 15100) }
 
   let(:raw_times) { [raw_time_1, raw_time_2].compact }
 
@@ -61,7 +64,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(cunningham_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
-        expect(new_split_times.map(&:time_from_start)).to eq([60.minutes, 61.minutes])
+        expect(new_split_times.map(&:absolute_time)).to eq([60.minutes, 61.minutes].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -95,7 +98,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(cunningham_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([64])
-        expect(new_split_times.map(&:time_from_start)).to eq([61.minutes])
+        expect(new_split_times.map(&:absolute_time)).to eq([61.minutes].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -106,7 +109,7 @@ RSpec.describe VerifyRawTimeRow do
       let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:30:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
 
-      it 'returns a raw_time_row with attributes set and calculates time_from_start correctly' do
+      it 'returns a raw_time_row with attributes set and calculates absolute_time correctly' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -123,7 +126,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(maggie_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
-        expect(new_split_times.map(&:time_from_start)).to eq([150.minutes, 151.minutes])
+        expect(new_split_times.map(&:absolute_time)).to eq([150.minutes, 151.minutes].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -134,7 +137,7 @@ RSpec.describe VerifyRawTimeRow do
       let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { nil }
 
-      it 'returns a raw_time_row with attributes set, attaches a split_time with time_from_start: nil, and does not set effort status' do
+      it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -149,7 +152,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.size).to eq(1)
         new_split_time = new_split_times.first
         expect(new_split_time).to be_a(SplitTime)
-        expect(new_split_time.time_from_start).to be_nil
+        expect(new_split_time.absolute_time).to be_nil
 
         expect(Interactors::SetEffortStatus).not_to have_received(:perform)
       end
@@ -160,7 +163,7 @@ RSpec.describe VerifyRawTimeRow do
       let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:00:00', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
 
-      it 'returns a raw_time_row with attributes set, attaches a split_time with time_from_start: nil, and does not set effort status' do
+      it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -174,7 +177,7 @@ RSpec.describe VerifyRawTimeRow do
         new_split_times = result_raw_times.map(&:new_split_time)
         expect(new_split_times.size).to eq(2)
         expect(new_split_times).to all be_a(SplitTime)
-        expect(new_split_times.map(&:time_from_start)).to eq([nil, 2.hours])
+        expect(new_split_times.map(&:absolute_time)).to eq([nil, start_time + 2.hours])
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -201,7 +204,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(cunningham_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
-        expect(new_split_times.map(&:time_from_start)).to eq([60.minutes, 61.minutes])
+        expect(new_split_times.map(&:absolute_time)).to eq([60.minutes, 61.minutes].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -228,7 +231,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(cunningham_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1, 64])
-        expect(new_split_times.map(&:time_from_start)).to eq([60.minutes, 61.minutes])
+        expect(new_split_times.map(&:absolute_time)).to eq([60.minutes, 61.minutes].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -255,7 +258,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(start_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1])
-        expect(new_split_times.map(&:time_from_start)).to eq([0])
+        expect(new_split_times.map(&:absolute_time)).to eq([0].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
@@ -283,7 +286,7 @@ RSpec.describe VerifyRawTimeRow do
         expect(new_split_times.map(&:lap)).to all eq(1)
         expect(new_split_times.map(&:split_id)).to all eq(start_split.id)
         expect(new_split_times.map(&:bitkey)).to eq([1])
-        expect(new_split_times.map(&:time_from_start)).to eq([0])
+        expect(new_split_times.map(&:absolute_time)).to eq([0].map { |e| start_time + e })
 
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end

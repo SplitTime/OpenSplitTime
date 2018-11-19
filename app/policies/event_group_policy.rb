@@ -36,11 +36,15 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_fully?(event_group)
   end
 
+  def delete_duplicate_raw_times?
+    user.authorized_to_edit?(event_group)
+  end
+
   def set_data_status?
     user.authorized_to_edit?(event_group)
   end
 
-  def start_ready_efforts?
+  def start_efforts?
     user.authorized_to_edit?(event_group)
   end
 

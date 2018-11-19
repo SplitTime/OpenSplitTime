@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 class TimePredictor
-
   def self.segment_time(args)
     new(args).segment_time
   end
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: :segment,
-                           required_alternatives: [:effort, [:lap_splits, :completed_split_time]],
+                           required: [:segment, :effort],
                            exclusive: [:segment, :effort, :lap_splits, :completed_split_time,
                                        :calc_model, :similar_effort_ids, :times_container],
                            class: self.class)
@@ -25,7 +23,7 @@ class TimePredictor
   end
 
   def segment_time
-    times_container.segment_time(segment) && times_container.segment_time(segment) * pace_factor
+    uncorrected_segment_time && uncorrected_segment_time * pace_factor
   end
 
   def data_status(seconds)
@@ -33,9 +31,12 @@ class TimePredictor
   end
 
   private
-
   attr_reader :segment, :effort, :lap_splits, :completed_split_time,
               :calc_model, :similar_effort_ids, :times_container
+
+  def uncorrected_segment_time
+    times_container.segment_time(segment)
+  end
 
   def limits
     times_container.limits(segment).transform_values { |limit| (limit * pace_factor).to_i }
@@ -46,11 +47,11 @@ class TimePredictor
   end
 
   def measurable_pace?
-    (completed_lap_split.distance_from_start > 0) && typical_completed_time
+    completed_lap_split.distance_from_start.positive? && actual_completed_time && typical_completed_time
   end
 
   def actual_completed_time
-    completed_split_time.time_from_start
+    completed_split_time.absolute_time && effort.start_time && completed_split_time.absolute_time - effort.start_time
   end
 
   def typical_completed_time

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EffortWithTimesPresenter do
@@ -23,7 +25,10 @@ RSpec.describe EffortWithTimesPresenter do
   end
 
   describe '#guaranteed_split_time' do
-    let(:split_times) { build_stubbed_list(:split_times_in_out, 3) }
+    let(:split_time_1) { build_stubbed(:split_time, lap: 1, split_id: 101, bitkey: 1) }
+    let(:split_time_2) { build_stubbed(:split_time, lap: 1, split_id: 102, bitkey: 1) }
+    let(:split_time_3) { build_stubbed(:split_time, lap: 1, split_id: 102, bitkey: 64) }
+    let(:split_times) { [split_time_1, split_time_2, split_time_3] }
 
     before do
       allow(effort).to receive(:split_times).and_return(split_times)

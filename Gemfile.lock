@@ -199,7 +199,7 @@ GEM
     multi_json (1.13.1)
     netrc (0.11.0)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
     paperclip (5.2.1)
@@ -440,6 +440,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails (~> 6.0)
   jwt
+  local_time
   momentjs-rails
   paperclip (~> 5.2.0)
   pg (~> 0.20)

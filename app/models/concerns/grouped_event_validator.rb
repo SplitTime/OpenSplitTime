@@ -7,6 +7,7 @@ class GroupedEventValidator < ActiveModel::Validator
     @analyzer = EventGroupSplitAnalyzer.new(event_group)
     validate_bibs
     validate_split_locations
+    validate_time_zones
   end
 
   private
@@ -30,6 +31,12 @@ class GroupedEventValidator < ActiveModel::Validator
       locations = incompatible_locations.map(&:titleize).to_sentence
       event.errors.add(:base, "#{'Location'.pluralize(size)} #{locations} #{'is'.pluralize(size)} " +
           "incompatible within the event group. Splits with duplicate names must have the same locations. ")
+    end
+  end
+
+  def validate_time_zones
+    if event_group.events.map(&:home_time_zone).uniq.many?
+      event.errors.add(:home_time_zone, 'is inconsistent with others within the event group')
     end
   end
 

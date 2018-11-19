@@ -7,7 +7,7 @@
     <th>From</th>
     <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_distance)) %></th>
     <th class="text-right">
-      <%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_time)) %>
+      <%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_time_from_start)) %>
     </th>
   </tr>
   </thead>

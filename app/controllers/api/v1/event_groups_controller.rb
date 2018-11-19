@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Api::V1::EventGroupsController < ApiController
   include BackgroundNotifiable
   before_action :set_resource, except: [:index, :create]
@@ -140,7 +142,7 @@ class Api::V1::EventGroupsController < ApiController
       problem_rows = response.resources[:problem_rows]
       report_raw_times_available(event_group)
 
-      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}
+      render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}, status: :created
     else
       render json: {errors: errors}, status: :unprocessable_entity
     end
@@ -171,8 +173,12 @@ class Api::V1::EventGroupsController < ApiController
     raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
 
     raw_times = raw_times_attributes.values.map do |attributes|
-      raw_time = attributes[:id].blank? ? RawTime.new : RawTime.find_or_initialize_by(id: attributes[:id])
-      raw_time.assign_attributes(attributes.except(:id))
+      id = attributes[:id]
+      raw_time = @resource.raw_times.find_by(id: id) if id.present?
+      raw_time ||= @resource.raw_times.new
+      # :id is already assigned if it is valid; :event_group_id is already assigned by
+      # @resource.raw_times.find_by or @resource.raw_times.new
+      raw_time.assign_attributes(attributes.except(:id, :event_group_id))
       raw_time
     end
 

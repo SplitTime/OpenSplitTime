@@ -43,8 +43,8 @@ RSpec.describe ETL::Importer do
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do
-      create(:start_split, course: course)
-      create(:finish_split, course: course, distance_from_start: 10_000)
+      create(:split, :start, course: course)
+      create(:split, :finish, course: course, distance_from_start: 10_000)
     end
 
     it 'creates new intermediate splits within the given course' do
@@ -64,8 +64,8 @@ RSpec.describe ETL::Importer do
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do
-      create(:start_split, base_name: 'Start', course: course)
-      create(:finish_split, base_name: 'Finish', course: course, distance_from_start: 10_000)
+      create(:split, :start, base_name: 'Start', course: course)
+      create(:split, :finish, base_name: 'Finish', course: course, distance_from_start: 10_000)
     end
 
     it 'creates new intermediate splits within the given course' do

@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-# t.integer  "event_id"
-# t.integer  "split_id"
-# t.datetime "created_at",        null: false
-# t.datetime "updated_at",        null: false
+# t.integer "event_id"
+# t.integer "split_id"
+# t.datetime "created_at", null: false
+# t.datetime "updated_at", null: false
 # t.datetime "open_time"
 # t.datetime "close_time"
-# t.integer  "status"
-# t.string   "captain_name"
-# t.string   "comms_crew_names"
-# t.string   "comms_frequencies"
-# t.string   "current_issues"
+# t.integer "status"
+# t.string "captain_name"
+# t.string "comms_crew_names"
+# t.string "comms_frequencies"
+# t.string "current_issues"
 
 RSpec.describe AidStation, type: :model do
   subject { build_stubbed(:aid_station, split: split, event: event) }
@@ -64,10 +66,10 @@ RSpec.describe AidStation, type: :model do
       let(:event_2) { create(:event, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
-      let(:course_1_split_1) { create(:start_split, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_1_split_2) { create(:finish_split, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
       let(:course_2) { create(:course) }
-      let(:course_2_split_1) { create(:start_split, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
+      let(:course_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
       before do
         event_1.splits << course_1_split_1
         event_1.splits << course_1_split_2
@@ -75,7 +77,7 @@ RSpec.describe AidStation, type: :model do
       end
 
       context 'when an aid_station is added and all splits remain compatible within the event_group' do
-        let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+        let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
 
         it 'is invalid' do
           aid_station = create(:aid_station, event: event_2, split: course_2_split_2)
@@ -84,7 +86,7 @@ RSpec.describe AidStation, type: :model do
       end
 
       context 'when an aid_station is added resulting in an incompatible split within the event_group' do
-        let(:course_2_split_2) { create(:finish_split, course: course_2, base_name: 'Finish', latitude: 41, longitude: -106) }
+        let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 41, longitude: -106) }
 
         it 'is invalid' do
           aid_station = create(:aid_station, event: event_2, split: course_2_split_2)

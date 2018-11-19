@@ -30,8 +30,7 @@ class EffortAnalysisRow
   end
 
   def time_cluster
-    @time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: split_times,
-                                      prior_split_time: prior_split_time, start_time: start_time)
+    @time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: split_times)
   end
 
   def split_id
@@ -47,11 +46,11 @@ class EffortAnalysisRow
   end
 
   def segment_time_typical
-    typical_row.try(:segment_time)
+    typical_row&.segment_time
   end
 
   def time_in_aid_typical
-    typical_row.try(:time_in_aid)
+    typical_row&.time_in_aid
   end
 
   def combined_time_typical

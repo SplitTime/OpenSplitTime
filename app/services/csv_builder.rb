@@ -35,7 +35,7 @@ class CsvBuilder
   end
 
   def export_attributes
-    @export_attributes ||= params_class.csv_attributes
+    @export_attributes ||= params_class.csv_export_attributes
   end
 
   def params_class

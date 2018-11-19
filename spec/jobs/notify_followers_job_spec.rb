@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe NotifyFollowersJob do
   subject { NotifyFollowersJob.new(person_id: person_id, split_time_ids: split_time_ids) }
   let(:person_id) { person.id }
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
   let(:event) { create(:event_with_standard_splits, splits_count: 3, laps_required: 0) }
   let(:effort) { create(:effort, event: event) }
   let(:splits) { event.splits }

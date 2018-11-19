@@ -32,7 +32,8 @@ module ETL::Transformers
       parse_times
       add_incremental_times
       calculate_times_from_start
-      proto_record.create_split_time_children!(time_points)
+      calculate_absolute_times
+      proto_record.create_split_time_children!(time_points, time_attribute: :absolute_time)
       proto_record.set_split_time_stop!
     end
 
@@ -65,6 +66,10 @@ module ETL::Transformers
     def calculate_times_from_start
       proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }
       proto_record[:times_from_start].unshift(0) if proto_record[:times_from_start].any?(&:present?)
+    end
+
+    def calculate_absolute_times
+      proto_record[:absolute_times] = proto_record[:times_from_start].map { |seconds| seconds ? event.start_time + seconds : nil }
     end
 
     def global_attributes

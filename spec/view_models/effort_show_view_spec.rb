@@ -4,8 +4,10 @@ RSpec.describe EffortShowView do
   subject { EffortShowView.new(effort: effort) }
   let(:event) { build_stubbed(:event, efforts: efforts) }
   let(:efforts) { other_efforts + [effort] }
+
   before do
     allow(subject).to receive(:event).and_return(event)
+    allow(subject).to receive(:effort).and_return(effort)
   end
 
   describe '#next_problem_effort' do
@@ -15,14 +17,20 @@ RSpec.describe EffortShowView do
       context 'when other problem efforts exist' do
         let(:other_efforts) { build_stubbed_list(:effort, 2, data_status: :bad).sort_by(&:last_name) }
 
-        it 'returns the next problem effort alphabetically by last name' do
-          effort.last_name = 'Aaron'
-          expect(subject.next_problem_effort).to eq(other_efforts.first)
+        context 'when the current effort is not last alphabetically' do
+          before { effort.last_name = 'Aaron' }
+
+          it 'returns the next problem effort alphabetically by last name' do
+            expect(subject.next_problem_effort.last_name).to eq(other_efforts.first.last_name)
+          end
         end
 
-        it 'returns the first problem effort if the current effort is last alphabetically' do
-          effort.last_name = 'Zyzyx'
-          expect(subject.next_problem_effort).to eq(other_efforts.first)
+        context 'when the current effort is last alphabetically' do
+          before { effort.last_name = 'Zyzyx' }
+
+          it 'returns the first problem effort' do
+            expect(subject.next_problem_effort).to eq(other_efforts.first)
+          end
         end
       end
 

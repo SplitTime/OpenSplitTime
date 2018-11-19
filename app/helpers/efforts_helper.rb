@@ -30,9 +30,17 @@ module EffortsHelper
 
   def last_reported_elapsed_time(effort_row)
     if effort_row.started?
-      "#{time_format_hhmmss(effort_row.final_time)}"
+      "#{time_format_hhmmss(effort_row.final_time_from_start)}"
     else
       '--'
     end
+  end
+
+  def lap_time_text(view_object, row)
+    true_time = view_object.true_lap_time(row.lap)
+    provisional_time = view_object.provisional_lap_time(row.lap)
+    provisional_marker = (provisional_time && !true_time) ? '*' : ''
+    time_string = time_format_hhmmss(true_time || provisional_time)
+    time_string + provisional_marker
   end
 end

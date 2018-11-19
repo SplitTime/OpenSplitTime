@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples_for 'transformable' do
   subject { described_class.new(attributes) }
 
@@ -82,6 +84,84 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe '#convert_start_offset!' do
+    let(:attributes) { {start_offset: start_offset} }
+    let(:event_start_time) { '2018-06-30 08:00:00'.in_time_zone('UTC') }
+    before { subject.convert_start_offset!(event_start_time) }
+
+    context 'when start_offset is an integer number of seconds' do
+      let(:start_offset) { 120 }
+
+      it 'sets scheduled_start_time equal to event start_time plus the start_offset' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 120.seconds)
+      end
+    end
+
+    context 'when start_offset is a string number of seconds' do
+      let(:start_offset) { '120' }
+
+      it 'sets scheduled_start_time equal to event start_time plus the start_offset' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 120.seconds)
+      end
+    end
+
+    context 'when start_offset is a string hh:mm:ss' do
+      let(:start_offset) { '01:00:00' }
+
+      it 'sets scheduled_start_time equal to event start_time plus the start_offset' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 1.hour)
+      end
+    end
+
+    context 'when start_offset is a string hh:mm:ss with many hours and minutes' do
+      let(:start_offset) { '150:30:00' }
+
+      it 'sets scheduled_start_time equal to event start_time plus the start_offset' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 150.5.hours)
+      end
+    end
+
+    context 'when start_offset is a string hh:mm' do
+      let(:start_offset) { '01:00' }
+
+      it 'sets scheduled_start_time equal to event start_time plus the start_offset' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 1.hour)
+      end
+    end
+
+    context 'when start_offset contains no numbers' do
+      let(:start_offset) { 'hello' }
+
+      it 'does not set scheduled_start_time' do
+        expect(subject[:scheduled_start_time]).to be_nil
+      end
+    end
+
+    context 'when start_offset contains a mix of numbers and letters' do
+      let(:start_offset) { 'hello120' }
+
+      it 'interprets the string based on the numbers' do
+        expect(subject[:scheduled_start_time]).to eq(event_start_time + 120.seconds)
+      end
+    end
+
+    context 'when start_offset is an empty string' do
+      let(:start_offset) { '' }
+
+      it 'does not set scheduled_start_time' do
+        expect(subject[:scheduled_start_time]).to be_nil
+      end
+    end
+
+    context 'when start_offset is nil' do
+      let(:start_offset) { nil }
+
+      it 'does not set scheduled_start_time' do
+        expect(subject[:scheduled_start_time]).to be_nil
+      end
+    end
+  end
+
   describe '#create_country_from_state!' do
     context 'when a state code from the United States exists but no country_code exists' do
       let(:attributes) { {state_code: 'NY'} }
@@ -98,6 +178,70 @@ RSpec.shared_examples_for 'transformable' do
       it 'adds country_code for the US' do
         subject.create_country_from_state!
         expect(subject[:country_code]).to eq('CA')
+      end
+    end
+  end
+
+  describe '#localize_datetime!' do
+    let(:local_key) { :scheduled_start_time_local }
+    let(:utc_key) { :scheduled_start_time }
+    let(:attributes) { {local_key => local_time, time_zone_name: time_zone_name} }
+    let(:local_time) { '2018-06-30 08:00:00' }
+    let(:time_zone_name) { 'Mountain Time (US & Canada)' }
+
+    before { subject.localize_datetime!(local_key, utc_key, time_zone_name) }
+
+    context 'when local time and time zone are present' do
+      it 'deletes the local time key and adds the utc time key with converted datetime' do
+        expect(subject.to_h).to eq({utc_key => '2018-06-30 14:00:00', time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when local time is not valid' do
+      let(:local_time) { 'hello' }
+
+      it 'deletes the local time key and does not set a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when local time is an empty string' do
+      let(:local_time) { '' }
+
+      it 'deletes the local time key and does not set a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when local time is nil' do
+      let(:local_time) { nil }
+
+      it 'deletes the local time key and does not set a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when time_zone_name is not valid' do
+      let(:time_zone_name) { 'hello' }
+
+      it 'deletes the local time key and does not create a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when time_zone_name is an empty string' do
+      let(:time_zone_name) { '' }
+
+      it 'deletes the local time key and does not create a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+      end
+    end
+
+    context 'when time_zone_name is nil' do
+      let(:time_zone_name) { nil }
+
+      it 'deletes the local time key and does not create a utc time key' do
+        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
       end
     end
   end
@@ -160,7 +304,7 @@ RSpec.shared_examples_for 'transformable' do
     let(:attributes) { {birthdate: birthdate} }
 
     context 'when provided with an American mm/dd/yy format' do
-      let(:birthdate) { '09/29/67'}
+      let(:birthdate) { '09/29/67' }
 
       it 'corrects the year to between 1920 and 2019' do
         subject.normalize_date!(:birthdate)
@@ -182,7 +326,7 @@ RSpec.shared_examples_for 'transformable' do
     context 'when provided with a two-digit year equal to or lower than the mod 100 of the current year' do
       let(:two_digit_year) { Date.today.year % 100 }
       let(:four_digit_year) { Date.today.year }
-      let(:birthdate) { "09/29/#{two_digit_year}"}
+      let(:birthdate) { "09/29/#{two_digit_year}" }
 
       it 'assumes the current year' do
         subject.normalize_date!(:birthdate)
@@ -222,7 +366,7 @@ RSpec.shared_examples_for 'transformable' do
     let(:attributes) { {start_time: start_time} }
 
     context 'when provided with an American mm/dd/yy hh:mm:ss format' do
-      let(:start_time) { '09/29/67 06:30:00'}
+      let(:start_time) { '09/29/67 06:30:00' }
 
       it 'corrects the year to between 1920 and 2019' do
         subject.normalize_datetime!(:start_time)
@@ -244,7 +388,7 @@ RSpec.shared_examples_for 'transformable' do
     context 'when provided with a two-digit year equal to or lower than the mod 100 of the current year' do
       let(:two_digit_year) { Date.today.year % 100 }
       let(:four_digit_year) { Date.today.year }
-      let(:start_time) { "09/29/#{two_digit_year} 06:30:00"}
+      let(:start_time) { "09/29/#{two_digit_year} 06:30:00" }
 
       it 'assumes the current year' do
         subject.normalize_datetime!(:start_time)
@@ -423,31 +567,31 @@ RSpec.shared_examples_for 'transformable' do
 
   describe '#delete_nil_keys!' do
     context 'when a single key exists and value is nil' do
-      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+      let(:attributes) { {first_name: 'Joe', start_time: nil, gender: nil} }
 
       it 'deletes the keys' do
         expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:start_offset)
+        subject.delete_nil_keys!(:gender)
         expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
       end
     end
 
     context 'when multiple keys exist and values are nil' do
-      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+      let(:attributes) { {first_name: 'Joe', start_time: nil, gender: nil} }
 
       it 'deletes the keys' do
         expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:start_time, :start_offset)
+        subject.delete_nil_keys!(:start_time, :gender)
         expect(subject.to_h).to eq({first_name: 'Joe'})
       end
     end
 
     context 'when any value is not nil' do
-      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+      let(:attributes) { {first_name: 'Joe', start_time: nil, gender: nil} }
 
       it 'deletes the keys' do
         expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:first_name, :start_offset)
+        subject.delete_nil_keys!(:first_name, :gender)
         expect(subject.to_h).to eq({first_name: 'Joe', start_time: nil})
       end
     end
@@ -455,29 +599,29 @@ RSpec.shared_examples_for 'transformable' do
 
   describe '#fill_blank_values!' do
     context 'when keys exist and are nil' do
-      let(:attributes) { {first_name: 'Joe', start_time: nil, start_offset: nil} }
+      let(:attributes) { {first_name: 'Joe', start_time: nil, gender: nil} }
 
       it 'sets the keys to the given values' do
-        subject.fill_blank_values!(start_time: '', start_offset: 0)
-        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', start_offset: 0})
+        subject.fill_blank_values!(start_time: '', gender: 'male')
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', gender: 'male'})
       end
     end
 
     context 'when keys exist and are blank' do
-      let(:attributes) { {first_name: 'Joe', start_time: '', start_offset: ''} }
+      let(:attributes) { {first_name: 'Joe', start_time: '', gender: ''} }
 
       it 'sets the keys to the given values' do
-        subject.fill_blank_values!(start_time: '', start_offset: 0)
-        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', start_offset: 0})
+        subject.fill_blank_values!(start_time: '', gender: 'male')
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '', gender: 'male'})
       end
     end
 
     context 'when keys exist and are present' do
-      let(:attributes) { {first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800} }
+      let(:attributes) { {first_name: 'Joe', start_time: '2017-07-01 06:00:00', gender: 'male'} }
 
       it 'does not change the keys' do
-        subject.fill_blank_values!(start_time: '', start_offset: 0)
-        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '2017-07-01 06:00:00', start_offset: 1800})
+        subject.fill_blank_values!(start_time: '', gender: 'female')
+        expect(subject.to_h).to eq({first_name: 'Joe', start_time: '2017-07-01 06:00:00', gender: 'male'})
       end
     end
 
@@ -485,20 +629,9 @@ RSpec.shared_examples_for 'transformable' do
       let(:attributes) { {first_name: 'Joe'} }
 
       it 'does not add the keys' do
-        subject.fill_blank_values!(start_time: '', start_offset: 0)
+        subject.fill_blank_values!(start_time: '', gender: 'male')
         expect(subject.to_h).to eq({first_name: 'Joe'})
       end
-    end
-  end
-
-  describe '#set_offset_from_start_time!' do
-    let(:attributes) { {start_time: '2018-02-01 08:30'} }
-    let(:event) { Event.new(start_time: '2018-02-01 06:00', home_time_zone: 'Pacific (US & Canada)') }
-
-    it 'sets the start_offset attribute and deletes the start_time attribute' do
-      subject.set_offset_from_start_time!(event)
-      expect(subject[:start_offset]).to eq(2.5.hours)
-      expect(subject[:start_time]).to be_nil
     end
   end
 

@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+include BitkeyDefinitions
 
 RSpec.describe Interactors::UpdateEffortsStop do
   subject { Interactors::UpdateEffortsStop.new(efforts, stop_status: stop_status) }
@@ -6,17 +9,16 @@ RSpec.describe Interactors::UpdateEffortsStop do
 
   let(:split_times_1) { [split_time_1, split_time_2, split_time_3] }
   let(:split_times_2) { [split_time_4, split_time_5, split_time_6] }
-  let(:in_bitkey) { SubSplit::IN_BITKEY }
-  let(:out_bitkey) { SubSplit::OUT_BITKEY }
 
   let(:effort_1) { create(:effort, event: event) }
   let(:effort_2) { create(:effort, event: event) }
   let(:event) { create(:event, course: course) }
+  let(:start_time) { event.start_time }
   let(:course) { create(:course) }
-  let(:split_1) { create(:start_split, course: course) }
+  let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
-  let(:split_4) { create(:finish_split, course: course) }
+  let(:split_4) { create(:split, :finish, course: course) }
 
   describe '#initialize' do
     context 'when efforts is provided' do
@@ -46,12 +48,12 @@ RSpec.describe Interactors::UpdateEffortsStop do
 
   describe '#perform!' do
     context 'when stops need to be added' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
-      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: true) }
-      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
+      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: true) }
+      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
       let!(:efforts) { Effort.where(id: [effort_1.id, effort_2.id]).includes(split_times: :split) }
 
       it 'changes the stopped_here flag for split_times of all efforts and returns changed split_times in its response' do
@@ -63,12 +65,12 @@ RSpec.describe Interactors::UpdateEffortsStop do
     end
 
     context 'when no stops need to be added' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: true) }
-      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: true) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: true) }
+      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: true) }
       let!(:efforts) { Effort.where(id: [effort_1.id, effort_2.id]).includes(split_times: :split) }
 
       it 'does not change any split_times and returns an empty array in its response' do
@@ -80,9 +82,9 @@ RSpec.describe Interactors::UpdateEffortsStop do
     end
 
     context 'when no split_times exist for an effort' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
       let!(:efforts) { Effort.where(id: [effort_1.id, effort_2.id]).includes(split_times: :split) }
 
       it 'works as expected' do
@@ -94,9 +96,9 @@ RSpec.describe Interactors::UpdateEffortsStop do
     end
 
     context 'when a single effort is provided without an Array' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
       let!(:efforts) { Effort.where(id: [effort_1.id]).includes(split_times: :split).first }
 
       it 'works as expected' do
@@ -108,12 +110,12 @@ RSpec.describe Interactors::UpdateEffortsStop do
     end
 
     context 'when stops need to be removed' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: true) }
-      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: true) }
-      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: true) }
+      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: true) }
+      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
       let!(:efforts) { Effort.where(id: [effort_1.id, effort_2.id]).includes(split_times: :split) }
       let(:stop_status) { false }
 
@@ -126,12 +128,12 @@ RSpec.describe Interactors::UpdateEffortsStop do
     end
 
     context 'when no stops need to be removed' do
-      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
-      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10000, stopped_here: false) }
-      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11000, stopped_here: false) }
+      let!(:split_time_1) { create(:split_time, effort: effort_1, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_2) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_3) { create(:split_time, effort: effort_1, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
+      let!(:split_time_4) { create(:split_time, effort: effort_2, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+      let!(:split_time_5) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
+      let!(:split_time_6) { create(:split_time, effort: effort_2, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11000, stopped_here: false) }
       let!(:efforts) { Effort.where(id: [effort_1.id, effort_2.id]).includes(split_times: :split) }
       let(:stop_status) { false }
 

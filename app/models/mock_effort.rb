@@ -91,8 +91,8 @@ class MockEffort < EffortWithLapSplitRows
                                      bitkey: time_point.bitkey,
                                      absolute_time_string: absolute_time_string,
                                      day_and_time_string: day_and_time.to_s,
-                                     time_from_start: absolute_time - start_time,
-                                     segment_time: absolute_time - prior_absolute_time,
+                                     time_from_start: absolute_time && start_time && absolute_time - start_time,
+                                     segment_time: absolute_time && prior_absolute_time && absolute_time - prior_absolute_time,
                                      military_time: day_and_time&.strftime('%H:%M:%S'))]
     end.to_h
   end

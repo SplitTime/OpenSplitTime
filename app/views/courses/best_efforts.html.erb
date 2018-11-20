@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Best efforts - #{@best_display.name} - #{@best_display.segment_name}" %>
+  <% "OpenSplitTime: Best efforts - #{@presenter.name} - #{@presenter.segment_name}" %>
 <% end %>
 
 <% content_for(:container_type) do %>skip
@@ -9,15 +9,18 @@
   <div class="container">
     <div class="row">
       <div class="ost-title col-xs-12">
-        <h1><strong><%= [@best_display.name, "All-time Best"].compact.join(': ') %></strong></h1>
+        <h1><strong><%= [@presenter.name, "All-time Best"].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Courses', courses_path %></li>
-          <li><%= link_to @best_display.name, course_path(@best_display) %></li>
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <% if @presenter.organization %>
+            <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <% end %>
+          <li><%= link_to @presenter.name, course_path(@presenter.course) %></li>
           <li class="active">All-Time best</li>
         </ul>
       </div>
     </div>
-    <%= render 'course_navigation', presenter: @best_display %>
+    <%= render 'course_navigation', presenter: @presenter %>
   </div>
 </header>
 
@@ -25,24 +28,24 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-sm-7">
-        <% if @best_display.all_efforts_count > 0 %>
-          <%= render 'best_efforts_lookup' %>
+        <% if @presenter.all_efforts_count > 0 %>
+          <%= render 'best_efforts_lookup', presenter: @presenter %>
         <% end %>
       </div>
       <div class="col-xs-12 col-sm-5 btn-toolbar">
-        <% unless @best_display.simple? %>
-          <%= segment_start_dropdown(@best_display) %>
-          <%= segment_finish_dropdown(@best_display) %>
+        <% unless @presenter.simple? %>
+          <%= segment_start_dropdown(@presenter) %>
+          <%= segment_finish_dropdown(@presenter) %>
         <% end %>
         <div class="btn-group pull-right">
           <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-            <%= @best_display.gender_text.capitalize %>
+            <%= @presenter.gender_text.capitalize %>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to_select_gender(@best_display, 'combined') %></li>
-            <li><%= link_to_select_gender(@best_display, 'male') %></li>
-            <li><%= link_to_select_gender(@best_display, 'female') %></li>
+            <li><%= link_to_select_gender(@presenter, 'combined') %></li>
+            <li><%= link_to_select_gender(@presenter, 'male') %></li>
+            <li><%= link_to_select_gender(@presenter, 'female') %></li>
           </ul>
         </div>
       </div>
@@ -52,20 +55,20 @@
 
 <article class="ost-article container">
   <h4>
-    <strong><%= "#{@best_display.segment_name}: #{d(@best_display.distance)} #{pdu}, #{e(@best_display.vert_gain)} #{peu} elevation gain, #{e(@best_display.vert_loss)} #{peu} elevation loss" %></strong>
+    <strong><%= "#{@presenter.segment_name}: #{d(@presenter.distance)} #{pdu}, #{e(@presenter.vert_gain)} #{peu} elevation gain, #{e(@presenter.vert_loss)} #{peu} elevation loss" %></strong>
   </h4>
-  <% if @best_display.all_efforts_count > 0 %>
+  <% if @presenter.all_efforts_count > 0 %>
     <h5>
-      <%= "Searched #{pluralize(@best_display.events_count, 'event')}
-      from #{[@best_display.earliest_event_date, @best_display.most_recent_event_date].compact.join(' to ')}" %>
+      <%= "Searched #{pluralize(@presenter.events_count, 'event')}
+      from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
     </h5>
 
-    <% if @best_display.filtered_efforts_count > 0 %>
-      <%= render 'efforts/efforts_list_segment' %>
+    <% if @presenter.filtered_efforts_count > 0 %>
+      <%= render 'efforts/efforts_list_segment', presenter: @presenter %>
 
       <div class="row">
         <div class="col-xs-8">
-          <%= will_paginate(@best_display.filtered_efforts, inner_window: 2, outer_window: 0) %>
+          <%= will_paginate(@presenter.filtered_efforts, inner_window: 2, outer_window: 0) %>
         </div>
       </div>
     <% elsif params[:search].present? && params[:search].length < 3 %>

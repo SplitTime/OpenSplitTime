@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Plan my effort - #{@plan_display.course_name}" %>
+  <% "OpenSplitTime: Plan my effort - #{@presenter.course_name}" %>
 <% end %>
 
 
@@ -9,34 +9,37 @@
   <div class="container">
     <div class="row">
       <div class="ost-title col-xs-12">
-        <h1><strong><%= [@plan_display.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
+        <h1><strong><%= [@presenter.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Courses', courses_path %></li>
-          <li><%= link_to @plan_display.course_name, course_path(@plan_display) %></li>
+          <li><%= link_to 'Organizations', organizations_path %></li>
+          <% if @presenter.organization %>
+            <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+          <% end %>
+          <li><%= link_to @presenter.name, course_path(@presenter.course) %></li>
           <li class="active">Plan My Effort</li>
         </ul>
       </div>
     </div>
-    <%= render 'course_navigation', presenter: @plan_display %>
+    <%= render 'course_navigation', presenter: @presenter %>
   </div>
 </header>
 
 
 <article class="ost-article container">
 
-<% if @plan_display.event %>
-  <%= render 'time_input' %>
+<% if @presenter.event %>
+  <%= render 'time_input', presenter: @presenter %>
 
   <hr>
 
-  <% if @plan_display.event %>
-    <% if @plan_display.expected_time && @plan_display.lap_split_rows.present? %>
+  <% if @presenter.event %>
+    <% if @presenter.expected_time && @presenter.lap_split_rows.present? %>
       <div class="row">
         <div class="col-xs-10">
-          <h4><strong><%= "Pacing plan for a #{time_format_hhmm(@plan_display.expected_time)} effort" %></strong></h4>
-          <h5><%= "Based on #{pluralize(@plan_display.relevant_efforts_count, 'effort')} " +
-                  "from #{'year'.pluralize(@plan_display.event_years_analyzed.size)} " +
-                  "#{@plan_display.event_years_analyzed.to_sentence}" %></h5>
+          <h4><strong><%= "Pacing plan for a #{time_format_hhmm(@presenter.expected_time)} effort" %></strong></h4>
+          <h5><%= "Based on #{pluralize(@presenter.relevant_efforts_count, 'effort')} " +
+                  "from #{'year'.pluralize(@presenter.event_years_analyzed.size)} " +
+                  "#{@presenter.event_years_analyzed.to_sentence}" %></h5>
         </div>
         <div class="col-xs-2">
           <%= link_to 'Export plan', request.params.merge(format: :csv), class: 'btn btn-sm btn-success' %>
@@ -45,9 +48,9 @@
     <% end %>
   <% end %>
 
-  <% if @plan_display.expected_time %>
-    <% if @plan_display.lap_split_rows.present? %>
-      <%= render 'plan_detail' %>
+  <% if @presenter.expected_time %>
+    <% if @presenter.lap_split_rows.present? %>
+      <%= render 'plan_detail', presenter: @presenter %>
     <% else %>
       <h4>Insufficient data to create a plan.</h4>
     <% end %>

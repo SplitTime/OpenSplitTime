@@ -1,10 +1,10 @@
-<%= form_tag best_efforts_course_path(@best_display), method: :get do %>
-    <%= hidden_field_tag 'split1', @best_display.split1 %>
-    <%= hidden_field_tag 'split2', @best_display.split2 %>
-    <%= hidden_field_tag 'filter[gender]', @best_display.gender_text %>
+<%= form_tag best_efforts_course_path(presenter), method: :get do %>
+    <%= hidden_field_tag 'split1', presenter.split1 %>
+    <%= hidden_field_tag 'split2', presenter.split2 %>
+    <%= hidden_field_tag 'filter[gender]', presenter.gender_text %>
     <div class="input-group">
       <%= text_field_tag 'filter[search]',
-                          @best_display.search_text,
+                          presenter.search_text,
                           placeholder: 'First name, last name, state, or country',
                           autofocus: true,
                           class: 'form-control search-box' %>

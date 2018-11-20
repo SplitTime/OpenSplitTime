@@ -4,10 +4,10 @@ class PlanDisplay
 
   attr_reader :course
 
-  delegate :simple?, to: :course
+  delegate :simple?, :name, to: :course
   delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
            :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
-  delegate :multiple_laps?, to: :event
+  delegate :multiple_laps?, :organization, to: :event
 
   def initialize(course, params)
     @course = course

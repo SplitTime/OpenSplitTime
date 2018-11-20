@@ -83,7 +83,7 @@ class MockEffort < EffortWithLapSplitRows
       prior_absolute_time = plan_times[prior_time_point]
       absolute_time = plan_times[time_point]
       absolute_time_string = absolute_time.to_s
-      day_and_time = absolute_time.in_time_zone(time_zone)
+      day_and_time = absolute_time&.in_time_zone(time_zone)
 
       [time_point, SplitTimeData.new(effort_id: effort.id,
                                      lap: time_point.lap,
@@ -93,7 +93,7 @@ class MockEffort < EffortWithLapSplitRows
                                      day_and_time_string: day_and_time.to_s,
                                      time_from_start: absolute_time - start_time,
                                      segment_time: absolute_time - prior_absolute_time,
-                                     military_time: day_and_time.strftime('%H:%M:%S'))]
+                                     military_time: day_and_time&.strftime('%H:%M:%S'))]
     end.to_h
   end
 

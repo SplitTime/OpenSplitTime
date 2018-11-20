@@ -5,12 +5,13 @@ class SegmentTimesPlanner
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:expected_time, :event, :laps, :similar_effort_ids],
-                           exclusive: [:expected_time, :event, :laps, :similar_effort_ids, :times_container, :serial_segments],
+                           exclusive: [:expected_time, :event, :laps, :similar_effort_ids, :start_time, :times_container, :serial_segments],
                            class: self.class)
     @expected_time = args[:expected_time]
     @event = args[:event]
     @laps = args[:laps]
     @similar_effort_ids = args[:similar_effort_ids]
+    @start_time = args[:start_time] || event.start_time
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids)
     @serial_segments = args[:serial_segments] ||
@@ -19,7 +20,7 @@ class SegmentTimesPlanner
   end
 
   def absolute_times(round_to: 0)
-    times_from_start(round_to: round_to).transform_values { |tfs| event.start_time + tfs }
+    times_from_start(round_to: round_to).transform_values { |tfs| start_time + tfs }
   end
 
   def times_from_start(round_to: 0)
@@ -30,7 +31,7 @@ class SegmentTimesPlanner
 
   private
 
-  attr_reader :expected_time, :event, :laps, :similar_effort_ids, :times_container, :serial_segments
+  attr_reader :expected_time, :event, :laps, :similar_effort_ids, :start_time, :times_container, :serial_segments
 
   def serial_times
     @serial_times ||= serial_segments.map { |segment| times_container.segment_time(segment) }

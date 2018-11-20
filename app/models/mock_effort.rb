@@ -21,7 +21,8 @@ class MockEffort < EffortWithLapSplitRows
     @times_planner = args[:times_planner] || SegmentTimesPlanner.new(expected_time: expected_time,
                                                                      event: event,
                                                                      laps: expected_laps,
-                                                                     similar_effort_ids: relevant_effort_ids)
+                                                                     similar_effort_ids: relevant_effort_ids,
+                                                                     start_time: start_time)
   end
 
   def effort

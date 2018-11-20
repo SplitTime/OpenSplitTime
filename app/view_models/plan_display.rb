@@ -35,9 +35,9 @@ class PlanDisplay
     when params[:start_time].blank?
       default_start_time
     when params[:start_time].is_a?(String)
-      DateTime.parse(params[:start_time])
+      ActiveSupport::TimeZone[default_time_zone].parse(params[:start_time])
     when params[:start_time].is_a?(ActionController::Parameters)
-      TimeConversion.components_to_absolute(params[:start_time])
+      TimeConversion.components_to_absolute(params[:start_time]).in_time_zone(default_time_zone)
     else
       default_start_time
     end

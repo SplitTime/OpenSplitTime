@@ -2,13 +2,13 @@ FactoryBot.define do
   factory :segment, class: Segment do
     skip_create
     transient do
-      begin_lap 1
-      end_lap 1
-      begin_split Split.new(id: 0, course_id: 10, distance_from_start: 1000)
-      end_split Split.new(id: 0, course_id: 10, distance_from_start: 1000)
-      begin_in_out 'in'
-      end_in_out 'in'
-      order_control true
+      begin_lap { 1 }
+      end_lap { 1 }
+      begin_split { Split.new(id: 0, course_id: 10, distance_from_start: 1000) }
+      end_split { Split.new(id: 0, course_id: 10, distance_from_start: 1000) }
+      begin_in_out { 'in' }
+      end_in_out { 'in' }
+      order_control { true }
     end
 
     initialize_with { new(args) }

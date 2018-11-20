@@ -8,11 +8,11 @@ FactoryBot.define do
 
     home_time_zone { ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == 'Samoa' }.shuffle.first.name }
     start_time { FFaker::Time.datetime }
-    laps_required 1
+    laps_required { 1 }
     course
     event_group
 
-    transient { without_slug false }
+    transient { without_slug { false } }
 
     after(:build, :stub) do |event, evaluator|
       event.slug = event.name.parameterize unless evaluator.without_slug
@@ -20,8 +20,8 @@ FactoryBot.define do
 
     factory :event_with_standard_splits do
 
-      transient { splits_count 4 }
-      transient { in_sub_splits_only false }
+      transient { splits_count { 4 } }
+      transient { in_sub_splits_only { false } }
 
       after(:stub) do |event, evaluator|
         course = build_stubbed(:course_with_standard_splits, splits_count: evaluator.splits_count,
@@ -42,11 +42,11 @@ FactoryBot.define do
     factory :event_functional do
 
       transient do
-        splits_count 4
-        efforts_count 5
-        laps_required 1
-        unlimited_laps_generated 3
-        in_sub_splits_only false
+        splits_count { 4 }
+        efforts_count { 5 }
+        laps_required { 1 }
+        unlimited_laps_generated { 3 }
+        in_sub_splits_only { false }
       end
 
       after(:stub) do |event, evaluator|

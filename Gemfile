@@ -61,7 +61,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '~> 2.13'
   gem 'factory_bot_rails', require: false
   gem 'ffaker'
   gem 'pry'

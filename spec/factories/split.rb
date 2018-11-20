@@ -18,8 +18,8 @@ FactoryBot.define do
     distance_from_start
     vert_gain_from_start
     vert_loss_from_start
-    sub_split_bitmap 65
-    kind :intermediate
+    sub_split_bitmap { 65 }
+    kind { :intermediate }
     course
 
     trait :with_lat_lon do
@@ -28,18 +28,18 @@ FactoryBot.define do
     end
 
     trait :start do
-      base_name 'Start Split'
-      distance_from_start 0
-      vert_gain_from_start 0
-      vert_loss_from_start 0
-      sub_split_bitmap 1
-      kind :start
+      base_name { 'Start Split' }
+      distance_from_start { 0 }
+      vert_gain_from_start { 0 }
+      vert_loss_from_start { 0 }
+      sub_split_bitmap { 1 }
+      kind { :start }
     end
 
     trait :finish do
-      base_name 'Finish Split'
-      sub_split_bitmap 1
-      kind :finish
+      base_name { 'Finish Split' }
+      sub_split_bitmap { 1 }
+      kind { :finish }
     end
 
     after(:build, :stub) { |split| split.send(:parameterize_base_name) }

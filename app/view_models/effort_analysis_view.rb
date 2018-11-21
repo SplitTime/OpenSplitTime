@@ -67,14 +67,15 @@ class EffortAnalysisView < EffortWithLapSplitRows
 
   def analysis_rows
     @analysis_rows ||= typical_effort.lap_split_rows.blank? ? nil :
-        lap_splits.reject(&:start?)
-            .map { |lap_split| EffortAnalysisRow.new(lap_split: lap_split,
-                                                     split_times: related_split_times(lap_split),
-                                                     prior_lap_split: lap_splits.elements_before(lap_split).last,
-                                                     prior_split_time: prior_split_time(lap_split),
-                                                     start_time: effort_start_time,
-                                                     typical_row: indexed_typical_rows[lap_split.key],
-                                                     show_laps: event.multiple_laps?) }
+        lap_splits.each_cons(2).map do |prior_lap_split, lap_split|
+          EffortAnalysisRow.new(lap_split: lap_split,
+                                split_times: related_split_times(lap_split),
+                                prior_lap_split: prior_lap_split,
+                                prior_split_time: prior_split_time(lap_split),
+                                start_time: effort_start_time,
+                                typical_row: indexed_typical_rows[lap_split.key],
+                                show_laps: event.multiple_laps?)
+        end
   end
 
   private

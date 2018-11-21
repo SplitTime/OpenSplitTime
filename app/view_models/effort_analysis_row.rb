@@ -5,7 +5,7 @@ class EffortAnalysisRow
   attr_reader :split_times
   delegate :distance_from_start, :lap, :split, :key, to: :lap_split
   delegate :kind, :intermediate?, :finish?, to: :split
-  delegate :segment_time, :time_in_aid, :times_from_start, to: :time_cluster
+  delegate :time_in_aid, :times_from_start, to: :time_cluster
 
   # split_times should be an array having size == split.sub_splits.size,
   # with nil values where no corresponding split_time exists
@@ -39,6 +39,12 @@ class EffortAnalysisRow
 
   def segment_name
     show_laps? ? segment.name_with_lap : segment.name
+  end
+
+  def segment_time
+    end_time = split_times.compact.first.absolute_time
+    begin_time = prior_split_time.absolute_time
+    end_time && begin_time && end_time - begin_time
   end
 
   def combined_time
@@ -85,7 +91,7 @@ class EffortAnalysisRow
   end
 
   def end_time_point
-    split_times.compact.first.try(:time_point)
+    split_times.compact.select(&:split_id).first&.time_point
   end
 
   def show_laps?

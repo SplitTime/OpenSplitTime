@@ -55,7 +55,7 @@ class EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    @ordered_split_times ||= effort.split_times_data
+    @ordered_split_times ||= Effort.where(id: effort).includes(split_times: :split).take.ordered_split_times
   end
 
   def indexed_split_times

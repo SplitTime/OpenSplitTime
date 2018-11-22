@@ -98,12 +98,12 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def focused_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
+    TimePredictor.segment_time(segment: completed_segment, effort: effort, lap_splits: lap_splits,
                                calc_model: :focused, similar_effort_ids: similar_effort_ids)
   end
 
   def stats_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
+    TimePredictor.segment_time(segment: completed_segment, effort: effort, lap_splits: lap_splits,
                                calc_model: :stats)
   end
 
@@ -128,8 +128,8 @@ class EffortAnalysisView < EffortWithLapSplitRows
     lap_splits.first.time_point_in
   end
 
-  def start_to_finish
-    Segment.new(begin_point: start_time_point, end_point: finish_time_point)
+  def completed_segment
+    Segment.new(begin_point: start_time_point, end_point: ordered_split_times.last.time_point)
   end
 
   def sorted_analysis_rows

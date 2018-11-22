@@ -5,10 +5,11 @@ require 'rails_helper'
 RSpec.describe SegmentTimesPlanner do
   before { FactoryBot.reload }
 
-  subject { SegmentTimesPlanner.new(expected_time: expected_time, event: event, laps: laps, similar_effort_ids: similar_effort_ids,
+  subject { SegmentTimesPlanner.new(expected_time: expected_time, event: event, time_points: time_points, similar_effort_ids: similar_effort_ids,
                                     start_time: start_time, times_container: times_container, serial_segments: serial_segments) }
   let(:expected_time) { 1000 }
   let(:event) { build_stubbed(:event_functional, laps_required: 1, splits_count: 3, efforts_count: 1) }
+  let(:time_points) { event&.time_points_through(laps) }
   let(:laps) { 1 }
   let(:similar_effort_ids) { [1, 2, 3] }
   let(:start_time) { nil }
@@ -16,7 +17,7 @@ RSpec.describe SegmentTimesPlanner do
   let(:serial_segments) { [] }
 
   describe '#initialize' do
-    it 'initializes with expected_time, event, laps, and similar_effort_ids in an args hash' do
+    it 'initializes with expected_time, event, time_points, and similar_effort_ids in an args hash' do
       expect { subject }.not_to raise_error
     end
 
@@ -36,11 +37,11 @@ RSpec.describe SegmentTimesPlanner do
       end
     end
 
-    context 'when no laps is given' do
-      let(:laps) { nil }
+    context 'when no time_points are given' do
+      let(:time_points) { nil }
 
       it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(/must include laps/)
+        expect { subject }.to raise_error(/must include time_points/)
       end
     end
 

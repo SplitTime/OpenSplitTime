@@ -156,6 +156,10 @@ class Segment
     end
   end
 
+  def zero_segment?
+    begin_point == end_point
+  end
+
   private
 
   attr_reader :arg_begin_split, :arg_end_split, :arg_begin_lap_split, :arg_end_lap_split, :order_control
@@ -175,10 +179,6 @@ class Segment
 
   def between_laps?
     begin_split.finish? && end_split.start? && (end_lap - 1 == begin_lap)
-  end
-
-  def zero_segment?
-    begin_point == end_point
   end
 
   def validate_setup

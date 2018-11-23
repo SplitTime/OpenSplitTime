@@ -22,8 +22,6 @@ class SegmentTimeCalculator
   end
 
   def typical_time
-    return 0 if segment.zero_segment?
-
     case calc_model
     when :focused
       typical_time_by_stats(effort_ids)

@@ -182,7 +182,9 @@ class EffortQuery < BaseQuery
                       final_bitkey desc),
                                           
         main_subquery as   
-            (select e1.*, extract(epoch from(absolute_time_end - absolute_time_begin)) as segment_seconds
+            (select e1.*,
+                    absolute_time_begin as segment_start_time,
+                    extract(epoch from(absolute_time_end - absolute_time_begin)) as segment_seconds
              from 
                       (select efforts_scoped.*, 
                               events.start_time as event_start_time, 

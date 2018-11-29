@@ -78,7 +78,7 @@ class CoursesController < ApplicationController
       flash[:danger] = 'No events yet held on this course'
       redirect_to course_path(@course)
     else
-      @presenter = PlanDisplay.new(@course, params)
+      @presenter = PlanDisplay.new(course: @course, params: params)
       respond_to do |format|
         format.html do
           session[:return_to] = plan_effort_course_path(@course)

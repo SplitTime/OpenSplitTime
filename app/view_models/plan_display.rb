@@ -1,21 +1,22 @@
 # frozen_string_literal: true
 
-class PlanDisplay
-
+class PlanDisplay < EffortWithLapSplitRows
   attr_reader :course
-
   delegate :simple?, :name, to: :course
-  delegate :relevant_events, :relevant_efforts, :lap_split_rows, :total_segment_time, :total_time_in_aid,
-           :relevant_efforts_count, :event_years_analyzed, to: :mock_effort
   delegate :multiple_laps?, :organization, to: :event
 
-  def initialize(course, params)
-    @course = course
-    @params = params
+  def post_initialize(args)
+    @course = args[:course]
+    @params = args[:params]
+    AssignSegmentTimes.perform!(ordered_split_times)
   end
 
   def event
     @event ||= course.events.visible.latest
+  end
+
+  def ordered_split_times
+    typical_effort&.ordered_split_times || []
   end
 
   def expected_time
@@ -51,17 +52,51 @@ class PlanDisplay
     lap_splits.any?(&:time_point_out)
   end
 
+  def total_segment_time
+    lap_split_rows.map(&:segment_time).compact.sum
+  end
+
+  def finish_time_from_start
+    ordered_split_times.last.absolute_time - start_time
+  end
+
+  def relevant_efforts_count
+    relevant_effort_ids.size
+  end
+
+  def event_years_analyzed
+    relevant_events.map(&:start_time).sort.map(&:year).uniq
+  end
+
+  def relevant_events
+    @relevant_events ||= effort_finder.events.to_a
+  end
+
+  def relevant_efforts
+    @relevant_efforts ||= effort_finder.efforts.to_a
+  end
+
   private
 
   attr_reader :params
 
-  def mock_effort
-    @mock_effort ||= MockEffort.new(event: event, expected_time: expected_time,
-                                    expected_laps: expected_laps, start_time: start_time) if expected_time && start_time
+  def typical_effort
+    @typical_effort ||= TypicalEffort.new(event: event,
+                                          expected_time_from_start: expected_time,
+                                          start_time: start_time,
+                                          time_points: time_points) if expected_time && start_time
   end
 
   def lap_splits
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(expected_laps)
+  end
+
+  def effort_finder
+    typical_effort.similar_effort_finder
+  end
+
+  def relevant_effort_ids
+    effort_finder.effort_ids
   end
 
   def default_start_time

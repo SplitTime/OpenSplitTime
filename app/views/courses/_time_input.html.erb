@@ -1,11 +1,7 @@
 <%= form_with url: plan_effort_course_path, local: true, method: :get do |form| %>
-    <div class="row">
-      <div class="col-xs-3 plan-label">
-        <%= form.label :start_time, 'Event start time' %>
-      </div>
-      
-      <div class="col-xs-6">
-
+    <div class="form-group row">
+      <%= form.label :start_time, 'Event start time', class: 'col-3 col-form-label' %>
+      <div class="col-6">
         <div class="input-group date" id="datetimepicker">
           <%= form.text_field :start_time, 
                             value: presenter.start_time&.strftime('%m/%d/%Y %H:%M:%S'),
@@ -19,29 +15,25 @@
       </div>
     </div>
     <% if presenter.multiple_laps? %>
-        <div class="row">
-          <div class="col-xs-3 plan-label">
-            <strong>Expected laps</strong>
-          </div>
-          <div class="col-xs-2">
-            <%= form.text_field_tag :expected_laps,
-                                presenter.expected_laps,
-                                placeholder: 'number of laps',
-                                autofocus: true,
-                                class: 'form-control form-control-sm' %>
-          </div>
+      <div class="form-group row">
+        <%= label :expected_laps, 'Expected laps', class: 'col-3 col-form-label' %>
+        <div class="col-2">
+          <%= text_field_tag :expected_laps,
+                              presenter.expected_laps,
+                              placeholder: 'number of laps',
+                              autofocus: true,
+                              class: 'form-control' %>
         </div>
-    <% end %>
-    <div class="row">
-      <div class="col-xs-3 plan-label">
-        <strong><%= label :expected_time, 'Expected time' %></strong>
       </div>
-      <div class="col-xs-2">
-        <%= form.text_field_tag :expected_time,
+    <% end %>
+    <div class="form-group row">
+      <%= label :expected_time, 'Expected time', class: 'col-3 col-form-label'  %>
+      <div class="col-2">
+        <%= text_field_tag :expected_time,
                             presenter.cleaned_time,
                             placeholder: 'hh:mm',
                             autofocus: true,
-                            class: 'form-control search-box form-control-sm' %>
+                            class: 'form-control search-box' %>
       </div>
     </div>
     <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>

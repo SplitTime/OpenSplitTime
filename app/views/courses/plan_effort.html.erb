@@ -49,7 +49,7 @@
   <% end %>
 
   <% if @presenter.expected_time %>
-    <% if @presenter.lap_split_rows.present? %>
+    <% if @presenter.ordered_split_times.present? %>
       <%= render 'plan_detail', presenter: @presenter %>
     <% else %>
       <h4>Insufficient data to create a plan.</h4>

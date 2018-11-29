@@ -1,6 +1,6 @@
 <% if current_user&.authorized_to_edit?(view_object.effort) %>
   <td class="text-right">
-    <% if lap_split_row.times_from_start.compact.present? %>
+    <% if lap_split_row.days_and_times.compact.present? %>
       <% lap_split_row.time_data_statuses.each_with_index do |data_status, i| %>
         <%= link_to "#{(data_status == 'confirmed') ? 'Unconfirm' : 'Confirm'}",
                     update_split_times_effort_path(view_object.effort,
@@ -13,7 +13,7 @@
     <% end %>
   </td>
   <td class="text-right">
-    <% if lap_split_row.times_from_start.compact.present? %>
+    <% if lap_split_row.days_and_times.compact.present? %>
       <% lap_split_row.split_time_ids.each do |id| %>
         <%= link_to 'Delete',
                     delete_split_times_effort_path(view_object.effort, split_time_ids: [id]),

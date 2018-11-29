@@ -123,6 +123,6 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def relevant_time_points
-    ordered_split_times.map(&:time_point) & typical_effort.ordered_split_times.map(&:time_point)
+    typical_effort ? ordered_split_times.map(&:time_point) & typical_effort.ordered_split_times.map(&:time_point) : []
   end
 end

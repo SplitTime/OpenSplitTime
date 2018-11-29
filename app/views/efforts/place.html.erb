@@ -2,7 +2,8 @@
   <% "OpenSplitTime: Place detail - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <header class="ost-header">
   <div class="container">
@@ -27,7 +28,9 @@
         </ul>
       </div>
     </div>
-    <h5>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <% if @presenter.start_time %>
+      <h5>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <% end %>
     <h5>Status:
       <strong>
         <%= @presenter.finish_status %>

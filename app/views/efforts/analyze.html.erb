@@ -28,7 +28,9 @@
         </ul>
       </div>
     </div>
-    <h5>Start Time: <strong><%= l(@presenter.effort_start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <% if @presenter.effort_start_time %>
+      <h5>Start Time: <strong><%= l(@presenter.effort_start_time, format: :full_day_time_and_zone) %></strong></h5>
+    <% end %>
     <h5>Status:
       <strong>
         <%= @presenter.finish_status %>
@@ -66,14 +68,16 @@
 </aside>
 
 <article class="ost-article container">
-  <% if @presenter.started? && @presenter.analysis_rows.present? %>
+  <% if !@presenter.started? %>
+  <strong>Cannot analyze an unstarted effort.</strong>
+  <% elsif !@presenter.effort_start_time %>
+    <strong>Cannot analyze an effort without a start time.</strong>
+  <% elsif @presenter.analysis_rows.blank? %>
+    <strong>Not enough data available to provide a reliable analysis.</strong>
+  <% else %>
     <strong><%= "Best segments: #{@presenter.best_segments}" %></strong><br/>
     <strong><%= "Worst segments: #{@presenter.worst_segments}" %></strong>
     <hr>
     <%= render 'split_times/split_times_analysis', view_object: @presenter %>
-  <% elsif @presenter.started? %>
-    <strong>Not enough data available to provide a reliable analysis.</strong>
-  <% else %>
-    <strong>Cannot analyze an unstarted effort.</strong>
   <% end %>
 </article>

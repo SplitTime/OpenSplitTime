@@ -14,9 +14,9 @@ ActiveRecord::Schema.define(version: 20181103194925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
+  enable_extension "uuid-ossp"
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"

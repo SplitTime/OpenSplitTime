@@ -33,7 +33,7 @@ class EffortWithLapSplitRows
   end
 
   def effort_start_time
-    effort.start_time || event.start_time
+    effort.start_time
   end
 
   private
@@ -47,7 +47,7 @@ class EffortWithLapSplitRows
   end
 
   def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTimeData.new) }
+    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTime.new) }
   end
 
   def prior_split_time(lap_split)

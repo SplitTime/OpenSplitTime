@@ -2,8 +2,8 @@
 
 class EffortAnalysisRow
 
-  attr_reader :split_times
-  delegate :distance_from_start, :lap, :split, :key, to: :lap_split
+  attr_reader :split_times, :typical_split_times
+  delegate :distance_from_start, :lap, :split, to: :lap_split
   delegate :kind, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, to: :time_cluster
 
@@ -12,16 +12,16 @@ class EffortAnalysisRow
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:lap_split, :split_times, :start_time],
-                           exclusive: [:lap_split, :split_times, :start_time, :show_laps,
-                                       :prior_lap_split, :prior_split_time, :typical_row],
+                           required: [:lap_split, :split_times, :typical_split_times, :start_time],
+                           exclusive: [:lap_split, :split_times, :typical_split_times, :start_time, :show_laps,
+                                       :prior_lap_split, :prior_split_time],
                            class: self.class)
     @lap_split = args[:lap_split]
     @split_times = args[:split_times]
+    @typical_split_times = args[:typical_split_times]
     @prior_lap_split = args[:prior_lap_split]
     @prior_split_time = args[:prior_split_time]
     @start_time = args[:start_time]
-    @typical_row = args[:typical_row]
     @show_laps = args[:show_laps]
   end
 
@@ -31,6 +31,10 @@ class EffortAnalysisRow
 
   def time_cluster
     @time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: split_times)
+  end
+
+  def typical_time_cluster
+    @typical_time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: typical_split_times)
   end
 
   def split_id
@@ -46,11 +50,11 @@ class EffortAnalysisRow
   end
 
   def segment_time_typical
-    typical_row&.segment_time
+    typical_time_cluster.segment_time
   end
 
   def time_in_aid_typical
-    typical_row&.time_in_aid
+    typical_time_cluster.time_in_aid
   end
 
   def combined_time_typical
@@ -75,7 +79,7 @@ class EffortAnalysisRow
 
   private
 
-  attr_reader :lap_split, :prior_lap_split, :prior_split_time, :start_time, :typical_row
+  attr_reader :lap_split, :prior_lap_split, :prior_split_time, :start_time
 
   def segment
     @segment ||= end_time_point && Segment.new(begin_point: prior_split_time.time_point,

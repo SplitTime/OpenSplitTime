@@ -8,7 +8,7 @@ class PlanDisplay < EffortWithLapSplitRows
   def post_initialize(args)
     @course = args[:course]
     @params = args[:params]
-    AssignSegmentTimes.perform!(ordered_split_times)
+    AssignSegmentTimes.perform(ordered_split_times)
   end
 
   def event

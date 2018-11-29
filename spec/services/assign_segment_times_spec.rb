@@ -2,7 +2,7 @@
 
 RSpec.describe AssignSegmentTimes do
   describe '.perform' do
-    subject { AssignSegmentTimes.perform!(ordered_split_times, source_attribute) }
+    subject { AssignSegmentTimes.perform(ordered_split_times, source_attribute) }
     let(:source_attribute) { :absolute_time }
 
     context 'when split_times each have an absolute_time in expected order' do
@@ -13,8 +13,7 @@ RSpec.describe AssignSegmentTimes do
 
       it 'sets segment_times on all but the first' do
         expect(ordered_split_times.map(&:segment_time)).to all be_nil
-        subject
-        expect(ordered_split_times.map(&:segment_time)).to eq([nil, 30.minutes, 15.minutes])
+        expect(subject.map(&:segment_time)).to eq([nil, 30.minutes, 15.minutes])
       end
     end
 
@@ -26,8 +25,7 @@ RSpec.describe AssignSegmentTimes do
 
       it 'uses negative segment_times' do
         expect(ordered_split_times.map(&:segment_time)).to all be_nil
-        subject
-        expect(ordered_split_times.map(&:segment_time)).to eq([nil, 30.minutes, -15.minutes])
+        expect(subject.map(&:segment_time)).to eq([nil, 30.minutes, -15.minutes])
       end
     end
 
@@ -39,8 +37,7 @@ RSpec.describe AssignSegmentTimes do
 
       it 'calculates segment times where possible' do
         expect(ordered_split_times.map(&:segment_time)).to all be_nil
-        subject
-        expect(ordered_split_times.map(&:segment_time)).to eq([nil, 30.minutes, nil])
+        expect(subject.map(&:segment_time)).to eq([nil, 30.minutes, nil])
       end
     end
   end

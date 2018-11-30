@@ -15,7 +15,8 @@
         position: relative;
         
         & > a {
-            line-height: 55px;
+            display: inline-block;
+            line-height: 35px;
             color: $black !important;
             font-weight: bold;
             border: none !important; // Override Bootstrap
@@ -25,9 +26,21 @@
             cursor: pointer;
         }
 
-        &.active {
-            background: $white;
+        & > .dropdown-menu {
+            margin-top: 0;
+            border-top: none;
+            min-width: 200px;;
+        }
 
+        &:hover {
+            background: rgba($white, 0.50);
+        }
+
+        &.show {
+            background: $white;
+        }
+
+        &.active {
             &:before {
                 content: '';
                 display: block;
@@ -38,6 +51,10 @@
                 top: 0;
                 position: absolute;
             }
+        }
+
+        &.show, &.active {
+            background: $white;
         }
     }
 }

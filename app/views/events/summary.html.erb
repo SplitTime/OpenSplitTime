@@ -27,10 +27,8 @@
 <aside class="ost-toolbar hidden-print">
   <div class="container">
     <div class="row">
+      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col form-inline">
-        <% if @presenter.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-        <% end %>
         <%= explore_dropdown_menu(@presenter) %>
       </div>
     </div>

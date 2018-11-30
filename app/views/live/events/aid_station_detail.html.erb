@@ -8,17 +8,17 @@
       <div class="col">
         <div class="ost-title">
           <h1><strong><%= "#{@aid_station_detail.split_name}: #{@aid_station_detail.event_name}" %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
+          <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item"><%= link_to 'Aid Stations', aid_station_report_live_event_path(@aid_station_detail.event) %></li>
             <li class="breadcrumb-item active"><%=@aid_station_detail.split_name%></li>
-        </ul>
-      </div>
+          </ul>
+        </div>
         <div class="ost-subtitle">
           <h6>As of: <strong><%= "#{day_time_current_military_full(@presenter.home_time_zone)}" %></strong></h6>
-    </div>
+        </div>
       </div>
     </div>
     <!-- Navigation -->
@@ -29,10 +29,9 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 btn-toolbar">
-        <% if @aid_station_detail.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @aid_station_detail.ordered_events_within_group, current_event: @aid_station_detail.event %>
-        <% end %>
+      <%= render 'event_groups/event_widget', events: @aid_station_detail.ordered_events_within_group, current_event: @aid_station_detail.event %>
+      <!-- Navigation Widget -->
+      <div class="col form-inline">
         <div class="btn-group btn-group-ost pull-right">
           <% if @aid_station_detail.prior_aid_station %>
               <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",

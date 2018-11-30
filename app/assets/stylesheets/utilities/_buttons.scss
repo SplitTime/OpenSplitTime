@@ -9,3 +9,7 @@
 .btn-input-group {
     @include button-outline-variant($input-group-addon-border-color);
 }
+
+.dropdown-toggle .glyphicon {
+    color: $blue;
+}

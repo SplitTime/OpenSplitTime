@@ -17,15 +17,17 @@
 
 @import "bootstrap/functions";
 
+@import "vendor/*";
 @import "*";
+
 @import "switchery";
 @import "jquery.fileupload";
 @import "jquery.fileupload-ui";
 @import "font-awesome";
-@import "animate";
 @import "bootstrap-datetimepicker";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 
+@import "pages/*";
 @import "utilities/*";

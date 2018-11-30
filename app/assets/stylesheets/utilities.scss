@@ -20,37 +20,6 @@ Live Progress Bar
   top: 0;
 }
 
-/**************
-Efforts Popover
-***************/
-.popover.efforts-popover .popover-content {
-	max-height: 400px;
-	overflow-x: visible;
-	overflow-y: auto;
-}
-
-.popover.static-popover {
-
-  .popover-title {
-    display: none;
-  }
-
-  .popover-content {
-    max-height: 150px;
-    overflow-x: visible;
-    overflow-y: auto;
-  }
-
-  &.static-popover-dark {
-    background: #222;
-    color: #dddddd;
-    &.bottom .arrow:after { border-bottom-color: #222; }
-    &.left .arrow:after { border-left-color: #222; }
-    &.right .arrow:after { border-right-color: #222; }
-    &.top .arrow:after { border-top-color: #222; }
-  }
-}
-
 .spin {
   -webkit-animation:spin 1s linear infinite;
   -moz-animation:spin 1s linear infinite;
@@ -418,26 +387,6 @@ span.brackets {
 		margin: 0 0.5em;
 	}
 }
-
-/*
-Global Alerts
-*/
-#global-alerts {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: none;
-    z-index: 2000;
-    padding-top: 0;
-
-    .alert {
-        max-height: 600px;
-        max-height: 90vh;
-        overflow-y: scroll;
-    }
-}
-
 
 /************
 Radio Buttons

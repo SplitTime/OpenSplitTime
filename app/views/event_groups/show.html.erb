@@ -2,32 +2,22 @@
   <% "OpenSplitTime: Show event group - #{@presenter.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-
-<!--<div class="row header">
-  <div class="col-xs-5">
-    <h2><strong><%= "#{@presenter.name}" %></strong></h2>
-    <div class="breadcrumb"><%= link_to 'Organizations', organizations_path %> / <%= link_to @presenter.organization.name, organization_path(@presenter.organization) %> / <%= @presenter.event_group.name %></div>
-  </div>
-  <div class="col-xs-7 page-navigation">
-    <div class="row">
-      <%= render 'events/view_buttons', view_object: @presenter %>
-    </div>
-  </div>
-</div>-->
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
         <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li class="active"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-        </ul>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event.guaranteed_short_name %></li>
+          </ul>
+        </div>
       </div>
     </div>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
@@ -36,41 +26,39 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-3">
-          <div class="btn-group">
-            <%= link_to_select_display_style(@presenter, 'events', 'Events', button: true) %>
-            <%= link_to_select_display_style(@presenter, 'partners', 'Partners', button: true) %>
-          </div>
+      <div class="col form-inline">
+        <%= display_style_button_group(@presenter, { events: 'Events', partners: 'Partners' }, button_class: 'btn-primary') %>
       </div>
-      <div class="col-xs-9 text-right">
-        <% if current_user&.authorized_fully?(@presenter.event_group) %>
-          <%= link_to_toggle_public_private(@presenter) %>
-          <%= link_to_toggle_ost_remote(@presenter) %>
-          <%= link_to_toggle_live_entry(@presenter) %>
-          &nbsp;
-          <div class="btn-group pull-right">
-            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-              Edit
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><%= link_to 'Edit group', edit_event_group_path(@presenter) %></li>
-              <li><%= link_to 'Add/remove stewards', organization_path(@presenter.organization, display_style: 'stewards') %></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
-                              method: :delete,
-                              data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-                                      'This action cannot be undone. Are you sure you want to go ahead?'} %></li>
-              <li><%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
-                              method: :delete,
-                              data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
-                                      'This action cannot be undone. Are you sure you want to go ahead?'} %></li>
-            </ul>
-          </div>
+      <div class="form-inline">
+        <div>
+          <% if current_user&.authorized_fully?(@presenter.event_group) %>
+            <%= link_to_toggle_public_private(@presenter) %>
+            <%= link_to_toggle_ost_remote(@presenter) %>
+            <%= link_to_toggle_live_entry(@presenter) %>
+            <div class="btn-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                Edit
+                <span class="caret"></span>
+              </button>
+              <div class="dropdown-menu">
+                <%= link_to 'Edit group', edit_event_group_path(@presenter), class: 'dropdown-item' %>
+                <%= link_to 'Add/remove stewards', organization_path(@presenter.organization, display_style: 'stewards'), class: 'dropdown-item' %>
+                <div role="separator" class="dropdown-divider"></div>
+                <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter), class: 'dropdown-item',
+                                method: :delete,
+                                data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
+                                        'This action cannot be undone. Are you sure you want to go ahead?'} %>
+                <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path), class: 'dropdown-item', 
+                                method: :delete,
+                                data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
+                                        'This action cannot be undone. Are you sure you want to go ahead?'} %>
+              </div>
+            </div>
 
 
 
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

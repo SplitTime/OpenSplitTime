@@ -2,22 +2,23 @@
   <% "OpenSplitTime: Event group traffic - #{@presenter.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
         <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-          <li>Traffic</li>
-          <li class="active"><%= @presenter.split_name %></li>
-        </ul>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item">Traffic</li>
+            <li class="breadcrumb-item active"><%= @presenter.split_name %></li>
+          </ul>
+        </div>
       </div>
     </div>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
@@ -25,27 +26,27 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col form-inline">
         <div class="dropdown float-left-button">
-          <button class="btn btn-default dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <strong><%= @presenter.split_name %></strong>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="split-name-dropdown">
             <% @presenter.ordered_split_names.each do |split_name| %>
-              <li class="<%= "disabled" if split_name.parameterize == @presenter.split_name.parameterize %>"><%= link_to split_name.titleize, request.params.merge(split_name: split_name.parameterize) %></li>
+              <%= link_to split_name.titleize, request.params.merge(split_name: split_name.parameterize), class: "dropdown-item #{split_name.parameterize == @presenter.split_name.parameterize ? 'active' : ''}" %>
             <% end %>
           </ul>
         </div>
 
         <div class="dropdown float-left-button">
-          <button class="btn btn-default dropdown-toggle" type="button" id="frequency-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="frequency-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <strong><%= pluralize(@presenter.band_width / 1.minute, 'minute') %></strong>
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="frequency-dropdown">
             <% @presenter.suggested_band_widths.each do |band_width| %>
-              <li class="<%= "disabled" if band_width == @presenter.band_width %>"><%= link_to pluralize(band_width / 1.minute, 'minute'), request.params.merge(band_width: band_width) %></li>
+              <%= link_to pluralize(band_width / 1.minute, 'minute'), request.params.merge(band_width: band_width), class: "dropdown-item #{band_width == @presenter.band_width ? 'active' : ''}" %>
             <% end %>
           </ul>
         </div>

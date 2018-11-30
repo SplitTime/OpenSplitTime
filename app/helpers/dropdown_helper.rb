@@ -135,7 +135,7 @@ module DropdownHelper
           visible: true
       }
     end
-    build_dropdown_menu(nil, dropdown_items, class: 'pull-right', button: true)
+    build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
   def explore_dropdown_menu(view_object)

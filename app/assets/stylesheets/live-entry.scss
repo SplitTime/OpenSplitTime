@@ -213,6 +213,7 @@ Globals
 .splits-slider {
     background: $darkGray;
     position: relative;
+    min-height: 400px;
 
     #js-effort-name:empty {
         opacity: 0.5;

@@ -177,7 +177,7 @@ class EventsController < ApplicationController
   end
 
   def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
+    @presenter = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     session[:return_to] = event_path(@event)
   end
 

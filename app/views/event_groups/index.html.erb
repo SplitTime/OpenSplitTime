@@ -8,10 +8,10 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
+    <div class="ost-heading row">
       <div class="ost-title col">
         <h1><strong>Events</strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
+        <ul class="breadcrumb">
           <li class="breadcrumb-item active">Events</li>
         </ul>
       </div>
@@ -22,12 +22,15 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col form-inline justify-content-between">
-        <%= render 'lookup' %>
+      <div class="col">
         <% if current_user %>
-          <%= link_to 'Create event', event_staging_app_path('new'),
-                      class: 'btn btn-sm btn-success' %>
+            <%= link_to 'Create event', event_staging_app_path('new'),
+                        class: 'btn btn-success' %>
         <% end %>
+      </div>
+      <div class="col-12 col-md-6 form-inline">
+        <%= render 'lookup' %>
+      </div>
       </div>
     </div>
   </div>

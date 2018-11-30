@@ -25,7 +25,8 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12">
+      <!-- Navigation Widget -->
+      <div class="col form-inline">
         <div class="dropdown float-left-button">
           <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <strong><%= @presenter.split_name %></strong>
@@ -51,7 +52,9 @@
             </ul>
           </div>
         <% end %>
-
+      </div>
+      <!-- Export Widget -->
+      <div class="col-auto form-inline">
         <%= link_to_export_raw_times(@presenter, @presenter.split_name, :summit) %>
       </div>
     </div>

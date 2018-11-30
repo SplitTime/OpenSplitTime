@@ -2,22 +2,25 @@
     <% "OpenSplitTime: Progress report - #{@progress_display.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= "#{@progress_display.event_name}: Progress Report" %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><a><%= @presenter.event_group.name %></a></li>
-          <li class="active">Progress Report</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@progress_display.event_name}: Progress Report" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Progress Report</li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <h6>As of: <strong><%= "#{day_time_current_military_full(@progress_display.home_time_zone)}" %></strong></h6>
+        </div>
       </div>
     </div>
-    <h5>As of: <strong><%= "#{day_time_current_military_full(@progress_display.home_time_zone)}" %></strong></h5>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
@@ -25,63 +28,57 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-4 page-navigation-left form-inline">
-        <% if @progress_display.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @progress_display.ordered_events_within_group, current_event: @progress_display.event %>
-        <% end %>
-      </div>
+      <%= render 'event_groups/event_widget', events: @progress_display.ordered_events_within_group, current_event: @progress_display.event %>
     </div>
   </div>
 </aside>
 
 <article class="ost-article container">
-
-<div class="row">
-  <div class="col-xs-12">
-    <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
-    <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
-    <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
-    <%= "Stopped: #{@progress_display.efforts_stopped_count}" %><br/>
-    <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
+  <div class="row">
+    <div class="col">
+      <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
+      <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
+      <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+      <%= "Stopped: #{@progress_display.efforts_stopped_count}" %><br/>
+      <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
+    </div>
   </div>
-</div>
-<hr>
+  <hr>
 
-<div class="row">
-  <div class="col-xs-6">
-    <% if @progress_display.efforts_in_progress_count > 0 %>
-        <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
-        <br/>
-        <table class="table table-condensed table-striped">
-          <thead>
-          <tr>
-            <th>Bib</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th class="text-center">Last Reported</th>
-            <th class="text-center">Due Next</th>
-            <th class="text-right">Overdue By</th>
+  <div class="row">
+    <div class="col-6">
+      <% if @progress_display.efforts_in_progress_count > 0 %>
+          <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
+          <br/>
+          <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+              <th>Bib</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th class="text-center">Last Reported</th>
+              <th class="text-center">Due Next</th>
+              <th class="text-right">Overdue By</th>
 
-          </tr>
-          </thead>
+            </tr>
+            </thead>
 
-          <tbody>
-          <% @progress_display.past_due_progress_rows.each do |row| %>
-              <tr>
-                <td><%= row.bib_number %></td>
-                <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort) %></td>
-                <td class="text-nowrap"><%= row.bio_historic %></td>
-                <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
-                <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>
-                <td class="text-right"><%= time_format_xxhyym(row.seconds_past_due) %></td>
-              </tr>
-          <% end %>
-          </tbody>
-        </table>
-    <% else %>
-        <h4>No efforts are in progress.</h4>
-    <% end %>
+            <tbody>
+            <% @progress_display.past_due_progress_rows.each do |row| %>
+                <tr>
+                  <td><%= row.bib_number %></td>
+                  <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort) %></td>
+                  <td class="text-nowrap"><%= row.bio_historic %></td>
+                  <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
+                  <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>
+                  <td class="text-right"><%= time_format_xxhyym(row.seconds_past_due) %></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% else %>
+          <h4>No efforts are in progress.</h4>
+      <% end %>
+    </div>
   </div>
-</div>
-
 </article>

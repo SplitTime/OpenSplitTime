@@ -6,15 +6,17 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-sm-5">
-        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li class="active"><%= @presenter.organization.name %></li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+            <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+                <li class="breadcrumb-item active"><%= @presenter.organization.name %></li>
+            </ul>
+        </div>
       </div>
-      <aside class="col-sm-7 text-right">
+      <aside class="col-auto">
         <% if current_user&.authorized_fully?(@presenter.organization) %>
             <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
             <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-outline-secondary" %>
@@ -25,6 +27,7 @@
         <% end %>
       </aside>
     </div>
+    <!-- Navigation -->
     <ul class="nav nav-tabs nav-tabs-ost">
         <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'courses'}" do
             link_to 'Courses', request.params.merge(display_style: 'courses')
@@ -55,7 +58,7 @@
         <aside class="ost-toolbar">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-8">
+                    <div class="col offset-md-6 col-md-6">
                         <%= render 'user_lookup' %>
                     </div>
                 </div>

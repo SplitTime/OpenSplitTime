@@ -2,23 +2,26 @@
     <% "OpenSplitTime: Aid station detail - #{@aid_station_detail.split_name} - #{@aid_station_detail.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h2><strong><%= "#{@aid_station_detail.split_name}: #{@aid_station_detail.event_name}" %></strong></h2>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@aid_station_detail.split_name}: #{@aid_station_detail.event_name}" %></strong></h1>
         <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><a><%= @presenter.event_group.name %></a></li>
-          <li><%= link_to 'Aid Stations', aid_station_report_live_event_path(@aid_station_detail.event) %></li>
-          <li class="active"><%=@aid_station_detail.split_name%></li>
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to 'Aid Stations', aid_station_report_live_event_path(@aid_station_detail.event) %></li>
+            <li class="breadcrumb-item active"><%=@aid_station_detail.split_name%></li>
         </ul>
       </div>
+        <div class="ost-subtitle">
+          <h6>As of: <strong><%= "#{day_time_current_military_full(@presenter.home_time_zone)}" %></strong></h6>
     </div>
-    <h5>As of: <strong><%= "#{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></strong></h5>
+      </div>
+    </div>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
@@ -31,20 +34,23 @@
           <%= render 'event_groups/event_buttons', events: @aid_station_detail.ordered_events_within_group, current_event: @aid_station_detail.event %>
         <% end %>
         <div class="btn-group btn-group-ost pull-right">
-          <div class="btn btn-outline-secondary" disabled><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
-          <%= render 'aid_station_detail_button_cluster' %>
-        </div>
-        <div class="btn-group btn-group-ost pull-right">
           <% if @aid_station_detail.prior_aid_station %>
               <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
                           request.params.merge(aid_station: @aid_station_detail.prior_aid_station),
-                          class: 'btn btn-ost btn-outline-secondary' %>
+                          class: 'btn btn-outline-secondary' %>
           <% end %>
           <% if @aid_station_detail.next_aid_station %>
               <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
                           request.params.merge(aid_station: @aid_station_detail.next_aid_station),
-                          class: 'btn btn-ost btn-outline-secondary' %>
+                          class: 'btn btn-outline-secondary' %>
           <% end %>
+        </div>
+      </div>
+      <!-- Filter Widget -->
+      <div class="col-auto form-inline">
+        <div class="btn-group btn-group-ost pull-right">
+          <div class="btn btn-outline-secondary" disabled><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
+          <%= render 'aid_station_detail_button_cluster' %>
         </div>
       </div>
     </div>

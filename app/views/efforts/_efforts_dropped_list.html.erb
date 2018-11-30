@@ -1,18 +1,18 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :bib_number)) %></th>
-    <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event, sort: toggled_sort_param(@event_dropped_display, :last_name, :first_name)) %></th>
+    <th><%= link_to 'Bib', drop_list_event_path(@presenter.event, sort: reversed_sort_param(@presenter, :bib_number)) %></th>
+    <th><%= link_to 'Name', drop_list_event_path(@presenter.event, sort: toggled_sort_param(@presenter, :last_name, :first_name)) %></th>
     <th>Category</th>
     <th>From</th>
-    <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_distance)) %></th>
+    <th><%= link_to 'Dropped where', drop_list_event_path(@presenter.event, sort: reversed_sort_param(@presenter, :final_distance)) %></th>
     <th class="text-right">
-      <%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_time_from_start)) %>
+      <%= link_to 'Dropped when', drop_list_event_path(@presenter.event, sort: reversed_sort_param(@presenter, :final_time_from_start)) %>
     </th>
   </tr>
   </thead>
   <tbody>
-  <% @event_dropped_display.dropped_effort_rows.each do |effort_row| %>
+  <% @presenter.dropped_effort_rows.each do |effort_row| %>
       <td><%= effort_row.bib_number %></td>
       <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
       <td><%= effort_row.bio_historic %></td>

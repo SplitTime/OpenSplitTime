@@ -100,12 +100,12 @@
       <% end %>
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-        <%= div_for(@presenter.effort) do %>
+        <%= div_for(@presenter.effort, class: 'col-auto form-inline') do %>
           <%= link_to_toggle_check_in(@presenter.effort, button_param: :check_in_effort_show) %>
         <% end %>
       <% end %>
 
-      <div>
+      <div class="col-auto form-inline">
         <% if @presenter.beacon_url %>
           <%= link_to effort_beacon_button_text(@presenter.beacon_url),
                       url_with_protocol(@presenter.beacon_url),

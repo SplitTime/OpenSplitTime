@@ -20,41 +20,6 @@
     }
 }
 
-.nav-tabs-ost {
-    margin-bottom: 0;
-    border-bottom: none;
-
-    & > li {
-        margin-bottom: -2px;
-        
-        & > a {
-            line-height: 33px;
-            color: $black !important;
-            font-weight: bold;
-            border: none !important; // Override Bootstrap
-            border-radius: 0 !important;
-            background: none !important;
-            padding: 10px 25px;
-            cursor: pointer;
-        }
-
-        &.active {
-            background: $white;
-
-            &:before {
-                content: '';
-                display: block;
-                background: $blue;
-                height: 5px;
-                left: 0;
-                right: 0;
-                top: 0;
-                position: absolute;
-            }
-        }
-    }
-}
-
 .breadcrumb-ost {
     background: none;
     padding: 0;

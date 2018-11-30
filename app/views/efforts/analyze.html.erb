@@ -53,9 +53,9 @@
     </div>
     <% unless @presenter.simple? || @presenter.not_analyzable? %>
       <ul class="nav nav-tabs nav-tabs-ost">
-        <li><%= link_to "Split times", effort_path(@presenter.effort) %></li>
-        <li class="active"><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
-        <li><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
+        <li class="nav-item"><%= link_to "Split times", effort_path(@presenter.effort) %></li>
+        <li class="nav-item active"><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
+        <li class="nav-item"><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
       </ul>
     <% end %>
   </div>

@@ -16,13 +16,17 @@ module DropdownHelper
         concat content_tag(:span, '', class: 'caret')
       }
 
-      concat content_tag(:ul, class: 'dropdown-menu') {
+      concat content_tag(:div, class: 'dropdown-menu') {
         items.select { |item| item[:visible] }.each do |item|
-          active = item[:active] ? 'active' : nil
-          divider = item[:role] == :separator ? 'dropdown-divider' : 'dropdown-item'
-          concat content_tag(:li, class: [active, divider].join(' '), role: item[:role]) {
-            link_to item[:name], item[:link], item[:item_options]
-          }
+          if item[:role] == :separator
+            concat content_tag(:div, class: 'dropdown-divider')
+          else
+            active = item[:active] ? 'active' : nil
+            concat link_to item[:name], item[:link], {
+              class: "dropdown-item #{active}",
+              role: item[:role]
+            }.merge(item.fetch(:item_options, {}))
+          end
         end
       }
     end
@@ -46,7 +50,7 @@ module DropdownHelper
          link: event_group_path(view_object.event_group, force_settings: true),
          active: controller_name == 'event_groups' && action_name == 'show',
          visible: true}
-    ])
+    ], class: 'nav-item')
   end
 
   def live_dropdown_menu(view_object)
@@ -71,7 +75,7 @@ module DropdownHelper
          link: aid_station_detail_live_event_path(view_object.event),
          active: action_name == 'aid_station_detail',
          visible: true}
-    ])
+    ], class: 'nav-item')
   end
 
   def results_dropdown_menu(view_object)
@@ -96,7 +100,7 @@ module DropdownHelper
          link: traffic_event_group_path(view_object.event_group),
          active: action_name == 'traffic',
          visible: true}
-    ])
+    ], class: 'nav-item')
   end
 
   def raw_times_dropdown_menu(view_object)
@@ -109,7 +113,7 @@ module DropdownHelper
          link: split_raw_times_event_group_path(view_object.event_group),
          active: action_name == 'split_raw_times',
          visible: true}
-    ])
+    ], class: 'nav-item')
   end
 
   def check_in_filter_dropdown_menu(items)

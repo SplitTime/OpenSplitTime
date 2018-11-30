@@ -87,7 +87,7 @@ module ToggleHelper
   def link_to_toggle_sms_subscription(person)
     if current_user
       link_to_toggle_subscription(person_id: person.id,
-                                  glyphicon: 'phone',
+                                  glyphicon: 'mobile',
                                   protocol: 'sms',
                                   subscribe_alert: "Receive live text message updates for #{person.full_name}?",
                                   unsubscribe_alert: "Stop receiving live text message updates for #{person.full_name}?")

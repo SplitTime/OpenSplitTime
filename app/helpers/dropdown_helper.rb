@@ -19,7 +19,7 @@ module DropdownHelper
       concat content_tag(:ul, class: 'dropdown-menu') {
         items.select { |item| item[:visible] }.each do |item|
           active = item[:active] ? 'active' : nil
-          divider = item[:role] == :separator ? 'divider' : nil
+          divider = item[:role] == :separator ? 'dropdown-divider' : 'dropdown-item'
           concat content_tag(:li, class: [active, divider].join(' '), role: item[:role]) {
             link_to item[:name], item[:link], item[:item_options]
           }

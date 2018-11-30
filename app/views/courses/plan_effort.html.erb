@@ -1,29 +1,28 @@
 <% content_for :title do %>
   <% "OpenSplitTime: Plan my effort - #{@presenter.course_name}" %>
 <% end %>
-
-
-<% content_for(:container_type) do %>skip<% end %>
   
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= [@presenter.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-          <% if @presenter.organization %>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <% end %>
-          <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
-          <li class="breadcrumb-item active">Plan My Effort</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <% if @presenter.organization %>
+              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item active">Plan My Effort</li>
+          </ul>
+        </div>
       </div>
     </div>
+    <!-- Navigation -->
     <%= render 'course_navigation', presenter: @presenter %>
   </div>
 </header>
-
 
 <article class="ost-article container">
   <% if @presenter.event %>

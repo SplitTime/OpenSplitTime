@@ -2,43 +2,56 @@
   <% "OpenSplitTime: Place detail - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong>
-          <% if @presenter.person %>
-            <%= link_to @presenter.full_name, person_path(@presenter.person) %>
-          <% else %>
-            <%= @presenter.full_name %>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>
+            <% if @presenter.person %>
+              <%= link_to @presenter.full_name, person_path(@presenter.person) %>
+            <% else %>
+              <%= @presenter.full_name %>
+            <% end %>
+          </strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
+            <% if @presenter.event_group.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.full_name, effort_path(@presenter.effort) %></li>
+            <li class="breadcrumb-item active">Place</li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <% if @presenter.start_time %>
+            <h6>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h6>
           <% end %>
-        </strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
-          <% if @presenter.event_group.multiple_events? %>
-            <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-          <% end %>
-          <li><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
-          <li><%= link_to @presenter.full_name, effort_path(@presenter.effort) %></li>
-          <li>Place</li>
-        </ul>
+          <h6>Status:
+            <strong>
+              <%= @presenter.finish_status %>
+              <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
+              <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
+              <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
+            </strong>
+          </h6>
+        </div>
       </div>
+      <%= div_for(@presenter.person) do %>
+        <table class="table-fixed">
+          <tr>
+            <th>Notify Me Live!</th>
+          </tr>
+          <tr>
+            <td class="table-button"><%= link_to_toggle_email_subscription(@presenter.person) %></td>
+            <td class="table-button"><%= link_to_toggle_sms_subscription(@presenter.person) %></td>
+          </tr>
+        </table>
+      <% end %>
     </div>
-    <% if @presenter.start_time %>
-      <h5>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h5>
-    <% end %>
-    <h5>Status:
-      <strong>
-        <%= @presenter.finish_status %>
-        <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-        <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-        <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-      </strong>
-    </h5>
     <% unless @presenter.simple? %>
       <ul class="nav nav-tabs nav-tabs-ost">
         <li><%= link_to "Split times", effort_path(@presenter.effort) %></li>
@@ -48,24 +61,6 @@
     <% end %>
   </div>
 </header>
-
-<aside class="ost-toolbar">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 btn-toolbar">
-        <% if @presenter.person %>
-          <%= div_for(@presenter.person) do %>
-            <div class="btn-group btn-group-ost">
-              <div class="btn btn-xs btn-default" disabled>Notify Me Live:</div>
-              <%= link_to_toggle_email_subscription(@presenter.person) %>
-              <%= link_to_toggle_sms_subscription(@presenter.person) %>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</aside>
 
 <article class="ost-article container">
   <strong>Closest peers:

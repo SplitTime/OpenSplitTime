@@ -63,24 +63,6 @@
     }
 }
 
-.table-centered {
-    & > tbody > tr > td {
-        vertical-align: middle;
-    }
-}
-
-.table-fixed {
-    & > tbody > tr {
-        height: 60px;
-    }
-}
-
-.table-fixed-sm {
-    & > tbody > tr {
-        height: 48px;
-    }
-}
-
 .btn-relative {
     position: relative;
 }

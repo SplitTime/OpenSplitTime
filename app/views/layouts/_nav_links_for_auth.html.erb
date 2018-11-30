@@ -21,5 +21,5 @@
   </li>
 <% else %>
   <li class="nav-item"><%= link_to 'Log In', new_user_session_path, class: 'nav-link' %></li>
-  <li class="nav-item"><%= link_to 'Sign Up', new_user_registration_path, class: 'sign-up nav-link' %></li>
+  <li class="nav-item"><%= link_to '<span class="sign-up">Sign Up</span>'.html_safe, new_user_registration_path, class: 'nav-link' %></li>
 <% end %>

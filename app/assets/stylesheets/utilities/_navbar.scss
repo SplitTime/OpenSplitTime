@@ -2,6 +2,23 @@
     font-family: "Gibson-Semibold";
 }
 
+.navbar-right {
+    border-radius: 0;
+    @include media-breakpoint-up(md) {
+      & .nav-link .sign-up {
+        border: 1px solid #FFF;
+        color: #FFF;
+        padding: 5px 16px;
+      }
+      & .nav-link.donate {
+        color: #bbbb00;
+      }
+      & .nav-link.donate:hover {
+        color: #ffff00;
+      }
+    }
+  }
+
 .nav-tabs-ost {
     margin-bottom: 0;
     border-bottom: none;

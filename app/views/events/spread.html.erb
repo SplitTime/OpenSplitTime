@@ -69,7 +69,7 @@
 
 <article class="ost-article container">
 <% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
-  <table class="table table-striped">
+  <table class="table table-tight table-striped">
     <thead>
     <tr>
       <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>

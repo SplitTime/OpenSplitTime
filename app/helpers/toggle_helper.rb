@@ -106,20 +106,20 @@ module ToggleHelper
 
     if subscription
       url = subscription_path(subscription)
-      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
+      link_to_with_icon("fa fa-#{glyphicon}", '', url, {
           method: 'delete',
           remote: true,
-          class: "#{protocol}-sub btn btn-sm btn-success",
+          class: "#{protocol}-sub btn btn-lg btn-primary",
           data: {confirm: unsubscribe_alert}
       })
     else
       url = subscriptions_path(subscription: {user_id: current_user&.id,
                                               person_id: person_id,
                                               protocol: protocol})
-      link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url, {
+      link_to_with_icon("fa fa-#{glyphicon}", '', url, {
           method: 'post',
           remote: true,
-          class: "#{protocol}-sub btn btn-sm btn-outline-subtle text-dark",
+          class: "#{protocol}-sub btn btn-lg text-dark",
           data: {confirm: subscribe_alert}
       })
     end
@@ -131,7 +131,7 @@ module ToggleHelper
 
     url = new_user_session_path(redirect_to: request.fullpath)
     link_to_with_icon("glyphicon glyphicon-#{glyphicon}", protocol, url,
-                      class: "btn btn-outline-subtle text-dark")
+                      class: "btn btn-lg text-dark")
   end
 
   def link_to_with_icon(icon_css, title, url, options = {})

@@ -2,13 +2,13 @@
 
 module EffortsHelper
 
-  def data_status_tag(effort_row)
+  def data_status_class(effort_row)
     if effort_row.bad?
-      tag('tr', class: "text-danger")
+      'text-danger'
     elsif effort_row.questionable?
-      tag('tr', class: "text-warning")
+      'text-warning'
     else
-      tag('tr')
+      ''
     end
   end
 

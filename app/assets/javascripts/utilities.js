@@ -13,7 +13,7 @@
                 .attr('role', 'button')
                 .data('ajax', null)
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus'
                 }).on('show.bs.popover', effortsPopover.onShowPopover);
             if ( utilities.isMobileSafari() ) {
@@ -49,7 +49,7 @@
                 .attr('role', 'button')
                 .data('ajax', null)
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus'
                 }).on('show.bs.popover', photoPopover.onShowPopover);
             if ( utilities.isMobileSafari() ) {

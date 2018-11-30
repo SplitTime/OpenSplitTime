@@ -1232,19 +1232,19 @@
             init: function() {
                 Vue.component( 'input-datetime', {
                     template: '<div class="row">\
-                        <div class="col-xs-6">\
+                        <div class="col-6">\
                             <div class="input-group">\
                                 <input type="text" class="js-date form-control"/>\
-                                <span class="input-group-addon">\
-                                    <span class="glyphicon glyphicon-calendar"></span>\
+                                <span class="input-group-append">\
+                                    <span class="input-group-text fa fa-calendar"></span>\
                                 </span>\
                             </div>\
                         </div>\
-                        <div class="col-xs-6">\
+                        <div class="col-6">\
                             <div class="input-group">\
                                 <input type="text" class="js-time form-control"/>\
-                                <span class="input-group-addon">\
-                                    <span class="glyphicon glyphicon-time"></span>\
+                                <span class="input-group-append">\
+                                    <span class="input-group-text fa fa-clock-o"></span>\
                                 </span>\
                             </div>\
                         </div>\

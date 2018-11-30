@@ -84,7 +84,7 @@
                 $( el ).attr( 'tabindex', $( el ).attr( 'tabindex' ) || '0' )
                 .attr('role', 'button')
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus',
                     'container': 'body'
                 }).on('show.bs.popover', staticPopover.onShowPopover);
@@ -95,7 +95,7 @@
         },
         onShowPopover: function (e) {
             var $popover = $(this).data('bs.popover');
-            $popover.tip()
+            $($popover.tip)
                 .addClass('static-popover')
                 .addClass($(this).data('toggle'));
         }

@@ -162,37 +162,6 @@ Modal Styles
 }
 
 
-
-
-/****************
-Help Tooltip Icon
-*****************/
-.help-tooltip {
-	display: inline-block;
-	font-size: 16px;
-	position: relative;
-	margin-top: -1px;
-	&:before {
-		display: block;
-		content: '';
-		background: $white;
-		margin: 0.1em;
-		height: 0.8em;
-		width: 0.8em;
-		position: absolute;
-		border-radius: 50%;
-	}
-
-	i {
-		color: $blue;
-	}
-}
-
-.loading-icon {
-    display: inline;
-}
-
-
 /**********************
 Progress Bar Navigation
 ***********************/

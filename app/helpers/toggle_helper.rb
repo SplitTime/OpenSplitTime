@@ -41,7 +41,7 @@ module ToggleHelper
       button_text = 'Check in'
       url = effort_path(effort, effort: {checked_in: true}, button: button_param)
       disabled = false
-      class_string = "check-in btn btn-md btn-default #{block_string}"
+      class_string = "check-in btn btn-md btn-outline-secondary #{block_string}"
     end
 
     link_to_with_icon(glyphicon_string, button_text, url, {
@@ -66,7 +66,7 @@ module ToggleHelper
     link_to_with_icon("glyphicon glyphicon-unchecked", 'All out', url, {
         method: 'patch',
         data: {confirm: 'This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?'},
-        class: 'btn btn-sm btn-default'
+        class: 'btn btn-sm btn-outline-secondary'
     })
   end
 

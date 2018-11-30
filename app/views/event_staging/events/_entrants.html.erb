@@ -7,7 +7,7 @@
       </h3>
       <p>Create each Entrant on this screen or import them from a standard CSV file.</p>
       <p>
-        <router-link to="/splits" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
+        <router-link to="/splits" class="btn btn-outline-secondary"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
         <router-link to="/confirmation" id="continue-side-3" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
@@ -61,7 +61,7 @@
             </button>
           </div>
           <div class="dropdown float-left-button">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
             </button>
@@ -86,8 +86,8 @@
             </ul>
           </div>
           <% if @presenter %>
-            <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-default' %></div>
-            <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter), class: 'btn btn-default' %></div>
+            <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-outline-secondary' %></div>
+            <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter), class: 'btn btn-outline-secondary' %></div>
             <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@presenter), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
           <% end %>
           <div class="pull-right">

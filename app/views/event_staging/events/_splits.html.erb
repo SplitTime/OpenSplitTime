@@ -8,7 +8,7 @@
       <p>Start and Finish splits have been created for you. Edit them to add location and elevation data. Add
         intermediate splits at points where intermediate times will be recorded.</p>
       <p>
-        <router-link to="/" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
+        <router-link to="/" class="btn btn-outline-secondary"><i class="glyphicon glyphicon-arrow-left"></i>&nbsp;Previous
         </router-link>
         <router-link to="/entrants" id="continue-side-2" class="btn btn-primary">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
         </router-link>
@@ -93,7 +93,7 @@
             </button>
           </div>
           <div class="dropdown float-left-button">
-            <button class="btn btn-default dropdown-toggle" type="button" id="split-import-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-import-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
             </button>
@@ -107,7 +107,7 @@
               <li><%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}) %></li>
             </ul>
           </div>
-          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-default' %></div>
+          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
           <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="glyphicon glyphicon-arrow-right"></i>
           </router-link>
         </div>

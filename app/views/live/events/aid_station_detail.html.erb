@@ -31,19 +31,19 @@
           <%= render 'event_groups/event_buttons', events: @aid_station_detail.ordered_events_within_group, current_event: @aid_station_detail.event %>
         <% end %>
         <div class="btn-group btn-group-ost pull-right">
-          <div class="btn btn-default" disabled><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
+          <div class="btn btn-outline-secondary" disabled><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
           <%= render 'aid_station_detail_button_cluster' %>
         </div>
         <div class="btn-group btn-group-ost pull-right">
           <% if @aid_station_detail.prior_aid_station %>
               <%= link_to "<< #{@aid_station_detail.prior_aid_station.split.base_name}",
                           request.params.merge(aid_station: @aid_station_detail.prior_aid_station),
-                          class: 'btn btn-ost btn-default' %>
+                          class: 'btn btn-ost btn-outline-secondary' %>
           <% end %>
           <% if @aid_station_detail.next_aid_station %>
               <%= link_to "#{@aid_station_detail.next_aid_station.split.base_name} >>",
                           request.params.merge(aid_station: @aid_station_detail.next_aid_station),
-                          class: 'btn btn-ost btn-default' %>
+                          class: 'btn btn-ost btn-outline-secondary' %>
           <% end %>
         </div>
       </div>

@@ -4,6 +4,6 @@
   <% events.each do |event| %>
     <%= link_to event.guaranteed_short_name,
                 request.params.merge(id: event.to_param, page: nil),
-                class: "btn btn-ost #{ event == current_event ? 'btn-primary' : 'btn-default' }" %>
+                class: "btn btn-ost #{ event == current_event ? 'btn-primary' : 'btn-outline-secondary' }" %>
   <% end %>
 </div>

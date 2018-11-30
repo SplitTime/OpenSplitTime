@@ -498,10 +498,10 @@
                 $('#js-dropped').on('change', function (event) {
                     var $root = $(this).parent();
                     if ($(this).prop('checked')) {
-                        $root.addClass('btn-warning').removeClass('btn-default');
+                        $root.addClass('btn-warning').removeClass('btn-outline-secondary');
                         $('.glyphicon', $root).addClass('glyphicon-check').removeClass('glyphicon-unchecked');
                     } else {
-                        $root.addClass('btn-default').removeClass('btn-warning');
+                        $root.addClass('btn-outline-secondary').removeClass('btn-warning');
                         $('.glyphicon', $root).addClass('glyphicon-unchecked').removeClass('glyphicon-check');
                     }
                 });

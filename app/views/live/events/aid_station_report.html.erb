@@ -2,23 +2,25 @@
   <% "OpenSplitTime: Aid station summary - #{@aid_stations_display.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= "#{@aid_stations_display.event_name}: Aid Station Summary" %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><a><%= @presenter.event_group.name %></a></li>
-          <li class="active">Aid Stations</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@aid_stations_display.event_name}: Aid Station Summary" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Aid Stations</li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <h6>As of: <strong><%= "#{day_time_current_military_full(@presenter.home_time_zone)}" %></strong></h6>
+        </div>
       </div>
     </div>
-    <h5>As of: <strong><%= "#{day_time_current_military_full(@aid_stations_display.home_time_zone)}" %></strong></h5>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
@@ -26,19 +28,14 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-4 page-navigation-left form-inline">
-        <% if @aid_stations_display.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
-        <% end %>
-      </div>
+        <%= render 'event_groups/event_widget', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
     </div>
   </div>
 </aside>
 
 <article class="ost-article container">
-
   <div class="row">
-    <div class="col-xs-6">
+    <div class="col-6">
       <h4><%= "Event started on #{l(@aid_stations_display.start_time, format: :full_day_military_and_zone)} with #{@aid_stations_display.efforts_started_count} entrants" %></h4>
       <table class="table table-condensed table-striped">
         <thead>

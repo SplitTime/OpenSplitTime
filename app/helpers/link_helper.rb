@@ -25,11 +25,11 @@ module LinkHelper
 
   def link_to_select_gender(view_object, gender)
     link_to gender.titlecase, request.params.merge(filter: {gender: gender}),
-            disabled: view_object.gender_text == gender
+            disabled: view_object.gender_text == gender, class: 'dropdown-item'
   end
 
   def link_to_select_display_style(view_object, display_style, title, options = {})
-    class_text = options[:button] ? 'btn btn-md btn-primary' : ''
+    class_text = options[:button] ? 'btn btn-md btn-primary' : 'dropdown-item'
     link_to title, request.params.merge(display_style: display_style),
             disabled: view_object.display_style == display_style,
             class: class_text

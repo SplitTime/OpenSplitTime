@@ -2,44 +2,44 @@
   <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group, force_settings: true) %></li>
-          <li class="active">Live Entry</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>  
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Live Entry</li>
+          </ul>
+        </div>
       </div>
     </div>
-    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) do %>
-    <% end %>
+    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) {}%>
+    <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
 
 <article class="container">
-<div class="form-split-wrapper lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-  <div class="col-xs-12 col-sm-5 col-md-4 live-entry">
+<div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+  <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
     <span id="js-live-times-pusher" data-key="<%= ENV['PUSHER_KEY'] %>"></span>
     <form id="js-add-effort-form">
       <input type="hidden" id="js-unique-id" value=""/>
-      <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4" for="js-station-select">Aid Station</label>
-        <div class="col-xs-8">
-          <select id="js-station-select" name="js-station-select" class="form-control" autofocus>Aid Station</select>
+      <div class="form-group row">
+        <label class="col-4" for="js-station-select">Aid Station</label>
+        <div class="col-8">
+          <select id="js-station-select" name="js-station-select" class="form-control form-control-sm" autofocus>Aid Station</select>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4" for="js-bib-number">Bib</label>
-        <div class="col-xs-8">
+      <div class="form-group row">
+        <label class="col-4" for="js-bib-number">Bib</label>
+        <div class="col-8">
           <div class="input-group">
-            <input id="js-bib-number" type="tel" name="bibNumber" class="form-control" autocomplete="off" value="" style="text-align: left;">
+            <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
             <span class="input-group-addon time-status">
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Bib Found" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-question-sign questionable text-warning" title="Bib In Wrong Event" data-toggle="tooltip" data-placement="right"></span>
@@ -48,19 +48,19 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix lap-only">
-        <label class="col-xs-4" for="js-lap-number">Lap</label>
-        <div class="col-xs-8">
+      <div class="form-group row lap-only">
+        <label class="col-4" for="js-lap-number">Lap</label>
+        <div class="col-8">
           <div class="input-group">
-            <input id="js-lap-number" type="tel" name="lap" class="form-control" autocomplete="off" value="" style="text-align: left;">
+            <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix time-in-only">
-        <label id="js-time-in-label" class="col-xs-4" for="js-time-in">&nbsp;</label>
-        <div class="col-xs-8">
+      <div class="form-group row time-in-only">
+        <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
+        <div class="col-8">
           <div class="input-group">
-            <input id="js-time-in" type="tel" name="timeIn" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
               <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
@@ -75,11 +75,11 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix time-out-only">
-        <label id="js-time-out-label" class="col-xs-4" for="js-time-out">&nbsp;</label>
-        <div class="col-xs-8">
+      <div class="form-group row time-out-only">
+        <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
+        <div class="col-8">
           <div class="input-group">
-            <input id="js-time-out" type="tel" name="timeOut" class="form-control" value="" placeholder="hh:mm:ss (24hr)">
+            <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
             <span class="input-group-addon time-status">
               <span class="glyphicon glyphicon-exclamation-sign exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
               <span class="glyphicon glyphicon-ok-sign good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
@@ -94,9 +94,9 @@
           </div>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix pacer-only">
-        <label class="col-xs-4" for="pacer">Pacer</label>
-        <div class="col-xs-8">
+      <div class="form-group row pacer-only">
+        <label class="col-4" for="pacer">Pacer</label>
+        <div class="col-8">
           <label class="checkbox-inline" for="js-pacer-in">
             <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
           </label>
@@ -105,26 +105,30 @@
           </label>
         </div>
       </div>
-      <div class="form-group form-group-sm clearfix">
-        <label class="col-xs-4"></label>
-        <div class="col-xs-8">
-          <button id="js-dropped-button" type="button" class="btn btn-sm btn-default col-xs-12">
+      <div class="form-group row">
+        <label class="col-4"></label>
+        <div class="col-8">
+          <button id="js-dropped-button" type="button" class="btn btn-sm btn-outline-secondary col-12">
             <input id="js-dropped" type="checkbox" name="dropped" value="true">
             <span class="glyphicon glyphicon-unchecked"></span>
             &nbsp;Dropped Here
           </button>
         </div>
       </div>
-      <div class="col-xs-8 col-xs-offset-2 col-sm-offset-4 form-buttons">
-        <input id="js-effort-id" type="hidden" name="effort-id" value="">
-        <input id="js-live-bib" type="hidden" name="live-bib" value="">
-        <button id="js-add-to-cache" type="submit" class="btn btn-sm btn-primary">Add</button>
-        <button id="js-discard-entry-form" type="submit" class="btn btn-sm btn-danger">Discard</button>
+      <input id="js-effort-id" type="hidden" name="effort-id" value="">
+      <input id="js-live-bib" type="hidden" name="live-bib" value="">
+      <div class="row">
+        <div class="col-4 offset-4">
+          <button id="js-add-to-cache" type="submit" class="btn btn-primary w-100">Add</button>
+        </div>
+        <div class="col-4">
+          <button id="js-discard-entry-form" type="submit" class="btn btn-danger w-100">Discard</button>
+        </div>
       </div>
     </form>
   </div>
 
-  <div class="col-xs-12 col-sm-7 col-md-8 splits-slider">
+  <div class="col-12 col-md-7 col-lg-8 splits-slider">
     <div class="splits-slider-data group-splits-slider-data">
       <h4>
         <a id="js-effort-name" target="_blank" data-effort-id="" data-event-id=""></a>
@@ -153,10 +157,10 @@
 <header class="ost-header">
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col-md-6">
         <h3><strong>Local Data Workspace</strong></h3>
       </div>
-      <!--<div class="col-sm-6 form-inline text-right">
+      <!--<div class="col-md-6 form-inline text-right">
         Show
         <select class="form-control">
           <option>10</option>
@@ -169,7 +173,7 @@
 
 <article class="ost-article container">
 <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="provisional-table-wrapper">
       <table id="js-local-workspace-table" class="table table-striped provisional-data-table">
         <thead>
@@ -205,7 +209,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-xs-12" id="js-live-messages">
+  <div class="col-12" id="js-live-messages">
     <div class="alert alert-warning" role="alert" id="js-import-live-warning">
       <strong>You're up to date.</strong> No raw time data available to pull.
     </div>
@@ -215,7 +219,7 @@
   </div>
 </div>
 <div class="row provisional-data">
-  <div id="js-table-submit-buttons" class="col-xs-12 table-submit-wrapper">
+  <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper">
     <button id="js-pull-times" class="btn btn-primary">
       Pull Times
       <span class="badge" id="js-pull-times-count"></span>

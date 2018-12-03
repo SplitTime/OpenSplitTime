@@ -82,6 +82,10 @@ class BestEffortsDisplay < BasePresenter
     params[:split2] || ordered_splits.last.to_param
   end
 
+  def organization
+    events.first&.organization
+  end
+
   private
 
   attr_reader :events, :params

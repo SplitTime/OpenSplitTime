@@ -1,29 +1,39 @@
 <% content_for :title do %>
     OpenSplitTime: Dashboard
 <% end %>
-<div class="row">
-  <div class="col-xs-6">
-    <h2><strong>OpenSplitTime Dashboard</strong></h2>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>OpenSplitTime Dashboard</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item active"><%= link_to 'Dashboard', admin_root_path %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Navigation -->
   </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-6">
-    <h4>Database Statistics</h4><br/>
-    <%= "People: #{Person.all.size}" %><br/>
-    <%= "Events: #{Event.all.size} with #{Effort.unreconciled.size} unreconciled efforts" %><br/>
-    <%= "Efforts: #{Effort.all.size} with #{Effort.bad.size} bad and #{Effort.questionable.size} questionable" %><br/>
-    <%= "Split Times: #{SplitTime.all.size} with #{SplitTime.bad.size} bad and #{SplitTime.questionable.size} questionable" %><br/>
-    <%= "Courses: #{Course.all.size}" %><br/>
-    <%= "Splits: #{Split.all.size}" %><br/>
-    <%= "Users: #{User.all.size}" %><br/>
-    <%= "Raw Times: #{RawTime.all.size}" %><br/>
-    <%= "Subscriptions: #{Subscription.all.size} consisting of #{Subscription.sms.size} SMS, #{Subscription.email.size} email, #{Subscription.http.size} http, #{Subscription.https.size} https" %><br/>
-  </div>
-</div>
-<hr>
-<div class="row">
-  <div class="col-xs-6">
-    <h4>Actions</h4><br/>
-  </div>
-</div>
+</header>
+
+<article class="ost-article container">
+  <p>
+    <h4>Database Statistics</h4>
+    <ul class="list-unstyled">
+      <li><%= "People: #{Person.all.size}" %></li>
+      <li><%= "Events: #{Event.all.size} with #{Effort.unreconciled.size} unreconciled efforts" %></li>
+      <li><%= "Efforts: #{Effort.all.size} with #{Effort.bad.size} bad and #{Effort.questionable.size} questionable" %></li>
+      <li><%= "Split Times: #{SplitTime.all.size} with #{SplitTime.bad.size} bad and #{SplitTime.questionable.size} questionable" %></li>
+      <li><%= "Courses: #{Course.all.size}" %></li>
+      <li><%= "Splits: #{Split.all.size}" %></li>
+      <li><%= "Users: #{User.all.size}" %></li>
+      <li><%= "Raw Times: #{RawTime.all.size}" %></li>
+      <li><%= "Subscriptions: #{Subscription.all.size} consisting of #{Subscription.sms.size} SMS, #{Subscription.email.size} email, #{Subscription.http.size} http, #{Subscription.https.size} https" %></li>
+    </ul>
+  </p>
+  <p>
+    <h4>Actions</h4>
+  </p>
+</article>

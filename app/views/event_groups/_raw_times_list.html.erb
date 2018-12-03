@@ -8,13 +8,11 @@
   <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
-        <div class="col-xs-3">
-          <%= render 'raw_times_search' %>
-        </div>
-        <div class="col-xs-2">
+        <div class="col-auto">
           <%= link_to 'Delete Duplicates', delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: 'btn btn-md btn-warning' %>
         </div>
-        <div class="col-xs-7 text-right">
+        <!-- Filter Widget -->
+        <div class="col form-inline">
           <div class="btn-group">
             <%= link_to_raw_time_filters('stop', 'Stopped', true, nil, nil) %>
             <%= link_to_raw_time_filters('cloud-download', 'Pulled', nil, true, nil) %>
@@ -23,6 +21,10 @@
             <%= link_to_raw_time_filters('unchecked', 'Unmatched', nil, nil, false) %>
             <%= link_to_raw_time_filters('asterisk', 'All', nil, nil, nil) %>
           </div>
+        </div>
+        <!-- Search Widget -->
+        <div class="col-auto form-inline">
+          <%= render 'raw_times_search' %>
         </div>
       </div>
     </div>

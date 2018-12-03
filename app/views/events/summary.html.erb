@@ -2,33 +2,33 @@
   <% "OpenSplitTime: Summary - #{@presenter.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
-
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= @presenter.name %></strong></h1>
-        <%= render 'shared/print_info' %>
-        <ul class="breadcrumb breadcrumb-ost hidden-print">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-          <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-          <li class="active"><%= @presenter.event.guaranteed_short_name %></li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <%= render 'shared/print_info' %>
+          <ul class="breadcrumb breadcrumb-ost hidden-print">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event.guaranteed_short_name %></li>
+          </ul>
+        </div>
       </div>
     </div>
+    <!-- Navigation -->
     <%= render 'view_buttons', view_object: @presenter %>
   </div>
 </header>
 
-<aside class="ost-toolbar container-fluid hidden-print">
+
+<aside class="ost-toolbar hidden-print">
   <div class="container">
     <div class="row">
-      <div class="col-xs-4 page-navigation-left form-inline">
-        <% if @presenter.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-        <% end %>
+      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      <div class="col form-inline">
         <%= explore_dropdown_menu(@presenter) %>
       </div>
     </div>

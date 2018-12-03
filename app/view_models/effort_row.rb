@@ -20,7 +20,7 @@ class EffortRow < SimpleDelegator
   end
 
   def year_and_lap
-    multiple_laps? ? "#{start_time.year} / Lap #{lap}" : "#{start_time.year}"
+    multiple_laps? ? "#{segment_start_time.year} / Lap #{lap}" : "#{segment_start_time.year}"
   end
 
   def run_status

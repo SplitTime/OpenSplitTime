@@ -27,7 +27,7 @@ module RawTimesHelper
       link_to '', raw_time_path(raw_time, raw_time: {pulled_by: current_user.id, pulled_at: Time.current}, referrer_path: request.params),
               method: :patch,
               data: {toggle: :tooltip, placement: :bottom, 'original-title' => 'Mark as pulled'},
-              class: 'fa fa-cloud-download btn btn-sm btn-default has-tooltip'
+              class: 'fa fa-cloud-download btn btn-sm btn-outline-secondary has-tooltip'
     end
   end
 

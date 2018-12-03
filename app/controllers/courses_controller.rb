@@ -68,7 +68,7 @@ class CoursesController < ApplicationController
       flash[:danger] = 'No efforts yet run on this course'
       redirect_to course_path(@course)
     else
-      @best_display = BestEffortsDisplay.new(@course, prepared_params)
+      @presenter = BestEffortsDisplay.new(@course, prepared_params)
       session[:return_to] = best_efforts_course_path(@course)
     end
   end
@@ -78,14 +78,14 @@ class CoursesController < ApplicationController
       flash[:danger] = 'No events yet held on this course'
       redirect_to course_path(@course)
     else
-      @plan_display = PlanDisplay.new(@course, params)
+      @presenter = PlanDisplay.new(course: @course, params: params)
       respond_to do |format|
         format.html do
           session[:return_to] = plan_effort_course_path(@course)
         end
         format.csv do
           csv_stream = render_to_string(partial: 'plan.csv.ruby')
-          filename = "#{@course.name}-pacing-plan-#{@plan_display.cleaned_time}-#{Date.today}.csv"
+          filename = "#{@course.name}-pacing-plan-#{@presenter.cleaned_time}-#{Date.today}.csv"
           send_data(csv_stream, type: 'text/csv', filename: filename)
         end
       end

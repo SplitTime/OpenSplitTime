@@ -17,16 +17,19 @@
 
 @import "bootstrap/functions";
 
-@import "*";
+@import "vendor/1st_load_framework";
+@import "vendor/animate";
+@import "vendor/bootstrap-editable";
+@import "vendor/datatables.min";
+
 @import "switchery";
-@import "devise_bootstrap_views";
 @import "jquery.fileupload";
 @import "jquery.fileupload-ui";
 @import "font-awesome";
-@import "animate";
 @import "bootstrap-datetimepicker";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
 
+@import "pages/*";
 @import "utilities/*";

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class EffortWithLapSplitRows
-
   attr_reader :effort
 
   def initialize(args)
@@ -34,19 +33,21 @@ class EffortWithLapSplitRows
   end
 
   def effort_start_time
-    effort.start_time || event.start_time
+    effort.start_time
   end
 
   private
 
   def rows_from_lap_splits(lap_splits)
-    lap_splits.map { |lap_split| LapSplitRow.new(lap_split: lap_split,
-                                                 split_times: related_split_times(lap_split),
-                                                 show_laps: event.multiple_laps?) }
+    lap_splits.map do |lap_split|
+      LapSplitRow.new(lap_split: lap_split,
+                      split_times: related_split_times(lap_split),
+                      show_laps: event.multiple_laps?)
+    end
   end
 
   def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTimeData.new) }
+    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTime.new) }
   end
 
   def prior_split_time(lap_split)
@@ -55,7 +56,7 @@ class EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    @ordered_split_times ||= effort.split_times_data
+    @ordered_split_times ||= loaded_effort.ordered_split_times
   end
 
   def indexed_split_times
@@ -83,6 +84,9 @@ class EffortWithLapSplitRows
   end
 
   def loaded_effort
-    @loaded_effort ||= Effort.where(id: effort.id).includes(split_times: :split).includes(:event).includes(:person).first
+    return @loaded_effort if defined?(@loaded_effort)
+    temp_effort = Effort.where(id: effort).includes(:event, :person, split_times: :split).first
+    temp_effort.ordered_split_times.each_cons(2) { |prior_st, st| st.segment_time = st.absolute_time - prior_st.absolute_time }
+    @loaded_effort = temp_effort
   end
 end

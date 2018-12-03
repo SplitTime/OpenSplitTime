@@ -3,54 +3,71 @@
   <tr>
     <th>Split</th>
     <th class="text-right"><%= pdu('singular').titleize %></th>
-    <th class="text-center">Time of Day<br/>In / Out</th>
-    <th class="text-center">Split Place<br/>In / Out</th>
-    <th class="text-center">Passed<br/>Segment / Aid</th>
-    <th class="text-center">Passed by<br/>Segment / Aid</th>
-    <th class="text-center">Together<br/>In Aid With</th>
+    <th class="text-center">Time of Day
+      <% if view_object.multiple_sub_splits? %><br/>In / Out<% end %>
+    </th>
+    <th class="text-center">Split Place
+      <% if view_object.multiple_sub_splits? %><br/>In / Out<% end %>
+    </th>
+    <th class="text-center">Passed
+      <% if view_object.multiple_sub_splits? %><br/>Segment / Aid<% end %>
+    </th>
+    <th class="text-center">Passed by
+      <% if view_object.multiple_sub_splits? %><br/>Segment / Aid<% end %>
+    </th>
+    <% if view_object.multiple_sub_splits? %>
+      <th class="text-center">Together<br/>In Aid With</th>
+    <% end %>
   </tr>
   </thead>
+
   <tbody>
   <% view_object.place_detail_rows.each do |place_detail_row| %>
-      <tr>
-        <td><%= place_detail_row.name %></td>
-        <td class="text-right"><%= d(place_detail_row.distance_from_start) %></td>
-        <td class="text-center"><%= place_detail_row.days_and_times.map { |datetime| day_time_format(datetime) }.join(' / ') %></td>
-        <td class="text-center"><%= place_detail_row.split_times.map { |st| st.try(:time_point_rank) || '--' }.compact.join(' / ') %></td>
-        <td class="text-center">
-          <% if place_detail_row.passed_segment_count == 0 %>
-              --
-          <% else %>
-              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_segment_ids %>"><%= place_detail_row.passed_segment_count %></a>
-          <% end %>
+    <tr>
+      <td><%= place_detail_row.name %></td>
+      <td class="text-right"><%= d(place_detail_row.distance_from_start) %></td>
+      <td class="text-center"><%= place_detail_row.days_and_times.map { |datetime| day_time_format(datetime) }.join(' / ') %></td>
+      <td class="text-center"><%= place_detail_row.split_times.map { |st| st.try(:time_point_rank) || '--' }.compact.join(' / ') %></td>
+      <td class="text-center">
+        <% if place_detail_row.passed_segment_count == 0 %>
+          --
+        <% else %>
+          <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_segment_ids %>"><%= place_detail_row.passed_segment_count %></a>
+        <% end %>
+        <% if view_object.multiple_sub_splits? %>
           /
           <% if place_detail_row.passed_in_aid_count == 0 %>
-              --
+            --
           <% else %>
-              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_in_aid_ids %>"><%= place_detail_row.passed_in_aid_count %></a>
+            <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_in_aid_ids %>"><%= place_detail_row.passed_in_aid_count %></a>
           <% end %>
-        </td>
-        <td class="text-center">
-          <% if place_detail_row.passed_by_segment_count == 0 %>
-              --
-          <% else %>
-              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_segment_ids %>"><%= place_detail_row.passed_by_segment_count %></a>
-          <% end %>
+        <% end %>
+      </td>
+      <td class="text-center">
+        <% if place_detail_row.passed_by_segment_count == 0 %>
+          --
+        <% else %>
+          <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_segment_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_segment_ids %>"><%= place_detail_row.passed_by_segment_count %></a>
+        <% end %>
+        <% if view_object.multiple_sub_splits? %>
           /
           <% if place_detail_row.passed_by_in_aid_count == 0 %>
-              --
+            --
           <% else %>
-              <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_in_aid_ids %>"><%= place_detail_row.passed_by_in_aid_count %></a>
+            <a data-toggle="efforts-popover" title="<%= place_detail_row.passed_by_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.passed_by_in_aid_ids %>"><%= place_detail_row.passed_by_in_aid_count %></a>
           <% end %>
-        </td>
+        <% end %>
+      </td>
+      <% if view_object.multiple_sub_splits? %>
         <td class="text-center">
           <% if place_detail_row.together_in_aid_count == 0 %>
-              --
+            --
           <% else %>
-              <a data-toggle="efforts-popover" data-placement="left" title="<%= place_detail_row.together_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.together_in_aid_ids %>"><%= place_detail_row.together_in_aid_count %></a>
+            <a data-toggle="efforts-popover" data-placement="left" title="<%= place_detail_row.together_in_aid_table_title %>" data-effort-ids="<%= place_detail_row.together_in_aid_ids %>"><%= place_detail_row.together_in_aid_count %></a>
           <% end %>
         </td>
-      </tr>
+      <% end %>
+    </tr>
   <% end %>
   </tbody>
 </table>

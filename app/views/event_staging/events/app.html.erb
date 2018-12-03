@@ -2,10 +2,6 @@
   <% "OpenSplitTime: Event staging - #{@presenter&.name || 'New event'}" %>
 <% end %>
 
-<% content_for(:container_type) do %>
-  skip
-<% end %>
-
 <!-- Vue.js Form Templates-->
 
 <%= render "event" %>
@@ -14,8 +10,8 @@
 <%= render "confirmation" %>
 
 <script type="text/x-template" id="published">
-  <div>
-    <article class="col-xs-12 published-page">
+  <div class="row col-12">
+    <article class="col-12 published-page">
       <span class="large-check"></span>
       <h2>Your Event Has Been Published</h2>
       <p>Congratulations! Your Event is now available for the world to see. You can return and edit the Event, Splits,
@@ -37,29 +33,32 @@
     window._rails_assets.marker = "<%= asset_path( 'icons/green.svg' ) %>";
 </script>
 <div id="event-app" data-id="<%= @presenter&.id %>">
+
   <header class="ost-header">
     <div class="container">
-      <div class="row">
-        <div class="ost-title col-xs-12">
-          <h1>
-            <strong v-if="!isReady">Loading...</strong>
-            <strong v-else-if="eventModel.__new__">Create Event</strong>
-            <strong v-else>
-              {{ eventModel.name }}
-              <i v-if="eventModel.concealed" class="glyphicon glyphicon-eye-close" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
-              <i v-else class="glyphicon glyphicon-eye-open" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
-            </strong>
-          </h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <% if @presenter&.organization %>
-              <li><%= link_to 'Organizations', organizations_path %></li>
-              <li><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-              <li><a><%= @presenter.event_group.name %></a></li>
-            <% end %>
-            <li class="active">Staging</li>
-          </ul>
+      <div class="ost-heading row">
+        <div class="col">
+          <div class="ost-title">
+            <h1>
+              <strong v-if="!isReady">Loading...</strong>
+              <strong v-else-if="eventModel.__new__">Create Event</strong>
+              <strong v-else>
+                {{ eventModel.name }}
+                <i v-if="eventModel.concealed" class="fa fa-eye-slash" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
+                <i v-else class="fa fa-eye" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
+              </strong>
+            </h1>
+            <ul class="breadcrumb breadcrumb-ost">
+              <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+              <!--<li class="breadcrumb-item"><%= @presenter.event.guaranteed_short_name %></li>-->
+              <li class="breadcrumb-item active">Staging</li>
+            </ul>
+          </div>
         </div>
       </div>
+      <!-- Navigation -->
       <% if @presenter %>
         <%= render 'events/view_buttons', view_object: @presenter %>
       <% end %>
@@ -80,7 +79,7 @@
     </div>
   </aside>
 
-  <div class="container">
+  <div class="container pt-4">
     <div class="row" v-if="!isReady" style="padding: 150px;">
       <%= image_tag("icons/loading.gif", alt: 'Loading', size: '30') %>
     </div>

@@ -18,30 +18,30 @@
     <th>Last Recorded</th>
     <th>Time of Day</th>
     <th>Elapsed Time</th>
-    <th>Notify Me Live</th>
+    <th colspan=2>Notify Me Live</th>
   </tr>
   </thead>
   <tbody>
   <% view_object.ranked_effort_rows.each do |effort_row| %>
-      <%= data_status_tag(effort_row) %>
-      <td><%= effort_row.display_overall_rank %></td>
-      <td><%= link_to effort_row.full_name, effort_path(effort_row) %></td>
-      <% if view_object.available_live %>
-          <td><%= effort_row.bib_number %></td>
-      <% end %>
-      <td><%= effort_row.bio_historic %></td>
-      <td><%= effort_row.flexible_geolocation %></td>
-      <td><%= effort_row.run_status %></td>
-      <td><%= last_reported_location(effort_row) %></td>
-      <td><%= last_reported_time_of_day(effort_row) %></td>
-      <td><%= last_reported_elapsed_time(effort_row) %></td>
-      <td>
-        <%= div_for(effort_row.person) do %>
-            <%= link_to_toggle_email_subscription(effort_row.person) %>
-            <%= link_to_toggle_sms_subscription(effort_row.person) %>
+      <%= content_tag_for(:tr, effort_row.person, class: data_status_class(effort_row)) do %>
+        <td><%= effort_row.display_overall_rank %></td>
+        <td><%= link_to effort_row.full_name, effort_path(effort_row) %></td>
+        <% if view_object.available_live %>
+            <td><%= effort_row.bib_number %></td>
         <% end %>
-      </td>
-      </tr>
+        <td><%= effort_row.bio_historic %></td>
+        <td><%= effort_row.flexible_geolocation %></td>
+        <td><%= effort_row.run_status %></td>
+        <td><%= last_reported_location(effort_row) %></td>
+        <td><%= last_reported_time_of_day(effort_row) %></td>
+        <td><%= last_reported_elapsed_time(effort_row) %></td>
+        <td class="table-button">
+            <%= link_to_toggle_email_subscription(effort_row.person) %>
+        </td>
+        <td class="table-button">
+            <%= link_to_toggle_sms_subscription(effort_row.person) %>
+        </td>
+      <% end %>
   <% end %>
   </tbody>
 </table>

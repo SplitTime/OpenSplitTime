@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe SmartSegmentsBuilder do
-  subject { SmartSegmentsBuilder.new(event: event, laps: laps, expected_time: expected_time, similar_effort_ids: similar_effort_ids, times_container: times_container) }
+  subject { SmartSegmentsBuilder.new(event: event, time_points: time_points, times_container: times_container) }
   let(:event) { build_stubbed(:event_with_standard_splits, laps_required: 1, splits_count: 3) }
+  let(:time_points) { event&.time_points_through(laps) }
   let(:laps) { 1 }
-  let(:expected_time) { 10_000 }
-  let(:similar_effort_ids) { [1, 2, 3] }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids) }
+  let(:similar_effort_ids) { [1, 2, 3] }
 
   describe '#initialize' do
-    it 'initializes with an event, laps, expected_time, and similar_effort_ids in an args hash' do
+    it 'initializes with an event, time_points, and a times_container in an args hash' do
       expect { subject }.not_to raise_error
     end
 
@@ -23,33 +23,24 @@ RSpec.describe SmartSegmentsBuilder do
       end
     end
 
-    context 'when laps is nil' do
-      let(:laps) { nil }
+    context 'when time_points is nil' do
+      let(:time_points) { nil }
 
       it 'raises an error' do
-        expect { subject }.to raise_error(/must include laps/)
+        expect { subject }.to raise_error(/must include time_points/)
       end
     end
 
-    context 'when expected_time is nil' do
-      let(:expected_time) { nil }
+    context 'when times_container is nil' do
+      let(:times_container) { nil }
 
       it 'raises an error' do
-        expect { subject }.to raise_error(/must include expected_time/)
-      end
-    end
-
-    context 'when similar_effort_ids is nil' do
-      let(:similar_effort_ids) { nil }
-
-      it 'raises an error' do
-        expect { subject }.to raise_error(/cannot be initialized with calc_model: :focused unless effort_ids are provided/)
+        expect { subject }.to raise_error(/must include times_container/)
       end
     end
   end
 
   describe '#segments' do
-    let(:time_points) { event.time_points_through(laps) }
     let(:segment_0_0) { Segment.new(begin_point: time_points[0], end_point: time_points[0]) }
     let(:segment_0_1) { Segment.new(begin_point: time_points[0], end_point: time_points[1]) }
     let(:segment_1_2) { Segment.new(begin_point: time_points[1], end_point: time_points[2]) }

@@ -1,46 +1,44 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Drop List - #{@event_dropped_display.name}" %>
+    <% "OpenSplitTime: Drop List - #{@presenter.name}" %>
 <% end %>
-
-<% content_for(:container_type) do %>skip<% end %>
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong><%= "#{@event_dropped_display.name}: Drop List" %></strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li class="active">Progress Report</li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Drop List</li>
+          </ul>
+        </div>
       </div>
     </div>
-    <%= render 'events/view_buttons', view_object: @event_dropped_display %>
+    <!-- Navigation -->
+    <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
 
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-4 page-navigation-left form-inline">
-        <% if @event_dropped_display.ordered_events_within_group.many? %>
-          <%= render 'event_groups/event_buttons', events: @event_dropped_display.ordered_events_within_group, current_event: @event_dropped_display.event %>
-        <% end %>
-      </div>
+      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
     </div>
   </div>
 </aside>
 
 <article class="ost-article container">
-
-<% if @event_dropped_display.dropped_efforts_count < 1 %>
-    <strong><%= "No runners have dropped as of #{day_time_current_military_full(@event_dropped_display.home_time_zone)}." %></strong>
-<% else %>
-    <div class="row">
-      <div class="col-xs-8">
-        <strong><%= "#{@event_dropped_display.dropped_efforts_count} #{@event_dropped_display.dropped_efforts_count == 1 ? 'runner has' : 'runners have'} dropped as of #{day_time_current_military_full(@event_dropped_display.home_time_zone)}." %></strong>
+  <% if @presenter.dropped_efforts_count < 1 %>
+      <strong><%= "No runners have dropped as of #{day_time_current_military_full(@presenter.home_time_zone)}." %></strong>
+  <% else %>
+      <div class="row">
+        <div class="col-8">
+          <strong><%= "#{@presenter.dropped_efforts_count} #{@presenter.dropped_efforts_count == 1 ? 'runner has' : 'runners have'} dropped as of #{day_time_current_military_full(@presenter.home_time_zone)}." %></strong>
+        </div>
       </div>
-    </div>
-    <%= render 'efforts/efforts_dropped_list' %>
-<% end %>
-
+      <%= render 'efforts/efforts_dropped_list' %>
+  <% end %>
 </article>

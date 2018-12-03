@@ -1,0 +1,27 @@
+.popover.efforts-popover .popover-content {
+	max-height: 400px;
+	overflow-x: visible;
+	overflow-y: auto;
+}
+
+.popover.static-popover {
+
+  .popover-title {
+    display: none;
+  }
+
+  .popover-content {
+    max-height: 150px;
+    overflow-x: visible;
+    overflow-y: auto;
+  }
+
+  &.static-popover-dark {
+    background: #222;
+    color: #dddddd;
+    &.bottom .arrow:after { border-bottom-color: #222; }
+    &.left .arrow:after { border-left-color: #222; }
+    &.right .arrow:after { border-right-color: #222; }
+    &.top .arrow:after { border-top-color: #222; }
+  }
+}

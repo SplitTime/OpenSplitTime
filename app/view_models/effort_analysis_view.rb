@@ -5,7 +5,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   attr_reader :effort
   delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender,
            :overall_rank, :gender_rank, :start_time, :started?, to: :effort
-  delegate :simple?, :event_group, to: :event
+  delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
   def post_initialize(args_effort)
     @effort = args_effort.enriched || args_effort
@@ -16,7 +16,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_segment_time_typical
-    typical_effort.total_segment_time
+    analysis_rows.map(&:segment_time_typical).compact.sum
   end
 
   def total_segment_time_over_under
@@ -28,7 +28,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_time_in_aid_typical
-    typical_effort.total_time_in_aid
+    analysis_rows.map(&:time_in_aid_typical).compact.sum
   end
 
   def total_time_in_aid_over_under
@@ -36,7 +36,11 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def total_time_combined
-    (total_segment_time && total_time_in_aid) ? total_segment_time + total_time_in_aid : nil
+    total_segment_time && total_time_in_aid && total_segment_time + total_time_in_aid
+  end
+
+  def total_time_combined_typical
+    total_segment_time_typical && total_time_in_aid_typical && total_segment_time_typical + total_time_in_aid_typical
   end
 
   def total_combined_time_over_under
@@ -66,69 +70,31 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def analysis_rows
-    @analysis_rows ||= typical_effort.lap_split_rows.blank? ? nil :
-        lap_splits.reject(&:start?)
-            .map { |lap_split| EffortAnalysisRow.new(lap_split: lap_split,
-                                                     split_times: related_split_times(lap_split),
-                                                     prior_lap_split: lap_splits.elements_before(lap_split).last,
-                                                     prior_split_time: prior_split_time(lap_split),
-                                                     start_time: effort_start_time,
-                                                     typical_row: indexed_typical_rows[lap_split.key],
-                                                     show_laps: event.multiple_laps?) }
+    @analysis_rows ||= indexed_split_times.blank? ? nil :
+                           lap_splits.each_cons(2).map do |prior_lap_split, lap_split|
+                             EffortAnalysisRow.new(lap_split: lap_split,
+                                                   split_times: related_split_times(lap_split),
+                                                   typical_split_times: related_typical_split_times(lap_split),
+                                                   prior_lap_split: prior_lap_split,
+                                                   prior_split_time: prior_split_time(lap_split),
+                                                   start_time: effort_start_time,
+                                                   show_laps: event.multiple_laps?)
+                           end
   end
 
   private
 
   def typical_effort
-    @typical_effort ||= mock_finish_time &&
-        MockEffort.new(event: event,
-                       expected_time: mock_finish_time,
-                       start_time: effort_start_time,
-                       comparison_time_points: ordered_split_times.map(&:time_point),
-                       expected_laps: last_split_time.lap)
-  end
-
-  def indexed_typical_rows
-    @indexed_typical_rows ||= typical_effort.lap_split_rows.index_by(&:key)
-  end
-
-  def mock_finish_time
-    effort_finish_tfs || focused_predicted_time || stats_predicted_time
-  end
-
-  def focused_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
-                               calc_model: :focused, similar_effort_ids: similar_effort_ids)
-  end
-
-  def stats_predicted_time
-    TimePredictor.segment_time(segment: start_to_finish, effort: effort, lap_splits: lap_splits,
-                               calc_model: :stats)
-  end
-
-  def similar_effort_ids
-    @similar_effort_ids ||= SimilarEffortFinder.new(time_point: last_split_time.time_point,
-                                                    time_from_start: last_split_time.time_from_start).effort_ids
+    @typical_effort ||= last_split_time && effort_start_time &&
+        TypicalEffort.new(event: event,
+                          expected_time_from_start: last_split_time.time_from_start,
+                          start_time: effort_start_time,
+                          time_points: ordered_split_times.map(&:time_point),
+                          expected_time_point: last_split_time.time_point)
   end
 
   def last_split_time
     ordered_split_times.last
-  end
-
-  def effort_finish_tfs
-    indexed_split_times[finish_time_point]&.time_from_start
-  end
-
-  def finish_time_point
-    lap_splits.last.time_point_in
-  end
-
-  def start_time_point
-    lap_splits.first.time_point_in
-  end
-
-  def start_to_finish
-    Segment.new(begin_point: start_time_point, end_point: finish_time_point)
   end
 
   def sorted_analysis_rows
@@ -137,5 +103,26 @@ class EffortAnalysisView < EffortWithLapSplitRows
 
   def course
     @course ||= event.course
+  end
+
+  def indexed_split_times
+    @indexed_split_times ||= segmentize_relevant_times(ordered_split_times).index_by(&:time_point)
+  end
+
+  def indexed_typical_split_times
+    @indexed_typical_split_times ||= segmentize_relevant_times(typical_effort.ordered_split_times).index_by(&:time_point)
+  end
+
+  def segmentize_relevant_times(split_times)
+    relevant_split_times = split_times.select { |st| relevant_time_points.include?(st.time_point) }
+    AssignSegmentTimes.perform(relevant_split_times)
+  end
+
+  def related_typical_split_times(lap_split)
+    lap_split.time_points.map { |time_point| indexed_typical_split_times.fetch(time_point, SplitTime.new) }
+  end
+
+  def relevant_time_points
+    typical_effort ? ordered_split_times.map(&:time_point) & typical_effort.ordered_split_times.map(&:time_point) : []
   end
 end

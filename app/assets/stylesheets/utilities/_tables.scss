@@ -1,3 +1,33 @@
 .table thead th {
     border-top: none;
 }
+
+.table .table-button {
+    border-left: 1px $table-border-color solid;
+    border-right: 1px $table-border-color solid;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+
+    & + & {
+        border-left: none;
+    }
+}
+
+.table-centered {
+    & > tbody > tr > td {
+        vertical-align: middle;
+    }
+}
+
+.table-fixed {
+    & > tbody > tr {
+        height: 60px;
+    }
+}
+
+.table-fixed-sm {
+    & > tbody > tr {
+        height: 48px;
+    }
+}

@@ -13,7 +13,7 @@
                 .attr('role', 'button')
                 .data('ajax', null)
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus'
                 }).on('show.bs.popover', effortsPopover.onShowPopover);
             if ( utilities.isMobileSafari() ) {
@@ -49,7 +49,7 @@
                 .attr('role', 'button')
                 .data('ajax', null)
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus'
                 }).on('show.bs.popover', photoPopover.onShowPopover);
             if ( utilities.isMobileSafari() ) {
@@ -84,7 +84,7 @@
                 $( el ).attr( 'tabindex', $( el ).attr( 'tabindex' ) || '0' )
                 .attr('role', 'button')
                 .popover({
-                    'html': 'append',
+                    'html': true,
                     'trigger': 'focus',
                     'container': 'body'
                 }).on('show.bs.popover', staticPopover.onShowPopover);
@@ -95,7 +95,7 @@
         },
         onShowPopover: function (e) {
             var $popover = $(this).data('bs.popover');
-            $popover.tip()
+            $($popover.tip)
                 .addClass('static-popover')
                 .addClass($(this).data('toggle'));
         }

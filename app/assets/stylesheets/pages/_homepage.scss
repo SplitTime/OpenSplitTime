@@ -10,24 +10,6 @@
   font-style: normal;
 }
 
-.navbar-dark {
-  border-radius: 0;
-  @include media-breakpoint-up(md) {
-    .navbar-nav > li > a.sign-up {
-      border: 1px solid #FFF;
-      color: #FFF;
-      padding: 5px 16px;
-      margin: 9px 0;
-    }
-    .navbar-nav > li > a.donate {
-      color: #bbbb00;
-    }
-    .navbar-nav > li > a.donate:hover {
-      color: #ffff00;
-    }
-  }
-}
-
 .visitors.index {
   color: #fff;
   text-align: center;

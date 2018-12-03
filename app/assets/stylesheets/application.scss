@@ -17,8 +17,10 @@
 
 @import "bootstrap/functions";
 
-@import "vendor/*";
-@import "*";
+@import "vendor/1st_load_framework";
+@import "vendor/animate";
+@import "vendor/bootstrap-editable";
+@import "vendor/datatables.min";
 
 @import "switchery";
 @import "jquery.fileupload";

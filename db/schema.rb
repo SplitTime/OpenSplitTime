@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181103194925) do
+ActiveRecord::Schema.define(version: 20181203150142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 20181103194925) do
     t.integer "protocol", default: 0, null: false
     t.string "resource_key"
     t.index ["person_id"], name: "index_subscriptions_on_person_id"
-    t.index ["resource_key"], name: "index_subscriptions_on_resource_key", unique: true
+    t.index ["resource_key"], name: "index_subscriptions_on_resource_key"
     t.index ["user_id", "person_id", "protocol"], name: "index_subscriptions_on_user_id_and_person_id_and_protocol", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end

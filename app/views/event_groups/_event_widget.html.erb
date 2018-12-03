@@ -1,5 +1,5 @@
 <!-- Event Selector Widget: Requires locals :events and :current_event -->
-<% if events and events.many? %>
+<% if events&.many? %>
   <div class="col-auto form-inline">
     <div class="btn-group btn-group-ost">
       <% events.each do |event| %>

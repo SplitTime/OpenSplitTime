@@ -71,7 +71,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :events do
+  resources :events, except: :index do
     collection { get :series }
     member do
       get :admin
@@ -90,6 +90,8 @@ Rails.application.routes.draw do
       delete :delete_all_efforts
     end
   end
+
+  get '/events', to: redirect('event_groups')
 
   resources :organizations
 

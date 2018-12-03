@@ -17,7 +17,7 @@ RSpec.describe 'Search the person index' do
   scenario 'The user is a visitor searching for a visible person' do
     visit people_path
     fill_in 'First name, last name, state, or country', with: visible_person_1.name
-    click_button 'Find someone'
+    click_button 'person-lookup-submit'
 
     expect(page).to have_content(visible_person_1.name)
     expect(page).not_to have_content(visible_person_2.name)
@@ -27,7 +27,7 @@ RSpec.describe 'Search the person index' do
   scenario 'The user is a visitor searching for a concealed person' do
     visit people_path
     fill_in 'First name, last name, state, or country', with: concealed_person.name
-    click_button 'Find someone'
+    click_button 'person-lookup-submit'
 
     expect(page).not_to have_content(visible_person_1.name)
     expect(page).not_to have_content(visible_person_2.name)
@@ -39,7 +39,7 @@ RSpec.describe 'Search the person index' do
 
     visit people_path
     fill_in 'First name, last name, state, or country', with: visible_person_1.name
-    click_button 'Find someone'
+    click_button 'person-lookup-submit'
 
     expect(page).to have_content(visible_person_1.name)
     expect(page).not_to have_content(visible_person_2.name)
@@ -51,7 +51,7 @@ RSpec.describe 'Search the person index' do
 
     visit people_path
     fill_in 'First name, last name, state, or country', with: concealed_person.name
-    click_button 'Find someone'
+    click_button 'person-lookup-submit'
 
     expect(page).not_to have_content(visible_person_1.name)
     expect(page).not_to have_content(visible_person_2.name)
@@ -63,7 +63,7 @@ RSpec.describe 'Search the person index' do
 
     visit people_path
     fill_in 'First name, last name, state, or country', with: concealed_person.name
-    click_button 'Find someone'
+    click_button 'person-lookup-submit'
 
     expect(page).not_to have_content(visible_person_1.name)
     expect(page).not_to have_content(visible_person_2.name)

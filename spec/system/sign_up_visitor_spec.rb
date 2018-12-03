@@ -51,8 +51,8 @@ RSpec.describe 'Visitor signs up' do
     fill_in 'Last name', with: last_name
     fill_in 'Email', with: email
     fill_in 'US or Canada mobile number', with: phone
-    fill_in 'Password*', with: password
-    fill_in 'Password confirmation*', with: password
+    fill_in 'Password', with: password
+    fill_in 'Password confirmation', with: password
     click_button 'Sign up'
   end
 end

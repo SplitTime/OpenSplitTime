@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
+      get :drop_list
       get :raw_times
       get :roster
       get :export_raw_times
@@ -75,7 +76,6 @@ Rails.application.routes.draw do
     collection { get :series }
     member do
       get :admin
-      get :drop_list
       get :edit_start_time
       get :export_finishers
       get :export_to_ultrasignup

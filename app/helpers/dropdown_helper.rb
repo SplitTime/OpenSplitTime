@@ -55,7 +55,7 @@ module DropdownHelper
          active: action_name == 'live_entry',
          visible: view_object.available_live},
         {name: 'Drops',
-         link: drop_list_event_path(view_object.event),
+         link: drop_list_event_group_path(view_object.event_group),
          active: action_name == 'drop_list'},
         {name: 'Progress',
          link: progress_report_live_event_path(view_object.event),

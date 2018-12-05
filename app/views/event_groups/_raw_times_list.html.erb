@@ -53,7 +53,9 @@
         <thead>
         <tr>
           <th><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Event', 'event_id,sortable_bib_number', view_object.existing_sort) %></th>
+          <% if view_object.multiple_events? %>
+            <th><%= link_to_reversing_sort_heading('Event', 'event_id,sortable_bib_number', view_object.existing_sort) %></th>
+          <% end %>
           <th><%= link_to_reversing_sort_heading('Name', :effort_last_name, view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Split Name', 'split_name,sortable_bib_number', view_object.existing_sort) %></th>
           <% if view_object.multiple_sub_splits? %>
@@ -77,7 +79,9 @@
         <% view_object.filtered_raw_times.each do |raw_time| %>
           <tr>
             <td><%= raw_time.bib_number %></td>
-            <td><%= raw_time.event&.guaranteed_short_name || '--' %></td>
+            <% if view_object.multiple_events? %>
+              <td><%= raw_time.event&.guaranteed_short_name || '--' %></td>
+            <% end %>
             <td><%= link_to_raw_time_effort(raw_time) %></td>
             <td><%= link_to_raw_time_split(raw_time) %></td>
             <% if view_object.multiple_sub_splits? %>

@@ -52,6 +52,14 @@ class EventGroupPresenter < BasePresenter
     ready_efforts.size
   end
 
+  def dropped_effort_rows
+    @dropped_effort_rows ||= ranked_efforts.select(&:dropped?).map { |effort| EffortRow.new(effort) }
+  end
+
+  def dropped_efforts_count
+    dropped_effort_rows.size
+  end
+
   def events
     @events ||= event_group.events.select_with_params('').order(:start_time).to_a
   end

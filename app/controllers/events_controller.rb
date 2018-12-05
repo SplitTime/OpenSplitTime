@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze]
   before_action :set_event, except: [:index, :new, :create, :series]
-  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
 
@@ -84,7 +84,6 @@ class EventsController < ApplicationController
       end
     end
   end
-
 
   def summary
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
@@ -174,11 +173,6 @@ class EventsController < ApplicationController
     EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,
                                           background_channel: background_channel, current_user: User.current)
     redirect_to event_group_path(@event.event_group, force_settings: true)
-  end
-
-  def drop_list
-    @presenter = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
-    session[:return_to] = event_path(@event)
   end
 
   def export_finishers

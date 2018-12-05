@@ -55,7 +55,7 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def event_finished?
-    @event_finished ||= ranked_efforts.all?(&:finished?)
+    @event_finished ||= ranked_efforts.none?(&:in_progress?)
   end
 
   def event_start_time

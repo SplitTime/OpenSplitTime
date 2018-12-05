@@ -101,15 +101,15 @@
               Import
               <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="split-import-dropdown">
-              <li>
+            <div class="dropdown-menu" aria-labelledby="split-import-dropdown">
+              <a class="dropdown-item">
                 <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_splits'" v-on:import="eventModel.fetch()">
                   <span>Import Splits</span>
                 </ajax-import>
-              </li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}) %></li>
-            </ul>
+              </a>
+              <div class="dropdown-divider"></div>
+              <%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}), class: 'dropdown-item' %>
+            </div>
           </div>
           <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
           <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="fa fa-arrow-right"></i>

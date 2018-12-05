@@ -69,25 +69,25 @@
               Import
               <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <li>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <a class="dropdown-item">
                 <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts'" v-on:import="eventModel.fetch()">
                   <span>Without Times</span>
                 </ajax-import>
-              </li>
-              <li>
+              </a>
+              <a class="dropdown-item">
                 <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_elapsed_times'" v-on:import="eventModel.fetch()">
                   <span>With Elapsed Times</span>
                 </ajax-import>
-              </li>
-              <li>
+              </a>
+              <a class="dropdown-item">
                 <ajax-import :url="'/api/v1/events/' + eventModel.id + '/import?dataFormat=csv_efforts_military_times'" v-on:import="eventModel.fetch()">
                   <span>With Absolute Times</span>
                 </ajax-import>
-              </li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to 'Download Template', efforts_path(format: :csv, params: {filter: {id: 0}}) %></li>
-            </ul>
+              </a>
+              <div class="dropdown-divider"></div>
+              <%= link_to 'Download Template', efforts_path(format: :csv, params: {filter: {id: 0}}), class: 'dropdown-item' %>
+            </div>
           </div>
           <% if @presenter %>
             <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-outline-secondary' %></div>

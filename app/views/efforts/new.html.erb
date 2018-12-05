@@ -1,6 +1,25 @@
 <% content_for :title do %>
-    <% 'OpenSplitTime: New effort' %>
+  <% "OpenSplitTime: New effort" %>
 <% end %>
-<h1 align="center">New Effort</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>New Effort</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @effort.event.event_group.name, event_group_path(@effort.event.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to @effort.event.name, event_path(@effort.event) %></li>
+            <li class="breadcrumb-item active">New effort</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+</article>

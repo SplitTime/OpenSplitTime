@@ -29,11 +29,8 @@ class EffortsController < ApplicationController
   end
 
   def new
-    @effort = Effort.new
-    if params[:event_id]
-      @event = Event.friendly.find(params[:event_id])
-      @effort.event = @event
-    end
+    event = Event.find(params[:event_id])
+    @effort = event.efforts.new
     authorize @effort
   end
 

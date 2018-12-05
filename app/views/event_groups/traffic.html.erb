@@ -28,27 +28,8 @@
     <div class="row">
       <div class="col form-inline">
         <div class="dropdown float-left-button">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-name-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <strong><%= @presenter.split_name %></strong>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="split-name-dropdown">
-            <% @presenter.ordered_split_names.each do |split_name| %>
-              <%= link_to split_name.titleize, request.params.merge(split_name: split_name.parameterize), class: "dropdown-item #{split_name.parameterize == @presenter.split_name.parameterize ? 'active' : ''}" %>
-            <% end %>
-          </ul>
-        </div>
-
-        <div class="dropdown float-left-button">
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="frequency-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <strong><%= pluralize(@presenter.band_width / 1.minute, 'minute') %></strong>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="frequency-dropdown">
-            <% @presenter.suggested_band_widths.each do |band_width| %>
-              <%= link_to pluralize(band_width / 1.minute, 'minute'), request.params.merge(band_width: band_width), class: "dropdown-item #{band_width == @presenter.band_width ? 'active' : ''}" %>
-            <% end %>
-          </ul>
+          <%= split_name_dropdown(@presenter) %>
+          <%= traffic_band_width_dropdown(@presenter) %>
         </div>
       </div>
     </div>

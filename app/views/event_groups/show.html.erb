@@ -35,29 +35,7 @@
               <%= link_to_toggle_public_private(@presenter) %>
               <%= link_to_toggle_ost_remote(@presenter) %>
               <%= link_to_toggle_live_entry(@presenter) %>
-              <div class="btn-group">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
-                  Edit
-                  <span class="caret"></span>
-                </button>
-                <div class="dropdown-menu">
-                  <%= link_to 'Edit group', edit_event_group_path(@presenter), class: 'dropdown-item' %>
-                  <%= link_to 'Add/remove stewards', organization_path(@presenter.organization, display_style: 'stewards'), class: 'dropdown-item' %>
-                  <div role="separator" class="dropdown-divider"></div>
-                  <%= link_to 'Delete all times', delete_all_times_event_group_path(@presenter),
-                              class: 'dropdown-item text-danger',
-                              method: :delete,
-                              data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-                                      'This action cannot be undone. Are you sure you want to go ahead?'} %>
-                  <%= link_to 'Delete group', event_group_path(@presenter, referrer_path: event_groups_path),
-                              class: 'dropdown-item text-danger',
-                              method: :delete,
-                              data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
-                                      'This action cannot be undone. Are you sure you want to go ahead?'} %>
-                </div>
-              </div>
-
-
+              <%= event_group_actions_dropdown(@presenter) %>
             <% end %>
           </div>
         </div>

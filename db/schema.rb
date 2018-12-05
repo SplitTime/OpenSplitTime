@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181103194925) do
+ActiveRecord::Schema.define(version: 20181205074940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,12 +246,12 @@ ActiveRecord::Schema.define(version: 20181103194925) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
-    t.integer "sub_split_bitkey"
+    t.integer "sub_split_bitkey", null: false
     t.boolean "pacer"
     t.string "remarks"
-    t.integer "lap"
+    t.integer "lap", null: false
     t.boolean "stopped_here", default: false
-    t.datetime "absolute_time"
+    t.datetime "absolute_time", null: false
     t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
     t.index ["effort_id"], name: "index_split_times_on_effort_id"
     t.index ["lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_time_point"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 20181103194925) do
     t.integer "protocol", default: 0, null: false
     t.string "resource_key"
     t.index ["person_id"], name: "index_subscriptions_on_person_id"
-    t.index ["resource_key"], name: "index_subscriptions_on_resource_key", unique: true
+    t.index ["resource_key"], name: "index_subscriptions_on_resource_key"
     t.index ["user_id", "person_id", "protocol"], name: "index_subscriptions_on_user_id_and_person_id_and_protocol", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end

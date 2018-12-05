@@ -40,17 +40,7 @@
             <%= segment_start_dropdown(@presenter) %>
             <%= segment_finish_dropdown(@presenter) %>
           <% end %>
-          <div class="btn-group">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
-              <%= @presenter.gender_text.capitalize %>
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><%= link_to_select_gender(@presenter, 'combined') %></li>
-              <li><%= link_to_select_gender(@presenter, 'male') %></li>
-              <li><%= link_to_select_gender(@presenter, 'female') %></li>
-            </ul>
-          </div>
+          <%= gender_dropdown_menu(@presenter) %>
         </div>
       </div>
     </div>

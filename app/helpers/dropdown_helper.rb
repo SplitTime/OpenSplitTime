@@ -19,12 +19,12 @@ module DropdownHelper
       concat content_tag(:div, class: 'dropdown-menu') {
         items.select { |item| item[:visible] }.each do |item|
           if item[:role] == :separator
-            concat content_tag(:div, class: 'dropdown-divider')
+            concat content_tag(:div, '', class: 'dropdown-divider')
           else
             active = item[:active] ? 'active' : nil
             concat link_to item[:name], item[:link], {
-              class: "dropdown-item #{active}",
-              role: item[:role]
+                class: ['dropdown-item', active].compact.join(' '),
+                role: item[:role]
             }.merge(item.fetch(:item_options, {}))
           end
         end
@@ -33,7 +33,7 @@ module DropdownHelper
   end
 
   def admin_dropdown_menu(view_object)
-    build_dropdown_menu('Admin', [
+    dropdown_items = [
         {name: 'Staging',
          link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
          active: action_name == 'app',
@@ -50,11 +50,12 @@ module DropdownHelper
          link: event_group_path(view_object.event_group, force_settings: true),
          active: controller_name == 'event_groups' && action_name == 'show',
          visible: true}
-    ], class: 'nav-item')
+    ]
+    build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end
 
   def live_dropdown_menu(view_object)
-    build_dropdown_menu('Live', [
+    dropdown_items = [
         {name: 'Time Entry',
          link: live_entry_live_event_group_path(view_object.event_group),
          active: action_name == 'live_entry',
@@ -75,11 +76,12 @@ module DropdownHelper
          link: aid_station_detail_live_event_path(view_object.event),
          active: action_name == 'aid_station_detail',
          visible: true}
-    ], class: 'nav-item')
+    ]
+    build_dropdown_menu('Live', dropdown_items, class: 'nav-item')
   end
 
   def results_dropdown_menu(view_object)
-    build_dropdown_menu('Results', [
+    dropdown_items = [
         {name: 'List',
          link: event_path(view_object.event),
          active: controller_name == 'events' && action_name == 'show',
@@ -100,11 +102,12 @@ module DropdownHelper
          link: traffic_event_group_path(view_object.event_group),
          active: action_name == 'traffic',
          visible: true}
-    ], class: 'nav-item')
+    ]
+    build_dropdown_menu('Results', dropdown_items, class: 'nav-item')
   end
 
   def raw_times_dropdown_menu(view_object)
-    build_dropdown_menu('Raw Times', [
+    dropdown_items = [
         {name: 'List',
          link: raw_times_event_group_path(view_object.event_group),
          active: action_name == 'raw_times',
@@ -113,7 +116,8 @@ module DropdownHelper
          link: split_raw_times_event_group_path(view_object.event_group),
          active: action_name == 'split_raw_times',
          visible: true}
-    ], class: 'nav-item')
+    ]
+    build_dropdown_menu('Raw Times', dropdown_items, class: 'nav-item')
   end
 
   def check_in_filter_dropdown_menu(items)
@@ -160,14 +164,34 @@ module DropdownHelper
           link: edit_split_times_effort_path(view_object.effort),
           visible: true},
          {name: '',
-         link: '#',
-         visible: true,
-         role: :separator},
+          link: '#',
+          visible: true,
+          role: :separator},
          {name: 'Delete effort',
-         link: effort_path(view_object.effort),
-         visible: true,
-         item_options: {method: :delete, data: {confirm: 'This action cannot be undone. Proceed?'}}}]
+          link: effort_path(view_object.effort),
+          visible: true,
+          item_options: {method: :delete, data: {confirm: 'This action cannot be undone. Proceed?'}}}]
     build_dropdown_menu('Edit', dropdown_items, button: true)
+  end
+
+  def gender_dropdown_menu(view_object)
+    dropdown_items = %w(combined male female).map do |gender|
+      {name: gender.titleize,
+       link: request.params.merge(filter: {gender: gender}),
+       active: view_object.gender_text == gender,
+       visible: true}
+    end
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def spread_style_dropdown_menu(view_object)
+    dropdown_items = view_object.display_style_hash.map do |style, text|
+      {name: text,
+       link: request.params.merge(display_style: style),
+       active: view_object.display_style == style.to_s,
+       visible: true}
+    end
+    build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
   def event_staging_app_page(view_object)

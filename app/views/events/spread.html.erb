@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>  
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -28,35 +28,15 @@
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col form-inline">
-        <%= explore_dropdown_menu(@presenter) %>
-        <%= link_to_download_spread_csv(@presenter, current_user) %>
+        <div>
+          <%= explore_dropdown_menu(@presenter) %>
+          <%= link_to_download_spread_csv(@presenter, current_user) %>
+        </div>
       </div>
       <div class="form-inline">
         <div>
-          <div class="btn-group">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
-              <%= @presenter.gender_text.titleize %>
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <%= link_to_select_gender(@presenter, 'combined') %>
-              <%= link_to_select_gender(@presenter, 'male') %>
-              <%= link_to_select_gender(@presenter, 'female') %>
-            </ul>
-          </div>
-
-          <div class="btn-group">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown">
-              <%= @presenter.display_style_text %>
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <%= link_to_select_display_style(@presenter, 'elapsed', 'Elapsed') %>
-              <%= link_to_select_display_style(@presenter, 'ampm', 'AM/PM') %>
-              <%= link_to_select_display_style(@presenter, 'military', '24-Hour') %>
-              <%= link_to_select_display_style(@presenter, 'segment', 'Segment') %>
-            </ul>
-          </div>
+          <%= gender_dropdown_menu(@presenter) %>
+          <%= spread_style_dropdown_menu(@presenter) %>
         </div>
       </div>
     </div>
@@ -68,48 +48,48 @@
 <% end %>
 
 <article class="ost-article container">
-<% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
-  <table class="table table-tight table-striped">
-    <thead>
-    <tr>
-      <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
-      <th><%= link_to_reversing_sort_heading('From', :state_code, @presenter.existing_sort) %></th>
-      <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
-        <th class="text-nowrap text-center">
-          <%= clustered_header(header) %>
-        </th>
-      <% end %>
-      <% if @presenter.show_segment_totals? %>
-        <th class="text-center text-nowrap">
-          <%= clustered_segment_total_header %>
-        </th>
-      <% end %>
-    </tr>
-    </thead>
-    <tbody>
-    <% @presenter.effort_times_rows.each do |row| %>
+  <% cache "#{@presenter.cache_key}/html", expires_in: @presenter.cache_expire do %>
+    <table class="table table-tight table-striped">
+      <thead>
       <tr>
-        <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
-        <td><%= row.bib_number %></td>
-        <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
-        <td class="text-nowrap"><%= row.bio_historic %></td>
-        <td class="text-nowrap"><%= row.flexible_geolocation %></td>
-        <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
-          <td class="text-nowrap text-center">
-            <%= time_cluster_display_data(cluster, @presenter.display_style) %>
-          </td>
+        <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading('From', :state_code, @presenter.existing_sort) %></th>
+        <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
+          <th class="text-nowrap text-center">
+            <%= clustered_header(header) %>
+          </th>
         <% end %>
         <% if @presenter.show_segment_totals? %>
-          <td class="text-center text-nowrap">
-            <%= clustered_segment_total_data(row) %>
-          </td>
+          <th class="text-center text-nowrap">
+            <%= clustered_segment_total_header %>
+          </th>
         <% end %>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-<% end %>
+      </thead>
+      <tbody>
+      <% @presenter.effort_times_rows.each do |row| %>
+        <tr>
+          <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
+          <td><%= row.bib_number %></td>
+          <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
+          <td class="text-nowrap"><%= row.bio_historic %></td>
+          <td class="text-nowrap"><%= row.flexible_geolocation %></td>
+          <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
+            <td class="text-nowrap text-center">
+              <%= time_cluster_display_data(cluster, @presenter.display_style) %>
+            </td>
+          <% end %>
+          <% if @presenter.show_segment_totals? %>
+            <td class="text-center text-nowrap">
+              <%= clustered_segment_total_data(row) %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
 </article>

@@ -1,10 +1,10 @@
 (function ($) {
 
     var timeIcons = {
-        'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
-        'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-        'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-        'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-toggle="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
     };
 
     /**
@@ -175,7 +175,7 @@
                 if (unconsideredCount > 0) {
                     if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
                         liveEntry.pusher.notification = $.notify({
-                            icon: 'glyphicon glyphicon-time',
+                            icon: 'fas fa-stopwatch',
                             title:'New Live Times Available',
                             message: 'Click to pull times.',
                             url: '#js-pull-times',
@@ -499,10 +499,10 @@
                     var $root = $(this).parent();
                     if ($(this).prop('checked')) {
                         $root.addClass('btn-warning').removeClass('btn-outline-secondary');
-                        $('.glyphicon', $root).addClass('glyphicon-check').removeClass('glyphicon-unchecked');
+                        $('.far', $root).addClass('fa-check-square').removeClass('fa-square');
                     } else {
                         $root.addClass('btn-outline-secondary').removeClass('btn-warning');
-                        $('.glyphicon', $root).addClass('glyphicon-unchecked').removeClass('glyphicon-check');
+                        $('.far', $root).addClass('fa-square').removeClass('fa-check-square');
                     }
                 });
 
@@ -944,7 +944,7 @@
                         }
                     });
                 $('#js-local-workspace-table_filter .form-group').append(
-                    '<span id="js-filter-clear" class="glyphicon glyphicon-remove dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
+                    '<span id="js-filter-clear" class="fas fa-times-circle dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
                 );
                 $('#js-filter-clear').on('click', function () {
                     liveEntry.timeRowsTable.$dataTable.search('').draw();
@@ -1083,9 +1083,9 @@
 
             buildTrHtml: function (rawTimeRow) {
                 var bibIcons = {
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
+                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Bib Found"></span>',
+                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');

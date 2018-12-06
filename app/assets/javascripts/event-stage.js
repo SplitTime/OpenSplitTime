@@ -1236,7 +1236,7 @@
                             <div class="input-group">\
                                 <input type="text" class="js-date form-control"/>\
                                 <span class="input-group-append">\
-                                    <span class="input-group-text fa fa-calendar"></span>\
+                                    <span class="input-group-text fas fa-calendar-alt"></span>\
                                 </span>\
                             </div>\
                         </div>\
@@ -1244,7 +1244,7 @@
                             <div class="input-group">\
                                 <input type="text" class="js-time form-control"/>\
                                 <span class="input-group-append">\
-                                    <span class="input-group-text fa fa-clock-o"></span>\
+                                    <span class="input-group-text fas fa-clock"></span>\
                                 </span>\
                             </div>\
                         </div>\

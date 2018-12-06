@@ -667,17 +667,17 @@
                                                     (pacers[0] ? 
                                                         '<i class="icon-pacer"></i>' : 
                                                         (pacers[1] ? 
-                                                            '<i class="fa fa-share"></i>' : 
+                                                            '<i class="fas fa-share"></i>' :
                                                             '')) +
                                                 '</span>' +
                                                 (pacers.length == 2 ?
                                                     '<span class="flex-1">' +
                                                         (pacers[1] ?
                                                             (pacers[0] ?
-                                                                '<i class="fa fa-long-arrow-right"></i>' :
+                                                                '<i class="fas fa-long-arrow-right"></i>' :
                                                                 '<i class="icon-pacer"></i>') :
                                                             (pacers[1] === false && pacers[0] ?
-                                                                '<i class="fa fa-share fa-rotate-90"></i>' :
+                                                                '<i class="fas fa-share fa-rotate-90"></i>' :
                                                                 '')) +
                                                     '</span>' : 
                                                     '') +
@@ -1114,9 +1114,9 @@
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
                         <td class="row-edit-btns">\
-                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                            <button class="effort-row-btn fas fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
+                            <button class="effort-row-btn fas fa-close delete-effort js-delete-effort btn btn-danger"></button>\
+                            <button class="effort-row-btn fas fa-check submit-effort js-submit-effort btn btn-success"></button>\
                         </td>\
                     </tr>';
                 return trHtml

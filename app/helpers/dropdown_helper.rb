@@ -103,9 +103,16 @@ module DropdownHelper
     build_dropdown_menu('Raw Times', dropdown_items, class: 'nav-item')
   end
 
-  def check_in_filter_dropdown_menu(items)
+  def check_in_filter_dropdown_menu
+    items = [{icon_name: 'exclamation-circle', type: :solid, text: 'Problems', problem: true},
+             {icon_name: 'question-circle', type: :solid, text: 'Unreconciled', unreconciled: true},
+             {icon_name: 'square', type: :regular, text: 'Not checked', checked_in: false, started: false},
+             {icon_name: 'check-square', type: :regular, text: 'Checked in', checked_in: true, started: false},
+             {icon_name: 'caret-square-right', type: :regular, text: 'Started', started: true},
+             {icon_name: 'asterisk', type: :solid, text: 'All'}]
+
     dropdown_items = items.map do |item|
-      {name: content_tag(:i, nil, class: "glyphicon glyphicon-#{item[:icon]}") + ' ' + item[:name],
+      {name: fa_icon(item[:icon_name], text: item[:text], type: item[:type]),
        link: request.params.merge(
            checked_in: item[:checked_in],
            started: item[:started],

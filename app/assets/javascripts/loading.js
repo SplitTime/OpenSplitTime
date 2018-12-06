@@ -2,10 +2,10 @@
 document.addEventListener("turbolinks:load", function () {
 
     // Change the link's icon while the request is performing
-    $('body').on('click', 'a[data-remote]', function () {
+    $('body').on('click', '.click-spinner', function () {
         var icon = $(this).find('i');
         icon.data('old-class', icon.attr('class'));
-        icon.attr('class', 'glyphicon glyphicon-refresh spin');
+        icon.attr('class', 'fas fa-sync fa-spin');
     });
 
     // Change the link's icon back after it's finished.

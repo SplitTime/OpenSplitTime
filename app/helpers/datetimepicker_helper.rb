@@ -16,9 +16,10 @@ module DatetimepickerHelper
     strftime_format = options[:date_only] ? '%m/%d/%Y' : '%m/%d/%Y %H:%M:%S'
     placeholder_format = options[:date_only] ? 'mm/dd/yyyy' : 'mm/dd/yyyy hh:mm:ss'
     html_id = "#{html_id_base}-#{method.to_s.dasherize}"
+    object = options[:object] || form.object
 
     text_field = form.text_field method,
-                                 value: form.object.send(method)&.strftime(strftime_format),
+                                 value: object.send(method)&.strftime(strftime_format),
                                  placeholder: placeholder_format,
                                  class: 'form-control datetimepicker-input',
                                  data: {target: "##{html_id}"}

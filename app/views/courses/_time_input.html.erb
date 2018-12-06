@@ -2,16 +2,7 @@
     <div class="form-group row">
       <%= form.label :start_time, 'Event start time', class: 'col-3 col-form-label' %>
       <div class="col-6">
-        <div class="input-group date" id="datetimepicker">
-          <%= form.text_field :start_time, 
-                            value: presenter.start_time&.strftime('%m/%d/%Y %H:%M:%S'),
-                            placeholder: 'mm/dd/yyyy hh:mm:ss',
-                            class: 'form-control',
-                            data: {provide: 'datetimepicker',
-                                  date_format: 'MM/DD/YYYY HH:mm:ss',
-                                  date_default_date: presenter.start_time&.strftime('%m/%d/%Y %H:%M:%S')} %>
-          <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-        </div>
+        <%= form.datetimepicker_field :start_time, object: presenter %>
       </div>
     </div>
     <% if presenter.multiple_laps? %>
@@ -36,7 +27,7 @@
                             class: 'form-control search-box' %>
       </div>
     </div>
-    <%= button_tag(type: :submit, class: 'btn btn-sm btn-success') do %>
+    <%= button_tag(type: :submit, class: 'btn btn-success') do %>
       Create my plan
     <% end %>
 <% end %>

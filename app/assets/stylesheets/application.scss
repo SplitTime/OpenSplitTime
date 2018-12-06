@@ -25,10 +25,10 @@
 @import "jquery.fileupload";
 @import "jquery.fileupload-ui";
 @import "font_awesome5_webfont";
-@import "bootstrap-datetimepicker";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap";
+@import "tempusdominus-bootstrap-4.css";
 
 @import "pages/*";
 @import "utilities/*";

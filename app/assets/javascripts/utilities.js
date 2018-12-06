@@ -120,27 +120,32 @@
     };
 
 
-    var datepicker = {
+    var datetimepicker = {
         init: function () {
-            var update = function( e ) {
-                /*
-                 * BruceLampson on Dec 31, 2016
-                 * https://github.com/RobinHerbots/Inputmask/issues/1468
-                 */
-                var event = document.createEvent( 'HTMLEvents' );
-                event.initEvent( 'input', true, true );
-                e.currentTarget.dispatchEvent( event );
-                $( this ).trigger( 'change' );
-            };
-            $( '[data-toggle="datetimepicker"]' ).each( function( i, el ) {
-                $( el ).datetimepicker( {
-                    format: $( el ).data( 'format' ) || false
-                } ).on( 'dp.change', function( e ) {
-                    update( e );
-                } );
-            } );
+            $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+                icons: {
+                    time: 'far fa-clock',
+                    date: 'far fa-calendar-alt',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'far fa-calendar-check',
+                    clear: 'fas fa-trash-alt',
+                    close: 'fas fa-times'
+                }
+            });
 
-            $('#datetimepicker').datetimepicker();
+            $('[id^="datetimepicker"]').datetimepicker({
+                sideBySide: true
+            });
+
+            $('[id^="datepicker"]').datetimepicker({
+                format: 'L',
+                viewMode: $(this).find(':input').val() ? 'days' : 'decades',
+                viewDate: moment('1900-01-01'),
+                useCurrent: false
+            });
         }
     };
 
@@ -148,7 +153,7 @@
         effortsPopover.init();
         staticPopover.init();
         switchery.init();
-        datepicker.init();
+        datetimepicker.init();
     };
 
     document.addEventListener("turbolinks:load", init );

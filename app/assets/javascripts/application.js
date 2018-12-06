@@ -20,7 +20,7 @@
 //= require jquery-fileupload/basic
 //= require switchery
 //= require moment
-//= require bootstrap-datetimepicker
+//= require tempusdominus-bootstrap-4.js
 //= require vue
 //= require vue-router
 //= require local-time

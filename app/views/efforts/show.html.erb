@@ -125,44 +125,7 @@
 
 <article class="ost-article container">
 
-  <p class="text-right">
-    <% if @presenter.in_progress? && current_user&.authorized_to_edit?(@presenter.effort) %>
-      <strong><%= @presenter.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
-      <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@presenter.beacon_url}" %></a>
-    <% end %>
-    <% if !@presenter.in_progress? && current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-      <strong><%= @presenter.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
-      <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@presenter.report_url}" %></a>
-    <% end %>
-  </p>
-
   <% if @presenter.lap_split_rows.present? %>
     <%= render 'split_times/split_times_list', view_object: @presenter %>
   <% end %>
 </article>
-
-<script>
-    $('#beacon-link').editable({
-        type: 'text',
-        emptytext: 'Click here',
-        url: '<%= add_beacon_effort_path(@presenter.effort) %>',
-        pk: 1,
-        title: 'Paste link:',
-        ajaxOptions: {
-            type: 'get',
-            dataType: 'script'
-        }
-    });
-
-    $('#report-link').editable({
-        type: 'text',
-        emptytext: 'Click here',
-        url: '<%= add_report_effort_path(@presenter.effort) %>',
-        pk: 1,
-        title: 'Paste link:',
-        ajaxOptions: {
-            type: 'get',
-            dataType: 'script'
-        }
-    });
-</script>

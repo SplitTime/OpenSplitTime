@@ -41,8 +41,6 @@ Rails.application.routes.draw do
       post :mini_table
     end
     member do
-      get :add_beacon
-      get :add_report
       get :analyze
       get :place
       get :show_photo

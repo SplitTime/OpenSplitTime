@@ -147,14 +147,7 @@
           </div>
           <div class="col-sm-3">
             <div class="input-group date" id="datetimepicker">
-              <%= f.text_field :scheduled_start_time_local,
-                               value: @effort.scheduled_start_time_local&.strftime('%m/%d/%Y %H:%M:%S'),
-                               placeholder: 'mm/dd/yyyy hh:mm:ss',
-                               class: 'form-control',
-                               data: {provide: 'datetimepicker',
-                                      date_format: 'MM/DD/YYYY HH:mm:ss',
-                                      date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              <%= f.datetimepicker_field :scheduled_start_time_local %>
             </div>
           </div>
         </div>

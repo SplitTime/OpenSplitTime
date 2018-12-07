@@ -111,16 +111,14 @@ module ToggleHelper
                  remote: true,
                  class: "#{protocol}-sub btn btn-lg btn-primary",
                  data: {confirm: unsubscribe_alert}}
-      link_to fa_icon(icon_name), url, options
-
     else
       url = subscriptions_path(subscription: {user_id: current_user&.id, person_id: person_id, protocol: protocol})
       options = {method: 'post',
                  remote: true,
                  class: "#{protocol}-sub btn btn-lg text-dark",
                  data: {confirm: subscribe_alert}}
-      link_to fa_icon(icon_name), url, options
     end
+    link_to fa_icon(icon_name), url, options
   end
 
   def link_to_sign_in(args)

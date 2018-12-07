@@ -35,23 +35,32 @@ module CoursesHelper
     time_of_day_headers = @presenter.out_sub_splits? ? ['Time of Day In', 'Time of Day Out'] : ['Time of Day']
     elapsed_time_headers = @presenter.out_sub_splits? ? ['Elapsed Time In', 'Elapsed Time Out'] : ['Elapsed Time']
     in_aid = @presenter.out_sub_splits? ? ['In Aid'] : []
-    ['Split', pdu('singular').titlecase] + time_of_day_headers + elapsed_time_headers + ['Segment'] + in_aid
+    lap = @presenter.multiple_laps? ? ['Lap Time'] : []
+    ['Split', pdu('singular').titlecase] + time_of_day_headers + elapsed_time_headers + ['Segment'] + in_aid + lap
   end
 
-  def lap_split_export_row(lap_split_row)
+  def lap_split_export_row(row)
     number_of_times = @presenter.out_sub_splits? ? 2 : 1
-    times_of_day = Array.new(number_of_times) { |i| lap_split_row.days_and_times.map { |day_and_time| day_time_full_format(day_and_time) }[i] }
-    elapsed_times = Array.new(number_of_times) { |i| lap_split_row.times_from_start.map { |time_from_start| time_format_hhmm(time_from_start) }[i] }
-    segment_time = [time_format_hhmm(lap_split_row.segment_time)]
+    times_of_day = Array.new(number_of_times) { |i| row.days_and_times.map { |day_and_time| day_time_full_format(day_and_time) }[i] }
+    elapsed_times = Array.new(number_of_times) { |i| row.times_from_start.map { |time_from_start| time_format_hhmm(time_from_start) }[i] }
+    segment_time = [time_format_hhmm(row.segment_time)]
     in_aid_time = case
                   when !@presenter.out_sub_splits?
                     []
-                  when lap_split_row.finish?
+                  when row.finish?
                     [time_format_hhmm(@presenter.total_time_in_aid)]
                   else
-                    [time_format_hhmm(lap_split_row.time_in_aid)]
+                    [time_format_hhmm(row.time_in_aid)]
                   end
+    lap_time = case
+               when !@presenter.multiple_laps?
+                 []
+               when row.finish?
+                 [lap_time_text(@presenter, row)]
+               else
+                 []
+               end
 
-    [lap_split_row.name, d(lap_split_row.distance_from_start)] + times_of_day + elapsed_times + segment_time + in_aid_time
+    [row.name, d(row.distance_from_start)] + times_of_day + elapsed_times + segment_time + in_aid_time + lap_time
   end
 end

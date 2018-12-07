@@ -9,6 +9,9 @@
     <% if presenter.out_sub_splits? %>
       <th class="text-right">In Aid</th>
     <% end %>
+    <% if presenter.multiple_laps? %>
+      <th class="text-right">Lap Time</th>
+    <% end %>
   </tr>
   </thead>
   <tbody>
@@ -21,6 +24,13 @@
       <td class="text-center"><%= strong_conditional time_format_hhmm(row.segment_time), row.finish? %></td>
       <% if presenter.out_sub_splits? %>
         <td class="text-right"><%= strong_text_conditional time_format_minutes(presenter.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>
+      <% end %>
+      <% if presenter.multiple_laps? %>
+        <td class="text-right">
+          <% if row.finish? %>
+            <%= strong_conditional lap_time_text(presenter, row), true %>
+          <% end %>
+        </td>
       <% end %>
     </tr>
   <% end %>

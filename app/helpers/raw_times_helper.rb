@@ -44,7 +44,7 @@ module RawTimesHelper
                       toggle: :tooltip,
                       placement: :bottom,
                       'original-title' => 'Delete raw time'},
-               class: 'btn btn-danger has-tooltip click-spinner'}
+               class: 'btn btn-danger has-tooltip'}
     link_to fa_icon('trash'), url, options
   end
 end

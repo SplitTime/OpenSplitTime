@@ -5,17 +5,17 @@ class UsersController < ApplicationController
 
   def index
     authorize User
-    authorized_scope = policy_class::Scope.new(current_user, controller_class)
-    working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
-    @resources = working_scope.where(prepared_params[:filter])
-                     .search(prepared_params[:search])
-                     .order(prepared_params[:sort])
+    users = User.with_avatar_names.includes(:avatar)
+                .where(prepared_params[:filter])
+                .search(prepared_params[:search])
+                .order(prepared_params[:sort])
+    paginated_users = users.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
+
+    @presenter = UsersCollectionPresenter.new(paginated_users, prepared_params, current_user)
     respond_to do |format|
-      format.html do
-        @resources = @resources.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page])
-      end
+      format.html
       format.csv do
-        csv_stream = render_to_string(partial: 'users.csv.ruby', locals: {users: @resources})
+        csv_stream = render_to_string(partial: 'users.csv.ruby', locals: {users: users})
         send_data(csv_stream, type: 'text/csv', filename: "users-#{Date.today}.csv")
       end
     end

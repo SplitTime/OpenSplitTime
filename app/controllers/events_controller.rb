@@ -1,18 +1,9 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze]
-  before_action :set_event, except: [:index, :new, :create, :series]
-  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :set_event, except: [:new, :create, :series]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
-
-  def index
-    @events = policy_class::Scope.new(current_user, controller_class).viewable
-                  .select_with_params(params[:search])
-                  .order(start_time: :desc)
-                  .paginate(page: params[:page], per_page: 25)
-    @presenter = EventsCollectionPresenter.new(@events, params, current_user)
-    session[:return_to] = events_path
-  end
 
   def show
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first

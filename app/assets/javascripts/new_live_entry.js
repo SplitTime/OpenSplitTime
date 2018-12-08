@@ -816,7 +816,7 @@
                 var $uniqueId = $('#js-unique-id');
                 if ($uniqueId.val() !== '') {
                     var $row = $('#workspace-' + $uniqueId.val());
-                    $row.removeClass('highlight');
+                    $row.removeClass('bg-highlight');
                     $uniqueId.val('');
                 }
                 $('#js-effort-name').html('').removeAttr('href');
@@ -1007,7 +1007,7 @@
                 var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
                 var rowData = liveEntry.timeRowsTable.trToData(trHtml);
                 var $row = $('#workspace-' + rawTimeRow.uniqueId);
-                $row.removeClass('highlight');
+                $row.removeClass('bg-highlight');
                 liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
                 $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
             },
@@ -1190,7 +1190,7 @@
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
-                    $row.addClass('highlight');
+                    $row.addClass('bg-highlight');
                     liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;

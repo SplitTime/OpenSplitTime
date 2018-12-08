@@ -1,0 +1,5 @@
+@import "variables";
+
+.bg-highlight {
+    background: lighten($warning, 30%) !important;
+}

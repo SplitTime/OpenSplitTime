@@ -170,7 +170,6 @@
             offsetTime: {
                 get: function() {
                     if(this.startOffset === null) return '';
-
                     var sign = this.startOffset < 0 ? '-' : '+';
                     var hours = Math.floor( Math.abs( this.startOffset ) / 3600 );
                     var fill = hours < 10 ? '0' : '';
@@ -1232,19 +1231,11 @@
             init: function() {
                 Vue.component( 'input-datetime', {
                     template: '<div class="row">\
-                        <div class="col-6">\
-                            <div class="input-group">\
-                                <input type="text" class="js-date form-control"/>\
-                                <span class="input-group-append">\
+                        <div class="col-12">\
+                            <div class="input-group" :id="\'input-datetime-\'+_uid" data-target-input="nearest">\
+                                <input type="text" class="js-input form-control datetimepicker-input" :data-target="\'#input-datetime-\'+_uid"/>\
+                                <span class="input-group-append" :data-target="\'#input-datetime-\'+_uid" data-toggle="datetimepicker">\
                                     <span class="input-group-text fas fa-calendar-alt"></span>\
-                                </span>\
-                            </div>\
-                        </div>\
-                        <div class="col-6">\
-                            <div class="input-group">\
-                                <input type="text" class="js-time form-control"/>\
-                                <span class="input-group-append">\
-                                    <span class="input-group-text fas fa-clock"></span>\
                                 </span>\
                             </div>\
                         </div>\
@@ -1255,45 +1246,33 @@
                     mounted: function() {
                         // Shared Variables
                         var self = this;
-                        var datestamp = null;
                         var timestamp = null;
                         // Mount Value Watcher
                         this.$watch( 'value', function() {
                             if ( this.value instanceof Date ) {
-                                date = moment( this.value );
-                                datestamp = date.format( 'MM/DD/YYYY' );
-                                timestamp = date.format( 'hh:mm a' );
+                                timestamp = moment( this.value );
+                                $( '.js-input', this.$el ).val( timestamp.format('MM/DD/YYYY hh:mm a') );
                             } else {
                                 // Enforce Default Values
-                                datestamp = null;
-                                timestamp = '06:00 am';
+                                timestamp = null;
                                 self.$emit( 'input', null );
+                                $( '.js-input', this.$el ).val( '' );
                             }
-                            $( '.js-date', this.$el ).val( datestamp );
-                            $( '.js-time', this.$el ).val( timestamp );
                         }, { immediate: true } );
                         // Prepare Transform Function
                         function update() {
-                            if ( datestamp == null || timestamp == null ) return;
-                            date = moment( datestamp + ' ' + timestamp, 'MM/DD/YYYY hh:mm a' );
-                            self.$emit( 'input', date.toDate() );
+                            if ( timestamp == null ) return;
+                            self.$emit( 'input', timestamp.toDate() );
                         }
                         // Mount Datepickers
-                        $( '.js-date', this.$el )
-                            .datetimepicker( {
-                                format: 'MM/DD/YYYY'
-                            } )
-                            .on( 'dp.change', function( e ) {
-                                datestamp = e.date.format( 'MM/DD/YYYY' );
+                        $( '#input-datetime-' + this._uid, this.$el )
+                            .on( 'change.datetimepicker', function( e ) {
+                                timestamp = e.date;
                                 update();
-                            } );
-                        $( '.js-time', this.$el )
-                            .datetimepicker( {
-                                format: 'hh:mm a'
                             } )
-                            .on( 'dp.change', function( e ) {
-                                timestamp = e.date.format( 'hh:mm a' );
-                                update();
+                            .datetimepicker( {
+                                sideBySide: true,
+                                format: 'MM/DD/YYYY hh:mm a'
                             } );
                     }
                 } );
@@ -1417,7 +1396,7 @@
                                 } );
                                 $el.popover( 'show' );
                                 // Hide on next click
-                                $( document ).one( 'click', $el.popover.bind( $el, 'destroy' ) );
+                                $( document ).one( 'click', $el.popover.bind( $el, 'dispose' ) );
                             } );
                         } );
                     }

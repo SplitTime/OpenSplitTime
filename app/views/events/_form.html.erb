@@ -28,7 +28,7 @@
           </div>
           <div class="col-sm-8">
             <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
-                                  {prompt: true}, {class: "dropdown-select-field"}) %>
+                                  {prompt: true}, {class: "form-control dropdown-select-field"}) %>
           </div>
         </div>
       <% else %>
@@ -55,7 +55,7 @@
         </div>
         <div class="col-sm-8">
           <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "dropdown-select-field"}) %>
+                                {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "form-control dropdown-select-field"}) %>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
         </div>
         <div class="col-sm-8">
           <%= collection_select(:event, :podium_template, Results::Templates.keys_and_names, :first, :last,
-                                {prompt: true}, {class: "dropdown-select-field"}) %>
+                                {prompt: true}, {class: "form-control dropdown-select-field"}) %>
         </div>
       </div>
 

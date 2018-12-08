@@ -27,7 +27,7 @@
           </div>
           <div class="col-sm-8">
             <%= f.select :gender, Person.genders.keys.map { |gender| [gender.titleize, gender] },
-                         {prompt: true}, {class: "dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
 

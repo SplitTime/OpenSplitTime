@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-8">
             <%= f.select :event_id, @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
-                         {prompt: true}, {class: "dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
 
@@ -37,7 +37,7 @@
           </div>
           <div class="col-sm-8">
             <%= f.select :gender, Effort.genders.keys.map { |gender| [gender.titleize, gender] },
-                         {prompt: true}, {class: "dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
 

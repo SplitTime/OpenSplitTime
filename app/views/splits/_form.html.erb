@@ -15,7 +15,7 @@
               </div>
               <div class="col-sm-8">
                 <%= collection_select(:split, :course_id, Course.all, :id, :name,
-                                      {prompt: true}, {class: "dropdown-select-field"}) %>
+                                      {prompt: true}, {class: "form-control dropdown-select-field"}) %>
               </div>
           <% end %>
         </div>

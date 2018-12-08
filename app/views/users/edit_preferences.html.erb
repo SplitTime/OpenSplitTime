@@ -14,7 +14,7 @@
           </div>
           <div class="col-sm-8">
             <%= f.select :pref_distance_unit, User.pref_distance_units.keys.map { |unit| [unit.titleize, unit] },
-                         {prompt: true}, {class: "dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
         <div class="form-group">
@@ -23,7 +23,7 @@
           </div>
           <div class="col-sm-8">
             <%= f.select :pref_elevation_unit, User.pref_elevation_units.keys.map { |unit| [unit.titleize, unit] },
-                         {prompt: true}, {class: "dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
         <div class="form-group">

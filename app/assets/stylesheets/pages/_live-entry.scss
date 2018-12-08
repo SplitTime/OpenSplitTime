@@ -103,51 +103,49 @@ Globals
 }
 
 /******* Live Entry Form ********/
-.form-split-wrapper {
-    display: flex;
-    @extend .no-gutter;
-    // border-bottom: 1px solid $gray;
-    width: 100%;
+.live-entry {
+    margin: 20px auto;
 
-    .live-entry {
-        margin: 20px auto;
+    label {
+        text-align: right;
+        padding-top: 7px;
+    }
 
-        label {
-            text-align: right;
-            padding-top: 7px;
+    .message {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    button {
+        text-align: center;
+        input[type="checkbox"] {
+            display: none;
         }
+    }
 
-        .message {
-            font-weight: bold;
-            font-style: italic;
-        }
+    .form-buttons button {
+        width: 46%;
 
-        button {
-            text-align: center;
-            input[type="checkbox"] {
-                display: none;
-            }
-        }
-
-        .form-buttons button {
-            width: 46%;
-
-            &:last-child {
-                margin-left: 4%;
-            }
+        &:last-child {
+            margin-left: 4%;
         }
     }
 
     .time-status {
-        display: none;
         font-size: 16px;
-        padding: 6px 8px 4px 8px;
-        min-width: 54px;
         text-align: center;
     }
 
-    .time-status, .time-mode {
-        span {
+    $status-list: good bad questionable exists;
+
+    .time-status {
+        .input-group-text {
+            width: 4em;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fas {
             display: none;
         }
         .null {
@@ -155,55 +153,12 @@ Globals
         }
     }
 
-    input.good ~ .time-status {
-        display: table-cell;
-        .good {
-            display: inline-block;
-        }
-    }
-
-    input.bad ~ .time-status {
-        display: table-cell;
-        .bad {
-            display: inline-block;
-        }
-    }
-
-    input.questionable ~ .time-status {
-        display: table-cell;
-        .questionable {
-            display: inline-block;
-        }
-    }
-
-    input.exists ~ .time-status {
-        display: table-cell;
-        .exists {
-            display: inline-block;
-        }
-    }
-
-    .time-mode {
-        cursor: pointer;
-        padding: 6px;
-    }
-
-    input:disabled ~ .time-mode {
-        pointer-events: none;
-        .null {
-            display: none;
-        }
-        .disabled {
-            display: inline-block;
-        }
-    }
-
-    .form-group.rapid-mode .time-mode {
-        .null {
-            display: none;
-        }
-        .enabled {
-            display: inline-block;
+    @each $status in $status-list {
+        input.#{$status} ~ .time-status {
+            .#{$status} {
+                display: inline-block;
+                padding: 0 0.2em;
+            }
         }
     }
 
@@ -249,42 +204,28 @@ Globals
         }
     }
 
+    .table-striped > tbody {
+        & > tr:nth-of-type(even) {
+            background: #333;
+        }
+
+        & > tr:nth-of-type(odd) {
+            background: #555;
+        }
+    }
+
     .table {
         color: $white;
-
-        // thead {
-        //     transform: translateY(0);
-        //     position: relative;
-
-        //     &:before {
-        //         content: '';
-        //         position: absolute;
-        //         display: block;
-        //         top: 0;
-        //         left: 0;
-        //         right: 0;
-        //         bottom: 5px;
-        //         background: $darkGray;
-        //         z-index: -1;
-        //         box-shadow: 0 0 5px 4px $darkGray;
-        //     }
-        // }
 
         td, th {
             border: none;
         }
 
-        .active {
+        & > tbody > tr.active {
+            background: $gray-500;
             color: $black;
+            font-weight: bold;
         }
-    }
-
-    .table-striped > tbody > tr:nth-of-type(even) {
-        background: #333;
-    }
-
-    .table-striped > tbody > tr:nth-of-type(odd) {
-        background: #555;
     }
 
     .splits-slider-data {
@@ -428,42 +369,4 @@ Globals
 
 #debug {
     display: none;
-}
-
-// Highlighting Rapid Mode
-.has-highlight {
-	.help-block,
-	.control-label,
-	.radio,
-	.checkbox,
-	.radio-inline,
-	.checkbox-inline,
-	.radio label,
-	.checkbox label,
-	.radio-inline label,
-	.checkbox-inline label {
-		color: $state-info-text;
-	}
-
-	.form-control {
-		border-color: $state-info-text;
-		-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075);
-		box-shadow:inset 0 1px 1px rgba(0,0,0,0.075)
-	}
-
-	.form-control:focus {
-		border-color: $state-info-border;
-		-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #c0a16b;
-		box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 6px #c0a16b
-	}
-
-	.input-group-addon {
-		color: $state-info-text;
-		border-color: $state-info-text;
-		background-color: $state-info-bg;
-	}
-
-	.form-control-feedback {
-		color: $state-info-text;
-	}
 }

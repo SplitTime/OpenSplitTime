@@ -24,7 +24,7 @@
 
   <tbody>
   <% view_object.ranked_effort_rows.each do |effort_row| %>
-      <%= content_tag(:tr, class: data_status_class(effort_row)) do %>
+      <%= content_tag_for(:tr, effort_row.person, class: data_status_class(effort_row)) do %>
         <td><%= effort_row.display_overall_rank %></td>
         <td><%= link_to effort_row.full_name, effort_path(effort_row) %></td>
         <% if view_object.available_live %>

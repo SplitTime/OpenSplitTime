@@ -109,13 +109,13 @@ module ToggleHelper
       url = subscription_path(subscription)
       options = {method: 'delete',
                  remote: true,
-                 class: "#{protocol}-sub btn btn-lg btn-primary",
+                 class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
                  data: {confirm: unsubscribe_alert}}
     else
       url = subscriptions_path(subscription: {user_id: current_user&.id, person_id: person_id, protocol: protocol})
       options = {method: 'post',
                  remote: true,
-                 class: "#{protocol}-sub btn btn-lg text-dark",
+                 class: "#{protocol}-sub btn btn-lg text-dark click-spinner",
                  data: {confirm: subscribe_alert}}
     end
     link_to fa_icon(icon_name), url, options

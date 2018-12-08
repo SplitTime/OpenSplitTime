@@ -83,27 +83,16 @@
             }
 		}
 
-        .edit {
-            width: 6em;
-            font-size: 1.1em;
-		}
-
         tr[disabled] {
             color: $gray;
         }
 
 		td {
-			vertical-align: middle;
-
             img {
                 margin: 0;
                 height: 1em;
             }
 		}
-
-        tbody td {
-            padding: 4px 8px;
-        }
 	}
 
 	.confirmation-table {
@@ -124,7 +113,15 @@
 		}
 	}
 
-    .dataTables_wrapper {
+    .dataTable {
+		td {
+			vertical-align: middle;
+		}
+
+		tbody td {
+			padding: 4px 8px;
+		}
+
         th {
             cursor: pointer;
 

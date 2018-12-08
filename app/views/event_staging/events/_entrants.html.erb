@@ -23,7 +23,7 @@
             <span class="input-group">
               <input type="text" class="form-control border-right-0" v-model="filter" placeholder="Filter:"/>
               <span class="input-group-append">
-                <a href="#" class="btn btn-input-group border-left-0 fas fa-times" v-on:click.prevent="filter = ''"></a>
+                <a href="#" class="btn btn-input-group border-left-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
               </span>
             </span>
           </div>
@@ -53,8 +53,12 @@
               <td>{{ vm.row.bibNumber }}</td>
 
               <td class="edit">
-                <a href="#" class="edit btn btn-sm btn-primary" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')"><i class="fas fa-pencil-alt"></i></a>
-                <a href="#" class="btn btn-sm btn-danger" v-confirm:click="'A deleted entrant cannot be recovered.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="fas fa-times"></i></a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="btn btn-danger" v-confirm:click="'A deleted entrant cannot be recovered.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')">
+                  <i class="fas fa-trash"></i>
+                </button>
               </td>
             </template>
           </data-tables>
@@ -220,7 +224,7 @@
                       </div>
                       <div class="col-12 sto-input-wrap">
                         <span class="sto-or">or</span>
-                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^[\-+]?[0-9]*:[0-5]{2}$' }" placeholder="hh:mm">
+                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^[\-+]?[0-9]*:[0-5][0-9]$' }" placeholder="hh:mm">
                       </div>
                     </div>
                   </div>

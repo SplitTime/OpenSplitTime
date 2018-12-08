@@ -1114,9 +1114,9 @@
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
                         <td class="row-edit-btns">\
-                            <button class="effort-row-btn fas fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-                            <button class="effort-row-btn fas fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-                            <button class="effort-row-btn fas fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                            <button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>\
+                            <button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>\
+                            <button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>\
                         </td>\
                     </tr>';
                 return trHtml

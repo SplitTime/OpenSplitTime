@@ -27,7 +27,7 @@
             <span class="input-group">
               <input type="text" class="form-control border-right-0" v-model="filter" placeholder="Filter:"/>
               <span class="input-group-append">
-                <a href="#" class="btn btn-input-group border-left-0 fas fa-times" v-on:click.prevent="filter = ''"></a>
+                <a href="#" class="btn btn-input-group border-left-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
               </span>
             </span>
           </div>
@@ -72,19 +72,25 @@
                 </td>
                 <td class="edit">
                   <!--<span class="marker"><%= image_tag("icons/dblue.svg", size: '16') %></span>-->
-                  <a href="#" class="edit" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></a>
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></button>
                   <template v-if="vm.row.kind === 'intermediate'">
-                    <a href="#" v-confirm:click="'Deassociating a split will erase related data and cannot be recovered.'" v-on:confirm="vm.row.associate( false )" v-show="vm.row.associated">
+                    <button class="btn btn-primary" v-confirm:click="'Deassociating a split will erase related data and cannot be recovered.'" v-on:confirm="vm.row.associate( false )" v-show="vm.row.associated">
                       <i class="far fa-check-square"></i>
-                    </a>
-                    <a href="#" v-on:click.prevent="vm.row.associate( true )" v-show="!vm.row.associated">
+                    </button>
+                    <button class="btn btn-primary" v-on:click.prevent="vm.row.associate( true )" v-show="!vm.row.associated">
                       <i class="far fa-square"></i>
-                    </a>
-                    <a href="#" v-confirm:click="'Deleted splits cannot be recovered, and all associated data will be lost.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')"><i class="fas fa-times"></i></a>
+                    </button>
+                    <button class="btn btn-danger" v-confirm:click="'Deleted splits cannot be recovered, and all associated data will be lost.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </template>
                   <template v-else>
-                    <i class="far fa-check-square" v-if="vm.row.associated"></i>
-                    <i class="far fa-square" v-else></i>
+                    <button class="btn btn-outline-secondary disabled" v-if="vm.row.associated">
+                      <i class="far fa-check-square"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary disabled" v-else>
+                      <i class="far fa-square"></i>
+                    </button>
                   </template>
                 </td>
               </tr>

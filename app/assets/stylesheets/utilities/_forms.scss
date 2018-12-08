@@ -2,3 +2,67 @@
     content: " *";
     color: $danger;
 }
+
+/************
+Radio Buttons
+*************/
+.custom-radio {
+	position: relative;
+	padding-left: 25px;
+	cursor: pointer;
+
+    input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+
+        & ~ .custom-radio-indicator {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 50%;
+            border: 1px solid #D6D6D6;  
+        }
+
+        &:focus ~ .custom-radio-indicator {
+            border-color: #2BADD6;
+        }
+
+        &:checked ~ .custom-radio-indicator:before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            left: 9px;
+            top: 9px;
+            margin: -6px 0 0 -6px;
+            border-radius: 50%;
+            background-color: #2BADD6;  
+        }
+
+        &:disabled {
+            & ~ .custom-radio-label {
+                color: #D6D6D6;
+            }
+            & ~ .custom-radio-indicator:before {
+                background-color: #D6D6D6; 
+            } 
+        }
+    }
+}
+
+span.brackets {
+	&:before { content: '['; }
+	&:after { content: ']'; }
+
+	& > * {
+		margin: 0 0.5em;
+	}
+}
+
+label.required:after {
+	content: ' *';
+	color: $blue;
+}

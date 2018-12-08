@@ -1,0 +1,10 @@
+@include media-breakpoint-up(md) {
+	.modal-dialog.modal-lg {
+		max-width: $max-width;
+		width: 90%;
+	}
+	
+	.modal-dialog {
+		width: 660px;
+	}
+}

@@ -546,18 +546,6 @@
                     liveEntry.liveEntryForm.enrichTimeData();
                 });
 
-                $('#js-rapid-time-in,#js-rapid-time-out').on('click', function () {
-                    if ($(this).siblings('input:disabled').length) return;
-                    var rapid = $(this).closest('.form-group').toggleClass('has-highlight').hasClass('has-highlight');
-                    $(this).closest('.form-group').toggleClass('rapid-mode', rapid);
-                });
-
-                // Enable / Disable Rapid Entry Mode
-                $('#js-rapid-mode').on('change', function () {
-                    liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
-                    $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
-                }).change();
-
                 var $droppedHereButton = $('#js-dropped-button');
                 $droppedHereButton.on('click', function (event) {
                     event.preventDefault();
@@ -649,9 +637,10 @@
                                             if (time === null) return '--- --:--';
                                             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
                                             var d = new Date(time);
+                                            var hours = ('0' + d.getHours()).slice(-2);
                                             var minutes = ('0' + d.getMinutes()).slice(-2);
                                             var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
-                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes + status;
+                                            return days[d.getDay()] + ' ' + hours + ':' + minutes + status;
                                         }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function(time) {
                                             if (time === null) return '--:--';
@@ -710,7 +699,6 @@
                     // and turned off when that's done.
                     return $.Deferred().resolve();
                 }
-                liveEntry.liveEntryForm.prefillCurrentTime();
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -859,25 +847,6 @@
                 }
                 return time;
             },
-            /**
-             * Returns the current time in the standard format
-             */
-            currentTime: function () {
-                var now = new Date();
-                return ("0" + now.getHours()).slice(-2) + ("0" + now.getMinutes()).slice(-2) + ("0" + now.getSeconds()).slice(-2);
-            },
-            /**
-             * Prefills the time fields with the current time
-             */
-            prefillCurrentTime: function () {
-                if ($('#js-bib-number').val() === '') {
-                    $('.rapid-mode #js-time-in').val('');
-                    $('.rapid-mode #js-time-out').val('');
-                } else if ($('#js-bib-number').val() !== liveEntry.liveEntryForm.lastEnrichTimeBib) {
-                    $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                    $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                }
-            },
 
             updateTimeField: function ($field, rawTime) {
                 $field.removeClass('exists null bad good questionable')
@@ -927,7 +896,6 @@
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.buttonAddMode();
-                    liveEntry.liveEntryForm.prefillCurrentTime();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     return false;
                 });

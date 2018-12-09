@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show person - #{@presenter.full_name}" %>
+  <% "OpenSplitTime: Show person - #{@presenter.full_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,34 +7,34 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-            <h1><strong><%= @presenter.full_name %></strong></h1>
-            <ul class="breadcrumb breadcrumb-ost">
-                <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
-                <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
-            </ul>
+          <h1><strong><%= @presenter.full_name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
+          </ul>
         </div>
         <div class="ost-subtitle">
-            <h6><%= @presenter.full_bio %></h6>
-            <% if @presenter.claimed? %>
-                <h6>
-                    <% if @presenter.claimant == current_user %>
-                        <strong>Hey, this is me!</strong><br/>
-                    <% else %>
-                        <% if current_user&.admin? %>
-                            <%= "Identified as user #{@presenter.claimant.full_name}" %>
-                        <% else %>
-                            OST Member
-                        <% end %>
-                    <% end %>
-                </h6>
-            <% end %>
+          <h6><%= @presenter.full_bio %></h6>
+          <% if @presenter.claimed? %>
+            <h6>
+              <% if @presenter.claimant == current_user %>
+                <strong>Hey, this is me!</strong><br/>
+              <% else %>
+                <% if current_user&.admin? %>
+                  <%= "Identified as user #{@presenter.claimant.full_name}" %>
+                <% else %>
+                  OST Member
+                <% end %>
+              <% end %>
+            </h6>
+          <% end %>
         </div>
       </div>
-        <% if @presenter.photo.present? %>
-            <div class="col-3">
-                <%= image_tag(@presenter.photo.url(:small)) %>
-            </div>
-        <% end %>
+      <% if @presenter.photo.present? %>
+        <div class="col-3">
+          <%= image_tag(@presenter.photo.url(:small)) %>
+        </div>
+      <% end %>
     </div>
   </div>
 </header>
@@ -43,28 +43,21 @@
   <div class="container">
     <div class="row">
       <div class="col form-inline justify-content-between">
-        <% if current_user %>
-            <div>
-                <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter) %>
-                    <%= link_to 'This is me', avatar_claim_person_path(@presenter),
-                                data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
-                                class: "btn btn-sm btn-success" %>
-                <% end %>
-                <% if current_user&.admin? %>
-                    <%= link_to 'Merge with', merge_person_path(@presenter), class: "btn btn-sm btn-success" %>
-                <% end %>
-                <% if current_user&.authorized_to_edit?(@presenter.person) %>
-                    <%= link_to 'Edit', edit_person_path(@presenter), class: "btn btn-sm btn-primary" %>
-                    <%= link_to 'Delete', person_path(@presenter), method: :delete,
-                                data: {confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
-                <% end %>
-            </div>
-        <% end %>
+        <div>
+          <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter) %>
+            <%= link_to 'This is me', avatar_claim_person_path(@presenter),
+                        data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
+                        class: "btn btn-sm btn-success" %>
+          <% end %>
+          <% if current_user&.admin? %>
+            <%= person_actions_dropdown_menu(@presenter) %>
+          <% end %>
+        </div>
 
         <%= div_for(@presenter, class: "btn-group btn-group-sm btn-group-ost") do %>
-            <div class="btn btn-label btn-outline-subtle text-dark">Notify Me Live:</div>
-            <%= link_to_toggle_email_subscription(@presenter) %>
-            <%= link_to_toggle_sms_subscription(@presenter) %>
+          <div class="btn btn-label btn-outline-subtle text-dark">Notify Me Live:</div>
+          <%= link_to_toggle_email_subscription(@presenter) %>
+          <%= link_to_toggle_sms_subscription(@presenter) %>
         <% end %>
       </div>
     </div>
@@ -72,7 +65,7 @@
 </aside>
 
 <article class="ost-article container">
-    <% if @presenter.efforts.present? %>
-        <%= render 'efforts/efforts_list_person', efforts: @presenter.efforts %>
-    <% end %>
+  <% if @presenter.efforts.present? %>
+    <%= render 'efforts/efforts_list_person', efforts: @presenter.efforts %>
+  <% end %>
 </article>

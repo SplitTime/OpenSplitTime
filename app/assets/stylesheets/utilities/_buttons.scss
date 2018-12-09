@@ -10,6 +10,8 @@
     @include button-outline-variant($input-group-addon-border-color);
 }
 
-.dropdown-toggle .glyphicon {
-    color: $blue;
+.dropdown-toggle {
+    .fas, .far, .fal, .fab {
+        color: $blue;
+    }
 }

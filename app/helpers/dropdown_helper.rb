@@ -157,6 +157,22 @@ module DropdownHelper
     build_dropdown_menu('Edit', dropdown_items, button: true)
   end
 
+  def person_actions_dropdown_menu(view_object)
+    dropdown_items =[
+        {name: 'Edit',
+        link: edit_person_path(view_object.person)},
+        {name: 'Merge with',
+        link: merge_person_path(view_object.person)},
+        {role: :separator},
+        {name: 'Delete person',
+        link: person_path(view_object.person),
+        method: :delete,
+        data: {confirm: 'This action cannot be undone. Proceed?'},
+        class: 'text-danger'}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
+  end
+
   def gender_dropdown_menu(view_object)
     dropdown_items = %w(combined male female).map do |gender|
       {name: gender.titleize,

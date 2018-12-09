@@ -1,39 +1,50 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Edit user preferences" %>
 <% end %>
-<h2><%= "#{@user.full_name} Preferences" %></h2>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="ost-title col">
+        <h1><strong><%= "#{@user.full_name} Preferences" %></strong></h1>
+      </div>
+    </div>
+  </div>
+</header>
 
 <%= render 'shared/errors', obj: @user %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@user, url: {action: "update_preferences"}, method: :put, html: {class: "form-horizontal", role: "form"}) do |f| %>
+<article class="ost-article container">
+  <div class="row justify-content-center">
+    <div class="col col-login">
+      <%= form_for(@user, url: {action: "update_preferences"}, method: :put, html: {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="control-label col-8">
             <%= f.label :pref_distance_unit, 'View distances in' %>
           </div>
-          <div class="col-sm-8">
+          <div class="col-8">
             <%= f.select :pref_distance_unit, User.pref_distance_units.keys.map { |unit| [unit.titleize, unit] },
                          {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
         <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="control-label col-8">
             <%= f.label :pref_elevation_unit, 'View elevations in' %>
           </div>
-          <div class="col-sm-8">
+          <div class="col-8">
             <%= f.select :pref_elevation_unit, User.pref_elevation_units.keys.map { |unit| [unit.titleize, unit] },
                          {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
+          <div class="col">
             <%= f.button("Update Preferences", name: 'referrer_path', value: params[:referrer_path], class: 'btn btn-primary btn-large') %>
           </div>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', user_path(@user) %> ]
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', user_path(@user) %></span>
         </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+</article>

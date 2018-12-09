@@ -61,9 +61,9 @@
         </div>
       <% end %>
 
-      <p><%= t('.unhappy') %>? <%= link_to t('.cancel_my_account'), registration_path(resource_name), data: { confirm: t('.are_you_sure') }, method: :delete %>.</p>
+      <p><span class="brackets"><%= link_to 'Cancel', :back %></span></p>
 
-      <%= link_to t('.back'), :back %>
+      <p><%= link_to t('.cancel_my_account'), registration_path(resource_name), data: { confirm: t('.are_you_sure') }, method: :delete, class: 'text-danger' %></p>
     </div>
   </div>
 </article>

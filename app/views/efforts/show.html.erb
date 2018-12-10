@@ -88,7 +88,7 @@
                           method: :put,
                           class: "btn btn-success" %>
             <% end %>
-            <% if @presenter.stopped? %>
+            <% if @presenter.has_removable_stop? %>
               <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
                           method: :put,
                           class: "btn btn-success" %>

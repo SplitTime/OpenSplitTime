@@ -76,13 +76,6 @@
                           method: :put,
                           class: "btn btn-success" %>
             <% end %>
-            <%= link_to 'Set data status', set_data_status_effort_path(@presenter.effort),
-                        method: :put,
-                        class: "btn btn-success" %>
-            <% if @presenter.next_problem_effort %>
-              <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
-                          class: "btn btn-success" %>
-            <% end %>
             <% if @presenter.needs_final_stop? %>
               <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
                           method: :put,
@@ -91,6 +84,10 @@
             <% if @presenter.has_removable_stop? %>
               <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
                           method: :put,
+                          class: "btn btn-success" %>
+            <% end %>
+            <% if @presenter.next_problem_effort %>
+              <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
                           class: "btn btn-success" %>
             <% end %>
             <%= link_to 'Raw time records', raw_times_event_group_path(@presenter.event_group, filter: {bib_number: @presenter.bib_number}),

@@ -141,11 +141,15 @@ module DropdownHelper
 
   def effort_actions_dropdown_menu(view_object)
     dropdown_items = [
-        {name: 'Effort',
+        {name: 'Set data status',
+         link: set_data_status_effort_path(view_object.effort),
+         method: :put},
+        {role: :separator},
+        {name: 'Edit effort',
          link: edit_effort_path(view_object.effort)},
-        {name: 'Times of day',
+        {name: 'Edit times of day',
          link: edit_split_times_effort_path(view_object.effort, display_style: :military_times)},
-        {name: 'Elapsed times',
+        {name: 'Edit elapsed times',
          link: edit_split_times_effort_path(view_object.effort)},
         {role: :separator},
         {name: 'Delete effort',
@@ -154,7 +158,7 @@ module DropdownHelper
          data: {confirm: 'This action cannot be undone. Proceed?'},
          class: 'text-danger'}
     ]
-    build_dropdown_menu('Edit', dropdown_items, button: true)
+    build_dropdown_menu('Actions', dropdown_items, button: true)
   end
 
   def person_actions_dropdown_menu(view_object)

@@ -31,12 +31,12 @@ Help Tooltip Icon
 *****************/
 .help-tooltip {
 	display: inline-block;
-	font-size: 16px;
+	font-size: 14px;
 	position: relative;
     margin-top: -1px;
     
 	& > .fa.fa-question-circle {
-        // Break this out into it's own class? It just creates a background for circular icons
+        // Break this out into its own class? It just creates a background for circular icons
         background: $white;
         border-radius: 50%;
     }

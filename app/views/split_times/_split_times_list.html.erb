@@ -26,10 +26,10 @@
     <tr class="<%= data_status_text_class[row.data_status] %>">
       <td><%= strong_conditional row.name, row.done? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
-      <td class="text-center"><%= strong_conditional combined_days_times(row), row.done? %></td>
-      <td class="text-center"><%= strong_conditional composite_time(row, with_seconds: row.finish?), row.done? %></td>
+      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm, with_status: true), row.done? %></td>
+      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :elapsed, with_status: true), row.done? %></td>
       <% unless view_object.simple? %>
-        <td class="text-center"><%= strong_conditional time_format_hhmmss(row.segment_time), row.done? %></td>
+        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :segment, with_status: true), row.done? %></td>
       <% end %>
       <% if view_object.multiple_sub_splits? %>
         <td class="text-right"><%= strong_text_conditional time_format_minutes(view_object.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>

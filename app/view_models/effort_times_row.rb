@@ -32,8 +32,9 @@ class EffortTimesRow
 
   def time_clusters
     @time_clusters ||= lap_splits.map do |lap_split|
-      TimeCluster.new(finish: finish_cluster?(lap_split),
-                      split_times_data: related_split_times(lap_split))
+      TimeCluster.new(split_times_data: related_split_times(lap_split),
+                      finish: finish_cluster?(lap_split),
+                      show_indicator_for_stop: show_indicator_for_stop?(lap_split))
     end
   end
 
@@ -51,6 +52,10 @@ class EffortTimesRow
     else
       lap_split.split.finish?
     end
+  end
+
+  def show_indicator_for_stop?(lap_split)
+    multiple_laps? || !finish_cluster?(lap_split)
   end
 
   def cluster_includes_last_data?(lap_split)

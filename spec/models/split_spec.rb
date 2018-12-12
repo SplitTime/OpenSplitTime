@@ -230,7 +230,7 @@ RSpec.describe Split, kind: :model do
       context 'when split names are duplicated with matching locations within the same event_group' do
         it 'is valid' do
           expect(course_1_split_2).to be_valid
-          course_1_split_2.update(base_name: 'Finish')
+          course_1_split_2.assign_attributes(base_name: 'Finish')
           expect(course_1_split_2).to be_valid
         end
       end
@@ -240,9 +240,9 @@ RSpec.describe Split, kind: :model do
 
         it 'is invalid' do
           expect(course_1_split_2).to be_valid
-          course_1_split_2.update(base_name: 'Finish')
+          course_1_split_2.assign_attributes(base_name: 'Finish')
           expect(course_1_split_2).not_to be_valid
-          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits within event group/)
+          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits/)
         end
       end
 
@@ -251,9 +251,9 @@ RSpec.describe Split, kind: :model do
 
         it 'is invalid' do
           expect(course_1_split_2).to be_valid
-          course_1_split_2.update(latitude: 41)
+          course_1_split_2.assign_attributes(latitude: 41)
           expect(course_1_split_2).not_to be_valid
-          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits within event group/)
+          expect(course_1_split_2.errors.full_messages).to include(/Base name Finish is incompatible with similarly named splits/)
         end
       end
     end

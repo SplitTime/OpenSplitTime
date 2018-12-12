@@ -46,12 +46,15 @@ class SplitAttributesValidator < ActiveModel::Validator
   end
 
   def validate_group_split_locations
-    events = Event.joins(:splits).where(splits: {id: split.id} )
-    event_groups = EventGroup.where(id: events.map(&:event_group_id)).includes(events: :splits)
-    event_groups.each do |event_group|
-      incompatible_locations = EventGroupSplitAnalyzer.new(event_group).incompatible_locations
-      if incompatible_locations.include?(split.parameterized_base_name)
-        split.errors.add(:base_name, "#{split.base_name} is incompatible with similarly named splits within event group #{event_group}. " +
+    event_groups = EventGroup.joins(:events).includes(events: :splits).where(events: {course_id: split.course_id})
+    event_conflict_candidates = event_groups.flat_map(&:events).reject { |event| event.course_id == split.course_id }
+
+    event_conflict_candidates.each do |event|
+      incompatible_locations = event.splits.select do |other_split|
+        (other_split.parameterized_base_name == split.parameterized_base_name) && other_split.different_location?(split)
+      end
+      if incompatible_locations.present?
+        split.errors.add(:base_name, "#{split.base_name} is incompatible with similarly named splits within #{event.name}. " +
             "Splits with duplicate names must have the same locations. ")
       end
     end

@@ -1232,16 +1232,17 @@
                 Vue.component( 'input-datetime', {
                     template: '<div class="row">\
                         <div class="col-12">\
-                            <div class="input-group" :id="\'input-datetime-\'+_uid" data-target-input="nearest">\
-                                <input type="text" class="js-input form-control datetimepicker-input" :data-target="\'#input-datetime-\'+_uid"/>\
-                                <span class="input-group-append" :data-target="\'#input-datetime-\'+_uid" data-toggle="datetimepicker">\
+                            <div class="input-group" :id="\'datetimepicker-\'+_uid" data-target-input="nearest">\
+                                <input type="text" :id="id" class="js-input form-control datetimepicker-input" :data-target="\'#datetimepicker-\'+_uid"/>\
+                                <span class="input-group-append" :data-target="\'#datetimepicker-\'+_uid" data-toggle="datetimepicker">\
                                     <span class="input-group-text fas fa-calendar-alt"></span>\
                                 </span>\
                             </div>\
                         </div>\
                     </div>',
                     props: {
-                        value: { required: true, default: null }
+                        value: { required: true, default: null },
+                        id: { default: null }
                     },
                     mounted: function() {
                         // Shared Variables
@@ -1251,7 +1252,7 @@
                         this.$watch( 'value', function() {
                             if ( this.value instanceof Date ) {
                                 timestamp = moment( this.value );
-                                $( '.js-input', this.$el ).val( timestamp.format('MM/DD/YYYY hh:mm a') );
+                                $( '.js-input', this.$el ).val( timestamp.format('MM/DD/YYYY h:mm a') );
                             } else {
                                 // Enforce Default Values
                                 timestamp = null;
@@ -1265,27 +1266,24 @@
                             self.$emit( 'input', timestamp.toDate() );
                         }
                         // Mount Datepickers
-                        $( '#input-datetime-' + this._uid, this.$el )
+                        $( '#datetimepicker-' + this._uid, this.$el )
                             .on( 'change.datetimepicker', function( e ) {
                                 timestamp = e.date;
                                 update();
-                            } )
-                            .datetimepicker( {
-                                sideBySide: true,
-                                format: 'MM/DD/YYYY hh:mm a'
                             } );
                     }
                 } );
 
                 Vue.component( 'input-date', {
-                    template: '<div class="input-group">\
-                                    <input type="text" class="js-date form-control"/>\
-                                    <span class="input-group-addon">\
-                                        <span class="glyphicon glyphicon-calendar"></span>\
-                                    </span>\
-                               </div>',
+                    template: '<div class="input-group" :id="\'datepicker-\'+_uid" data-target-input="nearest">\
+                                <input type="text" :id="id" class="js-input form-control datetimepicker-input" :data-target="\'#datepicker-\'+_uid"/>\
+                                <span class="input-group-append" :data-target="\'#datepicker-\'+_uid" data-toggle="datetimepicker">\
+                                    <span class="input-group-text fas fa-calendar-alt"></span>\
+                                </span>\
+                            </div>',
                     props: {
-                        value: { required: true, default: null }
+                        value: { required: true, default: null },
+                        id: { default: null }
                     },
                     mounted: function() {
                         // Shared Variables
@@ -1301,17 +1299,13 @@
                                 datestamp = null;
                                 self.$emit( 'input', null );
                             }
-                            $( '.js-date', this.$el ).val( datestamp );
+                            $( '.js-input', this.$el ).val( datestamp );
                         }, { immediate: true } );
                         // Mount Datepicker
-                        $( '.js-date', this.$el )
-                            .datetimepicker( {
-                                format: 'MM/DD/YYYY',
-                                viewMode: 'years',
-                                defaultDate: '1980-01-01'
-                            } )
-                            .on( 'dp.change', function( e ) {
-                                self.$emit( 'input', e.date.format( 'YYYY-MM-DD' ) );
+                        $( '#datepicker-' + this._uid, this.$el )
+                            .on( 'change.datetimepicker', function( e ) {
+                                datestamp = e.date;
+                                self.$emit('input', e.data.format('MM-DD-YYYY'));
                             } );
                     }
                 } );

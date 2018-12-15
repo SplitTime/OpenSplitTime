@@ -175,4 +175,73 @@ RSpec.describe RawTime, type: :model do
       end
     end
   end
+
+  describe '#has_time_data?' do
+    subject { RawTime.new(absolute_time: absolute_time, entered_time: entered_time) }
+
+    context 'when absolute_time is nil' do
+      let(:absolute_time) { nil }
+
+      context 'when entered_time exists' do
+        let(:entered_time) { '12:12:12' }
+
+        it 'returns true' do
+          expect(subject.has_time_data?).to eq(true)
+        end
+      end
+
+      context 'when entered_time is an empty string' do
+        let(:entered_time) { '' }
+
+        it 'returns false' do
+          expect(subject.has_time_data?).to eq(false)
+        end
+      end
+
+      context 'when entered_time is nil' do
+        let(:entered_time) { nil }
+
+        it 'returns false' do
+          expect(subject.has_time_data?).to eq(false)
+        end
+      end
+    end
+
+    context 'when entered_time is nil' do
+      let(:entered_time) { nil }
+
+      context 'when absolute_time exists' do
+        let(:absolute_time) { '12:12:12' }
+
+        it 'returns true' do
+          expect(subject.has_time_data?).to eq(true)
+        end
+      end
+
+      context 'when absolute_time is an empty string' do
+        let(:absolute_time) { '' }
+
+        it 'returns false' do
+          expect(subject.has_time_data?).to eq(false)
+        end
+      end
+
+      context 'when absolute_time is nil' do
+        let(:absolute_time) { nil }
+
+        it 'returns false' do
+          expect(subject.has_time_data?).to eq(false)
+        end
+      end
+    end
+
+    context 'when neither entered_time nor absolute_time is nil' do
+      let(:entered_time) { '12:12:12' }
+      let(:absolute_time) { '2018-10-01 12:12:12 -0600' }
+
+      it 'returns true' do
+        expect(subject.has_time_data?).to eq(true)
+      end
+    end
+  end
 end

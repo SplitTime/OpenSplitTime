@@ -65,7 +65,7 @@ module Interactors
     end
 
     def save_raw_times(rtr)
-      rtr.raw_times.select! { |rt| rt.entered_time? || rt.absolute_time? } # Throw away empty raw_times
+      rtr.raw_times.select!(&:has_time_data?) # Throw away empty raw_times
       rtr.raw_times.each do |raw_time|
         raw_time.event_group_id = event_group.id
         raw_time.assign_attributes(pulled_by: current_user_id, pulled_at: Time.current) if mark_as_pulled

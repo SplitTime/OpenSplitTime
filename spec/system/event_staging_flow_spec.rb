@@ -248,8 +248,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       visit "#{event_staging_app_path(event)}#/entrants"
 
       expect(Effort.count).to eq(1)
-      edit_link = find_link(class: 'edit')
-      edit_link.click
+      click_on class: 'entrant-edit'
       fill_in 'effort-first-name-field', with: 'Betty'
       wait_for_fill_in
       fill_in 'effort-bib-number-field', with: '1001'

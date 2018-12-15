@@ -53,7 +53,7 @@
               <td>{{ vm.row.bibNumber }}</td>
 
               <td class="edit">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">
+                <button class="btn btn-primary entrant-edit" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">
                   <i class="fas fa-pencil-alt"></i>
                 </button>
                 <button class="btn btn-danger" v-confirm:click="'A deleted entrant cannot be recovered.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')">

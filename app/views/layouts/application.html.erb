@@ -21,7 +21,14 @@
 
 <%= render 'layouts/navigation' %>
 <%= render 'layouts/messages' %>
+
 <%= yield %>
+
+<% unless user_signed_in? %>
+  <%= render partial: 'devise/registrations/new' %>
+  <%= render partial: 'devise/sessions/new' %>
+<% end %>
+
 <%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

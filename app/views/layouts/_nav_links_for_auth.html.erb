@@ -20,6 +20,6 @@
     </div>
   </li>
 <% else %>
-  <li class="nav-item"><%= link_to 'Log In', new_user_session_path, class: 'nav-link' %></li>
-  <li class="nav-item"><%= link_to '<span class="sign-up">Sign Up</span>'.html_safe, new_user_registration_path, class: 'nav-link' %></li>
+  <li class="nav-item"><%= link_to 'Log In', '#', class: 'nav-link', data: {toggle: 'modal', target: '#logInModal'} %></li>
+  <li class="nav-item"><%= link_to '<span class="sign-up">Sign Up</span>'.html_safe, '#', class: 'nav-link', data: {toggle: 'modal', target: '#signUpModal'} %></li>
 <% end %>

@@ -108,13 +108,6 @@ Rails.application.routes.draw do
   resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
-  get '/auth/:provider/callback' => 'sessions#create'
-  get '/signin' => 'sessions#new', :as => :signin
-  get '/signout' => 'sessions#destroy', :as => :signout
-  get '/auth/failure' => 'sessions#failure'
-
-  get '/races/:id' => 'organizations#show'
-
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
   namespace :admin do

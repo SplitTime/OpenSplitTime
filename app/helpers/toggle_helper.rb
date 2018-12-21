@@ -123,7 +123,6 @@ module ToggleHelper
 
   def link_to_sign_in(args)
     icon_name = args[:icon_name]
-    url = new_user_session_path(redirect_to: request.fullpath)
-    link_to fa_icon(icon_name), url, class: "btn btn-lg text-dark"
+    link_to fa_icon(icon_name), '#', class: "btn btn-lg text-dark", data: {toggle: 'modal', target: '#log-in-modal'}
   end
 end

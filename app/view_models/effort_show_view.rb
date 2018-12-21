@@ -3,7 +3,8 @@
 class EffortShowView < EffortWithLapSplitRows
 
   delegate :full_name, :bib_number, :gender, :split_times, :finish_status, :report_url, :beacon_url, :photo,
-           :overall_rank, :gender_rank, :started?, :finished?, :dropped?, :in_progress?, to: :effort
+           :overall_rank, :gender_rank, :started?, :finished?, :dropped?, :in_progress?,
+           :final_lap, :stopped_lap, :final_split_id, :stopped_split_id, :final_bitkey, :stopped_bitkey, to: :effort
   delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :loaded_effort
   delegate :simple?, :multiple_sub_splits?, :multiple_laps?, :laps_unlimited?, :event_group, to: :event
 
@@ -21,12 +22,19 @@ class EffortShowView < EffortWithLapSplitRows
   end
 
   def has_removable_stop?
-    stopped? && (!finished? || laps_unlimited?)
+    stopped? && (!finished? || laps_unlimited? || times_exist_after_stop?)
   end
 
   private
 
   def problem_efforts
     event.efforts.reject(&:valid_status?).sort_by(&:last_name)
+  end
+
+  def times_exist_after_stop?
+    stopped_split_id &&
+        ((final_lap != stopped_lap) ||
+            (final_split_id != stopped_split_id) ||
+            (final_bitkey != stopped_bitkey))
   end
 end

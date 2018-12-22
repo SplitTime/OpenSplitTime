@@ -10,7 +10,7 @@
   font-style: normal;
 }
 
-.visitors.index {
+.visitors.index > *:not(.modal) {
   color: #fff;
   text-align: center;
 

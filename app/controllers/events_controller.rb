@@ -99,13 +99,25 @@ class EventsController < ApplicationController
 
   def reconcile
     authorize @event
-    @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
-    if @unreconciled_batch.empty?
+
+    event = Event.where(id: @event.id).includes(efforts: :person).first
+    @presenter = EventReconcilePresenter.new(event: event, params: prepared_params, current_user: current_user)
+
+    if @presenter.event_efforts.empty?
+      flash[:success] = 'No efforts have been added to this event'
+      redirect_to reconcile_redirect_path
+    elsif @presenter.unreconciled_batch.empty?
       flash[:success] = 'All efforts have been reconciled'
-      redirect_to request.referrer&.include?('event_staging') ? "#{event_staging_app_path(@event)}#/entrants" : roster_event_group_path(@event.event_group)
-    else
-      @unreconciled_batch.each { |effort| effort.suggest_close_match }
+      redirect_to reconcile_redirect_path
     end
+  end
+
+  def auto_reconcile
+    authorize @event
+
+    EffortsAutoReconcileJob.perform_later(@event, current_user: current_user)
+    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
+    redirect_to reconcile_redirect_path
   end
 
   def associate_people
@@ -202,6 +214,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def reconcile_redirect_path
+    "#{event_staging_app_path(@event)}#/entrants"
+  end
 
   def set_event
     @event = Event.friendly.find(params[:id])

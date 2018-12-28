@@ -1,43 +1,82 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Reconcile efforts - #{@event.name}" %>
+  <% "OpenSplitTime: Reconcile efforts - #{@presenter.name}" %>
 <% end %>
-<div class="page-header">
-  <div class="row">
-    <div class="col-md-8">
-      <h3><%= "Showing #{@unreconciled_batch.size} of #{@event.unreconciled_efforts.size} Unreconciled efforts for #{@event.name}" %></h3>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event.guaranteed_short_name %></li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <h6>Start Time: <strong><%= l(@presenter.event_start_time, format: :full_day_time_and_zone) %></strong></h6>
+          <h6>Run on: <strong><%= link_to @presenter.course_name, course_path(@presenter.course) %></strong></h6>
+          <%= link_to_beacon_button(@presenter) %>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-      <% if suggested_match_count(@unreconciled_batch) > 0 %>
-          <%= link_to "Match #{suggested_match_count(@unreconciled_batch)} people",
-                      associate_people_event_path(ids: suggested_match_id_hash(@unreconciled_batch)),
-                      method: :put,
-                      class: 'btn btn-sm btn-primary btn-margin-top' %>
-      <% end %>
-      <%= link_to "Create #{@unreconciled_batch.size} people",
-                  create_people_event_path(@event.id, effort_ids: @unreconciled_batch.ids),
-                  method: :post,
-                  data: {confirm: "Create #{@unreconciled_batch.size} new people?"},
-                  class: 'btn btn-sm btn-success btn-margin-top pull-right' %>
+    <!-- Navigation -->
+    <%= render 'view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      <div class="col-auto form-inline">
+        <%= link_to 'Auto Reconcile', auto_reconcile_event_path(@presenter.event), method: :patch, class: 'btn btn-warning' %>
+      </div>
     </div>
   </div>
-</div>
+</aside>
 
-<table class="table table-condensed table-striped">
+<article class="ost-article container">
+  <div class="page-header">
+    <div class="row">
+      <div class="col-md-8">
+        <h3><%= "Showing #{@presenter.unreconciled_batch.size} of #{@event.unreconciled_efforts.size} unreconciled efforts for #{@event.name}" %></h3>
+      </div>
+      <div class="col-md-4 text-right">
+        <% if suggested_match_count(@presenter.unreconciled_batch) > 0 %>
+          <%= link_to "Match #{suggested_match_count(@presenter.unreconciled_batch)} people",
+                      associate_people_event_path(ids: suggested_match_id_hash(@presenter.unreconciled_batch)),
+                      method: :put,
+                      class: 'btn btn-primary btn-margin-top' %>
+        <% end %>
+        <%= link_to "Create #{@presenter.unreconciled_batch.size} people",
+                    create_people_event_path(@event.id, effort_ids: @presenter.unreconciled_batch.ids),
+                    method: :post,
+                    data: {confirm: "Create #{@presenter.unreconciled_batch.size} new people?"},
+                    class: 'btn btn-success btn-margin-top pull-right' %>
+      </div>
+    </div>
+  </div>
 
-  <thead>
-  <tr>
-    <th>Personal Effort Info</th>
-    <th></th>
-    <th>Suggested Match</th>
-    <th>Create</th>
-    <th></th>
-  </tr>
-  </thead>
+  <table class="table table-condensed table-striped">
 
-  <tbody>
-  <% @unreconciled_batch.each do |effort| %>
+    <thead>
+    <tr>
+      <th>Personal Effort Info</th>
+      <th></th>
+      <th>Suggested Match</th>
+      <th>Create</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @presenter.unreconciled_batch.each do |effort| %>
       <%= render 'unreconciled_effort', effort: effort %>
-  <% end %>
-  </tbody>
+    <% end %>
+    </tbody>
 
-</table>
+  </table>
+</article>

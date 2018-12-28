@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       get :reconcile
       get :spread
       get :summary
+      patch :auto_reconcile
       post :create_people
       put :associate_people
       put :set_stops

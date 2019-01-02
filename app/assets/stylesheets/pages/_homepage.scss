@@ -58,16 +58,16 @@
     .form-group {
       padding: 0 5px;
     }
-    input[name="email"],
+    input[id="user_email"],
     input[name="submit"] {
       box-sizing: border-box;
       float: left;
       border-radius: none;
     }
-    input[name="email"]:focus {
+    input[id="user_email"]:focus {
       border: solid 1px #868480;
     }
-    input[name="email"] {
+    input[id="user_email"] {
       color: #868480;
       border: solid 1px #868480;
       width: 100%;

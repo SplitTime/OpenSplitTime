@@ -20,6 +20,12 @@
     </div>
   </li>
 <% else %>
-  <li class="nav-item"><%= link_to 'Log In', '#', class: 'nav-link', data: {toggle: 'modal', target: '#log-in-modal'} %></li>
-  <li class="nav-item"><%= link_to '<span class="sign-up">Sign Up</span>'.html_safe, '#', class: 'nav-link', data: {toggle: 'modal', target: '#sign-up-modal'} %></li>
+  <li class="nav-item">
+    <%= link_to t('devise.sessions.new.sign_in').titleize, '#', class: 'nav-link', data: {toggle: 'modal', target: '#log-in-modal'} %>
+  </li>
+  <li class="nav-item">
+    <%= link_to new_registration_path(resource_name), class: 'nav-link' do %>
+      <%= content_tag(:span, t('devise.registrations.new.sign_up').titleize, class: 'sign-up') %>
+    <% end %>
+  </li>
 <% end %>

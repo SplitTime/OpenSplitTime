@@ -18,13 +18,13 @@
             <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
               <div class="form-fields row clearfix">
                 <div class="form-group col-xs-12 col-md-6">
-                  <input type="text" name="email" placeholder="Email Address"/>
+                  <input id="user_email" type="text" name="user[email]" placeholder="Email Address"/>
                 </div>
                 <div class="form-group col-xs-12 col-md-6">
                   <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
                 </div>
               </div>
-              <p>Already using OpenSplitTime? <a href="<%= new_user_session_path %>" class="sign-in">Sign In</a>
+              <p>Already using OpenSplitTime? <%= link_to t('devise.sessions.new.sign_in'), '#', class: 'sign-in', data: {toggle: 'modal', target: '#log-in-modal'} %>
                 <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
             </form>
         <% end %>

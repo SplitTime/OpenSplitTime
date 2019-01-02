@@ -75,13 +75,14 @@ en:
       signed_in: ""
       signed_out: ""
       new:
-        sign_in: "Sign in"
+        sign_in: "Log in"
     shared:
+      minimum_password_length: "8 characters minimum"
       links:
         didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
         didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
         forgot_your_password: "Forgot your password?"
-        sign_in: "Sign in"
+        sign_in: "Log in"
         sign_in_with_provider: "Sign in with %{provider}"
         sign_up: "Sign up"
     unlocks:

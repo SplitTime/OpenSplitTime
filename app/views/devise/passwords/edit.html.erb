@@ -11,22 +11,20 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}) do |f| %>
         <%= bootstrap_devise_error_messages! %>
         <%= f.hidden_field :reset_password_token %>
 
         <div class="form-group">
           <%= f.label :password, t('.new_password') %>
-          <%= f.password_field :password, autofocus: true, class: 'form-control'  %>
+          <%= f.password_field :password, autofocus: true, class: 'form-control' %>
 
-          <% if @minimum_password_length %>
-            <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
-          <% end %>
+          <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length') %></small>
         </div>
 
         <div class="form-group">
           <%= f.label :password_confirmation, t('.confirm_new_password') %>
-          <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control'  %>
+          <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control' %>
         </div>
 
         <div class="form-group">

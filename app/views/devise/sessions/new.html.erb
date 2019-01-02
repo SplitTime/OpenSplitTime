@@ -2,7 +2,7 @@
   <div class="container">
     <div class="ost-heading row">
       <div class="ost-title col">
-        <h1><strong><%= t('.sign_in') %></strong></h1>
+        <h1><strong><%= t('.sign_in').titleize %></strong></h1>
       </div>
     </div>
   </div>
@@ -11,31 +11,7 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="form-group">
-          <%= f.label :email %>
-          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password %>
-          <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' %>
-        </div>
-
-        <% if devise_mapping.rememberable? %>
-          <div class="form-group form-check">
-            <%= f.check_box :remember_me, class: 'form-check-input' %>
-            <%= f.label :remember_me, class: 'form-check-label' do %>
-              <%= resource.class.human_attribute_name('remember_me') %>
-            <% end %>
-          </div>
-        <% end %>
-
-        <div class="form-group">
-          <%= f.submit  t('.sign_in'), class: 'btn btn-primary' %>
-        </div>
-      <% end %>
-
+      <%= render 'devise/sessions/form', modal: false %>
       <%= render 'devise/shared/links' %>
     </div>
   </div>

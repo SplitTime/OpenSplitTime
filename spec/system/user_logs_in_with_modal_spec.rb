@@ -25,7 +25,7 @@ RSpec.describe 'User logs in with modal', js: true do
     login_with_modal(invalid_email, password)
 
     expect(page).to have_content(:all, 'Invalid email or password')
-    expect(page).to have_current_path(new_user_session_path)
+    expect(page).to have_current_path(organizations_path)
   end
 
   scenario 'with invalid password' do
@@ -34,7 +34,7 @@ RSpec.describe 'User logs in with modal', js: true do
     login_with_modal(email, invalid_password)
 
     expect(page).to have_content(:all, 'Invalid email or password')
-    expect(page).to have_current_path(new_user_session_path)
+    expect(page).to have_current_path(organizations_path)
   end
 
   def login_with_modal(email, password)

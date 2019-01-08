@@ -8,6 +8,13 @@
         </button>
       </div>
       <div class="modal-body">
+        <div id="log-in-error" class="row justify-content-center" style="display:none">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login">
+              <strong>Invalid email or password.</strong>
+            </div>
+          </div>
+        </div>
         <div class="row justify-content-center">
           <div class="col col-login">
             <%= render 'devise/sessions/form', modal: true %>

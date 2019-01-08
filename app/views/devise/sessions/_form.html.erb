@@ -1,6 +1,6 @@
 <!--Requires local variable modal (boolean)-->
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), remote: modal) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), format: :json, remote: true) do |f| %>
   <div class="form-group">
     <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
@@ -27,18 +27,31 @@
 
 <script>
     document.addEventListener("turbolinks:load", function () {
-        //form id
         $('#log-in-modal')
             .bind('ajax:success', function (evt, data, status, xhr) {
-                //function called on status: 200 (for ex.)
-                window.location.reload();
-            })
-            .bind('ajax:error', function(evt, data, status, xhr) {
-                evt.preventDefault();
-                console.log(evt);
-                console.log(data);
-                console.log(status);
-                console.log(xhr)
+                if (evt.detail[0].success === true) {
+                    reloadWithTurbolinks()
+                } else {
+                    $('#log-in-error').fadeIn()
+                }
             })
     });
+
+    var reloadWithTurbolinks = (function () {
+        var scrollPosition;
+
+        function reload() {
+            scrollPosition = [window.scrollX, window.scrollY];
+            Turbolinks.visit(window.location.toString(), {action: 'replace'})
+        }
+
+        document.addEventListener('turbolinks:load', function () {
+            if (scrollPosition) {
+                window.scrollTo.apply(window, scrollPosition);
+                scrollPosition = null
+            }
+        });
+
+        return reload
+    })();
 </script>

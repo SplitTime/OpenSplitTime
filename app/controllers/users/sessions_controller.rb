@@ -2,27 +2,22 @@
 
 module Users
   class SessionsController < Devise::SessionsController
-    def new
-      self.resource = resource_class.new(sign_in_params)
-      store_location_for(resource, params[:redirect_to])
-      super
+    def create
+      resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#failure")
+      sign_in_and_redirect(resource_name, resource)
     end
 
-    def create
-      resource = User.find_for_database_authentication(email: params[:user][:email])
+    def failure
+      render json: {success: false, errors: ["Invalid email or password."]}
+    end
 
-      respond_to do |format|
-        format.json do
-          if resource&.valid_password?(params[:user][:password])
-            sign_in :user, resource
-            render body: nil
-          else
-            set_flash_message(:alert, :invalid)
-            render json: flash[:alert], status: 401
-          end
-        end
-        format.html { super }
-      end
+    private
+
+    def sign_in_and_redirect(resource_or_scope, resource = nil)
+      scope = Devise::Mapping.find_scope!(resource_or_scope)
+      resource ||= resource_or_scope
+      sign_in(scope, resource) unless warden.user(scope) == resource
+      render json: {success: true}
     end
   end
 end

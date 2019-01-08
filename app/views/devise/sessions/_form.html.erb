@@ -21,20 +21,23 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.submit t('devise.sessions.new.sign_in'), class: 'btn btn-primary' %>
+    <%= f.submit t('devise.sessions.new.sign_in'), id: 'log-in-modal-submit', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
 <script>
     document.addEventListener("turbolinks:load", function () {
         $('#log-in-modal')
-            .bind('ajax:success', function (evt, data, status, xhr) {
-                if (evt.detail[0].success === true) {
-                    reloadWithTurbolinks()
-                } else {
-                    $('#log-in-error').fadeIn()
-                }
+            .bind('ajax:success', function () {
+                reloadWithTurbolinks()
             })
+            .bind('ajax:error', function () {
+                $('#log-in-error').fadeIn()
+            });
+
+        $('#log-in-modal-submit').click(function() {
+            $('#log-in-error').fadeOut();
+        });
     });
 
     var reloadWithTurbolinks = (function () {

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'visitors#index'
   get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
+  get 'privacy_policy', to: 'visitors#privacy_policy'
   get 'donations', to: 'visitors#donations'
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'

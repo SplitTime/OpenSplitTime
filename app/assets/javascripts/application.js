@@ -10,16 +10,17 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require jquery3
 //= require jquery-ui/effects/effect-highlight
 //= require rails-ujs
-//= require twitter/bootstrap
+//= require popper
+//= require bootstrap-sprockets
 //= require turbolinks
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require switchery
 //= require moment
-//= require bootstrap-datetimepicker
+//= require tempusdominus-bootstrap-4.js
 //= require vue
 //= require vue-router
 //= require local-time

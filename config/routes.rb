@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root to: 'visitors#index'
   get 'photo_credits', to: 'visitors#photo_credits'
   get 'about', to: 'visitors#about'
+  get 'privacy_policy', to: 'visitors#privacy_policy'
   get 'donations', to: 'visitors#donations'
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
@@ -41,8 +42,6 @@ Rails.application.routes.draw do
       post :mini_table
     end
     member do
-      get :add_beacon
-      get :add_report
       get :analyze
       get :place
       get :show_photo
@@ -58,6 +57,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
     member do
+      get :drop_list
       get :raw_times
       get :roster
       get :export_raw_times
@@ -71,11 +71,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :events do
+  resources :events, except: :index do
     collection { get :series }
     member do
       get :admin
-      get :drop_list
       get :edit_start_time
       get :export_finishers
       get :export_to_ultrasignup
@@ -83,6 +82,7 @@ Rails.application.routes.draw do
       get :reconcile
       get :spread
       get :summary
+      patch :auto_reconcile
       post :create_people
       put :associate_people
       put :set_stops
@@ -90,6 +90,8 @@ Rails.application.routes.draw do
       delete :delete_all_efforts
     end
   end
+
+  get '/events', to: redirect('event_groups')
 
   resources :organizations
 
@@ -107,13 +109,6 @@ Rails.application.routes.draw do
   resources :splits
   resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]
-
-  get '/auth/:provider/callback' => 'sessions#create'
-  get '/signin' => 'sessions#new', :as => :signin
-  get '/signout' => 'sessions#destroy', :as => :signout
-  get '/auth/failure' => 'sessions#failure'
-
-  get '/races/:id' => 'organizations#show'
 
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 

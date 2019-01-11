@@ -41,6 +41,10 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def auto_reconcile?
+    user.authorized_to_edit?(event)
+  end
+
   def delete_all_efforts?
     user.authorized_fully?(event)
   end

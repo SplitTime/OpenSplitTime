@@ -1,10 +1,10 @@
 (function ($) {
 
     var timeIcons = {
-        'exists': '&nbsp;<span class="glyphicon glyphicon-exclamation-sign" data-toggle="tooltip" title="Data Already Exists"></span>',
-        'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-        'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-        'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-toggle="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
     };
 
     /**
@@ -175,7 +175,7 @@
                 if (unconsideredCount > 0) {
                     if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
                         liveEntry.pusher.notification = $.notify({
-                            icon: 'glyphicon glyphicon-time',
+                            icon: 'fas fa-stopwatch',
                             title:'New Live Times Available',
                             message: 'Click to pull times.',
                             url: '#js-pull-times',
@@ -498,11 +498,11 @@
                 $('#js-dropped').on('change', function (event) {
                     var $root = $(this).parent();
                     if ($(this).prop('checked')) {
-                        $root.addClass('btn-warning').removeClass('btn-default');
-                        $('.glyphicon', $root).addClass('glyphicon-check').removeClass('glyphicon-unchecked');
+                        $root.addClass('btn-warning').removeClass('btn-outline-secondary');
+                        $('.far', $root).addClass('fa-check-square').removeClass('fa-square');
                     } else {
-                        $root.addClass('btn-default').removeClass('btn-warning');
-                        $('.glyphicon', $root).addClass('glyphicon-unchecked').removeClass('glyphicon-check');
+                        $root.addClass('btn-outline-secondary').removeClass('btn-warning');
+                        $('.far', $root).addClass('fa-square').removeClass('fa-check-square');
                     }
                 });
 
@@ -545,18 +545,6 @@
                     }
                     liveEntry.liveEntryForm.enrichTimeData();
                 });
-
-                $('#js-rapid-time-in,#js-rapid-time-out').on('click', function () {
-                    if ($(this).siblings('input:disabled').length) return;
-                    var rapid = $(this).closest('.form-group').toggleClass('has-highlight').hasClass('has-highlight');
-                    $(this).closest('.form-group').toggleClass('rapid-mode', rapid);
-                });
-
-                // Enable / Disable Rapid Entry Mode
-                $('#js-rapid-mode').on('change', function () {
-                    liveEntry.liveEntryForm.rapidEntry = $(this).prop('checked');
-                    $('#js-time-in, #js-time-out').closest('.form-group').toggleClass('has-success', $(this).prop('checked'));
-                }).change();
 
                 var $droppedHereButton = $('#js-dropped-button');
                 $droppedHereButton.on('click', function (event) {
@@ -649,9 +637,10 @@
                                             if (time === null) return '--- --:--';
                                             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
                                             var d = new Date(time);
+                                            var hours = ('0' + d.getHours()).slice(-2);
                                             var minutes = ('0' + d.getMinutes()).slice(-2);
                                             var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
-                                            return days[d.getDay()] + ' ' + d.getHours() + ':' + minutes + status;
+                                            return days[d.getDay()] + ' ' + hours + ':' + minutes + status;
                                         }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function(time) {
                                             if (time === null) return '--:--';
@@ -667,17 +656,17 @@
                                                     (pacers[0] ? 
                                                         '<i class="icon-pacer"></i>' : 
                                                         (pacers[1] ? 
-                                                            '<i class="fa fa-share"></i>' : 
+                                                            '<i class="fas fa-share"></i>' :
                                                             '')) +
                                                 '</span>' +
                                                 (pacers.length == 2 ?
                                                     '<span class="flex-1">' +
                                                         (pacers[1] ?
                                                             (pacers[0] ?
-                                                                '<i class="fa fa-long-arrow-right"></i>' :
+                                                                '<i class="fas fa-long-arrow-right"></i>' :
                                                                 '<i class="icon-pacer"></i>') :
                                                             (pacers[1] === false && pacers[0] ?
-                                                                '<i class="fa fa-share fa-rotate-90"></i>' :
+                                                                '<i class="fas fa-share fa-rotate-90"></i>' :
                                                                 '')) +
                                                     '</span>' : 
                                                     '') +
@@ -710,7 +699,6 @@
                     // and turned off when that's done.
                     return $.Deferred().resolve();
                 }
-                liveEntry.liveEntryForm.prefillCurrentTime();
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -816,7 +804,7 @@
                 var $uniqueId = $('#js-unique-id');
                 if ($uniqueId.val() !== '') {
                     var $row = $('#workspace-' + $uniqueId.val());
-                    $row.removeClass('highlight');
+                    $row.removeClass('bg-highlight');
                     $uniqueId.val('');
                 }
                 $('#js-effort-name').html('').removeAttr('href');
@@ -858,25 +846,6 @@
                     time = time.concat('0');
                 }
                 return time;
-            },
-            /**
-             * Returns the current time in the standard format
-             */
-            currentTime: function () {
-                var now = new Date();
-                return ("0" + now.getHours()).slice(-2) + ("0" + now.getMinutes()).slice(-2) + ("0" + now.getSeconds()).slice(-2);
-            },
-            /**
-             * Prefills the time fields with the current time
-             */
-            prefillCurrentTime: function () {
-                if ($('#js-bib-number').val() === '') {
-                    $('.rapid-mode #js-time-in').val('');
-                    $('.rapid-mode #js-time-out').val('');
-                } else if ($('#js-bib-number').val() !== liveEntry.liveEntryForm.lastEnrichTimeBib) {
-                    $('.rapid-mode #js-time-in:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                    $('.rapid-mode #js-time-out:not(:disabled)').val(liveEntry.liveEntryForm.currentTime());
-                }
             },
 
             updateTimeField: function ($field, rawTime) {
@@ -927,7 +896,6 @@
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();
                     liveEntry.liveEntryForm.buttonAddMode();
-                    liveEntry.liveEntryForm.prefillCurrentTime();
                     liveEntry.timeRowsTable.addTimeRowFromForm();
                     return false;
                 });
@@ -944,7 +912,7 @@
                         }
                     });
                 $('#js-local-workspace-table_filter .form-group').append(
-                    '<span id="js-filter-clear" class="glyphicon glyphicon-remove dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
+                    '<span id="js-filter-clear" class="fas fa-times-circle dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
                 );
                 $('#js-filter-clear').on('click', function () {
                     liveEntry.timeRowsTable.$dataTable.search('').draw();
@@ -1007,7 +975,7 @@
                 var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
                 var rowData = liveEntry.timeRowsTable.trToData(trHtml);
                 var $row = $('#workspace-' + rawTimeRow.uniqueId);
-                $row.removeClass('highlight');
+                $row.removeClass('bg-highlight');
                 liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
                 $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
             },
@@ -1083,9 +1051,9 @@
 
             buildTrHtml: function (rawTimeRow) {
                 var bibIcons = {
-                    'good': '&nbsp;<span class="glyphicon glyphicon-ok-sign text-success" data-toggle="tooltip" title="Bib Found"></span>',
-                    'questionable': '&nbsp;<span class="glyphicon glyphicon-question-sign text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
-                    'bad': '&nbsp;<span class="glyphicon glyphicon-remove-sign text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
+                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Bib Found"></span>',
+                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
@@ -1114,9 +1082,9 @@
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
                         <td class="row-edit-btns">\
-                            <button class="effort-row-btn fa fa-pencil edit-effort js-edit-effort btn btn-primary"></button>\
-                            <button class="effort-row-btn fa fa-close delete-effort js-delete-effort btn btn-danger"></button>\
-                            <button class="effort-row-btn fa fa-check submit-effort js-submit-effort btn btn-success"></button>\
+                            <button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>\
+                            <button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>\
+                            <button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>\
                         </td>\
                     </tr>';
                 return trHtml
@@ -1190,7 +1158,7 @@
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
 
-                    $row.addClass('highlight');
+                    $row.addClass('bg-highlight');
                     liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
                     liveEntry.PopulatingFromRow = false;

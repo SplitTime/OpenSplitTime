@@ -1,0 +1,77 @@
+.navbar-brand {
+    font-family: "Gibson-Semibold";
+}
+
+.navbar-right {
+    border-radius: 0;
+    @include media-breakpoint-up(md) {
+      & .nav-link .sign-up {
+        border: 1px solid #FFF;
+        color: #FFF;
+        padding: 5px 16px;
+      }
+      & .nav-link.donate {
+        color: #bbbb00;
+      }
+      & .nav-link.donate:hover {
+        color: #ffff00;
+      }
+    }
+  }
+
+.nav-tabs-ost {
+    margin-bottom: 0;
+    border-bottom: none;
+
+    &.nav-tabs {
+        border-bottom: none;
+    }
+
+    & > .nav-item {
+        margin-bottom: -2px;
+        position: relative;
+        
+        & > a {
+            display: inline-block;
+            line-height: 35px;
+            color: $black !important;
+            font-weight: bold;
+            border: none !important; // Override Bootstrap
+            border-radius: 0 !important;
+            background: none !important;
+            padding: 10px 25px;
+            cursor: pointer;
+        }
+
+        & > .dropdown-menu {
+            margin-top: 0;
+            border-top: none;
+            min-width: 200px;
+        }
+
+        &:hover {
+            background: rgba($white, 0.50);
+        }
+
+        &.show {
+            background: $white;
+        }
+
+        &.active {
+            &:before {
+                content: '';
+                display: block;
+                background: $blue;
+                height: 5px;
+                left: 0;
+                right: 0;
+                top: 0;
+                position: absolute;
+            }
+        }
+
+        &.show, &.active {
+            background: $white;
+        }
+    }
+}

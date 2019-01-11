@@ -1,18 +1,9 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
-  before_action :set_event, except: [:index, :new, :create, :series]
-  after_action :verify_authorized, except: [:index, :show, :spread, :summary, :podium, :series, :place, :analyze, :drop_list]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :set_event, except: [:new, :create, :series]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
-
-  def index
-    @events = policy_class::Scope.new(current_user, controller_class).viewable
-                  .select_with_params(params[:search])
-                  .order(start_time: :desc)
-                  .paginate(page: params[:page], per_page: 25)
-    @presenter = EventsCollectionPresenter.new(@events, params, current_user)
-    session[:return_to] = events_path
-  end
 
   def show
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
@@ -85,7 +76,6 @@ class EventsController < ApplicationController
     end
   end
 
-
   def summary
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
     params[:per_page] ||= MAX_SUMMARY_EFFORTS
@@ -109,13 +99,25 @@ class EventsController < ApplicationController
 
   def reconcile
     authorize @event
-    @unreconciled_batch = @event.unreconciled_efforts.order(:last_name).limit(20)
-    if @unreconciled_batch.empty?
+
+    event = Event.where(id: @event.id).includes(efforts: :person).first
+    @presenter = EventReconcilePresenter.new(event: event, params: prepared_params, current_user: current_user)
+
+    if @presenter.event_efforts.empty?
+      flash[:success] = 'No efforts have been added to this event'
+      redirect_to reconcile_redirect_path
+    elsif @presenter.unreconciled_batch.empty?
       flash[:success] = 'All efforts have been reconciled'
-      redirect_to request.referrer&.include?('event_staging') ? "#{event_staging_app_path(@event)}#/entrants" : roster_event_group_path(@event.event_group)
-    else
-      @unreconciled_batch.each { |effort| effort.suggest_close_match }
+      redirect_to reconcile_redirect_path
     end
+  end
+
+  def auto_reconcile
+    authorize @event
+
+    EffortsAutoReconcileJob.perform_later(@event, current_user: current_user)
+    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
+    redirect_to reconcile_redirect_path
   end
 
   def associate_people
@@ -176,11 +178,6 @@ class EventsController < ApplicationController
     redirect_to event_group_path(@event.event_group, force_settings: true)
   end
 
-  def drop_list
-    @event_dropped_display = EventDroppedDisplay.new(event: @event, params: prepared_params, current_user: current_user)
-    session[:return_to] = event_path(@event)
-  end
-
   def export_finishers
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
@@ -217,6 +214,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def reconcile_redirect_path
+    "#{event_staging_app_path(@event)}#/entrants"
+  end
 
   def set_event
     @event = Event.friendly.find(params[:id])

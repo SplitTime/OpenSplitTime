@@ -1,6 +1,23 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: New organization" %>
+  <% "OpenSplitTime: New Organization" %>
 <% end %>
-<h1 align="center">New Organization</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>New Organization</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item active">New</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+</article>

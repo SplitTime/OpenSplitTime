@@ -19,13 +19,8 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     @display_style ||= params[:display_style].presence || default_display_style
   end
 
-  def display_style_text
-    case display_style
-    when 'ampm' then 'AM/PM'
-    when 'military' then '24-Hour'
-    else
-      display_style.titleize
-    end
+  def display_style_hash
+    {elapsed: 'Elapsed', ampm: 'AM/PM', military: '24-Hour', segment: 'Segment'}
   end
 
   def effort_times_rows

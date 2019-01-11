@@ -96,10 +96,11 @@ RSpec.describe ComputeDataEntryNodes do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 3000, latitude: 40, longitude: -105) }
       let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 2000, latitude: 40.1, longitude: -105.1) }
 
-      it 'returns an empty Array' do
+      it 'returns a DataEntryNode indicating that the split is incompatible' do
         data_entry_nodes = subject.perform
         expect(event_1_split_3).to be_different_location(event_2_split_2)
-        expect(data_entry_nodes).to eq([])
+        expect(data_entry_nodes.size).to eq(1)
+        expect(data_entry_nodes.map(&:split_name)).to eq(['Incompatible: Aid 2'])
       end
     end
 

@@ -9,7 +9,6 @@ class User < ApplicationRecord
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
-  pg_search_scope :search_name_email, against: [:first_name, :last_name, :email], using: {tsearch: {any_word: true, prefix: true}}
   strip_attributes collapse_spaces: true
   friendly_id :slug_candidates, use: [:slugged, :history]
   phony_normalize :phone, country_code: 'US'
@@ -22,6 +21,11 @@ class User < ApplicationRecord
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint
   alias_attribute :https, :https_endpoint
+
+  scope :with_avatar_names, -> do
+    User.from(select('users.*, people.first_name as avatar_first_name, people.last_name as avatar_last_name')
+                  .left_joins(:avatar), :users)
+  end
 
   validates_presence_of :first_name, :last_name
   validates_plausible_phone :phone, country_code: 'US', message: 'must be a valid US or Canada phone number'
@@ -39,9 +43,14 @@ class User < ApplicationRecord
   def self.current=(user)
     Thread.current[:current_user] = user
   end
-  
+
   def self.search(search_param)
     search_param.present? ? search_name_email(search_param) : all
+  end
+
+  def self.search_name_email(search_param)
+    where('users.first_name ilike ? or users.last_name ilike ? or users.email ilike ?',
+          "#{search_param}%", "#{search_param}%", "%#{search_param}%")
   end
 
   attr_accessor :has_json_web_token

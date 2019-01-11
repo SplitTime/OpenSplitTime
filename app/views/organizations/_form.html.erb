@@ -34,11 +34,11 @@
         <% end %>
 
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
+          <div class="col">
             <%= f.submit(@organization.new_record? ? "Create Organization" : "Update Organization", class: 'btn btn-primary btn-large') %>
           </div>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
+        <div class="col">
           [ <%= link_to 'Cancel', @organization.new_record? ? organizations_path : @organization %> ]
         </div>
     <% end %>

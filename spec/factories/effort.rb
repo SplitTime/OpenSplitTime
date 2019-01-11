@@ -6,11 +6,11 @@ FactoryBot.define do
     sequence(:bib_number, (200..209).cycle)
     first_name { FFaker::Name.first_name }
     last_name { FFaker::Name.last_name }
-    gender { FFaker::Gender.random }
+    gender { %w(male female).sample }
     event
 
     trait :with_geo_attributes do
-      country_code 'US'
+      country_code { 'US' }
       state_code { FFaker::AddressUS.state_abbr }
       city { FFaker::AddressUS.city }
     end
@@ -29,14 +29,14 @@ FactoryBot.define do
     end
 
     trait :male do
-      gender 'male'
+      gender { :male }
     end
 
     trait :female do
-      gender 'female'
+      gender { :female }
     end
 
-    transient { without_slug false }
+    transient { without_slug { false } }
 
     after(:build, :stub) do |effort, evaluator|
       effort.slug = "#{effort.first_name&.parameterize}-#{effort.last_name&.parameterize}" unless evaluator.without_slug

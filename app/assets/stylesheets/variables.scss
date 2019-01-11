@@ -1,27 +1,58 @@
-@import "bootstrap/variables";
-
 /***********
 Variables
 ************/
-$gray: #777;
-$mediumGray: #aaa;
 
+$font-size-base: (14px / 16px) * 1rem;
+// $font-family-sans-serif: "Gibson-Semibold";
+
+$lightishGray: #F1F1F1;
 $lightGray: #eee;
+$mediumGray: #aaa;
+$gray: #777;
 $darkGray: #222;
 $darkerGray: #E1E1E1;
+
 $black: #000;
 $white: #FFF;
-$red: pink;
+
+// $red: pink;
 $blue: #3A9DD1;
 $orange: #F0AD4E;
 
-$lightishGray: #F1F1F1;
+// Theme Color Overrides
+$primary: #3A9DD1;
+$dark: #101010;
+
+// Breadcrumb Overrides
+$breadcrumb-bg: transparent;
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+$breadcrumb-color: $mediumGray;
+$breadcrumb-active-color: $black;
+
+// Navbar Overrides
+$navbar-brand-padding-y: 0;
+$navbar-dark-color: $white;
+$navbar-toggler-padding-y: 0.125rem;
+$navbar-toggler-padding-x: 0.5rem;
+
+/******************************
+ * Import Bootstrap Variables *
+ ******************************/
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
 
 // Boostrap breakpoints
-$break-small: $screen-sm-min;
-$break-medium: $screen-md-min;
-$break-large: $screen-lg-min;
+$break-small: map-get($grid-breakpoints, 'sm');
+$break-medium: map-get($grid-breakpoints, 'md');
+$break-large: map-get($grid-breakpoints, 'lg');
 $max-width: 1200px;
+
+// Imported from Bootstrap 3
+$state-info-text:                #31708f !default;
+$state-info-bg:                  #d9edf7 !default;
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
 
 /***********
 Mixins

@@ -1,0 +1,23 @@
+.ost-header {
+    background: $lightishGray;
+    border-bottom: 2px solid $darkerGray;
+
+    padding-top: 25px;
+
+    .nav-tabs-ost {
+        margin-top: 25px;
+    }
+}
+
+.ost-heading {
+    margin-bottom: 25px;
+}
+
+.ost-title * {
+    margin: 0;
+}
+
+.ost-subtitle, .ost-title {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

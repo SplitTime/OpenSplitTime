@@ -5,15 +5,20 @@ class TimeCluster
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:finish, :split_times_data],
-                           exclusive: [:finish, :split_times_data],
+                           required: [:split_times_data, :finish],
+                           exclusive: [:split_times_data, :finish, :show_indicator_for_stop],
                            class: self.class)
-    @finish = args[:finish]
     @split_times_data = args[:split_times_data]
+    @finish = args[:finish]
+    @show_indicator_for_stop = args[:show_indicator_for_stop] || false
   end
 
   def finish?
     @finish
+  end
+
+  def show_stop_indicator?
+    stopped_here? && show_indicator_for_stop?
   end
 
   def aid_time_recordable?
@@ -61,6 +66,10 @@ class TimeCluster
   end
 
   private
+
+  def show_indicator_for_stop?
+    @show_indicator_for_stop
+  end
 
   def compacted_segment_times
     @compacted_segment_times ||= split_times_data.map(&:segment_time).compact

@@ -1,20 +1,23 @@
-<div class="container">
-  <footer class="footer">
-    <div class="col-xs-5">
-      <small>Copyright &copy; OpenSplitTime Company</small>
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-5">
+        <small>Copyright &copy; OpenSplitTime Company</small>
+      </div>
+      <div class="col-2 text-center">
+        <%= image_tag("icons/icon-s.png", alt: 'S Icon', size: '30') %>
+      </div>
+      <div class="col-5">
+        <nav>
+          <ul>
+            <li><%= link_to "Privacy Policy", privacy_policy_path %></li>
+            <li><%= link_to "Get Started", getting_started_path %></li>
+            <li><%= link_to "Donate", donations_path %></li>
+            <li><%= link_to "About", about_path %></li>
+            <li><%= link_to "Home", root_path %></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <div class="col-xs-2">
-      <%= image_tag("icons/icon-s.png", alt: 'S Icon', size: '30') %>
-    </div>
-    <div class="col-xs-5 hidden-print">
-      <nav>
-        <ul>
-          <li><%= link_to "Get Started", getting_started_path %></li>
-          <li><%= link_to "Donate", donations_path %></li>
-          <li><%= link_to "About", about_path %></li>
-          <li><%= link_to "Home", root_path %></li>
-        </ul>
-      </nav>
-    </div>
-  </footer>
-</div>
+  </div>
+</footer>

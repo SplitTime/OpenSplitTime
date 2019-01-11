@@ -1,0 +1,17 @@
+.btn-label {
+    pointer-events: none;
+}
+
+.btn-outline-subtle {
+    @include button-outline-variant($gray-300);
+}
+
+.btn-input-group {
+    @include button-outline-variant($input-group-addon-border-color);
+}
+
+.dropdown-toggle {
+    .fas, .far, .fal, .fab {
+        color: $blue;
+    }
+}

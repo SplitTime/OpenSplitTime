@@ -115,6 +115,10 @@ class RawTime < ApplicationRecord
     self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
   end
 
+  def has_time_data?
+    absolute_time.present? || entered_time.present?
+  end
+
   private
 
   def parameterize_split_name

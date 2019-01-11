@@ -2,14 +2,13 @@
 
 class EffortTimesRow
   include ActiveModel::Serialization
-  include TimeFormats
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
+  include PersonalInfo, TimeFormats
 
-  include PersonalInfo
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
 
   attr_reader :effort, :display_style
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank,
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
            :stopped?, :dropped?, :finished?, to: :effort
 
   def initialize(args)
@@ -33,8 +32,9 @@ class EffortTimesRow
 
   def time_clusters
     @time_clusters ||= lap_splits.map do |lap_split|
-      TimeCluster.new(finish: finish_cluster?(lap_split),
-                      split_times_data: related_split_times(lap_split))
+      TimeCluster.new(split_times_data: related_split_times(lap_split),
+                      finish: finish_cluster?(lap_split),
+                      show_indicator_for_stop: show_indicator_for_stop?(lap_split))
     end
   end
 
@@ -52,6 +52,10 @@ class EffortTimesRow
     else
       lap_split.split.finish?
     end
+  end
+
+  def show_indicator_for_stop?(lap_split)
+    multiple_laps? || !finish_cluster?(lap_split)
   end
 
   def cluster_includes_last_data?(lap_split)

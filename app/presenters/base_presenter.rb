@@ -37,10 +37,6 @@ class BasePresenter
     params[:per_page] || 50
   end
 
-  def reversing_sort(field_name)
-    existing_sort == field_name.to_s ? "-#{field_name}" : field_name.to_s
-  end
-
   def search_text
     params[:search]
   end

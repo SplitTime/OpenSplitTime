@@ -1,10 +1,51 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show user - #{@user.full_name}" %>
+  <% "OpenSplitTime: Show user - #{@user.full_name}" %>
 <% end %>
-<h3><%= @user.full_name %></h3>
-<p>Email: <%= @user.email if @user.email %></p>
-<p>Avatar: <%= @user.avatar.full_name if @user.avatar %></p>
-<p>Preferred distance units: <%= @user.pref_distance_unit %></p>
-<p>Preferred elevation units: <%= @user.pref_elevation_unit %></p>
-<hr>
-<%= link_to "Change Preferences", edit_preferences_user_path(@user), class: 'btn btn-sm btn-primary' %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="ost-title col">
+        <h1><strong><%= @user.full_name %></strong></h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <div class="row justify-content-center">
+    <div class="col col-login">
+      <p>OST Member Since:</p>
+      <h5><%= local_time(@user.created_at, format: :full_with_weekday_and_time) %></h5>
+      <br>
+      <p>Email:</p>
+      <h5><%= @user.email %></h5>
+      <br>
+      <p>Phone:</p>
+      <h5><%= @user.phone %></h5>
+      <% if @user.http_endpoint %>
+        <br>
+        <p>HTTP Endpoint:</p>
+        <h5><%= @user.http_endpoint %></h5>
+      <% end %>
+      <% if @user.https_endpoint %>
+        <br>
+        <p>HTTPS Endpoint:</p>
+        <h5><%= @user.https_endpoint %></h5>
+      <% end %>
+      <% if @user.avatar %>
+        <br>
+        <p>Avatar:</p>
+        <h5><%= @user.avatar.full_name %></h5>
+      <% end %>
+      <br>
+      <p>Preferred distance units:</p>
+      <h5><%= @user.pref_distance_unit.titleize %></h5>
+      <br>
+      <p>Preferred elevation units:</p>
+      <h5><%= @user.pref_elevation_unit.titleize %></h5>
+      <hr/>
+      <%= link_to "Change Preferences", edit_preferences_user_path(@user), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</article>

@@ -2,25 +2,23 @@
     <% "OpenSplitTime: List organizations" %>
 <% end %>
 
-<div class="row header">
-  <div class="col-xs-5">
-    <h2>
-      <strong>Organizations</strong>
-    </h2>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Organizations</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item active">Organizations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</header>
 
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
-
-<%= render 'organizations', presenter: @presenter %>
-
-<hr>
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
+<article class="ost-article container">
+  <%= will_paginate(inner_window: 2, outer_window: 0) %>
+  <%= render 'organizations', presenter: @presenter %>
+  <%= will_paginate(inner_window: 2, outer_window: 0) %>
+</article>

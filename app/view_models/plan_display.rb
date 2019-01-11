@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PlanDisplay < EffortWithLapSplitRows
+  include TimeFormats
   attr_reader :course
   delegate :simple?, :name, to: :course
   delegate :multiple_laps?, :organization, to: :event
@@ -74,6 +75,12 @@ class PlanDisplay < EffortWithLapSplitRows
 
   def relevant_efforts
     @relevant_efforts ||= effort_finder.efforts.to_a
+  end
+
+  def plan_description
+    formatted_time = time_format_hhmm(expected_time)
+    lap_text = multiple_laps? ? "over #{expected_laps} laps" : nil
+    ["Pacing plan for a #{formatted_time} effort", lap_text].compact.join(' ')
   end
 
   private

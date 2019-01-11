@@ -2,7 +2,7 @@
 
 class EffortWithTimesPresenter < EffortWithLapSplitRows
 
-  delegate :id, :split_times, :event, :event_name, :full_name, :bib_number, :finish_status, :to_param, to: :effort
+  delegate :id, :split_times, :event_group, :event, :event_name, :full_name, :bib_number, :finish_status, :to_param, to: :effort
 
   def post_initialize(args)
     ArgsValidator.validate(params: args, required: [:effort, :params], exclusive: [:effort, :params], class: self.class)

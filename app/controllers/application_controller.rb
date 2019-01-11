@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  before_action :store_user_location!, if: :storable_location?
   before_action :set_current_user
   helper_method :prepared_params
 
@@ -14,15 +15,29 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
-    sign_in_url = new_user_session_url
-    if request.referer == sign_in_url
-      super
-    else
-      stored_location_for(resource) || request.referer || root_path
-    end
+    stored_location_for(resource) ||
+        devise_controller? ? root_path : request.referrer ||
+        root_path
+  end
+
+  def after_sign_out_path_for(resource)
+    stored_location_for(resource) || request.referrer || root_path
   end
 
   private
+
+  # It's important that the location is NOT stored if:
+  # - The request method is not GET (non idempotent)
+  # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an
+  #    infinite redirect loop.
+  # - The request is an Ajax request as this can lead to very unexpected behaviour.
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
+
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
+  end
 
   def prepared_params
     @prepared_params ||= PreparedParams.new(params, params_class.permitted, params_class.permitted_query)
@@ -59,9 +74,9 @@ class ApplicationController < ActionController::Base
 
   def set_flash_message(response)
     if response.successful?
-      flash[:success] = [flash[:success], response.message].compact.join("\n")
+      flash[:success] = [flash[:success], response.message].compact.join("\n").presence
     else
-      flash[:warning] = [flash[:warning], response.message_with_error_report].compact.join("\n")
+      flash[:warning] = [flash[:warning], response.message_with_error_report].compact.join("\n").presence
     end
   end
 

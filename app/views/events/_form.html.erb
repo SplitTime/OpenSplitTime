@@ -3,125 +3,101 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@event, :html => {class: "form-horizontal", role: "form"}) do |f| %>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :name %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :name %>
         </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :short_name %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
-          </div>
+        <div class="col-sm-4">
+          <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
         </div>
+      </div>
 
-        <% if @course.nil? %>
-            <div class="form-group">
-              <div class="control-label col-sm-2">
-                <%= f.label :course_id %>
-              </div>
-              <div class="col-sm-8">
-                <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
-                                      {prompt: true}, {class: "dropdown-select-field"}) %>
-              </div>
-            </div>
-        <% else %>
-            <div class="form-group">
-              <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :course_id, value: @course.id %>
-                <h4><%= @course.name %></h4>
-              </div>
-            </div>
-        <% end %>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label 'Start time' %>
-          </div>
-          <div class="col-sm-3">
-            <div class="input-group date" id="datetimepicker">
-              <%= f.text_field :start_time_in_home_zone,
-                               value: @event.start_time_in_home_zone&.strftime('%m/%d/%Y %H:%M:%S'),
-                               placeholder: 'mm/dd/yyyy hh:mm:ss',
-                               class: 'form-control',
-                               data: {provide: 'datetimepicker',
-                                      date_format: 'MM/DD/YYYY HH:mm:ss',
-                                      date_default_date: (Date.current + 6.hours).strftime('%m/%d/%Y %H:%M:%S')} %>
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-            </div>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :short_name %>
         </div>
+        <div class="col-sm-4">
+          <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
+        </div>
+      </div>
 
-        <% if @event.started? %>
-            <div class="row">
-              <div class="col-sm-8 col-sm-offset-2">
-                <p>Changing the start time of an event that <strong>has existing split times</strong>
-                  using this page will <strong>retain the same time relative to the event start</strong> instead of the
-                  same absolute time.</p>
-                <p>For example, if the event start time is 06:00 and you change it to 06:10, a finish time at 08:00
-                  <strong>would be pushed out to 08:10</strong>, while the elapsed finish time would remain constant at
-                  2:00.</p>
-                <p>If you intend to keep existing absolute times constant and change elapsed times, use
-                  the <%= link_to 'Change start time', edit_start_time_event_path(@event) %> page instead.</p>
-                <hr>
-              </div>
-            </div>
-        <% end %>
-
+      <% if @course.nil? %>
         <div class="form-group">
           <div class="control-label col-sm-2">
-            <%= f.label :home_time_zone %>
+            <%= f.label :course_id %>
           </div>
           <div class="col-sm-8">
-            <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                  {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "dropdown-select-field"}) %>
+            <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
+                                  {prompt: true}, {class: "form-control dropdown-select-field"}) %>
           </div>
         </div>
-
+      <% else %>
         <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :laps_required, "Laps required" %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.number_field :laps_required, class: "form-control", placeholder: "#" %>
-            <p>(Use 1 for an event that travels the course only once. Use 0 for unlimited laps (for a time-based
-              cutoff)</p>
+          <div class="col-sm-8 col-sm-offset-2">
+            <%= f.hidden_field :course_id, value: @course.id %>
+            <h4><%= @course.name %></h4>
           </div>
         </div>
+      <% end %>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :beacon_url %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label 'Start time' %>
         </div>
+        <div class="col-sm-3">
+          <%= f.datetimepicker_field(:start_time_in_home_zone) %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :podium_template %>
-          </div>
-          <div class="col-sm-8">
-            <%= collection_select(:event, :podium_template, Results::Templates.keys_and_names, :first, :last,
-                                  {prompt: true}, {class: "dropdown-select-field"}) %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :home_time_zone %>
         </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :laps_required, "Laps required" %>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', @event.event_group ? event_group_path(@event.event_group, force_settings: true) : event_groups_path %> ]
+        <div class="col-sm-4">
+          <%= f.number_field :laps_required, class: "form-control", placeholder: "#" %>
+          <p>(Use 1 for an event that travels the course only once. Use 0 for unlimited laps (for a time-based
+            cutoff)</p>
         </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :beacon_url %>
+        </div>
+        <div class="col-sm-4">
+          <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :podium_template %>
+        </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event, :podium_template, Results::Templates.keys_and_names, :first, :last,
+                                {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
+        </div>
+      </div>
+      <div class="col-xs-4 col-xs-offset-2">
+        [ <%= link_to 'Cancel', @event.event_group ? event_group_path(@event.event_group, force_settings: true) : event_groups_path %>
+        ]
+      </div>
     <% end %>
   </div>
 </div>

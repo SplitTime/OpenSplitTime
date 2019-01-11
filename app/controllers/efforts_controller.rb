@@ -29,11 +29,8 @@ class EffortsController < ApplicationController
   end
 
   def new
-    @effort = Effort.new
-    if params[:event_id]
-      @event = Event.friendly.find(params[:event_id])
-      @effort.event = @event
-    end
+    event = Event.find(params[:event_id])
+    @effort = event.efforts.new
     authorize @effort
   end
 
@@ -191,24 +188,6 @@ class EffortsController < ApplicationController
     render partial: 'show_photo'
   end
 
-  def add_beacon
-    authorize(@effort)
-    update_beacon_url(params[:value])
-    respond_to do |format|
-      format.html { redirect_to effort_path(@effort) }
-      format.js { render inline: "location.reload();" }
-    end
-  end
-
-  def add_report
-    authorize(@effort)
-    update_report_url(params[:value])
-    respond_to do |format|
-      format.html { redirect_to effort_path(@effort) }
-      format.js { render inline: "location.reload();" }
-    end
-  end
-
   def subregion_options
     render partial: 'subregion_select'
   end
@@ -222,13 +201,5 @@ class EffortsController < ApplicationController
   def set_effort
     @effort = Effort.friendly.find(params[:id])
     redirect_numeric_to_friendly(@effort, params[:id])
-  end
-
-  def update_beacon_url(url)
-    @effort.update(beacon_url: url)
-  end
-
-  def update_report_url(url)
-    @effort.update(report_url: url)
   end
 end

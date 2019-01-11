@@ -20,13 +20,14 @@
 <body class="<%= controller_name %> <%= action_name %>">
 
 <%= render 'layouts/navigation' %>
-<%= render 'layouts/progress' %>
 <%= render 'layouts/messages' %>
-<% if content_for?(:container_type) == 'skip' %>
-  <%= yield %>
-<% else %>
-  <div class="<%= content_for(:container_type) || 'container' %>"><%= yield %></div>
+
+<%= yield %>
+
+<% unless user_signed_in? %>
+  <%= render partial: 'devise/sessions/new' %>
 <% end %>
+
 <%= render 'layouts/footer' unless @skip_footer %>
 </body>
 </html>

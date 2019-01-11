@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :traffic]
+  before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
   before_action :set_event_group, except: [:index]
-  after_action :verify_authorized, except: [:index, :show, :traffic]
+  after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
     scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
@@ -72,6 +72,11 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
+    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def drop_list
+    event_group = EventGroup.where(id: @event_group).includes(:organization, events: :efforts).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 

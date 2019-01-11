@@ -1,6 +1,24 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Edit split - #{@split.base_name}" %>
 <% end %>
-<h1 align="center">Edit Spilt</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @split.base_name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to @split.course.name, course_path(@split.course) %></li>
+            <li class="breadcrumb-item active"><%= @split.base_name %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Navigation -->
+  </div>
+</header>
+
+<article class="ost-article container">
+    <%= render 'form' %>
+</article>

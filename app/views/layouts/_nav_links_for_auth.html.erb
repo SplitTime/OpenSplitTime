@@ -1,22 +1,31 @@
-<li><%= link_to 'Donate!', donations_path, class: 'donate' %></li>
+<li class="nav-item"><%= link_to 'Donate!', donations_path, class: 'donate nav-link' %></li>
 <% if user_signed_in? %>
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  <li class="nav-item">
+    <div class="dropdown">
+      <a href="#" id="nav-dropdown-auth" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <%= current_user.email %><%= " (admin)" if current_user.admin? %>
-        <span class="caret"></span></a>
-      <ul class="dropdown-menu">
-        <li><%= link_to 'Edit Your Profile', edit_user_registration_path %></li>
-        <li><%= link_to 'View Your Profile', user_path(current_user) %></li>
-        <li><%= link_to 'Change Preferences', edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path) %></li>
-        <% if current_user.try(:admin?) %>
-            <li role="separator" class="divider"></li>
-            <li><%= link_to 'List Users', users_path %></li>
+        <span class="caret"></span>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="nav-dropdown-auth">
+        <%= link_to 'Edit Your Profile', edit_user_registration_path, class: 'dropdown-item' %>
+        <%= link_to 'View Your Profile', user_path(current_user), class: 'dropdown-item' %>
+        <%= link_to 'Change Preferences', edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: 'dropdown-item' %>
+        <% if current_user&.admin? %>
+          <div class="dropdown-divider"></div>
+          <%= link_to 'List Users', users_path, class: 'dropdown-item' %>
         <% end %>
-        <li role="separator" class="divider"></li>
-        <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
-      </ul>
-    </li>
+        <div class="dropdown-divider"></div>
+        <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
+      </div>
+    </div>
+  </li>
 <% else %>
-    <li><%= link_to 'Log In', new_user_session_path %></li>
-    <li><%= link_to 'Sign Up', new_user_registration_path, class: 'sign-up' %></li>
+  <li class="nav-item">
+    <%= link_to t('devise.sessions.new.sign_in').titleize, '#', class: 'nav-link', data: {toggle: 'modal', target: '#log-in-modal'} %>
+  </li>
+  <li class="nav-item">
+    <%= link_to new_registration_path(resource_name), class: 'nav-link' do %>
+      <%= content_tag(:span, t('devise.registrations.new.sign_up').titleize, class: 'sign-up') %>
+    <% end %>
+  </li>
 <% end %>

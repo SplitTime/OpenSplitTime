@@ -7,8 +7,8 @@ FactoryBot.define do
   factory :split_time do
     absolute_time { Date.today.at_midnight + rand(-100_000..100_000) }
     effort
-    lap 1
-    bitkey 1
+    lap { 1 }
+    bitkey { 1 }
   end
 
   # These factories build realistic sets of split_times representing a efforts on the Hardrock counter-clockwise course.
@@ -33,7 +33,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_45].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -41,7 +41,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_43].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -49,7 +49,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_41].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -57,7 +57,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_38].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -65,7 +65,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_36].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -73,7 +73,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_35].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -81,7 +81,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_33].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -89,7 +89,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_31].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -97,7 +97,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_28].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 
@@ -105,7 +105,7 @@ FactoryBot.define do
     sequence(:split_id, HARDROCK_SPLIT_IDS.cycle)
     sequence(:bitkey, HARDROCK_BITKEYS.cycle)
     sequence(:absolute_time, HARDROCK_TIMES_FROM_START[:hours_25].map { |e| ActiveSupport::TimeZone['Mountain Time (US & Canada)'].parse('2016-07-01 06:00') + e }.cycle)
-    lap 1
+    lap { 1 }
     effort
   end
 end

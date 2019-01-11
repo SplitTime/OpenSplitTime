@@ -21,6 +21,12 @@ module Locatable
     Location.new(latitude, longitude, distance_threshold)
   end
 
+  def location=(other)
+    return nil unless other
+    self.latitude = other.latitude
+    self.longitude = other.longitude
+  end
+
   protected
 
   def distance_threshold

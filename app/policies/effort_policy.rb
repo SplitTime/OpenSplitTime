@@ -49,14 +49,6 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
-  def add_beacon?
-    user.authorized_to_edit?(effort)
-  end
-
-  def add_report?
-    user.authorized_to_edit_personal?(effort)
-  end
-
   def with_times_row?
     user.present?
   end

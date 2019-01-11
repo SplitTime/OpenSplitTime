@@ -54,8 +54,8 @@ en:
       updated_not_active: "Your password was changed."
     registrations:
       edit:
-        are_you_sure: "Are you sure?"
-        cancel_my_account: "Cancel my account"
+        are_you_sure: "We would be sad to see you go. Are you sure?"
+        cancel_my_account: "Delete my account"
         leave_blank_if_you_don_t_want_to_change_it: "leave blank if you don't want to change it"
         title: "Edit %{resource}"
         we_need_your_current_password_to_confirm_your_changes: "we need your current password to confirm your changes"
@@ -75,13 +75,14 @@ en:
       signed_in: ""
       signed_out: ""
       new:
-        sign_in: "Sign in"
+        sign_in: "Log in"
     shared:
+      minimum_password_length: "8 characters minimum"
       links:
         didn_t_receive_confirmation_instructions: "Didn't receive confirmation instructions?"
         didn_t_receive_unlock_instructions: "Didn't receive unlock instructions?"
         forgot_your_password: "Forgot your password?"
-        sign_in: "Sign in"
+        sign_in: "Log in"
         sign_in_with_provider: "Sign in with %{provider}"
         sign_up: "Sign up"
     unlocks:

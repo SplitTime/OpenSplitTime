@@ -1,0 +1,36 @@
+.switchery {
+
+	&, > small {
+		border-radius: 4px;
+		height: 32px;
+	}
+
+	&.switchery-small {
+		width: 40px;
+		
+		&, > small {
+			border-radius: 3px;
+			height: 28px;
+		}
+	}
+
+	&.switchery-large {
+		&, > small {
+			border-radius: 6px;
+			height: 44px;
+		}
+	}
+}
+
+label.switchery-label {
+	cursor: pointer;
+	
+	> span {
+		display: inline-block;
+		font-size: 12px;
+		line-height: 1;
+		font-weight: normal;
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}

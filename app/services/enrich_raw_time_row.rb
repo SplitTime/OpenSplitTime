@@ -66,7 +66,7 @@ class EnrichRawTimeRow
   def set_stops
     return unless raw_time_pair.any?(&:stopped_here)
     raw_time_pair.each { |raw_time| raw_time.stopped_here = false }
-    raw_time_pair.select(&:entered_time).last&.assign_attributes(stopped_here: true)
+    raw_time_pair.select(&:has_time_data?).last&.assign_attributes(stopped_here: true)
   end
 
   def add_attributes_and_verify

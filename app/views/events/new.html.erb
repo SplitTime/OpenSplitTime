@@ -1,6 +1,22 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: New event" %>
+  <% "OpenSplitTime: New event" %>
 <% end %>
-<h1 align="center">New Event</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>New Event</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item active">New Event</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+</article>

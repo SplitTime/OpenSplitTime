@@ -1,0 +1,27 @@
+<div class="modal fade" id="log-in-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><%= t('devise.sessions.new.sign_in').titleize %></h2>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="log-in-error" class="row justify-content-center" style="display:none">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login">
+              <strong>Invalid email or password.</strong>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col col-login">
+            <%= render 'devise/sessions/form', modal: true %>
+            <%= render 'devise/shared/modal_links' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

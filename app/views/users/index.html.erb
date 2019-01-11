@@ -1,42 +1,54 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: List users" %>
+  <% "OpenSplitTime: List users" %>
 <% end %>
 
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Users</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item active">Users</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
-<div class="row header">
-  <div class="col-xs-5">
-    <h2>
-      <strong>Users</strong>
-    </h2>
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <%= link_to 'Export email list', users_path(format: :csv), class: 'btn btn-primary' %>
+      </div>
+      <div class="col-6">
+        <%= render 'lookup' %>
+      </div>
+    </div>
   </div>
-  <div class="col-xs-7 text-right">
-    <%= link_to 'Export email list', users_path(format: :csv), class: 'btn btn-sm btn-primary btn-margin-top' %>
-  </div>
-</div>
+</aside>
 
-<%= render 'lookup' %>
+<article class="ost-article container">
+  <div class="row">
+    <div class="col-xs-8">
+      <%= will_paginate(@presenter.users) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-8">
+      <% if @presenter.users.present? %>
+        <%= render 'users', view_object: @presenter %>
+      <% else %>
+        <h4><%= "No users match this search" if params.dig(:filter, :search) %></h4>
+      <% end %>
+    </div>
+  </div>
 
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
+  <div class="row">
+    <div class="col-xs-8">
+      <%= will_paginate(@presenter.users) %>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-8">
-    <% if @resources.present? %>
-        <%= render 'users', users: @resources, params: params %>
-    <% else %>
-        <br/>
-        <p><strong>
-          <% "No users match this search" if params[:filter] && params[:filter][:search].present? %>
-        </strong></p>
-    <% end %>
-  </div>
-</div>
-
-<hr>
-<div class="row">
-  <div class="col-xs-8">
-    <%= will_paginate(@resources, inner_window: 2, outer_window: 0) %>
-  </div>
-</div>
+</article>

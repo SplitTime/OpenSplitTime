@@ -1,0 +1,372 @@
+@import "variables";
+@import "mixins";
+
+/***********
+Placeholders
+************/
+.no-gutter > [class*='col-'] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.no-gutter-right > [class*='col-'] {
+    padding-right: 0;
+}
+
+/******
+Globals
+*******/
+// .row.header,
+// .row.mid,
+// .live_entry .row {
+//     margin: 0 auto 25px; // Nerfed: Please QA
+// }
+.lap-disabled .lap-only {
+    display: none;
+}
+.group-disabled .group-only {
+    display: none;
+}
+.time-in-disabled .time-in-only {
+    display: none;
+}
+.time-out-disabled .time-out-only {
+    display: none;
+}
+.pacer-disabled .pacer-only {
+    display: none;
+}
+
+/******* Header ********/
+.header {
+    @extend .no-gutter;
+    position: relative;
+    border-bottom: 1px solid $gray;
+
+    .page-navigation {
+        padding-top: 20px;
+        margin-bottom: 10px;
+        text-align: right;
+    }
+
+    .page-navigation-left {
+        padding-top: 20px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .partner-ad {
+
+    }
+
+    .page-navigation-text {
+        padding-top: 10px;
+        padding-bottom: 0px;
+        text-align: right;
+        vertical-align: bottom;
+    }
+
+    .event-id {
+        display: none;
+    }
+}
+
+/******* Mid ********/
+.mid {
+    @extend .no-gutter;
+    position: relative;
+    border-bottom: 1px solid $gray;
+
+    .page-navigation {
+        padding-top: 0px;
+        margin-bottom: 10px;
+        text-align: right;
+    }
+
+    .page-navigation-left {
+        padding-top: 0px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .page-navigation-text {
+        padding-top: 10px;
+        padding-bottom: 0px;
+        text-align: right;
+        vertical-align: bottom;
+    }
+
+    .mid-padding {
+        padding-bottom: 10px;
+        vertical-align: top;
+    }
+}
+
+/******* Live Entry Form ********/
+.live-entry {
+    margin: 20px auto;
+
+    label {
+        text-align: right;
+        padding-top: 7px;
+    }
+
+    .message {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    button {
+        text-align: center;
+        input[type="checkbox"] {
+            display: none;
+        }
+    }
+
+    .form-buttons button {
+        width: 46%;
+
+        &:last-child {
+            margin-left: 4%;
+        }
+    }
+
+    .time-status {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    $status-list: good bad questionable exists;
+
+    .time-status {
+        .input-group-text {
+            width: 4em;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fas {
+            display: none;
+        }
+        .null {
+            display: inline-block;
+        }
+    }
+
+    @each $status in $status-list {
+        input.#{$status} ~ .time-status {
+            .#{$status} {
+                display: inline-block;
+                padding: 0 0.2em;
+            }
+        }
+    }
+
+}
+
+/******* Splits Slider ********/
+.splits-slider {
+    background: $darkGray;
+    position: relative;
+    min-height: 400px;
+
+    #js-effort-name:empty {
+        opacity: 0.5;
+        pointer-events: none;
+        color: $white;
+        
+        &:before {
+            content: 'Name';
+        }
+    }
+
+    #js-effort-event-name:empty {
+        opacity: 0.5;
+        pointer-events: none;
+        color: $white;
+        
+        &:before {
+            content: 'Event';
+        }
+    }
+
+    .table-wrapper {
+        position: relative;
+        &:after {
+            content: '';
+            position: absolute;
+            display: block;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            box-shadow: 0 0 5px 4px $darkGray;
+        }
+    }
+
+    .table-striped > tbody {
+        & > tr:nth-of-type(even) {
+            background: #333;
+        }
+
+        & > tr:nth-of-type(odd) {
+            background: #555;
+        }
+    }
+
+    .table {
+        color: $white;
+
+        td, th {
+            border: none;
+        }
+
+        & > tbody > tr.active {
+            background: $gray-500;
+            color: $black;
+            font-weight: bold;
+        }
+    }
+
+    .splits-slider-data {
+        [data-toggle="modal"] {
+            cursor: pointer;
+        }
+
+        color: $white;
+        position: absolute;
+        top: 0; left: 0;
+        right: 0; bottom: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+
+        .table-wrapper {
+            overflow: auto;
+        }
+
+        .data-label {
+            text-align: right;
+            clear: left;
+        }
+    }
+}
+
+/******* Provisional Data Table ********/
+.provisional-data {
+
+    .provisional-data-table {
+        th {
+            cursor: pointer;
+
+            @media (min-width: 992px) {
+                &.sorting,
+                &.sorting_asc,
+                &.sorting_desc {
+                    position: relative;
+
+                    &:before,
+                    &:after {
+                        display: block;
+                        position: absolute;
+                        right: 10px;
+                        font-size: 10px;
+                        line-height: 12px;
+                        color: $mediumGray;
+                    }
+
+                    &:before {
+                        content: '\25B2';
+                        bottom: 50%;
+                    }
+
+                    &:after {
+                        content: '\25BC';
+                        top: 50%;
+                    }
+                }
+
+                &.sorting_asc:before {
+                    color: inherit;
+                }
+
+                &.sorting_desc:after {
+                    color: inherit;
+                }
+            }
+        }
+
+        td {
+            vertical-align: middle;
+        }
+    }
+
+    .dataTables_filter {
+        text-align: right;
+
+        .dataTables_filter-clear {
+            display: none;
+            cursor: pointer;
+            pointer-events: all;
+        }
+    }
+
+    .dataTables_empty {
+        text-align: center;
+    }
+
+    .dataTables_length, .dataTables_filter {
+        select, .input-group {
+            margin: 0 5px;
+        }
+    }
+
+    .dataTables_info {
+        line-height: 34px;
+    }
+
+    .dataTables_paginate {
+        text-align: right;
+        ul { margin-top: 0; }
+    }
+
+    .row-edit-btns {
+        text-align: right;
+        min-width: 7.0em;
+        box-sizing: content-box;
+
+        .effort-row-btn {
+            display: inline-block;
+            margin-left: 0.20em;
+            width: 2em;
+            height: 2em;
+            text-align: center;
+            padding: 0;
+            line-height: 1;
+            -webkit-border-radius: 14px;
+            -moz-border-radius: 14px;
+            border-radius: 14px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .table-submit-wrapper {
+        text-align: right;
+        margin-bottom: 4em;
+
+        > * {
+            margin: 0 1.5em 1em 0;
+        }
+
+        button {
+            padding: 0.5em 1.5em;
+        }
+    }
+}
+
+#debug {
+    display: none;
+}

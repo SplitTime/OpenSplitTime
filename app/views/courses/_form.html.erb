@@ -26,14 +26,7 @@
             <%= f.label :next_start_time, 'Start time of next event (if known)' %>
           </div>
           <div class="col-sm-8">
-            <%= f.datetime_select :next_start_time,
-                                  {use_short_month: true,
-                                   start_year: (Date.today + 1.year).year,
-                                   end_year: 1970,
-                                   ampm: true,
-                                   default: Date.today.in_time_zone + 6.hours,
-                                   order: [:month, :day, :year]},
-                                  {class: "dropdown-select-field"} %>
+            <%= f.datetimepicker_field :next_start_time_local %>
           </div>
         </div>
 

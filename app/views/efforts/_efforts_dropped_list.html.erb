@@ -1,25 +1,30 @@
 <table class="table table-condensed table-striped">
   <thead>
   <tr>
-    <th><%= link_to 'Bib', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :bib_number)) %></th>
-    <th><%= link_to 'Name', drop_list_event_path(@event_dropped_display.event, sort: toggled_sort_param(@event_dropped_display, :last_name, :first_name)) %></th>
+    <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
+    <% if @presenter.multiple_events? %>
+      <th><%= link_to_reversing_sort_heading('Event', 'event_id,sortable_bib_number', @presenter.existing_sort) %></th>
+    <% end %>
+    <th><%= link_to_reversing_sort_heading('Name', :effort_last_name, @presenter.existing_sort) %></th>
     <th>Category</th>
     <th>From</th>
-    <th><%= link_to 'Dropped where', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_distance)) %></th>
-    <th class="text-right">
-      <%= link_to 'Dropped when', drop_list_event_path(@event_dropped_display.event, sort: reversed_sort_param(@event_dropped_display, :final_time_from_start)) %>
-    </th>
+    <th><%= link_to_reversing_sort_heading('Dropped where', :final_distance, @presenter.existing_sort) %></th>
+    <th class="text-right"><%= link_to_reversing_sort_heading('Dropped when', :final_time_from_start, @presenter.existing_sort) %></th>
   </tr>
   </thead>
+
   <tbody>
-  <% @event_dropped_display.dropped_effort_rows.each do |effort_row| %>
-      <td><%= effort_row.bib_number %></td>
-      <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
-      <td><%= effort_row.bio_historic %></td>
-      <td><%= effort_row.flexible_geolocation %></td>
-      <td><%= effort_row.final_split_name %></td>
-      <td class="text-right"><%= day_time_format(effort_row.final_day_and_time) %></td>
-      </tr>
+  <% @presenter.dropped_effort_rows.each do |effort| %>
+    <td><%= effort.bib_number %></td>
+    <% if @presenter.multiple_events? %>
+      <td><%= effort.event.guaranteed_short_name %></td>
+    <% end %>
+    <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+    <td><%= effort.bio_historic %></td>
+    <td><%= effort.flexible_geolocation %></td>
+    <td><%= effort.final_split_name %></td>
+    <td class="text-right"><%= day_time_format(effort.final_day_and_time) %></td>
+    </tr>
   <% end %>
   </tbody>
 </table>

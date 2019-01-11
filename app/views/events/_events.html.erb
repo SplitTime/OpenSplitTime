@@ -48,28 +48,7 @@
         <% end %>
         <% if presenter.respond_to?(:event_group) && current_user&.authorized_to_edit?(presenter.event_group) %>
           <td class="text-center">
-            <div class="btn-group pull-right">
-              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                Actions
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><%= link_to 'Edit event', edit_event_path(event) %></li>
-                <li><%= link_to 'Change start time', edit_start_time_event_path(event) %></li>
-                <li><%= link_to 'Establish drops', set_stops_event_path(event),
-                                method: :put,
-                                data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
-                                        'at the last aid station for which times are available. Are you sure you want to proceed?'} %></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to 'Export finishers list', export_finishers_event_path(event, format: :csv) %></li>
-                <li><%= link_to 'Export to ultrasignup', export_to_ultrasignup_event_path(event, format: :csv) %></li>
-                <li role="separator" class="divider"></li>
-                <li><%= link_to 'Delete event', event_path(event, referrer_path: roster_event_group_path),
-                                method: :delete,
-                                data: {confirm: 'NOTE: This will delete the event including all efforts and split times related to it. ' +
-                                        'This action cannot be undone. Are you sure you want to go ahead?'} %></li>
-              </ul>
-            </div>
+            <%= event_actions_dropdown(event) %>
           </td>
         <% end %>
       </tr>

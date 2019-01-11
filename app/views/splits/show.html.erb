@@ -1,46 +1,66 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Show split - #{@presenter.base_name}" %>
 <% end %>
-<h1 align="center"><%= @presenter.base_name %></h1>
-<h4 align="center"><%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h4>
-<div class="row">
-  <div class="col-md-6 col-md-offset-3 center">
-    <%= @presenter.description %>
-  </div>
-</div>
 
-<div class="well col-xs-8 col-xs-offset-2">
-  <ul class="object-list-body">
-    <li>
-      <strong>Course:</strong>
-      <%= link_to @presenter.course.name, course_path(@presenter.course) %>
-    </li>
-    <li>
-      <strong>Vertical Gain From Start:</strong>
-      <%= elevation_format(@presenter.vert_gain_from_start) %>
-    </li>
-    <li>
-      <strong>Vertical Loss From Start:</strong>
-      <%= elevation_format(@presenter.vert_loss_from_start) %>
-    </li>
-  </ul>
-  <div class="article-actions">
-    <%= link_to '<< View course', course_path(@presenter.course, display_style: :splits), class: "btn btn-sm btn-default" %>
-    <%= link_to '< Back', :back, class: "btn btn-sm btn-default" %>
-    <% if current_user&.authorized_to_edit?(@presenter.split) %>
-        <%= link_to 'Edit this split', edit_split_path(@presenter), class: "btn btn-sm btn-primary" %>
-        <%= link_to 'Delete this split',
-                    split_path(@presenter),
-                    method: :delete,
-                    data: {confirm: "Are you sure?"},
-                    class: "btn btn-sm btn-danger" %>
-    <% end %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.base_name %></strong> - <%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <% if @presenter.organization %>
+              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.course.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.base_name %></li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <%= @presenter.description %>
+          <h6>
+            <strong>Course:</strong> <%= link_to @presenter.course.name, course_path(@presenter.course) %>
+          </h6>
+          <h6>
+            <strong>Vertical Gain From Start:</strong> <%= elevation_format(@presenter.vert_gain_from_start) %>
+          </h6>
+          <h6>
+            <strong>Vertical Loss From Start:</strong> <%= elevation_format(@presenter.vert_loss_from_start) %>
+          </h6>
+          <% if @presenter.latitude && @presenter.longitude %>
+            <h6>
+              <strong>Elevation:</strong> <%= elevation_format(@presenter.elevation) %>
+            </h6>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- Navigation -->
   </div>
-  <hr>
+</header>
+  
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-7">
+        <div>
+          <% if current_user&.authorized_to_edit?(@presenter.split) %>
+              <%= link_to 'Edit Split', edit_split_path(@presenter), class: "btn btn-primary" %>
+              <%= link_to 'Delete Split',
+                          split_path(@presenter),
+                          method: :delete,
+                          data: {confirm: "Are you sure?"},
+                          class: "btn btn-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
 
+<article class="ost-article container">
   <% if @presenter.latitude && @presenter.longitude %>
-      <%= "Elevation: #{elevation_format(@presenter.elevation)}" %>
-      <hr>
       <div id="map" style="width: 550px; height: 350px;"></div>
 
       <script>
@@ -52,5 +72,4 @@
           });
       </script>
   <% end %>
-
-</div>
+</article>

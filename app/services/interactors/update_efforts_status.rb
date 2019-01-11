@@ -47,7 +47,7 @@ module Interactors
 
     def message
       if errors.empty?
-        return '' unless changed_efforts.present? || changed_split_times.present?
+        return nil unless changed_efforts.present? || changed_split_times.present?
         updated_efforts_string = changed_efforts.present? ? pluralize(changed_efforts.size, 'effort') : nil
         updated_split_times_string = changed_split_times.present? ? pluralize(changed_split_times.size, 'split time') : nil
         "Updated status for #{[updated_efforts_string, updated_split_times_string].compact.join(' and ')}. "

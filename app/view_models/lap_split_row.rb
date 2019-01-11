@@ -26,7 +26,7 @@ class LapSplitRow
   end
 
   def time_cluster
-    @time_cluster ||= TimeCluster.new(finish: split.finish?, split_times_data: split_times)
+    @time_cluster ||= TimeCluster.new(split_times_data: split_times, finish: finish?, show_indicator_for_stop: show_indicator_for_stop?)
   end
 
   def split_id
@@ -43,6 +43,10 @@ class LapSplitRow
 
   def done?
     stopped_here? || finish?
+  end
+
+  def show_indicator_for_stop?
+    !finish? || show_laps
   end
 
   private

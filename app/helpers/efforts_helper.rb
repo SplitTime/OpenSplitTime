@@ -2,13 +2,13 @@
 
 module EffortsHelper
 
-  def data_status_tag(effort_row)
+  def data_status_class(effort_row)
     if effort_row.bad?
-      tag('tr', class: "text-danger")
+      'text-danger'
     elsif effort_row.questionable?
-      tag('tr', class: "text-warning")
+      'text-warning'
     else
-      tag('tr')
+      ''
     end
   end
 
@@ -42,5 +42,35 @@ module EffortsHelper
     provisional_marker = (provisional_time && !true_time) ? '*' : ''
     time_string = time_format_hhmmss(true_time || provisional_time)
     time_string + provisional_marker
+  end
+
+  def effort_row_confirm_buttons(row, effort)
+    if row.days_and_times.compact.present?
+      row.time_data_statuses.each_with_index do |data_status, i|
+        new_data_status = data_status == 'confirmed' ? '' : 'confirmed'
+        button_class = data_status == 'confirmed' ? 'success' : 'outline-secondary'
+        effort_data = {split_times_attributes: {id: row.split_time_ids[i], data_status: new_data_status}}
+        url = update_split_times_effort_path(effort, effort: effort_data)
+        options = {method: :patch,
+                   disabled: row.split_time_ids[i].blank?,
+                   class: "btn btn-#{button_class}"}
+        concat link_to fa_icon('thumbs-up'), url, options
+        concat ' '
+      end
+    end
+  end
+
+  def effort_row_delete_buttons(row, effort)
+    if row.split_time_ids.compact.present?
+      row.split_time_ids.each do |id|
+        url = delete_split_times_effort_path(effort, split_time_ids: [id])
+        options = {method: :delete,
+                   disabled: id.blank?,
+                   data: {confirm: 'This action cannot be undone. OK to proceed?'},
+                   class: 'btn btn-danger'}
+        concat link_to fa_icon('trash'), url, options
+        concat ' '
+      end
+    end
   end
 end

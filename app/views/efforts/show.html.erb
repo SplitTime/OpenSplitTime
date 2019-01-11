@@ -6,44 +6,58 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="row">
-      <div class="ost-title col-xs-12">
-        <h1><strong>
-          <% if @presenter.person %>
-            <%= link_to @presenter.full_name, person_path(@presenter.person) %>
-          <% else %>
-            <%= @presenter.full_name %>
-          <% end %>
-        </strong></h1>
-        <ul class="breadcrumb breadcrumb-ost">
-          <li><%= link_to 'Organizations', organizations_path %></li>
-          <li><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
-          <% if @presenter.event_group.multiple_events? %>
-            <li><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-          <% end %>
-          <li><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
-          <li><%= @presenter.full_name %></li>
-        </ul>
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>
+            <% if @presenter.person %>
+              <%= link_to @presenter.full_name, person_path(@presenter.person) %>
+            <% else %>
+              <%= @presenter.full_name %>
+            <% end %>
+          </strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
+            <% if @presenter.event_group.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <h6>
+            <strong>Status:</strong> 
+            <%= @presenter.finish_status %>
+            <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
+            <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
+            <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
+          </h6>
+        </div>
       </div>
-      <div class="col-xs-12 col-sm-2">
-        <% if @presenter.photo.present? %>
+      <% if @presenter.photo.present? %>
+        <div class="col-3">
           <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
+      <%= div_for(@presenter.person) do %>
+        <table class="table-fixed">
+          <tr>
+            <th>Notify Me Live</th>
+          </tr>
+          <tr>
+            <td class="table-button"><%= link_to_toggle_email_subscription(@presenter.person) %></td>
+            <td class="table-button"><%= link_to_toggle_sms_subscription(@presenter.person) %></td>
+          </tr>
+        </table>
+      <% end %>
     </div>
-    <h5>Status:
-      <strong>
-        <%= @presenter.finish_status %>
-        <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-        <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-        <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-      </strong>
-    </h5>
     <% unless @presenter.simple? || @presenter.not_analyzable? %>
       <ul class="nav nav-tabs nav-tabs-ost">
-        <li class="active"><%= link_to "Split times", effort_path(@presenter.effort) %></li>
-        <li><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
-        <li><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
+        <li class="nav-item active"><%= link_to "Split times", effort_path(@presenter.effort) %></li>
+        <li class="nav-item"><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
+        <li class="nav-item"><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
       </ul>
     <% end %>
   </div>
@@ -52,27 +66,53 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 btn-toolbar">
-        <% if @presenter.person %>
-          <%= div_for(@presenter.person) do %>
-            <div class="btn-group btn-group-ost">
-              <div class="btn btn-xs btn-default" disabled>Notify Me Live:</div>
-              <%= link_to_toggle_email_subscription(@presenter.person) %>
-              <%= link_to_toggle_sms_subscription(@presenter.person) %>
-            </div>
-          <% end %>
-        <% end %>
 
+      <% if current_user&.authorized_to_edit?(@presenter.effort) %>
+        <div class="col form-inline">
+          <div>
+            <%= effort_actions_dropdown_menu(@presenter) %>
+            <% unless @presenter.has_start_time? %>
+              <%= link_to 'Start effort', start_effort_path(@presenter.effort),
+                          method: :put,
+                          class: "btn btn-success" %>
+            <% end %>
+            <% if @presenter.needs_final_stop? %>
+              <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
+                          method: :put,
+                          class: "btn btn-success" %>
+            <% end %>
+            <% if @presenter.has_removable_stop? %>
+              <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
+                          method: :put,
+                          class: "btn btn-success" %>
+            <% end %>
+            <% if @presenter.next_problem_effort %>
+              <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
+                          class: "btn btn-success" %>
+            <% end %>
+            <%= link_to 'Raw time records', raw_times_event_group_path(@presenter.event_group, filter: {bib_number: @presenter.bib_number}),
+                        class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
+        <%= div_for(@presenter.effort, class: 'col-auto form-inline') do %>
+          <%= link_to_toggle_check_in(@presenter.effort, button_param: :check_in_effort_show) %>
+        <% end %>
+      <% end %>
+
+      <div class="col-auto form-inline">
         <% if @presenter.beacon_url %>
           <%= link_to effort_beacon_button_text(@presenter.beacon_url),
                       url_with_protocol(@presenter.beacon_url),
-                      class: "btn btn-ost btn-default",
+                      class: "btn btn-outline-secondary btn-outline-secondary",
                       target: "_blank" %>
         <% end %>
         <% if @presenter.report_url %>
           <%= link_to effort_report_button_text(@presenter.report_url),
                       url_with_protocol(@presenter.report_url),
-                      class: "btn btn-ost btn-default",
+                      class: "btn btn-outline-secondary btn-outline-secondary",
                       target: "_blank" %>
         <% end %>
       </div>
@@ -81,85 +121,8 @@
 </aside>
 
 <article class="ost-article container">
-  <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-    <div class="row">
-      <div class="col-xs-7">
-        <% if current_user&.authorized_to_edit?(@presenter.effort) %>
-          <%= effort_actions_dropdown_menu(@presenter) %>
-          <% unless @presenter.has_start_time? %>
-            <%= link_to 'Start effort', start_effort_path(@presenter.effort),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <%= link_to 'Set data status', set_data_status_effort_path(@presenter.effort),
-                      method: :put,
-                      class: "btn btn-md btn-success" %>
-          <% if @presenter.next_problem_effort %>
-            <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <% if @presenter.needs_final_stop? %>
-            <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <% if @presenter.stopped? %>
-            <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
-                        method: :put,
-                        class: "btn btn-md btn-success" %>
-          <% end %>
-          <%= link_to 'Raw time records', raw_times_event_group_path(@presenter.event_group, filter: {bib_number: @presenter.bib_number}),
-                      class: "btn btn-md btn-success" %>
-        <% end %>
-      </div>
-      <div class="col-xs-2">
-        <%= div_for(@presenter.effort) do %>
-          <%= link_to_toggle_check_in(@presenter.effort, button_param: :check_in_effort_show) %>
-        <% end %>
-      </div>
-      <div class="col-xs-3">
-        <div class="text-right">
-          <% if @presenter.in_progress? && current_user&.authorized_to_edit?(@presenter.effort) %>
-            <strong><%= @presenter.beacon_url ? 'Modify locator beacon link: ' : 'Add link to locator beacon:' %></strong>
-            <a href="#" id="beacon-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your SPOT or other personal locator site here:"><%= "#{@presenter.beacon_url}" %></a>
-          <% end %>
-          <% if !@presenter.in_progress? && current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-            <strong><%= @presenter.report_url ? 'Modify trip report link: ' : 'Add link to trip report:' %></strong>
-            <a href="#" id="report-link" data-type="text" data-pk="1" data-placement="left" data-title="Paste a link to your Strava page or personal trip report here:"><%= "#{@presenter.report_url}" %></a>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    <hr>
-  <% end %>
 
   <% if @presenter.lap_split_rows.present? %>
     <%= render 'split_times/split_times_list', view_object: @presenter %>
   <% end %>
 </article>
-
-<script>
-    $('#beacon-link').editable({
-        type: 'text',
-        emptytext: 'Click here',
-        url: '<%= add_beacon_effort_path(@presenter.effort) %>',
-        pk: 1,
-        title: 'Paste link:',
-        ajaxOptions: {
-            type: 'get',
-            dataType: 'script'
-        }
-    });
-
-    $('#report-link').editable({
-        type: 'text',
-        emptytext: 'Click here',
-        url: '<%= add_report_effort_path(@presenter.effort) %>',
-        pk: 1,
-        title: 'Paste link:',
-        ajaxOptions: {
-            type: 'get',
-            dataType: 'script'
-        }
-    });
-</script>

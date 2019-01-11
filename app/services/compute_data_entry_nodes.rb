@@ -11,7 +11,7 @@ class ComputeDataEntryNodes
   end
 
   def perform
-    incompatible_locations.present? ? [] : ordered_split_names.flat_map { |split_name| nodes_for(split_name) }
+    incompatible_locations.present? ? [incompatible_notice_node] : ordered_split_names.flat_map { |split_name| nodes_for(split_name) }
   end
 
   private
@@ -36,5 +36,18 @@ class ComputeDataEntryNodes
                         event_split_ids: splits_by_event(split_name).transform_values(&:id),
                         event_aid_station_ids: aid_stations_by_event(split_name).transform_values(&:id))
     end
+  end
+
+  def incompatible_notice_node
+    DataEntryNode.new(split_name: "Incompatible: #{incompatible_locations.map(&:titleize).to_sentence}",
+                      display_split_name: "Incompatible: #{incompatible_locations.to_sentence}",
+                      parameterized_split_name: 'incompatible-locations-present',
+                      sub_split_kind: 'in',
+                      label: "Incompatible: #{incompatible_locations.to_sentence}",
+                      latitude: nil,
+                      longitude: nil,
+                      min_distance_from_start: 0,
+                      event_split_ids: {},
+                      event_aid_station_ids: {})
   end
 end

@@ -1,0 +1,12 @@
+<!-- Event Selector Widget: Requires locals :events and :current_event -->
+<% if events&.many? %>
+  <div class="col-auto form-inline">
+    <div class="btn-group btn-group-ost">
+      <% events.each do |event| %>
+        <%= link_to event.guaranteed_short_name,
+                    request.params.merge(id: event.to_param, page: nil),
+                    class: "btn #{ event == current_event ? 'btn-primary' : 'btn-outline-secondary' }" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

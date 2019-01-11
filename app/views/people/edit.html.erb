@@ -1,6 +1,24 @@
 <% content_for :title do %>
     <% "OpenSplitTime: Edit person - #{@person.full_name}" %>
 <% end %>
-<h1>Edit Person</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+            <h1><strong>Edit Person - <%= @person.full_name %></strong></h1>
+            <ul class="breadcrumb breadcrumb-ost">
+                <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+                <li class="breadcrumb-item"><%= link_to @person.full_name, person_path(@person) %></li>
+                <li class="breadcrumb-item active">Edit</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+    <%= render 'form' %>
+</article>

@@ -14,3 +14,6 @@ global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
 import 'utils/growl';
+
+import TurboLinksAdapter from 'vue-turbolinks';
+Vue.use(TurboLinksAdapter);

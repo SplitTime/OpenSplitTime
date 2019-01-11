@@ -1,21 +1,25 @@
-<% content_for :title do %>Waypoints
+<% content_for :title do %>Splits
 <% end %>
-<h3>Splits</h3>
-<hr>
-<p>
-  You need a Split anywhere you want to record times. A course comes ready-made with a start and finish split. For
-  events where just finish times will be recorded, that's all you need. If you want to record times in between, you can
-  add intermediate splits. On an ultramarathon course, these would be your aid stations. For a non-organized solo
-  effort, these would be meaningful places where you measure your progress. For road races they could be mile or
-  kilometer markers.
-</p>
-<p>
-  Splits always have a fixed distance from the start of a Course. If you plan to record more than one time at a
-  single location (for example, "in" and "out" times at an aid station or transition),
-  create two intermediate points, set them at the same distance, and designate them as "in" or "out."
-</p>
-<p>
-  Splits may include elevation/latitude/longitude data manually entered or chosen with the help of a map.
-</p>
-<hr>
-<strong><%= link_to '<< Back', :back %></strong>
+
+<article class="ost-article container">
+  <h3>Splits</h3>
+  <hr>
+  <p>
+    You need a Split anywhere you want to record times. A course comes ready-made with a start and finish split. For
+    events where just finish times will be recorded, that's all you need. If you want to record times in between, you
+    can
+    add intermediate splits. On an ultramarathon course, these would be your aid stations. For a non-organized solo
+    effort, these would be meaningful places where you measure your progress. For road races they could be mile or
+    kilometer markers.
+  </p>
+  <p>
+    Splits always have a fixed distance from the start of a Course. If you plan to record more than one time at a
+    single location (for example, "in" and "out" times at an aid station or transition),
+    create two intermediate points, set them at the same distance, and designate them as "in" or "out."
+  </p>
+  <p>
+    Splits may include elevation/latitude/longitude data manually entered or chosen with the help of a map.
+  </p>
+  <hr>
+  <strong><%= link_to '<< Back', :back %></strong>
+</article>

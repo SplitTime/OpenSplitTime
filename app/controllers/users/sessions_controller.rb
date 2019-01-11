@@ -2,15 +2,19 @@
 
 module Users
   class SessionsController < Devise::SessionsController
+    def new
+      redirect_to root_path
+    end
+
     def create
-      resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#failure")
+      resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#log_in_failure")
       sign_in_and_redirect(resource_name, resource)
     end
 
     # If status is 401, Devise will redirect to the login screen, so use 403 (Forbidden) instead,
     # which is proper in any case according to https://stackoverflow.com/a/45405518/5961578
-    def failure
-      render json: {success: false, errors: {detail: {messages: ["Invalid email or password."]}}}, status: :forbidden
+    def log_in_failure
+      render json: {success: false, errors: {detail: {messages: [t('devise.sessions.invalid')]}}}, status: :forbidden
     end
 
     private

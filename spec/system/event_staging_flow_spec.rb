@@ -10,7 +10,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
   let(:stubbed_course) { build_stubbed(:course, :with_description) }
   let(:stubbed_event) { build_stubbed(:event) }
 
-  scenario 'Create a new Event with a new Organization and Course' do
+  xscenario 'Create a new Event with a new Organization and Course' do
     login_as user
     visit event_staging_app_path('new')
 
@@ -138,7 +138,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       event.splits << course.splits
     end
 
-    scenario 'Edit event information' do
+    xscenario 'Edit event information' do
       login_as user
       visit event_staging_app_path(event)
 
@@ -161,7 +161,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       expect(event.start_time).to eq('2017-10-01 07:30 -07:00')
     end
 
-    scenario 'Add a split' do
+    xscenario 'Add a split' do
       login_as user
       visit "#{event_staging_app_path(event)}#/splits"
 
@@ -241,7 +241,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
       end
     end
 
-    scenario 'Edit an existing effort' do
+    xscenario 'Edit an existing effort' do
       effort = create(:effort, :with_geo_attributes, :with_birthdate, :with_contact_info, :with_bib_number, event: event)
 
       login_as user

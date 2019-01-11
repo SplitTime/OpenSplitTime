@@ -47,7 +47,16 @@
       <div class="form-group">
         <label>Event Start Time</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="For an Event with multiple waves or differing start times, you will generally want to use the earliest start time."><i class="fas fa-question-circle"></i></span>
-        <input-datetime id="event-start-time-field" v-model="eventModel.virtualStartTime"></input-datetime>
+        <div class="row">
+          <div class="col-12">
+            <div class="input-group date" id="datetimepicker-start-time-in-home-zone" data-target-input="nearest">
+              <input type="text" id="event-start-time-field" class="js-input form-control datetimepicker-input" data-target="#datetimepicker-start-time-in-home-zone" v-model="eventModel.startTimeInHomeZone" />
+              <span class="input-group-append" data-target="#datetimepicker-start-time-in-home-zone" data-toggle="datetimepicker">
+                <span class="input-group-text fas fa-calendar-alt"></span>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label>Event Time Zone</label>

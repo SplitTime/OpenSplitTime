@@ -5,12 +5,12 @@ class TimeCluster
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:split_times_data, :finish, :show_indicator_for_stop],
+                           required: [:split_times_data, :finish],
                            exclusive: [:split_times_data, :finish, :show_indicator_for_stop],
                            class: self.class)
     @split_times_data = args[:split_times_data]
     @finish = args[:finish]
-    @show_indicator_for_stop = args[:show_indicator_for_stop]
+    @show_indicator_for_stop = args[:show_indicator_for_stop] || false
   end
 
   def finish?

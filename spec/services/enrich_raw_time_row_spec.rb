@@ -59,9 +59,9 @@ RSpec.describe EnrichRawTimeRow do
         end
       end
 
-      context 'when a stop is set on the first raw_time and the second raw_time has no entered_time' do
+      context 'when a stop is set on the first raw_time and the second raw_time has no entered_time or absolute_time' do
         let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: '10:00:00', split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
-        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, absolute_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
 
         it 'leaves the stop on the first raw_time' do
           expect(request_raw_times.map(&:stopped_here)).to eq([true, false])
@@ -73,8 +73,8 @@ RSpec.describe EnrichRawTimeRow do
       end
 
       context 'when a stop is set but no time has an entered_time' do
-        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
-        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
+        let(:raw_time_1) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, absolute_time: nil, split_name: 'Cunningham', sub_split_kind: 'in', stopped_here: true) }
+        let(:raw_time_2) { build_stubbed(:raw_time, event_group: nil, bib_number: '10', entered_time: nil, absolute_time: nil, split_name: 'Cunningham', sub_split_kind: 'out', stopped_here: false) }
 
         it 'removes the stop' do
           expect(request_raw_times.map(&:stopped_here)).to eq([true, false])

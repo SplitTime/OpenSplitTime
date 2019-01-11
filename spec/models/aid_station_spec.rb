@@ -84,16 +84,6 @@ RSpec.describe AidStation, type: :model do
           expect(aid_station).to be_valid
         end
       end
-
-      context 'when an aid_station is added resulting in an incompatible split within the event_group' do
-        let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 41, longitude: -106) }
-
-        it 'is invalid' do
-          aid_station = create(:aid_station, event: event_2, split: course_2_split_2)
-          expect(aid_station).not_to be_valid
-          expect(aid_station.errors.full_messages).to include(/Split Finish is incompatible with similarly named splits within event group/)
-        end
-      end
     end
   end
 

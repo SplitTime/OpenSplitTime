@@ -35,7 +35,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
@@ -45,7 +45,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who created the effort' do
@@ -57,7 +57,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -71,7 +71,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
@@ -81,7 +81,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
   end
 
@@ -95,7 +95,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
@@ -105,7 +105,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who created the effort' do
@@ -117,7 +117,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -131,7 +131,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
@@ -141,7 +141,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
   end
 
@@ -155,7 +155,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
@@ -165,7 +165,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).not_to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who created the effort' do
@@ -177,7 +177,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -191,7 +191,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
@@ -201,7 +201,7 @@ RSpec.describe 'visit an effort show page' do
       expect(page).to have_content(effort.full_name)
       expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
       expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
-      expect(page).to have_link('Effort', href: edit_effort_path(effort))
+      expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
   end
 end

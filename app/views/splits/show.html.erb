@@ -55,15 +55,8 @@
 
 <article class="ost-article container">
   <% if @presenter.latitude && @presenter.longitude %>
-      <div id="map" style="width: 550px; height: 350px;"></div>
-
-      <script>
-          document.addEventListener("turbolinks:load", function () {
-              var locations = <%= [@presenter.split].to_json.html_safe %>;    // pass ruby variable to javascript
-              var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
-
-              gmap_show(locations, trackPoints);    // init show map
-          });
-      </script>
+    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
+         data-locations="<%= [@presenter.split].to_json %>"
+         data-track-points="<%= @presenter.track_points.to_json %>"></div>
   <% end %>
 </article>

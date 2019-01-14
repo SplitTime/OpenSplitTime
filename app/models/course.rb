@@ -8,9 +8,11 @@ class Course < ApplicationRecord
   extend FriendlyId
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
+
+  has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
-  has_many :events
-  accepts_nested_attributes_for :splits, :reject_if => lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
+
+  accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
   has_attached_file :gpx
   include DeletableAttachment
 

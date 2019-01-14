@@ -1,4 +1,4 @@
-<div class="modal fade" id="log-in-modal">
+<div class="modal fade" id="log-in-modal" data-controller="login">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div id="log-in-error" class="row justify-content-center" style="display:none">
+        <div class="row justify-content-center" style="display:none" data-target="login.error">
           <div class="alert alert-info d-block" role="alert">
             <div class="col col-login">
               <strong>Invalid email or password.</strong>

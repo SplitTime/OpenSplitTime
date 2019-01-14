@@ -1,6 +1,30 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
+  <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
 <% end %>
-<h1 align="center">Edit Event Group</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Edit Event Group</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+  <hr>
+  <%= link_with_strong_confirm('Delete this event group', event_group_path(@event_group),
+                               resource: @event_group,
+                               noteworthy_associations: [:events, :entrants, :split_times],
+                               class: "btn btn-danger") %>
+</article>

@@ -21,7 +21,10 @@
         <% if current_user&.authorized_fully?(@presenter.organization) %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-outline-secondary" %>
-          <%= link_to 'Delete this organization', '#', data: {toggle: 'modal', target: '#confirm-modal'}, class: "btn btn-outline-secondary" %>
+          <%= link_with_strong_confirm('Delete this organization', organization_path(@presenter.organization),
+                                       resource: @presenter.organization,
+                                       noteworthy_associations: [:events, :stewards, :courses],
+                                       class: "btn btn-outline-secondary") %>
         <% end %>
       </aside>
     </div>
@@ -41,28 +44,6 @@
     </ul>
   </div>
 </header>
-
-<aside id="confirm-modal" class="modal fade" role="dialog" data-controller="confirm">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="js-title modal-title">Are you absolutely sure?</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <p class="js-copy">This action <strong>cannot</strong> be undone. This will permanently delete the
-          <strong><%= @presenter.organization.name %></strong> organization with all of its events, stewards, and other
-          related information.</p>
-        <p class="js-copy">To proceed, type the name of the organization below and click the Delete button.</p>
-      </div>
-      <div class="modal-footer">
-        <%= text_field_tag 'confirm', nil, class: 'form-control input-block', autofocus: true, data: {action: 'keyup->confirm#compare', target: 'confirm.pattern', 'pattern-required' => @presenter.organization.name} %>
-        <%= link_to 'Permanently Delete', organization_path(@presenter.organization), class: 'btn btn-block btn-danger disabled', method: :delete, data: {target: 'confirm.deleteButton'} %>
-      </div>
-    </div>
-  </div>
-</aside>
 
 <% if @presenter.display_style == 'courses' %>
   <article class="ost-article container">

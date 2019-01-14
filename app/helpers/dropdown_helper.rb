@@ -208,14 +208,7 @@ module DropdownHelper
         {name: 'Export finishers list',
          link: export_finishers_event_path(event, format: :csv)},
         {name: 'Export to ultrasignup',
-         link: export_to_ultrasignup_event_path(event, format: :csv)},
-        {role: :separator},
-        {name: 'Delete event',
-         link: event_path(event, referrer_path: roster_event_group_path),
-         method: :delete,
-         data: {confirm: 'NOTE: This will delete the event including all efforts and split times related to it. ' +
-             'This action cannot be undone. Are you sure you want to go ahead?'},
-         class: 'text-danger'}
+         link: export_to_ultrasignup_event_path(event, format: :csv)}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
   end
@@ -231,12 +224,6 @@ module DropdownHelper
          link: delete_all_times_event_group_path(view_object),
          method: :delete,
          data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-             'This action cannot be undone. Are you sure you want to go ahead?'},
-         class: 'text-danger'},
-        {name: 'Delete group',
-         link: event_group_path(@presenter, referrer_path: event_groups_path),
-         method: :delete,
-         data: {confirm: 'NOTE: This will delete the event group including all events, efforts, and times related to it. ' +
              'This action cannot be undone. Are you sure you want to go ahead?'},
          class: 'text-danger'}
     ]

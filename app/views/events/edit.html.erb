@@ -23,4 +23,9 @@
 
 <article class="ost-article container">
   <%= render 'form' %>
+  <hr>
+  <%= link_with_strong_confirm('Delete this event', event_path(@event),
+                               resource: @event,
+                               noteworthy_associations: [:entrants, :split_times],
+                               class: "btn btn-danger") %>
 </article>

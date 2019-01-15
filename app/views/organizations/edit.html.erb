@@ -21,4 +21,9 @@
 
 <article class="ost-article container">
   <%= render 'form' %>
+  <hr>
+  <%= link_to_delete_resource('Delete this organization', organization_path(@organization),
+                              resource: @organization,
+                              noteworthy_associations: [:events, :stewards, :courses],
+                              class: "btn btn-danger") %>
 </article>

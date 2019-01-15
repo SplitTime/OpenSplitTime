@@ -21,10 +21,10 @@
         <% if current_user&.authorized_fully?(@presenter.organization) %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-outline-secondary" %>
-          <%= link_with_strong_confirm('Delete this organization', organization_path(@presenter.organization),
-                                       resource: @presenter.organization,
-                                       noteworthy_associations: [:events, :stewards, :courses],
-                                       class: "btn btn-outline-secondary") %>
+          <%= link_to_delete_resource('Delete this organization', organization_path(@presenter.organization),
+                                      resource: @presenter.organization,
+                                      noteworthy_associations: [:events, :stewards, :courses],
+                                      class: "btn btn-outline-secondary") %>
         <% end %>
       </aside>
     </div>

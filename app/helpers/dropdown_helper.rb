@@ -218,14 +218,7 @@ module DropdownHelper
         {name: 'Edit group',
          link: edit_event_group_path(view_object)},
         {name: 'Add/Remove Stewards',
-         link: organization_path(view_object.organization, display_style: 'stewards')},
-        {role: :separator},
-        {name: 'Delete all times',
-         link: delete_all_times_event_group_path(view_object),
-         method: :delete,
-         data: {confirm: 'NOTE: This will delete all split times and time records for the entire event group. ' +
-             'This action cannot be undone. Are you sure you want to go ahead?'},
-         class: 'text-danger'}
+         link: organization_path(view_object.organization, display_style: 'stewards')}
     ]
     build_dropdown_menu('Edit', dropdown_items, button: true)
   end

@@ -31,6 +31,6 @@
   <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
                                class: 'btn btn-outline-secondary text-danger',
                                message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
-                               required_pattern: "#{@event_group.name} times",
+                               required_pattern: "#{@event_group.name.upcase} TIMES",
                                strong_confirm_id: "strong-confirm-times-event-group-#{@event_group.id}") %>
 </article>

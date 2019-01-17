@@ -4,14 +4,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="js-title modal-title"><strong>Are you absolutely sure?</strong></h4>
+        <h4 class="modal-title"><strong>Are you absolutely sure?</strong></h4>
         <button type="button" tabindex="2" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
-        <p class="js-copy"><strong>This action cannot be undone.</strong></p>
-        <p class="js-copy"><%= message %></p>
-        <p class="js-copy">To proceed, type <strong><%= required_pattern.upcase %></strong> below and click the Delete button.</p>
+        <p><strong>This action cannot be undone.</strong></p>
+        <p><%= message %></p>
+        <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the Delete button.</p>
       </div>
       <div class="modal-footer">
         <%= text_field_tag 'confirm', nil, class: 'form-control input-block', autofocus: true, tabindex: 1, data: {action: 'keyup->confirm#compare', target: 'confirm.pattern', 'pattern-required' => required_pattern} %>

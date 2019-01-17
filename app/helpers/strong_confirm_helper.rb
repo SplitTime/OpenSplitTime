@@ -8,7 +8,7 @@ module StrongConfirmHelper
     message = "This will permanently delete the #{resource.name.upcase} #{resource.class.model_name.human.downcase} with all of its #{list_items}."
 
     link_with_strong_confirm(name, path_on_confirm, options.merge(message: message,
-                                                                  required_pattern: resource.name,
+                                                                  required_pattern: resource.name.upcase,
                                                                   strong_confirm_id: strong_confirm_id_for(resource)))
   end
 

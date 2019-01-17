@@ -16,66 +16,222 @@ RSpec.describe Array do
   end
 
   describe '#elements_before' do
-    it 'returns all elements in the array indexed prior to the provided parameter' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_before('ferret')
-      expect(sub).to eq(%w(cat bird sheep))
+    context 'when the "inclusive" parameter is set to false' do
+      subject { array.elements_before(element, inclusive: false) }
+
+      context 'when the element is included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'ferret' }
+
+        it 'returns all elements in the array indexed prior to the provided parameter' do
+          expect(subject).to eq(%w(cat bird sheep))
+        end
+      end
+
+      context 'when nil is provided and the array includes a nil element' do
+        let(:array) { [1, 2, 3, nil, 5] }
+        let(:element) { nil }
+
+        it 'returns the elements prior to nil' do
+          expect(subject).to eq([1, 2, 3])
+        end
+      end
+
+      context 'when the element appears more than once' do
+        let(:array) { %w(cat bird sheep ferret sheep coyote) }
+        let(:element) { 'sheep' }
+
+        it 'bases the result on the first match of the provided parameter' do
+          expect(subject).to eq(%w(cat bird))
+        end
+      end
+
+      context 'when the first element is provided' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'cat' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
+
+      context 'when the provided parameter is not included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'buffalo' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
     end
 
-    it 'returns the elements prior to nil when nil is provided' do
-      array = [1, 2, 3, nil, 5]
-      sub = array.elements_before(nil)
-      expect(sub).to eq([1, 2, 3])
+    context 'when the "inclusive" parameter is set to true' do
+      subject { array.elements_before(element, inclusive: true) }
+
+      context 'when the element is included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'ferret' }
+
+        it 'returns all elements in the array indexed prior to the provided parameter' do
+          expect(subject).to eq(%w(cat bird sheep ferret))
+        end
+      end
+
+      context 'when nil is provided and the array includes a nil element' do
+        let(:array) { [1, 2, 3, nil, 5] }
+        let(:element) { nil }
+
+        it 'returns the elements prior to nil' do
+          expect(subject).to eq([1, 2, 3, nil])
+        end
+      end
+
+      context 'when the element appears more than once' do
+        let(:array) { %w(cat bird sheep ferret sheep coyote) }
+        let(:element) { 'sheep' }
+
+        it 'bases the result on the first match of the provided parameter' do
+          expect(subject).to eq(%w(cat bird sheep))
+        end
+      end
+
+      context 'when the first element is provided' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'cat' }
+
+        it 'returns the first element' do
+          expect(subject).to eq(['cat'])
+        end
+      end
+
+      context 'when the provided parameter is not included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'buffalo' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
     end
 
-    it 'bases the result on the first match of the provided parameter' do
-      array = %w(cat bird sheep ferret sheep coyote)
-      sub = array.elements_before('sheep')
-      expect(sub).to eq(%w(cat bird))
-    end
+    context 'when the "inclusive" parameter is not provided' do
+      subject { array.elements_before(element) }
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'ferret' }
 
-    it 'returns an empty array when the first element is provided' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_before('cat')
-      expect(sub).to eq([])
-    end
-
-    it 'returns an empty array when the provided parameter is not included in the array' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_before('buffalo')
-      expect(sub).to eq([])
+      it 'functions as thought the "inclusive" parameter were set to false' do
+        expect(subject).to eq(%w(cat bird sheep))
+      end
     end
   end
 
   describe '#elements_after' do
-    it 'returns all elements in the array indexed after to the provided parameter' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_after('ferret')
-      expect(sub).to eq(%w(coyote))
+    context 'when the "inclusive" parameter is set to false' do
+      subject { array.elements_after(element, inclusive: false) }
+
+      context 'when the element is included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'ferret' }
+
+        it 'returns all elements in the array indexed after the provided parameter' do
+          expect(subject).to eq(%w(coyote))
+        end
+      end
+
+      context 'when nil is provided and the array includes a nil element' do
+        let(:array) { [1, 2, 3, nil, 5] }
+        let(:element) { nil }
+
+        it 'returns the elements after nil' do
+          expect(subject).to eq([5])
+        end
+      end
+
+      context 'when the element appears more than once' do
+        let(:array) { %w(cat bird sheep ferret sheep coyote) }
+        let(:element) { 'sheep' }
+
+        it 'bases the result on the first match of the provided parameter' do
+          expect(subject).to eq(%w(ferret sheep coyote))
+        end
+      end
+
+      context 'when the last element is provided' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'coyote' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
+
+      context 'when the provided parameter is not included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'buffalo' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
     end
 
-    it 'returns the elements after nil when nil is provided' do
-      array = [1, 2, 3, nil, 5]
-      sub = array.elements_after(nil)
-      expect(sub).to eq([5])
+    context 'when the "inclusive" parameter is set to true' do
+      subject { array.elements_after(element, inclusive: true) }
+
+      context 'when the element is included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'ferret' }
+
+        it 'returns the element and all elements in the array indexed after the provided parameter' do
+          expect(subject).to eq(%w(ferret coyote))
+        end
+      end
+
+      context 'when nil is provided and the array includes a nil element' do
+        let(:array) { [1, 2, 3, nil, 5] }
+        let(:element) { nil }
+
+        it 'returns nil and all elements after nil' do
+          expect(subject).to eq([nil, 5])
+        end
+      end
+
+      context 'when the element appears more than once' do
+        let(:array) { %w(cat bird sheep ferret sheep coyote) }
+        let(:element) { 'sheep' }
+
+        it 'bases the result on the first match of the provided parameter' do
+          expect(subject).to eq(%w(sheep ferret sheep coyote))
+        end
+      end
+
+      context 'when the last element is provided' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'coyote' }
+
+        it 'returns the last element' do
+          expect(subject).to eq(['coyote'])
+        end
+      end
+
+      context 'when the provided parameter is not included in the array' do
+        let(:array) { %w(cat bird sheep ferret coyote) }
+        let(:element) { 'buffalo' }
+
+        it 'returns an empty array' do
+          expect(subject).to eq([])
+        end
+      end
     end
 
-    it 'bases the result on the first match of the provided parameter' do
-      array = %w(cat bird sheep ferret sheep coyote)
-      sub = array.elements_after('sheep')
-      expect(sub).to eq(%w(ferret sheep coyote))
-    end
+    context 'when the "inclusive" parameter is not provided' do
+      subject { array.elements_after(element) }
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'ferret' }
 
-    it 'returns an empty array when the last element is provided' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_after('coyote')
-      expect(sub).to eq([])
-    end
-
-    it 'returns an empty array when the provided parameter is not included in the array' do
-      array = %w(cat bird sheep ferret coyote)
-      sub = array.elements_after('buffalo')
-      expect(sub).to eq([])
+      it 'functions as thought the "inclusive" parameter were set to false' do
+        expect(subject).to eq(%w(coyote))
+      end
     end
   end
 

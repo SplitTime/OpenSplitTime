@@ -2,7 +2,8 @@
   <% "OpenSplitTime: Show effort - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <header class="ost-header">
   <div class="container">
@@ -28,7 +29,7 @@
         </div>
         <div class="ost-subtitle">
           <h6>
-            <strong>Status:</strong> 
+            <strong>Status:</strong>
             <%= @presenter.finish_status %>
             <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
             <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
@@ -67,9 +68,9 @@
   <div class="container">
     <div class="row">
 
-      <% if current_user&.authorized_to_edit?(@presenter.effort) %>
-        <div class="col form-inline">
-          <div>
+      <div class="col form-inline">
+        <div>
+          <% if current_user&.authorized_to_edit?(@presenter.effort) %>
             <%= effort_actions_dropdown_menu(@presenter) %>
             <% unless @presenter.has_start_time? %>
               <%= link_to 'Start effort', start_effort_path(@presenter.effort),
@@ -92,9 +93,17 @@
             <% end %>
             <%= link_to 'Raw time records', raw_times_event_group_path(@presenter.event_group, filter: {bib_number: @presenter.bib_number}),
                         class: "btn btn-success" %>
-          </div>
+          <% end %>
+
+          <% if @presenter.in_progress? && !@presenter.showing_projected_times? %>
+            <%= link_to 'Show projected', request.params.merge(projected: true), class: 'btn btn-success' %>
+          <% end %>
+
+          <% if @presenter.in_progress? && @presenter.showing_projected_times? %>
+            <%= link_to 'Hide projected', request.params.merge(projected: false), class: 'btn btn-success' %>
+          <% end %>
         </div>
-      <% end %>
+      </div>
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
         <%= div_for(@presenter.effort, class: 'col-auto form-inline') do %>

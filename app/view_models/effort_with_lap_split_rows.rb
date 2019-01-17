@@ -9,7 +9,7 @@ class EffortWithLapSplitRows
 
   def post_initialize(args)
     ArgsValidator.validate(params: args, required: :effort, exclusive: :effort, class: self.class)
-    @effort ||= args[:effort].enriched
+    @effort = args[:effort].enriched
   end
 
   def event

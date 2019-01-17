@@ -24,7 +24,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @presenter = EffortShowView.new(effort: @effort)
+    @presenter = EffortShowView.new(effort: @effort, params: params)
     session[:return_to] = effort_path(@effort)
   end
 

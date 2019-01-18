@@ -136,7 +136,7 @@ RSpec.describe SegmentTimeCalculator do
 
     def typical_time_stats(segment, time_result, count_result)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :stats)
-      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return([time_result, count_result])
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({'effort_count' => count_result, 'average' => time_result}.with_indifferent_access)
       calculator.typical_time
     end
   end
@@ -180,7 +180,7 @@ RSpec.describe SegmentTimeCalculator do
 
     def typical_time_focused(segment, time_result, count_result, effort_ids)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :focused, effort_ids: effort_ids)
-      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return([time_result, count_result])
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({'effort_count' => count_result, 'average' => time_result}.with_indifferent_access)
       calculator.typical_time
     end
   end

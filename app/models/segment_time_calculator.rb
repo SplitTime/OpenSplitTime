@@ -10,6 +10,10 @@ class SegmentTimeCalculator
     new(args).typical_time
   end
 
+  def self.projected_window(args)
+    new(args).projected_window
+  end
+
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:segment, :calc_model],
@@ -32,6 +36,11 @@ class SegmentTimeCalculator
     end
   end
 
+  def projected_window
+    result = query_result(effort_ids)
+    result[:effort_count] >= STATS_CALC_THRESHOLD ? result.slice(:lower_estimate, :average, :upper_estimate) : {}
+  end
+
   private
 
   attr_reader :segment, :effort_ids, :calc_model
@@ -42,9 +51,14 @@ class SegmentTimeCalculator
   end
 
   def typical_time_by_stats(effort_ids = nil)
+    result = query_result(effort_ids)
+    return nil unless result
+    result[:effort_count] >= STATS_CALC_THRESHOLD ? result[:average] : nil
+  end
+
+  def query_result(effort_ids = nil)
     return nil if effort_ids == [] # Empty array indicates an attempt for a focused query without any focus efforts
-    segment_time, effort_count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
-    effort_count >= STATS_CALC_THRESHOLD ? segment_time : nil
+    @query_result ||= SplitTimeQuery.typical_segment_time(segment, effort_ids)
   end
 
   def validate_setup

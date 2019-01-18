@@ -207,10 +207,6 @@ class SplitTime < ApplicationRecord
     self.start? && lap == 1
   end
 
-  def projected?
-    false
-  end
-
   private
 
   def event_start_time

@@ -12,29 +12,42 @@ class SplitTimeQuery < BaseQuery
     end_lap = segment.end_lap.to_i
     end_id = segment.end_id.to_i
     end_bitkey = segment.end_bitkey.to_i
+    focus_clause = effort_ids ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : 'true'
 
     query = <<-SQL
-      SELECT AVG(extract(epoch from(st2.absolute_time - st1.absolute_time))) AS segment_time,
-             COUNT(st1.absolute_time) AS effort_count
-      FROM (SELECT st.effort_id, st.absolute_time
-           FROM split_times st 
-           WHERE st.lap = #{begin_lap} 
-             AND st.split_id = #{begin_id} 
-             AND st.sub_split_bitkey = #{begin_bitkey}
-             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
-           AS st1,
-           (SELECT st.effort_id, st.absolute_time
-           FROM split_times st 
-           WHERE st.lap = #{end_lap} 
-             AND st.split_id = #{end_id} 
-             AND st.sub_split_bitkey = #{end_bitkey}
-             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
-           AS st2
-      WHERE st1.effort_id = st2.effort_id
+      with segment_times as
+           (select extract(epoch from(st2.absolute_time - st1.absolute_time)) as seconds
+            from (select st.effort_id, st.absolute_time
+                 from split_times st 
+                 where st.lap = #{begin_lap}
+                   and st.split_id = #{begin_id}
+                   and st.sub_split_bitkey = #{begin_bitkey}
+                   and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
+                 as st1,
+                 (select st.effort_id, st.absolute_time
+                 from split_times st 
+                 where st.lap = #{end_lap}
+                   and st.split_id = #{end_id}
+                   and st.sub_split_bitkey = #{end_bitkey}
+                   and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
+                 as st2
+            where st1.effort_id = st2.effort_id and #{focus_clause}),
+          
+          bounds as
+            (select greatest((avg(seconds) - stddev_samp(seconds) * 2), 0) as lower_estimate,
+                    (avg(seconds) + stddev_samp(seconds) * 2) as upper_estimate
+             from segment_times)
+      
+      select json_build_object('effort_count', count(seconds), 
+                               'lower_estimate', (select round(lower_estimate) from bounds), 
+                               'average', round(avg(seconds)),
+                               'upper_estimate', (select round(upper_estimate) from bounds))
+      from segment_times
+      where seconds between (select lower_estimate from bounds) and (select upper_estimate from bounds)
     SQL
 
-    query += " AND st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" if effort_ids
-    SplitTime.connection.execute(query.squish).values.flatten.map(&:to_i)
+    result = SplitTime.connection.execute(query.squish)
+    JSON.parse(result.values.first.first).with_indifferent_access
   end
 
   def self.with_time_point_rank

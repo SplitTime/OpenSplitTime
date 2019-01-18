@@ -28,26 +28,76 @@ Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 Getting Started
 ---------------
 ### Setup Local Environment
+
+**Homebrew (MacOS)**
+1. Install [Homebrew](http://brew.sh/).
+
 **Ruby**
 
-1. Install Homebrew http://brew.sh/
 1. Clone the repository to your local machine by [forking the repo](https://help.github.com/articles/fork-a-repo/)
-2. `$ brew update`
-3. `$ brew install rbenv`
-4. `$ cd` into your local `OpenSplitTime` directory
-5. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-6. `$ rbenv install 2.5.1`
-7. `$ rbenv local 2.5.1` (to make sure this is correct, run `$ rbenv version`)
-8. `$ rbenv rehash` then restart the terminal session
+2. Install rbenv...
+
+> ### Using Homebrew on MacOS
+> 1. Install Homebrew http://brew.sh/
+> 2. `$ brew update`
+> 3. `$ brew install rbenv`
+
+> ### Using Debian/Ubuntu (Instructions from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04))
+> 1. Install dependancies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm5 libgdbm-dev`
+> 2. Clone the rbenv repository `$ git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
+> 3. Add to path `$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
+> 4. Enable automatic loading `$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc`
+> 5. Apply changes to current terminal `$ source ~/.bashrc`
+> 6. Add ruby-build plugin `$ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build`
+
+3. `$ cd` into your local `OpenSplitTime` directory
+4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
+5. `$ rbenv install 2.5.1`
+6. `$ rbenv local 2.5.1` (to make sure this is correct, run `$ rbenv version`)
+7. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
 2. `$ gem install rails`
-3. `$ brew install postgres`
-3. `$ bundle install`
+3. Install Postgres...
+
+> ### Using Homebrew on MacOS
+> 1. `$ brew install postgres`
+
+> ### Using Debian/Ubuntu
+> 1. `$ sudo apt install postgresql libpq-dev`
+> 2. Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
+
+4. `$ bundle install`
 
 *if running into weird errors first try `$ rbenv rehash` and restart your terminal*
+
+**Javascript Runtime + Yarn**
+
+1. Install Node.js
+
+> ### Using Homebrew on MacOS
+> *Incomplete*
+
+> ### Using Debian/Ubuntu
+> 1. Configure repository `wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -`
+> 3. Install Node.js `sudo apt-get install -y nodejs`
+
+2. Install Yarn
+
+> ### Using Homebrew on MacOS
+> 1. `brew install yarn`
+
+> ### Using Debian/Ubuntu
+> 1. Configure yarn repository...
+> 2. `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
+> 3. `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
+> 4. `sudo apt-get update && sudo apt-get install yarn`
+> 5. `$ cd` into your local `OpenSplitTime` directory
+> 6. Update dependancies `$ yarn`
+>
+> *If you have any issues, refer to [yarn's website](https://yarnpkg.com/lang/en/docs/install)*
 
 **Database**
 

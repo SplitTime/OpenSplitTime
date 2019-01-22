@@ -43,7 +43,7 @@ class EffortShowView < EffortWithLapSplitRows
     @typical_effort ||= last_valid_split_time && effort_start_time &&
         TypicalEffort.new(event: event,
                           start_time: effort_start_time,
-                          time_points: projectable_time_points,
+                          time_points: time_points,
                           expected_time_from_start: last_valid_split_time.time_from_start,
                           expected_time_point: last_valid_split_time.time_point)
   end
@@ -60,8 +60,12 @@ class EffortShowView < EffortWithLapSplitRows
     @indexed_projected_split_times ||= typical_effort.ordered_split_times.index_by(&:time_point)
   end
 
+  def last_split_time
+    ordered_split_times.last
+  end
+
   def last_valid_split_time
-    ordered_split_times.select(&:valid_status).last
+    ordered_split_times.select(&:valid_status?).last
   end
 
   def projectable_time_points

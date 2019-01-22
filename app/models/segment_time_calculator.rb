@@ -57,7 +57,6 @@ class SegmentTimeCalculator
   end
 
   def query_result(effort_ids = nil)
-    return nil if effort_ids == [] # Empty array indicates an attempt for a focused query without any focus efforts
     @query_result ||= SplitTimeQuery.typical_segment_time(segment, effort_ids)
   end
 

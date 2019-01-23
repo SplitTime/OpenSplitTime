@@ -55,7 +55,7 @@ namespace :create_records do
     sampled_bib_numbers.each do |bib_number|
       event_id = grouped_bib_numbers.find { |_, bib_numbers| bib_numbers.include?(bib_number) }.first
       event = indexed_events[event_id]
-      event_start_time = event.start_time_in_home_zone
+      event_start_time = event.start_time_local
       laps_required = event.laps_required
       speed_factor = rand(0.75..1.5)
 

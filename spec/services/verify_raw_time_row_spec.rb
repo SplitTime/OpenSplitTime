@@ -7,7 +7,7 @@ RSpec.describe VerifyRawTimeRow do
   let(:raw_time_row) { RawTimeRow.new(raw_times, effort, event) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
-  let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_in_home_zone: '2018-06-23 06:00:00', laps_required: 1) }
+  let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_local: '2018-06-23 06:00:00', laps_required: 1) }
   let(:start_time) { event&.start_time || DateTime.parse('2018-10-31 08:00:00') }
   let(:course) { build_stubbed(:course) }
   let(:effort) { build_stubbed(:effort, event: event, split_times: split_times, bib_number: 10) }
@@ -265,7 +265,7 @@ RSpec.describe VerifyRawTimeRow do
     end
 
     context 'when an event has unlimited laps' do
-      let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_in_home_zone: '2018-06-23 06:00:00', laps_required: 0) }
+      let(:event) { build_stubbed(:event, splits: splits, course: course, start_time_local: '2018-06-23 06:00:00', laps_required: 0) }
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1] }
 

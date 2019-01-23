@@ -151,7 +151,7 @@ RSpec.describe TimeConversion do
 
   describe '.absolute_to_offset' do
     subject { TimeConversion.absolute_to_offset(absolute, event) }
-    let(:event) { Event.new(home_time_zone: 'Arizona', start_time_in_home_zone: '2018-06-30 06:00:00') }
+    let(:event) { Event.new(home_time_zone: 'Arizona', start_time_local: '2018-06-30 06:00:00') }
     let(:time_zone) { ActiveSupport::TimeZone['Arizona'] }
 
     context 'when passed a datetime string' do

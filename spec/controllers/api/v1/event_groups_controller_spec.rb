@@ -297,7 +297,7 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
     let(:event_group) { create(:event_group) }
-    let(:event) { create(:event, start_time_in_home_zone: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
+    let(:event) { create(:event, start_time_local: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
     let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }
     let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
@@ -880,10 +880,10 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_group) { create(:event_group, available_live: true) }
     let!(:course_1) { create(:course) }
     let!(:course_2) { create(:course) }
-    let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
-    let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
-    let(:start_time_1) { event_1.start_time_in_home_zone }
-    let(:start_time_2) { event_2.start_time_in_home_zone }
+    let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2018-09-30 08:00') }
+    let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2018-09-30 08:00') }
+    let(:start_time_1) { event_1.start_time_local }
+    let(:start_time_2) { event_2.start_time_local }
 
     let!(:course_1_start_split) { create(:split, :start, course: course_1, base_name: 'Start') }
     let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }

@@ -63,7 +63,7 @@ module Interactors
     end
 
     def time_zone
-      @time_zone ||= efforts.first.event_home_zone
+      @time_zone ||= efforts.first.home_time_zone
     end
 
     def response_message

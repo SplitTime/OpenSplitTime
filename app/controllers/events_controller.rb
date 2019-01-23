@@ -170,7 +170,7 @@ class EventsController < ApplicationController
   def update_start_time
     authorize @event
     background_channel = "progress_#{session.id}"
-    temp_event = Event.new(home_time_zone: @event.home_time_zone, start_time_in_home_zone: params[:event][:start_time_in_home_zone])
+    temp_event = Event.new(home_time_zone: @event.home_time_zone, start_time_local: params[:event][:start_time_local])
     new_start_time = temp_event.start_time.to_s
 
     EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,

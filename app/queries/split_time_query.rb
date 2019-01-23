@@ -211,7 +211,7 @@ class SplitTimeQuery < BaseQuery
             efforts.gender as effort_gender, 
             efforts.age as effort_age, 
             efforts.id as tiebreaker_id, 
-            events.home_time_zone as event_home_zone
+            events.home_time_zone
           from split_times_scoped
           inner join efforts on efforts.id = split_times_scoped.effort_id
           inner join events on events.id = efforts.event_id
@@ -229,7 +229,7 @@ class SplitTimeQuery < BaseQuery
                          tiebreaker_id) 
             as time_point_rank,
             absolute_time,
-            event_home_zone
+            home_time_zone
       from main_subquery 
       order by time_point_rank
     SQL

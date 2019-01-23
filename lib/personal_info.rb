@@ -15,11 +15,11 @@ module PersonalInfo
 
   def current_age
     current_age_from_birthdate || (has_attribute?('current_age_from_efforts') ?
-                                       attributes['current_age_from_efforts']&.round(0) : current_age_approximate)
+                                       attributes['current_age_from_efforts']&.round : current_age_approximate)
   end
 
   def current_age_from_birthdate
-    birthdate && TimeDifference.between(birthdate, Time.now.utc.to_date).in_years.round(0)
+    birthdate && ((Time.current - birthdate.in_time_zone) / 1.year).to_i
   end
 
   def flexible_geolocation

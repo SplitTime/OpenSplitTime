@@ -32,7 +32,7 @@ class SplitTime < ApplicationRecord
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
   scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
-  scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, events.home_time_zone as event_home_zone, efforts.bib_number::text as bib_number") }
+  scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, events.home_time_zone, efforts.bib_number::text as bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter
@@ -149,12 +149,12 @@ class SplitTime < ApplicationRecord
   end
 
   def day_and_time
-    @day_and_time ||= absolute_time&.in_time_zone(event_home_zone)
+    @day_and_time ||= absolute_time&.in_time_zone(home_time_zone)
   end
 
   def day_and_time=(date_with_time)
     time_string = date_with_time.to_s
-    self.absolute_time = ActiveSupport::TimeZone.new(event_home_zone).parse(time_string)
+    self.absolute_time = ActiveSupport::TimeZone.new(home_time_zone).parse(time_string)
   end
 
   def military_time
@@ -213,8 +213,8 @@ class SplitTime < ApplicationRecord
     @event_start_time ||= effort.event_start_time
   end
 
-  def event_home_zone
-    @event_home_zone ||= attributes['event_home_zone'] || effort.event_home_zone
+  def home_time_zone
+    @home_time_zone ||= attributes['home_time_zone'] || effort.home_time_zone
   end
 
   def effort_start_split_time

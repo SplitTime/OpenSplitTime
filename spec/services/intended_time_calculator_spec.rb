@@ -48,7 +48,7 @@ RSpec.describe IntendedTimeCalculator do
 
   describe '#day_and_time' do
     let(:effort) { build_stubbed(:effort, event: event, id: 101) }
-    let(:event) { build_stubbed(:event, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2016-07-01 06:00:00') }
+    let(:event) { build_stubbed(:event, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2016-07-01 06:00:00') }
     let(:home_time_zone) { event.home_time_zone }
     let(:start_time) { event.start_time }
     let(:time_point) { TimePoint.new(1, 44, 1) }

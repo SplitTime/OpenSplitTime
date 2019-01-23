@@ -27,7 +27,7 @@
   <% events.each do |event| %>
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
-        <td><%= l(event.start_time_in_home_zone, format: :full_day_time_and_zone) %></td>
+        <td><%= l(event.start_time_local, format: :full_day_time_and_zone) %></td>
         <td><%= "#{pluralize(event.effort_count, 'entrants')}" %></td>
         <% if presenter.show_visibility_columns? %>
             <td class="text-center"><%= event.concealed? ? 'Private' : 'Public' %></td>

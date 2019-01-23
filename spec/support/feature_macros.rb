@@ -7,7 +7,7 @@ module FeatureMacros
     organization = create(:organization)
     organization.stewards << steward
     event_group = create(:event_group, concealed: false, created_by: owner.id, organization: organization)
-    event = create(:event, course: course, event_group: event_group, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2016-07-01 06:00')
+    event = create(:event, course: course, event_group: event_group, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2016-07-01 06:00')
     event.splits << splits
     efforts = create_list(:effort, 8, :with_birthdate, event: event)
     create_list(:split_times_hardrock_31, 30, effort: efforts[0])

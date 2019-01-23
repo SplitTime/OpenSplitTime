@@ -12,7 +12,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   let(:split_times) { [split_time_1, split_time_2, split_time_3] }
 
   let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 06:00:00') }
+  let(:event) { create(:event, course: course, event_group: event_group, start_time_local: '2018-02-10 06:00:00') }
   let(:course) { create(:course) }
   let(:event_group) { create(:event_group, available_live: true) }
   let(:split_1) { create(:split, :start, course: course) }
@@ -30,7 +30,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   let(:raw_time_2) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_2.split.base_name, bitkey: split_time_2.bitkey, absolute_time: time_2) }
   let(:raw_time_3) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_3.split.base_name, bitkey: split_time_3.bitkey, absolute_time: time_3) }
   let(:raw_time_4) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_3.base_name, bitkey: in_bitkey, absolute_time: time_4) }
-  let(:time_4) { event.start_time_in_home_zone + 3.hours }
+  let(:time_4) { event.start_time_local + 3.hours }
 
   before { event.splits << splits }
 

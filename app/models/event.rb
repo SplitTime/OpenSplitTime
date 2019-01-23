@@ -8,8 +8,11 @@ class Event < ApplicationRecord
   include LapsRequiredMethods
   include TimeZonable
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
+  zonable_attributes :start_time
+
   belongs_to :course
   belongs_to :event_group
   has_many :efforts, dependent: :destroy
@@ -89,16 +92,6 @@ class Event < ApplicationRecord
 
   def to_s
     slug
-  end
-
-  def start_time_in_home_zone
-    return nil unless time_zone_valid?(home_time_zone)
-    start_time&.in_time_zone(home_time_zone)
-  end
-
-  def start_time_in_home_zone=(time)
-    raise ArgumentError, 'start_time_in_home_zone cannot be set without a valid home_time_zone' unless time_zone_valid?(home_time_zone)
-    self.start_time = ActiveSupport::TimeZone[home_time_zone].parse(time)
   end
 
   def reconciled_efforts

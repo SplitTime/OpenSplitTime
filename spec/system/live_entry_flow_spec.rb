@@ -49,8 +49,8 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   end
 
   context 'For single-lap events' do
-    let!(:event_1) { create(:event, event_group: event_group, course: course_1, start_time_in_home_zone: '2017-10-10 08:00:00') }
-    let!(:event_2) { create(:event, event_group: event_group, course: course_2, start_time_in_home_zone: '2017-10-10 09:00:00') }
+    let!(:event_1) { create(:event, event_group: event_group, course: course_1, start_time_local: '2017-10-10 08:00:00') }
+    let!(:event_2) { create(:event, event_group: event_group, course: course_2, start_time_local: '2017-10-10 09:00:00') }
 
     context 'for previously unstarted efforts' do
       scenario 'Add and submit times' do

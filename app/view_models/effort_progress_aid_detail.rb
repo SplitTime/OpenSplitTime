@@ -43,11 +43,11 @@ class EffortProgressAidDetail < EffortProgressRow
 
   delegate :aid_station, :split_name, :time_points, :multiple_laps?, to: :event_framework
   delegate :split, to: :aid_station
-  delegate :state_and_country, :event_home_zone, to: :effort
+  delegate :state_and_country, :home_time_zone, to: :effort
   attr_reader :lap, :effort_split_times
 
   def predicted_aid_day_and_time
-    predicted_time_to_aid && (effort.final_absolute_time + predicted_time_to_aid).in_time_zone(event_home_zone)
+    predicted_time_to_aid && (effort.final_absolute_time + predicted_time_to_aid).in_time_zone(home_time_zone)
   end
 
   def predicted_time_to_aid

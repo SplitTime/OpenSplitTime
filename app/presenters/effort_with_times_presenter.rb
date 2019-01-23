@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 class EffortWithTimesPresenter < EffortWithLapSplitRows
-
-  delegate :id, :split_times, :event_group, :event, :event_name, :full_name, :bib_number, :finish_status, :to_param, to: :effort
-
-  def post_initialize(args)
-    ArgsValidator.validate(params: args, required: [:effort, :params], exclusive: [:effort, :params], class: self.class)
-    @effort = args[:effort]
+  def post_initialize(effort, args)
+    ArgsValidator.validate(subject: effort, params: args, required: [:params], exclusive: [:params], class: self.class)
+    @effort = effort
     @params = args[:params] || {}
   end
 

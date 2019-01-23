@@ -10,10 +10,6 @@ class SegmentTimeCalculator
     new(args).typical_time
   end
 
-  def self.projected_window(args)
-    new(args).projected_window
-  end
-
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:segment, :calc_model],
@@ -34,11 +30,6 @@ class SegmentTimeCalculator
     else
       typical_time_by_terrain
     end
-  end
-
-  def projected_window
-    result = query_result(effort_ids)
-    result[:effort_count] >= STATS_CALC_THRESHOLD ? result.slice(:lower_estimate, :average, :upper_estimate) : {}
   end
 
   private

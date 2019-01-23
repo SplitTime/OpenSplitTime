@@ -6,7 +6,7 @@ class PlanDisplay < EffortWithLapSplitRows
   delegate :simple?, :name, to: :course
   delegate :multiple_laps?, :organization, to: :event
 
-  def post_initialize(args)
+  def initialize(args)
     @course = args[:course]
     @params = args[:params]
     AssignSegmentTimes.perform(ordered_split_times)

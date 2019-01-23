@@ -45,6 +45,14 @@ class TimeCluster
     @days_and_times ||= split_times_data.map(&:day_and_time_string)
   end
 
+  def early_estimate_days_and_times
+    split_times_data.map(&:absolute_estimate_early)
+  end
+
+  def late_estimate_days_and_times
+    split_times_data.map(&:absolute_estimate_late)
+  end
+
   def time_data_statuses
     @time_data_statuses ||= split_times_data.map(&:data_status)
   end

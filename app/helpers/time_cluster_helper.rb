@@ -38,6 +38,10 @@ module TimeClusterHelper
       cluster.days_and_times
     when :military
       cluster.days_and_times
+    when :early_estimate
+      cluster.early_estimate_days_and_times
+    when :late_estimate
+      cluster.late_estimate_days_and_times
     else
       cluster.times_from_start
     end
@@ -51,6 +55,10 @@ module TimeClusterHelper
       cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
     when :military
       cluster.finish? ? day_time_military_format_hhmmss(time) : day_time_military_format(time)
+    when :early_estimate
+      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+    when :late_estimate
+      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
     else
       cluster.finish? ? time_format_hhmmss(time) : time_format_hhmm(time)
     end

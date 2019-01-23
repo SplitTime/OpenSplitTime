@@ -32,80 +32,11 @@ class SplitTimeQuery < BaseQuery
                    and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
                  as st2
             where st1.effort_id = st2.effort_id and #{focus_clause}),
-          
-          bounds as
-            (select greatest((avg(seconds) - stddev_samp(seconds) * 2), 0) as lower_estimate,
-                    (avg(seconds) + stddev_samp(seconds) * 2) as upper_estimate
-             from segment_times)
-      
-      select json_build_object('effort_count', count(seconds), 
-                               'lower_estimate', (select round(lower_estimate) from bounds), 
-                               'average', round(avg(seconds)),
-                               'upper_estimate', (select round(upper_estimate) from bounds))
-      from segment_times
-      where seconds between (select lower_estimate from bounds) and (select upper_estimate from bounds)
-    SQL
 
-    result = SplitTime.connection.execute(query.squish)
-    JSON.parse(result.values.first.first).with_indifferent_access
-  end
-
-  def self.projections(completed_segment, projected_segment, completed_seconds, sample_limit)
-    query = <<~SQL
-      with 
-        completed_end_split_times as
-          (select effort_id, 
-                  absolute_time
-          from split_times
-          where lap = #{completed_segment.end_lap}
-            and split_id = #{completed_segment.end_id}
-            and sub_split_bitkey = #{completed_segment.end_bitkey}),
-            
-        completed_begin_split_times as
-          (select effort_id, 
-                  absolute_time
-          from split_times
-            inner join splits on splits.id = split_times.split_id
-          where lap = #{completed_segment.begin_lap}
-            and split_id = #{completed_segment.begin_id}
-            and sub_split_bitkey = #{completed_segment.begin_bitkey}
-            and effort_id in (select effort_id from completed_end_split_times)),
-          
-        projected_end_split_times as
-          (select effort_id, 
-                  absolute_time
-          from split_times
-          where lap = #{projected_segment.end_lap}
-            and split_id = #{projected_segment.end_id}
-            and sub_split_bitkey = #{projected_segment.end_bitkey}
-            and effort_id in (select effort_id from completed_end_split_times)),
-            
-        projected_begin_split_times as
-          (select effort_id, 
-                  absolute_time
-          from split_times
-          where lap = #{projected_segment.begin_lap}
-            and split_id = #{projected_segment.begin_id}
-            and sub_split_bitkey = #{projected_segment.begin_bitkey}
-            and effort_id in (select effort_id from completed_end_split_times)),
-            
-        main_subquery as
-          (select extract(epoch from(cest.absolute_time - cbst.absolute_time)) as completed_segment_seconds, 
-                  extract(epoch from(pest.absolute_time - pbst.absolute_time)) as projected_segment_seconds
-          from completed_end_split_times cest
-            inner join completed_begin_split_times cbst on cbst.effort_id = cest.effort_id
-            inner join projected_end_split_times pest on pest.effort_id = cest.effort_id
-            inner join projected_begin_split_times pbst on pbst.effort_id = cest.effort_id),
-            
-        ratio_subquery as
-          (select *, 
-              round((projected_segment_seconds / completed_segment_seconds)::numeric, 6) as ratio
-          from main_subquery),
-          
         quartiles as
-          (select percentile_cont(0.25) within group (order by ratio) as q1,
-                  percentile_cont(0.75) within group (order by ratio) as q3
-          from ratio_subquery),
+          (select percentile_cont(0.25) within group (order by seconds) as q1,
+                  percentile_cont(0.75) within group (order by seconds) as q3
+          from segment_times),
               
         iqr_stats as
           (select q1,
@@ -116,39 +47,20 @@ class SplitTimeQuery < BaseQuery
         bounds as
           (select q1 - (iqr * 1.5) as lower_bound,
                   q3 + (iqr * 1.5) as upper_bound
-          from iqr_stats),
-      
-        valid_ratios as
-          (select *,
-              abs(completed_segment_seconds - #{completed_seconds}) as difference
-          from ratio_subquery
-          where ratio between (select lower_bound from bounds) and (select upper_bound from bounds)
-          order by difference
-          limit #{sample_limit}),
+          from iqr_stats)
 
-        ratio_stats as          
-          (select count(ratio) as effort_count,
-                  round(avg(ratio) - (stddev(ratio) * 2), 6) as low_ratio,
-                  round(avg(ratio), 6) as average_ratio,
-                  round(avg(ratio) + (stddev(ratio) * 2), 6) as high_ratio
-          from valid_ratios)
-
-      select  effort_count, 
-              low_ratio, 
-              average_ratio, 
-              high_ratio, 
-              low_ratio * completed_seconds as low_seconds,
-              average_ratio * completed_seconds as average_seconds,
-              high_ratio * completed_seconds as high_seconds
-      from ratio_stats
+      select count(seconds) as effort_count, 
+             round(avg(seconds)) as average
+      from segment_times
+      where seconds between (select lower_bound from bounds) and (select upper_bound from bounds)
     SQL
 
     result = SplitTime.connection.execute(query.squish)
-    values = result.values.first.map { |value| value.is_a?(String) ? value.to_f : value }
-    result.fields.zip(values).to_h.with_indifferent_access
+    casted_row = result.values.first.map { |value| value.is_a?(String) ? value.to_f : value }
+    result.fields.zip(casted_row).to_h.with_indifferent_access
   end
 
-  def self.multiple_projections(split_time, time_points)
+  def self.projections(split_time, time_points)
     completed_lap, completed_split_id, completed_bitkey = split_time.time_point.values
     completed_seconds = split_time.time_from_start
 
@@ -257,14 +169,15 @@ class SplitTimeQuery < BaseQuery
               round(avg(ratio) + (stddev(ratio) * 2), 6) as high_ratio
           from valid_ratios
           where row_number <= #{sample_limit}
-          group by lap, split_id, sub_split_bitkey
-          order by lap, split_id, sub_split_bitkey)
+          group by lap, split_id, sub_split_bitkey)
           
-      select *, 
+      select final_subquery.*, 
           round(low_ratio * #{completed_seconds})::int as low_seconds,
           round(average_ratio * #{completed_seconds})::int as average_seconds,
           round(high_ratio * #{completed_seconds})::int as high_seconds
       from final_subquery
+        inner join splits on splits.id = split_id
+      order by lap, distance_from_start, sub_split_bitkey
     SQL
 
     result = SplitTime.connection.execute(query.squish)

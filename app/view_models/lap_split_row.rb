@@ -49,6 +49,10 @@ class LapSplitRow
     !finish? || show_laps
   end
 
+  def empty?
+    split_times.none?(&:absolute_time?)
+  end
+
   private
 
   attr_reader :lap_split, :split_times, :show_laps

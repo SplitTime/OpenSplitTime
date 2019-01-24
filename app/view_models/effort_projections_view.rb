@@ -9,7 +9,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def projected_lap_split_rows
-    @projected_lap_split_rows ||= rows_from_lap_splits(projected_lap_splits, indexed_projected_split_times)
+    @projected_lap_split_rows ||= rows_from_lap_splits(projected_lap_splits, indexed_projected_split_times, in_times_only: true)
   end
 
   private
@@ -42,7 +42,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def projected_time_points
-    relevant_time_points.elements_after(ordered_split_times.last.time_point)
+    relevant_time_points.elements_after(ordered_split_times.last.time_point).select(&:in_sub_split?)
   end
 
   def first_projected_lap_split

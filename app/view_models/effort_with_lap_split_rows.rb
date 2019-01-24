@@ -58,16 +58,17 @@ class EffortWithLapSplitRows
     last_time && first_time && last_time - first_time
   end
 
-  def rows_from_lap_splits(lap_splits, indexed_times)
+  def rows_from_lap_splits(lap_splits, indexed_times, in_times_only: false)
     lap_splits.map do |lap_split|
       LapSplitRow.new(lap_split: lap_split,
                       split_times: related_split_times(lap_split, indexed_times),
-                      show_laps: event.multiple_laps?)
+                      show_laps: event.multiple_laps?,
+                      in_times_only: in_times_only)
     end
   end
 
   def related_split_times(lap_split, indexed_times)
-    lap_split.time_points.map { |time_point| indexed_times.fetch(time_point, effort.split_times.new) }
+    lap_split.time_points.map { |tp| indexed_times.fetch(tp, effort.split_times.new(time_point: tp)) }
   end
 
   def prior_split_time(lap_split)

@@ -13,11 +13,12 @@ class LapSplitRow
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:lap_split, :split_times],
-                           exclusive: [:lap_split, :split_times, :show_laps],
+                           exclusive: [:lap_split, :split_times, :show_laps, :in_times_only],
                            class: self.class)
     @lap_split = args[:lap_split]
     @split_times = args[:split_times]
     @show_laps = args[:show_laps]
+    @in_times_only = args[:in_times_only]
     validate_setup
   end
 
@@ -26,7 +27,7 @@ class LapSplitRow
   end
 
   def time_cluster
-    @time_cluster ||= TimeCluster.new(split_times_data: split_times, finish: finish?, show_indicator_for_stop: show_indicator_for_stop?)
+    @time_cluster ||= TimeCluster.new(split_times_data: visible_split_times, finish: finish?, show_indicator_for_stop: show_indicator_for_stop?)
   end
 
   def split_id
@@ -55,14 +56,18 @@ class LapSplitRow
 
   private
 
-  attr_reader :lap_split, :split_times, :show_laps
+  attr_reader :lap_split, :split_times, :show_laps, :in_times_only
 
   def name_without_lap
-    split.name
+    in_times_only ? split.base_name : split.name
   end
 
   def name_with_lap
-    lap_split.name
+    in_times_only ? lap_split.base_name : lap_split.name
+  end
+
+  def visible_split_times
+    in_times_only ? split_times.select(&:in_sub_split?) : split_times
   end
 
   def validate_setup

@@ -12,7 +12,7 @@ class SplitTimeQuery < BaseQuery
     end_lap = segment.end_lap.to_i
     end_id = segment.end_id.to_i
     end_bitkey = segment.end_bitkey.to_i
-    focus_clause = effort_ids ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : 'true'
+    focus_clause = effort_ids.present? ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : 'true'
 
     query = <<-SQL
       with segment_times as
@@ -67,7 +67,7 @@ class SplitTimeQuery < BaseQuery
     projected_where_array = time_points.map do |tp|
       "(lap = #{tp.lap} and split_id = #{tp.split_id} and sub_split_bitkey = #{tp.bitkey})"
     end
-    projected_where_clause = projected_where_array.join(' or ')
+    projected_where_clause = projected_where_array.join(' or ').presence || 'true'
 
     overall_limit = 300
     sample_limit = 50
@@ -164,7 +164,9 @@ class SplitTimeQuery < BaseQuery
               split_id, 
               sub_split_bitkey,
               count(ratio) as effort_count,
-              round(avg(ratio) - (stddev(ratio) * 2), 6) as low_ratio,
+              case when avg(ratio) >= 0 
+                   then greatest(0, round(avg(ratio) - (stddev(ratio) * 2), 6)) 
+                   else round(avg(ratio) - (stddev(ratio) * 2), 6) end as low_ratio,
               round(avg(ratio), 6) as average_ratio,
               round(avg(ratio) + (stddev(ratio) * 2), 6) as high_ratio
           from valid_ratios
@@ -260,7 +262,7 @@ class SplitTimeQuery < BaseQuery
              st.pacer,
              st.data_status as data_status_numeric,
              st.absolute_time as absolute_time_string,
-             trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as day_and_time_string,
+             trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as absolute_time_local_string,
              extract(epoch from (st.absolute_time - sst.absolute_time)) as time_from_start,
              case 
                when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey) 
@@ -341,7 +343,7 @@ class SplitTimeQuery < BaseQuery
 
       with 
         scoped_split_times as
-          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as day_and_time
+          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as absolute_time_local
            from split_times st
              inner join efforts ef on ef.id = st.effort_id
              inner join events ev on ev.id = ef.event_id
@@ -359,8 +361,8 @@ class SplitTimeQuery < BaseQuery
            
         interval_starts as
           (select *
-           from generate_series((select min(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) from scoped_split_times), 
-                                (select max(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
+           from generate_series((select min(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) from scoped_split_times), 
+                                (select max(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
                                  interval '#{band_width} seconds') time),
            
         intervals as
@@ -377,7 +379,7 @@ class SplitTimeQuery < BaseQuery
         left join finish_split_times fst
           on fst.effort_id = st.effort_id and fst.lap = st.lap
         right join intervals i
-          on st.day_and_time >= i.start_time and st.day_and_time < i.end_time
+          on st.absolute_time_local >= i.start_time and st.absolute_time_local < i.end_time
       where i.end_time is not null
       group by i.start_time, i.end_time
       order by i.start_time

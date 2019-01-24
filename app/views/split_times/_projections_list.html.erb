@@ -19,31 +19,34 @@
   <% end %>
   </tbody>
 
-  <thead>
-  <tr></tr>
-  <tr>
-    <th></th>
-    <th></th>
-    <th class="text-center" colspan="3">Projected Time of Day</th>
-  </tr>
-  <tr>
-    <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
-    <th class="text-center">Early</th>
-    <th class="text-center">Average</th>
-    <th class="text-center">Late</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% view_object.projected_lap_split_rows.each do |row| %>
-    <tr class="<%= data_status_text_class[row.data_status] %>">
-      <td><%= strong_conditional row.name, row.done? %></td>
-      <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
-      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>
-      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm), row.done? %></td>
-      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %></td>
+  <% if view_object.projected_lap_split_rows.present? %>
+    <thead>
+    <tr>
+      <th class="text-center" colspan="5"></th>
     </tr>
+    <tr>
+      <th>Split</th>
+      <th class="text-right"><%= pdu('singular').titleize %></th>
+      <th class="text-center">Projected Early</th>
+      <th class="text-center">Projected Average</th>
+      <th class="text-center">Projected Late</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% view_object.projected_lap_split_rows.each do |row| %>
+      <tr class="<%= data_status_text_class[row.data_status] %>">
+        <td><%= strong_conditional row.name, row.done? %></td>
+        <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
+        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>
+        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm), row.done? %></td>
+        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %></td>
+      </tr>
+    <% end %>
+    </tbody>
   <% end %>
-  </tbody>
 </table>
+<% unless view_object.projected_lap_split_rows.present? %>
+  <hr/>
+  <h4>No projections available</h4>
+<% end %>

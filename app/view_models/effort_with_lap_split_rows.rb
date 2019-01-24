@@ -67,7 +67,7 @@ class EffortWithLapSplitRows
   end
 
   def related_split_times(lap_split, indexed_times)
-    lap_split.time_points.map { |time_point| indexed_times.fetch(time_point, SplitTime.new) }
+    lap_split.time_points.map { |time_point| indexed_times.fetch(time_point, effort.split_times.new) }
   end
 
   def prior_split_time(lap_split)

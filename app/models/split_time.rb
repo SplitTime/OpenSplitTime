@@ -10,6 +10,7 @@ class SplitTime < ApplicationRecord
   include Auditable
   include DataStatusMethods
   include GuaranteedFindable
+  include TimePointMethods
   include TimeZonable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
@@ -75,29 +76,6 @@ class SplitTime < ApplicationRecord
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
-  end
-
-  def sub_split
-    {split_id => bitkey}
-  end
-
-  def sub_split=(sub_split)
-    self.split_id = sub_split.split_id
-    self.bitkey = sub_split.bitkey
-  end
-
-  def sub_split_kind
-    SubSplit.kind(bitkey)
-  end
-
-  def time_point
-    TimePoint.new(lap, split_id, bitkey)
-  end
-
-  def time_point=(time_point)
-    self.split_id = time_point.split_id
-    self.bitkey = time_point.bitkey
-    self.lap = time_point.lap
   end
 
   def lap_split

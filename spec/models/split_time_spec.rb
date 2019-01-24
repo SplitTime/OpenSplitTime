@@ -407,15 +407,15 @@ RSpec.describe SplitTime, kind: :model do
   end
 
   describe '#sub_split' do
-    it 'returns split_id and sub_split_bitkey as a sub_split hash' do
+    it 'returns a SubSplit object with split_id and sub_split_bitkey' do
       split_time = SplitTime.new(split_id: 101, bitkey: in_bitkey)
-      expect(split_time.sub_split).to eq({101 => 1})
+      expect(split_time.sub_split).to eq(SubSplit.new(101, in_bitkey))
     end
   end
 
   describe '#sub_split=' do
     it 'sets both split_id and sub_split_bitkey' do
-      split_time = SplitTime.new(sub_split: {101 => 1})
+      split_time = SplitTime.new(sub_split: SubSplit.new(101, in_bitkey))
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
     end

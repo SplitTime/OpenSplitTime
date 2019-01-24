@@ -472,11 +472,11 @@ RSpec.describe Event, type: :model do
 
     describe '#sub_splits' do
       it 'returns an array of ordered sub_splits' do
-        expect(event.sub_splits).to eq([{start_split.id => in_bitkey},
-                                        {intermediate_split_1.id => in_bitkey}, {intermediate_split_1.id => out_bitkey},
-                                        {intermediate_split_2.id => in_bitkey}, {intermediate_split_2.id => out_bitkey},
-                                        {intermediate_split_3.id => in_bitkey}, {intermediate_split_3.id => out_bitkey},
-                                        {finish_split.id => in_bitkey}])
+        expect(event.sub_splits).to eq([SubSplit.new(start_split.id, in_bitkey),
+                                        SubSplit.new(intermediate_split_1.id, in_bitkey), SubSplit.new(intermediate_split_1.id, out_bitkey),
+                                        SubSplit.new(intermediate_split_2.id, in_bitkey), SubSplit.new(intermediate_split_2.id, out_bitkey),
+                                        SubSplit.new(intermediate_split_3.id, in_bitkey), SubSplit.new(intermediate_split_3.id, out_bitkey),
+                                        SubSplit.new(finish_split.id, in_bitkey)])
       end
     end
   end

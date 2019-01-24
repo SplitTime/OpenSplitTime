@@ -30,12 +30,12 @@ class SubSplit
 
   def self.kind(bitkey)
     case bitkey
-      when IN_BITKEY
-        'In'
-      when OUT_BITKEY
-        'Out'
-      else
-        nil
+    when IN_BITKEY
+      'In'
+    when OUT_BITKEY
+      'Out'
+    else
+      nil
     end
   end
 
@@ -45,12 +45,12 @@ class SubSplit
 
   def self.bitkey(kind)
     case kind.to_s.downcase
-      when 'in'
-        IN_BITKEY
-      when 'out'
-        OUT_BITKEY
-      else
-        nil
+    when 'in'
+      IN_BITKEY
+    when 'out'
+      OUT_BITKEY
+    else
+      nil
     end
   end
 
@@ -80,5 +80,18 @@ class SubSplit
     result = []
     (0...bitmap.to_s(2).size).each { |k| result << (bitmap & (1 << k)) }
     result.reject { |x| x == 0 }
+  end
+
+  def initialize(split_id = nil, bitkey = nil)
+    @split_id = split_id
+    @bitkey = bitkey
+  end
+
+  attr_accessor :split_id, :bitkey
+  alias_method :sub_split_bitkey, :bitkey
+
+  def ==(other)
+    return false unless other && other.respond_to?(:split_id) && other.respond_to?(:bitkey)
+    [self.split_id, self.bitkey] == [other.split_id, other.bitkey]
   end
 end

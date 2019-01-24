@@ -260,22 +260,22 @@ RSpec.describe Split, kind: :model do
   end
 
   describe '#sub_splits' do
-    it 'returns a single key_hash for a start split' do
+    it 'returns a single SubSplit for a start split' do
       split = build_stubbed(:split, :start)
       expect(split.sub_splits.size).to eq(1)
-      expect(split.sub_splits.first).to eq({split.id => in_bitkey})
+      expect(split.sub_splits.first).to eq(SubSplit.new(split.id, in_bitkey))
     end
 
-    it 'returns two key_hashes for an intermediate split' do
+    it 'returns two SubSplits for an intermediate split with multiple sub_splits' do
       split = build_stubbed(:split)
       expect(split.sub_splits.size).to eq(2)
-      expect(split.sub_splits).to eq([{split.id => in_bitkey}, {split.id => out_bitkey}])
+      expect(split.sub_splits).to eq([SubSplit.new(split.id, in_bitkey), SubSplit.new(split.id, out_bitkey)])
     end
 
-    it 'returns a single key_hash for a finish split' do
+    it 'returns a single SubSplit for a finish split' do
       split = build_stubbed(:split, :finish)
       expect(split.sub_splits.size).to eq(1)
-      expect(split.sub_splits.first).to eq({split.id => in_bitkey})
+      expect(split.sub_splits.first).to eq(SubSplit.new(split.id, in_bitkey))
     end
   end
 

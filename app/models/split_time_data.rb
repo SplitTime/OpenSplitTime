@@ -10,6 +10,8 @@
 SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_here, :pacer, :data_status_numeric, :absolute_time_string,
                            :absolute_time_local_string, :time_from_start, :segment_time, :military_time, keyword_init: true) do
 
+  include TimePointMethods
+
   # absolute_time is an ActiveSupport::TimeWithZone for compatibility and useful math operations.
 
   def absolute_time
@@ -30,9 +32,5 @@ SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_h
 
   def stopped_here?
     stopped_here
-  end
-
-  def time_point
-    TimePoint.new(lap, split_id, bitkey)
   end
 end

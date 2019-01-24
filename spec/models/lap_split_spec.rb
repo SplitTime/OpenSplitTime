@@ -84,6 +84,26 @@ RSpec.describe LapSplit, type: :model do
         expect(lap_split_1).to be == lap_split_2
       end
     end
+
+    context 'when the comparison object is nil' do
+      subject { LapSplit.new(lap_1, split_1) }
+      let(:other) { nil }
+
+      it 'does not equate the objects' do
+        expect(subject == other).to eq(false)
+        expect(other == subject).to eq(false)
+      end
+    end
+
+    context 'when the comparison object is not a LapSplit' do
+      subject { LapSplit.new(lap_1, split_1) }
+      let(:other) { 'hello' }
+
+      it 'does not equate the objects' do
+        expect(subject == other).to eq(false)
+        expect(other == subject).to eq(false)
+      end
+    end
   end
 
   describe '#key' do

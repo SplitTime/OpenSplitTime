@@ -54,11 +54,11 @@ class EffortProgressRow
   end
 
   def predicted_segment_time(segment)
-    segment.end_point.out? ? nil : TimePredictor.segment_time(segment: segment,
-                                                              effort: effort,
-                                                              lap_splits: lap_splits,
-                                                              completed_split_time: last_reported_split_time,
-                                                              times_container: times_container)
+    segment.end_point.out_sub_split? ? nil : TimePredictor.segment_time(segment: segment,
+                                                                        effort: effort,
+                                                                        lap_splits: lap_splits,
+                                                                        completed_split_time: last_reported_split_time,
+                                                                        times_container: times_container)
   end
 
   def upcoming_segment

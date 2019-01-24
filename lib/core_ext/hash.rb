@@ -1,15 +1,4 @@
 class Hash
-
-  # Convenience methods for parsing sub_splits
-
-  def split_id
-    keys.first
-  end
-
-  def bitkey
-    values.first
-  end
-
   # Methods to convert hash keys for export to JSON
 
   def camelize_keys

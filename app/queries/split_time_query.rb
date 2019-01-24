@@ -60,12 +60,16 @@ class SplitTimeQuery < BaseQuery
     result.fields.zip(casted_row).to_h.with_indifferent_access
   end
 
-  def self.projections(split_time, starting_time_point, projection_time_points)
+  def self.projections(split_time, starting_time_point, subject_time_points)
+    unless split_time && starting_time_point && subject_time_points
+      raise ArgumentError, 'SplitTimeQuery.projections requires a split_time, starting_time_point, and subject_time_points'
+    end
+
     completed_lap, completed_split_id, completed_bitkey = split_time.time_point.values
     starting_lap, starting_split_id, starting_bitkey = starting_time_point.values
     completed_seconds = split_time.time_from_start
 
-    projected_where_array = projection_time_points.map do |tp|
+    projected_where_array = subject_time_points.map do |tp|
       "(lap = #{tp.lap} and split_id = #{tp.split_id} and sub_split_bitkey = #{tp.bitkey})"
     end
     projected_where_clause = projected_where_array.join(' or ').presence || 'true'
@@ -182,6 +186,8 @@ class SplitTimeQuery < BaseQuery
         inner join splits on splits.id = split_id
       order by lap, distance_from_start, sub_split_bitkey
     SQL
+
+    return [] if completed_seconds == 0 || subject_time_points.empty?
 
     result = SplitTime.connection.execute(query.squish)
     result.values.map do |row|

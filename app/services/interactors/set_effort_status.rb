@@ -33,7 +33,14 @@ module Interactors
 
     def set_split_time_status(split_time)
       set_subject_attributes(split_time)
-      subject_split_time.data_status = beyond_drop? ? 'bad' : time_predictor.data_status(subject_segment_time)
+      subject_split_time.data_status = case
+                                       when beyond_drop?
+                                         'bad'
+                                       when subject_segment.zero_start?
+                                         'good'
+                                       else
+                                         time_predictor.data_status(subject_segment_time)
+                                       end
     end
 
     def set_effort_status

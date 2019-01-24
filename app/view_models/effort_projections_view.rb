@@ -12,6 +12,19 @@ class EffortProjectionsView < EffortWithLapSplitRows
     @projected_lap_split_rows ||= rows_from_lap_splits(projected_lap_splits, indexed_projected_split_times, in_times_only: true)
   end
 
+  def explanation
+    case
+    when !beyond_start?
+      'The participant must first be recorded beyond the start.'
+    when dropped?
+      'The participant has dropped.'
+    when finished?
+      'The participant has finished.'
+    else
+      'Available data is insufficient.'
+    end
+  end
+
   private
 
   def last_actual_lap_split_row
@@ -34,6 +47,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def projected_lap_splits
+    return [] if indexed_projected_split_times.empty?
     relevant_lap_splits.elements_after(first_projected_lap_split, inclusive: true)
   end
 
@@ -42,6 +56,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def projected_time_points
+    return [] if finished? || dropped?
     relevant_time_points.elements_after(ordered_split_times.last.time_point).select(&:in_sub_split?)
   end
 

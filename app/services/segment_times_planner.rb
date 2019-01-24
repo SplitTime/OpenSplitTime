@@ -50,6 +50,6 @@ class SegmentTimesPlanner
   end
 
   def final_segment_missing?
-    serial_segments.last.end_point != time_points.last
+    serial_segments.last&.end_point != time_points.last
   end
 end

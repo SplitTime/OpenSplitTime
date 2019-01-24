@@ -15,7 +15,8 @@ module TabsHelper
               hidden: view_object.not_analyzable?},
              {name: 'Places + peers',
               link: place_effort_path(view_object.effort),
-              active: action_name == 'place'}]
+              active: action_name == 'place',
+              hidden: view_object.not_analyzable?}]
 
     unless view_object.simple?
       build_view_tabs(items)

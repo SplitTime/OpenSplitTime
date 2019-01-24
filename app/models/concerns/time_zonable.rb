@@ -25,7 +25,7 @@ module TimeZonable
         unless time_zone_valid?(home_time_zone)
           raise ArgumentError, "#{attribute}_local cannot be set without a valid home_time_zone"
         end
-        self.send("#{attribute}=", ActiveSupport::TimeZone[home_time_zone].parse(time))
+        self.send("#{attribute}=", time.to_s.in_time_zone(home_time_zone))
       end
     end
   end

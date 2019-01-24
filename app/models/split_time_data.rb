@@ -8,7 +8,7 @@
 # and a localized (day_and_time) string from the database query.
 
 SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_here, :pacer, :data_status_numeric, :absolute_time_string,
-                           :day_and_time_string, :time_from_start, :segment_time, :military_time, keyword_init: true) do
+                           :absolute_time_local_string, :time_from_start, :segment_time, :military_time, keyword_init: true) do
 
   # absolute_time is an ActiveSupport::TimeWithZone for compatibility and useful math operations.
 
@@ -16,12 +16,12 @@ SplitTimeData = Struct.new(:id, :effort_id, :lap, :split_id, :bitkey, :stopped_h
     absolute_time_string&.in_time_zone('UTC')
   end
 
-  # day_and_time is a Ruby DateTime object for speed of conversion.
+  # absolute_time_local is a Ruby DateTime object for speed of conversion.
   # The events/spread view relies on this attribute and slows unacceptably
   # when it is parsed into an ActiveSupport::TimeWithZone object.
 
-  def day_and_time
-    day_and_time_string&.to_datetime
+  def absolute_time_local
+    absolute_time_local_string&.to_datetime
   end
 
   def data_status

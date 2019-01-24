@@ -27,7 +27,8 @@
         </div>
         <div class="ost-subtitle">
           <% if @presenter.effort_start_time %>
-            <h6>Start Time: <strong><%= l(@presenter.effort_start_time, format: :full_day_time_and_zone) %></strong></h6>
+            <h6>Start Time: <strong><%= l(@presenter.effort_start_time, format: :full_day_time_and_zone) %></strong>
+            </h6>
           <% end %>
           <h6>Status:
             <strong>
@@ -51,22 +52,13 @@
         </table>
       <% end %>
     </div>
-    <% unless @presenter.simple? || @presenter.not_analyzable? %>
-      <ul class="nav nav-tabs nav-tabs-ost">
-        <li class="nav-item"><%= link_to "Split times", effort_path(@presenter.effort) %></li>
-        <% if @presenter.in_progress? %>
-          <li class="nav-item"><%= link_to "Projections", projections_effort_path(@presenter.effort) %></li>
-        <% end %>
-        <li class="nav-item active"><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
-        <li class="nav-item"><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
-      </ul>
-    <% end %>
+    <%= effort_view_tabs(@presenter) %>
   </div>
 </header>
 
 <article class="ost-article container">
   <% if !@presenter.started? %>
-  <strong>Cannot analyze an unstarted effort.</strong>
+    <strong>Cannot analyze an unstarted effort.</strong>
   <% elsif !@presenter.effort_start_time %>
     <strong>Cannot analyze an effort without a start time.</strong>
   <% elsif @presenter.analysis_rows.blank? %>

@@ -41,8 +41,8 @@ module CoursesHelper
 
   def lap_split_export_row(row)
     number_of_times = @presenter.out_sub_splits? ? 2 : 1
-    times_of_day = Array.new(number_of_times) { |i| row.days_and_times.map { |day_and_time| day_time_full_format(day_and_time) }[i] }
-    elapsed_times = Array.new(number_of_times) { |i| row.times_from_start.map { |time_from_start| time_format_hhmm(time_from_start) }[i] }
+    absolute_times_local = Array.new(number_of_times) { |i| row.absolute_times_local.map(&method(:day_time_full_format))[i] }
+    elapsed_times = Array.new(number_of_times) { |i| row.times_from_start.map(&method(:time_format_hhmm))[i] }
     segment_time = [time_format_hhmm(row.segment_time)]
     in_aid_time = case
                   when !@presenter.out_sub_splits?
@@ -61,6 +61,6 @@ module CoursesHelper
                  []
                end
 
-    [row.name, d(row.distance_from_start)] + times_of_day + elapsed_times + segment_time + in_aid_time + lap_time
+    [row.name, d(row.distance_from_start)] + absolute_times_local + elapsed_times + segment_time + in_aid_time + lap_time
   end
 end

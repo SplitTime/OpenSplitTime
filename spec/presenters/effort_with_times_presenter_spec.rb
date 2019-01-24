@@ -3,24 +3,24 @@
 require 'rails_helper'
 
 RSpec.describe EffortWithTimesPresenter do
-  subject { EffortWithTimesPresenter.new(effort: effort, params: params) }
+  subject { EffortWithTimesPresenter.new(effort, params: params) }
   let(:effort) { build_stubbed(:effort) }
   let(:params) { ActionController::Parameters.new(params_hash) }
   let(:params_hash) { {} }
 
   describe '#initialize' do
-    it 'initializes given an effort and params object' do
-      expect { subject }.not_to raise_error
+    context 'given an effort and params object' do
+      it 'initializes' do
+        expect { subject }.not_to raise_error
+      end
     end
 
-    it 'raises an error if effort argument is not given' do
-      expect { EffortWithTimesPresenter.new(params: params) }
-          .to raise_error(/must include effort/)
-    end
+    context 'if effort argument is not given' do
+      let(:effort) { nil }
 
-    it 'raises an error if any argument other than effort and params is given' do
-      expect { EffortWithTimesPresenter.new(effort: effort, params: params, random_param: 123) }
-          .to raise_error(/may not include random_param/)
+      it 'raises an error' do
+        expect { subject }.to raise_error(/must include a subject/)
+      end
     end
   end
 

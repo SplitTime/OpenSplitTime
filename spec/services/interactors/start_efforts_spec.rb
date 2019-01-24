@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::StartEfforts do
@@ -15,11 +17,13 @@ RSpec.describe Interactors::StartEfforts do
       let(:course) { create(:course) }
 
       before do
-        allow(event).to receive(:start_split).and_return(start_split)
+        event.splits << start_split
+        efforts.each(&:reload)
       end
 
       context 'when no efforts have a starting split time' do
         it 'creates start split_times for each effort, assigns user_id to created_by, and returns a successful response' do
+          expect(SplitTime.count).to eq(0)
           response = subject.perform!
           expect(SplitTime.count).to eq(2)
           expect(SplitTime.all.map(&:created_by)).to all eq(current_user_id)

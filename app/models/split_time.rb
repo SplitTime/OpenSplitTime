@@ -10,6 +10,9 @@ class SplitTime < ApplicationRecord
   include Auditable
   include DataStatusMethods
   include GuaranteedFindable
+  include TimeZonable
+
+  zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   belongs_to :effort
   belongs_to :split
   has_many :raw_times, dependent: :nullify
@@ -18,11 +21,8 @@ class SplitTime < ApplicationRecord
   attr_accessor :raw_time_id, :time_exists, :imposed_order, :segment_time
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
-  attribute :projected, :boolean
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
-  scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
-  scope :intermediate, -> { includes(:split).where(splits: {kind: Split.kinds[:intermediate]}) }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
@@ -148,23 +148,14 @@ class SplitTime < ApplicationRecord
     self.absolute_time = seconds ? start_time + seconds : nil
   end
 
-  def day_and_time
-    @day_and_time ||= absolute_time&.in_time_zone(home_time_zone)
-  end
-
-  def day_and_time=(date_with_time)
-    time_string = date_with_time.to_s
-    self.absolute_time = ActiveSupport::TimeZone.new(home_time_zone).parse(time_string)
-  end
-
   def military_time
-    day_and_time && TimeConversion.absolute_to_hms(day_and_time)
+    absolute_time_local && TimeConversion.absolute_to_hms(absolute_time_local)
   end
 
   def military_time=(military_time)
     @military_time = military_time
-    self.day_and_time = military_time.present? && effort.present? ?
-                            IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, time_point: time_point) : nil
+    self.absolute_time = military_time.present? && effort.present? ?
+                             IntendedTimeCalculator.absolute_time_local(military_time: military_time, effort: effort, time_point: time_point) : nil
   end
 
   def name
@@ -208,10 +199,6 @@ class SplitTime < ApplicationRecord
   end
 
   private
-
-  def event_start_time
-    @event_start_time ||= effort.event_start_time
-  end
 
   def home_time_zone
     @home_time_zone ||= attributes['home_time_zone'] || effort.home_time_zone

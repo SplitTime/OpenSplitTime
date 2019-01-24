@@ -16,7 +16,7 @@ class EffortProgressAidDetail < EffortProgressRow
     EffortSplitData.new(effort_slug: effort_slug,
                         lap_name: lap_name(lap),
                         split_name: lap_split_name(aid_station_time_points.first),
-                        days_and_times: [predicted_aid_day_and_time])
+                        absolute_times_local: [predicted_aid_day_and_time])
   end
 
   def prior_to_here_info

@@ -27,8 +27,8 @@ class PlaceDetailRow
     show_laps? ? name_with_lap : name_without_lap
   end
 
-  def days_and_times
-    split_times.map { |st| st&.day_and_time }
+  def absolute_times_local
+    split_times.map { |st| st.absolute_time_local if st }
   end
 
   def end_time_point

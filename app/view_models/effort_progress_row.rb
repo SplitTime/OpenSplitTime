@@ -79,7 +79,7 @@ class EffortProgressRow
     EffortSplitData.new(effort_slug: effort_slug,
                         lap_name: lap_name(lap),
                         split_name: st && lap_split_name(st.time_point),
-                        days_and_times: days_and_times(split_times))
+                        absolute_times_local: absolute_times_local(split_times))
   end
 
   def lap_name(lap)
@@ -93,7 +93,7 @@ class EffortProgressRow
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)
   end
 
-  def days_and_times(split_times)
-    split_times.map { |st| st&.day_and_time }
+  def absolute_times_local(split_times)
+    split_times.map { |st| st.absolute_time_local if st }
   end
 end

@@ -60,13 +60,6 @@ RSpec.describe Interactors::ChangeEffortEvent do
         subject.perform!
         expect(split_times.map(&:changed?)).to all eq(false)
       end
-
-      it 'updates the effort start offset such that the absolute effort start_time does not change' do
-        existing_start_time = effort.start_time
-        subject.perform!
-        reloaded_effort = Effort.find(effort.id)
-        expect(reloaded_effort.start_time).to eq(existing_start_time)
-      end
     end
 
     context 'when the new event has different splits from the old' do

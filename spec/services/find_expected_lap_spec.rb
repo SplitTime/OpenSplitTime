@@ -140,9 +140,9 @@ RSpec.describe FindExpectedLap do
       end
     end
 
-    context 'when subject_attribute is day_and_time and specified split and time fills a hole' do
+    context 'when subject_attribute is absolute_time and specified split and time fills a hole' do
       let(:split) { split_3 }
-      let(:subject_attribute) { :day_and_time }
+      let(:subject_attribute) { :absolute_time }
       let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 09:15:00') }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 
@@ -151,9 +151,9 @@ RSpec.describe FindExpectedLap do
       end
     end
 
-    context 'when subject_attribute is day_and_time and specified split and time does not fill a hole' do
+    context 'when subject_attribute is absolute_time and specified split and time does not fill a hole' do
       let(:split) { split_3 }
-      let(:subject_attribute) { :day_and_time }
+      let(:subject_attribute) { :absolute_time }
       let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 10:15:00') }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 

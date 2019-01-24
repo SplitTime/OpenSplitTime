@@ -35,13 +35,13 @@ module TimeClusterHelper
     when :segment
       cluster.aid_time_recordable? ? [cluster.segment_time, cluster.time_in_aid] : [cluster.segment_time]
     when :ampm
-      cluster.days_and_times
+      cluster.absolute_times_local
     when :military
-      cluster.days_and_times
+      cluster.absolute_times_local
     when :early_estimate
-      cluster.early_estimate_days_and_times
+      cluster.absolute_estimates_early_local
     when :late_estimate
-      cluster.late_estimate_days_and_times
+      cluster.absolute_estimates_late_local
     else
       cluster.times_from_start
     end

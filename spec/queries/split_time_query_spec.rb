@@ -8,6 +8,10 @@ RSpec.describe SplitTimeQuery do
   let(:lap_1) { 1 }
 
   describe '.typical_segment_time' do
+    subject { SplitTimeQuery.typical_segment_time(segment, effort_ids) }
+    let(:count) { subject[:effort_count] }
+    let(:time) { subject[:average] }
+
     before do
       FactoryBot.reload
       course = create(:course)
@@ -37,33 +41,42 @@ RSpec.describe SplitTimeQuery do
     let(:start_to_cunningham_in) { Segment.new(begin_point: start, end_point: cunningham_in) }
     let(:in_aid_maggie) { Segment.new(begin_point: maggie_in, end_point: maggie_out) }
 
-    it 'returns average time and count for a course segment' do
-      segment = start_to_cunningham_in
-      effort_ids = nil
-      time, count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
-      expect(time).to be_within(100).of(10000)
-      expect(count).to eq(4)
+    context 'for a course segment' do
+      let(:segment) { start_to_cunningham_in }
+      let(:effort_ids) { nil }
+
+      it 'returns average time and count' do
+        expect(time).to be_within(100).of(10000)
+        expect(count).to eq(4)
+      end
     end
 
-    it 'ignores any time if data_status of either the begin or end time is bad or questionable' do
-      effort_1 = Effort.first
-      effort_2 = Effort.second
-      split_time_1 = SplitTime.find_by(split: maggie_split, sub_split_bitkey: in_bitkey, effort: effort_1)
-      split_time_2 = SplitTime.find_by(split: maggie_split, sub_split_bitkey: out_bitkey, effort: effort_2)
-      split_time_1.bad!
-      split_time_2.questionable!
-      segment = in_aid_maggie
-      effort_ids = nil
-      _, count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
-      expect(count).to eq(2)
+    context 'if data_status of either the begin or end time is bad or questionable' do
+      let(:segment) { in_aid_maggie }
+      let(:effort_ids) { nil }
+
+      before do
+        effort_1 = Effort.first
+        effort_2 = Effort.second
+        split_time_1 = SplitTime.find_by(split: maggie_split, sub_split_bitkey: in_bitkey, effort: effort_1)
+        split_time_2 = SplitTime.find_by(split: maggie_split, sub_split_bitkey: out_bitkey, effort: effort_2)
+        split_time_1.bad!
+        split_time_2.questionable!
+      end
+
+      it 'ignores any time' do
+        expect(count).to eq(2)
+      end
     end
 
-    it 'returns average time and count for an in-aid segment and limits the scope of the query when effort_ids are provided' do
-      segment = in_aid_maggie
-      effort_ids = Effort.all.ids.first(2)
-      time, count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
-      expect(time).to be_within(50).of(200)
-      expect(count).to eq(2)
+    context 'when effort_ids are provided' do
+      let(:segment) { in_aid_maggie }
+      let(:effort_ids) { Effort.all.ids.first(2) }
+
+      it 'limits the scope of the query' do
+        expect(time).to be_within(50).of(200)
+        expect(count).to eq(2)
+      end
     end
   end
 

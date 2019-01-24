@@ -13,8 +13,8 @@ class PodiumPresenter < BasePresenter
     @current_user = current_user
   end
 
-  def event_start_time
-    event.start_time
+  def event_start_time_local
+    event.start_time_local
   end
 
   def categories

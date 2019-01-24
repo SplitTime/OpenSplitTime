@@ -22,9 +22,9 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   let(:splits) { [split_1, split_2, split_3, split_4] }
 
   let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
-  let(:time_1) { split_time_1.day_and_time }
-  let(:time_2) { split_time_2.day_and_time }
-  let(:time_3) { split_time_3.day_and_time }
+  let(:time_1) { split_time_1.absolute_time_local }
+  let(:time_2) { split_time_2.absolute_time_local }
+  let(:time_3) { split_time_3.absolute_time_local }
 
   let(:raw_time_1) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_1.split.base_name, bitkey: split_time_1.bitkey, absolute_time: time_1) }
   let(:raw_time_2) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_2.split.base_name, bitkey: split_time_2.bitkey, absolute_time: time_2) }
@@ -90,7 +90,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       let(:non_matching_raw_times) { [] }
       let(:tolerance) { 1.minute }
 
-      before { raw_time_2.update(absolute_time: split_time_2.day_and_time - 30.seconds) }
+      before { raw_time_2.update(absolute_time: split_time_2.absolute_time_local - 30.seconds) }
 
       it 'sets split_time for all raw_times' do
         verify_raw_times
@@ -118,7 +118,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       let(:non_matching_raw_times) { [raw_time_2] }
       let(:tolerance) { 10.seconds }
 
-      before { raw_time_2.update(absolute_time: split_time_2.day_and_time - 30.seconds) }
+      before { raw_time_2.update(absolute_time: split_time_2.absolute_time_local - 30.seconds) }
 
       it 'sets split_time for matching raw_times only' do
         verify_raw_times
@@ -132,7 +132,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       let(:non_matching_raw_times) { [raw_time_2] }
       let(:tolerance) { 10.seconds }
 
-      before { raw_time_2.update(absolute_time: nil, entered_time: TimeConversion.absolute_to_hms(split_time_2.day_and_time - 30.seconds)) }
+      before { raw_time_2.update(absolute_time: nil, entered_time: TimeConversion.absolute_to_hms(split_time_2.absolute_time_local - 30.seconds)) }
 
       it 'sets split_time for matching raw_times only' do
         verify_raw_times

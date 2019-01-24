@@ -11,6 +11,7 @@ class LapSplit
   end
 
   def <=>(other)
+    return nil if other.nil?
     [self.lap, self.split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
   end
 

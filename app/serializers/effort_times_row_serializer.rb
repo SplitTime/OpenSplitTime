@@ -38,7 +38,7 @@ class EffortTimesRowSerializer < BaseSerializer
   end
 
   def absolute_times
-    object.time_clusters.map(&:days_and_times)
+    object.time_clusters.map(&:absolute_times_local)
   end
 
   def segment_times

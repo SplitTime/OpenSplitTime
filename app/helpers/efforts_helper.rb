@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module EffortsHelper
-
   def data_status_class(effort_row)
     if effort_row.bad?
       'text-danger'
@@ -45,7 +44,7 @@ module EffortsHelper
   end
 
   def effort_row_confirm_buttons(row, effort)
-    if row.days_and_times.compact.present?
+    if row.absolute_times_local.compact.present?
       row.time_data_statuses.each_with_index do |data_status, i|
         new_data_status = data_status == 'confirmed' ? '' : 'confirmed'
         button_class = data_status == 'confirmed' ? 'success' : 'outline-secondary'

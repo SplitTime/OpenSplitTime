@@ -92,8 +92,8 @@ class PlaceDetailView
     begin_split_times = grouped_split_times[begin_time_point].index_by(&:effort_id)
     end_split_times = grouped_split_times[end_time_point].index_by(&:effort_id)
     event_efforts.each do |effort|
-      day_and_time_begin = begin_split_times[effort.id]&.day_and_time
-      day_and_time_end = end_split_times[effort.id]&.day_and_time
+      day_and_time_begin = begin_split_times[effort.id]&.absolute_time_local
+      day_and_time_end = end_split_times[effort.id]&.absolute_time_local
       result[effort.id] = {in: day_and_time_begin, out: day_and_time_end}
     end
     result

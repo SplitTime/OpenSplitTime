@@ -19,8 +19,8 @@
     <tr>
       <td><%= strong_conditional row.name, row.finish? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.finish? %></td>
-      <td class="text-center"><%= strong_conditional row.days_and_times.map {|time| day_time_format(time)}.join(' / '), row.finish? %></td>
-      <td class="text-center"><%= strong_conditional row.times_from_start.map {|time| time_format_hhmm(time)}.join(' / '), row.finish? %></td>
+      <td class="text-center"><%= strong_conditional row.absolute_times_local.map(&method(:day_time_format)).join(' / '), row.finish? %></td>
+      <td class="text-center"><%= strong_conditional row.times_from_start.map(&method(:time_format_hhmm)).join(' / '), row.finish? %></td>
       <td class="text-center"><%= strong_conditional time_format_hhmm(row.segment_time), row.finish? %></td>
       <% if presenter.out_sub_splits? %>
         <td class="text-right"><%= strong_text_conditional time_format_minutes(presenter.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %></td>

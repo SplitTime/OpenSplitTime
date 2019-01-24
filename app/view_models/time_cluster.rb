@@ -37,20 +37,20 @@ class TimeCluster
     @times_from_start ||= split_times_data.map(&:time_from_start)
   end
 
-  def days_and_times
-    @days_and_times ||= split_times_data.map(&:day_and_time)
+  def absolute_times_local
+    @absolute_times_local ||= split_times_data.map(&:absolute_time_local)
   end
 
-  def day_and_time_strings
-    @days_and_times ||= split_times_data.map(&:day_and_time_string)
+  def absolute_times_local_strings
+    @absolute_times_local_strings ||= split_times_data.map(&:absolute_time_local_string)
   end
 
-  def early_estimate_days_and_times
-    split_times_data.map(&:absolute_estimate_early)
+  def absolute_estimates_early_local
+    split_times_data.map(&:absolute_estimate_early_local)
   end
 
-  def late_estimate_days_and_times
-    split_times_data.map(&:absolute_estimate_late)
+  def absolute_estimates_late_local
+    split_times_data.map(&:absolute_estimate_late_local)
   end
 
   def time_data_statuses

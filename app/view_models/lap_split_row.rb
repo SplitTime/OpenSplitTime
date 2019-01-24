@@ -4,7 +4,7 @@ class LapSplitRow
 
   delegate :distance_from_start, :lap, :split, :key, :time_points, to: :lap_split
   delegate :id, :kind, :start?, :intermediate?, :finish?, to: :split
-  delegate :segment_time, :time_in_aid, :times_from_start, :days_and_times, :time_data_statuses,
+  delegate :segment_time, :time_in_aid, :times_from_start, :absolute_times_local, :time_data_statuses,
            :split_time_ids, :stopped_here_flags, :stopped_here?, to: :time_cluster
 
   # split_times should be an array having size == lap_split.time_points.size,

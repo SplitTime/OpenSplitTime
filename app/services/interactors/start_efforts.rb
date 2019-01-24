@@ -25,7 +25,7 @@ module Interactors
     def perform!
       unless errors.present?
         SplitTime.transaction do
-          efforts.each { |effort| start_effort(effort) }
+          efforts.each(&method(:start_effort))
           raise ActiveRecord::Rollback if errors.present?
         end
       end

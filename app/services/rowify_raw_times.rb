@@ -22,7 +22,7 @@ class RowifyRawTimes
     add_lap_to_raw_times
     add_entered_time_from_absolute
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
-    raw_time_pairs.map { |raw_time_pair| build_time_row(raw_time_pair) }
+    raw_time_pairs.map(&method(:build_time_row))
   end
 
   private
@@ -37,7 +37,7 @@ class RowifyRawTimes
       elsif raw_time.effort_id.nil? || raw_time.split_id.nil?
         raw_time.lap = nil
       elsif raw_time.absolute_time
-        raw_time.lap = expected_lap(raw_time, :day_and_time, raw_time.absolute_time)
+        raw_time.lap = expected_lap(raw_time, :absolute_time_local, raw_time.absolute_time)
       elsif raw_time.military_time
         raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
       else

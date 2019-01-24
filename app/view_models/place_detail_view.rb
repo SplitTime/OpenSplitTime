@@ -41,6 +41,10 @@ class PlaceDetailView
     @peers ||= efforts_from_ids(frequent_encountered_ids)
   end
 
+  def not_analyzable?
+    ordered_split_times.size < 2
+  end
+
   def method_missing(method)
     effort.send(method)
   end

@@ -24,7 +24,7 @@
     <tr>
       <th class="text-center" colspan="5"></th>
     </tr>
-    <tr>
+    <tr class="thead-dark">
       <th>Split</th>
       <th class="text-right"><%= pdu('singular').titleize %></th>
       <th class="text-center">Projected Early</th>
@@ -35,7 +35,7 @@
 
     <tbody>
     <% view_object.projected_lap_split_rows.each do |row| %>
-      <tr class="<%= data_status_text_class[row.data_status] %>">
+      <tr class="table-primary">
         <td><%= strong_conditional row.name, row.done? %></td>
         <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
         <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>

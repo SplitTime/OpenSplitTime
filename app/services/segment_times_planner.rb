@@ -23,6 +23,7 @@ class SegmentTimesPlanner
   end
 
   def times_from_start(round_to: 0)
+    return {} if final_segment_missing?
     @times_from_start ||= serial_segments.map.with_index do |segment, i|
       [segment.end_point, (serial_times[0..i].sum * pace_factor).round_to_nearest(round_to)]
     end.to_h
@@ -46,5 +47,9 @@ class SegmentTimesPlanner
 
   def total_segment_time
     serial_times.sum
+  end
+
+  def final_segment_missing?
+    serial_segments.last.end_point != time_points.last
   end
 end

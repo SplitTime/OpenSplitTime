@@ -146,7 +146,7 @@ class EffortsController < ApplicationController
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first
 
-    @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
+    @presenter = EffortWithTimesPresenter.new(effort, params: params)
   end
 
   def update_split_times
@@ -160,7 +160,7 @@ class EffortsController < ApplicationController
       redirect_to effort_path(effort)
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
-      @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
+      @presenter = EffortWithTimesPresenter.new(effort, params: params)
       render 'edit_split_times', display_style: params[:display_style]
     end
   end

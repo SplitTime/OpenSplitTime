@@ -22,7 +22,12 @@
   <% if view_object.projected_lap_split_rows.present? %>
     <thead>
     <tr>
-      <th class="text-center" colspan="5"></th>
+      <th colspan="5"></th>
+    </tr>
+    <tr>
+      <th colspan="5"><%= "Projections based on #{pluralize(@presenter.effort_count, 'effort')} " +
+                              "from #{'year'.pluralize(@presenter.effort_years.size)} " +
+                              "#{@presenter.effort_years.to_sentence}" %></th>
     </tr>
     <tr class="thead-dark">
       <th>Split</th>

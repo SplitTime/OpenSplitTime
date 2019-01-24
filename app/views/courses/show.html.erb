@@ -63,7 +63,7 @@
 
   <% if @presenter.display_style == 'splits' %>
     <% if @presenter.ordered_splits.present? %>
-      <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: course_path(@presenter) %>
+      <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: course_path(@presenter.course) %>
     <% else %>
       <h4>No splits are associated with this course.</h4>
     <% end %>

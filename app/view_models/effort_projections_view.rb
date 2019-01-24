@@ -2,6 +2,7 @@
 
 class EffortProjectionsView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, to: :event
+  delegate :effort_count, :effort_years, to: :projected_effort
 
   def actual_lap_split_rows
     @actual_lap_split_rows ||= lap_split_rows.elements_before(last_actual_lap_split_row, inclusive: true)

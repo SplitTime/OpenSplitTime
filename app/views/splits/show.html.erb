@@ -46,9 +46,9 @@
       <div class="col-12 col-sm-7">
         <div>
           <% if current_user&.authorized_to_edit?(@presenter.split) %>
-              <%= link_to 'Edit Split', edit_split_path(@presenter), class: "btn btn-primary" %>
+              <%= link_to 'Edit Split', edit_split_path(@presenter.split), class: "btn btn-primary" %>
               <%= link_to 'Delete Split',
-                          split_path(@presenter),
+                          split_path(@presenter.split),
                           method: :delete,
                           data: {confirm: "Are you sure?"},
                           class: "btn btn-danger" %>

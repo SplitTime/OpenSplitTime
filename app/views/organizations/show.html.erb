@@ -1,89 +1,86 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show organization - #{@presenter.name}" %>
+  <% "OpenSplitTime: Show organization - #{@presenter.name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-            <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-                <li class="breadcrumb-item active"><%= @presenter.organization.name %></li>
-            </ul>
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item active"><%= @presenter.organization.name %></li>
+          </ul>
         </div>
       </div>
       <aside class="col-auto">
         <% if current_user&.authorized_fully?(@presenter.organization) %>
-            <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
-            <%= link_to 'Edit this organization', edit_organization_path(@presenter.organization), class: "btn btn-outline-secondary" %>
-            <%= link_to 'Delete this organization',
-                        organization_path(@presenter.organization),
-                        method: :delete,
-                        data: {confirm: "Are you sure?"}, class: "btn btn-outline-secondary" %>
+          <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
+          <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-outline-secondary" %>
         <% end %>
       </aside>
     </div>
     <!-- Navigation -->
     <ul class="nav nav-tabs nav-tabs-ost">
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'courses'}" do
-            link_to 'Courses', request.params.merge(display_style: 'courses')
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'courses'}" do
+        link_to 'Courses', request.params.merge(display_style: 'courses')
+      end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'events'}" do
+        link_to 'Events', request.params.merge(display_style: 'events')
+      end %>
+      <% if current_user&.authorized_fully?(@presenter.organization) %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stewards'}" do
+          link_to 'Stewards', request.params.merge(display_style: 'stewards')
         end %>
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'events'}" do
-            link_to 'Events', request.params.merge(display_style: 'events')
-        end %>
-        <% if current_user&.authorized_fully?(@presenter.organization) %>
-            <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stewards'}" do
-                link_to 'Stewards', request.params.merge(display_style: 'stewards')
-            end %>
-        <% end %>
+      <% end %>
     </ul>
   </div>
 </header>
 
 <% if @presenter.display_style == 'courses' %>
-    <article class="ost-article container">
-        <% if @presenter.courses.present? %>
-            <%= render 'courses/courses', courses: @presenter.courses %>
-        <% else %>
-            <h4>No courses are associated with this organization.</h4>
-        <% end %>
-    </article>
-<% elsif @presenter.display_style == 'stewards' %>
-    <% if current_user&.authorized_fully?(@presenter.organization) %>
-
-        <aside class="ost-toolbar">
-            <div class="container">
-                <div class="row">
-                    <div class="col offset-md-6 col-md-6">
-                        <%= render 'user_lookup' %>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <article class="ost-article container">
-            <% if @presenter.stewards.present? %>
-                <%= render 'stewards_list', stewards: @presenter.stewards %>
-            <% else %>
-                <h4>No stewards have been added to this organization.</h4>
-            <% end %>
-        </article>
+  <article class="ost-article container">
+    <% if @presenter.courses.present? %>
+      <%= render 'courses/courses', courses: @presenter.courses %>
     <% else %>
-        <article class="ost-article container">
-            <h4>Not authorized.</h4>
-        </article>
+      <h4>No courses are associated with this organization.</h4>
     <% end %>
+  </article>
+<% elsif @presenter.display_style == 'stewards' %>
+  <% if current_user&.authorized_fully?(@presenter.organization) %>
+
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col offset-md-6 col-md-6">
+            <%= render 'user_lookup' %>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <article class="ost-article container">
+      <% if @presenter.stewards.present? %>
+        <%= render 'stewards_list', stewards: @presenter.stewards %>
+      <% else %>
+        <h4>No stewards have been added to this organization.</h4>
+      <% end %>
+    </article>
+  <% else %>
+    <article class="ost-article container">
+      <h4>Not authorized.</h4>
+    </article>
+  <% end %>
 
 <% else %>
-    <article class="ost-article container">
-        <% if @presenter.event_groups.present? %>
-            <%= render 'event_groups/list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
-        <% else %>
-            <h4>No events are associated with this organization.</h4>
-        <% end %>
-    </article>
+  <article class="ost-article container">
+    <% if @presenter.event_groups.present? %>
+      <%= render 'event_groups/list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
+    <% else %>
+      <h4>No events are associated with this organization.</h4>
+    <% end %>
+  </article>
 <% end %>

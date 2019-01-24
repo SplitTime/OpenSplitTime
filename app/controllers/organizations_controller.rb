@@ -48,14 +48,13 @@ class OrganizationsController < ApplicationController
 
   def destroy
     authorize @organization
-    if @organization.events.present?
-      flash[:danger] = 'An organization cannot be deleted so long as any events are associated with it. ' +
-          'Delete the related events individually and then delete the organization.'
-      redirect_to organization_path(@organization)
-    else
-      @organization.destroy
+
+    if @organization.destroy
       flash[:success] = 'Organization deleted.'
       redirect_to organizations_path
+    else
+      flash[:danger] = @organization.errors.full_messages.join("\n")
+      redirect_to organization_path(@organization)
     end
   end
 

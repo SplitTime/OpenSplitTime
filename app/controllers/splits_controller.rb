@@ -4,8 +4,9 @@ class SplitsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @splits = Split.order(prepared_params[:sort] || :course_id, :distance_from_start)
-                  .where(prepared_params[:filter])
+    order = prepared_params[:sort].presence || [:course_id, :distance_from_start]
+    @splits = Split.order(order).where(prepared_params[:filter])
+
     respond_to do |format|
       format.html do
         @splits = @splits.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)

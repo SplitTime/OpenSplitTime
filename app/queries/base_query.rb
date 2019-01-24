@@ -13,7 +13,7 @@ class BaseQuery
   def self.sql_order_from_hash(sort, allowed, default)
     sort_fields = (sort || {}).symbolize_keys
     allowed_fields = allowed.map(&:to_sym).to_set
-    filtered_fields = sort_fields.slice(*allowed_fields)
+    filtered_fields = sort_fields.select { |field, _| allowed_fields.include?(field) } # Don't use #slice here as it may reorder the sort_fields
     filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}"}.join(', ')
     filtered_string.presence || default.to_s
   end

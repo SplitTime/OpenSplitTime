@@ -47,7 +47,7 @@
           <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
             <%= link_to 'This is me', avatar_claim_person_path(@presenter.person),
                         data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
-                        class: "btn btn-sm btn-success" %>
+                        class: "btn btn-success" %>
           <% end %>
           <% if current_user&.admin? %>
             <%= person_actions_dropdown_menu(@presenter) %>

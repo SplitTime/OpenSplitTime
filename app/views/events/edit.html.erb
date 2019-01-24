@@ -23,4 +23,9 @@
 
 <article class="ost-article container">
   <%= render 'form' %>
+  <hr>
+  <%= link_to_delete_resource('Delete this event', event_path(@event),
+                              resource: @event,
+                              noteworthy_associations: [:entrants, :split_times],
+                              class: "btn btn-danger") %>
 </article>

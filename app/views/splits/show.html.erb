@@ -9,19 +9,13 @@
         <div class="ost-title">
           <h1><strong><%= @presenter.base_name %></strong> - <%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <% if @presenter.organization %>
-              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <% end %>
-            <li class="breadcrumb-item"><%= link_to @presenter.course.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item">Courses</li>
+            <li class="breadcrumb-item"><%= link_to @presenter.course.name, course_path(@presenter.course, display_style: :splits) %></li>
             <li class="breadcrumb-item active"><%= @presenter.base_name %></li>
           </ul>
         </div>
         <div class="ost-subtitle">
           <%= @presenter.description %>
-          <h6>
-            <strong>Course:</strong> <%= link_to @presenter.course.name, course_path(@presenter.course) %>
-          </h6>
           <h6>
             <strong>Vertical Gain From Start:</strong> <%= elevation_format(@presenter.vert_gain_from_start) %>
           </h6>
@@ -61,15 +55,8 @@
 
 <article class="ost-article container">
   <% if @presenter.latitude && @presenter.longitude %>
-      <div id="map" style="width: 550px; height: 350px;"></div>
-
-      <script>
-          document.addEventListener("turbolinks:load", function () {
-              var locations = <%= @presenter.course_splits.to_json.html_safe %>;    // pass ruby variable to javascript
-              var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
-
-              gmap_show(locations, trackPoints);    // init show map
-          });
-      </script>
+    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
+         data-locations="<%= [@presenter.split].to_json %>"
+         data-track-points="<%= @presenter.track_points.to_json %>"></div>
   <% end %>
 </article>

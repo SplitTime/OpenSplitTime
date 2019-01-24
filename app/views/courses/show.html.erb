@@ -1,7 +1,7 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show course - #{@presenter.name}" %>
+  <% "OpenSplitTime: Show course - #{@presenter.name}" %>
 <% end %>
-  
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -29,7 +29,7 @@
     <%= course_view_tabs(@presenter) %>
   </div>
 </header>
-  
+
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
@@ -38,9 +38,9 @@
           <% if current_user&.authorized_to_edit?(@presenter.course) %>
             <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-primary' %>
             <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
-                          method: :delete,
-                          data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
-                          class: 'btn btn-danger' %>
+                        method: :delete,
+                        data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
+                        class: 'btn btn-danger' %>
           <% end %>
         </div>
       </div>
@@ -50,14 +50,9 @@
 
 <article class="ost-article container">
   <% if @presenter.course_has_location_data? %>
-    <div id="map" style="width: 100%; height: 350px;"></div>
-    <script>
-      document.addEventListener("turbolinks:load", function () {
-        var locations = <%= @presenter.ordered_splits.to_json.html_safe %>; // pass ruby variables to javascript
-        var trackPoints = <%= @presenter.track_points.to_json.html_safe %>;
-        gmap_show(locations, trackPoints);    // init show map
-      });
-    </script>
+    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
+         data-locations="<%= @presenter.ordered_splits.to_json %>"
+         data-track-points="<%= @presenter.track_points.to_json %>"></div>
   <% end %>
   <br/>
 

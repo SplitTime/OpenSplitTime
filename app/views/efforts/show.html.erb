@@ -2,7 +2,8 @@
   <% "OpenSplitTime: Show effort - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip<% end %>
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <header class="ost-header">
   <div class="container">
@@ -28,7 +29,7 @@
         </div>
         <div class="ost-subtitle">
           <h6>
-            <strong>Status:</strong> 
+            <strong>Status:</strong>
             <%= @presenter.finish_status %>
             <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
             <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
@@ -53,13 +54,7 @@
         </table>
       <% end %>
     </div>
-    <% unless @presenter.simple? || @presenter.not_analyzable? %>
-      <ul class="nav nav-tabs nav-tabs-ost">
-        <li class="nav-item active"><%= link_to "Split times", effort_path(@presenter.effort) %></li>
-        <li class="nav-item"><%= link_to "Analyze times", analyze_effort_path(@presenter.effort) %></li>
-        <li class="nav-item"><%= link_to "Places + peers", place_effort_path(@presenter.effort) %></li>
-      </ul>
-    <% end %>
+    <%= effort_view_tabs(@presenter) %>
   </div>
 </header>
 

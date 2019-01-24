@@ -3,14 +3,14 @@
 # This Struct is a lightweight alternative to RawTime when many objects are needed.
 
 RawTimeData = Struct.new(:id, :event_group_id, :bib_number, :split_name, :bitkey, :stopped_here, :data_status_numeric,
-                         :absolute_time_string, :day_and_time_string, :military_time, :source, :created_by, :pulled_by, keyword_init: true) do
+                         :absolute_time_string, :absolute_time_local_string, :military_time, :source, :created_by, :pulled_by, keyword_init: true) do
 
   def absolute_time
     absolute_time_string&.to_datetime
   end
 
-  def day_and_time
-    day_and_time_string&.to_datetime
+  def absolute_time_local
+    absolute_time_local_string&.to_datetime
   end
 
   def data_status

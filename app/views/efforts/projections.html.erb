@@ -1,7 +1,9 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Place detail - #{@presenter.full_name} - #{@presenter.event_name}" %>
+  <% "OpenSplitTime: Projections - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
+<% content_for(:container_type) do %>skip
+<% end %>
 
 <header class="ost-header">
   <div class="container">
@@ -23,45 +25,40 @@
             <% end %>
             <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.full_name, effort_path(@presenter.effort) %></li>
-            <li class="breadcrumb-item active">Place</li>
+            <li class="breadcrumb-item active">Projections</li>
           </ul>
         </div>
         <div class="ost-subtitle">
-          <% if @presenter.start_time %>
-            <h6>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h6>
-          <% end %>
-          <h6>Status:
-            <strong>
-              <%= @presenter.finish_status %>
-              <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-              <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-              <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-            </strong>
+          <h6>
+            <strong>Status:</strong>
+            <%= @presenter.finish_status %>
+            <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
+            <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
+            <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
           </h6>
         </div>
       </div>
-      <%= div_for(@presenter.person) do %>
-        <table class="table-fixed">
-          <tr>
-            <th>Notify Me Live</th>
-          </tr>
-          <tr>
-            <td class="table-button"><%= link_to_toggle_email_subscription(@presenter.person) %></td>
-            <td class="table-button"><%= link_to_toggle_sms_subscription(@presenter.person) %></td>
-          </tr>
-        </table>
+      <% if @presenter.photo.present? %>
+        <div class="col-3">
+          <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
+        </div>
       <% end %>
     </div>
     <%= effort_view_tabs(@presenter) %>
   </div>
 </header>
 
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+
+    </div>
+  </div>
+</aside>
+
 <article class="ost-article container">
-  <strong>Closest peers:
-    <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ', '.html_safe) %>
-  </strong><br/>
-  <hr/>
-  <% if @presenter.place_detail_rows.present? %>
-    <%= render 'place_detail_rows', view_object: @presenter %>
+
+  <% if @presenter.actual_lap_split_rows.present? %>
+    <%= render 'split_times/projections_list', view_object: @presenter %>
   <% end %>
 </article>

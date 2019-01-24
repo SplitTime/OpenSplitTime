@@ -17,9 +17,12 @@ class Effort < ApplicationRecord
   include Matchable
   include TimeZonable
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], :regex => /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
+  zonable_attributes :start_time, :scheduled_start_time, :event_start_time
+
   belongs_to :event
   belongs_to :person
   has_many :split_times, dependent: :destroy
@@ -91,7 +94,7 @@ class Effort < ApplicationRecord
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
-    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :day_and_time, :absolute_time).values
+    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :absolute_time_local, :absolute_time).values
     without_time = time_values.all?(&:blank?)
     blank_time = without_time && time_values.any? { |value| value == '' }
     attributes.merge!(_destroy: true) if persisted and blank_time
@@ -103,31 +106,22 @@ class Effort < ApplicationRecord
   end
 
   def reset_age_from_birthdate
-    assign_attributes(age: TimeDifference.between(birthdate, event_start_time).in_years.to_i) if birthdate.present?
+    calculated_start_time = start_time || scheduled_start_time || event_start_time
+    return unless birthdate.present? && calculated_start_time.present?
+    assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
   end
 
   def start_time
     return @start_time if defined?(@start_time)
-    @start_time = attributes.has_key?('start_time') ?
-                      attributes['start_time']&.in_time_zone(event_home_zone) :
-                      start_split_time&.absolute_time&.in_time_zone(event_home_zone)
+    @start_time = attributes.has_key?('start_time') ? attributes['start_time'] : start_split_time&.absolute_time
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time']&.in_time_zone(event_home_zone) || event&.start_time_in_home_zone
+    @event_start_time ||= attributes['event_start_time'] || event&.start_time
   end
 
-  def event_home_zone
-    @event_home_zone ||= attributes['event_home_zone'] || event&.home_time_zone
-  end
-
-  def scheduled_start_time_local
-    @scheduled_start_time_local ||= scheduled_start_time&.in_time_zone(event_home_zone)
-  end
-
-  def scheduled_start_time_local=(time)
-    raise ArgumentError, 'scheduled_start_time_local cannot be set without a valid home time zone' unless time_zone_valid?(event_home_zone)
-    self.scheduled_start_time = ActiveSupport::TimeZone[event_home_zone].parse(time)
+  def home_time_zone
+    @home_time_zone ||= attributes['home_time_zone'] || event&.home_time_zone
   end
 
   def scheduled_start_offset
@@ -229,7 +223,7 @@ class Effort < ApplicationRecord
 
   def split_times_data
     return @split_times_data if defined?(@split_times_data)
-    query = SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: event_home_zone)
+    query = SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: home_time_zone)
     @split_times_data = ActiveRecord::Base.connection.execute(query).map { |row| SplitTimeData.new(row) }
   end
 
@@ -260,8 +254,10 @@ class Effort < ApplicationRecord
   end
 
   def current_age_approximate
-    @current_age_approximate ||=
-        age && (TimeDifference.from(event_start_time.to_date, Time.now.utc.to_date).in_years + age).to_i
+    return @current_age_approximate if defined?(@current_age_approximate)
+    calculated_start_time = start_time || scheduled_start_time || event_start_time
+    return unless age.present? && calculated_start_time.present?
+    @current_age_approximate ||= age && ((Time.current - calculated_start_time) / 1.year + age).round
   end
 
   def unreconciled?

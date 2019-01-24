@@ -297,7 +297,7 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
     let(:event_group) { create(:event_group) }
-    let(:event) { create(:event, start_time_in_home_zone: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
+    let(:event) { create(:event, start_time_local: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
     let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }
     let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
@@ -432,8 +432,8 @@ RSpec.describe Api::V1::EventGroupsController do
       context 'when there is a duplicate split_time in the database' do
         via_login_and_jwt do
           let(:split) { event.splits.first }
-          let(:day_and_time) { time_zone.parse(absolute_time_in) }
-          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, day_and_time: absolute_time_in, pacer: true, stopped_here: false) }
+          let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
+          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in, pacer: true, stopped_here: false) }
 
           it 'saves the raw_times to the database and matches the duplicate raw_time with the existing split_time' do
             expect(SplitTime.count).to eq(1)
@@ -451,8 +451,8 @@ RSpec.describe Api::V1::EventGroupsController do
         via_login_and_jwt do
           let(:effort) { create(:effort, event: event) }
           let(:split) { event.splits.first }
-          let(:day_and_time) { time_zone.parse(absolute_time_in) }
-          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, day_and_time: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
+          let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
+          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
           it 'saves the raw_times to the database and does not match any raw_time with the existing split_time' do
             expect(SplitTime.count).to eq(1)
@@ -499,7 +499,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(response.status).to eq(201)
             expect(RawTime.all.size).to eq(2)
             expect(SplitTime.all.size).to eq(2)
-            expect(SplitTime.all.map(&:day_and_time)).to match_array([absolute_time_in, absolute_time_out])
+            expect(SplitTime.all.map(&:absolute_time_local)).to match_array([absolute_time_in, absolute_time_out])
             expect(SplitTime.all.map(&:bitkey)).to match_array([in_bitkey, out_bitkey])
 
             expect(RawTime.all.pluck(:split_time_id)).to match_array(SplitTime.all.ids)
@@ -880,10 +880,10 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:event_group) { create(:event_group, available_live: true) }
     let!(:course_1) { create(:course) }
     let!(:course_2) { create(:course) }
-    let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
-    let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2018-09-30 08:00') }
-    let(:start_time_1) { event_1.start_time_in_home_zone }
-    let(:start_time_2) { event_2.start_time_in_home_zone }
+    let!(:event_1) { create(:event, event_group: event_group, course: course_1, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2018-09-30 08:00') }
+    let!(:event_2) { create(:event, event_group: event_group, course: course_2, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2018-09-30 08:00') }
+    let(:start_time_1) { event_1.start_time_local }
+    let(:start_time_2) { event_2.start_time_local }
 
     let!(:course_1_start_split) { create(:split, :start, course: course_1, base_name: 'Start') }
     let!(:course_1_aid_1_split) { create(:split, course: course_1, base_name: 'Aid 1', distance_from_start: 10000) }

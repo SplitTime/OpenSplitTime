@@ -20,7 +20,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
         allow(event).to receive(:required_time_points).and_return(time_points)
       end
 
-      let(:event) { build_stubbed(:event_with_standard_splits, start_time_in_home_zone: '2018-10-31 07:00:00', in_sub_splits_only: true, splits_count: 7) }
+      let(:event) { build_stubbed(:event_with_standard_splits, start_time_local: '2018-10-31 07:00:00', in_sub_splits_only: true, splits_count: 7) }
       let(:time_points) { event.required_time_points }
       let(:parsed_structs) { [
           OpenStruct.new(time_0: '7:05:05 AM',

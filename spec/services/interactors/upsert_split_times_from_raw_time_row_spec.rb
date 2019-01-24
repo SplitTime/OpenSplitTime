@@ -17,7 +17,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   let!(:split_time_4) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: start_time + 20000, stopped_here: false) }
 
   let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course, event_group: event_group, start_time_in_home_zone: '2018-02-10 06:00:00') }
+  let(:event) { create(:event, course: course, event_group: event_group, start_time_local: '2018-02-10 06:00:00') }
   let(:course) { create(:course) }
   let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }

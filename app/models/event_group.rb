@@ -18,7 +18,7 @@ class EventGroup < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
 
   delegate :stewards, to: :organization
-  delegate :start_time, :home_time_zone, :start_time_in_home_zone, to: :first_event
+  delegate :start_time, :home_time_zone, :start_time_local, to: :first_event
   delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }

@@ -44,8 +44,8 @@
     <div class="row">
       <div class="col form-inline justify-content-between">
         <div>
-          <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter) %>
-            <%= link_to 'This is me', avatar_claim_person_path(@presenter),
+          <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
+            <%= link_to 'This is me', avatar_claim_person_path(@presenter.person),
                         data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
                         class: "btn btn-success" %>
           <% end %>

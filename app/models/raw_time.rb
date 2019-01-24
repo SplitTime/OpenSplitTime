@@ -6,6 +6,7 @@ class RawTime < ApplicationRecord
 
   include Auditable
   include DataStatusMethods
+  include TimePointMethods
   include TimeRecordable
 
   belongs_to :event_group
@@ -99,20 +100,8 @@ class RawTime < ApplicationRecord
     split&.id
   end
 
-  def time_point
-    TimePoint.new(lap, split_id, bitkey)
-  end
-
   def has_split_id?
     attributes['split_id'].present?
-  end
-
-  def sub_split_kind
-    SubSplit.kind(bitkey)
-  end
-
-  def sub_split_kind=(sub_split_kind)
-    self.bitkey = SubSplit.bitkey(sub_split_kind.to_s)
   end
 
   def has_time_data?

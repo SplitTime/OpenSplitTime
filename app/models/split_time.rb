@@ -10,16 +10,20 @@ class SplitTime < ApplicationRecord
   include Auditable
   include DataStatusMethods
   include GuaranteedFindable
+  include TimePointMethods
+  include TimeZonable
+
+  zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   belongs_to :effort
   belongs_to :split
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   alias_attribute :with_pacer, :pacer
   attr_accessor :raw_time_id, :time_exists, :imposed_order, :segment_time
+  attribute :absolute_estimate_early, :datetime
+  attribute :absolute_estimate_late, :datetime
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
-  scope :int_and_finish, -> { includes(:split).where(splits: {kind: [Split.kinds[:intermediate], Split.kinds[:finish]]}) }
-  scope :intermediate, -> { includes(:split).where(splits: {kind: Split.kinds[:intermediate]}) }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
@@ -29,7 +33,7 @@ class SplitTime < ApplicationRecord
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
   scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
-  scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, events.home_time_zone as event_home_zone, efforts.bib_number::text as bib_number") }
+  scope :with_time_record_matchers, -> { joins(effort: :event).select("split_times.*, events.home_time_zone, efforts.bib_number::text as bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter
@@ -72,29 +76,6 @@ class SplitTime < ApplicationRecord
       errors.add(:effort_id, 'the effort.event.course_id does not resolve with the split.course_id')
       errors.add(:split_id, 'the effort.event.course_id does not resolve with the split.course_id')
     end
-  end
-
-  def sub_split
-    {split_id => bitkey}
-  end
-
-  def sub_split=(sub_split)
-    self.split_id = sub_split.split_id
-    self.bitkey = sub_split.bitkey
-  end
-
-  def sub_split_kind
-    SubSplit.kind(bitkey)
-  end
-
-  def time_point
-    TimePoint.new(lap, split_id, bitkey)
-  end
-
-  def time_point=(time_point)
-    self.split_id = time_point.split_id
-    self.bitkey = time_point.bitkey
-    self.lap = time_point.lap
   end
 
   def lap_split
@@ -145,23 +126,14 @@ class SplitTime < ApplicationRecord
     self.absolute_time = seconds ? start_time + seconds : nil
   end
 
-  def day_and_time
-    @day_and_time ||= absolute_time&.in_time_zone(event_home_zone)
-  end
-
-  def day_and_time=(date_with_time)
-    time_string = date_with_time.to_s
-    self.absolute_time = ActiveSupport::TimeZone.new(event_home_zone).parse(time_string)
-  end
-
   def military_time
-    day_and_time && TimeConversion.absolute_to_hms(day_and_time)
+    absolute_time_local && TimeConversion.absolute_to_hms(absolute_time_local)
   end
 
   def military_time=(military_time)
     @military_time = military_time
-    self.day_and_time = military_time.present? && effort.present? ?
-                            IntendedTimeCalculator.day_and_time(military_time: military_time, effort: effort, time_point: time_point) : nil
+    self.absolute_time = military_time.present? && effort.present? ?
+                             IntendedTimeCalculator.absolute_time_local(military_time: military_time, effort: effort, time_point: time_point) : nil
   end
 
   def name
@@ -206,12 +178,8 @@ class SplitTime < ApplicationRecord
 
   private
 
-  def event_start_time
-    @event_start_time ||= effort.event_start_time
-  end
-
-  def event_home_zone
-    @event_home_zone ||= attributes['event_home_zone'] || effort.event_home_zone
+  def home_time_zone
+    @home_time_zone ||= attributes['home_time_zone'] || effort.home_time_zone
   end
 
   def effort_start_split_time

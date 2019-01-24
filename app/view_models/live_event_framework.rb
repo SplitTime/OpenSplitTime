@@ -22,8 +22,8 @@ class LiveEventFramework
     event.id
   end
 
-  def event_start_time
-    event.start_time_in_home_zone
+  def event_start_time_local
+    event.start_time_local
   end
 
   def efforts_started

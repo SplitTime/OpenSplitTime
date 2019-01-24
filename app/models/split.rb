@@ -124,7 +124,7 @@ class Split < ApplicationRecord
   alias_method :sub_split_kinds=, :name_extensions=
 
   def sub_splits
-    sub_split_bitkeys.map { |bitkey| {id => bitkey} }
+    sub_split_bitkeys.map { |bitkey| SubSplit.new(id, bitkey) }
   end
 
   def sub_split_bitkeys
@@ -134,19 +134,19 @@ class Split < ApplicationRecord
   alias_method :bitkeys, :sub_split_bitkeys
 
   def sub_split_in
-    {id => in_bitkey} if in_bitkey
+    SubSplit.new(id, in_bitkey) if in_bitkey
   end
 
   def in_bitkey
-    bitkeys.find { |bitkey| bitkey == SubSplit::IN_BITKEY }
+    (bitkeys & [SubSplit::IN_BITKEY]).first
   end
 
   def sub_split_out
-    {id => out_bitkey} if out_bitkey
+    SubSplit.new(id, out_bitkey) if out_bitkey
   end
 
   def out_bitkey
-    bitkeys.find { |bitkey| bitkey == SubSplit::OUT_BITKEY }
+    (bitkeys & [SubSplit::OUT_BITKEY]).first
   end
 
   def course_name

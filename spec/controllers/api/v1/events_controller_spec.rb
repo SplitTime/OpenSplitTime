@@ -75,7 +75,7 @@ RSpec.describe Api::V1::EventsController do
     via_login_and_jwt do
       context 'when provided data is valid' do
         let(:attributes) { {course_id: course.id, event_group_id: event_group.id, name: 'Test Event',
-                            start_time_in_home_zone: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
+                            start_time_local: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
 
         it 'returns a successful json response' do
           make_request
@@ -262,7 +262,7 @@ RSpec.describe Api::V1::EventsController do
     let(:course) { create(:course) }
     let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
     let(:event_group) { create(:event_group) }
-    let(:event) { create(:event, start_time_in_home_zone: start_time, event_group: event_group, course: course, laps_required: 1) }
+    let(:event) { create(:event, start_time_local: start_time, event_group: event_group, course: course, laps_required: 1) }
     let(:start_time) { '2016-07-01 06:00:00' }
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
     let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }

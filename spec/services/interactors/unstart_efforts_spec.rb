@@ -17,6 +17,7 @@ RSpec.describe Interactors::UnstartEfforts do
       event.splits << [start_split, aid_1]
       create(:split_time, effort: effort_1, split: start_split, absolute_time: event.start_time)
       create(:split_time, effort: effort_2, split: start_split, absolute_time: event.start_time)
+      efforts.each(&:reload)
     end
 
     context 'when all provided efforts can be unstarted' do

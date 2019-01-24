@@ -32,22 +32,22 @@ RSpec.describe LapSplitRow, type: :model do
 
   let(:split_time_data_blank) { SplitTimeData.new }
   let(:split_time_data_1) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_1.id, bitkey: in_bitkey, time_from_start: tfs_1, segment_time: nil,
-                                              absolute_time_string: (event_start_time + tfs_1).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_1).to_s,
+                                              absolute_time_string: (event_start_time + tfs_1).to_s, absolute_time_local_string: (event.start_time_local + tfs_1).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_2) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey, time_from_start: tfs_2, segment_time: tfs_2 - tfs_1,
-                                              absolute_time_string: (event_start_time + tfs_2).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_2).to_s,
+                                              absolute_time_string: (event_start_time + tfs_2).to_s, absolute_time_local_string: (event.start_time_local + tfs_2).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_3) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: out_bitkey, time_from_start: tfs_3, segment_time: tfs_3 - tfs_2,
-                                              absolute_time_string: (event_start_time + tfs_3).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_3).to_s,
+                                              absolute_time_string: (event_start_time + tfs_3).to_s, absolute_time_local_string: (event.start_time_local + tfs_3).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_4) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, time_from_start: tfs_4, segment_time: tfs_4 - tfs_3,
-                                              absolute_time_string: (event_start_time + tfs_4).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_4).to_s,
+                                              absolute_time_string: (event_start_time + tfs_4).to_s, absolute_time_local_string: (event.start_time_local + tfs_4).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_5) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, time_from_start: tfs_5, segment_time: tfs_5 - tfs_4,
-                                              absolute_time_string: (event_start_time + tfs_5).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_5).to_s,
+                                              absolute_time_string: (event_start_time + tfs_5).to_s, absolute_time_local_string: (event.start_time_local + tfs_5).to_s,
                                               data_status_numeric: 0) }
   let(:split_time_data_6) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_4.id, bitkey: in_bitkey, time_from_start: tfs_6, segment_time: tfs_6 - tfs_5,
-                                              absolute_time_string: (event_start_time + tfs_6).to_s, day_and_time_string: (event.start_time_in_home_zone + tfs_6).to_s,
+                                              absolute_time_string: (event_start_time + tfs_6).to_s, absolute_time_local_string: (event.start_time_local + tfs_6).to_s,
                                               data_status_numeric: 2) }
 
   let(:event_start_time) { event.start_time }
@@ -146,14 +146,14 @@ RSpec.describe LapSplitRow, type: :model do
     end
   end
 
-  describe '#days_and_times' do
+  describe '#absolute_times_local' do
     context 'when provided with two valid split_time_data objects' do
       let(:lap_split) { lap_1_split_2 }
       let(:split_times) { [split_time_data_2, split_time_data_3] }
 
       it 'returns an array of datetime objects' do
-        expect(subject.days_and_times).to all be_a(DateTime)
-        expect(subject.days_and_times.map(&:to_s)).to eq(%w(2015-07-01T01:06:40-06:00 2015-07-01T01:08:20-06:00))
+        expect(subject.absolute_times_local).to all be_a(DateTime)
+        expect(subject.absolute_times_local.map(&:to_s)).to eq(%w(2015-07-01T01:06:40-06:00 2015-07-01T01:08:20-06:00))
       end
     end
 
@@ -162,8 +162,8 @@ RSpec.describe LapSplitRow, type: :model do
       let(:split_times) { [split_time_data_2, split_time_data_blank] }
 
       it 'returns a datetime object and a nil' do
-        expect(subject.days_and_times.map(&:class)).to eq([DateTime, NilClass])
-        expect(subject.days_and_times.map(&:to_s)).to eq(['2015-07-01T01:06:40-06:00', ''])
+        expect(subject.absolute_times_local.map(&:class)).to eq([DateTime, NilClass])
+        expect(subject.absolute_times_local.map(&:to_s)).to eq(['2015-07-01T01:06:40-06:00', ''])
       end
     end
   end

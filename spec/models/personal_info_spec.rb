@@ -4,6 +4,26 @@ require 'rails_helper'
 
 RSpec.describe PersonalInfo, type: :module do
 
+  describe '#current_age_from_birthdate' do
+    subject { build_stubbed(:effort, birthdate: birthdate) }
+
+    context 'when birthdate is not present' do
+      let(:birthdate) { nil }
+
+      it 'returns nil' do
+        expect(subject.current_age_from_birthdate).to be_nil
+      end
+    end
+
+    context 'when birthdate is present' do
+      let(:birthdate) { Date.today - 20.years - 6.months }
+
+      it 'calculates and returns the age' do
+        expect(subject.current_age_from_birthdate).to eq(20)
+      end
+    end
+  end
+
   describe '#state_and_country' do
     it 'returns the state and country of the subject resource' do
       effort = build_stubbed(:effort, country_code: 'CA', state_code: 'BC')

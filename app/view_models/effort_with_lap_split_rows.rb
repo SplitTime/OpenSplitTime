@@ -3,13 +3,13 @@
 class EffortWithLapSplitRows
   attr_reader :effort
 
-  def initialize(args)
-    post_initialize(args)
+  def initialize(effort, options = {})
+    post_initialize(effort, options)
   end
 
-  def post_initialize(args)
-    ArgsValidator.validate(params: args, required: :effort, exclusive: :effort, class: self.class)
-    @effort ||= args[:effort].enriched
+  def post_initialize(effort, options)
+    ArgsValidator.validate(subject: effort, params: options, class: self.class)
+    @effort = effort.enriched
   end
 
   def event
@@ -25,11 +25,11 @@ class EffortWithLapSplitRows
   end
 
   def lap_split_rows
-    @lap_split_rows ||= rows_from_lap_splits(lap_splits)
+    @lap_split_rows ||= rows_from_lap_splits(lap_splits, indexed_split_times)
   end
 
   def lap_split_rows_plus_one
-    @lap_split_rows_plus_one ||= rows_from_lap_splits(lap_splits_plus_one)
+    @lap_split_rows_plus_one ||= rows_from_lap_splits(lap_splits_plus_one, indexed_split_times)
   end
 
   def effort_start_time
@@ -48,22 +48,27 @@ class EffortWithLapSplitRows
     difference(prior_lap_row&.times_from_start&.first, lap_row&.times_from_start&.first)
   end
 
+  def method_missing(method)
+    effort.send(method)
+  end
+
   private
 
   def difference(first_time, last_time)
     last_time && first_time && last_time - first_time
   end
 
-  def rows_from_lap_splits(lap_splits)
+  def rows_from_lap_splits(lap_splits, indexed_times, in_times_only: false)
     lap_splits.map do |lap_split|
       LapSplitRow.new(lap_split: lap_split,
-                      split_times: related_split_times(lap_split),
-                      show_laps: event.multiple_laps?)
+                      split_times: related_split_times(lap_split, indexed_times),
+                      show_laps: event.multiple_laps?,
+                      in_times_only: in_times_only)
     end
   end
 
-  def related_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_split_times.fetch(time_point, SplitTime.new) }
+  def related_split_times(lap_split, indexed_times)
+    lap_split.time_points.map { |tp| indexed_times.fetch(tp, effort.split_times.new(time_point: tp)) }
   end
 
   def prior_split_time(lap_split)
@@ -102,7 +107,7 @@ class EffortWithLapSplitRows
   def loaded_effort
     return @loaded_effort if defined?(@loaded_effort)
     temp_effort = Effort.where(id: effort).includes(:event, :person, split_times: :split).first
-    temp_effort.ordered_split_times.each_cons(2) { |prior_st, st| st.segment_time = st.absolute_time - prior_st.absolute_time }
+    AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
     @loaded_effort = temp_effort
   end
 end

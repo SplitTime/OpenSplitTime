@@ -126,28 +126,80 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe '#approximate_age_today' do
-    it 'returns nil if age is not present' do
-      effort = build(:effort)
-      expect(effort.current_age_approximate).to be_nil
+  describe '#reset_age_from_birthdate' do
+    subject { build_stubbed(:effort, event: event, age: age, birthdate: birthdate) }
+    let(:event) { build_stubbed(:event, start_time: '2018-10-31 06:00:00') }
+
+    context 'when age is nil and birthdate is provided' do
+      let(:age) { nil }
+      let(:birthdate) { '1967-01-01' }
+
+      it 'sets the age from the birthdate' do
+        subject.reset_age_from_birthdate
+        expect(subject.age).to eq(51)
+      end
     end
 
-    it 'calculates approximate age at the current time based on age at time of effort' do
-      age = 40
-      event_start_time = DateTime.new(2010, 1, 1, 0, 0, 0)
-      years_since_effort = Time.now.year - event_start_time.year
-      effort = build(:effort, age: age)
-      expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.current_age_approximate).to eq(age + years_since_effort)
+    context 'when age is provided and birthdate is nil' do
+      let(:age) { 51 }
+      let(:birthdate) { nil }
+
+      it 'does not change age' do
+        subject.reset_age_from_birthdate
+        expect(subject.age).to eq(51)
+      end
     end
 
-    it 'functions properly for future events' do
-      age = 40
-      event_start_time = DateTime.new(2030, 1, 1, 0, 0, 0)
-      years_since_effort = Time.now.year - event_start_time.year
-      effort = build(:effort, age: age)
-      expect(effort).to receive(:event_start_time).and_return(event_start_time)
-      expect(effort.current_age_approximate).to eq(age + years_since_effort)
+    context 'when both age and birthdate are provided' do
+      let(:age) { 40 }
+      let(:birthdate) { '1967-01-01' }
+
+      it 'sets the age from the birthdate' do
+        subject.reset_age_from_birthdate
+        expect(subject.age).to eq(51)
+      end
+    end
+
+    context 'when neither age nor birthdate is provided' do
+      let(:age) { nil }
+      let(:birthdate) { nil }
+
+      it 'does not attempt to set age' do
+        subject.reset_age_from_birthdate
+        expect(subject.age).to be_nil
+      end
+    end
+  end
+
+  describe '#current_age_approximate' do
+    subject { build_stubbed(:effort, event: event, age: age) }
+    let(:event) { build_stubbed(:event, start_time: start_time) }
+
+    context 'when age is not present' do
+      let(:age) { nil }
+      let(:start_time) { Time.current - 2.years }
+
+      it 'returns nil' do
+        expect(subject.current_age_approximate).to be_nil
+      end
+    end
+
+    context 'when age is present and the event is in the past' do
+      let(:age) { 40 }
+      let(:start_time) { Time.current - 2.years }
+
+      it 'calculates approximate age at the current time based on age at time of effort' do
+        expect(subject.current_age_approximate).to eq(42)
+      end
+    end
+
+    context 'when the event is in the future' do
+      let(:age) { 40 }
+      let(:start_time) { Time.current + 2.years }
+
+      it 'functions properly' do
+        expect(subject.current_age_approximate).to eq(38)
+      end
     end
   end
 
@@ -437,15 +489,15 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe '#event_start_time' do
+  describe '#event_start_time_local' do
     subject { build_stubbed(:effort, event: event) }
 
     context 'when the event has a start_time and a home_time_zone' do
       let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: 'Arizona') }
 
       it 'returns the start_time in the home_time_zone' do
-        expect(subject.event_start_time).to be_a(ActiveSupport::TimeWithZone)
-        expect(subject.event_start_time).to eq('Tue, 01 Aug 2017 05:00:00 MST -07:00')
+        expect(subject.event_start_time_local).to be_a(ActiveSupport::TimeWithZone)
+        expect(subject.event_start_time_local).to eq('Tue, 01 Aug 2017 05:00:00 MST -07:00')
       end
     end
 
@@ -453,7 +505,7 @@ RSpec.describe Effort, type: :model do
       let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Arizona') }
 
       it 'returns nil' do
-        expect(subject.event_start_time).to be_nil
+        expect(subject.event_start_time_local).to be_nil
       end
     end
 
@@ -461,7 +513,7 @@ RSpec.describe Effort, type: :model do
       let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: nil) }
 
       it 'returns nil' do
-        expect(subject.event_start_time).to be_nil
+        expect(subject.event_start_time_local).to be_nil
       end
     end
   end

@@ -1,7 +1,7 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :analyze, :place]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
   before_action :set_effort, except: [:index, :new, :create, :associate_people, :mini_table, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :analyze, :place]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
 
   before_action do
     locale = params[:locale]
@@ -24,7 +24,7 @@ class EffortsController < ApplicationController
   end
 
   def show
-    @presenter = EffortShowView.new(effort: @effort)
+    @presenter = EffortShowView.new(@effort)
     session[:return_to] = effort_path(@effort)
   end
 
@@ -88,14 +88,16 @@ class EffortsController < ApplicationController
     redirect_to roster_event_group_path(@effort.event.event_group)
   end
 
+  def projections
+    @presenter = EffortProjectionsView.new(@effort)
+  end
+
   def analyze
     @presenter = EffortAnalysisView.new(@effort)
-    session[:return_to] = analyze_effort_path(@effort)
   end
 
   def place
     @presenter = PlaceDetailView.new(@effort)
-    session[:return_to] = place_effort_path(@effort)
   end
 
   def start
@@ -144,7 +146,7 @@ class EffortsController < ApplicationController
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first
 
-    @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
+    @presenter = EffortWithTimesPresenter.new(effort, params: params)
   end
 
   def update_split_times
@@ -158,7 +160,7 @@ class EffortsController < ApplicationController
       redirect_to effort_path(effort)
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
-      @presenter = EffortWithTimesPresenter.new(effort: effort, params: params)
+      @presenter = EffortWithTimesPresenter.new(effort, params: params)
       render 'edit_split_times', display_style: params[:display_style]
     end
   end

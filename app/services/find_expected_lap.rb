@@ -27,7 +27,7 @@ class FindExpectedLap
   delegate :event, to: :effort
 
   def missing_lap
-    (1..highest_lap).find { |lap| time_fits_missing?(lap) }
+    (1..highest_lap).find(&method(:time_fits_missing?))
   end
 
   def time_fits_missing?(lap)

@@ -3,13 +3,7 @@
 class EffortAnalysisView < EffortWithLapSplitRows
 
   attr_reader :effort
-  delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender,
-           :overall_rank, :gender_rank, :start_time, :started?, to: :effort
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
-
-  def post_initialize(args_effort)
-    @effort = args_effort.enriched || args_effort
-  end
 
   def total_segment_time
     analysis_rows.map(&:segment_time).compact.sum
@@ -73,8 +67,8 @@ class EffortAnalysisView < EffortWithLapSplitRows
     @analysis_rows ||= indexed_split_times.blank? ? nil :
                            lap_splits.each_cons(2).map do |prior_lap_split, lap_split|
                              EffortAnalysisRow.new(lap_split: lap_split,
-                                                   split_times: related_split_times(lap_split),
-                                                   typical_split_times: related_typical_split_times(lap_split),
+                                                   split_times: related_split_times(lap_split, indexed_split_times),
+                                                   typical_split_times: related_split_times(lap_split, indexed_typical_split_times),
                                                    prior_lap_split: prior_lap_split,
                                                    prior_split_time: prior_split_time(lap_split),
                                                    start_time: effort_start_time,
@@ -116,10 +110,6 @@ class EffortAnalysisView < EffortWithLapSplitRows
   def segmentize_relevant_times(split_times)
     relevant_split_times = split_times.select { |st| relevant_time_points.include?(st.time_point) }
     AssignSegmentTimes.perform(relevant_split_times)
-  end
-
-  def related_typical_split_times(lap_split)
-    lap_split.time_points.map { |time_point| indexed_typical_split_times.fetch(time_point, SplitTime.new) }
   end
 
   def relevant_time_points

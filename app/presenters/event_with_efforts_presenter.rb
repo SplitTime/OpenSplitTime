@@ -58,8 +58,8 @@ class EventWithEffortsPresenter < BasePresenter
     @event_finished ||= ranked_efforts.none?(&:in_progress?)
   end
 
-  def event_start_time
-    @event_start_time ||= event.start_time_in_home_zone
+  def event_start_time_local
+    @event_start_time_local ||= event.start_time_local
   end
 
   private

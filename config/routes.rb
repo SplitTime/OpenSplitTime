@@ -43,6 +43,7 @@ Rails.application.routes.draw do
     end
     member do
       get :analyze
+      get :projections
       get :place
       get :show_photo
       get :edit_split_times

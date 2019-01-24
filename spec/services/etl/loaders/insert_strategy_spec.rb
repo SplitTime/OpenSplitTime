@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ETL::Loaders::InsertStrategy do
   subject { ETL::Loaders::InsertStrategy.new(proto_records, options) }
-  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7, start_time_in_home_zone: '2017-12-25 06:00:00') }
+  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7, start_time_local: '2017-12-25 06:00:00') }
   let(:start_time) { event.start_time }
   let(:splits) { event.ordered_splits }
   let(:split_ids) { splits.map(&:id) }

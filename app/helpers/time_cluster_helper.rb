@@ -35,9 +35,13 @@ module TimeClusterHelper
     when :segment
       cluster.aid_time_recordable? ? [cluster.segment_time, cluster.time_in_aid] : [cluster.segment_time]
     when :ampm
-      cluster.days_and_times
+      cluster.absolute_times_local
     when :military
-      cluster.days_and_times
+      cluster.absolute_times_local
+    when :early_estimate
+      cluster.absolute_estimates_early_local
+    when :late_estimate
+      cluster.absolute_estimates_late_local
     else
       cluster.times_from_start
     end
@@ -51,6 +55,10 @@ module TimeClusterHelper
       cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
     when :military
       cluster.finish? ? day_time_military_format_hhmmss(time) : day_time_military_format(time)
+    when :early_estimate
+      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+    when :late_estimate
+      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
     else
       cluster.finish? ? time_format_hhmmss(time) : time_format_hhmm(time)
     end

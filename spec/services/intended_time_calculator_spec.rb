@@ -46,9 +46,9 @@ RSpec.describe IntendedTimeCalculator do
     end
   end
 
-  describe '#day_and_time' do
+  describe '#absolute_time_local' do
     let(:effort) { build_stubbed(:effort, event: event, id: 101) }
-    let(:event) { build_stubbed(:event, home_time_zone: 'Mountain Time (US & Canada)', start_time_in_home_zone: '2016-07-01 06:00:00') }
+    let(:event) { build_stubbed(:event, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2016-07-01 06:00:00') }
     let(:home_time_zone) { event.home_time_zone }
     let(:start_time) { event.start_time }
     let(:time_point) { TimePoint.new(1, 44, 1) }
@@ -61,7 +61,7 @@ RSpec.describe IntendedTimeCalculator do
       let(:military_time) { '' }
 
       it 'returns nil' do
-        expect(subject.day_and_time).to be_nil
+        expect(subject.absolute_time_local).to be_nil
       end
     end
 
@@ -72,7 +72,7 @@ RSpec.describe IntendedTimeCalculator do
         let(:expected_time_string) { '2016-07-01 09:30:45' }
 
         it 'calculates the likely intended day and time' do
-          expect(subject.day_and_time).to eq(expected_time)
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
 
@@ -82,7 +82,7 @@ RSpec.describe IntendedTimeCalculator do
         let(:expected_time_string) { '2016-07-03 15:30:45' }
 
         it 'calculates the likely intended day and time' do
-          expect(subject.day_and_time).to eq(expected_time)
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
 
@@ -92,7 +92,7 @@ RSpec.describe IntendedTimeCalculator do
         let(:expected_time_string) { '2016-07-05 15:30:45' }
 
         it 'calculates the likely intended day and time' do
-          expect(subject.day_and_time).to eq(expected_time)
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
     end
@@ -112,7 +112,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-01 18:00:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -121,7 +121,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-01 20:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -130,7 +130,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-02 01:00:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -139,7 +139,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-02 05:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
       end
@@ -154,7 +154,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-01 23:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -163,7 +163,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-02 00:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -172,7 +172,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-02 05:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
 
@@ -181,7 +181,7 @@ RSpec.describe IntendedTimeCalculator do
           let(:expected_time_string) { '2016-07-02 09:30:00' }
 
           it 'calculates the likely intended day and time' do
-            expect(subject.day_and_time).to eq(expected_time)
+            expect(subject.absolute_time_local).to eq(expected_time)
           end
         end
       end
@@ -194,7 +194,7 @@ RSpec.describe IntendedTimeCalculator do
         let(:expected_time_string) { '2016-07-02 02:30:00' }
 
         it 'adds a day' do
-          expect(subject.day_and_time).to eq(expected_time)
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
     end

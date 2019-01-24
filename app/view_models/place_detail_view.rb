@@ -3,8 +3,6 @@
 class PlaceDetailView
 
   attr_reader :effort, :place_detail_rows
-  delegate :full_name, :event_name, :person, :bib_number, :finish_status, :gender, 
-           :start_time, :overall_rank, :gender_rank, to: :effort
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
   def initialize(args_effort)
@@ -41,6 +39,14 @@ class PlaceDetailView
 
   def peers
     @peers ||= efforts_from_ids(frequent_encountered_ids)
+  end
+
+  def not_analyzable?
+    ordered_split_times.size < 2
+  end
+
+  def method_missing(method)
+    effort.send(method)
   end
 
   private
@@ -90,8 +96,8 @@ class PlaceDetailView
     begin_split_times = grouped_split_times[begin_time_point].index_by(&:effort_id)
     end_split_times = grouped_split_times[end_time_point].index_by(&:effort_id)
     event_efforts.each do |effort|
-      day_and_time_begin = begin_split_times[effort.id]&.day_and_time
-      day_and_time_end = end_split_times[effort.id]&.day_and_time
+      day_and_time_begin = begin_split_times[effort.id]&.absolute_time_local
+      day_and_time_end = end_split_times[effort.id]&.absolute_time_local
       result[effort.id] = {in: day_and_time_begin, out: day_and_time_end}
     end
     result

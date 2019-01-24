@@ -12,29 +12,187 @@ class SplitTimeQuery < BaseQuery
     end_lap = segment.end_lap.to_i
     end_id = segment.end_id.to_i
     end_bitkey = segment.end_bitkey.to_i
+    focus_clause = effort_ids.present? ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : 'true'
 
     query = <<-SQL
-      SELECT AVG(extract(epoch from(st2.absolute_time - st1.absolute_time))) AS segment_time,
-             COUNT(st1.absolute_time) AS effort_count
-      FROM (SELECT st.effort_id, st.absolute_time
-           FROM split_times st 
-           WHERE st.lap = #{begin_lap} 
-             AND st.split_id = #{begin_id} 
-             AND st.sub_split_bitkey = #{begin_bitkey}
-             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
-           AS st1,
-           (SELECT st.effort_id, st.absolute_time
-           FROM split_times st 
-           WHERE st.lap = #{end_lap} 
-             AND st.split_id = #{end_id} 
-             AND st.sub_split_bitkey = #{end_bitkey}
-             AND (st.data_status IN (#{valid_statuses_list}) OR st.data_status IS NULL))
-           AS st2
-      WHERE st1.effort_id = st2.effort_id
+      with segment_times as
+           (select extract(epoch from(st2.absolute_time - st1.absolute_time)) as seconds
+            from (select st.effort_id, st.absolute_time
+                 from split_times st 
+                 where st.lap = #{begin_lap}
+                   and st.split_id = #{begin_id}
+                   and st.sub_split_bitkey = #{begin_bitkey}
+                   and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
+                 as st1,
+                 (select st.effort_id, st.absolute_time
+                 from split_times st 
+                 where st.lap = #{end_lap}
+                   and st.split_id = #{end_id}
+                   and st.sub_split_bitkey = #{end_bitkey}
+                   and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
+                 as st2
+            where st1.effort_id = st2.effort_id and #{focus_clause}),
+
+        quartiles as
+          (select percentile_cont(0.25) within group (order by seconds) as q1,
+                  percentile_cont(0.75) within group (order by seconds) as q3
+          from segment_times),
+              
+        iqr_stats as
+          (select q1,
+                  q3, 
+                  q3 - q1 as iqr
+          from quartiles),
+          
+        bounds as
+          (select q1 - (iqr * 1.5) as lower_bound,
+                  q3 + (iqr * 1.5) as upper_bound
+          from iqr_stats)
+
+      select count(seconds) as effort_count, 
+             round(avg(seconds)) as average
+      from segment_times
+      where seconds between (select lower_bound from bounds) and (select upper_bound from bounds)
     SQL
 
-    query += " AND st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" if effort_ids
-    SplitTime.connection.execute(query.squish).values.flatten.map(&:to_i)
+    result = SplitTime.connection.execute(query.squish)
+    casted_row = result.values.first.map { |value| value.is_a?(String) ? value.to_f : value }
+    result.fields.zip(casted_row).to_h.with_indifferent_access
+  end
+
+  def self.projections(split_time, starting_time_point, subject_time_points)
+    unless split_time && starting_time_point && subject_time_points
+      raise ArgumentError, 'SplitTimeQuery.projections requires a split_time, starting_time_point, and subject_time_points'
+    end
+
+    completed_lap, completed_split_id, completed_bitkey = split_time.time_point.values
+    starting_lap, starting_split_id, starting_bitkey = starting_time_point.values
+    completed_seconds = split_time.time_from_start
+
+    projected_where_array = subject_time_points.map do |tp|
+      "(lap = #{tp.lap} and split_id = #{tp.split_id} and sub_split_bitkey = #{tp.bitkey})"
+    end
+    projected_where_clause = projected_where_array.join(' or ').presence || 'true'
+
+    overall_limit = 100
+    similarity_threshold = 0.3
+
+    query = <<~SQL
+      with 
+        completed_split_times as
+          (select cst.effort_id, 
+              cst.absolute_time,
+              extract(epoch from(cst.absolute_time - sst.absolute_time)) as completed_segment_seconds,
+              abs(extract(epoch from(cst.absolute_time - sst.absolute_time)) - #{completed_seconds}) as difference
+          from split_times cst
+            inner join split_times sst 
+                    on sst.effort_id = cst.effort_id 
+                   and sst.lap = #{starting_lap}
+                   and sst.split_id = #{starting_split_id}
+                   and sst.sub_split_bitkey = #{starting_bitkey}
+          where cst.lap = #{completed_lap}
+            and cst.split_id = #{completed_split_id}
+            and cst.sub_split_bitkey = #{completed_bitkey}
+          order by difference
+          limit #{overall_limit}),
+
+        main_subquery as
+          (select pst.effort_id, 
+              lap,
+              split_id,
+              sub_split_bitkey,
+              completed_segment_seconds,
+              extract(year from (pst.absolute_time)) as effort_year,
+              extract(epoch from(pst.absolute_time - cst.absolute_time)) as projected_segment_seconds
+          from completed_split_times cst
+            inner join split_times pst on pst.effort_id = cst.effort_id
+          where (#{projected_where_clause})
+            and difference / #{completed_seconds} < #{similarity_threshold}),
+
+        ratio_subquery as
+          (select *,
+              case when completed_segment_seconds = 0 
+                   then null 
+                   else round((projected_segment_seconds / completed_segment_seconds)::numeric, 6) end as ratio
+          from main_subquery),
+          
+        order_count_subquery as
+          (select *,
+              row_number() over (partition by lap, split_id, sub_split_bitkey order by ratio) as row_number,
+              sum(1) over (partition by lap, split_id, sub_split_bitkey) as total
+          from ratio_subquery),
+          
+        quartiles as
+            (select lap, 
+                split_id, 
+                sub_split_bitkey,
+                effort_year,
+                ratio,
+                avg(case when row_number >= (floor(total/2.0)/2.0)
+                      and row_number <= (floor(total/2.0)/2.0) + 1
+                     then ratio else null end) 
+                  over (partition by lap, split_id, sub_split_bitkey) as q1,
+                avg(case when row_number >= (total/2.0)
+                      and row_number <= (total/2.0) + 1
+                     then ratio else null end)
+                  over (partition by lap, split_id, sub_split_bitkey) as median,
+                avg(case when row_number >= (ceil(total/2.0) + (floor(total/2.0)/2.0))
+                      and row_number <= (ceil(total/2.0) + (floor(total/2.0)/2.0) + 1)
+                     then ratio else null end)
+                  over (partition by lap, split_id, sub_split_bitkey) as q3
+            from order_count_subquery),
+              
+        bounds as
+          (select *,
+              q3 - q1 as iqr,
+              q1 - ((q3 - q1) * 1.5) as lower_bound,
+              q3 + ((q3 - q1) * 1.5) as upper_bound
+          from quartiles),
+              
+        valid_ratios as
+          (select *
+          from bounds
+          where ratio between lower_bound and upper_bound),
+
+        stats_subquery as
+          (select lap, 
+              split_id, 
+              sub_split_bitkey,
+      				array_to_string(array_agg(distinct effort_year), ',') as effort_years,
+              count(ratio) as effort_count,
+              round(avg(ratio), 6) as average,
+              round(stddev(ratio) * 2, 6) as std2
+          from valid_ratios
+          group by lap, split_id, sub_split_bitkey),
+      
+        final_subquery as
+          (select lap, 
+              split_id, 
+              sub_split_bitkey,
+              effort_count,
+              effort_years,
+              case when average >= 0 and (average - std2) is not null
+                   then greatest(0, average - std2) 
+                   else average - std2 end as low_ratio,
+              average as average_ratio,
+              average + std2 as high_ratio
+          from stats_subquery)
+          
+      select final_subquery.*, 
+          round(low_ratio * #{completed_seconds})::int as low_seconds,
+          round(average_ratio * #{completed_seconds})::int as average_seconds,
+          round(high_ratio * #{completed_seconds})::int as high_seconds
+      from final_subquery
+        inner join splits on splits.id = split_id
+      order by lap, distance_from_start, sub_split_bitkey
+    SQL
+
+    return [] if completed_seconds == 0 || subject_time_points.empty?
+
+    result = SplitTime.connection.execute(query.squish)
+    result.values.map do |row|
+      Projection.new(result.fields.zip(row).to_h)
+    end
   end
 
   def self.with_time_point_rank
@@ -61,7 +219,7 @@ class SplitTimeQuery < BaseQuery
             efforts.gender as effort_gender, 
             efforts.age as effort_age, 
             efforts.id as tiebreaker_id, 
-            events.home_time_zone as event_home_zone
+            events.home_time_zone
           from split_times_scoped
           inner join efforts on efforts.id = split_times_scoped.effort_id
           inner join events on events.id = efforts.event_id
@@ -79,7 +237,7 @@ class SplitTimeQuery < BaseQuery
                          tiebreaker_id) 
             as time_point_rank,
             absolute_time,
-            event_home_zone
+            home_time_zone
       from main_subquery 
       order by time_point_rank
     SQL
@@ -110,7 +268,7 @@ class SplitTimeQuery < BaseQuery
              st.pacer,
              st.data_status as data_status_numeric,
              st.absolute_time as absolute_time_string,
-             trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as day_and_time_string,
+             trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as absolute_time_local_string,
              extract(epoch from (st.absolute_time - sst.absolute_time)) as time_from_start,
              case 
                when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey) 
@@ -191,7 +349,7 @@ class SplitTimeQuery < BaseQuery
 
       with 
         scoped_split_times as
-          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as day_and_time
+          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as absolute_time_local
            from split_times st
              inner join efforts ef on ef.id = st.effort_id
              inner join events ev on ev.id = ef.event_id
@@ -209,8 +367,8 @@ class SplitTimeQuery < BaseQuery
            
         interval_starts as
           (select *
-           from generate_series((select min(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) from scoped_split_times), 
-                                (select max(to_timestamp(floor((extract(epoch from day_and_time)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
+           from generate_series((select min(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) from scoped_split_times), 
+                                (select max(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
                                  interval '#{band_width} seconds') time),
            
         intervals as
@@ -227,7 +385,7 @@ class SplitTimeQuery < BaseQuery
         left join finish_split_times fst
           on fst.effort_id = st.effort_id and fst.lap = st.lap
         right join intervals i
-          on st.day_and_time >= i.start_time and st.day_and_time < i.end_time
+          on st.absolute_time_local >= i.start_time and st.absolute_time_local < i.end_time
       where i.end_time is not null
       group by i.start_time, i.end_time
       order by i.start_time

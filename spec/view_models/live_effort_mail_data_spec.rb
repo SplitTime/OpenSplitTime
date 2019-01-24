@@ -38,13 +38,13 @@ RSpec.describe LiveEffortMailData do
     let(:expected_split_times_data) {
       [{split_name: expected_in_split_name,
         split_distance: expected_in_distance,
-        day_and_time: in_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+        absolute_time_local: in_split_time.absolute_time_local.strftime('%A, %B %-d, %Y %l:%M%p'),
         elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
         pacer: nil,
         stopped_here: in_split_time.stopped_here},
        {split_name: expected_out_split_name,
         split_distance: expected_out_distance,
-        day_and_time: out_split_time.day_and_time.strftime('%A, %B %-d, %Y %l:%M%p'),
+        absolute_time_local: out_split_time.absolute_time_local.strftime('%A, %B %-d, %Y %l:%M%p'),
         elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
         pacer: nil,
         stopped_here: out_split_time.stopped_here}]

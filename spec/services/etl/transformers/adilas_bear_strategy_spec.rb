@@ -13,7 +13,7 @@ RSpec.describe ETL::Transformers::AdilasBearStrategy do
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
 
-  let(:event) { build_stubbed(:event, course: course, start_time_in_home_zone: '9/23/2016 6:00:00', home_time_zone: 'Mountain Time (US & Canada)') }
+  let(:event) { build_stubbed(:event, course: course, start_time_local: '9/23/2016 6:00:00', home_time_zone: 'Mountain Time (US & Canada)') }
   let(:start_time) { event.start_time }
   let(:course) { build_stubbed(:course) }
   let(:start) { build_stubbed(:split, :start, course: course, base_name: 'Start') }

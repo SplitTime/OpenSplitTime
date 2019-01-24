@@ -11,6 +11,7 @@ class LapSplit
   end
 
   def <=>(other)
+    return nil unless other && other.respond_to?(:lap) && other.respond_to?(:split)
     [self.lap, self.split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
   end
 

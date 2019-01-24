@@ -16,7 +16,7 @@ class EffortRow < SimpleDelegator
   end
 
   def final_day_and_time
-    final_absolute_time.in_time_zone(event_home_zone)
+    final_absolute_time.in_time_zone(home_time_zone)
   end
 
   def year_and_lap

@@ -6,9 +6,10 @@ class PlanDisplay < EffortWithLapSplitRows
   delegate :simple?, :name, to: :course
   delegate :multiple_laps?, :organization, to: :event
 
-  def post_initialize(args)
+  def initialize(args)
     @course = args[:course]
     @params = args[:params]
+    @effort = event.efforts.new
     AssignSegmentTimes.perform(ordered_split_times)
   end
 
@@ -109,7 +110,7 @@ class PlanDisplay < EffortWithLapSplitRows
   def default_start_time
     return course.next_start_time.in_time_zone(default_time_zone) if course.next_start_time
     years_prior = Time.now.year - event.start_time.year
-    event.start_time_in_home_zone + ((years_prior * 52.17).round(0)).weeks
+    event.start_time_local + ((years_prior * 52.17).round(0)).weeks
   end
 
   def default_time_zone

@@ -43,8 +43,8 @@ class SegmentTimeCalculator
 
   def typical_time_by_stats(effort_ids = nil)
     return nil if effort_ids == [] # Empty array indicates an attempt for a focused query without any focus efforts
-    segment_time, effort_count = SplitTimeQuery.typical_segment_time(segment, effort_ids)
-    effort_count >= STATS_CALC_THRESHOLD ? segment_time : nil
+    result = SplitTimeQuery.typical_segment_time(segment, effort_ids)
+    result[:effort_count] >= STATS_CALC_THRESHOLD ? result[:average] : nil
   end
 
   def validate_setup

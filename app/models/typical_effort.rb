@@ -14,7 +14,7 @@ class TypicalEffort
     @start_time = args[:start_time]
     @time_points = args[:time_points]
     @expected_time_point = args[:expected_time_point] || time_points.last
-    @similar_effort_finder = args[:similar_effort_finder] || SimilarEffortFinder.new(time_point: finish_time_point,
+    @similar_effort_finder = args[:similar_effort_finder] || SimilarEffortFinder.new(time_point: last_time_point,
                                                                                      time_from_start: expected_time_from_start,
                                                                                      finished: true)
     @times_planner = args[:times_planner] || SegmentTimesPlanner.new(expected_time: expected_time_from_start,
@@ -42,7 +42,7 @@ class TypicalEffort
     @plan_times ||= times_planner.absolute_times(round_to: 1.minute)
   end
 
-  def finish_time_point
+  def last_time_point
     time_points.last
   end
 

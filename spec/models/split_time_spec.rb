@@ -305,12 +305,12 @@ RSpec.describe SplitTime, kind: :model do
       end
     end
 
-    describe '#day_and_time' do
+    describe '#absolute_time_local' do
       context 'when absolute_time is nil' do
         let(:absolute_time) { nil }
 
         it 'returns nil' do
-          expect(split_time.day_and_time).to be_nil
+          expect(split_time.absolute_time_local).to be_nil
         end
       end
 
@@ -318,25 +318,25 @@ RSpec.describe SplitTime, kind: :model do
         let(:absolute_time) { '2018-10-30 12:00:00' }
 
         it 'returns a day and time in the event home time zone' do
-          expect(split_time.day_and_time).to eq(absolute_time)
-          expect(split_time.day_and_time.time_zone).to eq(ActiveSupport::TimeZone.new(event.home_time_zone))
+          expect(split_time.absolute_time_local).to eq(absolute_time)
+          expect(split_time.absolute_time_local.time_zone).to eq(ActiveSupport::TimeZone.new(event.home_time_zone))
         end
       end
     end
 
-    describe '#day_and_time=' do
+    describe '#absolute_time_local=' do
       let(:elapsed_seconds) { 1.hour }
 
       context 'when passed a nil value' do
         it 'sets absolute_time to nil' do
-          split_time.day_and_time = nil
+          split_time.absolute_time_local = nil
           expect(split_time.absolute_time).to be_nil
         end
       end
 
       context 'when passed an empty string' do
         it 'sets absolute_time to nil' do
-          split_time.day_and_time = ''
+          split_time.absolute_time_local = ''
           expect(split_time.absolute_time).to be_nil
         end
       end
@@ -345,7 +345,7 @@ RSpec.describe SplitTime, kind: :model do
         let(:local_datetime) { '2018-10-30 08:00:00' }
 
         it 'sets absolute_time to the UTC equivalent' do
-          split_time.day_and_time = local_datetime
+          split_time.absolute_time_local = local_datetime
           expect(split_time.absolute_time).to eq(event_time_zone.parse(local_datetime))
         end
       end
@@ -397,9 +397,9 @@ RSpec.describe SplitTime, kind: :model do
         let(:military_time) { '06:05:00' }
 
         it 'calls IntendedTimeCalculator with correct information' do
-          expect(IntendedTimeCalculator).to receive(:day_and_time).with(military_time: military_time,
-                                                                        effort: effort,
-                                                                        time_point: split_time.time_point)
+          expect(IntendedTimeCalculator).to receive(:absolute_time_local).with(military_time: military_time,
+                                                                               effort: effort,
+                                                                               time_point: split_time.time_point)
           split_time.military_time = military_time
         end
       end
@@ -407,15 +407,15 @@ RSpec.describe SplitTime, kind: :model do
   end
 
   describe '#sub_split' do
-    it 'returns split_id and sub_split_bitkey as a sub_split hash' do
+    it 'returns a SubSplit object with split_id and sub_split_bitkey' do
       split_time = SplitTime.new(split_id: 101, bitkey: in_bitkey)
-      expect(split_time.sub_split).to eq({101 => 1})
+      expect(split_time.sub_split).to eq(SubSplit.new(101, in_bitkey))
     end
   end
 
   describe '#sub_split=' do
     it 'sets both split_id and sub_split_bitkey' do
-      split_time = SplitTime.new(sub_split: {101 => 1})
+      split_time = SplitTime.new(sub_split: SubSplit.new(101, in_bitkey))
       expect(split_time.split_id).to eq(101)
       expect(split_time.bitkey).to eq(1)
     end

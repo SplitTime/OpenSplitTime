@@ -11,7 +11,7 @@ RSpec.describe FindExpectedLap do
   let(:split_id) { split.id }
   let(:bitkey) { in_bitkey }
 
-  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_in_home_zone: '2018-06-22 06:00:00') }
+  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_local: '2018-06-22 06:00:00') }
   let(:start_time) { event.start_time }
   let(:splits) { [split_1, split_2, split_3, split_4] }
   let(:split_1) { build_stubbed(:split, :start, base_name: 'Start') }
@@ -140,9 +140,9 @@ RSpec.describe FindExpectedLap do
       end
     end
 
-    context 'when subject_attribute is day_and_time and specified split and time fills a hole' do
+    context 'when subject_attribute is absolute_time and specified split and time fills a hole' do
       let(:split) { split_3 }
-      let(:subject_attribute) { :day_and_time }
+      let(:subject_attribute) { :absolute_time }
       let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 09:15:00') }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 
@@ -151,9 +151,9 @@ RSpec.describe FindExpectedLap do
       end
     end
 
-    context 'when subject_attribute is day_and_time and specified split and time does not fill a hole' do
+    context 'when subject_attribute is absolute_time and specified split and time does not fill a hole' do
       let(:split) { split_3 }
-      let(:subject_attribute) { :day_and_time }
+      let(:subject_attribute) { :absolute_time }
       let(:subject_value) { ActiveSupport::TimeZone.new(event.home_time_zone).parse('2018-06-22 10:15:00') }
       let(:split_times) { all_split_times[0..2] + all_split_times[4..-1] } # Two complete laps except Aid 2 in
 

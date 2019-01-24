@@ -20,7 +20,7 @@
       <aside class="col-auto">
         <% if current_user&.authorized_fully?(@presenter.organization) %>
           <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
-          <%= link_to 'Edit this organization', edit_organization_path(@presenter), class: "btn btn-outline-secondary" %>
+          <%= link_to 'Edit this organization', edit_organization_path(@presenter.organization), class: "btn btn-outline-secondary" %>
         <% end %>
       </aside>
     </div>

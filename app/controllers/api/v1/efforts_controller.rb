@@ -13,7 +13,7 @@ class Api::V1::EffortsController < ApiController
     effort.ordered_split_times.each_cons(2) do |begin_st, end_st|
       end_st.segment_time ||= end_st.absolute_time - begin_st.absolute_time
     end
-    presenter = EffortWithTimesRowPresenter.new(effort: effort)
+    presenter = EffortWithTimesRowPresenter.new(effort)
     render json: presenter, include: :effort_times_row, serializer: EffortWithTimesRowSerializer
   end
 end

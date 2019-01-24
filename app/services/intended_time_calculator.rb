@@ -2,8 +2,8 @@
 
 class IntendedTimeCalculator
 
-  def self.day_and_time(args)
-    new(args).day_and_time
+  def self.absolute_time_local(args)
+    new(args).absolute_time_local
   end
 
   def initialize(args)
@@ -29,7 +29,7 @@ class IntendedTimeCalculator
     validate_setup
   end
 
-  def day_and_time
+  def absolute_time_local
     return nil unless military_time.present?
     preliminary_day_and_time && (preliminary_day_and_time < threshold_day_and_time) ?
         preliminary_day_and_time + 1.day : preliminary_day_and_time

@@ -23,6 +23,10 @@ module SplitMethods
     ordered_splits.map(&:id)
   end
 
+  def starting_time_point
+    TimePoint.new(1, start_split.id, SubSplit::IN_BITKEY)
+  end
+
   def start_split
     ordered_splits.select(&:start?).first
   end

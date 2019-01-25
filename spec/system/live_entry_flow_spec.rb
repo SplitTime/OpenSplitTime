@@ -82,9 +82,11 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         submit_all_efforts
 
-        expect(efforts_1.first.split_times).to be_one
+        reload_all_efforts
+
+        expect(efforts_1.first.split_times.size).to eq(1)
         expect(efforts_1.second.split_times).to be_empty
-        expect(efforts_2.first.split_times).to be_one
+        expect(efforts_2.first.split_times.size).to eq(1)
         expect(efforts_2.second.split_times).to be_empty
 
         verify_workspace_is_empty
@@ -130,13 +132,13 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
 
         submit_all_efforts
 
-        verify_workspace_is_empty
+        reload_all_efforts
 
-        efforts_1.first.reload
         expect(efforts_1.first.split_times.size).to eq(3)
-        efforts_1.second.reload
         expect(efforts_1.second.split_times.size).to eq(3)
         expect(efforts_2.map(&:split_times).map(&:size)).to all eq(1)
+
+        verify_workspace_is_empty
       end
 
       scenario 'Add and discard times' do
@@ -165,6 +167,8 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
         expect(local_workspace).to have_content(efforts_1.second.full_name)
 
         discard_all_efforts
+
+        reload_all_efforts
 
         expect(efforts_1.map(&:split_times).map(&:size)).to all eq(2)
 
@@ -249,6 +253,11 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
     expect(page).to have_button('js-delete-all-warning', disabled: true)
     wait_for_css
     discard_all_button.click
+  end
+
+  def reload_all_efforts
+    efforts_1.each(&:reload)
+    efforts_2.each(&:reload)
   end
 
   def verify_workspace_is_empty

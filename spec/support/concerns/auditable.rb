@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples_for 'auditable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }

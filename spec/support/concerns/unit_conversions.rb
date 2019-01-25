@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples_for 'unit_conversions' do
   let (:model) { described_class }
 

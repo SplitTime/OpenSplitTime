@@ -18,6 +18,7 @@ RSpec.describe Event, type: :model do
 
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to localize_time_attribute(:start_time) }
 
   describe 'initialize' do
     it 'is valid when created with a course, organization, event_group, name, start time, laps_required, and home_time_zone' do

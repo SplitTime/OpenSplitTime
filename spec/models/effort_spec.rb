@@ -42,6 +42,7 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
+  it { is_expected.to localize_time_attribute(:scheduled_start_time) }
 
   describe 'validations' do
     context 'for validations independent of existing database records' do

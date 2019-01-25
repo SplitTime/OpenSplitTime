@@ -237,6 +237,23 @@ class EffortQuery < BaseQuery
     query.squish
   end
 
+  def self.shift_event_scheduled_times(event, shift_seconds, current_user)
+    query = <<-SQL
+        with time_subquery as 
+           (select ef.id, ef.scheduled_start_time + (#{shift_seconds} * interval '1 second') as computed_time
+            from efforts ef
+            where ef.event_id = #{event.id})
+          
+        update efforts
+        set scheduled_start_time = computed_time,
+            updated_at = current_timestamp,
+            updated_by = #{current_user.id}
+        from time_subquery
+        where efforts.id = time_subquery.id
+    SQL
+    query.squish
+  end
+
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }

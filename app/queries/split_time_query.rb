@@ -406,6 +406,24 @@ class SplitTimeQuery < BaseQuery
     query.squish
   end
 
+  def self.shift_event_absolute_times(event, shift_seconds, current_user)
+    query = <<-SQL
+        with time_subquery as 
+           (select st.id, st.absolute_time + (#{shift_seconds} * interval '1 second') as computed_time
+            from split_times st
+              inner join efforts ef on ef.id = st.effort_id
+            where ef.event_id = #{event.id})
+          
+        update split_times
+        set absolute_time = computed_time,
+            updated_at = current_timestamp,
+            updated_by = #{current_user.id}
+        from time_subquery
+        where split_times.id = time_subquery.id
+    SQL
+    query.squish
+  end
+
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     SplitTime.connection.unprepared_statement { SplitTime.reorder(nil).select("id").to_sql }

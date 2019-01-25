@@ -58,11 +58,11 @@ class EventPolicy < ApplicationPolicy
   end
 
   def edit_start_time?
-    user.authorized_to_edit?(event)
+    user.admin?
   end
 
   def update_start_time?
-    user.authorized_to_edit?(event)
+    user.admin?
   end
 
   def export_finishers?

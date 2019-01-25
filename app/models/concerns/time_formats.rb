@@ -93,4 +93,18 @@ module TimeFormats
   def day_time_full_format(datetime)
     datetime ? datetime.strftime('%B %-d, %Y %l:%M %p') : '--- --:--:--'
   end
+
+  # Formats datetime depending on distance between it and other_datetime
+
+  def flexible_format(datetime, other_datetime)
+    format = case
+             when datetime.to_date == other_datetime.to_date
+               :ampm
+             when (datetime - other_datetime).abs < 7.days
+               :day_and_ampm
+             else
+               :full_with_weekday_and_time
+             end
+    I18n.localize(datetime, format: format)
+  end
 end

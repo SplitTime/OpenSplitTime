@@ -1,0 +1,75 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Shift start time - #{@event.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Shift Start Time - <%= @event.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event.event_group.organization.name, organization_path(@event.event_group.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @event.event_group.name, event_group_path(@event.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to @event.guaranteed_short_name, event_path(@event) %></li>
+            <li class="breadcrumb-item active">Shift Start Time</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'shared/errors', obj: @event %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_for(@event, url: update_start_time_event_path(@event), remote: false, role: "form") do |f| %>
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label 'Start time' %>
+          </div>
+          <div class="col-sm-3">
+            <%= f.datetimepicker_field(:start_time_local) %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :home_time_zone %>
+          </div>
+          <div class="col-sm-8">
+            <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                  {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "form-control dropdown-select-field"}) %>
+          </div>
+        </div>
+
+        <hr/>
+
+        <p>
+          <strong>NOTE:</strong> This form will shift the event start time and all of its split times by the same
+          amount. For example, if you were to change the start time from 7/14/2019 at 6:00 AM to 7/14/2019 at 7:00 AM,
+          all existing split times would automatically shift forward by one hour. This is intended for utility purposes,
+          for example, when an older test event contains data and you would like to move it to a current date.
+        </p>
+
+        <p>
+          If you want to change the event start time without changing any related split times, use the <%= link_to 'Edit Event', edit_event_path(@event) %> feature instead.
+        </p>
+
+        <hr/>
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit("Shift start time", class: 'btn btn-primary') %>
+          </div>
+        </div>
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', event_group_path(@event.event_group, force_settings: true) %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</article>

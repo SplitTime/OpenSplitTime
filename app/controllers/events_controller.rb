@@ -169,13 +169,18 @@ class EventsController < ApplicationController
 
   def update_start_time
     authorize @event
-    background_channel = "progress_#{session.id}"
-    temp_event = Event.new(home_time_zone: @event.home_time_zone, start_time_local: params[:event][:start_time_local])
-    new_start_time = temp_event.start_time.to_s
 
-    EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time,
-                                          background_channel: background_channel, current_user: User.current)
-    redirect_to event_group_path(@event.event_group, force_settings: true)
+    @event.assign_attributes(permitted_params)
+
+    if @event.valid?
+      new_start_time = @event.start_time_local.to_s
+      @event.reload
+      response = EventUpdateStartTimeJob.perform_now(@event, new_start_time: new_start_time, current_user: current_user)
+      set_flash_message(response)
+      redirect_to event_group_path(@event.event_group, force_settings: true)
+    else
+      render :edit_start_time
+    end
   end
 
   def export_finishers

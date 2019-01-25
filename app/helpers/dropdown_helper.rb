@@ -162,17 +162,17 @@ module DropdownHelper
   end
 
   def person_actions_dropdown_menu(view_object)
-    dropdown_items =[
+    dropdown_items = [
         {name: 'Edit',
-        link: edit_person_path(view_object.person)},
+         link: edit_person_path(view_object.person)},
         {name: 'Merge with',
-        link: merge_person_path(view_object.person)},
+         link: merge_person_path(view_object.person)},
         {role: :separator},
         {name: 'Delete person',
-        link: person_path(view_object.person),
-        method: :delete,
-        data: {confirm: 'This action cannot be undone. Proceed?'},
-        class: 'text-danger'}
+         link: person_path(view_object.person),
+         method: :delete,
+         data: {confirm: 'This action cannot be undone. Proceed?'},
+         class: 'text-danger'}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
   end
@@ -204,6 +204,9 @@ module DropdownHelper
          method: :put,
          data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
              'at the last aid station for which times are available. Are you sure you want to proceed?'}},
+        {name: 'Shift start time',
+         link: edit_start_time_event_path(event),
+         visible: current_user.admin?},
         {role: :separator},
         {name: 'Export finishers list',
          link: export_finishers_event_path(event, format: :csv)},

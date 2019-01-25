@@ -200,4 +200,4 @@ License
 Copyright
 ---------
 
-Copyright (c) 2015-2018 OpenSplitTime Company. See license for details.
+Copyright (c) 2015-2019 OpenSplitTime Company. See license for details.

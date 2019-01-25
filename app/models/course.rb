@@ -6,6 +6,8 @@ class Course < ApplicationRecord
   include SplitMethods
   include TimeZonable
   extend FriendlyId
+
+  zonable_attribute :next_start_time
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
 
@@ -44,16 +46,6 @@ class Course < ApplicationRecord
 
   def home_time_zone
     events.most_recent&.home_time_zone
-  end
-
-  def next_start_time_local
-    return nil unless time_zone_valid?(home_time_zone)
-    next_start_time&.in_time_zone(home_time_zone)
-  end
-
-  def next_start_time_local=(value)
-    raise ArgumentError, 'next_start_time_local cannot be set without a valid home_time_zone' unless time_zone_valid?(home_time_zone)
-    self.next_start_time = ActiveSupport::TimeZone[home_time_zone].parse(value)
   end
 
   def distance

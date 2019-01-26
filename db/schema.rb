@@ -10,26 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181205074940) do
+ActiveRecord::Schema.define(version: 20190126070009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
-  enable_extension "uuid-ossp"
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"
     t.integer "split_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "open_time"
-    t.datetime "close_time"
-    t.integer "status"
-    t.string "captain_name"
-    t.string "comms_crew_names"
-    t.string "comms_frequencies"
-    t.string "current_issues"
     t.index ["event_id"], name: "index_aid_stations_on_event_id"
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
   end

@@ -6,13 +6,6 @@ require 'rails_helper'
 # t.integer "split_id"
 # t.datetime "created_at", null: false
 # t.datetime "updated_at", null: false
-# t.datetime "open_time"
-# t.datetime "close_time"
-# t.integer "status"
-# t.string "captain_name"
-# t.string "comms_crew_names"
-# t.string "comms_frequencies"
-# t.string "current_issues"
 
 RSpec.describe AidStation, type: :model do
   subject { build_stubbed(:aid_station, split: split, event: event) }

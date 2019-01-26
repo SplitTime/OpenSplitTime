@@ -66,42 +66,6 @@ RSpec.describe Api::V1::AidStationsController do
     end
   end
 
-  describe '#update' do
-    subject(:make_request) { put :update, params: params }
-    let(:params) { {id: aid_station_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {captain_name: 'Walt Whitman', open_time: '2017-07-01 08:00:00'} }
-
-    via_login_and_jwt do
-      context 'when the aid_station exists' do
-        let(:aid_station_id) { aid_station.id }
-
-        it 'returns a successful json response' do
-          make_request
-          expect(response.body).to be_jsonapi_response_for(type)
-          expect(response.status).to eq(200)
-        end
-
-        it 'updates the specified fields' do
-          make_request
-          aid_station.reload
-          expect(aid_station.captain_name).to eq(attributes[:captain_name])
-          expect(aid_station.open_time).to be_a(ActiveSupport::TimeWithZone)
-        end
-      end
-
-      context 'when the aid_station does not exist' do
-        let(:aid_station_id) { 0 }
-
-        it 'returns an error if the aid_station does not exist' do
-          make_request
-          parsed_response = JSON.parse(response.body)
-          expect(parsed_response['errors']).to include(/not found/)
-          expect(response.status).to eq(404)
-        end
-      end
-    end
-  end
-
   describe '#destroy' do
     subject(:make_request) { delete :destroy, params: {id: aid_station_id} }
 

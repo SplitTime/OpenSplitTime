@@ -99,9 +99,9 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
     select course.name, from: 'course-select'
     3.times { wait_for_fill_in }
     expect(page).to have_field('course-name-field', with: course.name)
-    expect(page).to have_field('course-distance-field', with: course.finish_split.distance_from_start.meters.to.miles.round(2))
-    expect(page).to have_field('course-vert-gain-field', with: course.finish_split.vert_gain_from_start.meters.to.feet.round(1))
-    expect(page).to have_field('course-vert-loss-field', with: course.finish_split.vert_loss_from_start.meters.to.feet.round(1))
+    expect(page).to have_field('course-distance-field', with: (course.finish_split.distance_from_start / UnitConversions::METERS_PER_MILE).round(2))
+    expect(page).to have_field('course-vert-gain-field', with: (course.finish_split.vert_gain_from_start / UnitConversions::METERS_PER_MILE).round(1))
+    expect(page).to have_field('course-vert-loss-field', with: (course.finish_split.vert_loss_from_start / UnitConversions::METERS_PER_MILE).round(1))
     expect(page).to have_field('course-description-field', with: course.description)
 
     expect(continue_button[:disabled]&.to_boolean).to be_falsey

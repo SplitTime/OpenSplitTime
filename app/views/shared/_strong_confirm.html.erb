@@ -15,7 +15,7 @@
       </div>
       <div class="modal-footer">
         <%= text_field_tag 'confirm', nil, class: 'form-control input-block', autofocus: true, tabindex: 1, data: {action: 'keyup->confirm#compare', target: 'confirm.pattern', 'pattern-required' => required_pattern} %>
-        <%= link_to 'Permanently Delete', path_on_confirm, tabindex: -1, class: 'btn btn-block btn-danger font-weight-bold disabled', method: :delete, data: {target: 'confirm.deleteButton'} %>
+        <%= link_to 'Permanently Delete', path_on_confirm, tabindex: -1, class: 'btn btn-block btn-danger font-weight-bold disabled', method: :delete, data: {target: 'confirm.deleteButton', action: 'click->confirm#onClickDelete'} %>
       </div>
     </div>
   </div>

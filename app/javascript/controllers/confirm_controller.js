@@ -11,4 +11,10 @@ export default class extends Controller {
             $(this.deleteButtonTarget).addClass("disabled")
         }
     }
+
+    onClickDelete() {
+        var $button = $(this.deleteButtonTarget);
+        $button.addClass("disabled saving")
+            .html( "Deleting <strong><span>.</span><span>.</span><span>.</span></strong>" )
+    }
 }

@@ -11,7 +11,7 @@ class EventGroup < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_many :events, dependent: :destroy
   has_many :efforts, through: :events
-  has_many :raw_times
+  has_many :raw_times, dependent: :destroy
   has_many :partners
   belongs_to :organization
   validates_presence_of :name

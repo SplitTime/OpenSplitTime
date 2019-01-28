@@ -36,11 +36,7 @@
       <div class="col">
         <div>
           <% if current_user&.authorized_to_edit?(@presenter.course) %>
-            <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-primary' %>
-            <%= link_to 'Delete', course_path(@presenter.course, referrer_path: courses_path),
-                        method: :delete,
-                        data: {confirm: 'NOTE: This will delete the course and all associated splits. This action cannot be undone. Are you sure you want to go ahead?'},
-                        class: 'btn btn-danger' %>
+            <%= link_to 'Edit', edit_course_path(@presenter.course), class: 'btn btn-outline-secondary' %>
           <% end %>
         </div>
       </div>

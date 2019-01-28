@@ -94,10 +94,11 @@
           <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
         </div>
       </div>
-      <div class="col-xs-4 col-xs-offset-2">
-        [ <%= link_to 'Cancel', @event.event_group ? event_group_path(@event.event_group, force_settings: true) : event_groups_path %>
-        ]
+
+      <div class="col">
+        <span class="brackets"><%= link_to 'Cancel', event_group_path(@event.event_group, force_settings: true) %></span>
       </div>
+
     <% end %>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit course #{@course.name}" %>
+  <% "OpenSplitTime: Edit course #{@course.name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -20,5 +20,10 @@
 </header>
 
 <article class="ost-article container">
-    <%= render 'form' %>
+  <%= render 'form' %>
+  <hr>
+  <%= link_to_delete_resource('Delete this course', course_path(@course),
+                              resource: @course,
+                              noteworthy_associations: [:splits],
+                              class: "btn btn-danger") %>
 </article>

@@ -3,53 +3,53 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@event_group, :html => {class: "form-horizontal", role: "form"}) do |f| %>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :name %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :name %>
         </div>
+        <div class="col-sm-4">
+          <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :organization_id %>
-          </div>
-          <div class="col-sm-8">
-            <%= collection_select(:event_group,
-                                  :organization_id,
-                                  OrganizationPolicy::Scope.new(current_user, Organization).editable,
-                                  :id, :name, {prompt: true}, {class: "form-control dropdown-select-field"}) %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :organization_id %>
         </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event_group,
+                                :organization_id,
+                                OrganizationPolicy::Scope.new(current_user, Organization).editable,
+                                :id, :name, {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :concealed, "Concealed (invisible to the public)?" %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.check_box :concealed %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :concealed, "Concealed (invisible to the public)?" %>
         </div>
+        <div class="col-sm-8">
+          <%= f.check_box :concealed %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :monitor_pacers, "Monitor pacers for this event?" %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.check_box :monitor_pacers %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :monitor_pacers, "Monitor pacers for this event?" %>
         </div>
+        <div class="col-sm-8">
+          <%= f.check_box :monitor_pacers %>
+        </div>
+      </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :auto_live_times, "Submit OST Remote times automatically without review?" %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.check_box :auto_live_times %>
-          </div>
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :auto_live_times, "Submit OST Remote times automatically without review?" %>
         </div>
+        <div class="col-sm-8">
+          <%= f.check_box :auto_live_times %>
+        </div>
+      </div>
 
       <div class="form-group">
         <div class="control-label col-sm-2">
@@ -63,13 +63,15 @@
       </div>
 
       <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@event_group.new_record? ? "Create Event Group" : "Update Event Group", class: 'btn btn-primary btn-large') %>
-          </div>
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit(@event_group.new_record? ? "Create Event Group" : "Update Event Group", class: 'btn btn-primary btn-large') %>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', @event_group.new_record? ? event_groups_path : event_group_path(@event_group, force_settings: true) %> ]
-        </div>
+      </div>
+
+      <div class="col">
+        <span class="brackets"><%= link_to 'Cancel', @event_group.new_record? ? event_groups_path : event_group_path(@event_group, force_settings: true) %></span>
+      </div>
+
     <% end %>
   </div>
 </div>

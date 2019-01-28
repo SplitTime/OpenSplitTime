@@ -42,7 +42,10 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
 
-  # config.global_fixtures = :all
+  config.global_fixtures = :organizations, :courses, :event_groups, :events, :efforts, :split_times, :splits,
+      :aid_stations, :people, :notifications, :partners, :raw_times, :stewardships, :subscriptions, :users
+
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

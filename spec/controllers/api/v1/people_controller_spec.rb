@@ -56,9 +56,7 @@ RSpec.describe Api::V1::PeopleController do
         end
 
         it 'creates a person record' do
-          expect(Person.all.count).to eq(0)
-          make_request
-          expect(Person.all.count).to eq(1)
+          expect { make_request }.to change { Person.count }.by(1)
         end
       end
     end
@@ -113,9 +111,7 @@ RSpec.describe Api::V1::PeopleController do
         end
 
         it 'destroys the person record' do
-          expect(Person.all.count).to eq(1)
-          make_request
-          expect(Person.all.count).to eq(0)
+          expect { make_request }.to change { Person.count }.by(-1)
         end
       end
 

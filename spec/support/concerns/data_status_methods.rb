@@ -3,21 +3,16 @@
 RSpec.shared_examples_for 'data_status_methods' do
   let(:model) { described_class }
   let(:model_name) { model.to_s.underscore.to_sym }
-  let(:resource_good) { create(model_name, data_status: :good) }
-  let(:resource_bad) { create(model_name, data_status: :bad) }
-  let(:resource_questionable) { create(model_name, data_status: :questionable) }
+  let(:resource_good) { model.find_by(data_status: :good) }
+  let(:resource_bad) { model.find_by(data_status: :bad) }
+  let(:resource_questionable) { model.find_by(data_status: :questionable) }
 
   describe '.valid_status' do
     it 'returns good resources and does not return bad or questionable resources' do
       if model_name == :effort # Generic SplitTime factory does not create split_times that pass validations
-        good = resource_good
-        bad = resource_bad
-        questionable = resource_questionable
-        expect(model.all.size).to eq(3)
-        expect(model.valid_status.size).to eq(1)
-        expect(model.valid_status.include?(good)).to eq(true)
-        expect(model.valid_status.include?(bad)).to eq(false)
-        expect(model.valid_status.include?(questionable)).to eq(false)
+        expect(model.valid_status).to include(resource_good)
+        expect(model.valid_status).not_to include(resource_bad)
+        expect(model.valid_status).not_to include(resource_questionable)
       end
     end
   end
@@ -28,11 +23,9 @@ RSpec.shared_examples_for 'data_status_methods' do
         good = resource_good
         bad = resource_bad
         questionable = resource_questionable
-        expect(model.all.size).to eq(3)
-        expect(model.invalid_status.size).to eq(2)
-        expect(model.invalid_status.include?(good)).to eq(false)
-        expect(model.invalid_status.include?(bad)).to eq(true)
-        expect(model.invalid_status.include?(questionable)).to eq(true)
+        expect(model.invalid_status).not_to include(good)
+        expect(model.invalid_status).to include(bad)
+        expect(model.invalid_status).to include(questionable)
       end
     end
   end

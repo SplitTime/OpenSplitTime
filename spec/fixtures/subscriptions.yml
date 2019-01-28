@@ -1,0 +1,25 @@
+---
+subscription_85:
+  id: 85
+  user_id: 1
+  person_id: 135
+  created_at: '2016-10-20 07:52:09.661987'
+  updated_at: '2017-03-26 17:06:48.096651'
+  protocol: 0
+  resource_key: pending confirmation:d071481c-b4d1-4674-a742-3ecf88859cfa
+subscription_100:
+  id: 100
+  user_id: 1
+  person_id: 80
+  created_at: '2018-01-10 05:24:14.441832'
+  updated_at: '2018-01-10 05:24:14.441832'
+  protocol: 1
+  resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kilian-jornet:0b1fd2fd-cefa-4bf5-a275-e1ff7af18ff0
+subscription_105:
+  id: 105
+  user_id: 1
+  person_id: 621
+  created_at: '2018-12-09 15:08:06.231238'
+  updated_at: '2018-12-09 15:08:06.231238'
+  protocol: 1
+  resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mark-oveson:38f3fc23-1266-4a42-b695-98eacb53d55f

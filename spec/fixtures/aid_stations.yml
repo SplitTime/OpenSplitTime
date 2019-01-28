@@ -1,0 +1,319 @@
+---
+aid_station_5:
+  id: 5
+  event_id: 4
+  split_id: 5
+  created_at: '2016-04-18 09:09:56.014295'
+  updated_at: '2016-04-18 09:09:56.014295'
+aid_station_26:
+  id: 26
+  event_id: 4
+  split_id: 26
+  created_at: '2016-04-18 09:09:56.116823'
+  updated_at: '2016-06-19 20:41:39.81865'
+aid_station_32:
+  id: 32
+  event_id: 4
+  split_id: 32
+  created_at: '2016-04-18 09:09:56.150741'
+  updated_at: '2016-06-19 20:41:39.837992'
+aid_station_34:
+  id: 34
+  event_id: 4
+  split_id: 34
+  created_at: '2016-04-18 09:09:56.162233'
+  updated_at: '2016-06-19 20:41:39.841776'
+aid_station_140:
+  id: 140
+  event_id: 14
+  split_id: 46
+  created_at: '2016-05-08 07:14:16.242124'
+  updated_at: '2016-05-08 07:14:16.242124'
+aid_station_141:
+  id: 141
+  event_id: 14
+  split_id: 47
+  created_at: '2016-05-08 07:14:16.243731'
+  updated_at: '2016-05-08 07:14:16.243731'
+aid_station_6:
+  id: 6
+  event_id: 4
+  split_id: 6
+  created_at: '2016-04-18 09:09:56.020065'
+  updated_at: '2016-11-14 15:59:38.258874'
+aid_station_12:
+  id: 12
+  event_id: 4
+  split_id: 12
+  created_at: '2016-04-18 09:09:56.050597'
+  updated_at: '2016-11-14 15:59:30.525209'
+aid_station_202:
+  id: 202
+  event_id: 17
+  split_id: 81
+  created_at: '2016-05-23 01:05:15.615672'
+  updated_at: '2016-05-23 01:05:15.615672'
+aid_station_208:
+  id: 208
+  event_id: 17
+  split_id: 87
+  created_at: '2016-05-23 01:09:02.029824'
+  updated_at: '2016-07-01 05:50:35.008523'
+aid_station_214:
+  id: 214
+  event_id: 17
+  split_id: 93
+  created_at: '2016-05-23 01:09:02.08107'
+  updated_at: '2016-07-01 05:50:35.02142'
+aid_station_218:
+  id: 218
+  event_id: 17
+  split_id: 97
+  created_at: '2016-05-23 01:09:02.103208'
+  updated_at: '2016-07-01 05:50:35.029118'
+aid_station_222:
+  id: 222
+  event_id: 17
+  split_id: 101
+  created_at: '2016-05-23 01:09:02.125359'
+  updated_at: '2016-07-01 05:50:35.037527'
+aid_station_228:
+  id: 228
+  event_id: 17
+  split_id: 107
+  created_at: '2016-05-23 01:09:02.158422'
+  updated_at: '2016-07-01 05:50:35.051484'
+aid_station_203:
+  id: 203
+  event_id: 17
+  split_id: 82
+  created_at: '2016-05-23 01:05:15.617583'
+  updated_at: '2016-07-01 05:50:35.054723'
+aid_station_16:
+  id: 16
+  event_id: 4
+  split_id: 16
+  created_at: '2016-04-18 09:09:56.06984'
+  updated_at: '2016-08-09 08:42:41.925961'
+aid_station_458:
+  id: 458
+  event_id: 34
+  split_id: 135
+  created_at: '2017-01-28 13:22:26.043214'
+  updated_at: '2017-01-28 13:22:26.043214'
+aid_station_459:
+  id: 459
+  event_id: 34
+  split_id: 136
+  created_at: '2017-01-28 13:22:26.067404'
+  updated_at: '2017-01-28 13:22:26.067404'
+aid_station_460:
+  id: 460
+  event_id: 34
+  split_id: 137
+  created_at: '2017-01-28 13:23:10.287671'
+  updated_at: '2017-01-28 13:23:10.287671'
+aid_station_476:
+  id: 476
+  event_id: 36
+  split_id: 137
+  created_at: '2017-03-28 07:18:29.911918'
+  updated_at: '2017-03-28 07:18:29.911918'
+aid_station_477:
+  id: 477
+  event_id: 36
+  split_id: 135
+  created_at: '2017-03-28 07:18:29.94354'
+  updated_at: '2017-03-28 07:18:29.94354'
+aid_station_478:
+  id: 478
+  event_id: 36
+  split_id: 136
+  created_at: '2017-03-28 07:18:29.945487'
+  updated_at: '2017-03-28 07:18:29.945487'
+aid_station_479:
+  id: 479
+  event_id: 37
+  split_id: 81
+  created_at: '2017-04-18 08:19:16.960439'
+  updated_at: '2017-04-18 08:19:16.960439'
+aid_station_482:
+  id: 482
+  event_id: 37
+  split_id: 87
+  created_at: '2017-04-18 08:19:17.003729'
+  updated_at: '2017-04-18 08:19:17.003729'
+aid_station_485:
+  id: 485
+  event_id: 37
+  split_id: 93
+  created_at: '2017-04-18 08:19:17.009424'
+  updated_at: '2017-04-18 08:19:17.009424'
+aid_station_487:
+  id: 487
+  event_id: 37
+  split_id: 97
+  created_at: '2017-04-18 08:19:17.012375'
+  updated_at: '2017-04-18 08:19:17.012375'
+aid_station_489:
+  id: 489
+  event_id: 37
+  split_id: 101
+  created_at: '2017-04-18 08:19:17.015427'
+  updated_at: '2017-04-18 08:19:17.015427'
+aid_station_492:
+  id: 492
+  event_id: 37
+  split_id: 107
+  created_at: '2017-04-18 08:19:17.020122'
+  updated_at: '2017-04-18 08:19:17.020122'
+aid_station_493:
+  id: 493
+  event_id: 37
+  split_id: 82
+  created_at: '2017-04-18 08:19:17.021751'
+  updated_at: '2017-04-18 08:19:17.021751'
+aid_station_513:
+  id: 513
+  event_id: 4
+  split_id: 20
+  created_at: '2017-05-08 11:25:05.1084'
+  updated_at: '2017-05-08 11:25:05.1084'
+aid_station_570:
+  id: 570
+  event_id: 48
+  split_id: 164
+  created_at: '2017-05-28 13:58:46.760875'
+  updated_at: '2017-05-28 13:58:46.760875'
+aid_station_571:
+  id: 571
+  event_id: 48
+  split_id: 165
+  created_at: '2017-05-28 13:58:46.770501'
+  updated_at: '2017-05-28 13:58:46.770501'
+aid_station_572:
+  id: 572
+  event_id: 48
+  split_id: 167
+  created_at: '2017-05-28 13:58:54.441016'
+  updated_at: '2017-05-28 13:58:54.441016'
+aid_station_574:
+  id: 574
+  event_id: 48
+  split_id: 170
+  created_at: '2017-05-28 13:58:57.636311'
+  updated_at: '2017-05-28 13:58:57.636311'
+aid_station_575:
+  id: 575
+  event_id: 48
+  split_id: 168
+  created_at: '2017-05-28 13:58:59.471469'
+  updated_at: '2017-05-28 13:58:59.471469'
+aid_station_576:
+  id: 576
+  event_id: 48
+  split_id: 166
+  created_at: '2017-05-28 13:59:01.411135'
+  updated_at: '2017-05-28 13:59:01.411135'
+aid_station_577:
+  id: 577
+  event_id: 48
+  split_id: 171
+  created_at: '2017-05-31 15:07:01.329496'
+  updated_at: '2017-05-31 15:07:01.329496'
+aid_station_578:
+  id: 578
+  event_id: 49
+  split_id: 173
+  created_at: '2017-06-09 09:51:15.844258'
+  updated_at: '2017-06-09 09:51:15.844258'
+aid_station_579:
+  id: 579
+  event_id: 49
+  split_id: 172
+  created_at: '2017-06-09 09:51:15.921475'
+  updated_at: '2017-06-09 09:51:15.921475'
+aid_station_626:
+  id: 626
+  event_id: 56
+  split_id: 205
+  created_at: '2018-01-18 05:09:16.982509'
+  updated_at: '2018-01-18 05:09:16.982509'
+aid_station_627:
+  id: 627
+  event_id: 56
+  split_id: 204
+  created_at: '2018-01-18 05:09:17.036196'
+  updated_at: '2018-01-18 05:09:17.036196'
+aid_station_629:
+  id: 629
+  event_id: 56
+  split_id: 207
+  created_at: '2018-01-18 05:09:24.981633'
+  updated_at: '2018-01-18 05:09:24.981633'
+aid_station_630:
+  id: 630
+  event_id: 56
+  split_id: 208
+  created_at: '2018-01-18 05:09:24.985718'
+  updated_at: '2018-01-18 05:09:24.985718'
+aid_station_631:
+  id: 631
+  event_id: 56
+  split_id: 209
+  created_at: '2018-01-18 05:09:24.990614'
+  updated_at: '2018-01-18 05:09:24.990614'
+aid_station_632:
+  id: 632
+  event_id: 56
+  split_id: 210
+  created_at: '2018-01-18 05:09:24.994135'
+  updated_at: '2018-01-18 05:09:24.994135'
+aid_station_634:
+  id: 634
+  event_id: 57
+  split_id: 213
+  created_at: '2018-01-18 05:15:20.961165'
+  updated_at: '2018-01-18 05:15:20.961165'
+aid_station_635:
+  id: 635
+  event_id: 57
+  split_id: 212
+  created_at: '2018-01-18 05:15:20.968758'
+  updated_at: '2018-01-18 05:15:20.968758'
+aid_station_636:
+  id: 636
+  event_id: 57
+  split_id: 218
+  created_at: '2018-01-18 05:20:09.897515'
+  updated_at: '2018-01-18 05:20:09.897515'
+aid_station_637:
+  id: 637
+  event_id: 57
+  split_id: 219
+  created_at: '2018-01-18 05:20:09.901899'
+  updated_at: '2018-01-18 05:20:09.901899'
+aid_station_638:
+  id: 638
+  event_id: 57
+  split_id: 220
+  created_at: '2018-01-18 05:20:09.907158'
+  updated_at: '2018-01-18 05:20:09.907158'
+aid_station_639:
+  id: 639
+  event_id: 57
+  split_id: 221
+  created_at: '2018-01-18 05:20:09.910794'
+  updated_at: '2018-01-18 05:20:09.910794'
+aid_station_725:
+  id: 725
+  event_id: 56
+  split_id: 206
+  created_at: '2018-12-15 21:51:03.222083'
+  updated_at: '2018-12-15 21:51:03.222083'
+aid_station_726:
+  id: 726
+  event_id: 56
+  split_id: 211
+  created_at: '2018-12-20 05:24:56.409073'
+  updated_at: '2018-12-20 05:24:56.409073'

@@ -1,0 +1,41 @@
+---
+rattlesnake_ramble:
+  id: 6
+  name: Rattlesnake Ramble
+  description: Bill's Race to benefit Eldorado Canyon State Park
+  created_at: '2016-05-07 23:07:36.37544'
+  updated_at: '2017-03-05 04:55:57.129926'
+  created_by: 1
+  updated_by: 1
+  concealed: false
+  slug: rattlesnake-ramble
+hardrock:
+  id: 4
+  name: Hardrock 100
+  description: A long race
+  created_at: '2016-04-16 19:25:07.662405'
+  updated_at: '2017-03-05 07:10:06.507608'
+  created_by: 1
+  updated_by: 1
+  concealed: false
+  slug: hardrock
+running_up_for_air:
+  id: 14
+  name: Running Up For Air
+  description: 
+  created_at: '2017-05-12 07:28:04.903865'
+  updated_at: '2017-05-12 07:28:04.903865'
+  created_by: 1
+  updated_by: 1
+  concealed: false
+  slug: running-up-for-air
+dirty_30_running:
+  id: 15
+  name: Dirty 30 Running
+  description: 
+  created_at: '2017-05-23 06:06:29.680019'
+  updated_at: '2018-06-11 07:08:24.245466'
+  created_by: 1
+  updated_by: 1
+  concealed: false
+  slug: dirty-30-running

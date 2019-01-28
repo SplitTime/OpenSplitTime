@@ -58,9 +58,7 @@ RSpec.describe Api::V1::AidStationsController do
         end
 
         it 'creates a aid_station record' do
-          expect(AidStation.all.count).to eq(0)
-          make_request
-          expect(AidStation.all.count).to eq(1)
+          expect { make_request }.to change { AidStation.count }.by(1)
         end
       end
     end
@@ -80,9 +78,7 @@ RSpec.describe Api::V1::AidStationsController do
         end
 
         it 'destroys the aid_station record' do
-          expect(AidStation.all.count).to eq(1)
-          make_request
-          expect(AidStation.all.count).to eq(0)
+          expect { make_request }.to change { AidStation.count }.by(-1)
         end
       end
 

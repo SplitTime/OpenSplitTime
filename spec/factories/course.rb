@@ -6,10 +6,10 @@ FactoryBot.define do
       description { FFaker::HipsterIpsum.phrase }
     end
 
-    factory :course_with_standard_splits do
+    trait :with_splits do
 
       transient { splits_count { 4 } }
-      transient { in_sub_splits_only { false} }
+      transient { in_sub_splits_only { false } }
 
       after(:stub) do |course, evaluator|
         intermediate_split_bitmap = evaluator.in_sub_splits_only ? 1 : 65

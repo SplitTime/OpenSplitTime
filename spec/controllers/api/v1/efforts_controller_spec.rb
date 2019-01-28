@@ -4,9 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::EffortsController do
   let(:type) { 'efforts' }
-  let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course) }
-  let(:course) { create(:course) }
+  let(:effort) { efforts(:hardrock_2014_finished_first) }
 
   describe '#show' do
     subject(:make_request) { get :show, params: params }
@@ -43,6 +41,7 @@ RSpec.describe Api::V1::EffortsController do
 
   describe '#create' do
     subject(:make_request) { post :create, params: params }
+    let(:event) { events(:hardrock_2014) }
 
     via_login_and_jwt do
       context 'when provided data is valid' do
@@ -58,9 +57,7 @@ RSpec.describe Api::V1::EffortsController do
         end
 
         it 'creates a effort record' do
-          expect(Effort.all.count).to eq(0)
-          make_request
-          expect(Effort.all.count).to eq(1)
+          expect { make_request }.to change { Effort.count }.by(1)
         end
       end
 
@@ -134,9 +131,7 @@ RSpec.describe Api::V1::EffortsController do
         end
 
         it 'destroys the effort record' do
-          expect(Effort.all.count).to eq(1)
-          make_request
-          expect(Effort.all.count).to eq(0)
+          expect { make_request }.to change { Effort.count }.by(-1)
         end
       end
 

@@ -59,10 +59,10 @@ class Api::V1::StagingController < ApiController
     if %w(public private).include?(params[:status])
       setter = EventConcealedSetter.new(event_group: @event.event_group, concealed: params[:status] == 'private')
       setter.perform
+      render json: setter.response, status: setter.status
     else
-      render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request and return
+      render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request
     end
-    render json: setter.response, status: setter.status
   end
 
   private

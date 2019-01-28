@@ -24,11 +24,10 @@ class EventConcealedSetter
       set_resource_concealed(event_group, boolean)
       organization = event_group.organization
       set_resource_concealed(organization, organization.should_be_concealed?) if organization
-      event_group.events.eager_load(efforts: :person) do |event|
-        event.efforts.each do |effort|
-          person = effort.person
-          set_resource_concealed(person, person.should_be_concealed?) if person
-        end
+
+      events = event_group.reload.events.includes(efforts: :person)
+      events.flat_map { |event| event.efforts.map(&:person) }.each do |person|
+        set_resource_concealed(person, person.should_be_concealed?) if person
       end
       raise ActiveRecord::Rollback if status
     end

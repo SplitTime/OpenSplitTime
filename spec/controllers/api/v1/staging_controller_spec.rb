@@ -301,120 +301,106 @@ RSpec.describe Api::V1::StagingController do
   end
 
   describe '#update_event_visibility' do
-    let(:event_group) { create(:event_group, organization: organization) }
-    let(:event_1) { create(:event, event_group: event_group) }
-    let(:event_2) { create(:event, event_group: event_group) }
-    let(:events) { [event_1, event_2] }
-    let(:event_1_efforts) { [create(:effort, person: create(:person), event: event_1), create(:effort, person: create(:person), event: event_1)] }
-    let(:event_2_efforts) { [create(:effort, person: create(:person), event: event_2), create(:effort, person: create(:person), event: event_2)] }
-    let(:organization) { create(:organization) }
+    subject(:make_request) { patch :update_event_visibility, params: {id: event.to_param, status: status} }
+    let(:event_group) { event_groups(:dirty_30) }
+    let(:organization) { event_group.organization }
+    let(:event) { event_group.events.first }
 
     context 'when params[:status] == "public"' do
       let(:status) { 'public' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
+        make_request
         expect(response).to be_successful
       end
 
       it 'sets concealed status of the event_group, organization, and people to false' do
-        event_group.update(concealed: true)
-        organization.update(concealed: true)
-        event_group.events.each do |event|
-          event.efforts.each do |effort|
-            effort.person.update(concealed: true)
-          end
-        end
+        preset_concealed(true)
 
-        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
+        make_request
 
         event_group.reload
         organization.reload
+
         expect(event_group.concealed).to eq(false)
         expect(organization.concealed).to eq(false)
-        event_group.events do |event|
-          event.efforts.each do |effort|
-            expect(effort.person.concealed).to eq(false)
-          end
+        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+        people.each do |person|
+          expect(person.concealed).to eq(false)
         end
       end
     end
 
     context 'when params[:status] == "private"' do
+      let(:event_group) { event_groups(:ramble) }
       let(:status) { 'private' }
 
       it 'returns a successful 200 response' do
-        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
+        make_request
         expect(response).to be_successful
       end
 
       it 'sets concealed status of the event_group, organization, and people to true' do
-        event_group.update(concealed: false)
-        organization.update(concealed: false)
-        event_group.events.each do |event|
-          event.efforts.each do |effort|
-            effort.person.update(concealed: false)
-          end
-        end
+        preset_concealed(false)
 
-        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
+        make_request
 
         event_group.reload
         organization.reload
+
         expect(event_group.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
-        event_group.events do |event|
-          event.efforts.each do |effort|
-            expect(effort.person.concealed).to eq(true)
-          end
+        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+        people.each do |person|
+          expect(person.concealed).to eq(true)
         end
       end
 
-      it 'does not make a person private if that person has other public efforts' do
-        event_group.update(concealed: false)
-        organization.update(concealed: false)
-        event_group.events.each do |event|
-          event.efforts.each do |effort|
-            effort.person.update(concealed: false)
-          end
-        end
+      context 'if that person has other visible efforts' do
+        let(:event_group) { event_groups(:dirty_30) }
+        let(:person_with_other_effort) { people(:not_started) }
 
-        visible_event_group = create(:event_group)
-        visible_event = create(:event, event_group: visible_event_group)
-        p_with_other_effort = event_1_efforts.first.person
-        create(:effort, person: p_with_other_effort, event: visible_event)
+        it 'does not make a person private' do
+          preset_concealed(false)
 
-        patch :update_event_visibility, params: {id: event_1.to_param, status: status}
+          make_request
 
-        event_group.reload
-        organization.reload
-        expect(event_group.concealed).to eq(true)
-        expect(organization.concealed).to eq(true)
-        event_group.events do |event|
-          event.efforts.each do |effort|
-            person = effort.person
-            if person == p_with_other_effort
-              expect(effort.person.concealed).to eq(false)
+          event_group.reload
+          organization.reload
+          expect(event_group.concealed).to eq(true)
+          expect(organization.concealed).to eq(false)
+          people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+
+          people.each do |person|
+            if person == person_with_other_effort
+              expect(person.concealed).to eq(false)
             else
-              expect(effort.person.concealed).to eq(true)
+              expect(person.concealed).to eq(true)
             end
           end
         end
       end
-    end
 
-    context 'when params[:status] is not "public" or "private"' do
-      it 'returns a bad request response' do
-        patch :update_event_visibility, params: {id: event_1.to_param, status: 'random'}
-        expect(response).to be_bad_request
+      context 'when params[:status] is not "public" or "private"' do
+        it 'returns a bad request response' do
+          patch :update_event_visibility, params: {id: event.to_param, status: 'random'}
+          expect(response).to be_bad_request
+        end
+      end
+
+      context 'when the event_id does not exist' do
+        it 'returns a not found response' do
+          patch :update_event_visibility, params: {id: 123, status: 'public'}
+          expect(response).to be_not_found
+        end
       end
     end
 
-    context 'when the event_id does not exist' do
-      it 'returns a not found response' do
-        patch :update_event_visibility, params: {id: 123, status: 'public'}
-        expect(response).to be_not_found
-      end
+    def preset_concealed(boolean)
+      event_group.update(concealed: boolean)
+      organization.update(concealed: boolean)
+      people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+      people.each { |person| person.update(concealed: boolean) }
     end
   end
 end

@@ -2989,6 +2989,29 @@ jostest_dictest:
   photo_content_type: 
   photo_file_size: 
   photo_updated_at: 
+not_started:
+  id: 710
+  first_name: Not
+  last_name: Started
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:35.057652'
+  updated_at: '2019-01-28 17:00:20.677612'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: not-started
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
 rostest_wartest:
   id: 707
   first_name: Rostest
@@ -3008,29 +3031,6 @@ rostest_wartest:
   concealed: false
   slug: rostest-wartest
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rosie-warfield
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-davtest_clatest:
-  id: 710
-  first_name: Davtest
-  last_name: Clatest
-  gender: 0
-  birthdate: 
-  city: 
-  state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:35.057652'
-  updated_at: '2019-01-28 06:52:21.58791'
-  created_by: 1
-  updated_by: 1
-  country_code: US
-  user_id: 
-  concealed: false
-  slug: davtest-clatest
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
   photo_file_name: 
   photo_content_type: 
   photo_file_size: 

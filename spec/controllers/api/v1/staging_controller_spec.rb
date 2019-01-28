@@ -8,7 +8,7 @@ RSpec.describe Api::V1::StagingController do
   describe '#get_countries' do
     it 'returns a successful 200 response' do
       get :get_countries
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'returns a set of country data that includes all Carmen countries' do
@@ -31,7 +31,7 @@ RSpec.describe Api::V1::StagingController do
   describe '#get_time_zones' do
     it 'returns a successful 200 response' do
       get :get_time_zones
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'returns an array of all ActiveSupport::TimeZone names and offsets' do
@@ -314,7 +314,7 @@ RSpec.describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         patch :update_event_visibility, params: {id: event_1.to_param, status: status}
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'sets concealed status of the event_group, organization, and people to false' do
@@ -345,7 +345,7 @@ RSpec.describe Api::V1::StagingController do
 
       it 'returns a successful 200 response' do
         patch :update_event_visibility, params: {id: event_1.to_param, status: status}
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'sets concealed status of the event_group, organization, and people to true' do

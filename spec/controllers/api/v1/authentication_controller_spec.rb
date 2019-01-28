@@ -10,7 +10,7 @@ RSpec.describe Api::V1::AuthenticationController do
   describe '#create' do
     it 'returns a successful 200 response' do
       post :create, params: {user: {email: 'user@example.com', password: 'password'}}
-      expect(response).to be_success
+      expect(response).to be_successful
     end
 
     it 'returns a valid JSON web token' do

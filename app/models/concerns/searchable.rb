@@ -32,6 +32,24 @@ module Searchable
           where([union_sql(country_param, 'country_code'), union_sql(state_param, 'state_code')].compact.join(' OR '))
     end
 
+    def state_code_for(param)
+      param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
+      param_state ? param_state.code : param
+    end
+
+    def country_code_for(param)
+      param_country = Carmen::Country.named(param)
+      param_country ? param_country.code : param
+    end
+
+    def gender_int(param)
+      gender_params.find { |_, values| values.include?(param) }&.first
+    end
+
+    def normalize(param)
+      param.gsub(/[\W_]+/, '')
+    end
+
     private
 
     def union_sql(param, field_name)
@@ -41,27 +59,9 @@ module Searchable
       terms.map { |term| "#{klass}.#{field_name} = '#{term}'" }.join(' OR ')
     end
 
-    def gender_int(param)
-      gender_params.find { |_, values| values.include?(param) }&.first
-    end
-
     def gender_params
       {0 => ['male', 0, :male],
        1 => ['female', 1, :female]}
-    end
-
-    def country_code_for(param)
-      param_country = Carmen::Country.named(param)
-      param_country ? param_country.code : param
-    end
-
-    def state_code_for(param)
-      param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
-      param_state ? param_state.code : param
-    end
-
-    def normalize(param)
-      param.gsub(/[\W_]+/, '')
     end
   end
 end

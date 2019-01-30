@@ -4649,6 +4649,21 @@ hardrock_2014_rictest_peatest_sherman_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 21:13:00'
+hardrock_2014_without_start_telluride_in_1:
+  id: 94459
+  effort_id: 4294
+  split_id: 87
+  data_status: 2
+  created_at: '2016-05-24 03:02:37.334335'
+  updated_at: '2016-05-24 03:02:37.334335'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2014-07-11 23:17:00'
 hardrock_2014_drop_ouray_start_1:
   id: 94471
   effort_id: 4295
@@ -4709,6 +4724,66 @@ hardrock_2014_drop_ouray_ouray_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 06:24:00'
+hardrock_2014_without_start_telluride_out_1:
+  id: 94460
+  effort_id: 4294
+  split_id: 87
+  data_status: 2
+  created_at: '2016-05-24 03:02:37.334335'
+  updated_at: '2016-05-24 03:02:37.334335'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2014-07-11 23:27:00'
+hardrock_2014_without_start_ouray_out_1:
+  id: 94466
+  effort_id: 4294
+  split_id: 93
+  data_status: 2
+  created_at: '2016-05-24 03:02:37.334335'
+  updated_at: '2016-05-24 03:02:37.334335'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2014-07-12 06:29:00'
+hardrock_2014_without_start_grouse_in_1:
+  id: 94469
+  effort_id: 4294
+  split_id: 97
+  data_status: 2
+  created_at: '2016-05-24 03:02:37.334335'
+  updated_at: '2016-05-24 03:02:37.334335'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2014-07-12 13:56:00'
+hardrock_2014_without_start_grouse_out_1:
+  id: 94470
+  effort_id: 4294
+  split_id: 97
+  data_status: 2
+  created_at: '2016-05-24 03:02:37.334335'
+  updated_at: '2017-02-19 02:02:39.100925'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: true
+  absolute_time: '2014-07-12 13:56:00'
 hardrock_2014_multiple_stops_start_1:
   id: 94437
   effort_id: 4293
@@ -4739,81 +4814,6 @@ hardrock_2014_multiple_stops_telluride_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-11 22:52:00'
-hardrock_2014_rictest_destest_telluride_in_1:
-  id: 94459
-  effort_id: 4294
-  split_id: 87
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2016-05-24 03:02:37.334335'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2014-07-11 23:17:00'
-hardrock_2014_rictest_destest_telluride_out_1:
-  id: 94460
-  effort_id: 4294
-  split_id: 87
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2016-05-24 03:02:37.334335'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2014-07-11 23:27:00'
-hardrock_2014_rictest_destest_ouray_out_1:
-  id: 94466
-  effort_id: 4294
-  split_id: 93
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2016-05-24 03:02:37.334335'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2014-07-12 06:29:00'
-hardrock_2014_rictest_destest_grouse_in_1:
-  id: 94469
-  effort_id: 4294
-  split_id: 97
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2016-05-24 03:02:37.334335'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2014-07-12 13:56:00'
-hardrock_2014_rictest_destest_grouse_out_1:
-  id: 94470
-  effort_id: 4294
-  split_id: 97
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2017-02-19 02:02:39.100925'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: true
-  absolute_time: '2014-07-12 13:56:00'
 hardrock_2015_bad_status_telluride_in_1:
   id: 101536
   effort_id: 138
@@ -8819,7 +8819,7 @@ hardrock_2016_jamtest_fictest_ouray_out_1:
   lap: 1
   stopped_here: true
   absolute_time: '2016-07-16 05:46:00'
-hardrock_2016_cratest_wiltest_start_1:
+hardrock_2016_start_only_start_1:
   id: 150546
   effort_id: 7411
   split_id: 81
@@ -8834,66 +8834,6 @@ hardrock_2016_cratest_wiltest_start_1:
   lap: 1
   stopped_here: false
   absolute_time: '2016-07-15 12:00:00'
-hardrock_2016_cratest_wiltest_telluride_in_1:
-  id: 150551
-  effort_id: 7411
-  split_id: 87
-  data_status: 2
-  created_at: '2017-04-18 09:43:45.881478'
-  updated_at: '2018-01-10 09:48:34.512089'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2016-07-16 01:45:00'
-hardrock_2016_cratest_wiltest_telluride_out_1:
-  id: 150552
-  effort_id: 7411
-  split_id: 87
-  data_status: 2
-  created_at: '2017-04-18 09:43:45.885817'
-  updated_at: '2018-01-10 09:48:34.51468'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2016-07-16 01:52:00'
-hardrock_2016_cratest_wiltest_ouray_in_1:
-  id: 150557
-  effort_id: 7411
-  split_id: 93
-  data_status: 2
-  created_at: '2017-04-18 09:43:45.906506'
-  updated_at: '2018-01-10 09:48:34.646406'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2016-07-16 11:30:00'
-hardrock_2016_cratest_wiltest_ouray_out_1:
-  id: 150558
-  effort_id: 7411
-  split_id: 93
-  data_status: 2
-  created_at: '2017-04-18 09:43:45.910534'
-  updated_at: '2018-01-10 09:48:34.648745'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: true
-  absolute_time: '2016-07-16 11:30:00'
 ggd30_50k_finished_first_aid_1_1:
   id: 184082
   effort_id: 15626
@@ -14219,26 +14159,11 @@ hardrock_2014_multiple_stops_grouse_out_1:
   lap: 1
   stopped_here: true
   absolute_time: '2014-07-12 13:10:00'
-hardrock_2014_rictest_destest_start_1:
-  id: 94454
-  effort_id: 4294
-  split_id: 81
-  data_status: 
-  created_at: '2016-05-24 03:02:37.334335'
-  updated_at: '2016-05-24 03:02:37.533161'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2014-07-11 12:00:00'
-hardrock_2014_rictest_destest_ouray_in_1:
+hardrock_2014_without_start_ouray_in_1:
   id: 94465
   effort_id: 4294
   split_id: 93
-  data_status: 
+  data_status: 2
   created_at: '2016-05-24 03:02:37.334335'
   updated_at: '2016-05-24 03:02:37.334335'
   created_by: 1

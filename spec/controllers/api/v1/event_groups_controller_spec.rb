@@ -274,29 +274,25 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe '#import' do
     subject(:make_request) { post :import, params: request_params }
-    before do
-      FactoryBot.reload
-      event.splits << splits
-    end
 
     before(:each) { VCR.insert_cassette("api/v1/event_groups_controller", match_requests_on: [:host]) }
     after(:each) { VCR.eject_cassette }
 
-    let(:course) { create(:course) }
-    let(:splits) { create_list(:splits_hardrock_ccw, 4, course: course) }
-    let(:event_group) { create(:event_group) }
-    let(:event) { create(:event, start_time_local: '2016-07-01 06:00:00', event_group: event_group, course: course, laps_required: 1) }
+    let(:course) { courses(:hardrock_clockwise) }
+    let(:ordered_splits) { course.ordered_splits }
+    let(:event_group) { event.event_group }
+    let(:event) { events(:hardrock_2016) }
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
-    let(:absolute_time_in) { time_zone.parse('2016-07-01 10:45:45') }
-    let(:absolute_time_out) { time_zone.parse('2016-07-01 10:50:50') }
-    let(:effort) { create(:effort, event: event) }
+    let(:absolute_time_in) { time_zone.parse('2016-07-15 17:00:00') }
+    let(:absolute_time_out) { time_zone.parse('2016-07-15 17:20:00') }
+    let(:effort) { efforts(:hardrock_2016_start_only) }
     let(:bib_number) { effort.bib_number.to_s }
     let(:strict) { nil }
     let(:unique_key) { nil }
     let(:limited_response) { nil }
 
     context 'when provided with an array of raw_time hashes and data_format: :jsonapi_batch' do
-      let(:split_name) { splits.first.name }
+      let(:split_name) { ordered_splits.second.base_name }
       let(:request_params) { {id: event_group.id, data_format: 'jsonapi_batch', data: data, strict: strict, unique_key: unique_key, limited_response: limited_response} }
       let(:data) { [
           {type: 'raw_time',
@@ -387,14 +383,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
       context 'when there is a duplicate raw_time in the database' do
         before do
-          create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey, absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
+          create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
+                 absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
         end
 
         context 'when unique_key is set' do
           via_login_and_jwt do
             let(:unique_key) { %w(absoluteTime splitName bitkey bibNumber source withPacer stoppedHere) }
 
-            it 'saves the non-duplicate raw_time to the database and updates the existing raw_time' do
+            it 'saves the non-duplicate raw_time to the database and updates the duplicate raw_time' do
               expect { make_request }.to change { RawTime.count }.by(1)
 
               expect(response.status).to eq(201)
@@ -414,10 +411,9 @@ RSpec.describe Api::V1::EventGroupsController do
         end
       end
 
-      context 'when there is a duplicate split_time in the database' do
+      context 'when there is a matching split_time in the database' do
         via_login_and_jwt do
-          let(:split) { event.splits.first }
-          let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
+          let(:split) { ordered_splits.second }
           let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in, pacer: true, stopped_here: false) }
 
           it 'saves the raw_times to the database and matches the duplicate raw_time with the existing split_time' do
@@ -432,8 +428,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
       context 'when there is a non-duplicate split_time in the database' do
         via_login_and_jwt do
-          let(:effort) { create(:effort, event: event) }
-          let(:split) { event.splits.first }
+          let(:effort) { create(:effort, bib_number: 333, event: event) }
+          let(:split) { ordered_splits.first }
           let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
           let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
@@ -449,7 +445,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
       context 'when push notifications are permitted' do
         via_login_and_jwt do
-          let(:event_group) { create(:event_group, available_live: true, concealed: false) }
+          before { event_group.update(available_live: true, concealed: false) }
 
           it 'sends a push notification that includes the count of available raw times' do
             expect(event.permit_notifications?).to be(true)
@@ -463,15 +459,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
       context 'when event_group.permit_notifications? is true and auto_live_times is true' do
         via_login_and_jwt do
-          let!(:event_group) { create(:event_group, concealed: false, available_live: true, auto_live_times: true) }
-          let!(:effort) { create(:effort, event: event, bib_number: 101, person: person) }
-          let!(:person) { create(:person) }
+          before { event_group.update(available_live: true, concealed: false, auto_live_times: true) }
+
+          let!(:person) { effort.person }
           let(:data) { [
               {type: 'raw_time',
-               attributes: {bibNumber: '101', splitName: splits.second.base_name, bitkey: in_bitkey, absoluteTime: absolute_time_in,
+               attributes: {bibNumber: effort.bib_number.to_s, splitName: ordered_splits.second.base_name, bitkey: in_bitkey, absoluteTime: absolute_time_in,
                             withPacer: true, stoppedHere: false, source: source}},
               {type: 'raw_time',
-               attributes: {bibNumber: '101', splitName: splits.second.base_name, bitkey: out_bitkey, absoluteTime: absolute_time_out,
+               attributes: {bibNumber: effort.bib_number.to_s, splitName: ordered_splits.second.base_name, bitkey: out_bitkey, absoluteTime: absolute_time_out,
                             withPacer: true, stoppedHere: true, source: source}}
           ] }
 
@@ -504,7 +500,7 @@ RSpec.describe Api::V1::EventGroupsController do
             allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
             make_request
 
-            expect(Interactors::SetEffortStatus).to have_received(:perform)
+            expect(Interactors::SetEffortStatus).to have_received(:perform).at_least(2).times
           end
         end
       end

@@ -7,26 +7,32 @@ require 'rails_helper'
 #   t.integer  "level"
 
 RSpec.describe Stewardship, type: :model do
-  it 'is valid when created with a user_id and a organization_id' do
-    user = User.create!(first_name: 'Test', last_name: 'User', role: :user, email: 'user@example.com', password: 'password')
-    organization = Organization.create!(name: 'Hardrock')
-    stewardship = Stewardship.create!(user_id: user.id, organization_id: organization.id)
+  subject(:stewardship) { Stewardship.new(user: user, organization: organization) }
+  let(:user) { users(:admin_user) }
+  let(:organization) { organizations(:hardrock) }
 
-    expect(Stewardship.all.count).to(equal(1))
-    expect(stewardship.user_id).to eq(user.id)
-    expect(stewardship.organization_id).to eq(organization.id)
-    expect(stewardship).to be_valid
+  context 'when created with a user and a organization' do
+    it 'is valid' do
+      expect(stewardship).to be_valid
+      expect { stewardship.save }.to change { Stewardship.count }.by(1)
+    end
   end
 
-  it 'should be invalid without a user_id' do
-    stewardship = Stewardship.new(user_id: nil, organization_id: 1)
-    expect(stewardship).not_to be_valid
-    expect(stewardship.errors[:user_id]).to include("can't be blank")
+  context 'when created without a user' do
+    let(:user) { nil }
+
+    it 'should be invalid' do
+      expect(stewardship).not_to be_valid
+      expect(stewardship.errors[:user_id]).to include("can't be blank")
+    end
   end
 
-  it 'should be invalid without an organization_id' do
-    stewardship = Stewardship.new(user_id: 1, organization_id: nil)
-    expect(stewardship).not_to be_valid
-    expect(stewardship.errors[:organization_id]).to include("can't be blank")
+  context 'when created without an organization' do
+    let(:organization) { nil }
+
+    it 'should be invalid without an organization_id' do
+      expect(stewardship).not_to be_valid
+      expect(stewardship.errors[:organization_id]).to include("can't be blank")
+    end
   end
 end

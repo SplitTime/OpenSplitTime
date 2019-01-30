@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe SmartSegmentsBuilder do
   subject { SmartSegmentsBuilder.new(event: event, time_points: time_points, times_container: times_container) }
-  let(:event) { build_stubbed(:event_with_standard_splits, laps_required: 1, splits_count: 3) }
-  let(:time_points) { event&.time_points_through(laps) }
+  let(:event) { Event.new }
+  let(:time_points) { [] }
   let(:laps) { 1 }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids) }
   let(:similar_effort_ids) { [1, 2, 3] }
@@ -50,7 +50,8 @@ RSpec.describe SmartSegmentsBuilder do
     before { allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_0_0)).and_return(0) }
 
     context 'for a single-lap event' do
-      let(:event) { build_stubbed(:event_with_standard_splits, laps_required: 1, splits_count: 3) }
+      let(:event) { events(:hardrock_2016) }
+      let(:time_points) { event&.time_points_through(laps)&.first(4) }
 
       context 'when data is available for all serial segments' do
         before do
@@ -96,15 +97,14 @@ RSpec.describe SmartSegmentsBuilder do
     end
 
     context 'for a multi-lap event' do
-      let(:event) { build_stubbed(:event_with_standard_splits, laps_required: 0, splits_count: 3) }
+      let(:event) { events(:rufa_2017) }
       let(:laps) { 2 }
+      let(:time_points) { event.time_points_through(laps) }
 
       let(:segment_3_4) { Segment.new(begin_point: time_points[3], end_point: time_points[4]) }
       let(:segment_3_5) { Segment.new(begin_point: time_points[3], end_point: time_points[5]) }
       let(:segment_3_6) { Segment.new(begin_point: time_points[3], end_point: time_points[6]) }
       let(:segment_4_5) { Segment.new(begin_point: time_points[4], end_point: time_points[5]) }
-      let(:segment_5_6) { Segment.new(begin_point: time_points[5], end_point: time_points[6]) }
-      let(:segment_6_7) { Segment.new(begin_point: time_points[6], end_point: time_points[7]) }
 
       context 'when data is available for all serial segments' do
         before do
@@ -113,37 +113,32 @@ RSpec.describe SmartSegmentsBuilder do
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_2_3)).and_return(6000)
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_3_4)).and_return(600)
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_4_5)).and_return(7000)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_5_6)).and_return(700)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_6_7)).and_return(8000)
         end
 
         it 'returns segments having begin time_points equal to the begin time_point plus all event time_points but the last' do
-          expect(subject.segments.map(&:begin_point)).to eq([time_points[0], time_points[0], time_points[1], time_points[2], time_points[3], time_points[4], time_points[5], time_points[6]])
+          expect(subject.segments.map(&:begin_point)).to eq([time_points[0]] + time_points[0..-2])
         end
 
         it 'returns segments having end time_points equal to all event time_points' do
-          expect(subject.segments.map(&:end_point)).to eq([time_points[0], time_points[1], time_points[2], time_points[3], time_points[4], time_points[5], time_points[6], time_points[7]])
+          expect(subject.segments.map(&:end_point)).to eq(time_points)
         end
       end
 
-      context 'when data is not available for three of many segments' do
+      context 'when data is not available for two of many segments' do
         before do
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_0_1)).and_return(5000)
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_1_2)).and_return(nil)
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_2_3)).and_return(6000)
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_3_4)).and_return(nil)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_4_5)).and_return(nil)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_5_6)).and_return(700)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_6_7)).and_return(8000)
+          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_4_5)).and_return(8000)
 
           allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_1_3)).and_return(5500)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_3_5)).and_return(nil)
-          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_3_6)).and_return(8300)
+          allow(times_container).to receive(:segment_time).with(a_segment_matching(segment_3_5)).and_return(8300)
         end
 
         it 'returns segments as expected' do
-          expect(subject.segments.map(&:begin_point)).to eq([time_points[0], time_points[0], time_points[1], time_points[3], time_points[6]])
-          expect(subject.segments.map(&:end_point)).to eq([time_points[0], time_points[1], time_points[3], time_points[6], time_points[7]])
+          expect(subject.segments.map(&:begin_point)).to eq([time_points[0], time_points[0], time_points[1], time_points[3]])
+          expect(subject.segments.map(&:end_point)).to eq([time_points[0], time_points[1], time_points[3], time_points[5]])
         end
       end
     end

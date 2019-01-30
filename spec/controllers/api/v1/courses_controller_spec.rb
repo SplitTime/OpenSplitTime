@@ -28,7 +28,7 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = ['Double Dirty 30 55K course', 'Golden Gate Dirty 30 12-Mile Course', 'Golden Gate Dirty 30 Course', 'Hardrock Clock Wise',
+          expected = ['Double Dirty 30 55K course', 'Golden Gate Dirty 30 12-Mile Course', 'Golden Gate Dirty 30 Course', 'Hardrock Clockwise',
                       'Hardrock Counter Clockwise', 'RUFA Course', 'Ramble Even-Year Course', 'Ramble Odd-Year Course', 'Silverton Double Dirty 30 Course']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
@@ -41,7 +41,7 @@ RSpec.describe Api::V1::CoursesController do
         it 'sorts properly in descending order based on the parameter' do
           make_request
           expected = ['Silverton Double Dirty 30 Course', 'Ramble Odd-Year Course', 'Ramble Even-Year Course', 'RUFA Course', 'Hardrock Counter Clockwise',
-                      'Hardrock Clock Wise', 'Golden Gate Dirty 30 Course', 'Golden Gate Dirty 30 12-Mile Course', 'Double Dirty 30 55K course']
+                      'Hardrock Clockwise', 'Golden Gate Dirty 30 Course', 'Golden Gate Dirty 30 12-Mile Course', 'Double Dirty 30 55K course']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = ['RUFA Course', 'Hardrock Clock Wise', 'Hardrock Counter Clockwise', 'Double Dirty 30 55K course', 'Golden Gate Dirty 30 12-Mile Course',
+          expected = ['RUFA Course', 'Hardrock Clockwise', 'Hardrock Counter Clockwise', 'Double Dirty 30 55K course', 'Golden Gate Dirty 30 12-Mile Course',
                       'Golden Gate Dirty 30 Course', 'Ramble Even-Year Course', 'Ramble Odd-Year Course', 'Silverton Double Dirty 30 Course']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)

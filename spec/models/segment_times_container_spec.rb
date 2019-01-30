@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe SegmentTimesContainer do
-  let(:course) { build_stubbed(:course_with_standard_splits, splits_count: 3) }
-  let(:start) { course.splits.first }
-  let(:aid_1) { course.splits.second }
-  let(:finish) { course.splits.last }
+  let(:course) { courses(:hardrock_clockwise) }
+  let(:start) { course.ordered_splits.first }
+  let(:aid_1) { course.ordered_splits.second }
+  let(:finish) { course.ordered_splits.last }
   let(:lap_1_zero_start) { build(:segment, begin_lap: 1, begin_split: start, begin_in_out: 'in',
                                              end_lap: 1, end_split: start, end_in_out: 'in') }
   let(:lap_1_in_aid_1) { build(:segment, begin_lap: 1, begin_split: aid_1, begin_in_out: 'in',

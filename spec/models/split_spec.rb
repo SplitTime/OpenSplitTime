@@ -36,16 +36,10 @@ RSpec.describe Split, kind: :model do
 
   describe '#initialize' do
     it 'is valid when created with a course, a name, a distance_from_start, and a kind' do
-      Split.create!(course: persisted_course,
-                    base_name: 'Hopeless Outbound',
-                    distance_from_start: 50000,
-                    kind: :intermediate)
-
-      expect(Split.all.count).to(equal(1))
-      expect(Split.first.name).to eq('Hopeless Outbound')
-      expect(Split.first.distance_from_start).to eq(50000)
-      expect(Split.first.sub_split_bitmap).to eq(1) # default value
-      expect(Split.first.intermediate?).to eq(true)
+      expect { Split.create!(course: persisted_course,
+                             base_name: 'Hopeless Outbound',
+                             distance_from_start: 50000,
+                             kind: :intermediate) }.to change { Split.count }.by(1)
     end
 
     it 'is invalid without a base_name' do

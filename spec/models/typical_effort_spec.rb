@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe TypicalEffort, type: :model do
   subject { TypicalEffort.new(event: event, expected_time_from_start: expected_time_from_start, start_time: start_time,
                               time_points: time_points, expected_time_point: expected_time_point) }
-  let(:event) { build_stubbed(:event_with_standard_splits, laps_required: 1, splits_count: 4) }
+  let(:event) { events(:hardrock_2016) }
   let(:expected_time_from_start) { 1.hour }
   let(:start_time) { event.start_time }
   let(:time_points) { event.required_time_points }

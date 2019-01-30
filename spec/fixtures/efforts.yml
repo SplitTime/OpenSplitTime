@@ -1567,6 +1567,38 @@ hardrock_2014_multiple_stops:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_without_start:
+  id: 4294
+  event_id: 17
+  person_id: 170
+  wave: 
+  bib_number: 119
+  city: 
+  state_code: MT
+  age: 63
+  created_at: '2016-05-24 03:02:37.329357'
+  updated_at: '2019-01-30 00:16:47.759842'
+  created_by: 1
+  updated_by: 1
+  first_name: Without
+  last_name: Start
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-without-start
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
 hardrock_2014_rictest_peatest:
   id: 4277
   event_id: 17
@@ -1631,38 +1663,6 @@ hardrock_2015_gartest_peltest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
-hardrock_2014_rictest_destest:
-  id: 4294
-  event_id: 17
-  person_id: 170
-  wave: 
-  bib_number: 119
-  city: 
-  state_code: MT
-  age: 63
-  created_at: '2016-05-24 03:02:37.329357'
-  updated_at: '2019-01-28 08:58:27.733254'
-  created_by: 1
-  updated_by: 1
-  first_name: Rictest
-  last_name: Destest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: hardrock-2014-rictest-destest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2014-07-11 12:00:00'
 hardrock_2014_not_started:
   id: 4302
   event_id: 17
@@ -3039,6 +3039,38 @@ hardrock_2016_davtest_brotest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_start_only:
+  id: 7411
+  event_id: 37
+  person_id: 818
+  wave: 
+  bib_number: 199
+  city: 
+  state_code: ME
+  age: 67
+  created_at: '2017-04-18 09:43:45.842843'
+  updated_at: '2019-01-29 00:18:41.116419'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-start-only
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
 hardrock_2016_neitest_blatest:
   id: 7400
   event_id: 37
@@ -3127,38 +3159,6 @@ hardrock_2016_jamtest_fictest:
   phone: 
   email: 
   slug: hardrock-2016-jamtest-fictest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2016-07-15 12:00:00'
-hardrock_2016_cratest_wiltest:
-  id: 7411
-  event_id: 37
-  person_id: 818
-  wave: 
-  bib_number: 199
-  city: 
-  state_code: ME
-  age: 67
-  created_at: '2017-04-18 09:43:45.842843'
-  updated_at: '2019-01-28 08:58:28.087578'
-  created_by: 1
-  updated_by: 1
-  first_name: Cratest
-  last_name: Wiltest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: hardrock-2016-cratest-wiltest
   checked_in: false
   photo_file_name: 
   photo_content_type: 

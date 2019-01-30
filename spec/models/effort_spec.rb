@@ -64,8 +64,8 @@ RSpec.describe Effort, type: :model do
       end
 
       it 'is invalid without an event_id' do
-        effort = build_stubbed(:effort, event_id: nil)
-        expect { effort.valid? }.to raise_error Module::DelegationError
+        effort = build_stubbed(:effort, event: nil)
+        expect(effort).not_to be_valid
         expect(effort.errors[:event_id]).to include("can't be blank")
       end
 
@@ -107,8 +107,7 @@ RSpec.describe Effort, type: :model do
       end
 
       it 'permits more than one effort in a given event with unassigned people' do
-        create(:effort, event: event_1, person: nil)
-        effort = create(:effort, event: event_1, person: nil)
+        effort = build_stubbed(:effort, split_times: [], event: event_1, person: nil)
         expect(effort).to be_valid
       end
 

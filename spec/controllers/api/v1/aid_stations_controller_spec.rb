@@ -58,45 +58,7 @@ RSpec.describe Api::V1::AidStationsController do
         end
 
         it 'creates a aid_station record' do
-          expect(AidStation.all.count).to eq(0)
-          make_request
-          expect(AidStation.all.count).to eq(1)
-        end
-      end
-    end
-  end
-
-  describe '#update' do
-    subject(:make_request) { put :update, params: params }
-    let(:params) { {id: aid_station_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {captain_name: 'Walt Whitman', open_time: '2017-07-01 08:00:00'} }
-
-    via_login_and_jwt do
-      context 'when the aid_station exists' do
-        let(:aid_station_id) { aid_station.id }
-
-        it 'returns a successful json response' do
-          make_request
-          expect(response.body).to be_jsonapi_response_for(type)
-          expect(response.status).to eq(200)
-        end
-
-        it 'updates the specified fields' do
-          make_request
-          aid_station.reload
-          expect(aid_station.captain_name).to eq(attributes[:captain_name])
-          expect(aid_station.open_time).to be_a(ActiveSupport::TimeWithZone)
-        end
-      end
-
-      context 'when the aid_station does not exist' do
-        let(:aid_station_id) { 0 }
-
-        it 'returns an error if the aid_station does not exist' do
-          make_request
-          parsed_response = JSON.parse(response.body)
-          expect(parsed_response['errors']).to include(/not found/)
-          expect(response.status).to eq(404)
+          expect { make_request }.to change { AidStation.count }.by(1)
         end
       end
     end
@@ -116,9 +78,7 @@ RSpec.describe Api::V1::AidStationsController do
         end
 
         it 'destroys the aid_station record' do
-          expect(AidStation.all.count).to eq(1)
-          make_request
-          expect(AidStation.all.count).to eq(0)
+          expect { make_request }.to change { AidStation.count }.by(-1)
         end
       end
 

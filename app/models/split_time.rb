@@ -114,14 +114,14 @@ class SplitTime < ApplicationRecord
     return attributes['time_from_start'] if attributes.has_key?('time_from_start')
     return nil unless absolute_time
     return 0 if starting_split_time?
-    start_time = effort_start_split_time&.absolute_time
+    start_time = effort_starting_split_time&.absolute_time
     return nil unless start_time
     absolute_time - start_time
   end
 
   def time_from_start=(seconds)
     return if starting_split_time?
-    start_time = effort_start_split_time&.absolute_time
+    start_time = effort_starting_split_time&.absolute_time
     return unless start_time
     self.absolute_time = seconds ? start_time + seconds : nil
   end
@@ -182,8 +182,8 @@ class SplitTime < ApplicationRecord
     @home_time_zone ||= attributes['home_time_zone'] || effort.home_time_zone
   end
 
-  def effort_start_split_time
-    effort.start_split_time
+  def effort_starting_split_time
+    effort.starting_split_time
   end
 
   def destroy_if_blank

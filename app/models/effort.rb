@@ -113,7 +113,7 @@ class Effort < ApplicationRecord
 
   def start_time
     return @start_time if defined?(@start_time)
-    @start_time = attributes.has_key?('start_time') ? attributes['start_time'] : start_split_time&.absolute_time
+    @start_time = attributes.has_key?('start_time') ? attributes['start_time'] : starting_split_time&.absolute_time
   end
 
   def event_start_time
@@ -144,8 +144,8 @@ class Effort < ApplicationRecord
     @finish_split_time ||= last_reported_split_time if finished?
   end
 
-  def start_split_time
-    @start_split_time ||= split_times.find(&:starting_split_time?)
+  def starting_split_time
+    @starting_split_time ||= split_times.find(&:starting_split_time?)
   end
 
   def start_split_id

@@ -286,7 +286,7 @@
             laps: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             virtualStartTime: { type: Date, default: null, local: true },
-            startTimeInHomeZone: { 
+            startTimeLocal: {
                 get: function() {
                     if (!(this.virtualStartTime instanceof Date)) return null;
                     var regex = new RegExp('Z$');

@@ -13,7 +13,8 @@ class OrganizationPresenter < BasePresenter
 
   def event_groups
     scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
-    EventGroup.where(id: scoped_event_groups.map(&:id), organization: organization)
+    EventGroup.joins(:events) # Excludes "orphaned" event_groups (having no events)
+        .where(id: scoped_event_groups.map(&:id), organization: organization)
         .includes(events: :efforts).includes(:organization)
         .sort_by { |event_group| -event_group.start_time.to_i }
   end

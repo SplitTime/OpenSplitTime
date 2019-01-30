@@ -20,12 +20,32 @@ RSpec.describe EventGroup, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe '#initialize' do
-    subject { build_stubbed(:event_group) }
-    
-    it 'initializes with a name and an organization' do
-      expect(subject.name).to be_present
-      expect(subject.organization).to be_present
-      expect(subject).to be_valid
+    subject { EventGroup.new(name: name, organization: organization) }
+    let(:name) { 'Test Name' }
+    let(:organization) { organizations(:hardrock) }
+
+    context 'with a name and an organization' do
+      it 'initializes' do
+        expect(subject).to be_valid
+      end
+    end
+
+    context 'without a name' do
+      let(:name) { nil }
+
+      it 'is not valid' do
+        expect(subject).to be_invalid
+        expect(subject.errors.full_messages).to include(/Name can't be blank/)
+      end
+    end
+
+    context 'without an organization' do
+      let(:organization) { nil }
+
+      it 'is not valid' do
+        expect(subject).to be_invalid
+        expect(subject.errors.full_messages).to include(/Organization can't be blank/)
+      end
     end
   end
 

@@ -28,9 +28,9 @@ class Event < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
   validate :home_time_zone_exists
   validate :course_is_consistent
-  validates_with GroupedEventValidator
 
   after_destroy :destroy_orphaned_event_group
+  after_save :validate_event_group
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
@@ -69,8 +69,18 @@ class Event < ApplicationRecord
   end
 
   def destroy_orphaned_event_group
+    event_group.reload
+
     if events_within_group.empty?
       event_group.destroy
+    end
+  end
+
+  def validate_event_group
+    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
+    unless event_group.valid?
+      errors[:base] << event_group.errors.full_messages
+      raise ActiveRecord::RecordInvalid.new(self)
     end
   end
 

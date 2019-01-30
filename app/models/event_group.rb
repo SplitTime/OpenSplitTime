@@ -14,11 +14,13 @@ class EventGroup < ApplicationRecord
   has_many :raw_times, dependent: :destroy
   has_many :partners
   belongs_to :organization
-  validates_presence_of :name
+
+  validates_presence_of :name, :organization_id
   validates_uniqueness_of :name, case_sensitive: false
+  validates_with GroupedEventsValidator
 
   delegate :stewards, to: :organization
-  delegate :start_time, :home_time_zone, :start_time_local, to: :first_event
+  delegate :start_time, :home_time_zone, :start_time_local, to: :first_event, allow_nil: true
   delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }

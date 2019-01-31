@@ -95,6 +95,12 @@ aid_station_16:
   split_id: 16
   created_at: '2016-04-18 09:09:56.06984'
   updated_at: '2016-08-09 08:42:41.925961'
+aid_station_753:
+  id: 753
+  event_id: 70
+  split_id: 137
+  created_at: '2019-01-30 17:38:14.2499'
+  updated_at: '2019-01-30 17:38:14.2499'
 aid_station_458:
   id: 458
   event_id: 34
@@ -113,6 +119,18 @@ aid_station_460:
   split_id: 137
   created_at: '2017-01-28 13:23:10.287671'
   updated_at: '2017-01-28 13:23:10.287671'
+aid_station_754:
+  id: 754
+  event_id: 70
+  split_id: 136
+  created_at: '2019-01-30 17:38:14.255012'
+  updated_at: '2019-01-30 17:38:14.255012'
+aid_station_755:
+  id: 755
+  event_id: 70
+  split_id: 135
+  created_at: '2019-01-30 17:38:14.261182'
+  updated_at: '2019-01-30 17:38:14.261182'
 aid_station_476:
   id: 476
   event_id: 36

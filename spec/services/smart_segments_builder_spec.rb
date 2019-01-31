@@ -97,7 +97,7 @@ RSpec.describe SmartSegmentsBuilder do
     end
 
     context 'for a multi-lap event' do
-      let(:event) { events(:rufa_2017) }
+      let(:event) { events(:rufa_2017_24h) }
       let(:laps) { 2 }
       let(:time_points) { event.time_points_through(laps) }
 

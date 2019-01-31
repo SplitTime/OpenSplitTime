@@ -1,32 +1,4 @@
 ---
-ramble_even_year_course:
-  id: 9
-  name: Ramble Even-Year Course
-  description: 
-  created_at: '2016-05-08 07:10:07.192914'
-  updated_at: '2019-01-14 07:58:42.002109'
-  created_by: 3
-  updated_by: 1
-  next_start_time: 
-  slug: ramble-even-year-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
-golden_gate_dirty_30_12_mile_course:
-  id: 27
-  name: Golden Gate Dirty 30 12-Mile Course
-  description: 
-  created_at: '2017-06-09 09:51:15.458576'
-  updated_at: '2019-01-14 07:58:42.049527'
-  created_by: 1
-  updated_by: 1
-  next_start_time: 
-  slug: golden-gate-dirty-30-12-mile-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 rufa_course:
   id: 20
   name: RUFA Course
@@ -41,87 +13,101 @@ rufa_course:
   gpx_content_type: 
   gpx_file_size: 
   gpx_updated_at: 
-silverton_double_dirty_30_course:
-  id: 31
-  name: Silverton Double Dirty 30 Course
+d30_12m_course:
+  id: 27
+  name: D30 12M Course
   description: 
-  created_at: '2018-01-18 05:09:16.740608'
-  updated_at: '2019-01-14 07:58:42.054761'
+  created_at: '2017-06-09 09:51:15.458576'
+  updated_at: '2019-01-30 21:31:14.718422'
   created_by: 1
   updated_by: 1
   next_start_time: 
-  slug: silverton-double-dirty-30-course
+  slug: d30-12m-course
   gpx_file_name: 
   gpx_content_type: 
   gpx_file_size: 
   gpx_updated_at: 
-hardrock_clockwise:
-  id: 12
-  name: Hardrock Clockwise
-  description: Clockwise Hardrock 100 course
-  created_at: '2016-05-23 01:04:57.225296'
-  updated_at: '2019-01-29 01:09:17.454073'
-  created_by: 1
-  updated_by: 1
-  next_start_time: '2016-07-15 12:00:00'
-  slug: hardrock-clockwise
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
-ramble_odd_year_course:
-  id: 8
-  name: Ramble Odd-Year Course
+ramble_even_course:
+  id: 9
+  name: Ramble Even Course
   description: 
-  created_at: '2016-05-07 23:08:10.461488'
-  updated_at: '2019-01-14 07:58:41.996781'
+  created_at: '2016-05-08 07:10:07.192914'
+  updated_at: '2019-01-30 21:32:45.570123'
   created_by: 3
   updated_by: 1
   next_start_time: 
-  slug: ramble-odd-year-course
+  slug: ramble-even-course
   gpx_file_name: 
   gpx_content_type: 
   gpx_file_size: 
   gpx_updated_at: 
-double_dirty_30_55k_course:
-  id: 32
-  name: Double Dirty 30 55K course
+sum_100k_course:
+  id: 31
+  name: SUM 100K Course
   description: 
-  created_at: '2018-01-18 05:15:20.742148'
-  updated_at: '2019-01-14 07:58:42.060285'
+  created_at: '2018-01-18 05:09:16.740608'
+  updated_at: '2019-01-30 21:30:28.251335'
   created_by: 1
   updated_by: 1
   next_start_time: 
-  slug: double-dirty-30-55k-course
+  slug: sum-100k-course
   gpx_file_name: 
   gpx_content_type: 
   gpx_file_size: 
   gpx_updated_at: 
-golden_gate_dirty_30_course:
+hardrock_cw:
+  id: 12
+  name: Hardrock CW
+  description: Clockwise Hardrock 100 course
+  created_at: '2016-05-23 01:04:57.225296'
+  updated_at: '2019-01-30 21:32:06.354936'
+  created_by: 1
+  updated_by: 1
+  next_start_time: '2016-07-15 12:00:00'
+  slug: hardrock-cw
+  gpx_file_name: 
+  gpx_content_type: 
+  gpx_file_size: 
+  gpx_updated_at: 
+sum_55k_course:
+  id: 32
+  name: SUM 55K Course
+  description: 
+  created_at: '2018-01-18 05:15:20.742148'
+  updated_at: '2019-01-30 21:44:59.102925'
+  created_by: 1
+  updated_by: 1
+  next_start_time: 
+  slug: sum-55k-course
+  gpx_file_name: 
+  gpx_content_type: 
+  gpx_file_size: 
+  gpx_updated_at: 
+d30_50k_course:
   id: 26
-  name: Golden Gate Dirty 30 Course
+  name: D30 50K Course
   description: 
   created_at: '2017-05-23 06:06:29.666791'
-  updated_at: '2019-01-14 07:58:42.043261'
+  updated_at: '2019-01-30 21:31:39.197679'
   created_by: 1
   updated_by: 1
   next_start_time: '2017-11-06 06:00:00'
-  slug: golden-gate-dirty-30-course
+  slug: d30-50k-course
   gpx_file_name: golden-gate-dirty-30-800.gpx
   gpx_content_type: application/octet-stream
   gpx_file_size: 80581
   gpx_updated_at: '2017-11-06 07:26:57.17064'
-hardrock_counter_clockwise:
+hardrock_ccw:
   id: 4
-  name: Hardrock Counter Clockwise
+  name: Hardrock CCW
   description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
     to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
   created_at: '2016-04-16 19:25:07.63709'
-  updated_at: '2019-01-14 07:58:41.983135'
+  updated_at: '2019-01-30 21:32:19.908442'
   created_by: 1
   updated_by: 1
   next_start_time: '2019-07-19 06:00:00'
-  slug: hardrock-counter-clockwise
+  slug: hardrock-ccw
   gpx_file_name: hardrock-ccw-cleaned.gpx
   gpx_content_type: application/octet-stream
   gpx_file_size: 175314

@@ -293,8 +293,8 @@ RSpec.describe Api::V1::StagingController do
     end
 
     def validate_no_resources_created
-      expect(Event.count).to eq(10)
-      expect(Course.count).to eq(9)
+      expect(Event.count).to eq(11)
+      expect(Course.count).to eq(8)
       expect(Organization.count).to eq(4)
       expect(EventGroup.count).to eq(8)
     end

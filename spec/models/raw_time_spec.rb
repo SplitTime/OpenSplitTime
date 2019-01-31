@@ -23,17 +23,13 @@ RSpec.describe RawTime, type: :model do
   it_behaves_like 'time_recordable'
 
   describe '.with_relation_ids' do
-    let(:event_1_efforts) { create_list(:effort, 2, :with_bib_number, event: event_1) }
-    let(:event_1) { create(:event, course: course_1, event_group: event_group) }
-    let(:event_2_efforts) { create_list(:effort, 2, :with_bib_number, event: event_2) }
-    let(:event_2) { create(:event, course: course_2, event_group: event_group) }
-    let(:event_group) { create(:event_group) }
-    let(:course_1_split) { create(:split, course: course_1) }
-    let(:course_1) { create(:course) }
-    let(:course_2_split) { create(:split, course: course_2) }
-    let(:course_2) { create(:course) }
-    before { event_1.splits << course_1_split }
-    before { event_2.splits << course_2_split }
+    let(:event_1) { events(:sum_100k) }
+    let(:event_2) { events(:sum_55k) }
+    let(:event_1_efforts) { event_1.efforts.first(2) }
+    let(:event_2_efforts) { event_2.efforts.first(2) }
+    let(:event_group) { event_groups(:sum) }
+    let(:course_1_split) { event_1.ordered_splits.second }
+    let(:course_2_split) { event_2.ordered_splits.second }
 
     context 'when bib_numbers and split_names are valid' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: event_1_efforts.first.bib_number, split_name: course_1_split.base_name) }
@@ -51,7 +47,7 @@ RSpec.describe RawTime, type: :model do
     end
 
     context 'when split_name is valid but bib_number is not valid' do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', split_name: course_1_split.base_name) }
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '9999', split_name: course_1_split.base_name) }
 
       it 'returns raw_time with effort_id, split_id, and event_id attributes set to nil' do
         expect(raw_time_1.effort_id).to be_nil
@@ -71,7 +67,7 @@ RSpec.describe RawTime, type: :model do
     end
 
     context 'when bib_number and split_name split_name are both not valid' do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', split_name: 'Nonexistent') }
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '9999', split_name: 'Nonexistent') }
 
       it 'returns raw_time with effort_id, split_id, and event_id attributes set to nil' do
         expect(raw_time_1.effort_id).to be_nil
@@ -82,25 +78,23 @@ RSpec.describe RawTime, type: :model do
   end
 
   describe '#split_time' do
-    let(:effort) { create(:effort, event: event) }
-    let(:event) { create(:event, course: course, event_group: event_group) }
-    let(:event_group) { create(:event_group) }
-    let(:split) { create(:split, course: course) }
-    let(:course) { create(:course) }
-    let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: 1) }
-    before { event.splits << split }
+    let(:event) { events(:sum_100k) }
+    let(:effort) { event.efforts.first }
+    let(:event_group) { event_groups(:sum) }
+    let(:split) { event.ordered_splits.second }
+    let(:split_time) { effort.ordered_split_times.second}
 
     it 'when related split_time is deleted, sets raw_time.split_time to nil' do
       raw_time = create(:raw_time, event_group: event_group, split_name: split.parameterized_base_name, split_time: split_time)
       expect(raw_time.split_time).to eq(split_time)
-      SplitTime.last.destroy
+      split_time.destroy
       raw_time.reload
       expect(raw_time.split_time).to be_nil
     end
   end
 
   describe '#data_status' do
-    subject { build_stubbed(:raw_time) }
+    subject { RawTime.new }
 
     it 'acts as an ActiveRecord enum' do
       expect(subject.data_status).to be_nil
@@ -118,7 +112,7 @@ RSpec.describe RawTime, type: :model do
   end
 
   describe '#clean?' do
-    subject { build_stubbed(:raw_time, data_status: data_status, split_time_exists: split_time_exists) }
+    subject { RawTime.new(data_status: data_status, split_time_exists: split_time_exists) }
     let(:data_status) { nil }
     let(:split_time_exists) { false }
 

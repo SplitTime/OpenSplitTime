@@ -1,4 +1,303 @@
 ---
+kattest_bartest:
+  id: 2168
+  first_name: Kattest
+  last_name: Bartest
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:44.835726'
+  updated_at: '2019-01-30 19:00:44.835726'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: kattest-bartest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kattest-bartest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+jactest_cartest:
+  id: 2169
+  first_name: Jactest
+  last_name: Cartest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:44.965267'
+  updated_at: '2019-01-30 19:00:44.965267'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: jactest-cartest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jactest-cartest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+jamtest_coutest:
+  id: 2170
+  first_name: Jamtest
+  last_name: Coutest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: AZ
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.095305'
+  updated_at: '2019-01-30 19:00:45.095305'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: jamtest-coutest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jamtest-coutest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+contest_eldtest:
+  id: 2171
+  first_name: Contest
+  last_name: Eldtest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.241578'
+  updated_at: '2019-01-30 19:00:45.241578'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: contest-eldtest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_contest-eldtest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+chrtest_elmtest:
+  id: 2172
+  first_name: Chrtest
+  last_name: Elmtest
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.375367'
+  updated_at: '2019-01-30 19:00:45.375367'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: chrtest-elmtest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_chrtest-elmtest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+pautest_faztest:
+  id: 2173
+  first_name: Pautest
+  last_name: Faztest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.536013'
+  updated_at: '2019-01-30 19:00:45.536013'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: pautest-faztest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_pautest-faztest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+coltest_fortest:
+  id: 2174
+  first_name: Coltest
+  last_name: Fortest
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.694985'
+  updated_at: '2019-01-30 19:00:45.694985'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: coltest-fortest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_coltest-fortest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+cartest_gletest:
+  id: 2175
+  first_name: Cartest
+  last_name: Gletest
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.813779'
+  updated_at: '2019-01-30 19:00:45.813779'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: cartest-gletest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+davtest_hentest:
+  id: 2176
+  first_name: Davtest
+  last_name: Hentest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.946704'
+  updated_at: '2019-01-30 19:00:45.946704'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: davtest-hentest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+magtest_mcctest:
+  id: 2177
+  first_name: Magtest
+  last_name: McCtest
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:46.081367'
+  updated_at: '2019-01-30 19:00:46.081367'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: magtest-mcctest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_magtest-mcctest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+ryatest_nortest:
+  id: 2178
+  first_name: Ryatest
+  last_name: Nortest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:46.249537'
+  updated_at: '2019-01-30 19:00:46.249537'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: ryatest-nortest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryatest-nortest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+stetest_ridtest:
+  id: 2179
+  first_name: Stetest
+  last_name: Ridtest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:46.373593'
+  updated_at: '2019-01-30 19:00:46.373593'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: stetest-ridtest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stetest-ridtest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+britest_robtest:
+  id: 2180
+  first_name: Britest
+  last_name: Robtest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:46.52493'
+  updated_at: '2019-01-30 19:00:46.52493'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: britest-robtest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_britest-robtest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
 shatest_mortest:
   id: 1265
   first_name: Shatest
@@ -363,6 +662,29 @@ scotest_snytest:
   concealed: false
   slug: scotest-snytest
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-snyder
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+shatest_hugtest_utah_us:
+  id: 2181
+  first_name: Shatest
+  last_name: Hugtest
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:01:07.704724'
+  updated_at: '2019-01-30 19:01:07.704724'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: shatest-hugtest-utah-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shatest-hugtest-utah-us
   photo_file_name: 
   photo_content_type: 
   photo_file_size: 

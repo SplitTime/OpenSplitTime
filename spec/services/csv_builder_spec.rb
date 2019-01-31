@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CsvBuilder do
   subject { CsvBuilder.new(model_class, resources) }
   let(:model_class) { Split }
-  let(:resources) { build_stubbed_list(:splits_hardrock_ccw, 2) }
+  let(:resources) { courses(:hardrock_ccw).ordered_splits.first(2) }
   before { FactoryBot.reload }
 
   describe '#initialize' do
@@ -14,10 +16,10 @@ RSpec.describe CsvBuilder do
 
   describe '#full_string' do
     context 'when provided with resources whose model has csv attributes defined' do
-      let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 2) }
+      let(:splits) { courses(:hardrock_ccw).ordered_splits.first(2) }
 
       it 'returns a full string with headers in csv format' do
-        expected = "Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\nStart,0.0,start,0,0,,,,In\nCunningham,9.3,intermediate,3840,2770,,,,In Out\n"
+        expected = "Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\nStart,0.0,start,0,0,37.811954,-107.664814,2837.84594726562,In\nCunningham,9.3,intermediate,3840,2770,,,,In Out\n"
         expect(subject.full_string).to eq(expected)
       end
     end

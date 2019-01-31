@@ -255,6 +255,38 @@ ramble_listest_ledtest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2006-09-16 14:00:00'
+sum_100k_not_started:
+  id: 16683
+  event_id: 56
+  person_id: 
+  wave: 
+  bib_number: 499
+  city: Fort Collins
+  state_code: CO
+  age: 18
+  created_at: '2019-01-30 19:51:50.515411'
+  updated_at: '2019-01-30 21:37:17.236682'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: '1999-01-01'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-100k-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-09-23 13:00:00'
 hardrock_2015_stetest_bartest:
   id: 57
   event_id: 4
@@ -767,6 +799,198 @@ hardrock_2015_bad_status:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
+rufa_2017_12h_not_started:
+  id: 16673
+  event_id: 70
+  person_id: 2175
+  wave: 
+  bib_number: 70
+  city: 
+  state_code: UT
+  age: 32
+  created_at: '2019-01-30 18:51:25.331813'
+  updated_at: '2019-01-30 22:22:48.490129'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_start_only:
+  id: 16667
+  event_id: 70
+  person_id: 2176
+  wave: 
+  bib_number: 73
+  city: 
+  state_code: UT
+  age: 47
+  created_at: '2019-01-30 18:51:24.983794'
+  updated_at: '2019-01-30 22:22:48.543288'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-start-only
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_progress_lap2:
+  id: 16663
+  event_id: 70
+  person_id: 2174
+  wave: 
+  bib_number: 68
+  city: 
+  state_code: UT
+  age: 56
+  created_at: '2019-01-30 18:51:24.783335'
+  updated_at: '2019-01-30 22:22:48.596284'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap2
+  gender: 1
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-progress-lap2
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_finished_lap6:
+  id: 16648
+  event_id: 70
+  person_id: 2171
+  wave: 
+  bib_number: 65
+  city: 
+  state_code: UT
+  age: 36
+  created_at: '2019-01-30 18:51:23.828956'
+  updated_at: '2019-01-30 22:22:48.621012'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Lap6
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-finished-lap6
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_progress_lap5_partial:
+  id: 16657
+  event_id: 70
+  person_id: 2169
+  wave: 
+  bib_number: 53
+  city: 
+  state_code: UT
+  age: 41
+  created_at: '2019-01-30 18:51:24.461838'
+  updated_at: '2019-01-30 22:22:48.655278'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap5 Partial
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-progress-lap5-partial
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_finished_first:
+  id: 16643
+  event_id: 70
+  person_id: 2170
+  wave: 
+  bib_number: 63
+  city: 
+  state_code: AZ
+  age: 33
+  created_at: '2019-01-30 18:51:23.404239'
+  updated_at: '2019-01-30 23:19:36.130021'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
 hardrock_2016_biltest_cletest:
   id: 7289
   event_id: 37
@@ -799,7 +1023,7 @@ hardrock_2016_biltest_cletest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
-rufa_2017_jertest_hadtest:
+rufa_2017_24h_jertest_hadtest:
   id: 6746
   event_id: 36
   person_id: 1129
@@ -809,7 +1033,7 @@ rufa_2017_jertest_hadtest:
   state_code: UT
   age: 37
   created_at: '2017-03-28 07:24:24.563034'
-  updated_at: '2019-01-28 06:50:41.700655'
+  updated_at: '2019-01-30 22:22:48.705057'
   created_by: 1
   updated_by: 1
   first_name: Jertest
@@ -822,7 +1046,7 @@ rufa_2017_jertest_hadtest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-jertest-hadtest
+  slug: rufa-2017-24h-jertest-hadtest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -1823,7 +2047,7 @@ rufa_2016_miktest_robtest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2016-02-13 14:00:00'
-rufa_2017_progress_lap6:
+rufa_2017_24h_progress_lap6:
   id: 6695
   event_id: 36
   person_id: 1266
@@ -1833,7 +2057,7 @@ rufa_2017_progress_lap6:
   state_code: UT
   age: 37
   created_at: '2017-03-28 07:24:13.143418'
-  updated_at: '2019-01-28 10:21:30.19424'
+  updated_at: '2019-01-30 22:22:49.475381'
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -1846,7 +2070,7 @@ rufa_2017_progress_lap6:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-progress-lap6
+  slug: rufa-2017-24h-progress-lap6
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -1855,7 +2079,7 @@ rufa_2017_progress_lap6:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
-rufa_2017_finished_first:
+rufa_2017_24h_finished_first:
   id: 6693
   event_id: 36
   person_id: 1265
@@ -1865,7 +2089,7 @@ rufa_2017_finished_first:
   state_code: UT
   age: 42
   created_at: '2017-03-28 07:24:12.485505'
-  updated_at: '2019-01-28 10:26:32.018838'
+  updated_at: '2019-01-30 22:22:49.500617'
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1878,7 +2102,199 @@ rufa_2017_finished_first:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-finished-first
+  slug: rufa-2017-24h-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 13:10:00'
+rufa_2017_24h_scotest_westest:
+  id: 6702
+  event_id: 36
+  person_id: 1270
+  wave: 
+  bib_number: 90
+  city: 
+  state_code: UT
+  age: 44
+  created_at: '2017-03-28 07:24:15.570736'
+  updated_at: '2019-01-30 22:22:49.525833'
+  created_by: 1
+  updated_by: 1
+  first_name: Scotest
+  last_name: Westest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-scotest-westest
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_24h_mattest_bertest:
+  id: 6704
+  event_id: 36
+  person_id: 1271
+  wave: 
+  bib_number: 6
+  city: 
+  state_code: UT
+  age: 32
+  created_at: '2017-03-28 07:24:16.184166'
+  updated_at: '2019-01-30 22:22:49.563344'
+  created_by: 1
+  updated_by: 1
+  first_name: Mattest
+  last_name: Bertest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-mattest-bertest
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 13:10:00'
+rufa_2017_24h_mictest_mcktest:
+  id: 6706
+  event_id: 36
+  person_id: 1272
+  wave: 
+  bib_number: 72
+  city: 
+  state_code: UT
+  age: 27
+  created_at: '2017-03-28 07:24:16.736326'
+  updated_at: '2019-01-30 22:22:49.595267'
+  created_by: 1
+  updated_by: 1
+  first_name: Mictest
+  last_name: Mcktest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-mictest-mcktest
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 15:00:00'
+rufa_2017_24h_chrtest_whitest:
+  id: 6709
+  event_id: 36
+  person_id: 1274
+  wave: 
+  bib_number: 91
+  city: 
+  state_code: UT
+  age: 36
+  created_at: '2017-03-28 07:24:17.435927'
+  updated_at: '2019-01-30 22:22:49.620324'
+  created_by: 1
+  updated_by: 1
+  first_name: Chrtest
+  last_name: Whitest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-chrtest-whitest
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_24h_doutest_olitest:
+  id: 6712
+  event_id: 36
+  person_id: 1134
+  wave: 
+  bib_number: 79
+  city: 
+  state_code: UT
+  age: 51
+  created_at: '2017-03-28 07:24:18.090584'
+  updated_at: '2019-01-30 22:22:49.64648'
+  created_by: 1
+  updated_by: 1
+  first_name: Doutest
+  last_name: Olitest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-doutest-olitest
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 15:00:00'
+rufa_2017_24h_johtest_shatest:
+  id: 6716
+  event_id: 36
+  person_id: 582
+  wave: 
+  bib_number: 22
+  city: 
+  state_code: TX
+  age: 39
+  created_at: '2017-03-28 07:24:18.989025'
+  updated_at: '2019-01-30 22:22:49.669654'
+  created_by: 1
+  updated_by: 1
+  first_name: Johtest
+  last_name: Shatest
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-johtest-shatest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2047,199 +2463,7 @@ rufa_2016_audtest_kratest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2016-02-13 15:00:00'
-rufa_2017_scotest_westest:
-  id: 6702
-  event_id: 36
-  person_id: 1270
-  wave: 
-  bib_number: 90
-  city: 
-  state_code: UT
-  age: 44
-  created_at: '2017-03-28 07:24:15.570736'
-  updated_at: '2019-01-28 06:50:40.423737'
-  created_by: 1
-  updated_by: 1
-  first_name: Scotest
-  last_name: Westest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-scotest-westest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_mattest_bertest:
-  id: 6704
-  event_id: 36
-  person_id: 1271
-  wave: 
-  bib_number: 6
-  city: 
-  state_code: UT
-  age: 32
-  created_at: '2017-03-28 07:24:16.184166'
-  updated_at: '2019-01-28 06:50:40.451158'
-  created_by: 1
-  updated_by: 1
-  first_name: Mattest
-  last_name: Bertest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-mattest-bertest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 13:10:00'
-rufa_2017_mictest_mcktest:
-  id: 6706
-  event_id: 36
-  person_id: 1272
-  wave: 
-  bib_number: 72
-  city: 
-  state_code: UT
-  age: 27
-  created_at: '2017-03-28 07:24:16.736326'
-  updated_at: '2019-01-28 06:50:40.513452'
-  created_by: 1
-  updated_by: 1
-  first_name: Mictest
-  last_name: Mcktest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-mictest-mcktest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 15:00:00'
-rufa_2017_chrtest_whitest:
-  id: 6709
-  event_id: 36
-  person_id: 1274
-  wave: 
-  bib_number: 91
-  city: 
-  state_code: UT
-  age: 36
-  created_at: '2017-03-28 07:24:17.435927'
-  updated_at: '2019-01-28 06:50:40.590656'
-  created_by: 1
-  updated_by: 1
-  first_name: Chrtest
-  last_name: Whitest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-chrtest-whitest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_doutest_olitest:
-  id: 6712
-  event_id: 36
-  person_id: 1134
-  wave: 
-  bib_number: 79
-  city: 
-  state_code: UT
-  age: 51
-  created_at: '2017-03-28 07:24:18.090584'
-  updated_at: '2019-01-28 06:50:40.673497'
-  created_by: 1
-  updated_by: 1
-  first_name: Doutest
-  last_name: Olitest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-doutest-olitest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 15:00:00'
-rufa_2017_johtest_shatest:
-  id: 6716
-  event_id: 36
-  person_id: 582
-  wave: 
-  bib_number: 22
-  city: 
-  state_code: TX
-  age: 39
-  created_at: '2017-03-28 07:24:18.989025'
-  updated_at: '2019-01-28 06:50:40.794067'
-  created_by: 1
-  updated_by: 1
-  first_name: Johtest
-  last_name: Shatest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: rufa-2017-johtest-shatest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-02-11 13:10:00'
-rufa_2017_multiple_stops:
+rufa_2017_24h_multiple_stops:
   id: 6756
   event_id: 36
   person_id: 1305
@@ -2249,7 +2473,7 @@ rufa_2017_multiple_stops:
   state_code: UT
   age: 42
   created_at: '2017-03-28 07:24:25.977802'
-  updated_at: '2019-01-28 11:07:29.829414'
+  updated_at: '2019-01-30 22:22:49.801893'
   created_by: 1
   updated_by: 1
   first_name: Multiple
@@ -2262,7 +2486,7 @@ rufa_2017_multiple_stops:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-multiple-stops
+  slug: rufa-2017-24h-multiple-stops
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2271,7 +2495,7 @@ rufa_2017_multiple_stops:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
-rufa_2017_rictest_whitest:
+rufa_2017_24h_rictest_whitest:
   id: 6734
   event_id: 36
   person_id: 1288
@@ -2281,7 +2505,7 @@ rufa_2017_rictest_whitest:
   state_code: UT
   age: 45
   created_at: '2017-03-28 07:24:22.426962'
-  updated_at: '2019-01-28 06:50:41.357227'
+  updated_at: '2019-01-30 22:22:49.827152'
   created_by: 1
   updated_by: 1
   first_name: Rictest
@@ -2294,7 +2518,7 @@ rufa_2017_rictest_whitest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-rictest-whitest
+  slug: rufa-2017-24h-rictest-whitest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2303,7 +2527,7 @@ rufa_2017_rictest_whitest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_bentest_alltest:
+rufa_2017_24h_bentest_alltest:
   id: 6737
   event_id: 36
   person_id: 1289
@@ -2313,7 +2537,7 @@ rufa_2017_bentest_alltest:
   state_code: UT
   age: 33
   created_at: '2017-03-28 07:24:22.962838'
-  updated_at: '2019-01-28 06:50:41.443901'
+  updated_at: '2019-01-30 22:22:49.845898'
   created_by: 1
   updated_by: 1
   first_name: Bentest
@@ -2326,7 +2550,7 @@ rufa_2017_bentest_alltest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-bentest-alltest
+  slug: rufa-2017-24h-bentest-alltest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2335,7 +2559,7 @@ rufa_2017_bentest_alltest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_bratest_swetest:
+rufa_2017_24h_bratest_swetest:
   id: 6745
   event_id: 36
   person_id: 1295
@@ -2345,7 +2569,7 @@ rufa_2017_bratest_swetest:
   state_code: UT
   age: 33
   created_at: '2017-03-28 07:24:24.382827'
-  updated_at: '2019-01-28 06:50:41.669792'
+  updated_at: '2019-01-30 22:22:49.867433'
   created_by: 1
   updated_by: 1
   first_name: Bratest
@@ -2358,7 +2582,7 @@ rufa_2017_bratest_swetest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-bratest-swetest
+  slug: rufa-2017-24h-bratest-swetest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2367,7 +2591,7 @@ rufa_2017_bratest_swetest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 13:10:00'
-rufa_2017_gretest_nortest:
+rufa_2017_24h_gretest_nortest:
   id: 6749
   event_id: 36
   person_id: 1298
@@ -2377,7 +2601,7 @@ rufa_2017_gretest_nortest:
   state_code: UT
   age: 47
   created_at: '2017-03-28 07:24:25.017717'
-  updated_at: '2019-01-28 06:50:41.775772'
+  updated_at: '2019-01-30 22:22:49.889777'
   created_by: 1
   updated_by: 1
   first_name: Gretest
@@ -2390,7 +2614,7 @@ rufa_2017_gretest_nortest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-gretest-nortest
+  slug: rufa-2017-24h-gretest-nortest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2399,7 +2623,7 @@ rufa_2017_gretest_nortest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 16:00:00'
-rufa_2017_emitest_sultest:
+rufa_2017_24h_emitest_sultest:
   id: 6752
   event_id: 36
   person_id: 1301
@@ -2409,7 +2633,7 @@ rufa_2017_emitest_sultest:
   state_code: AUS
   age: 41
   created_at: '2017-03-28 07:24:25.41922'
-  updated_at: '2019-01-28 06:50:41.852516'
+  updated_at: '2019-01-30 22:22:49.912862'
   created_by: 1
   updated_by: 1
   first_name: Emitest
@@ -2422,7 +2646,7 @@ rufa_2017_emitest_sultest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-emitest-sultest
+  slug: rufa-2017-24h-emitest-sultest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2431,7 +2655,7 @@ rufa_2017_emitest_sultest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 18:00:00'
-rufa_2017_camtest_hartest:
+rufa_2017_24h_camtest_hartest:
   id: 6754
   event_id: 36
   person_id: 1303
@@ -2441,7 +2665,7 @@ rufa_2017_camtest_hartest:
   state_code: UT
   age: 26
   created_at: '2017-03-28 07:24:25.683736'
-  updated_at: '2019-01-28 06:50:41.91014'
+  updated_at: '2019-01-30 22:22:49.934231'
   created_by: 1
   updated_by: 1
   first_name: Camtest
@@ -2454,7 +2678,7 @@ rufa_2017_camtest_hartest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-camtest-hartest
+  slug: rufa-2017-24h-camtest-hartest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2495,7 +2719,7 @@ hardrock_2016_anntest_frotest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
-rufa_2017_progress_lap1:
+rufa_2017_24h_progress_lap1:
   id: 6805
   event_id: 36
   person_id: 1344
@@ -2505,7 +2729,7 @@ rufa_2017_progress_lap1:
   state_code: UT
   age: 53
   created_at: '2017-03-28 07:24:31.338329'
-  updated_at: '2019-01-28 10:23:44.624378'
+  updated_at: '2019-01-30 22:22:49.983879'
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -2518,7 +2742,7 @@ rufa_2017_progress_lap1:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-progress-lap1
+  slug: rufa-2017-24h-progress-lap1
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2527,7 +2751,7 @@ rufa_2017_progress_lap1:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 16:00:00'
-rufa_2017_not_started:
+rufa_2017_24h_not_started:
   id: 6782
   event_id: 36
   person_id: 710
@@ -2537,7 +2761,7 @@ rufa_2017_not_started:
   state_code: UT
   age: 
   created_at: '2017-03-28 07:24:29.350276'
-  updated_at: '2019-01-28 17:02:39.01021'
+  updated_at: '2019-01-30 22:22:50.002275'
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -2550,7 +2774,7 @@ rufa_2017_not_started:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-not-started
+  slug: rufa-2017-24h-not-started
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2559,7 +2783,7 @@ rufa_2017_not_started:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-12 01:00:00'
-rufa_2017_mictest_gartest:
+rufa_2017_24h_mictest_gartest:
   id: 6780
   event_id: 36
   person_id: 1324
@@ -2569,7 +2793,7 @@ rufa_2017_mictest_gartest:
   state_code: UT
   age: 38
   created_at: '2017-03-28 07:24:29.153267'
-  updated_at: '2019-01-28 06:50:42.55558'
+  updated_at: '2019-01-30 22:22:50.025237'
   created_by: 1
   updated_by: 1
   first_name: Mictest
@@ -2582,7 +2806,7 @@ rufa_2017_mictest_gartest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-mictest-gartest
+  slug: rufa-2017-24h-mictest-gartest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2591,7 +2815,7 @@ rufa_2017_mictest_gartest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
-rufa_2017_dontest_crotest:
+rufa_2017_24h_dontest_crotest:
   id: 6781
   event_id: 36
   person_id: 1325
@@ -2601,7 +2825,7 @@ rufa_2017_dontest_crotest:
   state_code: UT
   age: 36
   created_at: '2017-03-28 07:24:29.258714'
-  updated_at: '2019-01-28 06:50:42.577782'
+  updated_at: '2019-01-30 22:22:50.043337'
   created_by: 1
   updated_by: 1
   first_name: Dontest
@@ -2614,7 +2838,7 @@ rufa_2017_dontest_crotest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-dontest-crotest
+  slug: rufa-2017-24h-dontest-crotest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2623,7 +2847,7 @@ rufa_2017_dontest_crotest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_jedtest_wintest:
+rufa_2017_24h_jedtest_wintest:
   id: 6783
   event_id: 36
   person_id: 1147
@@ -2633,7 +2857,7 @@ rufa_2017_jedtest_wintest:
   state_code: UT
   age: 43
   created_at: '2017-03-28 07:24:29.461303'
-  updated_at: '2019-01-28 06:50:42.624503'
+  updated_at: '2019-01-30 22:22:50.061962'
   created_by: 1
   updated_by: 1
   first_name: Jedtest
@@ -2646,7 +2870,7 @@ rufa_2017_jedtest_wintest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-jedtest-wintest
+  slug: rufa-2017-24h-jedtest-wintest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -2655,7 +2879,7 @@ rufa_2017_jedtest_wintest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
-rufa_2017_abrtest_alotest:
+rufa_2017_24h_abrtest_alotest:
   id: 6789
   event_id: 36
   person_id: 1331
@@ -2665,7 +2889,7 @@ rufa_2017_abrtest_alotest:
   state_code: UT
   age: 46
   created_at: '2017-03-28 07:24:30.105321'
-  updated_at: '2019-01-28 06:50:42.834909'
+  updated_at: '2019-01-30 22:22:50.084067'
   created_by: 1
   updated_by: 1
   first_name: Abrtest
@@ -2678,7 +2902,7 @@ rufa_2017_abrtest_alotest:
   report_url: 
   phone: 
   email: 
-  slug: rufa-2017-abrtest-alotest
+  slug: rufa-2017-24h-abrtest-alotest
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -4031,39 +4255,7 @@ ggd30_12m_martest_wittest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
-sdd30_55k_justest_mittest:
-  id: 16243
-  event_id: 57
-  person_id: 1570
-  wave: 
-  bib_number: 119
-  city: 
-  state_code: CO
-  age: 37
-  created_at: '2018-01-18 05:23:52.700457'
-  updated_at: '2019-01-28 09:59:34.801453'
-  created_by: 1
-  updated_by: 1
-  first_name: Justest
-  last_name: Mittest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: sdd30-55k-justest-mittest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_tattest_baitest:
+sum_55k_finished_second:
   id: 16229
   event_id: 57
   person_id: 1584
@@ -4073,11 +4265,11 @@ sdd30_55k_tattest_baitest:
   state_code: CO
   age: 46
   created_at: '2018-01-18 05:23:46.31644'
-  updated_at: '2019-01-28 09:59:34.826598'
+  updated_at: '2019-01-30 21:37:19.770605'
   created_by: 1
   updated_by: 1
-  first_name: Tattest
-  last_name: Baitest
+  first_name: Finished
+  last_name: Second
   gender: 1
   country_code: US
   birthdate: 
@@ -4086,7 +4278,7 @@ sdd30_55k_tattest_baitest:
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-tattest-baitest
+  slug: sum-55k-finished-second
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -4095,7 +4287,7 @@ sdd30_55k_tattest_baitest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_jamtest_ourtest:
+sum_55k_finished_first:
   id: 16227
   event_id: 57
   person_id: 1585
@@ -4105,11 +4297,11 @@ sdd30_55k_jamtest_ourtest:
   state_code: CO
   age: 48
   created_at: '2018-01-18 05:23:46.230111'
-  updated_at: '2019-01-28 09:59:34.85195'
+  updated_at: '2019-01-30 21:37:19.805553'
   created_by: 1
   updated_by: 1
-  first_name: Jamtest
-  last_name: Ourtest
+  first_name: Finished
+  last_name: First
   gender: 0
   country_code: US
   birthdate: 
@@ -4118,7 +4310,7 @@ sdd30_55k_jamtest_ourtest:
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-jamtest-ourtest
+  slug: sum-55k-finished-first
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -4127,39 +4319,7 @@ sdd30_55k_jamtest_ourtest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_amatest_stotest:
-  id: 16231
-  event_id: 57
-  person_id: 1582
-  wave: 
-  bib_number: 123
-  city: 
-  state_code: CO
-  age: 33
-  created_at: '2018-01-18 05:23:48.734804'
-  updated_at: '2019-01-28 09:59:34.876538'
-  created_by: 1
-  updated_by: 1
-  first_name: Amatest
-  last_name: Stotest
-  gender: 1
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: sdd30-55k-amatest-stotest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_gletest_laitest:
+sum_55k_not_started:
   id: 16242
   event_id: 57
   person_id: 1571
@@ -4169,11 +4329,11 @@ sdd30_55k_gletest_laitest:
   state_code: CO
   age: 60
   created_at: '2018-01-18 05:23:52.659025'
-  updated_at: '2019-01-28 09:59:34.89514'
+  updated_at: '2019-01-30 21:37:19.824862'
   created_by: 1
   updated_by: 1
-  first_name: Gletest
-  last_name: Laitest
+  first_name: Not
+  last_name: Started
   gender: 1
   country_code: US
   birthdate: 
@@ -4182,7 +4342,7 @@ sdd30_55k_gletest_laitest:
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-gletest-laitest
+  slug: sum-55k-not-started
   checked_in: true
   photo_file_name: 
   photo_content_type: 
@@ -4191,38 +4351,6 @@ sdd30_55k_gletest_laitest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_kartest_kamtest:
-  id: 16236
-  event_id: 57
-  person_id: 1577
-  wave: 
-  bib_number: 130
-  city: 
-  state_code: CO
-  age: 40
-  created_at: '2018-01-18 05:23:48.946612'
-  updated_at: '2019-01-28 09:59:34.914593'
-  created_by: 1
-  updated_by: 1
-  first_name: Kartest
-  last_name: Kamtest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 0
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: sdd30-55k-kartest-kamtest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-10-08 06:43:00'
 ggd30_12m_adrtest_segtest:
   id: 16173
   event_id: 49
@@ -4255,71 +4383,7 @@ ggd30_12m_adrtest_segtest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
-sdd30_100k_abrtest_eartest:
-  id: 16248
-  event_id: 56
-  person_id: 1748
-  wave: 
-  bib_number: 777
-  city: Provo
-  state_code: UT
-  age: 24
-  created_at: '2018-02-24 22:28:24.196234'
-  updated_at: '2019-01-28 09:59:34.978347'
-  created_by: 1
-  updated_by: 1
-  first_name: Abrtest
-  last_name: Eartest
-  gender: 0
-  country_code: US
-  birthdate: '1993-09-04'
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: legoabram@gmail.com
-  slug: sdd30-100k-abrtest-eartest
-  checked_in: true
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2018-11-05 04:20:00'
-sdd30_100k_iantest_crotest:
-  id: 16247
-  event_id: 56
-  person_id: 1747
-  wave: 
-  bib_number: 999
-  city: 
-  state_code: 
-  age: 31
-  created_at: '2018-02-03 23:41:41.141488'
-  updated_at: '2019-01-28 09:59:35.00473'
-  created_by: 1
-  updated_by: 1
-  first_name: Iantest
-  last_name: Crotest
-  gender: 0
-  country_code: 
-  birthdate: '1985-11-30'
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: sdd30-100k-iantest-crotest
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2017-09-23 13:00:00'
-sdd30_55k_hewtest_gaytest:
+sum_55k_start_only:
   id: 16246
   event_id: 57
   person_id: 1567
@@ -4329,11 +4393,11 @@ sdd30_55k_hewtest_gaytest:
   state_code: CO
   age: 25
   created_at: '2018-01-18 05:23:52.832341'
-  updated_at: '2019-01-28 09:59:35.02738'
+  updated_at: '2019-01-30 21:37:19.864339'
   created_by: 1
   updated_by: 1
-  first_name: Hewtest
-  last_name: Gaytest
+  first_name: Start
+  last_name: Only
   gender: 0
   country_code: US
   birthdate: 
@@ -4342,7 +4406,7 @@ sdd30_55k_hewtest_gaytest:
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-hewtest-gaytest
+  slug: sum-55k-start-only
   checked_in: true
   photo_file_name: 
   photo_content_type: 
@@ -4351,7 +4415,7 @@ sdd30_55k_hewtest_gaytest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_lyntest_haltest:
+sum_55k_drop_bandera:
   id: 16245
   event_id: 57
   person_id: 1568
@@ -4361,20 +4425,20 @@ sdd30_55k_lyntest_haltest:
   state_code: CO
   age: 34
   created_at: '2018-01-18 05:23:52.794212'
-  updated_at: '2019-01-28 09:59:35.051228'
+  updated_at: '2019-01-30 21:37:19.887252'
   created_by: 1
   updated_by: 1
-  first_name: Lyntest
-  last_name: Haltest
+  first_name: Drop
+  last_name: Bandera
   gender: 1
   country_code: US
   birthdate: 
-  data_status: 0
+  data_status: 2
   beacon_url: 
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-lyntest-haltest
+  slug: sum-55k-drop-bandera
   checked_in: false
   photo_file_name: 
   photo_content_type: 
@@ -4383,7 +4447,71 @@ sdd30_55k_lyntest_haltest:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
-sdd30_55k_nictest_hontest:
+sum_100k_progress_rolling:
+  id: 16248
+  event_id: 56
+  person_id: 1748
+  wave: 
+  bib_number: 777
+  city: Provo
+  state_code: UT
+  age: 24
+  created_at: '2018-02-24 22:28:24.196234'
+  updated_at: '2019-01-30 21:37:19.908291'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Rolling
+  gender: 0
+  country_code: US
+  birthdate: '1993-09-04'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: legoabram@gmail.com
+  slug: sum-100k-progress-rolling
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+sum_100k_drop_anvil:
+  id: 16247
+  event_id: 56
+  person_id: 1747
+  wave: 
+  bib_number: 999
+  city: Akron
+  state_code: OH
+  age: 31
+  created_at: '2018-02-03 23:41:41.141488'
+  updated_at: '2019-01-30 21:37:19.934868'
+  created_by: 1
+  updated_by: 1
+  first_name: Drop
+  last_name: Anvil
+  gender: 0
+  country_code: US
+  birthdate: '1985-11-30'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-100k-drop-anvil
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-09-23 13:00:00'
+sum_55k_progress_rolling:
   id: 16244
   event_id: 57
   person_id: 1569
@@ -4393,11 +4521,11 @@ sdd30_55k_nictest_hontest:
   state_code: CA
   age: 51
   created_at: '2018-01-18 05:23:52.74712'
-  updated_at: '2019-01-28 09:59:35.071585'
+  updated_at: '2019-01-30 21:37:19.957107'
   created_by: 1
   updated_by: 1
-  first_name: Nictest
-  last_name: Hontest
+  first_name: Progress
+  last_name: Rolling
   gender: 1
   country_code: US
   birthdate: 
@@ -4406,7 +4534,7 @@ sdd30_55k_nictest_hontest:
   report_url: 
   phone: 
   email: 
-  slug: sdd30-55k-nictest-hontest
+  slug: sum-55k-progress-rolling
   checked_in: false
   photo_file_name: 
   photo_content_type: 

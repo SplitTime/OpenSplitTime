@@ -24,54 +24,102 @@ RSpec.describe TimeConversion do
   end
 
   describe '.hms_to_seconds' do
-    it 'returns nil when passed a nil parameter' do
-      hms_elapsed = nil
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to be_nil
+    subject { TimeConversion.hms_to_seconds(hms_elapsed) }
+
+    context 'when passed a nil parameter' do
+      let(:hms_elapsed) { nil }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
     end
 
-    it 'returns nil when passed an empty string' do
-      hms_elapsed = ''
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to be_nil
+    context 'when passed an empty string' do
+      let(:hms_elapsed) { '' }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
     end
 
-    it 'returns zero when passed a string of zeros' do
-      hms_elapsed = '00:00:00'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(0)
+    context 'when passed a string of zeros' do
+      let(:hms_elapsed) { '00:00:00' }
+
+      it 'returns zero' do
+        expect(subject).to eq(0)
+      end
     end
 
-    it 'converts a string in the form of hh:mm:ss to seconds' do
-      hms_elapsed = '12:30:40'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.seconds)
+    context 'when passed hours, minutes, and seconds in hh:mm:ss format' do
+      let(:hms_elapsed) { '12:30:40' }
+
+      it 'converts the string to seconds' do
+        expect(subject).to eq(12.hours + 30.minutes + 40.seconds)
+      end
     end
 
-    it 'functions properly when passed a time greater than 24 hours' do
-      hms_elapsed = '27:30:40'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(27.hours + 30.minutes + 40.seconds)
+    context 'when passed a time greater than 24 hours' do
+      let(:hms_elapsed) { '27:30:40' }
+
+      it 'functions properly' do
+        expect(subject).to eq(27.hours + 30.minutes + 40.seconds)
+      end
     end
 
-    it 'functions properly when passed a time greater than 100 hours' do
-      hms_elapsed = '105:30:40'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(105.hours + 30.minutes + 40.seconds)
+    context 'when passed a time greater than 100 hours' do
+      let(:hms_elapsed) { '105:30:40' }
+
+      it 'functions properly' do
+        expect(subject).to eq(105.hours + 30.minutes + 40.seconds)
+      end
     end
 
-    it 'preserves fractional seconds to two decimal places when present' do
-      hms_elapsed = '12:30:40.55'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(12.hours + 30.minutes + 40.55.seconds)
+    context 'when decimals are present' do
+      let(:hms_elapsed) { '12:30:40.55' }
+
+      it 'preserves fractional seconds to two decimal places' do
+        expect(subject).to eq(12.hours + 30.minutes + 40.55.seconds)
+      end
     end
 
-    it 'computes times properly when no seconds component is present' do
-      hms_elapsed = '05:24'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq((5.hours + 24.minutes).to_i)
+    context 'when no seconds component is present' do
+      let(:hms_elapsed) { '05:24' }
+
+      it 'computes times properly' do
+        expect(subject).to eq((5.hours + 24.minutes).to_i)
+      end
     end
 
-    it 'computes negative times properly with no hours component' do
-      hms_elapsed = '-00:30:00'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(-1800)
+    context 'with a negative time with 00 hours component' do
+      let(:hms_elapsed) { '-00:30:00' }
+
+      it 'computes seconds properly' do
+        expect(subject).to eq(-1800)
+      end
     end
 
-    it 'computes negative times properly with an hours component' do
-      hms_elapsed = '-01:30:00'
-      expect(TimeConversion.hms_to_seconds(hms_elapsed)).to eq(-5400)
+    context 'with a negative time with an hours component' do
+      let(:hms_elapsed) { '-01:30:00' }
+
+      it 'computes seconds properly' do
+        expect(subject).to eq(-5400)
+      end
+    end
+
+    context 'when provided an incorrect format' do
+      let(:hms_elapsed) { '1:0:30' }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, /Improper hms time format/
+      end
+    end
+
+    context 'when provided non-numeric data' do
+      let(:hms_elapsed) { 'Sat 07:00:00' }
+
+      it 'raises an error' do
+        expect { subject }.to raise_error ArgumentError, /Improper hms time format/
+      end
     end
   end
 

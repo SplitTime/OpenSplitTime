@@ -11,10 +11,10 @@ rattlesnake_ramble:
   slug: rattlesnake-ramble
 hardrock:
   id: 4
-  name: Hardrock 100
+  name: Hardrock
   description: A long race
   created_at: '2016-04-16 19:25:07.662405'
-  updated_at: '2017-03-05 07:10:06.507608'
+  updated_at: '2019-01-30 23:40:32.921105'
   created_by: 1
   updated_by: 1
   concealed: false

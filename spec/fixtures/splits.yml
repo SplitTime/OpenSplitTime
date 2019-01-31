@@ -19,27 +19,87 @@ hardrock_ccw_putnam:
   elevation: 3482.12158203125
   slug: hardrock-ccw-putnam
   parameterized_base_name: putnam
-ramble_odd_year_course_ramble_odd_year_course_finish:
-  id: 45
-  course_id: 8
+hardrock_ccw_finish:
+  id: 34
+  course_id: 4
   location_id: 
-  distance_from_start: 6759
-  vert_gain_from_start: 249.936
-  vert_loss_from_start: 249.936
+  distance_from_start: 161739
+  vert_gain_from_start: 10073.64
+  vert_loss_from_start: 10073.64
   kind: 1
-  created_at: '2016-05-07 23:08:10.466192'
-  updated_at: '2018-03-16 14:58:28.451102'
+  created_at: '2016-04-18 09:09:56.159252'
+  updated_at: '2019-01-30 21:33:24.052358'
   created_by: 1
   updated_by: 1
-  description: Finish point for the Ramble Odd-Year Course course.
-  base_name: Ramble Odd-Year Course Finish
+  description: 
+  base_name: Finish
   sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
-  slug: ramble-odd-year-course-ramble-odd-year-course-finish
-  parameterized_base_name: ramble-odd-year-course-finish
-ramble_even_year_course_ramble_even_year_course_start:
+  latitude: '37.811971'
+  longitude: "-107.664771"
+  elevation: 2837.96826171875
+  slug: hardrock-ccw-finish
+  parameterized_base_name: finish
+d30_50k_course_start:
+  id: 164
+  course_id: 26
+  location_id: 
+  distance_from_start: 0
+  vert_gain_from_start: 0.0
+  vert_loss_from_start: 0.0
+  kind: 0
+  created_at: '2017-05-23 06:06:29.670579'
+  updated_at: '2019-01-30 21:33:24.072287'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Start
+  sub_split_bitmap: 1
+  latitude: '39.850194'
+  longitude: "-105.359809"
+  elevation: 2356.51098632812
+  slug: d30-50k-course-start
+  parameterized_base_name: start
+d30_50k_course_finish:
+  id: 165
+  course_id: 26
+  location_id: 
+  distance_from_start: 49889
+  vert_gain_from_start: 2286.0
+  vert_loss_from_start: 2286.0
+  kind: 1
+  created_at: '2017-05-23 06:06:29.673112'
+  updated_at: '2019-01-30 21:33:24.089928'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Finish
+  sub_split_bitmap: 1
+  latitude: '39.850210'
+  longitude: "-105.359841"
+  elevation: 2356.2763671875
+  slug: d30-50k-course-finish
+  parameterized_base_name: finish
+d30_50k_course_aid_5:
+  id: 166
+  course_id: 26
+  location_id: 
+  distance_from_start: 47475
+  vert_gain_from_start: 2164.08
+  vert_loss_from_start: 2072.64
+  kind: 2
+  created_at: '2017-05-23 06:17:22.480349'
+  updated_at: '2019-01-30 21:33:24.144024'
+  created_by: 1
+  updated_by: 1
+  description: On the Burro Trail on the slopes of Windy Peak
+  base_name: 'Aid #5'
+  sub_split_bitmap: 1
+  latitude: '39.855004'
+  longitude: "-105.363479"
+  elevation: 2434.32568359375
+  slug: d30-50k-course-aid-5
+  parameterized_base_name: aid-5
+ramble_even_course_start:
   id: 46
   course_id: 9
   location_id: 
@@ -48,37 +108,37 @@ ramble_even_year_course_ramble_even_year_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_at: '2016-05-08 07:10:07.193995'
-  updated_at: '2018-03-16 14:58:28.460863'
+  updated_at: '2019-01-30 21:33:43.974804'
   created_by: 1
   updated_by: 1
   description: Starting point for the Ramble Even-Year Course course.
-  base_name: Ramble Even-Year Course Start
+  base_name: Start
   sub_split_bitmap: 1
   latitude: 
   longitude: 
   elevation: 
-  slug: ramble-even-year-course-ramble-even-year-course-start
-  parameterized_base_name: ramble-even-year-course-start
-ramble_even_year_course_ramble_even_year_course_finish:
+  slug: ramble-even-course-start
+  parameterized_base_name: start
+ramble_even_course_finish:
   id: 47
   course_id: 9
   location_id: 
   distance_from_start: 6759
-  vert_gain_from_start: 249.936
-  vert_loss_from_start: 249.936
+  vert_gain_from_start: 249.935992002048
+  vert_loss_from_start: 249.935992002048
   kind: 1
   created_at: '2016-05-08 07:10:07.195406'
-  updated_at: '2018-03-16 14:58:28.471433'
+  updated_at: '2019-01-30 21:34:01.576579'
   created_by: 1
   updated_by: 1
   description: Finish point for the Ramble Even-Year Course course.
-  base_name: Ramble Even-Year Course Finish
+  base_name: Finish
   sub_split_bitmap: 1
   latitude: 
   longitude: 
   elevation: 
-  slug: ramble-even-year-course-ramble-even-year-course-finish
-  parameterized_base_name: ramble-even-year-course-finish
+  slug: ramble-even-course-finish
+  parameterized_base_name: finish
 hardrock_cw_sherman:
   id: 101
   course_id: 12
@@ -119,66 +179,6 @@ rufa_course_grandeur_peak:
   elevation: 2522.94921875
   slug: rufa-course-grandeur-peak
   parameterized_base_name: grandeur-peak
-hardrock_counter_clockwise_finish:
-  id: 34
-  course_id: 4
-  location_id: 
-  distance_from_start: 161739
-  vert_gain_from_start: 10073.64
-  vert_loss_from_start: 10073.64
-  kind: 1
-  created_at: '2016-04-18 09:09:56.159252'
-  updated_at: '2018-12-11 14:43:10.07879'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: '37.811971'
-  longitude: "-107.664771"
-  elevation: 2837.96826171875
-  slug: hardrock-counter-clockwise-finish
-  parameterized_base_name: finish
-start_19b294b8_915d_4230_b8ca_b17806e4592f:
-  id: 164
-  course_id: 26
-  location_id: 
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2017-05-23 06:06:29.670579'
-  updated_at: '2018-12-12 03:44:59.080719'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: '39.850194'
-  longitude: "-105.359809"
-  elevation: 2356.51098632812
-  slug: start-19b294b8-915d-4230-b8ca-b17806e4592f
-  parameterized_base_name: start
-finish_f025f4c6_9941_4adb_88bf_1e519c87a420:
-  id: 165
-  course_id: 26
-  location_id: 
-  distance_from_start: 49889
-  vert_gain_from_start: 2286.0
-  vert_loss_from_start: 2286.0
-  kind: 1
-  created_at: '2017-05-23 06:06:29.673112'
-  updated_at: '2018-12-12 03:55:08.928276'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: '39.850210'
-  longitude: "-105.359841"
-  elevation: 2356.2763671875
-  slug: finish-f025f4c6-9941-4adb-88bf-1e519c87a420
-  parameterized_base_name: finish
 hardrock_cw_cunningham:
   id: 107
   course_id: 12
@@ -219,26 +219,6 @@ rufa_course_finish:
   elevation: 1738.33129882812
   slug: rufa-course-finish
   parameterized_base_name: finish
-golden_gate_dirty_30_course_aid_5:
-  id: 166
-  course_id: 26
-  location_id: 
-  distance_from_start: 47475
-  vert_gain_from_start: 2164.08
-  vert_loss_from_start: 2072.64
-  kind: 2
-  created_at: '2017-05-23 06:17:22.480349'
-  updated_at: '2018-03-16 14:58:29.303056'
-  created_by: 1
-  updated_by: 1
-  description: On the Burro Trail on the slopes of Windy Peak
-  base_name: 'Aid #5'
-  sub_split_bitmap: 1
-  latitude: '39.855004'
-  longitude: "-105.363479"
-  elevation: 2434.32568359375
-  slug: golden-gate-dirty-30-course-aid-5
-  parameterized_base_name: aid-5
 hardrock_ccw_telluride:
   id: 26
   course_id: 4
@@ -259,7 +239,7 @@ hardrock_ccw_telluride:
   elevation: 2690.43334960938
   slug: hardrock-ccw-telluride
   parameterized_base_name: telluride
-golden_gate_dirty_30_course_aid_1:
+d30_50k_course_aid_1:
   id: 167
   course_id: 26
   location_id: 
@@ -268,7 +248,7 @@ golden_gate_dirty_30_course_aid_1:
   vert_loss_from_start: 243.84
   kind: 2
   created_at: '2017-05-23 06:19:26.04907'
-  updated_at: '2018-03-16 14:58:29.313964'
+  updated_at: '2019-01-30 21:33:24.182548'
   created_by: 1
   updated_by: 1
   description: In Forgotten Valley
@@ -277,9 +257,9 @@ golden_gate_dirty_30_course_aid_1:
   latitude: '39.859303'
   longitude: "-105.385709"
   elevation: 2540.84106445312
-  slug: golden-gate-dirty-30-course-aid-1
+  slug: d30-50k-course-aid-1
   parameterized_base_name: aid-1
-golden_gate_dirty_30_course_aid_4:
+d30_50k_course_aid_4:
   id: 168
   course_id: 26
   location_id: 
@@ -288,7 +268,7 @@ golden_gate_dirty_30_course_aid_4:
   vert_loss_from_start: 1615.44
   kind: 2
   created_at: '2017-05-23 06:20:05.636886'
-  updated_at: '2018-03-16 14:58:29.325764'
+  updated_at: '2019-01-30 21:33:24.201557'
   created_by: 1
   updated_by: 1
   description: 
@@ -297,9 +277,9 @@ golden_gate_dirty_30_course_aid_4:
   latitude: '39.859352'
   longitude: "-105.385687"
   elevation: 2541.6455078125
-  slug: golden-gate-dirty-30-course-aid-4
+  slug: d30-50k-course-aid-4
   parameterized_base_name: aid-4
-golden_gate_dirty_30_course_aid_3:
+d30_50k_course_aid_3:
   id: 170
   course_id: 26
   location_id: 
@@ -308,7 +288,7 @@ golden_gate_dirty_30_course_aid_3:
   vert_loss_from_start: 1158.24
   kind: 2
   created_at: '2017-05-23 06:23:13.751342'
-  updated_at: '2018-03-16 14:58:29.336476'
+  updated_at: '2019-01-30 21:33:24.220248'
   created_by: 1
   updated_by: 1
   description: 
@@ -317,9 +297,9 @@ golden_gate_dirty_30_course_aid_3:
   latitude: '39.835893'
   longitude: "-105.404978"
   elevation: 2488.14086914062
-  slug: golden-gate-dirty-30-course-aid-3
+  slug: d30-50k-course-aid-3
   parameterized_base_name: aid-3
-golden_gate_dirty_30_course_aid_2:
+d30_50k_course_aid_2:
   id: 171
   course_id: 26
   location_id: 
@@ -328,7 +308,7 @@ golden_gate_dirty_30_course_aid_2:
   vert_loss_from_start: 701.04
   kind: 2
   created_at: '2017-05-31 15:06:56.010141'
-  updated_at: '2018-03-16 14:58:29.347539'
+  updated_at: '2019-01-30 21:33:24.238842'
   created_by: 1
   updated_by: 1
   description: 
@@ -337,9 +317,9 @@ golden_gate_dirty_30_course_aid_2:
   latitude: '39.850210'
   longitude: "-105.445211"
   elevation: 2637.22631835938
-  slug: golden-gate-dirty-30-course-aid-2
+  slug: d30-50k-course-aid-2
   parameterized_base_name: aid-2
-start_34e4fd53_6a6a_4460_955e_94005a065bb2:
+d30_12m_course_start:
   id: 172
   course_id: 27
   location_id: 
@@ -348,7 +328,7 @@ start_34e4fd53_6a6a_4460_955e_94005a065bb2:
   vert_loss_from_start: 0.0
   kind: 0
   created_at: '2017-06-09 09:51:15.477285'
-  updated_at: '2018-03-16 14:58:29.358506'
+  updated_at: '2019-01-30 21:33:24.25564'
   created_by: 1
   updated_by: 1
   description: 
@@ -357,9 +337,9 @@ start_34e4fd53_6a6a_4460_955e_94005a065bb2:
   latitude: '39.850194'
   longitude: "-105.359809"
   elevation: 2356.51098632812
-  slug: start-34e4fd53-6a6a-4460-955e-94005a065bb2
+  slug: d30-12m-course-start
   parameterized_base_name: start
-finish_331b62a5_83d0_4b01_8e96_6007e07b8be0:
+d30_12m_course_finish:
   id: 173
   course_id: 27
   location_id: 
@@ -368,7 +348,7 @@ finish_331b62a5_83d0_4b01_8e96_6007e07b8be0:
   vert_loss_from_start: 1066.7999658624
   kind: 1
   created_at: '2017-06-09 09:51:15.480173'
-  updated_at: '2018-03-16 14:58:29.369535'
+  updated_at: '2019-01-30 21:33:24.274251'
   created_by: 1
   updated_by: 1
   description: 
@@ -377,58 +357,18 @@ finish_331b62a5_83d0_4b01_8e96_6007e07b8be0:
   latitude: '39.850210'
   longitude: "-105.359841"
   elevation: 2356.2763671875
-  slug: finish-331b62a5-83d0-4b01-8e96-6007e07b8be0
+  slug: d30-12m-course-finish
   parameterized_base_name: finish
-silverton_double_dirty_30_course_start:
-  id: 204
-  course_id: 31
-  location_id: 
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2018-01-18 05:09:16.742408'
-  updated_at: '2018-03-16 14:58:29.441605'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
-  elevation: 2840.0
-  slug: silverton-double-dirty-30-course-start
-  parameterized_base_name: start
-silverton_double_dirty_30_course_finish:
-  id: 205
-  course_id: 31
-  location_id: 
-  distance_from_start: 99779
-  vert_gain_from_start: 2676.144
-  vert_loss_from_start: 2529.84
-  kind: 1
-  created_at: '2018-01-18 05:09:16.744523'
-  updated_at: '2018-03-16 14:58:29.453676'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
-  elevation: 2840.0
-  slug: silverton-double-dirty-30-course-finish
-  parameterized_base_name: finish
-silverton_double_dirty_30_course_molas_pass_aid1:
+sum_100k_course_molas_pass_aid1:
   id: 206
   course_id: 31
   location_id: 
-  distance_from_start: 18314
+  distance_from_start: 18347
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
   kind: 2
   created_at: '2018-01-18 05:09:24.887373'
-  updated_at: '2018-03-16 14:58:29.465662'
+  updated_at: '2019-01-30 21:33:24.308328'
   created_by: 1
   updated_by: 1
   description: 
@@ -437,29 +377,49 @@ silverton_double_dirty_30_course_molas_pass_aid1:
   latitude: '37.739536'
   longitude: "-107.698161"
   elevation: 3328.416
-  slug: silverton-double-dirty-30-course-molas-pass-aid1
+  slug: sum-100k-course-molas-pass-aid1
   parameterized_base_name: molas-pass-aid1
-ramble_odd_year_course_ramble_odd_year_course_start:
-  id: 44
-  course_id: 8
+sum_100k_course_start:
+  id: 204
+  course_id: 31
   location_id: 
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2016-05-07 23:08:10.463824'
-  updated_at: '2018-03-16 14:58:28.441005'
+  created_at: '2018-01-18 05:09:16.742408'
+  updated_at: '2019-01-30 21:33:24.327917'
   created_by: 1
   updated_by: 1
-  description: Starting point for the Ramble Odd-Year Course course.
-  base_name: Ramble Odd-Year Course Start
+  description: 
+  base_name: Start
   sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
-  slug: ramble-odd-year-course-ramble-odd-year-course-start
-  parameterized_base_name: ramble-odd-year-course-start
-hardrock_cw_hardrock_cw_finish:
+  latitude: '37.812496'
+  longitude: "-107.665898"
+  elevation: 2840.0
+  slug: sum-100k-course-start
+  parameterized_base_name: start
+sum_100k_course_finish:
+  id: 205
+  course_id: 31
+  location_id: 
+  distance_from_start: 99779
+  vert_gain_from_start: 2676.144
+  vert_loss_from_start: 2529.84
+  kind: 1
+  created_at: '2018-01-18 05:09:16.744523'
+  updated_at: '2019-01-30 21:33:24.343889'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Finish
+  sub_split_bitmap: 1
+  latitude: '37.812496'
+  longitude: "-107.665898"
+  elevation: 2840.0
+  slug: sum-100k-course-finish
+  parameterized_base_name: finish
+hardrock_cw_finish:
   id: 82
   course_id: 12
   location_id: 
@@ -468,7 +428,7 @@ hardrock_cw_hardrock_cw_finish:
   vert_loss_from_start: 10073.64
   kind: 1
   created_at: '2016-05-23 01:04:57.227554'
-  updated_at: '2018-03-16 14:58:28.755592'
+  updated_at: '2019-01-30 21:33:24.370713'
   created_by: 1
   updated_by: 1
   description: Finish point for the Hardrock CW course.
@@ -477,8 +437,88 @@ hardrock_cw_hardrock_cw_finish:
   latitude: 
   longitude: 
   elevation: 
-  slug: hardrock-cw-hardrock-cw-finish
+  slug: hardrock-cw-finish
   parameterized_base_name: finish
+sum_100k_course_rolling_pass_aid2:
+  id: 207
+  course_id: 31
+  location_id: 
+  distance_from_start: 35293
+  vert_gain_from_start: 1005.84
+  vert_loss_from_start: 152.4
+  kind: 2
+  created_at: '2018-01-18 05:09:24.901188'
+  updated_at: '2019-01-30 21:33:24.401037'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Rolling Pass (Aid2)
+  sub_split_bitmap: 65
+  latitude: '37.747167'
+  longitude: "-107.805658"
+  elevation: 3749.04
+  slug: sum-100k-course-rolling-pass-aid2
+  parameterized_base_name: rolling-pass-aid2
+sum_100k_course_cascade_creek_rd_aid3:
+  id: 208
+  course_id: 31
+  location_id: 
+  distance_from_start: 46317
+  vert_gain_from_start: 1112.52
+  vert_loss_from_start: 365.76
+  kind: 2
+  created_at: '2018-01-18 05:09:24.912892'
+  updated_at: '2019-01-30 21:33:24.4181'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Cascade Creek Rd (Aid3)
+  sub_split_bitmap: 65
+  latitude: '37.725694'
+  longitude: "-107.862253"
+  elevation: 3474.72
+  slug: sum-100k-course-cascade-creek-rd-aid3
+  parameterized_base_name: cascade-creek-rd-aid3
+sum_100k_course_engineer_mtn_th_aid4:
+  id: 209
+  course_id: 31
+  location_id: 
+  distance_from_start: 59642
+  vert_gain_from_start: 1271.016
+  vert_loss_from_start: 1203.96
+  kind: 2
+  created_at: '2018-01-18 05:09:24.923832'
+  updated_at: '2019-01-30 21:33:24.434565'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Engineer Mtn TH (Aid4)
+  sub_split_bitmap: 65
+  latitude: '37.660092'
+  longitude: "-107.800361"
+  elevation: 2769.7176
+  slug: sum-100k-course-engineer-mtn-th-aid4
+  parameterized_base_name: engineer-mtn-th-aid4
+sum_100k_course_bandera_mine_aid5:
+  id: 210
+  course_id: 31
+  location_id: 
+  distance_from_start: 80741
+  vert_gain_from_start: 2496.312
+  vert_loss_from_start: 1938.528
+  kind: 2
+  created_at: '2018-01-18 05:09:24.93679'
+  updated_at: '2019-01-30 21:33:24.449463'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Bandera Mine (Aid5)
+  sub_split_bitmap: 65
+  latitude: '37.780772'
+  longitude: "-107.803181"
+  elevation: 3243.9864
+  slug: sum-100k-course-bandera-mine-aid5
+  parameterized_base_name: bandera-mine-aid5
 rufa_course_start:
   id: 135
   course_id: 20
@@ -499,86 +539,6 @@ rufa_course_start:
   elevation: 1738.73815917969
   slug: rufa-course-start
   parameterized_base_name: start
-silverton_double_dirty_30_course_rolling_pass_aid2:
-  id: 207
-  course_id: 31
-  location_id: 
-  distance_from_start: 35293
-  vert_gain_from_start: 1005.84
-  vert_loss_from_start: 152.4
-  kind: 2
-  created_at: '2018-01-18 05:09:24.901188'
-  updated_at: '2018-03-16 14:58:29.478256'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Rolling Pass (Aid2)
-  sub_split_bitmap: 65
-  latitude: '37.747167'
-  longitude: "-107.805658"
-  elevation: 3749.04
-  slug: silverton-double-dirty-30-course-rolling-pass-aid2
-  parameterized_base_name: rolling-pass-aid2
-silverton_double_dirty_30_course_cascade_creek_rd_aid3:
-  id: 208
-  course_id: 31
-  location_id: 
-  distance_from_start: 46317
-  vert_gain_from_start: 1112.52
-  vert_loss_from_start: 365.76
-  kind: 2
-  created_at: '2018-01-18 05:09:24.912892'
-  updated_at: '2018-03-16 14:58:29.490575'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Cascade Creek Rd (Aid3)
-  sub_split_bitmap: 65
-  latitude: '37.725694'
-  longitude: "-107.862253"
-  elevation: 3474.72
-  slug: silverton-double-dirty-30-course-cascade-creek-rd-aid3
-  parameterized_base_name: cascade-creek-rd-aid3
-silverton_double_dirty_30_course_engineer_mtn_th_aid4:
-  id: 209
-  course_id: 31
-  location_id: 
-  distance_from_start: 59642
-  vert_gain_from_start: 1271.016
-  vert_loss_from_start: 1203.96
-  kind: 2
-  created_at: '2018-01-18 05:09:24.923832'
-  updated_at: '2018-03-16 14:58:29.503718'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Engineer Mtn TH (Aid4)
-  sub_split_bitmap: 65
-  latitude: '37.660092'
-  longitude: "-107.800361"
-  elevation: 2769.7176
-  slug: silverton-double-dirty-30-course-engineer-mtn-th-aid4
-  parameterized_base_name: engineer-mtn-th-aid4
-silverton_double_dirty_30_course_bandera_mine_aid5:
-  id: 210
-  course_id: 31
-  location_id: 
-  distance_from_start: 80741
-  vert_gain_from_start: 2496.312
-  vert_loss_from_start: 1938.528
-  kind: 2
-  created_at: '2018-01-18 05:09:24.93679'
-  updated_at: '2018-03-16 14:58:29.515881'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Bandera Mine (Aid5)
-  sub_split_bitmap: 65
-  latitude: '37.780772'
-  longitude: "-107.803181"
-  elevation: 3243.9864
-  slug: silverton-double-dirty-30-course-bandera-mine-aid5
-  parameterized_base_name: bandera-mine-aid5
 hardrock_ccw_start:
   id: 5
   course_id: 4
@@ -679,7 +639,7 @@ hardrock_ccw_ouray:
   elevation: 2371.22412109375
   slug: hardrock-ccw-ouray
   parameterized_base_name: ouray
-hardrock_cw_hardrock_cw_start:
+hardrock_cw_start:
   id: 81
   course_id: 12
   location_id: 
@@ -688,7 +648,7 @@ hardrock_cw_hardrock_cw_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_at: '2016-05-23 01:04:57.226299'
-  updated_at: '2018-03-16 14:58:28.730621'
+  updated_at: '2019-01-30 21:33:24.524363'
   created_by: 1
   updated_by: 1
   description: Starting point for the Hardrock CW course.
@@ -697,7 +657,7 @@ hardrock_cw_hardrock_cw_start:
   latitude: 
   longitude: 
   elevation: 
-  slug: hardrock-cw-hardrock-cw-start
+  slug: hardrock-cw-start
   parameterized_base_name: start
 hardrock_cw_telluride:
   id: 87
@@ -759,7 +719,7 @@ hardrock_cw_grouse:
   elevation: 
   slug: hardrock-cw-grouse
   parameterized_base_name: grouse
-silverton_double_dirty_30_course_anvil_cg_aid6:
+sum_100k_course_anvil_cg_aid6:
   id: 211
   course_id: 31
   location_id: 
@@ -768,7 +728,7 @@ silverton_double_dirty_30_course_anvil_cg_aid6:
   vert_loss_from_start: 2328.672
   kind: 2
   created_at: '2018-01-18 05:09:24.96117'
-  updated_at: '2018-03-16 14:58:29.528674'
+  updated_at: '2019-01-30 21:33:24.58547'
   created_by: 1
   updated_by: 1
   description: 
@@ -777,9 +737,9 @@ silverton_double_dirty_30_course_anvil_cg_aid6:
   latitude: '37.820664'
   longitude: "-107.719200"
   elevation: 2886.456
-  slug: silverton-double-dirty-30-course-anvil-cg-aid6
+  slug: sum-100k-course-anvil-cg-aid6
   parameterized_base_name: anvil-cg-aid6
-double_dirty_30_55k_course_start:
+sum_55k_course_start:
   id: 212
   course_id: 32
   location_id: 
@@ -788,7 +748,7 @@ double_dirty_30_55k_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_at: '2018-01-18 05:15:20.743652'
-  updated_at: '2018-03-16 14:58:29.543611'
+  updated_at: '2019-01-30 21:45:11.794264'
   created_by: 1
   updated_by: 1
   description: 
@@ -797,9 +757,9 @@ double_dirty_30_55k_course_start:
   latitude: '37.812496'
   longitude: "-107.665898"
   elevation: 2838.857421875
-  slug: double-dirty-30-55k-course-start
+  slug: sum-55k-course-start
   parameterized_base_name: start
-double_dirty_30_55k_course_finish:
+sum_55k_course_finish:
   id: 213
   course_id: 32
   location_id: 
@@ -808,7 +768,7 @@ double_dirty_30_55k_course_finish:
   vert_loss_from_start: 1097.28
   kind: 1
   created_at: '2018-01-18 05:15:20.745798'
-  updated_at: '2018-03-16 14:58:29.555189'
+  updated_at: '2019-01-30 21:45:11.812282'
   created_by: 1
   updated_by: 1
   description: 
@@ -817,9 +777,9 @@ double_dirty_30_55k_course_finish:
   latitude: '37.812513'
   longitude: "-107.665919"
   elevation: 2838.86376953125
-  slug: double-dirty-30-55k-course-finish
+  slug: sum-55k-course-finish
   parameterized_base_name: finish
-double_dirty_30_55k_course_molas_pass_aid1:
+sum_55k_course_molas_pass_aid1:
   id: 218
   course_id: 32
   location_id: 
@@ -828,7 +788,7 @@ double_dirty_30_55k_course_molas_pass_aid1:
   vert_loss_from_start: 60.96
   kind: 2
   created_at: '2018-01-18 05:20:09.848746'
-  updated_at: '2018-03-16 14:58:29.566989'
+  updated_at: '2019-01-30 21:45:11.828308'
   created_by: 1
   updated_by: 1
   description: 
@@ -837,9 +797,9 @@ double_dirty_30_55k_course_molas_pass_aid1:
   latitude: '37.739536'
   longitude: "-107.698161"
   elevation: 3319.3212890625
-  slug: double-dirty-30-55k-course-molas-pass-aid1
+  slug: sum-55k-course-molas-pass-aid1
   parameterized_base_name: molas-pass-aid1
-double_dirty_30_55k_course_rolling_pass_aid2:
+sum_55k_course_rolling_pass_aid2:
   id: 219
   course_id: 32
   location_id: 
@@ -848,7 +808,7 @@ double_dirty_30_55k_course_rolling_pass_aid2:
   vert_loss_from_start: 152.4
   kind: 2
   created_at: '2018-01-18 05:20:09.859521'
-  updated_at: '2018-03-16 14:58:29.578756'
+  updated_at: '2019-01-30 21:45:11.844'
   created_by: 1
   updated_by: 1
   description: 
@@ -857,9 +817,9 @@ double_dirty_30_55k_course_rolling_pass_aid2:
   latitude: '37.747167'
   longitude: "-107.805658"
   elevation: 3698.63208007812
-  slug: double-dirty-30-55k-course-rolling-pass-aid2
+  slug: sum-55k-course-rolling-pass-aid2
   parameterized_base_name: rolling-pass-aid2
-double_dirty_30_55k_course_bandera_mine_aid5:
+sum_55k_course_bandera_mine_aid5:
   id: 220
   course_id: 32
   location_id: 
@@ -868,7 +828,7 @@ double_dirty_30_55k_course_bandera_mine_aid5:
   vert_loss_from_start: 670.56
   kind: 2
   created_at: '2018-01-18 05:20:09.869372'
-  updated_at: '2018-03-16 14:58:29.591985'
+  updated_at: '2019-01-30 21:45:11.858884'
   created_by: 1
   updated_by: 1
   description: 
@@ -877,9 +837,9 @@ double_dirty_30_55k_course_bandera_mine_aid5:
   latitude: '37.780772'
   longitude: "-107.803181"
   elevation: 3252.72241210938
-  slug: double-dirty-30-55k-course-bandera-mine-aid5
+  slug: sum-55k-course-bandera-mine-aid5
   parameterized_base_name: bandera-mine-aid5
-double_dirty_30_55k_course_anvil_cg_aid6:
+sum_55k_course_anvil_cg_aid6:
   id: 221
   course_id: 32
   location_id: 
@@ -888,7 +848,7 @@ double_dirty_30_55k_course_anvil_cg_aid6:
   vert_loss_from_start: 1021.08
   kind: 2
   created_at: '2018-01-18 05:20:09.879917'
-  updated_at: '2018-03-16 14:58:29.603478'
+  updated_at: '2019-01-30 21:45:11.873936'
   created_by: 1
   updated_by: 1
   description: 
@@ -897,5 +857,5 @@ double_dirty_30_55k_course_anvil_cg_aid6:
   latitude: '37.820664'
   longitude: "-107.719200"
   elevation: 2904.18798828125
-  slug: double-dirty-30-55k-course-anvil-cg-aid6
+  slug: sum-55k-course-anvil-cg-aid6
   parameterized_base_name: anvil-cg-aid6

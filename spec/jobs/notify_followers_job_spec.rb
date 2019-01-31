@@ -8,8 +8,8 @@ RSpec.describe NotifyFollowersJob do
   let(:perform_notification) { subject.perform(person_id: person_id, split_time_ids: split_time_ids) }
 
   let(:person_id) { person.id }
-  let(:event) { events(:rufa_2017) }
-  let(:effort) { efforts(:rufa_2017_progress_lap6) }
+  let(:event) { events(:rufa_2017_24h) }
+  let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
   let(:splits) { event.splits }
 
   describe '#perform' do

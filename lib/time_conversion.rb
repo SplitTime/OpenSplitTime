@@ -4,6 +4,7 @@ class TimeConversion
 
   def self.hms_to_seconds(hms)
     return nil unless hms.present?
+    raise ArgumentError, "Improper hms time format: #{hms}" unless hms =~ /\A-?\d+:\d{2}(:\d{2})?(\.\d+)?\z/
     negative = hms.start_with?('-')
     components = hms.sub(/\A-/, '').split(':')
     milliseconds_present = components.last.include?('.')

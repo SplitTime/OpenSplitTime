@@ -29,7 +29,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = ["Dirty 30 Running", "Hardrock 100", "Rattlesnake Ramble", "Running Up For Air"]
+          expected = ['Dirty 30 Running', 'Hardrock', 'Rattlesnake Ramble', 'Running Up For Air']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly in descending order based on the parameter' do
           make_request
-          expected = ["Running Up For Air", "Rattlesnake Ramble", "Hardrock 100", "Dirty 30 Running"]
+          expected = ['Running Up For Air', 'Rattlesnake Ramble', 'Hardrock', 'Dirty 30 Running']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -51,7 +51,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = ["Hardrock 100", "Rattlesnake Ramble", "Dirty 30 Running", "Running Up For Air"]
+          expected = ['Hardrock', 'Rattlesnake Ramble', 'Dirty 30 Running', 'Running Up For Air']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end

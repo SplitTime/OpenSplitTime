@@ -31,9 +31,10 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = ['Dirty 30', 'Hardrock 2014', 'Hardrock 2015', 'Hardrock 2016', 'Ramble', 'Rufa 2016', 'Rufa 2017', 'SDD30']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('Dirty 30')
+          expect(names.last).to eq('SUM')
         end
       end
 
@@ -42,9 +43,10 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it 'sorts properly in descending order based on the parameter' do
           make_request
-          expected = ['SDD30', 'Rufa 2017', 'Rufa 2016', 'Ramble', 'Hardrock 2016', 'Hardrock 2015', 'Hardrock 2014', 'Dirty 30']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('SUM')
+          expect(names.last).to eq('Dirty 30')
         end
       end
 
@@ -53,9 +55,10 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = ['Hardrock 2014', 'Ramble', 'Rufa 2016', 'Dirty 30', 'Hardrock 2015', 'Hardrock 2016', 'Rufa 2017', 'SDD30']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('Hardrock 2014')
+          expect(names.last).to eq('SUM')
         end
       end
 
@@ -66,7 +69,7 @@ RSpec.describe Api::V1::EventGroupsController do
           get :index, params: params
 
           expect(response.status).to eq(200)
-          expected = ['Dirty 30', 'Hardrock 2015', 'Hardrock 2016', 'Rufa 2017', 'SDD30']
+          expected = ['Dirty 30', 'Hardrock 2015', 'Hardrock 2016', 'RUFA 2017', 'SUM']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].size).to eq(5)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to match_array(expected)
@@ -186,10 +189,11 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe '#create' do
     subject(:make_request) { post :create, params: params }
+    let(:organization) { organizations(:hardrock) }
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group'}}} }
+        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group', organization_id: organization.id}}} }
 
         it 'returns a successful json response' do
           make_request
@@ -278,7 +282,7 @@ RSpec.describe Api::V1::EventGroupsController do
     before(:each) { VCR.insert_cassette("api/v1/event_groups_controller", match_requests_on: [:host]) }
     after(:each) { VCR.eject_cassette }
 
-    let(:course) { courses(:hardrock_clockwise) }
+    let(:course) { courses(:hardrock_cw) }
     let(:ordered_splits) { course.ordered_splits }
     let(:event_group) { event.event_group }
     let(:event) { events(:hardrock_2016) }
@@ -970,12 +974,11 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe '#trigger_raw_times_push' do
     subject(:make_request) { get :trigger_raw_times_push, params: request_params }
-    let(:course) { create(:course) }
-    let(:split) { create(:split, course_id: course.id) }
-    let(:event) { create(:event, event_group: event_group, course: course) }
+    let(:event) { events(:hardrock_2016) }
+    let(:split) { splits(:hardrock_cw_cunningham) }
+    let(:event_group) { event.event_group }
     let(:request_params) { {id: event_group.id} }
     before do
-      event.splits << split
       create_list(:raw_time, 3, event_group: event_group, split_name: split.base_name)
     end
 

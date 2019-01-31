@@ -6,7 +6,7 @@ RSpec.describe EventWithEffortsPresenter do
   before { FactoryBot.reload }
 
   subject { EventWithEffortsPresenter.new(event: event, params: prepared_params) }
-  let(:event) { build_stubbed(:event_functional) }
+  let(:event) { Event.new }
   let(:prepared_params) { create(:prepared_params) }
 
   describe '#initialize' do

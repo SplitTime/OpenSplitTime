@@ -89,7 +89,7 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'for validations dependent on existing database records' do
-      let(:existing_event_group) { event_groups(:sdd30) }
+      let(:existing_event_group) { event_groups(:sum) }
       let(:event_1) { existing_event_group.events.first }
       let(:event_2) { existing_event_group.events.second }
       let(:existing_effort) { Effort.where(event: event_1).where.not(person: nil).first }
@@ -319,7 +319,7 @@ RSpec.describe Effort, type: :model do
 
     context 'for an event with unlimited laps' do
       context 'when no when no split_time has stopped_here: true' do
-        let(:effort) { efforts(:rufa_2017_progress_lap6) }
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
         it 'returns false' do
           expect(effort.finished?).to eq(false)
@@ -327,7 +327,7 @@ RSpec.describe Effort, type: :model do
       end
 
       context 'when any split_time has stopped_here == true' do
-        let(:effort) { efforts(:rufa_2017_finished_first) }
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
 
         it 'returns true' do
           expect(effort.finished?).to eq(true)
@@ -357,7 +357,7 @@ RSpec.describe Effort, type: :model do
 
     context 'for an event with unlimited laps' do
       context 'always, including when a split_time is stopped_here' do
-        let(:effort) { efforts(:rufa_2017_finished_first) }
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
 
         it 'returns false' do
           expect(effort.dropped?).to eq(false)
@@ -365,7 +365,7 @@ RSpec.describe Effort, type: :model do
       end
 
       context 'always, including when no split_time is stopped_here' do
-        let(:effort) { efforts(:rufa_2017_progress_lap6) }
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
         it 'returns false' do
           expect(effort.dropped?).to eq(false)
@@ -411,7 +411,7 @@ RSpec.describe Effort, type: :model do
 
     context 'for an event with unlimited laps' do
       context 'when any split_time is stopped_here' do
-        let(:effort) { efforts(:rufa_2017_finished_first) }
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
 
         it 'returns true' do
           expect(effort.stopped?).to eq(true)
@@ -419,7 +419,7 @@ RSpec.describe Effort, type: :model do
       end
 
       context 'when no split_time is stopped_here' do
-        let(:effort) { efforts(:rufa_2017_progress_lap6) }
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
         it 'returns false' do
           expect(effort.stopped?).to eq(false)
@@ -448,8 +448,8 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when multiple stops exist across laps' do
-      let(:effort) { efforts(:rufa_2017_multiple_stops) }
-      let(:expected) { split_times(:rufa_2017_multiple_stops_finish_3) }
+      let(:effort) { efforts(:rufa_2017_24h_multiple_stops) }
+      let(:expected) { split_times(:rufa_2017_24h_multiple_stops_finish_3) }
 
       it 'works properly' do
         expect(effort.stopped_split_time).to eq(expected)
@@ -457,7 +457,7 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'if no split_time exists with stopped_here: true' do
-      let(:effort) { efforts(:rufa_2017_progress_lap6) }
+      let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
       it 'returns nil' do
         expect(effort.stopped_split_time).to be_nil

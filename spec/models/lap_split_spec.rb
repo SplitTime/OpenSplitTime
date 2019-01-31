@@ -405,7 +405,7 @@ RSpec.describe LapSplit, type: :model do
     subject { LapSplit.new(lap, split) }
     let(:lap) { 1 }
     let(:split) { course.ordered_splits.first }
-    let(:course) { courses(:hardrock_counter_clockwise) }
+    let(:course) { courses(:hardrock_ccw) }
 
     it 'returns the course to which split belongs' do
       expect(subject.course).to eq(course)

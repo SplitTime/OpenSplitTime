@@ -6,8 +6,8 @@ RSpec.describe Interactors::ChangeEffortEvent do
   subject { Interactors::ChangeEffortEvent.new(effort: effort, new_event: new_event) }
 
   describe '#initialization' do
-    let(:effort) { build_stubbed(:effort) }
-    let(:new_event) { build_stubbed(:event) }
+    let(:effort) { efforts(:sum_55k_finished_first) }
+    let(:new_event) { events(:sum_100k) }
 
     it 'initializes when provided with an effort and a new_event' do
       expect { subject }.not_to raise_error
@@ -31,20 +31,9 @@ RSpec.describe Interactors::ChangeEffortEvent do
   end
 
   describe '#perform!' do
-    let(:effort) { create(:effort, event: old_event) }
-    let!(:old_event) { create(:event, course: old_course, start_time: '2017-07-01 06:00:00') }
-    let(:old_course) { create(:course_with_standard_splits, splits_count: 3) }
-
     context 'when the new event has the same splits as the old' do
-      let!(:new_event) { create(:event, course: old_course, start_time: '2017-07-01 08:00:00') }
-
-      before do
-        old_course.reload
-        old_event.splits << old_course.splits
-        new_event.splits << old_course.splits
-        create_split_times_for_effort
-        effort.reload
-      end
+      let(:effort) { efforts(:rufa_2017_12h_finished_first) }
+      let(:new_event) { events(:rufa_2017_24h) }
 
       it 'updates the effort event_id to the id of the provided event' do
         expect(effort.event_id).not_to eq(new_event.id)
@@ -55,45 +44,29 @@ RSpec.describe Interactors::ChangeEffortEvent do
       end
 
       it 'does not change the split_id of any effort split_times' do
-        split_times = effort.split_times
-        expect(split_times.size).to eq(4)
         subject.perform!
-        expect(split_times.map(&:changed?)).to all eq(false)
+        expect(effort.split_times.map(&:changed?)).to all eq(false)
       end
     end
 
     context 'when the new event has different splits from the old' do
-      let(:new_event) { create(:event, course: new_course) }
-      let(:new_course) { create(:course, splits: new_splits) }
-      let(:new_split_1) { create(:split, :start) }
-      let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
-      let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
-      let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }
-      let(:new_splits) { [new_split_1, new_split_2, new_split_3, new_split_4] }
-
-      before do
-        FactoryBot.reload
-        old_course.reload
-        old_event.splits << old_course.splits
-        new_event.splits << new_course.splits
-        create_split_times_for_effort
-        effort.reload
-      end
+      let(:effort) { efforts(:sum_55k_progress_rolling) }
+      let(:new_event) { events(:sum_100k) }
 
       it 'updates the effort event_id to the id of the provided event' do
         expect(effort.event_id).not_to eq(new_event.id)
         response = subject.perform!
-        expect(effort.event_id).to eq(new_event.id)
+
         expect(response).to be_successful
         expect(response.message).to match(/was changed from/)
+        expect(effort.event_id).to eq(new_event.id)
       end
 
       it 'changes the split_ids of effort split_times to the corresponding split_ids of the new event' do
         time_points = new_event.required_time_points.first(effort.split_times.size)
-        expect(effort.split_times.map(&:time_point)).not_to match_array(time_points)
+        expect(effort.ordered_split_times.map(&:time_point)).not_to match_array(time_points)
         subject.perform!
-        effort.reload
-        expect(effort.split_times.map(&:time_point)).to match_array(time_points)
+        expect(effort.ordered_split_times.map(&:time_point)).to match_array(time_points)
       end
 
       it 'raises an error if distances do not coincide' do

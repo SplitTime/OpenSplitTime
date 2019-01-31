@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SegmentTimesContainer do
-  let(:course) { courses(:hardrock_clockwise) }
+  let(:course) { courses(:hardrock_cw) }
   let(:start) { course.ordered_splits.first }
   let(:aid_1) { course.ordered_splits.second }
   let(:finish) { course.ordered_splits.last }

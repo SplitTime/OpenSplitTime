@@ -1139,21 +1139,6 @@ sum_100k_drop_anvil_molas_pass_aid1_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-09-23 14:32:00'
-sum_55k_progress_rolling_rolling_pass_aid2_out_1:
-  id: 190672
-  effort_id: 16244
-  split_id: 219
-  data_status: 2
-  created_at: '2018-01-18 05:23:52.754695'
-  updated_at: '2019-01-30 21:20:34.659107'
-  created_by: 1
-  updated_by: 1
-  sub_split_bitkey: 64
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2017-10-07 16:25:00'
 sum_55k_progress_rolling_molas_pass_aid1_in_1:
   id: 190669
   effort_id: 16244
@@ -1184,6 +1169,21 @@ sum_55k_progress_rolling_start_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-10-07 13:00:00'
+sum_55k_progress_rolling_rolling_pass_aid2_out_1:
+  id: 190672
+  effort_id: 16244
+  split_id: 219
+  data_status: 2
+  created_at: '2018-01-18 05:23:52.754695'
+  updated_at: '2019-01-31 17:30:13.215642'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-10-07 17:15:00'
 sum_55k_finished_second_anvil_cg_aid6_out_1:
   id: 190527
   effort_id: 16229
@@ -18618,9 +18618,9 @@ sum_55k_progress_rolling_rolling_pass_aid2_in_1:
   id: 190671
   effort_id: 16244
   split_id: 219
-  data_status: 
+  data_status: 2
   created_at: '2018-01-18 05:23:52.753314'
-  updated_at: '2019-01-30 21:20:34.6649'
+  updated_at: '2019-01-31 17:30:13.21713'
   created_by: 1
   updated_by: 1
   sub_split_bitkey: 1
@@ -18628,7 +18628,7 @@ sum_55k_progress_rolling_rolling_pass_aid2_in_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2017-10-07 16:10:00'
+  absolute_time: '2017-10-07 17:05:00'
 sum_55k_drop_bandera_bandera_mine_aid5_in_1:
   id: 190683
   effort_id: 16245

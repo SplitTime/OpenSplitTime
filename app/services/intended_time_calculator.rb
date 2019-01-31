@@ -12,7 +12,7 @@ class IntendedTimeCalculator
                            exclusive: [:military_time, :effort, :time_point, :prior_valid_split_time,
                                        :expected_time_from_prior, :lap_splits, :split_times],
                            class: self.class)
-    @military_time = args[:military_time]
+    @military_time = args[:military_time].gsub(/[^\d:]/, '')
     @effort = args[:effort]
     @time_point = args[:time_point]
     @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)

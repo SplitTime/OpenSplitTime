@@ -11,7 +11,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   let!(:split_time_3) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 70.minutes) }
   let(:split_times) { [split_time_1, split_time_2, split_time_3] }
 
-  let(:effort) { create(:effort, event: event) }
+  let(:effort) { create(:effort, :with_bib_number, event: event) }
   let(:event) { create(:event, course: course, event_group: event_group, start_time_local: '2018-02-10 06:00:00') }
   let(:course) { create(:course) }
   let(:event_group) { create(:event_group, available_live: true) }

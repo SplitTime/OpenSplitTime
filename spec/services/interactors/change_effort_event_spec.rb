@@ -97,21 +97,16 @@ RSpec.describe Interactors::ChangeEffortEvent do
     end
 
     context 'when the effort cannot be moved to the new event' do
-      let!(:new_event) { create(:event, course: old_course) }
-      let!(:existing_effort) { create(:effort, event: new_event, bib_number: effort.bib_number) }
+      let(:effort) { create(:effort, event: old_event, bib_number: 26) }
+      let(:new_event) { events(:hardrock_2015) }
+      let(:old_event) { events(:hardrock_2014) }
+      let(:existing_effort) { new_event.efforts.find_by(bib_number: 26) }
 
       it 'returns an error response' do
         response = subject.perform!
         expect(response).not_to be_successful
         expect(response.errors.first[:detail][:messages])
             .to include("Bib number #{effort.bib_number} already exists for #{existing_effort.full_name}")
-      end
-    end
-
-    def create_split_times_for_effort
-      time_points = old_event.required_time_points
-      time_points.each_with_index do |time_point, i|
-        create(:split_time, time_point: time_point, effort: effort, absolute_time: old_event.start_time + i * 1000)
       end
     end
   end

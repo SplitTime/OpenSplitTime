@@ -92,9 +92,7 @@ RSpec.describe Interactors::AssignPeopleToEfforts do
                        efforts.second.id.to_s => nil} }
 
       it 'creates new Person records and assigns them to the provided efforts' do
-        expect(Person.count).to eq(0)
-        response
-        expect(Person.count).to eq(2)
+        expect { response }.to change { Person.count }.by(2)
         response.resources[:saved].each do |person_effort_hash|
           effort = person_effort_hash[:effort]
           person = person_effort_hash[:person]

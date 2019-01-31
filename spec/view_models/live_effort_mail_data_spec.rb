@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe LiveEffortMailData do
   subject { LiveEffortMailData.new(person: person, split_times: split_times) }
-  let(:person) { build_stubbed(:person) }
-  let(:event) { build_stubbed(:event_functional, laps_required: 2, splits_count: 3, efforts_count: 1) }
-  let(:effort) { event.efforts.first }
+  let(:event) { events(:hardrock_2015) }
+  let(:effort) { event.efforts.order(:bib_number).first }
+  let(:person) { effort.person }
   let(:effort_split_times) { effort.split_times }
-  let(:split_times) { [in_split_time, out_split_time] }
   let(:in_split_time) { effort_split_times[1] }
   let(:out_split_time) { effort_split_times[2] }
+  let(:split_times) { [in_split_time, out_split_time] }
 
   describe '#initialize' do
     context 'with a person and split_times in an args hash' do
@@ -40,13 +40,13 @@ RSpec.describe LiveEffortMailData do
         split_distance: expected_in_distance,
         absolute_time_local: in_split_time.absolute_time_local.strftime('%A, %B %-d, %Y %l:%M%p'),
         elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
-        pacer: nil,
+        pacer: in_split_time.pacer,
         stopped_here: in_split_time.stopped_here},
        {split_name: expected_out_split_name,
         split_distance: expected_out_distance,
         absolute_time_local: out_split_time.absolute_time_local.strftime('%A, %B %-d, %Y %l:%M%p'),
         elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
-        pacer: nil,
+        pacer: out_split_time.pacer,
         stopped_here: out_split_time.stopped_here}]
     }
 
@@ -55,8 +55,8 @@ RSpec.describe LiveEffortMailData do
     context 'when all split_times are in lap 1' do
       let(:expected_in_split_name) { in_split_time.split_name }
       let(:expected_out_split_name) { out_split_time.split_name }
-      let(:expected_in_distance) { 10000 }
-      let(:expected_out_distance) { 10000 }
+      let(:expected_in_distance) { 67914 }
+      let(:expected_out_distance) { 67914 }
 
       it 'returns a hash containing effort and split_time data' do
         expect(subject.effort_data).to eq(expected_effort_data)
@@ -70,8 +70,8 @@ RSpec.describe LiveEffortMailData do
 
       let(:expected_in_split_name) { in_split_time.split_name_with_lap }
       let(:expected_out_split_name) { out_split_time.split_name_with_lap }
-      let(:expected_in_distance) { 10000 }
-      let(:expected_out_distance) { 30000 }
+      let(:expected_in_distance) { 67914 }
+      let(:expected_out_distance) { 229653 }
 
       it 'uses split names with a lap indicator and adjusts distance as expected' do
         expect(subject.effort_data).to eq(expected_effort_data)

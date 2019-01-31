@@ -28,9 +28,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = ['D30 12M Course', 'D30 50K Course', 'Hardrock CCW', 'Hardrock CW', 'RUFA Course', 'Ramble Even Course', 'SUM 100K Course', 'SUM 55K Course']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('D30 12M Course')
+          expect(names.last).to eq('SUM 55K Course')
         end
       end
 
@@ -39,9 +40,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly in descending order based on the parameter' do
           make_request
-          expected = ['SUM 55K Course', 'SUM 100K Course', 'Ramble Even Course', 'RUFA Course', 'Hardrock CW', 'Hardrock CCW', 'D30 50K Course', 'D30 12M Course']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('SUM 55K Course')
+          expect(names.last).to eq('D30 12M Course')
         end
       end
 
@@ -50,9 +52,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = ['RUFA Course', 'Hardrock CW', 'Hardrock CCW', 'D30 12M Course', 'D30 50K Course', 'Ramble Even Course', 'SUM 100K Course', 'SUM 55K Course']
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('RUFA Course')
+          expect(names.last).to eq('SUM 55K Course')
         end
       end
     end

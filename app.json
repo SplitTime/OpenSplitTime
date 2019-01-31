@@ -17,6 +17,6 @@
         "test-setup": "rails db:structure:load; bin/rails assets:precompile",
         "test": "bin/rspec"
       }
-    },
+    }
   }
 }

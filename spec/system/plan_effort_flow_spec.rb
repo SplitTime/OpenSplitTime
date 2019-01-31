@@ -4,17 +4,9 @@ require 'rails_helper'
 include FeatureMacros
 
 RSpec.describe 'visit the plan efforts page and plan an effort' do
-  before(:context) do
-    create_hardrock_event
-  end
-
-  after(:context) do
-    clean_up_database
-  end
-
   let(:user) { create(:user) }
   let(:admin) { create(:admin) }
-  let(:course) { Course.first }
+  let(:course) { courses(:hardrock_ccw) }
 
   scenario 'The user is a visitor' do
     visit plan_effort_course_path(course)

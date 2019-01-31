@@ -4,9 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Interactors::SetEffortStatus do
   subject { Interactors::SetEffortStatus.new(effort, times_container: times_container) }
-  let(:event) { build_stubbed(:event_functional, efforts_count: 1) }
-  let(:effort) { event.efforts.first }
-  let(:split_times) { effort.split_times }
+  let(:effort) { efforts(:hardrock_2014_finished_first) }
+  let(:subject_split_times) { effort.ordered_split_times }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
   before { FactoryBot.reload }
@@ -29,12 +28,12 @@ RSpec.describe Interactors::SetEffortStatus do
 
   describe '#set_data_status' do
     before do
-      expect(split_times.map(&:data_status)).to all eq(nil)
-      expect(effort.data_status).to eq(nil)
+      effort.update(data_status: nil)
+      subject_split_times.each { |st| st.update(data_status: nil) }
     end
 
     context 'for an effort that has not yet started' do
-      before { allow(effort).to receive(:split_times).and_return([]) }
+      let(:effort) { efforts(:hardrock_2014_not_started) }
 
       it 'sets effort data_status to good and does not attempt to change split_times' do
         subject.perform
@@ -43,89 +42,99 @@ RSpec.describe Interactors::SetEffortStatus do
     end
 
     context 'when split_times fall within expected ranges' do
+      let(:effort) { efforts(:hardrock_2014_finished_first) }
+
       it 'sets data_status of all split_times and effort to "good"' do
         subject.perform
-        expect(split_times.map(&:data_status)).to all eq('good')
+        expect(subject_split_times.map(&:data_status)).to all eq('good')
         expect(effort.data_status).to eq('good')
       end
     end
 
     context 'when one split_time is questionable' do
-      before { split_times.second.absolute_time -= 1.hour }
+      let(:split_time) { subject_split_times.second }
+      before { split_time.update(absolute_time: split_time.absolute_time - 3.hours) }
 
       it 'sets data_status of all split_times correctly and sets effort to "questionable"' do
         subject.perform
-        expect(split_times.map(&:data_status)).to eq(%w[good questionable good good good good])
+        expect(subject_split_times.map(&:data_status)).to eq(%w[good questionable] + ['good'] * 10)
         expect(effort.data_status).to eq('questionable')
       end
     end
 
     context 'when one split_time is questionable and one is bad' do
-      before { split_times.second.time_from_start -= 2.hours }
-      before { split_times.third.time_from_start -= 1.hour }
+      let(:split_time_1) { subject_split_times.second }
+      let(:split_time_2) { subject_split_times.third }
+
+      before { split_time_1.update(absolute_time: split_time_1.absolute_time - 4.hours) }
+      before { split_time_2.update(absolute_time: split_time_2.absolute_time - 3.hours) }
 
       it 'sets data_status of all split_times correctly and sets effort to "bad"' do
         subject.perform
-        expect(split_times.map(&:data_status)).to eq(%w[good bad questionable good good good])
+        expect(subject_split_times.map(&:data_status)).to eq(%w[good bad questionable] + ['good'] * 9)
         expect(effort.data_status).to eq('bad')
       end
     end
 
     context 'when a split_time has stopped_here: true' do
-      before { split_times.third.stopped_here = true }
+      before { subject_split_times.third.update(stopped_here: true) }
 
       it 'sets data_status of all subsequent split_times to "bad"' do
         subject.perform
-        expect(split_times.map(&:data_status)).to eq(%w[good good good bad bad bad])
+        expect(subject_split_times.map(&:data_status)).to eq(%w[good good good] + ['bad'] * 9)
         expect(effort.data_status).to eq('bad')
       end
     end
 
     context 'when all split_times are confirmed' do
-      before { split_times.third.time_from_start -= 2.hours } # Bad time
-      before { split_times.each { |st| st.data_status = :confirmed } }
+      let(:split_time) { subject_split_times.third }
+      before { split_time.update(absolute_time: split_time.absolute_time - 4.hours) } # Bad time
+      before { subject_split_times.each { |st| st.data_status = :confirmed } }
 
       it 'sets data_status of the effort to "good"' do
         subject.perform
-        expect(split_times.map(&:data_status)).to all eq('confirmed')
+        expect(subject_split_times.map(&:data_status)).to all eq('confirmed')
         expect(effort.data_status).to eq('good')
       end
     end
 
     context 'when split_times have data_status set incorrectly' do
+      let(:split_time) { subject_split_times.third }
       before do
-        split_times.third.time_from_start -= 2.hours # bad time
-        effort.data_status = :good
-        pre_set_statuses = %w[bad questionable good questionable good bad]
-        split_times.zip(pre_set_statuses).each do |st, status|
-          st.data_status = status
+        split_time.update(absolute_time: split_time.absolute_time - 4.hours) # Bad time
+        effort.update(data_status: :good)
+
+        pre_set_statuses = %w[bad questionable good questionable good bad] + ['good'] * 6
+        subject_split_times.zip(pre_set_statuses).each do |st, status|
+          st.update(data_status: status)
         end
       end
 
       it 'sets data_status of the split_times and effort correctly' do
         subject.perform
-        expect(split_times.map(&:data_status)).to eq(%w[good good bad good good good])
+        expect(subject_split_times.map(&:data_status)).to eq(%w[good good bad] + ['good'] * 9)
         expect(effort.data_status).to eq('bad')
       end
     end
 
     context 'for a multi-lap event' do
-      let(:event) { build_stubbed(:event_functional, splits_count: 3, laps_required: 3, efforts_count: 1) }
+      let(:effort) { efforts(:rufa_2017_24h_mictest_gartest) }
 
       context 'when all times are good' do
         it 'sets all data_status attributes to "good"' do
           subject.perform
-          expect(split_times.map(&:data_status)).to all eq('good')
+          expect(subject_split_times.map(&:data_status)).to all eq('good')
           expect(effort.data_status).to eq('good')
         end
       end
 
       context 'when not all times are good' do
-        before { split_times[6].time_from_start -= 2.hours }
+        let(:split_time) { subject_split_times[4] }
+        before { split_time.update(absolute_time: split_time.absolute_time - 4.hours) }
 
         it 'works as expected' do
           subject.perform
-          expect(split_times.map(&:data_status)).to eq(['good'] * 6 + ['bad'] + ['good'] * 5)
+          expect(subject_split_times.map(&:data_status)).to eq(['good'] * 4 + ['bad'] + ['good'])
           expect(effort.data_status).to eq('bad')
         end
       end

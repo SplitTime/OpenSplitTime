@@ -6,15 +6,18 @@ RSpec.describe IntendedTimeCalculator do
   subject { IntendedTimeCalculator.new(effort: effort,
                                        military_time: military_time,
                                        time_point: time_point,
-                                       prior_valid_split_time: prior_valid_split_time,
-                                       expected_time_from_prior: expected_time_from_prior) }
-  let(:effort) { build_stubbed(:effort) }
-  let(:time_point) { TimePoint.new(1, 45, 1) }
+                                       prior_valid_split_time: prior_valid_split_time) }
+  let(:event) { effort.event }
+  let(:home_time_zone) { event.home_time_zone }
+  let(:start_time) { event.start_time }
+  let(:time_points) { event.required_time_points }
+  let(:time_point) { time_points.second }
   let(:military_time) { '15:30:45' }
-  let(:prior_valid_split_time) { SplitTime.new }
-  let(:expected_time_from_prior) { 0 }
+  let(:prior_valid_split_time) { effort.ordered_split_times.last }
 
   describe '#initialize' do
+    let(:effort) { efforts(:hardrock_2014_not_started) }
+
     context 'with a military time, an effort, and a sub_split in an args hash' do
       it 'initializes' do
         expect { subject }.not_to raise_error
@@ -31,6 +34,8 @@ RSpec.describe IntendedTimeCalculator do
 
     context 'when no effort is given' do
       let(:effort) { nil }
+      let(:time_point) { TimePoint.new(1, 101, 1) }
+      let(:prior_valid_split_time) { SplitTime.new }
 
       it 'raises an ArgumentError' do
         expect { subject }.to raise_error(/must include effort/)
@@ -47,18 +52,12 @@ RSpec.describe IntendedTimeCalculator do
   end
 
   describe '#absolute_time_local' do
-    let(:effort) { build_stubbed(:effort, event: event, id: 101) }
-    let(:event) { build_stubbed(:event, home_time_zone: 'Mountain Time (US & Canada)', start_time_local: '2016-07-01 06:00:00') }
-    let(:home_time_zone) { event.home_time_zone }
-    let(:start_time) { event.start_time }
-    let(:time_point) { TimePoint.new(1, 44, 1) }
-    let(:prior_valid_split_time) { build_stubbed(:split_time, time_point: time_point, absolute_time: start_time) }
     let(:expected_time) { ActiveSupport::TimeZone[home_time_zone].parse(expected_time_string) }
 
-    before { FactoryBot.reload }
-
     context 'if military_time provided is blank' do
+      let(:effort) { efforts(:hardrock_2014_not_started) }
       let(:military_time) { '' }
+      let(:time_point) { event.required_time_points.second }
 
       it 'returns nil' do
         expect(subject.absolute_time_local).to be_nil
@@ -66,10 +65,22 @@ RSpec.describe IntendedTimeCalculator do
     end
 
     context 'for an effort that has not yet started' do
+      let(:effort) { efforts(:hardrock_2014_not_started) }
+
       context 'for a same-day time' do
+        let(:time_point) { event.required_time_points.second }
         let(:military_time) { '9:30:45' }
-        let(:expected_time_from_prior) { 3.hours }
-        let(:expected_time_string) { '2016-07-01 09:30:45' }
+        let(:expected_time_string) { '2014-07-11 09:30:45' }
+
+        it 'calculates the likely intended day and time' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
+
+      context 'for a time extending into the next day' do
+        let(:time_point) { event.required_time_points[7] } # Sherman In
+        let(:military_time) { '10:30:45' }
+        let(:expected_time_string) { '2014-07-12 10:30:45' }
 
         it 'calculates the likely intended day and time' do
           expect(subject.absolute_time_local).to eq(expected_time)
@@ -77,19 +88,9 @@ RSpec.describe IntendedTimeCalculator do
       end
 
       context 'for a multi-day time' do
-        let(:military_time) { '15:30:45' }
-        let(:expected_time_from_prior) { 50.hours }
-        let(:expected_time_string) { '2016-07-03 15:30:45' }
-
-        it 'calculates the likely intended day and time' do
-          expect(subject.absolute_time_local).to eq(expected_time)
-        end
-      end
-
-      context 'for a many-day time' do
-        let(:military_time) { '15:30:45' }
-        let(:expected_time_from_prior) { 100.hours }
-        let(:expected_time_string) { '2016-07-05 15:30:45' }
+        let(:time_point) { event.required_time_points.last } # Finish
+        let(:military_time) { '02:30:45' }
+        let(:expected_time_string) { '2014-07-13 02:30:45' }
 
         it 'calculates the likely intended day and time' do
           expect(subject.absolute_time_local).to eq(expected_time)
@@ -98,100 +99,46 @@ RSpec.describe IntendedTimeCalculator do
     end
 
     context 'for an effort partially underway' do
-      let(:split_times) { build_stubbed_list(:split_times_hardrock_43, 30, effort_id: 101) }
-      let(:time_points) { split_times.map(&:time_point) }
-      let(:splits) { build_stubbed_list(:splits_hardrock_ccw, 16, course_id: 10) }
+      let(:effort) { efforts(:hardrock_2016_progress_sherman) }
 
-      context 'for a short segment' do
-        let(:time_point) { time_points[9] } # Burrows In
-        let(:prior_valid_split_time) { split_times[8] } # Sherman Out
-        let(:expected_time_from_prior) { 1.hour }
+      context 'for a shorter segment and a same-day time' do
+        let(:prior_valid_split_time) { effort.ordered_split_times[2] } # Telluride Out
+        let(:time_point) { time_points[3] } # Ouray In
+        let(:military_time) { '18:00:00' }
+        let(:expected_time_string) { '2016-07-15 18:00:00' }
 
-        context 'for a same-day time' do
-          let(:military_time) { '18:00:00' }
-          let(:expected_time_string) { '2016-07-01 18:00:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
-        end
-
-        context 'for a late evening time' do
-          let(:military_time) { '20:30:00' }
-          let(:expected_time_string) { '2016-07-01 20:30:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
-        end
-
-        context 'for a time that rolls into the next morning' do
-          let(:military_time) { '1:00:00' }
-          let(:expected_time_string) { '2016-07-02 01:00:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
-        end
-
-        context 'for a time well into the next morning' do
-          let(:military_time) { '5:30:00' }
-          let(:expected_time_string) { '2016-07-02 05:30:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
+        it 'calculates the likely intended day and time' do
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
 
-      context 'for a longer segment' do
-        let(:time_point) { time_points[13] } # Engineer In
-        let(:prior_valid_split_time) { split_times[8] } # Sherman Out
-        let(:expected_time_from_prior) { 8.hours }
+      context 'for a shorter segment with a time that rolls into the next morning' do
+        let(:prior_valid_split_time) { effort.ordered_split_times[6] } # Grouse Out
+        let(:time_point) { time_points[7] } # Sherman In
+        let(:military_time) { '1:00:00' }
+        let(:expected_time_string) { '2016-07-16 01:00:00' }
 
-        context 'for a time near midnight' do
-          let(:military_time) { '23:30:00' }
-          let(:expected_time_string) { '2016-07-01 23:30:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
+        it 'calculates the likely intended day and time' do
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
+      end
 
-        context 'for a time past midnight the next day' do
-          let(:military_time) { '00:30:00' }
-          let(:expected_time_string) { '2016-07-02 00:30:00' }
+      context 'for a long segment with a time well into the next day' do
+        let(:prior_valid_split_time) { effort.ordered_split_times[2] } # Telluride Out
+        let(:time_point) { time_points[9] } # Cunningham In
+        let(:military_time) { '15:00:00' }
+        let(:expected_time_string) { '2016-07-16 15:00:00' }
 
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
-        end
-
-        context 'for a time in the early morning the next day' do
-          let(:military_time) { '5:30:00' }
-          let(:expected_time_string) { '2016-07-02 05:30:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
-        end
-
-        context 'for a time in the mid morning the next day' do
-          let(:military_time) { '9:30:00' }
-          let(:expected_time_string) { '2016-07-02 09:30:00' }
-
-          it 'calculates the likely intended day and time' do
-            expect(subject.absolute_time_local).to eq(expected_time)
-          end
+        it 'calculates the likely intended day and time' do
+          expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
 
       context 'when the calculated time is more than three hours before the prior valid time' do
-        let(:time_point) { time_points[1] } # Cunningham In
-        let(:prior_valid_split_time) { split_times[0] } # Start
-        let(:expected_time_from_prior) { 2.5.hours }
-        let(:military_time) { '02:30:00' } # Expected time is roughly 08:30 on 7/1, so this would normally be interpreted as 02:30 on 7/1
-        let(:expected_time_string) { '2016-07-02 02:30:00' }
+        let(:prior_valid_split_time) { effort.ordered_split_times[0] } # Start
+        let(:time_point) { time_points[1] } # Telluride In
+        let(:military_time) { '02:30:00' } # Expected time is roughly 14:00 on 7/15, so this would normally be interpreted as 02:30 on 7/15
+        let(:expected_time_string) { '2016-07-16 02:30:00' }
 
         it 'adds a day' do
           expect(subject.absolute_time_local).to eq(expected_time)

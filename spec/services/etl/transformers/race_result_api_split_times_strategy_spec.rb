@@ -15,12 +15,8 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
     let(:start_time) { event.start_time }
 
     context 'when event is present and splits count matches split fields count' do
-      before do
-        _, time_points = lap_splits_and_time_points(event)
-        allow(event).to receive(:required_time_points).and_return(time_points)
-      end
-
-      let(:event) { build_stubbed(:event_with_standard_splits, start_time_local: '2018-10-31 07:00:00', in_sub_splits_only: true, splits_count: 7) }
+      let(:event) { events(:ggd30_50k) }
+      before { event.update(start_time_local: '2018-10-31 07:00:00') }
       let(:time_points) { event.required_time_points }
       let(:parsed_structs) { [
           OpenStruct.new(time_0: '7:05:05 AM',
@@ -234,12 +230,7 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
     end
 
     context 'when event time_points do not match the provided segment times' do
-      before do
-        _, time_points = lap_splits_and_time_points(event)
-        allow(event).to receive(:required_time_points).and_return(time_points)
-      end
-
-      let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 6) }
+      let(:event) { events(:ramble) }
       let(:parsed_structs) { [OpenStruct.new(time_0: '7:05:05 AM',
                                              time_1: '8:05:19 AM',
                                              time_2: '8:50:50 AM',

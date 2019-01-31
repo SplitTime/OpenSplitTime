@@ -110,9 +110,7 @@ RSpec.describe Persist::BulkUpsert do
       before { resources.second.assign_attributes(id: nil, slug: nil, first_name: 'Another', last_name: 'User', email: 'another@user.com') }
 
       it 'builds slugs and creates new records, ignoring the update_fields option' do
-        expect(User.count).to eq(3)
-        subject.perform!
-        expect(User.count).to eq(5)
+        expect { subject.perform! }.to change { User.count }.by(2)
         resources.each(&:reload)
         expect(resources.pluck(:email)).to include(*%w(test@user.com another@user.com))
         expect(resources.pluck(:slug)).to include(*%w(test-user another-user))

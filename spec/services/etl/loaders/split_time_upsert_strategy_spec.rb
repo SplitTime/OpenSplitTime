@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
-  let(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7) }
+  let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.start_time }
-  let(:splits) { event.ordered_splits }
-  let(:split_ids) { splits.map(&:id) }
+  let(:subject_splits) { event.ordered_splits }
+  let(:split_ids) { subject_splits.map(&:id) }
   let(:invalid_split_id) { 0 }
 
   let(:valid_proto_records) { [
@@ -71,9 +71,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'does not import any records and places all parent records into ignored_records' do
-        subject.load_records
-        expect(Effort.count).to eq(0)
-        expect(SplitTime.count).to eq(0)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
         expect(subject.ignored_records.size).to eq(3)
       end
     end
@@ -84,21 +82,19 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       let!(:effort_3) { create(:effort, event: event, bib_number: valid_proto_records.third[:bib_number]) }
 
       it 'assigns attributes and saves new child records' do
-        split_times = SplitTime.all
-        expect(split_times.size).to eq(0)
-        subject.load_records
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(7)
+        subject_split_times = SplitTime.last(7)
 
-        expect(split_times.size).to eq(7)
-        expect(split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(split_times.size).sort)
-        expect(split_times.map(&:time_from_start)).to eq([0, 2581, 6308, 9463, 13571, 16655, 17736])
-        expect(split_times.map(&:effort_id)).to all eq(effort_1.id)
-        expect(split_times.map(&:created_by)).to all eq(options[:current_user_id])
+        expect(subject_split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(subject_split_times.size).sort)
+        expect(subject_split_times.map(&:time_from_start)).to eq([0, 2581, 6308, 9463, 13571, 16655, 17736])
+        expect(subject_split_times.map(&:effort_id)).to all eq(effort_1.id)
+        expect(subject_split_times.map(&:created_by)).to all eq(options[:current_user_id])
       end
 
       it 'returns saved parent records in the saved_records array' do
         subject.load_records
         expect(subject.saved_records.size).to eq(2)
-        expect(subject.saved_records.map(&:id)).to match_array(Effort.all.ids)
+        expect(subject.saved_records.map(&:id)).to match_array([effort_1.id, effort_3.id])
       end
 
       it 'returns unsaved parent records in the ignored_records array' do
@@ -120,16 +116,12 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and updates provided fields' do
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(2)
         existing_effort.reload
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 1000].map { |e| start_time + e })
 
-        subject.load_records
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(5)
 
         expect(subject.saved_records.size).to eq(1)
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(7)
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 2581, 6308, 9463, 13571, 16655, 17736].map { |e| start_time + e })
       end
     end
@@ -155,13 +147,9 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'finds existing records based on a unique key and deletes times where blanks exist' do
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(5)
         existing_effort.reload
         expect(existing_effort.ordered_split_times.pluck(:absolute_time)).to eq([0, 1000, 2000, 3000, 4000].map { |e| start_time + e })
-        subject.load_records
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(3)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(-2)
         existing_effort.reload
         expect(existing_effort.ordered_split_times.pluck(:absolute_time)).to eq([0, 4916, 14398].map { |e| start_time + e })
       end
@@ -179,16 +167,12 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it 'sets the stop on the last split_time' do
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(2)
         existing_effort.reload
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 1000].map { |e| start_time + e })
 
-        subject.load_records
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(1)
 
         expect(subject.saved_records.size).to eq(1)
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(3)
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 4916, 14398].map { |e| start_time + e })
         expect(existing_effort.split_times.pluck(:stopped_here)).to match_array([false, false, true])
       end
@@ -206,11 +190,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(proto_with_invalid_child, options) }
 
       it 'does not create any child records for the related parent record' do
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(2)
-        subject.load_records
-        expect(Effort.count).to eq(1)
-        expect(SplitTime.count).to eq(2)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
       end
 
       it 'includes invalid records in the invalid_records array' do

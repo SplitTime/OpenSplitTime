@@ -44,7 +44,7 @@ hardrock_2015_miktest_footest_finish_1:
   lap: 1
   stopped_here: true
   absolute_time: '2015-07-11 13:45:00'
-sum_100k_progress_rolling_molas_pass_aid1_in_1:
+sum_100k_progress_cascade_molas_pass_aid1_in_1:
   id: 192698
   effort_id: 16248
   split_id: 206
@@ -59,7 +59,7 @@ sum_100k_progress_rolling_molas_pass_aid1_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-09-23 15:20:00'
-sum_100k_progress_rolling_molas_pass_aid1_out_1:
+sum_100k_progress_cascade_molas_pass_aid1_out_1:
   id: 192699
   effort_id: 16248
   split_id: 206
@@ -74,7 +74,7 @@ sum_100k_progress_rolling_molas_pass_aid1_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-09-23 15:25:00'
-sum_100k_progress_rolling_start_1:
+sum_100k_progress_cascade_start_1:
   id: 192697
   effort_id: 16248
   split_id: 204
@@ -149,7 +149,7 @@ hardrock_2015_kevtest_doutest_telluride_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2015-07-11 11:45:00'
-sum_100k_progress_rolling_rolling_pass_aid2_in_1:
+sum_100k_progress_cascade_rolling_pass_aid2_in_1:
   id: 192700
   effort_id: 16248
   split_id: 207
@@ -164,7 +164,7 @@ sum_100k_progress_rolling_rolling_pass_aid2_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-09-23 17:11:00'
-sum_100k_progress_rolling_rolling_pass_aid2_out_1:
+sum_100k_progress_cascade_rolling_pass_aid2_out_1:
   id: 192701
   effort_id: 16248
   split_id: 207
@@ -479,6 +479,36 @@ rufa_2017_12h_finished_first_finish_7:
   lap: 7
   stopped_here: true
   absolute_time: '2017-02-12 01:35:12'
+sum_100k_progress_cascade_cascade_creek_rd_aid3_in_1:
+  id: 192703
+  effort_id: 16248
+  split_id: 208
+  data_status: 
+  created_at: '2019-02-01 05:48:31.485426'
+  updated_at: '2019-02-01 05:48:31.485426'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 19:50:00'
+sum_100k_progress_cascade_cascade_creek_rd_aid3_out_1:
+  id: 192704
+  effort_id: 16248
+  split_id: 208
+  data_status: 
+  created_at: '2019-02-01 05:48:31.488018'
+  updated_at: '2019-02-01 05:48:31.488018'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 20:14:00'
 rufa_2017_12h_finished_lap6_start_1:
   id: 192278
   effort_id: 16648

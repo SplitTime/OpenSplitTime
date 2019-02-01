@@ -27,6 +27,20 @@ rufa_2016:
   slug: rufa-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+dirty_30:
+  id: 27
+  name: Dirty 30
+  organization_id: 15
+  available_live: true
+  auto_live_times: false
+  concealed: false
+  created_at: '2017-09-18 04:35:22.472119'
+  updated_at: '2019-02-01 03:16:00.099678'
+  created_by: 1
+  updated_by: 1
+  slug: dirty-30
+  data_entry_grouping_strategy: 1
+  monitor_pacers: false
 hardrock_2016:
   id: 28
   name: Hardrock 2016
@@ -54,20 +68,6 @@ ramble:
   updated_by: 1
   slug: ramble
   data_entry_grouping_strategy: 0
-  monitor_pacers: false
-dirty_30:
-  id: 27
-  name: Dirty 30
-  organization_id: 15
-  available_live: true
-  auto_live_times: false
-  concealed: true
-  created_at: '2017-09-18 04:35:22.472119'
-  updated_at: '2019-01-28 11:21:32.36317'
-  created_by: 1
-  updated_by: 1
-  slug: dirty-30
-  data_entry_grouping_strategy: 1
   monitor_pacers: false
 sum:
   id: 32

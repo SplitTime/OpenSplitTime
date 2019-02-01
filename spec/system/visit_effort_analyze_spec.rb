@@ -3,16 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'visit an effort analyze page' do
-  let(:user) { users(:third_user) }
-  let(:owner) { users(:fourth_user) }
-  let(:steward) { users(:fifth_user) }
-  let(:admin) { users(:admin_user) }
-
-  before do
-    organization.update(created_by: owner.id)
-    organization.stewards << steward
-  end
-
   let(:event) { events(:hardrock_2014) }
   let(:organization) { event.organization }
 
@@ -23,39 +13,30 @@ RSpec.describe 'visit an effort analyze page' do
   context 'When the effort is finished' do
     let(:effort) { completed_effort }
 
-    scenario 'For a visitor and each type of user' do
-      [nil, user, owner, steward, admin].each do |role|
-        login_as role if role
-        visit analyze_effort_path(effort)
-        verify_page_header
-        verify_split_names
-      end
+    scenario 'Visit the page' do
+      visit analyze_effort_path(effort)
+      verify_page_header
+      verify_split_names
     end
   end
 
   context 'when the effort is partially finished' do
     let(:effort) { in_progress_effort }
 
-    scenario 'For a visitor and each type of user' do
-      [nil, user, owner, steward, admin].each do |role|
-        login_as role if role
-        visit analyze_effort_path(effort)
-        verify_page_header
-        verify_split_names
-      end
+    scenario 'Visit the page' do
+      visit analyze_effort_path(effort)
+      verify_page_header
+      verify_split_names
     end
   end
 
   context 'when the effort is not started' do
     let(:effort) { unstarted_effort }
 
-    scenario 'For a visitor and each type of user' do
-      [nil, user, owner, steward, admin].each do |role|
-        login_as role if role
-        visit analyze_effort_path(effort)
-        verify_page_header
-        expect(page).to have_text('Cannot analyze an unstarted effort')
-      end
+    scenario 'Visit the page' do
+      visit analyze_effort_path(effort)
+      verify_page_header
+      expect(page).to have_text('Cannot analyze an unstarted effort')
     end
   end
 

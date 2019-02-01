@@ -14,27 +14,21 @@ RSpec.describe 'User logs in with modal', js: true do
     visit organizations_path
 
     login_with_modal(email, password)
-
-    expect(page).to have_content(user.email)
-    expect(page).to have_current_path(organizations_path)
+    verify_valid
   end
 
   scenario 'with invalid email' do
     visit organizations_path
 
     login_with_modal(invalid_email, password)
-
-    expect(page).to have_content(:all, 'Invalid email or password')
-    expect(page).to have_current_path(organizations_path)
+    verify_invalid
   end
 
   scenario 'with invalid password' do
     visit organizations_path
 
     login_with_modal(email, invalid_password)
-
-    expect(page).to have_content(:all, 'Invalid email or password')
-    expect(page).to have_current_path(organizations_path)
+    verify_invalid
   end
 
   def login_with_modal(email, password)
@@ -47,5 +41,15 @@ RSpec.describe 'User logs in with modal', js: true do
       fill_in 'Password', with: password
       click_button 'Log in'
     end
+  end
+
+  def verify_valid
+    expect(page).to have_content(user.email)
+    expect(page).to have_current_path(organizations_path)
+  end
+
+  def verify_invalid
+    expect(page).to have_content(:all, 'Invalid email or password')
+    expect(page).to have_current_path(organizations_path)
   end
 end

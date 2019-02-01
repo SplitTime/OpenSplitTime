@@ -1,15 +1,1 @@
----
-stewardship_18:
-  id: 18
-  user_id: 3
-  organization_id: 4
-  created_at: '2017-02-17 07:36:41.340854'
-  updated_at: '2017-02-17 07:36:41.340854'
-  level: 0
-stewardship_20:
-  id: 20
-  user_id: 3
-  organization_id: 15
-  created_at: '2019-01-25 22:41:13.639613'
-  updated_at: '2019-01-25 22:41:13.639613'
-  level: 0
+--- {}

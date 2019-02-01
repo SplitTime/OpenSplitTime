@@ -21,9 +21,9 @@ RSpec.describe 'Search the person index' do
     fill_in 'First name, last name, state, or country', with: visible_person_1.name
     click_button 'person-lookup-submit'
 
-    expect(page).to have_content(visible_person_1.name)
-    expect(page).not_to have_content(visible_person_2.name)
-    expect(page).not_to have_content(concealed_person.name)
+    verify_link_present(visible_person_1)
+    verify_content_absent(visible_person_2)
+    verify_content_absent(concealed_person)
   end
 
   scenario 'The user is a visitor searching for a concealed person' do
@@ -31,9 +31,9 @@ RSpec.describe 'Search the person index' do
     fill_in 'First name, last name, state, or country', with: concealed_person.name
     click_button 'person-lookup-submit'
 
-    expect(page).not_to have_content(visible_person_1.name)
-    expect(page).not_to have_content(visible_person_2.name)
-    expect(page).not_to have_content(concealed_person.name)
+    verify_content_absent(visible_person_1)
+    verify_content_absent(visible_person_2)
+    verify_content_absent(concealed_person)
   end
 
   scenario 'The user is a user searching for a visible person' do
@@ -43,9 +43,9 @@ RSpec.describe 'Search the person index' do
     fill_in 'First name, last name, state, or country', with: visible_person_1.name
     click_button 'person-lookup-submit'
 
-    expect(page).to have_content(visible_person_1.name)
-    expect(page).not_to have_content(visible_person_2.name)
-    expect(page).not_to have_content(concealed_person.name)
+    verify_link_present(visible_person_1)
+    verify_content_absent(visible_person_2)
+    verify_content_absent(concealed_person)
   end
 
   scenario 'The user is a user searching for a concealed person that is not visible to the user' do
@@ -55,9 +55,9 @@ RSpec.describe 'Search the person index' do
     fill_in 'First name, last name, state, or country', with: concealed_person.name
     click_button 'person-lookup-submit'
 
-    expect(page).not_to have_content(visible_person_1.name)
-    expect(page).not_to have_content(visible_person_2.name)
-    expect(page).not_to have_content(concealed_person.name)
+    verify_content_absent(visible_person_1)
+    verify_content_absent(visible_person_2)
+    verify_content_absent(concealed_person)
   end
 
   scenario 'The user is a user searching for a concealed person that is visible to the user' do
@@ -67,8 +67,8 @@ RSpec.describe 'Search the person index' do
     fill_in 'First name, last name, state, or country', with: concealed_person.name
     click_button 'person-lookup-submit'
 
-    expect(page).not_to have_content(visible_person_1.name)
-    expect(page).not_to have_content(visible_person_2.name)
-    expect(page).to have_content(concealed_person.name)
+    verify_content_absent(visible_person_1)
+    verify_content_absent(visible_person_2)
+    verify_link_present(concealed_person)
   end
 end

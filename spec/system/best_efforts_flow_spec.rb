@@ -19,17 +19,13 @@ RSpec.describe 'Visit the best efforts page and search for an effort' do
     expect(page).to have_content(course.name)
     finished_efforts = event.efforts.ranked_with_status.select(&:finished)
 
-    finished_efforts.each do |effort|
-      expect(page).to have_content(effort.full_name)
-    end
+    finished_efforts.each { |effort| verify_link_present(effort, :full_name) }
 
     fill_in 'First name, last name, state, or country', with: effort_1.name
     click_button 'search-submit'
     wait_for_css
 
-    expect(page).to have_content(effort_1.name)
-    other_efforts.each do |effort|
-      expect(page).not_to have_content(effort.name)
-    end
+    verify_link_present(effort_1)
+    other_efforts.each { |effort| verify_content_absent(effort) }
   end
 end

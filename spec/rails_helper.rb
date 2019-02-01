@@ -87,6 +87,7 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :system
 
   config.extend ControllerMacros, type: :controller
+  config.include CapybaraLinkHelpers, type: :system
 
   config.include StripAttributes::Matchers
 

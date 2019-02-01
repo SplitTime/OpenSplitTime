@@ -12,10 +12,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     fill_in 'hh:mm', with: '38:00'
     click_button 'Create my plan'
 
-    expect(page).to have_content(course.name)
-    course.splits.each do |split|
-      expect(page).to have_content(split.base_name)
-    end
+    verify_page_content
   end
 
   scenario 'The user is a user' do
@@ -25,10 +22,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     fill_in 'hh:mm', with: '38:00'
     click_button 'Create my plan'
 
-    expect(page).to have_content(course.name)
-    course.splits.each do |split|
-      expect(page).to have_content(split.base_name)
-    end
+    verify_page_content
   end
 
   scenario 'The user is an admin' do
@@ -38,10 +32,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     fill_in 'hh:mm', with: '38:00'
     click_button 'Create my plan'
 
-    expect(page).to have_content(course.name)
-    course.splits.each do |split|
-      expect(page).to have_content(split.base_name)
-    end
+    verify_page_content
   end
 
   scenario 'The user enters a time outside the normal scope' do
@@ -49,7 +40,7 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     fill_in 'hh:mm', with: '18:00'
     click_button 'Create my plan'
 
-    expect(page).to have_content(course.name)
+    verify_content_present(course)
     expect(page).to have_content('Insufficient data to create a plan.')
   end
 
@@ -57,6 +48,12 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
     course = create(:course)
     visit plan_effort_course_path(course)
 
+    verify_content_present(course)
     expect(page).to have_content('No events have been held on this course.')
+  end
+
+  def verify_page_content
+    verify_content_present(course)
+    course.splits.each { |split| verify_content_present(split, :base_name) }
   end
 end

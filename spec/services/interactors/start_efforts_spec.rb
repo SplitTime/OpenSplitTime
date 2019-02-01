@@ -12,7 +12,7 @@ RSpec.describe Interactors::StartEfforts do
 
     context 'when all provided efforts are valid' do
       context 'when no efforts have a starting split time' do
-        let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_not_started)] }
+        let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_un_started)] }
 
         context 'when start_time is provided as a string with no time zone' do
           let(:start_time) { '2017-09-23 08:00:00' }
@@ -109,7 +109,7 @@ RSpec.describe Interactors::StartEfforts do
       end
 
       context 'when one effort has an existing starting split time' do
-        let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_progress_rolling)] }
+        let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_progress_cascade)] }
         let(:start_time) { '2017-09-23 08:00:00' }
 
         it 'creates starting split_times only for the effort that needs one, and returns a successful response' do

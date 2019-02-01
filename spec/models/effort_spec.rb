@@ -521,6 +521,8 @@ RSpec.describe Effort, type: :model do
     let(:visible_efforts) { Effort.joins(:event).where.not(events: {event_group_id: concealed_event_group.id}).first(5) }
     let(:concealed_efforts) { Effort.joins(:event).where(events: {event_group_id: concealed_event_group.id}).first(5) }
 
+    before { concealed_event_group.update(concealed: true) }
+
     describe '.concealed' do
       it 'limits the subject scope to efforts whose event_group is concealed' do
         visible_efforts.each { |effort| expect(Effort.concealed).not_to include(effort) }

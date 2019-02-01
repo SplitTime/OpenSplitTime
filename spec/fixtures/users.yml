@@ -28,6 +28,35 @@ fifth_user:
   phone: "+13038806481"
   http_endpoint: 
   https_endpoint: 
+admin_user:
+  id: 1
+  first_name: Admin
+  last_name: User
+  role: 1
+  provider: 
+  uid: 
+  email: user@example.com
+  encrypted_password: "$2a$10$jhYkzuAbTVmMbK60m85zZ.K/bEMxQ.Qfqy7nDxmWsOvno7wvWrkTq"
+  reset_password_token: c8b8b7024cb8e95502ac89fe88ecb15e54a316d78c25c08654246111169c4fef
+  reset_password_sent_at: '2018-08-28 22:14:57.732468'
+  remember_created_at: 
+  sign_in_count: 220
+  current_sign_in_at: '2019-02-01 05:44:32.660298'
+  last_sign_in_at: '2019-02-01 00:55:14.80839'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  confirmation_token: 
+  confirmed_at: '2016-04-16 19:25:07.374438'
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  created_at: '2016-04-16 19:25:07.455868'
+  updated_at: '2019-02-01 05:44:32.661372'
+  pref_distance_unit: 0
+  pref_elevation_unit: 0
+  slug: admin-user
+  phone: "+13038806481"
+  http_endpoint: 
+  https_endpoint: 
 third_user:
   id: 3
   first_name: Third
@@ -84,34 +113,5 @@ fourth_user:
   pref_elevation_unit: 0
   slug: fourth-user
   phone: 
-  http_endpoint: 
-  https_endpoint: 
-admin_user:
-  id: 1
-  first_name: Admin
-  last_name: User
-  role: 1
-  provider: 
-  uid: 
-  email: user@example.com
-  encrypted_password: "$2a$10$jhYkzuAbTVmMbK60m85zZ.K/bEMxQ.Qfqy7nDxmWsOvno7wvWrkTq"
-  reset_password_token: c8b8b7024cb8e95502ac89fe88ecb15e54a316d78c25c08654246111169c4fef
-  reset_password_sent_at: '2018-08-28 22:14:57.732468'
-  remember_created_at: 
-  sign_in_count: 218
-  current_sign_in_at: '2019-01-25 22:45:56.794088'
-  last_sign_in_at: '2019-01-25 22:44:04.177554'
-  current_sign_in_ip: 127.0.0.1
-  last_sign_in_ip: 127.0.0.1
-  confirmation_token: 
-  confirmed_at: '2016-04-16 19:25:07.374438'
-  confirmation_sent_at: 
-  unconfirmed_email: 
-  created_at: '2016-04-16 19:25:07.455868'
-  updated_at: '2019-01-28 06:12:57.030978'
-  pref_distance_unit: 0
-  pref_elevation_unit: 0
-  slug: admin-user
-  phone: "+13038806481"
   http_endpoint: 
   https_endpoint: 

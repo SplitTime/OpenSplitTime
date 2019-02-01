@@ -38,8 +38,6 @@ RSpec.describe 'User logs in with modal', js: true do
   end
 
   def login_with_modal(email, password)
-    sleep 10
-
     within('.navbar') do
       click_link 'Log In'
     end
@@ -47,12 +45,7 @@ RSpec.describe 'User logs in with modal', js: true do
     within('#log-in-modal') do
       fill_in 'Email', with: email
       fill_in 'Password', with: password
-
-      sleep 5
-
       click_button 'Log in'
-
-      sleep 5
     end
   end
 end

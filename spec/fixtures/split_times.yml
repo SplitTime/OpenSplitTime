@@ -5174,7 +5174,7 @@ hardrock_2014_ryatest_martest_sherman_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 18:37:00'
-hardrock_2014_rictest_peatest_telluride_in_1:
+hardrock_2014_progress_sherman_telluride_in_1:
   id: 94160
   effort_id: 4277
   split_id: 87
@@ -5189,7 +5189,7 @@ hardrock_2014_rictest_peatest_telluride_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-11 23:07:00'
-hardrock_2014_rictest_peatest_telluride_out_1:
+hardrock_2014_progress_sherman_telluride_out_1:
   id: 94161
   effort_id: 4277
   split_id: 87
@@ -5204,7 +5204,7 @@ hardrock_2014_rictest_peatest_telluride_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-11 23:16:00'
-hardrock_2014_rictest_peatest_ouray_in_1:
+hardrock_2014_progress_sherman_ouray_in_1:
   id: 94166
   effort_id: 4277
   split_id: 93
@@ -5219,7 +5219,7 @@ hardrock_2014_rictest_peatest_ouray_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 05:57:59'
-hardrock_2014_rictest_peatest_grouse_out_1:
+hardrock_2014_progress_sherman_grouse_out_1:
   id: 94171
   effort_id: 4277
   split_id: 97
@@ -5234,7 +5234,7 @@ hardrock_2014_rictest_peatest_grouse_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 14:06:00'
-hardrock_2014_rictest_peatest_sherman_in_1:
+hardrock_2014_progress_sherman_sherman_in_1:
   id: 94174
   effort_id: 4277
   split_id: 101
@@ -14609,7 +14609,7 @@ hardrock_2014_ryatest_martest_finish_1:
   lap: 1
   stopped_here: true
   absolute_time: '2014-07-13 10:23:44'
-hardrock_2014_rictest_peatest_start_1:
+hardrock_2014_progress_sherman_start_1:
   id: 94155
   effort_id: 4277
   split_id: 81
@@ -14624,7 +14624,7 @@ hardrock_2014_rictest_peatest_start_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-11 12:00:00'
-hardrock_2014_rictest_peatest_ouray_out_1:
+hardrock_2014_progress_sherman_ouray_out_1:
   id: 94167
   effort_id: 4277
   split_id: 93
@@ -14639,7 +14639,7 @@ hardrock_2014_rictest_peatest_ouray_out_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 06:16:00'
-hardrock_2014_rictest_peatest_grouse_in_1:
+hardrock_2014_progress_sherman_grouse_in_1:
   id: 94170
   effort_id: 4277
   split_id: 97
@@ -14654,7 +14654,7 @@ hardrock_2014_rictest_peatest_grouse_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2014-07-12 13:40:00'
-hardrock_2014_rictest_peatest_sherman_out_1:
+hardrock_2014_progress_sherman_sherman_out_1:
   id: 94175
   effort_id: 4277
   split_id: 101

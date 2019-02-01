@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 include BitkeyDefinitions
-include FeatureMacros
 
 RSpec.describe SplitTimeQuery do
   let(:lap_1) { 1 }

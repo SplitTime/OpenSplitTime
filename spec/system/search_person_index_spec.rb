@@ -8,11 +8,13 @@ require 'rails_helper'
 # rails db:structure:load RAILS_ENV=test
 
 RSpec.describe 'Search the person index' do
-  let(:user) { create(:user) }
-  let(:admin) { create(:admin) }
-  let!(:visible_person_1) { create(:person, concealed: false) }
-  let!(:visible_person_2) { create(:person, concealed: false) }
-  let!(:concealed_person) { create(:person, concealed: true) }
+  let(:user) { users(:third_user) }
+  let(:admin) { users(:admin_user) }
+  let!(:visible_person_1) { people.sort_by(&:last_name).first }
+  let!(:visible_person_2) { people.sort_by(&:last_name).second }
+  let!(:concealed_person) { people.sort_by(&:last_name).last }
+
+  before { concealed_person.update(concealed: true) }
 
   scenario 'The user is a visitor searching for a visible person' do
     visit people_path

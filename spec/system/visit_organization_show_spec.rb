@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Visit an organization show page and try various features' do
-  let(:user) { create(:user) }
+  let(:user) { users(:third_user) }
   let(:owner) { create(:user) }
   let(:steward) { create(:user) }
-  let(:admin) { create(:admin) }
+  let(:admin) { users(:admin_user) }
   let!(:visible_event_1) { create(:event, event_group: visible_event_group) }
   let!(:visible_event_2) { create(:event, event_group: visible_event_group) }
   let!(:concealed_event_1) { create(:event, event_group: concealed_event_group) }

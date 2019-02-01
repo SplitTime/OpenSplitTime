@@ -1791,6 +1791,38 @@ hardrock_2014_multiple_stops:
   emergency_contact: 
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_progress_sherman:
+  id: 4277
+  event_id: 17
+  person_id: 289
+  wave: 
+  bib_number: 166
+  city: 
+  state_code: CO
+  age: 61
+  created_at: '2016-05-24 03:02:37.144241'
+  updated_at: '2019-01-31 23:49:47.088399'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Sherman
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-progress-sherman
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
 hardrock_2014_without_start:
   id: 4294
   event_id: 17
@@ -1815,38 +1847,6 @@ hardrock_2014_without_start:
   phone: 
   email: 
   slug: hardrock-2014-without-start
-  checked_in: false
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-  emergency_contact: 
-  emergency_phone: 
-  scheduled_start_time: '2014-07-11 12:00:00'
-hardrock_2014_rictest_peatest:
-  id: 4277
-  event_id: 17
-  person_id: 289
-  wave: 
-  bib_number: 166
-  city: 
-  state_code: CO
-  age: 61
-  created_at: '2016-05-24 03:02:37.144241'
-  updated_at: '2019-01-28 08:58:27.644128'
-  created_by: 1
-  updated_by: 1
-  first_name: Rictest
-  last_name: Peatest
-  gender: 0
-  country_code: US
-  birthdate: 
-  data_status: 2
-  beacon_url: 
-  report_url: 
-  phone: 
-  email: 
-  slug: hardrock-2014-rictest-peatest
   checked_in: false
   photo_file_name: 
   photo_content_type: 

@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include FeatureMacros
 
 RSpec.describe 'visit the plan efforts page and plan an effort' do
-  let(:user) { create(:user) }
-  let(:admin) { create(:admin) }
+  let(:user) { users(:third_user) }
+  let(:admin) { users(:admin_user) }
   let(:course) { courses(:hardrock_ccw) }
 
   scenario 'The user is a visitor' do
@@ -21,6 +20,19 @@ RSpec.describe 'visit the plan efforts page and plan an effort' do
 
   scenario 'The user is a user' do
     login_as user, scope: :user
+
+    visit plan_effort_course_path(course)
+    fill_in 'hh:mm', with: '38:00'
+    click_button 'Create my plan'
+
+    expect(page).to have_content(course.name)
+    course.splits.each do |split|
+      expect(page).to have_content(split.base_name)
+    end
+  end
+
+  scenario 'The user is an admin' do
+    login_as admin, scope: :user
 
     visit plan_effort_course_path(course)
     fill_in 'hh:mm', with: '38:00'

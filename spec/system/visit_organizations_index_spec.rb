@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Visit the organizations index' do
-  let(:user) { create(:user) }
+  let(:user) { users(:third_user) }
   let(:owner) { create(:user) }
   let(:steward) { create(:user) }
-  let(:admin) { create(:admin) }
+  let(:admin) { users(:admin_user) }
   let!(:visible_organization) { create(:organization, concealed: false) }
   let!(:concealed_organization) { create(:organization, concealed: true, created_by: owner.id) }
   before do

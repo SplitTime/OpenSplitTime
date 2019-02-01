@@ -3,14 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe 'search the event group index' do
-  let(:user) { create(:user) }
-  let(:admin) { create(:admin) }
-  let!(:visible_event_1) { create(:event, event_group: visible_event_group_1) }
-  let!(:visible_event_2) { create(:event, event_group: visible_event_group_2) }
-  let!(:concealed_event) { create(:event, event_group: concealed_event_group) }
-  let(:visible_event_group_1) { create(:event_group, concealed: false) }
-  let(:visible_event_group_2) { create(:event_group, concealed: false) }
-  let(:concealed_event_group) { create(:event_group, concealed: true) }
+  let(:user) { users(:third_user) }
+  let(:admin) { users(:admin_user) }
+
+  let(:concealed_event_group) { event_groups(:rufa_2017) }
+  let(:concealed_event) { concealed_event_group.events.first }
+  let(:visible_event_groups) { event_groups - [concealed_event_group].sort_by(&:name) }
+  let(:visible_event_group_1) { visible_event_groups.first }
+  let(:visible_event_group_2) { visible_event_groups.second }
+  let(:visible_event_1) { visible_event_group_1.events.first }
+  let(:visible_event_2) { visible_event_group_2.events.first }
+
+  before { concealed_event_group.update(concealed: true) }
 
   scenario 'The user is a visitor searching for a visible event or event group' do
     visit event_groups_path

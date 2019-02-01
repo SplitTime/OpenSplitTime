@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include FeatureMacros
 
 # These tests will fail if the test database is rebuilt using db:schema:load
 # To fix, run the following from the command line:

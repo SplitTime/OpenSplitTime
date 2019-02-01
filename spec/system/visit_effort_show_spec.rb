@@ -1,50 +1,39 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include FeatureMacros
 
 RSpec.describe 'visit an effort show page' do
-  before(:context) do
-    create_hardrock_event
+  let(:user) { users(:third_user) }
+  let(:owner) { users(:fourth_user) }
+  let(:steward) { users(:fifth_user) }
+  let(:admin) { users(:admin_user) }
+
+  before do
+    organization.update(created_by: owner.id)
+    organization.stewards.delete_all
+    organization.stewards << steward
   end
 
-  after(:context) do
-    clean_up_database
-  end
+  let(:event) { events(:hardrock_2014) }
+  let(:organization) { event.organization }
 
-  let(:user) { create(:user) }
-  let(:owner) { create(:user) }
-  let(:steward) { create(:user) }
-  let(:admin) { create(:admin) }
-
-  let(:event) { Event.first }
-  let(:course) { Course.first }
-
-  let(:enriched_efforts) { Effort.ranked_with_status }
-  let(:completed_effort) { enriched_efforts.find(&:finished?) }
-  let(:partial_effort) { enriched_efforts.select(&:started?).reject(&:finished?).first }
-  let(:unstarted_effort) { enriched_efforts.reject(&:started?).first }
+  let(:completed_effort) { efforts(:hardrock_2014_finished_first) }
+  let(:in_progress_effort) { efforts(:hardrock_2014_progress_sherman) }
+  let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
 
   context 'When the effort is finished' do
     let(:effort) { completed_effort }
-    before { expect(effort.split_times.size).to eq(30) }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
@@ -53,58 +42,38 @@ RSpec.describe 'visit an effort show page' do
 
       login_as owner, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
-      event = Event.first
-      organization = event.event_group.organization
-      organization.stewards << steward
-
       login_as steward, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
   end
 
-  context 'when the effort is partially finished' do
-    let(:effort) { partial_effort }
-    before { expect(effort.split_times.size).to eq(15) }
+  context 'When the effort is in progress' do
+    let(:effort) { in_progress_effort }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
@@ -113,58 +82,38 @@ RSpec.describe 'visit an effort show page' do
 
       login_as owner, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
-      event = Event.first
-      organization = event.event_group.organization
-      organization.stewards << steward
-
       login_as steward, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
   end
 
-  context 'when the effort is not started' do
+  context 'When the effort is not started' do
     let(:effort) { unstarted_effort }
-    before { expect(effort.split_times.size).to eq(0) }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a user who did not create the associated event and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).not_to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
@@ -173,35 +122,46 @@ RSpec.describe 'visit an effort show page' do
 
       login_as owner, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
-      event = Event.first
-      organization = event.event_group.organization
-      organization.stewards << steward
-
       login_as steward, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
       visit effort_path(effort)
-
-      expect(page).to have_content(effort.full_name)
-      expect(page).not_to have_link('Analyze', href: analyze_effort_path(effort))
-      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+      verify_page_header
       expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
     end
+  end
+
+
+  def verify_page_header
+    expect(page).to have_content(effort.full_name)
+    expect(page).to have_content('Split times')
+
+    if effort == in_progress_effort
+      expect(page).to have_link('Projections', href: projections_effort_path(effort))
+    else
+      expect(page).not_to have_link('Projections', href: projections_effort_path(effort))
+    end
+
+    if effort == unstarted_effort
+      expect(page).not_to have_link('Analyze times', href: analyze_effort_path(effort))
+      expect(page).not_to have_link('Places + peers', href: place_effort_path(effort))
+    else
+      expect(page).to have_link('Analyze times', href: analyze_effort_path(effort))
+      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
+    end
+  end
+
+  def verify_split_names
+    event.splits.each { |split| expect(page).to have_content(split.base_name) }
   end
 end

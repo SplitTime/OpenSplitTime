@@ -1,22 +1,13 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include FeatureMacros
 
 RSpec.describe 'visit a populated event show page and try various features' do
   context 'when the event has started efforts' do
-    before(:context) do
-      create_hardrock_event
-    end
-
-    after(:context) do
-      clean_up_database
-    end
-
-    let(:user) { create(:user) }
+    let(:user) { users(:third_user) }
     let(:owner) { User.find(event_group.created_by) }
     let(:steward) { User.find(organization.stewards.first.id) }
-    let(:admin) { create(:admin) }
+    let(:admin) { users(:admin_user) }
 
     let(:event) { Event.take }
     let(:event_group) { event.event_group }

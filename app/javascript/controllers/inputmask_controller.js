@@ -18,9 +18,7 @@ export default class extends Controller {
     fill() {
         const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets);
         for (let field of fields) {
-            if (field.value.match(/[^\d:]/)) {
-                field.value = field.value.replace(/[^\d:]/g, '0')
-            }
+            field.value = field.value.replace(/[^\d:]/g, '0')
         }
 
     }

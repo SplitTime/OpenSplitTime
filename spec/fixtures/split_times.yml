@@ -1,4 +1,19 @@
 ---
+hardrock_2016_start_only_start_1:
+  id: 192705
+  effort_id: 7411
+  split_id: 81
+  data_status: 
+  created_at: '2019-02-01 07:23:53.571303'
+  updated_at: '2019-02-01 07:23:53.571303'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2016-07-15 12:00:00'
 hardrock_2015_erich_larson_ouray_in_1:
   id: 58
   effort_id: 8
@@ -7514,21 +7529,6 @@ hardrock_2016_hoyt_macejkovic_ouray_out_1:
   lap: 1
   stopped_here: true
   absolute_time: '2016-07-16 05:46:00'
-hardrock_2016_start_only_start_1:
-  id: 150546
-  effort_id: 7411
-  split_id: 81
-  data_status: 2
-  created_at: '2017-04-18 09:43:45.858095'
-  updated_at: '2017-04-18 09:43:45.858095'
-  created_by: 
-  updated_by: 
-  sub_split_bitkey: 1
-  pacer: 
-  remarks: 
-  lap: 1
-  stopped_here: false
-  absolute_time: '2016-07-15 12:00:00'
 ggd30_50k_finished_first_aid_1_1:
   id: 184082
   effort_id: 15626

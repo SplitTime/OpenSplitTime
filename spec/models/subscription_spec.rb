@@ -9,7 +9,7 @@ require 'rails_helper'
 RSpec.describe Subscription, type: :model do
   subject(:subscription) { Subscription.new(user: user, person: person, protocol: protocol) }
   let(:user) { users(:admin_user) }
-  let(:person) { people(:shatest_mortest) }
+  let(:person) { people(:tuan_jacobs) }
   let(:protocol) { :email }
 
   context 'when created with a user, and person, and a protocol' do

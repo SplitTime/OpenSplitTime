@@ -7,8 +7,8 @@ RSpec.describe Interactors::MergePeople do
 
   describe '.perform!' do
     let(:response) { Interactors::MergePeople.perform!(survivor, target) }
-    let!(:survivor) { people(:settest_weatest) }
-    let!(:target) { people(:cratest_wiltest) }
+    let!(:survivor) { people(:tuan_jacobs) }
+    let!(:target) { people(:major_green) }
     let(:survivor_efforts) { survivor.efforts }
     let(:target_efforts) { target.efforts }
 

@@ -25,10 +25,14 @@
 </header>
 
 <article class="ost-article container">
-  <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style), html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+  <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
+               html: {class: 'form-horizontal',
+                      role: 'form',
+                      data: {controller: 'inputmask',
+                             action: 'submit->inputmask#fill'}}) do |f| %>
     <div class="row">
       <div class="col-sm-6">
-        <table class="table table-condensed table-striped" data-controller="inputmask">
+        <table class="table table-condensed table-striped">
           <thead>
           <th><h4>Split</h4></th>
           <th><h4><%= @presenter.table_header %></h4></th>

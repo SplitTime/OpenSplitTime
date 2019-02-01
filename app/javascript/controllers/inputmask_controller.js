@@ -15,11 +15,14 @@ export default class extends Controller {
         $(this.elapsedTimeTargets).inputmask("99:s:s", maskOptions);
     }
 
-    fill(e) {
-        let field = e.srcElement;
-        if (field.value.match(/[^\d:]/)) {
-            field.value = field.value.replace(/[^\d:]/g, '0')
+    fill() {
+        const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets);
+        for (let field of fields) {
+            if (field.value.match(/[^\d:]/)) {
+                field.value = field.value.replace(/[^\d:]/g, '0')
+            }
         }
+
     }
 
 }

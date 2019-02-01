@@ -97,6 +97,8 @@ RSpec.describe Event, type: :model do
       let(:event) { events(:rufa_2016) }
       let(:event_group) { event_groups(:rufa_2017) }
 
+      before { event.efforts.first.update(bib_number: event_group.efforts.first.bib_number) }
+
       it 'marks the event group as invalid' do
         expect(event).to be_valid
 
@@ -104,7 +106,7 @@ RSpec.describe Event, type: :model do
         # so instead test using the save response.
         response = event.update(event_group: event_group)
         expect(response).to eq(false)
-        expect(event.errors.full_messages).to include(/Bib number 6 is duplicated within the event group/)
+        expect(event.errors.full_messages).to include(/Bib number \d+ is duplicated within the event group/)
       end
     end
 

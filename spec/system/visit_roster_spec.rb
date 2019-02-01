@@ -16,7 +16,7 @@ RSpec.describe 'visit an event group roster page and try various features' do
   let(:event_group) { event_groups(:rufa_2017) }
   let(:organization) { event_group.organization }
   let(:all_efforts) { event_group.efforts }
-  let(:effort_1) { all_efforts.order(:last_name).take }
+  let(:effort_1) { efforts(:rufa_2017_12h_start_only) }
   let(:other_efforts) { all_efforts.where.not(id: effort_1.id) }
 
   scenario 'The user is an admin' do

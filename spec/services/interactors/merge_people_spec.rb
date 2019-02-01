@@ -2,6 +2,9 @@ require 'rails_helper'
 include Interactors::Errors
 
 RSpec.describe Interactors::MergePeople do
+  TEST_ATTRIBUTES = [:birthdate, :country_code, :state_code, :city]
+  TEST_VALUES = [Date.today - 30.years, 'US', 'CO', 'Louisville']
+
   describe '.perform!' do
     let(:response) { Interactors::MergePeople.perform!(survivor, target) }
     let!(:survivor) { people(:settest_weatest) }
@@ -19,9 +22,15 @@ RSpec.describe Interactors::MergePeople do
     end
 
     it 'assigns the attributes of the target to the survivor' do
-      modified_survivor = response.resources[:survivor]
-      [:birthdate, :country_code, :state_code, :city].each do |attribute|
-        expect(modified_survivor[attribute]).to eq(target[attribute])
+      target.update(TEST_ATTRIBUTES.zip(TEST_VALUES).to_h)
+      survivor.update(TEST_ATTRIBUTES.zip([nil]).to_h)
+
+      response
+      survivor.reload
+
+      TEST_ATTRIBUTES.each do |attr|
+        expect(survivor[attr]).to be_present
+        expect(survivor[attr]).to eq(target[attr])
       end
     end
 

@@ -118,7 +118,7 @@ RSpec.describe Interactors::SetEffortStatus do
     end
 
     context 'for a multi-lap event' do
-      let(:effort) { efforts(:rufa_2017_24h_mictest_gartest) }
+      let(:effort) { efforts(:rufa_2017_24h_finished_last) }
 
       context 'when all times are good' do
         it 'sets all data_status attributes to "good"' do

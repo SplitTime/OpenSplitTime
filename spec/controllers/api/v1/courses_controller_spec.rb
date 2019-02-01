@@ -10,13 +10,6 @@ RSpec.describe Api::V1::CoursesController do
     subject(:make_request) { get :index, params: params }
     let(:params) { {} }
 
-    before do
-      create(:course, name: 'Bravo', description: 'Fabulous')
-      create(:course, name: 'Charlie', description: 'Beautiful')
-      create(:course, name: 'Alpha', description: 'Beautiful')
-      create(:course, name: 'Delta', description: 'Gorgeous')
-    end
-
     via_login_and_jwt do
       it 'returns a successful 200 response' do
         make_request
@@ -27,7 +20,6 @@ RSpec.describe Api::V1::CoursesController do
         make_request
         expect(response.status).to eq(200)
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].size).to eq(4)
         expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(Course.all.map(&:id))
       end
 
@@ -36,9 +28,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = %w(Alpha Bravo Charlie Delta)
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('D30 12M Course')
+          expect(names.last).to eq('SUM 55K Course')
         end
       end
 
@@ -47,9 +40,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly in descending order based on the parameter' do
           make_request
-          expected = %w(Delta Charlie Bravo Alpha)
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('SUM 55K Course')
+          expect(names.last).to eq('D30 12M Course')
         end
       end
 
@@ -58,9 +52,10 @@ RSpec.describe Api::V1::CoursesController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = %w(Alpha Charlie Bravo Delta)
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
+          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
+          expect(names.first).to eq('RUFA Course')
+          expect(names.last).to eq('SUM 55K Course')
         end
       end
     end
@@ -115,9 +110,7 @@ RSpec.describe Api::V1::CoursesController do
         end
 
         it 'creates a course record' do
-          expect(Course.all.count).to eq(0)
-          make_request
-          expect(Course.all.count).to eq(1)
+          expect { make_request }.to change { Course.count }.by(1)
         end
       end
     end
@@ -172,9 +165,7 @@ RSpec.describe Api::V1::CoursesController do
         end
 
         it 'destroys the course record' do
-          expect(Course.all.count).to eq(1)
-          make_request
-          expect(Course.all.count).to eq(0)
+          expect { make_request }.to change { Course.count }.by(-1)
         end
       end
 

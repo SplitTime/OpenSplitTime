@@ -16,7 +16,7 @@ class Person < ApplicationRecord
   enum gender: [:male, :female]
   has_many :subscriptions, dependent: :destroy
   has_many :followers, through: :subscriptions, source: :user
-  has_many :efforts
+  has_many :efforts, dependent: :nullify
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 

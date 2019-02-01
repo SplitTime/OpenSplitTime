@@ -7,7 +7,6 @@ RSpec.describe User, type: :model do
     user_attr = FactoryBot.attributes_for(:user)
     user = User.create!(user_attr)
 
-    expect(User.all.size).to(equal(1))
     expect(user).to be_valid
   end
 

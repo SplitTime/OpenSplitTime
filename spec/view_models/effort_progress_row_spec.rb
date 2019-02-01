@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe EffortProgressRow do
-  let(:event) { build_stubbed(:event_functional, laps_required: 3, splits_count: 4) }
+  let(:event) { events(:rufa_2017_24h) }
   let(:splits) { event.splits }
   let(:efforts) { event.efforts }
 

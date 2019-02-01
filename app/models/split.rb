@@ -12,7 +12,7 @@ class Split < ApplicationRecord
   friendly_id :course_split_name, use: [:slugged, :history]
   enum kind: [:start, :finish, :intermediate]
   belongs_to :course
-  has_many :split_times
+  has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
 

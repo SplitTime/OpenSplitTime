@@ -36,11 +36,23 @@ module ETL::Transformers
     end
 
     def transform_time_data!(proto_record)
+      relocate_status_indicators!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
       proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
+    end
+
+    def relocate_status_indicators!(proto_record)
+      unless proto_record[:time] =~ TimeConversion::HMS_FORMAT
+        proto_record[:status_indicator] = proto_record[:time]
+        proto_record[:time] = nil
+      end
+      unless proto_record[:section1_split] =~ TimeConversion::HMS_FORMAT
+        proto_record[:status_indicator] ||= proto_record[:section1_split]
+        proto_record[:section1_split] = proto_record[:status_indicator].in?(%w(DNF DSQ)) ? '00:00' : nil
+      end
     end
 
     def extract_times!(proto_record)
@@ -83,7 +95,7 @@ module ETL::Transformers
 
     def set_stop!(proto_record)
       stop_indicators = %w(DNF DSQ)
-      if stop_indicators.include?(proto_record[:time])
+      if stop_indicators.include?(proto_record[:status_indicator])
         stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
         (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end

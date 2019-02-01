@@ -10,13 +10,6 @@ RSpec.describe Api::V1::OrganizationsController do
     subject(:make_request) { get :index, params: params }
     let(:params) { {} }
 
-    before do
-      create(:organization, name: 'Bravo', description: 'Fabulous')
-      create(:organization, name: 'Charlie', description: 'Beautiful')
-      create(:organization, name: 'Alpha', description: 'Beautiful')
-      create(:organization, name: 'Delta', description: 'Gorgeous')
-    end
-
     via_login_and_jwt do
       it 'returns a successful 200 response' do
         make_request
@@ -36,7 +29,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly in ascending order based on the parameter' do
           make_request
-          expected = %w(Alpha Bravo Charlie Delta)
+          expected = ['Dirty 30 Running', 'Hardrock', 'Rattlesnake Ramble', 'Running Up For Air']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -47,7 +40,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly in descending order based on the parameter' do
           make_request
-          expected = %w(Delta Charlie Bravo Alpha)
+          expected = ['Running Up For Air', 'Rattlesnake Ramble', 'Hardrock', 'Dirty 30 Running']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -58,7 +51,7 @@ RSpec.describe Api::V1::OrganizationsController do
 
         it 'sorts properly on multiple fields' do
           make_request
-          expected = %w(Alpha Charlie Bravo Delta)
+          expected = ['Hardrock', 'Rattlesnake Ramble', 'Dirty 30 Running', 'Running Up For Air']
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].map { |item| item.dig('attributes', 'name') }).to eq(expected)
         end
@@ -115,9 +108,7 @@ RSpec.describe Api::V1::OrganizationsController do
         end
 
         it 'creates a organization record' do
-          expect(Organization.all.count).to eq(0)
-          make_request
-          expect(Organization.all.count).to eq(1)
+          expect { make_request }.to change { Organization.count }.by(1)
         end
       end
     end
@@ -172,9 +163,7 @@ RSpec.describe Api::V1::OrganizationsController do
         end
 
         it 'destroys the organization record' do
-          expect(Organization.all.count).to eq(1)
-          make_request
-          expect(Organization.all.count).to eq(0)
+          expect { make_request }.to change { Organization.count }.by(-1)
         end
       end
 

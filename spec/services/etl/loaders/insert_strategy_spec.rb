@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe ETL::Loaders::InsertStrategy do
   subject { ETL::Loaders::InsertStrategy.new(proto_records, options) }
-  let!(:event) { create(:event_with_standard_splits, in_sub_splits_only: true, splits_count: 7, start_time_local: '2017-12-25 06:00:00') }
+  let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.start_time }
-  let(:splits) { event.ordered_splits }
-  let(:split_ids) { splits.map(&:id) }
+  let(:subject_splits) { event.ordered_splits }
+  let(:split_ids) { subject_splits.map(&:id) }
 
   let(:valid_proto_records) { [
       ProtoRecord.new(record_type: :effort, age: '39', gender: 'male', bib_number: '5',
@@ -83,25 +83,24 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       let(:proto_records) { valid_proto_records }
 
       it 'assigns attributes and creates new records of the parent class' do
-        efforts = Effort.all
-        expect(efforts.size).to eq(0)
-        subject.load_records
-        expect(efforts.size).to eq(3)
-        expect(efforts.map(&:first_name)).to match_array(%w(Jatest Castest Mictest))
-        expect(efforts.map(&:bib_number)).to match_array([5, 661, 633])
-        expect(efforts.map(&:gender)).to match_array(%w(male female female))
-        expect(efforts.map(&:event_id)).to all eq(event.id)
+        expect { subject.load_records }.to change { Effort.count }.by(3)
+        subject_efforts = Effort.last(3)
+
+        expect(subject_efforts.map(&:first_name)).to match_array(%w(Jatest Castest Mictest))
+        expect(subject_efforts.map(&:bib_number)).to match_array([5, 661, 633])
+        expect(subject_efforts.map(&:gender)).to match_array(%w(male female female))
+        expect(subject_efforts.map(&:event_id)).to all eq(event.id)
       end
 
       it 'assigns attributes and saves new child records' do
-        split_times = SplitTime.all
-        expect(split_times.size).to eq(0)
-        subject.load_records
-        expect(split_times.size).to eq(10)
-        expect(split_times.map(&:split_id)).to match_array(split_ids.cycle.first(split_times.size))
+        expect { subject.load_records }.to change { SplitTime.count }.by(10)
+        subject_efforts = Effort.last(3)
+        subject_split_times = SplitTime.last(10)
+
+        expect(subject_split_times.map(&:split_id)).to match_array(split_ids.cycle.first(subject_split_times.size))
         expected_absolute_times = [0, 2581, 6308, 9463, 13571, 16655, 17736, 0, 4916, 14398].map { |e| start_time + e }
-        expect(split_times.map(&:absolute_time)).to match_array(expected_absolute_times)
-        expect(split_times.map(&:effort_id)).to match_array([Effort.first.id] * 7 + [Effort.second.id] * 3)
+        expect(subject_split_times.map(&:absolute_time)).to match_array(expected_absolute_times)
+        expect(subject_split_times.map(&:effort_id)).to match_array([subject_efforts.first.id] * 7 + [subject_efforts.second.id] * 3)
       end
 
       it 'returns saved parent records in the saved_records array and assigns a current user id to created_by' do
@@ -113,27 +112,25 @@ RSpec.describe ETL::Loaders::InsertStrategy do
 
     context 'when valid records have children with military_time attributes' do
       let(:proto_records) { proto_with_military_times }
-      before { FactoryBot.reload }
 
       it 'assigns attributes and creates new records of the parent class' do
-        efforts = Effort.all
-        expect(efforts.size).to eq(0)
-        subject.load_records
-        expect(efforts.size).to eq(1)
-        expect(efforts.first.first_name).to eq('Johtest')
-        expect(efforts.first.bib_number).to eq(500)
-        expect(efforts.first.gender).to eq('male')
-        expect(efforts.first.event_id).to eq(event.id)
+        expect { subject.load_records }.to change { Effort.count }.by (1)
+        effort = Effort.last
+
+        expect(effort.first_name).to eq('Johtest')
+        expect(effort.bib_number).to eq(500)
+        expect(effort.gender).to eq('male')
+        expect(effort.event_id).to eq(event.id)
       end
 
       it 'assigns attributes and saves new child records' do
-        split_times = SplitTime.all
-        expect(split_times.size).to eq(0)
-        subject.load_records
-        expect(split_times.size).to eq(7)
-        expect(split_times.map(&:split_id)).to match_array(split_ids.cycle.first(split_times.size))
-        expect(split_times.map(&:time_from_start)).to match_array([0, 80.minutes, 160.minutes, 240.minutes, 320.minutes, 400.minutes, 480.minutes])
-        expect(split_times.map(&:effort_id)).to all eq(Effort.first.id)
+        expect { subject.load_records }.to change { SplitTime.count }.by (7)
+        effort = Effort.last
+        subject_split_times = SplitTime.last(7)
+
+        expect(subject_split_times.map(&:split_id)).to match_array(split_ids.cycle.first(subject_split_times.size))
+        expect(subject_split_times.map(&:time_from_start)).to match_array([0, 80.minutes, 160.minutes, 240.minutes, 320.minutes, 400.minutes, 480.minutes])
+        expect(subject_split_times.map(&:effort_id)).to all eq(effort.id)
       end
     end
 
@@ -151,11 +148,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       end
 
       it 'rolls back the transaction' do
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
-        subject.load_records
-        expect(Effort.all.size).to eq(1)
-        expect(SplitTime.all.size).to eq(2)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
       end
 
       it 'returns the problematic records in an invalid_records array' do
@@ -171,9 +164,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       let(:proto_records) { all_proto_records }
 
       it 'does not create any records of the parent or child class' do
-        subject.load_records
-        expect(Effort.all.size).to eq(0)
-        expect(SplitTime.all.size).to eq(0)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
       end
 
       it 'includes invalid records in the invalid_records and errors attributes' do
@@ -188,9 +179,7 @@ RSpec.describe ETL::Loaders::InsertStrategy do
       let(:proto_records) { proto_with_invalid_child }
 
       it 'does not create any records of the parent or child class' do
-        subject.load_records
-        expect(Effort.all.size).to eq(0)
-        expect(SplitTime.all.size).to eq(0)
+        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
       end
 
       it 'places the parent record into invalid_records' do

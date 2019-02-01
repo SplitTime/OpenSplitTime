@@ -31,8 +31,7 @@ class TimePredictor
   end
 
   private
-  attr_reader :segment, :effort, :lap_splits, :completed_split_time,
-              :calc_model, :similar_effort_ids, :times_container
+  attr_reader :segment, :effort, :lap_splits, :completed_split_time, :calc_model, :similar_effort_ids, :times_container
 
   def uncorrected_segment_time
     times_container.segment_time(segment)

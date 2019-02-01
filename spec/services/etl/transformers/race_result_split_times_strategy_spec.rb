@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
@@ -13,13 +15,8 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
 
   describe '#transform' do
     context 'when event is present and splits count matches split fields count' do
-      before do
-        _, time_points = lap_splits_and_time_points(event)
-        allow(event).to receive(:required_time_points).and_return(time_points)
-      end
-
       context 'when the parsed structs contain one or more section splits in addition to the finish time' do
-        let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 7) }
+        let(:event) { events(:ggd30_50k) }
         let(:time_points) { event.required_time_points }
         let(:parsed_structs) { [
             OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
@@ -168,7 +165,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
       end
 
       context 'when parsed_structs do not contain section splits and the provided event has only start and finish splits' do
-        let(:event) { build_stubbed(:event_with_standard_splits, id: 1, splits_count: 2) }
+        let(:event) { events(:ramble) }
         let(:options) { {parent: event} }
         let(:proto_records) { subject.transform }
         let(:parsed_structs) { [
@@ -257,12 +254,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
     end
 
     context 'when event time_points do not match the provided segment times' do
-      before do
-        _, time_points = lap_splits_and_time_points(event)
-        allow(event).to receive(:required_time_points).and_return(time_points)
-      end
-
-      let(:event) { build_stubbed(:event_with_standard_splits, id: 1, in_sub_splits_only: true, splits_count: 6) }
+      let(:event) { events(:ramble) }
       let(:parsed_structs) { [OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                                              section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',
                                              section2_split: '1:02:07.50', section3_split: '0:52:34.70', section6_split: '0:18:01.15',

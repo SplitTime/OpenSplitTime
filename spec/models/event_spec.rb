@@ -94,19 +94,19 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when bib numbers are duplicated within the same event_group' do
-      let!(:event_1) { create(:event) }
-      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: event_1.home_time_zone) }
-      let(:event_group) { create(:event_group) }
-      let!(:event_1_effort_1) { create(:effort, event: event_1, bib_number: 101) }
-      let!(:event_1_effort_2) { create(:effort, event: event_1, bib_number: 103) }
-      let!(:event_2_effort_1) { create(:effort, event: event_2, bib_number: 101) }
-      let!(:event_2_effort_2) { create(:effort, event: event_2, bib_number: 102) }
+      let(:event) { events(:rufa_2016) }
+      let(:event_group) { event_groups(:rufa_2017) }
 
-      it 'is invalid' do
-        expect(event_1).to be_valid
-        event_1.update(event_group: event_group)
-        expect(event_1).not_to be_valid
-        expect(event_1.errors.full_messages).to include('Bib number 101 is duplicated within the event group')
+      before { event.efforts.first.update(bib_number: event_group.efforts.first.bib_number) }
+
+      it 'marks the event group as invalid' do
+        expect(event).to be_valid
+
+        # Although the event does not update, for some reason the event is not marked as invalid,
+        # so instead test using the save response.
+        response = event.update(event_group: event_group)
+        expect(response).to eq(false)
+        expect(event.errors.full_messages).to include(/Bib number \d+ is duplicated within the event group/)
       end
     end
 
@@ -129,9 +129,11 @@ RSpec.describe Event, type: :model do
 
       context 'when split names are duplicated with matching locations within the same event_group' do
         it 'is valid' do
-          expect(event_1).to be_valid
-          event_1.update(event_group: event_group)
-          expect(event_1).to be_valid
+          expect(event_1.errors).to be_empty
+          response = event_1.update(event_group: event_group)
+
+          expect(response).to eq(true)
+          expect(event_1.errors).to be_empty
         end
       end
 
@@ -139,9 +141,10 @@ RSpec.describe Event, type: :model do
         let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 41, longitude: -106) }
 
         it 'is invalid' do
-          expect(event_1).to be_valid
-          event_1.update(event_group: event_group)
-          expect(event_1).not_to be_valid
+          expect(event_1.errors).to be_empty
+          response = event_1.update(event_group: event_group)
+
+          expect(response).to eq(false)
           expect(event_1.errors.full_messages).to include(/Location Start is incompatible within the event group/)
         end
       end
@@ -156,9 +159,11 @@ RSpec.describe Event, type: :model do
         let(:time_zone) { 'Arizona' }
 
         it 'is valid' do
-          expect(event_1).to be_valid
-          event_1.update(event_group: event_group)
-          expect(event_1).to be_valid
+          expect(event_1.errors).to be_empty
+          response = event_1.update(event_group: event_group)
+
+          expect(response).to eq(true)
+          expect(event_1.errors).to be_empty
         end
       end
 
@@ -166,9 +171,10 @@ RSpec.describe Event, type: :model do
         let(:time_zone) { 'Mountain Time (US & Canada)' }
 
         it 'is invalid' do
-          expect(event_1).to be_valid
-          event_1.update(event_group: event_group)
-          expect(event_1).not_to be_valid
+          expect(event_1.errors).to be_empty
+          response = event_1.update(event_group: event_group)
+
+          expect(response).to eq(false)
           expect(event_1.errors.full_messages).to include(/Home time zone is inconsistent with others within the event group/)
         end
       end
@@ -360,7 +366,7 @@ RSpec.describe Event, type: :model do
     subject { create(:event, event_group: event_group_1) }
     let!(:event_group_1) { create(:event_group) }
     let!(:event_group_2) { create(:event_group) }
-    let!(:event_same_group) { create(:event, event_group: event_group_1) }
+    let!(:event_same_group) { create(:event, event_group: event_group_1, home_time_zone: subject.home_time_zone) }
     let!(:event_different_group) { create(:event, event_group: event_group_2) }
 
     it 'returns the event and other members of the group as an array' do

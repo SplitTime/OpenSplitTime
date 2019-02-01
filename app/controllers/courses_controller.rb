@@ -53,9 +53,6 @@ class CoursesController < ApplicationController
       flash[:danger] = @course.errors.full_messages.join("\n")
       redirect_to course_path(@course)
     end
-
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || courses_path
   end
 
   def best_efforts

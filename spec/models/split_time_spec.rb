@@ -139,271 +139,267 @@ RSpec.describe SplitTime, kind: :model do
 
   describe 'virtual time attributes' do
     subject(:split_time) { effort.ordered_split_times.second }
-    let(:effort) { event.efforts.first }
-    let(:event) { build_stubbed(:event_functional, efforts_count: 1) }
-    let(:start_split_time) { effort.ordered_split_times.first }
-    let(:effort_start_time) { event.start_time + start_offset }
-    let(:start_offset) { 0 }
-    let(:absolute_time) { effort_start_time + elapsed_seconds }
-    let(:event_time_zone) { ActiveSupport::TimeZone.new(event.home_time_zone) }
+    let(:effort) { efforts(:hardrock_2014_finished_first) }
+    let(:event) { events(:hardrock_2014) }
+    let(:home_time_zone) { event.home_time_zone }
+    let(:starting_split_time) { effort.starting_split_time }
+    let(:effort_start_time) { starting_split_time.absolute_time }
 
-    before do
-      start_split_time.absolute_time = effort_start_time
-      split_time.absolute_time = absolute_time
+    describe 'getters' do
+      before { split_time.absolute_time = absolute_time }
+
+      describe '#elapsed time' do
+
+        context 'when absolute_time is nil' do
+          let(:absolute_time) { nil }
+
+          it 'returns nil' do
+            expect(split_time.elapsed_time).to be_nil
+          end
+        end
+
+        context 'when absolute_time is present' do
+          let(:absolute_time) { effort_start_time + 4530 }
+
+          it 'returns time in hh:mm:ss format' do
+            expect(split_time.elapsed_time).to eq('01:15:30')
+          end
+        end
+
+        context 'when time_from_start is less than one hour' do
+          let(:absolute_time) { effort_start_time + 950 }
+
+          it 'returns time in hh:mm:ss format ' do
+            expect(split_time.elapsed_time).to eq('00:15:50')
+          end
+        end
+
+        context 'when time_from_start is less than one minute' do
+          let(:absolute_time) { effort_start_time + 45 }
+
+          it 'returns time in hh:mm:ss format ' do
+            expect(split_time.elapsed_time).to eq('00:00:45')
+          end
+        end
+
+        context 'when time_from_start is greater than 24 hours' do
+          let(:absolute_time) { effort_start_time + 100_000 }
+
+          it 'returns time in hh:mm:ss format ' do
+            expect(split_time.elapsed_time).to eq('27:46:40')
+          end
+        end
+
+        context 'when time_from_start is greater than 100 hours' do
+          let(:absolute_time) { effort_start_time + 500_000 }
+
+          it 'returns time in hh:mm:ss format ' do
+            expect(split_time.elapsed_time).to eq('138:53:20')
+          end
+        end
+
+        context 'when with_fractionals: true is used' do
+          let(:absolute_time) { effort_start_time + 4530.55 }
+          let(:with_fractionals) { true }
+
+          it 'returns time in hh:mm:ss.xx format' do
+            expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:30.55')
+          end
+        end
+
+        context 'when with_fractionals: true is used' do
+          let(:absolute_time) { effort_start_time + 4530.55 }
+          let(:with_fractionals) { false }
+
+          it 'returns time in hh:mm:ss.xx format' do
+            expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:31')
+          end
+        end
+      end
+
+      describe '#absolute_time_local' do
+        before { split_time.absolute_time = absolute_time }
+
+        context 'when absolute_time is nil' do
+          let(:absolute_time) { nil }
+
+          it 'returns nil' do
+            expect(split_time.absolute_time_local).to be_nil
+          end
+        end
+
+        context 'when absolute_time exists' do
+          let(:absolute_time) { '2018-10-30 12:00:00' }
+
+          it 'returns a day and time in the event home time zone' do
+            expect(split_time.absolute_time_local).to eq(absolute_time)
+            expect(split_time.absolute_time_local.time_zone).to eq(ActiveSupport::TimeZone.new(event.home_time_zone))
+          end
+        end
+      end
+
+      describe '#military time' do
+        context 'when absolute_time is nil' do
+          let(:absolute_time) { nil }
+
+          it 'returns nil' do
+            expect(split_time.military_time).to be_nil
+          end
+        end
+
+        context 'when absolute_time is present' do
+          let(:absolute_time) { effort_start_time + 3600 }
+          let(:expected_day_and_time) { absolute_time.in_time_zone(home_time_zone) }
+          let(:expected_military_time) { expected_day_and_time.strftime('%H:%M:%S') }
+
+          it 'returns military time in hh:mm:ss format' do
+            expect(split_time.military_time).to eq(expected_military_time)
+          end
+        end
+      end
     end
 
-    describe '#elapsed time' do
-      context 'when absolute_time is nil' do
-        let(:absolute_time) { nil }
+    describe 'setters' do
+      describe '#elapsed_time=' do
+        before { split_time.elapsed_time = time_arg }
 
-        it 'returns nil' do
-          expect(split_time.elapsed_time).to be_nil
+        context 'when passed a nil value' do
+          let(:time_arg) { nil }
+
+          it 'removes an existing absolute_time' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to be_nil
+          end
+        end
+
+        context 'when passed an empty string' do
+          let(:time_arg) { '' }
+
+          it 'removes an existing absolute_time' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to be_nil
+          end
+        end
+
+        context 'when passed a string representing less than one minute' do
+          let(:time_arg) { '00:00:25' }
+
+          it 'sets absolute_time properly' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to eq(effort_start_time + 25.seconds)
+          end
+        end
+
+        context 'when passed a string representing less than one hour' do
+          let(:time_arg) { '00:30:25' }
+
+          it 'sets absolute_time properly' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to eq(effort_start_time + 30.minutes + 25.seconds)
+          end
+        end
+
+        context 'when passed a string representing more than one hour' do
+          let(:time_arg) { '01:15:25' }
+
+          it 'sets absolute_time properly' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to eq(effort_start_time + 1.hour + 15.minutes + 25.seconds)
+          end
+        end
+
+        context 'when passed a string representing more than 24 hours' do
+          let(:time_arg) { '27:46:45' }
+
+          it 'sets absolute_time properly' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to eq(effort_start_time + 27.hours + 46.minutes + 45.seconds)
+          end
+        end
+
+        context 'when passed a string representing more than 100 hours' do
+          let(:time_arg) { '138:53:20' }
+
+          it 'sets absolute_time properly' do
+            expect(split_time).to be_absolute_time_changed
+            expect(split_time.absolute_time).to eq(effort_start_time + 138.hours + 53.minutes + 20.seconds)
+          end
+        end
+
+        context 'when no starting split time exists' do
+          let(:effort) { efforts(:hardrock_2014_without_start) }
+          let(:split_time) { effort.ordered_split_times.first }
+          let(:time_arg) { '05:00:00' }
+
+          it 'returns without modifying the absolute time' do
+            expect(split_time).not_to be_absolute_time_changed
+          end
+        end
+
+        context 'when the subject is a starting split time' do
+          let(:split_time) { starting_split_time }
+          let(:time_arg) { '05:00:00' }
+
+          it 'returns without modifying the absolute time' do
+            expect(split_time).not_to be_absolute_time_changed
+          end
         end
       end
 
-      context 'when absolute_time is present' do
-        let(:elapsed_seconds) { 4530 }
+      describe '#absolute_time_local=' do
+        before { split_time.absolute_time_local = time_arg }
 
-        it 'returns time in hh:mm:ss format' do
-          expect(split_time.elapsed_time).to eq('01:15:30')
+        context 'when passed a nil value' do
+          let(:time_arg) { nil }
+
+          it 'sets absolute_time to nil' do
+            expect(split_time.absolute_time).to be_nil
+          end
+        end
+
+        context 'when passed an empty string' do
+          let(:time_arg) { '' }
+
+          it 'sets absolute_time to nil' do
+            expect(split_time.absolute_time).to be_nil
+          end
+        end
+
+        context 'when passed a datetime string' do
+          let(:time_arg) { '2018-10-30 08:00:00' }
+
+          it 'sets absolute_time to the UTC equivalent' do
+            expect(split_time.absolute_time).to eq(time_arg.in_time_zone(home_time_zone))
+          end
         end
       end
 
-      context 'when time_from_start is less than one hour' do
-        let(:elapsed_seconds) { 950 }
-
-        it 'returns time in hh:mm:ss format ' do
-          expect(split_time.elapsed_time).to eq('00:15:50')
-        end
-      end
-
-      context 'when time_from_start is less than one minutea' do
-        let(:elapsed_seconds) { 45 }
-
-        it 'returns time in hh:mm:ss format ' do
-          expect(split_time.elapsed_time).to eq('00:00:45')
-        end
-      end
-
-      context 'when time_from_start is greater than 24 hours' do
-        let(:elapsed_seconds) { 100_000 }
-
-        it 'returns time in hh:mm:ss format ' do
-          expect(split_time.elapsed_time).to eq('27:46:40')
-        end
-      end
-
-      context 'when time_from_start is greater than 100 hours' do
-        let(:elapsed_seconds) { 500_000 }
-
-        it 'returns time in hh:mm:ss format ' do
-          expect(split_time.elapsed_time).to eq('138:53:20')
-        end
-      end
-
-      context 'when with_fractionals: true is used' do
-        let(:elapsed_seconds) { 4530.55 }
-        let(:with_fractionals) { true }
-
-        it 'returns time in hh:mm:ss.xx format' do
-          expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:30.55')
-        end
-      end
-
-      context 'when with_fractionals: true is used' do
-        let(:elapsed_seconds) { 4530.55 }
-        let(:with_fractionals) { false }
-
-        it 'returns time in hh:mm:ss.xx format' do
-          expect(split_time.elapsed_time(with_fractionals: with_fractionals)).to eq('01:15:31')
-        end
-      end
-
-      context 'when the start split_time is not the same as the event.start_time' do
+      describe '#military_time=' do
         let(:elapsed_seconds) { 1.hour }
-        let(:start_offset) { -2.hours }
+        before { split_time.military_time = time_arg }
 
-        it 'returns time based on time elapsed from the start split_time' do
-          expect(start_split_time.absolute_time).not_to eq(event.start_time)
-          expect(split_time.elapsed_time).to eq('01:00:00')
+        context 'when passed a nil value' do
+          let(:time_arg) { nil }
+
+          it 'sets absolute_time to nil' do
+            expect(split_time.absolute_time).to be_nil
+          end
         end
-      end
-    end
 
-    describe '#elapsed_time=' do
-      let(:elapsed_seconds) { 1.hour }
+        context 'when passed an empty string' do
+          let(:time_arg) { '' }
 
-      context 'when passed a nil value' do
-        it 'removes an existing absolute_time' do
-          split_time.elapsed_time = nil
-          expect(split_time.absolute_time).to be_nil
+          it 'sets absolute_time to nil' do
+            expect(split_time.absolute_time).to be_nil
+          end
         end
-      end
 
-      context 'when passed an empty string' do
-        it 'removes an existing absolute_time' do
-          split_time.elapsed_time = ''
-          expect(split_time.absolute_time).to be_nil
-        end
-      end
+        context 'when passed a military time string' do
+          let(:time_arg) { '06:05:00' }
 
-      context 'when passed a string representing less than one minute' do
-        it 'sets absolute_time properly' do
-          split_time.elapsed_time = '00:00:25'
-          expect(split_time.absolute_time).to eq(effort_start_time + 25.seconds)
-        end
-      end
-
-      context 'when passed a string representing less than one hour' do
-        it 'sets absolute_time properly' do
-          split_time.elapsed_time = '00:30:25'
-          expect(split_time.absolute_time).to eq(effort_start_time + 30.minutes + 25.seconds)
-        end
-      end
-
-      context 'when passed a string representing more than one hour' do
-        it 'sets absolute_time properly' do
-          split_time.elapsed_time = '01:15:25'
-          expect(split_time.absolute_time).to eq(effort_start_time + 1.hour + 15.minutes + 25.seconds)
-        end
-      end
-
-      context 'when passed a string representing more than 24 hours' do
-        it 'sets absolute_time properly' do
-          split_time.elapsed_time = '27:46:45'
-          expect(split_time.absolute_time).to eq(effort_start_time + 27.hours + 46.minutes + 45.seconds)
-        end
-      end
-
-      context 'when passed a string representing more than 100 hours' do
-        it 'sets absolute_time properly' do
-          split_time.elapsed_time = '138:53:20'
-          expect(split_time.absolute_time).to eq(effort_start_time + 138.hours + 53.minutes + 20.seconds)
-        end
-      end
-
-      context 'when the start split_time is not the same as the event.start_time' do
-        let(:start_offset) { -2.hours }
-
-        it 'sets absolute_time based on start split_time' do
-          split_time.elapsed_time = '05:00:00'
-          expect(split_time.absolute_time).to eq(effort_start_time + 5.hours)
-        end
-      end
-
-      context 'when no starting split time exists' do
-        before { start_split_time.absolute_time = nil }
-
-        it 'returns without modifying the absolute time' do
-          split_time.elapsed_time = '05:00:00'
-          expect(split_time.absolute_time).to eq(effort_start_time + 1.hour)
-        end
-      end
-
-      context 'when the subject is a starting split time' do
-        it 'returns without modifying the absolute time' do
-          start_split_time.elapsed_time = '05:00:00'
-          expect(start_split_time.absolute_time).to eq(effort_start_time)
-        end
-      end
-    end
-
-    describe '#absolute_time_local' do
-      context 'when absolute_time is nil' do
-        let(:absolute_time) { nil }
-
-        it 'returns nil' do
-          expect(split_time.absolute_time_local).to be_nil
-        end
-      end
-
-      context 'when absolute_time exists' do
-        let(:absolute_time) { '2018-10-30 12:00:00' }
-
-        it 'returns a day and time in the event home time zone' do
-          expect(split_time.absolute_time_local).to eq(absolute_time)
-          expect(split_time.absolute_time_local.time_zone).to eq(ActiveSupport::TimeZone.new(event.home_time_zone))
-        end
-      end
-    end
-
-    describe '#absolute_time_local=' do
-      let(:elapsed_seconds) { 1.hour }
-
-      context 'when passed a nil value' do
-        it 'sets absolute_time to nil' do
-          split_time.absolute_time_local = nil
-          expect(split_time.absolute_time).to be_nil
-        end
-      end
-
-      context 'when passed an empty string' do
-        it 'sets absolute_time to nil' do
-          split_time.absolute_time_local = ''
-          expect(split_time.absolute_time).to be_nil
-        end
-      end
-
-      context 'when passed a datetime string' do
-        let(:local_datetime) { '2018-10-30 08:00:00' }
-
-        it 'sets absolute_time to the UTC equivalent' do
-          split_time.absolute_time_local = local_datetime
-          expect(split_time.absolute_time).to eq(event_time_zone.parse(local_datetime))
-        end
-      end
-    end
-
-    describe '#military time' do
-      let(:expected_day_and_time) { (effort_start_time + elapsed_seconds).in_time_zone(event_time_zone) }
-      let(:expected_military_time) { expected_day_and_time.strftime('%H:%M:%S') }
-
-      context 'when absolute_time is nil' do
-        let(:absolute_time) { nil }
-
-        it 'returns nil' do
-          expect(split_time.military_time).to be_nil
-        end
-      end
-
-      context 'when absolute_time is present' do
-        let(:elapsed_seconds) { 3600 }
-
-        it 'returns military time in hh:mm:ss format' do
-          expect(split_time.military_time).to eq(expected_military_time)
-        end
-      end
-    end
-
-    describe '#military_time=' do
-      let(:elapsed_seconds) { 1.hour }
-
-      context 'when passed a nil value' do
-        let(:military_time) { nil }
-
-        it 'sets absolute_time to nil' do
-          split_time.military_time = military_time
-          expect(split_time.absolute_time).to be_nil
-        end
-      end
-
-      context 'when passed an empty string' do
-        let(:military_time) { '' }
-
-        it 'sets absolute_time to nil' do
-          split_time.military_time = military_time
-          expect(split_time.absolute_time).to be_nil
-        end
-      end
-
-      context 'when passed a military time string' do
-        let(:military_time) { '06:05:00' }
-
-        it 'calls IntendedTimeCalculator with correct information' do
-          expect(IntendedTimeCalculator).to receive(:absolute_time_local).with(military_time: military_time,
-                                                                               effort: effort,
-                                                                               time_point: split_time.time_point)
-          split_time.military_time = military_time
+          it 'calls IntendedTimeCalculator with correct information' do
+            expect(split_time.absolute_time_local).to eq('2014-07-11 06:05:00'.in_time_zone(home_time_zone))
+          end
         end
       end
     end

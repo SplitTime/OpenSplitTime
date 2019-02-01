@@ -7,7 +7,9 @@ class EventGroupsController < ApplicationController
 
   def index
     scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
-    @event_groups = EventGroup.where(id: scoped_event_groups)
+    @event_groups = EventGroup.distinct
+                        .joins(:events) # Excludes "orphaned" event_groups (having no events)
+                        .where(id: scoped_event_groups)
                         .includes(:organization, events: :efforts)
                         .sort_by { |event_group| -event_group.start_time.to_i }
                         .paginate(page: params[:page], per_page: 25)

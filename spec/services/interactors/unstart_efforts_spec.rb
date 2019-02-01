@@ -3,43 +3,28 @@
 require 'rails_helper'
 
 RSpec.describe Interactors::UnstartEfforts do
+  subject { Interactors::UnstartEfforts.new(subject_efforts) }
+
   describe '.perform!' do
-    let(:effort_1) { create(:effort, event: event, checked_in: true) }
-    let(:effort_2) { create(:effort, event: event, checked_in: true) }
-    let(:efforts) { [effort_1, effort_2] }
-
-    let(:event) { create(:event, course: course) }
-    let(:start_split) { create(:split, :start, course: course) }
-    let(:aid_1) { create(:split, course: course) }
-    let(:course) { create(:course) }
-
-    before do
-      event.splits << [start_split, aid_1]
-      create(:split_time, effort: effort_1, split: start_split, absolute_time: event.start_time)
-      create(:split_time, effort: effort_2, split: start_split, absolute_time: event.start_time)
-      efforts.each(&:reload)
-    end
+    let(:response) { subject.perform! }
+    let(:effort_1) { efforts(:rufa_2017_12h_start_only) }
+    let(:effort_2) { efforts(:hardrock_2016_start_only) }
+    let(:subject_efforts) { [effort_1, effort_2] }
 
     context 'when all provided efforts can be unstarted' do
       it 'removes start split_times for each effort, sets checked_in to false, and returns a successful response' do
-        response = Interactors::UnstartEfforts.perform!(efforts)
-        expect(SplitTime.count).to eq(0)
+        expect { response }.to change { SplitTime.count }.by(-2)
         expect(response).to be_successful
         expect(response.message).to eq('Changed 2 efforts to DNS')
-        expect(efforts.map(&:checked_in?)).to all eq(false)
+        expect(subject_efforts.map(&:checked_in?)).to all eq(false)
       end
     end
 
     context 'when any provided effort has an intermediate time' do
-      before do
-        create(:split_time, effort: effort_1, split: aid_1, absolute_time: event.start_time + 1000)
-        efforts.each(&:reload)
-      end
+      let(:effort_2) { efforts(:hardrock_2016_progress_sherman) }
 
       it 'does not remove any start split_times but returns an unsuccessful response with errors' do
-        expect(SplitTime.count).to eq(3)
-        response = Interactors::UnstartEfforts.perform!(efforts)
-        expect(SplitTime.count).to eq(3)
+        expect { response }.not_to change { SplitTime.count }
         expect(response).not_to be_successful
         expect(response.message).to eq('No efforts were changed to DNS')
         expect(response.errors.first[:detail][:messages])

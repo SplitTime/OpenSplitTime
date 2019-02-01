@@ -51,9 +51,7 @@ RSpec.describe Effort, type: :model do
       let(:person) { build_stubbed(:person) }
 
       it 'saves a generic factory-created record to the database' do
-        effort = create(:effort)
-        expect(Effort.count).to eq(1)
-        expect(Effort.first).to eq(effort)
+        expect { create(:effort) }.to change { Effort.count }.by (1)
       end
 
       it 'is valid when created with an event_id, first_name, last_name, and gender' do
@@ -66,8 +64,8 @@ RSpec.describe Effort, type: :model do
       end
 
       it 'is invalid without an event_id' do
-        effort = build_stubbed(:effort, event_id: nil)
-        expect { effort.valid? }.to raise_error Module::DelegationError
+        effort = build_stubbed(:effort, event: nil)
+        expect(effort).not_to be_valid
         expect(effort.errors[:event_id]).to include("can't be blank")
       end
 
@@ -91,36 +89,41 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'for validations dependent on existing database records' do
-      let(:event) { create(:event) }
-      let(:other_event) { build_stubbed(:event, event_group: existing_effort.event.event_group) }
-      let(:person_1) { create(:person) }
-      let(:person_2) { create(:person) }
-      let!(:existing_effort) { create(:effort, event: event, person: person_1, bib_number: 20) }
+      let(:existing_event_group) { event_groups(:sum) }
+      let(:event_1) { existing_event_group.events.first }
+      let(:event_2) { existing_event_group.events.second }
+      let(:existing_effort) { Effort.where(event: event_1).where.not(person: nil).first }
 
-      it 'does not permit more than one effort by a person in a given event group' do
-        effort = build_stubbed(:effort, event: event, person: person_1)
+      it 'does not permit more than one effort by a person in a given event' do
+        effort = build_stubbed(:effort, event: event_1, person: existing_effort.person)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:person]).to include(/has already been entered in/)
+      end
+
+      it 'does not permit more than one effort by a person in a given event_group' do
+        effort = build_stubbed(:effort, event: event_2, person: existing_effort.person)
         expect(effort).not_to be_valid
         expect(effort.errors[:person]).to include(/has already been entered in/)
       end
 
       it 'permits more than one effort in a given event with unassigned people' do
-        effort = build_stubbed(:effort, event: event, person: nil)
+        effort = build_stubbed(:effort, split_times: [], event: event_1, person: nil)
         expect(effort).to be_valid
       end
 
       it 'permits more than one effort in a given event with different people' do
-        effort = build_stubbed(:effort, event: event, person: person_2)
+        effort = build_stubbed(:effort, event: event_1, person: build_stubbed(:person))
         expect(effort).to be_valid
       end
 
       it 'does not permit duplicate bib_numbers within a given event' do
-        effort = build_stubbed(:effort, event: event, bib_number: existing_effort.bib_number)
+        effort = build_stubbed(:effort, event: event_1, bib_number: existing_effort.bib_number)
         expect(effort).not_to be_valid
         expect(effort.errors[:bib_number]).to include(/already exists/)
       end
 
       it 'does not permit duplicate bib_numbers within a given event_group' do
-        effort = build_stubbed(:effort, event: other_event, bib_number: existing_effort.bib_number)
+        effort = build_stubbed(:effort, event: event_2, bib_number: existing_effort.bib_number)
         expect(effort).not_to be_valid
         expect(effort.errors[:bib_number]).to include(/already exists/)
       end
@@ -205,18 +208,8 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '#total_time_in_aid' do
-    subject(:effort) { event.efforts.first }
-    let(:event) { build_stubbed(:event_functional, in_sub_splits_only: in_sub_splits_only, efforts_count: 1) }
-    let(:in_sub_splits_only) { false }
-    let(:split_times) { effort.ordered_split_times }
-    let(:time_increment) { 1000 }
-
-    before do
-      split_times.each_with_index { |st, i| st.absolute_time = event.start_time + (i * time_increment) }
-    end
-
     context 'when the effort has no split_times' do
-      subject(:effort) { build_stubbed(:effort, split_times: []) }
+      let(:effort) { efforts(:hardrock_2014_not_started) }
 
       it 'returns zero' do
         expect(effort.total_time_in_aid).to eq(0)
@@ -224,7 +217,7 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the effort has split_times with only "in" sub_splits' do
-      let(:in_sub_splits_only) { true }
+      let(:effort) { efforts(:ggd30_50k_finished_first) }
 
       it 'returns zero' do
         expect(effort.total_time_in_aid).to eq(0)
@@ -232,9 +225,10 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the effort has split_times with "in" and "out" sub_splits' do
+      let(:effort) { efforts(:hardrock_2014_finished_first) }
+
       it 'correctly calculates time in aid based on times in and out of splits' do
-        intermediate_splits_count = event.splits.select(&:intermediate?).size
-        expect(effort.total_time_in_aid).to eq(time_increment * intermediate_splits_count)
+        expect(effort.total_time_in_aid).to eq(24.minutes)
       end
     end
   end
@@ -290,203 +284,184 @@ RSpec.describe Effort, type: :model do
 
   describe '#finished?' do
     context 'for an event with a fixed lap requirement' do
-      let(:laps_required) { 2 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
-      let(:test_splits) { test_event.splits }
-      let(:test_split_times) { test_effort.split_times }
+      context 'when laps_finished is at least equal to laps_required' do
+        let(:effort) { efforts(:hardrock_2014_finished_first) }
 
-      it 'returns true when laps_finished is at least equal to laps_required' do
-        effort = test_effort
-        split_times = test_effort.split_times
-        allow(effort).to receive(:ordered_split_times).and_return(split_times)
-        expect(effort.laps_required).to eq(laps_required)
-        expect(effort.laps_finished).to eq(laps_required)
-        expect(effort.finished?).to eq(true)
+        it 'returns true' do
+          expect(effort.finished?).to eq(true)
+        end
       end
 
-      it 'returns false when laps_finished is less than laps_required' do
-        effort = test_effort
-        split_times = test_effort.split_times[0..-2] # all but the last split_time
-        allow(effort).to receive(:ordered_split_times).and_return(split_times)
-        expect(effort.laps_required).to eq(laps_required)
-        expect(effort.laps_finished).to eq(laps_required - 1)
-        expect(effort.finished?).to eq(false)
+      context 'when laps_finished is less than laps_required and effort is dropped' do
+        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
+
+        it 'returns false' do
+          expect(effort.finished?).to eq(false)
+        end
       end
 
-      it 'returns false when the effort is not started' do
-        effort = test_effort
-        split_times = []
-        allow(effort).to receive(:ordered_split_times).and_return(split_times)
-        expect(effort.laps_required).to eq(laps_required)
-        expect(effort.laps_finished).to eq(0)
-        expect(effort.finished?).to eq(false)
+      context 'when laps_finished is less than laps_required and effort is in progress' do
+        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
+
+        it 'returns false' do
+          expect(effort.finished?).to eq(false)
+        end
+      end
+
+      context 'when the effort is not started' do
+        let(:effort) { efforts(:hardrock_2014_not_started) }
+
+        it 'returns false' do
+          expect(effort.finished?).to eq(false)
+        end
       end
     end
 
     context 'for an event with unlimited laps' do
-      let(:laps_required) { 0 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
-      let(:test_splits) { test_event.splits }
-      let(:test_split_times) { test_effort.split_times }
+      context 'when no when no split_time has stopped_here: true' do
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
-      it 'returns false when no split_time has stopped_here = true' do
-        effort = test_effort
-        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.finished?).to eq(false)
+        it 'returns false' do
+          expect(effort.finished?).to eq(false)
+        end
       end
 
-      it 'returns true when any split_time has stopped_here = true' do
-        effort = test_effort
-        effort.split_times.last.stopped_here = true
-        expect(effort.finished?).to eq(true)
+      context 'when any split_time has stopped_here == true' do
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
+
+        it 'returns true' do
+          expect(effort.finished?).to eq(true)
+        end
       end
     end
   end
 
   describe '#dropped?' do
     context 'for an event with a fixed lap requirement' do
-      let(:laps_required) { 1 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
-      let(:test_split_times) { test_effort.split_times }
-      let(:incomplete_split_times) { test_split_times.first(2) }
+      context 'when a split_time is stopped_here and laps_required are not completed' do
+        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
 
-      it 'returns true when a split_time is stopped_here and laps_required are not completed' do
-        effort = test_effort
-        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
-        incomplete_split_times.last.stopped_here = true
-        expect(effort.dropped?).to eq(true)
+        it 'returns true' do
+          expect(effort.dropped?).to eq(true)
+        end
       end
 
-      it 'returns false when no split_time is stopped_here although laps_required are not completed' do
-        effort = test_effort
-        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
-        expect(effort.ordered_split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.dropped?).to eq(false)
+      context 'when no split_time is stopped_here although laps_required are not completed' do
+        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
+
+        it 'returns false' do
+          expect(effort.dropped?).to eq(false)
+        end
       end
     end
 
     context 'for an event with unlimited laps' do
-      let(:laps_required) { 0 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
-      let(:test_split_times) { test_effort.split_times }
+      context 'always, including when a split_time is stopped_here' do
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
 
-      it 'returns false always, including when a split_time is stopped_here' do
-        effort = test_effort
-        effort.split_times.last.stopped_here = true
-        expect(effort.dropped?).to eq(false)
+        it 'returns false' do
+          expect(effort.dropped?).to eq(false)
+        end
       end
 
-      it 'returns false always, including when no split_time is stopped_here' do
-        effort = test_effort
-        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.dropped?).to eq(false)
+      context 'always, including when no split_time is stopped_here' do
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
+
+        it 'returns false' do
+          expect(effort.dropped?).to eq(false)
+        end
       end
     end
   end
 
   describe '#stopped?' do
     context 'for an event with a fixed lap requirement' do
-      let(:laps_required) { 1 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
-      let(:test_split_times) { test_effort.split_times }
-      let(:incomplete_split_times) { test_split_times.first(2) }
+      context 'when the effort is finished and the last split_time is stopped_here' do
+        let(:effort) { efforts(:hardrock_2014_finished_with_stop) }
 
-      it 'returns true when the effort is finished and the last split_time is stopped_here' do
-        effort = test_effort
-        effort.split_times.last.stopped_here = true
-        expect(effort.stopped?).to eq(true)
+        it 'returns true' do
+          expect(effort.stopped?).to eq(true)
+        end
       end
 
-      it 'returns true when the effort is finished even if no split_time is stopped_here' do
-        effort = test_effort
-        split_times = test_effort.split_times
-        allow(effort).to receive(:ordered_split_times).and_return(split_times)
-        expect(effort.finished?).to eq(true)
-        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.stopped?).to eq(true)
+      context 'when the effort is finished even if no split_time is stopped_here' do
+        let(:effort) { efforts(:hardrock_2014_finished_without_stop) }
+
+        it 'returns true' do
+          expect(effort.stopped?).to eq(true)
+        end
       end
 
-      it 'returns true when the effort is not finished and any split_time is stopped_here' do
-        effort = test_effort
-        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
-        incomplete_split_times.last.stopped_here = true
-        expect(effort.stopped?).to eq(true)
+      context 'when the effort is not finished and any split_time is stopped_here' do
+        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
+
+        it 'returns true' do
+          expect(effort.stopped?).to eq(true)
+        end
       end
 
-      it 'returns false when the effort is not finished and no split_time is stopped_here' do
-        effort = test_effort
-        allow(effort).to receive(:ordered_split_times).and_return(incomplete_split_times)
-        expect(incomplete_split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.stopped?).to eq(false)
+      context 'when the effort is not finished and no split_time is stopped_here' do
+        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
+
+        it 'returns false' do
+          expect(effort.stopped?).to eq(false)
+        end
       end
     end
 
     context 'for an event with unlimited laps' do
-      let(:laps_required) { 0 }
-      let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-      let(:test_effort) { test_event.efforts.first }
+      context 'when any split_time is stopped_here' do
+        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
 
-      it 'returns true when any split_time is stopped_here' do
-        effort = test_effort
-        effort.split_times.last.stopped_here = true
-        expect(effort.stopped?).to eq(true)
+        it 'returns true' do
+          expect(effort.stopped?).to eq(true)
+        end
       end
 
-      it 'returns false when no split_times is stopped_here' do
-        effort = test_effort
-        expect(effort.split_times.none?(&:stopped_here)).to eq(true)
-        expect(effort.stopped?).to eq(false)
+      context 'when no split_time is stopped_here' do
+        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
+
+        it 'returns false' do
+          expect(effort.stopped?).to eq(false)
+        end
       end
     end
   end
 
   describe '#stopped_split_time' do
-    let(:laps_required) { 0 }
-    let(:test_event) { build_stubbed(:event_functional, laps_required: laps_required) }
-    let(:test_effort) { test_event.efforts.first }
+    context 'when one split_time has stopped_here: true' do
+      let(:effort) { efforts(:hardrock_2014_drop_ouray) }
+      let(:expected) { split_times(:hardrock_2014_drop_ouray_ouray_out_1) }
 
-    it 'returns the split_time for which stopped_here is true' do
-      effort = test_effort
-      split_times = test_effort.split_times
-      stopped_indexes = [5]
-      expected = split_times[5]
-      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+      it 'returns the split_time for which stopped_here is true' do
+        expect(effort.stopped_split_time).to eq(expected)
+      end
     end
 
-    it 'returns the last split_time for which stopped_here is true if more than one exists' do
-      effort = test_effort
-      split_times = test_effort.split_times
-      stopped_indexes = [2, 5]
-      expected = split_times[5]
-      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    context 'if more than one exists' do
+      let(:effort) { efforts(:hardrock_2014_multiple_stops) }
+      let(:expected) { split_times(:hardrock_2014_multiple_stops_grouse_out_1) }
+
+      it 'returns the last split_time for which stopped_here is true' do
+        expect(effort.stopped_split_time).to eq(expected)
+      end
     end
 
-    it 'works properly across laps' do
-      effort = test_effort
-      split_times = test_effort.split_times
-      stopped_indexes = [2, 10]
-      expect(split_times[2].lap).not_to eq(split_times[10].lap)
-      expected = split_times[10]
-      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
+    context 'when multiple stops exist across laps' do
+      let(:effort) { efforts(:rufa_2017_24h_multiple_stops) }
+      let(:expected) { split_times(:rufa_2017_24h_multiple_stops_finish_3) }
+
+      it 'works properly' do
+        expect(effort.stopped_split_time).to eq(expected)
+      end
     end
 
-    it 'returns nil if no split_time exists with stopped_here = true' do
-      effort = test_effort
-      split_times = test_effort.split_times
-      stopped_indexes = []
-      expected = nil
-      validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
-    end
+    context 'if no split_time exists with stopped_here: true' do
+      let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
-    def validate_stopped_split_time(effort, split_times, stopped_indexes, expected)
-      stopped_indexes.each { |i| split_times[i].stopped_here = true }
-      allow(effort).to receive(:ordered_split_times).and_return(split_times)
-      expect(effort.stopped_split_time).to eq(expected)
+      it 'returns nil' do
+        expect(effort.stopped_split_time).to be_nil
+      end
     end
   end
 
@@ -542,12 +517,11 @@ RSpec.describe Effort, type: :model do
   end
 
   describe '.concealed and .visible' do
-    let(:visible_event_group) { create(:event_group, concealed: false) }
-    let(:concealed_event_group) { create(:event_group, concealed: true) }
-    let(:visible_event) { create(:event, event_group: visible_event_group) }
-    let(:concealed_event) { create(:event, event_group: concealed_event_group) }
-    let(:visible_efforts) { create_list(:effort, 2, event: visible_event) }
-    let(:concealed_efforts) { create_list(:effort, 2, event: concealed_event) }
+    let(:concealed_event_group) { event_groups(:dirty_30) }
+    let(:visible_efforts) { Effort.joins(:event).where.not(events: {event_group_id: concealed_event_group.id}).first(5) }
+    let(:concealed_efforts) { Effort.joins(:event).where(events: {event_group_id: concealed_event_group.id}).first(5) }
+
+    before { concealed_event_group.update(concealed: true) }
 
     describe '.concealed' do
       it 'limits the subject scope to efforts whose event_group is concealed' do

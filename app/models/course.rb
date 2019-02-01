@@ -49,7 +49,7 @@ class Course < ApplicationRecord
   end
 
   def distance
-    @distance ||= ordered_splits.last.distance_from_start if ordered_splits.present?
+    @distance ||= finish_split.distance_from_start if finish_split.present?
   end
 
   def track_points
@@ -62,11 +62,11 @@ class Course < ApplicationRecord
   end
 
   def vert_gain
-    @vert_gain ||= ordered_splits.last.vert_gain_from_start if ordered_splits.present?
+    @vert_gain ||= finish_split.vert_gain_from_start if finish_split.present?
   end
 
   def vert_loss
-    @vert_loss ||= ordered_splits.last.vert_loss_from_start if ordered_splits.present?
+    @vert_loss ||= finish_split.vert_loss_from_start if finish_split.present?
   end
 
   def simple?

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController do
-  let(:user) { create(:user) }
+  let(:user) { users(:third_user) }
   let(:type) { 'users' }
 
   describe '#show' do

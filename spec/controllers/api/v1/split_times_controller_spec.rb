@@ -7,11 +7,9 @@ RSpec.describe Api::V1::SplitTimesController do
 
   let(:type) { 'split_times' }
   let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: bitkey) }
-  let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course) }
-  let(:split) { create(:split, course: course) }
+  let(:effort) { efforts(:hardrock_2016_progress_sherman) }
+  let(:split) { splits(:hardrock_cw_cunningham) }
   let(:bitkey) { in_bitkey }
-  let(:course) { create(:course) }
 
   describe '#show' do
     subject(:make_request) { get :show, params: params }
@@ -63,9 +61,7 @@ RSpec.describe Api::V1::SplitTimesController do
         end
 
         it 'creates a split_time record' do
-          expect(SplitTime.count).to eq(0)
-          make_request
-          expect(SplitTime.count).to eq(1)
+          expect { make_request }.to change { SplitTime.count }.by(1)
         end
       end
     end

@@ -25,8 +25,7 @@ RSpec.describe EffortAutoReconciler do
 
   describe '#reconcile' do
     it 'creates new people for unmatched efforts, properly assigns efforts to people, and produces an accurate report' do
-      subject.reconcile
-      expect(Person.all.count).to eq(9)
+      expect { subject.reconcile }.to change { Person.count }.by(4)
 
       person6 = Person.find_by(last_name: 'Fredrickson')
       person7 = Person.find_by(last_name: 'Gottfredson')

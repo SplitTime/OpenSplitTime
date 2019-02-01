@@ -49,8 +49,15 @@ class EventsController < ApplicationController
         set_flash_message(response)
         redirect_to event_group_path(@event.event_group, force_settings: true)
       end
-    else
-      render 'edit'
+
+    else # response.unsuccessful?
+      set_flash_message(response)
+      case params[:button]
+      when 'join_leave'
+        redirect_to request.referrer
+      else
+        render 'edit'
+      end
     end
   end
 

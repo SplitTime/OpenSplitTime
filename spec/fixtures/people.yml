@@ -1,0 +1,2278 @@
+---
+progress_lap2:
+  id: 2174
+  first_name: Progress
+  last_name: Lap2
+  gender: 1
+  birthdate: '1992-10-06'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.694985'
+  updated_at: '2019-02-01 07:19:53.226652'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-lap2
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_coltest-fortest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_lap5_partial:
+  id: 2169
+  first_name: Progress
+  last_name: Lap5 Partial
+  gender: 0
+  birthdate: '1988-09-15'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:44.965267'
+  updated_at: '2019-02-01 07:19:53.254811'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-lap5-partial
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jactest-cartest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first:
+  id: 2170
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1997-01-25'
+  city: 
+  state_code: AZ
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.095305'
+  updated_at: '2019-02-01 07:19:53.263433'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-first
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jamtest-coutest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_lap6:
+  id: 2171
+  first_name: Finished
+  last_name: Lap6
+  gender: 0
+  birthdate: '1963-03-07'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.241578'
+  updated_at: '2019-02-01 07:19:53.272429'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-lap6
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_contest-eldtest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+not_started_utah_us:
+  id: 2175
+  first_name: Not
+  last_name: Started
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.813779'
+  updated_at: '2019-02-01 07:19:53.28547'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: not-started-utah-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only:
+  id: 2176
+  first_name: Start
+  last_name: Only
+  gender: 0
+  birthdate: '1972-12-19'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-01-30 19:00:45.946704'
+  updated_at: '2019-02-01 07:19:53.299193'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: start-only
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_utah_us:
+  id: 1265
+  first_name: Finished
+  last_name: First
+  gender: 1
+  birthdate: '1969-04-04'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2017-03-28 07:19:22.66871'
+  updated_at: '2019-02-01 07:19:53.57611'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-first-utah-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shalise-morgan
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_lap6:
+  id: 1266
+  first_name: Progress
+  last_name: Lap6
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2017-03-28 07:19:22.822139'
+  updated_at: '2019-02-01 07:19:53.585346'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-lap6
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-hughes
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+kendall_koch:
+  id: 226
+  first_name: Kendall
+  last_name: Koch
+  gender: 0
+  birthdate: '1976-02-05'
+  city: Littleton
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:31.615349'
+  updated_at: '2019-02-01 07:19:53.687414'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: kendall-koch
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-snyder
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+garry_kuhlman:
+  id: 39
+  first_name: Garry
+  last_name: Kuhlman
+  gender: 0
+  birthdate: '1969-10-10'
+  city: 
+  state_code: MT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.265724'
+  updated_at: '2019-02-01 07:19:53.858243'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: garry-kuhlman
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-davis
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+multiple_stops_utah_us:
+  id: 1305
+  first_name: Multiple
+  last_name: Stops
+  gender: 1
+  birthdate: '1973-11-14'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2017-03-28 07:19:29.184827'
+  updated_at: '2019-02-01 07:19:53.596042'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: multiple-stops-utah-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tara-warren
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_last:
+  id: 1324
+  first_name: Finished
+  last_name: Last
+  gender: 0
+  birthdate: '1976-05-03'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2017-03-28 07:19:32.066094'
+  updated_at: '2019-02-01 07:19:53.605615'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-last
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-garrison
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+tuan_jacobs:
+  id: 80
+  first_name: Tuan
+  last_name: Jacobs
+  gender: 0
+  birthdate: '1998-03-19'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.80464'
+  updated_at: '2019-02-01 07:19:53.004176'
+  created_by: 1
+  updated_by: 1
+  country_code: ES
+  user_id: 
+  concealed: false
+  slug: tuan-jacobs
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kilian-jornet
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+leroy_leffler:
+  id: 85
+  first_name: Leroy
+  last_name: Leffler
+  gender: 0
+  birthdate: '1967-06-18'
+  city: 
+  state_code: NM
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.855811'
+  updated_at: '2019-02-01 07:19:53.082378'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: leroy-leffler
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristen-kern
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+donn_mckenzie:
+  id: 40
+  first_name: Donn
+  last_name: McKenzie
+  gender: 0
+  birthdate: '1998-12-29'
+  city: 
+  state_code: WY
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.276164'
+  updated_at: '2019-02-01 07:19:53.143973'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: donn-mckenzie
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_aaron-denberg
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+irvin_harber:
+  id: 61
+  first_name: Irvin
+  last_name: Harber
+  gender: 0
+  birthdate: '1996-07-05'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.569434'
+  updated_at: '2019-02-01 07:19:53.152853'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: irvin-harber
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brett-gosney
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+benedict_davis:
+  id: 43
+  first_name: Benedict
+  last_name: Davis
+  gender: 0
+  birthdate: '1983-06-28'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.311539'
+  updated_at: '2019-02-01 07:19:53.197569'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: benedict-davis
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bogie-dumitrescu
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+susanna_abshire:
+  id: 74
+  first_name: Susanna
+  last_name: Abshire
+  gender: 1
+  birthdate: '1980-08-17'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.73066'
+  updated_at: '2019-02-01 07:19:53.207005'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: susanna-abshire
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sheila-huss
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+rachelle_eichmann:
+  id: 81
+  first_name: Rachelle
+  last_name: Eichmann
+  gender: 1
+  birthdate: '1992-01-11'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.813922'
+  updated_at: '2019-02-01 07:19:53.375866'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: rachelle-eichmann
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-kalmeyer
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+paul_predovic:
+  id: 44
+  first_name: Paul
+  last_name: Predovic
+  gender: 0
+  birthdate: '1959-06-26'
+  city: 
+  state_code: ID
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.326152'
+  updated_at: '2019-02-01 07:19:53.419711'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: paul-predovic
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-ehredt
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+pat_schaden:
+  id: 79
+  first_name: Pat
+  last_name: Schaden
+  gender: 0
+  birthdate: '1960-09-09'
+  city: 
+  state_code: AZ
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.794649'
+  updated_at: '2019-02-01 07:19:53.458785'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: pat-schaden
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeff-jones
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+lavon_paucek:
+  id: 53
+  first_name: Lavon
+  last_name: Paucek
+  gender: 1
+  birthdate: '1974-07-29'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.463923'
+  updated_at: '2019-02-01 07:19:53.615313'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: lavon-paucek
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_anna-frost
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+vesta_borer:
+  id: 70
+  first_name: Vesta
+  last_name: Borer
+  gender: 1
+  birthdate: '1995-04-24'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.681414'
+  updated_at: '2019-02-01 07:19:53.676494'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: vesta-borer
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_meghan-hicks
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+erich_larson:
+  id: 51
+  first_name: Erich
+  last_name: Larson
+  gender: 0
+  birthdate: '1979-07-10'
+  city: 
+  state_code: MT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.4363'
+  updated_at: '2019-02-01 07:19:53.867965'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: erich-larson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-foote
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+carmine_adams:
+  id: 69
+  first_name: Carmine
+  last_name: Adams
+  gender: 0
+  birthdate: '1997-05-25'
+  city: 
+  state_code: WA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.67013'
+  updated_at: '2019-02-01 07:19:53.876183'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: carmine-adams
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adam-hewey
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+donte_spencer:
+  id: 99
+  first_name: Donte
+  last_name: Spencer
+  gender: 0
+  birthdate: '1984-07-14'
+  city: Eden
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.993252'
+  updated_at: '2019-02-01 07:19:53.160812'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: donte-spencer
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-martin
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+gus_walker:
+  id: 98
+  first_name: Gus
+  last_name: Walker
+  gender: 0
+  birthdate: '1960-11-23'
+  city: Boulder
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.983941'
+  updated_at: '2019-02-01 07:19:53.169621'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: gus-walker
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_joey-luther
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+cassondra_nienow:
+  id: 97
+  first_name: Cassondra
+  last_name: Nienow
+  gender: 1
+  birthdate: '1958-09-07'
+  city: 
+  state_code: OH
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.974286'
+  updated_at: '2019-02-01 07:19:53.216885'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: cassondra-nienow
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kim-love-ottobre
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+humberto_adams:
+  id: 182
+  first_name: Humberto
+  last_name: Adams
+  gender: 0
+  birthdate: '1990-04-25'
+  city: 
+  state_code: NM
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:29.886921'
+  updated_at: '2019-02-01 07:19:53.469167'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: humberto-adams
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-gordon
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+without_start:
+  id: 170
+  first_name: Without
+  last_name: Start
+  gender: 0
+  birthdate: '1965-04-23'
+  city: 
+  state_code: MT
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:29.762812'
+  updated_at: '2019-02-01 07:19:53.52798'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: without-start
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rich-desimone
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+brinda_fisher:
+  id: 14
+  first_name: Brinda
+  last_name: Fisher
+  gender: 1
+  birthdate: '1994-07-12'
+  city: 
+  state_code: SC
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.005889'
+  updated_at: '2019-02-01 07:19:53.717197'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: brinda-fisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_liz-bauer
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+mervin_smitham:
+  id: 162
+  first_name: Mervin
+  last_name: Smitham
+  gender: 0
+  birthdate: '1991-10-08'
+  city: 
+  state_code: NM
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:29.684152'
+  updated_at: '2019-02-01 07:19:53.761114'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: mervin-smitham
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_neil-blake
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+bad_status:
+  id: 18
+  first_name: Bad
+  last_name: Status
+  gender: 0
+  birthdate: '1994-04-18'
+  city: Erie
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.043379'
+  updated_at: '2019-02-01 07:19:53.13615'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: bad-status
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_drew-brazier
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+omer_yundt:
+  id: 190
+  first_name: Omer
+  last_name: Yundt
+  gender: 0
+  birthdate: '1974-06-23'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:29.962932'
+  updated_at: '2019-02-01 07:19:53.481573'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: omer-yundt
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-hodges
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+drop_ouray:
+  id: 195
+  first_name: Drop
+  last_name: Ouray
+  gender: 1
+  birthdate: '1974-01-05'
+  city: Boulder Creek
+  state_code: CA
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:31.327182'
+  updated_at: '2019-02-01 07:19:53.53757'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: drop-ouray
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristina-irvin
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+charlie_mueller:
+  id: 205
+  first_name: Charlie
+  last_name: Mueller
+  gender: 0
+  birthdate: '1989-06-10'
+  city: 
+  state_code: OR
+  email: 
+  phone: 
+  created_at: '2016-04-28 08:14:31.426276'
+  updated_at: '2019-02-01 07:19:53.697537'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: charlie-mueller
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-larsen
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+chris_rempel:
+  id: 109
+  first_name: Chris
+  last_name: Rempel
+  gender: 0
+  birthdate: '1988-12-28'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.087654'
+  updated_at: '2019-02-01 07:19:53.015948'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: chris-rempel
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_doug-newton
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+ken_bradtke:
+  id: 101
+  first_name: Ken
+  last_name: Bradtke
+  gender: 0
+  birthdate: '1966-07-21'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.012012'
+  updated_at: '2019-02-01 07:19:53.491202'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: ken-bradtke
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-martin
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+dropped_grouse:
+  id: 249
+  first_name: Dropped
+  last_name: Grouse
+  gender: 0
+  birthdate: '1969-05-13'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-05-02 16:06:11.81628'
+  updated_at: '2019-02-01 07:19:53.742182'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: dropped-grouse
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nick-clark
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+hoyt_macejkovic:
+  id: 256
+  first_name: Hoyt
+  last_name: Macejkovic
+  gender: 0
+  birthdate: '1960-07-23'
+  city: 
+  state_code: TX
+  email: 
+  phone: 
+  created_at: '2016-05-02 16:06:11.885594'
+  updated_at: '2019-02-01 07:19:53.770319'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: hoyt-macejkovic
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-ficke
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+darius_jacobson:
+  id: 108
+  first_name: Darius
+  last_name: Jacobson
+  gender: 0
+  birthdate: '1985-03-21'
+  city: Carbondale
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.077918'
+  updated_at: '2019-02-01 07:19:53.887232'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: darius-jacobson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeason-murphy
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+samara_vandervort:
+  id: 110
+  first_name: Samara
+  last_name: Vandervort
+  gender: 1
+  birthdate: '1992-12-15'
+  city: Truckee
+  state_code: CA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.096853'
+  updated_at: '2019-02-01 07:19:53.127821'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: samara-vandervort
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-nye
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_sherman_colorado_us:
+  id: 289
+  first_name: Progress
+  last_name: Sherman
+  gender: 0
+  birthdate: '1977-12-15'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-05-02 16:06:12.251172'
+  updated_at: '2019-02-01 07:19:53.546915'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-sherman-colorado-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-pearcy
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_lap1:
+  id: 1344
+  first_name: Progress
+  last_name: Lap1
+  gender: 0
+  birthdate: '1967-03-21'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2017-03-28 07:19:35.252811'
+  updated_at: '2019-02-01 07:19:53.625378'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-lap1
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_keith-sanders
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_second:
+  id: 326
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  birthdate: '1994-08-16'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-08 07:06:11.133052'
+  updated_at: '2019-02-01 07:19:52.991074'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: finished-second
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lisa-ledet
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only_2019_02_01:
+  id: 331
+  first_name: Start
+  last_name: Only
+  gender: 1
+  birthdate: '1968-07-11'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-08 07:06:11.174801'
+  updated_at: '2019-02-01 07:19:53.33921'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: start-only-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alexa-mcnaul
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+willis_murray:
+  id: 21
+  first_name: Willis
+  last_name: Murray
+  gender: 0
+  birthdate: '1998-02-04'
+  city: 
+  state_code: FL
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.083822'
+  updated_at: '2019-02-01 07:19:53.50065'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: willis-murray
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-brockmeier
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+cedric_windler:
+  id: 135
+  first_name: Cedric
+  last_name: Windler
+  gender: 0
+  birthdate: '1979-07-10'
+  city: 
+  state_code: TN
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.342313'
+  updated_at: '2019-02-01 07:19:53.02791'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: cedric-windler
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_billy-simpson
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_2019_02_01:
+  id: 369
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1957-02-04'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-08 07:11:03.04274'
+  updated_at: '2019-02-01 07:19:53.35294'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: finished-first-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stefan-griebel
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+not_started_2019_02_01:
+  id: 384
+  first_name: Not
+  last_name: Started
+  gender: 0
+  birthdate: '1989-03-22'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-08 07:11:03.177256'
+  updated_at: '2019-02-01 07:19:53.365861'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: not-started-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jon-riebkes
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+clarence_goyette:
+  id: 136
+  first_name: Clarence
+  last_name: Goyette
+  gender: 0
+  birthdate: '1961-09-18'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.352342'
+  updated_at: '2019-02-01 07:19:53.509191'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: clarence-goyette
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_julian-smith
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+douglas_vandervort:
+  id: 113
+  first_name: Douglas
+  last_name: Vandervort
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.126029'
+  updated_at: '2019-02-01 07:19:53.638248'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: douglas-vandervort
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-oliver
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+leandro_cole:
+  id: 116
+  first_name: Leandro
+  last_name: Cole
+  gender: 0
+  birthdate: '1970-06-26'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.155158'
+  updated_at: '2019-02-01 07:19:53.178824'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: leandro-cole
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_raymond-overson
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+shad_hirthe:
+  id: 463
+  first_name: Shad
+  last_name: Hirthe
+  gender: 0
+  birthdate: '1975-09-05'
+  city: Crested Butte
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-05-10 07:28:03.541069'
+  updated_at: '2019-02-01 07:19:53.648664'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: shad-hirthe
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_allen-hadley
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_without_stop:
+  id: 495
+  first_name: Finished
+  last_name: Without Stop
+  gender: 0
+  birthdate: 
+  city: Salt Lake City
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-05-10 07:28:11.212024'
+  updated_at: '2019-02-01 07:19:53.386067'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-without-stop
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-jurynec
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+raphael_swift:
+  id: 120
+  first_name: Raphael
+  last_name: Swift
+  gender: 0
+  birthdate: '1974-07-14'
+  city: 
+  state_code: AR
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.192624'
+  updated_at: '2019-02-01 07:19:53.187844'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: raphael-swift
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_george-peterka
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_with_stop:
+  id: 25
+  first_name: Finished
+  last_name: With Stop
+  gender: 0
+  birthdate: '1974-03-03'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.125481'
+  updated_at: '2019-02-01 07:19:53.397128'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-with-stop
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jared-campbell
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+demetrius_moen:
+  id: 148
+  first_name: Demetrius
+  last_name: Moen
+  gender: 0
+  birthdate: '1975-06-06'
+  city: 
+  state_code: OR
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.476481'
+  updated_at: '2019-02-01 07:19:53.093429'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: demetrius-moen
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-ward
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+robt_wintheiser:
+  id: 152
+  first_name: Robt
+  last_name: Wintheiser
+  gender: 0
+  birthdate: 
+  city: Durango
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.513925'
+  updated_at: '2019-02-01 07:19:53.102516'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: robt-wintheiser
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_phil-wiley
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+kory_kulas:
+  id: 1356
+  first_name: Kory
+  last_name: Kulas
+  gender: 0
+  birthdate: '1974-01-25'
+  city: 
+  state_code: CA
+  email: 
+  phone: 
+  created_at: '2017-04-18 08:22:57.70508'
+  updated_at: '2019-02-01 07:19:53.310718'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: kory-kulas
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bill-clements
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+eddy_goldner:
+  id: 147
+  first_name: Eddy
+  last_name: Goldner
+  gender: 0
+  birthdate: '1997-07-26'
+  city: 
+  state_code: WA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.467534'
+  updated_at: '2019-02-01 07:19:53.657969'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: eddy-goldner
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-varner
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+benito_moen:
+  id: 1365
+  first_name: Benito
+  last_name: Moen
+  gender: 0
+  birthdate: '1964-01-16'
+  city: 
+  state_code: OH
+  email: 
+  phone: 
+  created_at: '2017-04-18 08:22:59.120573'
+  updated_at: '2019-02-01 07:19:53.7074'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: benito-moen
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-peterman
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+rene_mclaughlin:
+  id: 1379
+  first_name: Rene
+  last_name: McLaughlin
+  gender: 0
+  birthdate: '1984-04-30'
+  city: 
+  state_code: TX
+  email: 
+  phone: 
+  created_at: '2017-04-18 08:23:01.385694'
+  updated_at: '2019-02-01 07:19:53.779293'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: rene-mclaughlin
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-brown
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+bruno_fadel:
+  id: 10
+  first_name: Bruno
+  last_name: Fadel
+  gender: 0
+  birthdate: '1988-05-11'
+  city: 
+  state_code: CA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:13.966803'
+  updated_at: '2019-02-01 07:19:53.037951'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: bruno-fadel
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stevie-ansell
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+gilberto_mckenzie:
+  id: 42
+  first_name: Gilberto
+  last_name: McKenzie
+  gender: 0
+  birthdate: '1970-06-02'
+  city: 
+  state_code: WA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.297646'
+  updated_at: '2019-02-01 07:19:53.049667'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: gilberto-mckenzie
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-douglas
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+vince_willms:
+  id: 141
+  first_name: Vince
+  last_name: Willms
+  gender: 0
+  birthdate: '1964-10-22'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.401845'
+  updated_at: '2019-02-01 07:19:53.059679'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: vince-willms
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_clark-sundahl
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+santa_green:
+  id: 62
+  first_name: Santa
+  last_name: Green
+  gender: 1
+  birthdate: '1977-10-27'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.582024'
+  updated_at: '2019-02-01 07:19:53.070722'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: santa-green
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_missy-gosney
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+elden_morissette:
+  id: 119
+  first_name: Elden
+  last_name: Morissette
+  gender: 0
+  birthdate: '1972-11-21'
+  city: 
+  state_code: WI
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.183099'
+  updated_at: '2019-02-01 07:19:53.56644'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: elden-morissette
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_garrett-peltonen
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+leif_carter:
+  id: 83
+  first_name: Leif
+  last_name: Carter
+  gender: 0
+  birthdate: '1960-02-01'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:14.83388'
+  updated_at: '2019-02-01 07:19:53.896369'
+  created_by: 1
+  updated_by: 1
+  country_code: ES
+  user_id: 
+  concealed: false
+  slug: leif-carter
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_iker-karrera
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_second_colorado_us_2019_02_01:
+  id: 1584
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  birthdate: '1973-07-23'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:56.192766'
+  updated_at: '2019-02-01 07:19:53.940184'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-second-colorado-us-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tattie-bailey
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_colorado_us:
+  id: 1585
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1963-08-18'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:56.334499'
+  updated_at: '2019-02-01 07:19:53.950033'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-first-colorado-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-oury
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+not_started_colorado_us_2019_02_01:
+  id: 1571
+  first_name: Not
+  last_name: Started
+  gender: 1
+  birthdate: '1981-03-31'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:54.418009'
+  updated_at: '2019-02-01 07:19:53.960413'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: not-started-colorado-us-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_glenda-lainis
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only_colorado_us_2019_02_01:
+  id: 1567
+  first_name: Start
+  last_name: Only
+  gender: 0
+  birthdate: '1967-10-27'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:53.922446'
+  updated_at: '2019-02-01 07:19:53.982809'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: start-only-colorado-us-2019-02-01
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_hewitt-gaynor
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+drop_bandera:
+  id: 1568
+  first_name: Drop
+  last_name: Bandera
+  gender: 1
+  birthdate: '1998-08-31'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:54.016843'
+  updated_at: '2019-02-01 07:19:53.991273'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: drop-bandera
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lynn-hall
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_rolling:
+  id: 1569
+  first_name: Progress
+  last_name: Rolling
+  gender: 1
+  birthdate: '1962-04-23'
+  city: 
+  state_code: CA
+  email: 
+  phone: 
+  created_at: '2018-01-18 05:23:54.1754'
+  updated_at: '2019-02-01 07:19:54.001212'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-rolling
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nicole-honda
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+drop_aid4:
+  id: 1689
+  first_name: Drop
+  last_name: Aid4
+  gender: 0
+  birthdate: '1998-11-08'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-05-10 09:47:58.890141'
+  updated_at: '2019-02-01 07:19:53.832943'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: drop-aid4
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nathan-evans
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_aid3:
+  id: 1734
+  first_name: Progress
+  last_name: Aid3
+  gender: 0
+  birthdate: '1986-03-04'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-05-10 09:48:33.933618'
+  updated_at: '2019-02-01 07:19:53.810374'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: progress-aid3
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-hefti
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+drop_anvil:
+  id: 1747
+  first_name: Drop
+  last_name: Anvil
+  gender: 0
+  birthdate: '1988-09-29'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-07-28 11:18:08.492197'
+  updated_at: '2019-02-01 07:19:54.011406'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: drop-anvil
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ian-cropper
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_cascade:
+  id: 1748
+  first_name: Progress
+  last_name: Cascade
+  gender: 0
+  birthdate: '1997-05-20'
+  city: Provo
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2018-07-28 11:18:10.049155'
+  updated_at: '2019-02-01 07:19:54.020929'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-cascade
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_abram-early
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+not_started_colorado_us:
+  id: 1771
+  first_name: Not
+  last_name: Started
+  gender: 1
+  birthdate: '1995-03-06'
+  city: Greeley
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:34:35.09039'
+  updated_at: '2019-02-01 07:19:53.929463'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: not-started-colorado-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_marybeth-wittenbach
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_sherman:
+  id: 656
+  first_name: Progress
+  last_name: Sherman
+  gender: 0
+  birthdate: '1982-07-28'
+  city: 
+  state_code: ID
+  email: 
+  phone: 
+  created_at: '2016-05-11 15:44:32.114719'
+  updated_at: '2019-02-01 07:19:53.323784'
+  created_by: 2
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: progress-sherman
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_andy-jones-wilkins
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_second_colorado_us:
+  id: 1862
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  birthdate: '1984-01-16'
+  city: Boulder
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:34:43.417273'
+  updated_at: '2019-02-01 07:19:53.907919'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: finished-second-colorado-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sierra-horton
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only_colorado_us:
+  id: 1874
+  first_name: Start
+  last_name: Only
+  gender: 1
+  birthdate: '1989-09-09'
+  city: Aurora
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:34:44.799339'
+  updated_at: '2019-02-01 07:19:53.918886'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: start-only-colorado-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_christina-gille
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+vern_buckridge:
+  id: 128
+  first_name: Vern
+  last_name: Buckridge
+  gender: 0
+  birthdate: '1981-10-15'
+  city: 
+  state_code: TX
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:15.271416'
+  updated_at: '2019-02-01 07:19:53.110715'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: vern-buckridge
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brian-ricketts
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_japan:
+  id: 682
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1995-04-25'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:34.771455'
+  updated_at: '2019-02-01 07:19:53.408546'
+  created_by: 1
+  updated_by: 1
+  country_code: JP
+  user_id: 
+  concealed: false
+  slug: finished-first-japan
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tsuyoshi-kaburaki
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+claudio_wunsch:
+  id: 689
+  first_name: Claudio
+  last_name: Wunsch
+  gender: 0
+  birthdate: 
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:34.845156'
+  updated_at: '2019-02-01 07:19:53.431583'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: claudio-wunsch
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stuart-air
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+keith_metz:
+  id: 690
+  first_name: Keith
+  last_name: Metz
+  gender: 0
+  birthdate: '1971-11-06'
+  city: 
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:34.856224'
+  updated_at: '2019-02-01 07:19:53.440317'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: keith-metz
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-mcdermott
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+major_green:
+  id: 691
+  first_name: Major
+  last_name: Green
+  gender: 0
+  birthdate: '1955-09-29'
+  city: 
+  state_code: NC
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:34.865687'
+  updated_at: '2019-02-01 07:19:53.450078'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: major-green
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-dirito
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+irvin_corkery:
+  id: 698
+  first_name: Irvin
+  last_name: Corkery
+  gender: 0
+  birthdate: '1991-11-01'
+  city: 
+  state_code: DC
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:34.94944'
+  updated_at: '2019-02-01 07:19:53.519045'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: irvin-corkery
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_josh-dickson
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only_2019_02_01_07_19_53:
+  id: 1926
+  first_name: Start
+  last_name: Only
+  gender: 1
+  birthdate: '1985-11-14'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:35:21.894405'
+  updated_at: '2019-02-01 07:19:53.845347'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: start-only-2019-02-01-07-19-53
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_caolan-macmahon
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_france:
+  id: 1923
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1993-06-05'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:34:49.62732'
+  updated_at: '2019-02-01 07:19:53.971283'
+  created_by: 1
+  updated_by: 1
+  country_code: FR
+  user_id: 
+  concealed: false
+  slug: finished-first-france
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adrien-seguret
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+not_started:
+  id: 710
+  first_name: Not
+  last_name: Started
+  gender: 0
+  birthdate: '1986-03-23'
+  city: 
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:35.057652'
+  updated_at: '2019-02-01 06:10:44.623804'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: not-started
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+multiple_stops:
+  id: 707
+  first_name: Multiple
+  last_name: Stops
+  gender: 1
+  birthdate: '1954-03-21'
+  city: 
+  state_code: HI
+  email: 
+  phone: 
+  created_at: '2016-05-23 07:18:35.032341'
+  updated_at: '2019-02-01 07:19:53.557519'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: multiple-stops
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rosie-warfield
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+junior_lesch:
+  id: 830
+  first_name: Junior
+  last_name: Lesch
+  gender: 0
+  birthdate: '1967-02-21'
+  city: 
+  state_code: NM
+  email: 
+  phone: 
+  created_at: '2016-05-24 04:48:52.529697'
+  updated_at: '2019-02-01 07:19:53.667794'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: junior-lesch
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-halladay
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+robby_gerlach:
+  id: 13
+  first_name: Robby
+  last_name: Gerlach
+  gender: 0
+  birthdate: '1970-05-18'
+  city: 
+  state_code: VA
+  email: 
+  phone: 
+  created_at: '2016-04-18 09:10:13.995708'
+  updated_at: '2019-02-01 07:19:53.119492'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: robby-gerlach
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_steve-barge
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+progress_aid4:
+  id: 2003
+  first_name: Progress
+  last_name: Aid4
+  gender: 1
+  birthdate: '1982-03-29'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:35:28.943'
+  updated_at: '2019-02-01 07:19:53.821661'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: progress-aid4
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alyson-wiedenheft
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+bad_finish:
+  id: 2104
+  first_name: Bad
+  last_name: Finish
+  gender: 0
+  birthdate: '1995-07-25'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:35:38.330897'
+  updated_at: '2019-02-01 07:19:53.788073'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: bad-finish
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jimmy-picard
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+finished_first_2019_02_01_07_19_53:
+  id: 2128
+  first_name: Finished
+  last_name: First
+  gender: 0
+  birthdate: '1973-05-25'
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2018-12-28 19:35:40.68485'
+  updated_at: '2019-02-01 07:19:53.800827'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: finished-first-2019-02-01-07-19-53
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_seth-wealing
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+start_only_maine_us:
+  id: 818
+  first_name: Start
+  last_name: Only
+  gender: 0
+  birthdate: '1990-04-23'
+  city: 
+  state_code: ME
+  email: 
+  phone: 
+  created_at: '2016-05-24 04:48:52.37776'
+  updated_at: '2019-02-01 07:19:53.752476'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: start-only-maine-us
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_craig-wilson
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 

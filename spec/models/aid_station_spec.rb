@@ -6,64 +6,53 @@ require 'rails_helper'
 # t.integer "split_id"
 # t.datetime "created_at", null: false
 # t.datetime "updated_at", null: false
-# t.datetime "open_time"
-# t.datetime "close_time"
-# t.integer "status"
-# t.string "captain_name"
-# t.string "comms_crew_names"
-# t.string "comms_frequencies"
-# t.string "current_issues"
 
 RSpec.describe AidStation, type: :model do
-  subject { build_stubbed(:aid_station, split: split, event: event) }
+  subject(:aid_station) { AidStation.new(event: event, split: split) }
 
-  let(:course) { build_stubbed(:course) }
-  let(:event) { build_stubbed(:event, course: course, name: 'Test Event', start_time: '2012-08-08 05:00:00') }
-  let(:split) { build_stubbed(:split, course: course, base_name: 'Hopeless Outbound', distance_from_start: 50000) }
-  let(:wrong_course) { build_stubbed(:course, name: 'Wrong Course') }
-  let(:wrong_event) { build_stubbed(:event, course: wrong_course, name: 'Wrong Event', start_time: '2012-08-08 05:00:00') }
-  let(:wrong_split) { build_stubbed(:split, course: wrong_course, base_name: 'Wrong Outbound', distance_from_start: 50000) }
+  let(:event) { events(:sum_100k) }
+  let(:split) { splits(:sum_100k_course_finish) }
+  let(:course) { event.course }
+  let(:event_group) { event.event_group }
+  let(:organization) { event_group.organization }
 
   describe '#initialize' do
-    it 'is valid with an event and a split' do
-      aid_station = AidStation.new(event: event, split: split)
-      expect(aid_station).to be_valid
+    context 'with an event and a split that are not already paired' do
+      before { event.splits.delete(split) }
+
+      it 'is valid' do
+        expect(aid_station).to be_valid
+      end
     end
 
-    it 'is invalid without an event' do
-      aid_station = AidStation.new(split: split)
-      expect(aid_station).not_to be_valid
-      expect(aid_station.errors[:event_id]).to include("can't be blank")
+    context 'without an event' do
+      let(:event) { nil }
+
+      it 'is invalid' do
+        expect(aid_station).not_to be_valid
+        expect(aid_station.errors[:event_id]).to include("can't be blank")
+      end
     end
 
-    it 'is invalid without a split' do
-      aid_station = AidStation.new(event: event)
-      expect(aid_station).not_to be_valid
-      expect(aid_station.errors[:split_id]).to include("can't be blank")
-    end
+    context 'if event course and split course are inconsistent' do
+      let(:split) { splits(:sum_55k_course_finish) }
 
-    it 'is invalid if event course and split course are inconsistent' do
-      aid_station = AidStation.new(event: event, split: wrong_split)
-      expect(aid_station).not_to be_valid
-      expect(aid_station.errors[:event_id]).to include("event's course is not the same as split's course")
+      it 'is invalid' do
+        expect(aid_station).not_to be_valid
+        expect(aid_station.errors[:event_id]).to include("event's course is not the same as split's course")
+      end
     end
 
     context 'when an aid_station with the same event and split already exists' do
-      let(:existing_course) { create(:course) }
-      let(:existing_event) { create(:event, course: existing_course) }
-      let(:existing_split) { create(:split, course: existing_course) }
-
       it 'does not allow for duplicate records with the same course and split' do
-        create(:aid_station, event: existing_event, split: existing_split)
-        aid_station = build_stubbed(:aid_station, event: existing_event, split: existing_split)
         expect(aid_station).not_to be_valid
         expect(aid_station.errors.full_messages.first).to include('only one of any given split permitted within an event')
       end
     end
 
     context 'for event_group split location validations' do
-      let(:event_1) { create(:event, course: course_1, event_group: event_group) }
-      let(:event_2) { create(:event, course: course_2, event_group: event_group) }
+      let(:event_1) { create(:event, course: course_1, event_group: event_group, home_time_zone: 'Arizona') }
+      let(:event_2) { create(:event, course: course_2, event_group: event_group, home_time_zone: 'Arizona') }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
       let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
@@ -79,9 +68,17 @@ RSpec.describe AidStation, type: :model do
       context 'when an aid_station is added and all splits remain compatible within the event_group' do
         let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
 
-        it 'is invalid' do
+        it 'is valid' do
           aid_station = create(:aid_station, event: event_2, split: course_2_split_2)
           expect(aid_station).to be_valid
+        end
+      end
+
+      context 'when an aid_station is added and a splits becomes incompatible within the event_group' do
+        let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 40, longitude: -105) }
+
+        it 'is invalid' do
+          expect { create(:aid_station, event: event_2, split: course_2_split_2) }.to raise_error ActiveRecord::RecordInvalid
         end
       end
     end
@@ -101,7 +98,7 @@ RSpec.describe AidStation, type: :model do
 
   describe '#event_group' do
     it 'returns the event_group of the event' do
-      expect(subject.event_group).to eq(event.event_group)
+      expect(subject.event_group).to eq(event_group)
     end
   end
 
@@ -113,13 +110,13 @@ RSpec.describe AidStation, type: :model do
 
   describe '#organization' do
     it 'returns the organization of the event_group of the event' do
-      expect(subject.organization).to eq(event.event_group.organization)
+      expect(subject.organization).to eq(organization)
     end
   end
 
   describe '#organization_name' do
     it 'returns the name of the organization of the event_group of the event' do
-      expect(subject.organization_name).to eq(event.event_group.organization.name)
+      expect(subject.organization_name).to eq(organization.name)
     end
   end
 

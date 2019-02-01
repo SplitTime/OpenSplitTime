@@ -4,28 +4,27 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe LapSplit, type: :model do
+  subject(:lap_split) { LapSplit.new(lap, split) }
+  let(:lap) { 1 }
+  let(:split) { Split.new }
+  let(:start_split) { Split.new(id: 123, kind: :start, base_name: 'Test Start') }
+  let(:intermediate_split) { Split.new(id: 123, kind: :intermediate, base_name: 'Test Aid Station', sub_split_bitmap: 65) }
+  let(:bare_split_with_id) { Split.new(id: 123) }
+
   describe 'initialization' do
     it 'initializes with a lap and a split' do
-      lap = 1
-      split = build_stubbed(:split)
-      expect { LapSplit.new(lap, split) }.not_to raise_error
+      expect { lap_split }.not_to raise_error
     end
   end
 
   describe '#lap' do
     it 'returns the first value passed to the LapSplit at initialization' do
-      lap = 1
-      split = build_stubbed(:split)
-      lap_split = LapSplit.new(lap, split)
       expect(lap_split.lap).to eq(lap)
     end
   end
 
   describe '#split' do
     it 'returns the second value passed to the LapSplit at initialization' do
-      lap = 1
-      split = build_stubbed(:split)
-      lap_split = LapSplit.new(lap, split)
       expect(lap_split.split).to eq(split)
     end
   end
@@ -107,414 +106,471 @@ RSpec.describe LapSplit, type: :model do
   end
 
   describe '#key' do
+    let(:lap) { 1 }
+    let(:split) { bare_split_with_id }
+
     it 'returns a LapSplitKey containing the split_id and lap number' do
-      lap = 1
-      split = build_stubbed(:split, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expected = LapSplitKey.new(1, 123)
-      expect(lap_split.key).to eq(expected)
+      expect(lap_split.key).to eq(LapSplitKey.new(1, 123))
     end
 
-    it 'returns nil if split_id is not present' do
-      lap = 1
-      split = build_stubbed(:split)
-      split.id = nil
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.key).to be_nil
+    context 'if split_id is not present' do
+      let(:lap) { 1 }
+      let(:split) { Split.new }
+
+      it 'returns nil' do
+        expect(lap_split.key).to be_nil
+      end
     end
 
-    it 'returns nil if lap is not present' do
-      split = build_stubbed(:split, id: 123)
-      lap_split = LapSplit.new(nil, split)
-      expect(lap_split.key).to be_nil
+    context 'if lap is not present' do
+      let(:lap) { nil }
+      let(:split) { bare_split_with_id }
+
+      it 'returns nil' do
+        expect(lap_split.key).to be_nil
+      end
     end
   end
 
   describe '#names' do
-    it 'returns the split name and lap number in an array if the split has one sub_split' do
-      lap = 1
-      split = build_stubbed(:split, :start, base_name: 'Test Start')
-      lap_split = LapSplit.new(lap, split)
-      expected = ['Test Start Lap 1']
-      expect(lap_split.names).to eq(expected)
+    context 'if the split has one sub_split' do
+      let(:split) { start_split }
+
+      it 'returns the split name and lap number in an array' do
+        expected = ['Test Start Lap 1']
+        expect(lap_split.names).to eq(expected)
+      end
     end
 
-    it 'returns the split names with extensions and lap number in an array if the split has multiple sub_splits' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = ['Test Aid Station In Lap 1', 'Test Aid Station Out Lap 1']
-      expect(lap_split.names).to eq(expected)
+    context 'if the split has multiple sub_splits' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split names with extensions and lap number in an array' do
+        expected = ['Test Aid Station In Lap 1', 'Test Aid Station Out Lap 1']
+        expect(lap_split.names).to eq(expected)
+      end
     end
   end
 
   describe '#names_without_laps' do
-    it 'returns the split name in an array if the split has one sub_split' do
-      lap = 1
-      split = build_stubbed(:split, :start, base_name: 'Test Start')
-      lap_split = LapSplit.new(lap, split)
-      expected = ['Test Start']
-      expect(lap_split.names_without_laps).to eq(expected)
+    context 'if the split has one sub_split' do
+      let(:split) { start_split }
+
+      it 'returns the split name and lap number in an array' do
+        expected = ['Test Start']
+        expect(lap_split.names_without_laps).to eq(expected)
+      end
     end
 
-    it 'returns the split names with extensions in an array if the split has multiple sub_splits' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = ['Test Aid Station In', 'Test Aid Station Out']
-      expect(lap_split.names_without_laps).to eq(expected)
+    context 'if the split has multiple sub_splits' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split names with extensions and lap number in an array' do
+        expected = ['Test Aid Station In', 'Test Aid Station Out']
+        expect(lap_split.names_without_laps).to eq(expected)
+      end
     end
   end
 
   describe '#name' do
-    it 'returns the split name and lap number if the split has one sub_split' do
-      lap = 1
-      split = build_stubbed(:split, :start, base_name: 'Test Start')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Start Lap 1'
-      expect(lap_split.name).to eq(expected)
+    context 'if the split has one sub_split' do
+      let(:split) { start_split }
+
+      it 'returns the split name and lap number' do
+        expected = 'Test Start Lap 1'
+        expect(lap_split.name).to eq(expected)
+      end
     end
 
-    it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station In / Out Lap 1'
-      expect(lap_split.name).to eq(expected)
+    context 'if the split has multiple sub_splits' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split name with extensions and lap number' do
+        expected = 'Test Aid Station In / Out Lap 1'
+        expect(lap_split.name).to eq(expected)
+      end
     end
 
-    it 'returns the split name with the related extension and the lap number if a bitkey is provided' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      bitkey = out_bitkey
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station Out Lap 1'
-      expect(lap_split.name(bitkey)).to eq(expected)
+    context 'if a bitkey is provided' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split name with the related extension and the lap number' do
+        expected = 'Test Aid Station Out Lap 1'
+        expect(lap_split.name(out_bitkey)).to eq(expected)
+      end
     end
 
-    it 'returns the split name plus "[unknown lap]" if lap is not present' do
-      lap = nil
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station In / Out [unknown lap]'
-      expect(lap_split.name).to eq(expected)
+    context 'if lap is not present' do
+      let(:lap) { nil }
+      let(:split) { intermediate_split }
+
+      it 'returns the split name plus "[unknown lap]"' do
+        expected = 'Test Aid Station In / Out [unknown lap]'
+        expect(lap_split.name).to eq(expected)
+      end
     end
 
-    it 'returns "[unknown split]" plus the lap number if split is not present' do
-      lap = 1
-      split = nil
-      lap_split = LapSplit.new(lap, split)
-      expected = '[unknown split] Lap 1'
-      expect(lap_split.name).to eq(expected)
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns "[unknown split]" plus the lap number' do
+        expected = '[unknown split] Lap 1'
+        expect(lap_split.name).to eq(expected)
+      end
     end
   end
 
   describe '#name_without_lap' do
-    it 'returns the split name if the split has one sub_split' do
-      lap = 1
-      split = build_stubbed(:split, :start, base_name: 'Test Start')
-      expected = 'Test Start'
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.name_without_lap).to eq(expected)
+    context 'if the split has one sub_split' do
+      let(:split) { start_split }
+
+      it 'returns the split name' do
+        expected = 'Test Start'
+        expect(lap_split.name_without_lap).to eq(expected)
+      end
     end
 
-    it 'returns the split name with extensions and lap number if the split has multiple sub_splits' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station In / Out'
-      expect(lap_split.name_without_lap).to eq(expected)
+    context 'if the split has multiple sub_splits' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split name with extensions and lap number' do
+        expected = 'Test Aid Station In / Out'
+        expect(lap_split.name_without_lap).to eq(expected)
+      end
     end
 
-    it 'returns the split name with the related extension if a bitkey is provided' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      bitkey = out_bitkey
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station Out'
-      expect(lap_split.name_without_lap(bitkey)).to eq(expected)
+    context 'if a bitkey is provided' do
+      let(:split) { intermediate_split }
+
+      it 'returns the split name with the related extension' do
+        expected = 'Test Aid Station Out'
+        expect(lap_split.name_without_lap(out_bitkey)).to eq(expected)
+      end
     end
 
-    it 'returns "[unknown split]" plus the lap number if split is not present' do
-      lap = 1
-      split = nil
-      lap_split = LapSplit.new(lap, split)
-      expected = '[unknown split]'
-      expect(lap_split.name_without_lap).to eq(expected)
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns "[unknown split]" plus the lap number' do
+        expected = '[unknown split]'
+        expect(lap_split.name_without_lap).to eq(expected)
+      end
     end
   end
 
   describe '#base_name' do
-    it 'returns a string containing the split name and lap number' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station Lap 1'
-      expect(lap_split.base_name).to eq(expected)
+    context 'when lap and split are present' do
+      let(:split) { intermediate_split }
+
+      it 'returns a string containing the split name and lap number' do
+        expected = 'Test Aid Station Lap 1'
+        expect(lap_split.base_name).to eq(expected)
+      end
     end
 
-    it 'returns the split base_name plus "[unknown lap]" if lap is not present' do
-      split = build_stubbed(:split, id: 123, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(nil, split)
-      expect(lap_split.base_name).to eq('Test Aid Station [unknown lap]')
+    context 'when lap is not present' do
+      let(:split) { intermediate_split }
+      let(:lap) { nil }
+
+      it 'returns the split base_name plus "[unknown lap]"' do
+        expect(lap_split.base_name).to eq('Test Aid Station [unknown lap]')
+      end
     end
 
-    it 'returns "[unknown split]" plus the lap number if split is not present' do
-      lap = 1
-      lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.base_name).to eq('[unknown split] Lap 1')
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns "[unknown split]" plus the lap number' do
+        expect(lap_split.base_name).to eq('[unknown split] Lap 1')
+      end
     end
   end
 
   describe '#base_name_without_lap' do
-    it 'returns a string containing the split name' do
-      lap = 1
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(lap, split)
-      expected = 'Test Aid Station'
-      expect(lap_split.base_name_without_lap).to eq(expected)
+    context 'when lap and split are present' do
+      let(:split) { intermediate_split }
+
+      it 'returns a string containing the split name and lap number' do
+        expected = 'Test Aid Station'
+        expect(lap_split.base_name_without_lap).to eq(expected)
+      end
     end
 
-    it 'returns a string containing the split name even if lap is not present' do
-      split = build_stubbed(:split, base_name: 'Test Aid Station')
-      lap_split = LapSplit.new(nil, split)
-      expected = 'Test Aid Station'
-      expect(lap_split.base_name_without_lap).to eq(expected)
+    context 'when lap is not present' do
+      let(:split) { intermediate_split }
+      let(:lap) { nil }
+
+      it 'returns the split base_name_without_lap' do
+        expect(lap_split.base_name_without_lap).to eq('Test Aid Station')
+      end
     end
 
-    it 'returns "[unknown split]" if split is not present' do
-      lap = 1
-      lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.base_name_without_lap).to eq('[unknown split]')
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns "[unknown split]"' do
+        expect(lap_split.base_name_without_lap).to eq('[unknown split]')
+      end
     end
   end
 
   describe '#time_points' do
-    it 'for split with multiple bitkeys, returns an array of TimePoints using the lap and split.id and all valid bitkeys' do
-      lap = 1
-      split = build_stubbed(:split, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expected = [TimePoint.new(lap, split.id, in_bitkey), TimePoint.new(lap, split.id, out_bitkey)]
-      expect(lap_split.time_points).to eq(expected)
+    context 'for split with multiple bitkeys' do
+      let(:split) { intermediate_split }
+
+      it 'returns an array of TimePoints using the lap and split.id and all valid bitkeys' do
+        expected = [TimePoint.new(lap, split.id, in_bitkey), TimePoint.new(lap, split.id, out_bitkey)]
+        expect(lap_split.time_points).to eq(expected)
+      end
     end
 
-    it 'for a split with a single bitkey, returns an array of one TimePoint using the lap and split.id and bitkey' do
-      lap = 1
-      split = build_stubbed(:split, :start, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expected = [TimePoint.new(lap, split.id, in_bitkey)]
-      expect(lap_split.time_points).to eq(expected)
+    context 'for a split with a single bitkey' do
+      let(:split) { start_split }
+
+      it 'returns an array of one TimePoint using the lap and split.id and bitkey' do
+        expected = [TimePoint.new(lap, split.id, in_bitkey)]
+        expect(lap_split.time_points).to eq(expected)
+      end
     end
 
-    it 'returns nil if split is not present' do
-      lap = 1
-      lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.time_points).to be_nil
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns nil' do
+        expect(lap_split.time_points).to be_nil
+      end
     end
 
-    it 'returns nil if split is present but has no id' do
-      lap = 1
-      split = build_stubbed(:split)
-      split.id = nil
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.time_points).to be_nil
+    context 'if split is present but has no id' do
+      let(:split) { Split.new }
+
+      it 'returns nil' do
+        expect(lap_split.time_points).to be_nil
+      end
     end
   end
 
   describe '#time_point_in and #time_point_out' do
-    it 'returns a TimePoint using the lap and split.id and an in or out bitkey' do
-      lap = 1
-      split = build_stubbed(:split, sub_split_bitmap: 65, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expected = TimePoint.new(lap, split.id, in_bitkey)
-      expect(lap_split.time_point_in).to eq(expected)
-      expected = TimePoint.new(lap, split.id, out_bitkey)
-      expect(lap_split.time_point_out).to eq(expected)
+    context 'for a split with in and out bitkeys' do
+      let(:split) { intermediate_split }
+
+      it 'returns a TimePoint using the lap and split.id and an in or out bitkey' do
+        expected_in = TimePoint.new(lap, split.id, in_bitkey)
+        expected_out = TimePoint.new(lap, split.id, out_bitkey)
+        expect(lap_split.time_point_in).to eq(expected_in)
+        expect(lap_split.time_point_out).to eq(expected_out)
+      end
     end
 
-    it 'for a split with only an out bitkey, returns nil for time_point_in and a TimePoint for time_point_out' do
-      lap = 1
-      split = build_stubbed(:split, :start, sub_split_bitmap: 64, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.time_point_in).to be_nil
-      expected = TimePoint.new(lap, split.id, out_bitkey)
-      expect(lap_split.time_point_out).to eq(expected)
+    context 'for a split with only an out bitkey' do
+      let(:split) { Split.new(id: 123, sub_split_bitmap: SubSplit::OUT_BITKEY) }
+
+      it 'returns nil for time_point_in and a TimePoint for time_point_out' do
+        expect(lap_split.time_point_in).to be_nil
+        expected_out = TimePoint.new(lap, split.id, out_bitkey)
+        expect(lap_split.time_point_out).to eq(expected_out)
+      end
     end
 
-    it 'for a split with only an in bitkey, returns nil for time_point_out and a TimePoint for time_point_in' do
-      lap = 1
-      split = build_stubbed(:split, :start, sub_split_bitmap: 1, id: 123)
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.time_point_out).to be_nil
-      expected = TimePoint.new(lap, split.id, in_bitkey)
-      expect(lap_split.time_point_in).to eq(expected)
+    context 'for a split with only an in bitkey' do
+      let(:split) { start_split }
+
+      it 'returns nil for time_point_out and a TimePoint for time_point_in' do
+        expect(lap_split.time_point_out).to be_nil
+        expected_in = TimePoint.new(lap, split.id, in_bitkey)
+        expect(lap_split.time_point_in).to eq(expected_in)
+      end
     end
 
-    it 'returns nil if split is not present' do
-      lap = 1
-      lap_split = LapSplit.new(lap, nil)
-      expect(lap_split.time_point_in).to be_nil
-      expect(lap_split.time_point_out).to be_nil
+    context 'if split is not present' do
+      let(:split) { nil }
+
+      it 'returns nil' do
+        expect(lap_split.time_point_in).to be_nil
+        expect(lap_split.time_point_out).to be_nil
+      end
     end
 
-    it 'returns nil if split is present but has no id' do
-      lap = 1
-      split = build_stubbed(:split)
-      split.id = nil
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.time_point_in).to be_nil
-      expect(lap_split.time_point_out).to be_nil
+    context 'if split is present but has no id' do
+      let(:split) { Split.new }
+
+      it 'returns nil' do
+        expect(lap_split.time_point_in).to be_nil
+        expect(lap_split.time_point_out).to be_nil
+      end
     end
   end
 
   describe '#course' do
+    subject { LapSplit.new(lap, split) }
+    let(:lap) { 1 }
+    let(:split) { course.ordered_splits.first }
+    let(:course) { courses(:hardrock_ccw) }
+
     it 'returns the course to which split belongs' do
-      lap_1 = 1
-      course = build_stubbed(:course_with_standard_splits, splits_count: 3)
-      split = course.splits.first
-      lap_split = LapSplit.new(lap_1, split)
-      expect(lap_split.course).to eq(course)
+      expect(subject.course).to eq(course)
     end
   end
 
   describe '#distance_from_start' do
-    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
-    let(:splits) { course_with_splits.splits }
+    subject { LapSplit.new(lap, split) }
+    let(:splits) { course.ordered_splits }
+    let(:course) { courses(:rufa_course) }
+    let(:finish_split) { splits.last }
+    let(:finish_split_distance) { finish_split.distance_from_start }
+    let(:computed_distance) { finish_split_distance * (lap - 1) + split.distance_from_start }
 
-    it 'returns 0 for a start split on lap 1' do
-      lap = 1
-      split = splits.first
-      expected = 0
-      validate_distance(lap, split, expected)
+    context 'for a start split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.first }
+
+      it 'returns 0' do
+        expect(subject.distance_from_start).to eq(computed_distance)
+      end
     end
 
-    it 'returns a value equal to split.distance_from_start when lap is 1' do
-      lap = 1
-      split = splits.second
-      expected = splits.second.distance_from_start
-      validate_distance(lap, split, expected)
+    context 'for an intermediate or finish split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.second }
+
+      it 'returns a value equal to split.distance_from_start' do
+        expect(subject.distance_from_start).to eq(computed_distance)
+      end
     end
 
-    it 'returns course length times finished laps plus split.distance_from_start when lap is greater than 1' do
-      lap = 2
-      split = splits.second
-      expected = splits.last.distance_from_start + splits.second.distance_from_start
-      validate_distance(lap, split, expected)
+    context 'when lap is greater than 1' do
+      let(:lap) { 2 }
+      let(:split) { splits.second }
+
+      it 'returns course length times finished laps plus split.distance_from_start' do
+        expect(subject.distance_from_start).to eq(computed_distance)
+      end
     end
 
-    it 'functions properly over many laps with a partially completed lap' do
-      lap = 4
-      split = splits.third
-      expected = splits.last.distance_from_start * 3 + splits.third.distance_from_start
-      validate_distance(lap, split, expected)
+    context 'over many laps with a partially completed lap' do
+      let(:lap) { 4 }
+      let(:split) { splits.third }
+
+      it 'functions properly' do
+        expect(subject.distance_from_start).to eq(computed_distance)
+      end
     end
 
-    it 'functions properly for many completed laps' do
-      lap = 4
-      split = splits.last
-      expected = splits.last.distance_from_start * 4
-      validate_distance(lap, split, expected)
-    end
+    context 'for many completed laps' do
+      let(:lap) { 4 }
+      let(:split) { finish_split }
 
-    def validate_distance(lap, split, expected)
-      course = course_with_splits
-      allow(course).to receive(:ordered_splits).and_return(splits)
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.distance_from_start).to eq(expected)
+      it 'functions properly' do
+        expect(subject.distance_from_start).to eq(computed_distance)
+      end
     end
   end
 
   describe '#vert_gain_from_start' do
-    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
-    let(:splits) { course_with_splits.splits }
+    subject { LapSplit.new(lap, split) }
+    let(:splits) { course.ordered_splits }
+    let(:course) { courses(:rufa_course) }
+    let(:finish_split) { splits.last }
+    let(:finish_split_vert_gain) { finish_split.vert_gain_from_start }
+    let(:computed_vert_gain) { finish_split_vert_gain * (lap - 1) + split.vert_gain_from_start }
 
-    it 'returns 0 for a start split on lap 1' do
-      lap = 1
-      split = splits.first
-      expected = 0
-      validate_vert_gain(lap, split, expected)
+    context 'for a start split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.first }
+
+      it 'returns 0' do
+        expect(subject.vert_gain_from_start).to eq(computed_vert_gain)
+      end
     end
 
-    it 'returns a value equal to split.vert_gain_from_start when lap is 1' do
-      lap = 1
-      split = splits.second
-      expected = splits.second.vert_gain_from_start
-      validate_vert_gain(lap, split, expected)
+    context 'for an intermediate or finish split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.second }
+
+      it 'returns a value equal to split.vert_gain_from_start' do
+        expect(subject.vert_gain_from_start).to eq(computed_vert_gain)
+      end
     end
 
-    it 'returns course vert_gain times finished laps plus split.vert_gain_from_start when lap is greater than 1' do
-      lap = 2
-      split = splits.second
-      expected = splits.last.vert_gain_from_start + splits.second.vert_gain_from_start
-      validate_vert_gain(lap, split, expected)
+    context 'when lap is greater than 1' do
+      let(:lap) { 2 }
+      let(:split) { splits.second }
+
+      it 'returns course length times finished laps plus split.vert_gain_from_start' do
+        expect(subject.vert_gain_from_start).to eq(computed_vert_gain)
+      end
     end
 
-    it 'functions properly over many laps with a partially completed lap' do
-      lap = 4
-      split = splits.third
-      expected = splits.last.vert_gain_from_start * 3 + splits.third.vert_gain_from_start
-      validate_vert_gain(lap, split, expected)
+    context 'over many laps with a partially completed lap' do
+      let(:lap) { 4 }
+      let(:split) { splits.third }
+
+      it 'functions properly' do
+        expect(subject.vert_gain_from_start).to eq(computed_vert_gain)
+      end
     end
 
-    it 'functions properly for many completed laps' do
-      lap = 4
-      split = splits.last
-      expected = splits.last.vert_gain_from_start * 4
-      validate_vert_gain(lap, split, expected)
-    end
+    context 'for many completed laps' do
+      let(:lap) { 4 }
+      let(:split) { finish_split }
 
-    def validate_vert_gain(lap, split, expected)
-      course = course_with_splits
-      allow(course).to receive(:ordered_splits).and_return(splits)
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.vert_gain_from_start).to eq(expected)
+      it 'functions properly' do
+        expect(subject.vert_gain_from_start).to eq(computed_vert_gain)
+      end
     end
   end
 
   describe '#vert_loss_from_start' do
-    let(:course_with_splits) { build_stubbed(:course_with_standard_splits, splits_count: 4) }
-    let(:splits) { course_with_splits.splits }
+    subject { LapSplit.new(lap, split) }
+    let(:splits) { course.ordered_splits }
+    let(:course) { courses(:rufa_course) }
+    let(:finish_split) { splits.last }
+    let(:finish_split_vert_loss) { finish_split.vert_loss_from_start }
+    let(:computed_vert_loss) { finish_split_vert_loss * (lap - 1) + split.vert_loss_from_start }
 
-    it 'returns 0 for a start split on lap 1' do
-      lap = 1
-      split = splits.first
-      expected = 0
-      validate_vert_loss(lap, split, expected)
+    context 'for a start split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.first }
+
+      it 'returns 0' do
+        expect(subject.vert_loss_from_start).to eq(computed_vert_loss)
+      end
     end
 
-    it 'returns a value equal to split.vert_loss_from_start when lap is 1' do
-      lap = 1
-      split = splits.second
-      expected = splits.second.vert_loss_from_start
-      validate_vert_loss(lap, split, expected)
+    context 'for an intermediate or finish split on lap 1' do
+      let(:lap) { 1 }
+      let(:split) { splits.second }
+
+      it 'returns a value equal to split.vert_loss_from_start' do
+        expect(subject.vert_loss_from_start).to eq(computed_vert_loss)
+      end
     end
 
-    it 'returns course vert_loss times finished laps plus split.vert_loss_from_start when lap is greater than 1' do
-      lap = 2
-      split = splits.second
-      expected = splits.last.vert_loss_from_start + splits.second.vert_loss_from_start
-      validate_vert_loss(lap, split, expected)
+    context 'when lap is greater than 1' do
+      let(:lap) { 2 }
+      let(:split) { splits.second }
+
+      it 'returns course length times finished laps plus split.vert_loss_from_start' do
+        expect(subject.vert_loss_from_start).to eq(computed_vert_loss)
+      end
     end
 
-    it 'functions properly over many laps with a partially completed lap' do
-      lap = 4
-      split = splits.third
-      expected = splits.last.vert_loss_from_start * 3 + splits.third.vert_loss_from_start
-      validate_vert_loss(lap, split, expected)
+    context 'over many laps with a partially completed lap' do
+      let(:lap) { 4 }
+      let(:split) { splits.third }
+
+      it 'functions properly' do
+        expect(subject.vert_loss_from_start).to eq(computed_vert_loss)
+      end
     end
 
-    it 'functions properly for many completed laps' do
-      lap = 4
-      split = splits.last
-      expected = splits.last.vert_loss_from_start * 4
-      validate_vert_loss(lap, split, expected)
-    end
+    context 'for many completed laps' do
+      let(:lap) { 4 }
+      let(:split) { finish_split }
 
-    def validate_vert_loss(lap, split, expected)
-      course = course_with_splits
-      allow(course).to receive(:ordered_splits).and_return(splits)
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.vert_loss_from_start).to eq(expected)
+      it 'functions properly' do
+        expect(subject.vert_loss_from_start).to eq(computed_vert_loss)
+      end
     end
   end
 
@@ -522,25 +578,29 @@ RSpec.describe LapSplit, type: :model do
     let(:start_split) { build_stubbed(:split, :start) }
     let(:intermediate_split) { build_stubbed(:split) }
 
-    it 'returns true when split is a start split and lap == 1' do
-      lap = 1
-      split = start_split
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.start?).to be_truthy
+    context 'when split is a start split and lap == 1' do
+      let(:split) { start_split }
+
+      it 'returns true' do
+        expect(lap_split).to be_start
+      end
     end
 
-    it 'returns false when split is not a start split even if lap == 1' do
-      lap = 1
-      split = intermediate_split
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.start?).to be_falsey
+    context 'when split is not a start split even if lap == 1' do
+      let(:split) { intermediate_split }
+
+      it 'returns false' do
+        expect(lap_split).not_to be_start
+      end
     end
 
-    it 'returns false when lap > 1 even if split is a start split' do
-      lap = 2
-      split = start_split
-      lap_split = LapSplit.new(lap, split)
-      expect(lap_split.start?).to be_falsey
+    context 'when lap > 1 even if split is a start split' do
+      let(:lap) { 2 }
+      let(:split) { start_split }
+
+      it 'returns false' do
+        expect(lap_split).not_to be_start
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ class User < ApplicationRecord
   has_many :interests, through: :subscriptions, source: :person
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
-  has_one :avatar, class_name: 'Person'
+  has_one :avatar, class_name: 'Person', dependent: :nullify
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint
   alias_attribute :https, :https_endpoint

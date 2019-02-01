@@ -1,0 +1,837 @@
+---
+raw_time_49:
+  id: 49
+  event_group_id: 17
+  split_time_id: 
+  split_name: Pole Creek
+  bitkey: 1
+  bib_number: '102'
+  absolute_time: '2017-07-07 16:31:00'
+  entered_time: 
+  with_pacer: 
+  stopped_here: 
+  source: internal
+  pulled_by: 1
+  pulled_at: '2017-07-08 22:38:12.817174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.732619'
+  updated_at: '2018-06-11 10:56:14.732619'
+  parameterized_split_name: pole-creek
+  remarks: 
+  sortable_bib_number: 102
+  data_status: 
+raw_time_67:
+  id: 67
+  event_group_id: 32
+  split_time_id: 
+  split_name: Molas Pass (Aid1)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '12:34:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.798201'
+  updated_at: '2018-06-11 10:56:14.798201'
+  parameterized_split_name: molas-pass-aid1
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_89:
+  id: 89
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:14:00'
+  with_pacer: false
+  stopped_here: false
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.880784'
+  updated_at: '2018-06-11 10:56:14.880784'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_68:
+  id: 68
+  event_group_id: 32
+  split_time_id: 
+  split_name: Molas Pass (Aid1)
+  bitkey: 64
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '12:44:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.801611'
+  updated_at: '2018-06-11 10:56:14.801611'
+  parameterized_split_name: molas-pass-aid1
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_50:
+  id: 50
+  event_group_id: 17
+  split_time_id: 
+  split_name: Pole Creek
+  bitkey: 64
+  bib_number: '103'
+  absolute_time: '2017-07-07 20:20:00'
+  entered_time: 
+  with_pacer: 
+  stopped_here: 
+  source: internal
+  pulled_by: 1
+  pulled_at: '2017-07-08 22:38:12.817174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.735995'
+  updated_at: '2018-06-11 10:56:14.735995'
+  parameterized_split_name: pole-creek
+  remarks: 
+  sortable_bib_number: 103
+  data_status: 
+raw_time_69:
+  id: 69
+  event_group_id: 32
+  split_time_id: 190694
+  split_name: Anvil CG (Aid6)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '21:11:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.805381'
+  updated_at: '2018-06-11 10:56:14.805381'
+  parameterized_split_name: anvil-cg-aid6
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_70:
+  id: 70
+  event_group_id: 32
+  split_time_id: 190695
+  split_name: Anvil CG (Aid6)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '21:21:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.809416'
+  updated_at: '2018-06-11 10:56:14.809416'
+  parameterized_split_name: anvil-cg-aid6
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_73:
+  id: 73
+  event_group_id: 32
+  split_time_id: 190696
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '09:09:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.819696'
+  updated_at: '2018-06-11 10:56:14.819696'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_74:
+  id: 74
+  event_group_id: 32
+  split_time_id: 190697
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '09:10:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.825046'
+  updated_at: '2018-06-11 10:56:14.825046'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_75:
+  id: 75
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:13:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.828907'
+  updated_at: '2018-06-11 10:56:14.828907'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_76:
+  id: 76
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:14:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.832235'
+  updated_at: '2018-06-11 10:56:14.832235'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_77:
+  id: 77
+  event_group_id: 32
+  split_time_id: 190698
+  split_name: Start
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '07:00:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.835982'
+  updated_at: '2018-06-11 10:56:14.835982'
+  parameterized_split_name: start
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_78:
+  id: 78
+  event_group_id: 32
+  split_time_id: 190699
+  split_name: Molas Pass (Aid1)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '08:30:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.840667'
+  updated_at: '2018-06-11 10:56:14.840667'
+  parameterized_split_name: molas-pass-aid1
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_79:
+  id: 79
+  event_group_id: 32
+  split_time_id: 190700
+  split_name: Molas Pass (Aid1)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '08:32:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.84431'
+  updated_at: '2018-06-11 10:56:14.84431'
+  parameterized_split_name: molas-pass-aid1
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_80:
+  id: 80
+  event_group_id: 32
+  split_time_id: 190701
+  split_name: Cascade Creek Rd (Aid3)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '01:24:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.847562'
+  updated_at: '2018-06-11 10:56:14.847562'
+  parameterized_split_name: cascade-creek-rd-aid3
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_81:
+  id: 81
+  event_group_id: 32
+  split_time_id: 190702
+  split_name: Cascade Creek Rd (Aid3)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '01:28:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.851043'
+  updated_at: '2018-06-11 10:56:14.851043'
+  parameterized_split_name: cascade-creek-rd-aid3
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_82:
+  id: 82
+  event_group_id: 32
+  split_time_id: 190703
+  split_name: Engineer Mtn TH (Aid4)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '09:09:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.854819'
+  updated_at: '2018-06-11 10:56:14.854819'
+  parameterized_split_name: engineer-mtn-th-aid4
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_83:
+  id: 83
+  event_group_id: 32
+  split_time_id: 190704
+  split_name: Engineer Mtn TH (Aid4)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '09:09:09'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 
+  pulled_at: 
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.858689'
+  updated_at: '2018-06-11 10:56:14.858689'
+  parameterized_split_name: engineer-mtn-th-aid4
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_84:
+  id: 84
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '22:22:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.862327'
+  updated_at: '2018-06-11 10:56:14.862327'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 
+raw_time_85:
+  id: 85
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '23:23:00'
+  with_pacer: false
+  stopped_here: 
+  source: ost-live-entry
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.865972'
+  updated_at: '2018-06-11 10:56:14.865972'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 
+raw_time_86:
+  id: 86
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '01:02:03'
+  with_pacer: 
+  stopped_here: 
+  source: internal
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 
+  updated_by: 
+  created_at: '2018-06-11 10:56:14.86953'
+  updated_at: '2018-06-11 10:56:14.86953'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_87:
+  id: 87
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '01:03:04'
+  with_pacer: 
+  stopped_here: 
+  source: internal
+  pulled_by: 1
+  pulled_at: '2018-04-30 22:46:06.425174'
+  created_by: 
+  updated_by: 
+  created_at: '2018-06-11 10:56:14.873617'
+  updated_at: '2018-06-11 10:56:14.873617'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 999
+  data_status: 
+raw_time_178:
+  id: 178
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:13:11'
+  with_pacer: false
+  stopped_here: false
+  source: another
+  pulled_by: 1
+  pulled_at: '2018-11-14 05:48:27.582171'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-10-25 20:06:31.146819'
+  updated_at: '2018-11-14 05:48:27.597464'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  sortable_bib_number: 130
+  data_status: 0
+raw_time_177:
+  id: 177
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:13:15'
+  with_pacer: false
+  stopped_here: false
+  source: another
+  pulled_by: 1
+  pulled_at: '2018-11-14 05:48:25.812628'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-10-25 20:06:21.05898'
+  updated_at: '2018-11-14 05:48:25.82757'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  sortable_bib_number: 130
+  data_status: 0
+raw_time_92:
+  id: 92
+  event_group_id: 32
+  split_time_id: 
+  split_name: Start
+  bitkey: 1
+  bib_number: '777'
+  absolute_time: 
+  entered_time: '09:mm:ss'
+  with_pacer: false
+  stopped_here: false
+  source: internal
+  pulled_by: 1
+  pulled_at: '2018-07-27 03:24:12.907737'
+  created_by: 
+  updated_by: 
+  created_at: '2018-06-29 05:01:22.505217'
+  updated_at: '2018-06-29 05:01:22.505217'
+  parameterized_split_name: start
+  remarks: 
+  sortable_bib_number: 777
+  data_status: 
+raw_time_91:
+  id: 91
+  event_group_id: 32
+  split_time_id: 
+  split_name: Start
+  bitkey: 1
+  bib_number: '777'
+  absolute_time: '2018-06-30 13:00:00'
+  entered_time: '07:00:00'
+  with_pacer: false
+  stopped_here: false
+  source: internal
+  pulled_by: 1
+  pulled_at: '2018-07-27 03:40:08.987644'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-29 04:42:41.128703'
+  updated_at: '2018-07-27 03:40:09.010245'
+  parameterized_split_name: start
+  remarks: ''
+  sortable_bib_number: 777
+  data_status: 
+raw_time_88:
+  id: 88
+  event_group_id: 32
+  split_time_id: 190697
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '999'
+  absolute_time: 
+  entered_time: '01:03:05'
+  with_pacer: 
+  stopped_here: 
+  source: internal
+  pulled_by: 1
+  pulled_at: '2018-07-27 03:39:21.94946'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-06-11 10:56:14.877397'
+  updated_at: '2018-07-27 03:39:21.964139'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  sortable_bib_number: 999
+  data_status: 
+raw_time_176:
+  id: 176
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:13:13'
+  with_pacer: false
+  stopped_here: false
+  source: another
+  pulled_by: 1
+  pulled_at: '2018-11-14 05:48:02.521295'
+  created_by: 
+  updated_by: 
+  created_at: '2018-10-25 20:05:12.500786'
+  updated_at: '2018-10-25 20:05:12.500786'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 
+raw_time_1100:
+  id: 1100
+  event_group_id: 32
+  split_time_id: 
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '130'
+  absolute_time: 
+  entered_time: '13:13:13'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2018-11-14 05:48:22.55383'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-11-14 05:48:22.555587'
+  updated_at: '2018-11-14 05:48:22.568694'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 130
+  data_status: 2
+raw_time_1111:
+  id: 1111
+  event_group_id: 32
+  split_time_id: 
+  split_name: Anvil CG (Aid6)
+  bitkey: 64
+  bib_number: '103'
+  absolute_time: 
+  entered_time: '01:05:00'
+  with_pacer: false
+  stopped_here: true
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2018-12-09 02:26:54.169992'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-12-09 02:26:54.170813'
+  updated_at: '2018-12-09 02:26:54.178288'
+  parameterized_split_name: anvil-cg-aid6
+  remarks: 
+  sortable_bib_number: 103
+  data_status: 2
+raw_time_1110:
+  id: 1110
+  event_group_id: 32
+  split_time_id: 
+  split_name: Anvil CG (Aid6)
+  bitkey: 1
+  bib_number: '103'
+  absolute_time: 
+  entered_time: '01:00:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2018-12-09 02:25:03.158304'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-12-09 02:25:03.158886'
+  updated_at: '2018-12-09 02:25:03.165771'
+  parameterized_split_name: anvil-cg-aid6
+  remarks: 
+  sortable_bib_number: 103
+  data_status: 2
+raw_time_1122:
+  id: 1122
+  event_group_id: 32
+  split_time_id: 190522
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '21:30:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2019-01-25 00:23:15.068615'
+  created_by: 1
+  updated_by: 1
+  created_at: '2019-01-25 00:23:15.069786'
+  updated_at: '2019-01-25 00:23:15.086917'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 2
+raw_time_1123:
+  id: 1123
+  event_group_id: 32
+  split_time_id: 190523
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '21:40:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2019-01-25 00:23:15.075358'
+  created_by: 1
+  updated_by: 1
+  created_at: '2019-01-25 00:23:15.075882'
+  updated_at: '2019-01-25 00:23:15.095732'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 2
+raw_time_1124:
+  id: 1124
+  event_group_id: 32
+  split_time_id: 190522
+  split_name: Rolling Pass (Aid2)
+  bitkey: 1
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '22:30:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2019-01-25 00:23:57.46847'
+  created_by: 1
+  updated_by: 1
+  created_at: '2019-01-25 00:23:57.469491'
+  updated_at: '2019-01-25 00:23:57.48348'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 2
+raw_time_1125:
+  id: 1125
+  event_group_id: 32
+  split_time_id: 190523
+  split_name: Rolling Pass (Aid2)
+  bitkey: 64
+  bib_number: '101'
+  absolute_time: 
+  entered_time: '22:35:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2019-01-25 00:23:57.472413'
+  created_by: 1
+  updated_by: 1
+  created_at: '2019-01-25 00:23:57.472951'
+  updated_at: '2019-01-25 00:23:57.492574'
+  parameterized_split_name: rolling-pass-aid2
+  remarks: 
+  sortable_bib_number: 101
+  data_status: 2
+raw_time_1126:
+  id: 1126
+  event_group_id: 32
+  split_time_id: 
+  split_name: Start
+  bitkey: 1
+  bib_number: '114'
+  absolute_time: 
+  entered_time: '10:00:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2019-01-25 00:25:12.56391'
+  created_by: 1
+  updated_by: 1
+  created_at: '2019-01-25 00:25:12.56445'
+  updated_at: '2019-01-25 00:25:12.575728'
+  parameterized_split_name: start
+  remarks: 
+  sortable_bib_number: 114
+  data_status: 2
+raw_time_1106:
+  id: 1106
+  event_group_id: 32
+  split_time_id: 
+  split_name: Bandera Mine (Aid5)
+  bitkey: 64
+  bib_number: '103'
+  absolute_time: 
+  entered_time: '23:41:00'
+  with_pacer: false
+  stopped_here: false
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2018-12-09 02:24:15.750492'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-12-09 02:24:15.750994'
+  updated_at: '2018-12-09 02:24:15.771129'
+  parameterized_split_name: bandera-mine-aid5
+  remarks: 
+  sortable_bib_number: 103
+  data_status: 2
+raw_time_1117:
+  id: 1117
+  event_group_id: 32
+  split_time_id: 
+  split_name: Anvil CG (Aid6)
+  bitkey: 1
+  bib_number: '103'
+  absolute_time: 
+  entered_time: '01:40:00'
+  with_pacer: false
+  stopped_here: true
+  source: Live Entry (1)
+  pulled_by: 1
+  pulled_at: '2018-12-15 17:29:59.171376'
+  created_by: 1
+  updated_by: 1
+  created_at: '2018-12-15 17:29:59.172639'
+  updated_at: '2018-12-15 17:29:59.183563'
+  parameterized_split_name: anvil-cg-aid6
+  remarks: 
+  sortable_bib_number: 103
+  data_status: 2

@@ -4,17 +4,17 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AuthenticationController do
   before do
-    create(:user, email: 'user@example.com', password: 'password', password_confirmation: 'password')
+    create(:user, email: 'test_user@example.com', password: 'password', password_confirmation: 'password')
   end
 
   describe '#create' do
     it 'returns a successful 200 response' do
-      post :create, params: {user: {email: 'user@example.com', password: 'password'}}
-      expect(response).to be_success
+      post :create, params: {user: {email: 'test_user@example.com', password: 'password'}}
+      expect(response).to be_successful
     end
 
     it 'returns a valid JSON web token' do
-      post :create, params: {user: {email: 'user@example.com', password: 'password'}}
+      post :create, params: {user: {email: 'test_user@example.com', password: 'password'}}
       parsed_response = JSON.parse(response.body)
       token = parsed_response['token']
       expect(token).not_to be_nil
@@ -22,7 +22,7 @@ RSpec.describe Api::V1::AuthenticationController do
     end
 
     it 'returns a valid user id' do
-      post :create, params: {user: {email: 'user@example.com', password: 'password'}}
+      post :create, params: {user: {email: 'test_user@example.com', password: 'password'}}
       parsed_response = JSON.parse(response.body)
       token = parsed_response['token']
       payload = JsonWebToken.decode(token)
@@ -31,7 +31,7 @@ RSpec.describe Api::V1::AuthenticationController do
     end
 
     it 'returns a valid expiration' do
-      post :create, params: {user: {email: 'user@example.com', password: 'password'}}
+      post :create, params: {user: {email: 'test_user@example.com', password: 'password'}}
       parsed_response = JSON.parse(response.body)
       token = parsed_response['token']
       payload = JsonWebToken.decode(token)
@@ -47,7 +47,7 @@ RSpec.describe Api::V1::AuthenticationController do
     end
 
     it 'returns an error if the password is incorrect' do
-      post :create, params: {user: {email: 'user@example.com', password: 'incorrect'}}
+      post :create, params: {user: {email: 'test_user@example.com', password: 'incorrect'}}
       parsed_response = JSON.parse(response.body)
       expect(parsed_response['errors']).to include(/Invalid email or password/)
       expect(response).to be_bad_request
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::AuthenticationController do
 
     context 'when params[:durable] is equal to ENV["DURABLE_JWT_CODE"]' do
       it 'returns a valid long-duration expiration' do
-        post :create, params: {user: {email: 'user@example.com', password: 'password'}, durable: ENV['DURABLE_JWT_CODE']}
+        post :create, params: {user: {email: 'test_user@example.com', password: 'password'}, durable: ENV['DURABLE_JWT_CODE']}
         parsed_response = JSON.parse(response.body)
         token = parsed_response['token']
         payload = JsonWebToken.decode(token)
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::AuthenticationController do
 
     context 'when params[:durable] is provided but is not equal to ENV["DURABLE_JWT_CODE"]' do
       it 'returns an error' do
-        post :create, params: {user: {email: 'user@example.com', password: 'password'}, durable: 'invalid_code'}
+        post :create, params: {user: {email: 'test_user@example.com', password: 'password'}, durable: 'invalid_code'}
         parsed_response = JSON.parse(response.body)
         expect(parsed_response['errors']).to include(/Invalid durable code/)
         expect(response).to be_bad_request

@@ -2,8 +2,11 @@ class TimeConversion
 
   MILITARY_TIME_LIMITS = {hours: 23, minutes: 59, seconds: 59}
 
+  HMS_FORMAT = /\A-?\d+:\d{2}(:\d{2})?(\.\d+)?\z/
+
   def self.hms_to_seconds(hms)
     return nil unless hms.present?
+    raise ArgumentError, "Improper hms time format: #{hms}" unless hms =~ HMS_FORMAT
     negative = hms.start_with?('-')
     components = hms.sub(/\A-/, '').split(':')
     milliseconds_present = components.last.include?('.')

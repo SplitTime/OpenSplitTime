@@ -8,9 +8,9 @@ RSpec.describe SegmentTimesPlanner do
   subject { SegmentTimesPlanner.new(expected_time: expected_time, event: event, time_points: time_points, similar_effort_ids: similar_effort_ids,
                                     start_time: start_time, times_container: times_container, serial_segments: serial_segments) }
   let(:expected_time) { 1000 }
-  let(:event) { build_stubbed(:event_functional, laps_required: 1, splits_count: 3, efforts_count: 1) }
-  let(:time_points) { event&.time_points_through(laps) }
-  let(:laps) { 1 }
+  let(:event) { events(:hardrock_2016) }
+  let(:time_points) { event.required_time_points.first(time_points_size) }
+  let(:time_points_size) { 4 }
   let(:similar_effort_ids) { [1, 2, 3] }
   let(:start_time) { nil }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
@@ -31,6 +31,7 @@ RSpec.describe SegmentTimesPlanner do
 
     context 'when no event is given' do
       let(:event) { nil }
+      let(:time_points) { [] }
 
       it 'raises an ArgumentError' do
         expect { subject }.to raise_error(/must include event/)
@@ -55,7 +56,6 @@ RSpec.describe SegmentTimesPlanner do
   end
 
   describe '#times_from_start' do
-    let(:time_points) { event.time_points_through(laps) }
     let(:segment_0_0) { Segment.new(begin_point: time_points[0], end_point: time_points[0]) }
     let(:segment_0_1) { Segment.new(begin_point: time_points[0], end_point: time_points[1]) }
     let(:segment_1_2) { Segment.new(begin_point: time_points[1], end_point: time_points[2]) }
@@ -145,7 +145,6 @@ RSpec.describe SegmentTimesPlanner do
   end
 
   describe '#absolute_times' do
-    let(:time_points) { event.time_points_through(laps) }
     let(:segment_0_0) { Segment.new(begin_point: time_points[0], end_point: time_points[0]) }
     let(:segment_0_1) { Segment.new(begin_point: time_points[0], end_point: time_points[1]) }
     let(:segment_1_2) { Segment.new(begin_point: time_points[1], end_point: time_points[2]) }

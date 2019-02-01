@@ -3,6 +3,10 @@
 module UnitConversions
   extend ActiveSupport::Concern
 
+  METERS_PER_MILE = 1609.344
+  METERS_PER_KM = 1000
+  FEET_PER_METER = 3.28084
+
   module ClassMethods
 
     def entered_distance_to_meters(distance)
@@ -26,19 +30,20 @@ module UnitConversions
     def distance_in_preferred_units(distance_in_meters)
       case pref_distance_unit
       when 'miles'
-        distance_in_meters.meters.to.miles.value
+        distance_in_meters / METERS_PER_MILE
       when 'kilometers'
-        distance_in_meters.meters.to.kilometers.value
+        distance_in_meters / METERS_PER_KM
       else
         distance_in_meters
       end
     end
 
+
     def elevation_in_preferred_units(elevation_in_meters)
       return nil unless elevation_in_meters
       case pref_elevation_unit
       when 'feet'
-        elevation_in_meters.meters.to.feet.value
+        elevation_in_meters * FEET_PER_METER
       else
         elevation_in_meters
       end
@@ -47,9 +52,9 @@ module UnitConversions
     def preferred_distance_in_meters(distance_in_pref)
       case pref_distance_unit
       when 'miles'
-        distance_in_pref.miles.to.meters.value.round(0)
+        (distance_in_pref * METERS_PER_MILE).round(0)
       when 'kilometers'
-        distance_in_pref.kilometers.to.meters.value.round(0)
+        (distance_in_pref * METERS_PER_KM).round(0)
       else
         distance_in_pref
       end
@@ -59,7 +64,7 @@ module UnitConversions
       return nil unless elevation_in_pref
       case pref_elevation_unit
       when 'feet'
-        elevation_in_pref.feet.to.meters.value
+        elevation_in_pref / FEET_PER_METER
       else
         elevation_in_pref
       end

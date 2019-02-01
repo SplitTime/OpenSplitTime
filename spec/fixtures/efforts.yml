@@ -1,0 +1,3457 @@
+---
+sum_100k_un_started:
+  id: 16683
+  event_id: 56
+  person_id: 
+  wave: 
+  bib_number: 499
+  city: Fort Collins
+  state_code: CO
+  age: 29
+  created_at: '2019-01-30 19:51:50.515411'
+  updated_at: '2019-02-01 06:13:42.606218'
+  created_by: 1
+  updated_by: 1
+  first_name: Un
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: '1988-09-01'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-100k-un-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-09-23 13:00:00'
+ramble_finished_second:
+  id: 1048
+  event_id: 14
+  person_id: 326
+  wave: 
+  bib_number: 
+  city: 
+  state_code: 
+  age: 12
+  created_at: '2016-05-09 01:56:15.230348'
+  updated_at: '2019-02-01 06:38:45.308003'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  country_code: 
+  birthdate: '1994-08-16'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ramble-finished-second
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2006-09-16 14:00:00'
+hardrock_2015_tuan_jacobs:
+  id: 7
+  event_id: 4
+  person_id: 80
+  wave: 
+  bib_number: 1
+  city: 
+  state_code: AN
+  age: 17
+  created_at: '2016-04-18 09:10:02.632497'
+  updated_at: '2019-02-01 07:03:42.256286'
+  created_by: 1
+  updated_by: 1
+  first_name: Tuan
+  last_name: Jacobs
+  gender: 0
+  country_code: ES
+  birthdate: '1998-03-19'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-tuan-jacobs
+  checked_in: false
+  photo_file_name: 636024737688232340-2015891247_runner-2.jpg
+  photo_content_type: image/jpeg
+  photo_file_size: 51531
+  photo_updated_at: '2017-09-30 21:38:51.4331'
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_chris_rempel:
+  id: 56
+  event_id: 4
+  person_id: 109
+  wave: 
+  bib_number: 26
+  city: 
+  state_code: CO
+  age: 26
+  created_at: '2016-04-18 09:10:03.704495'
+  updated_at: '2019-02-01 07:03:42.284381'
+  created_by: 1
+  updated_by: 1
+  first_name: Chris
+  last_name: Rempel
+  gender: 0
+  country_code: US
+  birthdate: '1988-12-28'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-chris-rempel
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_cedric_windler:
+  id: 50
+  event_id: 4
+  person_id: 135
+  wave: 
+  bib_number: 9
+  city: 
+  state_code: TN
+  age: 36
+  created_at: '2016-04-18 09:10:03.606136'
+  updated_at: '2019-02-01 07:03:42.336555'
+  created_by: 1
+  updated_by: 1
+  first_name: Cedric
+  last_name: Windler
+  gender: 0
+  country_code: US
+  birthdate: '1979-07-10'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-cedric-windler
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_bruno_fadel:
+  id: 116
+  event_id: 4
+  person_id: 10
+  wave: 
+  bib_number: 103
+  city: 
+  state_code: CA
+  age: 27
+  created_at: '2016-04-18 09:10:04.699167'
+  updated_at: '2019-02-01 07:03:42.362225'
+  created_by: 1
+  updated_by: 1
+  first_name: Bruno
+  last_name: Fadel
+  gender: 0
+  country_code: US
+  birthdate: '1988-05-11'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-bruno-fadel
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_gilberto_mckenzie:
+  id: 31
+  event_id: 4
+  person_id: 42
+  wave: 
+  bib_number: 121
+  city: 
+  state_code: WA
+  age: 45
+  created_at: '2016-04-18 09:10:03.210408'
+  updated_at: '2019-02-01 07:03:42.382252'
+  created_by: 1
+  updated_by: 1
+  first_name: Gilberto
+  last_name: McKenzie
+  gender: 0
+  country_code: US
+  birthdate: '1970-06-02'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-gilberto-mckenzie
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_vince_willms:
+  id: 47
+  event_id: 4
+  person_id: 141
+  wave: 
+  bib_number: 182
+  city: 
+  state_code: CO
+  age: 50
+  created_at: '2016-04-18 09:10:03.5597'
+  updated_at: '2019-02-01 07:03:42.407355'
+  created_by: 1
+  updated_by: 1
+  first_name: Vince
+  last_name: Willms
+  gender: 0
+  country_code: US
+  birthdate: '1964-10-22'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-vince-willms
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_santa_green:
+  id: 29
+  event_id: 4
+  person_id: 62
+  wave: 
+  bib_number: 133
+  city: 
+  state_code: CO
+  age: 37
+  created_at: '2016-04-18 09:10:03.171265'
+  updated_at: '2019-02-01 07:03:55.850016'
+  created_by: 1
+  updated_by: 1
+  first_name: Santa
+  last_name: Green
+  gender: 1
+  country_code: US
+  birthdate: '1977-10-27'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-santa-green
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_leroy_leffler:
+  id: 63
+  event_id: 4
+  person_id: 85
+  wave: 
+  bib_number: 34
+  city: 
+  state_code: NM
+  age: 48
+  created_at: '2016-04-18 09:10:03.821143'
+  updated_at: '2019-02-01 07:03:42.432661'
+  created_by: 1
+  updated_by: 1
+  first_name: Leroy
+  last_name: Leffler
+  gender: 0
+  country_code: US
+  birthdate: '1967-06-18'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-leroy-leffler
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_demetrius_moen:
+  id: 96
+  event_id: 4
+  person_id: 148
+  wave: 
+  bib_number: 39
+  city: 
+  state_code: OR
+  age: 40
+  created_at: '2016-04-18 09:10:04.367628'
+  updated_at: '2019-02-01 07:03:42.457902'
+  created_by: 1
+  updated_by: 1
+  first_name: Demetrius
+  last_name: Moen
+  gender: 0
+  country_code: US
+  birthdate: '1975-06-06'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-demetrius-moen
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_robt_wintheiser:
+  id: 94
+  event_id: 4
+  person_id: 152
+  wave: 
+  bib_number: 30
+  city: 
+  state_code: CO
+  age: 57
+  created_at: '2016-04-18 09:10:04.337334'
+  updated_at: '2019-02-01 07:03:42.485198'
+  created_by: 1
+  updated_by: 1
+  first_name: Robt
+  last_name: Wintheiser
+  gender: 0
+  country_code: US
+  birthdate: '1957-09-14'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-robt-wintheiser
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_vern_buckridge:
+  id: 105
+  event_id: 4
+  person_id: 128
+  wave: 
+  bib_number: 176
+  city: 
+  state_code: TX
+  age: 33
+  created_at: '2016-04-18 09:10:04.514797'
+  updated_at: '2019-02-01 07:03:42.512926'
+  created_by: 1
+  updated_by: 1
+  first_name: Vern
+  last_name: Buckridge
+  gender: 0
+  country_code: US
+  birthdate: '1981-10-15'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-vern-buckridge
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_robby_gerlach:
+  id: 57
+  event_id: 4
+  person_id: 13
+  wave: 
+  bib_number: 105
+  city: 
+  state_code: VA
+  age: 45
+  created_at: '2016-04-18 09:10:03.721673'
+  updated_at: '2019-02-01 07:03:42.533966'
+  created_by: 1
+  updated_by: 1
+  first_name: Robby
+  last_name: Gerlach
+  gender: 0
+  country_code: US
+  birthdate: '1970-05-18'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-robby-gerlach
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_samara_vandervort:
+  id: 73
+  event_id: 4
+  person_id: 110
+  wave: 
+  bib_number: 35
+  city: 
+  state_code: CA
+  age: 22
+  created_at: '2016-04-18 09:10:03.987419'
+  updated_at: '2019-02-01 07:03:55.881777'
+  created_by: 1
+  updated_by: 1
+  first_name: Samara
+  last_name: Vandervort
+  gender: 1
+  country_code: US
+  birthdate: '1992-12-15'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-samara-vandervort
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_bad_status:
+  id: 138
+  event_id: 4
+  person_id: 18
+  wave: 
+  bib_number: 108
+  city: 
+  state_code: CO
+  age: 21
+  created_at: '2016-04-18 09:10:05.047829'
+  updated_at: '2019-02-01 06:12:37.109475'
+  created_by: 1
+  updated_by: 1
+  first_name: Bad
+  last_name: Status
+  gender: 0
+  country_code: US
+  birthdate: '1994-04-18'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-bad-status
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_donn_mckenzie:
+  id: 158
+  event_id: 4
+  person_id: 40
+  wave: 
+  bib_number: 119
+  city: 
+  state_code: WY
+  age: 16
+  created_at: '2016-04-18 09:10:05.339566'
+  updated_at: '2019-02-01 07:03:42.556117'
+  created_by: 1
+  updated_by: 1
+  first_name: Donn
+  last_name: McKenzie
+  gender: 0
+  country_code: US
+  birthdate: '1998-12-29'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-donn-mckenzie
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_irvin_harber:
+  id: 141
+  event_id: 4
+  person_id: 61
+  wave: 
+  bib_number: 134
+  city: 
+  state_code: CO
+  age: 19
+  created_at: '2016-04-18 09:10:05.103548'
+  updated_at: '2019-02-01 07:03:42.577054'
+  created_by: 1
+  updated_by: 1
+  first_name: Irvin
+  last_name: Harber
+  gender: 0
+  country_code: US
+  birthdate: '1996-07-05'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-irvin-harber
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_donte_spencer:
+  id: 112
+  event_id: 4
+  person_id: 99
+  wave: 
+  bib_number: 157
+  city: 
+  state_code: UT
+  age: 30
+  created_at: '2016-04-18 09:10:04.637912'
+  updated_at: '2019-02-01 07:03:42.599487'
+  created_by: 1
+  updated_by: 1
+  first_name: Donte
+  last_name: Spencer
+  gender: 0
+  country_code: US
+  birthdate: '1984-07-14'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-donte-spencer
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_gus_walker:
+  id: 117
+  event_id: 4
+  person_id: 98
+  wave: 
+  bib_number: 156
+  city: 
+  state_code: CO
+  age: 54
+  created_at: '2016-04-18 09:10:04.71541'
+  updated_at: '2019-02-01 07:03:42.624791'
+  created_by: 1
+  updated_by: 1
+  first_name: Gus
+  last_name: Walker
+  gender: 0
+  country_code: US
+  birthdate: '1960-11-23'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-gus-walker
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_leandro_cole:
+  id: 125
+  event_id: 4
+  person_id: 116
+  wave: 
+  bib_number: 168
+  city: 
+  state_code: UT
+  age: 45
+  created_at: '2016-04-18 09:10:04.84262'
+  updated_at: '2019-02-01 07:03:42.646945'
+  created_by: 1
+  updated_by: 1
+  first_name: Leandro
+  last_name: Cole
+  gender: 0
+  country_code: US
+  birthdate: '1970-06-26'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-leandro-cole
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_raphael_swift:
+  id: 136
+  event_id: 4
+  person_id: 120
+  wave: 
+  bib_number: 171
+  city: 
+  state_code: AR
+  age: 40
+  created_at: '2016-04-18 09:10:05.014754'
+  updated_at: '2019-02-01 07:03:42.674236'
+  created_by: 1
+  updated_by: 1
+  first_name: Raphael
+  last_name: Swift
+  gender: 0
+  country_code: US
+  birthdate: '1974-07-14'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-raphael-swift
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_benedict_davis:
+  id: 129
+  event_id: 4
+  person_id: 43
+  wave: 
+  bib_number: 122
+  city: 
+  state_code: CO
+  age: 32
+  created_at: '2016-04-18 09:10:04.90546'
+  updated_at: '2019-02-01 07:03:42.694894'
+  created_by: 1
+  updated_by: 1
+  first_name: Benedict
+  last_name: Davis
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-benedict-davis
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_susanna_abshire:
+  id: 121
+  event_id: 4
+  person_id: 74
+  wave: 
+  bib_number: 144
+  city: 
+  state_code: CO
+  age: 34
+  created_at: '2016-04-18 09:10:04.780476'
+  updated_at: '2019-02-01 07:03:55.908915'
+  created_by: 1
+  updated_by: 1
+  first_name: Susanna
+  last_name: Abshire
+  gender: 1
+  country_code: US
+  birthdate: '1980-08-17'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-susanna-abshire
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_cassondra_nienow:
+  id: 155
+  event_id: 4
+  person_id: 97
+  wave: 
+  bib_number: 155
+  city: 
+  state_code: OH
+  age: 56
+  created_at: '2016-04-18 09:10:05.298384'
+  updated_at: '2019-02-01 07:03:55.933676'
+  created_by: 1
+  updated_by: 1
+  first_name: Cassondra
+  last_name: Nienow
+  gender: 1
+  country_code: US
+  birthdate: '1958-09-07'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-cassondra-nienow
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+rufa_2017_12h_progress_lap2:
+  id: 16663
+  event_id: 70
+  person_id: 2174
+  wave: 
+  bib_number: 68
+  city: 
+  state_code: UT
+  age: 24
+  created_at: '2019-01-30 18:51:24.783335'
+  updated_at: '2019-02-01 06:14:59.45336'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap2
+  gender: 1
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-progress-lap2
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_progress_lap5_partial:
+  id: 16657
+  event_id: 70
+  person_id: 2169
+  wave: 
+  bib_number: 53
+  city: 
+  state_code: UT
+  age: 28
+  created_at: '2019-01-30 18:51:24.461838'
+  updated_at: '2019-02-01 06:12:36.164695'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap5 Partial
+  gender: 0
+  country_code: US
+  birthdate: '1988-09-15'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-progress-lap5-partial
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_finished_first:
+  id: 16643
+  event_id: 70
+  person_id: 2170
+  wave: 
+  bib_number: 63
+  city: 
+  state_code: AZ
+  age: 20
+  created_at: '2019-01-30 18:51:23.404239'
+  updated_at: '2019-02-01 06:12:36.185151'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: US
+  birthdate: '1997-01-25'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_finished_lap6:
+  id: 16648
+  event_id: 70
+  person_id: 2171
+  wave: 
+  bib_number: 65
+  city: 
+  state_code: UT
+  age: 53
+  created_at: '2019-01-30 18:51:23.828956'
+  updated_at: '2019-02-01 06:12:36.200179'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Lap6
+  gender: 0
+  country_code: US
+  birthdate: '1963-03-07'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-finished-lap6
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_not_started:
+  id: 16673
+  event_id: 70
+  person_id: 2175
+  wave: 
+  bib_number: 70
+  city: 
+  state_code: UT
+  age: 49
+  created_at: '2019-01-30 18:51:25.331813'
+  updated_at: '2019-02-01 06:12:36.227507'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: '1967-05-17'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+rufa_2017_12h_start_only:
+  id: 16667
+  event_id: 70
+  person_id: 2176
+  wave: 
+  bib_number: 73
+  city: 
+  state_code: UT
+  age: 44
+  created_at: '2019-01-30 18:51:24.983794'
+  updated_at: '2019-02-01 06:12:36.240519'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 0
+  country_code: US
+  birthdate: '1972-12-19'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-12h-start-only
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 14:00:00'
+hardrock_2016_kory_kulas:
+  id: 7289
+  event_id: 37
+  person_id: 1356
+  wave: 
+  bib_number: 118
+  city: 
+  state_code: CA
+  age: 42
+  created_at: '2017-04-18 09:43:18.615823'
+  updated_at: '2019-02-01 07:03:42.719614'
+  created_by: 1
+  updated_by: 1
+  first_name: Kory
+  last_name: Kulas
+  gender: 0
+  country_code: US
+  birthdate: '1974-01-25'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-kory-kulas
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_progress_sherman:
+  id: 7328
+  event_id: 37
+  person_id: 656
+  wave: 
+  bib_number: 150
+  city: 
+  state_code: VA
+  age: 33
+  created_at: '2017-04-18 09:43:28.206507'
+  updated_at: '2019-02-01 06:12:38.089423'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Sherman
+  gender: 0
+  country_code: US
+  birthdate: '1982-07-28'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-progress-sherman
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+ramble_start_only:
+  id: 1051
+  event_id: 14
+  person_id: 331
+  wave: 
+  bib_number: 
+  city: 
+  state_code: 
+  age: 38
+  created_at: '2016-05-09 01:56:15.271716'
+  updated_at: '2019-02-01 06:37:29.491883'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 1
+  country_code: 
+  birthdate: '1968-07-11'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ramble-start-only
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2006-09-16 14:00:00'
+ramble_finished_first:
+  id: 1040
+  event_id: 14
+  person_id: 369
+  wave: 
+  bib_number: 
+  city: 
+  state_code: 
+  age: 49
+  created_at: '2016-05-09 01:56:15.125469'
+  updated_at: '2019-02-01 06:38:32.510437'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: 
+  birthdate: '1957-02-04'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ramble-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2006-09-16 14:00:00'
+ramble_not_started:
+  id: 1061
+  event_id: 14
+  person_id: 384
+  wave: 
+  bib_number: 
+  city: 
+  state_code: 
+  age: 17
+  created_at: '2016-05-09 01:56:15.407929'
+  updated_at: '2019-02-01 06:37:07.323951'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 0
+  country_code: 
+  birthdate: '1989-03-22'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ramble-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2006-09-16 14:00:00'
+hardrock_2015_rachelle_eichmann:
+  id: 59
+  event_id: 4
+  person_id: 81
+  wave: 
+  bib_number: 22
+  city: 
+  state_code: CO
+  age: 23
+  created_at: '2016-04-18 09:10:03.755229'
+  updated_at: '2019-02-01 07:03:55.952941'
+  created_by: 1
+  updated_by: 1
+  first_name: Rachelle
+  last_name: Eichmann
+  gender: 1
+  country_code: US
+  birthdate: '1992-01-11'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-rachelle-eichmann
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2014_finished_without_stop:
+  id: 4174
+  event_id: 17
+  person_id: 495
+  wave: 
+  bib_number: 147
+  city: 
+  state_code: UT
+  age: 25
+  created_at: '2016-05-24 03:02:35.789178'
+  updated_at: '2019-02-01 06:12:37.491056'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Without Stop
+  gender: 0
+  country_code: US
+  birthdate: '1989-06-12'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-finished-without-stop
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_finished_with_stop:
+  id: 4173
+  event_id: 17
+  person_id: 25
+  wave: 
+  bib_number: 4
+  city: 
+  state_code: UT
+  age: 40
+  created_at: '2016-05-24 03:02:35.77778'
+  updated_at: '2019-02-01 06:12:37.526182'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: With Stop
+  gender: 0
+  country_code: US
+  birthdate: '1974-03-03'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-finished-with-stop
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_finished_first:
+  id: 4172
+  event_id: 17
+  person_id: 682
+  wave: 
+  bib_number: 148
+  city: 
+  state_code: '01'
+  age: 19
+  created_at: '2016-05-24 03:02:35.765362'
+  updated_at: '2019-02-01 06:14:59.505465'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: JP
+  birthdate: 
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_paul_predovic:
+  id: 4199
+  event_id: 17
+  person_id: 44
+  wave: 
+  bib_number: 123
+  city: 
+  state_code: ID
+  age: 55
+  created_at: '2016-05-24 03:02:36.127624'
+  updated_at: '2019-02-01 07:03:42.747347'
+  created_by: 1
+  updated_by: 1
+  first_name: Paul
+  last_name: Predovic
+  gender: 0
+  country_code: US
+  birthdate: '1959-06-26'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-paul-predovic
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_claudio_wunsch:
+  id: 4192
+  event_id: 17
+  person_id: 689
+  wave: 
+  bib_number: 104
+  city: 
+  state_code: 
+  age: 33
+  created_at: '2016-05-24 03:02:36.044742'
+  updated_at: '2019-02-01 07:03:42.769468'
+  created_by: 1
+  updated_by: 1
+  first_name: Claudio
+  last_name: Wunsch
+  gender: 0
+  country_code: US
+  birthdate: '1981-04-17'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-claudio-wunsch
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_keith_metz:
+  id: 4206
+  event_id: 17
+  person_id: 690
+  wave: 
+  bib_number: 159
+  city: 
+  state_code: UT
+  age: 42
+  created_at: '2016-05-24 03:02:36.226666'
+  updated_at: '2019-02-01 07:03:42.793235'
+  created_by: 1
+  updated_by: 1
+  first_name: Keith
+  last_name: Metz
+  gender: 0
+  country_code: US
+  birthdate: '1971-11-06'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-keith-metz
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_major_green:
+  id: 4207
+  event_id: 17
+  person_id: 691
+  wave: 
+  bib_number: 121
+  city: 
+  state_code: NC
+  age: 58
+  created_at: '2016-05-24 03:02:36.242262'
+  updated_at: '2019-02-01 07:03:42.817293'
+  created_by: 1
+  updated_by: 1
+  first_name: Major
+  last_name: Green
+  gender: 0
+  country_code: US
+  birthdate: '1955-09-29'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-major-green
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_pat_schaden:
+  id: 4247
+  event_id: 17
+  person_id: 79
+  wave: 
+  bib_number: 145
+  city: 
+  state_code: AZ
+  age: 53
+  created_at: '2016-05-24 03:02:36.793599'
+  updated_at: '2019-02-01 07:03:42.841949'
+  created_by: 1
+  updated_by: 1
+  first_name: Pat
+  last_name: Schaden
+  gender: 0
+  country_code: US
+  birthdate: '1960-09-09'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-pat-schaden
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_humberto_adams:
+  id: 4221
+  event_id: 17
+  person_id: 182
+  wave: 
+  bib_number: 37
+  city: 
+  state_code: NM
+  age: 24
+  created_at: '2016-05-24 03:02:36.472804'
+  updated_at: '2019-02-01 07:03:42.862929'
+  created_by: 1
+  updated_by: 1
+  first_name: Humberto
+  last_name: Adams
+  gender: 0
+  country_code: US
+  birthdate: '1990-04-25'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-humberto-adams
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_omer_yundt:
+  id: 4246
+  event_id: 17
+  person_id: 190
+  wave: 
+  bib_number: 41
+  city: 
+  state_code: CO
+  age: 40
+  created_at: '2016-05-24 03:02:36.780679'
+  updated_at: '2019-02-01 07:03:42.889059'
+  created_by: 1
+  updated_by: 1
+  first_name: Omer
+  last_name: Yundt
+  gender: 0
+  country_code: US
+  birthdate: '1974-06-23'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-omer-yundt
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_ken_bradtke:
+  id: 4256
+  event_id: 17
+  person_id: 101
+  wave: 
+  bib_number: 158
+  city: 
+  state_code: CO
+  age: 47
+  created_at: '2016-05-24 03:02:36.906798'
+  updated_at: '2019-02-01 07:03:42.912554'
+  created_by: 1
+  updated_by: 1
+  first_name: Ken
+  last_name: Bradtke
+  gender: 0
+  country_code: US
+  birthdate: '1966-07-21'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-ken-bradtke
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_willis_murray:
+  id: 4253
+  event_id: 17
+  person_id: 21
+  wave: 
+  bib_number: 32
+  city: 
+  state_code: GA
+  age: 16
+  created_at: '2016-05-24 03:02:36.871396'
+  updated_at: '2019-02-01 07:03:42.941302'
+  created_by: 1
+  updated_by: 1
+  first_name: Willis
+  last_name: Murray
+  gender: 0
+  country_code: US
+  birthdate: '1998-02-04'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-willis-murray
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_clarence_goyette:
+  id: 4249
+  event_id: 17
+  person_id: 136
+  wave: 
+  bib_number: 36
+  city: 
+  state_code: CO
+  age: 52
+  created_at: '2016-05-24 03:02:36.820543'
+  updated_at: '2019-02-01 07:03:42.984055'
+  created_by: 1
+  updated_by: 1
+  first_name: Clarence
+  last_name: Goyette
+  gender: 0
+  country_code: US
+  birthdate: '1961-09-18'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-clarence-goyette
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_irvin_corkery:
+  id: 4251
+  event_id: 17
+  person_id: 698
+  wave: 
+  bib_number: 120
+  city: 
+  state_code: DC
+  age: 22
+  created_at: '2016-05-24 03:02:36.844005'
+  updated_at: '2019-02-01 07:03:43.005092'
+  created_by: 1
+  updated_by: 1
+  first_name: Irvin
+  last_name: Corkery
+  gender: 0
+  country_code: US
+  birthdate: '1991-11-01'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-irvin-corkery
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_without_start:
+  id: 4294
+  event_id: 17
+  person_id: 170
+  wave: 
+  bib_number: 119
+  city: 
+  state_code: MT
+  age: 49
+  created_at: '2016-05-24 03:02:37.329357'
+  updated_at: '2019-02-01 06:14:59.432451'
+  created_by: 1
+  updated_by: 1
+  first_name: Without
+  last_name: Start
+  gender: 0
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-without-start
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_drop_ouray:
+  id: 4295
+  event_id: 17
+  person_id: 195
+  wave: 
+  bib_number: 142
+  city: 
+  state_code: CA
+  age: 40
+  created_at: '2016-05-24 03:02:37.338785'
+  updated_at: '2019-02-01 06:12:37.056049'
+  created_by: 1
+  updated_by: 1
+  first_name: Drop
+  last_name: Ouray
+  gender: 1
+  country_code: US
+  birthdate: '1974-01-05'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-drop-ouray
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_progress_sherman:
+  id: 4277
+  event_id: 17
+  person_id: 289
+  wave: 
+  bib_number: 166
+  city: 
+  state_code: CO
+  age: 36
+  created_at: '2016-05-24 03:02:37.144241'
+  updated_at: '2019-02-01 06:12:37.260642'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Sherman
+  gender: 0
+  country_code: US
+  birthdate: '1977-12-15'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-progress-sherman
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_not_started:
+  id: 4302
+  event_id: 17
+  person_id: 710
+  wave: 
+  bib_number: 115
+  city: 
+  state_code: CO
+  age: 28
+  created_at: '2016-05-24 03:02:37.399692'
+  updated_at: '2019-02-01 06:12:38.361885'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 0
+  country_code: US
+  birthdate: '1986-03-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2014_multiple_stops:
+  id: 4293
+  event_id: 17
+  person_id: 707
+  wave: 
+  bib_number: 187
+  city: 
+  state_code: HI
+  age: 60
+  created_at: '2016-05-24 03:02:37.319538'
+  updated_at: '2019-02-01 06:12:38.399539'
+  created_by: 1
+  updated_by: 1
+  first_name: Multiple
+  last_name: Stops
+  gender: 1
+  country_code: US
+  birthdate: '1954-03-21'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2014-multiple-stops
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2014-07-11 12:00:00'
+hardrock_2015_elden_morissette:
+  id: 61
+  event_id: 4
+  person_id: 119
+  wave: 
+  bib_number: 170
+  city: 
+  state_code: WI
+  age: 42
+  created_at: '2016-04-18 09:10:03.787728'
+  updated_at: '2019-02-01 07:03:43.029441'
+  created_by: 1
+  updated_by: 1
+  first_name: Elden
+  last_name: Morissette
+  gender: 0
+  country_code: US
+  birthdate: '1972-11-21'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-elden-morissette
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+rufa_2016_finished_first:
+  id: 6518
+  event_id: 34
+  person_id: 
+  wave: 
+  bib_number: 6
+  city: 
+  state_code: 
+  age: 35
+  created_at: '2017-02-18 07:04:03.460025'
+  updated_at: '2019-02-01 06:13:42.623687'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: 
+  birthdate: '1980-07-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2016-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-02-13 13:00:00'
+rufa_2016_finished_second:
+  id: 6520
+  event_id: 34
+  person_id: 
+  wave: 
+  bib_number: 8
+  city: 
+  state_code: 
+  age: 32
+  created_at: '2017-02-18 07:04:04.964494'
+  updated_at: '2019-02-01 06:33:07.990941'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Second
+  gender: 0
+  country_code: 
+  birthdate: '1983-04-21'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2016-finished-second
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-02-13 13:00:00'
+rufa_2016_not_started:
+  id: 6561
+  event_id: 34
+  person_id: 
+  wave: 
+  bib_number: 49
+  city: 
+  state_code: 
+  age: 57
+  created_at: '2017-02-18 07:04:23.903673'
+  updated_at: '2019-02-01 06:34:33.765616'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: 
+  birthdate: '1958-03-21'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2016-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-02-13 15:00:00'
+rufa_2016_progress_lap1:
+  id: 6560
+  event_id: 34
+  person_id: 
+  wave: 
+  bib_number: 48
+  city: 
+  state_code: 
+  age: 25
+  created_at: '2017-02-18 07:04:23.649965'
+  updated_at: '2019-02-01 06:35:06.886454'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap1
+  gender: 0
+  country_code: 
+  birthdate: '1991-01-16'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2016-progress-lap1
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-02-13 13:00:00'
+rufa_2017_24h_finished_first:
+  id: 6693
+  event_id: 36
+  person_id: 1265
+  wave: 
+  bib_number: 16
+  city: 
+  state_code: UT
+  age: 47
+  created_at: '2017-03-28 07:24:12.485505'
+  updated_at: '2019-02-01 06:12:36.257463'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 1
+  country_code: US
+  birthdate: '1969-04-04'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 13:10:00'
+rufa_2017_24h_progress_lap6:
+  id: 6695
+  event_id: 36
+  person_id: 1266
+  wave: 
+  bib_number: 60
+  city: 
+  state_code: UT
+  age: 33
+  created_at: '2017-03-28 07:24:13.143418'
+  updated_at: '2019-02-01 06:12:36.278043'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap6
+  gender: 0
+  country_code: US
+  birthdate: '1983-03-13'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-progress-lap6
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 15:00:00'
+rufa_2017_24h_multiple_stops:
+  id: 6756
+  event_id: 36
+  person_id: 1305
+  wave: 
+  bib_number: 142
+  city: 
+  state_code: UT
+  age: 43
+  created_at: '2017-03-28 07:24:25.977802'
+  updated_at: '2019-02-01 06:12:36.548922'
+  created_by: 1
+  updated_by: 1
+  first_name: Multiple
+  last_name: Stops
+  gender: 1
+  country_code: US
+  birthdate: '1973-11-14'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-multiple-stops
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 15:00:00'
+rufa_2017_24h_finished_last:
+  id: 6780
+  event_id: 36
+  person_id: 1324
+  wave: 
+  bib_number: 112
+  city: 
+  state_code: UT
+  age: 40
+  created_at: '2017-03-28 07:24:29.153267'
+  updated_at: '2019-02-01 06:30:17.520061'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Last
+  gender: 0
+  country_code: US
+  birthdate: '1976-05-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-finished-last
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 15:00:00'
+hardrock_2016_lavon_paucek:
+  id: 7270
+  event_id: 37
+  person_id: 53
+  wave: 
+  bib_number: 4
+  city: 
+  state_code: 
+  age: 41
+  created_at: '2017-04-18 09:43:13.944673'
+  updated_at: '2019-02-01 07:03:55.996048'
+  created_by: 1
+  updated_by: 1
+  first_name: Lavon
+  last_name: Paucek
+  gender: 1
+  country_code: NZ
+  birthdate: '1974-07-29'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-lavon-paucek
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+rufa_2017_24h_progress_lap1:
+  id: 6805
+  event_id: 36
+  person_id: 1344
+  wave: 
+  bib_number: 134
+  city: 
+  state_code: UT
+  age: 49
+  created_at: '2017-03-28 07:24:31.338329'
+  updated_at: '2019-02-01 06:12:37.294329'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Lap1
+  gender: 0
+  country_code: US
+  birthdate: '1967-03-21'
+  data_status: 1
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-progress-lap1
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-11 16:00:00'
+rufa_2017_24h_not_started:
+  id: 6782
+  event_id: 36
+  person_id: 710
+  wave: 
+  bib_number: 149
+  city: 
+  state_code: UT
+  age: 30
+  created_at: '2017-03-28 07:24:29.350276'
+  updated_at: '2019-02-01 06:12:38.373152'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 0
+  country_code: US
+  birthdate: '1986-03-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: rufa-2017-24h-not-started
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-02-12 01:00:00'
+hardrock_2016_missing_telluride_out:
+  id: 7308
+  event_id: 37
+  person_id: 
+  wave: 
+  bib_number: 121
+  city: 
+  state_code: AK
+  age: 20
+  created_at: '2017-04-18 09:43:23.33018'
+  updated_at: '2019-02-01 06:13:42.773572'
+  created_by: 1
+  updated_by: 1
+  first_name: Missing
+  last_name: Telluride Out
+  gender: 0
+  country_code: US
+  birthdate: '1996-02-11'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-missing-telluride-out
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_douglas_vandervort:
+  id: 7302
+  event_id: 37
+  person_id: 113
+  wave: 
+  bib_number: 26
+  city: 
+  state_code: CO
+  age: 52
+  created_at: '2017-04-18 09:43:21.759013'
+  updated_at: '2019-02-01 07:03:43.049987'
+  created_by: 1
+  updated_by: 1
+  first_name: Douglas
+  last_name: Vandervort
+  gender: 0
+  country_code: US
+  birthdate: '1964-02-16'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-douglas-vandervort
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_shad_hirthe:
+  id: 7297
+  event_id: 37
+  person_id: 463
+  wave: 
+  bib_number: 133
+  city: 
+  state_code: CO
+  age: 40
+  created_at: '2017-04-18 09:43:20.572745'
+  updated_at: '2019-02-01 07:03:43.070571'
+  created_by: 1
+  updated_by: 1
+  first_name: Shad
+  last_name: Hirthe
+  gender: 0
+  country_code: US
+  birthdate: '1975-09-05'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-shad-hirthe
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_eddy_goldner:
+  id: 7315
+  event_id: 37
+  person_id: 147
+  wave: 
+  bib_number: 9
+  city: 
+  state_code: WA
+  age: 18
+  created_at: '2017-04-18 09:43:25.135211'
+  updated_at: '2019-02-01 07:03:43.093398'
+  created_by: 1
+  updated_by: 1
+  first_name: Eddy
+  last_name: Goldner
+  gender: 0
+  country_code: US
+  birthdate: '1997-07-26'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-eddy-goldner
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_junior_lesch:
+  id: 7311
+  event_id: 37
+  person_id: 830
+  wave: 
+  bib_number: 135
+  city: 
+  state_code: NM
+  age: 49
+  created_at: '2017-04-18 09:43:24.182361'
+  updated_at: '2019-02-01 07:03:43.113838'
+  created_by: 1
+  updated_by: 1
+  first_name: Junior
+  last_name: Lesch
+  gender: 0
+  country_code: US
+  birthdate: '1967-02-21'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-junior-lesch
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_vesta_borer:
+  id: 7284
+  event_id: 37
+  person_id: 70
+  wave: 
+  bib_number: 24
+  city: 
+  state_code: UT
+  age: 21
+  created_at: '2017-04-18 09:43:17.416478'
+  updated_at: '2019-02-01 07:03:56.016615'
+  created_by: 1
+  updated_by: 1
+  first_name: Vesta
+  last_name: Borer
+  gender: 1
+  country_code: US
+  birthdate: '1995-04-24'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-vesta-borer
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_kendall_koch:
+  id: 7340
+  event_id: 37
+  person_id: 226
+  wave: 
+  bib_number: 188
+  city: 
+  state_code: CO
+  age: 40
+  created_at: '2017-04-18 09:43:31.134522'
+  updated_at: '2019-02-01 07:03:43.138134'
+  created_by: 1
+  updated_by: 1
+  first_name: Kendall
+  last_name: Koch
+  gender: 0
+  country_code: US
+  birthdate: '1976-02-05'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-kendall-koch
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_charlie_mueller:
+  id: 7343
+  event_id: 37
+  person_id: 205
+  wave: 
+  bib_number: 159
+  city: 
+  state_code: OR
+  age: 27
+  created_at: '2017-04-18 09:43:31.806769'
+  updated_at: '2019-02-01 07:03:43.163744'
+  created_by: 1
+  updated_by: 1
+  first_name: Charlie
+  last_name: Mueller
+  gender: 0
+  country_code: US
+  birthdate: '1989-06-10'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-charlie-mueller
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_benito_moen:
+  id: 7337
+  event_id: 37
+  person_id: 1365
+  wave: 
+  bib_number: 177
+  city: 
+  state_code: OH
+  age: 52
+  created_at: '2017-04-18 09:43:30.366948'
+  updated_at: '2019-02-01 07:03:43.190669'
+  created_by: 1
+  updated_by: 1
+  first_name: Benito
+  last_name: Moen
+  gender: 0
+  country_code: US
+  birthdate: '1964-01-16'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-benito-moen
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_brinda_fisher:
+  id: 7376
+  event_id: 37
+  person_id: 14
+  wave: 
+  bib_number: 37
+  city: 
+  state_code: SC
+  age: 22
+  created_at: '2017-04-18 09:43:39.469427'
+  updated_at: '2019-02-01 07:03:56.041856'
+  created_by: 1
+  updated_by: 1
+  first_name: Brinda
+  last_name: Fisher
+  gender: 1
+  country_code: US
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-brinda-fisher
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_start_only:
+  id: 7411
+  event_id: 37
+  person_id: 818
+  wave: 
+  bib_number: 199
+  city: 
+  state_code: ME
+  age: 26
+  created_at: '2017-04-18 09:43:45.842843'
+  updated_at: '2019-02-01 07:23:44.966511'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 0
+  country_code: US
+  birthdate: '1990-04-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-start-only
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_dropped_grouse:
+  id: 7396
+  event_id: 37
+  person_id: 249
+  wave: 
+  bib_number: 117
+  city: 
+  state_code: CO
+  age: 47
+  created_at: '2017-04-18 09:43:43.290742'
+  updated_at: '2019-02-01 06:12:37.162398'
+  created_by: 1
+  updated_by: 1
+  first_name: Dropped
+  last_name: Grouse
+  gender: 0
+  country_code: US
+  birthdate: '1969-05-13'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-dropped-grouse
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_mervin_smitham:
+  id: 7400
+  event_id: 37
+  person_id: 162
+  wave: 
+  bib_number: 109
+  city: 
+  state_code: NM
+  age: 24
+  created_at: '2017-04-18 09:43:43.987125'
+  updated_at: '2019-02-01 07:03:43.209066'
+  created_by: 1
+  updated_by: 1
+  first_name: Mervin
+  last_name: Smitham
+  gender: 0
+  country_code: US
+  birthdate: '1991-10-08'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-mervin-smitham
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_hoyt_macejkovic:
+  id: 7407
+  event_id: 37
+  person_id: 256
+  wave: 
+  bib_number: 125
+  city: 
+  state_code: MD
+  age: 55
+  created_at: '2017-04-18 09:43:45.252368'
+  updated_at: '2019-02-01 07:03:43.229274'
+  created_by: 1
+  updated_by: 1
+  first_name: Hoyt
+  last_name: Macejkovic
+  gender: 0
+  country_code: US
+  birthdate: '1960-07-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-hoyt-macejkovic
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_rene_mclaughlin:
+  id: 7380
+  event_id: 37
+  person_id: 1379
+  wave: 
+  bib_number: 113
+  city: 
+  state_code: TX
+  age: 32
+  created_at: '2017-04-18 09:43:40.343314'
+  updated_at: '2019-02-01 07:03:43.253547'
+  created_by: 1
+  updated_by: 1
+  first_name: Rene
+  last_name: McLaughlin
+  gender: 0
+  country_code: US
+  birthdate: '1984-04-30'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-rene-mclaughlin
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+hardrock_2016_rhett_auer:
+  id: 7404
+  event_id: 37
+  person_id: 
+  wave: 
+  bib_number: 131
+  city: 
+  state_code: CO
+  age: 41
+  created_at: '2017-04-18 09:43:44.745954'
+  updated_at: '2019-02-01 07:03:43.274507'
+  created_by: 1
+  updated_by: 1
+  first_name: Rhett
+  last_name: Auer
+  gender: 0
+  country_code: US
+  birthdate: '1974-11-07'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2016-rhett-auer
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2016-07-15 12:00:00'
+ggd30_50k_bad_finish:
+  id: 15664
+  event_id: 48
+  person_id: 2104
+  wave: 
+  bib_number: 1079
+  city: 
+  state_code: 
+  age: 21
+  created_at: '2017-06-09 08:26:07.426849'
+  updated_at: '2019-02-01 06:12:38.529959'
+  created_by: 1
+  updated_by: 1
+  first_name: Bad
+  last_name: Finish
+  gender: 0
+  country_code: 
+  birthdate: '1995-07-25'
+  data_status: 0
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-bad-finish
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_finished_first:
+  id: 15626
+  event_id: 48
+  person_id: 2128
+  wave: 
+  bib_number: 1116
+  city: 
+  state_code: 
+  age: 44
+  created_at: '2017-06-09 08:26:06.148699'
+  updated_at: '2019-02-01 06:12:38.549259'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: 
+  birthdate: '1973-05-25'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-finished-first
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_progress_aid3:
+  id: 15901
+  event_id: 48
+  person_id: 1734
+  wave: 
+  bib_number: 219
+  city: 
+  state_code: 
+  age: 31
+  created_at: '2017-06-09 08:26:15.541579'
+  updated_at: '2019-02-01 06:18:23.31687'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Aid3
+  gender: 0
+  country_code: 
+  birthdate: '1986-03-04'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-progress-aid3
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_progress_aid4:
+  id: 15891
+  event_id: 48
+  person_id: 2003
+  wave: 
+  bib_number: 1118
+  city: 
+  state_code: 
+  age: 35
+  created_at: '2017-06-09 08:26:15.208636'
+  updated_at: '2019-02-01 06:18:53.333713'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Aid4
+  gender: 1
+  country_code: 
+  birthdate: '1982-03-29'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-progress-aid4
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_drop_aid4:
+  id: 15931
+  event_id: 48
+  person_id: 1689
+  wave: 
+  bib_number: 1029
+  city: 
+  state_code: 
+  age: 18
+  created_at: '2017-06-09 08:26:16.456387'
+  updated_at: '2019-02-01 06:14:59.563079'
+  created_by: 1
+  updated_by: 1
+  first_name: Drop
+  last_name: Aid4
+  gender: 0
+  country_code: 
+  birthdate: 
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-drop-aid4
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_start_only:
+  id: 16023
+  event_id: 48
+  person_id: 1926
+  wave: 
+  bib_number: 433
+  city: 
+  state_code: 
+  age: 31
+  created_at: '2017-06-09 08:26:18.436664'
+  updated_at: '2019-02-01 06:12:38.331033'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 1
+  country_code: 
+  birthdate: '1985-11-14'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-start-only
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+ggd30_50k_not_started:
+  id: 16032
+  event_id: 48
+  person_id: 710
+  wave: 
+  bib_number: 49
+  city: 
+  state_code: 
+  age: 31
+  created_at: '2017-06-09 08:26:18.49114'
+  updated_at: '2019-02-01 06:12:38.385362'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 0
+  country_code: 
+  birthdate: '1986-03-23'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-not-started
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 13:00:00'
+hardrock_2015_garry_kuhlman:
+  id: 24
+  event_id: 4
+  person_id: 39
+  wave: 
+  bib_number: 11
+  city: 
+  state_code: MT
+  age: 45
+  created_at: '2016-04-18 09:10:03.077148'
+  updated_at: '2019-02-01 07:03:43.303129'
+  created_by: 1
+  updated_by: 1
+  first_name: Garry
+  last_name: Kuhlman
+  gender: 0
+  country_code: US
+  birthdate: '1969-10-10'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-garry-kuhlman
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_erich_larson:
+  id: 8
+  event_id: 4
+  person_id: 51
+  wave: 
+  bib_number: 128
+  city: 
+  state_code: MT
+  age: 36
+  created_at: '2016-04-18 09:10:02.669411'
+  updated_at: '2019-02-01 07:03:43.328247'
+  created_by: 1
+  updated_by: 1
+  first_name: Erich
+  last_name: Larson
+  gender: 0
+  country_code: US
+  birthdate: '1979-07-10'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-erich-larson
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_carmine_adams:
+  id: 20
+  event_id: 4
+  person_id: 69
+  wave: 
+  bib_number: 140
+  city: 
+  state_code: WA
+  age: 18
+  created_at: '2016-04-18 09:10:02.994073'
+  updated_at: '2019-02-01 07:03:43.355452'
+  created_by: 1
+  updated_by: 1
+  first_name: Carmine
+  last_name: Adams
+  gender: 0
+  country_code: US
+  birthdate: '1997-05-25'
+  data_status: 1
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-carmine-adams
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_darius_jacobson:
+  id: 25
+  event_id: 4
+  person_id: 108
+  wave: 
+  bib_number: 8
+  city: 
+  state_code: CO
+  age: 30
+  created_at: '2016-04-18 09:10:03.093446'
+  updated_at: '2019-02-01 07:03:43.376349'
+  created_by: 1
+  updated_by: 1
+  first_name: Darius
+  last_name: Jacobson
+  gender: 0
+  country_code: US
+  birthdate: '1985-03-21'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-darius-jacobson
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+hardrock_2015_leif_carter:
+  id: 15
+  event_id: 4
+  person_id: 83
+  wave: 
+  bib_number: 146
+  city: 
+  state_code: 
+  age: 55
+  created_at: '2016-04-18 09:10:02.914611'
+  updated_at: '2019-02-01 07:03:43.50434'
+  created_by: 1
+  updated_by: 1
+  first_name: Leif
+  last_name: Carter
+  gender: 0
+  country_code: ES
+  birthdate: '1960-02-01'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: hardrock-2015-leif-carter
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2015-07-10 12:00:00'
+ggd30_12m_finished_second:
+  id: 16107
+  event_id: 49
+  person_id: 1862
+  wave: 
+  bib_number: 1519
+  city: Boulder
+  state_code: CO
+  age: 33
+  created_at: '2017-06-09 09:52:57.413084'
+  updated_at: '2019-02-01 07:08:30.233045'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  country_code: US
+  birthdate: '1984-01-16'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-finished-second
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 16:00:00'
+ggd30_12m_start_only:
+  id: 16094
+  event_id: 49
+  person_id: 1874
+  wave: 
+  bib_number: 1506
+  city: Aurora
+  state_code: CO
+  age: 27
+  created_at: '2017-06-09 09:52:57.315679'
+  updated_at: '2019-02-01 07:08:30.249935'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 1
+  country_code: US
+  birthdate: '1989-09-09'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-start-only
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 16:00:00'
+ggd30_12m_not_started:
+  id: 16209
+  event_id: 49
+  person_id: 1771
+  wave: 
+  bib_number: 1622
+  city: Greeley
+  state_code: CO
+  age: 22
+  created_at: '2017-06-09 09:52:58.187937'
+  updated_at: '2019-02-01 07:08:30.265026'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: '1995-03-06'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-not-started
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 16:00:00'
+sum_55k_finished_second:
+  id: 16229
+  event_id: 57
+  person_id: 1584
+  wave: 
+  bib_number: 101
+  city: 
+  state_code: CO
+  age: 44
+  created_at: '2018-01-18 05:23:46.31644'
+  updated_at: '2019-02-01 06:12:37.872619'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  country_code: US
+  birthdate: '1973-07-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-finished-second
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+sum_55k_finished_first:
+  id: 16227
+  event_id: 57
+  person_id: 1585
+  wave: 
+  bib_number: 134
+  city: 
+  state_code: CO
+  age: 54
+  created_at: '2018-01-18 05:23:46.230111'
+  updated_at: '2019-02-01 06:12:37.891171'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: US
+  birthdate: '1963-08-18'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-finished-first
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+sum_55k_not_started:
+  id: 16242
+  event_id: 57
+  person_id: 1571
+  wave: 
+  bib_number: 114
+  city: 
+  state_code: CO
+  age: 36
+  created_at: '2018-01-18 05:23:52.659025'
+  updated_at: '2019-02-01 06:12:37.852763'
+  created_by: 1
+  updated_by: 1
+  first_name: Not
+  last_name: Started
+  gender: 1
+  country_code: US
+  birthdate: '1981-03-31'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-not-started
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+ggd30_12m_finished_first:
+  id: 16173
+  event_id: 49
+  person_id: 1923
+  wave: 
+  bib_number: 1586
+  city: LE VIBAL
+  state_code: ARA
+  age: 23
+  created_at: '2017-06-09 09:52:57.91879'
+  updated_at: '2019-02-01 07:08:30.28079'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: First
+  gender: 0
+  country_code: FR
+  birthdate: '1993-06-05'
+  data_status: 
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-finished-first
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-06-03 16:00:00'
+sum_55k_start_only:
+  id: 16246
+  event_id: 57
+  person_id: 1567
+  wave: 
+  bib_number: 132
+  city: 
+  state_code: CO
+  age: 49
+  created_at: '2018-01-18 05:23:52.832341'
+  updated_at: '2019-02-01 06:12:37.804164'
+  created_by: 1
+  updated_by: 1
+  first_name: Start
+  last_name: Only
+  gender: 0
+  country_code: US
+  birthdate: '1967-10-27'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-start-only
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+sum_55k_drop_bandera:
+  id: 16245
+  event_id: 57
+  person_id: 1568
+  wave: 
+  bib_number: 109
+  city: 
+  state_code: CO
+  age: 19
+  created_at: '2018-01-18 05:23:52.794212'
+  updated_at: '2019-02-01 06:12:37.822309'
+  created_by: 1
+  updated_by: 1
+  first_name: Drop
+  last_name: Bandera
+  gender: 1
+  country_code: US
+  birthdate: '1998-08-31'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-drop-bandera
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+sum_55k_progress_rolling:
+  id: 16244
+  event_id: 57
+  person_id: 1569
+  wave: 
+  bib_number: 111
+  city: 
+  state_code: CA
+  age: 55
+  created_at: '2018-01-18 05:23:52.74712'
+  updated_at: '2019-02-01 06:12:37.839314'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Rolling
+  gender: 1
+  country_code: US
+  birthdate: '1962-04-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-progress-rolling
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-10-07 15:00:00'
+sum_100k_drop_anvil:
+  id: 16247
+  event_id: 56
+  person_id: 1747
+  wave: 
+  bib_number: 999
+  city: Akron
+  state_code: OH
+  age: 28
+  created_at: '2018-02-03 23:41:41.141488'
+  updated_at: '2019-02-01 06:12:37.998419'
+  created_by: 1
+  updated_by: 1
+  first_name: Drop
+  last_name: Anvil
+  gender: 0
+  country_code: US
+  birthdate: '1988-09-29'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-100k-drop-anvil
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: '2017-09-23 13:00:00'
+sum_100k_progress_cascade:
+  id: 16248
+  event_id: 56
+  person_id: 1748
+  wave: 
+  bib_number: 777
+  city: Provo
+  state_code: UT
+  age: 20
+  created_at: '2018-02-24 22:28:24.196234'
+  updated_at: '2019-02-01 07:08:30.2975'
+  created_by: 1
+  updated_by: 1
+  first_name: Progress
+  last_name: Cascade
+  gender: 0
+  country_code: US
+  birthdate: '1997-05-20'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-100k-progress-cascade
+  checked_in: true
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 

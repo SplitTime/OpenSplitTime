@@ -30,13 +30,13 @@ module Interactors
 
     def unstart_effort(effort)
       effort.update(checked_in: false)
-      start_split_time = effort.start_split_time
-      return unless start_split_time
+      starting_split_time = effort.starting_split_time
+      return unless starting_split_time
 
-      if start_split_time.destroy
-        destroyed_split_times << start_split_time
+      if starting_split_time.destroy
+        destroyed_split_times << starting_split_time
       else
-        errors << resource_error_object(start_split_time)
+        errors << resource_error_object(starting_split_time)
       end
     end
 

@@ -1,0 +1,117 @@
+---
+fifth_user:
+  id: 11
+  first_name: Fifth
+  last_name: User
+  role: 0
+  provider: 
+  uid: 
+  email: fifthuser@example.com
+  encrypted_password: "$2a$10$OEXtV8bNIUspArW48HCjGO86WR3aUnPqSJLClYo.kINpUvdSFBQxu"
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 1
+  current_sign_in_at: '2018-01-10 06:35:01.065288'
+  last_sign_in_at: '2018-01-10 06:35:01.065288'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  confirmation_token: sKp8deFPAb_fFQXDzjMZ
+  confirmed_at: '2018-01-10 06:34:50.173537'
+  confirmation_sent_at: '2018-01-10 06:34:30.911109'
+  unconfirmed_email: 
+  created_at: '2018-01-10 06:34:30.910617'
+  updated_at: '2018-01-10 06:35:01.067858'
+  pref_distance_unit: 0
+  pref_elevation_unit: 0
+  slug: fifth-user
+  phone: "+13038806481"
+  http_endpoint: 
+  https_endpoint: 
+admin_user:
+  id: 1
+  first_name: Admin
+  last_name: User
+  role: 1
+  provider: 
+  uid: 
+  email: user@example.com
+  encrypted_password: "$2a$10$jhYkzuAbTVmMbK60m85zZ.K/bEMxQ.Qfqy7nDxmWsOvno7wvWrkTq"
+  reset_password_token: c8b8b7024cb8e95502ac89fe88ecb15e54a316d78c25c08654246111169c4fef
+  reset_password_sent_at: '2018-08-28 22:14:57.732468'
+  remember_created_at: 
+  sign_in_count: 220
+  current_sign_in_at: '2019-02-01 05:44:32.660298'
+  last_sign_in_at: '2019-02-01 00:55:14.80839'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  confirmation_token: 
+  confirmed_at: '2016-04-16 19:25:07.374438'
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  created_at: '2016-04-16 19:25:07.455868'
+  updated_at: '2019-02-01 05:44:32.661372'
+  pref_distance_unit: 0
+  pref_elevation_unit: 0
+  slug: admin-user
+  phone: "+13038806481"
+  http_endpoint: 
+  https_endpoint: 
+third_user:
+  id: 3
+  first_name: Third
+  last_name: User
+  role: 0
+  provider: 
+  uid: 
+  email: thirduser@example.com
+  encrypted_password: "$2a$10$/i14/9oGIR.0UWJaQYofNOeS85UAUgU0LOpd9C1mn.x4ZJxIZTSCy"
+  reset_password_token: ac4a7d72233563868fd69757e71597087a8010da3eb09c13a63bb85bd13f0b3e
+  reset_password_sent_at: '2018-08-28 21:02:15.748779'
+  remember_created_at: 
+  sign_in_count: 22
+  current_sign_in_at: '2019-01-25 22:45:17.386817'
+  last_sign_in_at: '2019-01-25 22:41:52.540192'
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  confirmation_token: 
+  confirmed_at: '2016-04-16 19:25:07.514373'
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  created_at: '2016-04-16 19:25:07.566303'
+  updated_at: '2019-01-25 22:45:17.388127'
+  pref_distance_unit: 0
+  pref_elevation_unit: 0
+  slug: third-user
+  phone: 
+  http_endpoint: 
+  https_endpoint: 
+fourth_user:
+  id: 4
+  first_name: Fourth
+  last_name: User
+  role: 0
+  provider: 
+  uid: 
+  email: fourthuser@example.com
+  encrypted_password: "$2a$10$KpMwP1bN1IZfIMYi0mTj.uWOguBBs4tW.Ew/g4E3dfimQ61mo/Eom"
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  confirmation_token: 
+  confirmed_at: '2016-04-16 19:25:07.568372'
+  confirmation_sent_at: 
+  unconfirmed_email: 
+  created_at: '2016-04-16 19:25:07.620128'
+  updated_at: '2017-03-05 04:55:53.39019'
+  pref_distance_unit: 0
+  pref_elevation_unit: 0
+  slug: fourth-user
+  phone: 
+  http_endpoint: 
+  https_endpoint: 

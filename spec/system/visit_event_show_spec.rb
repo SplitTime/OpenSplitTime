@@ -1,148 +1,99 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-include FeatureMacros
 
 RSpec.describe 'visit a populated event show page and try various features' do
-  context 'when the event has started efforts' do
-    before(:context) { create_hardrock_event }
+  let(:user) { users(:third_user) }
+  let(:owner) { users(:fourth_user) }
+  let(:steward) { users(:fifth_user) }
+  let(:admin) { users(:admin_user) }
 
-    after(:context) { clean_up_database }
-
-    let(:user) { create(:user) }
-    let(:owner) { create(:user) }
-    let(:steward) { create(:user) }
-    let(:admin) { create(:admin) }
-
-    let(:event) { Event.first }
-    let(:course) { Course.first }
-    let(:effort_1) { Effort.first }
-    let(:other_efforts) { Effort.where.not(id: effort_1.id) }
-
-    scenario 'The user is a visitor' do
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      expect(page).to have_link('Spread', href: spread_event_path(event))
-      expect(page).not_to have_link('Staging')
-      expect(page).not_to have_link('Roster')
-      expect(page).not_to have_link('Settings')
-      expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-    end
-
-    scenario 'The user is a user who did not create the event and is not a steward' do
-      login_as user, scope: :user
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      expect(page).to have_link('Spread', href: spread_event_path(event))
-      expect(page).not_to have_link('Staging')
-      expect(page).not_to have_link('Roster')
-      expect(page).not_to have_link('Settings')
-      expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-    end
-
-    scenario 'The user is a user who created the event' do
-      event = Event.first
-      event.update(created_by: owner.id)
-      event_group = event.event_group
-      event_group.update(created_by: owner.id)
-
-      login_as owner, scope: :user
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      expect(page).to have_link('Spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
-      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
-      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
-      expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-    end
-
-    scenario 'The user is a steward of the organization related to the event' do
-      event = Event.first
-      organization = event.event_group.organization
-      organization.stewards << steward
-      event_group = event.event_group
-
-      login_as steward, scope: :user
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      expect(page).to have_link('Spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
-      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
-      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
-      expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-    end
-
-    scenario 'The user is an admin' do
-      event_group = event.event_group
-
-      login_as admin, scope: :user
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      expect(page).to have_content(event.name)
-      expect(page).to have_link('Spread', href: spread_event_path(event))
-      expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
-      expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
-      expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
-      expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course))
-      expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-    end
-
-    scenario 'The user searches for a name' do
-      visit event_path(event)
-
-      expect(page).to have_content(event.name)
-      event.efforts.each { |effort| expect(page).to have_content(effort.full_name) }
-
-      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.full_name
-      click_button 'Find someone'
-
-      expect(page).to have_content(effort_1.full_name)
-      other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
-
-      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.bib_number
-      click_button 'Find someone'
-
-      expect(page).to have_content(effort_1.full_name)
-      other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
-    end
+  before do
+    organization.update(created_by: owner.id)
+    organization.stewards << steward
   end
 
-  context 'when the event has only unstarted efforts' do
-    let!(:event) { create(:event) }
-    let!(:efforts) { create_list(:effort, 3, :with_bib_number, event: event) }
-    let(:effort_1) { efforts.first }
-    let(:other_efforts) { Effort.where.not(id: effort_1.id) }
+  let(:event) { events(:sum_55k) }
+  let(:course) { event.course }
+  let(:event_group) { event.event_group }
+  let(:organization) { event.organization }
+  let(:effort_1) { event.efforts.sample }
+  let(:other_efforts) { event.efforts.where.not(id: effort_1.id) }
 
-    scenario 'User visits the page and searches for a name' do
-      visit event_path(event)
+  scenario 'The user is a visitor' do
+    visit event_path(event)
 
-      efforts.each { |effort| expect(page).to have_content(effort.name) }
+    verify_public_links_present
+    verify_admin_links_absent
+  end
 
-      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.full_name
-      click_button 'Find someone'
+  scenario 'The user is a user who did not create the event and is not a steward' do
+    login_as user, scope: :user
+    visit event_path(event)
 
-      expect(page).to have_content(effort_1.full_name)
-      other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
+    verify_public_links_present
+    verify_admin_links_absent
+  end
 
-      fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.bib_number
-      click_button 'Find someone'
+  scenario 'The user is a user who created the event' do
+    login_as owner, scope: :user
+    visit event_path(event)
 
-      expect(page).to have_content(effort_1.full_name)
-      other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
-    end
+    verify_public_links_present
+    verify_admin_links_present
+  end
+
+  scenario 'The user is a steward of the organization related to the event' do
+    login_as steward, scope: :user
+    visit event_path(event)
+
+    verify_public_links_present
+    verify_admin_links_present
+  end
+
+  scenario 'The user is an admin' do
+    login_as admin, scope: :user
+    visit event_path(event)
+
+    verify_public_links_present
+    verify_admin_links_present
+  end
+
+  scenario 'The user searches for a name' do
+    visit event_path(event)
+    verify_public_links_present
+
+    fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.full_name
+    click_button 'Find someone'
+
+    expect(page).to have_content(effort_1.full_name)
+    other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
+
+    fill_in 'Bib #, First name, Last name, State, or Country', with: effort_1.bib_number
+    click_button 'Find someone'
+
+    expect(page).to have_content(effort_1.full_name)
+    other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
+  end
+
+  def verify_public_links_present
+    expect(page).to have_link(event_group.name, href: event_group_path(event_group)) ||
+                        have_link(event.name, href: event_group_path(event_group))
+    expect(page).to have_link('Spread', href: spread_event_path(event))
+    expect(page).to have_link('Plan my effort', href: plan_effort_course_path(course), visible: :all)
+    expect(page).to have_link('All-time best', href: best_efforts_course_path(course))
+    event.efforts.each { |effort| expect(page).to have_link(effort.full_name, href: effort_path(effort)) }
+  end
+
+  def verify_admin_links_present
+    expect(page).to have_link('Staging', href: "#{event_staging_app_path(event)}#/entrants")
+    expect(page).to have_link('Roster', href: roster_event_group_path(event_group))
+    expect(page).to have_link('Settings', href: event_group_path(event_group, force_settings: true))
+  end
+
+  def verify_admin_links_absent
+    expect(page).not_to have_link('Staging')
+    expect(page).not_to have_link('Roster')
+    expect(page).not_to have_link('Settings')
   end
 end

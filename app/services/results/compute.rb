@@ -31,7 +31,8 @@ module Results
     end
 
     def attributes_match(category, effort)
-      category.genders.include?(effort.gender) && category.age_range.include?(effort.age)
+      (category.all_genders? || effort.gender.in?(category.genders)) &&
+          (category.all_ages? || effort.age.in?(category.age_range))
     end
 
     def available_efforts

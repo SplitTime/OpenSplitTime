@@ -25,7 +25,11 @@
 </header>
 
 <article class="ost-article container">
-  <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style), html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+  <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
+               html: {class: 'form-horizontal',
+                      role: 'form',
+                      data: {controller: 'inputmask',
+                             action: 'submit->inputmask#fill'}}) do |f| %>
     <div class="row">
       <div class="col-sm-6">
         <table class="table table-condensed table-striped">
@@ -43,6 +47,8 @@
                     <%= builder.text_field @presenter.working_field,
                                            class: 'form-control',
                                            placeholder: 'hh:mm:ss',
+                                           data: {target: "inputmask.#{@presenter.working_field.to_s.camelize(:lower)}",
+                                                  action: 'blur->inputmask#fill'},
                                            disabled: @presenter.disable_for_time_point?(time_point),
                                            autofocus: @presenter.autofocus_for_time_point?(time_point) %>
                     <%= builder.hidden_field :lap, {value: time_point.lap} %>

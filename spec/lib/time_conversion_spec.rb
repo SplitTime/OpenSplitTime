@@ -320,4 +320,26 @@ RSpec.describe TimeConversion do
       expect(TimeConversion.file_to_military(file_string)).to be_nil
     end
   end
+
+  describe '.valid_military?' do
+    context 'when provided in a valid format' do
+      let(:time_strings) { %w(10:10:10 00:00:00 23:59:59 12:34 01:00:00 01:00 1:00:00 1:00) }
+
+      it 'returns true' do
+        time_strings.each do |time_string|
+          expect(TimeConversion.valid_military?(time_string)).to eq(true)
+        end
+      end
+    end
+
+    context 'when provided in an invalid format' do
+      let(:time_strings) { %w(24:00:00 00:60:00 00:00:60 -10:10:10 12:00: 12: 1:0:00 1:00:0) }
+
+      it 'returns false' do
+        time_strings.each do |time_string|
+          expect(TimeConversion.valid_military?(time_string)).to eq(false)
+        end
+      end
+    end
+  end
 end

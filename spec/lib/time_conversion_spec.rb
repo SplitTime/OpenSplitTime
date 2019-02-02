@@ -197,37 +197,6 @@ RSpec.describe TimeConversion do
     end
   end
 
-  describe '.absolute_to_offset' do
-    subject { TimeConversion.absolute_to_offset(absolute, event) }
-    let(:event) { Event.new(home_time_zone: 'Arizona', start_time_local: '2018-06-30 06:00:00') }
-    let(:time_zone) { ActiveSupport::TimeZone['Arizona'] }
-
-    context 'when passed a datetime string' do
-      let(:absolute) { '2018-06-30 07:00:00' }
-      it('returns the difference in time from event start_time') { expect(subject).to eq(1.hour) }
-    end
-
-    context 'when passed a datetime object' do
-      let(:absolute) { time_zone.parse('2018-06-30 07:00:00') }
-      it('returns the difference in time from event start_time') { expect(subject).to eq(1.hour) }
-    end
-
-    context 'when passed nil' do
-      let(:absolute) { nil }
-      it('returns 0') { expect(subject).to eq(0) }
-    end
-
-    context 'when passed an empty string' do
-      let(:absolute) { '' }
-      it('returns 0') { expect(subject).to eq(0) }
-    end
-
-    context 'when passed a nonsense string' do
-      let(:absolute) { 'hello' }
-      it('returns 0') { expect(subject).to eq(0) }
-    end
-  end
-
   describe '.file_to_military' do
     it 'returns time in hh:mm:ss format when provided in hh:mm:ss format' do
       file_string = '12:30:45'
@@ -333,7 +302,7 @@ RSpec.describe TimeConversion do
     end
 
     context 'when provided in an invalid format' do
-      let(:time_strings) { %w(24:00:00 00:60:00 00:00:60 -10:10:10 12:00: 12: 1:0:00 1:00:0) }
+      let(:time_strings) { %w(24:00:00 00:60:00 00:00:60 -10:10:10 12:00: 12: 1:0:00 1:00:0 100:00:00 10:000:00 10:00:000) }
 
       it 'returns false' do
         time_strings.each do |time_string|

@@ -181,6 +181,17 @@ RSpec.describe IntendedTimeCalculator do
           expect(subject.absolute_time_local).to eq(expected_time)
         end
       end
+
+      context 'when the effort starts before the DST change and the intended time is after' do
+        let(:effort) { efforts(:sum_100k_across_dst_change) }
+        let(:military_time) { '02:30:00' }
+        let(:start_time_local) { '2017-11-05 00:30:00' }
+        let(:expected_time_string) { '2017-11-05 02:30:00' }
+
+        it 'calculates intended day and time properly' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
     end
 
     context 'if military time is greater than 24 hours' do

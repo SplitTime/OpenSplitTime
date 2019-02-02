@@ -56,19 +56,4 @@ class TimeConversion
   def self.valid_military?(military)
     (military =~ MILITARY_FORMAT).present?
   end
-
-  def self.absolute_to_offset(datetime, event)
-    time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
-    new_datetime = case
-                   when datetime.is_a?(Hash)
-                     time_zone.local(*datetime.values)
-                   when datetime.is_a?(String)
-                     time_zone.parse(datetime)
-                   when datetime.is_a?(Time)
-                     datetime
-                   else
-                     nil
-                   end
-    new_datetime ? new_datetime - event.start_time : 0
-  end
 end

@@ -21,7 +21,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def guaranteed_split_time(time_point)
-    split_times.find { |st| st.time_point == time_point } || SplitTime.new(time_point: time_point, effort_id: id)
+    split_times.find { |st| st.time_point == time_point } || SplitTime.new(time_point: time_point, effort_id: effort.id)
   end
 
   def html_value(time_point)
@@ -30,6 +30,12 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   def placeholder
     date_included? ? 'mm/dd/yyyy hh:mm:ss' : 'hh:mm:ss'
+  end
+
+  def subtext
+    elapsed_times? ?
+        "All times are elapsed since #{I18n.localize(start_time_local, format: :full_day_military_and_zone)}" :
+        "All times are in #{home_time_zone}"
   end
 
   def table_header

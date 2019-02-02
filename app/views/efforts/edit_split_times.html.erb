@@ -25,6 +25,9 @@
 </header>
 
 <article class="ost-article container">
+  <h5><%= @presenter.subtext %></h5>
+  <hr/>
+
   <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
                html: {class: 'form-horizontal',
                       role: 'form',

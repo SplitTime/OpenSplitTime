@@ -140,7 +140,7 @@ RSpec.describe SplitTime, kind: :model do
   describe 'virtual time attributes' do
     subject(:split_time) { effort.ordered_split_times.second }
     let(:effort) { efforts(:hardrock_2014_finished_first) }
-    let(:event) { events(:hardrock_2014) }
+    let(:event) { effort.event }
     let(:home_time_zone) { event.home_time_zone }
     let(:starting_split_time) { effort.starting_split_time }
     let(:effort_start_time) { starting_split_time.absolute_time }
@@ -376,29 +376,67 @@ RSpec.describe SplitTime, kind: :model do
 
       describe '#military_time=' do
         let(:elapsed_seconds) { 1.hour }
-        before { split_time.military_time = time_arg }
 
-        context 'when passed a nil value' do
-          let(:time_arg) { nil }
+        context 'for a split_time not affected by Daylight Savings' do
+          before { split_time.military_time = time_arg }
 
-          it 'sets absolute_time to nil' do
-            expect(split_time.absolute_time).to be_nil
+          context 'when passed a nil value' do
+            let(:time_arg) { nil }
+
+            it 'sets absolute_time to nil' do
+              expect(split_time.absolute_time).to be_nil
+            end
+          end
+
+          context 'when passed an empty string' do
+            let(:time_arg) { '' }
+
+            it 'sets absolute_time to nil' do
+              expect(split_time.absolute_time).to be_nil
+            end
+          end
+
+          context 'when passed a military time string' do
+            let(:time_arg) { '06:05:00' }
+
+            it 'sets the time attribute properly' do
+              expect(split_time.absolute_time_local).to eq('2014-07-11 06:05:00'.in_time_zone(home_time_zone))
+            end
           end
         end
 
-        context 'when passed an empty string' do
-          let(:time_arg) { '' }
+        context 'for a split_time occurring on the day that Daylight Savings Time switches' do
+          let(:effort) { efforts(:sum_100k_on_dst_change) }
+          let(:split_time) { effort.ordered_split_times.last }
+          let(:time_arg) { '09:30:00' }
 
-          it 'sets absolute_time to nil' do
-            expect(split_time.absolute_time).to be_nil
+          before do
+            effort.event.update(start_time_local: start_time_local)
+            split_time.military_time = time_arg
           end
-        end
 
-        context 'when passed a military time string' do
-          let(:time_arg) { '06:05:00' }
+          context 'when the event starts on a day before the DST change' do
+            let(:start_time_local) { '2017-09-23 07:00:00' }
 
-          it 'calls IntendedTimeCalculator with correct information' do
-            expect(split_time.absolute_time_local).to eq('2014-07-11 06:05:00'.in_time_zone(home_time_zone))
+            it 'sets time attributes correctly' do
+              expect(split_time.military_time).to eq(time_arg)
+            end
+          end
+
+          context 'when the event starts before the DST change on the day of the DST change' do
+            let(:start_time_local) { '2017-11-05 01:00:00' }
+
+            it 'sets absolute_time properly' do
+              expect(split_time.military_time).to eq(time_arg)
+            end
+          end
+
+          context 'when the event starts after the DST change' do
+            let(:start_time_local) { '2017-11-05 07:00:00' }
+
+            it 'sets absolute_time properly' do
+              expect(split_time.military_time).to eq(time_arg)
+            end
           end
         end
       end

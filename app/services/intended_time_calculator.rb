@@ -56,7 +56,8 @@ class IntendedTimeCalculator
   end
 
   def earliest_day_and_time
-    prior_day_and_time.beginning_of_day + seconds_into_day
+    # Use ActiveSupport datetime parsing logic to avoid problems with DST conversion
+    [prior_day_and_time.to_date.to_s, military_time].join(' ').in_time_zone(time_zone)
   end
 
   def days_from_earliest
@@ -90,12 +91,8 @@ class IntendedTimeCalculator
     event.home_time_zone
   end
 
-  def seconds_into_day
-    TimeConversion.hms_to_seconds(military_time)
-  end
-
   def validate_setup
     raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})" unless military_time.is_a?(String)
-    raise RangeError, "#{military_time} is out of range for #{self.class}" if seconds_into_day && !seconds_into_day.between?(0, 1.day)
+    raise ArgumentError, "#{military_time} is improperly formatted for #{self.class}" if military_time.present? && !TimeConversion.valid_military?(military_time)
   end
 end

@@ -1,8 +1,7 @@
 class TimeConversion
 
-  MILITARY_TIME_LIMITS = {hours: 23, minutes: 59, seconds: 59}
-
   HMS_FORMAT = /\A-?\d+:\d{2}(:\d{2})?(\.\d+)?\z/
+  MILITARY_FORMAT = /\A([0-1]\d|2[0-3]|[0-9]):([0-5]\d)(:[0-5]\d)?\z/
 
   def self.hms_to_seconds(hms)
     return nil unless hms.present?
@@ -55,22 +54,6 @@ class TimeConversion
   end
 
   def self.valid_military?(military)
-    time_components = %w(hours minutes seconds).zip(military.split(':')).to_h.symbolize_keys
-    time_components.all? { |component, value| value.between?('0', MILITARY_TIME_LIMITS[component].to_s) }
-  end
-
-  def self.absolute_to_offset(datetime, event)
-    time_zone = ActiveSupport::TimeZone[event.home_time_zone] || Time.zone
-    new_datetime = case
-                   when datetime.is_a?(Hash)
-                     time_zone.local(*datetime.values)
-                   when datetime.is_a?(String)
-                     time_zone.parse(datetime)
-                   when datetime.is_a?(Time)
-                     datetime
-                   else
-                     nil
-                   end
-    new_datetime ? new_datetime - event.start_time : 0
+    (military =~ MILITARY_FORMAT).present?
   end
 end

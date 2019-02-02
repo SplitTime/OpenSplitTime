@@ -52,7 +52,7 @@ RSpec.describe IntendedTimeCalculator do
   end
 
   describe '#absolute_time_local' do
-    let(:expected_time) { ActiveSupport::TimeZone[home_time_zone].parse(expected_time_string) }
+    let(:expected_time) { expected_time_string.in_time_zone(home_time_zone) }
 
     context 'if military_time provided is blank' do
       let(:effort) { efforts(:hardrock_2014_not_started) }
@@ -146,19 +146,70 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    it 'raises a RangeError if military time is greater than 24 hours' do
-      military_time = '25:30:45'
-      effort = build_stubbed(:effort)
-      time_point = TimePoint.new(1, 45, 1)
-      expected_time_from_prior = 90.minutes
-      prior_valid_split_time = SplitTime.new
+    context 'when the intended time occurs on the day that Daylight Savings Time switches' do
+      let(:effort) { efforts(:sum_100k_on_dst_change) }
+      let(:prior_valid_split_time) { effort.ordered_split_times.last }
+      let(:time_points) { effort.event.required_time_points }
+      let(:time_point) { time_points.elements_after(prior_valid_split_time.time_point).first }
+      let(:military_time) { '09:30:00' }
 
-      expect { IntendedTimeCalculator.new(effort: effort,
-                                          military_time: military_time,
-                                          time_point: time_point,
-                                          expected_time_from_prior: expected_time_from_prior,
-                                          prior_valid_split_time: prior_valid_split_time) }
-          .to raise_error(/out of range/)
+      before { effort.event.update(start_time_local: start_time_local) }
+
+      context 'when the event starts on a day before the DST change' do
+        let(:start_time_local) { '2017-09-23 07:00:00' }
+        let(:expected_time_string) { '2017-11-05 09:30:00' }
+
+        it 'calculates intended day and time properly' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
+
+      context 'when the event starts before the DST change on the day of the DST change' do
+        let(:start_time_local) { '2017-11-05 01:00:00' }
+        let(:expected_time_string) { '2017-11-05 09:30:00' }
+
+        it 'calculates intended day and time properly' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
+
+      context 'when the event starts after the DST change' do
+        let(:start_time_local) { '2017-11-05 07:00:00' }
+        let(:expected_time_string) { '2017-11-05 09:30:00' }
+
+        it 'calculates intended day and time properly' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
+
+      context 'when the effort starts before the DST change and the intended time is after' do
+        let(:effort) { efforts(:sum_100k_across_dst_change) }
+        let(:military_time) { '02:30:00' }
+        let(:start_time_local) { '2017-11-05 00:30:00' }
+        let(:expected_time_string) { '2017-11-05 02:30:00' }
+
+        it 'calculates intended day and time properly' do
+          expect(subject.absolute_time_local).to eq(expected_time)
+        end
+      end
+    end
+
+    context 'if military time is greater than 24 hours' do
+      let(:military_time) { '25:30:45' }
+
+      it 'raises a RangeError' do
+        effort = build_stubbed(:effort)
+        time_point = TimePoint.new(1, 45, 1)
+        expected_time_from_prior = 90.minutes
+        prior_valid_split_time = SplitTime.new
+
+        expect { IntendedTimeCalculator.new(effort: effort,
+                                            military_time: military_time,
+                                            time_point: time_point,
+                                            expected_time_from_prior: expected_time_from_prior,
+                                            prior_valid_split_time: prior_valid_split_time) }
+            .to raise_error(/improperly formatted/)
+      end
     end
   end
 end

@@ -17,7 +17,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def display_style
-    params[:display_style] || 'military_time'
+    params[:display_style].presence || default_display_style
   end
 
   def guaranteed_split_time(time_point)
@@ -44,6 +44,10 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   attr_reader :params
 
+  def default_display_style
+    'military_time'
+  end
+
   def datetime_html_value(time_point)
     field_value = field_value(time_point)
     return nil unless field_value
@@ -59,10 +63,10 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def elapsed_times?
-    working_field == :elapsed_time
+    working_field.in?([:elapsed_time])
   end
 
   def date_included?
-    working_field == :absolute_time_local
+    working_field.in?([:absolute_time_local])
   end
 end

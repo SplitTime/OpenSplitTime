@@ -56,16 +56,16 @@ RSpec.describe EffortWithTimesPresenter do
   end
 
   describe '#table_header' do
-    context 'when params[:display_style] == military_times' do
-      let(:params_hash) { {display_style: 'military_times'} }
+    context 'when params[:display_style] == military_time' do
+      let(:params_hash) { {display_style: 'military_time'} }
 
-      it 'returns a header indicating times of day' do
-        expect(subject.table_header).to eq('Times of Day')
+      it 'returns a header indicating military times' do
+        expect(subject.table_header).to eq('Military Times')
       end
     end
 
-    context 'when params[:display_style] != military_times' do
-      let(:params_hash) { {display_style: ''} }
+    context 'when params[:display_style] == elapsed_time' do
+      let(:params_hash) { {display_style: 'elapsed_time'} }
 
       it 'returns a header indicating elapsed times' do
         expect(subject.table_header).to eq('Elapsed Times')
@@ -74,19 +74,19 @@ RSpec.describe EffortWithTimesPresenter do
   end
 
   describe '#working_field' do
-    context 'when params[:display_style] == military_times' do
-      let(:params_hash) { {display_style: 'military_times'} }
+    context 'when params[:display_style] == elapsed_time' do
+      let(:params_hash) { {display_style: 'military_time'} }
 
       it 'returns :military_time' do
         expect(subject.working_field).to eq(:military_time)
       end
     end
 
-    context 'when params[:display_style] != military_times' do
+    context 'when params[:display_style] != military_time' do
       let(:params_hash) { {display_style: ''} }
 
-      it 'returns :elapsed_time' do
-        expect(subject.working_field).to eq(:elapsed_time)
+      it 'returns :military_time' do
+        expect(subject.working_field).to eq(:military_time)
       end
     end
   end

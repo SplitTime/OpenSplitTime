@@ -4,14 +4,67 @@ require 'action_view/helpers/text_helper'
 include ActionView::Helpers::TextHelper
 
 namespace :create_records do
-  desc 'Create random records for testing'
+  desc 'Create random efforts for testing'
+  task :efforts, [:event_group_id, :effort_count] => :environment do |_, args|
+    process_start_time = Time.current
+    abort "No event_group_id specified" unless args.event_group_id
+
+    event_group_id = args.event_group_id
+    effort_count = args.effort_count.to_i
+
+    saved_efforts_count = 0
+    event_group = EventGroup.friendly.find(event_group_id)
+    abort "Event group #{event_group_id} not found" unless event_group
+
+    puts "Building test data:"
+    events = event_group.events.order(:start_time)
+    puts "Found #{pluralize(events.size, 'event')}: #{events.map(&:name).to_sentence}"
+
+    events.each_with_index do |event, i|
+      bib_number = (i * 100) + 1
+      effort_count.times do
+        gender = %w(male female).sample
+        first_name = FFaker::Name.send("first_name_#{gender}")
+        last_name = FFaker::Name.last_name
+        birthdate = FFaker::Time.between(16.years.ago, 75.years.ago).to_date
+        country_code = 'US'
+        state_code = Carmen::Country.coded('US').subregions.map(&:code).sample
+        city = FFaker::Address.city
+        emergency_contact = FFaker::Name.name
+        emergency_phone = FFaker::PhoneNumber.short_phone_number
+        user_id = 1
+
+        effort = event.efforts.new(bib_number: bib_number, first_name: first_name, last_name: last_name, gender: gender,
+                                   birthdate: birthdate, country_code: country_code, state_code: state_code, city: city,
+                                   scheduled_start_time: event.start_time, emergency_phone: emergency_phone,
+                                   emergency_contact: emergency_contact, created_by: user_id)
+
+        effort_description = "#{effort.full_name} using bib number #{bib_number} for #{event.name}"
+
+        if effort.save
+          saved_efforts_count += 1
+          puts "Saved #{effort_description}"
+        else
+          puts "Could not save #{effort_description}:"
+          puts effort.errors.full_messages.join("\n")
+        end
+
+        bib_number += 1
+      end
+    end
+
+    elapsed_time = Time.current - process_start_time
+    puts "\nCreated #{saved_efforts_count} efforts in #{elapsed_time} seconds"
+  end
+
+  desc 'Create random raw_time records for testing'
   task :raw_times, [:event_group_id, :effort_count, :laps] => :environment do |_, args|
     process_start_time = Time.current
     abort "No event_group_id specified" unless args.event_group_id
 
     saved_raw_times_count = 0
     event_group_id = args.event_group_id
-    event_group = EventGroup.friendly.find(args.event_group_id)
+    event_group = EventGroup.friendly.find(event_group_id)
     abort "Event group #{event_group_id} not found" unless event_group
     effort_count = args.effort_count.present? ? args.effort_count.to_i : nil
     laps = args.laps.present? ? args.laps.to_i : 1

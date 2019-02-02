@@ -48,6 +48,7 @@ gem 'gpx'
 gem 'activerecord-import'
 gem 'skylight', '~> 1.6'
 gem 'local_time'
+gem 'ffaker'
 
 group :development do
   gem 'bullet'
@@ -61,7 +62,6 @@ end
 group :test do
   gem 'capybara', '~> 2.13'
   gem 'factory_bot_rails', require: false
-  gem 'ffaker'
   gem 'pry'
   gem 'selenium-webdriver'
   gem 'vcr', '~> 4.0'

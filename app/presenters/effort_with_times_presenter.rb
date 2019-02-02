@@ -8,35 +8,61 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def autofocus_for_time_point?(time_point)
-    military_times? ? time_point == time_points.first : time_point == time_points.second
+    time_point == first_enabled_time_point
   end
 
   def disable_for_time_point?(time_point)
-    return false if military_times?
+    return false unless elapsed_times?
     time_point == time_points.first
   end
 
   def display_style
-    params[:display_style]
+    params[:display_style] || 'military_time'
   end
 
   def guaranteed_split_time(time_point)
     split_times.find { |st| st.time_point == time_point } || SplitTime.new(time_point: time_point, effort_id: id)
   end
 
+  def html_value(time_point)
+    date_included? ? datetime_html_value(time_point) : field_value(time_point)
+  end
+
+  def placeholder
+    date_included? ? 'mm/dd/yyyy hh:mm:ss' : 'hh:mm:ss'
+  end
+
   def table_header
-    military_times? ? 'Times of Day' : 'Elapsed Times'
+    display_style.sub('time', 'times').titleize
   end
 
   def working_field
-    military_times? ? :military_time : :elapsed_time
+    display_style.to_sym
   end
 
   private
 
   attr_reader :params
 
-  def military_times?
-    params[:display_style] == 'military_times'
+  def datetime_html_value(time_point)
+    field_value = field_value(time_point)
+    return nil unless field_value
+    I18n.localize(field_value, format: :datetime_input)
+  end
+
+  def field_value(time_point)
+    guaranteed_split_time(time_point).send(working_field)
+  end
+
+  def first_enabled_time_point
+    @first_enabled_time_point ||= time_points.find { |tp| !disable_for_time_point?(tp) }
+  end
+
+  def elapsed_times?
+    working_field == :elapsed_time
+  end
+
+  def date_included?
+    working_field == :absolute_time_local
   end
 end

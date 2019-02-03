@@ -26,8 +26,7 @@ class TimeConversion
 
   def self.absolute_to_hms(absolute)
     return '' unless absolute.present?
-    time = absolute.is_a?(Date) ? absolute.to_time : absolute
-    to_hms(time.hour, time.min, time.sec)
+    I18n.localize(absolute, format: :military)
   end
 
   def self.components_to_absolute(components)
@@ -45,8 +44,8 @@ class TimeConversion
         format('%02d:%02d:%02d.%02d', hours, minutes, seconds, hundredths)
   end
 
-  def self.file_to_military(time_string)
-    number_string = time_string ? time_string.gsub(/[^\d]/, '') : ''
+  def self.user_entered_to_military(time_string)
+    number_string = time_string ? time_string.gsub(/[^\d:]/, '0').gsub(/\D/, '') : ''
     return nil unless number_string.length.between?(3, 6)
     military = number_string.rjust((number_string.length / 2.0).ceil * 2, '0').ljust(6, '0')
                    .chars.each_slice(2).map(&:join).join(':')
@@ -54,6 +53,6 @@ class TimeConversion
   end
 
   def self.valid_military?(military)
-    (military =~ MILITARY_FORMAT).present?
+    MILITARY_FORMAT === military
   end
 end

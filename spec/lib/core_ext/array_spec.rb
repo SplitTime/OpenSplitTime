@@ -235,6 +235,50 @@ RSpec.describe Array do
     end
   end
 
+  describe '#element_before' do
+    subject { array.element_before(element) }
+
+    context 'when the element is found and is not the first element' do
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'sheep' }
+
+      it 'returns the element immediately before the provided element' do
+        expect(subject).to eq('bird')
+      end
+    end
+
+    context 'when the element is found and is the first element' do
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'cat' }
+
+      it 'returns nil' do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
+
+  describe '#element_after' do
+    subject { array.element_after(element) }
+
+    context 'when the element is found and is not the last element' do
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'sheep' }
+
+      it 'returns the element immediately after the provided element' do
+        expect(subject).to eq('ferret')
+      end
+    end
+
+    context 'when the element is found and is the last element' do
+      let(:array) { %w(cat bird sheep ferret coyote) }
+      let(:element) { 'coyote' }
+
+      it 'returns nil' do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
+
   describe '#included_before?' do
     it 'returns true if the subject element is included in the array indexed prior to the index element' do
       array = %w(cat bird sheep ferret coyote)

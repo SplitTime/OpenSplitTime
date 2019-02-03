@@ -17,6 +17,14 @@ class Array
     self[(i + 1)..-1]
   end
 
+  def element_before(index_element)
+    elements_before(index_element).last
+  end
+
+  def element_after(index_element)
+    elements_after(index_element).first
+  end
+
   def included_before?(index_element, subject_element)
     elements_before(index_element).include?(subject_element)
   end

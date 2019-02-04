@@ -93,6 +93,48 @@ RSpec.describe RawTime, type: :model do
     end
   end
 
+  describe '#military_time' do
+    subject { raw_time.military_time(time_zone) }
+
+    let(:raw_time) { RawTime.new(entered_time: entered_time, absolute_time: absolute_time) }
+    let(:entered_time) { nil }
+    let(:absolute_time) { nil }
+    let(:time_zone) { nil }
+
+    context 'when absolute_time is present and time_zone is passed in' do
+      let(:absolute_time) { '2018-10-31 08:00:00'.in_time_zone('Arizona') }
+      let(:time_zone) { 'Arizona' }
+
+      it 'returns the hh:mm:ss component as a string' do
+        expect(subject).to eq('08:00:00')
+      end
+    end
+
+    context 'when absolute_time is not present but entered_time is present' do
+      let(:entered_time) { '08:00:00' }
+
+      it 'returns the entered_time as a string' do
+        expect(subject).to eq('08:00:00')
+      end
+    end
+
+    context 'when entered_time has hours and minutes but has no seconds' do
+      let(:entered_time) { '08:00' }
+
+      it 'returns the entered_time as a string with imputed :00 seconds' do
+        expect(subject).to eq('08:00:00')
+      end
+    end
+
+    context 'when entered_time has text where it should have zeros' do
+      let(:entered_time) { '08:mm:ss' }
+
+      it 'returns the entered_time as a string with imputed :00 minutes and seconds' do
+        expect(subject).to eq('08:00:00')
+      end
+    end
+  end
+
   describe '#data_status' do
     subject { RawTime.new }
 

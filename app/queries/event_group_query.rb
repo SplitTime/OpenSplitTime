@@ -62,7 +62,8 @@ class EventGroupQuery < BaseQuery
       with raw_times_subquery as
         (select ef.id as effort_id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number,
                          json_agg(json_build_object('id', rt.id,
-                                                    'military_time', case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH24:MI:SS') end,
+                                                    'entered_time', rt.entered_time,
+                                                    'absolute_time_local_string', to_char((rt.absolute_time at time zone 'UTC'), 'YYYY-MM-DD HH24:MI:SS'),
                                                     'source', rt.source,
                                                     'created_by', rt.created_by)
                                   order by case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH24:MI:SS') end) as raw_times_attributes

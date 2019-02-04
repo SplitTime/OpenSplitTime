@@ -42,7 +42,9 @@ module TimeRecordable
   end
 
   def military_time(zone = nil)
-    (absolute_time && zone) ? TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone)) : TimeConversion.file_to_military(entered_time)
+    absolute_time && zone ?
+        TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone)) :
+        TimeConversion.user_entered_to_military(entered_time)
   end
 
   def source_text

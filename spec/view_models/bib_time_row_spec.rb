@@ -12,7 +12,7 @@ RSpec.describe BibTimeRow do
   let(:first_name) { 'Tattie' }
   let(:last_name) { 'Bailey' }
   let(:bib_number) { '101' }
-  let(:raw_times_attributes) { "[{\"id\" : 84, \"military_time\" : \"#{raw_military_time_1}\", \"source\" : \"ost-live-entry\", \"created_by\" : 1}, {\"id\" : 85, \"military_time\" : \"#{raw_military_time_2}\", \"source\" : \"ost-remote abcd\", \"created_by\" : 1}]" }
+  let(:raw_times_attributes) { "[{\"id\" : 84, \"entered_time\" : \"#{raw_military_time_1}\", \"source\" : \"ost-live-entry\", \"created_by\" : 1}, {\"id\" : 85, \"entered_time\" : \"#{raw_military_time_2}\", \"source\" : \"ost-remote abcd\", \"created_by\" : 1}]" }
   let(:split_times_attributes) { "[{\"id\" : 190522, \"lap\" : 1, \"military_time\" : \"#{split_military_time_1}\"}, {\"id\" : 190523, \"lap\" : 2, \"military_time\" : \"#{split_military_time_2}\"}]" }
 
   let(:raw_military_time_1) { '13:22:00' }

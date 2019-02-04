@@ -134,7 +134,7 @@ RSpec.describe VerifyRawTimeRow do
 
     context 'when a raw_time is provided with an invalid entered_time' do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '99:99:99', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { nil }
 
       it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do
@@ -160,7 +160,7 @@ RSpec.describe VerifyRawTimeRow do
 
     context 'when raw_times are provided with one valid and one invalid entered_time' do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '99:99:99', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:00:00', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
 
       it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do

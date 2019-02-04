@@ -40,6 +40,10 @@ class AidStationRow
     split.base_name
   end
 
+  def parameterized_split_name
+    split.parameterized_base_name
+  end
+
   private
 
   attr_reader :event_framework, :split_times

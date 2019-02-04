@@ -50,7 +50,7 @@ module Interactors
     def set_subject_attributes(split_time)
       self.subject_split_time = split_time
       self.valid_split_times = ordered_split_times.select { |st| st.valid_status? || (st == subject_split_time) }
-      self.prior_valid_split_time = valid_split_times.elements_before(subject_split_time).last || mock_start_split_time
+      self.prior_valid_split_time = valid_split_times.element_before(subject_split_time) || mock_start_split_time
       self.subject_begin_lap_split = indexed_lap_splits[prior_valid_split_time.lap_split_key]
       self.subject_end_lap_split = indexed_lap_splits[subject_split_time.lap_split_key]
       self.subject_segment = Segment.new(begin_point: prior_valid_split_time.time_point,

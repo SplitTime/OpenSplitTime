@@ -4,22 +4,25 @@ class Live::EventsController < Live::BaseController
 
   def aid_station_report
     authorize @event
+
     @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
     @aid_stations_display = AidStationsDisplay.new(event: @event)
   end
 
   def progress_report
     authorize @event
+
     @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
     @progress_display = LiveProgressDisplay.new(event: @event, past_due_threshold: params[:past_due_threshold])
   end
 
   def aid_station_detail
     authorize @event
-    @event = Event.where(id: @event.id).includes(:splits).includes(:event_group).first
-    @presenter = EventWithEffortsPresenter.new(event: @event, params: params, current_user: current_user)
-    aid_station = @event.aid_stations.find_by(id: params[:aid_station]) || @event.ordered_aid_stations.first
-    @aid_station_detail = AidStationDetail.new(event: @event, aid_station: aid_station, params: prepared_params)
+
+    event = Event.where(id: @event.id).includes(:splits, :event_group).first
+    @presenter = EventWithEffortsPresenter.new(event: event, params: params, current_user: current_user)
+    parameterized_split_name = params[:parameterized_split_name]
+    @aid_station_detail = AidStationDetail.new(event: event, parameterized_split_name: parameterized_split_name, params: prepared_params)
   end
 
   private

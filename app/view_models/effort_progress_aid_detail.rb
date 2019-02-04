@@ -41,8 +41,7 @@ class EffortProgressAidDetail < EffortProgressRow
 
   private
 
-  delegate :aid_station, :split_name, :time_points, :multiple_laps?, to: :event_framework
-  delegate :split, to: :aid_station
+  delegate :split, :split_name, :time_points, :multiple_laps?, to: :event_framework
   delegate :state_and_country, :home_time_zone, to: :effort
   attr_reader :lap, :effort_split_times
 

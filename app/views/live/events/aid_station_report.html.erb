@@ -28,7 +28,7 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-        <%= render 'event_groups/event_widget', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
+      <%= render 'event_groups/event_widget', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
     </div>
   </div>
 </aside>
@@ -42,22 +42,27 @@
         <tr>
           <th>Name</th>
           <th class="text-right"><%= pdu('singular').titleize %></th>
-          <th class="text-center">Recorded<br/>In / Out</th>
+          <th class="text-center">Recorded
+            <% if @aid_stations_display.multiple_sub_splits? %>
+              <br/>In / Out
+            <% end %></th>
           <th class="text-center">In Aid</th>
           <th class="text-center">Missed</th>
           <th class="text-center"><%= @event.laps_unlimited? ? 'Stopped Here' : 'Dropped Here' %></th>
           <th class="text-center">Expected</th>
         </tr>
         </thead>
+
         <tbody>
         <% @aid_stations_display.aid_station_rows.each do |row| %>
           <tr>
-            <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, aid_station: row.aid_station) %></td>
+            <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, parameterized_split_name: row.parameterized_split_name) %></td>
             <td class="text-right"><%= d(row.split.distance_from_start) %></td>
             <td class="text-center">
               <%= render 'link_to_efforts', row: row, category: :recorded_in %>
-              /
-              <%= render 'link_to_efforts', row: row, category: :recorded_out %>
+              <% if @aid_stations_display.multiple_sub_splits? %>
+                / <%= render 'link_to_efforts', row: row, category: :recorded_out %>
+              <% end %>
             </td>
             <% stop_or_drop = @event.laps_unlimited? ? :stopped_here : :dropped_here %>
             <% [:in_aid, :missed, stop_or_drop, :expected].each do |category| %>

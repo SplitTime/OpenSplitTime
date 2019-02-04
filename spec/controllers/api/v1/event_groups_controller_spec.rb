@@ -713,7 +713,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.size).to eq(2)
           expect(raw_times.map { |rt| rt['lap'] }).to eq([1, 1])
           expect(raw_times.map { |rt| rt['bibNumber'] }).to all eq(effort_2.bib_number.to_s)
-          expect(raw_times.map { |rt| rt['splitName'] }).to eq(['Telluride', 'Telluride'])
+          expect(raw_times.map { |rt| rt['splitName'] }).to eq(%w(Telluride Telluride))
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq(%w(11:22:33 11:23:34))
           expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:33 11:23:34))
@@ -725,7 +725,7 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context 'when a an entered_time is invalid' do
-      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: '11:mm:ss', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'in'} }
+      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: '11:22:99', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'in'} }
       let(:raw_time_attributes_2) { {bib_number: effort_1.bib_number, entered_time: '11:23:34', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
 
       via_login_and_jwt do
@@ -740,10 +740,10 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.size).to eq(2)
           expect(raw_times.map { |rt| rt['bibNumber'] }).to all eq(effort_1.bib_number.to_s)
           expect(raw_times.map { |rt| rt['lap'] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt['splitName'] }).to eq(['Telluride', 'Telluride'])
+          expect(raw_times.map { |rt| rt['splitName'] }).to eq(%w(Telluride Telluride))
           expect(raw_times.map { |rt| rt['subSplitKind'] }).to eq(%w(In Out))
           expect(raw_times.map { |rt| rt['militaryTime'] }).to eq([nil, '11:23:34'])
-          expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:mm:ss 11:23:34))
+          expect(raw_times.map { |rt| rt['enteredTime'] }).to eq(%w(11:22:99 11:23:34))
           expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
@@ -988,6 +988,54 @@ RSpec.describe Api::V1::EventGroupsController do
         make_request
         expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
         expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
+      end
+    end
+  end
+
+  describe '#not_expected' do
+    subject(:make_request) { get :not_expected, params: request_params }
+    let(:event_group) { event_groups(:sum) }
+    let(:request_params) { {id: event_group.id, split_name: split_name} }
+
+    context 'when the split_name is valid' do
+      let(:split_name) { 'Molas Pass (Aid1)' }
+
+      via_login_and_jwt do
+        it 'responds with an array of bib numbers that are not expected at the split' do
+          response = make_request
+          expect(response).to be_successful
+
+          result = JSON.parse(response.body)
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 134, 222, 333, 444, 777, 999])
+        end
+      end
+    end
+
+    context 'when the split_name is the start' do
+      let(:split_name) { 'Start' }
+
+      via_login_and_jwt do
+        it 'responds with an array of all started bib numbers' do
+          response = make_request
+          expect(response).to be_successful
+
+          result = JSON.parse(response.body)
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 132, 134, 222, 333, 444, 777, 999])
+        end
+      end
+    end
+
+    context 'when the split_name is not valid' do
+      let(:split_name) { 'Non-existent' }
+
+      via_login_and_jwt do
+        it 'responds with an error' do
+          response = make_request
+          expect(response).not_to be_successful
+
+          result = JSON.parse(response.body)
+          expect(result['errors'].first['detail']['messages']).to include(/non-existent is invalid/)
+        end
       end
     end
   end

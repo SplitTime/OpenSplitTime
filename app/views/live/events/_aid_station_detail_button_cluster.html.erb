@@ -1,49 +1,37 @@
 <%= build_dropdown_menu(nil, [
     {
         name: "Recorded (#{@aid_station_detail.category_sizes[:recorded_here]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'recorded_here'),
+        link: request.params.merge(display_style: 'recorded_here'),
         active: @aid_station_detail.display_style == :recorded_here,
         visible: true
     },
     {
         name: "In aid (#{@aid_station_detail.category_sizes[:in_aid]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'in_aid'),
+        link: request.params.merge(display_style: 'in_aid'),
         active: @aid_station_detail.display_style == :in_aid,
         visible: true
     },
     {
         name: "Missed (#{@aid_station_detail.category_sizes[:missed]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'missed'),
+        link: request.params.merge(display_style: 'missed'),
         active: @aid_station_detail.display_style == :missed,
         visible: true
     },
     {
         name: "Stopped (#{@aid_station_detail.category_sizes[:stopped_here]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'stopped_here'),
+        link: request.params.merge(display_style: 'stopped_here'),
         active: @aid_station_detail.display_style == :stopped_here,
-        visible: true
+        visible: @aid_station_detail.laps_unlimited?
     },
     {
         name: "Dropped (#{@aid_station_detail.category_sizes[:dropped_here]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'dropped_here'),
+        link: request.params.merge(display_style: 'dropped_here'),
         active: @aid_station_detail.display_style == :dropped_here,
-        visible: true
+        visible: !@aid_station_detail.laps_unlimited?
     },
     {
         name: "Expected (#{@aid_station_detail.category_sizes[:expected]})",
-        link: aid_station_detail_live_event_path(@aid_station_detail.event_id,
-                                            aid_station: @aid_station_detail.aid_station,
-                                            display_style: 'expected'),
+        link: request.params.merge(display_style: 'expected'),
         active: @aid_station_detail.display_style == :expected,
         visible: true
     }

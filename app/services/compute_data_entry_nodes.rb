@@ -11,13 +11,15 @@ class ComputeDataEntryNodes
   end
 
   def perform
-    incompatible_locations.present? ? [incompatible_notice_node] : ordered_split_names.flat_map { |split_name| nodes_for(split_name) }
+    incompatible_locations.present? ?
+        [incompatible_notice_node] :
+        parameterized_split_names.flat_map { |split_name| nodes_for(split_name) }
   end
 
   private
 
   attr_reader :event_group, :analyzer
-  delegate :incompatible_locations, :ordered_split_names, :splits_by_event, :aid_stations_by_event, to: :analyzer
+  delegate :incompatible_locations, :parameterized_split_names, :splits_by_event, :aid_stations_by_event, to: :analyzer
 
   def nodes_for(split_name)
     splits = splits_by_event(split_name).values

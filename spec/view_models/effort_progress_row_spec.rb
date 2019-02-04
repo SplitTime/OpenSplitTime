@@ -11,8 +11,7 @@ RSpec.describe EffortProgressRow do
     it 'returns a hash with keys being the provided attributes and values being values of corresponding methods' do
       split = event.splits.first
       effort = event.efforts.first
-      aid_station = AidStation.new(event: event, split: split)
-      aid_station_detail = AidStationDetail.new(event: event, aid_station: aid_station)
+      aid_station_detail = AidStationDetail.new(event: event, parameterized_split_name: split.parameterized_base_name)
       aid_detail_row = EffortProgressAidDetail.new(effort: effort,
                                                    event_framework: aid_station_detail,
                                                    lap: 1,

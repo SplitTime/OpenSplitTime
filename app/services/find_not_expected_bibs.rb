@@ -2,6 +2,7 @@
 
 class FindNotExpectedBibs
   include Interactors::Errors
+  include SplitAnalyzable
 
   def self.perform(event_group, split_name)
     new(event_group, split_name).perform
@@ -9,7 +10,7 @@ class FindNotExpectedBibs
 
   def initialize(event_group, split_name)
     @event_group = event_group
-    @split_name = split_name.parameterize
+    @parameterized_split_name = split_name.parameterize
     @errors = []
     validate_setup
   end
@@ -20,20 +21,16 @@ class FindNotExpectedBibs
 
   private
 
-  attr_reader :event_group, :split_name, :errors
+  attr_reader :event_group, :parameterized_split_name, :errors
 
   def bib_numbers
     return [] if errors.present?
     event_group.not_expected_bibs(split_name)
   end
 
-  def ordered_split_names
-    @ordered_split_names ||= event_group.ordered_split_names
-  end
-
   def validate_setup
-    unless ordered_split_names.include?(split_name)
-      errors << invalid_split_name_error(split_name, ordered_split_names)
+    unless parameterized_split_names.include?(parameterized_split_name)
+      errors << invalid_split_name_error(parameterized_split_name, parameterized_split_names)
     end
   end
 end

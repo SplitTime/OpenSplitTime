@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 class SplitRawTimesPresenter < BasePresenter
-  attr_reader :event_group, :split_name
+  include SplitAnalyzable
+
+  attr_reader :event_group, :parameterized_split_name
   delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, :single_lap?, to: :event_group
   delegate :podium_template, to: :event
 
-  def initialize(event_group, split_name, params, current_user)
+  def initialize(event_group, params, current_user)
     @event_group = event_group
-    @split_name = split_name.presence&.titleize || ordered_split_names.first
+    @parameterized_split_name = params[:parameterized_split_name] || parameterized_split_names.first
     @params = params
     @current_user = current_user
   end
@@ -34,14 +36,6 @@ class SplitRawTimesPresenter < BasePresenter
 
   def event
     events.first
-  end
-
-  def ordered_split_names
-    @ordered_split_names ||= event_group.ordered_split_names.map(&:titleize)
-  end
-
-  def parameterized_split_name
-    @parameterized_split_name ||= split_name.parameterize
   end
 
   private

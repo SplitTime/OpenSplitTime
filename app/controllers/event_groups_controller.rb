@@ -67,7 +67,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
-    @presenter = SplitRawTimesPresenter.new(event_group, params[:split_name], prepared_params, current_user)
+    @presenter = SplitRawTimesPresenter.new(event_group, prepared_params, current_user)
   end
 
   def roster
@@ -83,14 +83,14 @@ class EventGroupsController < ApplicationController
   end
 
   def traffic
-    split_name = params[:split_name]
-    band_width = params[:band_width].present? ? params[:band_width].to_i : nil
+    band_width = params[:band_width].present? ? params.delete(:band_width).to_i : nil
     event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
-    @presenter = EventGroupTrafficPresenter.new(event_group, split_name, band_width)
+    @presenter = EventGroupTrafficPresenter.new(event_group, prepared_params, band_width)
   end
 
   def set_data_status
     authorize @event_group
+
     event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
     response = Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
     set_flash_message(response)

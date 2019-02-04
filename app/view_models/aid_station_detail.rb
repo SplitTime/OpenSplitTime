@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class AidStationDetail < LiveEventFramework
+  include SplitAnalyzable
 
-  attr_reader :aid_station, :times_container
-  delegate :course, :organization, :to_param, to: :event
-  delegate :event, :split, :split_id, to: :aid_station
-  delegate :split_name, :category_sizes, :category_table_titles, to: :aid_station_row
+  attr_reader :event, :times_container
+  delegate :course, :organization, :laps_unlimited?, :to_param, to: :event
+  delegate :category_sizes, :category_table_titles, to: :aid_station_row
 
   DEFAULT_DISPLAY_STYLE = :expected
   AID_EFFORT_CATEGORIES = AidStationRow::AID_EFFORT_CATEGORIES
@@ -22,11 +22,11 @@ class AidStationDetail < LiveEventFramework
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:event, :aid_station],
-                           exclusive: [:event, :aid_station, :times_container, :params],
+                           required: [:event, :parameterized_split_name],
+                           exclusive: [:event, :parameterized_split_name, :params, :times_container],
                            class: self.class)
     @event = args[:event]
-    @aid_station = args[:aid_station]
+    @parameterized_split_name = args[:parameterized_split_name] || parameterized_split_names.first
     @params = args[:params]
     @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
   end
@@ -46,22 +46,18 @@ class AidStationDetail < LiveEventFramework
     params.original_params[:sort]
   end
 
-  def prior_aid_station
-    ordered_aid_stations.elements_before(aid_station)&.last
-  end
-
-  def next_aid_station
-    ordered_aid_stations.elements_after(aid_station)&.first
-  end
-
-  def event_group_aid_stations
-    EventGroupSplitAnalyzer.new(event_group).aid_stations_by_event(split_name)
+  def split
+    event.splits.find { |split| split.parameterized_base_name == parameterized_split_name }
   end
 
   private
 
-  attr_reader :params, :aid_station_row
-  delegate :event_group, :ordered_aid_stations, to: :event
+  attr_reader :parameterized_split_name, :params, :aid_station_row
+  delegate :event_group, to: :event
+
+  def aid_station
+    event.aid_stations.find { |as| as.split == split }
+  end
 
   def category_effort_rows
     @category_effort_rows ||=
@@ -97,7 +93,7 @@ class AidStationDetail < LiveEventFramework
   end
 
   def split_times_here
-    @split_times_here ||= split_times_by_split[split_id]
+    @split_times_here ||= split_times_by_split[split.id]
   end
 
   def indexed_efforts
@@ -124,5 +120,9 @@ class AidStationDetail < LiveEventFramework
 
   def sort_param
     (params[:sort].first || []).map(&:to_sym)
+  end
+
+  def split_analyzable
+    event
   end
 end

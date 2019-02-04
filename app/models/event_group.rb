@@ -6,7 +6,9 @@ class EventGroup < ApplicationRecord
   include Auditable
   include Concealable
   include Delegable
+  include SplitAnalyzable
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   has_many :events, dependent: :destroy
@@ -21,7 +23,6 @@ class EventGroup < ApplicationRecord
 
   delegate :stewards, to: :organization
   delegate :start_time, :home_time_zone, :start_time_local, to: :first_event, allow_nil: true
-  delegate :ordered_split_names, :splits_by_event, to: :split_analyzer
 
   scope :standard_includes, -> { includes(events: :splits) }
 
@@ -93,7 +94,7 @@ class EventGroup < ApplicationRecord
 
   private
 
-  def split_analyzer
-    EventGroupSplitAnalyzer.new(self)
+  def split_analyzable
+    self
   end
 end

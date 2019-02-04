@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 class EventGroupTrafficPresenter < BasePresenter
-  include TimeFormats
+  include SplitAnalyzable, TimeFormats
 
   ROW_LIMIT = 500
 
-  attr_reader :event_group, :split_name, :band_width
+  attr_reader :event_group, :band_width
   delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
   delegate :podium_template, to: :event
 
-  def initialize(event_group, split_name, band_width)
+  def initialize(event_group, params, band_width)
     @event_group = event_group
-    @split_name = split_name.presence&.titleize || ordered_split_names.first
-    @band_width = band_width.presence || 30.minutes
+    @parameterized_split_name = params[:parameterized_split_name] || parameterized_split_names.first
+    @band_width = band_width || 30.minutes
   end
 
   def table
@@ -40,10 +40,6 @@ class EventGroupTrafficPresenter < BasePresenter
     @sub_split_kinds ||= split.sub_split_kinds.map { |kind| kind.downcase.to_sym }
   end
 
-  def ordered_split_names
-    @ordered_split_names ||= event_group.ordered_split_names.map(&:titleize)
-  end
-
   def event
     events.first
   end
@@ -58,16 +54,14 @@ class EventGroupTrafficPresenter < BasePresenter
 
   private
 
+  attr_reader :parameterized_split_name
+
   def query_result
     @query_result ||= ActiveRecord::Base.connection.execute(query).to_a
   end
 
   def query
     SplitTimeQuery.split_traffic(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
-  end
-
-  def parameterized_split_name
-    split_name.parameterize
   end
 
   def split

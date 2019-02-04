@@ -229,20 +229,31 @@ module DropdownHelper
     build_dropdown_menu('Edit', dropdown_items, button: true)
   end
 
-  def split_name_dropdown(view_object)
+  def split_name_dropdown(view_object, param: :parameterized_split_name)
     dropdown_items = view_object.ordered_split_names.map do |split_name|
-      {name: split_name.titleize,
-       link: request.params.merge(split_name: split_name.parameterize),
-       active: split_name.parameterize == @presenter.split_name.parameterize}
+      {name: split_name,
+       link: request.params.merge(param => split_name.parameterize),
+       active: split_name.parameterize == view_object.split_name.parameterize}
     end
+
     build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def split_name_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
+    icon_name = prior_or_next == :prior ? 'caret-left' : 'caret-right'
+    target = view_object.send("#{prior_or_next}_#{param}")
+
+    link_to fa_icon(icon_name, class: 'fa-lg'),
+            request.params.merge(param => target),
+            class: 'btn btn-outline-secondary',
+            disabled: target.blank?
   end
 
   def sub_split_kind_dropdown(view_object)
     dropdown_items = view_object.sub_split_kinds.map do |kind|
       {name: kind.titleize,
        link: request.params.merge(sub_split_kind: kind.parameterize),
-       active: kind.parameterize == @presenter.sub_split_kind.parameterize}
+       active: kind.parameterize == view_object.sub_split_kind.parameterize}
     end
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
@@ -251,7 +262,7 @@ module DropdownHelper
     dropdown_items = view_object.suggested_band_widths.map do |band_width|
       {name: pluralize(band_width / 1.minute, 'minute'),
        link: request.params.merge(band_width: band_width),
-       active: band_width == @presenter.band_width}
+       active: band_width == view_object.band_width}
     end
     build_dropdown_menu(nil, dropdown_items, button: true)
   end

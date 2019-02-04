@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -28,7 +28,13 @@
     <div class="row">
       <div class="col form-inline">
         <div class="dropdown float-left-button">
-          <%= split_name_dropdown(@presenter) %>
+          <div class="btn-group btn-group-ost pull-right">
+            <%= split_name_nav_button(@presenter, :prior) %>
+            <%= split_name_dropdown(@presenter) %>
+            <%= split_name_nav_button(@presenter, :next) %>
+          </div>
+        </div>
+        <div class="dropdown float-left-button">
           <%= traffic_band_width_dropdown(@presenter) %>
         </div>
       </div>

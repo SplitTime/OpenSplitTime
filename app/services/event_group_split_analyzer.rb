@@ -14,14 +14,18 @@ class EventGroupSplitAnalyzer
   end
 
   def incompatible_locations
-    ordered_split_names.select do |split_name|
+    parameterized_split_names.select do |split_name|
       splits_by_event(split_name).values.select { |split| split.latitude && split.longitude }
           .combination(2).any? { |split_1, split_2| split_1.different_location?(split_2) }
     end
   end
 
+  def parameterized_split_names
+    @parameterized_split_names ||= events.map { |event| event.ordered_splits.map(&:parameterized_base_name) }.reduce(:|) || []
+  end
+
   def ordered_split_names
-    @ordered_split_names ||= events.map { |event| event.ordered_splits.map(&:parameterized_base_name) }.reduce(:|) || []
+    @ordered_split_names ||= parameterized_split_names.map { |psn| splits_by_parameterized_name[psn].base_name }
   end
 
   private
@@ -29,8 +33,13 @@ class EventGroupSplitAnalyzer
   attr_reader :event_group
 
   def events
-    # This sort ensures ordered_split_names produces the expected result
+    # This sort ensures parameterized_split_names are produced in the expected order
+    # when one event's splits are a subset of the other event's splits
     @events ||= event_group.events.sort_by { |event| -event.splits.size }
+  end
+
+  def splits_by_parameterized_name
+    @splits_by_parameterized_name ||= events.flat_map(&:splits).index_by(&:parameterized_base_name)
   end
 
   def event_splits_by_name

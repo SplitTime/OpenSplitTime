@@ -24,51 +24,15 @@
             $self = $(this);
             var ajax = $self.data('ajax');
             if ( !ajax || typeof ajax.status == 'undefined' ) {
-                var $popover = $self.data('bs.popover');
-                $popover.tip().addClass('efforts-popover');
+                var popover = $self.data('bs.popover');
+                $(popover.tip).addClass('efforts-popover');
                 var data = {
                     effortIds: $self.data('effort-ids')
                 };
                 $self.data('ajax', $.post('/efforts/mini_table/', data)
                     .done(function (response) {
-                        $popover.options.content = $(response);
-                        $popover.show();
-                    }).always(function () {
-                        $self.data('ajax', null);
-                    })
-                );
-                e.preventDefault();
-            }
-        }
-    };
-
-    var photoPopover = {
-        init: function () {
-            $('[data-toggle="photo-popover"]')
-                .attr('tabindex', '0')
-                .attr('role', 'button')
-                .data('ajax', null)
-                .popover({
-                    'html': true,
-                    'trigger': 'focus'
-                }).on('show.bs.popover', photoPopover.onShowPopover);
-            if ( utilities.isMobileSafari() ) {
-                $( 'body' ).css( 'cursor', 'pointer' );
-            }
-        },
-        onShowPopover: function (e) {
-            $self = $(this);
-            var ajax = $self.data('ajax');
-            if ( !ajax || typeof ajax.status == 'undefined' ) {
-                var $popover = $self.data('bs.popover');
-                $popover.tip().addClass('photo-popover');
-                var data = {
-                    effortId: $self.data('effort-id')
-                };
-                $self.data('ajax', $.get('/efforts/show_photo/', data)
-                    .done(function (response) {
-                        $popover.options.content = $(response);
-                        $popover.show();
+                        popover.config.content = response;
+                        popover.show();
                     }).always(function () {
                         $self.data('ajax', null);
                     })
@@ -84,29 +48,15 @@
                 $( el ).attr( 'tabindex', $( el ).attr( 'tabindex' ) || '0' )
                 .attr('role', 'button')
                 .popover({
-                    'html': true,
                     'trigger': 'focus',
                     'container': 'body'
-                }).on('show.bs.popover', staticPopover.onShowPopover);
+                });
             } );
             if ( utilities.isMobileSafari() ) {
                 $( 'body' ).css( 'cursor', 'pointer' );
             }
-        },
-        onShowPopover: function (e) {
-            var $popover = $(this).data('bs.popover');
-            $($popover.tip)
-                .addClass('static-popover')
-                .addClass($(this).data('toggle'));
         }
     };
-
-    /*
-    <label class="switchery-label">
-      <span>Rapid<br>Mode</span>
-      <input type="checkbox" id="js-rapid-mode" data-toggle="switchery" data-size="small"/>
-    </label>
-     */
 
     var switchery = {
     	init: function () {

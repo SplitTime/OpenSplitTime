@@ -25,3 +25,7 @@
     &.top .arrow:after { border-top-color: #222; }
   }
 }
+
+[data-toggle*="popover"] {
+    cursor: pointer;
+}

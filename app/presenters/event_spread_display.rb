@@ -25,7 +25,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   def effort_times_rows
     @effort_times_rows ||=
-        filtered_ranked_efforts.select(&:started?).map do |effort|
+        filtered_ranked_efforts.map do |effort|
           EffortTimesRow.new(effort: effort,
                              lap_splits: lap_splits,
                              split_times: split_times_by_effort.fetch(effort.id, []),

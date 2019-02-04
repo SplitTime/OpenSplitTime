@@ -72,10 +72,7 @@ module DropdownHelper
 
   def results_dropdown_menu(view_object)
     dropdown_items = [
-        {name: 'List',
-         link: event_path(view_object.event),
-         active: controller_name == 'events' && action_name == 'show'},
-        {name: 'Spread',
+        {name: 'Full',
          link: spread_event_path(view_object.event),
          active: action_name == 'spread'},
         {name: 'Summary',

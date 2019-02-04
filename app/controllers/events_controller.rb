@@ -6,8 +6,7 @@ class EventsController < ApplicationController
   MAX_SUMMARY_EFFORTS = 1000
 
   def show
-    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
-    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
+    redirect_to :spread_event
   end
 
   def new

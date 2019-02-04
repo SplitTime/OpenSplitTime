@@ -16,6 +16,9 @@
           </ul>
         </div>
       </div>
+      <aside class="col-auto">
+        <%= link_to_beacon_button(@presenter) %>
+      </aside>
     </div>
     <!-- Navigation -->
     <%= render 'view_buttons', view_object: @presenter %>
@@ -57,6 +60,7 @@
         <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('From', :state_code, @presenter.existing_sort) %></th>
+        <th>Status</th>
         <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
           <th class="text-nowrap text-center">
             <%= clustered_header(header) %>
@@ -69,14 +73,16 @@
         <% end %>
       </tr>
       </thead>
+
       <tbody>
       <% @presenter.effort_times_rows.each do |row| %>
         <tr>
-          <td><%= "#{row.overall_rank}/#{row.gender_rank}" %></td>
+          <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
           <td><%= row.bib_number %></td>
           <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
           <td class="text-nowrap"><%= row.bio_historic %></td>
           <td class="text-nowrap"><%= row.flexible_geolocation %></td>
+          <td class="text-nowrap"><%= row.effort_status %></td>
           <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
             <td class="text-nowrap text-center">
               <%= time_cluster_display_data(cluster, @presenter.display_style) %>

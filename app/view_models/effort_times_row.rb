@@ -2,14 +2,14 @@
 
 class EffortTimesRow
   include ActiveModel::Serialization
-  include PersonalInfo, TimeFormats
+  include PersonalInfo, Rankable, TimeFormats
 
   EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
 
   attr_reader :effort, :display_style
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
-           :stopped?, :dropped?, :finished?, to: :effort
+           :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,

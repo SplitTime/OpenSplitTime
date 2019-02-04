@@ -5,7 +5,7 @@ module EventsHelper
     if view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),
               url_with_protocol(view_object.beacon_url),
-              class: 'btn btn-sm btn-outline-secondary',
+              class: 'btn btn-outline-secondary',
               target: '_blank'
     end
   end

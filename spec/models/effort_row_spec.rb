@@ -29,28 +29,28 @@ RSpec.describe EffortRow, type: :model do
     end
   end
 
-  describe '#run_status' do
+  describe '#effort_status' do
     subject { EffortRow.new(test_effort) }
     it 'returns "Finished" when the run is finished' do
       allow(test_effort).to receive(:finished?).and_return(true)
-      expect(subject.run_status).to eq('Finished')
+      expect(subject.effort_status).to eq('Finished')
     end
 
     it 'returns "Dropped" when the run is dropped' do
       allow(test_effort).to receive(:dropped?).and_return(true)
-      expect(subject.run_status).to eq('Dropped')
+      expect(subject.effort_status).to eq('Dropped')
     end
 
     it 'returns "In Progress" when the run is in progress' do
       allow(test_effort).to receive(:in_progress?).and_return(true)
-      expect(subject.run_status).to eq('In Progress')
+      expect(subject.effort_status).to eq('In Progress')
     end
 
     it 'returns "Not Started" when the run is neither finished nor dropped nor in progress' do
       allow(test_effort).to receive(:finished?).and_return(false)
       allow(test_effort).to receive(:dropped?).and_return(false)
       allow(test_effort).to receive(:in_progress?).and_return(false)
-      expect(subject.run_status).to eq('Not Started')
+      expect(subject.effort_status).to eq('Not Started')
     end
   end
 

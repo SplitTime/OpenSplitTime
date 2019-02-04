@@ -20,7 +20,7 @@ class EventGroupsController < ApplicationController
   def show
     events = @event_group.events
     if events.one? && !params[:force_settings]
-      redirect_to events.first
+      redirect_to spread_event_path(events.first)
     end
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
   end

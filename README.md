@@ -9,12 +9,6 @@ Our software engine is open source. If you have a suggestion for the site, or yo
 
 OpenSplitTime is developed and maintained by endurance athletes for endurance athletes.
 
-Performance
------------
-Performance analysis and monitoring is provided by [Skylight](https://www.skylight.io). Thanks to the folks at Tilde for supporting open source!
-
-[![View performance data on Skylight](https://badges.skylight.io/status/1o8bb9Iz1GqF.svg)](https://oss.skylight.io/app/applications/1o8bb9Iz1GqF)
-
 Ruby on Rails
 -------------
 

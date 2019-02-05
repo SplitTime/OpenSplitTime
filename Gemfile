@@ -46,7 +46,6 @@ gem 'record_tag_helper'
 gem 'webpacker', '~> 3.0'
 gem 'gpx'
 gem 'activerecord-import'
-gem 'skylight', '~> 1.6'
 gem 'local_time'
 gem 'ffaker'
 

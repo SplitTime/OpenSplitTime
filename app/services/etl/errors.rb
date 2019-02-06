@@ -77,7 +77,7 @@ module ETL
 
     def missing_start_key_error
       {title: 'Start key is missing',
-       details: {messages: ['This import requires a column titled "start" or "start offset" to indicate at what point split times begin']}}
+       detail: {messages: ['This import requires a column titled "start" or "start offset" to indicate at what point split times begin']}}
     end
 
     def missing_table_error

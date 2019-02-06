@@ -26,10 +26,17 @@ module ETL::Transformers
     attr_reader :proto_records
 
     def transform_time_data!(proto_record)
+      fill_missing_start_times(proto_record)
       extract_times(proto_record)
       transform_times(proto_record)
       proto_record.create_split_time_children!(time_points, time_attribute: time_attribute)
       proto_record.set_split_time_stop!
+    end
+
+    def fill_missing_start_times(proto_record)
+      unless proto_record[start_key].present?
+        proto_record[start_key] = default_start_value
+      end
     end
 
     def extract_times(proto_record)
@@ -48,7 +55,7 @@ module ETL::Transformers
     end
 
     def time_keys
-      @time_keys ||= attribute_keys.elements_after(start_key).unshift(start_key)
+      @time_keys ||= attribute_keys.elements_after(start_key, inclusive: true)
     end
 
     def time_format
@@ -71,6 +78,15 @@ module ETL::Transformers
 
     def start_key
       attribute_keys.find { |key| key.to_s.start_with?('start') }
+    end
+
+    def default_start_value
+      case time_format
+      when :elapsed
+        '00:00:00'
+      else
+        TimeConversion.absolute_to_hms(event.start_time_local)
+      end
     end
 
     def validate_setup

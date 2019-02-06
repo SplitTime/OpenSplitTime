@@ -179,19 +179,12 @@ tfoot {
   @extend .alert-warning;
 }
 
-.table-tight {
-    > tbody > tr {
-        font-size: 13px;
-    }
-
-    > tbody > tr > td {
-        padding-bottom:4px;
-        padding-top: 5px
-    }
+.podium tbody > tr:last-child {
+    border-bottom:#e3e3e3 solid 1px;
 }
 
-.podium tbody > tr:last-child {
-    background-color: transparent;
+.podium th {
+    height: 60px;
 }
 
 tr.sub-row > td:first-child {

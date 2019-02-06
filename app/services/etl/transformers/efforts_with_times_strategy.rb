@@ -34,7 +34,7 @@ module ETL::Transformers
     end
 
     def fill_missing_start_times(proto_record)
-      unless proto_record[start_key].present?
+      if missing_start_time?(proto_record)
         proto_record[start_key] = default_start_value
       end
     end
@@ -71,9 +71,12 @@ module ETL::Transformers
     end
 
     # Assume keys are identical for all structs, so use the first as a template for all.
-
     def attribute_keys
       @attribute_keys ||= proto_records.first.to_h.keys.map { |key| key.to_s.underscore.to_sym }
+    end
+
+    def missing_start_time?(proto_record)
+      proto_record[start_key].blank? && time_keys.map { |key| proto_record[key].presence }.compact.present?
     end
 
     def start_key

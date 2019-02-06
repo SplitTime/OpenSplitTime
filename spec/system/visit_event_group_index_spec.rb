@@ -65,19 +65,19 @@ RSpec.describe 'Visit the event_groups index' do
   def verify_public_links_present
     expect(page).to have_content('Events')
     expect(page).to have_content(visible_event_group.name)
-    expect(page).to have_content(visible_event_1.name)
-    expect(page).to have_content(visible_event_2.name)
+    expect(page).to have_content(visible_event_1.guaranteed_short_name)
+    expect(page).to have_content(visible_event_2.guaranteed_short_name)
   end
 
   def verify_concealed_links_absent
     expect(page).not_to have_content(concealed_event_group.name)
-    expect(page).not_to have_content(concealed_event_1.name)
-    expect(page).not_to have_content(concealed_event_2.name)
+    expect(page).not_to have_content(concealed_event_1.guaranteed_short_name)
+    expect(page).not_to have_content(concealed_event_2.guaranteed_short_name)
   end
 
   def verify_concealed_links_present
     expect(page).to have_content(concealed_event_group.name)
-    expect(page).to have_content(concealed_event_1.name)
-    expect(page).to have_content(concealed_event_2.name)
+    expect(page).to have_content(concealed_event_1.guaranteed_short_name)
+    expect(page).to have_content(concealed_event_2.guaranteed_short_name)
   end
 end

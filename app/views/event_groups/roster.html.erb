@@ -14,6 +14,7 @@
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Roster</li>
           </ul>
+          <%= render 'events/time_and_course_info' %>
         </div>
       </div>
     </div>

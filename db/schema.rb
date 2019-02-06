@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_06_091149) do
+ActiveRecord::Schema.define(version: 2019_02_06_201900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -74,9 +74,11 @@ ActiveRecord::Schema.define(version: 2019_02_06_091149) do
     t.string "emergency_contact"
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
+    t.string "topic_resource_key"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true
+    t.index ["topic_resource_key"], name: "index_efforts_on_topic_resource_key"
   end
 
   create_table "event_groups", id: :serial, force: :cascade do |t|
@@ -149,6 +151,8 @@ ActiveRecord::Schema.define(version: 2019_02_06_091149) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
+    t.integer "kind"
+    t.text "notice_text"
     t.index ["effort_id"], name: "index_notifications_on_effort_id"
   end
 
@@ -292,14 +296,13 @@ ActiveRecord::Schema.define(version: 2019_02_06_091149) do
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "subscribable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "protocol", default: 0, null: false
     t.string "resource_key"
-    t.string "subscribable_type", null: false
+    t.string "subscribable_type"
+    t.bigint "subscribable_id"
     t.index ["resource_key"], name: "index_subscriptions_on_resource_key"
-    t.index ["subscribable_id"], name: "index_subscriptions_on_subscribable_id"
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
     t.index ["user_id", "subscribable_type", "subscribable_id", "protocol"], name: "index_subscriptions_on_unique_fields", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
@@ -356,6 +359,5 @@ ActiveRecord::Schema.define(version: 2019_02_06_091149) do
   add_foreign_key "splits", "locations"
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
-  add_foreign_key "subscriptions", "people", column: "subscribable_id"
   add_foreign_key "subscriptions", "users"
 end

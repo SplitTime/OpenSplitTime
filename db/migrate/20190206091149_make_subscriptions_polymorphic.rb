@@ -1,24 +1,24 @@
 class MakeSubscriptionsPolymorphic < ActiveRecord::Migration[5.2]
   def up
-    remove_index :subscriptions, [:user_id, :person_id, :protocol]
+    add_reference :subscriptions, :subscribable, polymorphic: true
 
-    add_column :subscriptions, :subscribable_type, :string
-    rename_column :subscriptions, :person_id, :subscribable_id
+    query = "update subscriptions set subscribable_type = 'Person', subscribable_id = person_id"
+    ActiveRecord::Base.connection.execute(query)
 
-    Subscription.update_all(subscribable_type: 'Person')
-
-    change_column_null :subscriptions, :subscribable_type, false
-    add_index :subscriptions, [:subscribable_type, :subscribable_id]
-    add_index :subscriptions, [:user_id, :subscribable_type, :subscribable_id, :protocol], name: 'index_subscriptions_on_unique_fields', unique: true
+    remove_reference :subscriptions, :person
+    add_index :subscriptions, [:user_id, :subscribable_type, :subscribable_id, :protocol],
+              name: 'index_subscriptions_on_unique_fields', unique: true
   end
 
   def down
-    remove_index :subscriptions, [:subscribable_type, :subscribable_id]
-    remove_index :subscriptions, [:user_id, :subscribable_type, :subscribable_id, :protocol]
+    add_reference :subscriptions, :person
 
-    rename_column :subscriptions, :subscribable_id, :person_id
-    remove_column :subscriptions, :subscribable_type
+    query = "update subscriptions set person_id = subscribable_id where subscribable_type = 'Person';"
+    ActiveRecord::Base.connection.execute(query)
+    Subscription.where(person_id: nil).each(&:destroy)
 
     add_index :subscriptions, [:user_id, :person_id, :protocol], unique: true
+
+    remove_reference :subscriptions, :subscribable, polymorphic: true
   end
 end

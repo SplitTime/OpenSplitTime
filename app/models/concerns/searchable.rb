@@ -3,7 +3,6 @@
 module Searchable
   extend ActiveSupport::Concern
 
-  include SetOperations
   include PgSearch
 
   included do

@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 module Matchable
-
-  include SetOperations
-
   def possible_matching_people
-    Person.union_scope(self.people_with_same_name,
-                self.people_changed_last_name,
-                self.people_changed_first_name,
-                self.people_same_full_name)
+    self.people_with_same_name
+        .or(self.people_changed_last_name)
+        .or(self.people_changed_first_name)
+        .or(self.people_same_full_name)
         .where.not(id: self.id)
   end
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class BulkFollowerNotifier
-
   def initialize(split_times, options)
     @split_time_ids = split_times.map(&:id)
   end

@@ -87,4 +87,10 @@ class Person < ApplicationRecord
   def most_likely_duplicate
     possible_matching_people.first
   end
+
+  private
+
+  def generate_new_topic_resource?
+    resource_key_buildable?
+  end
 end

@@ -20,37 +20,114 @@ RSpec.describe User, type: :model do
     expect(user.valid?).to be_falsey
   end
 
-  describe '#subscriptions' do
-    it 'allows a single subscription with a person' do
-      user = create(:user)
-      person = create(:person)
+  describe '#interests' do
+    let(:user_1) { users(:third_user) }
+    let(:subject_people) { people.first(2) }
+    let(:person) { subject_people.first }
 
-      user.interests << person
-      expect(user.interests.size).to eq(1)
+    context 'when adding a single interest' do
+      it 'works as expected' do
+        expect(user_1.interests.size).to eq(0)
+        user_1.interests << person
+        expect(user_1.interests.size).to eq(1)
+        expect(user_1.interests.first).to eq(person)
+      end
     end
 
-    it 'allows two connections with people' do
-      user = create(:user)
-      people = create_list(:person, 2)
-
-      people.each { |person| user.interests << person }
-      expect(user.interests.size).to eq(2)
-      people.each { |person| expect(user.interests).to include(person) }
+    context 'when adding multiple interests' do
+      it 'works as expected' do
+        expect(user_1.interests.size).to eq(0)
+        user_1.interests << subject_people
+        expect(user_1.interests.size).to eq(2)
+        expect(user_1.interests).to match_array(subject_people)
+      end
     end
 
-    it 'allows multiple users to create connections with a person' do
-      user1 = create(:user)
-      user2 = create(:user)
-      user3 = create(:user)
-      person = create(:person)
+    context 'when multiple users have interest in the same person' do
+      let(:user_2) { users(:fourth_user) }
 
-      user1.interests << person
-      user2.interests << person
-      user3.interests << person
-      expect(user1.interests.size).to eq(1)
-      expect(user2.interests.size).to eq(1)
-      expect(user3.interests.size).to eq(1)
-      expect(person.followers.size).to eq(3)
+      it 'works as expected' do
+        expect(user_1.interests.size).to eq(0)
+        expect(user_2.interests.size).to eq(0)
+        expect(person.followers.size).to eq(0)
+
+        user_1.interests << person
+        user_2.interests << person
+        person.reload
+
+        expect(user_1.interests.size).to eq(1)
+        expect(user_2.interests.size).to eq(1)
+        expect(person.followers.size).to eq(2)
+
+        expect(user_1.interests).to eq([person])
+        expect(user_2.interests).to eq([person])
+        expect(person.followers).to match_array([user_1, user_2])
+      end
+    end
+  end
+
+  describe '#watch_efforts' do
+    let(:user_1) { users(:third_user) }
+    let(:subject_efforts) { efforts.first(2) }
+    let(:effort) { subject_efforts.first }
+    let(:topic_resource_key) { '123' }
+
+    before do
+      subject_efforts.each do |effort|
+        allow(effort).to receive(:topic_resource_key).and_return(topic_resource_key)
+      end
+    end
+
+    context 'when adding a single watch_effort that has a topic_resource_key' do
+
+      it 'adds the watch_effort' do
+        expect(user_1.watch_efforts.size).to eq(0)
+        user_1.watch_efforts << effort
+        expect(user_1.watch_efforts.size).to eq(1)
+        expect(user_1.watch_efforts.first).to eq(effort)
+      end
+    end
+
+    context 'when adding a watch_effort that has no topic_resource_key' do
+      let(:topic_resource_key) { nil }
+
+      it 'does not add the watch_effort and returns an error' do
+        expect(user_1.watch_efforts.size).to eq(0)
+        expect { user_1.watch_efforts << effort }.to raise_error(/Resource key can't be blank/)
+        expect(user_1.watch_efforts.size).to eq(0)
+      end
+    end
+
+    context 'when adding multiple watch_efforts with topic_resource_keys' do
+
+      it 'works as expected' do
+        expect(user_1.watch_efforts.size).to eq(0)
+        user_1.watch_efforts << subject_efforts
+        expect(user_1.watch_efforts.size).to eq(2)
+        expect(user_1.watch_efforts).to match_array(subject_efforts)
+      end
+    end
+
+    context 'when multiple users are watching the same effort' do
+      let(:user_2) { users(:fourth_user) }
+
+      it 'works as expected' do
+        expect(user_1.watch_efforts.size).to eq(0)
+        expect(user_2.watch_efforts.size).to eq(0)
+        expect(effort.followers.size).to eq(0)
+
+        user_1.watch_efforts << effort
+        user_2.watch_efforts << effort
+        effort.reload
+
+        expect(user_1.watch_efforts.size).to eq(1)
+        expect(user_2.watch_efforts.size).to eq(1)
+        expect(effort.followers.size).to eq(2)
+
+        expect(user_1.watch_efforts).to eq([effort])
+        expect(user_2.watch_efforts).to eq([effort])
+        expect(effort.followers).to match_array([user_1, user_2])
+      end
     end
   end
 

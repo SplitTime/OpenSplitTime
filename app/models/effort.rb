@@ -272,4 +272,10 @@ class Effort < ApplicationRecord
   def stopped_split_time
     ordered_split_times.reverse.find(&:stopped_here)
   end
+
+  private
+
+  def generate_new_topic_resource?
+    resource_key_buildable? && !finished?
+  end
 end

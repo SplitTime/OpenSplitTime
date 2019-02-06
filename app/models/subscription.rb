@@ -56,6 +56,6 @@ class Subscription < ApplicationRecord
   end
 
   def required_data_present?
-    subscribable&.topic_resource_key.present? && user&.protocol.present?
+    subscribable&.topic_resource_key.present? && user&.send(protocol).present?
   end
 end

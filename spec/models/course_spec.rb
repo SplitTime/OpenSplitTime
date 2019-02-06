@@ -2,19 +2,6 @@
 
 require 'rails_helper'
 
-# t.string "name", limit: 64, null: false
-# t.text "description"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.datetime "next_start_time"
-# t.string "slug", null: false
-# t.string "gpx_file_name"
-# t.string "gpx_content_type"
-# t.integer "gpx_file_size"
-# t.datetime "gpx_updated_at"
-
 RSpec.describe Course, type: :model do
   include BitkeyDefinitions
 

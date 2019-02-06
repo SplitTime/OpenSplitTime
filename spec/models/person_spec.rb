@@ -2,28 +2,6 @@
 
 require 'rails_helper'
 
-# t.string   "first_name",         limit: 32,                 null: false
-# t.string   "last_name",          limit: 64,                 null: false
-# t.integer  "gender",                                        null: false
-# t.date     "birthdate"
-# t.string   "city"
-# t.string   "state_code"
-# t.string   "email"
-# t.string   "phone"
-# t.datetime "created_at",                                    null: false
-# t.datetime "updated_at",                                    null: false
-# t.integer  "created_by"
-# t.integer  "updated_by"
-# t.string   "country_code",       limit: 2
-# t.integer  "user_id"
-# t.boolean  "concealed",                     default: false
-# t.string   "slug",                                          null: false
-# t.string   "topic_resource_key"
-# t.string   "photo_file_name"
-# t.string   "photo_content_type"
-# t.integer  "photo_file_size"
-# t.datetime "photo_updated_at"
-
 RSpec.describe Person, type: :model do
   it_behaves_like 'auditable'
   it_behaves_like 'subscribable'

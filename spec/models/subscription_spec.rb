@@ -2,10 +2,6 @@
 
 require 'rails_helper'
 
-#   t.integer  "user_id"
-#   t.integer  "person_id"
-#   t.integer  "kind"
-
 RSpec.describe Subscription, type: :model do
   subject(:subscription) { Subscription.new(user: user, subscribable: subscribable, protocol: protocol) }
   let(:user) { users(:admin_user) }

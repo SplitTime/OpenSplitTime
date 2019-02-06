@@ -2,17 +2,6 @@
 
 require 'rails_helper'
 
-# t.integer  "course_id",                                                 null: false
-# t.string   "name",            limit: 64,                                null: false
-# t.datetime "start_time"
-# t.string   "beacon_url"
-# t.integer  "laps_required"
-# t.string   "slug",                                                      null: false
-# t.string   "home_time_zone",                                            null: false
-# t.integer  "event_group_id"
-# t.string   "short_name"
-# t.string   "podium_template"
-
 RSpec.describe Event, type: :model do
   include BitkeyDefinitions
 

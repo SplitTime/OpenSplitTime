@@ -2,25 +2,6 @@
 
 require 'rails_helper'
 
-# t.integer "course_id", null: false
-# t.integer "location_id"
-# t.integer "distance_from_start", null: false
-# t.float "vert_gain_from_start"
-# t.float "vert_loss_from_start"
-# t.integer "kind", null: false
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.string "description"
-# t.string "base_name", null: false
-# t.integer "sub_split_bitmap", default: 1
-# t.decimal "latitude", precision: 9, scale: 6
-# t.decimal "longitude", precision: 9, scale: 6
-# t.float "elevation"
-# t.string "slug", null: false
-# t.string "parameterized_base_name", null: false
-
 RSpec.describe Split, kind: :model do
   include BitkeyDefinitions
 

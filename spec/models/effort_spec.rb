@@ -2,36 +2,6 @@
 
 require 'rails_helper'
 
-# t.integer "event_id", null: false
-# t.integer "person_id"
-# t.string "wave"
-# t.integer "bib_number"
-# t.string "city", limit: 64
-# t.string "state_code", limit: 64
-# t.integer "age"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.string "first_name"
-# t.string "last_name"
-# t.integer "gender"
-# t.string "country_code", limit: 2
-# t.date "birthdate"
-# t.integer "data_status"
-# t.string "beacon_url"
-# t.string "report_url"
-# t.string "phone", limit: 15
-# t.string "email"
-# t.string "slug", null: false
-# t.boolean "checked_in", default: false
-# t.string "photo_file_name"
-# t.string "photo_content_type"
-# t.integer "photo_file_size"
-# t.datetime "photo_updated_at"
-# t.string "emergency_contact"
-# t.string "emergency_phone"
-
 RSpec.describe Effort, type: :model do
   include BitkeyDefinitions
 

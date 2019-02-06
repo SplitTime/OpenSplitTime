@@ -2,10 +2,6 @@
 
 require 'rails_helper'
 
-#   t.integer  "user_id"
-#   t.integer  "organization_id"
-#   t.integer  "level"
-
 RSpec.describe Stewardship, type: :model do
   subject(:stewardship) { Stewardship.new(user: user, organization: organization) }
   let(:user) { users(:admin_user) }

@@ -3,20 +3,6 @@
 require 'rails_helper'
 include BitkeyDefinitions
 
-# t.integer "effort_id", null: false
-# t.integer "split_id", null: false
-# t.integer "data_status"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.integer "sub_split_bitkey"
-# t.boolean "pacer"
-# t.string "remarks"
-# t.integer "lap"
-# t.boolean "stopped_here", default: false
-# t.datetime "absolute_time"
-
 RSpec.describe SplitTime, kind: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'

@@ -2,22 +2,6 @@
 
 require 'rails_helper'
 
-# t.bigint "event_group_id", null: false
-# t.bigint "split_time_id"
-# t.string "split_name", null: false
-# t.integer "bitkey", null: false
-# t.string "bib_number", null: false
-# t.datetime "absolute_time"
-# t.string "entered_time"
-# t.boolean "with_pacer", default: false
-# t.boolean "stopped_here", default: false
-# t.string "source", null: false
-# t.integer "pulled_by"
-# t.datetime "pulled_at"
-# t.integer "created_by"
-# t.integer "updated_by"
-
-
 RSpec.describe RawTime, type: :model do
   it_behaves_like 'auditable'
   it_behaves_like 'time_recordable'

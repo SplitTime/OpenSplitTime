@@ -33,7 +33,7 @@
     <% if event_group.events.many? %>
       <% event_group.ordered_events.each do |event| %>
         <tr class="sub-row">
-          <td><%= link_to event.name, event_path(event) %></td>
+          <td><%= link_to event.guaranteed_short_name, event_path(event) %></td>
           <td><%= l(event.start_time_local, format: "%a | %B %d, %Y | %I:%M%p(%Z)") %></td>
           <td><%= "#{pluralize(event.efforts.size, 'entrant')}" %></td>
           <% if presenter.show_visibility_columns? %>

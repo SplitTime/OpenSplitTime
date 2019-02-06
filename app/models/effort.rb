@@ -7,15 +7,8 @@ class Effort < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
-  include Auditable
-  include DataStatusMethods
-  include Delegable
-  include GuaranteedFindable
-  include LapsRequiredMethods
-  include PersonalInfo
-  include Searchable
-  include Matchable
-  include TimeZonable
+  include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, LapsRequiredMethods, PersonalInfo,
+          Searchable, Subscribable, TimeZonable, Matchable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

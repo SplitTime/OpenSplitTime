@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SnsTopicManager
-
   def self.generate(args)
     new(args).generate
   end
@@ -11,20 +10,18 @@ class SnsTopicManager
   end
 
   def initialize(args)
-    ArgsValidator.validate(params: args, required: :person, exclusive: [:person, :sns_client], class: self.class)
-    @person = args[:person]
+    ArgsValidator.validate(params: args, required: :resource, exclusive: [:resource, :sns_client], class: self.class)
+    @resource = args[:resource]
     @sns_client = args[:sns_client] || SnsClientFactory.client
   end
 
   def generate
-    response = sns_client.create_topic(name: "#{environment_prefix}follow_#{person.slug}")
+    response = sns_client.create_topic(name: "#{environment_prefix}follow_#{resource.slug}")
     if response.successful?
-      print '.' unless Rails.env.test?
-      Rails.logger.info "Generated SNS topic for #{person.slug}"
+      Rails.logger.info "Generated SNS topic for #{resource.slug}"
       response.topic_arn.include?('arn:aws:sns') ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
-      print 'X' unless Rails.env.test?
-      warn "Unable to generate SNS topic for #{person.slug}"
+      warn "Unable to generate SNS topic for #{resource.slug}"
       nil
     end
   end
@@ -33,26 +30,23 @@ class SnsTopicManager
     if topic_arn && topic_arn.include?('arn:aws:sns')
       response = sns_client.delete_topic(topic_arn: topic_arn)
       if response.successful?
-        print '.' unless Rails.env.test?
         Rails.logger.info "Deleted SNS topic #{topic_arn}"
         topic_arn
       else
-        print 'X' unless Rails.env.test?
         warn "Unable to delete SNS topic #{topic_arn}"
         nil
       end
     else
-      print '-' unless Rails.env.test?
-      warn "#{person.slug} has no topic_resource_key or topic_arn does not exist" unless Rails.env.test?
+      warn "#{resource.slug} has no topic_resource_key or topic_arn does not exist" unless Rails.env.test?
     end
   end
 
   private
 
-  attr_reader :person, :sns_client
+  attr_reader :resource, :sns_client
 
   def topic_arn
-    person.topic_resource_key
+    resource.topic_resource_key
   end
 
   def environment_prefix

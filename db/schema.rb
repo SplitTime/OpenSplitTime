@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190126070009) do
+ActiveRecord::Schema.define(version: 2019_02_06_091149) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
+  enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"
@@ -292,14 +292,16 @@ ActiveRecord::Schema.define(version: 20190126070009) do
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "person_id", null: false
+    t.integer "subscribable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "protocol", default: 0, null: false
     t.string "resource_key"
-    t.index ["person_id"], name: "index_subscriptions_on_person_id"
+    t.string "subscribable_type", null: false
     t.index ["resource_key"], name: "index_subscriptions_on_resource_key"
-    t.index ["user_id", "person_id", "protocol"], name: "index_subscriptions_on_user_id_and_person_id_and_protocol", unique: true
+    t.index ["subscribable_id"], name: "index_subscriptions_on_subscribable_id"
+    t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
+    t.index ["user_id", "subscribable_type", "subscribable_id", "protocol"], name: "index_subscriptions_on_unique_fields", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -354,6 +356,6 @@ ActiveRecord::Schema.define(version: 20190126070009) do
   add_foreign_key "splits", "locations"
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
-  add_foreign_key "subscriptions", "people"
+  add_foreign_key "subscriptions", "people", column: "subscribable_id"
   add_foreign_key "subscriptions", "users"
 end

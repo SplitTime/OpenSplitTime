@@ -3,14 +3,12 @@
 class Subscription < ApplicationRecord
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user
-  belongs_to :person
+  belongs_to :subscribable, polymorphic: true
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key
-  validates_presence_of :user_id, :person_id, :protocol, :resource_key
+  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :protocol, :resource_key
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
-
-  alias_attribute :participant_id, :person_id
 
   def set_resource_key
     if should_generate_resource?
@@ -40,7 +38,7 @@ class Subscription < ApplicationRecord
   end
 
   def to_s
-    "SNS subscription for #{user.slug} following #{person.slug} by #{protocol}"
+    "Subscription for #{user.slug} following #{subscribable.slug} by #{protocol}"
   end
 
   private
@@ -58,6 +56,6 @@ class Subscription < ApplicationRecord
   end
 
   def required_data_present?
-    person.try(:topic_resource_key).present? && user.try(protocol).present?
+    subscribable&.topic_resource_key.present? && user&.protocol.present?
   end
 end

@@ -14,7 +14,8 @@ class User < ApplicationRecord
   phony_normalize :phone, country_code: 'US'
 
   has_many :subscriptions, dependent: :destroy
-  has_many :interests, through: :subscriptions, source: :person
+  has_many :interests, through: :subscriptions, source: :subscribable, source_type: 'Person'
+  has_many :watch_efforts, through: :subscriptions, source: :subscribable, source_type: 'Effort'
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
   has_one :avatar, class_name: 'Person', dependent: :nullify

@@ -2,49 +2,56 @@
 <tr>
   <th><%= category.name %></th>
   <% if @presenter.multiple_laps? %>
-      <th>Laps</th>
+    <th>Laps</th>
   <% end %>
   <th>Time</th>
   <th>Name</th>
   <th>Category</th>
   <th>From</th>
+  <% if @presenter.point_system? %>
+    <th>Points</th>
+  <% end %>
 </tr>
 </thead>
 
 <tbody>
 <% if category.efforts.present? %>
-    <% category.efforts.each_with_index do |effort, i| %>
-        <tr>
-          <td><%= "#{(i + 1).ordinalize} Place" %></td>
-          <% if @presenter.multiple_laps? %>
-              <td><%= effort.laps_finished %></td>
-          <% end %>
-          <td><%= time_format_hhmmss(effort.final_time_from_start) %></td>
-          <td><%= effort.full_name %></td>
-          <td><%= effort.bio_historic %></td>
-          <td><%= effort.flexible_geolocation %></td>
-        </tr>
-    <% end %>
-<% else %>
+  <% category.efforts.each.with_index(1) do |effort, i| %>
     <tr>
-      <td><strong>[Empty category]</strong></td>
+      <td><%= "#{i.ordinalize} Place" %></td>
       <% if @presenter.multiple_laps? %>
-          <td></td>
+        <td><%= effort.laps_finished %></td>
       <% end %>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td><%= time_format_hhmmss(effort.final_time_from_start) %></td>
+      <td><%= effort.full_name %></td>
+      <td><%= effort.bio_historic %></td>
+      <td><%= effort.flexible_geolocation %></td>
+      <% if @presenter.point_system? %>
+        <td><%= effort.points %></td>
+      <% end %>
     </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td><strong>[Empty category]</strong></td>
+    <% if @presenter.multiple_laps? %>
+      <td></td>
+    <% end %>
+    <td colspan="4"></td>
+    <% if @presenter.point_system? %>
+      <td></td>
+    <% end %>
+  </tr>
 <% end %>
-<tr>
+
+<tr class="table-light">
   <td><br/></td>
   <% if @presenter.multiple_laps? %>
-      <td><br/></td>
+    <td><br/></td>
   <% end %>
-  <td><br/></td>
-  <td><br/></td>
-  <td><br/></td>
-  <td><br/></td>
+  <td colspan="4"><br/></td>
+  <% if @presenter.point_system? %>
+    <td><br/></td>
+  <% end %>
 </tr>
 </tbody>

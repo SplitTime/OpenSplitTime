@@ -25,6 +25,10 @@ class PodiumPresenter < BasePresenter
     template&.name
   end
 
+  def point_system?
+    template&.point_system.present?
+  end
+
   private
 
   attr_reader :template, :current_user

@@ -11,8 +11,9 @@ module Results
     def initialize(args)
       @efforts = args[:efforts].to_a.sort_by(&:overall_rank)
       @categories = args[:categories]
-      @podium_size = args[:podium_size]
+      @podium_size = args[:podium_size] || efforts.size
       @method = args[:method]
+      @point_system = args[:point_system] || []
       @used_efforts = Set.new
     end
 
@@ -22,11 +23,14 @@ module Results
 
     private
 
-    attr_reader :efforts, :categories, :podium_size, :method
+    attr_reader :efforts, :categories, :podium_size, :method, :point_system
 
     def fill(category)
       category.efforts = available_efforts.select { |effort| attributes_match(category, effort) }.first(podium_size)
-      category.efforts.each { |effort| used_efforts << effort }
+      category.efforts.each_with_index do |effort, i|
+        effort.points = point_system[i] || 0
+        used_efforts << effort
+      end
       category
     end
 

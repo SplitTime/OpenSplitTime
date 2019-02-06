@@ -16,7 +16,8 @@ module Results
       Results::Compute.perform(efforts: efforts,
                                categories: template.categories,
                                podium_size: template.podium_size,
-                               method: template.method)
+                               method: template.method,
+                               point_system: template.point_system)
       template
     end
 

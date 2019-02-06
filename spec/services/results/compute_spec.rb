@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../app/services/results/compute'
 require_relative '../../../app/services/results/categories'
 require_relative '../../../app/services/results/category'
@@ -47,6 +49,12 @@ RSpec.describe Results::Compute do
     let(:women_30s) { Results::Categories.find(:women_30s) }
     let(:men_40s) { Results::Categories.find(:men_40s) }
     let(:women_40s) { Results::Categories.find(:women_40s) }
+
+    before do
+      efforts.each do |effort|
+        allow(effort).to receive(:points=)
+      end
+    end
 
     context 'when mode is set to strict' do
       let(:method) { :strict }

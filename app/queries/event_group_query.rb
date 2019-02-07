@@ -89,7 +89,9 @@ class EventGroupQuery < BaseQuery
       select rts.*, sts.sortable_time, sts.split_times_attributes
       from raw_times_subquery rts
         left join split_times_subquery sts on rts.effort_id = sts.effort_id
-      order by #{order_sql}
+      order by #{order_sql};
+
+      set timezone='UTC'
     SQL
     query.squish
   end

@@ -280,7 +280,9 @@ class SplitTimeQuery < BaseQuery
       inner join splits on splits.id = st.split_id
       inner join efforts on efforts.id = st.effort_id
       left join start_split_times sst on sst.effort_id = st.effort_id
-      where #{scope}
+      where #{scope};
+
+      set timezone='UTC'
     SQL
     query.squish
   end
@@ -388,7 +390,9 @@ class SplitTimeQuery < BaseQuery
           on st.absolute_time_local >= i.start_time and st.absolute_time_local < i.end_time
       where i.end_time is not null
       group by i.start_time, i.end_time
-      order by i.start_time
+      order by i.start_time;
+
+      set timezone='UTC'
     SQL
     query.squish
   end

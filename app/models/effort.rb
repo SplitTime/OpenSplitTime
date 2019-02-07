@@ -19,9 +19,9 @@ class Effort < ApplicationRecord
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
-  strip_attributes only: [:phone, :emergency_phone], :regex => /[^0-9|+]/
+  strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
-  zonable_attributes :start_time, :scheduled_start_time, :event_start_time
+  zonable_attributes :start_time, :scheduled_start_time, :event_start_time, :guaranteed_start_time
 
   belongs_to :event
   belongs_to :person
@@ -116,6 +116,10 @@ class Effort < ApplicationRecord
     @start_time = attributes.has_key?('start_time') ? attributes['start_time'] : starting_split_time&.absolute_time
   end
 
+  def guaranteed_start_time
+    scheduled_start_time || event_start_time
+  end
+
   def event_start_time
     @event_start_time ||= attributes['event_start_time'] || event&.start_time
   end
@@ -125,7 +129,7 @@ class Effort < ApplicationRecord
   end
 
   def scheduled_start_offset
-    @scheduled_start_offset ||= scheduled_start_time - event_start_time if scheduled_start_time && event_start_time
+    @scheduled_start_offset ||= (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
   end
 
   def event_name

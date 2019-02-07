@@ -206,7 +206,7 @@ RSpec.describe SplitTimeFinder do
   end
 
   describe '#guaranteed_prior' do
-    let(:start_time) { effort.start_time }
+    let(:actual_start_time) { effort.actual_start_time }
 
     context 'when a prior split_time exists' do
       let(:time_point) { time_points[5] }
@@ -225,7 +225,7 @@ RSpec.describe SplitTimeFinder do
       end
 
       it 'returns a mock start split_time associated with the provided effort' do
-        expected = SplitTime.new(time_point: time_points.first, absolute_time: start_time, effort_id: effort.id)
+        expected = SplitTime.new(time_point: time_points.first, absolute_time: actual_start_time, effort_id: effort.id)
         expect(subject.guaranteed_prior.attributes).to eq(expected.attributes)
       end
     end
@@ -234,7 +234,7 @@ RSpec.describe SplitTimeFinder do
       let(:time_point) { time_points[0] }
 
       it 'returns a mock start split_time associated with the provided effort' do
-        expected = SplitTime.new(time_point: time_points.first, absolute_time: start_time, effort_id: effort.id)
+        expected = SplitTime.new(time_point: time_points.first, absolute_time: actual_start_time, effort_id: effort.id)
         expect(subject.guaranteed_prior.attributes).to eq(expected.attributes)
       end
     end

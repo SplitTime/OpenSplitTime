@@ -7,21 +7,14 @@ class Effort < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
-  include Auditable
-  include DataStatusMethods
-  include Delegable
-  include GuaranteedFindable
-  include LapsRequiredMethods
-  include PersonalInfo
-  include Searchable
-  include Matchable
-  include TimeZonable
+  include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, LapsRequiredMethods, PersonalInfo,
+          Searchable, Matchable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
-  zonable_attributes :start_time, :scheduled_start_time, :event_start_time, :guaranteed_start_time
+  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time
 
   belongs_to :event
   belongs_to :person
@@ -106,18 +99,17 @@ class Effort < ApplicationRecord
   end
 
   def reset_age_from_birthdate
-    calculated_start_time = start_time || scheduled_start_time || event_start_time
     return unless birthdate.present? && calculated_start_time.present?
     assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
   end
 
-  def start_time
-    return @start_time if defined?(@start_time)
-    @start_time = attributes.has_key?('start_time') ? attributes['start_time'] : starting_split_time&.absolute_time
+  def actual_start_time
+    return @actual_start_time if defined?(@actual_start_time)
+    @actual_start_time = attributes.has_key?('actual_start_time') ? attributes['actual_start_time'] : starting_split_time&.absolute_time
   end
 
-  def guaranteed_start_time
-    scheduled_start_time || event_start_time
+  def calculated_start_time
+    actual_start_time || scheduled_start_time || event_start_time
   end
 
   def event_start_time
@@ -226,9 +218,7 @@ class Effort < ApplicationRecord
   end
 
   def split_times_data
-    return @split_times_data if defined?(@split_times_data)
-    query = SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: home_time_zone)
-    @split_times_data = ActiveRecord::Base.connection.execute(query).map { |row| SplitTimeData.new(row) }
+    @split_times_data ||= SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: home_time_zone)
   end
 
   def ordered_split_times(lap_split = nil)
@@ -259,7 +249,6 @@ class Effort < ApplicationRecord
 
   def current_age_approximate
     return @current_age_approximate if defined?(@current_age_approximate)
-    calculated_start_time = start_time || scheduled_start_time || event_start_time
     return unless age.present? && calculated_start_time.present?
     @current_age_approximate ||= age && ((Time.current - calculated_start_time) / 1.year + age).round
   end

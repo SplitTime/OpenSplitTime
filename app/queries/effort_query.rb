@@ -226,7 +226,7 @@ class EffortQuery < BaseQuery
                 case when laps_finished >= laps_required then true else false end 
               end
               as finished,
-              sst.absolute_time as start_time
+              sst.absolute_time as actual_start_time
       from main_subquery 
         left join start_split_times sst on sst.effort_id = main_subquery.effort_id
         left join stopped_split_times on stopped_split_times.effort_id = main_subquery.effort_id

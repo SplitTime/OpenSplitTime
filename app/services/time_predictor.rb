@@ -50,7 +50,8 @@ class TimePredictor
   end
 
   def actual_completed_time
-    completed_split_time.absolute_time && effort.start_time && completed_split_time.absolute_time - effort.start_time
+    completed_split_time.absolute_time && effort.actual_start_time &&
+        completed_split_time.absolute_time - effort.actual_start_time
   end
 
   def typical_completed_time

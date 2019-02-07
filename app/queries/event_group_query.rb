@@ -48,6 +48,8 @@ class EventGroupQuery < BaseQuery
     query.squish
   end
 
+  # It is critical to reset_database_timezone after running this query.
+  # Failure to do so will lead to elusive bugs.
   def self.bib_sub_split_rows(args)
     event_group = args[:event_group]
     parameterized_split_name = args[:split_name].parameterize
@@ -74,6 +76,8 @@ class EventGroupQuery < BaseQuery
   
       split_times_subquery as
         (select ef.id as effort_id, 
+                min(ev.laps_required) as min_laps_required,
+                max(ev.laps_required) as max_laps_required,
                 min(st.absolute_time at time zone 'UTC') as sortable_time,
                 json_agg(json_build_object('id', st.id, 
                                            'lap', st.lap, 
@@ -84,16 +88,25 @@ class EventGroupQuery < BaseQuery
           inner join events ev on ev.id = ef.event_id
           inner join splits s on s.id = st.split_id
         where ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and s.parameterized_base_name = '#{parameterized_split_name}' and st.sub_split_bitkey = #{bitkey}
-        group by ef.id)
+        group by ef.id),
+
+        laps_subquery as
+          (select max(max_laps_required) as overall_max_laps, 
+                  min(min_laps_required) as overall_min_laps
+          from split_times_subquery)
   
-      select rts.*, sts.sortable_time, sts.split_times_attributes
+      select rts.*, 
+             sts.sortable_time, 
+             sts.split_times_attributes, 
+             case when ls.overall_max_laps = 1 and ls.overall_min_laps = 1 then true else false end as single_lap
       from raw_times_subquery rts
         left join split_times_subquery sts on rts.effort_id = sts.effort_id
-      order by #{order_sql};
-
-      set timezone='UTC'
+        inner join laps_subquery ls on true
+      order by #{order_sql}
     SQL
-    query.squish
+    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| BibTimeRow.new(row) }
+    reset_database_timezone
+    result
   end
 
   def self.permitted_sort_fields

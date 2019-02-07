@@ -33,7 +33,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
 
   def projected_effort
     @projected_effort ||= ProjectedEffort.new(event: event,
-                                              start_time: effort.start_time,
+                                              start_time: effort.actual_start_time,
                                               baseline_split_time: last_valid_split_time,
                                               projected_time_points: projected_time_points)
   end

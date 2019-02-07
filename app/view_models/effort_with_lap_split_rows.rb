@@ -33,7 +33,7 @@ class EffortWithLapSplitRows
   end
 
   def effort_start_time
-    effort.start_time
+    effort.actual_start_time
   end
 
   def true_lap_time(lap)

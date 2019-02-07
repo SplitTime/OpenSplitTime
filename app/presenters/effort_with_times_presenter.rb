@@ -34,7 +34,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   def subtext
     elapsed_times? ?
-        "All times are elapsed since #{I18n.localize(start_time_local, format: :full_day_military_and_zone)}" :
+        "All times are elapsed since #{I18n.localize(actual_start_time_local, format: :full_day_military_and_zone)}" :
         "All times are in #{home_time_zone}"
   end
 

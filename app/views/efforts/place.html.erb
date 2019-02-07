@@ -27,8 +27,8 @@
           </ul>
         </div>
         <div class="ost-subtitle">
-          <% if @presenter.start_time %>
-            <h6>Start Time: <strong><%= l(@presenter.start_time, format: :full_day_time_and_zone) %></strong></h6>
+          <% if @presenter.actual_start_time %>
+            <h6>Start Time: <strong><%= l(@presenter.actual_start_time, format: :full_day_time_and_zone) %></strong></h6>
           <% end %>
           <h6>Status:
             <strong>

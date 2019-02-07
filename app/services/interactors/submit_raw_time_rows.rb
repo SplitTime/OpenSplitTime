@@ -81,10 +81,7 @@ module Interactors
     end
 
     def send_notifications
-      indexed_split_times = upserted_split_times.group_by { |st| st.effort.person_id }
-      indexed_split_times.each do |person_id, split_times|
-        NotifyFollowersJob.perform_later(person_id: person_id, split_time_ids: split_times.map(&:id)) if person_id
-      end
+      BulkProgressNotifier.notify(upserted_split_times)
     end
 
     def indexed_efforts

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-class LiveEffortMailData
+class EffortProgressData
 
-  attr_reader :person, :split_times
-  delegate :topic_resource_key, to: :person
+  attr_reader :effort, :split_times
+  delegate :topic_resource_key, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:person, :person_id],
-                           exclusive: [:person, :person_id, :split_times, :split_time_ids, :multi_lap],
+                           required_alternatives: [:effort, :effort_id],
+                           exclusive: [:effort, :effort_id, :split_times, :split_time_ids, :multi_lap],
                            class: self.class)
-    @person = args[:person] || Person.friendly.find(args[:person_id])
+    @effort = args[:effort] || Effort.friendly.find(args[:effort_id])
     @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids]).includes(:split, effort: :event).ordered
   end
 
@@ -18,27 +18,22 @@ class LiveEffortMailData
     @effort_data ||= {full_name: full_name,
                       event_name: event_name,
                       split_times_data: split_times_data,
-                      effort_slug: effort.slug,
-                      event_slug: effort.event.slug}
+                      effort_id: effort.id}
   end
 
   def followers
-    @followers ||= person.followers
+    @followers ||= effort.followers
   end
 
   private
 
   delegate :full_name, :event_name, to: :effort
 
-  def effort
-    @effort ||= split_times.first.effort
-  end
-
   def split_times_data
-    split_times.sort_by(&:time_from_start).map do |split_time|
+    split_times.sort_by(&:absolute_time).map do |split_time|
       {split_name: split_name(split_time),
        split_distance: split_distance(split_time),
-       absolute_time_local: split_time.absolute_time_local.strftime('%A, %B %-d, %Y %l:%M%p'),
+       absolute_time_local: split_time.absolute_time_local.strftime('%A %l:%M%p'),
        elapsed_time: TimeConversion.seconds_to_hms(split_time.time_from_start.to_i),
        pacer: split_time.pacer,
        stopped_here: split_time.stopped_here}

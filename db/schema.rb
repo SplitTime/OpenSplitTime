@@ -152,6 +152,8 @@ ActiveRecord::Schema.define(version: 2019_02_06_201900) do
     t.integer "created_by"
     t.integer "updated_by"
     t.integer "kind"
+    t.string "topic_resource_key"
+    t.string "subject"
     t.text "notice_text"
     t.index ["effort_id"], name: "index_notifications_on_effort_id"
   end

@@ -487,17 +487,17 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(raw_times.map(&:split_time_id)).to match_array(split_times.map(&:id))
           end
 
-          it 'sends a message to NotifyFollowersJob with relevant person and split_time data' do
-            allow(NotifyFollowersJob).to receive(:perform_later) do |args|
+          it 'sends a message to NotifyProgressJob with relevant person and split_time data' do
+            allow(NotifyProgressJob).to receive(:perform_later) do |args|
               args[:split_time_ids].sort!
             end
 
             make_request
             split_times = SplitTime.last(2)
             split_time_ids = split_times.map(&:id)
-            person_id = split_times.first.effort.person_id
+            effort_id = split_times.first.effort_id
 
-            expect(NotifyFollowersJob).to have_received(:perform_later).with(person_id: person_id, split_time_ids: split_time_ids.sort)
+            expect(NotifyProgressJob).to have_received(:perform_later).with(effort_id: effort_id, split_time_ids: split_time_ids.sort)
           end
 
           it 'sends messages to Interactors::SetEffortStatus with the efforts associated with the modified split_times' do

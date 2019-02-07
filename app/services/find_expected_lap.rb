@@ -50,7 +50,7 @@ class FindExpectedLap
   end
 
   def start_value
-    @start_value ||= TimeConversion.absolute_to_hms(effort.start_time)
+    @start_value ||= TimeConversion.absolute_to_hms(effort.actual_start_time)
   end
 
   def indexed_location_times

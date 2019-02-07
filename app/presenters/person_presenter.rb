@@ -12,7 +12,7 @@ class PersonPresenter < BasePresenter
 
   def efforts
     @efforts ||= EffortPolicy::Scope.new(current_user, Effort).viewable.includes(:event, split_times: :split)
-                     .where(person: person).sort_by { |effort| -effort.start_time.to_i }
+                     .where(person: person).sort_by { |effort| -effort.actual_start_time.to_i }
   end
 
   def method_missing(method)

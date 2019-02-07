@@ -1,33 +1,38 @@
-<%= form_with url: plan_effort_course_path, local: true, method: :get do |form| %>
-    <div class="form-group row">
-      <%= form.label :start_time, 'Event start time', class: 'col-3 col-form-label' %>
-      <div class="col-6">
-        <%= form.datetimepicker_field :start_time, object: presenter %>
-      </div>
+<%= form_with url: plan_effort_course_path, local: true, method: :get, role: 'form',
+              data: {controller: 'inputmask', action: 'submit->inputmask#fill'} do |form| %>
+
+  <div class="form-group row">
+    <%= form.label :start_time, 'Event start time', class: 'col-3 col-form-label' %>
+    <div class="col-6">
+      <%= form.datetimepicker_field :start_time, object: presenter %>
     </div>
-    <% if presenter.multiple_laps? %>
-      <div class="form-group row">
-        <%= label :expected_laps, 'Expected laps', class: 'col-3 col-form-label' %>
-        <div class="col-2">
-          <%= text_field_tag :expected_laps,
-                              presenter.expected_laps,
-                              placeholder: 'number of laps',
-                              autofocus: true,
-                              class: 'form-control' %>
-        </div>
-      </div>
-    <% end %>
+  </div>
+  <% if presenter.multiple_laps? %>
     <div class="form-group row">
-      <%= label :expected_time, 'Expected time', class: 'col-3 col-form-label'  %>
+      <%= label :expected_laps, 'Expected laps', class: 'col-3 col-form-label' %>
       <div class="col-2">
-        <%= text_field_tag :expected_time,
-                            presenter.cleaned_time,
-                            placeholder: 'hh:mm',
+        <%= form.text_field :expected_laps,
+                            value: presenter.expected_laps,
+                            placeholder: 'number of laps',
                             autofocus: true,
-                            class: 'form-control search-box' %>
+                            class: 'form-control' %>
       </div>
     </div>
-    <%= button_tag(type: :submit, class: 'btn btn-success') do %>
-      Create my plan
-    <% end %>
+  <% end %>
+
+  <div class="form-group row">
+    <%= label :expected_time, 'Expected time', class: 'col-3 col-form-label' %>
+    <div class="col-2">
+      <%= form.text_field :expected_time,
+                          value: presenter.cleaned_time,
+                          placeholder: 'hh:mm',
+                          autofocus: true,
+                          class: 'form-control search-box',
+                          data: {target: 'inputmask.elapsedTimeShort', action: 'blur->inputmask#fill'} %>
+    </div>
+  </div>
+
+  <%= button_tag(type: :submit, class: 'btn btn-success') do %>
+    Create my plan
+  <% end %>
 <% end %>

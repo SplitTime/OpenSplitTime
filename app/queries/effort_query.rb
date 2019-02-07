@@ -49,7 +49,7 @@ class EffortQuery < BaseQuery
               split_times.split_id as final_split_id, 
               split_times.sub_split_bitkey as final_bitkey,
               split_times.absolute_time as final_absolute_time,
-              sst.absolute_time as start_time,
+              sst.absolute_time as actual_start_time,
               extract(epoch from(sst.absolute_time - events.start_time)) as start_offset,
               extract(epoch from (split_times.absolute_time - sst.absolute_time)) as final_time_from_start,
               split_times.id as final_split_time_id,

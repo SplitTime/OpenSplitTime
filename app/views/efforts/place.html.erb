@@ -28,7 +28,8 @@
         </div>
         <div class="ost-subtitle">
           <% if @presenter.actual_start_time %>
-            <h6>Start Time: <strong><%= l(@presenter.actual_start_time, format: :full_day_time_and_zone) %></strong></h6>
+            <h6>Start Time: <strong><%= l(@presenter.actual_start_time, format: :full_day_time_and_zone) %></strong>
+            </h6>
           <% end %>
           <h6>Status:
             <strong>
@@ -57,11 +58,13 @@
 </header>
 
 <article class="ost-article container">
-  <strong>Closest peers:
-    <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ', '.html_safe) %>
-  </strong><br/>
-  <hr/>
-  <% if @presenter.place_detail_rows.present? %>
+  <% if !@presenter.started? %>
+    <strong>The effort has not started.</strong>
+  <% else %>
+    <strong>Closest peers:
+      <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ', '.html_safe) %>
+    </strong><br/>
+    <hr/>
     <%= render 'place_detail_rows', view_object: @presenter %>
   <% end %>
 </article>

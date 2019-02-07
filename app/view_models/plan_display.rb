@@ -26,7 +26,8 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def cleaned_time
-    (params[:expected_time] || '').gsub(/[^\d:]/, '').split(':').first(2).join(':')
+    time = (params[:expected_time] || '').gsub(/[^\d:]/, '').split(':').first(2).join(':')
+    time.length.between?(1, 2) ? "#{time}:00" : time
   end
 
   def expected_laps

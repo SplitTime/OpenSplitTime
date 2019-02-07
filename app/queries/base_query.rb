@@ -41,4 +41,8 @@ class BaseQuery
   def self.sql_quotify(value)
     value.is_a?(String) ? "'#{value}'" : value
   end
+
+  def self.reset_database_timezone
+    ActiveRecord::Base.connection.execute("set timezone='UTC'")
+  end
 end

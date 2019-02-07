@@ -15,10 +15,8 @@ class SplitRawTimesPresenter < BasePresenter
   end
 
   def bib_rows
-    return @bib_rows if defined?(@bib_rows)
-    query = EventGroupQuery.bib_sub_split_rows(event_group: event_group, split_name: split_name, bitkey: bitkey, sort: params[:sort_hash])
-    result = ActiveRecord::Base.connection.execute(query)
-    @bib_rows = result.map { |row| BibTimeRow.new(row.merge(universal_bib_row_attributes)) }
+    @bib_rows ||= EventGroupQuery.bib_sub_split_rows(event_group: event_group, split_name: split_name,
+                                                     bitkey: bitkey, sort: params[:sort_hash])
   end
 
   def sources

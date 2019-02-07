@@ -153,8 +153,9 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#spread' do
     subject(:make_request) { get :spread, params: params }
-    let(:params) { {id: event_id} }
+    let(:params) { {id: event_id, display_style: display_style} }
     let(:event_id) { event.id }
+    let(:display_style) { 'absolute' }
     before { Rails.cache.clear }
 
     via_login_and_jwt do
@@ -188,18 +189,48 @@ RSpec.describe Api::V1::EventsController do
       context 'when split and effort data are available' do
         let(:event) { events(:hardrock_2015) }
 
-        it 'returns split data in the expected format' do
-          make_request
-          parsed_response = JSON.parse(response.body)
-          expect(parsed_response.dig('data', 'attributes', 'splitHeaderData').map { |header| header['title'] })
-              .to match_array(event.splits.map(&:base_name))
+        context 'when display_style is not provided' do
+          it 'returns split data in the expected format' do
+            make_request
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response.dig('data', 'attributes', 'splitHeaderData').map { |header| header['title'] })
+                .to match_array(event.splits.map(&:base_name))
+          end
+
+          it 'returns effort data in the expected format' do
+            make_request
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
+                .to match_array(event.efforts.map(&:last_name))
+          end
+
+          it 'returns time data in absolute time format' do
+            make_request
+            parsed_response = JSON.parse(response.body)
+            subject_row = parsed_response['included'].first
+            subject_effort = Effort.find(subject_row['id'])
+            expect(subject_row.dig('attributes', 'displayStyle')).to eq('absolute')
+
+            response_times = subject_row.dig('attributes', 'absoluteTimes').flatten.map(&:in_time_zone)
+            expected_times = subject_effort.split_times.map(&:absolute_time)
+            expect(response_times).to match_array(expected_times)
+          end
         end
 
-        it 'returns effort data in the expected format' do
-          make_request
-          parsed_response = JSON.parse(response.body)
-          expect(parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') })
-              .to match_array(event.efforts.map(&:last_name))
+        context 'when display_style is elapsed' do
+          let(:display_style) { 'elapsed' }
+
+          it 'returns time data in absolute time format' do
+            make_request
+            parsed_response = JSON.parse(response.body)
+            subject_row = parsed_response['included'].first
+            subject_effort = Effort.find(subject_row['id'])
+            expect(subject_row.dig('attributes', 'displayStyle')).to eq('elapsed')
+
+            response_times = subject_row.dig('attributes', 'elapsedTimes').flatten
+            expected_times = subject_effort.split_times.map(&:time_from_start)
+            expect(response_times).to match_array(expected_times)
+          end
         end
 
         context 'when a sort param is provided' do
@@ -211,18 +242,6 @@ RSpec.describe Api::V1::EventsController do
             last_names = parsed_response['included'].map { |effort| effort.dig('attributes', 'lastName') }
             expect(last_names.sort).to eq(last_names)
           end
-        end
-
-        it 'returns time data in the expected format' do
-          make_request
-          parsed_response = JSON.parse(response.body)
-          subject_row = parsed_response['included'].first
-          subject_effort = Effort.find(subject_row['id'])
-          expect(subject_row.dig('attributes', 'displayStyle')).to eq('absolute')
-
-          response_times = subject_row.dig('attributes', 'absoluteTimes').flatten.map(&:in_time_zone)
-          expected_times = subject_effort.split_times.map(&:absolute_time)
-          expect(response_times).to match_array(expected_times)
         end
       end
     end

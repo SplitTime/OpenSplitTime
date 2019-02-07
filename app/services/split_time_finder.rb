@@ -56,7 +56,7 @@ class SplitTimeFinder
   end
 
   def effort_start_time
-    effort.start_time || effort.event.start_time
+    effort.calculated_start_time
   end
 
   def ordered_time_points

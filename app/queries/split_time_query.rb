@@ -244,6 +244,8 @@ class SplitTimeQuery < BaseQuery
     query.squish
   end
 
+  # It is critical to reset_database_timezone after running this query.
+  # Failure to do so will lead to elusive bugs.
   def self.time_detail(args)
     scope = where_string_from_hash(args[:scope])
     home_time_zone = args[:home_time_zone]
@@ -282,7 +284,9 @@ class SplitTimeQuery < BaseQuery
       left join start_split_times sst on sst.effort_id = st.effort_id
       where #{scope}
     SQL
-    query.squish
+    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| SplitTimeData.new(row) }
+    reset_database_timezone
+    result
   end
 
   def self.effort_times(args)
@@ -344,6 +348,8 @@ class SplitTimeQuery < BaseQuery
     home_time_zone = event_group.home_time_zone
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
+    # It is critical to reset_database_timezone after running this query.
+    # Failure to do so will lead to elusive bugs.
     query = <<~SQL
       set timezone='#{time_zone}';
 
@@ -390,7 +396,9 @@ class SplitTimeQuery < BaseQuery
       group by i.start_time, i.end_time
       order by i.start_time
     SQL
-    query.squish
+    result = ActiveRecord::Base.connection.execute(query.squish).to_a
+    reset_database_timezone
+    result
   end
 
   def self.starting_split_times(args)

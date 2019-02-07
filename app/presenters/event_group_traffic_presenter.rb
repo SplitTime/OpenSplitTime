@@ -57,11 +57,7 @@ class EventGroupTrafficPresenter < BasePresenter
   attr_reader :parameterized_split_name
 
   def query_result
-    @query_result ||= ActiveRecord::Base.connection.execute(query).to_a
-  end
-
-  def query
-    SplitTimeQuery.split_traffic(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
+    @query_result ||= SplitTimeQuery.split_traffic(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
   end
 
   def split

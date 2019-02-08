@@ -7,6 +7,8 @@ class Subscription < ApplicationRecord
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key
+  after_save :attempt_person_subscription, if: :effort_has_person?
+
   validates_presence_of :user_id, :subscribable_type, :subscribable_id, :user, :subscribable, :protocol, :resource_key
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
 
@@ -57,5 +59,15 @@ class Subscription < ApplicationRecord
 
   def required_data_present?
     subscribable&.topic_resource_key.present? && user&.send(protocol).present?
+  end
+
+  def attempt_person_subscription
+    Subscription.find_or_create_by(subscribable: subscribable.person, user: user, protocol: protocol)
+  rescue Aws::SNS::Errors::NotFound
+    true
+  end
+
+  def effort_has_person?
+    subscribable_type == 'Effort' && subscribable.person&.topic_resource_key.present?
   end
 end

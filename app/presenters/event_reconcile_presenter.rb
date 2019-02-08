@@ -7,7 +7,7 @@ class EventReconcilePresenter < EventWithEffortsPresenter
   end
 
   def unreconciled_batch
-    event.unreconciled_efforts.order(:last_name).limit(20)
+    @unreconciled_batch ||= event.unreconciled_efforts.order(:last_name).limit(20)
   end
 
   private

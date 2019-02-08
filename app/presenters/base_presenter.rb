@@ -34,7 +34,7 @@ class BasePresenter
   end
 
   def per_page
-    params[:per_page] || 50
+    params[:per_page] || 200
   end
 
   def search_text

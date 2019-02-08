@@ -14,8 +14,8 @@ class NotifyParticipationJob < ApplicationJob
                                       subject: response.resources[:subject], notice_text: response.resources[:notice_text],
                                       topic_resource_key: topic_resource_key)
       unless notification.save
-        logger.error "Unable to create notification for #{effort} at #{event}"
-        logger.error notification.errors.full_messages
+        logger.error "  Unable to create notification for #{effort} at #{event}"
+        logger.error "  #{notification.errors.full_messages}"
       end
     end
   end

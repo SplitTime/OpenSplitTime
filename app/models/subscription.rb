@@ -63,7 +63,8 @@ class Subscription < ApplicationRecord
 
   def attempt_person_subscription
     Subscription.find_or_create_by(subscribable: subscribable.person, user: user, protocol: protocol)
-  rescue Aws::SNS::Errors::NotFound
+  rescue Aws::SNS::Errors::ServiceError => exception
+    logger.warn "  Subscription for #{subscribable.name} could not be created: #{exception.message}"
     true
   end
 

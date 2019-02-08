@@ -15,6 +15,10 @@ class PersonPresenter < BasePresenter
                      .where(person: person).sort_by { |effort| -effort.actual_start_time.to_i }
   end
 
+  def participation_notifiable?
+    person.topic_resource_key.present?
+  end
+
   def method_missing(method)
     person.send(method)
   end

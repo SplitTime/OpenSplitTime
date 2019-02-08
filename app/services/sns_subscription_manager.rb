@@ -25,30 +25,37 @@ class SnsSubscriptionManager
   end
 
   def generate
-    response = sns_client.subscribe(topic_arn: topic_arn,
-                                    protocol: protocol,
-                                    endpoint: endpoint)
+    response = sns_client.subscribe(topic_arn: topic_arn, protocol: protocol, endpoint: endpoint)
+
     if response.successful?
       Rails.logger.info "  Generated #{subscription}"
       confirmed_arn?(response.subscription_arn) ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
     else
-      warn "  Unable to generate #{subscription}"
+      Rails.logger.warn "  Unable to generate #{subscription}"
       nil
     end
+
+  rescue Aws::SNS::Errors::ServiceError => exception
+    Rails.logger.warn "  Topic could not be generated: #{exception.message}"
+    nil
   end
 
   def delete
     if subscription.confirmed?
-      response = sns_client.unsubscribe(subscription_arn: subscription_arn)
-      if response.successful?
-        Rails.logger.info "  Deleted SNS subscription #{subscription_arn}"
-        subscription_arn
-      else
-        warn "  Unable to delete #{subscription}"
-        nil
+      begin
+        response = sns_client.unsubscribe(subscription_arn: subscription_arn)
+        if response.successful?
+          Rails.logger.info "  Deleted SNS subscription #{subscription_arn}"
+          subscription_arn
+        else
+          Rails.logger.warn "  Unable to delete #{subscription}"
+          nil
+        end
+      rescue Aws::SNS::Errors::ServiceError => exception
+        Rails.logger.warn "  #{subscription} could not be deleted: #{exception.message}"
       end
     else
-      warn "  #{subscription} is unconfirmed or does not exist"
+      Rails.logger.warn "  #{subscription} is unconfirmed or does not exist"
     end
   end
 

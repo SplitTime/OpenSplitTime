@@ -17,27 +17,40 @@ class SnsTopicManager
 
   def generate
     response = sns_client.create_topic(name: "#{environment_prefix}follow_#{resource.slug}")
+
     if response.successful?
-      Rails.logger.info "Generated SNS topic for #{resource.slug}"
+      Rails.logger.info "  Generated SNS topic for #{resource.slug}"
       response.topic_arn.include?('arn:aws:sns') ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
-      warn "Unable to generate SNS topic for #{resource.slug}"
+      Rails.logger.warn "  Unable to generate SNS topic for #{resource.slug}"
       nil
     end
+
+  rescue Aws::SNS::Errors::ServiceError => exception
+    Rails.logger.warn "  Topic could not be generated: #{exception.message}"
+    nil
   end
 
   def delete
     if topic_arn && topic_arn.include?('arn:aws:sns')
-      response = sns_client.delete_topic(topic_arn: topic_arn)
-      if response.successful?
-        Rails.logger.info "Deleted SNS topic #{topic_arn}"
-        topic_arn
-      else
-        warn "Unable to delete SNS topic #{topic_arn}"
+      begin
+        response = sns_client.delete_topic(topic_arn: topic_arn)
+
+        if response.successful?
+          Rails.logger.info "  Deleted SNS topic #{topic_arn}"
+          topic_arn
+        else
+          Rails.logger.warn "  Unable to delete SNS topic #{topic_arn}"
+          nil
+        end
+
+      rescue Aws::SNS::Errors::ServiceError => exception
+        Rails.logger.warn "  Topic could not be deleted: #{exception.message}"
         nil
       end
+
     else
-      warn "#{resource.slug} has no topic_resource_key or topic_arn does not exist" unless Rails.env.test?
+      Rails.logger.warn "  #{resource.slug} has no topic_resource_key or topic_arn does not exist" unless Rails.env.test?
     end
   end
 

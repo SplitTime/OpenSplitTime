@@ -45,6 +45,10 @@ class PlaceDetailView
     ordered_split_times.size < 2
   end
 
+  def progress_notifiable?
+    effort.topic_resource_key.present? && !effort.stopped?
+  end
+
   def method_missing(method)
     effort.send(method)
   end

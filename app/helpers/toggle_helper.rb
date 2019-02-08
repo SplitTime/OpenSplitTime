@@ -74,18 +74,24 @@ module ToggleHelper
   def link_to_subscription(subscribable, protocol)
     protocol = protocol.to_s
     raise ArgumentError, "Improper protocol: #{protocol}" unless protocol.in?(%w[email sms])
+    update_type = case subscribable.class.to_s
+                  when 'Effort'
+                    'live progress'
+                  when 'Person'
+                    'future event sign-up'
+                  end
 
     args = case protocol
            when 'email'
              {icon_name: 'envelope',
-              subscribe_alert: "Receive email updates for #{subscribable.full_name}? " +
+              subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " +
                   "(You will need to click a link in a confirmation email that will be sent to you " +
                   "from AWS Notifications.)",
-              unsubscribe_alert: "Stop receiving email updates for #{subscribable.full_name}?"}
+              unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?"}
            when 'sms'
              {icon_name: 'mobile-alt',
-              subscribe_alert: "Receive text message updates for #{subscribable.full_name}?",
-              unsubscribe_alert: "Stop receiving text message updates for #{subscribable.full_name}?"}
+              subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}?",
+              unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?"}
            else
              {}
            end
@@ -121,14 +127,15 @@ module ToggleHelper
       url = subscriptions_path(subscription: {subscribable_type: subscribable_type, subscribable_id: subscribable_id, protocol: protocol})
       options = {method: 'post',
                  remote: true,
-                 class: "#{protocol}-sub btn btn-lg text-dark click-spinner",
+                 class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
                  data: {confirm: subscribe_alert}}
     end
-    link_to fa_icon(icon_name), url, options
+    link_to fa_icon(icon_name, text: " #{protocol}"), url, options
   end
 
   def link_to_sign_in(args)
     icon_name = args[:icon_name]
-    link_to fa_icon(icon_name), '#', class: "btn btn-lg text-dark", data: {toggle: 'modal', target: '#log-in-modal'}
+    protocol = args[:protocol]
+    link_to fa_icon(icon_name, text: " #{protocol}"), '#', class: "btn btn-lg btn-outline-secondary", data: {toggle: 'modal', target: '#log-in-modal'}
   end
 end

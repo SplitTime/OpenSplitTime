@@ -35,6 +35,7 @@
           <%= image_tag(@presenter.photo.url(:small)) %>
         </div>
       <% end %>
+      <%= render 'subscription_buttons', view_object: @presenter %>
     </div>
   </div>
 </header>
@@ -53,12 +54,6 @@
             <%= person_actions_dropdown_menu(@presenter) %>
           <% end %>
         </div>
-
-        <%= div_for(@presenter.person, class: "btn-group btn-group-sm btn-group-ost") do %>
-          <div class="btn btn-label btn-outline-subtle text-dark">Alert me of future events</div>
-          <%= link_to_subscription(@presenter.person, :email) %>
-          <%= link_to_subscription(@presenter.person, :sms) %>
-        <% end %>
       </div>
     </div>
   </div>

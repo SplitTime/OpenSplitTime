@@ -8,7 +8,6 @@
     <% if current_user&.admin? %>
         <th><%= link_to_reversing_sort_heading('Concealed?', 'concealed', params[:sort]) %></th>
     <% end %>
-    <th>Alert me of future events</th>
   </tr>
   </thead>
   <tbody>
@@ -19,12 +18,6 @@
         <td><%= person.flexible_geolocation %></td>
         <td><%= pluralize(person.effort_count, 'effort') %></td>
         <td><%= person.concealed? %></td>
-        <td>
-          <%= div_for(person) do %>
-              <%= link_to_subscription(person, :email) %>
-              <%= link_to_subscription(person, :sms) %>
-          <% end %>
-        </td>
       </tr>
   <% end %>
   </tbody>

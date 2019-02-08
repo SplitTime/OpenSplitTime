@@ -36,6 +36,10 @@ class EffortWithLapSplitRows
     effort.actual_start_time
   end
 
+  def progress_notifiable?
+    effort.topic_resource_key.present? && !effort.stopped?
+  end
+
   def true_lap_time(lap)
     lap_start_row = lap_split_rows.find { |row| row.start? && row.lap == lap }
     lap_finish_row = lap_split_rows.find { |row| row.finish? && row.lap == lap }

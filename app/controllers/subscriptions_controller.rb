@@ -31,9 +31,9 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if @subscription.destroy
-      logger.info "  #{@subscription} destroyed"
+      logger.info "  #{@subscription} deleted"
     else
-      logger.warn "  #{@subscription} not destroyed" and return
+      logger.warn "  #{@subscription} not deleted" and return
     end
     render :toggle_progress_subscription
   end

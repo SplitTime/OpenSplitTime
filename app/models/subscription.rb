@@ -7,7 +7,7 @@ class Subscription < ApplicationRecord
 
   before_validation :set_resource_key
   before_destroy :delete_resource_key
-  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :protocol, :resource_key
+  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :user, :subscribable, :protocol, :resource_key
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
 
   def set_resource_key

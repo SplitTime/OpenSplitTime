@@ -1,0 +1,13 @@
+<% if view_object.effort.topic_resource_key %>
+  <%= div_for(view_object.effort) do %>
+    <table class="table-fixed">
+      <tr>
+        <th>Live Time Updates</th>
+      </tr>
+      <tr>
+        <td class="table-button"><%= link_to_subscription(view_object.effort, :email) %></td>
+        <td class="table-button"><%= link_to_subscription(view_object.effort, :sms) %></td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>

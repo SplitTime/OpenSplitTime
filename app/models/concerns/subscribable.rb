@@ -11,7 +11,7 @@ module Subscribable
     has_many :subscriptions, as: :subscribable, dependent: :destroy
     has_many :followers, through: :subscriptions, source: :user
 
-    before_validation :set_topic_resource
+    before_save :set_topic_resource
     before_destroy :delete_topic_resource
   end
 

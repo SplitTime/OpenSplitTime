@@ -1,0 +1,2 @@
+$('#<%= "#{@subscription.subscribable_type.downcase}_#{@subscription.subscribable_id} .#{@subscription.protocol}-sub" %>')
+    .replaceWith("<%=j link_to_subscription(@subscription.subscribable, @subscription.protocol) %>");

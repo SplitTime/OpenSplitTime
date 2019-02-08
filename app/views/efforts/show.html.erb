@@ -42,17 +42,7 @@
           <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
         </div>
       <% end %>
-      <%= div_for(@presenter.person) do %>
-        <table class="table-fixed">
-          <tr>
-            <th>Notify Me Live</th>
-          </tr>
-          <tr>
-            <td class="table-button"><%= link_to_toggle_email_subscription(@presenter.person) %></td>
-            <td class="table-button"><%= link_to_toggle_sms_subscription(@presenter.person) %></td>
-          </tr>
-        </table>
-      <% end %>
+      <%= render 'subscription_buttons', view_object: @presenter %>
     </div>
     <%= effort_view_tabs(@presenter) %>
   </div>

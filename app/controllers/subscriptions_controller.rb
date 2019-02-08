@@ -2,24 +2,24 @@ class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
   after_action :verify_authorized
 
+  VALID_SUBSCRIBABLES = Subscription.all_polymorphic_types(:subscribable).map(&:to_s)
+  PROTOCOL_WARNINGS = {'sms' => 'Please add a mobile phone number to receive sms text notifications.',
+                       'http' => 'Please add an http endpoint to receive http notifications.',
+                       'https' => 'Please add an https endpoint to receive https notifications.'}
+
   def index
   end
 
   def create
-    # Raise an error if either person or user does not exist
-    Person.friendly.find(permitted_params[:person_id])
-    user = User.friendly.find(permitted_params[:user_id])
-
-    @subscription = Subscription.new(permitted_params)
+    subscription_params = permitted_params.allow(subscribable_type: VALID_SUBSCRIBABLES).merge(user_id: current_user.id)
+    @subscription = Subscription.new(subscription_params)
     authorize @subscription
 
-    if user.send(permitted_params[:protocol])
-      if @subscription.save
-        logger.info "#{@subscription} saved"
-      else
-        logger.warn "#{@subscription} not saved"
+    if current_user.send(permitted_params[:protocol])
+      unless @subscription.save
+        logger.warn "  Subscription could not be created: #{@subscription.errors.full_messages}"
       end
-      render :toggle_email_subscription
+      render :toggle_progress_subscription
     else
       flash_protocol_warning
       render :edit_user_endpoints
@@ -31,25 +31,16 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if @subscription.destroy
-      logger.info "#{@subscription} destroyed"
+      logger.info "  #{@subscription} destroyed"
     else
-      logger.warn "#{@subscription} not destroyed" and return
+      logger.warn "  #{@subscription} not destroyed" and return
     end
-    render :toggle_email_subscription
+    render :toggle_progress_subscription
   end
 
   private
 
   def flash_protocol_warning
-    case permitted_params[:protocol]
-    when 'sms'
-      flash[:warning] = 'Please add a mobile phone number to receive sms text notifications.'
-    when 'http'
-      flash[:warning] = 'Please add an http endpoint to receive http notifications.'
-    when 'https'
-      flash[:warning] = 'Please add an https endpoint to receive https notifications.'
-    else
-      flash[:warning] = 'Protocol does not exist.'
-    end
+    flash[:warning] = PROTOCOL_WARNINGS[permitted_params[:protocol]] || 'Protocol does not exist.'
   end
 end

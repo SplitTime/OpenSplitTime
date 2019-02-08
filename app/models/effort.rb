@@ -276,6 +276,10 @@ class Effort < ApplicationRecord
   private
 
   def generate_new_topic_resource?
-    resource_key_buildable? && !finished?
+    resource_key_buildable? && !finished? && progress_notifications_timely?
+  end
+
+  def progress_notifications_timely?
+    calculated_start_time > 1.day.ago
   end
 end

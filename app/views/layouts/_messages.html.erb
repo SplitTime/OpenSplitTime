@@ -1,7 +1,7 @@
 <%# Rails flash messages styled for Bootstrap 3.0 %>
 
 <%# New Growl Style Flash Messages %>
-<% if ! flash.empty? %>
+<% if flash.present? %>
 <script type="text/javascript">
   $(function() {
     <% flash.each do |name, msg| %>

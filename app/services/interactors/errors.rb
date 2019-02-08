@@ -14,7 +14,7 @@ module Interactors
 
     def aws_sns_error(exception)
       {title: exception.message,
-       detail: {context: exception.context}}
+       detail: {context: exception.context.http_request}}
     end
 
     def database_error(error_message)

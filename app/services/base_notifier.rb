@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BaseNotifier
+  include Interactors::Errors
+
   def self.publish(args)
     new(args).publish
   end
@@ -15,7 +17,7 @@ class BaseNotifier
     sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
     Interactors::Response.new([], 'Published', response: sns_response, subject: subject, notice_text: message)
   rescue Aws::SNS::Errors::ServiceError => exception
-    Interactors::Response.new([Interactors::Errors.aws_sns_error(exception)], exception.message, {})
+    Interactors::Response.new([aws_sns_error(exception)], exception.message, {})
   end
 
   private

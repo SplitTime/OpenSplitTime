@@ -7,11 +7,11 @@ class EffortProgressData
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required_alternatives: [:effort, :effort_id],
-                           exclusive: [:effort, :effort_id, :split_times, :split_time_ids, :multi_lap],
+                           required: [:effort, :split_times],
+                           exclusive: [:effort, :split_times],
                            class: self.class)
-    @effort = args[:effort] || Effort.friendly.find(args[:effort_id])
-    @split_times = args[:split_times] || SplitTime.where(id: args[:split_time_ids]).includes(:split, effort: :event).ordered
+    @effort = args[:effort]
+    @split_times = args[:split_times]
   end
 
   def effort_data
@@ -19,10 +19,6 @@ class EffortProgressData
                       event_name: event_name,
                       split_times_data: split_times_data,
                       effort_id: effort.id}
-  end
-
-  def followers
-    @followers ||= effort.followers
   end
 
   private

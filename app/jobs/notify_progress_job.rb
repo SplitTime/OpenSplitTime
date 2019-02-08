@@ -1,47 +1,58 @@
 # frozen_string_literal: true
 
 class NotifyProgressJob < ApplicationJob
-  def perform(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort_id, :split_time_ids],
-                           exclusive: [:effort_id, :split_time_ids, :multi_lap],
-                           class: self)
-    effort_id = args[:effort_id]
-    split_time_ids = args[:split_time_ids]
+  def perform(effort_id, split_time_ids)
+    @effort_id = effort_id
+    @split_time_ids = split_time_ids
+    return unless split_time_ids.compact.present? && split_times.present? && effort.present?
+    return if farther_notification_exists?
 
-    return unless effort_id.present? && split_time_ids.compact.present?
-
-    live_data = EffortProgressData.new(effort_id: effort_id, split_time_ids: split_time_ids)
-    return if live_data.split_times.empty? || farther_notification_exists?(live_data.split_times.last)
-
-    response = ProgressNotifier.publish(topic_arn: live_data.topic_resource_key, effort_data: live_data.effort_data)
+    response = ProgressNotifier.publish(topic_arn: topic_resource_key, effort_data: progress_data)
 
     if response.successful?
-      live_data.split_times.each do |split_time|
-        notification = Notification.new(kind: :progress, effort: split_time.effort, distance: split_time.total_distance,
-                                        bitkey: split_time.bitkey, follower_ids: live_data.followers.ids,
-                                        subject: response.resources[:subject], notice_text: response.resources[:notice_text],
-                                        topic_resource_key: response.resources[:topic_resource_key])
-        unless notification.save
-          logger.error "Unable to create notification for #{split_time.effort} at #{split_time.total_distance}"
-          logger.error notification.errors.full_messages
-        end
+      notification = Notification.new(kind: :progress, effort: effort, distance: farthest_split_time.total_distance,
+                                      bitkey: farthest_split_time.bitkey, follower_ids: followers.ids,
+                                      subject: response.resources[:subject], notice_text: response.resources[:notice_text],
+                                      topic_resource_key: effort.topic_resource_key)
+      unless notification.save
+        logger.error "  Unable to create notification for #{st.effort} at #{st.total_distance}"
+        logger.error "  #{notification.errors.full_messages}"
       end
     end
   end
 
   private
 
-  def farther_notification_exists?(split_time)
-    farthest_notification = farthest_notification(split_time.effort)
-    return false unless farthest_notification
-    proposed_distance = split_time.total_distance
+  attr_reader :effort_id, :split_time_ids
+  delegate :topic_resource_key, to: :effort
 
-    farthest_notification.distance > proposed_distance ||
-        (farthest_notification.distance == proposed_distance && farthest_notification.bitkey > split_time.bitkey)
+  def effort
+    @effort ||= Effort.where(id: effort_id).includes(:event, split_times: {split: :course}).first
   end
 
-  def farthest_notification(effort)
-    Notification.where(effort: effort).order(distance: :desc, bitkey: :desc).limit(1).first
+  def split_times
+    @split_times ||= effort.ordered_split_times.select { |st| st.id.in?(split_time_ids) }
+  end
+
+  def followers
+    @followers ||= effort.followers
+  end
+
+  def farther_notification_exists?
+    farthest_notification &&
+        ([farthest_notification.distance, farthest_notification.bitkey] <=>
+            [farthest_split_time.total_distance, farthest_split_time.bitkey]) > 0
+  end
+
+  def farthest_notification
+    Notification.where(kind: :progress, effort: effort).order(distance: :desc, bitkey: :desc).limit(1).first
+  end
+
+  def farthest_split_time
+    split_times.last
+  end
+
+  def progress_data
+    EffortProgressData.new(effort: effort, split_times: split_times).effort_data
   end
 end

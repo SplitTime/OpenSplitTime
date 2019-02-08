@@ -1,9 +1,0 @@
-<%= "Hello #{@follower.first_name}," %>
-
-<%= "The following new times were reported for #{@effort_data[:full_name]} at #{@effort_data[:event_name]}:" %>
-
-<% @effort_data[:split_times_data].each do |split_time_data| %>
-    <%= follower_update_body_text(split_time_data) %>
-<% end %>
-
-Thank you for using OpenSplitTime!

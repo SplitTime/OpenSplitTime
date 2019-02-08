@@ -91,6 +91,6 @@ class Person < ApplicationRecord
   private
 
   def generate_new_topic_resource?
-    resource_key_buildable?
+    true
   end
 end

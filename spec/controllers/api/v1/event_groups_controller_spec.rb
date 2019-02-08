@@ -488,8 +488,8 @@ RSpec.describe Api::V1::EventGroupsController do
           end
 
           it 'sends a message to NotifyProgressJob with relevant person and split_time data' do
-            allow(NotifyProgressJob).to receive(:perform_later) do |args|
-              args[:split_time_ids].sort!
+            allow(NotifyProgressJob).to receive(:perform_later) do |_, split_time_ids|
+              split_time_ids.sort!
             end
 
             make_request
@@ -497,7 +497,7 @@ RSpec.describe Api::V1::EventGroupsController do
             split_time_ids = split_times.map(&:id)
             effort_id = split_times.first.effort_id
 
-            expect(NotifyProgressJob).to have_received(:perform_later).with(effort_id: effort_id, split_time_ids: split_time_ids.sort)
+            expect(NotifyProgressJob).to have_received(:perform_later).with(effort_id, split_time_ids.sort)
           end
 
           it 'sends messages to Interactors::SetEffortStatus with the efforts associated with the modified split_times' do

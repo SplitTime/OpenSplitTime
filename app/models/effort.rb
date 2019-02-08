@@ -276,7 +276,7 @@ class Effort < ApplicationRecord
   private
 
   def generate_new_topic_resource?
-    resource_key_buildable? && !finished? && progress_notifications_timely?
+    !finished? && progress_notifications_timely?
   end
 
   def progress_notifications_timely?

@@ -11,7 +11,7 @@ class BulkProgressNotifier
 
   def notify
     grouped_ids.each do |effort_id, split_time_ids|
-      NotifyProgressJob.perform_later(effort_id: effort_id, split_time_ids: split_time_ids)
+      NotifyProgressJob.perform_later(effort_id, split_time_ids)
     end
   end
 

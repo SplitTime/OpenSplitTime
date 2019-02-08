@@ -4,7 +4,7 @@ RSpec.shared_examples_for 'subscribable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }
 
-  describe 'before validation' do
+  describe 'before save' do
     let(:subject) { build(model_name) }
 
     context 'when generate_new_topic_resource? returns true' do
@@ -12,13 +12,13 @@ RSpec.shared_examples_for 'subscribable' do
 
       it 'sets the topic_resource_key' do
         expect(subject.topic_resource_key).to be_nil
-        subject.valid?
+        subject.save
         expect(subject.topic_resource_key).not_to be_nil
       end
 
       it 'sends a :generate message to the topic_manager' do
         expect(subject.topic_manager).to receive(:generate).with(resource: subject)
-        subject.valid?
+        subject.save
       end
     end
 
@@ -27,13 +27,13 @@ RSpec.shared_examples_for 'subscribable' do
 
       it 'sets the topic_resource_key' do
         expect(subject.topic_resource_key).to be_nil
-        subject.valid?
+        subject.save
         expect(subject.topic_resource_key).to be_nil
       end
 
       it 'does not send a :generate message to the topic_manager' do
         expect(subject.topic_manager).not_to receive(:generate)
-        subject.valid?
+        subject.save
       end
     end
   end

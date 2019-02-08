@@ -15,8 +15,8 @@ module Subscribable
     before_destroy :delete_topic_resource
   end
 
-  def set_topic_resource
-    if generate_new_topic_resource?
+  def set_topic_resource(force: false)
+    if (force || generate_new_topic_resource?) && resource_key_buildable?
       self.topic_resource_key = topic_manager.generate(resource: self)
     end
   end

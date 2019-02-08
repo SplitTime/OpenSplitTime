@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ProgressNotifier
-  include MailHelper
-
   def self.publish(args)
     new(args).publish
   end
@@ -15,9 +13,9 @@ class ProgressNotifier
 
   def publish
     sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
-    Interactors::Response.new([], 'Published', response: sns_response, topic_resource_key: topic_arn, subject: subject, notice_text: message)
+    Interactors::Response.new([], 'Published', response: sns_response, subject: subject, notice_text: message)
   rescue Aws::SNS::Errors => error
-    Interactors::Response.new([error], 'Not published', response: sns_response, notice_text: nil)
+    Interactors::Response.new([error], 'Not published', response: sns_response)
   end
 
   private
@@ -41,5 +39,13 @@ class ProgressNotifier
     effort_data[:split_times_data].map do |split_time_data|
       follower_update_body_text(split_time_data)
     end.join("\n")
+  end
+
+  def follower_update_body_text(split_time_data)
+    "#{split_time_data[:split_name]} " +
+        "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " +
+        "#{split_time_data[:absolute_time_local]}, " +
+        "elapsed: #{split_time_data[:elapsed_time]}" +
+        "#{split_time_data[:stopped_here] ? ' and stopped there' : ''}"
   end
 end

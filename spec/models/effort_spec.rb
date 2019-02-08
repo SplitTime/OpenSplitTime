@@ -566,4 +566,42 @@ RSpec.describe Effort, type: :model do
       expect(subject.photo.exists?).to eq(true)
     end
   end
+
+  describe '#generate_new_topic_resource?' do
+    subject(:effort) { efforts(:sum_100k_un_started) }
+    before { effort.assign_attributes(scheduled_start_time: scheduled_start_time) }
+
+    context 'when the calculated start time is long ago' do
+      let(:scheduled_start_time) { 1.year.ago }
+
+      it 'returns false' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(false)
+      end
+    end
+
+    context 'when the calculated start time is less than a day ago' do
+      let(:scheduled_start_time) { 12.hours.ago }
+
+      it 'returns true' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(true)
+      end
+    end
+
+    context 'when the calculated start time is in the future' do
+      let(:scheduled_start_time) { 12.hours.from_now }
+
+      it 'returns true' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(true)
+      end
+    end
+
+    context 'when the effort is finished' do
+      let(:scheduled_start_time) { 12.hours.ago }
+      before { allow(effort).to receive(:finished?).and_return(true) }
+
+      it 'returns false' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(false)
+      end
+    end
+  end
 end

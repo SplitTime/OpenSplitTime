@@ -12,7 +12,7 @@ RSpec.describe EffortProgressData do
   let(:subject_split_times) { [in_split_time, out_split_time] }
 
   describe '#initialize' do
-    context 'with an effort and split_times in an args hash' do
+    context 'with an effort and split_times' do
       it 'initializes' do
         expect { subject }.not_to raise_error
       end
@@ -23,7 +23,7 @@ RSpec.describe EffortProgressData do
       let(:effort_split_times) { [] }
 
       it 'raises an ArgumentError' do
-        expect { subject }.to raise_error(/must include one of effort or effort_id/)
+        expect { subject }.to raise_error(/must include effort/)
       end
     end
   end

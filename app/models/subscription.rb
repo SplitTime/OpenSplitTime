@@ -8,6 +8,7 @@ class Subscription < ApplicationRecord
   before_validation :set_resource_key
   before_destroy :delete_resource_key
   after_save :attempt_person_subscription, if: :effort_has_person?
+  after_save :attempt_effort_subscriptions, if: :type_is_person?
 
   validates_presence_of :user_id, :subscribable_type, :subscribable_id, :user, :subscribable, :protocol, :resource_key
   validates :protocol, inclusion: {in: Subscription.protocols.keys}
@@ -62,13 +63,27 @@ class Subscription < ApplicationRecord
   end
 
   def attempt_person_subscription
-    Subscription.find_or_create_by(subscribable: subscribable.person, user: user, protocol: protocol)
+    person = subscribable.person
+    Subscription.find_or_create_by(subscribable: person, user: user, protocol: protocol)
   rescue Aws::SNS::Errors::ServiceError => exception
-    logger.warn "  Subscription for #{subscribable.name} could not be created: #{exception.message}"
+    logger.warn "  Subscription for #{person.name} could not be created: #{exception.message}"
     true
   end
 
   def effort_has_person?
     subscribable_type == 'Effort' && subscribable.person&.topic_resource_key.present?
+  end
+
+  def attempt_effort_subscriptions
+    subscribable.efforts.select(&:topic_resource_key).each do |effort|
+      Subscription.find_or_create_by(subscribable: effort, user: user, protocol: protocol)
+    rescue Aws::SNS::Errors::ServiceError => exception
+      logger.warn "  Subscription for #{effort.name} could not be created: #{exception.message}"
+      true
+    end
+  end
+
+  def type_is_person?
+    subscribable_type == 'Person'
   end
 end

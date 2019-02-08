@@ -8,7 +8,7 @@
     <% if current_user&.admin? %>
         <th><%= link_to_reversing_sort_heading('Concealed?', 'concealed', params[:sort]) %></th>
     <% end %>
-    <th>Notify Me Live</th>
+    <th>Alert me of future events</th>
   </tr>
   </thead>
   <tbody>
@@ -21,8 +21,8 @@
         <td><%= person.concealed? %></td>
         <td>
           <%= div_for(person) do %>
-              <%= link_to_toggle_email_subscription(person) %>
-              <%= link_to_toggle_sms_subscription(person) %>
+              <%= link_to_subscription(person, :email) %>
+              <%= link_to_subscription(person, :sms) %>
           <% end %>
         </td>
       </tr>

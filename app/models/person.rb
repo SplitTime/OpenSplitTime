@@ -2,22 +2,17 @@
 
 class Person < ApplicationRecord
 
-  include Auditable
-  include Concealable
-  include PersonalInfo
-  include Searchable
-  include SetOperations
-  include Matchable
+  include Auditable, Concealable, PersonalInfo, Searchable, Subscribable, Matchable
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone], :regex => /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
 
   enum gender: [:male, :female]
-  has_many :subscriptions, dependent: :destroy
-  has_many :followers, through: :subscriptions, source: :user
   has_many :efforts, dependent: :nullify
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
+
   has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
 
   attr_accessor :suggested_match
@@ -29,8 +24,6 @@ class Person < ApplicationRecord
       'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) ' +
       'as current_age_from_efforts'}
 
-  before_validation :set_topic_resource
-  before_destroy :delete_topic_resource
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
             format: {with: VALID_EMAIL_REGEX}
@@ -75,17 +68,6 @@ class Person < ApplicationRecord
     slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed?
   end
 
-  def set_topic_resource
-    self.topic_resource_key = SnsTopicManager.generate(person: self) if generate_new_topic_resource?
-  end
-
-  def delete_topic_resource
-    if topic_resource_key.present?
-      SnsTopicManager.delete(person: self)
-      self.topic_resource_key = nil
-    end
-  end
-
   def current_age_approximate
     Person.where(id: id).with_age_and_effort_count.first&.current_age_from_efforts
   end
@@ -98,19 +80,9 @@ class Person < ApplicationRecord
     claimant.present?
   end
 
-  def add_follower(user)
-    followers << user
-  end
-
-  def remove_follower(user)
-    followers.delete(user)
-  end
-
   def should_be_concealed?
     efforts.present? && efforts.all?(&:concealed?) # This avoids an n + 1 query when called from EventConcealedSetter
   end
-
-  # Methods related to matching and merging efforts with people
 
   def most_likely_duplicate
     possible_matching_people.first
@@ -119,6 +91,6 @@ class Person < ApplicationRecord
   private
 
   def generate_new_topic_resource?
-    topic_resource_key.nil? && slug.present?
+    true
   end
 end

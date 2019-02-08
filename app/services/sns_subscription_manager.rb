@@ -29,12 +29,10 @@ class SnsSubscriptionManager
                                     protocol: protocol,
                                     endpoint: endpoint)
     if response.successful?
-      print '.' unless Rails.env.test?
-      Rails.logger.info "Generated #{subscription}"
+      Rails.logger.info "  Generated #{subscription}"
       confirmed_arn?(response.subscription_arn) ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
     else
-      print 'X' unless Rails.env.test?
-      warn "Unable to generate #{subscription}"
+      warn "  Unable to generate #{subscription}"
       nil
     end
   end
@@ -43,17 +41,14 @@ class SnsSubscriptionManager
     if subscription.confirmed?
       response = sns_client.unsubscribe(subscription_arn: subscription_arn)
       if response.successful?
-        print '.' unless Rails.env.test?
-        Rails.logger.info "Deleted SNS subscription #{subscription_arn}"
+        Rails.logger.info "  Deleted SNS subscription #{subscription_arn}"
         subscription_arn
       else
-        print 'X' unless Rails.env.test?
-        warn "Unable to delete #{subscription}"
+        warn "  Unable to delete #{subscription}"
         nil
       end
     else
-      print '-' unless Rails.env.test?
-      warn "#{subscription} is unconfirmed or does not exist"
+      warn "  #{subscription} is unconfirmed or does not exist"
     end
   end
 
@@ -84,14 +79,14 @@ class SnsSubscriptionManager
   private
 
   attr_reader :subscription, :sns_client
-  delegate :person, :user, :protocol, :resource_key, to: :subscription
+  delegate :subscribable, :user, :protocol, :resource_key, to: :subscription
 
   def endpoint
     @endpoint ||= user.send(protocol)
   end
 
   def topic_arn
-    @topic_arn ||= person.topic_resource_key
+    @topic_arn ||= subscribable.topic_resource_key
   end
 
   def subscription_arn

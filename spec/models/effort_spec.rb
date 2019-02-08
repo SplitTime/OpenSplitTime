@@ -2,36 +2,6 @@
 
 require 'rails_helper'
 
-# t.integer "event_id", null: false
-# t.integer "person_id"
-# t.string "wave"
-# t.integer "bib_number"
-# t.string "city", limit: 64
-# t.string "state_code", limit: 64
-# t.integer "age"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.string "first_name"
-# t.string "last_name"
-# t.integer "gender"
-# t.string "country_code", limit: 2
-# t.date "birthdate"
-# t.integer "data_status"
-# t.string "beacon_url"
-# t.string "report_url"
-# t.string "phone", limit: 15
-# t.string "email"
-# t.string "slug", null: false
-# t.boolean "checked_in", default: false
-# t.string "photo_file_name"
-# t.string "photo_content_type"
-# t.integer "photo_file_size"
-# t.datetime "photo_updated_at"
-# t.string "emergency_contact"
-# t.string "emergency_phone"
-
 RSpec.describe Effort, type: :model do
   include BitkeyDefinitions
 
@@ -65,6 +35,7 @@ RSpec.describe Effort, type: :model do
 
       it 'is invalid without an event_id' do
         effort = build_stubbed(:effort, event: nil)
+        allow(effort).to receive(:finished?)
         expect(effort).not_to be_valid
         expect(effort.errors[:event_id]).to include("can't be blank")
       end
@@ -593,6 +564,44 @@ RSpec.describe Effort, type: :model do
       expect(existing_effort.photo.exists?).to eq(true)
       subject.update(photo: existing_effort.photo)
       expect(subject.photo.exists?).to eq(true)
+    end
+  end
+
+  describe '#generate_new_topic_resource?' do
+    subject(:effort) { efforts(:sum_100k_un_started) }
+    before { effort.assign_attributes(scheduled_start_time: scheduled_start_time) }
+
+    context 'when the calculated start time is long ago' do
+      let(:scheduled_start_time) { 1.year.ago }
+
+      it 'returns false' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(false)
+      end
+    end
+
+    context 'when the calculated start time is less than a day ago' do
+      let(:scheduled_start_time) { 12.hours.ago }
+
+      it 'returns true' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(true)
+      end
+    end
+
+    context 'when the calculated start time is in the future' do
+      let(:scheduled_start_time) { 12.hours.from_now }
+
+      it 'returns true' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(true)
+      end
+    end
+
+    context 'when the effort is finished' do
+      let(:scheduled_start_time) { 12.hours.ago }
+      before { allow(effort).to receive(:finished?).and_return(true) }
+
+      it 'returns false' do
+        expect(effort.send(:generate_new_topic_resource?)).to eq(false)
+      end
     end
   end
 end

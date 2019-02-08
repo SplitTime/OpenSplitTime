@@ -71,48 +71,54 @@ module ToggleHelper
     link_to fa_icon('square', text: 'All', type: :regular), url, options
   end
 
-  def link_to_toggle_email_subscription(person)
-    if current_user
-      link_to_toggle_subscription(person_id: person.id,
-                                  icon_name: 'envelope',
-                                  protocol: 'email',
-                                  subscribe_alert: "Receive live email updates for #{person.full_name}? " +
-                                      "(You will need to click a link in a confirmation email that will be sent to you " +
-                                      "from AWS Notifications.)",
-                                  unsubscribe_alert: "Stop receiving live email updates for #{person.full_name}?")
-    else
-      link_to_sign_in(icon_name: 'envelope', protocol: 'email')
-    end
-  end
+  def link_to_subscription(subscribable, protocol)
+    protocol = protocol.to_s
+    raise ArgumentError, "Improper protocol: #{protocol}" unless protocol.in?(%w[email sms])
 
-  def link_to_toggle_sms_subscription(person)
-    if current_user
-      link_to_toggle_subscription(person_id: person.id,
-                                  icon_name: 'mobile-alt',
-                                  protocol: 'sms',
-                                  subscribe_alert: "Receive live text message updates for #{person.full_name}?",
-                                  unsubscribe_alert: "Stop receiving live text message updates for #{person.full_name}?")
-    else
-      link_to_sign_in(icon_name: 'mobile-alt', protocol: 'sms')
+    args = case protocol
+           when 'email'
+             {icon_name: 'envelope',
+              subscribe_alert: "Receive email updates for #{subscribable.full_name}? " +
+                  "(You will need to click a link in a confirmation email that will be sent to you " +
+                  "from AWS Notifications.)",
+              unsubscribe_alert: "Stop receiving email updates for #{subscribable.full_name}?"}
+           when 'sms'
+             {icon_name: 'mobile-alt',
+              subscribe_alert: "Receive text message updates for #{subscribable.full_name}?",
+              unsubscribe_alert: "Stop receiving text message updates for #{subscribable.full_name}?"}
+           else
+             {}
+           end
+
+    if subscribable.topic_resource_key.present?
+      args.merge!(subscribable: subscribable, protocol: protocol)
+      if current_user
+        link_to_toggle_subscription(args)
+      else
+        link_to_sign_in(args)
+      end
     end
   end
 
   def link_to_toggle_subscription(args)
-    person_id = args[:person_id]
+    subscribable_type = args[:subscribable].class.to_s
+    subscribable_id = args[:subscribable].id
     icon_name = args[:icon_name]
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    subscription = current_user&.subscriptions&.find { |sub| (sub.person_id == person_id) && (sub.protocol == protocol) }
+    existing_subscription = current_user&.subscriptions&.find do |sub|
+      (sub.subscribable_type == subscribable_type) && (sub.subscribable_id == subscribable_id) && (sub.protocol == protocol)
+    end
 
-    if subscription
-      url = subscription_path(subscription)
+    if existing_subscription
+      url = subscription_path(existing_subscription)
       options = {method: 'delete',
                  remote: true,
                  class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
                  data: {confirm: unsubscribe_alert}}
     else
-      url = subscriptions_path(subscription: {user_id: current_user&.id, person_id: person_id, protocol: protocol})
+      url = subscriptions_path(subscription: {subscribable_type: subscribable_type, subscribable_id: subscribable_id, protocol: protocol})
       options = {method: 'post',
                  remote: true,
                  class: "#{protocol}-sub btn btn-lg text-dark click-spinner",

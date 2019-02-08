@@ -2,11 +2,6 @@
 
 require 'rails_helper'
 
-# t.integer "event_id"
-# t.integer "split_id"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-
 RSpec.describe AidStation, type: :model do
   subject(:aid_station) { AidStation.new(event: event, split: split) }
 

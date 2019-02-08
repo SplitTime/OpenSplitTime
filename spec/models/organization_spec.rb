@@ -2,15 +2,6 @@
 
 require 'rails_helper'
 
-# t.string "name", limit: 64, null: false
-# t.text "description"
-# t.datetime "created_at", null: false
-# t.datetime "updated_at", null: false
-# t.integer "created_by"
-# t.integer "updated_by"
-# t.boolean "concealed", default: true
-# t.string "slug", null: false
-
 RSpec.describe Organization, type: :model do
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:name).collapse_spaces }

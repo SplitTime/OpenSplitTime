@@ -52,6 +52,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    allowable (1.1.0)
     american_date (1.1.1)
     api-pagination (4.8.2)
     arel (9.0.0)
@@ -423,6 +424,7 @@ DEPENDENCIES
   active_model_serializers
   active_record_query_trace
   activerecord-import
+  allowable (~> 1.1)
   american_date
   api-pagination
   aws-sdk (~> 2.10.47)

@@ -48,6 +48,7 @@ gem 'gpx'
 gem 'activerecord-import'
 gem 'local_time'
 gem 'ffaker'
+gem 'allowable', '~> 1.1'
 
 group :development do
   gem 'bullet'

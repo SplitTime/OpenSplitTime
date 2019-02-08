@@ -15,7 +15,7 @@ class ProgressNotifier < BaseNotifier
 
   def message
     <<~MESSAGE
-      #{effort_data[:full_name]} at #{effort_data[:event_name]}:
+      #{effort_data[:full_name]} made progress at #{effort_data[:event_name]}:
       #{times_text}
       Full results: #{ENV['BASE_URI']}/efforts/#{effort_data[:effort_id]}
       Thank you for using OpenSplitTime!

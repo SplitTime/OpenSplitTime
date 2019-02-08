@@ -23,7 +23,7 @@ RSpec.describe ProgressNotifier do
       subject = ProgressNotifier.new(topic_arn: topic_arn, effort_data: effort_data, sns_client: sns_client)
       expected_subject = 'Update for Joe LastName 1 at Test Event 1 from OpenSplitTime'
       expected_message = <<~MESSAGE
-        Joe LastName 1 at Test Event 1:
+        Joe LastName 1 made progress at Test Event 1:
         Split 1 In (Mile 6.2), Friday  7:40AM, elapsed: 01:40:00
         Split 1 Out (Mile 6.2), Friday  7:50AM, elapsed: 01:50:00 and stopped there
         Full results: #{ENV['BASE_URI']}/efforts/101

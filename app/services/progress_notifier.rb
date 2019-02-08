@@ -1,26 +1,13 @@
 # frozen_string_literal: true
 
-class ProgressNotifier
-  def self.publish(args)
-    new(args).publish
-  end
-
-  def initialize(args)
-    @topic_arn = args[:topic_arn]
+class ProgressNotifier < BaseNotifier
+  def post_initialize(args)
     @effort_data = args[:effort_data]
-    @sns_client = args[:sns_client] || SnsClientFactory.client
-  end
-
-  def publish
-    sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
-    Interactors::Response.new([], 'Published', response: sns_response, subject: subject, notice_text: message)
-  rescue Aws::SNS::Errors => error
-    Interactors::Response.new([error], 'Not published', response: sns_response)
   end
 
   private
 
-  attr_reader :topic_arn, :effort_data, :sns_client
+  attr_reader :effort_data
 
   def subject
     "Update for #{effort_data[:full_name]} at #{effort_data[:event_name]} from OpenSplitTime"

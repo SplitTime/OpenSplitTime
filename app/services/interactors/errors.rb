@@ -12,6 +12,11 @@ module Interactors
        detail: {exception: exception}}
     end
 
+    def aws_sns_error(exception)
+      {title: exception.message,
+       detail: {context: exception.context}}
+    end
+
     def database_error(error_message)
       {title: 'A database error occurred',
        detail: {error_message: error_message}}

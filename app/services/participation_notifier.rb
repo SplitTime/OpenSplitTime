@@ -1,29 +1,16 @@
 # frozen_string_literal: true
 
-class ParticipationNotifier
+class ParticipationNotifier < BaseNotifier
   VERBS = {unstarted: 'will be participating', in_progress: 'is in progress', stopped: 'recently participated'}
   RESULTS_DESCRIPTORS = {unstarted: 'Watch for results', in_progress: 'Follow along', stopped: 'See full results'}
 
-  def self.publish(args)
-    new(args).publish
-  end
-
-  def initialize(args)
-    @topic_arn = args[:topic_arn]
+  def post_initialize(args)
     @effort = args[:effort]
-    @sns_client = args[:sns_client] || SnsClientFactory.client
-  end
-
-  def publish
-    sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
-    Interactors::Response.new([], 'Published', response: sns_response, subject: subject, notice_text: message)
-  rescue Aws::SNS::Errors => error
-    Interactors::Response.new([error], 'Not published', response: sns_response)
   end
 
   private
 
-  attr_reader :topic_arn, :effort, :sns_client
+  attr_reader :effort
   delegate :event, :person, to: :effort
 
   def subject

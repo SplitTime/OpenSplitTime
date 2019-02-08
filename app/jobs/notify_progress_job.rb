@@ -18,6 +18,11 @@ class NotifyProgressJob < ApplicationJob
         logger.error "  Unable to create notification for #{st.effort} at #{st.total_distance}"
         logger.error "  #{notification.errors.full_messages}"
       end
+    else
+      response.errors.each do |error|
+        logger.error "  ProgressNotifier.publish was unsuccessful: #{error.title}"
+        logger.error "  #{error.detail}"
+      end
     end
   end
 

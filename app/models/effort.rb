@@ -54,9 +54,8 @@ class Effort < ApplicationRecord
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
   scope :add_ready_to_start, -> do
-    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
+    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and (events.start_time < current_timestamp)) as ready_to_start')
         .left_joins(split_times: :split)
-        .joins(:event)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
 

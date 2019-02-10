@@ -75,7 +75,10 @@
               <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
                           class: "btn btn-success" %>
             <% end %>
-            <%= link_to "Raw time records (#{@presenter.raw_times_count})", raw_times_event_group_path(@presenter.event_group, filter: {bib_number: @presenter.bib_number}),
+            <%= link_to "Raw time records (#{@presenter.raw_times_count})",
+                        raw_times_event_group_path(@presenter.event_group,
+                                                   filter: {bib_number: @presenter.bib_number},
+                                                   sort: [:absolute_time, :entered_time]),
                         class: "btn btn-success" %>
           </div>
         </div>

@@ -151,6 +151,11 @@ module DropdownHelper
         {role: :separator},
         {name: 'Edit effort',
          link: edit_effort_path(view_object.effort)},
+        {name: 'Rebuild times',
+         link: rebuild_effort_path(view_object.effort),
+         method: :patch,
+         data: {confirm: "This will delete all split times and attempt to rebuild them from the " +
+             "#{pluralize(view_object.raw_times_count, 'raw time')} related to this effort. This action cannot be undone. Proceed?"}},
         {role: :separator},
         {name: 'Delete effort',
          link: effort_path(view_object.effort),

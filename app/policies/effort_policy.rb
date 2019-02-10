@@ -29,6 +29,10 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
+  def rebuild?
+    user.authorized_to_edit?(effort)
+  end
+
   def stop?
     user.authorized_to_edit?(effort)
   end

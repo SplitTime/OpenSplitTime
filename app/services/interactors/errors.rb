@@ -32,6 +32,11 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}
     end
 
+    def invalid_raw_time_error(raw_time, valid_sub_splits)
+      {title: 'Invalid raw time',
+       detail: {messages: ["#{raw_time} is invalid; the sub_split #{raw_time.sub_split} must be one of #{valid_sub_splits}"]}}
+    end
+
     def invalid_split_name_error(split_name, valid_split_names)
       {title: 'Invalid split name',
        detail: {messages: ["#{split_name} is invalid; valid names are: #{valid_split_names.to_sentence}"]}}
@@ -47,6 +52,11 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
     end
 
+    def missing_absolute_time_error(raw_time)
+      {title: 'Missing absolute time',
+       detail: {messages: ["Raw time #{raw_time} is missing an absolute time"]}}
+    end
+
     def missing_effort_error
       {title: 'Missing effort',
        detail: {messages: ['The raw_time is missing an effort']}}
@@ -60,6 +70,11 @@ module Interactors
     def raw_time_mismatch_error
       {title: 'Raw times do not match',
        detail: {messages: ['One or more raw times is not related to the provided event group']}}
+    end
+
+    def single_lap_event_error(interactor)
+      {title: 'Event cannot be a single lap',
+      detail: {messages: ["The event must be multi-lap to use #{interactor}"]}}
     end
 
     def sub_split_mismatch_error(child, new_parent)

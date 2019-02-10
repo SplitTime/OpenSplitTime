@@ -22,6 +22,10 @@ class EffortShowView < EffortWithLapSplitRows
     stopped? && (!finished? || laps_unlimited? || times_exist_after_stop?)
   end
 
+  def raw_times_count
+    event_group.raw_times.where(bib_number: bib_number).size
+  end
+
   private
 
   def problem_efforts

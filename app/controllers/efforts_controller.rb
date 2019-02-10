@@ -100,6 +100,15 @@ class EffortsController < ApplicationController
     @presenter = PlaceDetailView.new(@effort)
   end
 
+  def rebuild
+    authorize @effort
+
+    effort = Effort.where(id: @effort.id).includes(event: :splits).first
+    response = Interactors::RebuildEffortTimes.perform!(effort: effort, current_user_id: current_user.id)
+    set_flash_message(response) unless response.successful?
+    redirect_to effort_path(effort)
+  end
+
   def start
     authorize @effort
     effort = effort_with_splits

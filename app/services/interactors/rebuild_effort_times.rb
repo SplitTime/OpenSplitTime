@@ -28,6 +28,7 @@ module Interactors
         ActiveRecord::Base.transaction do
           destroy_split_times
           build_split_times unless errors.present?
+          set_effort_status unless errors.present?
           errors << resource_error_object(effort) unless errors.present? || effort.save
           raise ActiveRecord::Rollback if errors.present?
         end
@@ -66,6 +67,10 @@ module Interactors
                                stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: [rt],
                                created_by: current_user_id)
       end
+    end
+
+    def set_effort_status
+      Interactors::SetEffortStatus.perform(effort)
     end
 
     def effort_start_time

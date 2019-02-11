@@ -56,6 +56,12 @@ RSpec.describe Interactors::RebuildEffortTimes do
           raw_times = RawTime.where(source: 'rebuild_effort_test')
           expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
+
+        it 'sets data status for the effort and all split times' do
+          subject.perform!
+          expect(effort.data_status).to eq('bad')
+          expect(effort.ordered_split_times.map(&:data_status)).to eq(%w(good good good good good bad))
+        end
       end
 
       context 'when raw_times are duplicated' do

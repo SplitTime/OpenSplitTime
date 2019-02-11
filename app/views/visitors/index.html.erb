@@ -3,33 +3,37 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 <div class="homepage">
-  <div class="row first" >
+  <div class="row first">
     <div class="over-text">
       <h2><br/>Endurance Event Data Lives Here</h2>
       <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
         easy to collect, store, and play with endurance event data.<br/>
         <% if current_user %>
-            <br/>You are signed in. <strong>Scroll down to start exploring.</strong>
+          <br/>You are signed in. <strong>Scroll down to start exploring.</strong>
         <% else %>
-            <strong>Join the community now.</strong>
+          <strong>Join the community now.</strong>
         <% end %>
         <p/>
         <% unless current_user %>
-            <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
-              <div class="form-fields row clearfix">
-                <div class="form-group col-xs-12 col-md-6">
-                  <input id="user_email" type="text" name="user[email]" placeholder="Email Address"/>
-                </div>
-                <div class="form-group col-xs-12 col-md-6">
-                  <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
-                </div>
+          <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
+            <div class="form-fields row clearfix">
+              <div class="form-group col-xs-12 col-md-6">
+                <input id="user_email" type="text" name="user[email]" placeholder="Email Address"/>
               </div>
-              <p>Already using OpenSplitTime? <%= link_to t('devise.sessions.new.sign_in'), '#', class: 'sign-in', data: {toggle: 'modal', target: '#log-in-modal'} %>
-                <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
-            </form>
+              <div class="form-group col-xs-12 col-md-6">
+                <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
+              </div>
+            </div>
+            <p>Already using
+              OpenSplitTime? <%= link_to t('devise.sessions.new.sign_in'), '#', class: 'sign-in', data: {toggle: 'modal', target: '#log-in-modal'} %>
+              <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
+          </form>
         <% end %>
         <br/>
-        <%= link_to '2018 Never Summer', event_path('never-summer-100k-2018'), class: 'btn btn-info cta' %>
+        <h2>Recent Results</h2>
+        <% @presenter.recent_event_groups(4).each do |event_group| %>
+          <%= link_to event_group.name, event_group_path(event_group), class: 'btn btn-info cta' %>
+        <% end %>
         </div>
     <div class="gradient"></div>
     <a data-toggle="static-popover-dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
@@ -44,11 +48,12 @@
         OpenSplitTime will suggest where you need to be and when.<br/>
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
-      <%= link_to '2018 Silverton Ultra Marathon', plan_effort_course_path('silverton-double-dirty-30-course'), class: 'btn btn-info cta' %>
-      <%= link_to '2018 Never Summer 100K', plan_effort_course_path('never-summer-100k-course'), class: 'btn btn-info cta' %>
+      <% @presenter.upcoming_courses(4).each do |course| %>
+        <%= link_to course.name, plan_effort_course_path(course), class: 'btn btn-info cta' %>
+      <% end %>
     </div>
   </div>
-  <div class="row third" >
+  <div class="row third">
     <div class="over-text">
       <h2>Search the Archives</h2>
       <p>Browse and play with endurance event data like you've never done before. Analyze your efforts, discover
@@ -77,8 +82,8 @@
   <div class="row fifth">
     <div class="over-text">
       <h2>Unprecedented Live Tracking Tools</h2>
-      <p>OST Live Entry is revolutionary. It learns from your time data. It gives you race progress for each aid station. It
-        tells you instantly where your runners last reported, where they are due next, and who you ought to look
+      <p>OST Live Entry is revolutionary. It learns from your time data. It gives you race progress for each aid
+        station. It tells you instantly where your runners last reported, where they are due next, and who you ought to look
         for.<br/>
         <strong>Omniscience is pretty cool.</strong></p>
     </div>

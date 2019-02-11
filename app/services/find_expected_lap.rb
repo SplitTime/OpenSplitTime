@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FindExpectedLap
+  include TimePointMethods
+
   def self.perform(args)
     new(args).perform
   end
@@ -18,13 +20,17 @@ class FindExpectedLap
 
   def perform
     return 1 if maximum_lap == 1
-    missing_lap || (location_highest_lap + 1).clamp(1, maximum_lap)
+    identical_time_lap || missing_lap || (location_highest_lap + 1).clamp(1, maximum_lap)
   end
 
   private
 
   attr_reader :effort, :subject_attribute, :subject_value, :split_id, :bitkey
   delegate :event, to: :effort
+
+  def identical_time_lap
+    location_times.find { |st| st.send(subject_attribute) == subject_value }&.lap
+  end
 
   def missing_lap
     (1..highest_lap).find(&method(:time_fits_missing?))
@@ -54,7 +60,11 @@ class FindExpectedLap
   end
 
   def indexed_location_times
-    @indexed_location_times ||= split_times.select { |st| (st.split_id == split_id) && (st.bitkey == bitkey) }.index_by(&:lap)
+    @indexed_location_times ||= location_times.index_by(&:lap)
+  end
+
+  def location_times
+    @location_times ||= split_times.select { |st| st.sub_split == sub_split }
   end
 
   def location_highest_lap

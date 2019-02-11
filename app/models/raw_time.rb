@@ -8,6 +8,9 @@ class RawTime < ApplicationRecord
   include DataStatusMethods
   include TimePointMethods
   include TimeRecordable
+  include TimeZonable
+
+  zonable_attribute :absolute_time
 
   belongs_to :event_group
   belongs_to :split_time
@@ -112,5 +115,9 @@ class RawTime < ApplicationRecord
 
   def parameterize_split_name
     self.parameterized_split_name = split_name&.parameterize
+  end
+
+  def home_time_zone
+    @home_time_zone ||= attributes['home_time_zone'] || event_group.home_time_zone
   end
 end

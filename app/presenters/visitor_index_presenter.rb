@@ -5,7 +5,7 @@ class VisitorIndexPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    EventGroup.visible.includes(:events).sort_by(&:start_time).reverse.first(number)
+    EventGroup.visible.includes(events: :efforts).reject { |eg| eg.effort_count.zero? }.sort_by(&:start_time).reverse.first(number)
   end
 
   def upcoming_courses(number)

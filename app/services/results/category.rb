@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Results
-  Category = Struct.new(:name, :genders, :low_age, :high_age, :efforts) do
+  Category = Struct.new(:name, :genders, :low_age, :high_age, :efforts, keyword_init: true) do
 
     INF = 1.0/0
 

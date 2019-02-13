@@ -20,8 +20,8 @@ class EventSeriesPresenter < BasePresenter
   end
 
   def series_efforts
-    @series_efforts ||= common_efforts.map { |common_effort| build_series_effort(common_effort) }
-                            .sort_by { |series_effort| series_effort.total_time }
+    @series_efforts ||= common_efforts.map(&method(:build_series_effort))
+                            .sort_by(&:total_time)
   end
 
   private

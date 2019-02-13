@@ -8,7 +8,7 @@ module Results
 
     def initialize(args)
       @event = args[:event]
-      @template = Results::Templates.find(args[:template_name]) if args[:template_name]
+      @template = Results::Template.find(args[:template_name]) if args[:template_name]
     end
 
     def perform

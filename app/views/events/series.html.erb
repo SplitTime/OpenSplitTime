@@ -13,7 +13,7 @@
           <h1><strong><%= "Event Series: #{@presenter.event_names.join(', ')}" %></strong></h1>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= @presenter.organization.name %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item active">Event Series</li>
           </ul>
         </div>

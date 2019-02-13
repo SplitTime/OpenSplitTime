@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../../../app/services/results/compute'
-require_relative '../../../app/services/results/categories'
 require_relative '../../../app/services/results/category'
 require 'active_support/all'
 
@@ -36,19 +35,19 @@ RSpec.describe Results::Compute do
     let(:efforts) { [male_1, male_2, male_3, male_4, male_5, male_6, male_7, male_8, male_9, male_10,
                      female_1, female_2, female_3, female_4, female_5, female_6, female_7, female_8, female_9, female_10].shuffle }
 
-    let(:combined_overall) { Results::Categories.find(:combined_overall) }
-    let(:men_overall) { Results::Categories.find(:men_overall) }
-    let(:women_overall) { Results::Categories.find(:women_overall) }
-    let(:men_masters) { Results::Categories.find(:men_masters) }
-    let(:women_masters) { Results::Categories.find(:women_masters) }
-    let(:men_under_20) { Results::Categories.find(:men_under_20) }
-    let(:women_under_20) { Results::Categories.find(:women_under_20) }
-    let(:men_20s) { Results::Categories.find(:men_20s) }
-    let(:women_20s) { Results::Categories.find(:women_20s) }
-    let(:men_30s) { Results::Categories.find(:men_30s) }
-    let(:women_30s) { Results::Categories.find(:women_30s) }
-    let(:men_40s) { Results::Categories.find(:men_40s) }
-    let(:women_40s) { Results::Categories.find(:women_40s) }
+    let(:combined_overall) { Results::Category.find(:combined_overall) }
+    let(:men_overall) { Results::Category.find(:men_overall) }
+    let(:women_overall) { Results::Category.find(:women_overall) }
+    let(:men_masters) { Results::Category.find(:men_masters) }
+    let(:women_masters) { Results::Category.find(:women_masters) }
+    let(:men_under_20) { Results::Category.find(:men_under_20) }
+    let(:women_under_20) { Results::Category.find(:women_under_20) }
+    let(:men_20s) { Results::Category.find(:men_20s) }
+    let(:women_20s) { Results::Category.find(:women_20s) }
+    let(:men_30s) { Results::Category.find(:men_30s) }
+    let(:women_30s) { Results::Category.find(:women_30s) }
+    let(:men_40s) { Results::Category.find(:men_40s) }
+    let(:women_40s) { Results::Category.find(:women_40s) }
 
     before do
       efforts.each do |effort|

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_053703) do
+ActiveRecord::Schema.define(version: 2019_02_14_152213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -247,7 +247,6 @@ ActiveRecord::Schema.define(version: 2019_02_14_053703) do
     t.integer "low_age"
     t.integer "high_age"
     t.string "temp_key"
-    t.string "slug", null: false
     t.integer "created_by"
     t.integer "updated_by"
     t.datetime "created_at", null: false
@@ -268,7 +267,7 @@ ActiveRecord::Schema.define(version: 2019_02_14_053703) do
   create_table "results_templates", force: :cascade do |t|
     t.bigint "organization_id"
     t.string "name"
-    t.integer "method"
+    t.integer "aggregation_method"
     t.integer "podium_size"
     t.integer "point_system", default: [], array: true
     t.string "temp_key"

@@ -3,7 +3,7 @@ ramble:
   id: 1
   organization_id: 
   name: Ramble
-  method: 0
+  aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: ramble
@@ -16,7 +16,7 @@ overall_30s_40s_50s_seniors:
   id: 2
   organization_id: 
   name: Overall, 30s, 40s, 50s, Seniors
-  method: 0
+  aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: overall_30s_40s_50s_seniors
@@ -29,7 +29,7 @@ blue_sky:
   id: 3
   organization_id: 
   name: Blue Sky
-  method: 0
+  aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: blue_sky
@@ -42,7 +42,7 @@ masters_and_grandmasters:
   id: 4
   organization_id: 
   name: Masters and Grandmasters
-  method: 0
+  aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: masters_and_grandmasters
@@ -55,7 +55,7 @@ nighthawks_snowshoe:
   id: 5
   organization_id: 
   name: Nighthawks Snowshoe
-  method: 0
+  aggregation_method: 0
   podium_size: 
   point_system: "{16,12,9,7,6,5,4,3,2,1}"
   temp_key: nighthawks_snowshoe
@@ -68,7 +68,7 @@ nighthawks_ski:
   id: 6
   organization_id: 
   name: Nighthawks Ski
-  method: 0
+  aggregation_method: 0
   podium_size: 
   point_system: "{16,12,9,7,6,5,4,3,2,1}"
   temp_key: nighthawks_ski
@@ -81,7 +81,7 @@ simple:
   id: 7
   organization_id: 
   name: Simple
-  method: 0
+  aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: simple

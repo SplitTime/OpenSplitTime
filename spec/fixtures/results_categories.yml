@@ -8,7 +8,6 @@ overall:
   low_age: 
   high_age: 
   temp_key: combined_overall
-  slug: overall
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.216125'
@@ -22,7 +21,6 @@ overall_men:
   low_age: 
   high_age: 
   temp_key: men_overall
-  slug: overall-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.240465'
@@ -36,7 +34,6 @@ overall_women:
   low_age: 
   high_age: 
   temp_key: women_overall
-  slug: overall-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.246694'
@@ -50,7 +47,6 @@ masters_men_40:
   low_age: 40
   high_age: 
   temp_key: men_masters
-  slug: masters-men-40
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.252543'
@@ -64,7 +60,6 @@ masters_women_40:
   low_age: 40
   high_age: 
   temp_key: women_masters
-  slug: masters-women-40
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.258249'
@@ -78,7 +73,6 @@ masters_men_40_49:
   low_age: 40
   high_age: 49
   temp_key: men_40s_masters
-  slug: masters-men-40-49
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.263779'
@@ -92,7 +86,6 @@ masters_women_40_49:
   low_age: 40
   high_age: 49
   temp_key: women_40s_masters
-  slug: masters-women-40-49
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.269301'
@@ -106,7 +99,6 @@ grandmasters_men_50:
   low_age: 50
   high_age: 
   temp_key: men_grandmasters
-  slug: grandmasters-men-50
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.276758'
@@ -120,7 +112,6 @@ grandmasters_women_50:
   low_age: 50
   high_age: 
   temp_key: women_grandmasters
-  slug: grandmasters-women-50
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.282907'
@@ -134,7 +125,6 @@ senior_grandmasters_men_60:
   low_age: 60
   high_age: 
   temp_key: men_seniors
-  slug: senior-grandmasters-men-60
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.28843'
@@ -148,7 +138,6 @@ senior_grandmasters_women_60:
   low_age: 60
   high_age: 
   temp_key: women_seniors
-  slug: senior-grandmasters-women-60
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.295124'
@@ -162,7 +151,6 @@ boys_12_and_under:
   low_age: 
   high_age: 12
   temp_key: boys_12_and_under
-  slug: boys-12-and-under
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.303036'
@@ -176,7 +164,6 @@ girls_12_and_under:
   low_age: 
   high_age: 12
   temp_key: girls_12_and_under
-  slug: girls-12-and-under
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.310181'
@@ -190,7 +177,6 @@ boys_13_to_16:
   low_age: 13
   high_age: 16
   temp_key: boys_13_to_16
-  slug: boys-13-to-16
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.322522'
@@ -204,7 +190,6 @@ girls_13_to_16:
   low_age: 13
   high_age: 16
   temp_key: girls_13_to_16
-  slug: girls-13-to-16
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.330382'
@@ -218,7 +203,6 @@ boys_16_and_under:
   low_age: 
   high_age: 16
   temp_key: boys_16_and_under
-  slug: boys-16-and-under
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.338496'
@@ -232,7 +216,6 @@ girls_16_and_under:
   low_age: 
   high_age: 16
   temp_key: girls_16_and_under
-  slug: girls-16-and-under
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.348408'
@@ -246,7 +229,6 @@ under_20_men:
   low_age: 
   high_age: 19
   temp_key: men_under_20
-  slug: under-20-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.357627'
@@ -260,7 +242,6 @@ under_20_women:
   low_age: 
   high_age: 19
   temp_key: women_under_20
-  slug: under-20-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.371632'
@@ -274,7 +255,6 @@ under_20_women:
   low_age: 13
   high_age: 39
   temp_key: men_13_to_39
-  slug: 13-to-39-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.38053'
@@ -288,7 +268,6 @@ under_20_women:
   low_age: 13
   high_age: 39
   temp_key: women_13_to_39
-  slug: 13-to-39-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.388081'
@@ -302,7 +281,6 @@ under_20_women:
   low_age: 17
   high_age: 39
   temp_key: men_17_to_39
-  slug: 17-to-39-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.396785'
@@ -316,7 +294,6 @@ under_20_women:
   low_age: 17
   high_age: 39
   temp_key: women_17_to_39
-  slug: 17-to-39-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.405085'
@@ -330,7 +307,6 @@ under_20_women:
   low_age: 20
   high_age: 29
   temp_key: men_20s
-  slug: 20-to-29-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.418062'
@@ -344,7 +320,6 @@ under_20_women:
   low_age: 20
   high_age: 29
   temp_key: women_20s
-  slug: 20-to-29-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.426851'
@@ -358,7 +333,6 @@ under_20_women:
   low_age: 30
   high_age: 39
   temp_key: men_30s
-  slug: 30-to-39-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.435691'
@@ -372,7 +346,6 @@ under_20_women:
   low_age: 30
   high_age: 39
   temp_key: women_30s
-  slug: 30-to-39-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.445779'
@@ -386,7 +359,6 @@ under_20_women:
   low_age: 40
   high_age: 49
   temp_key: men_40s
-  slug: 40-to-49-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.453568'
@@ -400,7 +372,6 @@ under_20_women:
   low_age: 40
   high_age: 49
   temp_key: women_40s
-  slug: 40-to-49-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.461776'
@@ -414,7 +385,6 @@ under_20_women:
   low_age: 50
   high_age: 59
   temp_key: men_50s
-  slug: 50-to-59-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.469249'
@@ -428,7 +398,6 @@ under_20_women:
   low_age: 50
   high_age: 59
   temp_key: women_50s
-  slug: 50-to-59-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.476449'
@@ -442,7 +411,6 @@ under_20_women:
   low_age: 60
   high_age: 69
   temp_key: men_60s
-  slug: 60-to-69-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.483272'
@@ -456,7 +424,6 @@ under_20_women:
   low_age: 60
   high_age: 69
   temp_key: women_60s
-  slug: 60-to-69-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.489825'
@@ -470,7 +437,6 @@ under_30_men:
   low_age: 
   high_age: 29
   temp_key: men_under_30
-  slug: under-30-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.498658'
@@ -484,7 +450,6 @@ under_30_women:
   low_age: 
   high_age: 29
   temp_key: women_under_30
-  slug: under-30-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.506807'
@@ -498,7 +463,6 @@ under_40_men:
   low_age: 
   high_age: 39
   temp_key: men_under_40
-  slug: under-40-men
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.519912'
@@ -512,7 +476,6 @@ under_40_women:
   low_age: 
   high_age: 39
   temp_key: women_under_40
-  slug: under-40-women
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.529403'

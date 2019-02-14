@@ -84,7 +84,7 @@
           <%= f.label :podium_template %>
         </div>
         <div class="col-sm-8">
-          <%= collection_select(:event, :podium_template, Results::Templates.keys_and_names, :first, :last,
+          <%= collection_select(:event, :results_template_id, ResultsTemplate.pluck(:id, :name), :first, :last,
                                 {prompt: true}, {class: "form-control dropdown-select-field"}) %>
         </div>
       </div>

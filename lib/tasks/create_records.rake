@@ -57,6 +57,45 @@ namespace :create_records do
     puts "\nCreated #{saved_efforts_count} efforts in #{elapsed_time} seconds"
   end
 
+  desc 'Create ResultsTemplates from Results::Template.all'
+  task :results_templates => :environment do
+    process_start_time = Time.current
+    require 'results/template'
+    require 'results/category'
+
+    unless defined?(Results::Template) && defined?(Results::Category)
+      abort 'Results::Template and Results::Category must be defined'
+    end
+
+    categories = Results::Category.all
+    puts "Found #{pluralize(categories.size, 'category')}"
+
+    categories.each do |key, category|
+      puts "Creating category #{category.name}"
+      ResultsCategory.create!(temp_key: key, name: category.name,
+                              male: category.genders.include?('male'), female: category.genders.include?('female'),
+                              low_age: category.low_age, high_age: category.high_age,
+                              created_by: 1)
+    end
+
+    templates = Results::Template.all
+    puts "Found #{pluralize(templates.size, 'template')}"
+
+    templates.each do |key, template|
+      puts "Creating template #{template.name}"
+      results_template = ResultsTemplate.create!(temp_key: key, name: template.name, method: template.method,
+                                                 podium_size: template.podium_size, point_system: template.point_system,
+                                                 created_by: 1)
+      template.category_names.each do |category_name|
+        results_category = ResultsCategory.find_by(temp_key: category_name)
+        results_template.results_categories << results_category
+      end
+    end
+
+    elapsed_time = Time.current - process_start_time
+    puts "\nFinished in #{elapsed_time} seconds"
+  end
+
   desc 'Create random raw_time records for testing'
   task :raw_times, [:event_group_id, :effort_count, :laps] => :environment do |_, args|
     process_start_time = Time.current

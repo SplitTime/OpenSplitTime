@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_06_201900) do
+ActiveRecord::Schema.define(version: 2019_02_14_033831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -237,6 +237,46 @@ ActiveRecord::Schema.define(version: 2019_02_06_201900) do
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end
 
+  create_table "results_categories", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "name"
+    t.boolean "male"
+    t.boolean "female"
+    t.integer "low_age"
+    t.integer "high_age"
+    t.string "temp_key"
+    t.string "slug", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_results_categories_on_organization_id"
+  end
+
+  create_table "results_template_categories", force: :cascade do |t|
+    t.bigint "results_template_id"
+    t.bigint "results_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
+    t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
+  end
+
+  create_table "results_templates", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "name"
+    t.integer "method"
+    t.integer "podium_size"
+    t.integer "point_system", default: [], array: true
+    t.string "temp_key"
+    t.string "slug", null: false
+    t.integer "created_by"
+    t.integer "updated_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_results_templates_on_organization_id"
+  end
+
   create_table "split_times", id: :serial, force: :cascade do |t|
     t.integer "effort_id", null: false
     t.integer "split_id", null: false
@@ -355,6 +395,10 @@ ActiveRecord::Schema.define(version: 2019_02_06_201900) do
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"
+  add_foreign_key "results_categories", "organizations"
+  add_foreign_key "results_template_categories", "results_categories"
+  add_foreign_key "results_template_categories", "results_templates"
+  add_foreign_key "results_templates", "organizations"
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"

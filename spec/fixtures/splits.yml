@@ -1,4 +1,124 @@
 ---
+hardrock_ccw_start:
+  id: 5
+  course_id: 4
+  location_id: 17
+  distance_from_start: 0
+  vert_gain_from_start: 0.0
+  vert_loss_from_start: 0.0
+  kind: 0
+  created_at: '2016-04-18 09:09:56.005933'
+  updated_at: '2018-03-16 14:58:28.105359'
+  created_by: 3
+  updated_by: 1
+  description: Silverton High School
+  base_name: Start
+  sub_split_bitmap: 1
+  latitude: '37.811954'
+  longitude: "-107.664814"
+  elevation: 2837.84594726562
+  slug: hardrock-ccw-start
+  parameterized_base_name: start
+hardrock_ccw_cunningham:
+  id: 6
+  course_id: 4
+  location_id: 
+  distance_from_start: 14966
+  vert_gain_from_start: 1170.432
+  vert_loss_from_start: 844.296
+  kind: 2
+  created_at: '2016-04-18 09:09:56.017581'
+  updated_at: '2019-01-31 08:35:14.07341'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Cunningham
+  sub_split_bitmap: 65
+  latitude: '37.793287'
+  longitude: "-107.577864"
+  elevation: 3164.79809570312
+  slug: hardrock-ccw-cunningham
+  parameterized_base_name: cunningham
+hardrock_ccw_sherman:
+  id: 12
+  course_id: 4
+  location_id: 
+  distance_from_start: 46349
+  vert_gain_from_start: 3084.576
+  vert_loss_from_start: 2749.296
+  kind: 2
+  created_at: '2016-04-18 09:09:56.048422'
+  updated_at: '2019-01-31 08:35:32.868078'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Sherman
+  sub_split_bitmap: 65
+  latitude: '37.901170'
+  longitude: "-107.430661"
+  elevation: 2925.47534179688
+  slug: hardrock-ccw-sherman
+  parameterized_base_name: sherman
+hardrock_ccw_grouse:
+  id: 16
+  course_id: 4
+  location_id: 
+  distance_from_start: 67914
+  vert_gain_from_start: 4452.5184
+  vert_loss_from_start: 4025.7984
+  kind: 2
+  created_at: '2016-04-18 09:09:56.067613'
+  updated_at: '2019-01-31 08:36:52.637995'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Grouse
+  sub_split_bitmap: 65
+  latitude: '37.917532'
+  longitude: "-107.558352"
+  elevation: 3282.86303710938
+  slug: hardrock-ccw-grouse
+  parameterized_base_name: grouse
+hardrock_ccw_ouray:
+  id: 20
+  course_id: 4
+  location_id: 
+  distance_from_start: 91088
+  vert_gain_from_start: 5295.2904
+  vert_loss_from_start: 5792.1144
+  kind: 2
+  created_at: '2016-04-18 09:09:56.086046'
+  updated_at: '2018-03-16 14:58:28.26417'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Ouray
+  sub_split_bitmap: 65
+  latitude: '38.024295'
+  longitude: "-107.670822"
+  elevation: 2371.22412109375
+  slug: hardrock-ccw-ouray
+  parameterized_base_name: ouray
+hardrock_ccw_telluride:
+  id: 26
+  course_id: 4
+  location_id: 
+  distance_from_start: 117160
+  vert_gain_from_start: 6961.9368
+  vert_loss_from_start: 7144.8168
+  kind: 2
+  created_at: '2016-04-18 09:09:56.11459'
+  updated_at: '2018-03-16 14:58:28.32161'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Telluride
+  sub_split_bitmap: 65
+  latitude: '37.938782'
+  longitude: "-107.808838"
+  elevation: 2690.43334960938
+  slug: hardrock-ccw-telluride
+  parameterized_base_name: telluride
 hardrock_ccw_putnam:
   id: 32
   course_id: 4
@@ -19,6 +139,166 @@ hardrock_ccw_putnam:
   elevation: 3482.12158203125
   slug: hardrock-ccw-putnam
   parameterized_base_name: putnam
+hardrock_ccw_finish:
+  id: 34
+  course_id: 4
+  location_id: 
+  distance_from_start: 161739
+  vert_gain_from_start: 10073.64
+  vert_loss_from_start: 10073.64
+  kind: 1
+  created_at: '2016-04-18 09:09:56.159252'
+  updated_at: '2019-01-30 21:33:24.052358'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Finish
+  sub_split_bitmap: 1
+  latitude: '37.811971'
+  longitude: "-107.664771"
+  elevation: 2837.96826171875
+  slug: hardrock-ccw-finish
+  parameterized_base_name: finish
+ramble_even_course_start:
+  id: 46
+  course_id: 9
+  location_id: 
+  distance_from_start: 0
+  vert_gain_from_start: 0.0
+  vert_loss_from_start: 0.0
+  kind: 0
+  created_at: '2016-05-08 07:10:07.193995'
+  updated_at: '2019-01-30 21:33:43.974804'
+  created_by: 1
+  updated_by: 1
+  description: Starting point for the Ramble Even-Year Course course.
+  base_name: Start
+  sub_split_bitmap: 1
+  latitude: 
+  longitude: 
+  elevation: 
+  slug: ramble-even-course-start
+  parameterized_base_name: start
+ramble_even_course_finish:
+  id: 47
+  course_id: 9
+  location_id: 
+  distance_from_start: 6759
+  vert_gain_from_start: 249.935992002048
+  vert_loss_from_start: 249.935992002048
+  kind: 1
+  created_at: '2016-05-08 07:10:07.195406'
+  updated_at: '2019-01-30 21:34:01.576579'
+  created_by: 1
+  updated_by: 1
+  description: Finish point for the Ramble Even-Year Course course.
+  base_name: Finish
+  sub_split_bitmap: 1
+  latitude: 
+  longitude: 
+  elevation: 
+  slug: ramble-even-course-finish
+  parameterized_base_name: finish
+hardrock_cw_start:
+  id: 81
+  course_id: 12
+  location_id: 
+  distance_from_start: 0
+  vert_gain_from_start: 0.0
+  vert_loss_from_start: 0.0
+  kind: 0
+  created_at: '2016-05-23 01:04:57.226299'
+  updated_at: '2019-01-31 08:29:08.562736'
+  created_by: 1
+  updated_by: 1
+  description: Starting point for the Hardrock CW course.
+  base_name: Start
+  sub_split_bitmap: 1
+  latitude: '37.812496'
+  longitude: "-107.665898"
+  elevation: 2839.82150912571
+  slug: hardrock-cw-start
+  parameterized_base_name: start
+hardrock_cw_finish:
+  id: 82
+  course_id: 12
+  location_id: 
+  distance_from_start: 161739
+  vert_gain_from_start: 10073.64
+  vert_loss_from_start: 10073.64
+  kind: 1
+  created_at: '2016-05-23 01:04:57.227554'
+  updated_at: '2019-01-31 08:33:29.136331'
+  created_by: 1
+  updated_by: 1
+  description: Finish point for the Hardrock CW course.
+  base_name: Finish
+  sub_split_bitmap: 1
+  latitude: '37.812496'
+  longitude: "-107.665898"
+  elevation: 2839.82150912571
+  slug: hardrock-cw-finish
+  parameterized_base_name: finish
+hardrock_cw_telluride:
+  id: 87
+  course_id: 12
+  location_id: 
+  distance_from_start: 44578
+  vert_gain_from_start: 2928.82310627766
+  vert_loss_from_start: 3099.51110081564
+  kind: 2
+  created_at: '2016-05-23 01:09:02.026784'
+  updated_at: '2019-01-31 08:28:21.230857'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Telluride
+  sub_split_bitmap: 65
+  latitude: '37.935055'
+  longitude: "-107.807532"
+  elevation: 2678.88711427561
+  slug: hardrock-cw-telluride
+  parameterized_base_name: telluride
+hardrock_cw_ouray:
+  id: 93
+  course_id: 12
+  location_id: 
+  distance_from_start: 70650
+  vert_gain_from_start: 4281.52546299119
+  vert_loss_from_start: 4778.34944709282
+  kind: 2
+  created_at: '2016-05-23 01:09:02.078134'
+  updated_at: '2019-01-31 08:29:48.792823'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Ouray
+  sub_split_bitmap: 65
+  latitude: '38.027895'
+  longitude: "-107.672853"
+  elevation: 7739.78615232684
+  slug: hardrock-cw-ouray
+  parameterized_base_name: ouray
+hardrock_cw_grouse:
+  id: 97
+  course_id: 12
+  location_id: 
+  distance_from_start: 93824
+  vert_gain_from_start: 6047.84140646908
+  vert_loss_from_start: 5621.12142012411
+  kind: 2
+  created_at: '2016-05-23 01:09:02.100361'
+  updated_at: '2019-01-31 08:30:38.830627'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Grouse
+  sub_split_bitmap: 65
+  latitude: '37.917532'
+  longitude: "-107.558352"
+  elevation: 3291.83989466112
+  slug: hardrock-cw-grouse
+  parameterized_base_name: grouse
 hardrock_cw_sherman:
   id: 101
   course_id: 12
@@ -59,26 +339,66 @@ hardrock_cw_cunningham:
   elevation: 3162.9094987869
   slug: hardrock-cw-cunningham
   parameterized_base_name: cunningham
-hardrock_ccw_finish:
-  id: 34
-  course_id: 4
+rufa_course_start:
+  id: 135
+  course_id: 20
   location_id: 
-  distance_from_start: 161739
-  vert_gain_from_start: 10073.64
-  vert_loss_from_start: 10073.64
-  kind: 1
-  created_at: '2016-04-18 09:09:56.159252'
-  updated_at: '2019-01-30 21:33:24.052358'
+  distance_from_start: 0
+  vert_gain_from_start: 0.0
+  vert_loss_from_start: 0.0
+  kind: 0
+  created_at: '2017-01-28 13:21:38.627377'
+  updated_at: '2018-03-16 14:58:29.096437'
   created_by: 1
   updated_by: 1
-  description: 
+  description: Starting point for the RUFA Course course.
+  base_name: Start
+  sub_split_bitmap: 1
+  latitude: '40.698096'
+  longitude: "-111.742930"
+  elevation: 1738.73815917969
+  slug: rufa-course-start
+  parameterized_base_name: start
+rufa_course_finish:
+  id: 136
+  course_id: 20
+  location_id: 
+  distance_from_start: 8690
+  vert_gain_from_start: 780.288
+  vert_loss_from_start: 780.288
+  kind: 1
+  created_at: '2017-01-28 13:21:38.656813'
+  updated_at: '2018-03-16 14:58:29.106766'
+  created_by: 1
+  updated_by: 1
+  description: Finish point for the RUFA Course course.
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '37.811971'
-  longitude: "-107.664771"
-  elevation: 2837.96826171875
-  slug: hardrock-ccw-finish
+  latitude: '40.698080'
+  longitude: "-111.742930"
+  elevation: 1738.33129882812
+  slug: rufa-course-finish
   parameterized_base_name: finish
+rufa_course_grandeur_peak:
+  id: 137
+  course_id: 20
+  location_id: 
+  distance_from_start: 4345
+  vert_gain_from_start: 780.288
+  vert_loss_from_start: 0.0
+  kind: 2
+  created_at: '2017-01-28 13:23:10.270043'
+  updated_at: '2018-11-21 00:01:19.151959'
+  created_by: 1
+  updated_by: 1
+  description: Top of Grander Peak
+  base_name: Grandeur Peak
+  sub_split_bitmap: 1
+  latitude: '40.707189'
+  longitude: "-111.759710"
+  elevation: 2522.94921875
+  slug: rufa-course-grandeur-peak
+  parameterized_base_name: grandeur-peak
 d30_50k_course_start:
   id: 164
   course_id: 26
@@ -139,106 +459,6 @@ d30_50k_course_aid_5:
   elevation: 2434.32568359375
   slug: d30-50k-course-aid-5
   parameterized_base_name: aid-5
-ramble_even_course_start:
-  id: 46
-  course_id: 9
-  location_id: 
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2016-05-08 07:10:07.193995'
-  updated_at: '2019-01-30 21:33:43.974804'
-  created_by: 1
-  updated_by: 1
-  description: Starting point for the Ramble Even-Year Course course.
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
-  slug: ramble-even-course-start
-  parameterized_base_name: start
-ramble_even_course_finish:
-  id: 47
-  course_id: 9
-  location_id: 
-  distance_from_start: 6759
-  vert_gain_from_start: 249.935992002048
-  vert_loss_from_start: 249.935992002048
-  kind: 1
-  created_at: '2016-05-08 07:10:07.195406'
-  updated_at: '2019-01-30 21:34:01.576579'
-  created_by: 1
-  updated_by: 1
-  description: Finish point for the Ramble Even-Year Course course.
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
-  slug: ramble-even-course-finish
-  parameterized_base_name: finish
-rufa_course_grandeur_peak:
-  id: 137
-  course_id: 20
-  location_id: 
-  distance_from_start: 4345
-  vert_gain_from_start: 780.288
-  vert_loss_from_start: 0.0
-  kind: 2
-  created_at: '2017-01-28 13:23:10.270043'
-  updated_at: '2018-11-21 00:01:19.151959'
-  created_by: 1
-  updated_by: 1
-  description: Top of Grander Peak
-  base_name: Grandeur Peak
-  sub_split_bitmap: 1
-  latitude: '40.707189'
-  longitude: "-111.759710"
-  elevation: 2522.94921875
-  slug: rufa-course-grandeur-peak
-  parameterized_base_name: grandeur-peak
-rufa_course_finish:
-  id: 136
-  course_id: 20
-  location_id: 
-  distance_from_start: 8690
-  vert_gain_from_start: 780.288
-  vert_loss_from_start: 780.288
-  kind: 1
-  created_at: '2017-01-28 13:21:38.656813'
-  updated_at: '2018-03-16 14:58:29.106766'
-  created_by: 1
-  updated_by: 1
-  description: Finish point for the RUFA Course course.
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: '40.698080'
-  longitude: "-111.742930"
-  elevation: 1738.33129882812
-  slug: rufa-course-finish
-  parameterized_base_name: finish
-hardrock_ccw_telluride:
-  id: 26
-  course_id: 4
-  location_id: 
-  distance_from_start: 117160
-  vert_gain_from_start: 6961.9368
-  vert_loss_from_start: 7144.8168
-  kind: 2
-  created_at: '2016-04-18 09:09:56.11459'
-  updated_at: '2018-03-16 14:58:28.32161'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Telluride
-  sub_split_bitmap: 65
-  latitude: '37.938782'
-  longitude: "-107.808838"
-  elevation: 2690.43334960938
-  slug: hardrock-ccw-telluride
-  parameterized_base_name: telluride
 d30_50k_course_aid_1:
   id: 167
   course_id: 26
@@ -359,26 +579,6 @@ d30_12m_course_finish:
   elevation: 2356.2763671875
   slug: d30-12m-course-finish
   parameterized_base_name: finish
-sum_100k_course_molas_pass_aid1:
-  id: 206
-  course_id: 31
-  location_id: 
-  distance_from_start: 18347
-  vert_gain_from_start: 609.6
-  vert_loss_from_start: 60.96
-  kind: 2
-  created_at: '2018-01-18 05:09:24.887373'
-  updated_at: '2019-01-30 21:33:24.308328'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Molas Pass (Aid1)
-  sub_split_bitmap: 65
-  latitude: '37.739536'
-  longitude: "-107.698161"
-  elevation: 3328.416
-  slug: sum-100k-course-molas-pass-aid1
-  parameterized_base_name: molas-pass-aid1
 sum_100k_course_start:
   id: 204
   course_id: 31
@@ -419,6 +619,26 @@ sum_100k_course_finish:
   elevation: 2840.0
   slug: sum-100k-course-finish
   parameterized_base_name: finish
+sum_100k_course_molas_pass_aid1:
+  id: 206
+  course_id: 31
+  location_id: 
+  distance_from_start: 18347
+  vert_gain_from_start: 609.6
+  vert_loss_from_start: 60.96
+  kind: 2
+  created_at: '2018-01-18 05:09:24.887373'
+  updated_at: '2019-01-30 21:33:24.308328'
+  created_by: 1
+  updated_by: 1
+  description: 
+  base_name: Molas Pass (Aid1)
+  sub_split_bitmap: 65
+  latitude: '37.739536'
+  longitude: "-107.698161"
+  elevation: 3328.416
+  slug: sum-100k-course-molas-pass-aid1
+  parameterized_base_name: molas-pass-aid1
 sum_100k_course_rolling_pass_aid2:
   id: 207
   course_id: 31
@@ -479,26 +699,6 @@ sum_100k_course_engineer_mtn_th_aid4:
   elevation: 2769.7176
   slug: sum-100k-course-engineer-mtn-th-aid4
   parameterized_base_name: engineer-mtn-th-aid4
-hardrock_cw_finish:
-  id: 82
-  course_id: 12
-  location_id: 
-  distance_from_start: 161739
-  vert_gain_from_start: 10073.64
-  vert_loss_from_start: 10073.64
-  kind: 1
-  created_at: '2016-05-23 01:04:57.227554'
-  updated_at: '2019-01-31 08:33:29.136331'
-  created_by: 1
-  updated_by: 1
-  description: Finish point for the Hardrock CW course.
-  base_name: Finish
-  sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
-  elevation: 2839.82150912571
-  slug: hardrock-cw-finish
-  parameterized_base_name: finish
 sum_100k_course_bandera_mine_aid5:
   id: 210
   course_id: 31
@@ -519,206 +719,6 @@ sum_100k_course_bandera_mine_aid5:
   elevation: 3243.9864
   slug: sum-100k-course-bandera-mine-aid5
   parameterized_base_name: bandera-mine-aid5
-rufa_course_start:
-  id: 135
-  course_id: 20
-  location_id: 
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2017-01-28 13:21:38.627377'
-  updated_at: '2018-03-16 14:58:29.096437'
-  created_by: 1
-  updated_by: 1
-  description: Starting point for the RUFA Course course.
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: '40.698096'
-  longitude: "-111.742930"
-  elevation: 1738.73815917969
-  slug: rufa-course-start
-  parameterized_base_name: start
-hardrock_ccw_start:
-  id: 5
-  course_id: 4
-  location_id: 17
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2016-04-18 09:09:56.005933'
-  updated_at: '2018-03-16 14:58:28.105359'
-  created_by: 3
-  updated_by: 1
-  description: Silverton High School
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: '37.811954'
-  longitude: "-107.664814"
-  elevation: 2837.84594726562
-  slug: hardrock-ccw-start
-  parameterized_base_name: start
-hardrock_ccw_cunningham:
-  id: 6
-  course_id: 4
-  location_id: 
-  distance_from_start: 14966
-  vert_gain_from_start: 1170.432
-  vert_loss_from_start: 844.296
-  kind: 2
-  created_at: '2016-04-18 09:09:56.017581'
-  updated_at: '2019-01-31 08:35:14.07341'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Cunningham
-  sub_split_bitmap: 65
-  latitude: '37.793287'
-  longitude: "-107.577864"
-  elevation: 3164.79809570312
-  slug: hardrock-ccw-cunningham
-  parameterized_base_name: cunningham
-hardrock_ccw_sherman:
-  id: 12
-  course_id: 4
-  location_id: 
-  distance_from_start: 46349
-  vert_gain_from_start: 3084.576
-  vert_loss_from_start: 2749.296
-  kind: 2
-  created_at: '2016-04-18 09:09:56.048422'
-  updated_at: '2019-01-31 08:35:32.868078'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Sherman
-  sub_split_bitmap: 65
-  latitude: '37.901170'
-  longitude: "-107.430661"
-  elevation: 2925.47534179688
-  slug: hardrock-ccw-sherman
-  parameterized_base_name: sherman
-hardrock_ccw_grouse:
-  id: 16
-  course_id: 4
-  location_id: 
-  distance_from_start: 67914
-  vert_gain_from_start: 4452.5184
-  vert_loss_from_start: 4025.7984
-  kind: 2
-  created_at: '2016-04-18 09:09:56.067613'
-  updated_at: '2019-01-31 08:36:52.637995'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Grouse
-  sub_split_bitmap: 65
-  latitude: '37.917532'
-  longitude: "-107.558352"
-  elevation: 3282.86303710938
-  slug: hardrock-ccw-grouse
-  parameterized_base_name: grouse
-hardrock_ccw_ouray:
-  id: 20
-  course_id: 4
-  location_id: 
-  distance_from_start: 91088
-  vert_gain_from_start: 5295.2904
-  vert_loss_from_start: 5792.1144
-  kind: 2
-  created_at: '2016-04-18 09:09:56.086046'
-  updated_at: '2018-03-16 14:58:28.26417'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Ouray
-  sub_split_bitmap: 65
-  latitude: '38.024295'
-  longitude: "-107.670822"
-  elevation: 2371.22412109375
-  slug: hardrock-ccw-ouray
-  parameterized_base_name: ouray
-hardrock_cw_telluride:
-  id: 87
-  course_id: 12
-  location_id: 
-  distance_from_start: 44578
-  vert_gain_from_start: 2928.82310627766
-  vert_loss_from_start: 3099.51110081564
-  kind: 2
-  created_at: '2016-05-23 01:09:02.026784'
-  updated_at: '2019-01-31 08:28:21.230857'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Telluride
-  sub_split_bitmap: 65
-  latitude: '37.935055'
-  longitude: "-107.807532"
-  elevation: 2678.88711427561
-  slug: hardrock-cw-telluride
-  parameterized_base_name: telluride
-hardrock_cw_start:
-  id: 81
-  course_id: 12
-  location_id: 
-  distance_from_start: 0
-  vert_gain_from_start: 0.0
-  vert_loss_from_start: 0.0
-  kind: 0
-  created_at: '2016-05-23 01:04:57.226299'
-  updated_at: '2019-01-31 08:29:08.562736'
-  created_by: 1
-  updated_by: 1
-  description: Starting point for the Hardrock CW course.
-  base_name: Start
-  sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
-  elevation: 2839.82150912571
-  slug: hardrock-cw-start
-  parameterized_base_name: start
-hardrock_cw_ouray:
-  id: 93
-  course_id: 12
-  location_id: 
-  distance_from_start: 70650
-  vert_gain_from_start: 4281.52546299119
-  vert_loss_from_start: 4778.34944709282
-  kind: 2
-  created_at: '2016-05-23 01:09:02.078134'
-  updated_at: '2019-01-31 08:29:48.792823'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Ouray
-  sub_split_bitmap: 65
-  latitude: '38.027895'
-  longitude: "-107.672853"
-  elevation: 7739.78615232684
-  slug: hardrock-cw-ouray
-  parameterized_base_name: ouray
-hardrock_cw_grouse:
-  id: 97
-  course_id: 12
-  location_id: 
-  distance_from_start: 93824
-  vert_gain_from_start: 6047.84140646908
-  vert_loss_from_start: 5621.12142012411
-  kind: 2
-  created_at: '2016-05-23 01:09:02.100361'
-  updated_at: '2019-01-31 08:30:38.830627'
-  created_by: 1
-  updated_by: 1
-  description: 
-  base_name: Grouse
-  sub_split_bitmap: 65
-  latitude: '37.917532'
-  longitude: "-107.558352"
-  elevation: 3291.83989466112
-  slug: hardrock-cw-grouse
-  parameterized_base_name: grouse
 sum_100k_course_anvil_cg_aid6:
   id: 211
   course_id: 31

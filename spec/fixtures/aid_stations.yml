@@ -5,6 +5,24 @@ aid_station_5:
   split_id: 5
   created_at: '2016-04-18 09:09:56.014295'
   updated_at: '2016-04-18 09:09:56.014295'
+aid_station_6:
+  id: 6
+  event_id: 4
+  split_id: 6
+  created_at: '2016-04-18 09:09:56.020065'
+  updated_at: '2016-11-14 15:59:38.258874'
+aid_station_12:
+  id: 12
+  event_id: 4
+  split_id: 12
+  created_at: '2016-04-18 09:09:56.050597'
+  updated_at: '2016-11-14 15:59:30.525209'
+aid_station_16:
+  id: 16
+  event_id: 4
+  split_id: 16
+  created_at: '2016-04-18 09:09:56.06984'
+  updated_at: '2016-08-09 08:42:41.925961'
 aid_station_26:
   id: 26
   event_id: 4
@@ -35,24 +53,18 @@ aid_station_141:
   split_id: 47
   created_at: '2016-05-08 07:14:16.243731'
   updated_at: '2016-05-08 07:14:16.243731'
-aid_station_6:
-  id: 6
-  event_id: 4
-  split_id: 6
-  created_at: '2016-04-18 09:09:56.020065'
-  updated_at: '2016-11-14 15:59:38.258874'
-aid_station_12:
-  id: 12
-  event_id: 4
-  split_id: 12
-  created_at: '2016-04-18 09:09:56.050597'
-  updated_at: '2016-11-14 15:59:30.525209'
 aid_station_202:
   id: 202
   event_id: 17
   split_id: 81
   created_at: '2016-05-23 01:05:15.615672'
   updated_at: '2016-05-23 01:05:15.615672'
+aid_station_203:
+  id: 203
+  event_id: 17
+  split_id: 82
+  created_at: '2016-05-23 01:05:15.617583'
+  updated_at: '2016-07-01 05:50:35.054723'
 aid_station_208:
   id: 208
   event_id: 17
@@ -83,24 +95,6 @@ aid_station_228:
   split_id: 107
   created_at: '2016-05-23 01:09:02.158422'
   updated_at: '2016-07-01 05:50:35.051484'
-aid_station_203:
-  id: 203
-  event_id: 17
-  split_id: 82
-  created_at: '2016-05-23 01:05:15.617583'
-  updated_at: '2016-07-01 05:50:35.054723'
-aid_station_16:
-  id: 16
-  event_id: 4
-  split_id: 16
-  created_at: '2016-04-18 09:09:56.06984'
-  updated_at: '2016-08-09 08:42:41.925961'
-aid_station_753:
-  id: 753
-  event_id: 70
-  split_id: 137
-  created_at: '2019-01-30 17:38:14.2499'
-  updated_at: '2019-01-30 17:38:14.2499'
 aid_station_458:
   id: 458
   event_id: 34
@@ -119,18 +113,6 @@ aid_station_460:
   split_id: 137
   created_at: '2017-01-28 13:23:10.287671'
   updated_at: '2017-01-28 13:23:10.287671'
-aid_station_754:
-  id: 754
-  event_id: 70
-  split_id: 136
-  created_at: '2019-01-30 17:38:14.255012'
-  updated_at: '2019-01-30 17:38:14.255012'
-aid_station_755:
-  id: 755
-  event_id: 70
-  split_id: 135
-  created_at: '2019-01-30 17:38:14.261182'
-  updated_at: '2019-01-30 17:38:14.261182'
 aid_station_476:
   id: 476
   event_id: 36
@@ -335,3 +317,21 @@ aid_station_726:
   split_id: 211
   created_at: '2018-12-20 05:24:56.409073'
   updated_at: '2018-12-20 05:24:56.409073'
+aid_station_753:
+  id: 753
+  event_id: 70
+  split_id: 137
+  created_at: '2019-01-30 17:38:14.2499'
+  updated_at: '2019-01-30 17:38:14.2499'
+aid_station_754:
+  id: 754
+  event_id: 70
+  split_id: 136
+  created_at: '2019-01-30 17:38:14.255012'
+  updated_at: '2019-01-30 17:38:14.255012'
+aid_station_755:
+  id: 755
+  event_id: 70
+  split_id: 135
+  created_at: '2019-01-30 17:38:14.261182'
+  updated_at: '2019-01-30 17:38:14.261182'

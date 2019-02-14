@@ -1,14 +1,4 @@
 ---
-rattlesnake_ramble:
-  id: 6
-  name: Rattlesnake Ramble
-  description: Bill's Race to benefit Eldorado Canyon State Park
-  created_at: '2016-05-07 23:07:36.37544'
-  updated_at: '2017-03-05 04:55:57.129926'
-  created_by: 1
-  updated_by: 1
-  concealed: false
-  slug: rattlesnake-ramble
 hardrock:
   id: 4
   name: Hardrock
@@ -19,6 +9,16 @@ hardrock:
   updated_by: 1
   concealed: false
   slug: hardrock
+rattlesnake_ramble:
+  id: 6
+  name: Rattlesnake Ramble
+  description: Bill's Race to benefit Eldorado Canyon State Park
+  created_at: '2016-05-07 23:07:36.37544'
+  updated_at: '2017-03-05 04:55:57.129926'
+  created_by: 1
+  updated_by: 1
+  concealed: false
+  slug: rattlesnake-ramble
 running_up_for_air:
   id: 14
   name: Running Up For Air

@@ -1,32 +1,19 @@
 ---
-rufa_course:
-  id: 20
-  name: RUFA Course
-  description: Bottom of Grandeur Peak to top and back
-  created_at: '2017-01-28 13:21:38.623222'
-  updated_at: '2019-01-24 23:58:45.917638'
+hardrock_ccw:
+  id: 4
+  name: Hardrock CCW
+  description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
+    to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
+  created_at: '2016-04-16 19:25:07.63709'
+  updated_at: '2019-01-30 21:32:19.908442'
   created_by: 1
   updated_by: 1
-  next_start_time: '2019-02-09 14:00:00'
-  slug: rufa-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
-d30_12m_course:
-  id: 27
-  name: D30 12M Course
-  description: 
-  created_at: '2017-06-09 09:51:15.458576'
-  updated_at: '2019-01-30 21:31:14.718422'
-  created_by: 1
-  updated_by: 1
-  next_start_time: 
-  slug: d30-12m-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
+  next_start_time: '2019-07-19 06:00:00'
+  slug: hardrock-ccw
+  gpx_file_name: hardrock-ccw-cleaned.gpx
+  gpx_content_type: application/octet-stream
+  gpx_file_size: 175314
+  gpx_updated_at: '2017-11-05 17:08:01.704472'
 ramble_even_course:
   id: 9
   name: Ramble Even Course
@@ -37,20 +24,6 @@ ramble_even_course:
   updated_by: 1
   next_start_time: 
   slug: ramble-even-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
-sum_100k_course:
-  id: 31
-  name: SUM 100K Course
-  description: 
-  created_at: '2018-01-18 05:09:16.740608'
-  updated_at: '2019-01-30 21:30:28.251335'
-  created_by: 1
-  updated_by: 1
-  next_start_time: 
-  slug: sum-100k-course
   gpx_file_name: 
   gpx_content_type: 
   gpx_file_size: 
@@ -69,16 +42,16 @@ hardrock_cw:
   gpx_content_type: 
   gpx_file_size: 
   gpx_updated_at: 
-sum_55k_course:
-  id: 32
-  name: SUM 55K Course
-  description: 
-  created_at: '2018-01-18 05:15:20.742148'
-  updated_at: '2019-01-30 21:44:59.102925'
+rufa_course:
+  id: 20
+  name: RUFA Course
+  description: Bottom of Grandeur Peak to top and back
+  created_at: '2017-01-28 13:21:38.623222'
+  updated_at: '2019-01-24 23:58:45.917638'
   created_by: 1
   updated_by: 1
-  next_start_time: 
-  slug: sum-55k-course
+  next_start_time: '2019-02-09 14:00:00'
+  slug: rufa-course
   gpx_file_name: 
   gpx_content_type: 
   gpx_file_size: 
@@ -97,18 +70,45 @@ d30_50k_course:
   gpx_content_type: application/octet-stream
   gpx_file_size: 80581
   gpx_updated_at: '2017-11-06 07:26:57.17064'
-hardrock_ccw:
-  id: 4
-  name: Hardrock CCW
-  description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
-    to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
-  created_at: '2016-04-16 19:25:07.63709'
-  updated_at: '2019-01-30 21:32:19.908442'
+d30_12m_course:
+  id: 27
+  name: D30 12M Course
+  description: 
+  created_at: '2017-06-09 09:51:15.458576'
+  updated_at: '2019-01-30 21:31:14.718422'
   created_by: 1
   updated_by: 1
-  next_start_time: '2019-07-19 06:00:00'
-  slug: hardrock-ccw
-  gpx_file_name: hardrock-ccw-cleaned.gpx
-  gpx_content_type: application/octet-stream
-  gpx_file_size: 175314
-  gpx_updated_at: '2017-11-05 17:08:01.704472'
+  next_start_time: 
+  slug: d30-12m-course
+  gpx_file_name: 
+  gpx_content_type: 
+  gpx_file_size: 
+  gpx_updated_at: 
+sum_100k_course:
+  id: 31
+  name: SUM 100K Course
+  description: 
+  created_at: '2018-01-18 05:09:16.740608'
+  updated_at: '2019-01-30 21:30:28.251335'
+  created_by: 1
+  updated_by: 1
+  next_start_time: 
+  slug: sum-100k-course
+  gpx_file_name: 
+  gpx_content_type: 
+  gpx_file_size: 
+  gpx_updated_at: 
+sum_55k_course:
+  id: 32
+  name: SUM 55K Course
+  description: 
+  created_at: '2018-01-18 05:15:20.742148'
+  updated_at: '2019-01-30 21:44:59.102925'
+  created_by: 1
+  updated_by: 1
+  next_start_time: 
+  slug: sum-55k-course
+  gpx_file_name: 
+  gpx_content_type: 
+  gpx_file_size: 
+  gpx_updated_at: 

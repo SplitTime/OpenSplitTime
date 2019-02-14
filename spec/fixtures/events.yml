@@ -1,112 +1,10 @@
 ---
-ggd30_50k:
-  id: 48
-  course_id: 26
-  name: GGD30 50K
-  created_at: '2017-05-28 13:58:46.392428'
-  updated_at: '2019-01-30 22:22:19.982581'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-06-03 13:00:00'
-  beacon_url: https://goldengatedirty30.maprogress.com
-  laps_required: 1
-  slug: ggd30-50k
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 27
-  short_name: 50K
-  podium_template: 
-  results_template_id: 
-rufa_2016:
-  id: 34
-  course_id: 20
-  name: RUFA 2016
-  created_at: '2017-01-28 13:22:25.985588'
-  updated_at: '2018-01-30 06:44:40.875882'
-  created_by: 1
-  updated_by: 1
-  start_time: '2016-02-13 13:00:00'
-  beacon_url: 
-  laps_required: 0
-  slug: rufa-2016
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 25
-  short_name: 
-  podium_template: 
-  results_template_id: 
-ggd30_12m:
-  id: 49
-  course_id: 27
-  name: GGD30 12M
-  created_at: '2017-06-09 09:51:15.491594'
-  updated_at: '2019-01-30 22:22:26.717883'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-06-03 16:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: ggd30-12m
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 27
-  short_name: 12-miler
-  podium_template: 
-  results_template_id: 
-ramble:
-  id: 14
-  course_id: 9
-  name: Ramble
-  created_at: '2016-05-08 07:14:16.23639'
-  updated_at: '2019-01-28 09:54:54.41062'
-  created_by: 1
-  updated_by: 1
-  start_time: '2006-09-16 14:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: ramble
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 4
-  short_name: 
-  podium_template: 
-  results_template_id: 
-rufa_2017_24h:
-  id: 36
-  course_id: 20
-  name: RUFA 2017 24H
-  created_at: '2017-03-28 07:18:29.860735'
-  updated_at: '2019-01-30 23:33:19.030024'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-02-11 13:00:00'
-  beacon_url: 
-  laps_required: 0
-  slug: rufa-2017-24h
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 59
-  short_name: 24H
-  podium_template: 
-  results_template_id: 
-hardrock_2014:
-  id: 17
-  course_id: 12
-  name: Hardrock 2014
-  created_at: '2016-05-23 01:05:15.602165'
-  updated_at: '2019-01-28 08:56:34.128028'
-  created_by: 1
-  updated_by: 1
-  start_time: '2014-07-11 12:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: hardrock-2014
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 7
-  short_name: 
-  podium_template: 
-  results_template_id: 
 hardrock_2015:
   id: 4
   course_id: 4
   name: Hardrock 2015
   created_at: '2016-04-16 19:25:07.717306'
-  updated_at: '2019-02-14 05:57:03.193733'
+  updated_at: '2019-02-14 06:32:48.282796'
   created_by: 1
   updated_by: 1
   start_time: '2015-07-10 12:00:00'
@@ -116,14 +14,77 @@ hardrock_2015:
   home_time_zone: Mountain Time (US & Canada)
   event_group_id: 17
   short_name: 
-  podium_template: simple
+  results_template_id: 7
+ramble:
+  id: 14
+  course_id: 9
+  name: Ramble
+  created_at: '2016-05-08 07:14:16.23639'
+  updated_at: '2019-02-14 16:16:43.234318'
+  created_by: 1
+  updated_by: 1
+  start_time: '2006-09-16 14:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: ramble
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 4
+  short_name: 
+  results_template_id: 7
+hardrock_2014:
+  id: 17
+  course_id: 12
+  name: Hardrock 2014
+  created_at: '2016-05-23 01:05:15.602165'
+  updated_at: '2019-02-14 16:16:43.253211'
+  created_by: 1
+  updated_by: 1
+  start_time: '2014-07-11 12:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: hardrock-2014
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 7
+  short_name: 
+  results_template_id: 7
+rufa_2016:
+  id: 34
+  course_id: 20
+  name: RUFA 2016
+  created_at: '2017-01-28 13:22:25.985588'
+  updated_at: '2019-02-14 16:16:43.264188'
+  created_by: 1
+  updated_by: 1
+  start_time: '2016-02-13 13:00:00'
+  beacon_url: 
+  laps_required: 0
+  slug: rufa-2016
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 25
+  short_name: 
+  results_template_id: 7
+rufa_2017_24h:
+  id: 36
+  course_id: 20
+  name: RUFA 2017 24H
+  created_at: '2017-03-28 07:18:29.860735'
+  updated_at: '2019-02-14 16:16:43.274986'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-02-11 13:00:00'
+  beacon_url: 
+  laps_required: 0
+  slug: rufa-2017-24h
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 59
+  short_name: 24H
   results_template_id: 7
 hardrock_2016:
   id: 37
   course_id: 12
   name: Hardrock 2016
   created_at: '2017-04-18 08:19:16.928331'
-  updated_at: '2019-02-14 05:57:03.331492'
+  updated_at: '2019-02-14 06:32:48.432142'
   created_by: 1
   updated_by: 1
   start_time: '2016-07-15 12:00:00'
@@ -133,14 +94,45 @@ hardrock_2016:
   home_time_zone: Mountain Time (US & Canada)
   event_group_id: 28
   short_name: 
-  podium_template: simple
+  results_template_id: 7
+ggd30_50k:
+  id: 48
+  course_id: 26
+  name: GGD30 50K
+  created_at: '2017-05-28 13:58:46.392428'
+  updated_at: '2019-02-14 16:16:43.298524'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-06-03 13:00:00'
+  beacon_url: https://goldengatedirty30.maprogress.com
+  laps_required: 1
+  slug: ggd30-50k
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 27
+  short_name: 50K
+  results_template_id: 7
+ggd30_12m:
+  id: 49
+  course_id: 27
+  name: GGD30 12M
+  created_at: '2017-06-09 09:51:15.491594'
+  updated_at: '2019-02-14 16:16:43.310081'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-06-03 16:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: ggd30-12m
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 27
+  short_name: 12-miler
   results_template_id: 7
 sum_100k:
   id: 56
   course_id: 31
   name: SUM 100K
   created_at: '2018-01-18 05:09:16.764958'
-  updated_at: '2019-02-14 05:57:03.362562'
+  updated_at: '2019-02-14 06:32:48.468826'
   created_by: 1
   updated_by: 1
   start_time: '2017-09-23 13:00:00'
@@ -150,14 +142,13 @@ sum_100k:
   home_time_zone: Mountain Time (US & Canada)
   event_group_id: 32
   short_name: 100K
-  podium_template: simple
   results_template_id: 7
 sum_55k:
   id: 57
   course_id: 32
   name: SUM 55K
   created_at: '2018-01-18 05:15:20.769855'
-  updated_at: '2019-02-14 05:57:03.373565'
+  updated_at: '2019-02-14 06:32:48.481238'
   created_by: 1
   updated_by: 1
   start_time: '2017-09-23 15:00:00'
@@ -167,14 +158,13 @@ sum_55k:
   home_time_zone: Mountain Time (US & Canada)
   event_group_id: 32
   short_name: 55K
-  podium_template: blue_sky
   results_template_id: 3
 rufa_2017_12h:
   id: 70
   course_id: 20
   name: RUFA 2017 12H
   created_at: '2019-01-30 17:38:14.220608'
-  updated_at: '2019-02-14 05:57:03.38453'
+  updated_at: '2019-02-14 06:32:48.518301'
   created_by: 1
   updated_by: 1
   start_time: '2017-02-11 14:00:00'
@@ -184,5 +174,4 @@ rufa_2017_12h:
   home_time_zone: Mountain Time (US & Canada)
   event_group_id: 59
   short_name: 12H
-  podium_template: simple
   results_template_id: 7

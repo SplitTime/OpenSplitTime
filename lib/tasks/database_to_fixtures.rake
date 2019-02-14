@@ -15,7 +15,7 @@ namespace :db do
         counter = 0
         file_path = "#{Rails.root}/spec/fixtures/#{table_name}.yml"
         File.open(file_path, 'w') do |file|
-          rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name}")
+          rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY id")
           data = rows.each_with_object({}) do |record, hash|
             suffix = if record['id'].blank?
                        counter += 1
@@ -30,6 +30,9 @@ namespace :db do
                       effort = Effort.find(record['effort_id'])
                       split = Split.find(record['split_id'])
                       "#{effort.slug.underscore}_#{split.name(record['sub_split_bitkey']).parameterize.underscore}_#{record['lap']}"
+                    when table_name == 'results_categories'
+                      organization = record['organization_id'].present? ? Organization.find(record['organization_id']) : nil
+                      [organization&.name, record['name']].join(' ').parameterize.underscore
                     else
                       "#{table_name.singularize}_#{suffix}"
                     end

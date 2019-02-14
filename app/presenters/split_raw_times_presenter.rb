@@ -5,7 +5,6 @@ class SplitRawTimesPresenter < BasePresenter
 
   attr_reader :event_group, :parameterized_split_name
   delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, :single_lap?, to: :event_group
-  delegate :podium_template, to: :event
 
   def initialize(event_group, params, current_user)
     @event_group = event_group

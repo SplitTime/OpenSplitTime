@@ -10,4 +10,8 @@ class ResultsTemplate < ApplicationRecord
   has_many :results_categories, through: :results_template_categories
 
   validates_presence_of :name, :aggregation_method
+
+  def self.default
+    find_by(slug: 'simple')
+  end
 end

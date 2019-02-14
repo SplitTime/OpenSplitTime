@@ -7,7 +7,6 @@ class EventGroupTrafficPresenter < BasePresenter
 
   attr_reader :event_group, :band_width
   delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
-  delegate :podium_template, to: :event
 
   def initialize(event_group, params, band_width)
     @event_group = event_group

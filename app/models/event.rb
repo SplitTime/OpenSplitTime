@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-
   include Auditable
   include Delegable
   include SplitMethods
@@ -25,12 +24,13 @@ class Event < ApplicationRecord
            :organization, :organization_id, :permit_notifications?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id
+  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id, :results_template
   validates_uniqueness_of :name, case_sensitive: false
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id, allow_nil: true
   validate :home_time_zone_exists
   validate :course_is_consistent
 
+  before_validation :add_default_results_template
   after_destroy :destroy_orphaned_event_group
   after_save :validate_event_group
 
@@ -172,5 +172,11 @@ class Event < ApplicationRecord
 
   def ordered_aid_stations
     @ordered_aid_stations ||= aid_stations.sort_by(&:distance_from_start)
+  end
+
+  private
+
+  def add_default_results_template
+    self.results_template ||= ResultsTemplate.default
   end
 end

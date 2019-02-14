@@ -1,36 +1,4 @@
 ---
-sum_100k:
-  id: 56
-  course_id: 31
-  name: SUM 100K
-  created_at: '2018-01-18 05:09:16.764958'
-  updated_at: '2019-01-30 21:36:44.130206'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-09-23 13:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: sum-100k
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 32
-  short_name: 100K
-  podium_template: simple
-sum_55k:
-  id: 57
-  course_id: 32
-  name: SUM 55K
-  created_at: '2018-01-18 05:15:20.769855'
-  updated_at: '2019-01-30 21:36:51.300545'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-09-23 15:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: sum-55k
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 32
-  short_name: 55K
-  podium_template: blue_sky
 ggd30_50k:
   id: 48
   course_id: 26
@@ -47,6 +15,7 @@ ggd30_50k:
   event_group_id: 27
   short_name: 50K
   podium_template: 
+  results_template_id: 
 rufa_2016:
   id: 34
   course_id: 20
@@ -63,22 +32,7 @@ rufa_2016:
   event_group_id: 25
   short_name: 
   podium_template: 
-hardrock_2016:
-  id: 37
-  course_id: 12
-  name: Hardrock 2016
-  created_at: '2017-04-18 08:19:16.928331'
-  updated_at: '2019-01-28 08:56:52.211765'
-  created_by: 1
-  updated_by: 1
-  start_time: '2016-07-15 12:00:00'
-  beacon_url: http://trackleaders.com/hardrock16
-  laps_required: 1
-  slug: hardrock-2016
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 28
-  short_name: 
-  podium_template: simple
+  results_template_id: 
 ggd30_12m:
   id: 49
   course_id: 27
@@ -95,6 +49,7 @@ ggd30_12m:
   event_group_id: 27
   short_name: 12-miler
   podium_template: 
+  results_template_id: 
 ramble:
   id: 14
   course_id: 9
@@ -111,22 +66,7 @@ ramble:
   event_group_id: 4
   short_name: 
   podium_template: 
-rufa_2017_12h:
-  id: 70
-  course_id: 20
-  name: RUFA 2017 12H
-  created_at: '2019-01-30 17:38:14.220608'
-  updated_at: '2019-01-30 23:33:15.133507'
-  created_by: 1
-  updated_by: 1
-  start_time: '2017-02-11 14:00:00'
-  beacon_url: 
-  laps_required: 0
-  slug: rufa-2017-12h
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 59
-  short_name: 12H
-  podium_template: simple
+  results_template_id: 
 rufa_2017_24h:
   id: 36
   course_id: 20
@@ -143,22 +83,7 @@ rufa_2017_24h:
   event_group_id: 59
   short_name: 24H
   podium_template: 
-hardrock_2015:
-  id: 4
-  course_id: 4
-  name: Hardrock 2015
-  created_at: '2016-04-16 19:25:07.717306'
-  updated_at: '2019-01-31 21:20:43.002936'
-  created_by: 1
-  updated_by: 1
-  start_time: '2015-07-10 12:00:00'
-  beacon_url: 
-  laps_required: 1
-  slug: hardrock-2015
-  home_time_zone: Mountain Time (US & Canada)
-  event_group_id: 17
-  short_name: 
-  podium_template: simple
+  results_template_id: 
 hardrock_2014:
   id: 17
   course_id: 12
@@ -175,3 +100,89 @@ hardrock_2014:
   event_group_id: 7
   short_name: 
   podium_template: 
+  results_template_id: 
+hardrock_2015:
+  id: 4
+  course_id: 4
+  name: Hardrock 2015
+  created_at: '2016-04-16 19:25:07.717306'
+  updated_at: '2019-02-14 05:57:03.193733'
+  created_by: 1
+  updated_by: 1
+  start_time: '2015-07-10 12:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: hardrock-2015
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 17
+  short_name: 
+  podium_template: simple
+  results_template_id: 7
+hardrock_2016:
+  id: 37
+  course_id: 12
+  name: Hardrock 2016
+  created_at: '2017-04-18 08:19:16.928331'
+  updated_at: '2019-02-14 05:57:03.331492'
+  created_by: 1
+  updated_by: 1
+  start_time: '2016-07-15 12:00:00'
+  beacon_url: http://trackleaders.com/hardrock16
+  laps_required: 1
+  slug: hardrock-2016
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 28
+  short_name: 
+  podium_template: simple
+  results_template_id: 7
+sum_100k:
+  id: 56
+  course_id: 31
+  name: SUM 100K
+  created_at: '2018-01-18 05:09:16.764958'
+  updated_at: '2019-02-14 05:57:03.362562'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-09-23 13:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: sum-100k
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 32
+  short_name: 100K
+  podium_template: simple
+  results_template_id: 7
+sum_55k:
+  id: 57
+  course_id: 32
+  name: SUM 55K
+  created_at: '2018-01-18 05:15:20.769855'
+  updated_at: '2019-02-14 05:57:03.373565'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-09-23 15:00:00'
+  beacon_url: 
+  laps_required: 1
+  slug: sum-55k
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 32
+  short_name: 55K
+  podium_template: blue_sky
+  results_template_id: 3
+rufa_2017_12h:
+  id: 70
+  course_id: 20
+  name: RUFA 2017 12H
+  created_at: '2019-01-30 17:38:14.220608'
+  updated_at: '2019-02-14 05:57:03.38453'
+  created_by: 1
+  updated_by: 1
+  start_time: '2017-02-11 14:00:00'
+  beacon_url: 
+  laps_required: 0
+  slug: rufa-2017-12h
+  home_time_zone: Mountain Time (US & Canada)
+  event_group_id: 59
+  short_name: 12H
+  podium_template: simple
+  results_template_id: 7

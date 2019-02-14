@@ -1,0 +1,519 @@
+---
+overall:
+  id: 1
+  organization_id: 
+  name: Overall
+  male: true
+  female: true
+  low_age: 
+  high_age: 
+  temp_key: combined_overall
+  slug: overall
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.216125'
+  updated_at: '2019-02-14 05:23:14.216125'
+overall_men:
+  id: 2
+  organization_id: 
+  name: Overall Men
+  male: true
+  female: false
+  low_age: 
+  high_age: 
+  temp_key: men_overall
+  slug: overall-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.240465'
+  updated_at: '2019-02-14 05:23:14.240465'
+overall_women:
+  id: 3
+  organization_id: 
+  name: Overall Women
+  male: false
+  female: true
+  low_age: 
+  high_age: 
+  temp_key: women_overall
+  slug: overall-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.246694'
+  updated_at: '2019-02-14 05:23:14.246694'
+masters_men_40:
+  id: 4
+  organization_id: 
+  name: Masters Men (40+)
+  male: true
+  female: false
+  low_age: 40
+  high_age: 
+  temp_key: men_masters
+  slug: masters-men-40
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.252543'
+  updated_at: '2019-02-14 05:23:14.252543'
+masters_women_40:
+  id: 5
+  organization_id: 
+  name: Masters Women (40+)
+  male: false
+  female: true
+  low_age: 40
+  high_age: 
+  temp_key: women_masters
+  slug: masters-women-40
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.258249'
+  updated_at: '2019-02-14 05:23:14.258249'
+masters_men_40_49:
+  id: 6
+  organization_id: 
+  name: Masters Men (40-49)
+  male: true
+  female: false
+  low_age: 40
+  high_age: 49
+  temp_key: men_40s_masters
+  slug: masters-men-40-49
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.263779'
+  updated_at: '2019-02-14 05:23:14.263779'
+masters_women_40_49:
+  id: 7
+  organization_id: 
+  name: Masters Women (40-49)
+  male: false
+  female: true
+  low_age: 40
+  high_age: 49
+  temp_key: women_40s_masters
+  slug: masters-women-40-49
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.269301'
+  updated_at: '2019-02-14 05:23:14.269301'
+grandmasters_men_50:
+  id: 8
+  organization_id: 
+  name: Grandmasters Men (50+)
+  male: true
+  female: false
+  low_age: 50
+  high_age: 
+  temp_key: men_grandmasters
+  slug: grandmasters-men-50
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.276758'
+  updated_at: '2019-02-14 05:23:14.276758'
+grandmasters_women_50:
+  id: 9
+  organization_id: 
+  name: Grandmasters Women (50+)
+  male: false
+  female: true
+  low_age: 50
+  high_age: 
+  temp_key: women_grandmasters
+  slug: grandmasters-women-50
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.282907'
+  updated_at: '2019-02-14 05:23:14.282907'
+senior_grandmasters_men_60:
+  id: 10
+  organization_id: 
+  name: Senior Grandmasters Men (60+)
+  male: true
+  female: false
+  low_age: 60
+  high_age: 
+  temp_key: men_seniors
+  slug: senior-grandmasters-men-60
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.28843'
+  updated_at: '2019-02-14 05:23:14.28843'
+senior_grandmasters_women_60:
+  id: 11
+  organization_id: 
+  name: Senior Grandmasters Women (60+)
+  male: false
+  female: true
+  low_age: 60
+  high_age: 
+  temp_key: women_seniors
+  slug: senior-grandmasters-women-60
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.295124'
+  updated_at: '2019-02-14 05:23:14.295124'
+boys_12_and_under:
+  id: 12
+  organization_id: 
+  name: Boys 12 and Under
+  male: true
+  female: false
+  low_age: 
+  high_age: 12
+  temp_key: boys_12_and_under
+  slug: boys-12-and-under
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.303036'
+  updated_at: '2019-02-14 05:23:14.303036'
+girls_12_and_under:
+  id: 13
+  organization_id: 
+  name: Girls 12 and Under
+  male: false
+  female: true
+  low_age: 
+  high_age: 12
+  temp_key: girls_12_and_under
+  slug: girls-12-and-under
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.310181'
+  updated_at: '2019-02-14 05:23:14.310181'
+boys_13_to_16:
+  id: 14
+  organization_id: 
+  name: Boys 13 to 16
+  male: true
+  female: false
+  low_age: 13
+  high_age: 16
+  temp_key: boys_13_to_16
+  slug: boys-13-to-16
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.322522'
+  updated_at: '2019-02-14 05:23:14.322522'
+girls_13_to_16:
+  id: 15
+  organization_id: 
+  name: Girls 13 to 16
+  male: false
+  female: true
+  low_age: 13
+  high_age: 16
+  temp_key: girls_13_to_16
+  slug: girls-13-to-16
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.330382'
+  updated_at: '2019-02-14 05:23:14.330382'
+boys_16_and_under:
+  id: 16
+  organization_id: 
+  name: Boys 16 and Under
+  male: true
+  female: false
+  low_age: 
+  high_age: 16
+  temp_key: boys_16_and_under
+  slug: boys-16-and-under
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.338496'
+  updated_at: '2019-02-14 05:23:14.338496'
+girls_16_and_under:
+  id: 17
+  organization_id: 
+  name: Girls 16 and Under
+  male: false
+  female: true
+  low_age: 
+  high_age: 16
+  temp_key: girls_16_and_under
+  slug: girls-16-and-under
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.348408'
+  updated_at: '2019-02-14 05:23:14.348408'
+under_20_men:
+  id: 18
+  organization_id: 
+  name: Under 20 Men
+  male: true
+  female: false
+  low_age: 
+  high_age: 19
+  temp_key: men_under_20
+  slug: under-20-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.357627'
+  updated_at: '2019-02-14 05:23:14.357627'
+under_20_women:
+  id: 19
+  organization_id: 
+  name: Under 20 Women
+  male: false
+  female: true
+  low_age: 
+  high_age: 19
+  temp_key: women_under_20
+  slug: under-20-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.371632'
+  updated_at: '2019-02-14 05:23:14.371632'
+13_to_39_men:
+  id: 20
+  organization_id: 
+  name: 13 to 39 Men
+  male: true
+  female: false
+  low_age: 13
+  high_age: 39
+  temp_key: men_13_to_39
+  slug: 13-to-39-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.38053'
+  updated_at: '2019-02-14 05:23:14.38053'
+13_to_39_women:
+  id: 21
+  organization_id: 
+  name: 13 to 39 Women
+  male: false
+  female: true
+  low_age: 13
+  high_age: 39
+  temp_key: women_13_to_39
+  slug: 13-to-39-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.388081'
+  updated_at: '2019-02-14 05:23:14.388081'
+17_to_39_men:
+  id: 22
+  organization_id: 
+  name: 17 to 39 Men
+  male: true
+  female: false
+  low_age: 17
+  high_age: 39
+  temp_key: men_17_to_39
+  slug: 17-to-39-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.396785'
+  updated_at: '2019-02-14 05:23:14.396785'
+17_to_39_women:
+  id: 23
+  organization_id: 
+  name: 17 to 39 Women
+  male: false
+  female: true
+  low_age: 17
+  high_age: 39
+  temp_key: women_17_to_39
+  slug: 17-to-39-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.405085'
+  updated_at: '2019-02-14 05:23:14.405085'
+20_to_29_men:
+  id: 24
+  organization_id: 
+  name: 20 to 29 Men
+  male: true
+  female: false
+  low_age: 20
+  high_age: 29
+  temp_key: men_20s
+  slug: 20-to-29-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.418062'
+  updated_at: '2019-02-14 05:23:14.418062'
+20_to_29_women:
+  id: 25
+  organization_id: 
+  name: 20 to 29 Women
+  male: false
+  female: true
+  low_age: 20
+  high_age: 29
+  temp_key: women_20s
+  slug: 20-to-29-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.426851'
+  updated_at: '2019-02-14 05:23:14.426851'
+30_to_39_men:
+  id: 26
+  organization_id: 
+  name: 30 to 39 Men
+  male: true
+  female: false
+  low_age: 30
+  high_age: 39
+  temp_key: men_30s
+  slug: 30-to-39-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.435691'
+  updated_at: '2019-02-14 05:23:14.435691'
+30_to_39_women:
+  id: 27
+  organization_id: 
+  name: 30 to 39 Women
+  male: false
+  female: true
+  low_age: 30
+  high_age: 39
+  temp_key: women_30s
+  slug: 30-to-39-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.445779'
+  updated_at: '2019-02-14 05:23:14.445779'
+40_to_49_men:
+  id: 28
+  organization_id: 
+  name: 40 to 49 Men
+  male: true
+  female: false
+  low_age: 40
+  high_age: 49
+  temp_key: men_40s
+  slug: 40-to-49-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.453568'
+  updated_at: '2019-02-14 05:23:14.453568'
+40_to_49_women:
+  id: 29
+  organization_id: 
+  name: 40 to 49 Women
+  male: false
+  female: true
+  low_age: 40
+  high_age: 49
+  temp_key: women_40s
+  slug: 40-to-49-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.461776'
+  updated_at: '2019-02-14 05:23:14.461776'
+50_to_59_men:
+  id: 30
+  organization_id: 
+  name: 50 to 59 Men
+  male: true
+  female: false
+  low_age: 50
+  high_age: 59
+  temp_key: men_50s
+  slug: 50-to-59-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.469249'
+  updated_at: '2019-02-14 05:23:14.469249'
+50_to_59_women:
+  id: 31
+  organization_id: 
+  name: 50 to 59 Women
+  male: false
+  female: true
+  low_age: 50
+  high_age: 59
+  temp_key: women_50s
+  slug: 50-to-59-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.476449'
+  updated_at: '2019-02-14 05:23:14.476449'
+60_to_69_men:
+  id: 32
+  organization_id: 
+  name: 60 to 69 Men
+  male: true
+  female: false
+  low_age: 60
+  high_age: 69
+  temp_key: men_60s
+  slug: 60-to-69-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.483272'
+  updated_at: '2019-02-14 05:23:14.483272'
+60_to_69_women:
+  id: 33
+  organization_id: 
+  name: 60 to 69 Women
+  male: false
+  female: true
+  low_age: 60
+  high_age: 69
+  temp_key: women_60s
+  slug: 60-to-69-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.489825'
+  updated_at: '2019-02-14 05:23:14.489825'
+under_30_men:
+  id: 34
+  organization_id: 
+  name: Under 30 Men
+  male: true
+  female: false
+  low_age: 
+  high_age: 29
+  temp_key: men_under_30
+  slug: under-30-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.498658'
+  updated_at: '2019-02-14 05:23:14.498658'
+under_30_women:
+  id: 35
+  organization_id: 
+  name: Under 30 Women
+  male: false
+  female: true
+  low_age: 
+  high_age: 29
+  temp_key: women_under_30
+  slug: under-30-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.506807'
+  updated_at: '2019-02-14 05:23:14.506807'
+under_40_men:
+  id: 36
+  organization_id: 
+  name: Under 40 Men
+  male: true
+  female: false
+  low_age: 
+  high_age: 39
+  temp_key: men_under_40
+  slug: under-40-men
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.519912'
+  updated_at: '2019-02-14 05:23:14.519912'
+under_40_women:
+  id: 37
+  organization_id: 
+  name: Under 40 Women
+  male: false
+  female: true
+  low_age: 
+  high_age: 39
+  temp_key: women_under_40
+  slug: under-40-women
+  created_by: 1
+  updated_by: 
+  created_at: '2019-02-14 05:23:14.529403'
+  updated_at: '2019-02-14 05:23:14.529403'

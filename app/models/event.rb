@@ -15,6 +15,7 @@ class Event < ApplicationRecord
 
   belongs_to :course
   belongs_to :event_group
+  belongs_to :results_template
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations

@@ -1,0 +1,435 @@
+---
+results_template_category_1:
+  id: 1
+  results_template_id: 1
+  results_category_id: 2
+  created_at: '2019-02-14 05:23:14.60864'
+  updated_at: '2019-02-14 05:23:14.60864'
+  position: 1
+results_template_category_2:
+  id: 2
+  results_template_id: 1
+  results_category_id: 3
+  created_at: '2019-02-14 05:23:14.612271'
+  updated_at: '2019-02-14 05:23:14.612271'
+  position: 2
+results_template_category_3:
+  id: 3
+  results_template_id: 1
+  results_category_id: 4
+  created_at: '2019-02-14 05:23:14.640713'
+  updated_at: '2019-02-14 05:23:14.640713'
+  position: 3
+results_template_category_4:
+  id: 4
+  results_template_id: 1
+  results_category_id: 5
+  created_at: '2019-02-14 05:23:14.643194'
+  updated_at: '2019-02-14 05:23:14.643194'
+  position: 4
+results_template_category_5:
+  id: 5
+  results_template_id: 1
+  results_category_id: 18
+  created_at: '2019-02-14 05:23:14.645254'
+  updated_at: '2019-02-14 05:23:14.645254'
+  position: 5
+results_template_category_6:
+  id: 6
+  results_template_id: 1
+  results_category_id: 19
+  created_at: '2019-02-14 05:23:14.64728'
+  updated_at: '2019-02-14 05:23:14.64728'
+  position: 6
+results_template_category_7:
+  id: 7
+  results_template_id: 1
+  results_category_id: 24
+  created_at: '2019-02-14 05:23:14.649226'
+  updated_at: '2019-02-14 05:23:14.649226'
+  position: 7
+results_template_category_8:
+  id: 8
+  results_template_id: 1
+  results_category_id: 25
+  created_at: '2019-02-14 05:23:14.651033'
+  updated_at: '2019-02-14 05:23:14.651033'
+  position: 8
+results_template_category_9:
+  id: 9
+  results_template_id: 1
+  results_category_id: 26
+  created_at: '2019-02-14 05:23:14.652781'
+  updated_at: '2019-02-14 05:23:14.652781'
+  position: 9
+results_template_category_10:
+  id: 10
+  results_template_id: 1
+  results_category_id: 27
+  created_at: '2019-02-14 05:23:14.654557'
+  updated_at: '2019-02-14 05:23:14.654557'
+  position: 10
+results_template_category_11:
+  id: 11
+  results_template_id: 1
+  results_category_id: 28
+  created_at: '2019-02-14 05:23:14.656262'
+  updated_at: '2019-02-14 05:23:14.656262'
+  position: 11
+results_template_category_12:
+  id: 12
+  results_template_id: 1
+  results_category_id: 29
+  created_at: '2019-02-14 05:23:14.657967'
+  updated_at: '2019-02-14 05:23:14.657967'
+  position: 12
+results_template_category_13:
+  id: 13
+  results_template_id: 1
+  results_category_id: 30
+  created_at: '2019-02-14 05:23:14.65963'
+  updated_at: '2019-02-14 05:23:14.65963'
+  position: 13
+results_template_category_14:
+  id: 14
+  results_template_id: 1
+  results_category_id: 31
+  created_at: '2019-02-14 05:23:14.661252'
+  updated_at: '2019-02-14 05:23:14.661252'
+  position: 14
+results_template_category_15:
+  id: 15
+  results_template_id: 1
+  results_category_id: 32
+  created_at: '2019-02-14 05:23:14.662843'
+  updated_at: '2019-02-14 05:23:14.662843'
+  position: 15
+results_template_category_16:
+  id: 16
+  results_template_id: 1
+  results_category_id: 33
+  created_at: '2019-02-14 05:23:14.664436'
+  updated_at: '2019-02-14 05:23:14.664436'
+  position: 16
+results_template_category_17:
+  id: 17
+  results_template_id: 2
+  results_category_id: 2
+  created_at: '2019-02-14 05:23:14.672381'
+  updated_at: '2019-02-14 05:23:14.672381'
+  position: 1
+results_template_category_18:
+  id: 18
+  results_template_id: 2
+  results_category_id: 3
+  created_at: '2019-02-14 05:23:14.674256'
+  updated_at: '2019-02-14 05:23:14.674256'
+  position: 2
+results_template_category_19:
+  id: 19
+  results_template_id: 2
+  results_category_id: 34
+  created_at: '2019-02-14 05:23:14.675766'
+  updated_at: '2019-02-14 05:23:14.675766'
+  position: 3
+results_template_category_20:
+  id: 20
+  results_template_id: 2
+  results_category_id: 35
+  created_at: '2019-02-14 05:23:14.677232'
+  updated_at: '2019-02-14 05:23:14.677232'
+  position: 4
+results_template_category_21:
+  id: 21
+  results_template_id: 2
+  results_category_id: 26
+  created_at: '2019-02-14 05:23:14.6787'
+  updated_at: '2019-02-14 05:23:14.6787'
+  position: 5
+results_template_category_22:
+  id: 22
+  results_template_id: 2
+  results_category_id: 27
+  created_at: '2019-02-14 05:23:14.680174'
+  updated_at: '2019-02-14 05:23:14.680174'
+  position: 6
+results_template_category_23:
+  id: 23
+  results_template_id: 2
+  results_category_id: 28
+  created_at: '2019-02-14 05:23:14.6816'
+  updated_at: '2019-02-14 05:23:14.6816'
+  position: 7
+results_template_category_24:
+  id: 24
+  results_template_id: 2
+  results_category_id: 29
+  created_at: '2019-02-14 05:23:14.683025'
+  updated_at: '2019-02-14 05:23:14.683025'
+  position: 8
+results_template_category_25:
+  id: 25
+  results_template_id: 2
+  results_category_id: 30
+  created_at: '2019-02-14 05:23:14.684548'
+  updated_at: '2019-02-14 05:23:14.684548'
+  position: 9
+results_template_category_26:
+  id: 26
+  results_template_id: 2
+  results_category_id: 31
+  created_at: '2019-02-14 05:23:14.685979'
+  updated_at: '2019-02-14 05:23:14.685979'
+  position: 10
+results_template_category_27:
+  id: 27
+  results_template_id: 2
+  results_category_id: 10
+  created_at: '2019-02-14 05:23:14.687401'
+  updated_at: '2019-02-14 05:23:14.687401'
+  position: 11
+results_template_category_28:
+  id: 28
+  results_template_id: 2
+  results_category_id: 11
+  created_at: '2019-02-14 05:23:14.688828'
+  updated_at: '2019-02-14 05:23:14.688828'
+  position: 12
+results_template_category_29:
+  id: 29
+  results_template_id: 3
+  results_category_id: 2
+  created_at: '2019-02-14 05:23:14.695887'
+  updated_at: '2019-02-14 05:23:14.695887'
+  position: 1
+results_template_category_30:
+  id: 30
+  results_template_id: 3
+  results_category_id: 3
+  created_at: '2019-02-14 05:23:14.697353'
+  updated_at: '2019-02-14 05:23:14.697353'
+  position: 2
+results_template_category_31:
+  id: 31
+  results_template_id: 3
+  results_category_id: 36
+  created_at: '2019-02-14 05:23:14.698787'
+  updated_at: '2019-02-14 05:23:14.698787'
+  position: 3
+results_template_category_32:
+  id: 32
+  results_template_id: 3
+  results_category_id: 37
+  created_at: '2019-02-14 05:23:14.701303'
+  updated_at: '2019-02-14 05:23:14.701303'
+  position: 4
+results_template_category_33:
+  id: 33
+  results_template_id: 3
+  results_category_id: 6
+  created_at: '2019-02-14 05:23:14.703485'
+  updated_at: '2019-02-14 05:23:14.703485'
+  position: 5
+results_template_category_34:
+  id: 34
+  results_template_id: 3
+  results_category_id: 7
+  created_at: '2019-02-14 05:23:14.705275'
+  updated_at: '2019-02-14 05:23:14.705275'
+  position: 6
+results_template_category_35:
+  id: 35
+  results_template_id: 3
+  results_category_id: 8
+  created_at: '2019-02-14 05:23:14.70693'
+  updated_at: '2019-02-14 05:23:14.70693'
+  position: 7
+results_template_category_36:
+  id: 36
+  results_template_id: 3
+  results_category_id: 9
+  created_at: '2019-02-14 05:23:14.708544'
+  updated_at: '2019-02-14 05:23:14.708544'
+  position: 8
+results_template_category_37:
+  id: 37
+  results_template_id: 4
+  results_category_id: 2
+  created_at: '2019-02-14 05:23:14.715758'
+  updated_at: '2019-02-14 05:23:14.715758'
+  position: 1
+results_template_category_38:
+  id: 38
+  results_template_id: 4
+  results_category_id: 3
+  created_at: '2019-02-14 05:23:14.717225'
+  updated_at: '2019-02-14 05:23:14.717225'
+  position: 2
+results_template_category_39:
+  id: 39
+  results_template_id: 4
+  results_category_id: 6
+  created_at: '2019-02-14 05:23:14.718644'
+  updated_at: '2019-02-14 05:23:14.718644'
+  position: 3
+results_template_category_40:
+  id: 40
+  results_template_id: 4
+  results_category_id: 7
+  created_at: '2019-02-14 05:23:14.720056'
+  updated_at: '2019-02-14 05:23:14.720056'
+  position: 4
+results_template_category_41:
+  id: 41
+  results_template_id: 4
+  results_category_id: 8
+  created_at: '2019-02-14 05:23:14.721467'
+  updated_at: '2019-02-14 05:23:14.721467'
+  position: 5
+results_template_category_42:
+  id: 42
+  results_template_id: 4
+  results_category_id: 9
+  created_at: '2019-02-14 05:23:14.722884'
+  updated_at: '2019-02-14 05:23:14.722884'
+  position: 6
+results_template_category_43:
+  id: 43
+  results_template_id: 5
+  results_category_id: 12
+  created_at: '2019-02-14 05:23:14.73372'
+  updated_at: '2019-02-14 05:23:14.73372'
+  position: 1
+results_template_category_44:
+  id: 44
+  results_template_id: 5
+  results_category_id: 13
+  created_at: '2019-02-14 05:23:14.73587'
+  updated_at: '2019-02-14 05:23:14.73587'
+  position: 2
+results_template_category_45:
+  id: 45
+  results_template_id: 5
+  results_category_id: 14
+  created_at: '2019-02-14 05:23:14.737877'
+  updated_at: '2019-02-14 05:23:14.737877'
+  position: 3
+results_template_category_46:
+  id: 46
+  results_template_id: 5
+  results_category_id: 15
+  created_at: '2019-02-14 05:23:14.740841'
+  updated_at: '2019-02-14 05:23:14.740841'
+  position: 4
+results_template_category_47:
+  id: 47
+  results_template_id: 5
+  results_category_id: 22
+  created_at: '2019-02-14 05:23:14.744945'
+  updated_at: '2019-02-14 05:23:14.744945'
+  position: 5
+results_template_category_48:
+  id: 48
+  results_template_id: 5
+  results_category_id: 23
+  created_at: '2019-02-14 05:23:14.748292'
+  updated_at: '2019-02-14 05:23:14.748292'
+  position: 6
+results_template_category_49:
+  id: 49
+  results_template_id: 5
+  results_category_id: 6
+  created_at: '2019-02-14 05:23:14.750508'
+  updated_at: '2019-02-14 05:23:14.750508'
+  position: 7
+results_template_category_50:
+  id: 50
+  results_template_id: 5
+  results_category_id: 7
+  created_at: '2019-02-14 05:23:14.75264'
+  updated_at: '2019-02-14 05:23:14.75264'
+  position: 8
+results_template_category_51:
+  id: 51
+  results_template_id: 5
+  results_category_id: 8
+  created_at: '2019-02-14 05:23:14.754918'
+  updated_at: '2019-02-14 05:23:14.754918'
+  position: 9
+results_template_category_52:
+  id: 52
+  results_template_id: 5
+  results_category_id: 9
+  created_at: '2019-02-14 05:23:14.75707'
+  updated_at: '2019-02-14 05:23:14.75707'
+  position: 10
+results_template_category_53:
+  id: 53
+  results_template_id: 6
+  results_category_id: 16
+  created_at: '2019-02-14 05:23:14.768541'
+  updated_at: '2019-02-14 05:23:14.768541'
+  position: 1
+results_template_category_54:
+  id: 54
+  results_template_id: 6
+  results_category_id: 17
+  created_at: '2019-02-14 05:23:14.771054'
+  updated_at: '2019-02-14 05:23:14.771054'
+  position: 2
+results_template_category_55:
+  id: 55
+  results_template_id: 6
+  results_category_id: 22
+  created_at: '2019-02-14 05:23:14.774977'
+  updated_at: '2019-02-14 05:23:14.774977'
+  position: 3
+results_template_category_56:
+  id: 56
+  results_template_id: 6
+  results_category_id: 23
+  created_at: '2019-02-14 05:23:14.777394'
+  updated_at: '2019-02-14 05:23:14.777394'
+  position: 4
+results_template_category_57:
+  id: 57
+  results_template_id: 6
+  results_category_id: 6
+  created_at: '2019-02-14 05:23:14.77951'
+  updated_at: '2019-02-14 05:23:14.77951'
+  position: 5
+results_template_category_58:
+  id: 58
+  results_template_id: 6
+  results_category_id: 7
+  created_at: '2019-02-14 05:23:14.781524'
+  updated_at: '2019-02-14 05:23:14.781524'
+  position: 6
+results_template_category_59:
+  id: 59
+  results_template_id: 6
+  results_category_id: 8
+  created_at: '2019-02-14 05:23:14.783493'
+  updated_at: '2019-02-14 05:23:14.783493'
+  position: 7
+results_template_category_60:
+  id: 60
+  results_template_id: 6
+  results_category_id: 9
+  created_at: '2019-02-14 05:23:14.785498'
+  updated_at: '2019-02-14 05:23:14.785498'
+  position: 8
+results_template_category_61:
+  id: 61
+  results_template_id: 7
+  results_category_id: 2
+  created_at: '2019-02-14 05:23:14.79598'
+  updated_at: '2019-02-14 05:23:14.79598'
+  position: 1
+results_template_category_62:
+  id: 62
+  results_template_id: 7
+  results_category_id: 3
+  created_at: '2019-02-14 05:23:14.797984'
+  updated_at: '2019-02-14 05:23:14.797984'
+  position: 2

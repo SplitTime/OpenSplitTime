@@ -50,6 +50,8 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_list (0.9.17)
+      activerecord (>= 3.0)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     allowable (1.1.0)
@@ -424,6 +426,7 @@ DEPENDENCIES
   active_model_serializers
   active_record_query_trace
   activerecord-import
+  acts_as_list (~> 0.9)
   allowable (~> 1.1)
   american_date
   api-pagination

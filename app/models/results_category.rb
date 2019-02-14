@@ -4,7 +4,7 @@ class ResultsCategory < ApplicationRecord
   INF = 1.0/0
 
   belongs_to :organization, optional: true
-  has_many :results_template_categories
+  has_many :results_template_categories, dependent: :destroy
   has_many :results_templates, through: :results_template_categories
 
   validates_presence_of :name

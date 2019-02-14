@@ -1,17 +1,17 @@
 ---
-ramble:
+masters_and_decades:
   id: 1
   organization_id: 
-  name: Ramble
+  name: Masters and Decades
   aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: ramble
-  slug: ramble
+  slug: masters-and-decades
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.562811'
-  updated_at: '2019-02-14 05:23:14.562811'
+  updated_at: '2019-02-14 16:45:20.26476'
 overall_30s_40s_50s_seniors:
   id: 2
   organization_id: 
@@ -25,19 +25,19 @@ overall_30s_40s_50s_seniors:
   updated_by: 
   created_at: '2019-02-14 05:23:14.667926'
   updated_at: '2019-02-14 05:23:14.667926'
-blue_sky:
+sub_masters_masters_and_grandmasters:
   id: 3
   organization_id: 
-  name: Blue Sky
+  name: Sub-Masters, Masters, and Grandmasters
   aggregation_method: 0
   podium_size: 3
   point_system: 
   temp_key: blue_sky
-  slug: blue-sky
+  slug: sub-masters-masters-and-grandmasters
   created_by: 1
   updated_by: 
   created_at: '2019-02-14 05:23:14.691868'
-  updated_at: '2019-02-14 05:23:14.691868'
+  updated_at: '2019-02-14 16:45:03.667365'
 masters_and_grandmasters:
   id: 4
   organization_id: 
@@ -51,32 +51,6 @@ masters_and_grandmasters:
   updated_by: 
   created_at: '2019-02-14 05:23:14.711695'
   updated_at: '2019-02-14 05:23:14.711695'
-nighthawks_snowshoe:
-  id: 5
-  organization_id: 
-  name: Nighthawks Snowshoe
-  aggregation_method: 0
-  podium_size: 
-  point_system: "{16,12,9,7,6,5,4,3,2,1}"
-  temp_key: nighthawks_snowshoe
-  slug: nighthawks-snowshoe
-  created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.726975'
-  updated_at: '2019-02-14 05:23:14.726975'
-nighthawks_ski:
-  id: 6
-  organization_id: 
-  name: Nighthawks Ski
-  aggregation_method: 0
-  podium_size: 
-  point_system: "{16,12,9,7,6,5,4,3,2,1}"
-  temp_key: nighthawks_ski
-  slug: nighthawks-ski
-  created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.762221'
-  updated_at: '2019-02-14 05:23:14.762221'
 simple:
   id: 7
   organization_id: 

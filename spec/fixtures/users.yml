@@ -11,9 +11,9 @@ admin_user:
   reset_password_token: c8b8b7024cb8e95502ac89fe88ecb15e54a316d78c25c08654246111169c4fef
   reset_password_sent_at: '2018-08-28 22:14:57.732468'
   remember_created_at: 
-  sign_in_count: 221
-  current_sign_in_at: '2019-02-14 16:17:21.657595'
-  last_sign_in_at: '2019-02-01 05:44:32.660298'
+  sign_in_count: 222
+  current_sign_in_at: '2019-02-14 16:42:58.307471'
+  last_sign_in_at: '2019-02-14 16:17:21.657595'
   current_sign_in_ip: 127.0.0.1
   last_sign_in_ip: 127.0.0.1
   confirmation_token: 
@@ -21,7 +21,7 @@ admin_user:
   confirmation_sent_at: 
   unconfirmed_email: 
   created_at: '2016-04-16 19:25:07.455868'
-  updated_at: '2019-02-14 16:33:20.303998'
+  updated_at: '2019-02-14 16:42:58.308187'
   pref_distance_unit: 0
   pref_elevation_unit: 0
   slug: admin-user

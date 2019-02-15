@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class MyStuffPresenter < BasePresenter
+  attr_reader :current_user
   delegate :full_name, to: :current_user
 
   def initialize(current_user)
@@ -41,6 +42,4 @@ class MyStuffPresenter < BasePresenter
   def avatar
     current_user.avatar
   end
-
-  attr_reader :current_user
 end

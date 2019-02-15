@@ -12,7 +12,9 @@
         <div class="ost-title">
           <h1><strong><%= @presenter.full_name %></strong></h1>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
+            <li class="breadcrumb-item"><%= current_user&.admin? ? (link_to 'Users', users_path) : 'Users' %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.full_name, user_path(@presenter.current_user) %></li>
+            <li class="breadcrumb-item active">My Stuff</li>
           </ul>
         </div>
       </div>

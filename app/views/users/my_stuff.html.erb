@@ -42,7 +42,7 @@
         <div class="card">
           <h3 class="card-header"><strong>My Events</strong></h3>
           <div class="card-body">
-            <% @presenter.recent_event_groups(5).each do |event_group| %>
+            <% @presenter.recent_event_groups(10).each do |event_group| %>
               <h4 class="card-text">
                 <strong><%= link_to event_group.name, event_group_path(event_group) %></strong>
               </h4>

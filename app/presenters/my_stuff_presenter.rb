@@ -21,11 +21,11 @@ class MyStuffPresenter < BasePresenter
   end
 
   def owned_organizations
-    Organization.where(created_by: current_user.id)
+    Organization.where(created_by: current_user.id).order(:name)
   end
 
   def steward_organizations
-    current_user.organizations.where.not(created_by: current_user.id)
+    current_user.organizations.where.not(created_by: current_user.id).order(:name)
   end
 
   def recent_user_efforts(number)
@@ -35,6 +35,14 @@ class MyStuffPresenter < BasePresenter
   def user_efforts
     return nil unless avatar
     @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
+  end
+
+  def interests
+    current_user.interests.distinct.order(:last_name)
+  end
+
+  def watch_efforts
+    current_user.watch_efforts.distinct.order(:last_name)
   end
 
   private

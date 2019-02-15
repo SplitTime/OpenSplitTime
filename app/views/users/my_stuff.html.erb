@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: My stuff - #{@user.full_name}" %>
+  <% "OpenSplitTime: My stuff - #{@presenter.full_name}" %>
 <% end %>
 
 <% content_for(:container_type) do %>skip
@@ -23,55 +23,75 @@
 </header>
 
 <article class="ost-article container">
-  <div class="row">
+  <div class="card-columns">
     <% if @presenter.user_efforts.present? %>
-      <div class="col">
-        <div class="card">
-          <h3 class="card-header"><strong>My Results</strong></h3>
-          <div class="card-body">
-            <% @presenter.recent_user_efforts(10).each do |effort| %>
-              <h4 class="card-text">
-                <strong><%= link_to effort.event_name, effort_path(effort) %></strong>
-              </h4>
-            <% end %>
-          </div>
+      <div class="card">
+        <h3 class="card-header"><strong>My Results</strong></h3>
+        <div class="card-body">
+          <% @presenter.recent_user_efforts(10).each do |effort| %>
+            <h4 class="card-text">
+              <strong><%= link_to effort.event_name, effort_path(effort) %></strong>
+            </h4>
+          <% end %>
         </div>
       </div>
     <% end %>
 
     <% if @presenter.event_groups.present? %>
-      <div class="col">
-        <div class="card">
-          <h3 class="card-header"><strong>My Events</strong></h3>
-          <div class="card-body">
-            <% @presenter.recent_event_groups(10).each do |event_group| %>
-              <h4 class="card-text">
-                <strong><%= link_to event_group.name, event_group_path(event_group) %></strong>
-              </h4>
-            <% end %>
-          </div>
+      <div class="card">
+        <h3 class="card-header"><strong>My Events</strong></h3>
+        <div class="card-body">
+          <% @presenter.recent_event_groups(10).each do |event_group| %>
+            <h4 class="card-text">
+              <strong><%= link_to event_group.name, event_group_path(event_group) %></strong>
+            </h4>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @presenter.interests.present? %>
+      <div class="card">
+        <h3 class="card-header"><strong>My Interests</strong></h3>
+        <div class="card-body">
+          <% @presenter.interests.each do |person| %>
+            <h4 class="card-text">
+              <strong><%= link_to person.full_name, person_path(person) %></strong>
+            </h4>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @presenter.watch_efforts.present? %>
+      <div class="card">
+        <h3 class="card-header"><strong>My Live Updates</strong></h3>
+        <div class="card-body">
+          <% @presenter.watch_efforts.each do |effort| %>
+            <h4 class="card-text">
+              <strong><%= link_to effort.full_name, effort_path(effort) %></strong>
+            </h4>
+          <% end %>
         </div>
       </div>
     <% end %>
 
     <% if @presenter.organizations.present? %>
-      <div class="col">
-        <div class="card">
-          <h3 class="card-header"><strong>My Organizations</strong></h3>
-          <div class="card-body">
-            <% @presenter.owned_organizations.each do |organization| %>
-              <h4 class="card-text">
-                <strong><%= link_to organization.name, organization_path(organization) %></strong>
-                <span class="badge badge-secondary">Owner</span>
-              </h4>
-            <% end %>
-            <% @presenter.steward_organizations.each do |organization| %>
-              <h4 class="card-text">
-                <strong><%= link_to organization.name, organization_path(organization) %></strong>
-                <span class="badge badge-secondary">Steward</span>
-              </h4>
-            <% end %>
-          </div>
+      <div class="card">
+        <h3 class="card-header"><strong>My Organizations</strong></h3>
+        <div class="card-body">
+          <% @presenter.owned_organizations.each do |organization| %>
+            <h4 class="card-text">
+              <strong><%= link_to organization.name, organization_path(organization) %></strong>
+              <span class="badge badge-secondary">Owner</span>
+            </h4>
+          <% end %>
+          <% @presenter.steward_organizations.each do |organization| %>
+            <h4 class="card-text">
+              <strong><%= link_to organization.name, organization_path(organization) %></strong>
+              <span class="badge badge-secondary">Steward</span>
+            </h4>
+          <% end %>
         </div>
       </div>
     <% end %>

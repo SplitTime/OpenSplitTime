@@ -14,7 +14,17 @@
           <strong>Join the community now.</strong>
         <% end %>
         <p/>
-        <% unless current_user %>
+
+        <% if current_user %>
+          <% if @presenter.user_efforts.present? %>
+            <h2>Your Recent Races</h2>
+            <% @presenter.recent_user_efforts(2).each do |effort| %>
+              <%= link_to effort.event_name, effort_path(effort), class: 'btn btn-info cta' %>
+            <% end %>
+            <br/>
+          <% end %>
+
+        <% else %>
           <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
             <div class="form-fields row clearfix">
               <div class="form-group col-xs-12 col-md-6">
@@ -30,6 +40,7 @@
           </form>
         <% end %>
         <br/>
+
         <h2>Recent Results</h2>
         <% @presenter.recent_event_groups(4).each do |event_group| %>
           <%= link_to event_group.name, event_group_path(event_group), class: 'btn btn-info cta' %>
@@ -83,8 +94,8 @@
     <div class="over-text">
       <h2>Unprecedented Live Tracking Tools</h2>
       <p>OST Live Entry is revolutionary. It learns from your time data. It gives you race progress for each aid
-        station. It tells you instantly where your runners last reported, where they are due next, and who you ought to look
-        for.<br/>
+        station. It tells you instantly where your runners last reported, where they are due next, and who you ought to
+        look for.<br/>
         <strong>Omniscience is pretty cool.</strong></p>
     </div>
     <div class="gradient"></div>

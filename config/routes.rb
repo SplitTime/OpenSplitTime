@@ -24,9 +24,12 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 
   resources :users do
-    member { get :people }
-    member { get :edit_preferences }
-    member { put :update_preferences }
+    member do
+      get :people
+      get :edit_preferences
+      get :my_stuff
+      put :update_preferences
+    end
   end
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]

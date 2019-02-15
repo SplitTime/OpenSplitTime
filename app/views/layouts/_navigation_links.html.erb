@@ -1,6 +1,9 @@
 <li class="nav-item"><%= link_to 'People', people_path, class: 'nav-link' %></li>
 <li class="nav-item"><%= link_to 'Events', event_groups_path, class: 'nav-link' %></li>
 <li class="nav-item"><%= link_to 'Organizations', organizations_path, class: 'nav-link' %></li>
+<% if current_user %>
+    <li class="nav-item"><%= link_to 'My Stuff', my_stuff_user_path(current_user), class: 'nav-link' %></li>
+<% end %>
 <% if current_user&.admin? %>
     <li class="nav-item"><%= link_to 'Dashboard', admin_root_path, class: 'nav-link' %></li>
 <% end %>

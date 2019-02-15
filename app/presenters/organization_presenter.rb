@@ -3,7 +3,7 @@
 class OrganizationPresenter < BasePresenter
 
   attr_reader :organization
-  delegate :id, :name, :description, :stewards, :to_param, to: :organization
+  delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
 
   def initialize(organization, params, current_user)
     @organization = organization
@@ -25,7 +25,7 @@ class OrganizationPresenter < BasePresenter
   end
 
   def display_style
-    %w[courses stewards events].include?(params[:display_style]) ? params[:display_style] : default_display_style
+    %w[courses stewards events event_series].include?(params[:display_style]) ? params[:display_style] : default_display_style
   end
 
   def default_display_style

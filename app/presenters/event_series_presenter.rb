@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 class EventSeriesPresenter < BasePresenter
+  delegate :organization, :events, to: :event_series
 
-  def initialize(events, params)
-    @events = events || []
+  def initialize(event_series, params, current_user)
+    @event_series = event_series || []
     @params = params
-  end
-
-  def organization
-    events.first&.organization
+    @current_user = current_user
   end
 
   def organization_name
-    organization&.name
+    organization.name
   end
 
   def event_names
@@ -20,13 +18,12 @@ class EventSeriesPresenter < BasePresenter
   end
 
   def series_efforts
-    @series_efforts ||= common_efforts.map(&method(:build_series_effort))
-                            .sort_by(&:total_time)
+    @series_efforts ||= common_efforts.map(&method(:build_series_effort)).sort_by(&:total_time)
   end
 
   private
 
-  attr_reader :events, :params
+  attr_reader :event_series, :params, :current_user
 
   def common_efforts
     @common_efforts ||= Results::FindCommonEfforts.perform(events)

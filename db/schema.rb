@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_155839) do
+ActiveRecord::Schema.define(version: 2019_02_14_232432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -96,6 +96,16 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.boolean "monitor_pacers", default: false
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
+  end
+
+  create_table "event_series", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.string "name"
+    t.bigint "results_template_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_event_series_on_organization_id"
+    t.index ["results_template_id"], name: "index_event_series_on_results_template_id"
   end
 
   create_table "events", id: :serial, force: :cascade do |t|
@@ -390,6 +400,8 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
   add_foreign_key "event_groups", "organizations"
+  add_foreign_key "event_series", "organizations"
+  add_foreign_key "event_series", "results_templates"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "notifications", "efforts"

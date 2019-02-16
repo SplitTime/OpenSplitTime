@@ -57,7 +57,8 @@ Getting Started
 3. Install Postgres...
 
 > ### Using Homebrew on MacOS
-> 1. `$ brew install postgres`
+> `$ brew install postgres`
+> or alternatively, install the Postgres App found here: https://postgresapp.com/downloads.html
 
 > ### Using Debian/Ubuntu
 > 1. `$ sudo apt install postgresql libpq-dev`
@@ -95,7 +96,7 @@ Getting Started
 
 **Database**
 
-1. Start your local DB `$ brew services restart postgres`
+1. Start your local DB `$ brew services restart postgres` or run the Postgres App
 2. `$ rake db:setup` to create the database
 3. `$ rails db:structure:load` to add Postgres functions
 4. `$ rails db:from_fixtures` to load seed data from test fixtures files

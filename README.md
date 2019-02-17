@@ -57,7 +57,8 @@ Getting Started
 3. Install Postgres...
 
 > ### Using Homebrew on MacOS
-> 1. `$ brew install postgres`
+> `$ brew install postgres`
+> or alternatively, install the Postgres App found here: https://postgresapp.com/downloads.html
 
 > ### Using Debian/Ubuntu
 > 1. `$ sudo apt install postgresql libpq-dev`
@@ -95,25 +96,24 @@ Getting Started
 
 **Database**
 
-1. Start your local DB `$ brew services restart postgres`
-2. `$ rake db:setup` to get local data
-3. `$ rails s` to start the server
-4. Type `localhost:3000` in a browser
-5. You can also locally import a sample race by downloading [Hardrock CCW Splits](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock-ccw-splits.csv) and [Hardrock 2015 Efforts](https://github.com/SplitTime/OpenSplitTime/raw/master/hardrock-2015-efforts.csv)
+1. Start your local DB `$ brew services restart postgres` or run the Postgres App
+2. `$ rake db:setup` to create the database
+3. `$ rails db:structure:load` to add Postgres functions
+4. `$ rails db:from_fixtures` to load seed data from test fixtures files
+5. `$ rails s` to start the server
+6. Type `localhost:3000` in a browser
 
 *Test Users*
 
-After you setup/seed your database, you should have two test users:
+After you setup/seed your database, you should have four test users:
 ```
-| Role  | Email              | Password |
-| ----- | ------------------ | -------- |
-| user  | tester@example.com | password |
-| admin | user@example.com   | password |
+| Role  | Email                  | Password |
+| ----- | ---------------------- | -------- |
+| admin | user@example.com       | password |
+| user  | thirduser@example.com  | password |
+| user  | fourthuser@example.com | password |
+| user  | fifthuser@example.com  | password |
 ```
-
-*Postgres Search*
-
-OpenSplitTime relies on metaphone searching using a Postgres add-on function. The function is available in `db/structure.sql`. After setting up your dev and test databases, you will need to run `rails db:structure:load RAILS_ENV=development` and `rails db:structure:load RAILS_ENV=test`. This is a one-time operation for each database.
 
 **AWS**
 

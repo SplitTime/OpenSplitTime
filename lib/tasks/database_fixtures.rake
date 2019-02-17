@@ -3,7 +3,7 @@
 # Credit to Yi Zeng, https://yizeng.me/2017/07/16/generate-rails-test-fixtures-yaml-from-database-dump/
 
 namespace :db do
-  desc 'Convert development DB to Rails test fixtures'
+  desc 'Convert development database to Rails test fixtures'
   task to_fixtures: :environment do
     TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations].freeze
 
@@ -45,5 +45,27 @@ namespace :db do
     ensure
       ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
     end
+  end
+
+  desc 'Convert Rails test fixtures to development database'
+  task from_fixtures: :environment do
+    process_start_time = Time.current
+
+    TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations].freeze
+
+    begin
+      ActiveRecord::Base.establish_connection
+      table_names = ActiveRecord::Base.connection.tables - TABLES_TO_SKIP
+      ENV['FIXTURES_PATH'] = 'spec/fixtures'
+      ENV['FIXTURES'] = table_names.join(',')
+      ENV['RAILS_ENV'] = 'development'
+      Rake::Task['db:fixtures:load'].invoke
+
+    ensure
+      ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
+    end
+
+    elapsed_time = Time.current - process_start_time
+    puts "\nFinished creating records for #{to_sentence(table_names)} in #{elapsed_time} seconds"
   end
 end

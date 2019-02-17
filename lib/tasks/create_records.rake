@@ -58,7 +58,7 @@ namespace :create_records do
   end
 
   desc 'Create ResultsTemplates from yml files'
-  task :results_templates => :environment do
+  task results_templates: :environment do
     process_start_time = Time.current
 
     ENV['FIXTURES_PATH'] = 'spec/fixtures'

@@ -56,10 +56,11 @@
       <tr>
         <th>Time Range</th>
         <% @presenter.sub_split_kinds.each do |kind| %>
-          <th class="text-center"><%= kind.to_s.titleize %></th>
+          <th class="text-center"><%= @presenter.sub_split_kinds.many? ? "#{kind.to_s.titleize} Count" : 'Count' %></th>
         <% end %>
       </tr>
       </thead>
+
       <tbody>
       <% @presenter.table.each do |row| %>
         <tr>

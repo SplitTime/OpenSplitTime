@@ -49,6 +49,10 @@ class EventGroupRawTimesPresenter < BasePresenter
     filtered_raw_times.total_entries
   end
 
+  def split_name
+    params.filter[:parameterized_split_name] || 'All Splits'
+  end
+
   def method_missing(method)
     event_group.send(method)
   end

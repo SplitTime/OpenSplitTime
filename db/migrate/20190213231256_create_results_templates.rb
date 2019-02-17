@@ -3,7 +3,7 @@ class CreateResultsTemplates < ActiveRecord::Migration[5.2]
     create_table :results_templates do |t|
       t.references :organization, foreign_key: true
       t.string :name, unique: true
-      t.integer :method
+      t.integer :aggregation_method
       t.integer :podium_size
       t.integer :point_system, array: true, default: '{}'
       t.string :temp_key

@@ -55,4 +55,8 @@ class UserPolicy < ApplicationPolicy
   def update_preferences?
     current_user.admin? || (current_user == user_record)
   end
+
+  def my_stuff?
+    current_user.admin? || (current_user == user_record)
+  end
 end

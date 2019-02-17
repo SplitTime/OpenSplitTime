@@ -53,6 +53,11 @@ class UsersController < ApplicationController
     redirect_to users_path, notice: 'User deleted.'
   end
 
+  def my_stuff
+    authorize @user
+    @presenter = MyStuffPresenter.new(@user)
+  end
+
   private
 
   def secure_params

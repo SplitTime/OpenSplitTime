@@ -100,7 +100,7 @@ module DropdownHelper
     build_dropdown_menu('Raw Times', dropdown_items, class: 'nav-item')
   end
 
-  def check_in_filter_dropdown_menu
+  def check_in_filter_dropdown
     items = [{icon_name: 'exclamation-circle', type: :solid, text: 'Problems', problem: true},
              {icon_name: 'question-circle', type: :solid, text: 'Unreconciled', unreconciled: true},
              {icon_name: 'square', type: :regular, text: 'Not checked', checked_in: false, started: false},
@@ -123,6 +123,31 @@ module DropdownHelper
            params[:unreconciled]&.to_boolean == item[:unreconciled] &&
            params[:problem]&.to_boolean == item[:problem]}
     end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def raw_time_filter_dropdown
+    items = [{icon_name: 'hand-paper', type: :solid, text: 'Stopped', stopped: true, pulled: nil, matched: nil},
+             {icon_name: 'cloud-download-alt', type: :solid, text: 'Pulled', stopped: nil, pulled: true, matched: nil},
+             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unpulled', stopped: nil, pulled: false, matched: nil},
+             {icon_name: 'check-square', type: :solid, text: 'Matched', stopped: nil, pulled: nil, matched: true},
+             {icon_name: 'square', type: :solid, text: 'Unmatched', stopped: nil, pulled: nil, matched: false},
+             {icon_name: 'asterisk', type: :solid, text: 'All', stopped: nil, pulled: nil, matched: nil}]
+
+    dropdown_items = items.map do |item|
+      {name: fa_icon(item[:icon_name], text: item[:text], type: item[:type]),
+       link: request.params.merge(
+           stopped: item[:stopped],
+           pulled: item[:pulled],
+           matched: item[:matched],
+           page: nil
+       ),
+       active: params[:stopped]&.to_boolean == item[:stopped] &&
+           params[:pulled]&.to_boolean == item[:pulled] &&
+           params[:matched]&.to_boolean == item[:matched]}
+    end
+
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
@@ -238,6 +263,21 @@ module DropdownHelper
        link: request.params.merge(param => split_name.parameterize),
        active: split_name.parameterize == view_object.split_name.parameterize}
     end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def split_name_filter_dropdown(view_object, param: :parameterized_split_name)
+    default_item_filter = request.params[:filter].except(param)
+    default_item = {name: 'All Splits',
+                    link: request.params.merge(filter: default_item_filter, page: nil),
+                    active: view_object.split_name.parameterize == 'all-splits'}
+    dropdown_items = view_object.ordered_split_names.map do |split_name|
+      {name: split_name,
+       link: request.params.deep_merge(filter: {param => split_name.parameterize}, page: nil),
+       active: split_name.parameterize == view_object.split_name.parameterize}
+    end
+    dropdown_items.unshift(default_item)
 
     build_dropdown_menu(nil, dropdown_items, button: true)
   end

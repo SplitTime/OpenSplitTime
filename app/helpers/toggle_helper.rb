@@ -1,21 +1,6 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_check_in_filters(icon_name, text, checked_in, started, unreconciled, problem)
-    url = request.params.merge(checked_in: checked_in, started: started, unreconciled: unreconciled, problem: problem, filter: {search: ''}, page: nil)
-    disabled = params[:checked_in]&.to_boolean == checked_in && params[:started]&.to_boolean == started &&
-        params[:unreconciled]&.to_boolean == unreconciled && params[:problem]&.to_boolean == problem
-    options = {class: 'btn btn-md btn-primary', disabled: disabled}
-    link_to fa_icon(icon_name, text: text), url, options
-  end
-
-  def link_to_raw_time_filters(icon_name, text, stopped, pulled, matched)
-    url = request.params.merge(stopped: stopped, pulled: pulled, matched: matched, filter: {search: ''}, page: nil)
-    disabled = params[:stopped]&.to_boolean == stopped && params[:pulled]&.to_boolean == pulled && params[:matched]&.to_boolean == matched
-    options = {class: 'btn btn-md btn-primary', disabled: disabled}
-    link_to fa_icon(icon_name, text: text), url, options
-  end
-
   def link_to_toggle_check_in(effort, button_param: :check_in_group, block: true)
     block_string = block ? 'btn-block' : ''
     case

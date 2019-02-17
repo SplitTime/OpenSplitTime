@@ -13,13 +13,9 @@
         </div>
         <!-- Filter Widget -->
         <div class="col form-inline">
-          <div class="btn-group">
-            <%= link_to_raw_time_filters('hand-paper', 'Stopped', true, nil, nil) %>
-            <%= link_to_raw_time_filters('cloud-download-alt', 'Pulled', nil, true, nil) %>
-            <%= link_to_raw_time_filters('cloud-upload-alt', 'Unpulled', nil, false, nil) %>
-            <%= link_to_raw_time_filters('check-square', 'Matched', nil, nil, true) %>
-            <%= link_to_raw_time_filters('square', 'Unmatched', nil, nil, false) %>
-            <%= link_to_raw_time_filters('asterisk', 'All', nil, nil, nil) %>
+          <div>
+            <%= raw_time_filter_dropdown %>
+            <%= split_name_filter_dropdown(view_object) %>
           </div>
         </div>
         <!-- Search Widget -->

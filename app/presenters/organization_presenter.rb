@@ -20,6 +20,15 @@ class OrganizationPresenter < BasePresenter
         .sort_by { |event_group| -event_group.start_time.to_i }
   end
 
+  def event_series
+    organization.event_series.includes(:events)
+  end
+
+  def event_date_range(series)
+    dates = event_dates(series)
+    [dates.first, dates.last].uniq.join(' to ')
+  end
+
   def courses
     @courses ||= Course.includes(:splits, :events).used_for_organization(organization)
   end
@@ -39,4 +48,8 @@ class OrganizationPresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
+  def event_dates(series)
+    series.events.map(&:start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }
+  end
 end

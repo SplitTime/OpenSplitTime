@@ -1,6 +1,6 @@
 class EventSeriesController < ApplicationController
   before_action :authenticate_user!, except: [:show]
-  before_action :set_event_series, except: [:new]
+  before_action :set_event_series, except: [:new, :create]
   after_action :verify_authorized, except: [:show]
 
   def show
@@ -25,6 +25,8 @@ class EventSeriesController < ApplicationController
   end
 
   def create
+    convert_event_ids
+
     @event_series = EventSeries.new(permitted_params)
     authorize @event_series
 
@@ -37,6 +39,8 @@ class EventSeriesController < ApplicationController
 
   def update
     authorize @event_series
+
+    convert_event_ids
 
     if @event_series.update(permitted_params)
       flash[:success] = 'Event series updated'
@@ -57,8 +61,14 @@ class EventSeriesController < ApplicationController
       redirect_to_organization
     end
   end
-  
+
   private
+
+  def convert_event_ids
+    if params.dig(:event_series, :event_ids).is_a?(ActionController::Parameters)
+      params[:event_series][:event_ids] = params.dig(:event_series, :event_ids).select { |_, value| value == '1' }.keys
+    end
+  end
 
   def set_event_series
     @event_series = EventSeries.friendly.find(params[:id])

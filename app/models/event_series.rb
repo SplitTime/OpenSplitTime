@@ -1,5 +1,4 @@
 class EventSeries < ApplicationRecord
-  include Auditable
   extend FriendlyId
 
   friendly_id :name, use: [:slugged, :history]

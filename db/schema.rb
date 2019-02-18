@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_232432) do
+ActiveRecord::Schema.define(version: 2019_02_18_072142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -100,8 +100,9 @@ ActiveRecord::Schema.define(version: 2019_02_14_232432) do
 
   create_table "event_series", force: :cascade do |t|
     t.bigint "organization_id"
-    t.string "name"
     t.bigint "results_template_id"
+    t.string "name"
+    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_event_series_on_organization_id"
@@ -123,8 +124,10 @@ ActiveRecord::Schema.define(version: 2019_02_14_232432) do
     t.integer "event_group_id"
     t.string "short_name"
     t.bigint "results_template_id", null: false
+    t.bigint "event_series_id"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
+    t.index ["event_series_id"], name: "index_events_on_event_series_id"
     t.index ["results_template_id"], name: "index_events_on_results_template_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true
   end
@@ -266,9 +269,9 @@ ActiveRecord::Schema.define(version: 2019_02_14_232432) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
-    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end

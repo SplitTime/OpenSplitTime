@@ -208,7 +208,7 @@ hardrock_2015_erich_larson_start_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 12:00:00'
+  absolute_time: '2015-07-10 12:00:11'
 hardrock_2015_erich_larson_cunningham_in_1:
   id: 44
   effort_id: 8
@@ -223,7 +223,7 @@ hardrock_2015_erich_larson_cunningham_in_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 14:01:00'
+  absolute_time: '2015-07-10 14:00:22'
 hardrock_2015_erich_larson_cunningham_out_1:
   id: 45
   effort_id: 8
@@ -238,7 +238,7 @@ hardrock_2015_erich_larson_cunningham_out_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 14:01:00'
+  absolute_time: '2015-07-10 14:01:33'
 hardrock_2015_erich_larson_sherman_in_1:
   id: 50
   effort_id: 8
@@ -253,7 +253,7 @@ hardrock_2015_erich_larson_sherman_in_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 18:06:00'
+  absolute_time: '2015-07-10 18:06:50'
 hardrock_2015_erich_larson_sherman_out_1:
   id: 51
   effort_id: 8
@@ -268,7 +268,7 @@ hardrock_2015_erich_larson_sherman_out_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 18:06:00'
+  absolute_time: '2015-07-10 18:07:00'
 hardrock_2015_erich_larson_grouse_in_1:
   id: 54
   effort_id: 8
@@ -283,7 +283,7 @@ hardrock_2015_erich_larson_grouse_in_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 21:22:00'
+  absolute_time: '2015-07-10 21:21:00'
 hardrock_2015_erich_larson_grouse_out_1:
   id: 55
   effort_id: 8
@@ -298,7 +298,7 @@ hardrock_2015_erich_larson_grouse_out_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-10 21:24:00'
+  absolute_time: '2015-07-10 21:24:59'
 hardrock_2015_erich_larson_ouray_in_1:
   id: 58
   effort_id: 8
@@ -358,7 +358,7 @@ hardrock_2015_erich_larson_telluride_out_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-11 04:33:00'
+  absolute_time: '2015-07-11 04:33:03'
 hardrock_2015_erich_larson_putnam_in_1:
   id: 70
   effort_id: 8
@@ -373,7 +373,7 @@ hardrock_2015_erich_larson_putnam_in_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-11 12:39:00'
+  absolute_time: '2015-07-11 12:39:05'
 hardrock_2015_erich_larson_putnam_out_1:
   id: 71
   effort_id: 8
@@ -388,7 +388,7 @@ hardrock_2015_erich_larson_putnam_out_1:
   remarks: 
   lap: 1
   stopped_here: false
-  absolute_time: '2015-07-11 12:39:00'
+  absolute_time: '2015-07-11 12:39:07'
 hardrock_2015_erich_larson_finish_1:
   id: 72
   effort_id: 8
@@ -403,7 +403,7 @@ hardrock_2015_erich_larson_finish_1:
   remarks: 
   lap: 1
   stopped_here: true
-  absolute_time: '2015-07-11 13:45:00'
+  absolute_time: '2015-07-11 13:45:09'
 hardrock_2015_leif_carter_start_1:
   id: 253
   effort_id: 15

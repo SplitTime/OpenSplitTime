@@ -68,11 +68,32 @@ Getting Started
 
 *if running into weird errors first try `$ rbenv rehash` and restart your terminal*
 
+If you get this error installing the postgres gem and you installed the Posgres.app (and not via brew):
+```
+Fetching pg 0.21.0
+Installing pg 0.21.0 with native extensions
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/gems/2.6.0/gems/pg-0.21.0/ext
+/Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/bin/ruby -I /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/2.6.0 -r ./siteconf20190216-89781-dwhko7.rb extconf.rb
+checking for pg_config... no
+No pg_config... trying anyway. If building fails, please try again with
+ --with-pg-config=/path/to/pg_config
+```
+
+Then run this: `bundle config build.pg --with-pg-config=/Applications/Postgres.app/Contents/Versions/latest/bin/pg_config`
+
+-- change the path to where your pg_config is located, of course.
+
+Then run `bundle install` again.
+
 **Javascript Runtime + Yarn**
 
 1. Install Node.js
 
 > ### Using Homebrew on MacOS
+
+
 > *Incomplete*
 
 > ### Using Debian/Ubuntu
@@ -102,6 +123,10 @@ Getting Started
 4. `$ rails db:from_fixtures` to load seed data from test fixtures files
 5. `$ rails s` to start the server
 6. Type `localhost:3000` in a browser
+
+_Note_: I got an error running rake:db. Some problem with yarn and it was suggested that I do a `yarn install`.
+This failed for me when I was running Node version 6.4. I upgraded to the latest version via the installer
+at https://nodejs.org and then I running `yarn install` worked.
 
 *Test Users*
 

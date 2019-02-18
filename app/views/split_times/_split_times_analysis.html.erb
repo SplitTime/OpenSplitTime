@@ -40,12 +40,12 @@
       <td><%= analysis_row.name %></td>
       <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
       <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
-      <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under) %></td>
+      <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under_truncated_minutes) %></td>
       <% if view_object.multiple_sub_splits? %>
         <td class="text-center"><%= [time_format_minutes(analysis_row.time_in_aid), time_format_minutes(analysis_row.time_in_aid_typical)].join(' / ') %></td>
-        <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under) %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under_truncated_minutes) %></td>
         <td class="text-center"><%= [time_format_xxhyym(analysis_row.combined_time), time_format_xxhyym(analysis_row.combined_time_typical)].join(' / ') %></td>
-        <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under) %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under_truncated_minutes) %></td>
       <% end %>
     </tr>
   <% end %>

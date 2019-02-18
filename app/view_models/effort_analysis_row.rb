@@ -65,12 +65,24 @@ class EffortAnalysisRow
     segment_time && segment_time_typical && segment_time - segment_time_typical
   end
 
+  def segment_time_over_under_truncated_minutes
+    segment_time && segment_time_typical && ((segment_time / 60).floor * 60) - ((segment_time_typical / 60).floor * 60)
+  end
+
   def time_in_aid_over_under
     time_in_aid && time_in_aid_typical && time_in_aid - time_in_aid_typical
   end
 
+  def time_in_aid_over_under_truncated_minutes
+    time_in_aid && time_in_aid_typical && ((time_in_aid / 60).floor * 60) - ((time_in_aid_typical / 60).floor * 60)
+  end
+
   def combined_time_over_under
     segment_time_over_under && time_in_aid_over_under && segment_time_over_under + time_in_aid_over_under
+  end
+
+  def combined_time_over_under_truncated_minutes
+    segment_time_over_under && time_in_aid_over_under && segment_time_over_under_truncated_minutes + time_in_aid_over_under_truncated_minutes
   end
 
   def segment_over_under_percent

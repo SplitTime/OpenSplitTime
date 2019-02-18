@@ -56,20 +56,20 @@
       <strong><%= [time_format_xxhyym(view_object.total_segment_time), time_format_xxhyym(view_object.total_segment_time_typical)].join(' / ') %></strong>
     </td>
     <td class="text-center">
-      <strong><%= time_format_minutes(view_object.total_segment_time_over_under) %></strong>
+      <strong><%= time_format_minutes(view_object.total_segment_time_over_under_truncated_minutes) %></strong>
     </td>
     <% if view_object.multiple_sub_splits? %>
       <td class="text-center">
         <strong><%= [time_format_xxhyym(view_object.total_time_in_aid), time_format_xxhyym(view_object.total_time_in_aid_typical)].join(' / ') %></strong>
       </td>
       <td class="text-center">
-        <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under) %></strong>
+        <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under_truncated_minutes) %></strong>
       </td>
       <td class="text-center">
         <strong><%= [time_format_xxhyym(view_object.total_time_combined), time_format_xxhyym(view_object.total_time_combined_typical)].join(' / ') %></strong>
       </td>
       <td class="text-center">
-        <strong><%= time_format_minutes(view_object.total_combined_time_over_under) %></strong>
+        <strong><%= time_format_minutes(view_object.total_combined_time_over_under_truncated_minutes) %></strong>
       </td>
     <% end %>
   </tr>

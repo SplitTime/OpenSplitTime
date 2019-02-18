@@ -69,7 +69,7 @@ class User < ApplicationRecord
   end
 
   def authorized_fully?(resource)
-    admin? || (id == resource.created_by) || resource.new_record? || owner_of?(resource)
+    admin? || resource.new_record? || owner_of?(resource)
   end
 
   def authorized_to_edit?(resource)

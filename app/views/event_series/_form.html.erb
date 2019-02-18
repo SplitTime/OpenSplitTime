@@ -2,7 +2,11 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(url: '/event_series', local: true, method: :post, html: {class: "form-horizontal", role: "form"}) do |f| %>
+    <%= form_with(url: @event_series.new_record? ? '/event_series' : "/event_series/#{@event_series.id}",
+                  local: true,
+                  method: @event_series.new_record? ? :post : :patch,
+                  html: {class: "form-horizontal", role: "form"}) do |f| %>
+
       <%= f.hidden_field 'event_series[organization_id]', value: @event_series.organization.id %>
 
       <div class="form-group">
@@ -10,7 +14,7 @@
           <%= f.label :name %>
         </div>
         <div class="col-sm-8">
-          <%= f.text_field 'event_series[name]', class: "form-control", placeholder: "Event series name", autofocus: true %>
+          <%= f.text_field 'event_series[name]', class: "form-control", value: @event_series.name, placeholder: "Event series name", autofocus: true %>
         </div>
       </div>
 
@@ -30,18 +34,18 @@
             <%= f.label :events, event.name %>
           </div>
           <div class="col-sm-8">
-            <%= f.check_box "event_series[event_ids][#{event.id}]" %>
+            <%= f.check_box "event_series[event_ids][#{event.id}]", checked: @event_series.events.include?(event) %>
           </div>
         </div>
       <% end %>
 
       <div class="form-group">
         <div class="col">
-          <%= f.submit(@event_series.new_record? ? "Create Event Series" : "Update Event Series", class: 'btn btn-primary btn-large') %>
+          <%= f.submit(@event_series.new_record? ? 'Create Event Series' : 'Update Event Series', class: 'btn btn-primary btn-large') %>
         </div>
       </div>
       <div class="col">
-        [ <%= link_to 'Cancel', organization_path(@event_series.organization, display_style: 'event_series') %> ]
+        <span class="brackets"><%= link_to 'Cancel', organization_path(@event_series.organization, display_style: 'event_series') %></span>
       </div>
     <% end %>
   </div>

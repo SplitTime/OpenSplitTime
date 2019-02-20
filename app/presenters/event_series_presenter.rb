@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class EventSeriesPresenter < BasePresenter
-  delegate :organization, :events, to: :event_series
+  attr_reader :event_series
+  delegate :name, :organization, :events, to: :event_series
+  delegate :results_categories, to: :results_template
 
   def initialize(event_series, params, current_user)
     @event_series = event_series || []
@@ -13,31 +15,11 @@ class EventSeriesPresenter < BasePresenter
     organization.name
   end
 
-  def event_names
-    events.map(&:name)
-  end
-
-  def series_efforts
-    @series_efforts ||= common_efforts.map(&method(:build_series_effort)).sort_by(&:total_time)
-  end
-
   private
 
-  attr_reader :event_series, :params, :current_user
+  attr_reader :params, :current_user
 
-  def common_efforts
-    @common_efforts ||= Results::FindCommonEfforts.perform(events)
-  end
-
-  def build_series_effort(common_effort)
-    Results::SeriesEffort.new(person: indexed_people[common_effort[:person_id]], efforts: common_effort[:efforts])
-  end
-
-  def indexed_people
-    @indexed_people ||= Person.find(person_ids).index_by(&:id)
-  end
-
-  def person_ids
-    common_efforts.map { |common_effort| common_effort[:person_id] }
+  def results_template
+    @results_template ||= Results::FillEventSeriesTemplate.perform(event_series)
   end
 end

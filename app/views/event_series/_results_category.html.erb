@@ -1,0 +1,32 @@
+<thead>
+<tr>
+  <th><%= category.name %></th>
+  <th>Name</th>
+  <th>From</th>
+  <% @presenter.events.each do |event| %>
+    <th class="text-center"><%= event.name %></th>
+  <% end %>
+  <th class="text-center">Total</th>
+</tr>
+</thead>
+
+<tbody>
+<% if category.efforts.present? %>
+  <% category.efforts.each.with_index(1) do |effort, i| %>
+    <tr>
+      <td><%= "#{i.ordinalize} Place" %></td>
+      <td><%= effort.full_name %></td>
+      <td><%= effort.flexible_geolocation %></td>
+      <% @presenter.events.each do |event| %>
+        <td class="text-center"><%= effort.indexed_points[event.id] %></td>
+      <% end %>
+      <td class="text-center"><%= effort.total_points %></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td><strong>[Empty category]</strong></td>
+    <td colspan="<%= @presenter.events.size + 2 %>"></td>
+  </tr>
+<% end %>
+</tbody>

@@ -2,19 +2,18 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(url: @event_series.new_record? ? '/event_series' : "/event_series/#{@event_series.id}",
+    <%= form_with(model: @event_series,
                   local: true,
-                  method: @event_series.new_record? ? :post : :patch,
                   html: {class: "form-horizontal", role: "form"}) do |f| %>
 
-      <%= f.hidden_field 'event_series[organization_id]', value: @event_series.organization.id %>
+      <%= f.hidden_field :organization_id, value: @event_series.organization.id %>
 
       <div class="form-group">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
         </div>
         <div class="col-sm-8">
-          <%= f.text_field 'event_series[name]', class: "form-control", value: @event_series.name, placeholder: "Event series name", autofocus: true %>
+          <%= f.text_field :name, class: "form-control", value: @event_series.name, placeholder: "Event series name", autofocus: true %>
         </div>
       </div>
 
@@ -23,18 +22,32 @@
           <%= f.label :podium_template %>
         </div>
         <div class="col-sm-8">
-          <%= collection_select(:event_series, :results_template_id, ResultsTemplate.pluck(:id, :name), :first, :last,
-                                {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+          <%= collection_select(:event_series, :results_template_id, ResultsTemplate.from(ResultsTemplate.standard, :results_templates).pluck(:id, :name), :first, :last,
+                                {prompt: false}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :scoring_method %>
+        </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event_series, :scoring_method, EventSeries.scoring_methods.keys, :to_sym, :titleize,
+                                {prompt: false}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <strong>Events in Series</strong>
         </div>
       </div>
 
       <% @event_series.organization.event_groups.flat_map(&:events).sort_by(&:start_time).each do |event| %>
         <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :events, event.name %>
-          </div>
           <div class="col-sm-8">
-            <%= f.check_box "event_series[event_ids][#{event.id}]", checked: @event_series.events.include?(event) %>
+            <%= f.check_box "event_ids[#{event.id}]", checked: @event_series.events.include?(event) %>
+            <%= f.label :events, event.name %>
           </div>
         </div>
       <% end %>

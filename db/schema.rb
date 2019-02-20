@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_18_072142) do
+ActiveRecord::Schema.define(version: 2019_02_20_162508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 2019_02_18_072142) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "scoring_method"
     t.index ["organization_id"], name: "index_event_series_on_organization_id"
     t.index ["results_template_id"], name: "index_event_series_on_results_template_id"
   end
@@ -269,9 +270,9 @@ ActiveRecord::Schema.define(version: 2019_02_18_072142) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end

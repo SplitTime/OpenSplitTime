@@ -89,16 +89,8 @@ class EventsController < ApplicationController
   end
 
   def podium
-    template = Results::FillTemplate.perform(event: @event)
+    template = Results::FillEventTemplate.perform(@event)
     @presenter = PodiumPresenter.new(@event, template, current_user)
-  end
-
-  def series
-    events = Event.find(params[:event_ids])
-    @presenter = EventSeriesPresenter.new(events, prepared_params)
-  rescue ActiveRecord::RecordNotFound => exception
-    flash[:danger] = "#{exception}"
-    redirect_to event_groups_path
   end
 
   # Event admin actions

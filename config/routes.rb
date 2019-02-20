@@ -79,7 +79,6 @@ Rails.application.routes.draw do
   resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
 
   resources :events, except: :index do
-    collection { get :series }
     member do
       get :admin
       get :edit_start_time

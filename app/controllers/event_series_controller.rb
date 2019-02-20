@@ -4,12 +4,13 @@ class EventSeriesController < ApplicationController
   after_action :verify_authorized, except: [:show]
 
   def show
-    event_series = EventSeries.where(id: @event_series).includes(:organization, :results_template, events: :efforts)
+    event_series = EventSeries.where(id: @event_series).includes(:organization, :results_template, events: :efforts).first
     @presenter = EventSeriesPresenter.new(event_series, params, current_user)
   end
 
   def new
-    organization = Organization.friendly.find(params[:organization])
+    organization = Organization.where(id: Organization.friendly.find(params[:organization]))
+                       .includes(event_groups: {events: :efforts}).first
 
     if organization
       @event_series = EventSeries.new(organization: organization)
@@ -22,10 +23,11 @@ class EventSeriesController < ApplicationController
 
   def edit
     authorize @event_series
+    @event_series = EventSeries.includes(:organization, events: :efforts).first
   end
 
   def create
-    convert_event_ids
+    convert_checkbox_event_ids
 
     @event_series = EventSeries.new(permitted_params)
     authorize @event_series
@@ -40,7 +42,7 @@ class EventSeriesController < ApplicationController
   def update
     authorize @event_series
 
-    convert_event_ids
+    convert_checkbox_event_ids
 
     if @event_series.update(permitted_params)
       flash[:success] = 'Event series updated'
@@ -64,7 +66,7 @@ class EventSeriesController < ApplicationController
 
   private
 
-  def convert_event_ids
+  def convert_checkbox_event_ids
     if params.dig(:event_series, :event_ids).is_a?(ActionController::Parameters)
       params[:event_series][:event_ids] = params.dig(:event_series, :event_ids).select { |_, value| value == '1' }.keys
     end

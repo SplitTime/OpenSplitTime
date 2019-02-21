@@ -50,6 +50,19 @@
       </div>
     <% end %>
 
+    <% if @presenter.event_series.present? %>
+      <div class="card">
+        <h3 class="card-header"><strong>My Event Series</strong></h3>
+        <div class="card-body">
+          <% @presenter.recent_event_series(10).each do |series| %>
+            <h4 class="card-text">
+              <strong><%= link_to series.name, event_series_path(series) %></strong>
+            </h4>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
     <% if @presenter.interests.present? %>
       <div class="card">
         <h3 class="card-header"><strong>My Interests</strong></h3>

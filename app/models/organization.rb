@@ -10,6 +10,7 @@ class Organization < ApplicationRecord
   has_many :event_groups, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
+  has_many :event_series, dependent: :destroy
 
   scope :with_visible_event_count, -> do
     left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
@@ -33,5 +34,9 @@ class Organization < ApplicationRecord
 
   def should_be_concealed?
     !event_groups.visible.present?
+  end
+
+  def owner_id
+    created_by
   end
 end

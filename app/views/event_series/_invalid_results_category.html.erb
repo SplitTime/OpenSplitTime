@@ -1,0 +1,30 @@
+<thead>
+<tr>
+  <th><%= category.name %></th>
+  <th>Name</th>
+  <th>Errors</th>
+</tr>
+</thead>
+
+<tbody>
+<% if category.efforts.present? %>
+  <% category.efforts.each do |effort| %>
+    <tr>
+      <td></td>
+      <td>
+        <% if effort.person_id %>
+          <%= link_to effort.person.full_name, person_path(effort.person) %>
+        <% else %>
+          <%= link_to effort.full_name, effort_path(effort) %>
+        <% end %>
+      </td>
+      <td><%= effort.errors.full_messages %></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td><strong>[Empty category]</strong></td>
+    <td colspan="2"></td>
+  </tr>
+<% end %>
+</tbody>

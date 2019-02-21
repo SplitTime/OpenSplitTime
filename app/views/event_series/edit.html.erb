@@ -1,0 +1,30 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Edit Event Series - #{@event_series.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Edit Event Series - <%= @event_series.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event_series.organization.name, organization_path(@event_series.organization, display_style: :event_series) %></li>
+            <li class="breadcrumb-item"><%= link_to @event_series.name, event_series_path(@event_series) %></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+  <hr>
+  <%= link_to 'Delete', event_series_path(@event_series),
+              method: :delete,
+              data: {confirm: 'Are you sure?'},
+              class: "btn btn-danger" %>
+</article>

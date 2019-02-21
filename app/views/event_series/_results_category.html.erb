@@ -1,0 +1,38 @@
+<thead>
+<tr>
+  <th colspan="3" class="border-0"></th>
+  <th colspan="<%= @presenter.events.size + 1 %>" class="text-center">
+    <%= @presenter.scoring_method.titleize %>
+  </th>
+</tr>
+<tr>
+  <th class="regular-height"><%= category.name %></th>
+  <th class="regular-height">Name</th>
+  <th class="regular-height">From</th>
+  <% @presenter.events.each do |event| %>
+    <th class="text-center regular-height"><%= event.name %></th>
+  <% end %>
+  <th class="text-center regular-height">Total</th>
+</tr>
+</thead>
+
+<tbody>
+<% if category.efforts.present? %>
+  <% category.efforts.each.with_index(1) do |effort, i| %>
+    <tr>
+      <td><%= "#{i.ordinalize} Place" %></td>
+      <td><%= effort.full_name %></td>
+      <td><%= effort.flexible_geolocation %></td>
+      <% @presenter.events.each do |event| %>
+        <td class="text-center"><%= @presenter.event_result(effort, event) %></td>
+      <% end %>
+      <td class="text-center"><%= @presenter.total_result(effort) %></td>
+    </tr>
+  <% end %>
+<% else %>
+  <tr>
+    <td><strong>[Empty category]</strong></td>
+    <td colspan="<%= @presenter.events.size + 3 %>"></td>
+  </tr>
+<% end %>
+</tbody>

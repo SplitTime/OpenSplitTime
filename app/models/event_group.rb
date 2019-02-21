@@ -6,6 +6,7 @@ class EventGroup < ApplicationRecord
   include Auditable
   include Concealable
   include Delegable
+  include MultiEventable
   include SplitAnalyzable
   extend FriendlyId
 
@@ -22,7 +23,6 @@ class EventGroup < ApplicationRecord
   validates_with GroupedEventsValidator
 
   delegate :stewards, to: :organization
-  delegate :start_time, :home_time_zone, :start_time_local, to: :first_event, allow_nil: true
 
   scope :standard_includes, -> { includes(events: :splits) }
 
@@ -39,36 +39,12 @@ class EventGroup < ApplicationRecord
     name
   end
 
-  def ordered_events
-    events.sort_by { |event| [event.start_time, event.name] }
-  end
-
-  def first_event
-    ordered_events.first
-  end
-
-  def multiple_events?
-    events.many?
-  end
-
-  def multiple_laps?
-    events.any?(&:multiple_laps?)
-  end
-
-  def multiple_sub_splits?
-    events.any?(&:multiple_sub_splits?)
-  end
-
   def permit_notifications?
     visible? && available_live?
   end
 
   def pick_partner_with_banner
     partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
-  end
-
-  def single_lap?
-    !multiple_laps?
   end
 
   def split_times

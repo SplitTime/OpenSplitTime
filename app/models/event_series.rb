@@ -7,7 +7,8 @@ class EventSeries < ApplicationRecord
 
   belongs_to :organization
   belongs_to :results_template
-  has_many :events
+  has_many :event_series_events, dependent: :destroy
+  has_many :events, through: :event_series_events
   has_many :efforts, through: :events
 
   delegate :stewards, to: :organization

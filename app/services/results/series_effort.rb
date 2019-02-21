@@ -54,7 +54,7 @@ module Results
     end
 
     def indexed_times_from_start
-      indexed_efforts.transform_values(&:final_time_from_start)
+      indexed_efforts.transform_values { |effort| effort.final_time_from_start.to_i }
     end
 
     def total_time_from_start
@@ -67,15 +67,15 @@ module Results
     delegate :results_template, to: :event_series
 
     def final_points
-      efforts.map(&:points)
+      indexed_points.values
     end
 
     def final_ranks
-      efforts.map(&:overall_rank)
+      indexed_ranks.values
     end
 
     def final_times_from_start
-      efforts.map(&:final_time_from_start)
+      indexed_times_from_start.values
     end
 
     def indexed_efforts

@@ -25,7 +25,11 @@
 <article class="ost-article container">
   <table class="table table-sm table-striped podium">
     <% @presenter.results_categories.each do |category| %>
-      <%= render 'results_category', category: category %>
+      <% if category.invalid_efforts? %>
+        <%= render 'invalid_results_category', category: category %>
+      <% else %>
+        <%= render 'results_category', category: category %>
+      <% end %>
     <% end %>
   </table>
 </article>

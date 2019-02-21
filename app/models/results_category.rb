@@ -12,6 +12,12 @@ class ResultsCategory < ApplicationRecord
   validate :gender_present?
 
   attr_accessor :efforts
+  attribute :invalid_efforts, :boolean
+
+  def self.invalid_category(attributes = {})
+    standard_attributes = {name: 'Invalid Efforts', male: true, female: true, invalid_efforts: true}
+    new(standard_attributes.merge(attributes))
+  end
 
   def age_range
     (low_age || 0)..(high_age || INF)

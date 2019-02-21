@@ -9,6 +9,8 @@ class ResultsTemplate < ApplicationRecord
   has_many :results_template_categories, -> { order(position: :asc) }, dependent: :destroy
   has_many :results_categories, through: :results_template_categories
 
+  alias_attribute :categories, :results_categories
+
   scope :standard, -> { select('results_templates.*, count(results_categories.id) as category_count')
                             .joins(:results_categories).where(organization: nil).group(:id).order('category_count') }
 

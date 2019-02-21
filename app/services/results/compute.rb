@@ -46,10 +46,10 @@ module Results
     end
 
     def attributes_match(category, effort)
-      # Checks for all_genders? and all_ages? are necessary to properly sort overall categories
-      # when age and/or gender is not provided.
-      (category.all_genders? || effort.gender.in?(category.genders)) &&
-          (category.all_ages? || effort.age.in?(category.age_range))
+      # Check for all_ages? is necessary to properly sort overall categories
+      # when age is not provided.
+      effort.gender.in?(category.genders) &&
+          (category.all_ages? || effort.template_age.in?(category.age_range))
     end
 
     def available_efforts

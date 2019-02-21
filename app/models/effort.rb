@@ -24,7 +24,7 @@ class Effort < ApplicationRecord
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :points
-  attr_writer :last_reported_split_time, :event_start_time
+  attr_writer :last_reported_split_time, :event_start_time, :template_age
 
   alias_attribute :participant_id, :person_id
   delegate :event_group, :events_within_group, to: :event
@@ -263,6 +263,10 @@ class Effort < ApplicationRecord
 
   def enriched
     event.efforts.ranked_with_status.find { |e| e.id == id }
+  end
+  
+  def template_age
+    @template_age || age
   end
 
   # Methods related to stopped split_time

@@ -2,7 +2,7 @@
 
 class EventSeriesPresenter < BasePresenter
   attr_reader :event_series
-  delegate :name, :organization, :events, to: :event_series
+  delegate :name, :organization, to: :event_series
   delegate :results_categories, to: :results_template
 
   def initialize(event_series, params, current_user)
@@ -13,6 +13,10 @@ class EventSeriesPresenter < BasePresenter
 
   def organization_name
     organization.name
+  end
+
+  def events
+    event_series.events.sort_by(&:start_time)
   end
 
   private

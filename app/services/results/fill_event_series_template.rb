@@ -8,16 +8,18 @@ module Results
 
     def initialize(event_series)
       @event_series = event_series
-      @series_template = event_series.results_template.dup_with_categories
+      @series_template = blank_template
     end
 
     def perform
-      unreconciled_efforts = event_series.efforts.select(&:unreconciled?)
+      compute_series_efforts
+      invalid_series_efforts = series_efforts.select(&:invalid?)
 
-      if unreconciled_efforts.present?
-        Results::ReportUnreconciled.perform(efforts: unreconciled_efforts, template: series_template)
+      if invalid_series_efforts.present?
+        category = ResultsCategory.invalid_category(efforts: invalid_series_efforts)
+        series_template.categories = [category]
       else
-        Results::Compute.perform(efforts: sorted_series_efforts, template: series_template)
+        Results::Compute.perform(efforts: scored_series_efforts, template: series_template)
       end
 
       series_template
@@ -25,37 +27,34 @@ module Results
 
     private
 
-    attr_reader :event_series, :series_template
+    attr_reader :event_series, :series_template, :series_efforts
+    delegate :scoring_method, :results_template, to: :event_series
 
-    def all_event_efforts
-      @all_event_efforts = events.flat_map do |event|
-        event_template = series_template.dup_with_categories
-        event_efforts = event.efforts.ranked_with_status.select(&:finished?)
-        Results::Compute.perform(efforts: event_efforts, template: event_template)
-        event_efforts
-      end
+    def blank_template
+      results_template.dup_with_categories
     end
 
     def events
       event_series.events.sort_by(&:start_time)
     end
 
-    def sorted_series_efforts
-      series_efforts.sort_by { |effort| -effort.total_points }
+    def scored_series_efforts
+      Results::ScoreSeriesEfforts.perform(series_efforts, scoring_method, event_series)
     end
 
-    def series_efforts
-      all_event_efforts.group_by(&:person_id).map do |person_id, efforts|
-        SeriesEffort.new(person: indexed_people[person_id], efforts: efforts)
+    def compute_series_efforts
+      @series_efforts = ranked_efforts.group_by(&:person_id).map do |person_id, efforts|
+        SeriesEffort.new(person: indexed_people[person_id], efforts: efforts, event_series: event_series)
       end
-    end
-
-    def person_ids
-      all_event_efforts.map(&:person_id).uniq
+      @series_efforts.each(&:valid?)
     end
 
     def indexed_people
-      @indexed_people ||= Person.find(person_ids).index_by(&:id)
+      @indexed_people ||= Person.find(event_series.efforts.pluck(:person_id)).index_by(&:id)
+    end
+
+    def ranked_efforts
+      @ranked_efforts ||= event_series.efforts.ranked_with_status.select(&:finished?)
     end
   end
 end

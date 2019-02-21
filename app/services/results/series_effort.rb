@@ -90,8 +90,8 @@ module Results
       errors.add(:efforts, :unreconciled, message: "cannot be unreconciled") if efforts.any?(&:unreconciled?)
       errors.add(:efforts, :age_and_birthdate_blank, message: "must have an age or birthdate") unless efforts.all?(&:age) || age_not_required?
       errors.add(:efforts, :actual_start_time_blank, message: "must have an actual start time") unless efforts.all?(&:actual_start_time)
-      errors.add(:efforts, :mismatched_with_person, message: "must match the provided person") unless efforts.all? { |e| e.person_id == person.id }
-      errors.add(:efforts, :mismatched_genders, message: "must match the provided person's gender") unless efforts.all? { |e| e.gender == person.gender }
+      errors.add(:efforts, :mismatched_with_person, message: "must match the provided person") unless efforts.all? { |e| e.person_id == person&.id }
+      errors.add(:efforts, :mismatched_genders, message: "must match the provided person's gender") unless efforts.all? { |e| e.gender == person&.gender }
 
       if efforts.all? { |effort| effort.age && effort.actual_start_time }
         effort_birth_years = efforts.map { |effort| effort.actual_start_time.year - effort.age }.sort

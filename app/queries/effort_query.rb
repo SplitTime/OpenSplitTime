@@ -4,7 +4,7 @@ class EffortQuery < BaseQuery
 
   def self.rank_and_status(args = {})
     select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'overall_rank')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'event_id,overall_rank')
     query = <<-SQL
       with
         existing_scope as (#{existing_scope_sql}),
@@ -108,7 +108,8 @@ class EffortQuery < BaseQuery
 
       select #{select_sql},
           rank() over 
-            (order by started desc,
+            (partition by event_id
+             order by started desc,
                       dropped, 
                       final_lap desc nulls last, 
                       final_lap_distance desc, 
@@ -118,7 +119,7 @@ class EffortQuery < BaseQuery
                       age desc) 
           as overall_rank, 
           rank() over 
-            (partition by gender 
+            (partition by event_id, gender 
              order by started desc,
                       dropped, 
                       final_lap desc nulls last, 

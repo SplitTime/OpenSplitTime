@@ -9,6 +9,8 @@ module Results
     attr_reader :used_efforts
 
     def initialize(args)
+      ArgsValidator.validate(params: args, required: [:efforts, :template], exclusive: [:efforts, :template], class: self)
+
       # efforts must be pre-sorted in the desired order
       @efforts = args[:efforts]
       @template = args[:template]
@@ -22,7 +24,10 @@ module Results
     private
 
     attr_reader :sort_attribute, :efforts, :template
-    delegate :aggregation_method, to: :template
+
+    def aggregation_method
+      template.aggregation_method.to_sym
+    end
 
     def podium_size
       template.podium_size || efforts.size

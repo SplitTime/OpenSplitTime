@@ -16,6 +16,14 @@ class MyStuffPresenter < BasePresenter
     EventGroup.includes(events: :efforts).where(organization: organizations)
   end
 
+  def recent_event_series(number)
+    event_series.sort_by(&:start_time).reverse.first(number)
+  end
+
+  def event_series
+    EventSeries.includes(:events).where(organization: organizations)
+  end
+
   def organizations
     owned_organizations | steward_organizations
   end

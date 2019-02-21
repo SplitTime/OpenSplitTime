@@ -25,7 +25,7 @@ module Results
 
     def score_efforts
       events.flat_map do |event|
-        event_efforts = filtered_efforts_by_event_id[event.id]
+        event_efforts = filtered_efforts_by_event_id[event.id] || []
         Results::Compute.perform(efforts: event_efforts, template: blank_template)
       end
     end

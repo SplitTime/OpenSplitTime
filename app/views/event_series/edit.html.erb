@@ -11,6 +11,7 @@
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @event_series.organization.name, organization_path(@event_series.organization, display_style: :event_series) %></li>
+            <li class="breadcrumb-item"><%= link_to @event_series.name, event_series_path(@event_series) %></li>
             <li class="breadcrumb-item active">Edit</li>
           </ul>
         </div>

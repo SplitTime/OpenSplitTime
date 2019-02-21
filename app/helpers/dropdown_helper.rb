@@ -192,6 +192,20 @@ module DropdownHelper
     build_dropdown_menu('Actions', dropdown_items, button: true)
   end
 
+  def event_series_actions_dropdown_menu(view_object)
+    dropdown_items = [
+        {name: 'Edit',
+         link: edit_event_series_path(view_object.event_series)},
+        {role: :separator},
+        {name: 'Delete event series',
+         link: event_series_path(view_object.event_series),
+         method: :delete,
+         data: {confirm: 'This action cannot be undone. Proceed?'},
+         class: 'text-danger'}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
+  end
+
   def person_actions_dropdown_menu(view_object)
     dropdown_items = [
         {name: 'Edit',

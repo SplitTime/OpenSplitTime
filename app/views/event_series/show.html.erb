@@ -22,7 +22,25 @@
   </div>
 </header>
 
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+
+      <% if current_user&.authorized_to_edit?(@presenter.event_series) %>
+        <div class="col form-inline">
+          <div>
+            <%= event_series_actions_dropdown_menu(@presenter) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</aside>
+
 <article class="ost-article container">
+  <h5><%= @presenter.subtext %></h5>
+  <hr/>
+
   <table class="table table-sm table-striped podium">
     <% @presenter.results_categories.each do |category| %>
       <% if category.invalid_efforts? %>

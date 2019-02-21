@@ -58,7 +58,11 @@
         </div>
       </div>
       <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', organization_path(@event_series.organization, display_style: 'event_series') %></span>
+        <span class="brackets">
+          <%= link_to 'Cancel', @event_series.new_record? ?
+                                    organization_path(@event_series.organization, display_style: 'event_series') :
+                                    event_series_path(@event_series) %>
+        </span>
       </div>
     <% end %>
   </div>

@@ -1,12 +1,18 @@
 <thead>
 <tr>
-  <th><%= category.name %></th>
-  <th>Name</th>
-  <th>From</th>
+  <th colspan="3" class="border-0"></th>
+  <th colspan="<%= @presenter.events.size + 1 %>" class="text-center">
+    <%= @presenter.scoring_method.titleize %>
+  </th>
+</tr>
+<tr>
+  <th class="regular-height"><%= category.name %></th>
+  <th class="regular-height">Name</th>
+  <th class="regular-height">From</th>
   <% @presenter.events.each do |event| %>
-    <th class="text-center"><%= event.name %></th>
+    <th class="text-center regular-height"><%= event.name %></th>
   <% end %>
-  <th class="text-center">Total</th>
+  <th class="text-center regular-height">Total</th>
 </tr>
 </thead>
 
@@ -18,9 +24,9 @@
       <td><%= effort.full_name %></td>
       <td><%= effort.flexible_geolocation %></td>
       <% @presenter.events.each do |event| %>
-        <td class="text-center"><%= effort.indexed_points[event.id] %></td>
+        <td class="text-center"><%= @presenter.event_result(effort, event) %></td>
       <% end %>
-      <td class="text-center"><%= effort.total_points %></td>
+      <td class="text-center"><%= @presenter.total_result(effort) %></td>
     </tr>
   <% end %>
 <% else %>

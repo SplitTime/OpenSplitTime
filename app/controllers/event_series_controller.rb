@@ -23,7 +23,7 @@ class EventSeriesController < ApplicationController
 
   def edit
     authorize @event_series
-    @event_series = EventSeries.includes(:organization, events: :efforts).first
+    @event_series = EventSeries.where(id: @event_series).includes(:organization, events: :efforts).first
   end
 
   def create
@@ -33,7 +33,7 @@ class EventSeriesController < ApplicationController
     authorize @event_series
 
     if @event_series.save
-      redirect_to_organization
+      redirect_to @event_series
     else
       render 'new'
     end
@@ -41,12 +41,10 @@ class EventSeriesController < ApplicationController
 
   def update
     authorize @event_series
-
     convert_checkbox_event_ids
 
     if @event_series.update(permitted_params)
-      flash[:success] = 'Event series updated'
-      redirect_to_organization
+      redirect_to @event_series
     else
       render 'edit'
     end

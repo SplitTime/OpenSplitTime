@@ -9,8 +9,8 @@ module Results
 
     attr_reader :person, :efforts
     attr_accessor :points # For duck typing only
-    delegate :full_name, to: :person
-    delegate :age, :gender, :bio_historic, :flexible_geolocation, :person_id, :template_age, :to_param, to: :baseline_effort
+    delegate :full_name, to: :person, allow_nil: true
+    delegate :age, :gender, :bio_historic, :flexible_geolocation, :person_id, :template_age, :to_param, to: :baseline_effort, allow_nil: true
 
     validate :verify_effort_consistency
     after_validation :set_template_age
@@ -87,7 +87,12 @@ module Results
     end
 
     def verify_effort_consistency
-      errors.add(:efforts, :unreconciled, message: "cannot be unreconciled") if efforts.any?(&:unreconciled?)
+      if efforts.any?(&:unreconciled?)
+        efforts.select(&:unreconciled?).each do |effort|
+          errors.add(:efforts, :unreconciled, message: "#{effort} must first be reconciled")
+        end
+        return
+      end
       errors.add(:efforts, :age_and_birthdate_blank, message: "must have an age or birthdate") unless efforts.all?(&:age) || age_not_required?
       errors.add(:efforts, :actual_start_time_blank, message: "must have an actual start time") unless efforts.all?(&:actual_start_time)
       errors.add(:efforts, :mismatched_with_person, message: "must match the provided person") unless efforts.all? { |e| e.person_id == person&.id }

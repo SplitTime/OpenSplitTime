@@ -1,18 +1,34 @@
-<%= person.bio %> |
-<%= person.flexible_geolocation %><br/>
-<% if person.email %>
-    <%= person.email %><br/>
-<% end %>
-<% if person.phone %>
-    <%= person.phone %><br/>
-<% end %>
-<%= link_to pluralize(@person_merge.effort_counts[person.id], 'effort'), person_path(person) %><br/>
-<% if person.claimed? %>
+<div>
+  <h6><%= [person.bio.presence, person.flexible_geolocation.presence].compact.join(' | ') %></h6>
+  <% if person.email %>
+    <h6><%= "Email: #{person.email}" %></h6>
+  <% end %>
+  <% if person.phone %>
+    <h6><%= "Phone: #{person.phone}" %></h6>
+  <% end %>
+</div>
+
+<div>
+  <% if person.claimed? %>
     <% if person.claimant == current_user %>
-        <strong>Hey, this is me!</strong><br/>
+      <strong>Hey, this is me!</strong><br/>
     <% else %>
-        <%= "Identified as user #{person.claimant.full_name}" %>
+      <%= "Identified as user #{person.claimant.full_name}" %>
     <% end %>
-<% else %>
+  <% else %>
     <strong>Not claimed</strong>
-<% end %>
+  <% end %>
+</div>
+
+<hr/>
+
+<div>
+  <% if person.efforts.present? %>
+    <h5>Efforts:</h5>
+    <% person.efforts.each do |effort| %>
+      <%= link_to effort.event_name, effort_path(effort) %>
+    <% end %>
+  <% else %>
+    <h5>No Efforts</h5>
+  <% end %>
+</div>

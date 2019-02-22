@@ -28,7 +28,7 @@
     <div class="col-sm-5">
       <div class="card">
         <h4 class="card-header">
-          <%= "#{@person_merge.last_name}, #{@person_merge.first_name}" %>
+          <%= link_to @person_merge.person.full_name, person_path(@person_merge.person) %>
         </h4>
         <div class="card-body">
           <%= render 'inspect', person: @person_merge.person %>
@@ -51,7 +51,7 @@
       <div class="col-sm-5">
         <div class="card">
           <h4 class="card-header">
-            <%= @person_merge.proposed_match_name %>
+            <%= link_to @person_merge.proposed_match.full_name, person_path(@person_merge.proposed_match) %>
           </h4>
           <div class="card-body">
             <%= render 'inspect', person: @person_merge.proposed_match %>

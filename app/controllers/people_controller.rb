@@ -86,7 +86,7 @@ class PeopleController < ApplicationController
 
   def combine
     authorize @person
-    target = Person.find(params[:target_id])
+    target = Person.friendly.find(params[:target_id])
     response = Interactors::MergePeople.perform!(@person, target)
     set_flash_message(response)
     redirect_to person_path(@person)

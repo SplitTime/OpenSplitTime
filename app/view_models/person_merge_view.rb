@@ -15,10 +15,6 @@ class PersonMergeView
     set_effort_counts
   end
 
-  def proposed_match_name
-    "#{proposed_match.last_name}, #{proposed_match.first_name}"
-  end
-  
   private
 
   def set_effort_counts

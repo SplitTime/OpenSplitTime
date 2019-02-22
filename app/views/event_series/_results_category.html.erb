@@ -10,7 +10,7 @@
   <th class="regular-height">Name</th>
   <th class="regular-height">From</th>
   <% @presenter.events.each do |event| %>
-    <th class="text-center regular-height"><%= event.name %></th>
+    <th class="text-center regular-height"><%= link_to event.name, event_path(event) %></th>
   <% end %>
   <th class="text-center regular-height">Total</th>
 </tr>

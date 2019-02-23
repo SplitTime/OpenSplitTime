@@ -1,0 +1,25 @@
+---
+event_series_event_1:
+  id: 1
+  event_id: 48
+  event_series_id: 1
+  created_at: '2019-02-21 23:12:45.588834'
+  updated_at: '2019-02-21 23:12:45.588834'
+event_series_event_2:
+  id: 2
+  event_id: 57
+  event_series_id: 1
+  created_at: '2019-02-21 23:12:45.592142'
+  updated_at: '2019-02-21 23:12:45.592142'
+event_series_event_3:
+  id: 3
+  event_id: 49
+  event_series_id: 2
+  created_at: '2019-02-21 23:28:49.728316'
+  updated_at: '2019-02-21 23:28:49.728316'
+event_series_event_4:
+  id: 4
+  event_id: 57
+  event_series_id: 2
+  created_at: '2019-02-21 23:28:49.729758'
+  updated_at: '2019-02-21 23:28:49.729758'

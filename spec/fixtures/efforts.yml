@@ -2708,14 +2708,14 @@ hardrock_2016_start_only:
 ggd30_50k_finished_first:
   id: 15626
   event_id: 48
-  person_id: 2128
+  person_id: 1585
   wave: 
   bib_number: 1116
   city: 
   state_code: 
   age: 44
   created_at: '2017-06-09 08:26:06.148699'
-  updated_at: '2019-02-01 06:12:38.549259'
+  updated_at: '2019-02-21 23:11:57.311356'
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -2977,16 +2977,16 @@ ggd30_12m_finished_second:
   bib_number: 1519
   city: Boulder
   state_code: CO
-  age: 33
+  age: 43
   created_at: '2017-06-09 09:52:57.413084'
-  updated_at: '2019-02-01 07:08:30.233045'
+  updated_at: '2019-02-21 23:29:32.276516'
   created_by: 1
   updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 1
   country_code: US
-  birthdate: '1984-01-16'
+  birthdate: '1973-07-23'
   data_status: 
   beacon_url: 
   report_url: 
@@ -3076,16 +3076,16 @@ sum_55k_finished_first:
   bib_number: 134
   city: 
   state_code: CO
-  age: 54
+  age: 44
   created_at: '2018-01-18 05:23:46.230111'
-  updated_at: '2019-02-01 06:12:37.891171'
+  updated_at: '2019-02-21 23:13:43.465089'
   created_by: 1
   updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
   country_code: US
-  birthdate: '1963-08-18'
+  birthdate: '1973-08-18'
   data_status: 2
   beacon_url: 
   report_url: 
@@ -3104,14 +3104,14 @@ sum_55k_finished_first:
 sum_55k_finished_second:
   id: 16229
   event_id: 57
-  person_id: 1584
+  person_id: 1862
   wave: 
   bib_number: 101
   city: 
   state_code: CO
   age: 44
   created_at: '2018-01-18 05:23:46.31644'
-  updated_at: '2019-02-01 06:12:37.872619'
+  updated_at: '2019-02-21 23:22:49.384693'
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3533,14 +3533,14 @@ rufa_2017_12h_not_started:
 sum_100k_un_started:
   id: 16683
   event_id: 56
-  person_id: 
+  person_id: 2184
   wave: 
   bib_number: 444
   city: Fort Collins
   state_code: CO
   age: 29
   created_at: '2019-01-30 19:51:50.515411'
-  updated_at: '2019-02-01 17:53:00.255033'
+  updated_at: '2019-02-21 23:23:44.282356'
   created_by: 1
   updated_by: 1
   first_name: Un
@@ -3566,14 +3566,14 @@ sum_100k_un_started:
 sum_100k_on_dst_change:
   id: 16684
   event_id: 56
-  person_id: 
+  person_id: 2182
   wave: 
   bib_number: 333
   city: 
   state_code: 
   age: 
   created_at: '2019-02-01 17:50:28.758242'
-  updated_at: '2019-02-01 21:16:06.230688'
+  updated_at: '2019-02-21 23:23:43.936495'
   created_by: 1
   updated_by: 1
   first_name: 'On'
@@ -3599,14 +3599,14 @@ sum_100k_on_dst_change:
 sum_100k_across_dst_change:
   id: 16685
   event_id: 56
-  person_id: 
+  person_id: 2183
   wave: 
   bib_number: 222
   city: 
   state_code: 
   age: 
   created_at: '2019-02-01 17:50:43.430509'
-  updated_at: '2019-02-01 21:15:50.921768'
+  updated_at: '2019-02-21 23:23:44.14651'
   created_by: 1
   updated_by: 1
   first_name: Across
@@ -3620,6 +3620,171 @@ sum_100k_across_dst_change:
   phone: 
   email: 
   slug: sum-100k-across-dst-change
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+  topic_resource_key: 
+ggd30_50k_finished_second:
+  id: 16686
+  event_id: 48
+  person_id: 
+  wave: 
+  bib_number: 1117
+  city: 
+  state_code: 
+  age: 43
+  created_at: '2019-02-21 23:18:43.25104'
+  updated_at: '2019-02-21 23:20:16.853801'
+  created_by: 1
+  updated_by: 1
+  first_name: Finished
+  last_name: Second
+  gender: 1
+  country_code: 
+  birthdate: '1973-07-23'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-50k-finished-second
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+  topic_resource_key: 
+ggd30_12m_series_finisher:
+  id: 16687
+  event_id: 49
+  person_id: 2185
+  wave: 
+  bib_number: 1515
+  city: Superior
+  state_code: CO
+  age: 34
+  created_at: '2019-02-21 23:44:48.76883'
+  updated_at: '2019-02-21 23:46:23.054132'
+  created_by: 1
+  updated_by: 1
+  first_name: Series
+  last_name: Finisher
+  gender: 0
+  country_code: US
+  birthdate: '1983-03-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-series-finisher
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+  topic_resource_key: 
+sum_55k_series_finisher:
+  id: 16688
+  event_id: 57
+  person_id: 2185
+  wave: 
+  bib_number: 105
+  city: 
+  state_code: 
+  age: 34
+  created_at: '2019-02-21 23:47:35.929007'
+  updated_at: '2019-02-21 23:49:30.323839'
+  created_by: 1
+  updated_by: 1
+  first_name: Series
+  last_name: Finisher
+  gender: 0
+  country_code: 
+  birthdate: '1983-03-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-series-finisher
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+  topic_resource_key: 
+sum_55k_slow_finisher:
+  id: 16689
+  event_id: 57
+  person_id: 2186
+  wave: 
+  bib_number: 140
+  city: 
+  state_code: UT
+  age: 64
+  created_at: '2019-02-21 23:54:25.605263'
+  updated_at: '2019-02-21 23:56:29.365474'
+  created_by: 1
+  updated_by: 1
+  first_name: Slow
+  last_name: Finisher
+  gender: 0
+  country_code: 
+  birthdate: '1953-03-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: sum-55k-slow-finisher
+  checked_in: false
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+  emergency_contact: 
+  emergency_phone: 
+  scheduled_start_time: 
+  topic_resource_key: 
+ggd30_12m_slow_finisher:
+  id: 16690
+  event_id: 49
+  person_id: 2186
+  wave: 
+  bib_number: 1616
+  city: Orem
+  state_code: UT
+  age: 64
+  created_at: '2019-02-21 23:57:44.862099'
+  updated_at: '2019-02-22 00:08:09.025798'
+  created_by: 1
+  updated_by: 1
+  first_name: Slow
+  last_name: Finisher
+  gender: 0
+  country_code: 
+  birthdate: '1953-03-03'
+  data_status: 2
+  beacon_url: 
+  report_url: 
+  phone: 
+  email: 
+  slug: ggd30-12m-slow-finisher
   checked_in: false
   photo_file_name: 
   photo_content_type: 

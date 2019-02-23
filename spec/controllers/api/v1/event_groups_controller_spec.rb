@@ -1006,7 +1006,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 134, 222, 333, 444, 777, 999])
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 105, 109, 111, 114, 134, 140, 222, 333, 444, 777, 999])
         end
       end
     end
@@ -1020,7 +1020,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 132, 134, 222, 333, 444, 777, 999])
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 105, 109, 111, 114, 132, 134, 140, 222, 333, 444, 777, 999])
         end
       end
     end

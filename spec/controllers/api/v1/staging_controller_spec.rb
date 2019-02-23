@@ -324,7 +324,7 @@ RSpec.describe Api::V1::StagingController do
 
         expect(event_group.concealed).to eq(false)
         expect(organization.concealed).to eq(false)
-        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }.compact
         people.each do |person|
           expect(person.concealed).to eq(false)
         end
@@ -350,17 +350,16 @@ RSpec.describe Api::V1::StagingController do
 
         expect(event_group.concealed).to eq(true)
         expect(organization.concealed).to eq(true)
-        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+        people = event_group.events.flat_map { |event| event.efforts.map(&:person) }.compact
         people.each do |person|
           expect(person.concealed).to eq(true)
         end
       end
 
-      context 'if that person has other visible efforts' do
+      context 'for people that have other visible efforts' do
         let(:event_group) { event_groups(:dirty_30) }
-        let(:person_with_other_effort) { people(:not_started) }
 
-        it 'does not make a person private' do
+        it 'does not make them private' do
           preset_concealed(false)
 
           make_request
@@ -369,13 +368,13 @@ RSpec.describe Api::V1::StagingController do
           organization.reload
           expect(event_group.concealed).to eq(true)
           expect(organization.concealed).to eq(false)
-          people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+          people = event_group.events.flat_map { |event| event.efforts.map(&:person) }.compact
 
           people.each do |person|
-            if person == person_with_other_effort
-              expect(person.concealed).to eq(false)
-            else
+            if person.efforts.size == 1
               expect(person.concealed).to eq(true)
+            else
+              expect(person.concealed).to eq(false)
             end
           end
         end
@@ -399,7 +398,7 @@ RSpec.describe Api::V1::StagingController do
     def preset_concealed(boolean)
       event_group.update(concealed: boolean)
       organization.update(concealed: boolean)
-      people = event_group.events.flat_map { |event| event.efforts.map(&:person) }
+      people = event_group.events.flat_map { |event| event.efforts.map(&:person) }.compact
       people.each { |person| person.update(concealed: boolean) }
     end
   end

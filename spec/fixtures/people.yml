@@ -1816,41 +1816,18 @@ not_started_colorado_us_2019_02_01:
   photo_content_type: 
   photo_file_size: 
   photo_updated_at: 
-finished_second_colorado_us_2019_02_01:
-  id: 1584
-  first_name: Finished
-  last_name: Second
-  gender: 1
-  birthdate: '1973-07-23'
-  city: 
-  state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:56.192766'
-  updated_at: '2019-02-01 07:19:53.940184'
-  created_by: 1
-  updated_by: 1
-  country_code: US
-  user_id: 
-  concealed: false
-  slug: finished-second-colorado-us-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tattie-bailey
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_colorado_us:
   id: 1585
   first_name: Finished
   last_name: First
   gender: 0
-  birthdate: '1963-08-18'
+  birthdate: '1973-08-18'
   city: 
   state_code: CO
   email: 
   phone: 
   created_at: '2018-01-18 05:23:56.334499'
-  updated_at: '2019-02-01 07:19:53.950033'
+  updated_at: '2019-02-21 23:10:08.501744'
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1982,13 +1959,13 @@ finished_second_colorado_us:
   first_name: Finished
   last_name: Second
   gender: 1
-  birthdate: '1984-01-16'
+  birthdate: '1973-07-23'
   city: Boulder
   state_code: CO
   email: 
   phone: 
   created_at: '2018-12-28 19:34:43.417273'
-  updated_at: '2019-02-01 07:19:53.907919'
+  updated_at: '2019-02-21 23:22:35.28103'
   created_by: 1
   updated_by: 1
   country_code: US
@@ -2111,29 +2088,6 @@ bad_finish:
   concealed: false
   slug: bad-finish
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jimmy-picard
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-finished_first_2019_02_01_07_19_53:
-  id: 2128
-  first_name: Finished
-  last_name: First
-  gender: 0
-  birthdate: '1973-05-25'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:35:40.68485'
-  updated_at: '2019-02-01 07:19:53.800827'
-  created_by: 1
-  updated_by: 1
-  country_code: 
-  user_id: 
-  concealed: false
-  slug: finished-first-2019-02-01-07-19-53
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_seth-wealing
   photo_file_name: 
   photo_content_type: 
   photo_file_size: 
@@ -2272,6 +2226,121 @@ start_only:
   concealed: false
   slug: start-only
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+on_dst_change:
+  id: 2182
+  first_name: 'On'
+  last_name: DST Change
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:43.929477'
+  updated_at: '2019-02-21 23:23:43.929477'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: on-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_on-dst-change
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+across_dst_change:
+  id: 2183
+  first_name: Across
+  last_name: DST Change
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:44.141109'
+  updated_at: '2019-02-21 23:23:44.141109'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: across-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_across-dst-change
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+un_started:
+  id: 2184
+  first_name: Un
+  last_name: Started
+  gender: 1
+  birthdate: '1988-09-01'
+  city: Fort Collins
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:44.276762'
+  updated_at: '2019-02-21 23:23:44.276762'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: un-started
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_un-started
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+series_finisher:
+  id: 2185
+  first_name: Series
+  last_name: Finisher
+  gender: 0
+  birthdate: '1983-03-03'
+  city: Louisville
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:40:15.216434'
+  updated_at: '2019-02-21 23:40:21.442364'
+  created_by: 1
+  updated_by: 
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: series-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_series-finisher
+  photo_file_name: 
+  photo_content_type: 
+  photo_file_size: 
+  photo_updated_at: 
+slow_finisher:
+  id: 2186
+  first_name: Slow
+  last_name: Finisher
+  gender: 0
+  birthdate: '1953-03-03'
+  city: Orem
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:53:21.216763'
+  updated_at: '2019-02-21 23:53:21.216763'
+  created_by: 1
+  updated_by: 
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: slow-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_slow-finisher
   photo_file_name: 
   photo_content_type: 
   photo_file_size: 

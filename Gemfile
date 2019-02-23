@@ -1,7 +1,7 @@
 ruby '2.6.0'
 source 'https://rubygems.org'
 gem 'rails', '~> 5.2'
-gem 'bootstrap', '~> 4.1.0'
+gem 'bootstrap', '~> 4.3'
 gem 'vuejs-rails'
 gem 'sass-rails', '~> 5.0.6'
 gem 'uglifier', '>= 1.3.0'

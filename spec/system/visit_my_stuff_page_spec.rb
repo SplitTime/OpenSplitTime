@@ -32,8 +32,6 @@ RSpec.describe 'Visit the My Stuff page' do
     login_as admin, scope: :user
     visit my_stuff_user_path(admin)
 
-    pp page.text
-
     verify_org_links_present(organization_2)
   end
 

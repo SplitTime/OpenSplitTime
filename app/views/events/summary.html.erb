@@ -11,8 +11,10 @@
           <ul class="breadcrumb breadcrumb-ost hidden-print">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-            <li class="breadcrumb-item"><%= @presenter.event.guaranteed_short_name %></li>
+            <% if @presenter.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
             <li class="breadcrumb-item active">Results summary</li>
           </ul>
         </div>

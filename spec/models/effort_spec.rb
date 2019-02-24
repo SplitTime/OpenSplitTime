@@ -34,7 +34,7 @@ RSpec.describe Effort, type: :model do
       end
 
       it 'is invalid without an event_id' do
-        effort = build_stubbed(:effort, event: nil)
+        effort = build_stubbed(:effort, without_slug: true, event: nil)
         allow(effort).to receive(:finished?)
         expect(effort).not_to be_valid
         expect(effort.errors[:event_id]).to include("can't be blank")

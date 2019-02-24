@@ -68,7 +68,7 @@ RSpec.describe Api::V1::EventsController do
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:attributes) { {course_id: course.id, event_group_id: event_group.id, name: 'Test Event',
+        let(:attributes) { {course_id: course.id, event_group_id: event_group.id, short_name: '50M',
                             start_time_local: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
 
         it 'returns a successful json response' do
@@ -89,7 +89,7 @@ RSpec.describe Api::V1::EventsController do
   describe '#update' do
     subject(:make_request) { put :update, params: params }
     let(:params) { {id: event_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {name: 'Updated Event Name'} }
+    let(:attributes) { {short_name: 'Updated Short Name'} }
 
     via_login_and_jwt do
       context 'when the event exists' do
@@ -104,7 +104,7 @@ RSpec.describe Api::V1::EventsController do
         it 'updates the specified fields' do
           make_request
           event.reload
-          expect(event.name).to eq(attributes[:name])
+          expect(event.short_name).to eq(attributes[:short_name])
         end
       end
 

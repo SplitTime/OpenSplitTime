@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EventSpreadDisplay do
@@ -6,7 +8,7 @@ RSpec.describe EventSpreadDisplay do
 
   describe '#split_header_data' do
     let(:course) { build_stubbed(:course, name: 'Testrock Counter-clockwise', splits: splits) }
-    let(:event) { build_stubbed(:event, name: 'Testrock 100', course: course, splits: splits) }
+    let(:event) { build_stubbed(:event, course: course, splits: splits) }
     let(:splits) { [split_1, split_2, split_3] }
     let(:split_1) { build_stubbed(:split, :start, base_name: 'Starting Point') }
     let(:split_2) { build_stubbed(:split, base_name: 'Aid Station 1', distance_from_start: 10000) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::UpdateEventAndGrouping do
@@ -25,8 +27,8 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
 
     context 'when the event is changing to a new event_group and the old event_group has one remaining event' do
       let!(:old_event_group) { create(:event_group) }
-      let!(:event) { create(:event, event_group: old_event_group) }
-      let!(:other_event) { create(:event, event_group: old_event_group, home_time_zone: event.home_time_zone) }
+      let!(:event) { create(:event, :with_short_name, event_group: old_event_group) }
+      let!(:other_event) { create(:event, :with_short_name, event_group: old_event_group, home_time_zone: event.home_time_zone) }
       let(:params) { {event_group_id: nil} }
 
       it 'creates a new event and assigns it to the subject event' do

@@ -28,7 +28,7 @@ class EventGroup < ApplicationRecord
 
   def self.search(search_param)
     return all if search_param.blank?
-    joins(:events).where('event_groups.name ILIKE ? OR events.name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
+    joins(:events).where('event_groups.name ILIKE ? OR events.short_name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
   end
 
   def effort_count

@@ -32,7 +32,7 @@ RSpec.describe NotifyProgressJob do
         expect(notification.distance).to eq(notification_split_times.last.total_distance)
         expect(notification.bitkey).to eq(notification_split_times.last.bitkey)
         expect(notification.topic_resource_key).to eq(effort.topic_resource_key)
-        expect(notification.subject).to eq('Update for Progress Lap6 at RUFA 2017 24H from OpenSplitTime')
+        expect(notification.subject).to eq('Update for Progress Lap6 at RUFA 2017 (24H) from OpenSplitTime')
       end
     end
 

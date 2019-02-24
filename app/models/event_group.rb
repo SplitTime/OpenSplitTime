@@ -18,6 +18,8 @@ class EventGroup < ApplicationRecord
   has_many :partners
   belongs_to :organization
 
+  after_create :notify_admin
+
   validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
   validates_with GroupedEventsValidator
@@ -72,6 +74,10 @@ class EventGroup < ApplicationRecord
   end
 
   private
+
+  def notify_admin
+    AdminMailer.new_event_group(self).deliver_later
+  end
 
   def split_analyzable
     self

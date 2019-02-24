@@ -1,0 +1,76 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Duplicate event group - #{@event_group.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Duplicate Event Group</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
+            <li class="breadcrumb-item active">Duplicate</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'shared/errors', obj: @event_group %>
+
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_for(EventGroup.new, html: {class: "form-horizontal", role: "form"}) do |f| %>
+
+        <% [:organization_id, :auto_live_times, :data_entry_grouping_strategy, :monitor_pacers].each do |attr| %>
+          <%= f.hidden_field attr, value: @event_group.send(attr) %>
+        <% end %>
+
+        <%= f.hidden_field :concealed, value: true %>
+        <%= f.hidden_field :available_live, value: false %>
+
+        <% @event_group.events.each do |event| %>
+          <%= f.fields_for :events, Event.new do |e| %>
+            <% [:start_time, :course_id, :laps_required, :home_time_zone, :short_name, :results_template_id].each do |attr| %>
+              <%= e.hidden_field attr, value: event.send(attr) %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label 'Name of new event group' %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label 'Date of first event' %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.datepicker_field :duplicate_event_date, object: @event_group %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit("Duplicate Event Group", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', event_group_path(@event_group, force_settings: true) %></span>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</article>

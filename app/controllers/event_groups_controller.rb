@@ -2,7 +2,7 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index]
+  before_action :set_event_group, except: [:index, :create]
   after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
@@ -29,6 +29,26 @@ class EventGroupsController < ApplicationController
     authorize @event_group
   end
 
+  def create
+    duplicate_event_date = params.require(:event_group).delete(:duplicate_event_date)
+    @event_group = EventGroup.new(permitted_params)
+    authorize @event_group
+
+    if duplicate_event_date
+      duplicate_offset = (duplicate_event_date.to_date - @event_group.start_time.to_date).days
+      @event_group.events.each { |event| event.start_time += duplicate_offset }
+    end
+
+    if @event_group.save
+      @event_group.events.each { |event| event.set_all_course_splits }
+      redirect_to event_group_path(@event_group, force_settings: true)
+    else
+      flash[:danger] = "Could not duplicate event group.\n " +
+          "#{@event_group.errors.full_messages.join("\n")}"
+      redirect_to session[:return_to]
+    end
+  end
+
   def update
     authorize @event_group
     @event_group.assign_attributes(permitted_params)
@@ -53,6 +73,11 @@ class EventGroupsController < ApplicationController
     @event_group.destroy
     flash[:success] = 'Event group deleted.'
     redirect_to event_groups_path
+  end
+
+  def duplicate
+    authorize @event_group
+    session[:return_to] = duplicate_event_group_path(@event_group)
   end
 
   def raw_times

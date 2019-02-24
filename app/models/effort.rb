@@ -31,7 +31,7 @@ class Effort < ApplicationRecord
   delegate :organization, :concealed?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event, :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}

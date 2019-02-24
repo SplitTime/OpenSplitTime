@@ -18,10 +18,13 @@ class EventGroup < ApplicationRecord
   has_many :partners
   belongs_to :organization
 
-  validates_presence_of :name, :organization_id
+  validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
   validates_with GroupedEventsValidator
 
+  accepts_nested_attributes_for :events
+
+  attr_accessor :duplicate_event_date
   delegate :stewards, to: :organization
 
   scope :standard_includes, -> { includes(events: :splits) }

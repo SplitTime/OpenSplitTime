@@ -26,7 +26,7 @@ class Event < ApplicationRecord
            :organization, :organization_id, :permit_notifications?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :course_id, :start_time, :laps_required, :home_time_zone, :event_group_id, :results_template
+  validates_presence_of :course_id, :start_time, :laps_required, :home_time_zone, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
   validate :home_time_zone_exists
   validate :course_is_consistent

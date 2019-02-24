@@ -265,10 +265,13 @@ module DropdownHelper
     dropdown_items = [
         {name: 'Edit group',
          link: edit_event_group_path(view_object)},
+        {name: 'Duplicate group',
+         link: duplicate_event_group_path(view_object)},
+        {role: :separator},
         {name: 'Add/Remove Stewards',
          link: organization_path(view_object.organization, display_style: 'stewards')}
     ]
-    build_dropdown_menu('Edit', dropdown_items, button: true)
+    build_dropdown_menu('Group Actions', dropdown_items, button: true)
   end
 
   def split_name_dropdown(view_object, param: :parameterized_split_name)

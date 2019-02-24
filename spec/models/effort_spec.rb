@@ -37,7 +37,7 @@ RSpec.describe Effort, type: :model do
         effort = build_stubbed(:effort, without_slug: true, event: nil)
         allow(effort).to receive(:finished?)
         expect(effort).not_to be_valid
-        expect(effort.errors[:event_id]).to include("can't be blank")
+        expect(effort.errors[:event]).to include("can't be blank")
       end
 
       it 'is invalid without a first_name' do

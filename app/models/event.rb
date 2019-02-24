@@ -26,9 +26,8 @@ class Event < ApplicationRecord
            :organization, :organization_id, :permit_notifications?, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id, :results_template
-  validates_uniqueness_of :name, case_sensitive: false
-  validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id, allow_nil: true
+  validates_presence_of :course_id, :start_time, :laps_required, :home_time_zone, :event_group_id, :results_template
+  validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
   validate :home_time_zone_exists
   validate :course_is_consistent
 
@@ -72,21 +71,9 @@ class Event < ApplicationRecord
     event_group&.ordered_events
   end
 
-  def destroy_orphaned_event_group
-    event_group.reload
-
-    if events_within_group.empty?
-      event_group.destroy
-    end
-  end
-
-  def validate_event_group
-    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
-
-    unless event_group.valid?
-      event_group.errors.full_messages.each { |message| errors[:base] << message }
-      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
-    end
+  def name
+    event_group_name = event_group&.name || 'Nonexistent Event Group'
+    short_name ? "#{event_group_name} (#{short_name})" : event_group_name
   end
 
   def guaranteed_short_name
@@ -176,9 +163,30 @@ class Event < ApplicationRecord
     @ordered_aid_stations ||= aid_stations.sort_by(&:distance_from_start)
   end
 
+  def should_generate_new_friendly_id?
+    slug.blank? || short_name_changed? || event_group&.name_changed?
+  end
+
   private
 
   def add_default_results_template
     self.results_template ||= ResultsTemplate.default
+  end
+
+  def destroy_orphaned_event_group
+    event_group.reload
+
+    if events_within_group.empty?
+      event_group.destroy
+    end
+  end
+
+  def validate_event_group
+    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
+
+    unless event_group.valid?
+      event_group.errors.full_messages.each { |message| errors[:base] << message }
+      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
+    end
   end
 end

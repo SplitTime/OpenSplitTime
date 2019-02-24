@@ -73,7 +73,7 @@ RSpec.describe Api::V1::StagingController do
 
     context 'when an existing event_id is provided' do
       let(:event_params) { existing_event_params.merge(updated_event_params) }
-      let(:event_group_params) { existing_event_params.merge(updated_event_group_params) }
+      let(:event_group_params) { existing_event_group_params.merge(updated_event_group_params) }
       let(:course_params) { existing_course_params.merge(updated_course_params) }
       let(:organization_params) { existing_organization_params.merge(updated_organization_params) }
 
@@ -108,7 +108,7 @@ RSpec.describe Api::V1::StagingController do
       end
 
       context 'when attributes are provided for an existing event' do
-        let(:updated_event_params) { {name: 'Updated Event Name', laps_required: 3} }
+        let(:updated_event_params) { {short_name: 'Updated Short Name', laps_required: 3} }
 
         it 'updates provided attributes for an existing event' do
           status, resources = post_with_params(event_id, params)
@@ -135,7 +135,7 @@ RSpec.describe Api::V1::StagingController do
     end
 
     context 'when a new event_id is provided' do
-      let(:new_event_params) { {name: 'New Event Name', start_time: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Pacific Time (US & Canada)'} }
+      let(:new_event_params) { {short_name: '50M', start_time: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Pacific Time (US & Canada)'} }
       let(:new_event_group_params) { {name: 'New Event Name'} }
       let(:new_course_params) { {name: 'New Course Name', description: 'New course description.'} }
       let(:new_organization_params) { {name: 'New Organization Name'} }
@@ -159,7 +159,7 @@ RSpec.describe Api::V1::StagingController do
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
-          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
+          expect(resources[:event].slug).to eq("#{new_event_group_params[:name]} #{new_event_params[:short_name]}".parameterize)
         end
       end
 
@@ -177,7 +177,7 @@ RSpec.describe Api::V1::StagingController do
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
-          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
+          expect(resources[:event].slug).to eq("#{existing_event_group_params[:name]} (#{new_event_params[:short_name]})".parameterize)
         end
       end
 
@@ -193,7 +193,7 @@ RSpec.describe Api::V1::StagingController do
 
           expect(status).to eq(200)
           validate_response(resources, expected_attributes)
-          expect(resources[:event].slug).to eq(new_event_params[:name].parameterize)
+          expect(resources[:event].slug).to eq("#{new_event_group_params[:name]} (#{new_event_params[:short_name]})".parameterize)
         end
       end
 
@@ -247,13 +247,16 @@ RSpec.describe Api::V1::StagingController do
     end
 
     def post_with_params(event_id, params)
-      post :post_event_course_org, params: {id: event_id,
-                                            event: params[:event],
-                                            course: params[:course],
-                                            organization: params[:organization]}
+      passed_params = {id: event_id,
+                         event_group: params[:event_group],
+                         event: params[:event],
+                         course: params[:course],
+                         organization: params[:organization]}
+      post :post_event_course_org, params: passed_params
 
       status = response.status
       parsed_response = JSON.parse(response.body)
+
       if status == 200
         resources = {event: Event.find_by(id: parsed_response['event']['id']),
                      event_group: EventGroup.find_by(id: parsed_response['event_group']['id']),

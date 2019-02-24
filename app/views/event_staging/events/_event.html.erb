@@ -59,9 +59,9 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="required">Event Name</label>
+        <label class="required">Event Group Name</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
-        <input id="event-name-field" type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="suggestedName()">
+        <input id="event-group-name-field" type="text" class="form-control" placeholder="Your event group name" v-model="eventModel.eventGroup.name" v-prefill="suggestedName()">
       </div>
       <div class="form-group">
         <label>Short Event Name</label>

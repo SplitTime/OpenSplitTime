@@ -1,6 +1,4 @@
 ---
-_fixture:
-  model_class: EventSeries
 d30_50k_series:
   id: 1
   organization_id: 15

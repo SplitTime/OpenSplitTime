@@ -356,7 +356,7 @@
             jsonify: function () {
                 var data = {
                     event: this.attributes(),
-                    eventgroup: this.eventGroup.attributes(),
+                    eventGroup: this.eventGroup.attributes(),
                     organization: this.eventGroup.organization.attributes(),
                     course: this.course.attributes(),
                     splits: [

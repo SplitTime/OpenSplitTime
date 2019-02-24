@@ -104,7 +104,7 @@ RSpec.describe 'search the event group index' do
     verify_content_absent(visible_event_group_2)
     verify_link_present(concealed_event_group)
 
-    fill_in 'Event name', with: concealed_event.name
+    fill_in 'Event name', with: concealed_event.short_name
     click_button 'event-group-lookup-submit'
 
     verify_content_absent(visible_event_group_1)

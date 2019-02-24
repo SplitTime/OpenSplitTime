@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class EventCourseOrgSetter
-
   attr_reader :resources, :status
 
   def initialize(args)
@@ -19,7 +18,6 @@ class EventCourseOrgSetter
 
   def set_resources
     ActiveRecord::Base.transaction do
-      add_event_group_name
       submitted_resources.each do |resource|
         update_resource(resource)
       end
@@ -33,10 +31,6 @@ class EventCourseOrgSetter
 
   attr_reader :event, :event_group, :course, :organization, :params
   attr_writer :response, :status
-
-  def add_event_group_name
-    event_group.name ||= params[:event][:name]
-  end
 
   def submitted_resources
     [course, organization, event_group, event]

@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 module EventsHelper
+  def results_template_selector(event)
+    public_organization = Organization.new(name: 'Public Templates', results_templates: ResultsTemplate.standard)
+    private_organization = event.organization
+    organizations = [public_organization, private_organization]
+
+    grouped_collection_select(:event, :results_template_id, organizations, :results_templates, :name, :id, :name,
+                      {prompt: false},
+                      {class: "form-control dropdown-select-field",
+                       data: {target: 'event-form.dropdown', action: 'event-form#replaceCategories'}})
+  end
+
   def link_to_beacon_button(view_object)
     if view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),

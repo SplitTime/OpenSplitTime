@@ -11,6 +11,7 @@ class Organization < ApplicationRecord
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
   has_many :event_series, dependent: :destroy
+  has_many :results_templates, dependent: :destroy
 
   scope :with_visible_event_count, -> do
     left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')

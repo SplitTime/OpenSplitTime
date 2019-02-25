@@ -76,14 +76,18 @@
           <%= f.label :podium_template %>
         </div>
         <div class="col-sm-8">
-          <%= collection_select(:event, :results_template_id, ResultsTemplate.pluck(:id, :name), :first, :last,
-                                {prompt: true}, {class: "form-control dropdown-select-field"}) %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-8">
-          <%= render 'results_categories_card' %>
+          <div class="card" data-controller="event-form">
+            <div class="card-header">
+              <h5>
+                <strong><%= collection_select(:event, :results_template_id, ResultsTemplate.pluck(:id, :name), :first, :last,
+                                              {prompt: true},
+                                              {class: "form-control dropdown-select-field", data: {target: 'event-form.dropdown', action: 'change->event-form#replaceCategories'}}) %></strong>
+              </h5>
+            </div>
+            <div class="card-body" data-target="event-form.categories">
+              <%= render 'results_templates/categories_card', template: @event.results_template %>
+            </div>
+          </div>
         </div>
       </div>
 

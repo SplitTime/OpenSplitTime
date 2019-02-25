@@ -112,6 +112,11 @@ Rails.application.routes.draw do
 
   resources :partners
   resources :raw_times, only: [:update, :destroy]
+
+  resources :results_templates, only: [] do
+    member { get :categories}
+  end
+
   resources :split_times
   resources :splits
   resources :stewardships, only: [:create, :destroy]

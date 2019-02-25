@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="card-header">
+    <h5><strong><%= "#{@event.results_template.name} Categories" %></strong></h5>
+  </div>
+  <div class="card-body">
+    <table>
+      <tbody>
+      <% @event.results_template.results_categories.each.with_index(1) do |category, i| %>
+        <tr>
+          <td><%= "#{i}." %></td>
+          <td><%= "#{category.name} (#{category.description})" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

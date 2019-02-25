@@ -35,6 +35,27 @@ class ResultsCategory < ApplicationRecord
     male? && female?
   end
 
+  def description
+    "#{gender_description} #{age_description}"
+  end
+
+  def age_description
+    case
+    when all_ages?
+      'all ages'
+    when age_range.begin == 0
+      "up to #{high_age}"
+    when age_range.end == INF
+      "#{low_age} and up"
+    else
+      "#{low_age} to #{high_age}"
+    end
+  end
+
+  def gender_description
+    genders.map(&:titleize).to_sentence
+  end
+
   private
 
   def gender_present?

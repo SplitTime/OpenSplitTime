@@ -279,9 +279,9 @@ RSpec.describe Api::V1::EventsController do
           expect(parsed_response['data'].size).to eq(3)
 
           start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone(event.home_time_zone) }
-          expected_absolute_times = ['2017-06-03 07:30:00 -0600',
+          expected_absolute_times = ['2017-06-03 19:30:00 -0600',
                                      '2017-06-03 08:00:00 -0600',
-                                     '2017-06-03 07:00:00 -0600']
+                                     '2017-06-03 19:00:00 -0600']
           expect(start_times).to eq(expected_absolute_times)
         end
       end

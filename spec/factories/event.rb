@@ -11,7 +11,7 @@ FactoryBot.define do
     event_group
 
     trait :with_short_name do
-      short_name { "#{rand(25..200)}#{['-mile', 'k' 'M']}" }
+      short_name { "#{rand(25..200)}#{['-mile', 'k' 'M'].sample}" }
     end
 
     transient { without_slug { false } }

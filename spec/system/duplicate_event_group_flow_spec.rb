@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'create a duplicate event group using the duplicate event group page', type: :system, js: true do
+RSpec.describe 'create a duplicate event group using the duplicate event group page', type: :system do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -16,22 +16,6 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
   let(:event_group) { event_groups(:sum) }
   let(:organization) { event_group.organization }
   let(:new_date) { '2019-02-28' }
-
-  scenario 'The user is a visitor' do
-    visit duplicate_event_group_path(event_group)
-
-    expect(page).to have_current_path(root_path)
-    verify_alert('You need to sign in or sign up before continuing')
-  end
-
-  scenario 'The user is a user that is not authorized to edit the event group' do
-    login_as user, scope: :user
-
-    visit duplicate_event_group_path(event_group)
-
-    expect(page).to have_current_path(root_path)
-    verify_alert('Access denied')
-  end
 
   context 'when event start times have the same date as UTC date' do
     scenario 'The user is a steward of the organization' do
@@ -63,7 +47,6 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
       fill_in_date(new_date)
       click_button 'Duplicate Event Group'
       expect(page).to have_current_path(duplicate_event_group_path(event_group))
-      verify_alert('Name has already been taken')
     end
 
     scenario 'The name is blank' do
@@ -74,7 +57,6 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
       fill_in_date(new_date)
       click_button 'Duplicate Event Group'
       expect(page).to have_current_path(duplicate_event_group_path(event_group))
-      verify_alert(/Name can't be blank/)
     end
 
     scenario 'The date is blank' do
@@ -129,16 +111,13 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     fill_in_date(string)
     click_button 'Duplicate Event Group'
     expect(page).to have_current_path(duplicate_event_group_path(event_group))
-    verify_alert(/Date is invalid/)
   end
 
   def fill_in_name(text)
     fill_in 'event_group_name', with: text
-    sleep(0.5)
   end
 
   def fill_in_date(text)
     fill_in 'event_group_duplicate_event_date', with: text
-    sleep(0.5)
   end
 end

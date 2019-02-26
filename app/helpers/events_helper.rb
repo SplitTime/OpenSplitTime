@@ -3,8 +3,8 @@
 module EventsHelper
   def results_template_selector(event)
     public_organization = Organization.new(name: 'Public Templates', results_templates: ResultsTemplate.standard)
-    private_organization = event.organization
-    organizations = [public_organization, private_organization]
+    private_organization = event.organization.results_templates.present? ? event.organization : nil
+    organizations = [public_organization, private_organization].compact
 
     grouped_collection_select(:event, :results_template_id, organizations, :results_templates, :name, :id, :name,
                       {prompt: false},

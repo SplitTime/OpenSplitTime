@@ -45,9 +45,7 @@ RSpec.describe 'Visit the My Stuff page' do
   def verify_org_links_present(organization)
     expect(page).to have_content('My Events')
     expect(page).to have_content('My Organizations')
-    expect(page).to have_link(organization.name, href: organization_path(organization))
-    organization.event_groups.each do |event_group|
-      expect(page).to have_link(event_group.name, href: event_group_path(event_group))
-    end
+    verify_link_present(organization)
+    organization.event_groups.each(&method(:verify_link_present))
   end
 end

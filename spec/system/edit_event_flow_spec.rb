@@ -20,7 +20,7 @@ RSpec.describe 'visit the edit event page and make changes', type: :system, js: 
     visit edit_event_path(event)
 
     expect(page).to have_current_path(root_path)
-    expect(page.find('.alert')).to have_content('You need to sign in or sign up before continuing')
+    verify_alert('You need to sign in or sign up before continuing')
   end
 
   scenario 'The user is a user that is not authorized to edit the event' do
@@ -29,7 +29,7 @@ RSpec.describe 'visit the edit event page and make changes', type: :system, js: 
     visit edit_event_path(event)
 
     expect(page).to have_current_path(root_path)
-    expect(page.find('.alert')).to have_content('Access denied')
+    verify_alert('Access denied')
   end
 
   scenario 'The user is a steward of the organization' do

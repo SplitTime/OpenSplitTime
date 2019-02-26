@@ -126,18 +126,18 @@ RSpec.describe 'Visit and search the people index' do
   end
 
   def verify_visible_matching_present
-    visible_californians.each { |person| expect(page).to have_link(person.full_name, href: person_path(person)) }
+    visible_californians.each { |person| verify_link_present(person, :full_name) }
   end
 
   def verify_concealed_matching_present
-    concealed_californians.each { |person| expect(page).to have_link(person.full_name, href: person_path(person)) }
+    concealed_californians.each { |person| verify_link_present(person, :full_name) }
   end
 
   def verify_concealed_matching_absent
-    concealed_californians.each { |person| expect(page).not_to have_content(person.full_name) }
+    concealed_californians.each { |person| verify_content_absent(person, :full_name) }
   end
 
   def verify_non_matching_absent
-    non_californians.each { |person| expect(page).not_to have_content(person.full_name) }
+    non_californians.each { |person| verify_content_absent(person, :full_name) }
   end
 end

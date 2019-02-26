@@ -11,4 +11,8 @@ module CapybaraLinkHelpers
   def verify_content_absent(resource, attr = :name)
     expect(page).not_to have_content(resource.send(attr))
   end
+
+  def verify_alert(text)
+    expect(page.find('.alert')).to have_content(text)
+  end
 end

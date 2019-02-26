@@ -32,11 +32,11 @@ RSpec.xdescribe 'visit an event series page' do
   end
 
   def verify_page_header
-    expect(page).to have_content(subject_series.name)
-    expect(page).to have_link(organization.name, href: organization_path(organization))
+    verify_content_present(subject_series)
+    verify_link_present(organization)
   end
 
   def verify_event_links
-    events.each { |event| expect(page).to have_link(event.name, href: event_path(event)) }
+    events.each(&method(:verify_link_present))
   end
 end

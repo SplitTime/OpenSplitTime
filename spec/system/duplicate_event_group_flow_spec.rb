@@ -21,7 +21,7 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     visit duplicate_event_group_path(event_group)
 
     expect(page).to have_current_path(root_path)
-    expect(page.find('.alert')).to have_content('You need to sign in or sign up before continuing')
+    verify_alert('You need to sign in or sign up before continuing')
   end
 
   scenario 'The user is a user that is not authorized to edit the event group' do
@@ -30,7 +30,7 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     visit duplicate_event_group_path(event_group)
 
     expect(page).to have_current_path(root_path)
-    expect(page.find('.alert')).to have_content('Access denied')
+    verify_alert('Access denied')
   end
 
   context 'when event start times have the same date as UTC date' do
@@ -54,6 +54,42 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
       visit duplicate_event_group_path(event_group)
       verify_visit_and_duplication
     end
+
+    scenario 'The name has been taken' do
+      login_as admin, scope: :user
+
+      visit duplicate_event_group_path(event_group)
+      fill_in 'event_group_name', with: 'SUM'
+      fill_in 'event_group_duplicate_event_date', with: new_date
+      click_button 'Duplicate Event Group'
+      expect(page).to have_current_path(duplicate_event_group_path(event_group))
+      verify_alert('Name has already been taken')
+    end
+
+    scenario 'The name is blank' do
+      login_as admin, scope: :user
+
+      visit duplicate_event_group_path(event_group)
+      fill_in 'event_group_name', with: ''
+      fill_in 'event_group_duplicate_event_date', with: new_date
+      click_button 'Duplicate Event Group'
+      expect(page).to have_current_path(duplicate_event_group_path(event_group))
+      verify_alert(/Name can't be blank/)
+    end
+
+    scenario 'The date is blank' do
+      login_as admin, scope: :user
+
+      visit duplicate_event_group_path(event_group)
+      verify_invalid_date('')
+    end
+
+    scenario 'The date is invalid' do
+      login_as admin, scope: :user
+
+      visit duplicate_event_group_path(event_group)
+      verify_invalid_date('hello')
+    end
   end
 
   context 'when event start times have a different local date as UTC date' do
@@ -72,14 +108,27 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
 
     fill_in 'event_group_name', with: 'SUM New'
     fill_in 'event_group_duplicate_event_date', with: new_date
-    expect { click_button 'Duplicate Event Group' }.to change { EventGroup.count }.by(1).and change { Event.count }.by(2)
+    click_button 'Duplicate Event Group'
+    page.find('h1', text: 'SUM New')
     new_event_group = EventGroup.last
-    new_events = Event.last(2)
 
     expect(page).to have_current_path(event_group_path(new_event_group, force_settings: true))
+
+    expect(new_event_group.name).to eq('SUM New')
+    expect(new_event_group.events.map(&:short_name)).to match_array(event_group.events.map(&:short_name))
+
+    new_events = Event.last(2)
     new_events.each do |event|
-      expect(page).to have_link(event.name, href: event_path(event))
+      verify_link_present(event)
       expect(event.start_time_local.to_date).to eq(new_date.to_date)
     end
+  end
+
+  def verify_invalid_date(string)
+    fill_in 'event_group_name', with: 'SUM New'
+    fill_in 'event_group_duplicate_event_date', with: string
+    click_button 'Duplicate Event Group'
+    expect(page).to have_current_path(duplicate_event_group_path(event_group))
+    verify_alert(/Date is invalid/)
   end
 end

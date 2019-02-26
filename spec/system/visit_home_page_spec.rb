@@ -30,8 +30,6 @@ RSpec.describe 'Visit the home page' do
 
 
   def verify_public_links_present
-    recent_event_groups.each do |event_group|
-      expect(page).to have_link(event_group.name, href: event_group_path(event_group))
-    end
+    recent_event_groups.each(&method(:verify_link_present))
   end
 end

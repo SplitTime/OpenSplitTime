@@ -7,7 +7,7 @@ RSpec.describe 'visit the duplicate event group page', type: :system, js: true d
   let(:event_group) { event_groups(:sum) }
 
   scenario 'The user is a visitor' do
-    visit duplicate_event_group_path(event_group)
+    visit new_duplicate_event_group_path(existing_id: event_group.id)
 
     expect(page).to have_current_path(root_path)
     verify_alert('You need to sign in or sign up before continuing')
@@ -16,7 +16,7 @@ RSpec.describe 'visit the duplicate event group page', type: :system, js: true d
   scenario 'The user is a user that is not authorized to edit the event group' do
     login_as user, scope: :user
 
-    visit duplicate_event_group_path(event_group)
+    visit new_duplicate_event_group_path(existing_id: event_group.id)
 
     expect(page).to have_current_path(root_path)
     verify_alert('Access denied')

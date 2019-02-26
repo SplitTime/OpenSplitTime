@@ -60,7 +60,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
+  resources :duplicate_event_groups, only: [:new, :create]
+
+  resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
     member do
       get :drop_list
       get :raw_times
@@ -69,7 +71,6 @@ Rails.application.routes.draw do
       put :set_data_status
       get :split_raw_times
       get :traffic
-      get :duplicate
       put :start_efforts
       patch :update_all_efforts
       delete :delete_all_times

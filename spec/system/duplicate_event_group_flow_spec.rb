@@ -21,55 +21,55 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     scenario 'The user is a steward of the organization' do
       login_as steward, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_visit_and_duplication
     end
 
     scenario 'The user is the owner of the organization' do
       login_as owner, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_visit_and_duplication
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_visit_and_duplication
     end
 
     scenario 'The name has been taken' do
       login_as admin, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       fill_in_name('SUM')
       fill_in_date(new_date)
       click_button 'Duplicate Event Group'
-      expect(page).to have_current_path(duplicate_event_group_path(event_group))
+      verify_did_not_leave_page
     end
 
     scenario 'The name is blank' do
       login_as admin, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       fill_in_name('')
       fill_in_date(new_date)
       click_button 'Duplicate Event Group'
-      expect(page).to have_current_path(duplicate_event_group_path(event_group))
+      verify_did_not_leave_page
     end
 
     scenario 'The date is blank' do
       login_as admin, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_invalid_date('')
     end
 
     scenario 'The date is invalid' do
       login_as admin, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_invalid_date('hello')
     end
   end
@@ -80,13 +80,13 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     scenario 'The user is authorized to edit the organization' do
       login_as steward, scope: :user
 
-      visit duplicate_event_group_path(event_group)
+      visit new_duplicate_path
       verify_visit_and_duplication
     end
   end
 
   def verify_visit_and_duplication
-    expect(page).to have_current_path(duplicate_event_group_path(event_group))
+    expect(page).to have_current_path(new_duplicate_path)
 
     fill_in_name('SUM New')
     fill_in_date(new_date)
@@ -110,14 +110,22 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     fill_in_name('SUM New')
     fill_in_date(string)
     click_button 'Duplicate Event Group'
-    expect(page).to have_current_path(duplicate_event_group_path(event_group))
+    verify_did_not_leave_page
   end
 
   def fill_in_name(text)
-    fill_in 'event_group_name', with: text
+    fill_in 'duplicate_event_group_new_name', with: text
   end
 
   def fill_in_date(text)
-    fill_in 'event_group_duplicate_event_date', with: text
+    fill_in 'duplicate_event_group_new_start_date', with: text
+  end
+
+  def new_duplicate_path
+    new_duplicate_event_group_path(existing_id: event_group.id)
+  end
+
+  def verify_did_not_leave_page
+    expect(page).to have_css('h1', text: 'Duplicate Event Group')
   end
 end

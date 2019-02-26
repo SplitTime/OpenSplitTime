@@ -20,10 +20,6 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
-  def duplicate?
-    user.authorized_to_edit?(event_group)
-  end
-
   def raw_times?
     user.authorized_to_edit?(event_group)
   end

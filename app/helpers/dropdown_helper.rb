@@ -266,7 +266,7 @@ module DropdownHelper
         {name: 'Edit group',
          link: edit_event_group_path(view_object)},
         {name: 'Duplicate group',
-         link: duplicate_event_group_path(view_object)},
+         link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
         {role: :separator},
         {name: 'Add/Remove Stewards',
          link: organization_path(view_object.organization, display_style: 'stewards')}

@@ -103,7 +103,7 @@ ggd30_50k:
   updated_at: '2019-02-21 18:03:17.390583'
   created_by: 1
   updated_by: 1
-  start_time: '2017-06-03 13:00:00'
+  start_time: '2017-06-04 01:00:00'
   beacon_url: https://goldengatedirty30.maprogress.com
   laps_required: 1
   slug: ggd30-50k
@@ -119,7 +119,7 @@ ggd30_12m:
   updated_at: '2019-02-21 18:03:17.407428'
   created_by: 1
   updated_by: 1
-  start_time: '2017-06-03 16:00:00'
+  start_time: '2017-06-04 02:00:00'
   beacon_url: 
   laps_required: 1
   slug: ggd30-12m

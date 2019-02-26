@@ -35,12 +35,12 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if duplicate_event_date
-      duplicate_offset = (duplicate_event_date.to_date - @event_group.start_time.to_date).days
+      duplicate_offset = (duplicate_event_date.to_date - @event_group.start_time_local.to_date).days
       @event_group.events.each { |event| event.start_time += duplicate_offset }
     end
 
     if @event_group.save
-      @event_group.events.each { |event| event.set_all_course_splits }
+      @event_group.events.each(&:set_all_course_splits)
       redirect_to event_group_path(@event_group, force_settings: true)
     else
       flash[:danger] = "Could not duplicate event group.\n " +

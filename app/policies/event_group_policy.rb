@@ -21,7 +21,7 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def duplicate?
-    user.present?
+    user.authorized_to_edit?(event_group)
   end
 
   def raw_times?

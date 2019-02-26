@@ -90,10 +90,12 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
 
     fill_in_name('SUM New')
     fill_in_date(new_date)
-    click_button 'Duplicate Event Group'
-    page.find('h1', text: 'SUM New')
-    new_event_group = EventGroup.last
+    expect do
+      click_button 'Duplicate Event Group'
+      page.find('h1', text: 'SUM New')
+    end.to change { EventGroup.count }.by(1).and change { Event.count }.by(2)
 
+    new_event_group = EventGroup.last
     expect(page).to have_current_path(event_group_path(new_event_group, force_settings: true))
 
     expect(new_event_group.name).to eq('SUM New')

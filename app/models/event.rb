@@ -32,8 +32,9 @@ class Event < ApplicationRecord
   validate :course_is_consistent
 
   before_validation :add_default_results_template
-  after_destroy :destroy_orphaned_event_group
+  before_create :add_all_course_splits
   after_save :validate_event_group
+  after_destroy :destroy_orphaned_event_group
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
@@ -108,10 +109,6 @@ class Event < ApplicationRecord
     unreconciled_efforts.present?
   end
 
-  def set_all_course_splits
-    splits << course.splits
-  end
-
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: id})
   end
@@ -178,6 +175,12 @@ class Event < ApplicationRecord
 
     if events_within_group.empty?
       event_group.destroy
+    end
+  end
+
+  def add_all_course_splits
+    if splits.empty?
+      splits << course.splits
     end
   end
 

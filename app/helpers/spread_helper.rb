@@ -37,7 +37,7 @@ module SpreadHelper
   end
 
   def spread_relevant_elements(array)
-    STYLES_WITH_START_TIME.include?(@presenter.display_style) ? array : array[1..-1]
+    STYLES_WITH_START_TIME.include?(@presenter.display_style) ? array : array[1..-1] || []
   end
 
   def spread_export_headers
@@ -50,7 +50,7 @@ module SpreadHelper
   end
 
   def spread_individual_split_names
-    split_names = @presenter.split_header_data.flat_map { |header_data| individual_headers(header_data) }
+    split_names = @presenter.split_header_data.flat_map(&method(:individual_headers))
     split_names[0] = 'Start Offset' if @presenter.display_style == 'elapsed'
     split_names
   end

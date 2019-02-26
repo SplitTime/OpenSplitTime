@@ -20,13 +20,10 @@ class DuplicateEventGroup
 
   def create
     if valid?
-      self.new_event_group = existing_event_group.dup
-      new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false)
-      new_event_group.events = existing_event_group.events.map(&:dup)
-      new_event_group.events.each do |event|
-        event.assign_attributes(start_time: event.start_time + offset, historical_name: nil, beacon_url: nil)
+      duplicate_event_group
+      if new_event_group.save
+        conform_splits
       end
-      new_event_group.save
     end
     self
   end
@@ -34,6 +31,27 @@ class DuplicateEventGroup
   private
 
   attr_writer :new_event_group
+
+  def duplicate_event_group
+    self.new_event_group = existing_event_group.dup
+    new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false)
+    existing_event_group.events.each do |existing_event|
+      new_event = existing_event.dup
+      new_event.assign_attributes(start_time: existing_event.start_time + offset, historical_name: nil, beacon_url: nil)
+      new_event_group.events << new_event
+    end
+  end
+
+  # Saving the events will attach all course splits to each, so we need to
+  # conform splits by deleting those that are not included in the original.
+  def conform_splits
+    new_event_group.events.each do |new_event|
+      existing_event = existing_event_group.events.find { |existing_event| existing_event.short_name == new_event.short_name }
+      new_event.aid_stations.each do |aid_station|
+        aid_station.destroy unless aid_station.split_id.in?(existing_event.split_ids)
+      end
+    end
+  end
 
   def offset
     @offset ||= (new_start_date.to_date - existing_event_group.start_time_local.to_date).days

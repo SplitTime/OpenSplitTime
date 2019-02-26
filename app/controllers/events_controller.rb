@@ -28,7 +28,6 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      @event.set_all_course_splits
       redirect_to event_group_path(@event.event_group)
     else
       render 'new'

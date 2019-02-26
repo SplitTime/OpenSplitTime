@@ -59,8 +59,8 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
       login_as admin, scope: :user
 
       visit duplicate_event_group_path(event_group)
-      fill_in 'event_group_name', with: 'SUM'
-      fill_in 'event_group_duplicate_event_date', with: new_date
+      fill_in_name('SUM')
+      fill_in_date(new_date)
       click_button 'Duplicate Event Group'
       expect(page).to have_current_path(duplicate_event_group_path(event_group))
       verify_alert('Name has already been taken')
@@ -70,8 +70,8 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
       login_as admin, scope: :user
 
       visit duplicate_event_group_path(event_group)
-      fill_in 'event_group_name', with: ''
-      fill_in 'event_group_duplicate_event_date', with: new_date
+      fill_in_name('')
+      fill_in_date(new_date)
       click_button 'Duplicate Event Group'
       expect(page).to have_current_path(duplicate_event_group_path(event_group))
       verify_alert(/Name can't be blank/)
@@ -106,8 +106,8 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
   def verify_visit_and_duplication
     expect(page).to have_current_path(duplicate_event_group_path(event_group))
 
-    fill_in 'event_group_name', with: 'SUM New'
-    fill_in 'event_group_duplicate_event_date', with: new_date
+    fill_in_name('SUM New')
+    fill_in_date(new_date)
     click_button 'Duplicate Event Group'
     page.find('h1', text: 'SUM New')
     new_event_group = EventGroup.last
@@ -125,10 +125,20 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
   end
 
   def verify_invalid_date(string)
-    fill_in 'event_group_name', with: 'SUM New'
-    fill_in 'event_group_duplicate_event_date', with: string
+    fill_in_name('SUM New')
+    fill_in_date(string)
     click_button 'Duplicate Event Group'
     expect(page).to have_current_path(duplicate_event_group_path(event_group))
     verify_alert(/Date is invalid/)
+  end
+
+  def fill_in_name(text)
+    fill_in 'event_group_name', with: text
+    sleep(0.5)
+  end
+
+  def fill_in_date(text)
+    fill_in 'event_group_duplicate_event_date', with: text
+    sleep(0.5)
   end
 end

@@ -18,10 +18,7 @@ class EventCourseOrgSetter
 
   def set_resources
     ActiveRecord::Base.transaction do
-      submitted_resources.each do |resource|
-        update_resource(resource)
-      end
-      event.splits << course.splits if event.splits.empty?
+      submitted_resources.each(&method(:update_resource))
       raise ActiveRecord::Rollback if status
     end
     self.status ||= :ok

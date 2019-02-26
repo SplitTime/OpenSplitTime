@@ -14,6 +14,7 @@ module Interactors
       @new_event = args[:new_event]
       @old_event ||= effort.event
       @split_times ||= effort.ordered_split_times
+      @existing_splits = old_event.splits
       @errors = []
       verify_compatibility
     end
@@ -21,7 +22,7 @@ module Interactors
     def perform!
       unless errors.present?
         effort.event = new_event
-        split_times.each { |st| st.split = splits_by_distance[st.distance_from_start_of_lap] }
+        split_times.each { |st| st.split = old_new_split_map[st.split_id] }
         save_changes
       end
       Interactors::Response.new(errors, response_message)
@@ -29,7 +30,7 @@ module Interactors
 
     private
 
-    attr_reader :effort, :old_event, :new_event, :split_times, :errors
+    attr_reader :effort, :old_event, :new_event, :split_times, :existing_splits, :errors
 
     def save_changes
       ActiveRecord::Base.transaction do
@@ -47,12 +48,12 @@ module Interactors
       @maximum_lap ||= new_event.laps_required == 0 ? Float::INFINITY : new_event.laps_required
     end
 
-    def distances
-      @distances ||= splits_by_distance.keys
+    def old_new_split_map
+      @old_new_split_map ||= existing_splits.map { |existing_split| [existing_split.id, matching_new_split(existing_split)] }.to_h
     end
 
-    def splits_by_distance
-      @splits_by_distance ||= new_event.splits.index_by(&:distance_from_start)
+    def matching_new_split(existing_split)
+      new_event.splits.find { |split| split.parameterized_base_name == existing_split.parameterized_base_name }
     end
 
     def response_message
@@ -61,8 +62,8 @@ module Interactors
     end
 
     def verify_compatibility
-      errors << distance_mismatch_error(effort, new_event) and return unless split_times.all? { |st| distances.include?(st.distance_from_start_of_lap) }
-      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| splits_by_distance[st.distance_from_start_of_lap].sub_split_bitkeys.include?(st.bitkey) }
+      errors << split_name_mismatch_error(effort, new_event) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
+      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
       errors << lap_mismatch_error(effort, new_event) unless split_times.all? { |st| maximum_lap >= st.lap }
     end
   end

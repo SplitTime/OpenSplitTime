@@ -32,7 +32,7 @@ class Event < ApplicationRecord
   validate :course_is_consistent
 
   before_validation :add_default_results_template
-  before_create :add_all_course_splits
+  before_save :add_all_course_splits
   after_save :validate_event_group
   after_destroy :destroy_orphaned_event_group
 

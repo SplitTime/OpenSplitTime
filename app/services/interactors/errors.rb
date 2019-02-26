@@ -77,6 +77,11 @@ module Interactors
       detail: {messages: ["The event must be multi-lap to use #{interactor}"]}}
     end
 
+    def split_name_mismatch_error(child, new_parent)
+      {title: 'Split names do not match',
+       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because split names do not coincide"]}}
+    end
+
     def sub_split_mismatch_error(child, new_parent)
       {title: 'Distances do not match',
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because sub splits do not coincide"]}}

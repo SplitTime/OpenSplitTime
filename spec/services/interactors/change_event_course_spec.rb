@@ -33,25 +33,24 @@ RSpec.describe Interactors::ChangeEventCourse do
   describe '#perform!' do
     let(:event) { create(:event, course: old_course) }
     let!(:old_course) { create(:course, splits: old_splits) }
-    let(:old_split_1) { create(:split, :start) }
-    let(:old_split_2) { create(:split, distance_from_start: 10000) }
-    let(:old_split_3) { create(:split, distance_from_start: 20000) }
+    let(:old_split_1) { create(:split, :start, base_name: 'Start') }
+    let(:old_split_2) { create(:split, distance_from_start: 1000, base_name: 'Aid 1') }
+    let(:old_split_3) { create(:split, distance_from_start: 2000, base_name: 'Aid 2') }
     let(:old_splits) { [old_split_1, old_split_2, old_split_3] }
     let!(:efforts) { create_list(:effort, 2, event: event) }
 
     context 'when the new course has splits with the same distances as the old' do
       let(:new_course) { create(:course, splits: new_splits) }
-      let(:new_split_1) { create(:split, :start) }
-      let(:new_split_2) { create(:split, distance_from_start: old_course.ordered_splits.second.distance_from_start) }
-      let(:new_split_3) { create(:split, distance_from_start: old_course.ordered_splits.third.distance_from_start) }
-      let(:new_split_4) { create(:split, distance_from_start: new_split_3.distance_from_start + 10000) }
+      let(:new_split_1) { create(:split, :start, base_name: 'Start') }
+      let(:new_split_2) { create(:split, base_name: old_course.ordered_splits.second.base_name) }
+      let(:new_split_3) { create(:split, base_name: old_course.ordered_splits.third.base_name) }
+      let(:new_split_4) { create(:split, base_name: 'Finish') }
       let(:new_splits) { [new_split_1, new_split_2, new_split_3, new_split_4] }
 
       before do
         FactoryBot.reload
         old_course.reload
         new_course.reload
-        event.splits << old_course.splits
         create_times_for_event
       end
 
@@ -78,18 +77,18 @@ RSpec.describe Interactors::ChangeEventCourse do
         end
       end
 
-      it 'makes no changes and returns an unsuccessful response with errors if distances do not coincide' do
+      it 'makes no changes and returns an unsuccessful response with errors if names do not coincide' do
         existing_aid_stations = event.aid_stations
         existing_splits = event.splits
         split = new_course.ordered_splits.second
-        split.update(distance_from_start: split.distance_from_start - 1)
+        split.update(base_name: split.base_name + '123')
         new_course.reload
         response = subject.perform!
         event.reload
         expect(event.aid_stations).to match_array(existing_aid_stations)
         expect(event.splits).to match_array(existing_splits)
         expect(response).not_to be_successful
-        expect(response.errors.first[:detail][:messages]).to include(/distances do not coincide/)
+        expect(response.errors.first[:detail][:messages]).to include(/names do not coincide/)
       end
 
       it 'makes no changes and raises an error if sub_splits do not coincide' do

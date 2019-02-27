@@ -12,9 +12,4 @@ module Concealable
     scope :concealed, -> { where(concealed: true) }
     scope :visible, -> { where(concealed: false) }
   end
-
-  # May be overridden in models
-  def should_be_concealed?
-    false
-  end
 end

@@ -36,36 +36,4 @@ RSpec.describe Organization, type: :model do
       end
     end
   end
-
-  describe '#should_be_concealed?' do
-    let(:organization) { organizations(:hardrock) }
-
-    context 'if all event_groups associated with the organization are concealed' do
-      before { organization.event_groups.each { |eg| eg.update(concealed: true) } }
-
-      it 'returns true' do
-        expect(organization.should_be_concealed?).to eq(true)
-      end
-    end
-
-    context 'if any event_groups associated with the organization are visible' do
-      before do
-        organization.event_groups.each { |eg| eg.update(concealed: true) }
-        organization.event_groups.first.update(concealed: false)
-      end
-
-      it 'returns false' do
-        expect(organization.should_be_concealed?).to eq(false)
-      end
-    end
-
-    context 'if no event_groups are associated with the organization' do
-      let(:organization) { create(:organization) }
-
-      it 'returns true' do
-        expect(organization.event_groups.size).to eq(0)
-        expect(organization.should_be_concealed?).to eq(true)
-      end
-    end
-  end
 end

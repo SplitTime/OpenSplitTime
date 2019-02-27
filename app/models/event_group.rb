@@ -19,6 +19,7 @@ class EventGroup < ApplicationRecord
   belongs_to :organization
 
   after_create :notify_admin
+  after_save :conform_concealed_status
 
   validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
@@ -74,6 +75,14 @@ class EventGroup < ApplicationRecord
   end
 
   private
+
+  def conform_concealed_status
+    if saved_changes.keys.include?('concealed')
+      query = EventGroupQuery.set_concealed(id, concealed)
+      result = ActiveRecord::Base.connection.execute(query)
+      result.error_message.blank?
+    end
+  end
 
   def notify_admin
     AdminMailer.new_event_group(self).deliver_later

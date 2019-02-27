@@ -31,17 +31,9 @@ class EventGroupsController < ApplicationController
 
   def update
     authorize @event_group
-    @event_group.assign_attributes(permitted_params)
 
-    if @event_group.concealed_changed?
-      setter = EventConcealedSetter.new(event_group: @event_group, concealed: @event_group.concealed)
-      setter.perform
-      flash[:danger] = setter.response[:errors] unless setter.status == :ok
+    if @event_group.update(permitted_params)
       redirect_to event_group_path(@event_group, force_settings: true)
-
-    elsif @event_group.save
-      redirect_to event_group_path(@event_group, force_settings: true)
-
     else
       render 'edit'
     end

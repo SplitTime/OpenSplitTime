@@ -188,7 +188,7 @@ class Event < ApplicationRecord
     event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
 
     unless event_group.valid?
-      event_group.errors.full_messages.each { |message| errors[:base] << message }
+      errors.merge!(event_group.errors)
       raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
     end
   end

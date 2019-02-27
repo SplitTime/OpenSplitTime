@@ -33,10 +33,6 @@ class Organization < ApplicationRecord
     end
   end
 
-  def should_be_concealed?
-    !event_groups.visible.present?
-  end
-
   def owner_id
     created_by
   end

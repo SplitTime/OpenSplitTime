@@ -66,6 +66,11 @@ class EventsController < ApplicationController
     redirect_to event_groups_path
   end
 
+  def reassign
+    authorize @event
+
+  end
+
   # Special views with results
 
   def spread

@@ -24,7 +24,7 @@ module Interactors
 
         if event_group_orphaned?
           begin
-            self.destroyed_event_group = old_event_group.destroy
+            old_event_group.destroy
           rescue ActiveRecord::ActiveRecordError => exception
             errors << active_record_error(exception)
           end
@@ -38,15 +38,10 @@ module Interactors
     private
 
     attr_reader :event, :event_group_updated, :old_event_group, :old_event_group_id, :new_event_group_id, :errors
-    attr_accessor :destroyed_event_group
 
     def event_group_orphaned?
       old_event_group.reload
       event_group_updated && old_event_group.events.empty?
-    end
-
-    def event_group_destroyed?
-      destroyed_event_group.is_a?(EventGroup)
     end
 
     def old_event_group
@@ -67,22 +62,11 @@ module Interactors
     end
 
     def message
-      case
-      when errors.present?
+      if errors.present?
         'Event or event group could not be updated. '
-      when event_group_destroyed?
-        event_saved_message + event_group_destroyed_message
       else
-        event_saved_message
+        "Event #{event} was updated. "
       end
-    end
-
-    def event_saved_message
-      "Event #{event} was updated. "
-    end
-
-    def event_group_destroyed_message
-      "Event group #{destroyed_event_group.name}, which was formerly related to the event, was deleted. "
     end
 
     def validate_setup

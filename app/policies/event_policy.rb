@@ -65,6 +65,10 @@ class EventPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def reassign?
+    user.authorized_fully?(event)
+  end
+
   def export_finishers?
     user.authorized_to_edit?(event)
   end

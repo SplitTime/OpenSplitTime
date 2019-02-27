@@ -94,6 +94,7 @@ Rails.application.routes.draw do
       post :create_people
       put :associate_people
       put :set_stops
+      patch :reassign
       patch :update_start_time
       delete :delete_all_efforts
     end

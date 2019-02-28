@@ -285,7 +285,7 @@ module DropdownHelper
   end
 
   def split_name_filter_dropdown(view_object, param: :parameterized_split_name)
-    default_item_filter = request.params[:filter].except(param)
+    default_item_filter = (request.params[:filter] || {}).except(param)
     default_item = {name: 'All Splits',
                     link: request.params.merge(filter: default_item_filter, page: nil),
                     active: view_object.split_name.parameterize == 'all-splits'}

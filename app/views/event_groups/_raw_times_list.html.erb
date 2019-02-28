@@ -73,7 +73,7 @@
         </thead>
         <tbody>
         <% view_object.filtered_raw_times.each do |raw_time| %>
-          <tr>
+          <tr id="<%= "raw_time_#{raw_time.id}" %>">
             <td><%= raw_time.bib_number %></td>
             <% if view_object.multiple_events? %>
               <td><%= raw_time.event&.guaranteed_short_name || '--' %></td>

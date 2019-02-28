@@ -16,9 +16,9 @@
         <p/>
 
         <% if current_user %>
-          <% if @presenter.user_efforts.present? %>
+          <% if @presenter.recent_user_efforts.present? %>
             <h2>Your Recent Races</h2>
-            <% @presenter.recent_user_efforts(2).each do |effort| %>
+            <% @presenter.recent_user_efforts.first(2).each do |effort| %>
               <%= link_to effort.event_name, effort_path(effort), class: 'btn btn-info cta' %>
             <% end %>
             <br/>

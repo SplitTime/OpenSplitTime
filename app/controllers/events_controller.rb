@@ -36,26 +36,11 @@ class EventsController < ApplicationController
 
   def update
     authorize @event
-    @event.assign_attributes(permitted_params)
-    response = Interactors::UpdateEventAndGrouping.perform!(@event)
 
-    if response.successful?
-      case params[:button]
-      when 'join_leave'
-        redirect_to request.referrer
-      else
-        set_flash_message(response)
-        redirect_to event_group_path(@event.event_group, force_settings: true)
-      end
-
+    if @event.update(permitted_params)
+      redirect_to event_group_path(@event.event_group, force_settings: true)
     else # response.unsuccessful?
-      set_flash_message(response)
-      case params[:button]
-      when 'join_leave'
-        redirect_to request.referrer
-      else
-        render 'edit'
-      end
+      render 'edit'
     end
   end
 
@@ -68,7 +53,11 @@ class EventsController < ApplicationController
 
   def reassign
     authorize @event
+    @event.assign_attributes(params.require(:event).permit(:event_group_id))
 
+    response = Interactors::UpdateEventAndGrouping.perform!(@event)
+    set_flash_message(response) unless response.successful?
+    redirect_to session.delete(:return_to) || event_group_path(@event.event_group)
   end
 
   # Special views with results

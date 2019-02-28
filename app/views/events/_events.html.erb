@@ -35,12 +35,12 @@
         <% end %>
         <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
             <% if show_grouping_button == 'join' %>
-                <td class="text-center"><%= link_to 'Join', event_path(event, event: {event_group_id: presenter.event_group.id}, button: :join_leave),
+                <td class="text-center"><%= link_to 'Join', reassign_event_path(event, event: {event_group_id: presenter.event_group.id}),
                                                     method: :patch,
                                                     data: {confirm: "Join #{event.name} into the #{presenter.event_group.name} group?"},
                                                     class: 'btn btn-xs btn-success' %></td>
             <% elsif events.many? && show_grouping_button == 'leave' %>
-                <td class="text-center"><%= link_to 'Leave', event_path(event, event: {event_group_id: nil}, button: :join_leave),
+                <td class="text-center"><%= link_to 'Leave', reassign_event_path(event, event: {event_group_id: nil}),
                                                     method: :patch,
                                                     data: {confirm: "Remove #{event.name} from the #{presenter.event_group.name} group?"},
                                                     class: 'btn btn-xs btn-success' %></td>

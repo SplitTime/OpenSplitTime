@@ -23,6 +23,7 @@ class EventGroupsController < ApplicationController
       redirect_to spread_event_path(events.first)
     end
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+    session[:return_to] = event_group_path(@event_group, force_settings: true)
   end
 
   def edit

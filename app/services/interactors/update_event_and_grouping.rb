@@ -58,7 +58,11 @@ module Interactors
     end
 
     def unique_name
-      EventGroup.find_by(name: event.name) ? "#{event.name} #{Time.now}" : event.name
+      EventGroup.find_by(name: new_event_group_name) ? "#{new_event_group_name} #{Time.now}" : new_event_group_name
+    end
+
+    def new_event_group_name
+      "#{event.start_time_local.year} #{old_event_group.organization.name}"
     end
 
     def message

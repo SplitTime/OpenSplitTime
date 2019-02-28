@@ -22,7 +22,7 @@ class Event < ApplicationRecord
   has_many :splits, through: :aid_stations
   has_many :partners, through: :event_group
 
-  delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
+  delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :organization_id, :permit_notifications?, to: :event_group
   delegate :stewards, to: :organization
 

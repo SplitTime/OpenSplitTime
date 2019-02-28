@@ -420,12 +420,13 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:split) { ordered_splits.second }
           let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in, pacer: true, stopped_here: false) }
 
-          it 'saves the raw_times to the database and matches the duplicate raw_time with the existing split_time' do
-            expect { make_request }.to change { RawTime.count }.by(2).and change { SplitTime.count }.by(0)
+          it 'saves the raw_times to the database, matches the duplicate raw_time with the existing split_time, and creates a new split_time' do
+            expect { make_request }.to change { RawTime.count }.by(2).and change { SplitTime.count }.by(1)
             raw_times = RawTime.last(2)
+            new_split_time = SplitTime.last
 
             expect(response.status).to eq(201)
-            expect(raw_times.map(&:split_time_id)).to match_array([split_time.id, nil])
+            expect(raw_times.map(&:split_time_id)).to match_array([split_time.id, new_split_time.id])
           end
         end
       end
@@ -447,7 +448,9 @@ RSpec.describe Api::V1::EventGroupsController do
         end
       end
 
-      context 'when push notifications are permitted' do
+      context 'when push notifications are permitted and raw_times do not create new split_times' do
+        let(:bib_number) { '*' } # Invalid bib numbers never automatically create split_times
+
         via_login_and_jwt do
           before { event_group.update(available_live: true, concealed: false) }
 
@@ -461,9 +464,9 @@ RSpec.describe Api::V1::EventGroupsController do
         end
       end
 
-      context 'when event_group.permit_notifications? is true and auto_live_times is true' do
+      context 'when event_group.permit_notifications? is true' do
         via_login_and_jwt do
-          before { event_group.update(available_live: true, concealed: false, auto_live_times: true) }
+          before { event_group.update(available_live: true, concealed: false) }
 
           let!(:person) { effort.person }
           let(:data) { [

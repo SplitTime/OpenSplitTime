@@ -8,7 +8,6 @@
     <th></th>
     <% if presenter.show_visibility_columns? %>
         <th class="text-center">Visibility</th>
-        <th class="text-center">OST Remote</th>
     <% end %>
     <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
         <% if show_grouping_button == 'join' %>
@@ -31,7 +30,6 @@
         <td><%= "#{pluralize(event.effort_count, 'entrants')}" %></td>
         <% if presenter.show_visibility_columns? %>
             <td class="text-center"><%= event.concealed? ? 'Private' : 'Public' %></td>
-            <td class="text-center"><%= event.auto_live_times? ? 'Auto' : 'Manual' %></td>
         <% end %>
         <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
             <% if show_grouping_button == 'join' %>

@@ -8,7 +8,6 @@
       <th>Entrants</th>
       <% if presenter.show_visibility_columns? %>
         <th class="text-center">Visibility</th>
-        <th class="text-center">OST Remote</th>
         <th class="text-center"></th>
       <% end %>
     </tr>
@@ -22,7 +21,6 @@
       <td><%= "#{pluralize(event_group.effort_count, 'entrant')}" %></td>
       <% if presenter.show_visibility_columns? %>
         <td class="text-center"><%= event_group.concealed? ? 'Private' : 'Public' %></td>
-        <td class="text-center"><%= event_group.auto_live_times? ? 'Auto' : 'Manual' %></td>
         <td class="text-center">
           <% if event_group.available_live? && current_user&.authorized_to_edit?(event_group) %>
             <%= link_to 'Live Entry', live_entry_live_event_group_path(event_group), class: 'btn btn-xs btn-primary' %>

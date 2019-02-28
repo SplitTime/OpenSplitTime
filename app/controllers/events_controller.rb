@@ -39,7 +39,7 @@ class EventsController < ApplicationController
 
     if @event.update(permitted_params)
       redirect_to event_group_path(@event.event_group, force_settings: true)
-    else # response.unsuccessful?
+    else
       render 'edit'
     end
   end

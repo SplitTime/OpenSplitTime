@@ -56,7 +56,7 @@ class Api::V1::StagingController < ApiController
   # PATCH /api/v1/staging/:id/update_event_visibility
   def update_event_visibility
     if %w(public private).include?(params[:status])
-      query = EventGroupQuery.set_concealed(@event.event_group, params[:status] == 'private')
+      query = EventGroupQuery.set_concealed(@event.event_group_id, params[:status] == 'private')
       ActiveRecord::Base.connection.execute(query)
       render json: {errors: {}}, status: :ok
     else

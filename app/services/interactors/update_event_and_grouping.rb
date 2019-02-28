@@ -53,7 +53,6 @@ module Interactors
           EventGroup.create!(name: unique_name,
                              organization_id: old_event_group.organization_id,
                              concealed: old_event_group.concealed,
-                             auto_live_times: old_event_group.auto_live_times,
                              available_live: old_event_group.available_live)
     end
 

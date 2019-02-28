@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_23_071547) do
+ActiveRecord::Schema.define(version: 2019_02_28_010302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 2019_02_23_071547) do
     t.string "name"
     t.integer "organization_id"
     t.boolean "available_live", default: false
-    t.boolean "auto_live_times", default: true
     t.boolean "concealed", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -278,9 +277,9 @@ ActiveRecord::Schema.define(version: 2019_02_23_071547) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end

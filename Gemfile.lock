@@ -367,8 +367,10 @@ GEM
       redis (>= 3.3.5, < 5)
     sitemap_generator (6.0.2)
       builder (~> 3.0)
-    skylight (1.7.2)
-      activesupport (>= 3.0.0)
+    skylight (3.1.4)
+      skylight-core (= 3.1.4)
+    skylight-core (3.1.4)
+      activesupport (>= 4.2.0)
     smarter_csv (1.2.6)
     spring (2.0.2)
       activesupport (>= 4.2)
@@ -485,7 +487,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq
   sitemap_generator
-  skylight
+  skylight (~> 3.1)
   smarter_csv
   spring
   spring-commands-rspec

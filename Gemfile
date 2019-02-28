@@ -50,7 +50,7 @@ gem 'local_time'
 gem 'ffaker'
 gem 'allowable', '~> 1.1'
 gem 'acts_as_list', '~> 0.9'
-gem 'skylight'
+gem 'skylight', '~> 3.1'
 
 group :development do
   gem 'bullet'

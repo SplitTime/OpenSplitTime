@@ -12,4 +12,10 @@ module Concealable
     scope :concealed, -> { where(concealed: true) }
     scope :visible, -> { where(concealed: false) }
   end
+
+  def visible?
+    !concealed?
+  end
+
+  alias_method :visible, :visible?
 end

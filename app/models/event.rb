@@ -32,7 +32,7 @@ class Event < ApplicationRecord
   validate :course_is_consistent
 
   before_validation :add_default_results_template
-  before_validation :conform_changed_course, if: :course_id_changed?
+  before_validation :conform_changed_course
   before_save :add_all_course_splits
   after_save :validate_event_group
   after_destroy :destroy_orphaned_event_group
@@ -172,9 +172,11 @@ class Event < ApplicationRecord
   end
 
   def conform_changed_course
-    response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
-    response.errors.each { |error| errors.add(:base, error[:title]) }
-    response.successful?
+    if persisted? && course_id_changed?
+      response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
+      response.errors.each { |error| errors.add(:base, error[:title]) }
+      response.successful?
+    end
   end
 
   def destroy_orphaned_event_group

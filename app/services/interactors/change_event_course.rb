@@ -22,6 +22,7 @@ module Interactors
     def perform!
       unless errors.present?
         event.course = new_course
+        event.splits = new_course.splits
         split_times.each { |st| st.split = old_new_split_map[st.split_id] }
         save_changes
       end
@@ -34,7 +35,6 @@ module Interactors
 
     def save_changes
       ActiveRecord::Base.transaction do
-        event.splits = old_new_split_map.values
         save_without_validation(event)
         split_times.each(&method(:save_without_validation))
         validate_resource(event)
@@ -44,7 +44,7 @@ module Interactors
     end
 
     def save_without_validation(resource)
-      resource.save(validate: false) if resource.changed?
+      resource.save(validate: false)
     end
 
     def validate_resource(resource)

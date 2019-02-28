@@ -6,9 +6,6 @@
     <th>Name</th>
     <th>Date and Time</th>
     <th></th>
-    <% if presenter.show_visibility_columns? %>
-        <th class="text-center">Visibility</th>
-    <% end %>
     <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
         <% if show_grouping_button == 'join' %>
             <th class="text-center">Join Group</th>
@@ -28,9 +25,6 @@
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= l(event.start_time_local, format: :full_day_time_and_zone) %></td>
         <td><%= "#{pluralize(event.effort_count, 'entrants')}" %></td>
-        <% if presenter.show_visibility_columns? %>
-            <td class="text-center"><%= event.concealed? ? 'Private' : 'Public' %></td>
-        <% end %>
         <% if %w(join leave).include?(show_grouping_button) && current_user&.authorized_fully?(presenter.event_group) %>
             <% if show_grouping_button == 'join' %>
                 <td class="text-center"><%= link_to 'Join', reassign_event_path(event, event: {event_group_id: presenter.event_group.id}),

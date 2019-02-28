@@ -318,31 +318,6 @@
             },
             normalize: function() {
                 this.course.normalize();
-                var newCourse = false || this.aidStations.length == 0;
-                /* Remove Aid Stations for other Courses */
-                for ( var i = this.aidStations.length - 1; i >= 0; i-- ) {
-                    var splitId = this.aidStations[i].splitId;
-                    if ( splitId === null ) break; // Unnecessary
-                    for ( var j = this.course.splits.length - 1; j >= 0; j-- ) {
-                        if ( this.course.splits[j].id == splitId ) break;
-                    }
-                    if ( j < 0 ) {
-                        newCourse = true;
-                        this.aidStations[i].delete();
-                        this.aidStations.splice( i, 1 );
-                    }
-                }
-                /* Attach Splits on a New Course*/
-                if ( newCourse ) {
-                    for ( var i = this.course.splits.length - 1; i >= 0; i-- ) {
-                        var split = this.course.splits[i];
-                        if ( split.__new__ ) {
-                            split.post().then( function() { split.associate( true ); } );
-                        } else if ( !split.associated ) {
-                            split.associate( true );
-                        }
-                    }
-                }
             },
             validate: function( context ) {
                 var self = ( context ) ? context : this;

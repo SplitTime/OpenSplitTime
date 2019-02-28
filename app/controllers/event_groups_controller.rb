@@ -76,9 +76,13 @@ class EventGroupsController < ApplicationController
   end
 
   def traffic
-    band_width = params[:band_width].present? ? params.delete(:band_width).to_i : nil
-    event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
-    @presenter = EventGroupTrafficPresenter.new(event_group, prepared_params, band_width)
+    if params[:split_name]
+      redirect_to request.params.merge(split_name: nil, parameterized_split_name: params[:split_name]), status: 301
+    else
+      band_width = params[:band_width].present? ? params.delete(:band_width).to_i : nil
+      event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
+      @presenter = EventGroupTrafficPresenter.new(event_group, prepared_params, band_width)
+    end
   end
 
   def set_data_status

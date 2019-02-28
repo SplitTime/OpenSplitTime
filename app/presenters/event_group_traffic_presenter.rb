@@ -26,6 +26,8 @@ class EventGroupTrafficPresenter < BasePresenter
 
   def table_title
     case
+    when split.nil?
+      "Unknown split."
     when query_result.empty?
       "No entrants have arrived at this aid station."
     when row_limit_exceeded?
@@ -36,7 +38,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def sub_split_kinds
-    @sub_split_kinds ||= split.sub_split_kinds.map { |kind| kind.downcase.to_sym }
+    @sub_split_kinds ||= split ? split.sub_split_kinds.map { |kind| kind.downcase.to_sym } : []
   end
 
   def event

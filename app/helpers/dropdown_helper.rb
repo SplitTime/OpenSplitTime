@@ -278,7 +278,7 @@ module DropdownHelper
     dropdown_items = view_object.ordered_split_names.map do |split_name|
       {name: split_name,
        link: request.params.merge(param => split_name.parameterize),
-       active: split_name.parameterize == view_object.split_name.parameterize}
+       active: split_name.parameterize == view_object.split_name&.parameterize}
     end
 
     build_dropdown_menu(nil, dropdown_items, button: true)

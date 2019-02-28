@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
 module EventsHelper
-  def results_template_selector(event)
+  def results_template_selector(resource)
     public_organization = Organization.new(name: 'Public Templates', results_templates: ResultsTemplate.standard)
-    private_organization = event.organization.results_templates.present? ? event.organization : nil
+    private_organization = resource.organization.results_templates.present? ? resource.organization : nil
     organizations = [public_organization, private_organization].compact
+    resource_type = resource.class.name.underscore.to_sym
 
-    grouped_collection_select(:event, :results_template_id, organizations, :results_templates, :name, :id, :name,
-                      {prompt: false},
-                      {class: "form-control dropdown-select-field",
-                       data: {target: 'event-form.dropdown', action: 'event-form#replaceCategories'}})
+    grouped_collection_select(resource_type, :results_template_id, organizations, :results_templates, :name, :id, :name,
+                              {prompt: false},
+                              {class: "form-control dropdown-select-field",
+                       data: {target: 'results-template.dropdown', action: 'results-template#replaceCategories'}})
   end
 
   def link_to_beacon_button(view_object)

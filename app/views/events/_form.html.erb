@@ -76,13 +76,13 @@
           <%= f.label :podium_template %>
         </div>
         <div class="col-sm-8">
-          <div class="card" data-controller="event-form">
+          <div class="card" data-controller="results-template">
             <div class="card-header">
               <h5>
                 <%= results_template_selector(@event) %>
               </h5>
             </div>
-            <div class="card-body" data-target="event-form.categories">
+            <div class="card-body" data-target="results-template.categories">
               <%= render 'results_templates/categories_card', template: @event.results_template %>
             </div>
           </div>

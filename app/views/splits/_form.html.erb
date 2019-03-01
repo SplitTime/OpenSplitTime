@@ -2,7 +2,7 @@
 <% set_course_and_event %>
 <div class="row">
   <div class="col-md-12">
-    <%= form_for(@split, :html => {class: "form-horizontal", role: "form"}) do |f| %>
+    <%= form_for(@split, html: {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-group">
           <% if @split.course_id %>
               <div class="col-sm-8 col-sm-offset-2">

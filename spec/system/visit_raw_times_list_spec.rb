@@ -21,6 +21,8 @@ RSpec.describe 'visit an event group raw times list page and try various feature
   let(:raw_times_101) { event_group.raw_times.where(bib_number: '101') }
   let(:stopped_raw_times) { event_group.raw_times.where(stopped_here: true) }
   let(:unstopped_raw_times) { event_group.raw_times.where(stopped_here: false).first(5) }
+  let(:anvil_raw_times) { event_group.raw_times.where(split_name: 'Anvil CG (Aid6)') }
+  let(:non_anvil_raw_times) { event_group.raw_times.where.not(split_name: 'Anvil CG (Aid6)').first(25) }
 
   scenario 'The user is an admin' do
     login_as admin, scope: :user
@@ -64,6 +66,17 @@ RSpec.describe 'visit an event group raw times list page and try various feature
 
     verify_raw_times_present(stopped_raw_times)
     verify_raw_times_absent(unstopped_raw_times)
+  end
+
+  scenario 'The user filters using the split name selector' do
+    login_as admin, scope: :user
+    visit raw_times_event_group_path(event_group)
+    verify_raw_times_present(all_raw_times)
+
+    click_link 'Anvil CG (Aid6)'
+
+    verify_raw_times_present(anvil_raw_times)
+    verify_raw_times_absent(non_anvil_raw_times)
   end
 
   def search_button

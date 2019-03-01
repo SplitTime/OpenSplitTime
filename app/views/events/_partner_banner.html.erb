@@ -1,7 +1,7 @@
 <div class="row header">
   <div class="col-md-6 partner-ad">
     <a href="<%= url_with_protocol(partner.banner_link) %>" target="_blank">
-      <img src="<%= partner.banner.url(:medium) %>">
+      <img src="<%= partner.banner.variant(resize: '728x90') if partner.banner.attached? %>">
     </a>
   </div>
   <div class="col-md-6">

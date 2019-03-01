@@ -19,7 +19,7 @@ class Effort < ApplicationRecord
   belongs_to :event
   belongs_to :person
   has_many :split_times, dependent: :destroy
-  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
+  has_one_attached :photo
 
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
@@ -37,10 +37,9 @@ class Effort < ApplicationRecord
   validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
-  validates_attachment :photo,
-                       content_type: {content_type: %w(image/png image/jpeg)},
-                       file_name: {matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]},
-                       size: {in: 0..2000.kilobytes}
+  validates :photo,
+            content_type: %w(image/png image/jpeg),
+            size: {less_than: 5000.kilobytes}
 
   before_save :reset_age_from_birthdate
 
@@ -264,7 +263,7 @@ class Effort < ApplicationRecord
   def enriched
     event.efforts.ranked_with_status.find { |e| e.id == id }
   end
-  
+
   def template_age
     @template_age || age
   end

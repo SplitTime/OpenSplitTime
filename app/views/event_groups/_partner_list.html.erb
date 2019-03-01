@@ -19,7 +19,7 @@
   <% partners.each do |partner| %>
       <tr>
         <td><%= link_to partner.name, edit_partner_path(partner) %></td>
-        <td><%= image_tag partner.banner.url(:small) %></td>
+        <td><%= image_tag partner.banner.variant(resize: '364x45') if partner.banner.attached? %></td>
         <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: '_blank' if partner.banner_link %></td>
         <td><%= partner.weight %></td>
         <td>

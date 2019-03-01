@@ -31,7 +31,7 @@ class MigrateToActiveStorage
   private
 
   def make_active_storage_records(resource, attribute, model)
-    blob_key = key(resource, attribute)
+    blob_key = key(resource, attribute).sub(/\A\//, '')
     filename = resource.send("#{attribute}_file_name")
     content_type = resource.send("#{attribute}_content_type")
     file_size = resource.send("#{attribute}_file_size")

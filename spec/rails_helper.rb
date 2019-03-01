@@ -18,6 +18,8 @@ require 'active_support/core_ext/hash/keys'
 require 'active_support/inflector'
 require 'rack/test'
 require 'webmock/rspec'
+require 'aws-sdk-s3'
+require 'aws-sdk-sns'
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

@@ -26,7 +26,6 @@ gem 'strip_attributes'
 gem 'puma'
 gem 'puma_worker_killer'
 gem 'sidekiq'
-gem 'aws-sdk', '~> 2.10.47'
 gem 'pusher'
 gem 'active_model_serializers'
 gem 'friendly_id', '~> 5.2.0'
@@ -51,6 +50,9 @@ gem 'ffaker'
 gem 'allowable', '~> 1.1'
 gem 'acts_as_list', '~> 0.9'
 gem 'skylight', '~> 3.1'
+gem 'mini_magick'
+gem 'aws-sdk-s3', '~> 1', require: false
+gem 'aws-sdk-sns', '~> 1', require: false
 
 group :development do
   gem 'bullet'

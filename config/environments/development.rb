@@ -64,4 +64,7 @@ Rails.application.configure do
   end
 
   config.assets.quiet = true
+
+  # ActiveStorage
+  config.active_storage.service = :local
 end

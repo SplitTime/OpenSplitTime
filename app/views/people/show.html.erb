@@ -30,9 +30,9 @@
           <% end %>
         </div>
       </div>
-      <% if @presenter.photo.present? %>
+      <% if @presenter.photo.attached? %>
         <div class="col-3">
-          <%= image_tag(@presenter.photo.url(:small)) %>
+          <%= image_tag(@presenter.photo.variant(resize: '150x150')) %>
         </div>
       <% end %>
       <%= render 'subscription_buttons', view_object: @presenter %>

@@ -37,9 +37,9 @@
           </h6>
         </div>
       </div>
-      <% if @presenter.photo.present? %>
+      <% if @presenter.photo.attached? %>
         <div class="col-3">
-          <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
+          <%= link_to image_tag(@presenter.photo.variant(resize: '150x150')), {action: :show_photo} %>
         </div>
       <% end %>
       <%= render 'subscription_buttons', view_object: @presenter %>

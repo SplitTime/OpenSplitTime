@@ -30,6 +30,8 @@ GEM
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     active_record_query_trace (1.5.4)
+    active_storage_validations (0.6.1)
+      rails (>= 5.2.0)
     activejob (5.2.2)
       activesupport (= 5.2.2)
       globalid (>= 0.3.6)
@@ -446,6 +448,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   active_record_query_trace
+  active_storage_validations
   activerecord-import
   acts_as_list (~> 0.9)
   allowable (~> 1.1)

@@ -15,7 +15,7 @@
         <td><strong><%= link_to course.name, course_path(course) %></strong></td>
         <td><%= pluralize(course.splits.size, 'split') %></td>
         <td><%= pluralize(course.events.size, 'event') %></td>
-        <td><%= "#{course.gpx_file_name} (#{(course.gpx_file_size / 1.0.kilobytes).round(1)} KB)" if course.gpx.present? %></td>
+        <td><%= "#{course.gpx.filename} (#{(course.gpx.byte_size / 1.0.kilobytes).round(1)} KB)" if course.gpx.attached? %></td>
       </tr>
   <% end %>
   </tbody>

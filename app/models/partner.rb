@@ -2,18 +2,15 @@
 
 class Partner < ApplicationRecord
   belongs_to :event_group
-  scope :with_banners, -> { where.not(banner_file_name: nil).where.not(banner_link: nil) }
+  scope :with_banners, -> { joins(:banner_attachment).where.not(banner_link: nil) }
 
   strip_attributes collapse_spaces: true
 
-  has_attached_file :banner,
-                    styles: {medium: '728x90>', small: '364x45>'},
-                    default_url: ':style/missing_banner.png'
+  has_one_attached :banner
 
-  validates_attachment :banner,
-                       content_type: { content_type: %w(image/png image/jpeg)},
-                       file_name: { matches: [/png\z/, /jpe?g\z/] },
-                       size: { in: 0..500.kilobytes }
+  validates :banner,
+            content_type: %w(image/png image/jpeg),
+            size: {less_than: 500.kilobytes}
 
   validates_presence_of :event_group, :name, :weight
 end

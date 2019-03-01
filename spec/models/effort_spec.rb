@@ -550,23 +550,6 @@ RSpec.describe Effort, type: :model do
     end
   end
 
-  describe '#photo' do
-    subject { build(:effort) }
-    let(:existing_effort) { build(:effort) }
-    let(:file_path) { "#{Rails.root}/spec/fixtures/files/potato3.jpg" }
-    let(:photo_file) { File.new(file_path) }
-
-    before do
-      existing_effort.update(photo: photo_file)
-    end
-
-    it 'copies a photo from an existing effort' do
-      expect(existing_effort.photo.exists?).to eq(true)
-      subject.update(photo: existing_effort.photo)
-      expect(subject.photo.exists?).to eq(true)
-    end
-  end
-
   describe '#generate_new_topic_resource?' do
     subject(:effort) { efforts(:sum_100k_un_started) }
     before { effort.assign_attributes(scheduled_start_time: scheduled_start_time) }

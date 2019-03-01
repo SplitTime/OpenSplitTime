@@ -53,6 +53,7 @@ gem 'skylight', '~> 3.1'
 gem 'mini_magick'
 gem 'aws-sdk-s3', '~> 1', require: false
 gem 'aws-sdk-sns', '~> 1', require: false
+gem 'active_storage_validations'
 
 group :development do
   gem 'bullet'

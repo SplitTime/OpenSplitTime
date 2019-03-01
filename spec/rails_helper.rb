@@ -42,6 +42,10 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+FactoryBot::SyntaxRunner.class_eval do
+  include ActionDispatch::TestProcess
+end
+
 RSpec.configure do |config|
 
   config.global_fixtures = :organizations, :courses, :event_groups, :events, :efforts, :split_times, :splits,

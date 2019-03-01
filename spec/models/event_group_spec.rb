@@ -72,7 +72,7 @@ RSpec.describe EventGroup, type: :model do
         partners = []
         100.times { partners << event_group.pick_partner_with_banner }
         expect(partners.map(&:event_group).uniq).to eq([event_group])
-        expect(partners.map(&:banner_file_name)).to all (be_present)
+        expect(partners.map(&:id).uniq).to match_array(related_partners_with_banners.map(&:id))
       end
     end
 
@@ -95,7 +95,7 @@ RSpec.describe EventGroup, type: :model do
     end
 
     context 'where no partners with banners for the event_group exist' do
-      let!(:event_group) { create(:event_group) }
+      let(:event_group) { create(:event_group) }
 
       it 'returns nil' do
         create(:partner, event_group: event_group) # Without a banner

@@ -47,21 +47,13 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.paperclip_defaults = {
-      storage: :s3,
-      preserve_files: true,
-      s3_credentials: {
-          bucket: ENV['S3_BUCKET'],
-          access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-          secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-          s3_region: ENV['AWS_REGION'],
-          s3_host_name: "s3-#{ENV['AWS_REGION']}.amazonaws.com",
-      }
-  }
 
   if ENV['MEMCACHEDCLOUD_SERVERS']
     config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
   end
 
   config.assets.quiet = true
+
+  # ActiveStorage
+  config.active_storage.service = :amazon
 end

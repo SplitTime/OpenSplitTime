@@ -13,7 +13,7 @@ class CoursePresenter < BasePresenter
   end
 
   def course_has_location_data?
-    ordered_splits.any? { |split| split.latitude && split.longitude } || gpx.present?
+    ordered_splits.any? { |split| split.latitude && split.longitude } || gpx.attached?
   end
 
   def display_style

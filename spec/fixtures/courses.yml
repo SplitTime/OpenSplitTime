@@ -10,10 +10,6 @@ hardrock_ccw:
   updated_by: 1
   next_start_time: '2019-07-19 06:00:00'
   slug: hardrock-ccw
-  gpx_file_name: hardrock-ccw-cleaned.gpx
-  gpx_content_type: application/octet-stream
-  gpx_file_size: 175314
-  gpx_updated_at: '2017-11-05 17:08:01.704472'
 ramble_even_course:
   id: 9
   name: Ramble Even Course
@@ -24,10 +20,6 @@ ramble_even_course:
   updated_by: 1
   next_start_time: 
   slug: ramble-even-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 hardrock_cw:
   id: 12
   name: Hardrock CW
@@ -38,10 +30,6 @@ hardrock_cw:
   updated_by: 1
   next_start_time: '2016-07-15 12:00:00'
   slug: hardrock-cw
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 rufa_course:
   id: 20
   name: RUFA Course
@@ -52,10 +40,6 @@ rufa_course:
   updated_by: 1
   next_start_time: '2019-02-09 14:00:00'
   slug: rufa-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 d30_50k_course:
   id: 26
   name: D30 50K Course
@@ -66,10 +50,6 @@ d30_50k_course:
   updated_by: 1
   next_start_time: '2017-11-06 06:00:00'
   slug: d30-50k-course
-  gpx_file_name: golden-gate-dirty-30-800.gpx
-  gpx_content_type: application/octet-stream
-  gpx_file_size: 80581
-  gpx_updated_at: '2017-11-06 07:26:57.17064'
 d30_12m_course:
   id: 27
   name: D30 12M Course
@@ -80,10 +60,6 @@ d30_12m_course:
   updated_by: 1
   next_start_time: 
   slug: d30-12m-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 sum_100k_course:
   id: 31
   name: SUM 100K Course
@@ -94,10 +70,6 @@ sum_100k_course:
   updated_by: 1
   next_start_time: 
   slug: sum-100k-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 
 sum_55k_course:
   id: 32
   name: SUM 55K Course
@@ -108,7 +80,3 @@ sum_55k_course:
   updated_by: 1
   next_start_time: 
   slug: sum-55k-course
-  gpx_file_name: 
-  gpx_content_type: 
-  gpx_file_size: 
-  gpx_updated_at: 

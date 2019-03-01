@@ -13,20 +13,18 @@ class Course < ApplicationRecord
 
   has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
+  has_one_attached :gpx
 
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
-  has_attached_file :gpx
-  include DeletableAttachment
 
   scope :used_for_organization, -> (organization) { includes(events: :event_group).where(event_groups: {organization_id: organization.id}).uniq }
   scope :standard_includes, -> { includes(:splits) }
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
-  validates_attachment :gpx,
-                       content_type: {content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream]},
-                       file_name: {matches: /gpx\Z/},
-                       size: {in: 0..500.kilobytes}
+  validates :gpx,
+            content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],
+            size: {less_than: 500.kilobytes}
 
   def to_s
     slug
@@ -53,9 +51,9 @@ class Course < ApplicationRecord
   end
 
   def track_points
-    return [] unless gpx.present?
+    return [] unless gpx.attached?
     return @track_points if defined?(@track_points)
-    file = Paperclip.io_adapters.for(gpx).read
+    file = gpx.download
     gpx_file = GPX::GPXFile.new(gpx_data: file)
     points = gpx_file.tracks.flat_map(&:points)
     @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }

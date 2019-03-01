@@ -101,3 +101,6 @@ dump.rdb/public/packs
 yarn-debug.log*
 yarn-error.log
 .yarn-integrity
+
+# ActiveStorage local directory
+storage/

@@ -10,13 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_28_010302) do
+ActiveRecord::Schema.define(version: 2019_03_01_123544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"
@@ -36,10 +57,6 @@ ActiveRecord::Schema.define(version: 2019_02_28_010302) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
-    t.string "gpx_file_name"
-    t.string "gpx_content_type"
-    t.integer "gpx_file_size"
-    t.datetime "gpx_updated_at"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -67,10 +84,6 @@ ActiveRecord::Schema.define(version: 2019_02_28_010302) do
     t.string "email"
     t.string "slug", null: false
     t.boolean "checked_in", default: false
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.string "emergency_contact"
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
@@ -197,10 +210,6 @@ ActiveRecord::Schema.define(version: 2019_02_28_010302) do
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "banner_file_name"
-    t.string "banner_content_type"
-    t.integer "banner_file_size"
-    t.datetime "banner_updated_at"
     t.string "name", null: false
     t.bigint "event_group_id", null: false
     t.index ["event_group_id"], name: "index_partners_on_event_group_id"
@@ -224,10 +233,6 @@ ActiveRecord::Schema.define(version: 2019_02_28_010302) do
     t.boolean "concealed", default: false
     t.string "slug", null: false
     t.string "topic_resource_key"
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true
     t.index ["user_id"], name: "index_people_on_user_id"
@@ -406,6 +411,7 @@ ActiveRecord::Schema.define(version: 2019_02_28_010302) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
   add_foreign_key "efforts", "events"

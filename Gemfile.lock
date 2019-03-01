@@ -115,8 +115,6 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
     climate_control (0.2.0)
-    cocaine (0.5.8)
-      climate_control (>= 0.0.3, < 1.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -224,12 +222,12 @@ GEM
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
-    paperclip (5.2.1)
+    paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
-      cocaine (~> 0.5.5)
       mime-types
       mimemagic (~> 0.3.0)
+      terrapin (~> 0.6.0)
     parallel (1.13.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
@@ -400,6 +398,8 @@ GEM
       activerecord
     switchery-rails (0.8.1.1)
       railties (>= 3.2, < 6.0)
+    terrapin (0.6.0)
+      climate_control (>= 0.0.3, < 1.0)
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
@@ -479,7 +479,7 @@ DEPENDENCIES
   local_time
   mini_magick
   momentjs-rails
-  paperclip (~> 5.2.0)
+  paperclip (~> 6.1)
   pg (~> 0.20)
   pg_search
   phony_rails

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_01_042516) do
+ActiveRecord::Schema.define(version: 2019_03_01_123544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -57,10 +57,6 @@ ActiveRecord::Schema.define(version: 2019_03_01_042516) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
-    t.string "gpx_file_name"
-    t.string "gpx_content_type"
-    t.integer "gpx_file_size"
-    t.datetime "gpx_updated_at"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -88,10 +84,6 @@ ActiveRecord::Schema.define(version: 2019_03_01_042516) do
     t.string "email"
     t.string "slug", null: false
     t.boolean "checked_in", default: false
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.string "emergency_contact"
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
@@ -218,10 +210,6 @@ ActiveRecord::Schema.define(version: 2019_03_01_042516) do
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "banner_file_name"
-    t.string "banner_content_type"
-    t.integer "banner_file_size"
-    t.datetime "banner_updated_at"
     t.string "name", null: false
     t.bigint "event_group_id", null: false
     t.index ["event_group_id"], name: "index_partners_on_event_group_id"
@@ -245,10 +233,6 @@ ActiveRecord::Schema.define(version: 2019_03_01_042516) do
     t.boolean "concealed", default: false
     t.string "slug", null: false
     t.string "topic_resource_key"
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true
     t.index ["user_id"], name: "index_people_on_user_id"

@@ -51,7 +51,7 @@ namespace :db do
   task from_fixtures: :environment do
     process_start_time = Time.current
 
-    TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations].freeze
+    TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations active_storage_blobs active_storage_attachments].freeze
 
     begin
       ActiveRecord::Base.establish_connection

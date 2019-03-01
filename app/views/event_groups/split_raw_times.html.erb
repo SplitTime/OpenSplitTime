@@ -75,7 +75,7 @@
 
       <tbody>
       <% @presenter.bib_rows.each do |row| %>
-        <tr class="<%= 'highlight' if row.problem? %>">
+        <tr id="<%= "bib_#{row.bib_number}" %>" class="<%= 'highlight' if row.problem? %>">
           <td class="text-center"><%= row.bib_number %></td>
           <td><%= row.effort_id ? (link_to row.full_name, effort_path(row.effort_id)) : row.full_name %></td>
           <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= lap_and_time_builder(row) %></td>

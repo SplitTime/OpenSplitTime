@@ -7,19 +7,19 @@ RSpec.describe 'visit the traffic page' do
   let(:admin) { users(:admin_user) }
   let(:event_group) { event_groups(:hardrock_2015) }
 
-  scenario 'A visitor views the podium page' do
+  scenario 'A visitor views the traffic page' do
     visit traffic_event_group_path(event_group)
     expect(page).to have_content(event_group.name)
   end
 
-  scenario 'A user views the podium page' do
+  scenario 'A user views the traffic page' do
     login_as user, scope: :user
 
     visit traffic_event_group_path(event_group)
     expect(page).to have_content(event_group.name)
   end
 
-  scenario 'An admin views the podium page' do
+  scenario 'An admin views the traffic page' do
     login_as admin, scope: :user
 
     visit traffic_event_group_path(event_group)

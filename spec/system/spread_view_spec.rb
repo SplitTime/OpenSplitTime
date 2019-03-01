@@ -8,13 +8,13 @@ RSpec.describe 'visit the spread page' do
   let(:event) { events(:hardrock_2015) }
   let(:subject_efforts) { event.efforts }
 
-  scenario 'A visitor views the podium page' do
+  scenario 'A visitor views the spread page' do
     visit spread_event_path(event)
     expect(page).to have_content(event.name)
     verify_efforts_present(subject_efforts)
   end
 
-  scenario 'A user views the podium page' do
+  scenario 'A user views the spread page' do
     login_as user, scope: :user
 
     visit spread_event_path(event)
@@ -22,7 +22,7 @@ RSpec.describe 'visit the spread page' do
     verify_efforts_present(subject_efforts)
   end
 
-  scenario 'An admin views the podium page' do
+  scenario 'An admin views the spread page' do
     login_as admin, scope: :user
 
     visit spread_event_path(event)

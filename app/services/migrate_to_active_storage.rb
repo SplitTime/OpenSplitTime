@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Run this migration from the active-storage code branch.
+
 class MigrateToActiveStorage
   require 'open-uri'
   require 'aws-sdk-s3'

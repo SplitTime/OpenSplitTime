@@ -13,4 +13,6 @@ class Partner < ApplicationRecord
             size: {less_than: 500.kilobytes}
 
   validates_presence_of :event_group, :name, :weight
+
+  delegate :organization, to: :event_group
 end

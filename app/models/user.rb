@@ -11,7 +11,6 @@ class User < ApplicationRecord
   enum pref_elevation_unit: [:feet, :meters]
   strip_attributes collapse_spaces: true
   friendly_id :slug_candidates, use: [:slugged, :history]
-  phony_normalize :phone, country_code: 'US'
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :subscribable, source_type: 'Person'
@@ -29,8 +28,9 @@ class User < ApplicationRecord
   end
 
   validates_presence_of :first_name, :last_name
-  validates_plausible_phone :phone, country_code: 'US', message: 'must be a valid US or Canada phone number'
+  validates :phone, format: { with: /\+1\d{9}/, message: 'must be a valid US or Canada phone number' }, if: :phone?
 
+  before_validation :normalize_phone, if: :phone?
   after_initialize :set_default_role, if: :new_record?
 
   def set_default_role
@@ -99,5 +99,14 @@ class User < ApplicationRecord
 
   def has_avatar?
     avatar.present?
+  end
+
+  private
+
+  def normalize_phone
+    self.phone.gsub!(/[^+\d]/, '')
+    self.phone.gsub!(/\A\+?1?/, '')
+    self.phone = '+1' + phone if phone.length == 10
+    self.phone = phone.presence
   end
 end

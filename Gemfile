@@ -34,7 +34,6 @@ gem 'momentjs-rails'
 gem 'bootstrap4-datetime-picker-rails'
 gem 'rest-client'
 gem 'sitemap_generator'
-gem 'phony_rails'
 gem 'font_awesome5_rails'
 gem 'pg_search'
 gem 'smarter_csv'
@@ -61,6 +60,7 @@ group :development do
   gem 'spring'
   gem 'web-console', '~> 3.0'
   gem 'better_errors', '>= 2.3'
+  gem 'derailed'
 end
 
 group :test do

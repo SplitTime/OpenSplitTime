@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'smarter_csv'
+
 module ETL::Extractors
   class CsvFileStrategy
     include ETL::Errors

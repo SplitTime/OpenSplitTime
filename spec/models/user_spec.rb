@@ -20,6 +20,91 @@ RSpec.describe User, type: :model do
     expect(user.valid?).to be_falsey
   end
 
+  describe '#normalize_phone' do
+    subject(:user) { build(:user, phone: phone) }
+    let(:normalized_phone) { '+12025551212' }
+
+    context 'when phone is a standard US or Canada number with +1 prefix' do
+      let(:phone) { '+12025551212' }
+
+      it 'does not change phone and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with 1 prefix' do
+      let(:phone) { '12025551212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number without + or 1 prefix' do
+      let(:phone) { '2025551212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with +1 prefix and parentheses, spaces, and dashes' do
+      let(:phone) { '+1 (202) 555-1212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with parentheses, spaces, and dashes' do
+      let(:phone) { '(202) 555-1212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a nonstandard number' do
+      let(:phone) { '555-1212' }
+
+      it 'attempts to normalize phone number and user is not valid' do
+        user.validate
+        expect(user.phone).to eq('5551212')
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'when phone is nonsensical' do
+      let(:phone) { 'hello234' }
+
+      it 'attempts to normalize phone number and user is not valid' do
+        user.validate
+        expect(user.phone).to eq('234')
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'when phone contains no numeric data' do
+      let(:phone) { 'hello' }
+
+      it 'eliminates the data and user is valid' do
+        user.validate
+        expect(user.phone).to be_nil
+        expect(user).to be_valid
+      end
+    end
+  end
+
   describe '#interests' do
     let(:user_1) { users(:third_user) }
     let(:subject_people) { people.first(2) }

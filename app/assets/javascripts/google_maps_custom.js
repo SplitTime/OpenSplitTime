@@ -18,7 +18,11 @@ var gmap_show = function (locations, trackPoints) {
         bounds.extend(p);
     });
 
-    map = new google.maps.Map(document.getElementById('map'));
+    var mapOptions = {
+        mapTypeId: 'terrain'
+    };
+
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
     var markers = locations.map(function (location, i) {
         if (location.latitude !== null && location.longitude !== null) {
@@ -59,6 +63,12 @@ var gmap_show = function (locations, trackPoints) {
     });
 
     poly.setMap(map);
+
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
+        this.setZoom(Math.min(15, this.getZoom()));
+    });
+
+    map.initialZoom = true;
     map.fitBounds(bounds);
 
 };

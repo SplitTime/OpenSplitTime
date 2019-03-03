@@ -3,7 +3,7 @@
 class CoursePresenter < BasePresenter
 
   attr_reader :course, :events
-  delegate :id, :name, :description, :ordered_splits, :simple?, :gpx, :track_points, to: :course
+  delegate :id, :name, :description, :ordered_splits, :simple?, to: :course
 
   def initialize(course, params, current_user)
     @course = course
@@ -13,7 +13,7 @@ class CoursePresenter < BasePresenter
   end
 
   def course_has_location_data?
-    ordered_splits.any? { |split| split.latitude && split.longitude } || gpx.attached?
+    ordered_splits.any?(&:has_location?) || gpx.attached?
   end
 
   def display_style
@@ -31,4 +31,5 @@ class CoursePresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+  delegate :gpx, to: :course
 end

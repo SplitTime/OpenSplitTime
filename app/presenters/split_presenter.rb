@@ -2,8 +2,8 @@
 
 class SplitPresenter < BasePresenter
   attr_reader :split
-  delegate :id, :course, :base_name, :description, :distance_from_start, :vert_gain_from_start, :vert_loss_from_start,
-           :latitude, :longitude, :elevation, :to_param, to: :split
+  delegate :id, :course, :course_id, :base_name, :description, :distance_from_start, :vert_gain_from_start,
+           :vert_loss_from_start, :latitude, :longitude, :elevation, :to_param, to: :split
   delegate :track_points, to: :course
   delegate :organization, to: :event
 

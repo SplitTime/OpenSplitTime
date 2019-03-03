@@ -9,7 +9,8 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @presenter = CoursePresenter.new(@course, params, current_user)
+    course = Course.where(id: @course).includes(:splits).first
+    @presenter = CoursePresenter.new(course, params, current_user)
     session[:return_to] = course_path(@course)
   end
 

@@ -6,7 +6,7 @@ class VisitorIndexPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    EventGroup.visible.joins(events: :efforts).select('event_groups.*, min(events.start_time) as group_start_time').group(:id).order('group_start_time desc').limit(number)
+    EventGroup.visible.by_group_start_time.limit(number)
   end
 
   def upcoming_courses(number)

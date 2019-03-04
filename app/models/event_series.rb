@@ -13,6 +13,7 @@ class EventSeries < ApplicationRecord
   has_many :efforts, through: :events
 
   delegate :stewards, to: :organization
+  delegate :home_time_zone, to: :first_event
 
   validates_presence_of :name, :organization, :results_template, :scoring_method
   validate :point_system_present, if: :points?

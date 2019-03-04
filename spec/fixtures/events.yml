@@ -11,7 +11,6 @@ hardrock_2015:
   beacon_url: 
   laps_required: 1
   slug: hardrock-2015
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 17
   short_name: 
   results_template_id: 7
@@ -27,7 +26,6 @@ ramble:
   beacon_url: 
   laps_required: 1
   slug: ramble
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 4
   short_name: 
   results_template_id: 7
@@ -43,7 +41,6 @@ hardrock_2014:
   beacon_url: 
   laps_required: 1
   slug: hardrock-2014
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 7
   short_name: 
   results_template_id: 7
@@ -59,7 +56,6 @@ rufa_2016:
   beacon_url: 
   laps_required: 0
   slug: rufa-2016
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 25
   short_name: 
   results_template_id: 7
@@ -75,7 +71,6 @@ rufa_2017_24h:
   beacon_url: 
   laps_required: 0
   slug: rufa-2017-24h
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 59
   short_name: 24H
   results_template_id: 7
@@ -91,7 +86,6 @@ hardrock_2016:
   beacon_url: http://trackleaders.com/hardrock16
   laps_required: 1
   slug: hardrock-2016
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 28
   short_name: 
   results_template_id: 7
@@ -107,7 +101,6 @@ ggd30_50k:
   beacon_url: https://goldengatedirty30.maprogress.com
   laps_required: 1
   slug: ggd30-50k
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 27
   short_name: 50K
   results_template_id: 7
@@ -123,7 +116,6 @@ ggd30_12m:
   beacon_url: 
   laps_required: 1
   slug: ggd30-12m
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 27
   short_name: 12-miler
   results_template_id: 7
@@ -139,7 +131,6 @@ sum_100k:
   beacon_url: 
   laps_required: 1
   slug: sum-100k
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 32
   short_name: 100K
   results_template_id: 7
@@ -155,7 +146,6 @@ sum_55k:
   beacon_url: 
   laps_required: 1
   slug: sum-55k
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 32
   short_name: 55K
   results_template_id: 3
@@ -171,7 +161,6 @@ rufa_2017_12h:
   beacon_url: 
   laps_required: 0
   slug: rufa-2017-12h
-  home_time_zone: Mountain Time (US & Canada)
   event_group_id: 59
   short_name: 12H
   results_template_id: 7

@@ -440,7 +440,8 @@ RSpec.describe Effort, type: :model do
     subject { build_stubbed(:effort, event: event) }
 
     context 'when the event has a start_time and a home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: 'Arizona') }
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
       it 'returns the start_time in the home_time_zone' do
         expect(subject.event_start_time_local).to be_a(ActiveSupport::TimeWithZone)
@@ -449,7 +450,8 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the event has no start_time' do
-      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Arizona') }
+      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
       it 'returns nil' do
         expect(subject.event_start_time_local).to be_nil
@@ -457,7 +459,8 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the event has no home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: nil) }
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
         expect(subject.event_start_time_local).to be_nil

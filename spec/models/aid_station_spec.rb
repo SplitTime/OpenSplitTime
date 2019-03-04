@@ -46,9 +46,9 @@ RSpec.describe AidStation, type: :model do
     end
 
     context 'for event_group split location validations' do
-      let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group, home_time_zone: 'Arizona') }
-      let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group, home_time_zone: 'Arizona') }
-      let(:event_group) { create(:event_group) }
+      let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group) }
+      let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group) }
+      let(:event_group) { create(:event_group, home_time_zone: 'Arizona') }
       let(:course_1) { create(:course) }
       let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
       let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }

@@ -42,7 +42,7 @@ class EffortQuery < BaseQuery
               efforts_scoped.*,
               events.laps_required,
               events.start_time as event_start_time,
-              events.home_time_zone,
+              event_groups.home_time_zone,
               splits.base_name as final_split_name,
               splits.distance_from_start as final_lap_distance,
               split_times.lap as final_lap,
@@ -65,6 +65,7 @@ class EffortQuery < BaseQuery
               left join split_times on split_times.effort_id = efforts_scoped.id 
               left join splits on splits.id = split_times.split_id
               left join events on events.id = efforts_scoped.event_id
+              inner join event_groups on event_groups.id = events.event_group_id
               left join course_subquery on events.course_id = course_subquery.course_id
               left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
               left join start_split_times sst on split_times.effort_id = sst.effort_id
@@ -190,7 +191,7 @@ class EffortQuery < BaseQuery
              from 
                       (select efforts_scoped.*, 
                               events.start_time as event_start_time, 
-                              events.home_time_zone, 
+                              event_groups.home_time_zone, 
                               split_times.effort_id, 
                               split_times.absolute_time as absolute_time_begin, 
                               split_times.lap, 

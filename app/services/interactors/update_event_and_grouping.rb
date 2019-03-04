@@ -53,7 +53,8 @@ module Interactors
           EventGroup.create!(name: unique_name,
                              organization_id: old_event_group.organization_id,
                              concealed: old_event_group.concealed,
-                             available_live: old_event_group.available_live)
+                             available_live: old_event_group.available_live,
+                             home_time_zone: old_event_group.home_time_zone)
     end
 
     def unique_name
@@ -61,7 +62,7 @@ module Interactors
     end
 
     def new_event_group_name
-      "#{event.start_time_local.year} #{old_event_group.organization.name}"
+      "#{event.start_time.year} #{old_event_group.organization.name}"
     end
 
     def message

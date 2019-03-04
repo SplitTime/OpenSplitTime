@@ -189,7 +189,7 @@ RSpec.describe Split, kind: :model do
 
     context 'for event_group split location validations' do
       let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group) }
-      let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group, home_time_zone: event_1.home_time_zone) }
+      let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group) }
       let(:course_1) { create(:course) }
       let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }

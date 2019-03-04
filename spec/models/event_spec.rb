@@ -10,14 +10,13 @@ RSpec.describe Event, type: :model do
   it { is_expected.to localize_time_attribute(:start_time) }
 
   describe 'initialize' do
-    it 'is valid when created with a course, organization, event_group, start time, laps_required, and home_time_zone' do
+    it 'is valid when created with a course, organization, event_group, start time, laps_required' do
       event = build_stubbed(:event)
 
       expect(event.course_id).to be_present
       expect(event.event_group_id).to be_present
       expect(event.start_time).to be_present
       expect(event.laps_required).to be_present
-      expect(event.home_time_zone).to be_present
       expect(event).to be_valid
     end
 
@@ -43,18 +42,6 @@ RSpec.describe Event, type: :model do
       event = build_stubbed(:event, laps_required: nil)
       expect(event).not_to be_valid
       expect(event.errors[:laps_required]).to include("can't be blank")
-    end
-
-    it 'is invalid without a home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: nil)
-      expect(event).not_to be_valid
-      expect(event.errors[:home_time_zone]).to include("can't be blank")
-    end
-
-    it 'is invalid with a nonexistent home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: 'Narnia')
-      expect(event).to be_invalid
-      expect(event.errors[:home_time_zone]).to include("must be the name of an ActiveSupport::TimeZone object")
     end
 
     it 'is invalid if any splits do not reconcile with the course' do
@@ -135,41 +122,6 @@ RSpec.describe Event, type: :model do
 
           expect(response).to eq(false)
           expect(event_2.errors.full_messages).to include(/Location Start is incompatible within the event group/)
-        end
-      end
-    end
-
-    context 'for home_time_zone validation' do
-      let(:event_1) { events(:sum_100k) }
-      let(:event_2) { events(:sum_55k) }
-      let(:event_group) { event_1.event_group }
-      before do
-        new_event_group = create(:event_group, organization: event_group.organization)
-        event_2.update(event_group: new_event_group)
-        event_2.update(home_time_zone: home_time_zone)
-      end
-
-      context 'when time zones are consistent' do
-        let(:home_time_zone) { event_1.home_time_zone }
-
-        it 'is valid' do
-          expect(event_2.errors).to be_empty
-          response = event_2.update(event_group: event_group)
-
-          expect(response).to eq(true)
-          expect(event_2.errors).to be_empty
-        end
-      end
-
-      context 'when time zones are not consistent' do
-        let(:home_time_zone) { 'Arizona' }
-
-        it 'is invalid' do
-          expect(event_2.errors).to be_empty
-          response = event_2.update(event_group: event_group)
-
-          expect(response).to eq(false)
-          expect(event_2.errors.full_messages).to include(/Home time zone is inconsistent with others within the event group/)
         end
       end
     end
@@ -278,8 +230,9 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time_local' do
-    context 'when the event specifies a valid home_time_zone' do
-      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
+    context 'when the event_group specifies a valid home_time_zone' do
+      let(:event) { build_stubbed(:event, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns the start_time in the time zone specified by event.home_time_zone' do
         event.start_time = DateTime.parse('2017-07-01T06:00+00:00')
@@ -295,7 +248,8 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when the event home_time_zone is nil' do
-      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), home_time_zone: nil) }
+      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
         expect(event.start_time_local).to be_nil
@@ -303,7 +257,8 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when the event start_time is nil' do
-      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Eastern Time (US & Canada)') }
+      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns nil' do
         expect(event.start_time_local).to be_nil
@@ -312,8 +267,10 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time_local=' do
+    let(:event) { build_stubbed(:event, event_group: event_group) }
+
     context 'when home_time_zone exists' do
-      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'converts the string based on the specified home_time_zone' do
         event.start_time_local = '07/01/2017 06:00:00'
@@ -347,7 +304,7 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when home_time_zone does not exist' do
-      let(:event) { build_stubbed(:event, home_time_zone: nil) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'raises an error' do
         expect { event.start_time_local = '2017-07-01 06:00:00' }
@@ -360,7 +317,7 @@ RSpec.describe Event, type: :model do
     subject { create(:event, event_group: event_group_1) }
     let!(:event_group_1) { create(:event_group) }
     let!(:event_group_2) { create(:event_group) }
-    let!(:event_same_group) { create(:event, :with_short_name, event_group: event_group_1, home_time_zone: subject.home_time_zone) }
+    let!(:event_same_group) { create(:event, :with_short_name, event_group: event_group_1) }
     let!(:event_different_group) { create(:event, :with_short_name, event_group: event_group_2) }
 
     it 'returns the event and other members of the group as an array' do

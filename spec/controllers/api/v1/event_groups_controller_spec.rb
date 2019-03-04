@@ -190,10 +190,11 @@ RSpec.describe Api::V1::EventGroupsController do
   describe '#create' do
     subject(:make_request) { post :create, params: params }
     let(:organization) { organizations(:hardrock) }
+    let(:home_time_zone) { 'Arizona' }
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group', organization_id: organization.id}}} }
+        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group', organization_id: organization.id, home_time_zone: home_time_zone}}} }
 
         it 'returns a successful json response' do
           make_request

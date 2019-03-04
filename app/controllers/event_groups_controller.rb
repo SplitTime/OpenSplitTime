@@ -25,7 +25,7 @@ class EventGroupsController < ApplicationController
   end
 
   def new
-    organization = Organization.find_by(id: params[:organization_id])
+    organization = Organization.find_or_initialize_by(id: params[:organization_id])
     @event_group = EventGroup.new(organization: organization)
     authorize @event_group
   end

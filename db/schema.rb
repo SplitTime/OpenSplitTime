@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_01_123544) do
+ActiveRecord::Schema.define(version: 2019_03_04_031344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2019_03_01_123544) do
     t.string "slug"
     t.integer "data_entry_grouping_strategy", default: 0
     t.boolean "monitor_pacers", default: false
+    t.string "home_time_zone"
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
   end
@@ -142,10 +143,10 @@ ActiveRecord::Schema.define(version: 2019_03_01_123544) do
     t.string "beacon_url"
     t.integer "laps_required"
     t.string "slug", null: false
-    t.string "home_time_zone", null: false
     t.integer "event_group_id"
     t.string "short_name"
     t.bigint "results_template_id", null: false
+    t.string "home_time_zone"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
@@ -282,9 +283,9 @@ ActiveRecord::Schema.define(version: 2019_03_01_123544) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
+    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end

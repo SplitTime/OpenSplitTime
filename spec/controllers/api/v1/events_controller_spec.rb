@@ -69,7 +69,7 @@ RSpec.describe Api::V1::EventsController do
     via_login_and_jwt do
       context 'when provided data is valid' do
         let(:attributes) { {course_id: course.id, event_group_id: event_group.id, short_name: '50M',
-                            start_time_local: '2017-03-01 06:00:00', laps_required: 1, home_time_zone: 'Eastern Time (US & Canada)'} }
+                            start_time_local: '2017-03-01 06:00:00', laps_required: 1} }
 
         it 'returns a successful json response' do
           make_request
@@ -248,12 +248,12 @@ RSpec.describe Api::V1::EventsController do
   end
 
   describe '#import' do
-
     subject(:make_request) { post :import, params: request_params }
     before(:each) { VCR.insert_cassette("api/v1/events_controller", match_requests_on: [:host]) }
     after(:each) { VCR.eject_cassette }
 
     let(:event) { events(:ggd30_50k) }
+    let(:event_group) { event.event_group }
 
     via_login_and_jwt do
       context 'when provided with a file' do
@@ -278,7 +278,7 @@ RSpec.describe Api::V1::EventsController do
           parsed_response = JSON.parse(response.body)
           expect(parsed_response['data'].size).to eq(3)
 
-          start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone(event.home_time_zone) }
+          start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone(event_group.home_time_zone) }
           expected_absolute_times = ['2017-06-03 19:30:00 -0600',
                                      '2017-06-03 08:00:00 -0600',
                                      '2017-06-03 19:00:00 -0600']

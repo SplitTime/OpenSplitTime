@@ -219,10 +219,11 @@ class SplitTimeQuery < BaseQuery
             efforts.gender as effort_gender, 
             efforts.age as effort_age, 
             efforts.id as tiebreaker_id, 
-            events.home_time_zone
+            event_groups.home_time_zone
           from split_times_scoped
           inner join efforts on efforts.id = split_times_scoped.effort_id
           inner join events on events.id = efforts.event_id
+          inner join event_groups on event_groups.id = events.event_group_id
           left join start_split_times sst on sst.effort_id = split_times_scoped.effort_id 
           where sst.id != split_times_scoped.id)
 

@@ -301,7 +301,6 @@
                     }
                 }
             },
-            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
             courseNew: Boolean
         },
         relationships: {
@@ -403,6 +402,7 @@
         url: 'event_groups',
         attributes: {
             name: String,
+            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
         },
         includes: [ 'events', 'events.efforts', 'events.splits' ],
         relationships: {

@@ -8,6 +8,7 @@ class EventGroup < ApplicationRecord
   include Delegable
   include MultiEventable
   include SplitAnalyzable
+  include TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -21,8 +22,9 @@ class EventGroup < ApplicationRecord
   after_create :notify_admin
   after_save :conform_concealed_status
 
-  validates_presence_of :name, :organization
+  validates_presence_of :name, :organization, :home_time_zone
   validates_uniqueness_of :name, case_sensitive: false
+  validate :home_time_zone_exists
   validates_with GroupedEventsValidator
 
   accepts_nested_attributes_for :events

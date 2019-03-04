@@ -49,8 +49,8 @@ RSpec.describe EventGroup, type: :model do
       let(:home_time_zone) { 'Narnia' }
 
       it 'is invalid' do
-        expect(event).to be_invalid
-        expect(event.errors[:home_time_zone]).to include(/must be the name of an ActiveSupport::TimeZone object/)
+        expect(subject).to be_invalid
+        expect(subject.errors[:home_time_zone]).to include(/must be the name of an ActiveSupport::TimeZone object/)
       end
     end
   end

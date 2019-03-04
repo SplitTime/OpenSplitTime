@@ -141,10 +141,10 @@ RSpec.describe BaseQuery do
     end
 
     context 'when the hash is complex' do
-      let(:hash) { {efforts: {event_id: [10, 11], gender: 0}, events: {home_time_zone: 'Arizona'}} }
+      let(:hash) { {efforts: {event_id: [10, 11], gender: 0}, event_groups: {home_time_zone: 'Arizona'}} }
 
       it 'parses the result correctly' do
-        expect(subject).to eq("efforts.event_id in (10, 11) and efforts.gender = 0 and events.home_time_zone = 'Arizona'")
+        expect(subject).to eq("efforts.event_id in (10, 11) and efforts.gender = 0 and event_groups.home_time_zone = 'Arizona'")
       end
     end
   end

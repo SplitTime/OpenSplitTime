@@ -2,7 +2,7 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index, :create]
+  before_action :set_event_group, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
@@ -24,8 +24,25 @@ class EventGroupsController < ApplicationController
     session[:return_to] = event_group_path(@event_group, force_settings: true)
   end
 
+  def new
+    organization = Organization.find_by(id: params[:organization_id])
+    @event_group = EventGroup.new(organization: organization)
+    authorize @event_group
+  end
+
   def edit
     authorize @event_group
+  end
+
+  def create
+    @event_group = EventGroup.new(permitted_params)
+    authorize @event_group
+
+    if @event_group.save
+      redirect_to new_event_path(@event_group.event.new)
+    else
+      render 'new'
+    end
   end
 
   def update

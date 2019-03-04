@@ -20,6 +20,14 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
+  def new?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def create?
+    user.authorized_to_edit?(event_group)
+  end
+
   def raw_times?
     user.authorized_to_edit?(event_group)
   end

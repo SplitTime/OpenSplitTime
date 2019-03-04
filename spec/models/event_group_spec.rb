@@ -7,9 +7,10 @@ RSpec.describe EventGroup, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe '#initialize' do
-    subject { EventGroup.new(name: name, organization: organization) }
+    subject { EventGroup.new(name: name, organization: organization, home_time_zone: home_time_zone) }
     let(:name) { 'Test Name' }
     let(:organization) { organizations(:hardrock) }
+    let(:home_time_zone) { 'Arizona' }
 
     context 'with a name and an organization' do
       it 'initializes' do
@@ -32,6 +33,24 @@ RSpec.describe EventGroup, type: :model do
       it 'is not valid' do
         expect(subject).to be_invalid
         expect(subject.errors.full_messages).to include(/Organization can't be blank/)
+      end
+    end
+
+    context 'without a home_time_zone' do
+      let(:home_time_zone) { nil }
+
+      it 'is invalid' do
+        expect(subject).to be_invalid
+        expect(subject.errors.full_messages).to include(/Home time zone can't be blank/)
+      end
+    end
+
+    context 'with a nonexistent home_time_zone' do
+      let(:home_time_zone) { 'Narnia' }
+
+      it 'is invalid' do
+        expect(event).to be_invalid
+        expect(event.errors[:home_time_zone]).to include(/must be the name of an ActiveSupport::TimeZone object/)
       end
     end
   end

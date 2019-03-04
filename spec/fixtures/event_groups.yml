@@ -12,6 +12,7 @@ ramble:
   slug: ramble
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2014:
   id: 7
   name: Hardrock 2014
@@ -25,6 +26,7 @@ hardrock_2014:
   slug: hardrock-2014
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2015:
   id: 17
   name: Hardrock 2015
@@ -38,6 +40,7 @@ hardrock_2015:
   slug: hardrock-2015
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 rufa_2016:
   id: 25
   name: RUFA 2016
@@ -51,6 +54,7 @@ rufa_2016:
   slug: rufa-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 dirty_30:
   id: 27
   name: Dirty 30
@@ -64,6 +68,7 @@ dirty_30:
   slug: dirty-30
   data_entry_grouping_strategy: 1
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2016:
   id: 28
   name: Hardrock 2016
@@ -77,6 +82,7 @@ hardrock_2016:
   slug: hardrock-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 sum:
   id: 32
   name: SUM
@@ -90,6 +96,7 @@ sum:
   slug: sum
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 rufa_2017:
   id: 59
   name: RUFA 2017
@@ -103,3 +110,4 @@ rufa_2017:
   slug: rufa-2017
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)

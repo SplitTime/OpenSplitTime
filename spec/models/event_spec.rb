@@ -10,14 +10,13 @@ RSpec.describe Event, type: :model do
   it { is_expected.to localize_time_attribute(:start_time) }
 
   describe 'initialize' do
-    it 'is valid when created with a course, organization, event_group, start time, laps_required, and home_time_zone' do
+    it 'is valid when created with a course, organization, event_group, start time, laps_required' do
       event = build_stubbed(:event)
 
       expect(event.course_id).to be_present
       expect(event.event_group_id).to be_present
       expect(event.start_time).to be_present
       expect(event.laps_required).to be_present
-      expect(event.home_time_zone).to be_present
       expect(event).to be_valid
     end
 
@@ -43,18 +42,6 @@ RSpec.describe Event, type: :model do
       event = build_stubbed(:event, laps_required: nil)
       expect(event).not_to be_valid
       expect(event.errors[:laps_required]).to include("can't be blank")
-    end
-
-    it 'is invalid without a home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: nil)
-      expect(event).not_to be_valid
-      expect(event.errors[:home_time_zone]).to include("can't be blank")
-    end
-
-    it 'is invalid with a nonexistent home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: 'Narnia')
-      expect(event).to be_invalid
-      expect(event.errors[:home_time_zone]).to include("must be the name of an ActiveSupport::TimeZone object")
     end
 
     it 'is invalid if any splits do not reconcile with the course' do

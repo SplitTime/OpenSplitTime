@@ -297,7 +297,7 @@ RSpec.describe Api::V1::EventsController do
         let(:url) { 'https://www.adilas.biz/bear100/runner_details.cfm?id=500' }
 
         it 'creates an effort and split_times' do
-          expect { make_request }.to change { event.efforts.size }.by(1)
+          expect { make_request }.to change { event.efforts.count }.by(1)
           expect(response.status).to eq(201)
           event.reload
           effort = event.efforts.last

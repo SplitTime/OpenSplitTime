@@ -31,14 +31,20 @@ class EventGroup < ApplicationRecord
   delegate :stewards, to: :organization
 
   scope :standard_includes, -> { includes(events: :splits) }
+  scope :by_group_start_time, -> do
+    joins(:events)
+        .select('event_groups.*, min(events.start_time) as group_start_time')
+        .group(:id)
+        .order('group_start_time desc')
+  end
 
   def self.search(search_param)
     return all if search_param.blank?
     joins(:events).where('event_groups.name ILIKE ? OR events.short_name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
   end
 
-  def effort_count
-    events.flat_map(&:efforts).size
+  def efforts_count
+    @efforts_count ||= events.sum(&:efforts_count)
   end
 
   def to_s
@@ -69,6 +75,12 @@ class EventGroup < ApplicationRecord
       query = EventGroupQuery.set_concealed(id, concealed)
       result = ActiveRecord::Base.connection.execute(query)
       result.error_message.blank?
+    end
+  end
+
+  def home_time_zone_exists
+    unless time_zone_valid?(home_time_zone)
+      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
     end
   end
 

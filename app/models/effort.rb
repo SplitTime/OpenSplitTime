@@ -16,7 +16,7 @@ class Effort < ApplicationRecord
   friendly_id :slug_candidates, use: [:slugged, :history]
   zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time
 
-  belongs_to :event
+  belongs_to :event, counter_cache: true
   belongs_to :person
   has_many :split_times, dependent: :destroy
   has_one_attached :photo

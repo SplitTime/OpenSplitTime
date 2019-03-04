@@ -6,14 +6,12 @@ class EventGroupsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
-    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
-    @event_groups = EventGroup.distinct
-                        .joins(:events) # Excludes "orphaned" event_groups (having no events)
-                        .where(id: scoped_event_groups)
-                        .includes(:organization, events: :efforts)
-                        .sort_by { |event_group| -event_group.start_time.to_i }
-                        .paginate(page: params[:page], per_page: 25)
-    @presenter = EventGroupsCollectionPresenter.new(@event_groups, params, current_user)
+    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable
+                              .search(params[:search])
+                              .by_group_start_time
+                              .preload(:events)
+                              .paginate(page: params[:page], per_page: 25)
+    @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end
 

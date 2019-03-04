@@ -23,12 +23,11 @@ class Event < ApplicationRecord
   has_many :partners, through: :event_group
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
-           :organization, :organization_id, :permit_notifications?, to: :event_group
+           :organization, :organization_id, :permit_notifications?, :home_time_zone, to: :event_group
   delegate :stewards, to: :organization
 
-  validates_presence_of :course_id, :start_time, :laps_required, :home_time_zone, :event_group, :results_template
+  validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
-  validate :home_time_zone_exists
   validate :course_is_consistent
 
   before_validation :add_default_results_template
@@ -40,7 +39,6 @@ class Event < ApplicationRecord
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
     search(search_param)
-        .select('events.*, COUNT(efforts.id) as effort_count')
         .left_joins(:efforts).left_joins(:event_group)
         .group('events.id, event_groups.id')
   end
@@ -82,12 +80,6 @@ class Event < ApplicationRecord
     short_name || name
   end
 
-  def home_time_zone_exists
-    unless time_zone_valid?(home_time_zone)
-      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
-    end
-  end
-
   def course_is_consistent
     if splits.any? { |split| split.course_id != course_id }
       errors.add(:course_id, "does not reconcile with one or more splits")
@@ -98,16 +90,8 @@ class Event < ApplicationRecord
     slug
   end
 
-  def reconciled_efforts
-    efforts.where.not(person_id: nil)
-  end
-
   def unreconciled_efforts
     efforts.where(person_id: nil)
-  end
-
-  def unreconciled_efforts?
-    unreconciled_efforts.present?
   end
 
   def split_times

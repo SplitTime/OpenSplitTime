@@ -4,6 +4,6 @@ rvm:
   - 2.6.0
 services:
   - postgresql
-script:
+install:
+  - yarn install
   - bundle exec rake db:setup
-  - bundle exec rake

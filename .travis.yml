@@ -1,9 +1,11 @@
+---
 language: ruby
 cache: bundler
 rvm:
   - 2.6.1
 services:
   - postgresql
+sudo: required
 addons:
   chrome: stable
   postgresql: "9.6"

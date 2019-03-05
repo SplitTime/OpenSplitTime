@@ -4,6 +4,8 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
+  before { allow(Pusher).to receive(:trigger) }
+
   let(:event_group) { event_groups(:dirty_30) }
   let(:type) { 'event_groups' }
 

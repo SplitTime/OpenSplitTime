@@ -1,7 +1,7 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.6.0
+  - 2.6.1
 services:
   - postgresql
 install:

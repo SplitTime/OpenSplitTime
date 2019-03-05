@@ -12,6 +12,7 @@ install:
   - bundle exec rake db:setup db:structure:load
 addons:
   chrome: stable
+  postgresql: "9.6"
 env:
   - ADMIN_EMAIL=your.email@example.com
     BASE_URI=localhost:3000

@@ -8,3 +8,5 @@ install:
   - bundle install --jobs=3 --retry=3 --deployment
   - yarn install
   - bundle exec rake db:setup
+addons:
+  chrome: stable

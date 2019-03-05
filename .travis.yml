@@ -12,3 +12,11 @@ install:
   - bundle exec rake db:setup db:structure:load
 addons:
   chrome: stable
+env:
+  - ADMIN_EMAIL=your.email@example.com
+  - BASE_URI=localhost:3000
+  - DURABLE_JWT_CODE=durable-jwt
+  - FULL_URI=http://localhost:3000
+  - PUSHER_APP_ID=your-pusher-app-id
+  - PUSHER_KEY=your-pusher-key
+  - PUSHER_SECRET_KEY=your-pusher-secret-key

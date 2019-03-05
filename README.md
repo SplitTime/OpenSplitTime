@@ -1,7 +1,7 @@
 OpenSplitTime
 ================
 
-OpenSplitTime is a site for endurance athletes, fans and families, race directors, volunteers, support crews, and data geeks. Our purpose is simple: to make it easy to collect endurance event data, play with it, plan with it, safely archive it, and never worry about it again. 
+OpenSplitTime is a site for endurance athletes, fans and families, race directors, volunteers, support crews, and data geeks. Our purpose is simple: to make it easy to collect endurance event data, play with it, plan with it, safely archive it, and never worry about it again.
 
 The site is built and maintained by OpenSplitTime Company, a Colorado nonprofit corporation. If you find the website useful, motivating, entertaining, or strangely beautiful, please consider making a small [donation](https://www.opensplittime.org/donations) to help us keep the doors open. OpenSplitTime Company is registered with the U.S. Internal Revenue Service as a 501(c)(3) charitable organization. Your donations are probably tax deductible (but if you have any question you should ask your tax advisor about that stuff).
 
@@ -12,16 +12,16 @@ OpenSplitTime is developed and maintained by endurance athletes for endurance at
 Performance
 -----------
 
-Performance analysis and monitoring is provided by [Skylight](https://www.skylight.io). Thanks to the folks at Tilde for supporting open source!		
+Performance analysis and monitoring is provided by [Skylight](https://www.skylight.io). Thanks to the folks at Tilde for supporting open source!
 
-[![View performance data on Skylight](https://badges.skylight.io/status/1o8bb9Iz1GqF.svg)](https://oss.skylight.io/app/applications/1o8bb9Iz1GqF)		
+[![View performance data on Skylight](https://badges.skylight.io/status/1o8bb9Iz1GqF.svg)](https://oss.skylight.io/app/applications/1o8bb9Iz1GqF)
 
 Ruby on Rails
 -------------
 
 This application requires:
 
-- Ruby 2.6.0
+- Ruby 2.6.1
 - Rails 5.2.2
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
@@ -53,8 +53,8 @@ Getting Started
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install 2.6.0`
-6. `$ rbenv local 2.6.0` (to make sure this is correct, run `$ rbenv version`)
+5. `$ rbenv install 2.6.1`
+6. `$ rbenv local 2.6.1` (to make sure this is correct, run `$ rbenv version`)
 7. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
@@ -158,7 +158,7 @@ Some integration tests rely on Google ChromeDriver. You can install it in Mac OS
 Support
 -------------------------
 
-Still having issues setting up your local environment? 
+Still having issues setting up your local environment?
 Create an [issue](https://github.com/SplitTime/OpenSplitTime/issues/new) with label `support` and we will try and help as best we can!
 
 Contributing

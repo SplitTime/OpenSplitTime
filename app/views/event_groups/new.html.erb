@@ -38,26 +38,27 @@
   </div>
 </aside>
 
+<%= render 'shared/errors', obj: @event_group %>
+
 <article class="ost-article container">
   <div class="col-12 row">
     <aside class="col-12">
       <h3>
-        <strong>Provide Information About Your Event Group</strong>
+        <strong>Provide Information About Your Organization and Event</strong>
         <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="An Event is run on a Course. An Event happens once, while a Course can be reused for many Events."><i class="fas fa-question-circle"></i></span>
       </h3>
       <p>Your event group will belong to an Organization. You'll either use an existing Organization or create one.</p>
     </aside>
     <article class="col-12" data-controller="new-event-group">
-      <%= form_with(model: @event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |f| %>
+      <%= form_with(model: @event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
 
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
               <label>What is your organization called?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
-              <h5><%= organizations_selector %></h5>
-              <div>
-                <%= render 'organization_form', form: f, organization: @event_group.organization %>
+              <h5><%= organizations_selector(form) %></h5>
+              <div data-target="new-event-group.orgForm">
               </div>
             </div>
           </div>
@@ -67,27 +68,31 @@
 
         <div class="card card-body bg-light border-0">
           <div class="row">
-            <div class="form-group col-12">
-              <label class="required">Event Group Name</label>
+            <div class="form-group col-12" data-target="new-event-group.eventGroupName">
+              <label class="required">What will you call your event?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
-              <input id="event-group-name-field" type="text" class="form-control" placeholder="Your event group name" v-model="eventModel.eventGroup.name" v-prefill="suggestedName()">
+              <%= form.text_field :name, class: "form-control", placeholder: "Event name" %>
             </div>
 
             <div class="form-group col-12">
-              <label>Time Zone</label>
+              <label class="required">Time Zone</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Some Tooltip"><i class="fas fa-question-circle"></i></span>
-              <%= f.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                      {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+              <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                         {prompt: 'Select the time zone for your event'}, {class: "form-control dropdown-select-field"}) %>
             </div>
           </div>
         </div>
 
+        <br/>
 
-        <div class="row">
+        <div class="form-group">
           <div class="col-12">
-            <router-link to="/splits" id="continue-bottom-1" class="btn btn-primary pull-right" :disabled="!eventModel.validate()">Continue&nbsp;<i class="fas fa-arrow-right"></i>
-            </router-link>
+            <%= form.submit("Continue", class: 'btn btn-primary btn-large') %>
           </div>
+        </div>
+
+        <div class="col-12">
+          <span class="brackets"><%= link_to 'Cancel', @event_group.organization.persisted? ? organization_path(@event_group.organization) : event_groups_path %></span>
         </div>
       <% end %>
     </article>

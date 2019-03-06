@@ -65,12 +65,12 @@ Rails.application.routes.draw do
   resources :event_groups do
     member do
       get :drop_list
+      get :export_raw_times
       get :raw_times
       get :roster
-      get :export_raw_times
-      put :set_data_status
       get :split_raw_times
       get :traffic
+      put :set_data_status
       put :start_efforts
       patch :update_all_efforts
       delete :delete_all_times

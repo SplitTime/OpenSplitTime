@@ -93,7 +93,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def event_start_time_local
-    event.start_time_local
+    event&.start_time_local
   end
 
   def method_missing(method)

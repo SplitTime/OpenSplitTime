@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 module EventGroupsHelper
-  def organizations_selector
+  def organizations_selector(form)
     organizations = OrganizationPolicy::Scope.new(current_user, Organization).editable.sort_by(&:name)
                         .unshift(Organization.new(name: 'Create a New Organization'))
 
-    collection_select(:event_group, :organization_id, organizations, :id, :name,
-                      {},
-                      {class: "form-control dropdown-select-field",
-                       data: {target: 'new-event-group.orgDropdown', action: 'new-event-group#replaceOrgForm'}})
+    form.collection_select(:organization_id, organizations, :id, :name, {},
+                           {class: "form-control dropdown-select-field",
+                            data: {target: 'new-event-group.orgDropdown', action: 'new-event-group#setOrgForm'}})
   end
 
   def link_to_start_ready_efforts(view_object)

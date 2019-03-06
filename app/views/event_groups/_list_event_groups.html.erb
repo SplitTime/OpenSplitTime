@@ -17,7 +17,7 @@
   <% event_groups.each do |event_group| %>
     <tr>
       <td><strong><%= link_to event_group.name, event_group_path(event_group) %></strong></td>
-      <td><%= l(event_group.start_time_local, format: "%a | %B %d, %Y | %I:%M%p(%Z)") %></td>
+      <td><%= l(event_group.start_time_local, format: "%a | %B %d, %Y | %I:%M%p(%Z)") if event_group.start_time_local %></td>
       <td><%= "#{pluralize(event_group.efforts_count, 'entrant')}" %></td>
       <% if presenter.show_visibility_columns? %>
         <td class="text-center"><%= event_group.concealed? ? fa_icon('eye-slash 2x') : fa_icon('eye 2x') %></td>

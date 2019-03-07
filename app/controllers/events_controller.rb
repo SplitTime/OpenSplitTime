@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
-  before_action :set_event, except: [:new, :create, :series]
-  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :place, :analyze]
+  before_action :set_event, except: [:new, :create]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
 
@@ -10,12 +10,13 @@ class EventsController < ApplicationController
   end
 
   def new
-    event_group = EventGroup.find_by(id: params[:event_group_id])
+    event_group = EventGroup.friendly.find(params[:id])
 
     if event_group
       @event = Event.new(event_group: event_group, results_template: ResultsTemplate.default)
       authorize @event
     else
+      skip_authorization
       flash[:warning] = 'A new event must be created using an existing event group'
       redirect_to event_groups_path
     end

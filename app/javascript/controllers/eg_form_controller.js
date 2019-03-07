@@ -13,7 +13,7 @@ export default class extends Controller {
         let orgDescription = this.orgDescriptionTarget;
 
         if (orgId === '') {
-            orgForm.innerHTML = null
+            orgDescription.innerHTML = null
         } else {
             Rails.ajax({
                 type: "GET",

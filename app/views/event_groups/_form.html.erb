@@ -50,7 +50,7 @@
       <p>Your event group will belong to an Organization. You'll either use an existing Organization or create one.</p>
     </aside>
 
-    <article class="col-12" data-controller="new-event-group">
+    <article class="col-12" data-controller="eg-form">
       <%= form_with(model: @event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
 
         <div class="card card-body bg-light border-0">
@@ -68,7 +68,7 @@
               </div>
               <hr/>
               <div class="row">
-                <div class="col" data-target="new-event-group.orgDescription"></div>
+                <div class="col" data-target="eg-form.orgDescription"></div>
               </div>
             </div>
           </div>
@@ -78,10 +78,10 @@
 
         <div class="card card-body bg-light border-0">
           <div class="row">
-            <div class="form-group col-12" data-target="new-event-group.eventGroupName">
+            <div class="form-group col-12" data-target="eg-form.eventGroupName">
               <label class="required">What will you call your event?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
-              <%= form.text_field :name, class: "form-control", placeholder: "Event name", data: {action: 'blur->new-event-group#freezeEventGroupName'} %>
+              <%= form.text_field :name, class: "form-control", placeholder: "Event name", data: {action: 'blur->eg-form#freezeEventGroupName'} %>
             </div>
 
             <div class="form-group col-12">

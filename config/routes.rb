@@ -75,12 +75,13 @@ Rails.application.routes.draw do
       patch :update_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
+      resources :events, only: [:index, :new, :edit]
     end
   end
 
   resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
 
-  resources :events, except: :index do
+  resources :events, except: [:index, :new, :edit] do
     member do
       get :admin
       get :edit_start_time

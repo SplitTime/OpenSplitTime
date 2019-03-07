@@ -32,19 +32,16 @@ class EventGroupsController < ApplicationController
 
   def edit
     organization = Organization.find_by(id: params[:organization_id]) || @event_group.organization
-    @event_group.organization  = organization
+    @event_group.organization = organization
     authorize @event_group
   end
 
   def create
-    if params.dig(:event_group, :organization_id).present?
-      params[:event_group].delete(:organization_attributes)
-    end
     @event_group = EventGroup.new(permitted_params)
     authorize @event_group
 
     if @event_group.save
-      redirect_to new_event_path(event_group_id: @event_group.id)
+      redirect_to new_event_path(@event_group)
     else
       render 'new'
     end

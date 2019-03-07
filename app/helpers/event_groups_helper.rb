@@ -7,7 +7,8 @@ module EventGroupsHelper
 
     form.collection_select(:organization_id, organizations, :id, :name, {},
                            {class: "form-control dropdown-select-field",
-                            data: {target: 'new-event-group.orgDropdown', action: 'new-event-group#setOrgForm'}})
+                            data: {target: 'new-event-group.orgDropdown',
+                                   action: 'new-event-group#setOrgForm new-event-group#fillEventGroupName'}})
   end
 
   def link_to_start_ready_efforts(view_object)

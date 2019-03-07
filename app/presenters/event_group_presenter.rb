@@ -72,8 +72,13 @@ class EventGroupPresenter < BasePresenter
   end
 
   def candidate_events
-    (organization.events.select_with_params('').order(start_time: :desc) - events)
-        .select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
+    org_events = organization.events.select_with_params('').order(start_time: :desc)
+
+    if event
+      (org_events - events).select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
+    else
+      org_events
+    end
   end
 
   def show_visibility_columns?

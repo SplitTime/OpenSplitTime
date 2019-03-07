@@ -10,13 +10,15 @@ class EventsController < ApplicationController
   end
 
   def new
-    if params[:course_id]
-      @event = Event.new(course_id: params[:course_id], laps_required: 1)
-      @course = Course.friendly.find(params[:course_id])
+    event_group = EventGroup.find_by(id: params[:event_group_id])
+
+    if event_group
+      @event = Event.new(event_group: event_group, results_template: ResultsTemplate.default)
+      authorize @event
     else
-      @event = Event.new(laps_required: 1)
+      flash[:warning] = 'A new event must be created using an existing event group'
+      redirect_to event_groups_path
     end
-    authorize @event
   end
 
   def edit

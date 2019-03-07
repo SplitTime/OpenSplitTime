@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'aws-sdk-sns'
+
 class Subscription < ApplicationRecord
   enum protocol: [:email, :sms, :http, :https]
   belongs_to :user

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'aws-sdk-sns'
+
 class SnsClientFactory
 
   # Create a real SNS client if credentials are present; otherwise create a stubbed SNS client

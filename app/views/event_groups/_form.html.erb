@@ -1,68 +1,131 @@
+<%= render partial: 'organizations/new' %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= @event_group.persisted? ? "Edit: #{@event_group.name}" : 'Create Event' %></strong>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <% if @event_group.organization.persisted? %>
+              <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+              <li class="breadcrumb-item"><%= link_to @event_group.organization_name, organization_path(@event_group.organization) %></li>
+            <% end %>
+            <% if @event_group.persisted? %>
+              <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item active"><%= @event_group.persisted? ? 'Edit' : 'New Event' %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <nav class="progress-bar-nav">
+      <ul>
+        <li class="active"><a href="#"><span>Your Event</span></a></li>
+        <li><a href="#"><span>Courses</span></a></li>
+        <li><a href="#"><span>Splits</span></a></li>
+        <li><a href="#"><span>Entrants</span></a></li>
+        <li><a href="#"><span>Confirmation</span></a></li>
+        <li><a href="#"><span>Published</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+
 <%= render 'shared/errors', obj: @event_group %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@event_group, html: {class: "form-horizontal", role: "form"}) do |f| %>
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :name %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
-        </div>
-      </div>
+<article class="ost-article container">
+  <div class="col-12 row">
+    <aside class="col-12">
+      <h3>
+        <strong>Provide Information About Your Organization and Event</strong>
+      </h3>
+      <p>Your event group will belong to an Organization. You'll either use an existing Organization or create one.</p>
+    </aside>
 
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :organization_id %>
-        </div>
-        <div class="col-sm-8">
-          <%= collection_select(:event_group,
-                                :organization_id,
-                                OrganizationPolicy::Scope.new(current_user, Organization).editable,
-                                :id, :name, {prompt: true}, {class: "form-control dropdown-select-field"}) %>
-        </div>
-      </div>
+    <article class="col-12" data-controller="new-event-group">
+      <%= form_with(model: @event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
 
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :concealed, "Concealed (invisible to the public)?" %>
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <label>What is your organization called?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
+              <div class="row">
+                <div class="col">
+                  <%= organizations_selector(form) %>
+                </div>
+                <div class="col">
+                  <%= link_to 'Create a New Organization', '#', class: 'btn btn-outline-secondary form-control dropdown-select-field', data: {toggle: 'modal', target: '#new-org-modal'} %>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col" data-target="new-event-group.orgDescription"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-8">
-          <%= f.check_box :concealed %>
-        </div>
-      </div>
 
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :monitor_pacers, "Monitor pacers for this event?" %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.check_box :monitor_pacers %>
-        </div>
-      </div>
+        <br/>
 
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :data_entry_grouping_strategy %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.select(:data_entry_grouping_strategy,
-                       EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },
-                       {class: "dropdown-select-field"}) %>
-        </div>
-      </div>
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col-12" data-target="new-event-group.eventGroupName">
+              <label class="required">What will you call your event?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
+              <%= form.text_field :name, class: "form-control", placeholder: "Event name", data: {action: 'blur->new-event-group#freezeEventGroupName'} %>
+            </div>
 
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit(@event_group.new_record? ? "Create Event Group" : "Update Event Group", class: 'btn btn-primary btn-large') %>
+            <div class="form-group col-12">
+              <label class="required">Time Zone</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
+              <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                         {selected: @event_group.home_time_zone || 'Mountain Time (US & Canada)'},
+                                         {class: "form-control dropdown-select-field"}) %>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="required">Will you monitor pacers?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose 'Yes' only if you will actively track pacers using OST Remote"><i class="fas fa-question-circle"></i></span>
+              <div>
+                <div><%= form.radio_button :monitor_pacers, true %> Yes</div>
+                <div><%= form.radio_button :monitor_pacers, false %> No</div>
+              </div>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="required">How will data entry points be grouped in OST Remote?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'"><i class="fas fa-question-circle"></i></span>
+              <div>
+                <%= form.select(:data_entry_grouping_strategy,
+                                EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },
+                                {},
+                                {class: "form-control dropdown-select-field"}) %>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', @event_group.new_record? ? event_groups_path : event_group_path(@event_group, force_settings: true) %></span>
-      </div>
+        <br/>
 
-    <% end %>
+        <div class="form-group">
+          <div class="col-12">
+            <%= form.submit("Continue", class: 'btn btn-primary btn-large') %>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <span class="brackets"><%= link_to 'Cancel', @event_group.organization.persisted? ? organization_path(@event_group.organization) : event_groups_path %></span>
+        </div>
+      <% end %>
+    </article>
   </div>
-</div>
+</article>

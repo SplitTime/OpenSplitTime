@@ -31,6 +31,8 @@ class EventGroupsController < ApplicationController
   end
 
   def edit
+    organization = Organization.find_by(id: params[:organization_id]) || @event_group.organization
+    @event_group.organization  = organization
     authorize @event_group
   end
 

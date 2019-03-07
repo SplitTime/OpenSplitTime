@@ -1,0 +1,45 @@
+<div class="modal fade" id="new-org-modal" data-controller="org-form">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"><strong>New Organization</strong></h3>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center" style="display:none" data-target="org-form.error">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login" data-target="org-form.errorMessage">
+              <strong>Organization could not be saved. </strong>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col col-login">
+
+            <%= form_for(Organization.new, url: organizations_path, format: :json, remote: true,
+                         data: {action: "ajax:success->org-form#onPostSuccess ajax:error->org-form#onPostError"}) do |f| %>
+              <div class="form-group">
+                <label>What is your organization called?</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
+                <%= f.text_field :name, autofocus: true, placeholder: 'Organization Name', class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :description %>
+                <%= f.text_area :description, placeholder: 'Say something about your organization', class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.submit 'Create', id: 'org-form-modal-submit', class: 'btn btn-primary',
+                             data: {action: 'click->org-form#onClickSubmit'} %>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

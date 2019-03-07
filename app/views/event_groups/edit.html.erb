@@ -2,26 +2,9 @@
   <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong>Edit Event Group</strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
-            <li class="breadcrumb-item active">Edit</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+<%= render 'form' %>
 
 <article class="ost-article container">
-  <%= render 'form' %>
   <% if current_user.authorized_fully?(@event_group) %>
     <hr>
     <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),

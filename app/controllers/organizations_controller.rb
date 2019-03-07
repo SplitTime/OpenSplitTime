@@ -16,11 +16,6 @@ class OrganizationsController < ApplicationController
     session[:return_to] = organization_path(@organization)
   end
 
-  def new
-    @organization = Organization.new
-    authorize @organization
-  end
-
   def edit
     authorize @organization
   end
@@ -30,9 +25,13 @@ class OrganizationsController < ApplicationController
     authorize @organization
 
     if @organization.save
-      redirect_to @organization
+      respond_to do |format|
+        format.json { render json: {success: true, id: @organization.id}, status: :created }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.json { render json: {success: false, errors: jsonapi_error_object(@organization)}, status: :unprocessable_entity }
+      end
     end
   end
 

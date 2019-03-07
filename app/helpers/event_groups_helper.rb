@@ -3,9 +3,9 @@
 module EventGroupsHelper
   def organizations_selector(form)
     organizations = OrganizationPolicy::Scope.new(current_user, Organization).editable.sort_by(&:name)
-                        .unshift(Organization.new(name: 'Create a New Organization'))
 
-    form.collection_select(:organization_id, organizations, :id, :name, {},
+    form.collection_select(:organization_id, organizations, :id, :name,
+                           {prompt: 'Choose an organization'},
                            {class: "form-control dropdown-select-field",
                             data: {target: 'new-event-group.orgDropdown',
                                    action: 'new-event-group#setOrgForm new-event-group#fillEventGroupName'}})

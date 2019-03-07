@@ -51,7 +51,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if @event_group.update(permitted_params)
-      redirect_to event_group_path(@event_group, force_settings: true)
+      redirect_to new_event_path(@event_group)
     else
       render 'edit'
     end

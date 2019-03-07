@@ -6,7 +6,7 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @event_group.persisted? ? "Edit: #{@event_group.name}" : 'Create Event' %></strong>
+            <strong><%= @event_group.persisted? ? "Staging: #{@event_group.name}" : 'Staging: Create Event' %></strong>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
             <% if @event_group.organization.persisted? %>

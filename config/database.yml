@@ -7,7 +7,8 @@ default: &default
 development:
   <<: *default
   database: ost-development
-  username: <%= ENV["PSQL_DEV_USERNAME"] %>
+  username: <%= ENV["PSQL_DEV_USERNAME"] || 'postgres' %>
+  host: <%= ENV["PSQL_DEV_HOST"] || 'localhost' %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -15,5 +16,6 @@ development:
 test:
   <<: *default
   database: ost-test
-  username: <%= ENV["PSQL_TEST_USERNAME"] %>
+  username: <%= ENV["PSQL_TEST_USERNAME"] || 'postgres' %>
+  host: <%= ENV["PSQL_TEST_HOST"] || 'localhost' %>
 

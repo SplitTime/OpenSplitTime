@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.xdescribe 'visit an event series page' do
+RSpec.describe 'visit an event series page' do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -24,7 +24,7 @@ RSpec.xdescribe 'visit an event series page' do
       let(:subject_series) { event_series(:d30_short_series) }
 
       scenario 'Visit the page' do
-        visit event_series_path(event_series)
+        visit event_series_path(subject_series)
         verify_page_header
         verify_event_links
       end
@@ -33,7 +33,7 @@ RSpec.xdescribe 'visit an event series page' do
 
   def verify_page_header
     verify_content_present(subject_series)
-    verify_link_present(organization)
+    verify_content_present(organization)
   end
 
   def verify_event_links

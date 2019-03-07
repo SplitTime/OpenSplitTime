@@ -48,7 +48,7 @@ end
 
 RSpec.configure do |config|
 
-  config.global_fixtures = :organizations, :courses, :event_groups, :events, :efforts, :split_times, :splits,
+  config.global_fixtures = :organizations, :courses, :event_groups, :event_series, :events, :efforts, :split_times, :splits,
       :aid_stations, :people, :notifications, :partners, :raw_times, :stewardships, :subscriptions, :users,
       :results_categories, :results_templates, :results_template_categories
 

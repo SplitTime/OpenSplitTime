@@ -43,7 +43,7 @@ class Course < ApplicationRecord
   end
 
   def home_time_zone
-    events.most_recent&.home_time_zone
+    events.latest&.home_time_zone
   end
 
   def distance

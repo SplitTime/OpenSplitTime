@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :place, :analyze]
-  before_action :set_event, except: [:new, :create]
+  before_action :set_event, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
@@ -13,8 +13,9 @@ class EventsController < ApplicationController
     event_group = EventGroup.friendly.find(params[:id])
 
     if event_group
-      @event = Event.new(event_group: event_group, results_template: ResultsTemplate.default)
-      authorize @event
+      event = Event.new(event_group: event_group, results_template: ResultsTemplate.default)
+      authorize event
+      @form = StagingForm.new(event_group: event_group, event: event, step: :event_details)
     else
       skip_authorization
       flash[:warning] = 'A new event must be created using an existing event group'
@@ -24,6 +25,7 @@ class EventsController < ApplicationController
 
   def edit
     authorize @event
+    @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details)
   end
 
   def create

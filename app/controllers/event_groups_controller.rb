@@ -26,14 +26,16 @@ class EventGroupsController < ApplicationController
 
   def new
     organization = Organization.find_or_initialize_by(id: params[:organization_id])
-    @event_group = EventGroup.new(organization: organization)
-    authorize @event_group
+    event_group = EventGroup.new(organization: organization)
+    authorize event_group
+    @form = StagingForm.new(event_group: event_group, step: :your_event)
   end
 
   def edit
     organization = Organization.find_by(id: params[:organization_id]) || @event_group.organization
     @event_group.organization = organization
     authorize @event_group
+    @form = StagingForm.new(event_group: @event_group, step: :your_event)
   end
 
   def create

@@ -1,94 +1,141 @@
-<%= render 'shared/errors', obj: @event %>
-
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@event, html: {class: "form-horizontal", role: "form"}) do |f| %>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :short_name %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= "Staging: #{@form.event_group.name}" %></strong>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @form.event_group.organization_name, organization_path(@form.event_group.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @form.event_group.name, event_group_path(@form.event_group) %></li>
+            <% if @form.event.persisted? %>
+              <li class="breadcrumb-item"><%= link_to @form.event.short_name, event_path(@form.event) %></li>
+              <li class="breadcrumb-item active">Edit</li>
+            <% else %>
+              <li class="breadcrumb-item active">New Event</li>
+            <% end %>
+          </ul>
         </div>
       </div>
+    </div>
 
-      <% if @course.nil? %>
+    <aside class="ost-toolbar">
+      <div class="container">
+        <%= staging_progress_bar(@form) %>
+      </div>
+    </aside>
+
+    <!-- Navigation -->
+    <ul class="nav nav-tabs nav-tabs-ost">
+      <% @form.event_group.events.select(&:persisted?).each do |event| %>
+        <%= content_tag :li, class: "nav-item #{'active' if request.path == edit_event_path(event)}" do
+          link_to event.short_name, edit_event_path(event)
+        end %>
+      <% end %>
+      <%= content_tag :li, class: "nav-item #{'active' if request.path == new_event_path(@form.event_group)}" do
+        link_to 'New Event', new_event_path(@form.event_group)
+      end %>
+    </ul>
+  </div>
+</header>
+
+<%= render 'shared/errors', obj: @form.event %>
+
+<article class="ost-article container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_for(@form.event, html: {class: "form-horizontal", role: "form"}) do |f| %>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <div class="row">
+                <div class="col">
+                  <%= f.label :short_name %>
+                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
+                  <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
+                </div>
+                <div class="col">
+                  <%= f.label :full_name %>
+                  <div>[Full name here]</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <%= f.label :start_time, class: 'required' %>
+              <%= f.datetimepicker_field(:start_time_local) %>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <%= f.label :course_id %>
+              <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
+                                    {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col">
+            <%= f.label :laps_required %>
+            <%= f.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {}, class: "form-control dropdown-select-field" %>
+            </div>
+            <div class="form-group col">
+              <%= f.label :total_distance %>
+              <div>[Total distance here]</div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+          <div class="control-label col-sm-2">
+            <%= f.label :beacon_url %>
+          </div>
+          <div class="col-sm-4">
+            <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
+          </div>
+        </div>
+
+        <br/>
+
         <div class="form-group required">
           <div class="control-label col-sm-2">
-            <%= f.label :course_id %>
+            <%= f.label :podium_template %>
           </div>
           <div class="col-sm-8">
-            <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
-                                  {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+            <div class="card" data-controller="results-template">
+              <div class="card-header">
+                <h5>
+                  <%= results_template_selector(@form.event) %>
+                </h5>
+              </div>
+              <div class="card-body" data-target="results-template.categories">
+                <%= render 'results_templates/categories_card', template: @form.event.results_template %>
+              </div>
+            </div>
           </div>
         </div>
-      <% else %>
+
         <div class="form-group">
-          <div class="col-sm-8 col-sm-offset-2">
-            <%= f.hidden_field :course_id, value: @course.id %>
-            <h4><%= @course.name %></h4>
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit 'Continue', class: 'btn btn-primary btn-large' %>
           </div>
         </div>
+
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', edit_event_group_path(@form.event_group) %></span>
+        </div>
+
       <% end %>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label 'Start time' %>
-        </div>
-        <div class="col-sm-3">
-          <%= f.datetimepicker_field(:start_time_local) %>
-        </div>
-      </div>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :laps_required, "Laps required" %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.number_field :laps_required, class: "form-control", placeholder: "#" %>
-          <p>(Use 1 for an event that travels the course only once. Use 0 for unlimited laps (for a time-based
-            cutoff)</p>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :beacon_url %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
-        </div>
-      </div>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :podium_template %>
-        </div>
-        <div class="col-sm-8">
-          <div class="card" data-controller="results-template">
-            <div class="card-header">
-              <h5>
-                <%= results_template_selector(@event) %>
-              </h5>
-            </div>
-            <div class="card-body" data-target="results-template.categories">
-              <%= render 'results_templates/categories_card', template: @event.results_template %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
-        </div>
-      </div>
-
-      <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', edit_event_group_path(@event.event_group) %></span>
-      </div>
-
-    <% end %>
+    </div>
   </div>
-</div>
+</article>

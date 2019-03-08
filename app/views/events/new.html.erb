@@ -1,46 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: #{@event.event_group.name} - New event" %>
+  <% "OpenSplitTime: #{@form.event_group.name} - New event" %>
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1>
-            <strong><%= "Staging: #{@event.event_group.name}" %></strong>
-          </h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @event.event_group.organization_name, organization_path(@event.event_group.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @event.event_group.name, event_group_path(@event.event_group) %></li>
-            <% if @event.persisted? %>
-              <li class="breadcrumb-item active"><%= link_to @event.short_name, event_path(@event) %></li>
-            <% else %>
-              <li class="breadcrumb-item active"><%= 'New Event' %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<aside class="ost-toolbar">
-  <div class="container">
-    <nav class="progress-bar-nav">
-      <ul>
-        <li><a href="#"><span>Your Event</span></a></li>
-        <li class="active"><a href="#"><span>Event Details</span></a></li>
-        <li><a href="#"><span>Splits</span></a></li>
-        <li><a href="#"><span>Entrants</span></a></li>
-        <li><a href="#"><span>Confirmation</span></a></li>
-        <li><a href="#"><span>Published</span></a></li>
-      </ul>
-    </nav>
-  </div>
-</aside>
-
-<article class="ost-article container">
-  <%= render 'form' %>
-</article>
+<%= render 'form' %>

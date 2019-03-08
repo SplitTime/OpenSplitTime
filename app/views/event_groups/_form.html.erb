@@ -6,40 +6,32 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @event_group.persisted? ? "Staging: #{@event_group.name}" : 'Staging: Create Event' %></strong>
+            <strong><%= @form.event_group.persisted? ? "Staging: #{@form.event_group.name}" : 'Staging: Create Event' %></strong>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <% if @event_group.organization.persisted? %>
+            <% if @form.organization.persisted? %>
               <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-              <li class="breadcrumb-item"><%= link_to @event_group.organization_name, organization_path(@event_group.organization) %></li>
+              <li class="breadcrumb-item"><%= link_to @form.organization_name, organization_path(@form.organization) %></li>
             <% end %>
-            <% if @event_group.persisted? %>
-              <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
+            <% if @form.event_group.persisted? %>
+              <li class="breadcrumb-item"><%= link_to @form.event_group.name, event_group_path(@form.event_group) %></li>
             <% end %>
-            <li class="breadcrumb-item active"><%= @event_group.persisted? ? 'Edit' : 'New Event' %></li>
+            <li class="breadcrumb-item active"><%= @form.event_group.persisted? ? 'Edit' : 'New Event' %></li>
           </ul>
         </div>
       </div>
     </div>
+
+    <aside class="ost-toolbar">
+      <div class="container">
+        <%= staging_progress_bar(@form) %>
+      </div>
+    </aside>
+
   </div>
 </header>
 
-<aside class="ost-toolbar">
-  <div class="container">
-    <nav class="progress-bar-nav">
-      <ul>
-        <li class="active"><a href="#"><span>Your Event</span></a></li>
-        <li><a href="#"><span>Courses</span></a></li>
-        <li><a href="#"><span>Splits</span></a></li>
-        <li><a href="#"><span>Entrants</span></a></li>
-        <li><a href="#"><span>Confirmation</span></a></li>
-        <li><a href="#"><span>Published</span></a></li>
-      </ul>
-    </nav>
-  </div>
-</aside>
-
-<%= render 'shared/errors', obj: @event_group %>
+<%= render 'shared/errors', obj: @form.event_group %>
 
 <article class="ost-article container">
   <div class="col-12 row">
@@ -51,7 +43,7 @@
     </aside>
 
     <article class="col-12" data-controller="eg-form">
-      <%= form_with(model: @event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
+      <%= form_with(model: @form.event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
 
         <div class="card card-body bg-light border-0">
           <div class="row">
@@ -88,7 +80,7 @@
               <label class="required">Time Zone</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
               <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                         {selected: @event_group.home_time_zone || 'Mountain Time (US & Canada)'},
+                                         {selected: @form.event_group.home_time_zone || 'Mountain Time (US & Canada)'},
                                          {class: "form-control dropdown-select-field"}) %>
             </div>
 
@@ -123,7 +115,7 @@
         </div>
 
         <div class="col-12">
-          <span class="brackets"><%= link_to 'Cancel', @event_group.organization.persisted? ? organization_path(@event_group.organization) : event_groups_path %></span>
+          <span class="brackets"><%= link_to 'Cancel', @form.organization.persisted? ? organization_path(@form.organization) : event_groups_path %></span>
         </div>
       <% end %>
     </article>

@@ -15,6 +15,7 @@ class Split < ApplicationRecord
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
+  delegate :stewards, to: :course
 
   before_validation :parameterize_base_name
 

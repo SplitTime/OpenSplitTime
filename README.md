@@ -155,6 +155,12 @@ You'll know you did it right when you see the awesome ASCII art.
 
 Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew install chromedriver` or your preferred package manager for Linux or Windows.
 
+**Continuous Integration**
+
+Heroku CI is used when deploying to staging and production, [Travis CI](https://travis-ci.com/SplitTime/OpenSplitTime) is configured for open source contributions, if you are having a hard time setting up your local environment but still want to make contributions you can count on Travis to run the entire suite and confirm your changes are good.
+
+[![Build Status](https://travis-ci.com/SplitTime/OpenSplitTime.svg?branch=master)](https://travis-ci.com/cabello/OpenSplitTime)
+
 Support
 -------------------------
 

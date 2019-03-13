@@ -13,9 +13,10 @@ class EventsController < ApplicationController
     event_group = EventGroup.friendly.find(params[:id])
 
     if event_group
-      event = Event.new(event_group: event_group, results_template: ResultsTemplate.default)
+      start_time_local = I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
+      event = Event.new(event_group: event_group, results_template: ResultsTemplate.default, laps_required: 1, start_time_local: start_time_local)
       authorize event
-      @form = StagingForm.new(event_group: event_group, event: event, step: :event_details)
+      @form = StagingForm.new(event_group: event_group, event: event, step: :event_details, current_user: current_user)
     else
       skip_authorization
       flash[:warning] = 'A new event must be created using an existing event group'
@@ -25,7 +26,7 @@ class EventsController < ApplicationController
 
   def edit
     authorize @event
-    @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details)
+    @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
   end
 
   def create
@@ -45,6 +46,7 @@ class EventsController < ApplicationController
     if @event.update(permitted_params)
       redirect_to event_group_path(@event.event_group, force_settings: true)
     else
+      @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
       render 'edit'
     end
   end

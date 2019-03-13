@@ -115,7 +115,7 @@
         </div>
 
         <div class="col-12">
-          <span class="brackets"><%= link_to 'Cancel', @form.organization.persisted? ? organization_path(@form.organization) : event_groups_path %></span>
+          <span class="brackets"><%= link_to 'Cancel', @form.cancel_link %></span>
         </div>
       <% end %>
     </article>

@@ -1,16 +1,19 @@
 module StagingHelper
   def staging_progress_bar(view_object)
+    your_event_link = view_object.event_group.persisted? ? edit_event_group_path(view_object.event_group) : new_event_group_path
+    event_details_link = view_object.step_enabled?(:event_details) ? edit_event_group_path(view_object.event_group) : '#'
+    courses_link = view_object.step_enabled?(:courses) ? edit_course_path(view_object.events.first&.course) : '#'
+    entrants_link = view_object.step_enabled?(:entrants) ? roster_event_group_path(view_object.event_group) : '#'
+
     step_items = [
         {step: :your_event,
-         link: edit_event_group_path(view_object.event_group)},
+         link: your_event_link},
         {step: :event_details,
-         link: view_object.events.present? ?
-                   edit_event_path(view_object.events.first) :
-                   new_event_path(view_object.event_group)},
+         link: event_details_link},
         {step: :courses,
-         link: edit_course_path(view_object.events.first&.course)},
+         link: courses_link},
         {step: :entrants,
-         link: roster_event_group_path(view_object.event_group)},
+         link: entrants_link},
         {step: :confirmation, link: '#'},
         {step: :published, link: '#'}
     ]

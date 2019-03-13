@@ -26,16 +26,16 @@ class EventGroupsController < ApplicationController
 
   def new
     organization = Organization.find_or_initialize_by(id: params[:organization_id])
-    event_group = EventGroup.new(organization: organization)
-    authorize event_group
-    @form = StagingForm.new(event_group: event_group, step: :your_event)
+    @event_group = EventGroup.new(organization: organization)
+    authorize @event_group
+    set_form
   end
 
   def edit
     organization = Organization.find_by(id: params[:organization_id]) || @event_group.organization
     @event_group.organization = organization
     authorize @event_group
-    @form = StagingForm.new(event_group: @event_group, step: :your_event)
+    set_form
   end
 
   def create
@@ -45,6 +45,9 @@ class EventGroupsController < ApplicationController
     if @event_group.save
       redirect_to new_event_path(@event_group)
     else
+      organization = Organization.find_or_initialize_by(id: params[:organization_id]) || @event_group.organization
+      @event_group.organization = organization
+      set_form
       render 'new'
     end
   end
@@ -53,8 +56,10 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if @event_group.update(permitted_params)
-      redirect_to new_event_path(@event_group)
+      redirect_path = @event_group.events.present? ? edit_event_path(@event_group.events.first) : new_event_path(@event_group)
+      redirect_to redirect_path
     else
+      set_form
       render 'edit'
     end
   end
@@ -170,5 +175,9 @@ class EventGroupsController < ApplicationController
   def set_event_group
     @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
+  end
+
+  def set_form
+    @form = StagingForm.new(event_group: @event_group, step: :your_event)
   end
 end

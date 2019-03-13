@@ -45,7 +45,10 @@
 
 <article class="ost-article container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" data-controller="event-form">
+      <div data-target="event-form.formData"
+           data-event-group-name="<%= @form.event_group.name %>"
+           data-pref-distance-unit="<%= @form.pref_distance_unit %>"></div>
       <%= form_for(@form.event, html: {class: "form-horizontal", role: "form"}) do |f| %>
 
         <div class="card card-body bg-light border-0">
@@ -55,11 +58,11 @@
                 <div class="col">
                   <%= f.label :short_name %>
                   <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
-                  <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
+                  <%= f.text_field :short_name, class: "form-control", placeholder: "Short name", data: {target: 'event-form.eventShortName', action: 'keyup->event-form#fillEventName'} %>
                 </div>
                 <div class="col">
                   <%= f.label :full_name %>
-                  <div>[Full name here]</div>
+                  <div data-target="event-form.eventName"><%= @form.event.name %></div>
                 </div>
               </div>
             </div>
@@ -77,19 +80,37 @@
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
-              <%= f.label :course_id %>
-              <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
-                                    {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+              <%= f.label :course_id, class: 'required' %>
+              <%= f.select :course_id, options_for_select(@form.courses_for_select, @form.event.course_id),
+                           {prompt: true},
+                           {class: "form-control dropdown-select-field", data: {target: 'event-form.courseDropdown', action: 'event-form#fillDistance'}} %>
             </div>
           </div>
           <div class="row">
             <div class="form-group col">
-            <%= f.label :laps_required %>
-            <%= f.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {}, class: "form-control dropdown-select-field" %>
+              <%= f.label :laps_required, class: 'required' %>
+              <%= f.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
+                           class: "form-control dropdown-select-field", data: {target: 'event-form.lapDropdown', action: 'event-form#fillDistance'} %>
+            </div>
+            <div class="form-group col">
+              <%= f.label :course_distance %>
+              <div data-target="event-form.courseDistance"></div>
             </div>
             <div class="form-group col">
               <%= f.label :total_distance %>
-              <div>[Total distance here]</div>
+              <div data-target="event-form.totalDistance"></div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <%= f.label :beacon_url %>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
+              <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
             </div>
           </div>
         </div>
@@ -97,19 +118,9 @@
         <br/>
 
         <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :beacon_url %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
-          </div>
-        </div>
-
-        <br/>
-
-        <div class="form-group required">
-          <div class="control-label col-sm-2">
-            <%= f.label :podium_template %>
+          <div class="control-label col">
+            <%= f.label :podium_template, class: 'required' %>
+            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
           </div>
           <div class="col-sm-8">
             <div class="card" data-controller="results-template">

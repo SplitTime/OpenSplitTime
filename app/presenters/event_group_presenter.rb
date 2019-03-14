@@ -60,7 +60,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def events
-    @events ||= event_group.events.select_with_params('').order(:start_time).to_a
+    @events ||= event_group.ordered_events
   end
 
   def event_group_names

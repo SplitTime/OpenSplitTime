@@ -43,7 +43,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if @event_group.save
-      redirect_to new_event_path(@event_group)
+      redirect_to staging_redirect_path
     else
       organization = Organization.find_or_initialize_by(id: params[:organization_id]) || @event_group.organization
       @event_group.organization = organization
@@ -56,8 +56,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if @event_group.update(permitted_params)
-      redirect_path = @event_group.events.present? ? edit_event_path(@event_group.events.first) : new_event_path(@event_group)
-      redirect_to redirect_path
+      redirect_to staging_redirect_path
     else
       set_form
       render 'edit'
@@ -179,5 +178,20 @@ class EventGroupsController < ApplicationController
 
   def set_form
     @form = StagingForm.new(event_group: @event_group, step: :your_event)
+  end
+
+  def staging_redirect_path
+    case params[:button]
+    when 'Continue'
+      if action_name == 'create'
+        new_event_path(@event_group)
+      else
+        @event_group.events.present? ? edit_event_path(@event_group.events.first) : new_event_path(@event_group)
+      end
+    when 'Save'
+      edit_event_group_path(@event_group)
+    else
+      event_group_path(@event.event_group, force_settings: true)
+    end
   end
 end

@@ -34,8 +34,9 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      redirect_to event_group_path(@event.event_group)
+      redirect_to staging_redirect_path
     else
+      @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
       render 'new'
     end
   end
@@ -44,7 +45,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(permitted_params)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
+      redirect_to staging_redirect_path
     else
       @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
       render 'edit'
@@ -225,5 +226,18 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event, params[:id])
+  end
+  
+  def staging_redirect_path
+    case params[:button]
+    when 'Continue'
+      event_group_path(@event.event_group, force_settings: true)
+    when 'Previous'
+      edit_event_group_path(@event.event_group)
+    when 'Save'
+      edit_event_path(@event)
+    else
+      event_group_path(@event.event_group, force_settings: true)
+    end
   end
 end

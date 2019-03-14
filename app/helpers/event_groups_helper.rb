@@ -6,7 +6,8 @@ module EventGroupsHelper
 
     form.collection_select(:organization_id, organizations, :id, :name,
                            {prompt: 'Choose an organization'},
-                           {class: "form-control dropdown-select-field",
+                           {autofocus: true,
+                            class: "form-control dropdown-select-field",
                             data: {target: 'eg-form.orgDropdown',
                                    action: 'eg-form#setOrgForm eg-form#fillEventGroupName'}})
   end

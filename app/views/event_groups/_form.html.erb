@@ -42,13 +42,21 @@
       <p>Your event group will belong to an Organization. You'll either use an existing Organization or create one.</p>
     </aside>
 
-    <article class="col-12" data-controller="eg-form">
+    <article class="col-12" data-controller="staging eg-form">
       <%= form_with(model: @form.event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <%= staging_hidden_continue_button %>
+
+        <div class="form-group">
+          <div class="col-12">
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
+          </div>
+        </div>
 
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
-              <label>What is your organization called?</label>
+              <label class="required">What is your organization called?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
               <div class="row">
                 <div class="col">
@@ -77,7 +85,7 @@
             </div>
 
             <div class="form-group col-12">
-              <label class="required">Time Zone</label>
+              <label class="required">In what time zone will your event occur?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
               <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
                                          {selected: @form.event_group.home_time_zone || 'Mountain Time (US & Canada)'},
@@ -110,7 +118,8 @@
 
         <div class="form-group">
           <div class="col-12">
-            <%= form.submit("Continue", class: 'btn btn-primary btn-large') %>
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
           </div>
         </div>
 

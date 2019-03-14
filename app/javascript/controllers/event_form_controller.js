@@ -5,6 +5,11 @@ export default class extends Controller {
     static targets = ["eventName", "eventShortName", "formData", "courseDropdown", "lapDropdown",
         "courseDistance", "totalDistance"];
 
+    connect() {
+        this.fillEventName();
+        this.fillDistance()
+    }
+
     fillEventName() {
         const shortName = this.eventShortNameTarget.value;
         const eventGroupName = this.formDataTarget.dataset.eventGroupName;

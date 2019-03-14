@@ -29,7 +29,7 @@
 
     <!-- Navigation -->
     <ul class="nav nav-tabs nav-tabs-ost">
-      <% @form.event_group.events.select(&:persisted?).each do |event| %>
+      <% @form.event_group.ordered_events.select(&:persisted?).each do |event| %>
         <%= content_tag :li, class: "nav-item #{'active' if request.path == edit_event_path(event)}" do
           link_to event.short_name, edit_event_path(event)
         end %>
@@ -45,11 +45,20 @@
 
 <article class="ost-article container">
   <div class="row">
-    <div class="col-md-12" data-controller="event-form">
+    <div class="col-12" data-controller="staging event-form">
       <div data-target="event-form.formData"
            data-event-group-name="<%= @form.event_group.name %>"
            data-pref-distance-unit="<%= @form.pref_distance_unit %>"></div>
       <%= form_for(@form.event, html: {class: "form-horizontal", role: "form"}) do |f| %>
+        <%= staging_hidden_continue_button %>
+
+        <div class="form-group">
+          <div class="col">
+            <%= staging_previous_button %>
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
+          </div>
+        </div>
 
         <div class="card card-body bg-light border-0">
           <div class="row">
@@ -58,7 +67,7 @@
                 <div class="col">
                   <%= f.label :short_name %>
                   <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
-                  <%= f.text_field :short_name, class: "form-control", placeholder: "Short name", data: {target: 'event-form.eventShortName', action: 'keyup->event-form#fillEventName'} %>
+                  <%= f.text_field :short_name, class: "form-control", autofocus: true, placeholder: "Short name", data: {target: 'event-form.eventShortName', action: 'keyup->event-form#fillEventName'} %>
                 </div>
                 <div class="col">
                   <%= f.label :full_name %>
@@ -80,25 +89,34 @@
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
-              <%= f.label :course_id, class: 'required' %>
-              <%= f.select :course_id, options_for_select(@form.courses_for_select, @form.event.course_id),
-                           {prompt: true},
-                           {class: "form-control dropdown-select-field", data: {target: 'event-form.courseDropdown', action: 'event-form#fillDistance'}} %>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col">
-              <%= f.label :laps_required, class: 'required' %>
-              <%= f.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
-                           class: "form-control dropdown-select-field", data: {target: 'event-form.lapDropdown', action: 'event-form#fillDistance'} %>
-            </div>
-            <div class="form-group col">
-              <%= f.label :course_distance %>
-              <div data-target="event-form.courseDistance"></div>
-            </div>
-            <div class="form-group col">
-              <%= f.label :total_distance %>
-              <div data-target="event-form.totalDistance"></div>
+              <label class="required">Choose an existing course or create a new course</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
+              <div class="row">
+                <div class="col">
+                  <%= f.select :course_id, options_for_select(@form.courses_for_select, @form.event.course_id),
+                               {prompt: true},
+                               {class: "form-control dropdown-select-field", data: {target: 'event-form.courseDropdown', action: 'event-form#fillDistance'}} %>
+                </div>
+                <div class="col">
+                  <%= link_to 'Create a New Course', '#', class: 'btn btn-outline-secondary form-control dropdown-select-field', data: {toggle: 'modal', target: '#new-course-modal'} %>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col">
+                  <%= f.label :laps_required, class: 'required' %>
+                  <%= f.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
+                               class: "form-control dropdown-select-field", data: {target: 'event-form.lapDropdown', action: 'event-form#fillDistance'} %>
+                </div>
+                <div class="col">
+                  <%= f.label :course_distance %>
+                  <div data-target="event-form.courseDistance"></div>
+                </div>
+                <div class="col">
+                  <%= f.label :total_distance %>
+                  <div data-target="event-form.totalDistance"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -137,8 +155,10 @@
         </div>
 
         <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit 'Continue', class: 'btn btn-primary btn-large' %>
+          <div class="col">
+            <%= staging_previous_button %>
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
           </div>
         </div>
 

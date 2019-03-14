@@ -4,20 +4,24 @@ export default class extends Controller {
 
     static targets = ["error", "errorMessage"];
 
-    onClickSubmit() {
+    hideErrors() {
         $(this.errorTarget).fadeOut()
     }
 
-    onPostSuccess(event) {
-        const [data, _status, xhr] = event.detail;
-        let newOrgId = data.id;
+    reloadPage(event) {
+        const [data, _status, _xhr] = event.detail;
 
-        let url = window.location.pathname + '?organization_id=' + newOrgId;
+        console.log(data);
+
+        const newId = data.id;
+        const resourceType = data.type;
+
+        let url = window.location.pathname + '?' + resourceType + '_id=' + newId;
         Turbolinks.visit(url)
     }
 
-    onPostError(event) {
-        const [data, _status, xhr] = event.detail;
+    showErrors(event) {
+        const [data, _status, _xhr] = event.detail;
 
         this.errorMessageTarget.innerHTML = data.errors.title;
         $(this.errorMessageTarget).append('<br/>');

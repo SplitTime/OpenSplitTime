@@ -65,7 +65,7 @@ class StagingForm
   private
 
   def distance_component(course)
-    {'data-distance' => (course.distance && StagingForm.meters_to_preferred_distance(course.distance))}
+    {'data-distance' => (course.distance && StagingForm.meters_to_preferred_distance(course.distance).round(1))}
   end
 
   attr_reader :current_user

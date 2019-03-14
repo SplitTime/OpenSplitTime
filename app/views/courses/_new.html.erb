@@ -1,0 +1,78 @@
+<div class="modal fade" id="new-course-modal" data-controller="ajax-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"><strong>New Course</strong></h3>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center" style="display:none" data-target="ajax-modal.error">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login" data-target="ajax-modal.errorMessage">
+              <strong>Course could not be saved. </strong>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col col-login">
+
+            <%= form_for(Course.new, url: courses_path, format: :json, remote: true,
+                         data: {action: 'ajax:success->ajax-modal#reloadPage ajax:error->ajax-modal#showErrors'}) do |f| %>
+              <div class="form-group">
+                <label class="required">What will you name your course?</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Give your course a descriptive name that can be reused in future events, for example, Desert Ultra 100K Course."><i class="fas fa-question-circle"></i></span>
+                <%= f.text_field :name, autofocus: true, placeholder: 'Course Name', class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <label class="required">Course distance</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter the total distance in <%= @form.pref_distance_unit %>. If your race consists of multiple identical laps, enter the distance of a single lap."><i class="fas fa-question-circle"></i></span>
+                <div class="input-group">
+                  <%= f.text_field :distance_preferred, placeholder: 'e.g. 62', class: 'form-control' %>
+                  <span class="input-group-append">
+                    <span class="input-group-text"><%= @form.pref_distance_unit %></span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Course vertical gain</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter the total vertical gain in <%= @form.pref_elevation_unit %>. If your race consists of multiple identical laps, enter the vertical gain of a single lap."><i class="fas fa-question-circle"></i></span>
+                <div class="input-group">
+                  <%= f.text_field :vert_gain_preferred, placeholder: 'e.g. 8000', class: 'form-control' %>
+                  <span class="input-group-append">
+                    <span class="input-group-text"><%= @form.pref_elevation_unit %></span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Course vertical loss</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enter the total vertical loss in <%= @form.pref_elevation_unit %>. If your race consists of multiple identical laps, enter the vertical loss of a single lap."><i class="fas fa-question-circle"></i></span>
+                <div class="input-group">
+                  <%= f.text_field :vert_loss_preferred, placeholder: 'e.g. 8000', class: 'form-control' %>
+                  <span class="input-group-append">
+                    <span class="input-group-text"><%= @form.pref_elevation_unit %></span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Give a brief description of your course</label>
+                <%= f.text_area :description, placeholder: 'Example: A scenic and challenging route that will whet your appetite for the mountains of central Wyoming.', class: 'form-control' %>
+              </div>
+
+              <div class="form-group">
+                <%= f.submit 'Create', id: 'course-form-modal-submit', class: 'btn btn-primary',
+                             data: {action: 'click->ajax-modal#hideErrors'} %>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

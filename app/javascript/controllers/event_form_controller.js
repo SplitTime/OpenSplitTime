@@ -23,7 +23,7 @@ export default class extends Controller {
 
     fillDistance() {
         const select = this.courseDropdownTarget;
-        const courseDistance = parseInt(select.options[select.selectedIndex].dataset.distance);
+        const courseDistance = parseFloat(select.options[select.selectedIndex].dataset.distance);
         const distanceUnit = this.formDataTarget.dataset.prefDistanceUnit;
         const laps = parseInt(this.lapDropdownTarget.value);
 

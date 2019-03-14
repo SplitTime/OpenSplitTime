@@ -8,16 +8,7 @@
           <h1>
             <strong><%= @form.event_group.persisted? ? "Staging: #{@form.event_group.name}" : 'Staging: Create Event' %></strong>
           </h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <% if @form.organization.persisted? %>
-              <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-              <li class="breadcrumb-item"><%= link_to @form.organization_name, organization_path(@form.organization) %></li>
-            <% end %>
-            <% if @form.event_group.persisted? %>
-              <li class="breadcrumb-item"><%= link_to @form.event_group.name, event_group_path(@form.event_group) %></li>
-            <% end %>
-            <li class="breadcrumb-item active"><%= @form.event_group.persisted? ? 'Edit' : 'New Event' %></li>
-          </ul>
+          <%= render 'shared/staging_breadcrumbs' %>
         </div>
       </div>
     </div>

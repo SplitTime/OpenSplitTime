@@ -15,6 +15,10 @@ class Course < ApplicationRecord
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
 
+  attribute :distance_preferred, :float
+  attribute :vert_gain_preferred, :float
+  attribute :vert_loss_preferred, :float
+
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
   scope :used_for_organization, -> (organization) { includes(events: :event_group).where(event_groups: {organization_id: organization.id}).uniq }
@@ -22,9 +26,15 @@ class Course < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
+  validates_presence_of :distance_preferred, :vert_gain_preferred, :vert_loss_preferred, unless: :finish_split_present?
+  validates :distance_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
+  validates :vert_gain_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
+  validates :vert_loss_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates :gpx,
             content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],
             size: {less_than: 500.kilobytes}
+
+  after_create :create_start_and_finish_splits, unless: :finish_split_present?
 
   def to_s
     slug
@@ -46,10 +56,6 @@ class Course < ApplicationRecord
     events.most_recent&.home_time_zone
   end
 
-  def distance
-    @distance ||= finish_split.distance_from_start if finish_split.present?
-  end
-
   def track_points
     return [] unless gpx.attached?
     return @track_points if defined?(@track_points)
@@ -59,15 +65,33 @@ class Course < ApplicationRecord
     @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
   end
 
+  def distance
+    finish_split&.distance_from_start
+  end
+
   def vert_gain
-    @vert_gain ||= finish_split.vert_gain_from_start if finish_split.present?
+    finish_split&.vert_gain_from_start
   end
 
   def vert_loss
-    @vert_loss ||= finish_split.vert_loss_from_start if finish_split.present?
+    finish_split&.vert_loss_from_start
   end
 
   def simple?
     splits_count < 3
+  end
+
+  private
+
+  def create_start_and_finish_splits
+    splits.new(base_name: 'Start', kind: :start, sub_split_bitmap: SubSplit::IN_BITKEY,
+               distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0)
+    splits.new(base_name: 'Finish', kind: :finish, sub_split_bitmap: SubSplit::IN_BITKEY,
+               distance: distance_preferred, vert_gain: vert_gain_preferred, vert_loss: vert_loss_preferred)
+    save
+  end
+
+  def finish_split_present?
+    finish_split.present?
   end
 end

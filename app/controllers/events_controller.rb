@@ -1,36 +1,35 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :place, :analyze]
   before_action :set_event, except: [:index, :new, :create]
+  before_action :set_event_group, only: [:index, :new, :create]
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
 
   def show
-    redirect_to :spread_event
+    redirect_to :spread_event, status: 301
   end
 
   def new
-    event_group = EventGroup.friendly.find(params[:id])
+    course = Course.find_or_initialize_by(id: params[:course_id])
+    start_time_local = I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
+    event = @event_group.events.new
+    event.assign_attributes(course: course, results_template: ResultsTemplate.default, laps_required: 1, start_time_local: start_time_local)
+    authorize event
 
-    if event_group
-      start_time_local = I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
-      event = Event.new(event_group: event_group, results_template: ResultsTemplate.default, laps_required: 1, start_time_local: start_time_local)
-      authorize event
-      @form = StagingForm.new(event_group: event_group, event: event, step: :event_details, current_user: current_user)
-    else
-      skip_authorization
-      flash[:warning] = 'A new event must be created using an existing event group'
-      redirect_to event_groups_path
-    end
+    @form = StagingForm.new(event_group: @event_group, event: event, step: :event_details, current_user: current_user)
   end
 
   def edit
+    course = Course.find_by(id: params[:course_id]) || @event.course
+    @event.course = course
     authorize @event
     @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
   end
 
   def create
-    @event = Event.new(permitted_params)
+    @event = @event_group.events.new
+    @event.assign_attributes(permitted_params)
     authorize @event
 
     if @event.save
@@ -227,7 +226,11 @@ class EventsController < ApplicationController
     @event = Event.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event, params[:id])
   end
-  
+
+  def set_event_group
+    @event_group = EventGroup.friendly.find(params[:id])
+  end
+
   def staging_redirect_path
     case params[:button]
     when 'Continue'

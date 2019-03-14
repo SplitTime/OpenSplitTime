@@ -28,9 +28,13 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      redirect_to courses_path
+      respond_to do |format|
+        format.json { render json: {success: true, id: @course.id, type: 'course'}, status: :created }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.json { render json: {success: false, errors: jsonapi_error_object(@course)}, status: :unprocessable_entity }
+      end
     end
   end
 

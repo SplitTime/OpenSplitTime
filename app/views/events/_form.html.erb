@@ -1,3 +1,5 @@
+<%= render partial: 'courses/new' %>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -6,17 +8,7 @@
           <h1>
             <strong><%= "Staging: #{@form.event_group.name}" %></strong>
           </h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @form.event_group.organization_name, organization_path(@form.event_group.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @form.event_group.name, event_group_path(@form.event_group) %></li>
-            <% if @form.event.persisted? %>
-              <li class="breadcrumb-item"><%= link_to @form.event.short_name, event_path(@form.event) %></li>
-              <li class="breadcrumb-item active">Edit</li>
-            <% else %>
-              <li class="breadcrumb-item active">New Event</li>
-            <% end %>
-          </ul>
+          <%= render 'shared/staging_breadcrumbs' %>
         </div>
       </div>
     </div>
@@ -31,7 +23,7 @@
     <ul class="nav nav-tabs nav-tabs-ost">
       <% @form.event_group.ordered_events.select(&:persisted?).each do |event| %>
         <%= content_tag :li, class: "nav-item #{'active' if request.path == edit_event_path(event)}" do
-          link_to event.short_name, edit_event_path(event)
+          link_to event.guaranteed_short_name, edit_event_path(event)
         end %>
       <% end %>
       <%= content_tag :li, class: "nav-item #{'active' if request.path == new_event_path(@form.event_group)}" do

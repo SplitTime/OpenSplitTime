@@ -26,7 +26,7 @@ class OrganizationsController < ApplicationController
 
     if @organization.save
       respond_to do |format|
-        format.json { render json: {success: true, id: @organization.id}, status: :created }
+        format.json { render json: {success: true, id: @organization.id, type: 'organization'}, status: :created }
       end
     else
       respond_to do |format|

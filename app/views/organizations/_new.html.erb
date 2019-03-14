@@ -1,4 +1,4 @@
-<div class="modal fade" id="new-org-modal" data-controller="org-form">
+<div class="modal fade" id="new-org-modal" data-controller="ajax-modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,9 +8,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row justify-content-center" style="display:none" data-target="org-form.error">
+        <div class="row justify-content-center" style="display:none" data-target="ajax-modal.error">
           <div class="alert alert-info d-block" role="alert">
-            <div class="col col-login" data-target="org-form.errorMessage">
+            <div class="col col-login" data-target="ajax-modal.errorMessage">
               <strong>Organization could not be saved. </strong>
             </div>
           </div>
@@ -19,7 +19,7 @@
           <div class="col col-login">
 
             <%= form_for(Organization.new, url: organizations_path, format: :json, remote: true,
-                         data: {action: "ajax:success->org-form#onPostSuccess ajax:error->org-form#onPostError"}) do |f| %>
+                         data: {action: 'ajax:success->ajax-modal#reloadPage ajax:error->ajax-modal#showErrors'}) do |f| %>
               <div class="form-group">
                 <label>What is your organization called?</label>
                 <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
@@ -33,7 +33,7 @@
 
               <div class="form-group">
                 <%= f.submit 'Create', id: 'org-form-modal-submit', class: 'btn btn-primary',
-                             data: {action: 'click->org-form#onClickSubmit'} %>
+                             data: {action: 'click->ajax-modal#hideErrors'} %>
               </div>
             <% end %>
 

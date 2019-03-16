@@ -20,16 +20,7 @@
     </aside>
 
     <!-- Navigation -->
-    <ul class="nav nav-tabs nav-tabs-ost">
-      <% @form.event_group.ordered_events.select(&:persisted?).each do |event| %>
-        <%= content_tag :li, class: "nav-item #{'active' if request.path == edit_event_path(event)}" do
-          link_to event.guaranteed_short_name, edit_event_path(event)
-        end %>
-      <% end %>
-      <%= content_tag :li, class: "nav-item #{'active' if request.path == new_event_path(@form.event_group)}" do
-        link_to 'New Event', new_event_path(@form.event_group)
-      end %>
-    </ul>
+    <%= staging_event_tabs(@form) %>
   </div>
 </header>
 
@@ -63,7 +54,7 @@
                 </div>
                 <div class="col">
                   <%= f.label :full_name %>
-                  <div data-target="event-form.eventName"><%= @form.event.name %></div>
+                  <div class="form-auto-text" data-target="event-form.eventName"><%= @form.event.name %></div>
                 </div>
               </div>
             </div>
@@ -102,11 +93,11 @@
                 </div>
                 <div class="col">
                   <%= f.label :course_distance %>
-                  <div data-target="event-form.courseDistance"></div>
+                  <div class="form-auto-text" data-target="event-form.courseDistance"></div>
                 </div>
                 <div class="col">
                   <%= f.label :total_distance %>
-                  <div data-target="event-form.totalDistance"></div>
+                  <div class="form-auto-text" data-target="event-form.totalDistance"></div>
                 </div>
               </div>
             </div>

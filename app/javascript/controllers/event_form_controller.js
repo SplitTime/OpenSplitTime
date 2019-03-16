@@ -26,6 +26,7 @@ export default class extends Controller {
         const courseDistance = parseFloat(select.options[select.selectedIndex].dataset.distance);
         const distanceUnit = this.formDataTarget.dataset.prefDistanceUnit;
         const laps = parseInt(this.lapDropdownTarget.value);
+        const totalDistance = parseFloat((laps * courseDistance).toFixed(1));
 
         if (isNaN(courseDistance)) {
             this.courseDistanceTarget.innerHTML = 'No course selected';
@@ -35,7 +36,7 @@ export default class extends Controller {
             this.totalDistanceTarget.innerHTML = 'Unlimited (time-based)'
         } else {
             this.courseDistanceTarget.innerHTML = courseDistance + ' ' + distanceUnit;
-            this.totalDistanceTarget.innerHTML = laps * courseDistance + ' ' + distanceUnit
+            this.totalDistanceTarget.innerHTML = totalDistance + ' ' + distanceUnit
         }
     }
 }

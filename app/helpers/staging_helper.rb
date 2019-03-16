@@ -1,32 +1,49 @@
 module StagingHelper
   def staging_progress_bar(view_object)
-    your_event_link = view_object.event_group.persisted? ? edit_event_group_path(view_object.event_group) : new_event_group_path
-    event_details_link = view_object.step_enabled?(:event_details) ? edit_event_group_path(view_object.event_group) : '#'
-    courses_link = view_object.step_enabled?(:courses) ? edit_course_path(view_object.events.first&.course) : '#'
-    entrants_link = view_object.step_enabled?(:entrants) ? roster_event_group_path(view_object.event_group) : '#'
-
-    step_items = [
-        {step: :your_event,
-         link: your_event_link},
-        {step: :event_details,
-         link: event_details_link},
-        {step: :courses,
-         link: courses_link},
-        {step: :entrants,
-         link: entrants_link},
-        {step: :confirmation, link: '#'},
-        {step: :published, link: '#'}
-    ]
-
-    list_items = step_items.map do |item|
-      active = item[:step] == view_object.step ? 'active' : nil
-      content_tag(:li, class: active) { link_to(item[:link]) { content_tag(:span, item[:step].to_s.titleize) } }
+    list_items = StagingForm.steps.map do |step|
+      active = step == view_object.step ? 'active' : nil
+      content_tag(:li, class: active) do
+        content_tag(:p) { content_tag(:span, step.to_s.titleize) }
+      end
     end
 
-    content_tag :nav, class: "progress-bar-nav" do
+    content_tag :nav, class: 'progress-bar-nav' do
       content_tag :ul do
         list_items.sum
       end
+    end
+  end
+
+  def staging_event_tabs(view_object)
+    persisted_events = view_object.events.select(&:persisted?)
+    persisted_list_items = persisted_events.map do |event|
+      active = request.path == edit_event_path(event) ? 'active' : nil
+      content_tag(:li, class: ['nav-item', active].compact.join(' ')) do
+        link_to event.guaranteed_short_name, edit_event_path(event)
+      end
+    end
+
+    new_item_active = (request.path == new_event_path(view_object.event_group) || persisted_events.empty?) ? 'active' : nil
+    new_list_item = content_tag(:li, class: ['nav-item', new_item_active].compact.join(' ')) do
+      link_to 'New Event', new_event_path(view_object.event_group)
+    end
+
+    content_tag(:ul, class: 'nav nav-tabs nav-tabs-ost') do
+      (persisted_list_items + [new_list_item]).sum
+    end
+  end
+
+  def staging_course_tabs(view_object)
+    courses = view_object.courses
+    list_items = courses.map do |course|
+      active = request.path == edit_course_path(course) ? 'active' : nil
+      content_tag(:li, class: ['nav-item', active].compact.join(' ')) do
+        link_to course.name, edit_course_path(course)
+      end
+    end
+
+    content_tag(:ul, class: 'nav nav-tabs nav-tabs-ost') do
+      list_items.sum
     end
   end
 

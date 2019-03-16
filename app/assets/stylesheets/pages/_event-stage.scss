@@ -439,7 +439,7 @@ Progress Bar Navigation
 					text-align: center;
 				}
 
-				a {
+				p {
 					&:before {
 						content: '\e013';
 						color: $white;
@@ -458,7 +458,7 @@ Progress Bar Navigation
 				}
 			}
 
-			a {
+			p {
 				@include transform( translateX(-50%) );
 				position: absolute;
 				top: 0;
@@ -512,7 +512,7 @@ Progress Bar Navigation
 				opacity: 0;
 			}
 
-			a {
+			p {
 				color: $mediumGray;
 
 				&:before {

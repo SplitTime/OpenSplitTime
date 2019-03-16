@@ -9,11 +9,15 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    event_groups.sort_by(&:start_time).reverse.first(number)
+    event_groups.left_joins(:events)
+        .select('event_groups.*, min(events.start_time) as group_start_time')
+        .group(:id)
+        .order('group_start_time desc')
+        .limit(number)
   end
 
   def event_groups
-    EventGroup.includes(events: :efforts).where(organization: organizations)
+    EventGroup.where(organization: organizations)
   end
 
   def recent_event_series(number)

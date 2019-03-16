@@ -22,23 +22,8 @@ class StagingForm
     @current_user = attributes[:current_user]
   end
 
-  def step_enabled?(step)
-    case step
-    when :your_event
-      true
-    when :event_details
-      event_group.persisted?
-    when :courses
-      events.present?
-    when :entrants
-      events.present?
-    when :confirmation
-      events.present?
-    when :published
-      events.present? && events.all? { |event| event.efforts.present? }
-    else
-      false
-    end
+  def courses
+    events.map(&:course).uniq
   end
 
   def courses_for_select

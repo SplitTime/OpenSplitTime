@@ -5,7 +5,8 @@ export default class extends Controller {
     static targets = ["orgDescription", "orgDropdown", "eventGroupName"];
 
     connect() {
-        this.setOrgForm()
+        this.setOrgForm();
+        this.fillEventGroupName()
     }
 
     setOrgForm() {

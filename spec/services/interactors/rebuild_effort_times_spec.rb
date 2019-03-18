@@ -89,6 +89,30 @@ RSpec.describe Interactors::RebuildEffortTimes do
           expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
       end
+
+      context 'when raw_times have no absolute_time' do
+        before do
+          st = ordered_split_times[3]
+          RawTime.create!(event_group: effort.event_group, bib_number: effort.bib_number, split_name: st.split.base_name,
+                          entered_time: '10:10:10', absolute_time: nil, bitkey: st.bitkey, source: 'ignored')
+        end
+
+        it 'reorders the split_times, retaining sub_split integrity and ignoring the time that lacks an absolute_time' do
+          old_split_times = ordered_split_times.dup
+          response = subject.perform!
+          expect(response).to be_successful
+          expect(effort.ordered_split_times.map(&:absolute_time)).to eq(disordered_absolute_times.sort)
+          expect(effort.ordered_split_times.map(&:sub_split)).to match_array(old_split_times.map(&:sub_split))
+          expect(effort.ordered_split_times.map(&:lap)).to eq([1, 2, 2, 2, 3, 3])
+          expect(effort.ordered_split_times.map(&:split_id)).to eq([id_1, id_1, id_2, id_3, id_2, id_3])
+        end
+
+        it 'matches raw_times with the newly created split_times' do
+          subject.perform!
+          raw_times = RawTime.where(source: 'rebuild_effort_test')
+          expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
+        end
+      end
     end
   end
 end

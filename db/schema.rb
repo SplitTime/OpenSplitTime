@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_04_122855) do
+ActiveRecord::Schema.define(version: 2019_03_08_000739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 2019_03_04_122855) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
+    t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -415,6 +417,7 @@ ActiveRecord::Schema.define(version: 2019_03_04_122855) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
+  add_foreign_key "courses", "organizations"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
   add_foreign_key "event_groups", "organizations"

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-
   include Auditable
+  include Delegable
   include SplitMethods
   include TimeZonable
   extend FriendlyId
@@ -11,9 +11,11 @@ class Course < ApplicationRecord
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
 
+  belongs_to :organization
   has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
+  delegate :stewards, to: :organization
 
   attribute :distance_preferred, :float
   attribute :vert_gain_preferred, :float
@@ -21,7 +23,7 @@ class Course < ApplicationRecord
 
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
-  scope :used_for_organization, -> (organization) { includes(events: :event_group).where(event_groups: {organization_id: organization.id}).uniq }
+  scope :used_for_organization, -> (organization) { organization.courses }
   scope :standard_includes, -> { includes(:splits) }
 
   validates_presence_of :name
@@ -53,7 +55,7 @@ class Course < ApplicationRecord
   end
 
   def home_time_zone
-    events.most_recent&.home_time_zone
+    events.latest&.home_time_zone
   end
 
   def track_points

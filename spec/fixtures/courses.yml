@@ -1,6 +1,7 @@
 ---
 hardrock_ccw:
   id: 4
+  organization_id: 4
   name: Hardrock CCW
   description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
     to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
@@ -12,6 +13,7 @@ hardrock_ccw:
   slug: hardrock-ccw
 ramble_even_course:
   id: 9
+  organization_id: 6
   name: Ramble Even Course
   description: 
   created_at: '2016-05-08 07:10:07.192914'
@@ -22,6 +24,7 @@ ramble_even_course:
   slug: ramble-even-course
 hardrock_cw:
   id: 12
+  organization_id: 4
   name: Hardrock CW
   description: Clockwise Hardrock 100 course
   created_at: '2016-05-23 01:04:57.225296'
@@ -32,6 +35,7 @@ hardrock_cw:
   slug: hardrock-cw
 rufa_course:
   id: 20
+  organization_id: 14
   name: RUFA Course
   description: Bottom of Grandeur Peak to top and back
   created_at: '2017-01-28 13:21:38.623222'
@@ -42,6 +46,7 @@ rufa_course:
   slug: rufa-course
 d30_50k_course:
   id: 26
+  organization_id: 15
   name: D30 50K Course
   description: 
   created_at: '2017-05-23 06:06:29.666791'
@@ -52,6 +57,7 @@ d30_50k_course:
   slug: d30-50k-course
 d30_12m_course:
   id: 27
+  organization_id: 15
   name: D30 12M Course
   description: 
   created_at: '2017-06-09 09:51:15.458576'
@@ -62,6 +68,7 @@ d30_12m_course:
   slug: d30-12m-course
 sum_100k_course:
   id: 31
+  organization_id: 15
   name: SUM 100K Course
   description: 
   created_at: '2018-01-18 05:09:16.740608'
@@ -72,6 +79,7 @@ sum_100k_course:
   slug: sum-100k-course
 sum_55k_course:
   id: 32
+  organization_id: 15
   name: SUM 55K Course
   description: 
   created_at: '2018-01-18 05:15:20.742148'

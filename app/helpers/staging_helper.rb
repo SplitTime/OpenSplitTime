@@ -36,9 +36,9 @@ module StagingHelper
   def staging_course_tabs(view_object)
     courses = view_object.courses
     list_items = courses.map do |course|
-      active = request.path == edit_course_path(course) ? 'active' : nil
+      active = view_object.course == course ? 'active' : nil
       content_tag(:li, class: ['nav-item', active].compact.join(' ')) do
-        link_to course.name, edit_course_path(course)
+        link_to course.name, courses_event_group_path(course_id: course.id)
       end
     end
 

@@ -234,7 +234,7 @@ class EventsController < ApplicationController
   def staging_redirect_path
     case params[:button]
     when 'Continue'
-      event_group_path(@event.event_group, force_settings: true)
+      courses_event_group_path(@event.event_group, course_id: @event.course_id)
     when 'Previous'
       edit_event_group_path(@event.event_group)
     when 'Save'

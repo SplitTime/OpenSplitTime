@@ -64,6 +64,7 @@ Rails.application.routes.draw do
 
   resources :event_groups do
     member do
+      get :courses
       get :drop_list
       get :export_raw_times
       get :raw_times

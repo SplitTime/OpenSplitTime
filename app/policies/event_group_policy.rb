@@ -28,6 +28,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def courses?
+    user.authorized_to_edit?(event_group)
+  end
+
   def raw_times?
     user.authorized_to_edit?(event_group)
   end

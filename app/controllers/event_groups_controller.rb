@@ -71,6 +71,18 @@ class EventGroupsController < ApplicationController
     redirect_to event_groups_path
   end
 
+  def courses
+    authorize @event_group
+
+    course = Course.joins(events: :event_group).where(id: params[:course_id], event_groups: {id: @event_group.id}).first
+    if course
+      @form = StagingForm.new(event_group: @event_group, step: :courses, course: course, current_user: current_user)
+    else
+      flash[:warning] = "Course #{params[:course_id]} not found"
+      redirect_to courses_event_group_path(@event_group, course_id: @event_group.events.first.course_id)
+    end
+  end
+
   def raw_times
     authorize @event_group
     params[:sort] ||= '-created_at'

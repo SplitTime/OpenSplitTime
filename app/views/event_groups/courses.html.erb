@@ -1,0 +1,68 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Courses - #{@form.course.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= "Staging: #{@form.event_group.name}" %></strong>
+          </h1>
+          <%= render 'shared/staging_breadcrumbs' %>
+        </div>
+      </div>
+    </div>
+
+    <aside class="ost-toolbar">
+      <div class="container">
+        <%= staging_progress_bar(@form) %>
+      </div>
+    </aside>
+
+    <!-- Navigation -->
+    <%= staging_course_tabs(@form) %>
+  </div>
+</header>
+
+<%= render 'shared/errors', obj: @form.course %>
+
+<article class="ost-article container">
+  <div class="row">
+    <div class="col-12" data-controller="staging course-form">
+      <div data-target="course-form.formData"
+           data-pref-distance-unit="<%= @form.pref_distance_unit %>"></div>
+      <%= form_for(@form.course, html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <%= staging_hidden_continue_button %>
+
+        <div class="form-group">
+          <div class="col">
+            <%= staging_previous_button %>
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
+          </div>
+        </div>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col-12" data-target="eg-form.eventGroupName">
+              <label class="required">Course name</label>
+              <%= form.text_field :name, class: "form-control", placeholder: "Course name", data: {action: 'blur->eg-form#freezeEventGroupName'} %>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col">
+            <%= staging_previous_button %>
+            <%= staging_save_button %>
+            <%= staging_continue_button %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</article>

@@ -143,6 +143,14 @@ PUSHER_SECRET_KEY=xxx
 ```
 Contact us for the dev team's Pusher credentials.
 
+**Google Maps API**
+
+OpenSplitTime uses Google Maps API to display course gpx tracks and split locations. To access the API, you will need to add the following to your `.env` file:
+```
+GOOGLE_MAPS_API_KEY=xxx
+```
+Get your own free [Google Maps API key](https://console.cloud.google.com/google/maps-apis) or contact us for the dev team's credentials.
+
 **Sidekiq and Redis**
 
 OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:

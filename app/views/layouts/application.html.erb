@@ -10,7 +10,7 @@
     <script id="current_user" type="text/json"><%= raw(UserSerializer.new(@current_user).to_json) %></script>
   <% end %>
   <%= javascript_pack_tag 'application' %>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGMCB8fvvGJzp_aR0Hp_YUyopUiAgGoCE"></script>
+  <%= javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
   <%= render 'layouts/google_analytics' if Rails.env.production? %>

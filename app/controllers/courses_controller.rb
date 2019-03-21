@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :best_efforts, :plan_effort]
   before_action :set_course, except: [:index, :new, :create]
+  before_action :set_event_group, only: [:update]
   after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
 
   def index
@@ -42,9 +43,10 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to @course, notice: 'Course updated'
+      redirect_to staging_redirect_path
     else
-      render 'edit'
+      @form = StagingForm.new(event_group: @event_group, step: :courses, course: @course, current_user: current_user)
+      render 'event_groups/courses'
     end
   end
 
@@ -102,6 +104,23 @@ class CoursesController < ApplicationController
 
     if request.path != course_path(@course)
       redirect_numeric_to_friendly(@course, params[:id])
+    end
+  end
+
+  def set_event_group
+    @event_group = EventGroup.friendly.find(params[:event_group_id])
+  end
+
+  def staging_redirect_path
+    case params[:button]
+    when 'Continue'
+      roster_event_group_path(@event_group)
+    when 'Previous'
+      edit_event_path(@event_group.events.where(course_id: @course.id).first)
+    when 'Save'
+      courses_event_group_path(@event_group, course_id: @course.id)
+    else
+      course_path(@course)
     end
   end
 end

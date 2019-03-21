@@ -33,8 +33,9 @@
     <div class="col-12" data-controller="staging course-form">
       <div data-target="course-form.formData"
            data-pref-distance-unit="<%= @form.pref_distance_unit %>"></div>
-      <%= form_for(@form.course, html: {class: "form-horizontal", role: "form"}) do |form| %>
+      <%= form_for(@form.course, html: {class: 'form-horizontal', role: 'form'}) do |form| %>
         <%= staging_hidden_continue_button %>
+        <%= hidden_field_tag :event_group_id, @form.event_group.id %>
 
         <div class="form-group">
           <div class="col">
@@ -46,13 +47,47 @@
 
         <div class="card card-body bg-light border-0">
           <div class="row">
-            <div class="form-group col-12" data-target="eg-form.eventGroupName">
+            <div class="form-group col-12">
               <label class="required">Course name</label>
-              <%= form.text_field :name, class: "form-control", placeholder: "Course name", data: {action: 'blur->eg-form#freezeEventGroupName'} %>
+              <%= form.text_field :name, class: 'form-control', placeholder: 'Course name' %>
             </div>
+          </div>
 
+          <div class="row">
+            <div class="form-group col-12">
+              <label>Course description</label>
+              <%= form.text_area :description, class: 'form-control', placeholder: 'Course description' %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-12">
+              <label>Start time of next event (if known)</label>
+              <%= form.datetimepicker_field :next_start_time_local %>
+            </div>
+          </div>
+
+          <% if @form.course.gpx.attached? %>
+            <div class="row">
+              <div class="form-group col">
+                <label>Existing gpx file: </label>
+                <%= "#{@form.course.gpx.filename}, #{(@form.course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="row">
+            <div class="form-group col">
+              <%= form.label @form.course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
+              <%= form.file_field :gpx, class: 'form-control' %>
+            </div>
           </div>
         </div>
+
+        <br/>
+
+
+        <br/>
 
         <div class="form-group">
           <div class="col">

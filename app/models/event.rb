@@ -34,6 +34,7 @@ class Event < ApplicationRecord
   before_validation :conform_changed_course
   before_save :add_all_course_splits
   after_save :validate_event_group
+  after_save :update_course_start_time
   after_destroy :destroy_orphaned_event_group
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
@@ -174,6 +175,12 @@ class Event < ApplicationRecord
   def add_all_course_splits
     if splits.empty?
       splits << course.splits
+    end
+  end
+
+  def update_course_start_time
+    if course.next_start_time.nil? || (course.next_start_time < Time.current && start_time > Time.current)
+      course.update(next_start_time: start_time)
     end
   end
 

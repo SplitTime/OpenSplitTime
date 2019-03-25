@@ -53,21 +53,33 @@ module StagingHelper
     button_tag('', type: :submit, value: 'Continue', class: 'default-button-handler', tabindex: '-1')
   end
 
-  def staging_continue_button
+  def staging_continue_submit_button
     button_tag(type: :submit, value: 'Continue', class: 'btn btn-primary btn-large') do
       content_tag(:span, 'Continue', class: 'fa5-text-left') + fa_icon('arrow-right')
     end
   end
 
-  def staging_previous_button
+  def staging_previous_submit_button
     button_tag(type: :submit, value: 'Previous', class: 'btn btn-primary btn-large') do
       fa_icon 'arrow-left', text: 'Previous'
     end
   end
 
-  def staging_save_button
-    button_tag(type: :submit, value: 'Save', class: 'btn btn-primary btn-large') do
+  def staging_save_submit_button
+    button_tag(type: :submit, value: 'Save', class: 'btn btn-primary btn-large float-right') do
       fa_icon 'save', text: 'Save'
+    end
+  end
+
+  def staging_previous_button(view_object)
+    link_to(edit_event_path(view_object.first_course_event), class: 'btn btn-primary btn-large') do
+      fa_icon 'arrow-left', text: 'Previous'
+    end
+  end
+
+  def staging_continue_button(view_object)
+    link_to(roster_event_group_path(view_object.event_group), class: 'btn btn-primary btn-large') do
+      content_tag(:span, 'Continue', class: 'fa5-text-left') + fa_icon('arrow-right')
     end
   end
 end

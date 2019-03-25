@@ -1,4 +1,4 @@
-<%# Requires parameter splits, referred_by %>
+<%# Requires parameter splits %>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -16,16 +16,16 @@
   </thead>
   <tbody>
   <% splits.each do |split| %>
-      <tr>
-        <td><strong><%= link_to split.base_name, split_path(split) %></strong></td>
-        <td><%= link_to split.course_name, course_path(split.course) %></td>
-        <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
-        <td><%= "#{e(split.vert_gain_from_start)} #{peu}" %></td>
-        <td><%= "#{e(split.vert_loss_from_start)} #{peu}" %></td>
-        <td><%= "#{e(split.elevation)} #{peu}" %></td>
-        <td><%= split.latitude %></td>
-        <td><%= split.longitude %></td>
-      </tr>
+    <tr>
+      <td><strong><%= link_to split.base_name, split_path(split) %></strong></td>
+      <td><%= link_to split.course_name, course_path(split.course) %></td>
+      <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
+      <td><%= "#{e(split.vert_gain_from_start)} #{peu}" %></td>
+      <td><%= "#{e(split.vert_loss_from_start)} #{peu}" %></td>
+      <td><%= "#{e(split.elevation)} #{peu}" %></td>
+      <td><%= split.latitude %></td>
+      <td><%= split.longitude %></td>
+    </tr>
   <% end %>
   </tbody>
 </table>

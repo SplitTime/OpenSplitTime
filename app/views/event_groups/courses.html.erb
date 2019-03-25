@@ -28,76 +28,96 @@
 
 <%= render 'shared/errors', obj: @form.course %>
 
-<article class="ost-article container">
+<article class="ost-article container" data-controller="course-form">
+  <aside class="col-12">
+    <h3>
+      <strong>Add Your Course Details</strong>
+    </h3>
+    <p>A course has splits at each point where times will be recorded. If you just created a new course, Start and
+      Finish splits were automatically created for you. You can add splits here, and if desired, you can use the map to
+      add location information and a gpx track.</p>
+  </aside>
+
   <div class="row">
     <div class="col-12" data-controller="staging course-form">
-      <div data-target="course-form.formData"
-           data-pref-distance-unit="<%= @form.pref_distance_unit %>"></div>
-      <%= form_for(@form.course, html: {class: 'form-horizontal', role: 'form'}) do |form| %>
-        <%= staging_hidden_continue_button %>
-        <%= hidden_field_tag :event_group_id, @form.event_group.id %>
 
-        <div class="form-group">
+      <div class="form-group">
+        <div class="row">
           <div class="col">
-            <%= staging_previous_button %>
-            <%= staging_save_button %>
-            <%= staging_continue_button %>
+            <%= staging_previous_button(@form) %>
+            <%= staging_continue_button(@form) %>
           </div>
         </div>
+      </div>
 
-        <div class="card card-body bg-light border-0">
-          <div class="row">
-            <div class="form-group col-12">
-              <label class="required">Course name</label>
-              <%= form.text_field :name, class: 'form-control', placeholder: 'Course name' %>
-            </div>
-          </div>
+      <div class="card card-body bg-light border-0">
+        <% if @form.course_has_location_data? %>
+          <div id="map" style="width: 100%; height: 500px;" data-controller="maps" data-target="maps.mapInfo"
+               data-course-id="<%= @form.course.id %>"></div>
+        <% end %>
+        <br/>
 
-          <div class="row">
-            <div class="form-group col-12">
-              <label>Course description</label>
-              <%= form.text_area :description, class: 'form-control', placeholder: 'Course description' %>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-12">
-              <label>Start time of next event (if known)</label>
-              <%= form.datetimepicker_field :next_start_time_local %>
-            </div>
-          </div>
-
-          <% if @form.course.gpx.attached? %>
-            <div class="row">
-              <div class="form-group col">
-                <label>Existing gpx file: </label>
-                <%= "#{@form.course.gpx.filename}, #{(@form.course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
-              </div>
-            </div>
-          <% end %>
-
+        <%= form_with(model: @form.course, class: 'form-horizontal', role: 'form', format: :json) do |form| %>
           <div class="row">
             <div class="form-group col">
+              <% if @form.course.gpx.attached? %>
+                <%= "GPX track: #{@form.course.gpx.filename}, #{(@form.course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
+              <% else %>
+                <%= "No GPX track attached" %>
+              <% end %>
+            </div>
+            <div class="form-group col">
               <%= form.label @form.course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
-              <%= form.file_field :gpx, class: 'form-control' %>
+              <%= form.file_field :gpx, class: 'form-control', direct_upload: true, data: {action: 'change->course-form#submit'} %>
+            </div>
+            <div class="col d-none">
+              <%= form.submit 'Upload', class: 'btn btn-primary', data: {target: 'course-form.submitButton', action: 'ajax:success->course-form#reloadPage'} %>
             </div>
           </div>
+        <% end %>
+      </div>
+
+      <br/>
+
+      <div class="card card-body bg-light border-0">
+        <table class="table table-condensed table-hover">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Distance</th>
+            <th>Gain From Start</th>
+            <th>Loss From Start</th>
+            <th>Elevation</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @form.course.ordered_splits.each do |split| %>
+            <tr data-split-id="<%= split.id %>" data-action="click->course-form#splitModal">
+              <td><strong><%= split.base_name %></strong></td>
+              <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
+              <td><%= "#{e(split.vert_gain_from_start)} #{peu}" %></td>
+              <td><%= "#{e(split.vert_loss_from_start)} #{peu}" %></td>
+              <td><%= "#{e(split.elevation)} #{peu}" %></td>
+              <td><%= split.latitude %></td>
+              <td><%= split.longitude %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <br/>
+
+      <div class="form-group">
+        <div class="col">
+          <%= staging_previous_button(@form) %>
+          <%= staging_continue_button(@form) %>
         </div>
+      </div>
 
-        <br/>
-
-
-        <br/>
-
-        <div class="form-group">
-          <div class="col">
-            <%= staging_previous_button %>
-            <%= staging_save_button %>
-            <%= staging_continue_button %>
-          </div>
-        </div>
-
-      <% end %>
     </div>
   </div>
 </article>

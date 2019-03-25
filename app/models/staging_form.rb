@@ -47,6 +47,14 @@ class StagingForm
     end
   end
 
+  def first_course_event
+    @first_course_event ||= event_group.events.where(course_id: course.id).first
+  end
+
+  def course_has_location_data?
+    course.ordered_splits.any?(&:has_location?) || course.gpx.attached?
+  end
+
   private
 
   def distance_component(course)

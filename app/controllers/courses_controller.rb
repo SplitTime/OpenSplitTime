@@ -1,7 +1,6 @@
 class CoursesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :best_efforts, :plan_effort]
   before_action :set_course, except: [:index, :new, :create]
-  before_action :set_event_group, only: [:update]
   after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
 
   def index
@@ -43,10 +42,13 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to staging_redirect_path
+      respond_to do |format|
+        format.json { render json: {success: true, id: @course.id, type: 'course'}, status: :ok }
+      end
     else
-      @form = StagingForm.new(event_group: @event_group, step: :courses, course: @course, current_user: current_user)
-      render 'event_groups/courses'
+      respond_to do |format|
+        format.json { render json: {success: false, errors: jsonapi_error_object(@course)}, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -105,10 +107,6 @@ class CoursesController < ApplicationController
     if request.path != course_path(@course)
       redirect_numeric_to_friendly(@course, params[:id])
     end
-  end
-
-  def set_event_group
-    @event_group = EventGroup.friendly.find(params[:event_group_id])
   end
 
   def staging_redirect_path

@@ -32,9 +32,7 @@ class Course < ApplicationRecord
   validates :distance_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates :vert_gain_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validates :vert_loss_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
-  validates :gpx,
-            content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],
-            size: {less_than: 500.kilobytes}
+  # FIXME: Add validations for gpx when upgrading to Rails 6.
 
   after_create :create_start_and_finish_splits, unless: :finish_split_present?
 

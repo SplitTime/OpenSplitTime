@@ -34,11 +34,12 @@ var gmap_show = function (locations, trackPoints) {
 
             var marker = new google.maps.Marker({
                 position: point,
+                label: (i + 1).toString(),
                 map: map
             });
 
             marker.infowindow = new google.maps.InfoWindow({
-                content: location.base_name + " : " + location.latitude + ", " + location.longitude
+                content: location.baseName + " : " + location.latitude + ", " + location.longitude
             });
 
             marker.addListener('click', function () {

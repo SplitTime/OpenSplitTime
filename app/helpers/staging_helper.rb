@@ -55,7 +55,7 @@ module StagingHelper
 
   def staging_continue_submit_button
     button_tag(type: :submit, value: 'Continue', class: 'btn btn-primary btn-large') do
-      content_tag(:span, 'Continue', class: 'fa5-text-left') + fa_icon('arrow-right')
+      fa_icon 'arrow-right', text: 'Continue', right: true
     end
   end
 
@@ -79,7 +79,7 @@ module StagingHelper
 
   def staging_continue_button(view_object)
     link_to(roster_event_group_path(view_object.event_group), class: 'btn btn-primary btn-large') do
-      content_tag(:span, 'Continue', class: 'fa5-text-left') + fa_icon('arrow-right')
+      fa_icon 'arrow-right', text: 'Continue', right: true
     end
   end
 end

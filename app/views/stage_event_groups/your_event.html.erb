@@ -1,3 +1,11 @@
+<% content_for :title do %>
+  <% if @event_group.persisted? %>
+    <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
+  <% else %>
+    <% 'OpenSplitTime: New Event Group' %>
+  <% end %>
+<% end %>
+
 <%= render partial: 'organizations/new' %>
 
 <header class="ost-header">
@@ -6,7 +14,7 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @form.event_group.persisted? ? "Staging: #{@form.event_group.name}" : 'Staging: Create Event' %></strong>
+            <strong><%= @presenter.event_group.persisted? ? "Staging: #{@presenter.event_group.name}" : 'Staging: Create Event' %></strong>
           </h1>
           <%= render 'shared/staging_breadcrumbs' %>
         </div>
@@ -15,14 +23,14 @@
 
     <aside class="ost-toolbar">
       <div class="container">
-        <%= staging_progress_bar(@form) %>
+        <%= staging_progress_bar(@presenter) %>
       </div>
     </aside>
 
   </div>
 </header>
 
-<%= render 'shared/errors', obj: @form.event_group %>
+<%= render 'shared/errors', obj: @presenter.event_group %>
 
 <article class="ost-article container">
   <div class="col-12 row">
@@ -34,7 +42,7 @@
     </aside>
 
     <article class="col-12" data-controller="staging eg-form">
-      <%= form_with(model: @form.event_group, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
+      <%= form_with(model: @presenter.event_group, url: @presenter.event_group.persisted? ? stage_event_group_path(@presenter.event_group) : stage_event_groups_path, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
         <%= staging_hidden_continue_button %>
 
         <div class="form-group">
@@ -79,7 +87,7 @@
               <label class="required">In what time zone will your event occur?</label>
               <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
               <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                         {selected: @form.event_group.home_time_zone || 'Mountain Time (US & Canada)'},
+                                         {selected: @presenter.event_group.home_time_zone || 'Mountain Time (US & Canada)'},
                                          {class: "form-control dropdown-select-field"}) %>
             </div>
 
@@ -115,9 +123,27 @@
         </div>
 
         <div class="col-12">
-          <span class="brackets"><%= link_to 'Cancel', @form.cancel_link %></span>
+          <span class="brackets"><%= link_to 'Cancel', @presenter.cancel_link %></span>
         </div>
       <% end %>
     </article>
   </div>
 </article>
+
+<% if @event_group.persisted? %>
+  <article class="ost-article container">
+    <% if current_user.authorized_fully?(@event_group) %>
+      <hr>
+      <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),
+                                  resource: @event_group,
+                                  noteworthy_associations: [:events, :entrants, :split_times],
+                                  class: 'btn btn-danger') %>
+
+      <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
+                                   class: 'btn btn-outline-secondary text-danger',
+                                   message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
+                                   required_pattern: "#{@event_group.name.upcase} TIMES",
+                                   strong_confirm_id: "strong-confirm-times-event-group-#{@event_group.id}") %>
+    <% end %>
+  </article>
+<% end %>

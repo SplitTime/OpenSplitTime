@@ -1,54 +1,12 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :place, :analyze]
   before_action :set_event, except: [:index, :new, :create]
-  before_action :set_event_group, only: [:index, :new, :create]
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
 
   def show
     redirect_to :spread_event, status: 301
-  end
-
-  def new
-    course = Course.find_or_initialize_by(id: params[:course_id])
-    start_time_local = I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
-    event = @event_group.events.new
-    event.assign_attributes(course: course, results_template: ResultsTemplate.default, laps_required: 1, start_time_local: start_time_local)
-    authorize event
-
-    @form = StagingForm.new(event_group: @event_group, event: event, step: :event_details, current_user: current_user)
-  end
-
-  def edit
-    course = Course.find_by(id: params[:course_id]) || @event.course
-    @event.course = course
-    authorize @event
-    @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
-  end
-
-  def create
-    @event = @event_group.events.new
-    @event.assign_attributes(permitted_params)
-    authorize @event
-
-    if @event.save
-      redirect_to staging_redirect_path
-    else
-      @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
-      render 'new'
-    end
-  end
-
-  def update
-    authorize @event
-
-    if @event.update(permitted_params)
-      redirect_to staging_redirect_path
-    else
-      @form = StagingForm.new(event_group: @event.event_group, event: @event, step: :event_details, current_user: current_user)
-      render 'edit'
-    end
   end
 
   def destroy
@@ -225,22 +183,5 @@ class EventsController < ApplicationController
   def set_event
     @event = Event.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event, params[:id])
-  end
-
-  def set_event_group
-    @event_group = EventGroup.friendly.find(params[:id])
-  end
-
-  def staging_redirect_path
-    case params[:button]
-    when 'Continue'
-      courses_event_group_path(@event.event_group, course_id: @event.course_id)
-    when 'Previous'
-      edit_event_group_path(@event.event_group)
-    when 'Save'
-      edit_event_path(@event)
-    else
-      event_group_path(@event.event_group, force_settings: true)
-    end
   end
 end

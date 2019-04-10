@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def permitted_params
-    @permitted_params ||= params_class.strong_params(controller_class_name, params)
+    @permitted_params ||= params_class.strong_params(params)
   end
 
   def params_class

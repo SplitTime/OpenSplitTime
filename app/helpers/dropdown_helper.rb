@@ -250,7 +250,7 @@ module DropdownHelper
   def event_actions_dropdown(event)
     dropdown_items = [
         {name: 'Edit event',
-         link: edit_event_path(event)},
+         link: edit_stage_event_group_path(event.event_group, event_id: event.id, step: :event_details)},
         {name: 'Establish drops',
          link: set_stops_event_path(event),
          method: :put,
@@ -271,7 +271,7 @@ module DropdownHelper
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
         {name: 'Edit group',
-         link: edit_event_group_path(view_object)},
+         link: edit_stage_event_group_path(view_object, step: :your_event)},
         {name: 'Duplicate group',
          link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
         {role: :separator},

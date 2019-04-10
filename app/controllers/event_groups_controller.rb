@@ -2,7 +2,7 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index, :new, :create]
+  before_action :set_event_group, except: [:index]
   after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
@@ -24,63 +24,12 @@ class EventGroupsController < ApplicationController
     session[:return_to] = event_group_path(@event_group, force_settings: true)
   end
 
-  def new
-    organization = Organization.find_or_initialize_by(id: params[:organization_id])
-    @event_group = EventGroup.new(organization: organization)
-    authorize @event_group
-    set_form
-  end
-
-  def edit
-    organization = Organization.find_by(id: params[:organization_id]) || @event_group.organization
-    @event_group.organization = organization
-    authorize @event_group
-    set_form
-  end
-
-  def create
-    @event_group = EventGroup.new(permitted_params)
-    authorize @event_group
-
-    if @event_group.save
-      redirect_to staging_redirect_path
-    else
-      organization = Organization.find_or_initialize_by(id: params[:organization_id]) || @event_group.organization
-      @event_group.organization = organization
-      set_form
-      render 'new'
-    end
-  end
-
-  def update
-    authorize @event_group
-
-    if @event_group.update(permitted_params)
-      redirect_to staging_redirect_path
-    else
-      set_form
-      render 'edit'
-    end
-  end
-
   def destroy
     authorize @event_group
 
     @event_group.destroy
     flash[:success] = 'Event group deleted.'
     redirect_to event_groups_path
-  end
-
-  def courses
-    authorize @event_group
-
-    course = Course.joins(events: :event_group).where(id: params[:course_id], event_groups: {id: @event_group.id}).first
-    if course
-      @form = StagingForm.new(event_group: @event_group, step: :courses, course: course, current_user: current_user)
-    else
-      flash[:warning] = "Course #{params[:course_id]} not found"
-      redirect_to courses_event_group_path(@event_group, course_id: @event_group.events.first.course_id)
-    end
   end
 
   def raw_times
@@ -186,24 +135,5 @@ class EventGroupsController < ApplicationController
   def set_event_group
     @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
-  end
-
-  def set_form
-    @form = StagingForm.new(event_group: @event_group, step: :your_event)
-  end
-
-  def staging_redirect_path
-    case params[:button]
-    when 'Continue'
-      if action_name == 'create'
-        new_event_path(@event_group)
-      else
-        @event_group.events.present? ? edit_event_path(@event_group.events.first) : new_event_path(@event_group)
-      end
-    when 'Save'
-      edit_event_group_path(@event_group)
-    else
-      event_group_path(@event.event_group, force_settings: true)
-    end
   end
 end

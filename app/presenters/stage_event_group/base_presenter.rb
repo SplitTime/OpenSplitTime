@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+class StageEventGroup::BasePresenter < BasePresenter
+  include ActiveModel::Model
+  include ActiveModel::Attributes
+  include UnitConversions
+  validates_presence_of :event_group
+  validates_presence_of :params
+  validates_presence_of :current_user
+
+  attr_reader :event_group
+  delegate :name, :organization, :organization_name, :events, :to_param, to: :event_group
+  delegate :pref_distance_unit, :pref_elevation_unit, to: :current_user
+
+  def initialize(attributes)
+    @event_group = attributes[:event_group]
+    @params = attributes[:params]
+    @current_user = attributes[:current_user]
+    post_initialize
+  end
+
+  def current_step
+    params[:step] || StageEventGroupsController::STEPS.first
+  end
+
+  private
+
+  attr_reader :params, :current_user
+
+  def post_initialize
+    raise NotImplementedError, "A subclass of #{self.class.name} must implement a post_initialize method."
+  end
+end

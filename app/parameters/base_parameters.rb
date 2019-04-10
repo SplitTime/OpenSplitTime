@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class BaseParameters
-
   def self.permitted
     []
   end
@@ -10,7 +9,7 @@ class BaseParameters
     permitted
   end
 
-  def self.strong_params(class_name, params)
+  def self.strong_params(params)
     params.require(class_name).permit(*permitted)
   end
 
@@ -28,5 +27,9 @@ class BaseParameters
 
   def self.unique_key
     []
+  end
+
+  def self.class_name
+    self.to_s.sub('Parameters', '').underscore
   end
 end

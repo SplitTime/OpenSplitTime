@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Courses - #{@form.course.name}" %>
+  <% "OpenSplitTime: Event Group Courses - #{@presenter.course.name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -8,7 +8,7 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= "Staging: #{@form.event_group.name}" %></strong>
+            <strong><%= "Staging: #{@presenter.event_group.name}" %></strong>
           </h1>
           <%= render 'shared/staging_breadcrumbs' %>
         </div>
@@ -17,16 +17,16 @@
 
     <aside class="ost-toolbar">
       <div class="container">
-        <%= staging_progress_bar(@form) %>
+        <%= staging_progress_bar(@presenter) %>
       </div>
     </aside>
 
     <!-- Navigation -->
-    <%= staging_course_tabs(@form) %>
+    <%= staging_course_tabs(@presenter) %>
   </div>
 </header>
 
-<%= render 'shared/errors', obj: @form.course %>
+<%= render 'shared/errors', obj: @presenter.course %>
 
 <article class="ost-article container" data-controller="course-form">
   <aside class="col-12">
@@ -44,30 +44,30 @@
       <div class="form-group">
         <div class="row">
           <div class="col">
-            <%= staging_previous_button(@form) %>
-            <%= staging_continue_button(@form) %>
+            <%= staging_previous_button(@presenter) %>
+            <%= staging_continue_button(@presenter) %>
           </div>
         </div>
       </div>
 
       <div class="card card-body bg-light border-0">
-        <% if @form.course_has_location_data? %>
+        <% if @presenter.course_has_location_data? %>
           <div id="map" style="width: 100%; height: 500px;" data-controller="maps" data-target="maps.mapInfo"
-               data-course-id="<%= @form.course.id %>"></div>
+               data-course-id="<%= @presenter.course.id %>"></div>
         <% end %>
         <br/>
 
-        <%= form_with(model: @form.course, class: 'form-horizontal', role: 'form', format: :json) do |form| %>
+        <%= form_with(model: @presenter.course, class: 'form-horizontal', role: 'form', format: :json) do |form| %>
           <div class="row">
             <div class="form-group col">
-              <% if @form.course.gpx.attached? %>
-                <%= "GPX track: #{@form.course.gpx.filename}, #{(@form.course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
+              <% if @presenter.course.gpx.attached? %>
+                <%= "GPX track: #{@presenter.course.gpx.filename}, #{(@presenter.course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
               <% else %>
                 <%= "No GPX track attached" %>
               <% end %>
             </div>
             <div class="form-group col">
-              <%= form.label @form.course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
+              <%= form.label @presenter.course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
               <%= form.file_field :gpx, class: 'form-control', direct_upload: true, data: {action: 'change->course-form#submit'} %>
             </div>
             <div class="col d-none">
@@ -94,7 +94,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @form.course.ordered_splits.each do |split| %>
+          <% @presenter.course.ordered_splits.each do |split| %>
             <tr data-split-id="<%= split.id %>" data-action="click->course-form#splitModal">
               <td><strong><%= split.base_name %></strong></td>
               <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
@@ -113,8 +113,8 @@
 
       <div class="form-group">
         <div class="col">
-          <%= staging_previous_button(@form) %>
-          <%= staging_continue_button(@form) %>
+          <%= staging_previous_button(@presenter) %>
+          <%= staging_continue_button(@presenter) %>
         </div>
       </div>
 

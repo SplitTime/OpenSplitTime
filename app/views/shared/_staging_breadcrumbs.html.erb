@@ -1,10 +1,10 @@
 <ul class="breadcrumb breadcrumb-ost">
-  <% if @form.organization.persisted? %>
+  <% if @presenter.organization.persisted? %>
     <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-    <li class="breadcrumb-item"><%= link_to @form.organization_name, organization_path(@form.organization) %></li>
+    <li class="breadcrumb-item"><%= link_to @presenter.organization_name, organization_path(@presenter.organization) %></li>
   <% end %>
-  <% if @form.event_group.persisted? %>
-    <li class="breadcrumb-item"><%= link_to @form.event_group.name, event_group_path(@form.event_group) %></li>
+  <% if @presenter.event_group.persisted? %>
+    <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
   <% end %>
-  <li class="breadcrumb-item active"><%= @form.step.to_s.titleize %></li>
+  <li class="breadcrumb-item active"><%= @presenter.current_step.titleize %></li>
 </ul>

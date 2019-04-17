@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ComputeDataEntryNodes do
@@ -45,8 +47,6 @@ RSpec.describe ComputeDataEntryNodes do
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
         expect(data_entry_nodes.map(&:min_distance_from_start)).to eq([0, 1000, 1000, 2000, 2000, 4000])
-        expect(data_entry_nodes.first.event_split_ids).to eq({event_1.id => event_1_split_1.id, event_2.id => event_2_split_1.id})
-        expect(data_entry_nodes.first.event_aid_station_ids).to eq({event_1.id => event_1_aid_1.id, event_2.id => event_2_aid_1.id})
       end
     end
 

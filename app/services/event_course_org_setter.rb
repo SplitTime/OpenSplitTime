@@ -34,11 +34,14 @@ class EventCourseOrgSetter
   end
 
   def update_resource(resource)
+    resource.assign_attributes(relationships[symbolized_name(resource.class)])
+
     if resource.update(class_params(resource.class))
       resource.reload
     else
       self.status = :unprocessable_entity
     end
+
     self.resources << resource
   end
 
@@ -51,7 +54,6 @@ class EventCourseOrgSetter
   def class_params(klass)
     (params[symbolized_name(klass)] || ActionController::Parameters.new)
         .permit(*"#{klass}Parameters".constantize.permitted)
-        .merge(relationships[symbolized_name(klass)])
   end
 
   def symbolized_class_name(resource)

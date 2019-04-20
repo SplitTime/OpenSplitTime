@@ -13,4 +13,8 @@ class StageEventGroup::YourEventPresenter < StageEventGroup::BasePresenter
       Rails.application.routes.url_helpers.event_groups_path
     end
   end
+
+  def current_step
+    'your_event'
+  end
 end

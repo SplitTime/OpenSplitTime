@@ -16,6 +16,10 @@ class StageEventGroup::CoursesPresenter < StageEventGroup::BasePresenter
     course.ordered_splits.any?(&:has_location?) || course.gpx.attached?
   end
 
+  def current_step
+    'courses'
+  end
+
   private
 
   def distance_component(course)

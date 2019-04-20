@@ -20,7 +20,7 @@ class StageEventGroup::BasePresenter < BasePresenter
   end
 
   def current_step
-    params[:step] || StageEventGroupsController::STEPS.first
+    raise NotImplementedError, "A subclass of #{self.class.name} must implement a current_step method."
   end
 
   private

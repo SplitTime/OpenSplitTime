@@ -26,6 +26,10 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
     course.ordered_splits.any?(&:has_location?) || course.gpx.attached?
   end
 
+  def current_step
+    'event_details'
+  end
+
   private
 
   attr_reader :current_user

@@ -1,0 +1,26 @@
+<% content_for :title do %>Event Groups
+<% end %>
+
+<article class="ost-article container">
+  <h3>Event Groups</h3>
+  <hr>
+  <p>
+    An Event Group is owned by an Organization, and it has one or more Events contained within it.
+  </p>
+  <p>
+    Events should belong to a single Event Group when no one person can participate in more than one of the Events.
+    Another way to think of it is that all bib numbers within an Event Group must be unique.
+  </p>
+  <p>
+    For example, if you are running 6-hour, 12-hour, and 24-hour events all on the same day, an entrant would have to
+    choose to run one of those events. Also, you would not have a bib number 101 in the 6-hour event and a different
+    bib number 101 in the 12-hour event. So those three events would fit nicely into a single Event Group.
+  </p>
+  <p>
+    When entering times using Live Entry or OST Remote, you are entering times not for a single Event, but rather for an
+    Event Group. For example, if you have 6-hour, 12-hour, and 24-hour events within a single Event Group, you would
+    have the ability to enter times for entrants in all of those events.
+  </p>
+  <hr>
+  <strong><%= link_to '<< Back', :back %></strong>
+</article>

@@ -1,26 +1,37 @@
-<% content_for :title do %>Getting Started 1
+<% content_for :title do %>Getting Started 3
 <% end %>
 
 <article class="ost-article container">
   <h3>Getting Started</h3>
   <hr>
   <h4>
-    Creating or importing your first event
+    Organizations, courses, and events
   </h4><br/>
-  <p> 1. <%= link_to 'Sign up', new_user_registration_path %>.</p>
-  <p> 2. Create a <%= link_to 'new Event', event_staging_app_path('new') %>.</p>
-  <p> 3. Follow the step-by-step instructions to add splits. You can manually enter information or import a splits CSV
-    file.</p>
-  <p> 4. Continue to add your entrants' personal information (names, ages, contact info) manually or import an efforts
-    CSV file. To avoid duplication, each entrant's information is stored as an "effort" and you will need to reconcile
-    efforts with our participant database. You can always add or change entrant information at any time, including
-    after the event is finished.</p>
-  <p> 5.a. If this is a planned event that will happen in the future, use OST Live to track your racers on the course.
-    Your time data will be available to the public instantly as it is submitted to the database.</p>
-  <p>or</p>
-  <p> 5.b. If this is an event that happened in the past and you have the data somewhere in gmail, or sharing a
-    thumb drive in a drawer with the Sword of Many Truths, or scribbled in a notebook in your basement, dust it off and
-    enter it using our handy tools.</p>
+  <p> There is a fair amount of terminology here, and it can be a bit confusing at first. Here's a short
+    description of the terms you need to know.</p>
+  <p><strong><%= link_to 'Organization:', organization_info_path %></strong> This is the basic administrative unit in
+    OpenSplitTime. Each Event Group, Event Series, and Course belongs to an Organization. This is the way you (as the
+    Organization creator) can create and modify your own Events and invite trusted Stewards to help.
+  </p>
+  <p><strong><%= link_to 'Course:', course_info_path %></strong> The physical course on which your event is run, ridden,
+    swum (swam?), flown, or climbed.</p>
+  <p><strong><%= link_to 'Split:', split_info_path %></strong> A point on a course at which a Split Time is recorded.
+    A Split may also include optional elevation, latitude, and longitude.</p>
+  <p><strong><%= link_to 'Event Group:', event_group_info_path %></strong> A group of events happening on or about the
+    same time. Some Event Groups will have just one Event, like a 100 miler that has no shorter course alternative.
+    Others will have multiple Events, like a 30K, 50K, and 100K that are run on the same day.</p>
+  <p><strong><%= link_to 'Event:', event_info_path %></strong> A single running of a race, ride, stage, or other...you
+    know, event.</p>
+  <p><strong><%= link_to 'Person:', person_info_path %></strong> A person who has competed in at least one
+    Event, like <%= link_to 'Kilian Jornet', person_path('kilian-jornet') %>.</p>
+  <p><strong><%= link_to 'Effort:', effort_info_path %></strong> The performance by a Person in a single Event, like
+    <%= link_to 'Kilian at Hardrock 2016', effort_path('hardrock-100-2016-kilian-jornet') %>.</p>
+  <p><strong><%= link_to 'Split Time:', split_time_info_path %></strong> A single time at which a Person during an
+    Effort passed through a given Split.</p>
+  <p>All this data is stored in a logical way with proper relations, which makes it possible to do just about
+    anything you want with it. If you've never seen endurance event data stored like this before, well, one theory is
+    that nobody has gone to the trouble of doing it right before. Some geeky people gave this a lot of thought.
+    Trust us, it all works out.</p>
   <hr>
-  <p><strong><%= link_to 'Creating or importing a recurring event >>', getting_started_2_path %></strong></p>
+  <p><strong><%= link_to 'Creating your first Event >>', getting_started_2_path %></strong></p>
 </article>

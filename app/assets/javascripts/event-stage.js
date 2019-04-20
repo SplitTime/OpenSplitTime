@@ -219,8 +219,6 @@
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
-                if ( !this.bibNumber ) return false;
-                if ( !this.birthdate ) return false;
                 return true;
             }
         }

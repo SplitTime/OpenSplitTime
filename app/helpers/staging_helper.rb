@@ -17,7 +17,7 @@ module StagingHelper
   def staging_event_tabs(view_object)
     persisted_events = view_object.events.select(&:persisted?)
     persisted_list_items = persisted_events.map do |event|
-      path_for_event = edit_stage_event_group_path(view_object.event_group, step: :event_details, event_id: event.id)
+      path_for_event = edit_stage_event_group_path(view_object.event_group, step: :event_details, event: {id: event.id})
       active = view_object.event.id == event.id ? 'active' : nil
       content_tag(:li, class: ['nav-item', active].compact.join(' ')) do
         link_to event.guaranteed_short_name, path_for_event

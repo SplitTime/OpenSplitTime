@@ -219,8 +219,6 @@
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
-                if ( !this.bibNumber ) return false;
-                if ( !this.birthdate ) return false;
                 return true;
             }
         }
@@ -1139,11 +1137,12 @@
                         var self = this;
                         var reset = function() {
                             // Locally clone existing object
+                            self.model = {}
                             setTimeout(function(){
                                 self.model = self.value;
-                                if ( self.model ) self.model.fetch();
+                                if (self.model && self.model.fetch) self.model.fetch();
                                 self.error = null;
-                            });
+                            }, 250);
                         };
                         $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );

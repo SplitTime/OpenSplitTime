@@ -13,14 +13,15 @@ Rails.application.routes.draw do
   get 'getting_started_4', to: 'visitors#getting_started_4'
   get 'getting_started_5', to: 'visitors#getting_started_5'
   get 'getting_started_6', to: 'visitors#getting_started_6'
+  get 'getting_started_7', to: 'visitors#getting_started_7'
   get 'course_info', to: 'visitors#course_info'
   get 'effort_info', to: 'visitors#effort_info'
   get 'event_info', to: 'visitors#event_info'
   get 'event_group_info', to: 'visitors#event_group_info'
   get 'person_info', to: 'visitors#person_info'
   get 'organization_info', to: 'visitors#organization_info'
+  get 'raw_time_info', to: 'visitors#raw_time_info'
   get 'split_info', to: 'visitors#split_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
   get 'split_time_info', to: 'visitors#split_time_info'
 
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}

@@ -5,14 +5,16 @@
   <h3>Events</h3>
   <hr>
   <p>
-    An Event is just that--a single event run on a single Course, with one Entrant for each person participating in the
-    event.
+    An Event is just that--a single event run on a single Course, with one or more Entrants participating in the
+    event. If you have groups running different Courses (even if they are happening at the same time), you'll need to
+    have an Event for each Course, and those Events would belong to a single Event Group.
   </p>
   <p>
-    If you have groups running different Courses (even if they are happening at the same time), you'll need to have an
-    Event for each Course, and those Events would belong to a single Event Group. For example, the Tough Trail 50K and
-    the Tough Trail 100K would be two separate Events belonging to a single Event Group, even if both are run at the
-    same time and even if parts of the 50K Course may overlap with parts of the 100K Course.
+    For example, <%= link_to 'Quad Rock 50 (2018)', event_path('quad-rock-50-2018') %> and
+    <%= link_to 'Quad Rock 25 (2018)', event_path('quad-rock-25-2018') %> are two separate Events belonging to a single
+    Event
+    Group, <%= link_to 'Quad Rock 2018', event_group_path('quad-rock-2018') %>, even though both are run at the
+    same time and even though the 25-mile Course covers the same territory as the 50-mile Course.
   </p>
   <hr>
   <strong><%= link_to '<< Back', :back %></strong>

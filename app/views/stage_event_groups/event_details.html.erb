@@ -63,6 +63,12 @@
           </div>
         </div>
 
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', @presenter.event.persisted? ? request.params : @presenter.cancel_link %></span>
+        </div>
+
+        <%= form.hidden_field :id %>
+
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
@@ -166,7 +172,7 @@
         </div>
 
         <div class="col">
-          <span class="brackets"><%= link_to 'Cancel', edit_stage_event_group_path(@presenter.event_group) %></span>
+          <span class="brackets"><%= link_to 'Cancel', @presenter.event.persisted? ? request.params : @presenter.cancel_link %></span>
         </div>
 
       <% end %>

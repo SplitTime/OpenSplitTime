@@ -11,12 +11,16 @@ export default class extends Controller {
     reloadPage(event) {
         const [data, _status, _xhr] = event.detail;
 
-        console.log(data);
-
         const newId = data.id;
         const resourceType = data.type;
+        let searchString;
+        if(window.location.search.length === 0) {
+            searchString = '?'
+        } else {
+            searchString = window.location.search + '&'
+        }
 
-        let url = window.location.pathname + '?' + resourceType + '_id=' + newId;
+        let url = window.location.pathname + searchString + resourceType + '_id=' + newId;
         Turbolinks.visit(url)
     }
 

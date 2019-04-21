@@ -19,8 +19,6 @@ class StageEventGroupsController < ApplicationController
 
   # GET /stage_event_groups/:id?step=name_of_step
   def edit
-    # params[:organization_id] should exist only if the user intends to change the organization
-    @event_group.organization = Organization.find(params[:organization_id]) if params[:organization_id]
     authorize @event_group
     set_presenter
 
@@ -33,10 +31,8 @@ class StageEventGroupsController < ApplicationController
     authorize @event_group
 
     if step_updater.update(@event_group, params)
-      redirect_to edit_stage_event_group_path(@event_group, step: step_for_redirect)
+      redirect_to edit_stage_event_group_path(@event_group, {step: step_for_redirect}.merge(redirect_context))
     else
-      organization = Organization.find_or_initialize_by(id: params[:organization_id]) || @event_group.organization
-      @event_group.organization = organization
       set_presenter
       render current_step
     end
@@ -47,22 +43,10 @@ class StageEventGroupsController < ApplicationController
     authorize @event_group
 
     if step_updater.update(@event_group, params)
-      redirect_to edit_stage_event_group_path(@event_group, step: step_for_redirect)
+      redirect_to edit_stage_event_group_path(@event_group, {step: step_for_redirect}.merge(redirect_context))
     else
       set_presenter
       render current_step
-    end
-  end
-
-  def courses
-    authorize @event_group
-
-    course = Course.joins(events: :event_group).where(id: params[:course_id], event_groups: {id: @event_group.id}).first
-    if course
-      @presenter = StagingForm.new(event_group: @event_group, step: :courses, course: course, current_user: current_user)
-    else
-      flash[:warning] = "Course #{params[:course_id]} not found"
-      redirect_to courses_event_group_path(@event_group, course_id: @event_group.events.first.course_id)
     end
   end
 
@@ -83,11 +67,20 @@ class StageEventGroupsController < ApplicationController
   def step_for_redirect
     case params[:button]
     when 'Continue'
-      STEPS.element_after(current_step)
-    when 'Back'
-      STEPS.element_before(current_step)
+      STEPS.element_after(current_step) || current_step
+    when 'Previous'
+      STEPS.element_before(current_step) || current_step
     else
       current_step
+    end
+  end
+
+  def redirect_context
+    context_event_id = params.dig(:event, :id)
+    if step_for_redirect.in?(%w(event_details courses)) && context_event_id.present?
+      {event: {id: context_event_id}}
+    else
+      {}
     end
   end
 

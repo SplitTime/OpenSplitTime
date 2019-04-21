@@ -14,7 +14,13 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @presenter.event_group.persisted? ? "Staging: #{@presenter.event_group.name}" : 'Staging: Create Event' %></strong>
+            <strong>
+              <% if @presenter.event_group.persisted? %>
+                <%= "Staging: #{@presenter.name}" %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %>
+              <% else %>
+                Staging: Create Event
+              <% end %>
+            </strong>
           </h1>
           <%= render 'shared/staging_breadcrumbs' %>
         </div>
@@ -50,6 +56,10 @@
             <%= staging_continue_submit_button %>
             <%= staging_save_submit_button %>
           </div>
+        </div>
+
+        <div class="col-12">
+          <span class="brackets"><%= link_to 'Cancel', @presenter.cancel_link %></span>
         </div>
 
         <div class="card card-body bg-light border-0">

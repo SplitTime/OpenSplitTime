@@ -250,7 +250,7 @@ module DropdownHelper
   def event_actions_dropdown(event)
     dropdown_items = [
         {name: 'Edit event',
-         link: edit_stage_event_group_path(event.event_group, event_id: event.id, step: :event_details)},
+         link: edit_stage_event_group_path(event.event_group, step: :event_details, event: {id: event.id})},
         {name: 'Establish drops',
          link: set_stops_event_path(event),
          method: :put,

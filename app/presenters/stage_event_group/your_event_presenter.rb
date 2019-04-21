@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class StageEventGroup::YourEventPresenter < StageEventGroup::BasePresenter
-  def post_initialize; end
+  def post_initialize
+    assign_event_group_attributes
+  end
 
   def cancel_link
     case
@@ -16,5 +18,11 @@ class StageEventGroup::YourEventPresenter < StageEventGroup::BasePresenter
 
   def current_step
     'your_event'
+  end
+
+  private
+
+  def assign_event_group_attributes
+    event_group.assign_attributes(organization_id: params[:organization_id]) if params[:organization_id].present?
   end
 end

@@ -15,7 +15,7 @@ module StagingHelper
   end
 
   def staging_event_tabs(view_object)
-    persisted_events = view_object.events.select(&:persisted?)
+    persisted_events = view_object.ordered_events.select(&:persisted?)
     persisted_list_items = persisted_events.map do |event|
       path_for_event = edit_stage_event_group_path(view_object.event_group, step: :event_details, event: {id: event.id})
       active = view_object.event.id == event.id ? 'active' : nil
@@ -24,10 +24,11 @@ module StagingHelper
       end
     end
 
-    path_for_new_event = edit_stage_event_group_path(view_object.event_group, step: :event_details)
+    path_for_new_event = edit_stage_event_group_path(view_object.event_group, step: :event_details, event: {id: nil})
     new_item_active = view_object.event.new_record? ? 'active' : nil
+    new_item_label = new_item_active ? 'New Event' : fa_icon('plus')
     new_list_item = content_tag(:li, class: ['nav-item', new_item_active].compact.join(' ')) do
-      link_to 'New Event', path_for_new_event
+      link_to new_item_label, path_for_new_event
     end
 
     content_tag(:ul, class: 'nav nav-tabs nav-tabs-ost') do
@@ -40,7 +41,7 @@ module StagingHelper
     list_items = courses.map do |course|
       active = view_object.course == course ? 'active' : nil
       content_tag(:li, class: ['nav-item', active].compact.join(' ')) do
-        link_to course.name, courses_event_group_path(course_id: course.id)
+        link_to course.name, edit_stage_event_group_path(view_object.event_group, step: :courses, course: {id: course.id})
       end
     end
 
@@ -62,7 +63,7 @@ module StagingHelper
   end
 
   def staging_previous_submit_button
-    button_tag(type: :submit, value: 'Previous', class: 'btn btn-primary btn-large') do
+    button_tag(type: :submit, value: 'Previous', class: 'btn btn-outline-secondary btn-large') do
       fa_icon 'arrow-left', text: 'Previous'
     end
   end
@@ -70,18 +71,6 @@ module StagingHelper
   def staging_save_submit_button
     button_tag(type: :submit, value: 'Save', class: 'btn btn-primary btn-large float-right') do
       fa_icon 'save', text: 'Save'
-    end
-  end
-
-  def staging_previous_button(view_object)
-    link_to(edit_event_path(view_object.first_course_event), class: 'btn btn-primary btn-large') do
-      fa_icon 'arrow-left', text: 'Previous'
-    end
-  end
-
-  def staging_continue_button(view_object)
-    link_to(roster_event_group_path(view_object.event_group), class: 'btn btn-primary btn-large') do
-      fa_icon 'arrow-right', text: 'Continue', right: true
     end
   end
 end

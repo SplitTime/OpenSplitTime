@@ -40,15 +40,22 @@
 
   <div class="row">
     <div class="col-12" data-controller="staging course-form">
+      <%= form_with(model: @presenter.first_course_event,
+                    url: stage_event_group_path(@presenter.event_group, step: @presenter.current_step),
+                    method: :patch,
+                    local: true,
+                    html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <%= staging_hidden_continue_button %>
 
-      <div class="form-group">
-        <div class="row">
+        <div class="form-group">
           <div class="col">
-            <%= staging_previous_button(@presenter) %>
-            <%= staging_continue_button(@presenter) %>
+            <%= staging_previous_submit_button %>
+            <%= staging_continue_submit_button %>
           </div>
         </div>
-      </div>
+
+        <%= form.hidden_field :id %>
+      <% end %>
 
       <div class="card card-body bg-light border-0">
         <% if @presenter.course_has_location_data? %>
@@ -111,12 +118,22 @@
 
       <br/>
 
-      <div class="form-group">
-        <div class="col">
-          <%= staging_previous_button(@presenter) %>
-          <%= staging_continue_button(@presenter) %>
+      <%= form_with(model: @presenter.first_course_event,
+                    url: stage_event_group_path(@presenter.event_group, step: @presenter.current_step),
+                    method: :patch,
+                    local: true,
+                    html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <%= staging_hidden_continue_button %>
+
+        <div class="form-group">
+          <div class="col">
+            <%= staging_previous_submit_button %>
+            <%= staging_continue_submit_button %>
+          </div>
         </div>
-      </div>
+
+        <%= form.hidden_field :id %>
+      <% end %>
 
     </div>
   </div>

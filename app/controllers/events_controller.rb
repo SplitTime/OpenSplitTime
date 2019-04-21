@@ -13,7 +13,7 @@ class EventsController < ApplicationController
     authorize @event
     @event.destroy
 
-    redirect_to event_groups_path
+    redirect_to edit_stage_event_group_path(@event.event_group, step: :event_details)
   end
 
   def reassign

@@ -20,6 +20,7 @@
 
             <%= form_for(Course.new, url: courses_path, format: :json, remote: true,
                          data: {action: 'ajax:success->ajax-modal#reloadPage ajax:error->ajax-modal#showErrors'}) do |f| %>
+              <%= f.hidden_field :organization_id, value: @presenter.organization.id %>
               <div class="form-group">
                 <label class="required">What will you name your course?</label>
                 <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Give your course a descriptive name that can be reused in future events, for example, Desert Ultra 100K Course."><i class="fas fa-question-circle"></i></span>

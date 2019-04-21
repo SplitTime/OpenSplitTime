@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
-  attr_reader :course, :event
+  attr_reader :event
 
   def post_initialize
-    @event = existing_event || new_event
-  end
-
-  def courses
-    events.map(&:course).uniq
+    @event = event_from_id || new_event
+    assign_event_attributes
   end
 
   def courses_for_select
@@ -16,14 +13,12 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
   end
 
   def cancel_link
-  end
-
-  def first_course_event
-    @first_course_event ||= event_group.events.where(course_id: course.id).first
-  end
-
-  def course_has_location_data?
-    course.ordered_splits.any?(&:has_location?) || course.gpx.attached?
+    case
+    when events.select(&:persisted?).present?
+      Rails.application.routes.url_helpers.edit_stage_event_group_path(event_group, step: :event_details, event: {id: ordered_events.first.id})
+    else
+      Rails.application.routes.url_helpers.edit_stage_event_group_path(event_group, step: :your_event)
+    end
   end
 
   def current_step
@@ -34,19 +29,17 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
 
   attr_reader :current_user
 
-  def distance_component(course)
-    {'data-distance' => (course.distance && StageEventGroup::BasePresenter.meters_to_preferred_distance(course.distance).round(1))}
-  end
-
-  def existing_event
-    return nil unless event_id.present?
-    found_event = event_group.events.find(event_id)
-    found_event.assign_attributes(permitted_event_params)
-    found_event
-  end
-
   def new_event
     Event.new(default_event_attributes)
+  end
+
+  def assign_event_attributes
+    event.assign_attributes(permitted_event_params) if params[:event].present?
+    event.assign_attributes(course_id: params[:course_id]) if params[:course_id].present?
+  end
+
+  def distance_component(course)
+    {'data-distance' => (course.distance && StageEventGroup::BasePresenter.meters_to_preferred_distance(course.distance).round(1))}
   end
 
   def default_event_attributes
@@ -57,9 +50,5 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
 
   def permitted_event_params
     EventParameters.strong_params(params)
-  end
-
-  def event_id
-    params.dig(:event, :id)
   end
 end

@@ -8,7 +8,7 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= "Staging: #{@presenter.event_group.name}" %></strong>
+            <strong><%= "Staging: #{@presenter.name}" %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
           </h1>
           <%= render 'shared/staging_breadcrumbs' %>
         </div>

@@ -16,6 +16,10 @@ class EffortProjectionsView < EffortWithLapSplitRows
     case
     when !beyond_start?
       'The participant must first be recorded beyond the start.'
+    when effort_start_time.nil?
+      'The participant does not have a recorded start time.'
+    when last_valid_split_time.nil?
+      'The participant has recorded times but none are valid.'
     when dropped?
       'The participant has dropped.'
     when finished?
@@ -69,6 +73,7 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def indexed_projected_split_times
+    return {} if effort_start_time.nil? || last_valid_split_time.nil?
     @indexed_projected_split_times ||= projected_effort.ordered_split_times.index_by(&:time_point)
   end
 end

@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= "#{@aid_station_detail.split_name.titleize}: #{@aid_station_detail.event_name}" %></strong>
+          <h1><strong><%= "#{@aid_station_detail.split_name&.titleize}: #{@aid_station_detail.event_name}" %></strong>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>

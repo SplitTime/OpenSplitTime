@@ -33,9 +33,18 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def subtext
-    elapsed_times? ?
-        "All times are elapsed since #{I18n.localize(actual_start_time_local, format: :full_day_military_and_zone)}" :
-        "All times are in #{home_time_zone}"
+    case
+    when suppress_form?
+      "Elapsed times cannot be calculated. No start time is present."
+    when elapsed_times?
+      "All times are elapsed since #{I18n.localize(actual_start_time_local, format: :full_day_military_and_zone)}"
+    else
+      "All times are in #{home_time_zone}"
+    end
+  end
+
+  def suppress_form?
+    elapsed_times? && actual_start_time_local.blank?
   end
 
   def table_header

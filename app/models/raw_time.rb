@@ -6,6 +6,7 @@ class RawTime < ApplicationRecord
 
   include Auditable
   include DataStatusMethods
+  include Delegable
   include TimePointMethods
   include TimeRecordable
   include TimeZonable
@@ -14,6 +15,8 @@ class RawTime < ApplicationRecord
 
   belongs_to :event_group
   belongs_to :split_time
+
+  delegate :organization, :stewards, to: :event_group
 
   attribute :lap, :integer
   attribute :split_time_exists, :boolean

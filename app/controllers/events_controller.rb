@@ -216,7 +216,7 @@ class EventsController < ApplicationController
   end
 
   def set_event
-    @event = Event.friendly.find(params[:id])
+    @event = policy_scope(Event).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event, params[:id])
   end
 end

@@ -6,7 +6,7 @@ class EventGroupsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
 
   def index
-    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable
+    scoped_event_groups = policy_scope(EventGroup)
                               .search(params[:search])
                               .by_group_start_time
                               .preload(:events)
@@ -147,7 +147,7 @@ class EventGroupsController < ApplicationController
   private
 
   def set_event_group
-    @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:id])
+    @event_group = policy_scope(EventGroup).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
   end
 end

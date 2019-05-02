@@ -70,6 +70,10 @@ class EventGroup < ApplicationRecord
     ActiveRecord::Base.connection.execute(query).values.flatten
   end
 
+  def organization_name
+    organization.name
+  end
+
   private
 
   def conform_concealed_status

@@ -1,0 +1,123 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event group follow - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item">Follow</li>
+          </ul>
+        </div>
+        <%= render 'events/time_and_course_info' %>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <br/>
+  <% if @presenter.event_group_finished? %>
+    <h3><strong><%= @presenter.name %> is completed.</strong></h3>
+  <% else %>
+    <h3><strong>How to Follow <%= @presenter.name %></strong></h3>
+    <hr>
+    <p><%= @presenter.organization_name %> is pleased to bring you live results and updates from OpenSplitTime!
+      OpenSplitTime provides us with several helpful tools for planning, predicting, and tracking runners.</p>
+    <% if @presenter.other_events_available? %>
+      <p>You can explore data from other <%= @presenter.organization_name %> events at
+        our <%= link_to 'home page', organization_path(@presenter.organization) %>.</p>
+    <% end %>
+
+    <div class="card">
+      <h4 class="card-header">Live Results</h4>
+      <div class="card-body">
+        <p>As runners come through each aid station, they will be recorded by our timing crews. Results will be
+          available
+          throughout the race at <%= @presenter.multiple_events? ? 'these links' : 'this link' %>:</p>
+        <ul>
+          <% @presenter.events.each do |event| %>
+            <li><%= link_to event.name, spread_event_path(event) %></li>
+          <% end %>
+        </ul>
+        <p>For detailed results for a specific person, click the person's name.</p>
+        <p>Note that some aid stations may have weak or intermittent internet access, so some results may be
+          delayed. <%= @presenter.organization_name %> will do its best to keep the live results as current as
+          possible.</p>
+      </div>
+    </div>
+    <br/>
+
+    <div class="card">
+      <h4 class="card-header">Live Text and Email Updates</h4>
+      <div class="card-body">
+        <p>You can also subscribe to receive free live updates via email or text message. To subscribe, follow these
+          easy
+          steps:</p>
+        <ol>
+          <% unless @presenter.current_user.present? %>
+            <li>Sign up for an account or log in to your existing account</li>
+          <% end %>
+          <li>Find the person you want to follow
+            at <%= @presenter.multiple_events? ? 'one of the Live Results links' : 'the Live Results link' %> provided
+            above
+          </li>
+          <li>Click the person's name</li>
+          <li>Locate the box that says "Notify me" and click the email or text button</li>
+        </ol>
+      </div>
+    </div>
+    <br/>
+
+    <% if @presenter.effort_planning_available? %>
+      <div class="card">
+        <h4 class="card-header">Live Time Projections</h4>
+        <div class="card-body">
+          <p>After an entrant has been recorded at the first aid station, projections will be available showing expected
+            times to later aid stations. The projections are based on prior years' data, and the outside (high and low)
+            projected times should be reliable. To see projected times, go to the full race results, click the person's
+            name, and click the "Projections" tab.</p>
+        </div>
+      </div>
+      <br/>
+
+      <div class="card">
+        <h4 class="card-header">Planning Your Effort</h4>
+        <div class="card-body">
+          <p>Using data from prior years, OpenSplitTime provides a planning tool to help you figure out your pacing for
+            any
+            finish time. You can plan your effort here:</p>
+          <ul>
+            <% @presenter.courses.each do |course| %>
+              <li><%= link_to course.name, plan_effort_course_path(course) %></li>
+            <% end %>
+          </ul>
+          <p>Just click <%= @presenter.multiple_courses? ? 'one of the links' : 'the link' %> above, type in your
+            expected
+            finish time, and click "Create My Plan." OpenSplitTime will calculate split times for each aid station based
+            on prior-year efforts that finished close to that same time.</p>
+          <p>You can export your plan to a CSV file (readable by Excel or Google Sheets) by clicking "Export Plan."
+            Enter
+            different finish times to create as many alternate plans as you like.</p>
+        </div>
+      </div>
+      <br/>
+    <% end %>
+
+    <div class="card">
+      <h4 class="card-header">Questions? Need a Hand?</h4>
+      <div class="card-body">
+        <p>If you have any questions or problems with OpenSplitTime, please feel free to contact us here:
+          <%= mail_to 'mark@opensplittime.org' %>.</p>
+      </div>
+    </div>
+  <% end %>
+</article>

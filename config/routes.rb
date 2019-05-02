@@ -68,6 +68,7 @@ Rails.application.routes.draw do
   resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
     member do
       get :drop_list
+      get :follow
       get :raw_times
       get :roster
       get :export_raw_times

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
   before_action :set_event_group, except: [:index, :create]
-  after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list]
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
@@ -71,6 +71,10 @@ class EventGroupsController < ApplicationController
   def drop_list
     event_group = EventGroup.where(id: @event_group).includes(:organization, events: :efforts).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def follow
+    @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
   end
 
   def traffic

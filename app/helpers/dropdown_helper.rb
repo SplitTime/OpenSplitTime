@@ -81,6 +81,9 @@ module DropdownHelper
         {name: 'Podium',
          link: podium_event_path(view_object.event),
          active: action_name == 'podium'},
+        {name: 'Follow',
+         link: follow_event_group_path(view_object.event_group),
+         active: action_name == 'follow'},
         {name: 'Traffic',
          link: traffic_event_group_path(view_object.event_group),
          active: action_name == 'traffic'}

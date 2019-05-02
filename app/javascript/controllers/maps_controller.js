@@ -9,8 +9,8 @@ export default class extends Controller {
         const splitId = this.mapInfoTarget.dataset.splitId;
 
         Rails.ajax({
+            url: "/courses/" + courseId + '.json',
             type: "GET",
-            url: "/api/v1/courses/" + courseId,
             success: function (data) {
                 const attributes = data.data.attributes;
 

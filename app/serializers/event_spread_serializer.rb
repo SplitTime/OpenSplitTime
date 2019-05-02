@@ -7,6 +7,10 @@ class EventSpreadSerializer < BaseSerializer
   has_many :effort_times_rows
 
   def event_start_time
-    object.event_start_time_local
+    object.start_time_local
+  end
+
+  def event_start_time_local
+    object.start_time_local
   end
 end

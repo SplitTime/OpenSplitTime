@@ -22,10 +22,6 @@ class LiveEventFramework
     event.id
   end
 
-  def event_start_time_local
-    event.start_time_local
-  end
-
   def efforts_started
     @efforts_started ||= event_efforts.select(&:started?)
   end

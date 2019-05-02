@@ -31,7 +31,7 @@
     <h3><strong>How to Follow <%= @presenter.name %></strong></h3>
     <hr>
     <p><%= @presenter.organization_name %> is pleased to bring you live results and updates from OpenSplitTime!
-      OpenSplitTime provides us with several helpful tools for planning, predicting, and tracking runners.</p>
+      OpenSplitTime provides us with helpful tools for <%= @presenter.effort_planning_available? ? 'planning, predicting, and ' : '' %>tracking runners.</p>
     <% if @presenter.other_events_available? %>
       <p>You can explore data from other <%= @presenter.organization_name %> events at
         our <%= link_to 'home page', organization_path(@presenter.organization) %>.</p>

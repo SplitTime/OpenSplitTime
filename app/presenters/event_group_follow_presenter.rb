@@ -20,7 +20,7 @@ class EventGroupFollowPresenter < BasePresenter
   end
 
   def effort_planning_available?
-    courses.any? { |course| course.events.any?(&:finished?) }
+    complex_events_included? && complex_precedents_available?
   end
 
   def event_group_finished?
@@ -33,5 +33,15 @@ class EventGroupFollowPresenter < BasePresenter
 
   def other_events_available?
     organization.event_groups.visible.many?
+  end
+
+  private
+  
+  def complex_events_included?
+    events.any? { |event| !event.simple? }
+  end
+
+  def complex_precedents_available?
+    courses.any? { |course| course.events.any? { |event| event.finished? && !event.simple? } }
   end
 end

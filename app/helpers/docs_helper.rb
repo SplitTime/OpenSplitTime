@@ -24,7 +24,7 @@ module DocsHelper
     items = {
         'Setup' => ['Welcome', 'Your Event and Aid Station'],
         'Menu' => ['Overview', 'Live Entry', 'Review/Sync', 'Cross Check', 'Change Station', 'Logout'],
-        'Usage' => ['Pro Tips']
+        'Usage' => ['The Timing Station', 'Recording Tips']
     }
 
     build_sidebar_menu(items)

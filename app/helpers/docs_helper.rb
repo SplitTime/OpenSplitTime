@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DocsHelper
-  def build_sidebar_menu(items)
+  def build_sidebar_menu(items, action)
     default_topic = items.keys.first
     default_page = 1
 
@@ -14,10 +14,20 @@ module DocsHelper
           active = topic_matches && page_matches ? 'active' : nil
           class_text = ['list-group-item list-group-item-action bg-light', active].compact.join(' ')
 
-          concat(link_to page, ost_remote_path(topic: topic.downcase, page: i), class: class_text)
+          concat(link_to page, {controller: :visitors, action: action, topic: topic.downcase, page: i}, class: class_text)
         end
       end
     end
+  end
+
+  def getting_started_sidebar_menu
+    items = {
+        'Overview' => ['Welcome', 'Organizations, Courses, and Events', 'Two Types of Time Records'],
+        'Staging' => ['Create Your First Event Group', 'Duplicate an Existing Group', 'New Event With Existing Organization',
+        'Formatting Split Data for Import', 'Formatting Entrant Data for Import', 'Experiment']
+    }
+
+    build_sidebar_menu(items, :getting_started)
   end
 
   def ost_remote_sidebar_menu
@@ -27,6 +37,6 @@ module DocsHelper
         'Usage' => ['The Timing Station', 'Recording Tips']
     }
 
-    build_sidebar_menu(items)
+    build_sidebar_menu(items, :ost_remote)
   end
 end

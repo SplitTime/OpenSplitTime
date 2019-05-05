@@ -1,0 +1,26 @@
+<div class="card">
+  <h4 class="card-header">Organizations, Courses, and Events</h4>
+  <div class="card-body">
+    <p><strong><%= link_to 'Organization:', organization_info_path %></strong> This is the basic administrative unit in
+      OpenSplitTime, like <%= link_to 'Hardrock 100', organization_path('hardrock') %>. Each Event Group, Event Series,
+      and Course belongs to an Organization. This is the way you (as the
+      Organization creator) can create and modify your own Events and invite trusted Stewards to help.
+    </p>
+    <p><strong><%= link_to 'Course:', course_info_path %></strong> The physical course on which your event is run, ridden,
+      swum (swam?), flown, or climbed, like <%= link_to 'Hardrock Clockwise', course_path('hardrock-100-clockwise') %>.
+    </p>
+    <p><strong><%= link_to 'Split:', split_info_path %></strong> A point on a course at which times are recorded,
+      like <%= link_to 'Kroger Aid Station', split_path('hardrock-100-clockwise-kroger') %>. A Split may include
+      optional elevation, latitude, and longitude data.</p>
+    <p><strong><%= link_to 'Event Group:', event_group_info_path %></strong> A group of events happening on or about the
+      same time, like <%= link_to '2019 RUFA', event_group_path('2019-running-up-for-air-slc') %>. Some
+      Event Groups will have just one Event, like a 100 miler that has no shorter course alternative. Others will have
+      multiple Events, like a 30K, 50K, and 100K that are run on the same day.</p>
+    <p><strong><%= link_to 'Event:', event_info_path %></strong> A single running of a race, ride, stage, or other...you
+      know, event. An example would be the <%= link_to '2019 RUFA (24 hours)', event_path('2019-rufa-slc-24-hour') %></p>
+    <p><strong><%= link_to 'Person:', person_info_path %></strong> A person who has competed in at least one
+      Event, like <%= link_to 'Kilian Jornet', person_path('kilian-jornet') %>.</p>
+    <p><strong><%= link_to 'Entrant:', effort_info_path %></strong> A Person in a single Event, like
+      <%= link_to 'Kilian at Hardrock 2016', effort_path('hardrock-100-2016-kilian-jornet') %>.</p>
+  </div>
+</div>

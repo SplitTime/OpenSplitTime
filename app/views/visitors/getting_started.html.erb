@@ -1,47 +1,27 @@
-<% content_for :title do %>Getting Started 1
+<% content_for :title do %>
+  Getting Started Docs
 <% end %>
 
-<article class="ost-article container">
-  <h3>Getting Started</h3>
-  <hr>
-  <h4>
-    Organizations, courses, and events
-  </h4><br/>
-  <p> OpenSplitTime is a free and easy service to organize and analyze your timed event data. All this data fits into a
-    defined pattern, and there is a fair amount of terminology behind it. Things can seem a bit confusing at first, but
-    it all works out. Here's a short description of the terms you need to know.</p>
-  <p><strong><%= link_to 'Organization:', organization_info_path %></strong> This is the basic administrative unit in
-    OpenSplitTime, like <%= link_to 'Hardrock 100', organization_path('hardrock') %>. Each Event Group, Event Series,
-    and Course belongs to an Organization. This is the way you (as the
-    Organization creator) can create and modify your own Events and invite trusted Stewards to help.
-  </p>
-  <p><strong><%= link_to 'Course:', course_info_path %></strong> The physical course on which your event is run, ridden,
-    swum (swam?), flown, or climbed, like <%= link_to 'Hardrock Clockwise', course_path('hardrock-100-clockwise') %>.
-  </p>
-  <p><strong><%= link_to 'Split:', split_info_path %></strong> A point on a course at which times are recorded,
-    like <%= link_to 'Kroger Aid Station', split_path('hardrock-100-clockwise-kroger') %>. A Split may include
-    optional elevation, latitude, and longitude data.</p>
-  <p><strong><%= link_to 'Event Group:', event_group_info_path %></strong> A group of events happening on or about the
-    same time, like <%= link_to '2019 RUFA', event_group_path('2019-running-up-for-air-slc') %>. Some
-    Event Groups will have just one Event, like a 100 miler that has no shorter course alternative. Others will have
-    multiple Events, like a 30K, 50K, and 100K that are run on the same day.</p>
-  <p><strong><%= link_to 'Event:', event_info_path %></strong> A single running of a race, ride, stage, or other...you
-    know, event. An example would be the <%= link_to '2019 RUFA (24 hours)', event_path('2019-rufa-slc-24-hour') %></p>
-  <p><strong><%= link_to 'Person:', person_info_path %></strong> A person who has competed in at least one
-    Event, like <%= link_to 'Kilian Jornet', person_path('kilian-jornet') %>.</p>
-  <p><strong><%= link_to 'Entrant:', effort_info_path %></strong> A Person in a single Event, like
-    <%= link_to 'Kilian at Hardrock 2016', effort_path('hardrock-100-2016-kilian-jornet') %>.</p>
-  <p><strong><%= link_to 'Raw Time:', raw_time_info_path %></strong> A single time at which a bib number is recorded
-    live at a given Split while an Event is ongoing. Raw Times are viewable by Organization personnel and stewards, but
-    <strong>not by the general public</strong>.</p>
-  <p><strong><%= link_to 'Split Time:', split_time_info_path %></strong> A <strong>publicly viewable</strong> time at
-    which an Entrant is deemed to have been recorded at a given Split. When Raw Time records are available, as is the
-    case when times are recorded live using OST Remote, Split Times will ideally represent the best possible
-    interpretation of the complete Raw Time record.</p>
-  <p>All this data is stored in a logical way with proper relations, which makes it possible to do just about
-    anything you want with it. If you've never seen endurance event data organized like this before, maybe that's
-    because nobody has gone to the trouble of doing it right before. Some geeky people gave this a lot of
-    thought. Trust us! The form follows the function.</p>
-  <hr>
-  <p><strong><%= link_to 'Creating your first Event >>', getting_started_2_path %></strong></p>
-</article>
+<div class="d-flex" id="wrapper" data-controller="sidebar" data-target="sidebar.wrapper">
+  <%= render 'getting_started_sidebar' %>
+
+  <div id="page-content-wrapper">
+    <article class="ost-article container">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-outline-dark" data-action="sidebar#toggle"><%= fa_icon('caret-left lg') + ' ' + fa_icon('caret-right lg') %></button>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="col text-right">
+          <h1><strong>Getting Started</strong></h1>
+        </div>
+      </div>
+      <br/>
+
+      <%= render "getting_started_#{params[:topic] || 'overview'}_#{params[:page] || 1}" %>
+    </article>
+  </div>
+</div>

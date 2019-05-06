@@ -24,7 +24,8 @@ module DocsHelper
     items = {
         'Overview' => ['Welcome', 'Organizations, Courses, and Events', 'Two Types of Time Records'],
         'Staging' => ['Create Your First Event Group', 'Duplicate an Existing Group', 'New Event With Existing Organization',
-        'Formatting Split Data for Import', 'Formatting Entrant Data for Import', 'Experiment']
+        'Formatting Split Data for Import', 'Formatting Entrant Data for Import', 'Experiment'],
+        'Terminology' => ['Organization', 'Course', 'Split', 'Event Group', 'Event', 'Person', 'Entrant', 'Raw Time', 'Split Time']
     }
 
     build_sidebar_menu(items, :getting_started)

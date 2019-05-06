@@ -9,15 +9,6 @@ Rails.application.routes.draw do
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
   get 'getting_started', to: 'visitors#getting_started'
   get 'ost_remote', to: 'visitors#ost_remote'
-  get 'course_info', to: 'visitors#course_info'
-  get 'effort_info', to: 'visitors#effort_info'
-  get 'event_info', to: 'visitors#event_info'
-  get 'event_group_info', to: 'visitors#event_group_info'
-  get 'person_info', to: 'visitors#person_info'
-  get 'organization_info', to: 'visitors#organization_info'
-  get 'raw_time_info', to: 'visitors#raw_time_info'
-  get 'split_info', to: 'visitors#split_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
 
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 

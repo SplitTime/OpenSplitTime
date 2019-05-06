@@ -1,4 +1,6 @@
-<% content_for :title do %>OST Remote Docs<% end %>
+<% content_for :title do %>
+  OST Remote Docs - <%= "#{params[:topic] || 'setup'}_#{params[:page] || 1}" %>
+<% end %>
 
 <div class="d-flex" id="wrapper" data-controller="sidebar" data-target="sidebar.wrapper">
   <%= render 'ost_remote_sidebar' %>

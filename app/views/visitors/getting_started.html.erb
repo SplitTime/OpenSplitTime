@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  Getting Started Docs
+  Getting Started Docs - <%= "#{params[:topic] || 'overview'} - #{params[:page] || 1}" %>
 <% end %>
 
 <div class="d-flex" id="wrapper" data-controller="sidebar" data-target="sidebar.wrapper">

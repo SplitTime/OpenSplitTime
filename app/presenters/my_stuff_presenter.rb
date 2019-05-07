@@ -50,7 +50,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def watch_efforts
-    current_user.watch_efforts.distinct.order(:last_name)
+    current_user.watch_efforts.includes(:event).distinct.order(:last_name)
   end
 
   private

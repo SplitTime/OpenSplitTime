@@ -54,7 +54,7 @@ RSpec.describe 'visit an event group roster page and try various features' do
   end
 
   def search_button
-    find('[type=submit]')
+    find('#roster-search-submit')
   end
 
   def verify_links_present

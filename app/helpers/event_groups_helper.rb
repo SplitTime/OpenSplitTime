@@ -12,12 +12,12 @@ module EventGroupsHelper
         }
 
         concat content_tag(:div, class: 'dropdown-menu') {
-          view_object.ready_efforts.count_by(&:scheduled_start_time_local).sort.each do |time, effort_count|
+          view_object.ready_efforts.count_by(&:assumed_start_time_local).sort.each do |time, effort_count|
             display_time = l(time, format: :full_day_military_and_zone)
             concat content_tag(:div, "(#{effort_count}) scheduled at #{display_time}",
                                {class: 'dropdown-item', data: {action: 'click->roster#showModal',
                                                                title: "Start #{pluralize(effort_count, 'Effort')}",
-                                                               time: time.to_s,
+                                                               time: time.in_time_zone('UTC').to_s,
                                                                displaytime: l(time, format: :datetime_input)}})
           end
         }

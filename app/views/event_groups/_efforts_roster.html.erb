@@ -54,7 +54,8 @@
             <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('From', 'state_code', @presenter.existing_sort) %></th>
-            <th><%= link_to_reversing_sort_heading('Scheduled Start', 'scheduled_start_time', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Scheduled Start', 'assumed_start_time', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading('Actual Start', 'actual_start_time', @presenter.existing_sort) %></th>
             <th><%= link_to_reversing_sort_heading('Emergency Contact', 'emergency_contact', @presenter.existing_sort) %></th>
             <% if @presenter.started_efforts.present? %>
               <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
@@ -76,7 +77,8 @@
               <td><%= effort.bib_number %></td>
               <td><%= effort.bio_historic %></td>
               <td><%= effort.flexible_geolocation %></td>
-              <td><%= "#{day_time_military_format(effort.calculated_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
+              <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
+              <td><%= day_time_military_format(effort.actual_start_time_local) %></td>
               <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(' / ') %></td>
               <% if @presenter.started_efforts.present? %>
                 <td><%= effort.data_status %></td>

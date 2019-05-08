@@ -2,7 +2,7 @@ import {Controller} from "stimulus"
 
 export default class extends Controller {
 
-    static targets = ['startEffortsModal', 'actualStartTimeField', 'scheduledStartTimeFilter', 'scheduledStartTime',
+    static targets = ['startEffortsModal', 'actualStartTimeField', 'assumedStartTimeFilter', 'scheduledStartTime',
         'error']
 
     showModal(event) {
@@ -14,8 +14,8 @@ export default class extends Controller {
         this.startEffortsModalTarget.querySelector('.modal-title').innerHTML = '<strong>' + title + '</strong>';
         this.actualStartTimeFieldTarget.value = displayTime;
         this.scheduledStartTimeTarget.innerHTML = displayTime;
-        if (this.scheduledStartTimeFilterTarget) {
-            this.scheduledStartTimeFilterTarget.value = time;
+        if (this.assumedStartTimeFilterTarget) {
+            this.assumedStartTimeFilterTarget.value = time;
         }
     }
 

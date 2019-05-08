@@ -74,7 +74,7 @@ module EffortsHelper
   end
 
   def link_to_start_effort(view_object)
-    time = view_object.scheduled_start_time_local
+    time = view_object.assumed_start_time_local
     button_tag 'Start effort', class: "btn btn-success", data: {action: 'click->roster#showModal',
                                                                 title: "Start Effort",
                                                                 time: time.to_s,

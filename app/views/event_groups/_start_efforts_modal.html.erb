@@ -27,8 +27,8 @@
 
               <% if resource == :event_group %>
                 <%= f.hidden_field 'filter[ready_to_start]', value: true %>
-                <%= f.hidden_field 'filter[scheduled_start_time]', value: nil,
-                                   data: {target: 'roster.scheduledStartTimeFilter'} %>
+                <%= f.hidden_field 'filter[assumed_start_time]', value: nil,
+                                   data: {target: 'roster.assumedStartTimeFilter'} %>
               <% end %>
 
               <% if resource == :effort %>

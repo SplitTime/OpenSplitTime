@@ -76,6 +76,7 @@ class EffortQuery < BaseQuery
 
         distance_subquery as 
           (select *, 
+              coalesce(scheduled_start_time, event_start_time) as assumed_start_time,
               case when final_lap is null then false else true end as started,
               final_lap as laps_started,
               case when final_lap_complete is true then final_lap else final_lap - 1 end as laps_finished,
@@ -92,7 +93,7 @@ class EffortQuery < BaseQuery
               end
               as finished,
               case
-                when not started and checked_in and (coalesce(scheduled_start_time, event_start_time) < current_timestamp) then true else false
+                when not started and checked_in and (assumed_start_time < current_timestamp) then true else false
               end
               as ready_to_start
            from distance_subquery),

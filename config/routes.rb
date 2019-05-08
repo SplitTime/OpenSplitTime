@@ -55,11 +55,15 @@ Rails.application.routes.draw do
       get :drop_list
       get :follow
       get :raw_times
+      get :reconcile
       get :roster
       get :export_raw_times
       get :split_raw_times
       get :traffic
       put :set_data_status
+      patch :auto_reconcile
+      post :create_people
+      patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
@@ -76,12 +80,9 @@ Rails.application.routes.draw do
       get :export_finishers
       get :export_to_ultrasignup
       get :podium
-      get :reconcile
       get :spread
       get :summary
       patch :auto_reconcile
-      post :create_people
-      put :associate_people
       put :set_stops
       patch :reassign
       patch :update_start_time

@@ -87,6 +87,38 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  def reconcile
+    authorize @event_group
+
+    event_group = EventGroup.where(id: @event_group.id).includes(efforts: :person).first
+    @presenter = ReconcilePresenter.new(parent: event_group, params: prepared_params, current_user: current_user)
+  end
+
+  def auto_reconcile
+    authorize @event_group
+
+    EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
+    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
+    redirect_to event_group_path(@event_group, force_settings: true)
+  end
+
+  def associate_people
+    authorize @event_group
+
+    id_hash = params[:ids].to_unsafe_h
+    response = Interactors::AssignPeopleToEfforts.perform!(id_hash)
+    set_flash_message(response)
+    redirect_to reconcile_event_group_path(@event_group)
+  end
+
+  def create_people
+    authorize @event_group
+
+    response = Interactors::CreatePeopleFromEfforts.perform!(params[:effort_ids])
+    set_flash_message(response)
+    redirect_to reconcile_event_group_path(@event_group)
+  end
+
   def set_data_status
     authorize @event_group
 

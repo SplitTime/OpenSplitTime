@@ -2,16 +2,16 @@
 
 class EffortAutoReconciler
 
-  def self.reconcile(event, options = {})
-    reconciler = new(event, options)
+  def self.reconcile(parent, options = {})
+    reconciler = new(parent, options)
     reconciler.reconcile
     reconciler.report
   end
 
-  def initialize(event, options = {})
-    @event = event
+  def initialize(parent, options = {})
+    @parent = parent
     @background_channel = options[:background_channel]
-    @unreconciled_efforts = event.unreconciled_efforts.to_a
+    @unreconciled_efforts = parent.unreconciled_efforts.to_a
   end
 
   def reconcile
@@ -27,7 +27,7 @@ class EffortAutoReconciler
 
   private
 
-  attr_reader :event, :background_channel, :unreconciled_efforts
+  attr_reader :parent, :background_channel, :unreconciled_efforts
   attr_accessor :auto_matched_count, :auto_created_count
 
   def matched_hash
@@ -81,6 +81,6 @@ class EffortAutoReconciler
   def unreconciled_report
     close_matched_count > 0 ?
         "We found #{close_matched_count} people that may or may not match our database. Please reconcile them now. " :
-        "All efforts for #{event.name} have been reconciled. "
+        "All efforts for #{parent.name} have been reconciled. "
   end
 end

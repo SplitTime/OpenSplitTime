@@ -93,7 +93,7 @@
           </div>
           <% if @presenter %>
             <div class="float-left-button"><%= link_to 'Export', efforts_path(format: :csv, filter: {event_id: @presenter.id}), class: 'btn btn-outline-secondary' %></div>
-            <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_path(@presenter.event), class: 'btn btn-outline-secondary' %></div>
+            <div class="float-left-button"><%= link_to 'Reconcile', reconcile_event_group_path(@presenter.event_group), class: 'btn btn-outline-secondary' %></div>
             <div class="float-left-button"><%= link_to 'Delete All', delete_all_efforts_event_path(@presenter.event), class: 'btn btn-danger', method: :delete, data: {confirm: 'This will delete all efforts and split times for this event. This action cannot be undone. Are you sure you want to proceed?'} %></div>
           <% end %>
           <div class="pull-right">

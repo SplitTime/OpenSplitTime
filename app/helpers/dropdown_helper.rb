@@ -35,6 +35,9 @@ module DropdownHelper
         {name: 'Staging',
          link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
          active: action_name == 'app'},
+        {name: 'Reconcile',
+         link: reconcile_event_group_path(view_object.event_group),
+         active: action_name == 'reconcile'},
         {name: 'Roster',
          link: roster_event_group_path(view_object.event_group),
          active: action_name == 'roster' && !params[:problem]},
@@ -275,6 +278,16 @@ module DropdownHelper
          link: organization_path(view_object.organization, display_style: 'stewards')}
     ]
     build_dropdown_menu('Group Actions', dropdown_items, button: true)
+  end
+
+  def roster_actions_dropdown(view_object)
+    dropdown_items = [
+        {name: 'Reconcile efforts',
+         link: reconcile_event_group_path(view_object.event_group)},
+        {name: 'Set data status',
+         link: set_data_status_event_group_path(view_object.event_group)}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
   end
 
   def split_name_dropdown(view_object, param: :parameterized_split_name)

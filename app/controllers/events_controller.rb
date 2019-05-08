@@ -88,42 +88,12 @@ class EventsController < ApplicationController
 
   # Event admin actions
 
-  def reconcile
-    authorize @event
-
-    event = Event.where(id: @event.id).includes(efforts: :person).first
-    @presenter = EventReconcilePresenter.new(event: event, params: prepared_params, current_user: current_user)
-
-    if @presenter.event_efforts.empty?
-      flash[:success] = 'No efforts have been added to this event'
-      redirect_to reconcile_redirect_path
-    elsif @presenter.unreconciled_batch.empty?
-      flash[:success] = 'All efforts have been reconciled'
-      redirect_to reconcile_redirect_path
-    end
-  end
-
   def auto_reconcile
     authorize @event
 
     EffortsAutoReconcileJob.perform_later(@event, current_user: current_user)
     flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
     redirect_to reconcile_redirect_path
-  end
-
-  def associate_people
-    authorize @event
-    id_hash = params[:ids].to_unsafe_h
-    response = Interactors::AssignPeopleToEfforts.perform!(id_hash)
-    set_flash_message(response)
-    redirect_to reconcile_event_path(@event)
-  end
-
-  def create_people
-    authorize @event
-    response = Interactors::CreatePeopleFromEfforts.perform!(params[:effort_ids])
-    set_flash_message(response)
-    redirect_to reconcile_event_path(@event)
   end
 
   def delete_all_efforts

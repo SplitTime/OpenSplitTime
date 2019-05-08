@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable
-  include Delegable
-  include SplitMethods
-  include LapsRequiredMethods
-  include TimeZonable
+  include Auditable, Delegable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -88,10 +84,6 @@ class Event < ApplicationRecord
 
   def to_s
     slug
-  end
-
-  def unreconciled_efforts
-    efforts.where(person_id: nil)
   end
 
   def split_times

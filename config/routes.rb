@@ -58,10 +58,10 @@ Rails.application.routes.draw do
       get :raw_times
       get :roster
       get :export_raw_times
-      put :set_data_status
       get :split_raw_times
       get :traffic
-      put :start_efforts
+      put :set_data_status
+      patch :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times

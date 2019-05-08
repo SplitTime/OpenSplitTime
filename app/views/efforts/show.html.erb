@@ -58,7 +58,7 @@
             <%= effort_actions_dropdown_menu(@presenter) %>
             <% unless @presenter.has_start_time? %>
               <%= link_to 'Start effort', start_effort_path(@presenter.effort),
-                          method: :put,
+                          method: :patch,
                           class: "btn btn-success" %>
             <% end %>
             <% if @presenter.needs_final_stop? %>

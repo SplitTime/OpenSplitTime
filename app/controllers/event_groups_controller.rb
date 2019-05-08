@@ -101,12 +101,24 @@ class EventGroupsController < ApplicationController
 
     filter = prepared_params[:filter]
     efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
-                  .select { |effort| filter.all? { |method, value| effort.send(method) == value } }
-    start_time = params[:start_time]
+    filtered_efforts = efforts.select { |effort| filter.all? { |method, value| effort.send(method) == value } }
+    start_time = params[:actual_start_time]
 
-    response = Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time, current_user_id: current_user.id)
-    set_flash_message(response)
-    redirect_to request.referrer
+    response = Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
+
+    respond_to do |format|
+      format.html do
+        set_flash_message(response)
+        redirect_to request.referrer
+      end
+      format.json do
+        if response.successful?
+          render json: {success: true}, status: :created
+        else
+          render json: {success: false, errors: response.errors}
+        end
+      end
+    end
   end
 
   def update_all_efforts

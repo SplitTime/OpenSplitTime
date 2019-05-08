@@ -101,7 +101,7 @@ class EventGroupsController < ApplicationController
 
     filter = prepared_params[:filter]
     efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
-    filtered_efforts = efforts.select { |effort| filter.all? { |method, value| effort.send(method) == value } }
+    filtered_efforts = Effort.from(efforts, :efforts).where(filter)
     start_time = params[:actual_start_time]
 
     response = Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)

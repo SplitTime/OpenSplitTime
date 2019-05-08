@@ -48,7 +48,9 @@
   </div>
 </header>
 
-<aside class="ost-toolbar">
+<aside class="ost-toolbar" data-controller="roster">
+  <%= render 'event_groups/start_efforts_modal', resource: :effort %>
+
   <div class="container">
     <div class="row">
 
@@ -57,9 +59,7 @@
           <div>
             <%= effort_actions_dropdown_menu(@presenter) %>
             <% unless @presenter.has_start_time? %>
-              <%= link_to 'Start effort', start_effort_path(@presenter.effort),
-                          method: :patch,
-                          class: "btn btn-success" %>
+              <%= link_to_start_effort(@presenter) %>
             <% end %>
             <% if @presenter.needs_final_stop? %>
               <%= link_to 'Set stop', stop_effort_path(@presenter.effort),

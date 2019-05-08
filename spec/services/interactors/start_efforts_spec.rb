@@ -22,7 +22,7 @@ RSpec.describe Interactors::StartEfforts do
             response = subject.perform!
 
             expect(response).to be_successful
-            expect(response.message).to eq('Started 2 efforts')
+            expect(response.message).to eq('Started 2 efforts at 09/23/2017 08:00:00')
 
             subject_efforts.each(&:reload)
             split_times = subject_efforts.map(&:starting_split_time)

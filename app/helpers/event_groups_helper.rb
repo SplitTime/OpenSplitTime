@@ -24,7 +24,7 @@ module EventGroupsHelper
       end
     else
       link_to 'Nothing to start', '#', disabled: true,
-              data: {confirm: 'No efforts are ready to start. Reload the page to check again.'},
+              data: {confirm: 'No entrants are ready to start. Reload the page to check again.'},
               class: 'start-ready-efforts btn btn-md btn-success'
     end
   end

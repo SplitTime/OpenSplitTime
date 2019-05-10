@@ -77,6 +77,7 @@ class EffortsController < ApplicationController
         set_flash_message(response)
       end
     else
+      @effort = effort
       render 'edit'
     end
   end

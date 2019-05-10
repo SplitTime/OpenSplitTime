@@ -32,8 +32,8 @@
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col form-inline">
         <div>
-          <%= explore_dropdown_menu(@presenter) %>
           <%= summary_filter_dropdown %>
+          <%= explore_dropdown_menu(@presenter) %>
         </div>
       </div>
     </div>
@@ -41,9 +41,11 @@
 </aside>
 
 <article class="ost-article container">
-  <% if @presenter.ranked_effort_rows.present? %>
-    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
-  <% else %>
+  <% if @presenter.event_efforts.empty? %>
     <h4><strong>No entrants have been added to this event.</strong></h4>
+  <% elsif @presenter.ranked_effort_rows.empty? %>
+    <h4><strong><%= "There are no #{@presenter.summary_title.downcase}." %></strong></h4>
+  <% else %>
+    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
   <% end %>
 </article>

@@ -78,7 +78,7 @@ class EventsController < ApplicationController
   def summary
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
     params[:per_page] ||= MAX_SUMMARY_EFFORTS
-    @presenter = EventWithEffortsPresenter.new(event: event, params: prepared_params, current_user: current_user)
+    @presenter = SummaryPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
   def podium

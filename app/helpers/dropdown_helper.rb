@@ -157,6 +157,20 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
+  def summary_filter_dropdown
+    items = [{text: 'All', finished: nil},
+             {text: 'Finished', finished: true},
+             {text: 'Unfinished', finished: false}]
+
+    dropdown_items = items.map do |item|
+      {name: item[:text],
+       link: request.params.merge(finished: item[:finished], page: nil),
+       active: params[:finished]&.to_boolean == item[:finished]}
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
   def explore_dropdown_menu(view_object)
     dropdown_items = [
         {name: 'Plan my effort',

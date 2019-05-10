@@ -2,13 +2,13 @@
   <% "OpenSplitTime: Summary - #{@presenter.name}" %>
 <% end %>
 
-<header class="ost-header">
+<header class="ost-header d-print-none">
   <div class="container">
     <div class="ost-heading row">
       <div class="col-8">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-          <ul class="breadcrumb breadcrumb-ost hidden-print">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <% if @presenter.multiple_events? %>
@@ -20,22 +20,21 @@
         </div>
         <%= render 'time_and_course_info' %>
       </div>
-      <div class="col-4 text-right">
-        <%= render 'shared/print_info' %>
-      </div>
     </div>
     <!-- Navigation -->
     <%= render 'view_buttons', view_object: @presenter %>
   </div>
 </header>
 
-
-<aside class="ost-toolbar hidden-print">
+<aside class="ost-toolbar d-print-none">
   <div class="container">
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col form-inline">
-        <%= explore_dropdown_menu(@presenter) %>
+        <div>
+          <%= explore_dropdown_menu(@presenter) %>
+          <%= summary_filter_dropdown %>
+        </div>
       </div>
     </div>
   </div>

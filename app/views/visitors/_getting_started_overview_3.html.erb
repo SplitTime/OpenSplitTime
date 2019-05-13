@@ -1,12 +1,14 @@
 <div class="card">
   <h4 class="card-header">Two Types of Time Records</h4>
   <div class="card-body">
-    <p><strong><%= link_to 'Raw Time:', getting_started_path(topic: :terminology, page: 8) %></strong> A single time at which a bib number is recorded
-      live at a given Split while an Event is ongoing. Raw Times are viewable by Organization personnel and stewards, but
-      <strong>not by the general public</strong>.</p>
-    <p><strong><%= link_to 'Split Time:', getting_started_path(topic: :terminology, page: 9) %></strong> A <strong>publicly viewable</strong> time at
-      which an Entrant is deemed to have been recorded at a given Split. When Raw Time records are available, as is the
-      case when times are recorded live using OST Remote, Split Times will ideally represent the best possible
-      interpretation of the complete Raw Time record.</p>
+    <p><strong><%= link_to 'Raw Time:', getting_started_path(topic: :terms, page: 8) %></strong> A single time at which
+      a bib number is recorded live at a given Split while an Event is ongoing. Raw Times are viewable by Organization
+      personnel and stewards, but <strong>not by the general public</strong>. Raw Times are recorded using the Live
+      Entry screen in opensplittime.org or <%= link_to 'OST Remote', ost_remote_path %>, the easy-to-use iOS
+      client app for live time recording.</p>
+    <p><strong><%= link_to 'Split Time:', getting_started_path(topic: :terms, page: 9) %></strong> A
+      <strong>publicly viewable</strong> time at which an Entrant is deemed to have been recorded at a given Split. When
+      Raw Time records are available, as is the case when times are recorded live using OST Remote, Split Times will
+      ideally represent the best possible interpretation of the complete Raw Time record.</p>
   </div>
 </div>

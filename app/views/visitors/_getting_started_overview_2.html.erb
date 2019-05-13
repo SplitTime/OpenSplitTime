@@ -1,26 +1,26 @@
 <div class="card">
   <h4 class="card-header">Organizations, Courses, and Events</h4>
   <div class="card-body">
-    <p><strong><%= link_to 'Organization:', getting_started_path(topic: :terminology, page: 1) %></strong> This is the basic administrative unit in
+    <p><strong><%= link_to 'Organization:', getting_started_path(topic: :terms, page: 1) %></strong> This is the basic administrative unit in
       OpenSplitTime, like <%= link_to 'Hardrock 100', organization_path('hardrock') %>. Each Event Group, Event Series,
       and Course belongs to an Organization. This is the way you (as the
       Organization creator) can create and modify your own Events and invite trusted Stewards to help.
     </p>
-    <p><strong><%= link_to 'Course:', getting_started_path(topic: :terminology, page: 2) %></strong> The physical course on which your event is run, ridden,
+    <p><strong><%= link_to 'Course:', getting_started_path(topic: :terms, page: 2) %></strong> The physical course on which your event is run, ridden,
       swum (swam?), flown, or climbed, like <%= link_to 'Hardrock Clockwise', course_path('hardrock-100-clockwise') %>.
     </p>
-    <p><strong><%= link_to 'Split:', getting_started_path(topic: :terminology, page: 3) %></strong> A point on a course at which times are recorded,
+    <p><strong><%= link_to 'Split:', getting_started_path(topic: :terms, page: 3) %></strong> A point on a course at which times are recorded,
       like <%= link_to 'Kroger Aid Station', split_path('hardrock-100-clockwise-kroger') %>. A Split may include
       optional elevation, latitude, and longitude data.</p>
-    <p><strong><%= link_to 'Event Group:', getting_started_path(topic: :terminology, page: 4) %></strong> A group of events happening on or about the
+    <p><strong><%= link_to 'Event Group:', getting_started_path(topic: :terms, page: 4) %></strong> A group of events happening on or about the
       same time, like <%= link_to '2019 RUFA', event_group_path('2019-running-up-for-air-slc') %>. Some
       Event Groups will have just one Event, like a 100 miler that has no shorter course alternative. Others will have
       multiple Events, like a 30K, 50K, and 100K that are run on the same day.</p>
-    <p><strong><%= link_to 'Event:', getting_started_path(topic: :terminology, page: 5) %></strong> A single running of a race, ride, stage, or other...you
+    <p><strong><%= link_to 'Event:', getting_started_path(topic: :terms, page: 5) %></strong> A single running of a race, ride, stage, or other...you
       know, event. An example would be the <%= link_to '2019 RUFA (24 hours)', event_path('2019-rufa-slc-24-hour') %></p>
-    <p><strong><%= link_to 'Person:', getting_started_path(topic: :terminology, page: 6) %></strong> A person who has competed in at least one
+    <p><strong><%= link_to 'Person:', getting_started_path(topic: :terms, page: 6) %></strong> A person who has competed in at least one
       Event, like <%= link_to 'Kilian Jornet', person_path('kilian-jornet') %>.</p>
-    <p><strong><%= link_to 'Entrant:', getting_started_path(topic: :terminology, page: 7) %></strong> A Person in a single Event, like
+    <p><strong><%= link_to 'Entrant:', getting_started_path(topic: :terms, page: 7) %></strong> A Person in a single Event, like
       <%= link_to 'Kilian at Hardrock 2016', effort_path('hardrock-100-2016-kilian-jornet') %>.</p>
   </div>
 </div>

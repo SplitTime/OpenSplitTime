@@ -34,8 +34,8 @@ module DocsHelper
   def management_sidebar_menu
     items = {
         'Overview' => ['Summary of Steps'],
-        'Preparation' => ['Going Public and Live', 'Explaining How to Follow', 'Training Crews', 'Preparing Equipment'],
-        'Check In and Start' => ['Checking In', 'Changing Entrants', 'Starting Entrants'],
+        'Preparation' => ['Going Public and Live', 'Explaining How to Follow', 'Preparing Equipment', 'Training Crews'],
+        'Starting' => ['Overview', 'Checking In', 'Changing Entrants', 'Starting Entrants'],
         'Monitoring' => ['Tools', 'Looking for Holes', 'Watching Progress', 'Aid Station Summary', 'Aid Station Detail'],
         'Entering and Editing Times' => ['Live Entry', 'Direct Edit', 'Rebuilding an Effort', 'Finding Problems', 'Sleuthing'],
         'Winding Up' => ['Setting Stops', 'Disabling Live Entry', 'Exporting Data'],

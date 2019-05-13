@@ -3,7 +3,7 @@
   <div class="card-body">
     <p>
       Raw Times are the permanent timing log created as an Event Group is taking place. As time data are captured by
-      volunteers using OST Remote or manually entered using the Live Entry view, they are recorded first as Raw Times.
+      volunteers using <%= link_to 'OST Remote', ost_remote_path %> or manually entered using the Live Entry view, they are recorded first as Raw Times.
     </p>
     <p>
       Raw Time data is captured in the form it comes in, warts and all. Human error is intentionally preserved to ensure
@@ -16,6 +16,6 @@
     </p>
     <p>Raw Time data is not intended for public view; it is a behind-the-scenes record. Our best interpretation of the
       Raw Time record is presented to the public in the form
-      of <%= link_to 'Split Times', getting_started_path(topic: :terminology, page: 9) %>.</p>
+      of <%= link_to 'Split Times', getting_started_path(topic: :terms, page: 9) %>.</p>
   </div>
 </div>

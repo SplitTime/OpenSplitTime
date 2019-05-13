@@ -6,7 +6,7 @@ module EventGroupsHelper
       content_tag :div, class: 'btn-group' do
         concat content_tag(:button, class: 'btn btn-success dropdown-toggle start-ready-efforts',
                            data: {toggle: :dropdown}) {
-          safe_concat 'Start efforts'
+          safe_concat 'Start entrants'
           safe_concat '&nbsp;'
           concat content_tag(:span, '', class: 'caret')
         }
@@ -16,7 +16,7 @@ module EventGroupsHelper
             display_time = l(time, format: :full_day_military_and_zone)
             concat content_tag(:div, "(#{effort_count}) scheduled at #{display_time}",
                                {class: 'dropdown-item', data: {action: 'click->roster#showModal',
-                                                               title: "Start #{pluralize(effort_count, 'Effort')}",
+                                                               title: "Start #{pluralize(effort_count, 'Entrant')}",
                                                                time: time.in_time_zone('UTC').to_s,
                                                                displaytime: l(time, format: :datetime_input)}})
           end

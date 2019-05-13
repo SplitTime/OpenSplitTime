@@ -25,10 +25,24 @@ module DocsHelper
         'Overview' => ['Welcome', 'Organizations, Courses, and Events', 'Two Types of Time Records'],
         'Staging' => ['Create Your First Event Group', 'Duplicate an Existing Group', 'New Event With Existing Organization',
         'Formatting Split Data for Import', 'Formatting Entrant Data for Import', 'Experiment'],
-        'Terminology' => ['Organization', 'Course', 'Split', 'Event Group', 'Event', 'Person', 'Entrant', 'Raw Time', 'Split Time']
+        'Terms' => ['Organization', 'Course', 'Split', 'Event Group', 'Event', 'Person', 'Entrant', 'Raw Time', 'Split Time']
     }
 
     build_sidebar_menu(items, :getting_started)
+  end
+
+  def management_sidebar_menu
+    items = {
+        'Overview' => ['Summary of Steps'],
+        'Preparation' => ['Going Public and Live', 'Explaining How to Follow', 'Training Crews', 'Preparing Equipment'],
+        'Check In and Start' => ['Checking In', 'Changing Entrants', 'Starting Entrants'],
+        'Monitoring' => ['Tools', 'Looking for Holes', 'Watching Progress', 'Aid Station Summary', 'Aid Station Detail'],
+        'Entering and Editing Times' => ['Live Entry', 'Direct Edit', 'Rebuilding an Effort', 'Finding Problems', 'Sleuthing'],
+        'Winding Up' => ['Setting Stops', 'Disabling Live Entry', 'Exporting Data'],
+        'Support' => ['Getting Help']
+    }
+
+    build_sidebar_menu(items, :management)
   end
 
   def ost_remote_sidebar_menu

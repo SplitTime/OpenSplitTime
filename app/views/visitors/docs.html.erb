@@ -1,0 +1,41 @@
+<% content_for :title do %>
+  Docs - <%= @presenter.partial %>
+<% end %>
+
+<div class="d-flex" id="wrapper" data-controller="sidebar" data-target="sidebar.wrapper">
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <%= build_sidebar_menu(@presenter) %>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <div id="page-content-wrapper">
+    <article class="ost-article container">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-outline-dark" data-action="sidebar#toggle"><%= fa_icon('caret-left lg') + ' ' + fa_icon('caret-right lg') %></button>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <div class="col text-right">
+          <h1><strong><%= @presenter.display_category %></strong></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Documentation', documentation_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.display_category, ost_remote_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.display_topic, ost_remote_path(topic: @presenter.topic, page: 1) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.page_title %></li>
+          </ul>
+        </div>
+      </div>
+      <br/>
+
+      <%= render @presenter.partial %>
+    </article>
+  </div>
+</div>

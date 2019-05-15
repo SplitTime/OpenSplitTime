@@ -1,28 +1,30 @@
 # frozen_string_literal: true
 
 class Docs::VisitorsController < ApplicationController
-  def index
-    @presenter = Docs::IndexPresenter.new(params, current_user)
-    render :docs
+  def contents
+    render_using_presenter(Docs::ContentsPresenter)
   end
 
   def getting_started
-    @presenter = Docs::GettingStartedPresenter.new(params, current_user)
-    render :docs
+    render_using_presenter(Docs::GettingStartedPresenter)
   end
 
   def management
-    @presenter = Docs::ManagementPresenter.new(params, current_user)
-    render :docs
+    render_using_presenter(Docs::ManagementPresenter)
   end
 
   def ost_remote
-    @presenter = Docs::OstRemotePresenter.new(params, current_user)
-    render :docs
+    render_using_presenter(Docs::OstRemotePresenter)
   end
 
   def api
-    @presenter = Docs::ApiPresenter.new(params, current_user)
+    render_using_presenter(Docs::ApiPresenter)
+  end
+
+  private
+
+  def render_using_presenter(presenter)
+    @presenter = presenter.new(params, current_user)
     render :docs
   end
 end

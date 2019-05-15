@@ -18,4 +18,8 @@ module DocsHelper
       end
     end
   end
+
+  def path_for_category(view_object, params = {})
+    send("docs_#{view_object.category}_path", params)
+  end
 end

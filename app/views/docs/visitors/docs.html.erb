@@ -26,9 +26,9 @@
       <div class="row">
         <div class="col">
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Documentation', documentation_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.display_category, ost_remote_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.display_topic, ost_remote_path(topic: @presenter.topic, page: 1) %></li>
+            <li class="breadcrumb-item"><%= link_to 'Documentation', docs_contents_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.display_category, path_for_category(@presenter) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.display_topic, path_for_category(@presenter, topic: @presenter.topic, page: 1) %></li>
             <li class="breadcrumb-item active"><%= @presenter.page_title %></li>
           </ul>
         </div>

@@ -7,7 +7,7 @@ module Docs
     end
 
     def display_category
-      'API'
+      'OpenSplitTime API'
     end
 
     def items

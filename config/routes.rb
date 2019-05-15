@@ -7,14 +7,14 @@ Rails.application.routes.draw do
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
-  get 'documentation', to: redirect('docs/index')
+  get 'documentation', to: redirect('docs/contents')
   get 'getting_started', to: redirect('docs/getting_started')
   get 'management', to: redirect('docs/management')
   get 'ost_remote', to: redirect('docs/ost_remote')
 
   namespace :docs do
-    root to: 'visitors#index'
-    get 'index', to: 'visitors#index'
+    root to: 'visitors#contents'
+    get 'contents', to: 'visitors#contents'
     get 'getting_started', to: 'visitors#getting_started'
     get 'management', to: 'visitors#management'
     get 'ost_remote', to: 'visitors#ost_remote'

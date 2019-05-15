@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Docs
-  class IndexPresenter < Docs::BasePresenter
+  class ContentsPresenter < Docs::BasePresenter
     def category
-      :index
+      :contents
     end
 
     def display_category

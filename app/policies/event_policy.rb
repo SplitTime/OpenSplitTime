@@ -22,7 +22,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def spread?
-    user.authorized_to_edit?(event)
+    user.present?
   end
 
   def summary?

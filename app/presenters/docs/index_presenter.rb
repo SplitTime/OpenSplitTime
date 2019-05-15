@@ -3,7 +3,7 @@
 module Docs
   class IndexPresenter < Docs::BasePresenter
     def category
-      :documentation
+      :index
     end
 
     def display_category
@@ -12,7 +12,7 @@ module Docs
 
     def items
       {
-          index: {display_topic: 'Index', pages: ['Categories']},
+          contents: {display_topic: 'Contents', pages: ['Categories']},
       }
     end
   end

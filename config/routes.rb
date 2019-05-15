@@ -7,10 +7,19 @@ Rails.application.routes.draw do
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
-  get 'documentation', to: 'visitors#documentation'
-  get 'getting_started', to: 'visitors#getting_started'
-  get 'management', to: 'visitors#management'
-  get 'ost_remote', to: 'visitors#ost_remote'
+  get 'documentation', to: redirect('docs/index')
+  get 'getting_started', to: redirect('docs/getting_started')
+  get 'management', to: redirect('docs/management')
+  get 'ost_remote', to: redirect('docs/ost_remote')
+
+  namespace :docs do
+    root to: 'visitors#index'
+    get 'index', to: 'visitors#index'
+    get 'getting_started', to: 'visitors#getting_started'
+    get 'management', to: 'visitors#management'
+    get 'ost_remote', to: 'visitors#ost_remote'
+    get 'api', to: 'visitors#api'
+  end
 
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 

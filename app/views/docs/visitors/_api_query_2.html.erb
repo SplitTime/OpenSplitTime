@@ -1,0 +1,29 @@
+<div class="card">
+  <h4 class="card-header">Standard Individual Record Queries</h4>
+  <div class="card-body">
+    <p>Individual records are generally more useful and response times will be much faster. You can query for an
+      individual record using its id.</p>
+    <p>Most records in OpenSplitTime have both a numeric id (the unique database id) and a "slug" or "friendly" id,
+      which is used in the URL for easy readability by humans. The OpenSplitTime API will respond to either the numeric
+      id or the slug. For example, the following two queries:</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer xxxx" https://www.opensplittime.org/api/v1/events/5</code>
+    <hr/>
+    <p>or</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer xxxx" https://www.opensplittime.org/api/v1/events/hardrock-100-2013</code>
+    <hr/>
+    <p>will return exactly the same result.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Inclusions</h4>
+  <div class="card-body">
+    <p>Most record queries will return relationships that include the type and id of related records. You can include
+      full data for these relationships using an <code>include</code> parameter in your query:</p>
+    <code>$ curl -H "Authorization: bearer xxxx" https://www.opensplittime.org/api/v1/events/5?include=efforts</code>
+  </div>
+</div>
+<br/>

@@ -1,0 +1,21 @@
+<div class="card">
+  <h4 class="card-header">Security</h4>
+  <div class="card-body">
+    <p>The OpenSplitTime API uses a secure <code>https</code> connection, so your credentials will be encrypted during
+      transfer. As always, you should use measures to ensure your password and any API Keys are kept secret and stored
+      in a safe way in your client application. </p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">API Key Lifespan</h4>
+  <div class="card-body">
+    <p>For additional security, <strong>the API Key issued to you will expire
+      after <%= distance_of_time_in_words(Rails.application.secrets.jwt_duration) %></strong>. If you need to use the
+      API for a longer period, you will need to obtain a new API Key.</p>
+    <p>For reference, when you obtain an API Key,
+      <strong>the expiration date and time is included in the response</strong>. </p>
+  </div>
+</div>
+<br/>

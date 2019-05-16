@@ -23,10 +23,11 @@
       <li>Split Time</li>
       <li>Raw Time</li>
     </ul>
-    <p>Query any of these models by passing a GET request to the applicable endpoint. For example (you will need to
-      replace the <code>xxxx</code> with your own JSON Web Token):</p>
+    <p>Query any of these models by passing a GET request to the applicable endpoint and including your API key as a
+      bearer authorization in the request header. For example (you will need to replace <code>your.api.key</code> with
+      your own API Key):</p>
     <hr/>
-    <code>$ curl -H "Authorization: bearer xxxx" https://www.opensplittime.org/api/v1/events</code>
+    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/events</code>
     <hr/>
     <p>Records are returned in batches of 25. Links are included to obtain additional batches.</p>
     <p>Individual records are generally more useful and response times will be much faster. You can query for</p>

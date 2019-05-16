@@ -34,7 +34,7 @@ class ApplicationPolicy
     alias_method :resolve, :resolve_viewable
 
     def visible_records
-      scope.respond_to?(:visible) ? scope.visible : scope
+      scope.respond_to?(:visible) ? scope.visible : scope.all
     end
 
     def created_records

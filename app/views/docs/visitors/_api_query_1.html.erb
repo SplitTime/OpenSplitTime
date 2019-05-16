@@ -12,22 +12,19 @@
 <div class="card">
   <h4 class="card-header">Standard Index Queries</h4>
   <div class="card-body">
-    <p>The primary models in use in OpenSplitTime are:</p>
+    <p>The models available for index queries are:</p>
     <ul>
-      <li>Organization</li>
-      <li>Course</li>
-      <li>Split</li>
-      <li>Event Group</li>
-      <li>Event</li>
-      <li>Effort</li>
-      <li>Split Time</li>
-      <li>Raw Time</li>
+      <li>Organizations</li>
+      <li>Courses</li>
+      <li>Event Groups</li>
+      <li>Events</li>
+      <li>People</li>
     </ul>
     <p>Query any of these models by passing a GET request to the applicable endpoint and including your API key as a
       bearer authorization in the request header. For example (you will need to replace <code>your.api.key</code> with
       your own API Key):</p>
     <hr/>
-    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/events</code>
+    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/event_groups</code>
     <hr/>
     <p>Records are returned in batches of 25. Links are included to obtain additional batches.</p>
     <p>Remember that individual records are generally more useful and

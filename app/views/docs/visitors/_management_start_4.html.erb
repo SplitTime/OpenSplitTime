@@ -1,7 +1,50 @@
 <div class="card">
   <h4 class="card-header">Starting Entrants</h4>
   <div class="card-body">
-    <p>Coming soon</p>
+    <p>Entrants will be shown as "Not Started" until they are started&mdash;in other words, until they have a recorded
+      Split Time. Starting an Entrant records a Split Time at the starting split. Entrants are started using one of the
+      tools provided in the Roster view.</p>
+    <p>Note: <strong>If an Entrant is not started and has no other recorded Split Times</strong>, OpenSplitTime will
+      report that Entrant to OST Remote as "Not Expected," and
+      <strong>the Entrant's bib number will appear black (Not Expected) in the OST Remote Cross Check view</strong>.
+      Make sure to timely start your Entrants so that stations using OST Remote will have an accurate Cross Check.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Starting Entrants In Bulk</h4>
+  <div class="card-body">
+    <p>The Roster view includes a green button that will initially indicate that there is
+      <strong>Nothing to Start</strong>. Remember that each Entrant has a "scheduled start time", as discussed on the
+      <%= link_to 'Starting Overview', docs_management_path(topic: :start, page: 1) %> page. An Entrant becomes eligible
+      to start when the following are true:</p>
+    <ol>
+      <li>The Entrant has checked in</li>
+      <li>The Entrant's scheduled start time is earlier than the current time</li>
+    </ol>
+    <p>If any Entrant meets both criteria, the text of the green button will change to <strong>Start Entrants</strong>.
+      To start Entrants, do the following:</p>
+    <ol>
+      <li>Click <strong>Start Entrants</strong></li>
+      <li>Choose the applicable scheduled start time from the dropdown menu. A dialog box will appear.</li>
+      <li>If the actual start time is different from the scheduled start time, change the actual start time in the
+        dialog box.
+      </li>
+      <li>Click <strong>Start</strong></li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Starting a Single Entrant</h4>
+  <div class="card-body">
+    <p>Sometimes you may need to start a single Entrant. You can do this from the Show Entrant page.</p>
+    <ol>
+      <li>Click on the Entrant's name</li>
+      <li>Click <strong>Start Effort</strong></li>
+    </ol>
   </div>
 </div>
 <br/>

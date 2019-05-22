@@ -36,6 +36,10 @@
     <p>If a particular Entrant is missing several Split Times, consider whether the Entrant may not be displaying his or
       her bib correctly. Where appropriate, consider whether it is possible the Entrant may not have completed the
       entire course.</p>
+    <p>Some holes may be caused by data that OpenSplitTime has determined is not correct. For example, if Bib #111 is
+      recorded at Aid 2 at 12:30 and also recorded at Aid 3 at 12:10, OpenSplitTime will reject whichever of those times
+      is submitted second. Faulty times need to be pulled into
+      the <%= link_to 'Live Entry', docs_management_path(topic: :enter, page: 1) %> screen for review by a human.</p>
   </div>
 </div>
 <br/>

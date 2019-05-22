@@ -14,7 +14,8 @@ module Docs
       {
           credentials: {display_topic: 'Credentials', pages: ['Signing Up']},
           key: {display_topic: 'API Keys', pages: ['Getting an API Key', 'Security and Lifespan']},
-          query: {display_topic: 'Querying the API', pages: ['Index Queries', 'Individual Queries', 'Special Queries', 'Performance']}
+          query: {display_topic: 'Querying the API', pages: ['Index Queries', 'Individual Queries', 'Special Queries', 'Performance']},
+          support: {display_topic: 'Support', pages: ['Getting Help']}
       }
     end
   end

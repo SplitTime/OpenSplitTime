@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable
-  include Delegable
-  include SplitMethods
-  include LapsRequiredMethods
-  include TimeZonable
+  include Auditable, Delegable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -91,10 +87,6 @@ class Event < ApplicationRecord
     slug
   end
 
-  def unreconciled_efforts
-    efforts.where(person_id: nil)
-  end
-
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: id})
   end
@@ -124,7 +116,7 @@ class Event < ApplicationRecord
   end
 
   def finished?
-    ranked_efforts.present? && ranked_efforts.none?(&:in_progress?)
+    ranked_efforts.present? && ranked_efforts.any?(&:started?) && ranked_efforts.none?(&:in_progress?)
   end
 
   def ranked_efforts(args = {})

@@ -82,7 +82,7 @@
         <div class="card-body">
           <% @presenter.watch_efforts.each do |effort| %>
             <h4 class="card-text">
-              <strong><%= link_to effort.full_name, effort_path(effort) %></strong>
+              <strong><%= link_to "#{effort.full_name} at #{effort.event_name}", effort_path(effort) %></strong>
             </h4>
           <% end %>
         </div>

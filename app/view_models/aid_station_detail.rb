@@ -22,11 +22,11 @@ class AidStationDetail < LiveEventFramework
 
   def post_initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:event, :parameterized_split_name],
+                           required: [:event],
                            exclusive: [:event, :parameterized_split_name, :params, :times_container],
                            class: self.class)
     @event = args[:event]
-    @parameterized_split_name = args[:parameterized_split_name] || parameterized_split_names.first
+    @parameterized_split_name = args[:parameterized_split_name].in?(parameterized_split_names) ? args[:parameterized_split_name] : parameterized_split_names.last
     @params = args[:params]
     @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
   end
@@ -47,7 +47,7 @@ class AidStationDetail < LiveEventFramework
   end
 
   def split
-    event.splits.find { |split| split.parameterized_base_name == parameterized_split_name }
+    event.splits.find { |split| split.parameterized_base_name == parameterized_split_name } || event.ordered_splits.last
   end
 
   private
@@ -93,6 +93,7 @@ class AidStationDetail < LiveEventFramework
   end
 
   def split_times_here
+    return {} unless split.present?
     @split_times_here ||= split_times_by_split[split.id]
   end
 

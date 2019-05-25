@@ -3,12 +3,7 @@
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped]
 
-  include Auditable
-  include Concealable
-  include Delegable
-  include MultiEventable
-  include SplitAnalyzable
-  include TimeZonable
+  include Auditable, Concealable, Delegable, MultiEventable, Reconcilable, SplitAnalyzable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -73,6 +68,10 @@ class EventGroup < ApplicationRecord
   def not_expected_bibs(split_name)
     query = EventGroupQuery.not_expected_bibs(id, split_name)
     ActiveRecord::Base.connection.execute(query).values.flatten
+  end
+
+  def organization_name
+    organization.name
   end
 
   private

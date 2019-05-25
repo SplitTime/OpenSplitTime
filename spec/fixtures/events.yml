@@ -14,6 +14,7 @@ hardrock_2015:
   event_group_id: 17
   short_name: 
   results_template_id: 7
+  efforts_count: 30
 ramble:
   id: 14
   course_id: 9
@@ -29,6 +30,7 @@ ramble:
   event_group_id: 4
   short_name: 
   results_template_id: 7
+  efforts_count: 4
 hardrock_2014:
   id: 17
   course_id: 12
@@ -44,6 +46,7 @@ hardrock_2014:
   event_group_id: 7
   short_name: 
   results_template_id: 7
+  efforts_count: 19
 rufa_2016:
   id: 34
   course_id: 20
@@ -59,6 +62,7 @@ rufa_2016:
   event_group_id: 25
   short_name: 
   results_template_id: 7
+  efforts_count: 4
 rufa_2017_24h:
   id: 36
   course_id: 20
@@ -74,6 +78,7 @@ rufa_2017_24h:
   event_group_id: 59
   short_name: 24H
   results_template_id: 7
+  efforts_count: 6
 hardrock_2016:
   id: 37
   course_id: 12
@@ -89,6 +94,7 @@ hardrock_2016:
   event_group_id: 28
   short_name: 
   results_template_id: 7
+  efforts_count: 19
 ggd30_50k:
   id: 48
   course_id: 26
@@ -104,6 +110,7 @@ ggd30_50k:
   event_group_id: 27
   short_name: 50K
   results_template_id: 7
+  efforts_count: 8
 ggd30_12m:
   id: 49
   course_id: 27
@@ -119,6 +126,7 @@ ggd30_12m:
   event_group_id: 27
   short_name: 12-miler
   results_template_id: 7
+  efforts_count: 6
 sum_100k:
   id: 56
   course_id: 31
@@ -134,6 +142,7 @@ sum_100k:
   event_group_id: 32
   short_name: 100K
   results_template_id: 7
+  efforts_count: 5
 sum_55k:
   id: 57
   course_id: 32
@@ -149,6 +158,7 @@ sum_55k:
   event_group_id: 32
   short_name: 55K
   results_template_id: 3
+  efforts_count: 8
 rufa_2017_12h:
   id: 70
   course_id: 20
@@ -164,3 +174,4 @@ rufa_2017_12h:
   event_group_id: 59
   short_name: 12H
   results_template_id: 7
+  efforts_count: 6

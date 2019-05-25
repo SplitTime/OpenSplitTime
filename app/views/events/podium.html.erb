@@ -26,7 +26,7 @@
   </div>
 </header>
 
-<aside class="ost-toolbar hidden-print">
+<aside class="ost-toolbar d-print-none">
   <div class="container">
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>

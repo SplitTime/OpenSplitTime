@@ -40,6 +40,22 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def reconcile?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def auto_reconcile?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def associate_people?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def create_people?
+    user.authorized_to_edit?(event_group)
+  end
+
   def roster?
     user.authorized_to_edit?(event_group)
   end

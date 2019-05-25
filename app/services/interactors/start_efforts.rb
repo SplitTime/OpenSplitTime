@@ -67,14 +67,19 @@ module Interactors
     end
 
     def time_zone
-      @time_zone ||= efforts.first.home_time_zone
+      @time_zone ||= efforts.first&.home_time_zone
     end
 
     def response_message
-      errors.present? ? "No efforts were started" : "Started #{pluralize(saved_split_times.size, 'effort')}"
+      started_time = converted_start_time ? I18n.l(converted_start_time, format: :datetime_input) : "the scheduled start #{pluralize(saved_split_times.size, 'time')}"
+      errors.present? ? "No efforts were started" : "Started #{pluralize(saved_split_times.size, 'effort')} at #{started_time}"
     end
 
     def validate_setup
+      if efforts.empty?
+        errors << efforts_not_provided_error
+        return
+      end
       errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
       errors << invalid_start_time_error(start_time) if invalid_start_time?
       errors << invalid_start_time_error(start_time || 'nil') unless converted_start_time ||

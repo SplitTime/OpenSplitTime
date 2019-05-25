@@ -7,21 +7,19 @@ Rails.application.routes.draw do
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
-  get 'getting_started', to: 'visitors#getting_started'
-  get 'getting_started_2', to: 'visitors#getting_started_2'
-  get 'getting_started_3', to: 'visitors#getting_started_3'
-  get 'getting_started_4', to: 'visitors#getting_started_4'
-  get 'getting_started_5', to: 'visitors#getting_started_5'
-  get 'getting_started_6', to: 'visitors#getting_started_6'
-  get 'course_info', to: 'visitors#course_info'
-  get 'effort_info', to: 'visitors#effort_info'
-  get 'event_info', to: 'visitors#event_info'
-  get 'event_group_info', to: 'visitors#event_group_info'
-  get 'person_info', to: 'visitors#person_info'
-  get 'organization_info', to: 'visitors#organization_info'
-  get 'split_info', to: 'visitors#split_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
+  get 'documentation', to: redirect('docs/contents')
+  get 'getting_started', to: redirect('docs/getting_started')
+  get 'management', to: redirect('docs/management')
+  get 'ost_remote', to: redirect('docs/ost_remote')
+
+  namespace :docs do
+    root to: 'visitors#contents'
+    get 'contents', to: 'visitors#contents'
+    get 'getting_started', to: 'visitors#getting_started'
+    get 'management', to: 'visitors#management'
+    get 'ost_remote', to: 'visitors#ost_remote'
+    get 'api', to: 'visitors#api'
+  end
 
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 
@@ -54,7 +52,6 @@ Rails.application.routes.draw do
       get :edit_split_times
       patch :update_split_times
       put :set_data_status
-      put :start
       patch :rebuild
       patch :unstart
       put :stop
@@ -69,12 +66,17 @@ Rails.application.routes.draw do
       get :courses
       get :drop_list
       get :export_raw_times
+      get :follow
       get :raw_times
+      get :reconcile
       get :roster
       get :split_raw_times
       get :traffic
       put :set_data_status
-      put :start_efforts
+      patch :auto_reconcile
+      post :create_people
+      patch :associate_people
+      patch :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
@@ -91,12 +93,9 @@ Rails.application.routes.draw do
       get :export_finishers
       get :export_to_ultrasignup
       get :podium
-      get :reconcile
       get :spread
       get :summary
       patch :auto_reconcile
-      post :create_people
-      put :associate_people
       put :set_stops
       patch :reassign
       patch :update_start_time

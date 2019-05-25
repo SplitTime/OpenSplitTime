@@ -22,7 +22,7 @@ class EventPolicy < ApplicationPolicy
   end
 
   def spread?
-    user.authorized_to_edit?(event)
+    user.present?
   end
 
   def summary?
@@ -33,24 +33,12 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def create_people?
-    user.authorized_to_edit?(event)
-  end
-
-  def reconcile?
-    user.authorized_to_edit?(event)
-  end
-
   def auto_reconcile?
     user.authorized_to_edit?(event)
   end
 
   def delete_all_efforts?
     user.authorized_fully?(event)
-  end
-
-  def associate_people?
-    user.authorized_to_edit?(event)
   end
 
   def set_stops?

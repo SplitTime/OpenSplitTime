@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :traffic, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
   before_action :set_event_group, except: [:index]
-  after_action :verify_authorized, except: [:index, :show, :traffic, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list]
 
   def index
-    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable
+    scoped_event_groups = policy_scope(EventGroup)
                               .search(params[:search])
                               .by_group_start_time
                               .preload(:events)
@@ -59,6 +59,10 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
+  def follow
+    @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
+  end
+
   def traffic
     if params[:split_name]
       redirect_to request.params.merge(split_name: nil, parameterized_split_name: params[:split_name]), status: 301
@@ -67,6 +71,38 @@ class EventGroupsController < ApplicationController
       event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
       @presenter = EventGroupTrafficPresenter.new(event_group, prepared_params, band_width)
     end
+  end
+
+  def reconcile
+    authorize @event_group
+
+    event_group = EventGroup.where(id: @event_group.id).includes(efforts: :person).first
+    @presenter = ReconcilePresenter.new(parent: event_group, params: prepared_params, current_user: current_user)
+  end
+
+  def auto_reconcile
+    authorize @event_group
+
+    EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
+    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
+    redirect_to event_group_path(@event_group, force_settings: true)
+  end
+
+  def associate_people
+    authorize @event_group
+
+    id_hash = params[:ids].to_unsafe_h
+    response = Interactors::AssignPeopleToEfforts.perform!(id_hash)
+    set_flash_message(response)
+    redirect_to reconcile_event_group_path(@event_group)
+  end
+
+  def create_people
+    authorize @event_group
+
+    response = Interactors::CreatePeopleFromEfforts.perform!(params[:effort_ids])
+    set_flash_message(response)
+    redirect_to reconcile_event_group_path(@event_group)
   end
 
   def set_data_status
@@ -83,12 +119,24 @@ class EventGroupsController < ApplicationController
 
     filter = prepared_params[:filter]
     efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
-                  .select { |effort| filter.all? { |method, value| effort.send(method) == value } }
-    start_time = params[:start_time]
+    filtered_efforts = Effort.from(efforts, :efforts).where(filter)
+    start_time = params[:actual_start_time]
 
-    response = Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time, current_user_id: current_user.id)
-    set_flash_message(response)
-    redirect_to request.referrer
+    response = Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
+
+    respond_to do |format|
+      format.html do
+        set_flash_message(response)
+        redirect_to request.referrer
+      end
+      format.json do
+        if response.successful?
+          render json: {success: true}, status: :created
+        else
+          render json: {success: false, errors: response.errors}
+        end
+      end
+    end
   end
 
   def update_all_efforts
@@ -133,7 +181,7 @@ class EventGroupsController < ApplicationController
   private
 
   def set_event_group
-    @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:id])
+    @event_group = policy_scope(EventGroup).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
   end
 end

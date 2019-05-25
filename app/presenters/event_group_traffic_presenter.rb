@@ -6,7 +6,7 @@ class EventGroupTrafficPresenter < BasePresenter
   ROW_LIMIT = 500
 
   attr_reader :event_group, :band_width
-  delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
+  delegate :name, :organization, :events, :home_time_zone, :start_time_local, :available_live, :multiple_events?, to: :event_group
 
   def initialize(event_group, params, band_width)
     @event_group = event_group
@@ -42,7 +42,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def event
-    events.first
+    event_group.first_event
   end
 
   def totals(kind)

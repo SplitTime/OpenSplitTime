@@ -2,7 +2,7 @@
 
 class LiveEventFramework
   attr_reader :event
-  delegate :multiple_laps?, :multiple_sub_splits?, :home_time_zone, :ordered_events_within_group, to: :event
+  delegate :multiple_laps?, :multiple_sub_splits?, :laps_unlimited?, :home_time_zone, :ordered_events_within_group, to: :event
 
   def initialize(args)
     @event = args[:event]
@@ -20,10 +20,6 @@ class LiveEventFramework
 
   def event_id
     event.id
-  end
-
-  def event_start_time_local
-    event.start_time_local
   end
 
   def efforts_started

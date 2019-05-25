@@ -77,6 +77,7 @@ class EffortsController < ApplicationController
         set_flash_message(response)
       end
     else
+      @effort = effort
       render 'edit'
     end
   end
@@ -105,16 +106,6 @@ class EffortsController < ApplicationController
 
     effort = Effort.where(id: @effort.id).includes(event: :splits).first
     response = Interactors::RebuildEffortTimes.perform!(effort: effort, current_user_id: current_user.id)
-    set_flash_message(response) unless response.successful?
-    redirect_to effort_path(effort)
-  end
-
-  def start
-    authorize @effort
-    effort = effort_with_splits
-    start_time = params[:start_time]
-
-    response = Interactors::StartEfforts.perform!(efforts: [effort], start_time: start_time, current_user_id: current_user.id)
     set_flash_message(response) unless response.successful?
     redirect_to effort_path(effort)
   end

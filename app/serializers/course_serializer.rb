@@ -5,6 +5,7 @@ class CourseSerializer < BaseSerializer
   link(:self) { api_v1_course_path(object) }
 
   has_many :splits
+  belongs_to :organization
 
   def locations
     object.ordered_splits.select(&:has_location?).map do |split|

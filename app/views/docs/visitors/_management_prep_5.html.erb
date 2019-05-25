@@ -1,0 +1,91 @@
+<div class="card">
+  <h4 class="card-header">Training Timing Crews</h4>
+  <div class="card-body">
+    <p>Event timing can be intense. A trained timing crew will be less stressed, more accurate, and generally more
+      effective than an untrained crew. Please make an effort to train your crews in advance.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Creating Steward Accounts</h4>
+  <div class="card-body">
+    <p>First, you will need one or more timing accounts authorized as Stewards for your organization. Follow these
+      steps:</p>
+    <ol>
+      <li><strong>Log out from your own account</strong> (you cannot create a new account while logged in)</li>
+      <li>Click the Sign Up button</li>
+      <li>Enter an email address and password. Remember that you will need access to the email address you use so that
+        you can confirm the account. Make sure you write down or otherwise store the email and password in a secure
+        place.
+      </li>
+      <li>Log back in to your own account</li>
+      <li>Authorize the new time entry accounts as Stewards (<strong>My Stuff > Your Organization > Stewards</strong>).
+        You must have Owner privileges for your Organization in order to grant Steward privileges to another account.
+      </li>
+    </ol>
+    <p>Creating Steward accounts is a one-time process. You can re-use them in future years. Consider changing your
+      passwords between events to discourage unauthorized use.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Creating a Test Event Group</h4>
+  <div class="card-body">
+    <p>For training purposes, your crews will need to have access to an Event Group. Follow these steps:</p>
+    <ol>
+      <li>Create an Event Group using the usual <%= link_to 'Staging process', getting_started_path %>.
+        <strong>Note: Do not make your mock Event Group public!</strong> (It will be confusing to the public if you do.)
+      </li>
+      <li>Make your mock Event Group available live (<strong>Admin > Settings > Enable Live</strong>). Remember that
+        <strong>OST Remote will not recognize an Event Group unless it is enabled for live entry</strong>.
+      </li>
+      <li>Verify that your mock event is available for time entry by logging in to OST Remote using a Steward account.
+        The mock Event Group should appear in the "Select Event" list.
+      </li>
+    </ol>
+    <p>We recommend that each Organization create one or more mock Event Groups to simulate actual race conditions. Mock
+      Event Groups should always be kept private, and never made available for public view. Once you have created a mock
+      Event Group, you can enable or disable live entry as often as you like. <strong>Consider keeping a mock Event
+      Group available for training in later years</strong> so you do not have to re-create one for each new event.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Using the Test Event Group</h4>
+  <div class="card-body">
+    <p>Timing crews will do best if they actually enter and sync some times in your mock Event Group. Follow these
+      steps:</p>
+    <ol>
+      <li>Provide an email and password for a Steward account to your timing crews. Or, if you prefer to keep your
+        Steward passwords secret, simply log in to OST Remote and provide devices to your crews. The password will not
+        have to be re-entered unless an operator logs out and attempts to change the password when logging back in.
+      </li>
+      <li>Direct your timing crews to the <%= link_to 'OST Remote Documentation', ost_remote_path %>, and ask them to
+        read it carefully and test OST Remote. Encourage them to enter and sync times. Nothing will be visible to the
+        public so long as the Event Group remains private.
+      </li>
+      <li>If you are able, hold an in-person meeting or video conference with timing crews to make sure they understand
+        how to use OST Remote
+      </li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Cleaning Up</h4>
+  <div class="card-body">
+    <p>After training is complete, you will need to disable the mock Event Group and clean up. Follow these steps:</p>
+    <ol>
+      <li>Make sure all devices are logged out of OST Remote</li>
+      <li>Disable live entry for your mock Event Group (<strong>Admin > Settings > Disable Live</strong>). This step is
+        critical to avoid any accidental use of your mock Event Group during the actual event.
+      </li>
+      <li>Verify that the mock Event Group no longer appears when attempting to log in to OST Remote.</li>
+    </ol>
+  </div>
+</div>
+<br/>

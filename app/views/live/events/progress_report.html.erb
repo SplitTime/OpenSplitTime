@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Progress report - #{@progress_display.event_name}" %>
+  <% "OpenSplitTime: Progress report - #{@progress_display.event_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -38,8 +38,9 @@
     <div class="col">
       <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
       <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
-      <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
-      <%= "Stopped: #{@progress_display.efforts_stopped_count}" %><br/>
+      <% unless @progress_display.laps_unlimited? %>
+        <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+      <% end %>
       <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
     </div>
   </div>
@@ -48,36 +49,36 @@
   <div class="row">
     <div class="col-6">
       <% if @progress_display.efforts_in_progress_count > 0 %>
-          <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
-          <br/>
-          <table class="table table-condensed table-striped">
-            <thead>
+        <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
+        <br/>
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th>Bib</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th class="text-center">Last Reported</th>
+            <th class="text-center">Due Next</th>
+            <th class="text-right">Overdue By</th>
+
+          </tr>
+          </thead>
+
+          <tbody>
+          <% @progress_display.past_due_progress_rows.each do |row| %>
             <tr>
-              <th>Bib</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th class="text-center">Last Reported</th>
-              <th class="text-center">Due Next</th>
-              <th class="text-right">Overdue By</th>
-
+              <td><%= row.bib_number %></td>
+              <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort) %></td>
+              <td class="text-nowrap"><%= row.bio_historic %></td>
+              <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
+              <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>
+              <td class="text-right"><%= time_format_xxhyym(row.seconds_past_due) %></td>
             </tr>
-            </thead>
-
-            <tbody>
-            <% @progress_display.past_due_progress_rows.each do |row| %>
-                <tr>
-                  <td><%= row.bib_number %></td>
-                  <td class="text-nowrap"><%= link_to row.full_name, effort_path(row.effort) %></td>
-                  <td class="text-nowrap"><%= row.bio_historic %></td>
-                  <td class="text-center text-nowrap"><%= display_progress_info(row.last_reported_info) %></td>
-                  <td class="text-center text-nowrap"><%= display_progress_info(row.due_next_info) %></td>
-                  <td class="text-right"><%= time_format_xxhyym(row.seconds_past_due) %></td>
-                </tr>
-            <% end %>
-            </tbody>
-          </table>
+          <% end %>
+          </tbody>
+        </table>
       <% else %>
-          <h4>No efforts are in progress.</h4>
+        <h4>No efforts are in progress.</h4>
       <% end %>
     </div>
   </div>

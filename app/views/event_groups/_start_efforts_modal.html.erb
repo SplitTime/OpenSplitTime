@@ -1,0 +1,59 @@
+<!--requires local variable 'resource'-->
+
+<div class="modal fade" data-target="roster.startEffortsModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"><strong>Start Entrants</strong></h3>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center" style="display:none" data-target="roster.error">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login">
+              <strong>Could not start entrants.</strong>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col col-login">
+            <%= form_with url: start_efforts_event_group_path(@presenter.event_group),
+                          method: :patch,
+                          format: :json,
+                          local: false,
+                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors'} do |f| %>
+
+              <% if resource == :event_group %>
+                <%= f.hidden_field 'filter[ready_to_start]', value: true %>
+                <%= f.hidden_field 'filter[assumed_start_time]', value: nil,
+                                   data: {target: 'roster.assumedStartTimeFilter'} %>
+              <% end %>
+
+              <% if resource == :effort %>
+                <%= f.hidden_field 'filter[id]', value: @presenter.id %>
+              <% end %>
+
+              <div class="form-group">
+                <%= f.label :scheduled_start_time %>
+                <p data-target="roster.scheduledStartTime"></p>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :actual_start_time %>
+                <%= f.text_field :actual_start_time, value: nil, class: 'form-control', autofocus: true,
+                                 data: {target: 'roster.actualStartTimeField'} %>
+              </div>
+
+              <div class="form-group">
+                <%= f.submit 'Start', class: 'btn btn-success', data: {action: 'click->roster#reloadPage'} %>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

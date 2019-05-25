@@ -32,6 +32,11 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}
     end
 
+    def efforts_not_provided_error
+      {title: 'Efforts not provided',
+       detail: {messages: ['No efforts were provided']}}
+    end
+
     def invalid_raw_time_error(raw_time, valid_sub_splits)
       {title: 'Invalid raw time',
        detail: {messages: ["#{raw_time} is invalid; the sub_split #{raw_time.sub_split} must be one of #{valid_sub_splits}"]}}

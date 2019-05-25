@@ -1,0 +1,121 @@
+<div class="card">
+  <h4 class="card-header">Live Entry</h4>
+  <div class="card-body">
+    <p>The Live Entry screen is the primary place to manually enter time data. It also serves as a review point for time
+      entries that have been flagged by OpenSplitTime as faulty, meaning that they require human review before being
+      posted for public view.</p>
+    <p>You can reach the Live Entry page by selecting <strong>Live > Time Entry</strong> from the main menu.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Manual Time Entry</h4>
+  <div class="card-body">
+    <p>For aid stations that have no data connectivity, the best way to report time entries is often by voice over ham
+      radio or some similar mechanism. The timing crew may record the times using OST Remote and read them from
+      the Review/Sync screen, or they may use paper and pencil and read the time entries the old fashioned way.</p>
+    <p>When an aid station calls to report times, follow this procedure to record an entry:</p>
+    <ol>
+      <li>Select the correct station from the Aid Station dropdown at the top of the Live Entry screen</li>
+      <li>Tab to the Bib field and enter the bib number</li>
+      <li>Tab to the time field and enter the time or times. There will be one time field if you are recording "in"
+        times only, and two fields if you are recording "in" and "out" times.
+      </li>
+      <li>If the entry is a drop/stop, click <strong>Dropped Here</strong></li>
+      <li>For Events that are monitoring pacers only: If the entry includes a pacer, click the "In" and/or "Out" pacer
+        toggles, as appropriate
+      </li>
+      <li>Click <strong>Add</strong>. The entry will appear in the Local Data Workspace.</li>
+      <li>Repeat steps 2 through 6 for all times reported by the station.</li>
+    </ol>
+    <p>The Live Entry screen is designed to be used exclusively with the keyboard, if the operator so chooses. This is
+      the most efficient way to enter times. Use Tab and Shift-Tab to move between fields. Use the space bar to toggle
+      the Dropped Here and Pacer boxes. Use Enter to activate the <strong>Add</strong> button.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Real-Time Feedback</h4>
+  <div class="card-body">
+    <p>As you enter data into the Live Entry screen, <strong>OpenSplitTime provides real-time feedback</strong> to help
+      you evaluate the data.</p>
+    <p>If a bib is not found, a red "X" icon will appear next to the Bib field. If a bib is found but is associated with
+      an Event that is not expected to be at the selected station, a yellow "?" icon will appear next to the Bib
+      field.</p>
+    <p>If a time is questionable, a yellow "?" icon will appear next to the time. If a time is bad, a red "X" icon will
+      appear next to the time. If a time is duplicated (meaning that a Split Time already exists for that bib at that
+      station), a grey "!" icon will appear next to the time.</p>
+    <p>When you enter a bib number, OpenSplitTime will fetch all existing time data for that Entrant and display it in
+      the upper right corner of the Live Entry screen. This allows you to quickly evaluate the Entrant's status and
+      understand why a time may be flagged as bad. For example, if Bib #111 has dropped at Aid 3 and Aid 4 calls in a
+      time entry for Bib #111, the time will always be flagged as "bad."</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">The Local Data Workspace</h4>
+  <div class="card-body">
+    <p>Times entered through the Live Entry screen are placed into the Local Data Workspace. Times in the Workspace are
+      not saved to the database and will not be visible to the public. The Local Data Workspace provides an area in
+      which time entries can be reviewed and checked for accuracy before being submitted to the database.</p>
+    <p>A time entry can be <strong>edited</strong> by clicking the <strong>blue pencil</strong> icon at the right side
+      of the row.</p>
+    <p>A time entry can be <strong>discarded</strong> by clicking the <strong>red "X"</strong> icon at the right side of
+      the row.</p>
+    <p>All time entries can be discarded at once by clicking the red <strong>Discard All</strong> button and confirming
+      the action.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Submitting Time Entries</h4>
+  <div class="card-body">
+    <p>Submitting a time entry results in it being removed from the Local Data Workspace and saved as a Raw Time for
+      recordkeeping purposes and as a Split Time for view by the public until they are submitted. A single time entry is
+      submitted by clicking the green checkmark icon at the right side of the row.</p>
+    <p>Multiple time entries can be submitted to the database at once by clicking the green <strong>Submit All</strong>
+      button.</p>
+    <p>Each time entry in the Local Data Workspace is either "clean" or "not clean." "Clean" entries are those that have
+      a valid bib number, are not duplicates, and have times that OpenSplitTime does not consider to be faulty. Clean
+      entries will have green checkmark icons next to the bib number and all related times.</p>
+    <p>Clicking <strong>Submit All</strong> will submit only those entries that are clean, but clicking the green
+      checkmark icon next to a single time entry will submit that time entry whether or not it is clean. </p>
+    <p>Some time entries cannot be submitted using any method. For example, if the bib number does not exist in the
+      Event Group, the time entry cannot be submitted even using its individual submit button. It must be edited to fix
+      the bib number or discarded.</p>
+    <p>For example, say you have five time entries in your Local Data Workspace. Two are clean, one has a duplicate
+      time, one has a faulty time, and one has an invalid bib number. You click Submit All. The two clean entries are
+      submitted, and the other three entries remain in the Local Data Workspace.</p>
+    <p>You click the green checkmark next to the entry having the duplicate time. The entry is submitted and the new
+      time overwrites the old time.</p>
+    <p>Next you click the green checkmark next to the entry with the faulty time. The entry is submitted. The
+      related Entrant will now appear in the <strong>Admin > Problems</strong> list because one of her times is faulty.
+    </p>
+    <p>You click the green checkmark next to the entry with the invalid bib number. The entry is not submitted because
+      there is no way to create a Split Time for an invalid bib number. The entry remains in the Local Data Workspace.
+      It can be removed only by discarding it or by correcting the bib number and then submitting it.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Pulling Times For Review</h4>
+  <div class="card-body">
+    <p>Time entries coming through OST Remote are always saved as Raw Times. If the entries are clean, they are
+      automatically saved as Split Times for public view.</p>
+    <p>But when a time entry from OST Remote is not clean, either because the time is a duplicate, the time is faulty,
+      or the bib number is invalid, the Raw Time must be reviewed by a human before it can be saved as a Split Time. The
+      Live Entry screen is the place where such Raw Times are reviewed. </p>
+    <p>When times are available for review, a message will appear in the upper right corner of the screen, and the blue
+      <strong>Pull Times</strong> button will be enabled and will indicate the number of times available for review.
+      Click <strong>Pull Times</strong> to bring in a batch of time entries for review. Times are pulled in batches of
+      50 at most.</p>
+    <p>Once you have pulled a batch of times, review them and determine whether they should be submitted as-is, edited
+      to fix problems, or discarded.</p>
+  </div>
+</div>
+<br/>

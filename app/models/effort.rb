@@ -14,7 +14,7 @@ class Effort < ApplicationRecord
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
-  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time
+  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
 
   belongs_to :event, counter_cache: true
   belongs_to :person
@@ -53,8 +53,8 @@ class Effort < ApplicationRecord
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
   scope :add_ready_to_start, -> do
-    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and (events.start_time < current_timestamp)) as ready_to_start')
-        .left_joins(split_times: :split)
+    select('distinct on (efforts.id) efforts.*, coalesce(scheduled_start_time, events.start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
+        .left_joins(:event, split_times: :split)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
 
@@ -108,7 +108,11 @@ class Effort < ApplicationRecord
   end
 
   def calculated_start_time
-    actual_start_time || scheduled_start_time || event_start_time
+    actual_start_time || assumed_start_time
+  end
+
+  def assumed_start_time
+    attributes['assumed_start_time'] || scheduled_start_time || event_start_time
   end
 
   def event_start_time

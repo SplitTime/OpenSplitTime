@@ -1,0 +1,36 @@
+<div class="card">
+  <h4 class="card-header">Starting: Overview</h4>
+  <div class="card-body">
+    <p>To start an Event, you will follow these steps:</p>
+    <ol>
+      <li>Check in Entrants</li>
+      <li>Make modifications as needed</li>
+      <li>Verify bib numbers</li>
+      <li>Start Entrants</li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Checked In Status</h4>
+  <div class="card-body">
+    <p>Each Entrant is either "checked in" or "not checked in." Entrants who are checked in can be started using the
+      <%= link_to 'Start Entrants', management_path(topic: :starting, page: 4) %> process. </p>
+    <p><strong>Entrants that are not checked in will not be started using the normal Start Entrants process.</strong>
+    </p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Scheduled Start Times</h4>
+  <div class="card-body">
+    <p>In addition, each Entrant has a "scheduled start time." If the scheduled start time for an entrant is not
+      specified, OST will use the Event start time by default. You will start your entrants in batches depending on
+      scheduled start time.</p>
+    <p>You will have the opportunity to enter an actual start time for each batch of Entrants at the time you start your
+      Entrants. This is useful if your Event starts a few minutes late, as is often the case.</p>
+  </div>
+</div>
+<br/>

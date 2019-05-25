@@ -32,6 +32,9 @@ module DropdownHelper
 
   def admin_dropdown_menu(view_object)
     dropdown_items = [
+        {name: 'Reconcile',
+         link: reconcile_event_group_path(view_object.event_group),
+         active: action_name == 'reconcile'},
         {name: 'Roster',
          link: roster_event_group_path(view_object.event_group),
          active: action_name == 'roster' && !params[:problem]},
@@ -84,6 +87,9 @@ module DropdownHelper
           {name: 'Podium',
            link: podium_event_path(view_object.event),
            active: action_name == 'podium'},
+          {name: 'Follow',
+           link: follow_event_group_path(view_object.event_group),
+           active: action_name == 'follow'},
           {name: 'Traffic',
            link: traffic_event_group_path(view_object.event_group),
            active: action_name == 'traffic'}
@@ -158,6 +164,20 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
+  def summary_filter_dropdown
+    items = [{text: 'All', finished: nil},
+             {text: 'Finished', finished: true},
+             {text: 'Unfinished', finished: false}]
+
+    dropdown_items = items.map do |item|
+      {name: item[:text],
+       link: request.params.merge(finished: item[:finished], page: nil),
+       active: params[:finished]&.to_boolean == item[:finished]}
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
   def explore_dropdown_menu(view_object)
     dropdown_items = [
         {name: 'Plan my effort',
@@ -170,27 +190,27 @@ module DropdownHelper
 
   def effort_actions_dropdown_menu(view_object)
     dropdown_items = [
-        {name: 'Set data status',
+        {name: 'Set Data Status',
          link: set_data_status_effort_path(view_object.effort),
          method: :put},
         {role: :separator},
-        {name: 'Edit times of day',
+        {name: 'Edit Times of Day',
          link: edit_split_times_effort_path(view_object.effort, display_style: :military_time)},
-        {name: 'Edit dates and times',
+        {name: 'Edit Dates and Times',
          link: edit_split_times_effort_path(view_object.effort, display_style: :absolute_time_local)},
-        {name: 'Edit elapsed times',
+        {name: 'Edit Elapsed Times',
          link: edit_split_times_effort_path(view_object.effort, display_style: :elapsed_time)},
         {role: :separator},
-        {name: 'Edit effort',
+        {name: 'Edit Entrant',
          link: edit_effort_path(view_object.effort)},
-        {name: 'Rebuild times',
+        {name: 'Rebuild Times',
          link: rebuild_effort_path(view_object.effort),
          method: :patch,
          data: {confirm: "This will delete all split times and attempt to rebuild them from the " +
              "#{pluralize(view_object.raw_times_count, 'raw time')} related to this effort. This action cannot be undone. Proceed?"},
          visible: view_object.multiple_laps? && view_object.raw_times_count.positive?},
         {role: :separator},
-        {name: 'Delete effort',
+        {name: 'Delete Entrant',
          link: effort_path(view_object.effort),
          method: :delete,
          data: {confirm: 'This action cannot be undone. Proceed?'},
@@ -279,6 +299,16 @@ module DropdownHelper
          link: organization_path(view_object.organization, display_style: 'stewards')}
     ]
     build_dropdown_menu('Group Actions', dropdown_items, button: true)
+  end
+
+  def roster_actions_dropdown(view_object)
+    dropdown_items = [
+        {name: 'Reconcile efforts',
+         link: reconcile_event_group_path(view_object.event_group)},
+        {name: 'Set data status',
+         link: set_data_status_event_group_path(view_object.event_group)}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
   end
 
   def split_name_dropdown(view_object, param: :parameterized_split_name)

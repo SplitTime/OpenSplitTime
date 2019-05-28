@@ -1,0 +1,64 @@
+<div class="card">
+  <h4 class="card-header">Using the Raw Times Record</h4>
+  <div class="card-body">
+    <p>You can gain additional insight into a problem Effort using the <strong>Raw Times List</strong> and
+      <strong>Raw Time Splits</strong> screens. Together with the Effort screen and the Effort Analysis screen, these
+      tools give you deep insight into what data is faulty and how it can be improved.</p>
+    <p>A full explanation of the Raw Times List screen is found on the
+      <strong><%= link_to 'Monitoring / Raw Times List', docs_management_path(topic: :monitor, page: 7) %></strong>
+      page.</p>
+    <p>A full explanation of the Raw Times Splits screen is found on the
+      <strong><%= link_to 'Monitoring / Raw Times Split', docs_management_path(topic: :monitor, page: 8) %></strong>
+      page.</p>
+    <p>For various reasons, valid Raw Times may be not be automatically saved as Split Times. The following scenarios
+      may be helpful in learning how to use the Raw Time record to find and fix problems.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Scenario 1: A Duplicated Entry</h4>
+  <div class="card-body">
+    <p>Bib 111 comes through Aid 1 at 08:30, but the timing crew may inadvertently record her into OST Remote as bib 101
+      and then sync. The problematic time for bib 101 evaluates as good and is automatically saved as a Split Time. When
+      bib 101 comes through at 08:35 and is recorded into OST Remote, the Raw Time evaluates as not clean (because a
+      time for bib 101 already exists at Aid 1), so it is not automatically saved as a Split Time and must be
+      reviewed.</p>
+    <p>On review, the operator may not know whether the original 08:30 Split Time or the new 08:35 Raw Time is correct.
+      Unable to make the determination immediately, she discards the time to remove it from the Local Data
+      Workspace.</p>
+    <p>After the event, a Steward notices there is a hole for bib 111 at Aid 1. He also notices that there are two Raw
+      Times recorded at Aid 1 for bib 101, with a 5-minute discrepancy. He reviews the paper record and determines that
+      the 08:30 time belongs to 111 and the 08:35 time belongs to 101. He "un-pulls" the 08:30 time, pulls it into the
+      Live Entry screen for review, changes the bib from 101 to 111, and submits the time.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Scenario 2: An Errant Finisher</h4>
+  <div class="card-body">
+    <p>Bib 234 is entered in an Event Group for which both 25-mile and 50-mile events are available. Bib 234 is entered
+      in the 50-mile event. The 50-mile Entrants are expected to finish a 25-mile loop, then run the same loop in the
+      opposite direction to complete the 50-mile course. Because the 25-mile and 50-mile events are run concurrently,
+      the slower 25-mile finishers will be finishing within the same timeframe as the faster 50-mile finishers. To avoid
+      confusion, the 50-mile Entrants are instructed not to enter the finisher's chute at the 25-mile mark, but instead
+      to report into a separate 25-mile timing station nearby.</p>
+    <p>When bib 234 comes in at mile 25, he decides he is going to drop. But instead of reporting into the 25-mile
+      timing station, he runs through the finisher's chute and is recorded as a finisher. Bib 234 now has a Raw Time at
+      the Finish station. The Raw Time is flagged as <strong>bad</strong> because the time from the prior station to the
+      finish is much too short.</p>
+    <p>The problem is soon discovered, and bib 234 is entered again, this time at the 25-mile station. The entry is
+      synced and the Raw Time is automatically saved as a Split Time.</p>
+    <p>Later, an operator pulls the faulty Raw Time for review. Although the Raw Time is marked as <strong>bad</strong>,
+      he submits it using the green <strong>checkmark</strong> icon. Now bib 234 shows as a finisher, and worse, he is
+      shown as having won the race as his 50-mile finish time reflects the time it took him to complete only 25 miles.
+    </p>
+    <p>Another Steward notices the problem and pulls up the Effort screen for bib 234. She clicks the <strong>Raw Time
+      Records</strong> button to see what is going on, notices the errant Raw Time for bib 234 at the Finish station,
+      and figures out what happened. Based on the data, she visits the Effort screen for bib 234 and deletes the finish
+      Split Time.</p>
+    <p>Bib 234 now properly appears as a drop at Mile 25.</p>
+  </div>
+</div>
+<br/>

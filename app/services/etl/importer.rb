@@ -22,6 +22,8 @@ module ETL
       case format
       when :race_result_full
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::InsertStrategy, {delete_blank_times: true}.merge(options))
+      when :race_result_entrants
+        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultEntrantsStrategy, Loaders::UpsertStrategy, {delete_blank_times: false, unique_key: [:event_id, :bib_number]}.merge(options))
       when :race_result_times
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, {delete_blank_times: false}.merge(options))
       when :race_result_api_times

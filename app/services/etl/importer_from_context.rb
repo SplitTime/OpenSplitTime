@@ -23,6 +23,8 @@ module ETL
         params[:file]
       elsif params[:file]
         File.read(params[:file])
+      elsif params[:data].is_a?(String)
+        JSON.parse(params[:data]).deep_transform_keys(&:underscore)
       else
         params[:data]
       end

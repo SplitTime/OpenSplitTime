@@ -15,6 +15,7 @@ module ETL::Transformers
         proto_record.record_type = :effort
         proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
         proto_record.normalize_gender!
+        remove_name_classifications(proto_record)
         proto_record.split_field!(:full_name, :first_name, :last_name)
         proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
@@ -25,6 +26,11 @@ module ETL::Transformers
     private
 
     attr_reader :proto_records
+
+    # Remove commentary like " - LOWLANDER" and " - COURSE RECORD"
+    def remove_name_classifications(proto_record)
+      proto_record[:full_name] = proto_record[:full_name].sub(/\s-\s[A-Z\s]*/, '')
+    end
 
     def global_attributes
       {event_id: event.id}

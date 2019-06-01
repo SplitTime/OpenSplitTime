@@ -287,7 +287,6 @@ RSpec.describe Api::V1::EventsController do
       end
 
       context 'when provided with an adilas url and data_format adilas_bear_times' do
-        let(:start_time) { '2016-09-23 06:00:00' }
         let(:request_params) { {id: event.id, data_format: 'adilas_bear_times', data: source_data} }
         let(:source_data) do
           VCR.use_cassette("adilas/#{url.split('?').last}") do
@@ -314,6 +313,108 @@ RSpec.describe Api::V1::EventsController do
                                      '2016-09-23 13:49:11 -0600']
 
           expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+        end
+      end
+
+      context 'when provided with JSON data from api.raceresult.com and data_format race_result_api_times' do
+        let(:request_params) { {id: event.id, data_format: 'race_result_api_times', data: source_data} }
+        let(:source_data) do
+          {"list" =>
+               {"list_name" => "Result Lists|Tracking Details - json for API",
+                "orders" => [],
+                "filters" => [{"expression1" => "CONTEST", "expression2" => "1", "operator" => "=", "or_conjunction" => false}],
+                "fields" => [{"alignment" => 1, "expression" => "\"#\" & [BIB] & \". \" & ucase([FLNAME])"},
+                             {"alignment" => 1, "expression" => "\"STATUS: \" & [STATUSTEXT]"},
+                             {"alignment" => 1, "expression" => "\"START\""},
+                             {"alignment" => 1, "expression" => "iif([TIMESET100];\"Time: \" & format(T100;\"Hh:mm:ss A\"))"},
+                             {"alignment" => 1, "expression" => "\"AID 1\""},
+                             {"alignment" => 1, "expression" => "iif([TIMESET151];\"Time: \" & format(T151;\"Hh:mm:ss A\"))", "line" => 3},
+                             {"alignment" => 1, "expression" => "iif([TIMESET151];\"Split: \" & [Section1Split])", "line" => 3},
+                             {"alignment" => 1, "expression" => "\"AID 2\"", "line" => 4},
+                             {"alignment" => 1, "expression" => "iif([TIMESET152];\"Time: \" & format(T152;\"Hh:mm:ss A\"))", "line" => 4},
+                             {"alignment" => 1, "expression" => "iif([TIMESET152];\"Split: \" & [Section2Split])", "line" => 4},
+                             {"alignment" => 1, "expression" => "\"AID 3\"", "line" => 5},
+                             {"alignment" => 1, "expression" => "iif([TIMESET153];\"Time: \" & format(T153;\"Hh:mm:ss A\"))", "line" => 5},
+                             {"alignment" => 1, "expression" => "iif([TIMESET153];\"Split: \" & [Section3Split])", "line" => 5},
+                             {"alignment" => 1, "expression" => "\"AID 4\"", "line" => 6},
+                             {"alignment" => 1, "expression" => "iif([TIMESET154];\"Time: \" & format(T154;\"Hh:mm:ss A\"))", "line" => 6},
+                             {"alignment" => 1, "expression" => "iif([TIMESET154];\"Split: \" & [Section4Split])", "line" => 6},
+                             {"alignment" => 1, "expression" => "\"AID 5\"", "line" => 7},
+                             {"alignment" => 1, "expression" => "iif([TIMESET155];\"Time: \" & format(T155;\"Hh:mm:ss A\"))", "line" => 7},
+                             {"alignment" => 1, "expression" => "iif([TIMESET155];\"Split: \" & [Section6Split])", "line" => 7},
+                             {"alignment" => 1, "expression" => "\"FINISH\"", "line" => 8},
+                             {"alignment" => 1, "expression" => "iif([TIMESET200];\"Time: \" & format(T200;\"Hh:mm:ss A\"))", "line" => 8},
+                             {"alignment" => 1, "expression" => "iif([TIMESET200];\"Total Time: \" & [TIMETEXT])", "line" => 8}]},
+           "data" => {"#1_50k" => [[1116, "#1116. FINISHED FIRST", "STATUS: OK", "START", "Time: 8:01:49 AM", "AID 1", "Time: 8:41:08 AM", "Split: 0:39:19.11", "AID 2", "Time: 9:38:32 AM", "Split: 0:57:23.56", "AID 3", "Time: 10:24:12 AM", "Split: 0:45:39.80", "AID 4", "Time: 11:29:45 AM", "Split: 1:05:33.06", "AID 5", "Time: 12:20:44 PM", "Split: 0:10:44.34", "FINISH", "Time: 12:37:41 PM", "Total Time: 4:35:52.1"],
+                                   [1117, "#1117. FINISHED SECOND", "STATUS: OK", "START", "Time: 8:01:48 AM", "AID 1", "", "", "AID 2", "Time: 9:41:07 AM", "Split: 0:59:30.85", "AID 3", "Time: 10:31:45 AM", "Split: 0:50:38.20", "AID 4", "Time: 11:40:33 AM", "Split: 1:08:48.08", "AID 5", "Time: 12:31:31 PM", "Split: 0:18:31.84", "FINISH", "Time: 12:48:04 PM", "Total Time: 4:46:15.7"],
+                                   [1118, "#1118. PROGRESS AID4", "STATUS: OK", "START", "Time: 6:08:18 AM", "AID 1", "Time: 7:27:44 AM", "Split: 1:19:26.03", "AID 2", "Time: 9:31:50 AM", "Split: 2:04:05.72", "AID 3", "Time: 11:36:00 AM", "Split: 2:04:09.50", "AID 4", "Time: 14:26:38 PM", "Split: 2:50:37.96", "AID 5", "Time: 16:38:50 PM", "Split: 0:37:50.18", "FINISH", "Time: 17:22:12 PM", "Total Time: 11:13:54.0"],
+                                   [219, "#219. PROGRESS AID3", "STATUS: OK", "START", "Time: 6:08:18 AM", "AID 1", "Time: 7:38:18 AM", "Split: 1:30:00.00", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""],
+                                   [433, "#433. START ONLY", "STATUS: OK", "START", "Time: 8:01:49 AM", "AID 1", "", "", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""]]}
+          }.to_json
+        end
+
+        context 'when existing efforts have no split times' do
+          before do
+            event.efforts.each do |effort|
+              effort.split_times.each(&:destroy)
+            end
+          end
+
+          it 'adds times to existing efforts' do
+            expect { make_request }.to change { event.efforts.count }.by(0)
+            expect(response.status).to eq(201)
+            event.reload
+
+            effort = event.efforts.find_by(bib_number: 1116)
+            split_times = effort.ordered_split_times
+            expect(split_times.size).to eq(7)
+            expected_absolute_times = ['2017-06-03 08:01:49 -0600',
+                                       '2017-06-03 08:41:08 -0600',
+                                       '2017-06-03 09:38:32 -0600',
+                                       '2017-06-03 10:24:12 -0600',
+                                       '2017-06-03 11:29:45 -0600',
+                                       '2017-06-03 12:20:44 -0600',
+                                       '2017-06-03 12:37:41 -0600']
+            expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+
+            effort = event.efforts.find_by(bib_number: 433)
+            split_times = effort.ordered_split_times
+            expect(split_times.size).to eq(1)
+            expected_absolute_times = ['2017-06-03 08:01:49 -0600']
+            expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+          end
+        end
+
+        context 'when existing efforts have existing split times' do
+          it 'overwrites existing times but does not erase existing times when blanks appear' do
+            expect { make_request }.to change { event.efforts.count }.by(0)
+            expect(response.status).to eq(201)
+            event.reload
+
+            effort = event.efforts.find_by(bib_number: 1116)
+            split_times = effort.ordered_split_times
+            expect(split_times.size).to eq(7)
+            expected_absolute_times = ['2017-06-03 08:01:49 -0600',
+                                       '2017-06-03 08:41:08 -0600',
+                                       '2017-06-03 09:38:32 -0600',
+                                       '2017-06-03 10:24:12 -0600',
+                                       '2017-06-03 11:29:45 -0600',
+                                       '2017-06-03 12:20:44 -0600',
+                                       '2017-06-03 12:37:41 -0600']
+            expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+
+            effort = event.efforts.find_by(bib_number: 1117)
+            split_times = effort.ordered_split_times
+            expect(split_times.size).to eq(7)
+            expected_absolute_times = ['2017-06-03 08:01:48 -0600',
+                                       '2017-06-03 07:52:00 -0600',
+                                       '2017-06-03 09:41:07 -0600',
+                                       '2017-06-03 10:31:45 -0600',
+                                       '2017-06-03 11:40:33 -0600',
+                                       '2017-06-03 12:31:31 -0600',
+                                       '2017-06-03 12:48:04 -0600']
+            expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+          end
         end
       end
     end

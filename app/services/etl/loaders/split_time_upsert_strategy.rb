@@ -22,14 +22,10 @@ module ETL::Loaders
           effort.assign_attributes(proto_effort.parent_child_attributes)
           Interactors::SetEffortStop.perform(effort) if effort.split_times.select(&:stopped_here?).many?
 
-          if effort.changed?
-            if effort.save
-              saved_records << effort
-            else
-              invalid_records << effort
-            end
+          if effort.save
+            saved_records << effort
           else
-            ignored_records << effort
+            invalid_records << effort
           end
         else
           ignored_records << effort

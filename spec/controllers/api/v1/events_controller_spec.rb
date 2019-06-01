@@ -361,7 +361,7 @@ RSpec.describe Api::V1::EventsController do
           end
 
           it 'adds times to existing efforts' do
-            expect { make_request }.to change { event.efforts.count }.by(0)
+            expect { make_request }.to change { event.efforts.count }.by(0).and change { SplitTime.count }.by(23)
             expect(response.status).to eq(201)
             event.reload
 
@@ -383,11 +383,23 @@ RSpec.describe Api::V1::EventsController do
             expected_absolute_times = ['2017-06-03 08:01:49 -0600']
             expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
           end
+
+          context 'when the event permits notifications' do
+            before { event.event_group.update(available_live: true, concealed: false) }
+
+            it 'sends notifications to followers' do
+              expect(event.permit_notifications?).to eq(true)
+              allow(BulkProgressNotifier).to receive(:notify)
+              expect { make_request }.to change { SplitTime.count }.by(23)
+              split_times = SplitTime.last(23)
+              expect(BulkProgressNotifier).to have_received(:notify).with(split_times)
+            end
+          end
         end
 
         context 'when existing efforts have existing split times' do
-          it 'overwrites existing times but does not erase existing times when blanks appear' do
-            expect { make_request }.to change { event.efforts.count }.by(0)
+          it 'overwrites existing times and adds new times but does not erase existing times when blanks appear' do
+            expect { make_request }.to change { event.efforts.count }.by(0).and change { SplitTime.count }.by(2)
             expect(response.status).to eq(201)
             event.reload
 
@@ -414,6 +426,18 @@ RSpec.describe Api::V1::EventsController do
                                        '2017-06-03 12:31:31 -0600',
                                        '2017-06-03 12:48:04 -0600']
             expect(split_times.map(&:absolute_time)).to eq(expected_absolute_times)
+          end
+
+          context 'when the event permits notifications' do
+            before { event.event_group.update(available_live: true, concealed: false) }
+
+            it 'sends notifications to followers for only the new split times' do
+              expect(event.permit_notifications?).to eq(true)
+              allow(BulkProgressNotifier).to receive(:notify)
+              expect { make_request }.to change { SplitTime.count }.by(2)
+              split_times = SplitTime.last(2)
+              expect(BulkProgressNotifier).to have_received(:notify).with(split_times)
+            end
           end
         end
       end

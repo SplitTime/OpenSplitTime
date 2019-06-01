@@ -20,10 +20,12 @@ module ETL::Loaders
         if effort.persisted?
           proto_effort.children.each { |proto_split_time| prepare_attributes(proto_split_time, effort) }
           effort.assign_attributes(proto_effort.parent_child_attributes)
-          Interactors::SetEffortStop.perform(effort) if effort.split_times.select(&:stopped_here?).many?
+          Interactors::SetEffortStop.perform(effort) if effort.split_times.many?(&:stopped_here?)
+          new_split_times = effort.split_times.select(&:new_record?)
 
           if effort.save
             saved_records << effort
+            new_split_times.each { |st| saved_records << st }
           else
             invalid_records << effort
           end

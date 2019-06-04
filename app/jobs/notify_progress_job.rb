@@ -5,7 +5,7 @@ class NotifyProgressJob < ApplicationJob
     @effort_id = effort_id
     @split_time_ids = split_time_ids
     return unless split_time_ids.compact.present? && split_times.present? && effort.present?
-    return if farther_notification_exists?
+    return if effort_not_notifiable? || notification_not_timely? || farther_notification_exists?
 
     response = ProgressNotifier.publish(topic_arn: topic_resource_key, effort_data: progress_data)
 
@@ -19,10 +19,7 @@ class NotifyProgressJob < ApplicationJob
         logger.error "  #{notification.errors.full_messages}"
       end
     else
-      response.errors.each do |error|
-        logger.error "  ProgressNotifier.publish was unsuccessful: #{error.title}"
-        logger.error "  #{error.detail}"
-      end
+      logger.error response.error_report
     end
   end
 
@@ -41,6 +38,22 @@ class NotifyProgressJob < ApplicationJob
 
   def followers
     @followers ||= effort.followers
+  end
+
+  def effort_not_notifiable?
+    effort.topic_resource_key.blank?
+  end
+
+  def notification_not_timely?
+    latest_absolute_time < earliest_notification_time
+  end
+
+  def latest_absolute_time
+    @latest_absolute_time ||= split_times.map(&:absolute_time).max
+  end
+
+  def earliest_notification_time
+    6.hours.ago
   end
 
   def farther_notification_exists?

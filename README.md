@@ -79,8 +79,8 @@ Getting Started
 
 1. Install Node.js
 
-> ### Using Homebrew on MacOS
-> *Incomplete*
+> ### On MacOS
+> Download the package installer from nodejs.org. Use the LTS version (v10.16.0 as of mid-2019)
 
 > ### Using Debian/Ubuntu
 > 1. Configure repository `wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -`
@@ -89,7 +89,11 @@ Getting Started
 2. Install Yarn
 
 > ### Using Homebrew on MacOS
-> 1. `brew install yarn`
+> Use the yarn install script so that you can specify the version you want. The newest versions of yarn (as of mid-2019) 
+depend on Nodejs v12 and will install it as a dependency even though you have already installed Nodejs v10. Specify
+v1.13.0 instead.
+> 1. `curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0`
+> 2. Restart your terminal session
 
 > ### Using Debian/Ubuntu
 > 1. Configure yarn repository...
@@ -104,7 +108,7 @@ Getting Started
 **Database**
 
 1. Start your local DB `$ brew services restart postgres` or run the Postgres App
-2. `$ rake db:setup` to create the database
+2. `$ rails db:setup` to create the database
 3. `$ rails db:structure:load` to add Postgres functions
 4. `$ rails db:from_fixtures` to load seed data from test fixtures files
 5. `$ rails s` to start the server

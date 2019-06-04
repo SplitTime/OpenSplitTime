@@ -122,8 +122,8 @@ class EventGroupsController < ApplicationController
   def set_data_status
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
-    response = Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
+    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
+    response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
     set_flash_message(response)
     redirect_to roster_event_group_path(@event_group)
   end

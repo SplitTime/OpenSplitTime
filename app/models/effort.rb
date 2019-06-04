@@ -260,10 +260,6 @@ class Effort < ApplicationRecord
     person_id.nil?
   end
 
-  def set_data_status
-    Interactors::UpdateEffortsStatus.perform!(self)
-  end
-
   def enriched
     event.efforts.ranked_with_status.find { |e| e.id == id }
   end

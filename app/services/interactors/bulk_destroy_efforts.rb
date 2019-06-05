@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class BulkDeleteEfforts
+  class BulkDestroyEfforts
     include ActionView::Helpers::TextHelper
 
     def self.perform!(efforts)
@@ -16,8 +16,9 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
+        nullify_raw_times
         delete_split_times
-        delete_efforts
+        destroy_efforts
         raise ActiveRecord::Rollback if errors.present?
       end
       Interactors::Response.new(errors, message, {})
@@ -27,14 +28,20 @@ module Interactors
 
     attr_reader :efforts, :effort_initial_count, :errors
 
+    def nullify_raw_times
+      raw_times = RawTime.where(split_time_id: split_times.ids)
+      raw_times.update_all(split_time_id: nil)
+    end
+
     def delete_split_times
       split_times.delete_all
     rescue ActiveRecord::ActiveRecordError => exception
       errors << Interactors::Errors.active_record_error(exception)
     end
 
-    def delete_efforts
-      efforts.delete_all
+    # To ensure dependents are properly handled, use destroy_all instead of delete_all
+    def destroy_efforts
+      efforts.destroy_all
     rescue ActiveRecord::ActiveRecordError => exception
       errors << Interactors::Errors.active_record_error(exception)
     end

@@ -29,5 +29,11 @@
                                 resource: @event,
                                 noteworthy_associations: [:entrants, :split_times],
                                 class: "btn btn-danger") %>
+
+    <%= link_with_strong_confirm('Delete all efforts', delete_all_efforts_event_path(@event),
+                                 class: 'btn btn-outline-secondary text-danger',
+                                 message: "This action will permanently delete all efforts, including all time records, from the #{@event.name.upcase} event.",
+                                 required_pattern: "#{@event.name.upcase} EFFORTS",
+                                 strong_confirm_id: "strong-confirm-efforts-event-#{@event.id}") %>
   <% end %>
 </article>

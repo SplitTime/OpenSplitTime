@@ -90,13 +90,15 @@ class EventsController < ApplicationController
 
   def delete_all_efforts
     authorize @event
-    response = Interactors::BulkDeleteEfforts.perform!(@event.efforts)
+    response = Interactors::BulkDestroyEfforts.perform!(@event.efforts)
     set_flash_message(response) unless response.successful?
     redirect_to case request.referrer
                 when nil
                   event_staging_app_path(@event)
                 when event_staging_app_url(@event)
                   request.referrer + '#/entrants'
+                when edit_event_url(@event)
+                  event_group_path(@event.event_group_id)
                 else
                   request.referrer
                 end

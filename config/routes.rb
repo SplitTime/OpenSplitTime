@@ -93,7 +93,6 @@ Rails.application.routes.draw do
       get :podium
       get :spread
       get :summary
-      patch :auto_reconcile
       put :set_stops
       patch :reassign
       patch :update_start_time

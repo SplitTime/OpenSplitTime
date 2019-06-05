@@ -88,14 +88,6 @@ class EventsController < ApplicationController
 
   # Event admin actions
 
-  def auto_reconcile
-    authorize @event
-
-    EffortsAutoReconcileJob.perform_later(@event, current_user: current_user)
-    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
-    redirect_to reconcile_redirect_path
-  end
-
   def delete_all_efforts
     authorize @event
     response = Interactors::BulkDeleteEfforts.perform!(@event.efforts)

@@ -1,0 +1,92 @@
+<div class="card">
+  <h4 class="card-header">Analyzing Problem Efforts</h4>
+  <div class="card-body">
+    <p>OpenSplitTime provides tools for analyzing and fixing problem Efforts. This section discusses how to use the
+      Effort screen and the Effort Analysis screen to decipher and fix many problem Efforts.</p>
+    <p>As described in <%= link_to 'Problem Efforts', docs_management_path(topic: :monitor, page: 6) %>, you should
+      check the Problems Report screen (<strong>Admin > Problems</strong>) regularly. Problems should be monitored and
+      corrected during the Event as time permits. Problems can be fixed after the event has concluded as well.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">The Effort Screen</h4>
+  <div class="card-body">
+    <p>When you find a problem Effort, click on the Entrant name to visit the Effort screen. All of the Entrant's Split
+      Times will be listed. Note the Split Times that are marked as <strong>questionable</strong> or
+      <strong>bad</strong>.</p>
+    <p>As you review a problem Effort, try to determine which Split Times are problematic. This is not always as easy
+      as it sounds. Consider the following example:</p>
+    <p>Assume we have a 50-mile course with aid stations at Mile 10, Mile 20, Mile 30, and Mile 40. Suppose an Effort
+      shows a starting Split Time at 06:00, a time into Aid 1 at 08:30, and a time into Aid 2 at 09:00, and suppose that
+      OpenSplitTime has marked the Aid 2 time as <strong>bad</strong>.</p>
+    <p>The Aid 2 time was flagged as bad because 2.5 hours is a reasonable period to travel from Start to Aid 1,
+      but 30 minutes is not long enough to travel from Aid 1 to Aid 2.</p>
+    <p>But this does not necessarily mean the Aid 2 time is faulty. In fact, there are two possibilities. One
+      possibility is that <strong>the Aid 2 time is incorrect and should be much later</strong>. The other possibility
+      is that <strong>the Aid 1 time is incorrect and should be much earlier</strong>.</p>
+    <p>A faster Entrant might cover 20 miles in 3 hours. If the Entrant was recorded with an incorrect time at Aid 1,
+      the Aid 2 time may be correct although it was flagged as <strong>bad</strong>.</p>
+    <p>A slower Entrant might cover 10 miles in 2.5 hours. If the Entrant was recorded with a correct time at Aid 1,
+      the Aid 2 time would be correctly flagged as <strong>bad</strong>.</p>
+    <p>In the above example, you might be able to make an educated guess as to which time is faulty, or you may be able
+      to ask your timing crews to verify by checking their paper records, or you may be able to verify using GPS
+      tracking. If you are still unsure, it is best to wait until the Entrant is recorded at Aid 3, at which time it
+      should become clear which of the two Split Times (Aid 1 or Aid 2) is faulty.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">The Effort Analysis Screen</h4>
+  <div class="card-body">
+    <p>Sometimes it is not obvious which Split Times are problematic, even after all times have been recorded for an
+      Effort. In these cases, the Effort Analysis screen is often helpful.</p>
+    <p>From the Effort screen, click the <strong>Analyze Times</strong> tab to view the Effort Analysis screen. This
+      screen presents columns of data showing actual and expected times for each completed segment and the differences,
+      shown in <strong>Over (Under)</strong> format, for each segment. Times that are longer than expected are shown as
+      a number of minutes without parentheses, and times that are shorter than expected are shown as a number of minutes
+      surrounded by parentheses.</p>
+    <p>Expected times are determined by using the <strong>farthest recorded time for the Effort</strong>, finding other
+      Efforts that reached that farthest point in a <strong>similar amount of time</strong>, and <strong>averaging and
+      normalizing the segment times</strong> for those similar Efforts.</p>
+    <p>The Effort Analysis view provides insight into which segments were relatively fast and which were relatively slow
+      for a given Effort. But when the Effort contains problem Split Times, it can often reveal which of the Split Times
+      are faulty and which are valid.</p>
+    <p>For example, assume we are viewing an Effort having a starting Split Time and five additional Split Times. The
+      Aid 1 Split Time is marked as <strong>good</strong>, the Aid 2 and Aid 3 Split Times are flagged as
+      <strong>bad</strong>, the Aid 4 Split Time is flagged as <strong>questionable</strong>, and the Aid 5 Split Time
+      is marked as <strong>good</strong>. From the Effort screen, it is not immediately apparent which Split Times are
+      causing the problems.</p>
+    <p>We click the <strong>Analyze Times</strong> tab to reach the Effort Analysis screen. Here we look at the
+      <strong>Segment Over (Under)</strong> column and note the following:</p>
+    <ul>
+      <li>Aid 1: (3m)</li>
+      <li>Aid 2: 54m</li>
+      <li>Aid 3: (59m)</li>
+      <li>Aid 4: 1m</li>
+      <li>Aid 5: 6m</li>
+    </ul>
+    <p>The actual times recorded for Aid 1, Aid 4, and Aid 5 are close to what we would expect for this Effort. The Aid
+      2 segment, by contrast, is much too slow, and the Aid 3 segment is much too fast. This tells us quite a lot about
+      this Effort.</p>
+    <p>It is highly unlikely that this Entrant was actually nearly an hour past due into Aid 2 and then nearly an hour
+      early into Aid 3. It is much more likely that the Aid 2 time is wrong. We should return to the Effort screen by
+      clicking the <strong>Split Times</strong> tab, and then delete the Aid 2 Split Time by clicking the
+      <strong>Delete (trash can)</strong> icon corresponding to Aid 2. OpenSplitTime re-evaluates the Effort, and all
+      Split Times are now marked as <strong>good</strong>. When we return to the Effort Analysis screen, the Segment
+      Over (Under) column now indicates that all actual segment times for the Effort are close to expected segment
+      times:</p>
+    <ul>
+      <li>Aid 1: (3m)</li>
+      <li>Aid 2: --</li>
+      <li>Aid 3: (5m)</li>
+      <li>Aid 4: 1m</li>
+      <li>Aid 5: 6m</li>
+    </ul>
+    <p>We now have a hole in our Split Times for this Effort. We can use the Raw Time tools or other resources to try to
+      fill in the hole.</p>
+  </div>
+</div>
+<br/>

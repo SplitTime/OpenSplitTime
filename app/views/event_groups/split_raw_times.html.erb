@@ -64,7 +64,7 @@
       <tr>
         <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Name', :last_name, @presenter.existing_sort) %></th>
-        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Grid time' : 'Grid times', :sortable_time, @presenter.existing_sort) %></th>
+        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Split Time' : 'Split Times', :sortable_time, @presenter.existing_sort) %></th>
         <% @presenter.sources.each do |source| %>
           <th class="text-center"><%= source %></th>
         <% end %>

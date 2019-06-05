@@ -51,10 +51,10 @@ Rails.application.routes.draw do
       get :show_photo
       get :edit_split_times
       patch :update_split_times
-      put :set_data_status
+      patch :set_data_status
       patch :rebuild
       patch :unstart
-      put :stop
+      patch :stop
       delete :delete_split_times
     end
   end
@@ -72,9 +72,9 @@ Rails.application.routes.draw do
       get :roster
       get :split_raw_times
       get :traffic
-      put :set_data_status
-      patch :auto_reconcile
       post :create_people
+      patch :set_data_status
+      patch :auto_reconcile
       patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
@@ -95,7 +95,6 @@ Rails.application.routes.draw do
       get :podium
       get :spread
       get :summary
-      patch :auto_reconcile
       put :set_stops
       patch :reassign
       patch :update_start_time

@@ -27,7 +27,7 @@
         toggles, as appropriate
       </li>
       <li>Click <strong>Add</strong>. The entry will appear in the Local Data Workspace.</li>
-      <li>Repeat steps 2 through 6 for all times reported by the station.</li>
+      <li>Repeat steps <strong>2 through 6</strong> for all times reported by the station.</li>
     </ol>
     <p>The Live Entry screen is designed to be used exclusively with the keyboard, if the operator so chooses. This is
       the most efficient way to enter times. Use Tab and Shift-Tab to move between fields. Use the space bar to toggle
@@ -105,17 +105,19 @@
 <div class="card">
   <h4 class="card-header">Pulling Times For Review</h4>
   <div class="card-body">
-    <p>Time entries coming through OST Remote are always saved as Raw Times. If the entries are clean, they are
-      automatically saved as Split Times for public view.</p>
-    <p>But when a time entry from OST Remote is not clean, either because the time is a duplicate, the time is faulty,
-      or the bib number is invalid, the Raw Time must be reviewed by a human before it can be saved as a Split Time. The
-      Live Entry screen is the place where such Raw Times are reviewed. </p>
+    <p>Time entries coming through OST Remote are always saved as Raw Times. If the entries are <strong>clean</strong>,
+      they are automatically saved as Split Times for public view.</p>
+    <p>But when a time entry from OST Remote is <strong>not clean</strong>, either because the entry is a
+      <strong>duplicate</strong>, the time is <strong>marked as bad</strong>, or the <strong>bib number is
+      invalid</strong>, the Raw Time must be reviewed by a human before it can be saved as a Split Time. The Live Entry
+      screen is the place where such Raw Times are reviewed. </p>
     <p>When times are available for review, a message will appear in the upper right corner of the screen, and the blue
       <strong>Pull Times</strong> button will be enabled and will indicate the number of times available for review.
       Click <strong>Pull Times</strong> to bring in a batch of time entries for review. Times are pulled in batches of
       50 at most.</p>
     <p>Once you have pulled a batch of times, review them and determine whether they should be submitted as-is, edited
-      to fix problems, or discarded.</p>
+      to fix problems, or discarded. Review and analysis are covered in
+      the <%= link_to 'Reviewing Raw Times', docs_management_path(topic: :enter, page: 4) %> section.</p>
   </div>
 </div>
 <br/>

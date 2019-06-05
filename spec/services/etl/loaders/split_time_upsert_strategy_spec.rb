@@ -66,6 +66,9 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
   let(:options) { {event: event, current_user_id: 111} }
 
+  let(:saved_efforts) { subject.saved_records.select { |record| record.is_a?(Effort) } }
+  let(:saved_split_times) { subject.saved_records.select { |record| record.is_a?(SplitTime) } }
+
   describe '#load_records' do
     context 'when no matching parent records exist' do
       subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
@@ -81,20 +84,26 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
       let!(:effort_1) { create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number]) }
       let!(:effort_3) { create(:effort, event: event, bib_number: valid_proto_records.third[:bib_number]) }
 
-      it 'assigns attributes and saves new child records' do
+      it 'assigns attributes, saves new child records, and puts new child records into saved_records' do
         expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(7)
         subject_split_times = SplitTime.last(7)
 
         expect(subject_split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(subject_split_times.size).sort)
-        expect(subject_split_times.map(&:time_from_start)).to eq([0, 2581, 6308, 9463, 13571, 16655, 17736])
+        expect(subject_split_times.map(&:absolute_time)).to eq([0, 2581, 6308, 9463, 13571, 16655, 17736].map { |e| start_time + e })
         expect(subject_split_times.map(&:effort_id)).to all eq(effort_1.id)
         expect(subject_split_times.map(&:created_by)).to all eq(options[:current_user_id])
       end
 
       it 'returns saved parent records in the saved_records array' do
         subject.load_records
-        expect(subject.saved_records.size).to eq(2)
-        expect(subject.saved_records.map(&:id)).to match_array([effort_1.id, effort_3.id])
+        expect(saved_efforts.size).to eq(2)
+        expect(saved_efforts.map(&:id)).to match_array([effort_1.id, effort_3.id])
+      end
+
+      it 'returns newly saved child records in the saved_records array' do
+        subject.load_records
+        expect(saved_split_times.size).to eq(7)
+        expect(saved_split_times.map(&:absolute_time)).to eq([0, 2581, 6308, 9463, 13571, 16655, 17736].map { |e| start_time + e })
       end
 
       it 'returns unsaved parent records in the ignored_records array' do
@@ -121,7 +130,8 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
 
         expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(5)
 
-        expect(subject.saved_records.size).to eq(1)
+        expect(saved_efforts.size).to eq(1)
+        expect(saved_split_times.size).to eq(5)
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 2581, 6308, 9463, 13571, 16655, 17736].map { |e| start_time + e })
       end
     end
@@ -172,7 +182,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
 
         expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(1)
 
-        expect(subject.saved_records.size).to eq(1)
+        expect(saved_efforts.size).to eq(1)
         expect(existing_effort.split_times.pluck(:absolute_time)).to match_array([0, 4916, 14398].map { |e| start_time + e })
         expect(existing_effort.split_times.pluck(:stopped_here)).to match_array([false, false, true])
       end

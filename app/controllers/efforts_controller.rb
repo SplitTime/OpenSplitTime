@@ -177,7 +177,7 @@ class EffortsController < ApplicationController
 
   def set_data_status
     authorize @effort
-    @effort.set_data_status
+    Interactors::UpdateEffortsStatus.perform!(@effort)
     redirect_to effort_path(@effort)
   end
 

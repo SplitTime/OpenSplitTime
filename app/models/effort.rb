@@ -19,6 +19,7 @@ class Effort < ApplicationRecord
   belongs_to :event, counter_cache: true
   belongs_to :person
   has_many :split_times, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_one_attached :photo
 
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
@@ -258,10 +259,6 @@ class Effort < ApplicationRecord
 
   def unreconciled?
     person_id.nil?
-  end
-
-  def set_data_status
-    Interactors::UpdateEffortsStatus.perform!(self)
   end
 
   def enriched

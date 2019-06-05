@@ -109,27 +109,32 @@ class EffortQuery < BaseQuery
            from stopped_subquery)
 
       select #{select_sql},
-          rank() over 
-            (partition by event_id
-             order by started desc,
-                      dropped, 
-                      final_lap desc nulls last, 
-                      final_lap_distance desc, 
-                      final_bitkey desc, 
-                      final_time_from_start, 
-                      gender desc, 
-                      age desc) 
+          case when started then 
+            rank() over 
+              (partition by event_id
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc) 
+            else null end
           as overall_rank, 
-          rank() over 
-            (partition by event_id, gender 
-             order by started desc,
-                      dropped, 
-                      final_lap desc nulls last, 
-                      final_lap_distance desc, 
-                      final_bitkey desc, 
-                      final_time_from_start, 
-                      gender desc, 
-                      age desc) 
+
+          case when started then
+            rank() over 
+              (partition by event_id, gender 
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc)
+            else null end
           as gender_rank
       from main_subquery
       order by #{order_sql}

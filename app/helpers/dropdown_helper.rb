@@ -192,7 +192,7 @@ module DropdownHelper
     dropdown_items = [
         {name: 'Set Data Status',
          link: set_data_status_effort_path(view_object.effort),
-         method: :put},
+         method: :patch},
         {role: :separator},
         {name: 'Edit Times of Day',
          link: edit_split_times_effort_path(view_object.effort, display_style: :military_time)},
@@ -306,7 +306,8 @@ module DropdownHelper
         {name: 'Reconcile efforts',
          link: reconcile_event_group_path(view_object.event_group)},
         {name: 'Set data status',
-         link: set_data_status_event_group_path(view_object.event_group)}
+         link: set_data_status_event_group_path(view_object.event_group),
+         method: :patch}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
   end

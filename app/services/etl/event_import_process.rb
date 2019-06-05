@@ -43,6 +43,7 @@ module ETL
       if split_times.present?
         updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
         Interactors::UpdateEffortsStatus.perform!(updated_efforts)
+        BulkProgressNotifier.notify(split_times) if event.permit_notifications?
       end
     end
 

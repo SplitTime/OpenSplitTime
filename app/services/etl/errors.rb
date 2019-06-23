@@ -85,6 +85,11 @@ module ETL
        detail: {messages: ['A required table was not found in the provided source data']}}
     end
 
+    def smarter_csv_error(exception)
+      {title: 'CSV error',
+      detail: {messages: [exception.message]}}
+    end
+
     def source_not_recognized_error(source)
       {title: 'Source not recognized', detail: {messages: ["Importer does not recognize the source: #{source}"]}}
     end

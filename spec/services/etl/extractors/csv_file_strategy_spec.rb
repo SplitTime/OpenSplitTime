@@ -68,5 +68,18 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
         expect(subject.errors.first[:title]).to eq('File type incorrect')
       end
     end
+
+    context 'when the file causes a CSV parsing error' do
+      let(:file) { file_fixture('test_efforts_duplicate_headers.csv') }
+
+      it 'returns nil and reports the error' do
+        raw_data = subject.extract
+        expect(raw_data).to be_nil
+
+        error = subject.errors.first
+        expect(error[:title]).to eq('CSV error')
+        expect(error[:detail][:messages]).to include('ERROR: duplicate headers: country,country')
+      end
+    end
   end
 end

@@ -22,7 +22,7 @@ Ruby on Rails
 This application requires:
 
 - Ruby 2.6.1
-- Rails 5.2.2
+- Rails 5.2.3
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 

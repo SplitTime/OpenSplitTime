@@ -3,7 +3,7 @@
 BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sortable_bib_number, :raw_times_attributes,
                         :sortable_time, :split_times_attributes, :single_lap, keyword_init: true) do
 
-  DISCREPANCY_THRESHOLD = 2.minutes
+  DISCREPANCY_THRESHOLD = 1.minute
 
   def full_name
     "#{first_name} #{last_name}".strip.presence || '[Bib not found]'

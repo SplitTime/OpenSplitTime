@@ -164,8 +164,8 @@ GEM
       railties (>= 3.0.0)
     ffaker (2.10.0)
     ffi (1.9.25)
-    font_awesome5_rails (0.4.3)
-      railties (>= 4.2, < 5.3)
+    font_awesome5_rails (0.7.0)
+      railties (>= 4.2)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     get_process_mem (0.2.3)
@@ -464,7 +464,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   ffaker
-  font_awesome5_rails
+  font_awesome5_rails (~> 0.7)
   friendly_id (~> 5.2.0)
   gpx
   jquery-fileupload-rails

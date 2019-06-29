@@ -44,8 +44,8 @@
               <strong v-else-if="eventModel.__new__">Create Event</strong>
               <strong v-else>
                 {{ eventModel.name }}
-                <i v-if="eventModel.concealed" class="fas fa-eye-slash" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
-                <i v-else class="fas fa-eye" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
+                <i v-if="eventModel.concealed" class="fas fa-eye-slash" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="This Event is not yet visible to the public."></i>
+                <i v-else class="fas fa-eye" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="This Event is visible to the public."></i>
               </strong>
             </h1>
             <ul class="breadcrumb breadcrumb-ost">

@@ -27,5 +27,9 @@ module.exports = {
             enumerable: false,
             configurable: false
         });
+    },
+
+    isMobileSafari() {
+        return navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/)
     }
 };

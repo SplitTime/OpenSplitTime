@@ -14,7 +14,7 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
 
   def cancel_link
     case
-    when events.select(&:persisted?).present?
+    when existing_events.present?
       Rails.application.routes.url_helpers.edit_stage_event_group_path(event_group, step: :event_details, event: {id: ordered_events.first.id})
     else
       Rails.application.routes.url_helpers.edit_stage_event_group_path(event_group, step: :your_event)
@@ -43,12 +43,16 @@ class StageEventGroup::EventDetailsPresenter < StageEventGroup::BasePresenter
   end
 
   def default_event_attributes
-    course = params[:course_id] ? Course.find(id: params[:course_id]) : nil
-    start_time_local = I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
+    course = Course.find_by(id: params[:course_id])
+    start_time_local = existing_events.last&.start_time_local || I18n.l(Date.tomorrow + 6.hours, format: :datetime_input)
     {event_group: event_group, course: course, results_template: ResultsTemplate.default, laps_required: 1, start_time_local: start_time_local}
   end
 
   def permitted_event_params
     EventParameters.strong_params(params)
+  end
+
+  def existing_events
+    ordered_events.select(&:persisted?)
   end
 end

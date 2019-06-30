@@ -3,7 +3,7 @@
     <aside class="col-12">
       <div><h3>
         <strong>Provide A List of Your Entrants</strong>
-        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Entrants are all those people competing in the Event."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip pull-right" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Entrants are all those people competing in the Event."><i class="fas fa-question-circle"></i></span>
       </h3></div>
       <p>Create each Entrant on this screen or import them from a standard CSV file.</p>
       <p>
@@ -143,7 +143,7 @@
               <div class="row">
                 <div class="form-group col-6">
                   <label>Bib Number</label>
-                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered using Live Entry or OST Remote."><i class="fas fa-question-circle"></i></span>
+                  <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered using Live Entry or OST Remote."><i class="fas fa-question-circle"></i></span>
                   <input id="effort-bib-number-field" type="text" class="form-control" v-model.number="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
                 </div>
 
@@ -211,7 +211,7 @@
                       <div class="row">
                         <div class="form-group col-12">
                           <label class="required">Entrant's Start
-                            Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="fas fa-question-circle"></i></span>
+                            Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="fas fa-question-circle"></i></span>
                         </div>
                       </div>
                       <input-datetime id="effort-start-time-field" v-model="model.scheduledStartTime" class="no-gutters"></input-datetime>

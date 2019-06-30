@@ -1,5 +1,5 @@
 <% if row.category_sizes[category] == 0 %>
     --
 <% else %>
-    <a data-toggle="efforts-popover" title="<%= row.category_table_titles[category] %>" data-effort-ids="<%= row.category_effort_lap_keys[category].map(&:effort_id) %>"><%= row.category_sizes[category] %></a>
+    <a data-controller="popover" title="<%= row.category_table_titles[category] %>" data-effort-ids="<%= row.category_effort_lap_keys[category].map(&:effort_id) %>"><%= row.category_sizes[category] %></a>
 <% end %>

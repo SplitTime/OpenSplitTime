@@ -4,31 +4,31 @@
     <th>Split</th>
     <th class="text-right"><%= pdu('singular').titleize %></th>
     <th class="text-center">Segment<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
+      <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
       /
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+      <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
     <th class="text-center">Segment<br/>
-      <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
+      <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
     <% if view_object.multiple_sub_splits? %>
       <th class="text-center">In Aid<br/>
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
         /
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
       <th class="text-center">In Aid<br/>
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
       <th class="text-center">Combined<br/>
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
         /
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
       <th class="text-center">Combined<br/>
-        <a data-toggle="static-popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
+        <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
     <% end %>

@@ -2,8 +2,7 @@
 
 class EffortsMiniTable
 
-  def initialize(effort_ids_param)
-    effort_ids = effort_ids_param.split(',')
+  def initialize(effort_ids)
     @efforts = Effort.where(id: effort_ids)
   end
 

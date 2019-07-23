@@ -24,7 +24,7 @@ class ReconcilePresenter < BasePresenter
   end
 
   def event
-    parent.respond_to?(:event) ? parent.event : parent
+    parent.respond_to?(:first_event) ? parent.first_event : parent
   end
 
   private

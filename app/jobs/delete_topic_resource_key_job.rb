@@ -6,6 +6,6 @@ class DeleteTopicResourceKeyJob < ApplicationJob
 
   def perform(topic_resource_key)
     mock_resource = OpenStruct.new(topic_resource_key: topic_resource_key, slug: topic_resource_key)
-    SnsTopicManager.delete(mock_resource)
+    SnsTopicManager.delete(resource: mock_resource)
   end
 end

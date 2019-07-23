@@ -21,5 +21,11 @@ FactoryBot.define do
     trait :with_birthdate do
       birthdate { FFaker::Time.between(10.years.ago, 80.years.ago).to_date }
     end
+
+    transient { without_slug { false } }
+
+    after(:build, :stub) do |person, evaluator|
+      person.slug = "#{person.first_name&.parameterize}-#{person.last_name&.parameterize}" unless evaluator.without_slug
+    end
   end
 end

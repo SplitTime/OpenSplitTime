@@ -11,8 +11,8 @@ module Subscribable
     has_many :subscriptions, as: :subscribable, dependent: :destroy
     has_many :followers, through: :subscriptions, source: :user
 
-    before_save :set_topic_resource
-    before_destroy :delete_topic_resource
+    after_save :set_topic_resource_job
+    after_destroy :delete_topic_resource_job
   end
 
   def set_topic_resource(force: false)
@@ -33,6 +33,14 @@ module Subscribable
   end
 
   private
+
+  def set_topic_resource_job
+    SetTopicResourceKeyJob.perform_later(self)
+  end
+
+  def delete_topic_resource_job
+    DeleteTopicResourceKeyJob.perform_later(self)
+  end
 
   def resource_key_buildable?
     topic_resource_key.nil? && slug.present?

@@ -4,7 +4,7 @@ RSpec.shared_examples_for 'subscribable' do
   let(:model) { described_class }
   let(:model_name) { model.name.underscore.to_sym }
 
-  describe 'before save' do
+  describe 'set_topic_resource' do
     let(:subject) { build(model_name) }
 
     context 'when generate_new_topic_resource? returns true' do
@@ -12,13 +12,13 @@ RSpec.shared_examples_for 'subscribable' do
 
       it 'sets the topic_resource_key' do
         expect(subject.topic_resource_key).to be_nil
-        subject.save
+        subject.set_topic_resource
         expect(subject.topic_resource_key).not_to be_nil
       end
 
       it 'sends a :generate message to the topic_manager' do
         expect(subject.topic_manager).to receive(:generate).with(resource: subject)
-        subject.save
+        subject.set_topic_resource
       end
     end
 
@@ -27,19 +27,19 @@ RSpec.shared_examples_for 'subscribable' do
 
       it 'sets the topic_resource_key' do
         expect(subject.topic_resource_key).to be_nil
-        subject.save
+        subject.set_topic_resource
         expect(subject.topic_resource_key).to be_nil
       end
 
       it 'does not send a :generate message to the topic_manager' do
         expect(subject.topic_manager).not_to receive(:generate)
-        subject.save
+        subject.set_topic_resource
       end
     end
   end
 
-  describe 'before destruction' do
-    let(:subject) { people.first }
+  describe 'delete_topic_resource' do
+    let(:subject) { build(model_name) }
     let(:topic_resource_key) { '123' }
 
     context 'when topic_resource_key exists' do
@@ -47,13 +47,13 @@ RSpec.shared_examples_for 'subscribable' do
 
       it 'removes the topic_resource_key' do
         expect(subject.topic_resource_key).to eq(topic_resource_key)
-        subject.destroy
+        subject.delete_topic_resource
         expect(subject.topic_resource_key).to be_nil
       end
 
       it 'sends a :delete message to the topic_manager' do
         expect(subject.topic_manager).to receive(:delete).with(resource: subject)
-        subject.destroy
+        subject.delete_topic_resource
       end
     end
   end

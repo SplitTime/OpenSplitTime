@@ -11,17 +11,17 @@ module Subscribable
     has_many :subscriptions, as: :subscribable, dependent: :destroy
     has_many :followers, through: :subscriptions, source: :user
 
-    after_commit :set_topic_resource_job
-    after_destroy :delete_topic_resource_job
+    after_commit :set_topic_resource_job, on: [:create, :update]
+    after_commit :delete_topic_resource_job, on: :destroy
   end
 
-  def set_topic_resource(force: false)
+  def assign_topic_resource(force: false)
     if (force || generate_new_topic_resource?) && resource_key_buildable?
       self.topic_resource_key = topic_manager.generate(resource: self)
     end
   end
 
-  def delete_topic_resource
+  def unassign_topic_resource
     if topic_resource_key.present?
       topic_manager.delete(resource: self)
       self.topic_resource_key = nil
@@ -39,7 +39,7 @@ module Subscribable
   end
 
   def delete_topic_resource_job
-    DeleteTopicResourceKeyJob.perform_later(self)
+    DeleteTopicResourceKeyJob.perform_later(topic_resource_key)
   end
 
   def resource_key_buildable?

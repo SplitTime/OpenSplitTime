@@ -21,6 +21,7 @@ class SnsTopicManager
     response = sns_client.create_topic(name: "#{environment_prefix}follow_#{resource.slug}")
 
     if response.successful?
+      Rails.logger.info "  Created SNS topic for #{resource.slug}"
       response.topic_arn.include?('arn:aws:sns') ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
       Rails.logger.error "  Unable to generate SNS topic for #{resource.slug}"
@@ -38,6 +39,7 @@ class SnsTopicManager
         response = sns_client.delete_topic(topic_arn: topic_arn)
 
         if response.successful?
+          Rails.logger.info "  Deleted SNS topic #{topic_arn}"
           topic_arn
         else
           Rails.logger.error "  Unable to delete SNS topic #{topic_arn}"

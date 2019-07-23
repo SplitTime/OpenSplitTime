@@ -57,4 +57,26 @@ RSpec.shared_examples_for 'subscribable' do
       end
     end
   end
+
+  describe 'after create' do
+    let(:subject) { build(model_name) }
+
+    it 'starts a background job to create a topic_resource_key' do
+      expect(DeleteTopicResourceKeyJob).not_to receive(:perform_later)
+      expect(SetTopicResourceKeyJob).to receive(:perform_later).with(subject)
+      subject.save
+    end
+  end
+
+  describe 'after destroy' do
+    let(:subject) { efforts(:hardrock_2015_tuan_jacobs) }
+    let(:topic_resource_key) { '123' }
+    before { subject.update(topic_resource_key: topic_resource_key) }
+
+    it 'starts a background job to delete the topic_resource_key' do
+      expect(SetTopicResourceKeyJob).not_to receive(:perform_later)
+      expect(DeleteTopicResourceKeyJob).to receive(:perform_later).with(topic_resource_key, topic_manager_string: subject.topic_manager.to_s)
+      subject.destroy
+    end
+  end
 end

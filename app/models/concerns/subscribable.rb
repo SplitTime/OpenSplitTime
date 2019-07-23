@@ -39,7 +39,7 @@ module Subscribable
   end
 
   def delete_topic_resource_job
-    DeleteTopicResourceKeyJob.perform_later(topic_resource_key)
+    DeleteTopicResourceKeyJob.perform_later(topic_resource_key, topic_manager_string: topic_manager.to_s)
   end
 
   def resource_key_buildable?

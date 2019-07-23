@@ -11,7 +11,7 @@ module Subscribable
     has_many :subscriptions, as: :subscribable, dependent: :destroy
     has_many :followers, through: :subscriptions, source: :user
 
-    after_commit :set_topic_resource_job, on: [:create, :update]
+    after_commit :set_topic_resource_job, on: :create
     after_commit :delete_topic_resource_job, on: :destroy
   end
 

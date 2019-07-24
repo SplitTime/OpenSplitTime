@@ -50,7 +50,7 @@ gem 'switchery-rails'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'
-gem 'webpacker', '~> 3.0'
+gem 'webpacker', '~> 4.0'
 gem 'will_paginate', '~>3.1.7'
 
 group :development do

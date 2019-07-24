@@ -6,10 +6,16 @@
     "datatables.net-bs4": "^1.10.19",
     "lodash": "^4.17.12",
     "stimulus": "^1.1.1",
-    "vue-turbolinks": "^2.0.3"
+    "vue-turbolinks": "^2.0.3",
+    "snyk": "^1.198.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "webpack-dev-server": "^3.1.9"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }

@@ -21,6 +21,7 @@ RSpec.describe 'visit the user index page' do
     verify_all_users_listed
     button = find_link(id: "delete_user_#{user.id}")
     button.click
+
     verify_content_absent(user, :full_name)
   end
 
@@ -37,8 +38,10 @@ RSpec.describe 'visit the user index page' do
     visit organizations_path
     click_link 'Stop impersonating'
 
-    expect(current_path).to eq(root_path)
+    expect(current_path).to eq(organizations_path)
     expect(page).not_to have_content(impersonation_text)
+    expect(page).not_to have_content(user.email)
+    expect(page).to have_content(admin.email)
   end
 
   private

@@ -14,6 +14,6 @@ class Admin::DashboardController < Admin::BaseController
 
   def stop_impersonating
     stop_impersonating_user
-    redirect_to root_path
+    redirect_back(fallback_location: root_path)
   end
 end

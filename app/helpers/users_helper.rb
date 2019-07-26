@@ -8,13 +8,19 @@ module UsersHelper
                       toggle: :tooltip,
                       placement: :bottom,
                       'original-title' => 'Delete user'},
+               id: "delete_user_#{user.id}",
                class: 'btn btn-danger has-tooltip'}
     link_to fa_icon('trash'), url, options
   end
 
   def link_to_become_user(user)
     url = admin_impersonate_path(user)
-    options = {method: :post, class: 'btn btn-warning has-tooltip'}
+    options = {method: :post,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original-title' => 'Impersonate user'},
+               id: "impersonate_user_#{user.id}",
+               class: 'btn btn-warning has-tooltip'}
     link_to fa_icon('theater-masks'), url, options
   end
 end

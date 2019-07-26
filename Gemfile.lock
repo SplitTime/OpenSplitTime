@@ -234,6 +234,8 @@ GEM
       arel (>= 6)
     popper_js (1.14.5)
     powerpack (0.1.2)
+    pretender (0.3.4)
+      actionpack (>= 4.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -476,6 +478,7 @@ DEPENDENCIES
   momentjs-rails
   pg (~> 0.20)
   pg_search
+  pretender (~> 0.3)
   pry
   puma
   puma_worker_killer

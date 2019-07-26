@@ -5,4 +5,15 @@ class Admin::DashboardController < Admin::BaseController
   def dashboard
     authorize :dashboard, :show?
   end
+
+  def impersonate
+    return unless current_user&.admin?
+    impersonate_user(User.friendly.find(params[:id]))
+    redirect_to root_path
+  end
+
+  def stop_impersonating
+    stop_impersonating_user
+    redirect_to root_path
+  end
 end

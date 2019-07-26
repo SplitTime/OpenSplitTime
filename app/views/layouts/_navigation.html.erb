@@ -1,14 +1,29 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand-md">
-    <%= link_to 'OpenSplitTime', root_path, class: 'navbar-brand', id: 'logo' %>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbar-collapse">
-      <ul class="nav navbar-nav mr-auto">
-        <%= render 'layouts/navigation_links' %>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <%= render 'layouts/nav_links_for_auth' %>
-      </ul>
+<% if current_user && current_user != true_user %>
+  <aside class="navbar bg-warning">
+    <div class="row">
+      <div class="col text-left">
+        <h5 class="nav-link">
+          <%= "#{true_user.full_name} is impersonating #{current_user.full_name}. " %>
+        </h5>
+      </div>
+      <div class="col text-right">
+        <%= link_to 'Stop impersonating', admin_stop_impersonating_path, method: :post, class: 'btn btn-outline-light' %>
+      </div>
     </div>
+  </aside>
+<% end %>
+
+<nav class="navbar navbar-dark bg-dark navbar-expand-md">
+  <%= link_to 'OpenSplitTime', root_path, class: 'navbar-brand', id: 'logo' %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbar-collapse">
+    <ul class="nav navbar-nav mr-auto">
+      <%= render 'layouts/navigation_links' %>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <%= render 'layouts/nav_links_for_auth' %>
+    </ul>
+  </div>
 </nav>

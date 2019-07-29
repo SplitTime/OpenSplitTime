@@ -12,16 +12,16 @@ class StageEventGroupsController < ApplicationController
     organization = Organization.find_or_initialize_by(id: params[:organization_id])
     @event_group = EventGroup.new(organization: organization)
     authorize @event_group
-    set_presenter
 
+    set_presenter
     render current_step
   end
 
   # GET /stage_event_groups/:id?step=name_of_step
   def edit
     authorize @event_group
-    set_presenter
 
+    set_presenter
     render current_step
   end
 

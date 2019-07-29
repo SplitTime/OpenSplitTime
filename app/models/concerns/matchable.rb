@@ -22,7 +22,7 @@ module Matchable
   end
 
   def suggest_close_match
-    self.suggested_match = possible_matching_people.first
+    self.suggested_match = exact_matching_person || possible_matching_people.first
   end
 
   def people_same_full_name # For situations where middle names are sometimes included with first_name and sometimes with last_name

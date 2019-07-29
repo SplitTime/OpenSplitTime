@@ -11,20 +11,28 @@ RSpec.describe Course, type: :model do
   it { is_expected.to localize_time_attribute(:next_start_time) }
 
   describe '#initialize' do
-    it 'is valid with a name' do
-      course = Course.create!(name: 'Slow Mo 100 CCW')
+    let(:organization) { build_stubbed(:organization) }
+
+    it 'is valid with a name and organization' do
+      course = build_stubbed(:course, organization: organization)
       expect(course).to be_valid
     end
 
     it 'is invalid without a name' do
-      course = Course.new(name: nil)
+      course = build_stubbed(:course, name: nil, organization: organization)
       expect(course).not_to be_valid
       expect(course.errors[:name]).to include("can't be blank")
     end
 
+    it 'is invalid without an organization' do
+      course = build_stubbed(:course, organization: nil)
+      expect(course).not_to be_valid
+      expect(course.errors[:organization]).to include("can't be blank")
+    end
+
     it 'does not allow duplicate names' do
-      Course.create!(name: 'Hard Time 100')
-      course = Course.new(name: 'Hard Time 100')
+      create(:course, name: 'Hard Time 100')
+      course = build(:course, name: 'Hard Time 100')
       expect(course).not_to be_valid
       expect(course.errors[:name]).to include('has already been taken')
     end

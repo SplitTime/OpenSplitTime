@@ -25,6 +25,22 @@
     <article class="ost-article container">
       <% if @presenter.filtered_ranked_efforts.present? %>
 
+        <% if @presenter.unreconciled_efforts.present? %>
+          <div class="row">
+            <div class="col">
+              <div class="card border-primary">
+                <h4 class="card-header bg-primary text-white"><strong>Note</strong></h4>
+                <div class="card-body">
+                  <h5 class="card-text">
+                    Unreconciled efforts exist. Please <%= link_to 'reconcile', reconcile_event_group_path(@presenter.event_group) %> when you have a moment.
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/>
+        <% end %>
+
         <div class="row">
           <div class="col-xs-8">
             <% if @presenter.filtered_ranked_efforts_count == @presenter.efforts_count %>

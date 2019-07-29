@@ -6,10 +6,10 @@ SitemapGenerator::Sitemap.create do
 
   add organizations_path
   add event_groups_path
-  add events_path
   add people_path
   add about_path
-  add getting_started_path
+  add donations_path
+  add docs_contents_path
 
   Organization.visible.find_each do |organization|
     add organization_path(organization), lastmod: organization.updated_at

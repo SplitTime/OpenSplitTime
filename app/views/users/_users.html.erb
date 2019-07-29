@@ -9,7 +9,7 @@
           <th><%= link_to_reversing_sort_heading('Confirmed at', 'confirmed_at', view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Avatar', 'avatar_last_name,avatar_first_name,confirmed_at', view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Role', 'role', view_object.existing_sort) %></th>
-          <th></th>
+          <th colspan="2"></th>
         </tr>
         </thead>
 
@@ -19,22 +19,15 @@
             <td><%= link_to user.full_name, user %></td>
             <td><%= user.email %></td>
             <td><%= day_time_full_format(user.confirmed_at) %></td>
-            <td>
-              <% if user.avatar %>
-                <%= link_to user.avatar.full_name, person_path(user.avatar) %>
-              <% else %>
-                [None]
-              <% end %>
-            </td>
+            <td><% user.avatar ? link_to(user.avatar.full_name, person_path(user.avatar)) : '[None]' %></td>
             <td>
               <%= form_for(user) do |f| %>
                 <%= f.select(:role, User.roles.keys.map { |role| [role.titleize, role] }) %>
                 <%= f.submit 'Change Role', :class => 'btn btn-primary' %>
               <% end %>
             </td>
-            <td>
-              <%= link_to_user_delete(user) unless user == current_user %>
-            </td>
+            <td><%= link_to_delete_user(user) unless user == current_user %></td>
+            <td><%= link_to_become_user(user) unless user == current_user %></td>
           </tr>
         <% end %>
         </tbody>

@@ -269,7 +269,7 @@ module DropdownHelper
 
   def event_actions_dropdown(event)
     dropdown_items = [
-        {name: 'Edit event',
+        {name: 'Edit/Delete Event',
          link: edit_stage_event_group_path(event.event_group, step: :event_details, event: {id: event.id})},
         {name: 'Establish drops',
          link: set_stops_event_path(event),
@@ -280,9 +280,9 @@ module DropdownHelper
          link: edit_start_time_event_path(event),
          visible: current_user.admin?},
         {role: :separator},
-        {name: 'Export finishers list',
+        {name: 'Export Finishers List',
          link: export_finishers_event_path(event, format: :csv)},
-        {name: 'Export to ultrasignup',
+        {name: 'Export to Ultrasignup',
          link: export_to_ultrasignup_event_path(event, format: :csv)}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
@@ -290,9 +290,9 @@ module DropdownHelper
 
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
-        {name: 'Edit group',
+        {name: 'Edit/Delete Group',
          link: edit_stage_event_group_path(view_object, step: :your_event)},
-        {name: 'Duplicate group',
+        {name: 'Duplicate Group',
          link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
         {role: :separator},
         {name: 'Add/Remove Stewards',

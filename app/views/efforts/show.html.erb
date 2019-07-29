@@ -63,12 +63,12 @@
             <% end %>
             <% if @presenter.needs_final_stop? %>
               <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
-                          method: :put,
+                          method: :patch,
                           class: "btn btn-success" %>
             <% end %>
             <% if @presenter.has_removable_stop? %>
               <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
-                          method: :put,
+                          method: :patch,
                           class: "btn btn-success" %>
             <% end %>
             <% if @presenter.next_problem_effort %>

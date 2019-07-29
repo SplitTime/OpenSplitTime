@@ -26,7 +26,7 @@ class Course < ApplicationRecord
   scope :used_for_organization, -> (organization) { organization.courses }
   scope :standard_includes, -> { includes(:splits) }
 
-  validates_presence_of :name
+  validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
   validates_presence_of :distance_preferred, :vert_gain_preferred, :vert_loss_preferred, unless: :finish_split_present?
   validates :distance_preferred, numericality: {greater_than_or_equal_to: 0}, allow_nil: true

@@ -42,15 +42,15 @@
         </div>
         <div class="col-md-4 text-right">
           <% if suggested_match_count(@presenter.unreconciled_batch) > 0 %>
-            <%= link_to "Match #{suggested_match_count(@presenter.unreconciled_batch)} people",
+            <%= link_to "Match #{pluralize(suggested_match_count(@presenter.unreconciled_batch), 'person')}",
                         associate_people_event_group_path(ids: suggested_match_id_hash(@presenter.unreconciled_batch)),
                         method: :patch,
                         class: 'btn btn-primary btn-margin-top' %>
           <% end %>
-          <%= link_to "Create #{@presenter.unreconciled_batch.size} people",
+          <%= link_to "Create #{pluralize(@presenter.unreconciled_batch.size, 'person')}",
                       create_people_event_group_path(effort_ids: @presenter.unreconciled_batch.ids),
                       method: :post,
-                      data: {confirm: "Create #{@presenter.unreconciled_batch.size} new people?"},
+                      data: {confirm: "Create #{pluralize(@presenter.unreconciled_batch.size, 'new person')}?"},
                       class: 'btn btn-success btn-margin-top pull-right' %>
         </div>
       </div>

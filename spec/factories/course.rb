@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :course do
     name { FFaker::Product.product }
+    organization
 
     trait :with_description do
       description { FFaker::HipsterIpsum.phrase }

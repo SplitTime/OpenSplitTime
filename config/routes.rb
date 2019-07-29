@@ -133,6 +133,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root 'dashboard#dashboard'
+    post 'impersonate/:id', to: 'dashboard#impersonate', as: :impersonate
+    post 'stop_impersonating', to: 'dashboard#stop_impersonating', as: :stop_impersonating
   end
 
   namespace :live do

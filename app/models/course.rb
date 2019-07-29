@@ -22,7 +22,7 @@ class Course < ApplicationRecord
   scope :used_for_organization, -> (organization) { organization.courses }
   scope :standard_includes, -> { includes(:splits) }
 
-  validates_presence_of :name
+  validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
   validates :gpx,
             content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],

@@ -5,7 +5,7 @@ class EventCourseOrgSetter
 
   def initialize(args)
     ArgsValidator.validate(params: args,
-                           required: [:event, :params],
+                           required: [:event, :event_group, :course, :organization, :params],
                            exclusive: [:event, :event_group, :course, :organization, :params],
                            class: self.class)
     @event = args[:event]
@@ -30,7 +30,7 @@ class EventCourseOrgSetter
   attr_writer :response, :status
 
   def submitted_resources
-    [course, organization, event_group, event]
+    [organization, course, event_group, event]
   end
 
   def update_resource(resource)
@@ -46,7 +46,9 @@ class EventCourseOrgSetter
   end
 
   def relationships
-    result = {event: {event_group: event_group, course: course}, event_group: {organization: organization}}
+    result = {event: {event_group: event_group, course: course},
+              event_group: {organization: organization},
+              course: {organization: organization}}
     result.default = {}
     result
   end

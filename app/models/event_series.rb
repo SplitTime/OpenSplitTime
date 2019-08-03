@@ -1,6 +1,5 @@
 class EventSeries < ApplicationRecord
-  include Delegable
-  include MultiEventable
+  include Delegable, MultiEventable
   extend FriendlyId
 
   enum scoring_method: [:time, :rank, :points]

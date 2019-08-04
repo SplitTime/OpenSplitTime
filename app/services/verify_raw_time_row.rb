@@ -85,7 +85,7 @@ class VerifyRawTimeRow
     errors << 'missing event' unless event.present?
 
     if errors.empty?
-      errors << 'mismatched bib numbers' if raw_times_bib_numbers.uniq.many? || raw_times_bib_numbers.first != effort.bib_number.to_s
+      errors << 'mismatched bib numbers' if raw_times_bib_numbers.uniq.many? || raw_times_bib_numbers.first.to_i != effort.bib_number
       errors << 'missing lap attribute' unless raw_times_laps.all?
       errors << 'mismatched laps' if raw_times_laps.uniq.many?
       errors << 'lap exceeds event limit' if event.maximum_laps && raw_times_laps.first > event.maximum_laps

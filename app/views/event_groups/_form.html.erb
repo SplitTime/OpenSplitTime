@@ -24,6 +24,16 @@
         </div>
       </div>
 
+      <div class="form-group required">
+        <div class="control-label col-sm-2">
+          <%= f.label :home_time_zone %>
+        </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event_group, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                {prompt: true, selected: @event_group.home_time_zone || Time.zone.name}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="control-label col-sm-2">
           <%= f.label :concealed, "Concealed (invisible to the public)?" %>

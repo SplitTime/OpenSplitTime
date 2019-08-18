@@ -26,8 +26,29 @@
 </header>
 
 <article class="ost-article container">
-  <h3><%= "Total number of subscriptions: #{@presenter.subscriptions_count}" %></h3>
-  <h3><%= "Total notifications sent: #{@presenter.notifications_count}" %></h3>
-  <h3><%= "Number of entrants that are the subject of notifications: #{@presenter.efforts_noticed_count}" %></h3>
-  <h3><%= "Number of distances that are the subject of notifications: #{@presenter.distances_noticed_count}" %></h3>
+  <div class="card">
+    <h3 class="card-header"><strong>Subscriptions</strong></h3>
+    <div class="card-body">
+      <% if @presenter.subs_count_by_protocol.present? %>
+        <% @presenter.subs_count_by_protocol.each do |protocol, count| %>
+          <h4 class="card-text">
+            <%= "#{protocol}: #{count}" %>
+          </h4>
+        <% end %>
+      <% else %>
+        <h4 class="card-text">No subscriptions exist for this event group.</h4>
+      <% end %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3 class="card-header"><strong>Notifications</strong></h3>
+    <div class="card-body">
+      <h4 class="card-text"><%= "Total sent: #{@presenter.notifications_count}" %></h4>
+      <h4 class="card-text"><%= "Subject entrants: #{@presenter.efforts_noticed_count}" %></h4>
+      <h4 class="card-text"><%= "Subject distances: #{@presenter.distances_noticed_count}" %></h4>
+    </div>
+  </div>
 </article>

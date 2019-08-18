@@ -18,11 +18,12 @@ class EventGroupNotificationsPresenter < BasePresenter
   end
 
   def notifications_count
-    notifications.pluck(:follower_ids).flatten.uniq.size
+    notifications.pluck(:follower_ids).flatten.size
   end
 
-  def subscriptions_count
-    Subscription.where(subscribable_type: 'Effort', subscribable_id: efforts).count
+  def subs_count_by_protocol
+    @subs_count_by_protocol ||=
+      Subscription.where(subscribable_type: 'Effort', subscribable_id: efforts).group(:protocol).count
   end
 
   def event

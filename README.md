@@ -165,7 +165,7 @@ You'll know you did it right when you see the awesome ASCII art.
 
 **ChromeDriver**
 
-Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew install chromedriver` or your preferred package manager for Linux or Windows.
+Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew cask install chromedriver` or your preferred package manager for Linux or Windows.
 
 **Continuous Integration**
 

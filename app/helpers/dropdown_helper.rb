@@ -46,7 +46,10 @@ module DropdownHelper
          active: action_name == 'roster' && params[:problem]},
         {name: 'Settings',
          link: event_group_path(view_object.event_group, force_settings: true),
-         active: controller_name == 'event_groups' && action_name == 'show'}
+         active: controller_name == 'event_groups' && action_name == 'show'},
+        {name: 'Notifications',
+         link: notifications_event_group_path(view_object.event_group),
+         active: controller_name == 'event_groups' && action_name == 'notifications'}
     ]
     build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end

@@ -71,8 +71,7 @@ class EventGroupsController < ApplicationController
   def notifications
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group).includes(:efforts).first
-    @presenter = EventGroupNotificationsPresenter.new(event_group)
+    @presenter = EventGroupNotificationsPresenter.new(@event_group)
   end
 
   def drop_list

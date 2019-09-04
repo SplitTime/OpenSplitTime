@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.6.3'
+ruby '2.6.4'
 source 'https://rubygems.org'
 gem 'active_model_serializers', '>= 0.10.8'
 gem 'active_storage_validations', '>= 0.6.1'

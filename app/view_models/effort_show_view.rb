@@ -6,7 +6,7 @@ class EffortShowView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :multiple_laps?, :laps_unlimited?, :event_group, to: :event
 
   def next_problem_effort
-    proposed_effort = problem_efforts.elements_after(effort).first || problem_efforts.first
+    proposed_effort = problem_efforts.element_after(effort) || problem_efforts.first
     proposed_effort unless proposed_effort == effort
   end
 

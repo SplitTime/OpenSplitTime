@@ -100,7 +100,7 @@ class EffortsController < ApplicationController
   def audit
     authorize @effort
 
-    @presenter = EffortAuditPresenter.new(@effort)
+    @presenter = EffortAuditView.new(@effort)
   end
 
   def place

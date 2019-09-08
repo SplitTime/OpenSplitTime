@@ -21,14 +21,7 @@
             <h6>Start Time: <strong><%= l(@presenter.effort_start_time, format: :full_day_time_and_zone) %></strong>
             </h6>
           <% end %>
-          <h6>Status:
-            <strong>
-              <%= @presenter.finish_status %>
-              <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-              <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-              <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-            </strong>
-          </h6>
+          <%= effort_view_status(@presenter) %>
         </div>
       </div>
       <%= render 'subscription_buttons', view_object: @presenter %>

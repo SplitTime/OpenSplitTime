@@ -80,4 +80,16 @@ module EffortsHelper
                                                                 time: time.to_s,
                                                                 displaytime: l(time, format: :datetime_input)}
   end
+
+  def effort_view_status(presenter)
+    finish_status = presenter.finish_status
+    overall_place = presenter.overall_rank ? "#{presenter.overall_rank.ordinalize} Place" : ''
+    gender_place = presenter.gender_rank ? "#{presenter.gender_rank.ordinalize} #{presenter.gender.titleize}" : ''
+    bib_number = presenter.bib_number ? "Bib ##{presenter.bib_number}" : ''
+
+    content_tag(:h6) do
+      concat content_tag(:strong, 'Status: ')
+      concat [finish_status, overall_place, gender_place, bib_number].compact.join(' • ')
+    end
+  end
 end

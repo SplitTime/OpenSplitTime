@@ -1,0 +1,45 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Audit effort - #{@presenter.full_name} - #{@presenter.event_name}" %>
+<% end %>
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>
+            <% if @presenter.person %>
+              <%= link_to @presenter.full_name, person_path(@presenter.person) %>
+            <% else %>
+              <%= @presenter.full_name %>
+            <% end %>
+          </strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
+            <% if @presenter.event_group.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.full_name, effort_path(@presenter.effort) %></li>
+            <li class="breadcrumb-item active">Audit</li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <h6>
+            <strong>Status:</strong>
+            <%= @presenter.finish_status %>
+            <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
+            <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
+            <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
+          </h6>
+        </div>
+      </div>
+    </div>
+    <%= effort_view_tabs(@presenter) %>
+  </div>
+</header>
+

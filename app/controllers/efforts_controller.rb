@@ -97,6 +97,12 @@ class EffortsController < ApplicationController
     @presenter = EffortAnalysisView.new(@effort)
   end
 
+  def audit
+    authorize @effort
+
+    @presenter = EffortAuditPresenter.new(@effort)
+  end
+
   def place
     @presenter = PlaceDetailView.new(@effort)
   end

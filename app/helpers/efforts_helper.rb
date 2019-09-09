@@ -81,11 +81,20 @@ module EffortsHelper
                                                                 displaytime: l(time, format: :datetime_input)}
   end
 
+  def effort_start_time_string(presenter)
+    if presenter.calculated_start_time
+      content_tag(:h6) do
+        concat content_tag(:strong, "Start Time: ")
+        concat l(@presenter.calculated_start_time_local, format: :full_day_time_and_zone)
+      end
+    end
+  end
+
   def effort_view_status(presenter)
     finish_status = presenter.finish_status
-    overall_place = presenter.overall_rank ? "#{presenter.overall_rank.ordinalize} Place" : ''
-    gender_place = presenter.gender_rank ? "#{presenter.gender_rank.ordinalize} #{presenter.gender.titleize}" : ''
-    bib_number = presenter.bib_number ? "Bib ##{presenter.bib_number}" : ''
+    overall_place = presenter.overall_rank ? "#{presenter.overall_rank.ordinalize} Place" : nil
+    gender_place = presenter.gender_rank ? "#{presenter.gender_rank.ordinalize} #{presenter.gender.titleize}" : nil
+    bib_number = presenter.bib_number ? "Bib ##{presenter.bib_number}" : nil
 
     content_tag(:h6) do
       concat content_tag(:strong, 'Status: ')

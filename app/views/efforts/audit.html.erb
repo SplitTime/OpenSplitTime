@@ -29,3 +29,9 @@
   </div>
 </header>
 
+<article class="ost-article container">
+
+  <% if @presenter.lap_split_rows.present? %>
+    <%= render 'split_times/audit_list', presenter: @presenter %>
+  <% end %>
+</article>

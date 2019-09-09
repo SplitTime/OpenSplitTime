@@ -1,0 +1,21 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Time Point</th>
+    <th class="text-center">Time of Day</th>
+    <th class="text-center">Matched Raw Times</th>
+    <th class="text-center">Unmatched Raw Times</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% presenter.audit_rows.each do |row| %>
+    <tr>
+      <td><%= row.name %></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+      <td class="text-center"></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

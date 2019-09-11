@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th>Time Point</th>
-    <th class="text-center">Time of Day</th>
+    <th class="text-center">Split Time</th>
     <th class="text-center">Matched Raw Times</th>
     <th class="text-center">Unmatched Raw Times</th>
   </tr>
@@ -12,9 +12,9 @@
   <% presenter.audit_rows.each do |row| %>
     <tr>
       <td><%= row.name %></td>
-      <td class="text-center"></td>
-      <td class="text-center"></td>
-      <td class="text-center"></td>
+      <td class="text-center"><%= row.split_time.absolute_time_local %></td>
+      <td class="text-center"><%= row.raw_times.select(&:matched?).map(&:absolute_time_local).join("\n") %></td>
+      <td class="text-center"><%= row.raw_times.reject(&:matched?).map(&:absolute_time_local).join("\n") %></td>
     </tr>
   <% end %>
   </tbody>

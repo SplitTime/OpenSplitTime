@@ -32,12 +32,6 @@ class ProtoRecord
     to_h.merge(child_attributes)
   end
 
-  def resource_attributes(attribute_names = [])
-    resource = record_class.new(to_h)
-    joined_attributes = to_h.keys | (attribute_names || [])
-    joined_attributes.map { |attribute_name| [attribute_name, resource.send(attribute_name)] }.to_h
-  end
-
   def transform_as(model, options = {})
     self.record_type = model
     underscore_keys!

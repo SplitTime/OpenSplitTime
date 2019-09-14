@@ -21,7 +21,7 @@ module TabsHelper
                { name:   'Audit',
                  link:   audit_effort_path(view_object.effort),
                  active: action_name == 'audit',
-                 hidden: current_user.nil? || !current_user.authorized_to_edit?(view_object.effort) }]
+                 hidden: true }]
 
       build_view_tabs(items)
     end

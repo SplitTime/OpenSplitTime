@@ -25,14 +25,14 @@ class EffortParameters < BaseParameters
   def self.permitted
     [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
      :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
-     :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
+     :scheduled_start_offset, :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
      split_times_attributes: [*SplitTimeParameters.permitted]]
   end
 
   def self.mapping
     {first: :first_name, firstname: :first_name, last: :last_name, lastname: :last_name, name: :full_name, state: :state_code,
      country: :country_code, sex: :gender, bib: :bib_number, :"bib_#" => :bib_number, dob: :birthdate,
-     emergency_name: :emergency_contact, start_time: :scheduled_start_time_local}
+     emergency_name: :emergency_contact, start_time: :scheduled_start_time_local, start_offset: :scheduled_start_offset}
   end
 
   def self.unique_key

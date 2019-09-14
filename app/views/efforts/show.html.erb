@@ -17,24 +17,11 @@
               <%= @presenter.full_name %>
             <% end %>
           </strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
-            <% if @presenter.event_group.multiple_events? %>
-              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-            <% end %>
-            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
-            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
-          </ul>
+          <%= effort_view_breadcrumbs(@presenter, nil) %>
         </div>
         <div class="ost-subtitle">
-          <h6>
-            <strong>Status:</strong>
-            <%= @presenter.finish_status %>
-            <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-            <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-            <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-          </h6>
+          <%= effort_start_time_string(@presenter) %>
+          <%= effort_view_status(@presenter) %>
         </div>
       </div>
       <% if @presenter.photo.attached? %>

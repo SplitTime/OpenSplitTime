@@ -128,6 +128,11 @@ class Effort < ApplicationRecord
     @scheduled_start_offset ||= (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
   end
 
+  def scheduled_start_offset=(seconds)
+    return unless seconds.present? && event_start_time
+    self.scheduled_start_time = event_start_time + seconds.to_i
+  end
+
   def event_name
     @event_name ||= event&.name
   end

@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     end
     member do
       get :analyze
+      get :audit
       get :projections
       get :place
       get :show_photo

@@ -10,7 +10,7 @@
 
   <tbody>
   <% presenter.audit_rows.each do |row| %>
-    <tr>
+    <tr class="<%= 'bg-highlight' if row.problem %>">
       <td><%= row.name %></td>
       <td class="text-center"><%= day_time_military_format_hhmmss(row.split_time.absolute_time_local) %></td>
       <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.matched_raw_times.map(&:military_time).join("\n") %></td>

@@ -38,7 +38,7 @@ class EffortAuditView < EffortWithLapSplitRows
   end
 
   def problem?(split_time, raw_times)
-    joined_military_times = (raw_times.map(&:military_time) + [split_time.military_time]).compact.sort
+    joined_military_times = (raw_times.map { |rt| rt.military_time(home_time_zone) } + [split_time.military_time]).compact.sort
     return false unless joined_military_times.present?
 
     times_in_seconds = joined_military_times.map { |military_time| TimeConversion.hms_to_seconds(military_time) }

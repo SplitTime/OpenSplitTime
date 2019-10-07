@@ -5,7 +5,7 @@ RSpec.describe ETL::Loaders::UpsertStrategy do
 
   let(:course) { create(:course, id: 10) }
   let(:event) { create(:event, id: 1, course: course) }
-  let(:options) { {event: event, unique_key: [:course_id, :distance_from_start], current_user_id: 111} }
+  let(:options) { {parent: course, event: event, unique_key: [:course_id, :distance_from_start], current_user_id: 111} }
   let(:valid_proto_records) do
     [ProtoRecord.new({record_type: :split, kind: 0, sub_split_bitmap: 1, base_name: 'Start', distance_from_start: 0, course_id: 10}),
      ProtoRecord.new({record_type: :split, kind: 2, sub_split_bitmap: 65, base_name: 'Aid 1', distance_from_start: 5000, course_id: 10}),
@@ -46,6 +46,24 @@ RSpec.describe ETL::Loaders::UpsertStrategy do
         expect(subject_split.base_name).to eq('Old Name')
         expect(subject.invalid_records.size).to eq(2)
         expect(subject.invalid_records.map(&:distance_from_start)).to match_array([0, -100])
+      end
+    end
+
+    context 'when proto_records are efforts for an event with scheduled start offset' do
+      let(:event) { create(:event, event_group: event_group, start_time_local: event_start_time) }
+      let(:event_group) { create(:event_group, home_time_zone: 'Mountain Time (US & Canada)')}
+      let(:event_start_time) { '2019-09-14 07:45:00' }
+      let(:options) { {parent: event, event: event, unique_key: [:first_name, :last_name], current_user_id: 111} }
+      let(:proto_records) do
+        [ProtoRecord.new({record_type: :effort, first_name: 'Millie', last_name: 'Canyon', gender: 'female',
+                          scheduled_start_offset: offset, event_id: event.id})]
+      end
+      let(:offset) { 900 }
+
+      it 'sets scheduled start time correctly' do
+        expect { subject.load_records }.to change { Effort.count }.by(1)
+        effort = Effort.last
+        expect(effort.scheduled_start_time).to eq(event.start_time + offset)
       end
     end
   end

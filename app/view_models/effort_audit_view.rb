@@ -13,9 +13,10 @@ class EffortAuditView < EffortWithLapSplitRows
     lap_splits.flat_map do |lap_split|
       lap_split.bitkeys.map do |bitkey|
         time_point = lap_split.time_point(bitkey)
-        split_time = split_times.find { |st| st.time_point == time_point }
-        matched_raw_times = raw_times.select { |rt| rt.split_time_id && rt.split_time_id == split_time&.id }
-        unmatched_raw_times = raw_times.select { |rt| rt.split_time_id.nil? && rt.time_point == split_time.time_point }
+        split_time = indexed_split_times[time_point] || effort.split_times.new(time_point: time_point)
+        matched_raw_times = raw_times.select { |rt| rt.split_time_id && rt.split_time_id == split_time.id }
+        unmatched_raw_times = raw_times.select { |rt| rt.split_time_id.nil? && rt.time_point == time_point }
+
         OpenStruct.new(name: lap_split.public_send(name_method, bitkey),
                        time_point: time_point,
                        split_time: split_time,

@@ -181,10 +181,12 @@ RSpec.describe 'visit an effort show page' do
 
   def verify_admin_links_absent
     expect(page).not_to have_content('Edit Entrant')
+    expect(page).not_to have_content('Audit')
   end
 
   def verify_admin_links_present
     expect(page).to have_link('Edit Entrant', href: edit_effort_path(effort))
+    expect(page).to have_link('Audit', href: audit_effort_path(effort))
   end
 
   def verify_set_stop

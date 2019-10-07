@@ -11,10 +11,12 @@ class EffortAuditView < EffortWithLapSplitRows
     lap_splits.flat_map do |lap_split|
       lap_split.bitkeys.map do |bitkey|
         time_point = lap_split.time_point(bitkey)
+        split_time = split_times.find { |st| st.time_point == time_point }
         OpenStruct.new(name: lap_split.public_send(name_method, bitkey),
                        time_point: time_point,
-                       split_time: split_times.find { |st| st.time_point == time_point },
-                       raw_times: raw_times.select { |rt| rt.split_id == lap_split.split_id && rt.bitkey == bitkey })
+                       split_time: split_time,
+                       matched_raw_times: raw_times.select { |rt| rt.split_time_id && rt.split_time_id == split_time&.id },
+                       unmatched_raw_times: raw_times.select { |rt| rt.split_time_id.nil? && rt.time_point == split_time.time_point })
       end
     end
   end
@@ -22,6 +24,11 @@ class EffortAuditView < EffortWithLapSplitRows
   private
 
   def raw_times
-    @raw_times ||= event_group.raw_times.where(bib_number: effort.bib_number).with_relation_ids
+    @raw_times ||=
+      begin
+        result = event_group.raw_times.where(bib_number: effort.bib_number).with_relation_ids
+        result.each { |rt| rt.lap ||= 1 }
+        result
+      end
   end
 end

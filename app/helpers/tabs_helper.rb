@@ -2,22 +2,22 @@
 
 module TabsHelper
   def effort_view_tabs(view_object)
-    unless view_object.simple?
+    if !view_object.simple? || current_user&.authorized_to_edit?(view_object.effort)
       items = [{ name:   'Split times',
                  link:   effort_path(view_object.effort),
                  active: action_name == 'show' },
                { name:   'Projections',
                  link:   projections_effort_path(view_object.effort),
                  active: action_name == 'projections',
-                 hidden: !view_object.in_progress? },
+                 hidden: view_object.simple? || !view_object.in_progress? },
                { name:   'Analyze times',
                  link:   analyze_effort_path(view_object.effort),
                  active: action_name == 'analyze',
-                 hidden: view_object.not_analyzable? },
+                 hidden: view_object.simple? || view_object.not_analyzable? },
                { name:   'Places + peers',
                  link:   place_effort_path(view_object.effort),
                  active: action_name == 'place',
-                 hidden: view_object.not_analyzable? },
+                 hidden: view_object.simple? || view_object.not_analyzable? },
                { name:   'Audit',
                  link:   audit_effort_path(view_object.effort),
                  active: action_name == 'audit',

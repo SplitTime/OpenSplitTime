@@ -15,14 +15,8 @@ class EffortAuditView < EffortWithLapSplitRows
         matched_raw_times = raw_times.select { |rt| rt.split_time_id && rt.split_time_id == split_time.id }
         unmatched_raw_times = raw_times.select { |rt| rt.split_time_id.nil? && rt.time_point == time_point }
 
-        EffortAuditRow.new(name: lap_split.public_send(:name_without_lap, bitkey),
-                           parameterized_split_name: lap_split.split.parameterized_base_name,
-                           sub_split_kind: SubSplit.kind(bitkey).downcase,
-                           time_point: time_point,
-                           split_time: split_time,
-                           matched_raw_times: matched_raw_times,
-                           unmatched_raw_times: unmatched_raw_times,
-                           problem: problem?(split_time, matched_raw_times + unmatched_raw_times))
+        EffortAuditRow.new(lap_split: lap_split, bitkey: bitkey, split_time: split_time, home_time_zone: home_time_zone,
+                           matched_raw_times: matched_raw_times, unmatched_raw_times: unmatched_raw_times)
       end
     end
   end
@@ -36,16 +30,5 @@ class EffortAuditView < EffortWithLapSplitRows
         result.each { |rt| rt.lap ||= 1 }
         result
       end
-  end
-
-  def problem?(split_time, raw_times)
-    joined_military_times = (raw_times.map { |rt| rt.military_time(home_time_zone) } + [split_time.military_time]).compact.sort
-    return false unless joined_military_times.present?
-
-    times_in_seconds = joined_military_times.map { |military_time| TimeConversion.hms_to_seconds(military_time) }
-    adjusted_times = times_in_seconds.map { |seconds| (seconds - times_in_seconds.first) > 12.hours ? (seconds - 24.hours).to_i : seconds }.sort
-    largest_discrepancy = (adjusted_times.last - adjusted_times.first).to_i
-
-    largest_discrepancy > DISCREPANCY_THRESHOLD
   end
 end

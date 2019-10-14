@@ -47,4 +47,15 @@ module RawTimesHelper
                class: 'btn btn-danger has-tooltip'}
     link_to fa_icon('trash'), url, options
   end
+
+  def link_to_raw_time_match(split_time, raw_time_id)
+    url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
+    options = {method: :patch,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original-title' => 'Match this raw time'},
+               class: 'btn btn-sm btn-success has-tooltip'}
+
+    link_to fa_icon('equals'), url, options
+  end
 end

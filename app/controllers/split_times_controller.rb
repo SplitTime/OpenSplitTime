@@ -5,7 +5,7 @@ class SplitTimesController < ApplicationController
   after_action :verify_authorized
 
   def update
-    @split_time = SplitTime.find(id: params[:id])
+    @split_time = SplitTime.find(params[:id])
     authorize @split_time
 
     if @split_time.update(permitted_params)

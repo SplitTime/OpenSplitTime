@@ -123,6 +123,45 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe 'around_save' do
+    subject { split_times(:sum_100k_drop_anvil_rolling_pass_aid2_out_1) }
+    let(:raw_time) { raw_times(:raw_time_87) }
+    let(:matching_raw_time_id) { raw_time.id }
+
+    before { subject.matching_raw_time_id = matching_raw_time_id }
+
+    context 'when matching_raw_time_id is set and exists' do
+      it 'conforms the split_time with the raw_time' do
+        expect(subject.military_time).not_to eq(raw_time.military_time)
+        subject.save
+        expect(subject.military_time).to eq(raw_time.military_time)
+      end
+
+      it 'matches the raw_time to the split_time' do
+        raw_time.reload
+        expect(raw_time.split_time_id).not_to eq(subject.id)
+
+        subject.save
+        raw_time.reload
+        expect(raw_time.split_time_id).to eq(subject.id)
+      end
+    end
+
+    context 'when matching_raw_time_id is not found' do
+      let(:matching_raw_time_id) { 0 }
+      it 'does not change the split_time' do
+        expect { subject.save }.not_to change { subject.military_time }
+      end
+    end
+
+    context 'when matching_raw_time_id is nil' do
+      let(:matching_raw_time_id) { nil }
+      it 'does not change the split_time' do
+        expect { subject.save }.not_to change { subject.military_time }
+      end
+    end
+  end
+
   describe 'virtual time attributes' do
     subject(:split_time) { effort.ordered_split_times.second }
     let(:effort) { efforts(:hardrock_2014_finished_first) }

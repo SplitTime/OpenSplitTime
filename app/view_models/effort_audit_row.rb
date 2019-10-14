@@ -2,6 +2,7 @@
 
 EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :matched_raw_times, :unmatched_raw_times,
                             keyword_init: true) do
+  include Discrepancy
 
   def name
     @name ||= lap_split.public_send(:name_without_lap, bitkey)
@@ -15,17 +16,8 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
     SubSplit.kind(bitkey).downcase
   end
 
-  def largest_discrepancy
-    return nil unless times_in_seconds.present?
-
-    adjusted_times = times_in_seconds.map { |seconds| (seconds - times_in_seconds.first) > 12.hours ? (seconds - 24.hours).to_i : seconds }.sort
-    (adjusted_times.last - adjusted_times.first).to_i
-  end
-
   def problem?
-    return false unless joined_military_times.present?
-
-    largest_discrepancy > EffortAuditView::DISCREPANCY_THRESHOLD
+    discrepancy_above_threshold?
   end
 
   private
@@ -36,13 +28,5 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
 
   def split_times
     [split_time]
-  end
-
-  def times_in_seconds
-    @times_in_seconds ||= joined_military_times.map { |military_time| TimeConversion.hms_to_seconds(military_time) }
-  end
-
-  def joined_military_times
-    (split_times.map(&:military_time) | raw_times.map(&:military_time)).compact.sort
   end
 end

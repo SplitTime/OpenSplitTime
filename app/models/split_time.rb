@@ -19,9 +19,10 @@ class SplitTime < ApplicationRecord
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   alias_attribute :with_pacer, :pacer
-  attr_accessor :raw_time_id, :time_exists, :imposed_order, :segment_time
+  attr_accessor :imposed_order, :segment_time, :time_exists
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
+  attribute :matching_raw_time_id, :integer
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
@@ -42,6 +43,7 @@ class SplitTime < ApplicationRecord
                                                     .where(aid_stations: {id: aid_station_id}) }
 
   before_validation :destroy_if_blank
+  after_save :set_matching_raw_times, if: :matching_raw_time_id_changed?
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -188,5 +190,12 @@ class SplitTime < ApplicationRecord
 
   def destroy_if_blank
     self.destroy if elapsed_time == ''
+  end
+
+  def set_matching_raw_times
+    matching_raw_time = RawTime.find_by(id: matching_raw_time_id)
+    return unless matching_raw_time.present?
+
+    matching_raw_time.update(split_time_id: id)
   end
 end

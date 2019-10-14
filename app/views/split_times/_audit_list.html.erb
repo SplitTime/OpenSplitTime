@@ -5,6 +5,7 @@
     <th class="text-center">Split Time</th>
     <th class="text-center">Matched Raw Times</th>
     <th class="text-center">Unmatched Raw Times</th>
+    <th class="text-center">Discrepancy</th>
   </tr>
   </thead>
 
@@ -15,6 +16,7 @@
       <td class="text-center"><%= day_time_military_format_hhmmss(row.split_time.absolute_time_local) %></td>
       <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.matched_raw_times.map { |rt| rt.military_time(presenter.home_time_zone)}.join("\n") %></td>
       <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.unmatched_raw_times.map { |rt| rt.military_time(presenter.home_time_zone)}.join("\n") %></td>
+      <td class="text-center"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy, blank_zero: true) %></td>
     </tr>
   <% end %>
   </tbody>

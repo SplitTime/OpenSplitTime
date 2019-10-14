@@ -16,6 +16,8 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
   end
 
   def largest_discrepancy
+    return nil unless times_in_seconds.present?
+
     adjusted_times = times_in_seconds.map { |seconds| (seconds - times_in_seconds.first) > 12.hours ? (seconds - 24.hours).to_i : seconds }.sort
     (adjusted_times.last - adjusted_times.first).to_i
   end

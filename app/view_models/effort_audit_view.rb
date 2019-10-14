@@ -17,14 +17,14 @@ class EffortAuditView < EffortWithLapSplitRows
         matched_raw_times = raw_times.select { |rt| rt.split_time_id && rt.split_time_id == split_time.id }
         unmatched_raw_times = raw_times.select { |rt| rt.split_time_id.nil? && rt.time_point == time_point }
 
-        OpenStruct.new(name: lap_split.public_send(name_method, bitkey),
-                       parameterized_split_name: lap_split.split.parameterized_base_name,
-                       sub_split_kind: SubSplit.kind(bitkey).downcase,
-                       time_point: time_point,
-                       split_time: split_time,
-                       matched_raw_times: matched_raw_times,
-                       unmatched_raw_times: unmatched_raw_times,
-                       problem: problem?(split_time, matched_raw_times + unmatched_raw_times))
+        EffortAuditRow.new(name: lap_split.public_send(name_method, bitkey),
+                           parameterized_split_name: lap_split.split.parameterized_base_name,
+                           sub_split_kind: SubSplit.kind(bitkey).downcase,
+                           time_point: time_point,
+                           split_time: split_time,
+                           matched_raw_times: matched_raw_times,
+                           unmatched_raw_times: unmatched_raw_times,
+                           problem: problem?(split_time, matched_raw_times + unmatched_raw_times))
       end
     end
   end

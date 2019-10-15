@@ -56,6 +56,6 @@ module RawTimesHelper
                       'original-title' => 'Match this raw time'},
                class: 'btn btn-sm btn-success has-tooltip'}
 
-    link_to fa_icon('equals'), url, options
+    link_to fa_icon('link'), url, options
   end
 end

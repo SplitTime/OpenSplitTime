@@ -69,6 +69,8 @@ class SplitTime < ApplicationRecord
     self.find_by_sql(query)
   end
 
+  delegate :event_group, to: :effort
+
   def to_s
     "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"
   end
@@ -204,6 +206,6 @@ class SplitTime < ApplicationRecord
 
     yield
 
-    matching_raw_time.update(split_time_id: id)
+    Interactors::MatchAndUnmatchRawTimes.perform(self, matching_raw_time)
   end
 end

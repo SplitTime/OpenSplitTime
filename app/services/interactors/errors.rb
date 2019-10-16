@@ -37,6 +37,11 @@ module Interactors
        detail: {messages: ['No efforts were provided']}}
     end
 
+    def event_group_mismatch_error(resource_1, resource_2)
+      {title: 'Event group mismatch',
+       detail: {messages: ["Event group for #{resource_1} does not match the event group for #{resource_2}"]}}
+    end
+
     def invalid_raw_time_error(raw_time, valid_sub_splits)
       {title: 'Invalid raw time',
        detail: {messages: ["#{raw_time} is invalid; the sub_split #{raw_time.sub_split} must be one of #{valid_sub_splits}"]}}
@@ -79,7 +84,7 @@ module Interactors
 
     def single_lap_event_error(interactor)
       {title: 'Event cannot be a single lap',
-      detail: {messages: ["The event must be multi-lap to use #{interactor}"]}}
+       detail: {messages: ["The event must be multi-lap to use #{interactor}"]}}
     end
 
     def split_name_mismatch_error(child, new_parent)

@@ -15,7 +15,6 @@ class Course < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
-  delegate :stewards, to: :organization
 
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 

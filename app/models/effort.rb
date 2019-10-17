@@ -30,7 +30,6 @@ class Effort < ApplicationRecord
   alias_attribute :participant_id, :person_id
   delegate :event_group, :events_within_group, to: :event
   delegate :organization, :concealed?, to: :event_group
-  delegate :stewards, to: :organization
 
   validates_presence_of :event, :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}

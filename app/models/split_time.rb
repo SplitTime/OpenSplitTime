@@ -206,6 +206,6 @@ class SplitTime < ApplicationRecord
 
     yield
 
-    Interactors::MatchAndUnmatchRawTimes.perform(self, matching_raw_time)
+    Interactors::MatchAndUnmatchRawTimes.perform!(split_time: self, raw_time: matching_raw_time)
   end
 end

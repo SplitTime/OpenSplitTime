@@ -7,11 +7,7 @@ class SplitTime < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
 
-  include Auditable
-  include DataStatusMethods
-  include GuaranteedFindable
-  include TimePointMethods
-  include TimeZonable
+  include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, TimePointMethods, TimeZonable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   belongs_to :effort
@@ -69,7 +65,7 @@ class SplitTime < ApplicationRecord
     self.find_by_sql(query)
   end
 
-  delegate :event_group, to: :effort
+  delegate :event_group, :organization, to: :effort
 
   def to_s
     "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"

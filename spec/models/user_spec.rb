@@ -280,11 +280,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when the provided resource does not implement :stewards' do
-      let(:split_time) { build_stubbed(:split_time, effort: effort) }
-      let(:stewards) { [subject] }
+      let(:user) { build_stubbed(:user) }
 
       it 'returns false' do
-        expect(subject.steward_of?(split_time)).to eq(false)
+        expect(subject.steward_of?(user)).to eq(false)
       end
     end
   end

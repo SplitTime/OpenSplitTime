@@ -121,7 +121,7 @@ Rails.application.routes.draw do
     member { get :categories}
   end
 
-  resources :split_times
+  resources :split_times, only: [:update]
   resources :splits
   resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]

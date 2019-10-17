@@ -47,4 +47,28 @@ module RawTimesHelper
                class: 'btn btn-danger has-tooltip'}
     link_to fa_icon('trash'), url, options
   end
+
+  def link_to_raw_time_match(split_time, raw_time_id, icon = :link)
+    url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
+    tooltip = icon == :link ? 'Match this raw time' : 'Set this as the governing time'
+    options = {method: :patch,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original-title' => tooltip},
+               class: 'btn btn-sm btn-success has-tooltip'}
+
+    link_to fa_icon(icon), url, options
+  end
+
+  def link_to_raw_time_unmatch(raw_time_id)
+    url = raw_time_path(raw_time_id, raw_time: {split_time_id: nil})
+    tooltip = 'Un-match this raw time'
+    options = {method: :patch,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original-title' => tooltip},
+               class: 'btn btn-sm btn-danger has-tooltip'}
+
+    link_to fa_icon(:unlink), url, options
+  end
 end

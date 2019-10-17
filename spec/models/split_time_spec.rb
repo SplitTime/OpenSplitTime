@@ -123,42 +123,79 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
-  describe 'around_save' do
+  describe 'before_update' do
     subject { split_times(:sum_100k_drop_anvil_rolling_pass_aid2_out_1) }
-    let(:raw_time) { raw_times(:raw_time_87) }
-    let(:matching_raw_time_id) { raw_time.id }
+    let(:proposed_time) { raw_times(:raw_time_87) }
+    let(:proposed_time_id) { proposed_time.id }
+    let(:conflicting_time) { raw_times(:raw_time_74) }
+    let(:non_conflicting_time) { raw_times(:raw_time_88) }
 
-    before { subject.matching_raw_time_id = matching_raw_time_id }
+    before { subject.matching_raw_time_id = proposed_time_id }
 
-    context 'when matching_raw_time_id is set and exists' do
+    shared_examples 'conforms and matches the proposed time' do
       it 'conforms the split_time with the raw_time' do
-        expect(subject.military_time).not_to eq(raw_time.military_time)
+        expect(subject.military_time).not_to eq(proposed_time.military_time)
         subject.save
-        expect(subject.military_time).to eq(raw_time.military_time)
+        expect(subject.military_time).to eq(proposed_time.military_time)
       end
 
       it 'matches the raw_time to the split_time' do
-        raw_time.reload
-        expect(raw_time.split_time_id).not_to eq(subject.id)
+        expect(subject.raw_times).not_to include(proposed_time)
 
         subject.save
-        raw_time.reload
-        expect(raw_time.split_time_id).to eq(subject.id)
+        subject.reload
+        expect(subject.raw_times).to include(proposed_time)
+      end
+    end
+
+    shared_examples 'does not conform or match the proposed time' do
+      it 'does not change the split_time' do
+        expect { subject.save }.not_to change { subject.military_time }
+      end
+
+      it 'does not match the raw_time to the split_time' do
+        subject.save
+        subject.reload
+        expect(subject.raw_times).not_to include(proposed_time)
+      end
+    end
+
+    context 'when matching_raw_time_id is set and exists' do
+      include_examples 'conforms and matches the proposed time'
+
+      it 'unmatches only those raw times that conflict' do
+        expect(subject.raw_times).to include(conflicting_time)
+        expect(subject.raw_times).to include(non_conflicting_time)
+
+        subject.save
+        subject.reload
+
+        expect(subject.raw_times).not_to include(conflicting_time)
+        expect(subject.raw_times).to include(non_conflicting_time)
       end
     end
 
     context 'when matching_raw_time_id is not found' do
-      let(:matching_raw_time_id) { 0 }
-      it 'does not change the split_time' do
-        expect { subject.save }.not_to change { subject.military_time }
-      end
+      let(:proposed_time_id) { 0 }
+      include_examples 'does not conform or match the proposed time'
     end
 
     context 'when matching_raw_time_id is nil' do
-      let(:matching_raw_time_id) { nil }
-      it 'does not change the split_time' do
-        expect { subject.save }.not_to change { subject.military_time }
-      end
+      let(:proposed_time_id) { nil }
+      include_examples 'does not conform or match the proposed time'
+    end
+
+    context 'when the proposed time relates to another bib number in the same event group' do
+      let(:proposed_time) { raw_times(:raw_time_76) }
+      before { expect(proposed_time.bib_number.to_i).not_to eq(subject.bib_number) }
+      before { expect(proposed_time.event_group_id).to eq(subject.event_group_id) }
+      include_examples 'conforms and matches the proposed time'
+    end
+
+    context 'when the proposed time relates to another event group' do
+      let(:proposed_time) { raw_times(:raw_time_50) }
+      before { expect(proposed_time.event_group_id).not_to eq(subject.event_group_id) }
+      include_examples 'does not conform or match the proposed time'
     end
   end
 

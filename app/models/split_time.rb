@@ -43,7 +43,7 @@ class SplitTime < ApplicationRecord
                                                     .where(aid_stations: {id: aid_station_id}) }
 
   before_validation :destroy_if_blank
-  around_save :set_matching_raw_times, if: :matching_raw_time_id_changed?
+  before_update :set_matching_raw_times, if: :matching_raw_time_id_changed?
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -199,17 +199,7 @@ class SplitTime < ApplicationRecord
   end
 
   def set_matching_raw_times
-    matching_raw_time = RawTime.find_by(id: matching_raw_time_id)
-    return unless matching_raw_time.present?
-
-    if matching_raw_time.absolute_time.present?
-      self.absolute_time = matching_raw_time.absolute_time
-    else
-      self.military_time = matching_raw_time.military_time
-    end
-
-    yield
-
-    Interactors::MatchAndUnmatchRawTimes.perform!(split_time: self, raw_time: matching_raw_time)
+    response = Interactors::MatchAndUnmatchRawTimes.perform!(split_time: self, raw_time_id: matching_raw_time_id)
+    raise ActiveRecord::Rollback unless response.successful?
   end
 end

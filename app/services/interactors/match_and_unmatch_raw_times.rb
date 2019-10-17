@@ -10,9 +10,9 @@ module Interactors
     end
 
     def initialize(args)
-      ArgsValidator.validate(params: args, required: [:split_time, :raw_time], exclusive: [:split_time, :raw_time], class: self.class)
+      ArgsValidator.validate(params: args, required: [:split_time, :raw_time_id], exclusive: [:split_time, :raw_time_id], class: self.class)
       @split_time = args[:split_time]
-      @raw_time = args[:raw_time]
+      @raw_time = RawTime.find_by(id: args[:raw_time_id])
       @errors = []
       validate_setup
     end
@@ -20,7 +20,10 @@ module Interactors
     def perform!
       if errors.present?
         Interactors::Response.new(errors, "Raw times could not be matched. ", {})
+      elsif raw_time.nil?
+        Interactors::Response.new(errors, "Raw time does not exist. ", {})
       else
+        conform_absolute_time
         match_raw_time
         unmatch_conflicting_raw_times
         Interactors::Response.new(errors, "Matched raw times. ", {})
@@ -30,6 +33,14 @@ module Interactors
     private
 
     attr_reader :split_time, :raw_time, :errors
+
+    def conform_absolute_time
+      if raw_time.absolute_time.present?
+        split_time.absolute_time = raw_time.absolute_time
+      else
+        split_time.military_time = raw_time.military_time
+      end
+    end
 
     def match_raw_time
       raw_time.update(split_time_id: split_time.id)
@@ -65,6 +76,8 @@ module Interactors
     end
 
     def validate_setup
+      return unless raw_time.present?
+
       errors << event_group_mismatch_error(split_time, raw_time) unless split_time.event_group_id == raw_time.event_group_id
     end
   end

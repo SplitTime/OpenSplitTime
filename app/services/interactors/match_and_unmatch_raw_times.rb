@@ -23,6 +23,7 @@ module Interactors
       else
         match_raw_time
         unmatch_conflicting_raw_times
+        Interactors::Response.new(errors, "Matched raw times. ", {})
       end
     end
 

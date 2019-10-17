@@ -222,31 +222,16 @@ RSpec.describe User, type: :model do
     let(:event_group) { build_stubbed(:event_group, organization: organization) }
     let(:event) { build_stubbed(:event, event_group: event_group) }
     let(:effort) { build_stubbed(:effort, event: event) }
+    let(:split_time) { build_stubbed(:split_time, effort: effort) }
 
     context 'when the user is a steward' do
       let(:stewards) { [subject] }
 
-      context 'when the provided resource is an Organization' do
-        it 'returns true' do
-          expect(subject.steward_of?(organization)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an EventGroup' do
-        it 'returns true' do
-          expect(subject.steward_of?(event_group)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an Event' do
-        it 'returns true' do
-          expect(subject.steward_of?(event)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an Effort' do
-        it 'returns true' do
-          expect(subject.steward_of?(effort)).to eq(true)
+      [:organization, :event_group, :event, :effort, :split_time].each do |resource|
+        context "when the provided resource is a/an #{resource}" do
+          it 'returns true' do
+            expect(subject.steward_of?(send(resource))).to eq(true)
+          end
         end
       end
     end
@@ -254,27 +239,11 @@ RSpec.describe User, type: :model do
     context 'when the user is not a steward' do
       let(:stewards) { [] }
 
-      context 'when the provided resource is an Organization' do
-        it 'returns false' do
-          expect(subject.steward_of?(organization)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an EventGroup' do
-        it 'returns false' do
-          expect(subject.steward_of?(event_group)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an Event' do
-        it 'returns false' do
-          expect(subject.steward_of?(event)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an Effort' do
-        it 'returns false' do
-          expect(subject.steward_of?(effort)).to eq(false)
+      [:organization, :event_group, :event, :effort, :split_time].each do |resource|
+        context "when the provided resource is a/an #{resource}" do
+          it 'returns false' do
+            expect(subject.steward_of?(send(resource))).to eq(false)
+          end
         end
       end
     end

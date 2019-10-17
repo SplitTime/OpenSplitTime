@@ -36,19 +36,27 @@ module Interactors
 
     def unmatch_conflicting_raw_times
       other_raw_times = RawTime.where(split_time_id: split_time.id).where.not(id: raw_time.id)
+
       conflicting_raw_times = other_raw_times.select do |rt|
-        if rt.absolute_time.present?
-          (rt.absolute_time - split_absolute_time).abs > DISCREPANCY_THRESHOLD
-        else
-          TimeConversion.hms_to_seconds(rt.military_time) - TimeConversion.hms_to_seconds(split_time.military_time)
-        end
+        rt.absolute_time.present? ? absolute_time_conflicts?(rt) : military_time_conflicts?(rt)
       end
 
       conflicting_raw_times.each { |rt| rt.update(split_time_id: nil) }
     end
 
+    def absolute_time_conflicts?(rt)
+      (rt.absolute_time - split_absolute_time).abs > DISCREPANCY_THRESHOLD
+    end
+
+    def military_time_conflicts?(rt)
+      raw_time_seconds = TimeConversion.hms_to_seconds(rt.military_time)
+      split_time_seconds = TimeConversion.hms_to_seconds(split_military_time)
+      military_difference = (raw_time_seconds - split_time_seconds).abs
+      military_difference > DISCREPANCY_THRESHOLD && military_difference < (1.day - DISCREPANCY_THRESHOLD)
+    end
+
     def split_absolute_time
-      split_time.absolute_time
+      @split_absolute_time ||= split_time.absolute_time
     end
 
     def split_military_time
@@ -56,7 +64,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_group_mismatch_error(split_time, raw_time) unless split_time.effort.event.event_group_id == raw_time.event_group_id
+      errors << event_group_mismatch_error(split_time, raw_time) unless split_time.event_group_id == raw_time.event_group_id
     end
   end
 end

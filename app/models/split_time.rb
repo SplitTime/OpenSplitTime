@@ -172,6 +172,10 @@ class SplitTime < ApplicationRecord
     @event_name ||= effort&.event_name || '[unknown event]'
   end
 
+  def event_group_id
+    @event_group_id ||= event_group&.id
+  end
+
   def start?
     !!split&.start?
   end

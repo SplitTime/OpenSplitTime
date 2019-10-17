@@ -127,8 +127,6 @@ RSpec.describe SplitTime, kind: :model do
     subject { split_times(:sum_100k_drop_anvil_rolling_pass_aid2_out_1) }
     let(:proposed_time) { raw_times(:raw_time_87) }
     let(:proposed_time_id) { proposed_time.id }
-    let(:conflicting_time) { raw_times(:raw_time_74) }
-    let(:non_conflicting_time) { raw_times(:raw_time_88) }
 
     before { subject.matching_raw_time_id = proposed_time_id }
 
@@ -162,17 +160,6 @@ RSpec.describe SplitTime, kind: :model do
 
     context 'when matching_raw_time_id is set and exists' do
       include_examples 'conforms and matches the proposed time'
-
-      it 'unmatches only those raw times that conflict' do
-        expect(subject.raw_times).to include(conflicting_time)
-        expect(subject.raw_times).to include(non_conflicting_time)
-
-        subject.save
-        subject.reload
-
-        expect(subject.raw_times).not_to include(conflicting_time)
-        expect(subject.raw_times).to include(non_conflicting_time)
-      end
     end
 
     context 'when matching_raw_time_id is not found' do

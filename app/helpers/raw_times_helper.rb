@@ -58,6 +58,7 @@ module RawTimesHelper
                data: {toggle: :tooltip,
                       placement: :bottom,
                       'original-title' => tooltip},
+               id: "match-raw-time-#{raw_time_id}",
                class: 'btn btn-sm btn-success has-tooltip'}
 
     link_to fa_icon(icon), url, options
@@ -70,6 +71,7 @@ module RawTimesHelper
                data: {toggle: :tooltip,
                       placement: :bottom,
                       'original-title' => tooltip},
+               id: "unmatch-raw-time-#{raw_time_id}",
                class: 'btn btn-sm btn-danger has-tooltip'}
 
     link_to fa_icon(:unlink), url, options

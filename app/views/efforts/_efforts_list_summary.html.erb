@@ -1,6 +1,6 @@
 <% # Requires local parameter view_object %>
 
-<table class="table table-sm">
+<table class="table table-xs">
   <thead>
   <tr>
     <th colspan="6"><h4><%= "#{@presenter.name} Results Summary (#{@presenter.summary_title})" %></h4></th>
@@ -12,10 +12,15 @@
     <th>Bib</th>
     <th>Category</th>
     <th>From</th>
-    <th>Status</th>
-    <th>Last Recorded</th>
+    <% unless @presenter.finished_efforts_only? %>
+      <th>Status</th>
+      <th>Last Recorded</th>
+    <% end %>
+    <% if @presenter.multiple_laps? %>
+      <th class="text-center">Laps</th>
+    <% end %>
     <th class="text-center">Time of Day</th>
-    <th class="text-right">Elapsed</th>
+    <th class="text-center">Elapsed</th>
   </tr>
   </thead>
   <tbody>
@@ -25,10 +30,15 @@
     <td><%= effort_row.bib_number %></td>
     <td><%= effort_row.bio_historic %></td>
     <td><%= effort_row.flexible_geolocation %></td>
-    <td><%= effort_row.effort_status %></td>
-    <td><%= last_reported_location(effort_row) %></td>
-    <td class="text-center"><%= last_reported_time_of_day(effort_row) %></td>
-    <td class="text-right"><%= last_reported_elapsed_time(effort_row) %></td>
+    <% unless @presenter.finished_efforts_only? %>
+      <td><%= effort_row.effort_status %></td>
+      <td><%= last_reported_location(effort_row) %></td>
+    <% end %>
+    <% if @presenter.multiple_laps? %>
+      <td class="text-center"><%= effort_row.final_lap %></td>
+    <% end %>
+    <td class="text-center text-nowrap"><%= last_reported_time_of_day(effort_row) %></td>
+    <td class="text-center"><%= last_reported_elapsed_time(effort_row) %></td>
     </tr>
   <% end %>
   </tbody>

@@ -481,7 +481,7 @@ DEPENDENCIES
   puma_worker_killer
   pundit
   pusher
-  rails (~> 5.2.3)
+  rails (< 6.0)
   rails-erd
   rails_12factor
   record_tag_helper (>= 1.0.0)

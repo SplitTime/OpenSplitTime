@@ -3,6 +3,7 @@
 class BaseSerializer < ActiveModel::Serializer
 
   def editable
+    return false unless current_user
     Pundit.policy!(current_user, object).update?
   end
 

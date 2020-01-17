@@ -4,6 +4,8 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
+  before { allow(Pusher).to receive(:trigger) }
+
   let(:event_group) { event_groups(:dirty_30) }
   let(:type) { 'event_groups' }
 
@@ -190,10 +192,11 @@ RSpec.describe Api::V1::EventGroupsController do
   describe '#create' do
     subject(:make_request) { post :create, params: params }
     let(:organization) { organizations(:hardrock) }
+    let(:home_time_zone) { 'Arizona' }
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group', organization_id: organization.id}}} }
+        let(:params) { {data: {type: type, attributes: {name: 'Test Event Group', organization_id: organization.id, home_time_zone: home_time_zone}}} }
 
         it 'returns a successful json response' do
           make_request
@@ -316,8 +319,46 @@ RSpec.describe Api::V1::EventGroupsController do
 
             expect(response.status).to eq(201)
             parsed_response = JSON.parse(response.body)
-            expect(parsed_response['data'].map { |record| record['type'] }).to all (eq('rawTimes'))
+            expect(parsed_response['data'].map { |record| record['type'] }).to all eq('rawTimes')
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
+            expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
+            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
+          end
+
+          it 'invokes a job to process imported raw times' do
+            allow(ProcessImportedRawTimesJob).to receive(:perform_later) do |_, raw_times|
+              raw_times.sort_by!(&:id)
+            end
+
+            make_request
+            raw_times = RawTime.last(2)
+
+            expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, raw_times.sort_by(&:id))
+          end
+        end
+      end
+
+      context 'when raw_times include leading zeros' do
+        via_login_and_jwt do
+          let(:data) { [
+              {type: 'raw_time',
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: 'in', absoluteTime: absolute_time_in,
+                            withPacer: 'true', stoppedHere: 'false', source: source}},
+              {type: 'raw_time',
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: 'out', absoluteTime: absolute_time_out,
+                            withPacer: 'true', stoppedHere: 'true', source: source}}
+          ] }
+          let(:bib_number_leading_zeros) { "00#{bib_number}" }
+
+          it 'creates_raw_times' do
+            expect { make_request }.to change { RawTime.count }.by(2)
+            raw_times = RawTime.last(2)
+
+            expect(response.status).to eq(201)
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['data'].map { |record| record['type'] }).to all eq('rawTimes')
+            expect(raw_times.map(&:bib_number)).to all eq(bib_number_leading_zeros)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
             expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
@@ -375,7 +416,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
             expect(response.status).to eq(201)
             parsed_response = JSON.parse(response.body)
-            expect(parsed_response).to (eq({}))
+            expect(parsed_response).to eq({})
             expect(raw_times.size).to eq(2)
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
@@ -411,100 +452,6 @@ RSpec.describe Api::V1::EventGroupsController do
               expect { make_request }.to change { RawTime.count }.by(2)
               expect(response.status).to eq(201)
             end
-          end
-        end
-      end
-
-      context 'when there is a matching split_time in the database' do
-        via_login_and_jwt do
-          let(:split) { ordered_splits.second }
-          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in, pacer: true, stopped_here: false) }
-
-          it 'saves the raw_times to the database and matches the duplicate raw_time with the existing split_time' do
-            expect { make_request }.to change { RawTime.count }.by(2).and change { SplitTime.count }.by(0)
-            raw_times = RawTime.last(2)
-
-            expect(response.status).to eq(201)
-            expect(raw_times.map(&:split_time_id)).to match_array([split_time.id, nil])
-          end
-        end
-      end
-
-      context 'when there is a non-duplicate split_time in the database' do
-        via_login_and_jwt do
-          let(:effort) { create(:effort, bib_number: 333, event: event) }
-          let(:split) { ordered_splits.first }
-          let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
-          let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
-
-          it 'saves the raw_times to the database and does not match any raw_time with the existing split_time' do
-            expect { make_request }.to change { RawTime.count }.by(2).and change { SplitTime.count }.by(0)
-            raw_times = RawTime.last(2)
-
-            expect(response.status).to eq(201)
-            expect(raw_times.map(&:split_time_id)).to all be_nil
-          end
-        end
-      end
-
-      context 'when push notifications are permitted' do
-        via_login_and_jwt do
-          before { event_group.update(available_live: true, concealed: false) }
-
-          it 'sends a push notification that includes the count of available raw times' do
-            expect(event.permit_notifications?).to be(true)
-            allow(Pusher).to receive(:trigger)
-            make_request
-            expected_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 2, unmatched: 2}]
-            expect(Pusher).to have_received(:trigger).with(*expected_args)
-          end
-        end
-      end
-
-      context 'when event_group.permit_notifications? is true and auto_live_times is true' do
-        via_login_and_jwt do
-          before { event_group.update(available_live: true, concealed: false, auto_live_times: true) }
-
-          let!(:person) { effort.person }
-          let(:data) { [
-              {type: 'raw_time',
-               attributes: {bibNumber: effort.bib_number.to_s, splitName: ordered_splits.second.base_name, bitkey: in_bitkey, absoluteTime: absolute_time_in,
-                            withPacer: true, stoppedHere: false, source: source}},
-              {type: 'raw_time',
-               attributes: {bibNumber: effort.bib_number.to_s, splitName: ordered_splits.second.base_name, bitkey: out_bitkey, absoluteTime: absolute_time_out,
-                            withPacer: true, stoppedHere: true, source: source}}
-          ] }
-
-          it 'creates new split_times matching the raw_times' do
-            expect { make_request }.to change { RawTime.count }.by(2).and change { SplitTime.count }.by(2)
-            raw_times = RawTime.last(2)
-            split_times = SplitTime.last(2)
-
-            expect(response.status).to eq(201)
-            expect(split_times.map(&:absolute_time_local)).to match_array([absolute_time_in, absolute_time_out])
-            expect(split_times.map(&:bitkey)).to match_array([in_bitkey, out_bitkey])
-
-            expect(raw_times.map(&:split_time_id)).to match_array(split_times.map(&:id))
-          end
-
-          it 'sends a message to NotifyProgressJob with relevant person and split_time data' do
-            allow(NotifyProgressJob).to receive(:perform_later) do |_, split_time_ids|
-              split_time_ids.sort!
-            end
-
-            make_request
-            split_times = SplitTime.last(2)
-            split_time_ids = split_times.map(&:id)
-            effort_id = split_times.first.effort_id
-
-            expect(NotifyProgressJob).to have_received(:perform_later).with(effort_id, split_time_ids.sort)
-          end
-
-          it 'sends messages to Interactors::SetEffortStatus with the efforts associated with the modified split_times' do
-            allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], '', {}))
-            make_request
-
-            expect(Interactors::SetEffortStatus).to have_received(:perform).at_least(2).times
           end
         end
       end
@@ -666,6 +613,21 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
+        end
+      end
+    end
+
+    context 'when the bib number includes leading zeros' do
+      let(:raw_time_attributes_1) { {bib_number: "00#{effort_1.bib_number}", entered_time: '11:22:33', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'in'} }
+      let(:raw_time_attributes_2) { {bib_number: "00#{effort_1.bib_number}", entered_time: '11:23:34', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
+
+      via_login_and_jwt do
+        it 'does not result in an error' do
+          response = make_request
+          result = JSON.parse(response.body)
+          raw_time_row = result.dig('data', 'rawTimeRow')
+
+          expect(raw_time_row['errors']).to eq([])
         end
       end
     end
@@ -1006,7 +968,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 134, 222, 333, 444, 777, 999])
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 105, 109, 111, 114, 134, 140, 222, 333, 444, 777, 999])
         end
       end
     end
@@ -1020,7 +982,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig('data', 'bib_numbers')).to match_array([101, 109, 111, 114, 132, 134, 222, 333, 444, 777, 999])
+          expect(result.dig('data', 'bib_numbers')).to match_array([101, 105, 109, 111, 114, 132, 134, 140, 222, 333, 444, 777, 999])
         end
       end
     end

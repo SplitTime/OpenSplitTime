@@ -9,11 +9,19 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    event_groups.sort_by(&:start_time).reverse.first(number)
+    event_groups.sort_by { |eg| eg.start_time || Time.current }.reverse.first(number)
   end
 
   def event_groups
     EventGroup.includes(events: :efforts).where(organization: organizations)
+  end
+
+  def recent_event_series(number)
+    event_series.sort_by(&:start_time).reverse.first(number)
+  end
+
+  def event_series
+    EventSeries.includes(:events).where(organization: organizations)
   end
 
   def organizations
@@ -42,7 +50,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def watch_efforts
-    current_user.watch_efforts.distinct.order(:last_name)
+    current_user.watch_efforts.includes(:event).distinct.order(:last_name)
   end
 
   private

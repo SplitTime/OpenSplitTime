@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.describe PreparedParams do
   subject { PreparedParams.new(params, permitted, permitted_query) }
   let(:permitted) { [] }
@@ -426,41 +428,46 @@ RSpec.describe PreparedParams do
 
   describe '#sort' do
     let(:params) { ActionController::Parameters.new(sort: sort_string) }
-    let(:permitted_query) { [:name, :age, :country_code] }
+    let(:permitted_query) { [:last_name, :age, :country_code] }
 
     context 'when provided with params[:sort] in jsonapi format' do
-      let(:sort_string) { 'name,-age' }
+      let(:sort_string) { 'last_name,-age' }
+      let(:event) { events(:sum_55k) }
 
       it 'returns a hash containing the given data' do
-        expected = {'name' => :asc, 'age' => :desc}
+        expected = {'last_name' => :asc, 'age' => :desc}
         validate_param('sort', expected)
       end
 
       it 'responds indifferently to string and symbol keys' do
-        expect(subject[:sort][:name]).to eq(:asc)
-        expect(subject[:sort]['name']).to eq(:asc)
+        expect(subject[:sort][:last_name]).to eq(:asc)
+        expect(subject[:sort]['last_name']).to eq(:asc)
       end
 
       it 'works correctly when used as the argument in an ActiveRecord #order method' do
-        relation = Effort.order(subject[:sort])
-        expect(relation.to_sql).to include("ORDER BY \"efforts\".\"name\" ASC, \"efforts\".\"age\" DESC")
+        event_efforts = event.efforts.order(subject[:sort])
+        expect(event_efforts.first).to eq(efforts(:sum_55k_drop_bandera))
+
+        sql = event_efforts.to_sql
+        expect(sql).to include("\"last_name\" ASC")
+        expect(sql).to include("\"age\" DESC")
       end
     end
 
     context 'when provided with params[:sort] fields in camelCase' do
-      let(:sort_string) { 'name,-countryCode' }
+      let(:sort_string) { 'lastName,-countryCode' }
 
       it 'returns a hash containing the given data' do
-        expected = {'name' => :asc, 'country_code' => :desc}
+        expected = {'last_name' => :asc, 'country_code' => :desc}
         validate_param('sort', expected)
       end
     end
 
     context 'when provided with a non-permitted sort attribute' do
-      let(:sort_string) { 'name,-age,role' }
+      let(:sort_string) { 'last_name,-age,role' }
 
       it 'returns a hash containing only the permitted attributes' do
-        expected = {'name' => :asc, 'age' => :desc}
+        expected = {'last_name' => :asc, 'age' => :desc}
         validate_param('sort', expected)
       end
     end

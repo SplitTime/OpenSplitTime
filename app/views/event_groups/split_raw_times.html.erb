@@ -12,9 +12,11 @@
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-            <li class="breadcrumb-item active"><%= @presenter.event.guaranteed_short_name %></li>
+            <li class="breadcrumb-item">Raw Times</li>
+            <li class="breadcrumb-item active">Splits</li>
           </ul>
         </div>
+        <%= render 'events/time_and_course_info' %>
       </div>
     </div>
     <!-- Navigation -->
@@ -62,7 +64,7 @@
       <tr>
         <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Name', :last_name, @presenter.existing_sort) %></th>
-        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Grid time' : 'Grid times', :sortable_time, @presenter.existing_sort) %></th>
+        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Split Time' : 'Split Times', :sortable_time, @presenter.existing_sort) %></th>
         <% @presenter.sources.each do |source| %>
           <th class="text-center"><%= source %></th>
         <% end %>
@@ -74,9 +76,9 @@
 
       <tbody>
       <% @presenter.bib_rows.each do |row| %>
-        <tr class="<%= 'highlight' if row.problem? %>">
+        <tr id="<%= "bib_#{row.bib_number}" %>" class="<%= 'bg-highlight' if row.problem? %>">
           <td class="text-center"><%= row.bib_number %></td>
-          <td><%= row.effort_id ? (link_to row.full_name, effort_path(row.effort_id)) : row.full_name %></td>
+          <td><%= row.effort_id ? (link_to row.full_name, audit_effort_path(row.effort_id)) : row.full_name %></td>
           <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= lap_and_time_builder(row) %></td>
           <% @presenter.sources.each do |source| %>
             <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.grouped_raw_times.fetch(source, []).map(&:military_time).join("\n") %></td>
@@ -89,6 +91,6 @@
       </tbody>
     </table>
   <% else %>
-    <h4>No raw times have been entered for this aid station.</h4>
+    <h4>No raw times have been entered for this station.</h4>
   <% end %>
 </article>

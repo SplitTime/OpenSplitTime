@@ -22,15 +22,17 @@
 
 <article class="ost-article container">
   <%= render 'form' %>
-  <hr>
-  <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),
-                              resource: @event_group,
-                              noteworthy_associations: [:events, :entrants, :split_times],
-                              class: 'btn btn-danger') %>
+  <% if current_user.authorized_fully?(@event_group) %>
+    <hr>
+    <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),
+                                resource: @event_group,
+                                noteworthy_associations: [:events, :entrants, :split_times],
+                                class: 'btn btn-danger') %>
 
-  <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
-                               class: 'btn btn-outline-secondary text-danger',
-                               message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
-                               required_pattern: "#{@event_group.name.upcase} TIMES",
-                               strong_confirm_id: "strong-confirm-times-event-group-#{@event_group.id}") %>
+    <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
+                                 class: 'btn btn-outline-secondary text-danger',
+                                 message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
+                                 required_pattern: "#{@event_group.name.upcase} TIMES",
+                                 strong_confirm_id: "strong-confirm-times-event-group-#{@event_group.id}") %>
+  <% end %>
 </article>

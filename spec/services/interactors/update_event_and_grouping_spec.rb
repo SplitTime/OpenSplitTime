@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Interactors::UpdateEventAndGrouping do
@@ -19,24 +21,22 @@ RSpec.describe Interactors::UpdateEventAndGrouping do
         event.reload
         expect(event.event_group_id).to eq(new_event_group.id)
         expect(response.message).to match(/was updated/)
-        expect(response.message).to match(/was deleted/)
       end
     end
 
-    context 'when the event is changing to a new event_group and the old event_group has one remaining event' do
+    context 'when the event is changing to a new event_group and the old event_group has any remaining events' do
       let!(:old_event_group) { create(:event_group) }
-      let!(:event) { create(:event, event_group: old_event_group) }
-      let!(:other_event) { create(:event, event_group: old_event_group, home_time_zone: event.home_time_zone) }
+      let!(:event) { create(:event, :with_short_name, event_group: old_event_group) }
+      let!(:other_event) { create(:event, :with_short_name, event_group: old_event_group) }
       let(:params) { {event_group_id: nil} }
 
-      it 'creates a new event and assigns it to the subject event' do
+      it 'creates a new event and assigns it to the subject event but does not destroy the old event_group' do
         event.assign_attributes(params)
         expect { response }.to change { EventGroup.count }.by(1)
         event.reload
         expect(event.event_group_id).not_to be_nil
         expect(event.event_group_id).not_to eq(old_event_group.id)
         expect(response.message).to match(/was updated/)
-        expect(response.message).not_to match(/was deleted/)
       end
     end
 

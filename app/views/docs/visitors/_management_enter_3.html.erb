@@ -1,0 +1,35 @@
+<div class="card">
+  <h4 class="card-header">Rebuilding an Effort (Multi-Lap Events Only)</h4>
+  <div class="card-body">
+    <p>This tool applies only to multi-lap events.</p>
+    <p>Raw Times contain a bib number, time data, and the name of the station at which the bib was recorded. They do not
+      specify a lap. In a multi-lap Event, time entries are sometimes mismatched such that a later Raw Time for an
+      Entrant is mapped to one lap, and then an earlier Raw Time is discovered and is forced to map to a later lap.</p>
+    <p>When times for an Entrant are hopelessly confused, <strong>the entire Effort can be rebuilt</strong> from the Raw
+      Time record using the <strong>Rebuild Times</strong> tool. Follow these steps:</p>
+    <ol>
+      <li>Visit the Entrant Show screen by clicking on the Entrant's name from the Roster or Full Results screen</li>
+      <li>Locate the green <strong>Raw Time Records</strong> button. The button includes a number indicating how many
+        Raw Time records exist for the Entrant.
+      </li>
+      <li>Click <strong>Raw Time Records</strong> and review the list to ensure it is complete</li>
+      <li>Return to the Entrant Show page</li>
+      <li>Choose <strong>Actions > Rebuild Times</strong></li>
+      <li>Click <strong>OK</strong> to confirm your choice</li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Use This Tool With Care</h4>
+  <div class="card-body">
+    <p>Note: This is a powerful and blunt instrument. <strong>It will delete all of the Entrant's Split Times</strong>
+      and attempt to rebuild them from the available Raw Times. <strong>If you do not have a complete Raw Time record,
+      you will lose data.</strong> If there are no Raw Times (for example, if all of the Entrant's times were entered
+      using the <%= link_to 'Direct Edit', docs_management_path(topic: :enter, page: 2) %> method), you will erase all
+      of the Entrant's Split Times and you will have to re-enter them from some other source.
+    </p>
+  </div>
+</div>
+<br/>

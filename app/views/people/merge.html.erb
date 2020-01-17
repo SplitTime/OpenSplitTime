@@ -1,51 +1,75 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Merge people - #{@person_merge.full_name}" %>
+  <% "OpenSplitTime: Merge people - #{@person_merge.full_name}" %>
 <% end %>
-<div class="row">
-  <div class="col-xs-5">
-    <h2><%= "#{@person_merge.last_name}, #{@person_merge.first_name}" %></h2>
-  </div>
-  <% if @person_merge.proposed_match.present? %>
-      <div class="col-xs-2"><%= link_to '<< Merge into',
-                                        combine_person_path(@person_merge.id,
-                                                                 target_id: @person_merge.proposed_match.id),
-                                        method: :put,
-                                        class: 'btn btn-sm btn-success btn-margin-top' %>
-      </div>
-      <div class="col-xs-5">
-        <h2><%= @person_merge.proposed_match_name %></h2>
-      </div>
-  <% else %>
-      <div class="col-xs-4">
-        <h2>[ No merge suggestions ]</h2>
-      </div>
-  <% end %>
-</div>
-<div class="row">
-  <div class="col-xs-5">
-    <%= render 'inspect', person: @person_merge.person %>
-  </div>
-  <% if @person_merge.proposed_match %>
-      <div class="col-xs-2"><%= link_to 'Merge with >>',
-                                        combine_person_path(@person_merge.proposed_match,
-                                                                 target_id: @person_merge.id),
-                                        method: :put,
-                                        class: 'btn btn-sm btn-success btn-margin-top' %>
-      </div>
-      <div class="col-xs-5">
-        <%= render 'inspect', person: @person_merge.proposed_match %>
-      </div>
-  <% end %>
-</div>
 
-<hr>
-<div class="row">
-  <div class="col-xs-5">
-    <%= link_to '<< Back to person page', person_path(@person_merge.id), class: "btn btn-sm btn-outline-secondary" %>
-  </div>
-</div>
-<hr>
+<% content_for(:container_type) do %>skip
+<% end %>
 
-<% if @person_merge.possible_matches.present? %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "Merge: #{@person_merge.full_name}" %></strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+            <li class="breadcrumb-item"><%= link_to @person_merge.full_name, person_path(@person_merge.person) %></li>
+            <li class="breadcrumb-item active">Merge</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<article class="ost-article container">
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="card">
+        <h4 class="card-header">
+          <%= link_to @person_merge.person.full_name, person_path(@person_merge.person) %>
+        </h4>
+        <div class="card-body">
+          <%= render 'inspect', person: @person_merge.person %>
+        </div>
+      </div>
+    </div>
+    <% if @person_merge.proposed_match.present? %>
+      <div class="col-sm-2 text-center">
+            <%= link_to '<< Merge into',
+                        combine_person_path(@person_merge.person,
+                                            target_id: @person_merge.proposed_match),
+                        method: :put,
+                        class: 'btn btn-sm btn-success btn-margin-top' %>
+            <%= link_to 'Merge into >>',
+                        combine_person_path(@person_merge.proposed_match,
+                                            target_id: @person_merge.person),
+                        method: :put,
+                        class: 'btn btn-sm btn-success btn-margin-top' %>
+      </div>
+      <div class="col-sm-5">
+        <div class="card">
+          <h4 class="card-header">
+            <%= link_to @person_merge.proposed_match.full_name, person_path(@person_merge.proposed_match) %>
+          </h4>
+          <div class="card-body">
+            <%= render 'inspect', person: @person_merge.proposed_match %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="col-sm-7">
+        <div class="card">
+          <div class="card-body">[ No merge suggestions ]</div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+
+  <% if @person_merge.possible_matches.present? %>
     <%= render 'people/people_list_merge' %>
-<% end %>
+  <% end %>
+</article>

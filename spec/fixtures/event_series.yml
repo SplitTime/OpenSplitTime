@@ -1,0 +1,19 @@
+---
+d30_50k_series:
+  id: 1
+  organization_id: 15
+  results_template_id: 7
+  name: D30 50K Series
+  slug: d30-50k-series
+  created_at: '2019-02-21 23:12:45.586466'
+  updated_at: '2019-02-21 23:12:45.586466'
+  scoring_method: 0
+d30_short_series:
+  id: 2
+  organization_id: 15
+  results_template_id: 7
+  name: D30 Short Series
+  slug: d30-short-series
+  created_at: '2019-02-21 23:28:49.726633'
+  updated_at: '2019-02-21 23:28:49.726633'
+  scoring_method: 0

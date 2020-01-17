@@ -1,0 +1,50 @@
+<div class="card">
+  <h4 class="card-header">Reviewing Raw Times</h4>
+  <div class="card-body">
+    <p>When Raw Time entries are flagged as <strong>bad</strong>, they wait in a holding state until they are pulled for
+      review into the Live Entry screen. You should visit the Live Entry screen on a regular basis to review these
+      problem entries.</p>
+    <p>From the Live Entry screen, if time entries are waiting for review, you will see an alert in the upper right
+      corner to that effect. In addition, the blue "Pull Times" button will show a badge indicating how many time
+      entries are available for review. Pull the time entries as described in
+      the <%= link_to 'Live Entry', docs_management_path(topic: :enter, page: 1) %> section.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">The Review Procedure</h4>
+  <div class="card-body">
+    <p>Each Raw Time entry was flagged for review for some reason, so please take a moment to review each one before
+      submitting. For each time entry, we recommend you follow this procedure:</p>
+    <ol>
+      <li>Click the blue pencil icon next to the time entry. If the bib number is valid, OpenSplitTime will present the
+        related Effort data to the right with the selected aid station highlighted.
+      </li>
+      <li>If the entry appears to have a wrong bib number, and if you are able to determine the correct bib number,
+        change the bib number, click <strong>Update</strong>, and then submit the entry by clicking the green
+        <strong>checkmark</strong> icon
+      </li>
+      <li>If the entry appears to have a wrong bib number and you are not able to determine the correct bib number,
+        or if there is some other problem that you cannot discern given the information that you have, click
+        <strong>Cancel</strong> to return the entry to the Local Data Workspace, and then use other tools to try
+        to determine the problem
+      </li>
+      <li>If the entry duplicates an existing Split Time, and if the <strong>existing entry appears to be
+        correct</strong>, click <strong>Cancel</strong> and then discard the entry by clicking the
+        red <strong>X</strong> icon
+      </li>
+      <li>If the entry duplicates an existing Split Time, and if the <strong>new entry appears to be correct</strong>,
+        click <strong>Cancel</strong> and then submit the entry by clicking the green <strong>checkmark</strong> icon
+      </li>
+      <li>If the entry appears to have been made at the wrong station, choose a new station from the dropdown menu,
+        click <strong>Update</strong>, and then submit the entry by clicking the green <strong>checkmark</strong> icon
+      </li>
+      <li><strong>For multi-lap events</strong>, if the entry appears to be correct but the <strong>lap suggested by
+        OpenSplitTime is incorrect</strong>, change the lap, click <strong>Update</strong>, and then submit the entry by
+        clicking the green <strong>checkmark</strong> icon
+      </li>
+    </ol>
+  </div>
+</div>
+<br/>

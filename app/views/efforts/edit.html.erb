@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit effort - #{@effort.full_name}" %>
+    <% "OpenSplitTime: Edit Entrant - #{@effort.full_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>Edit Effort - <%= @effort.full_name %></strong></h1>
+          <h1><strong>Edit Entrant - <%= @effort.full_name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @effort.event.event_group.organization.name, organization_path(@effort.event.event_group.organization) %></li>

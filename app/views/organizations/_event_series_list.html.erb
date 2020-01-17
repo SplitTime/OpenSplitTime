@@ -1,0 +1,17 @@
+<table class="table table-centered table-fixed-sm table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Dates</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @presenter.event_series.each do |series| %>
+      <tr>
+        <td><%= link_to series.name, event_series_path(series) %></td>
+        <td><%= @presenter.event_date_range(series) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

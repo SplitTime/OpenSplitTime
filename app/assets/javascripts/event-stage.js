@@ -219,8 +219,6 @@
                 if ( !this.firstName ) return false;
                 if ( !this.lastName ) return false;
                 if ( !this.gender ) return false;
-                if ( !this.bibNumber ) return false;
-                if ( !this.birthdate ) return false;
                 return true;
             }
         }
@@ -301,7 +299,6 @@
                     }
                 }
             },
-            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
             courseNew: Boolean
         },
         relationships: {
@@ -318,31 +315,6 @@
             },
             normalize: function() {
                 this.course.normalize();
-                var newCourse = false || this.aidStations.length == 0;
-                /* Remove Aid Stations for other Courses */
-                for ( var i = this.aidStations.length - 1; i >= 0; i-- ) {
-                    var splitId = this.aidStations[i].splitId;
-                    if ( splitId === null ) break; // Unnecessary
-                    for ( var j = this.course.splits.length - 1; j >= 0; j-- ) {
-                        if ( this.course.splits[j].id == splitId ) break;
-                    }
-                    if ( j < 0 ) {
-                        newCourse = true;
-                        this.aidStations[i].delete();
-                        this.aidStations.splice( i, 1 );
-                    }
-                }
-                /* Attach Splits on a New Course*/
-                if ( newCourse ) {
-                    for ( var i = this.course.splits.length - 1; i >= 0; i-- ) {
-                        var split = this.course.splits[i];
-                        if ( split.__new__ ) {
-                            split.post().then( function() { split.associate( true ); } );
-                        } else if ( !split.associated ) {
-                            split.associate( true );
-                        }
-                    }
-                }
             },
             validate: function( context ) {
                 var self = ( context ) ? context : this;
@@ -356,7 +328,7 @@
             jsonify: function () {
                 var data = {
                     event: this.attributes(),
-                    eventgroup: this.eventGroup.attributes(),
+                    eventGroup: this.eventGroup.attributes(),
                     organization: this.eventGroup.organization.attributes(),
                     course: this.course.attributes(),
                     splits: [
@@ -428,6 +400,7 @@
         url: 'event_groups',
         attributes: {
             name: String,
+            homeTimeZone: { type: String, default: 'Mountain Time (US & Canada)' },
         },
         includes: [ 'events', 'events.efforts', 'events.splits' ],
         relationships: {
@@ -1164,11 +1137,12 @@
                         var self = this;
                         var reset = function() {
                             // Locally clone existing object
+                            self.model = {}
                             setTimeout(function(){
                                 self.model = self.value;
-                                if ( self.model ) self.model.fetch();
+                                if (self.model && self.model.fetch) self.model.fetch();
                                 self.error = null;
-                            });
+                            }, 250);
                         };
                         $( this.$el ).on( 'show.bs.modal hide.bs.modal', reset );
                         this.$on( 'cancel', reset );

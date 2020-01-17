@@ -3,10 +3,7 @@
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped]
 
-  include Auditable
-  include Concealable
-  include Delegable
-  include SplitAnalyzable
+  include Auditable, Concealable, Delegable, MultiEventable, Reconcilable, SplitAnalyzable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -17,46 +14,37 @@ class EventGroup < ApplicationRecord
   has_many :partners
   belongs_to :organization
 
-  validates_presence_of :name, :organization_id
+  after_create :notify_admin
+  after_save :conform_concealed_status
+
+  validates_presence_of :name, :organization, :home_time_zone
   validates_uniqueness_of :name, case_sensitive: false
+  validate :home_time_zone_exists
   validates_with GroupedEventsValidator
 
-  delegate :stewards, to: :organization
-  delegate :start_time, :home_time_zone, :start_time_local, to: :first_event, allow_nil: true
+  accepts_nested_attributes_for :events
+
+  attr_accessor :duplicate_event_date
 
   scope :standard_includes, -> { includes(events: :splits) }
+  scope :by_group_start_time, -> do
+    joins(:events)
+        .select('event_groups.*, min(events.start_time) as group_start_time')
+        .group(:id)
+        .order('group_start_time desc')
+  end
 
   def self.search(search_param)
     return all if search_param.blank?
-    joins(:events).where('event_groups.name ILIKE ? OR events.name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
+    joins(:events).where('event_groups.name ILIKE ? OR events.short_name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
   end
 
-  def effort_count
-    events.flat_map(&:efforts).size
+  def efforts_count
+    @efforts_count ||= events.sum(&:efforts_count)
   end
 
   def to_s
     name
-  end
-
-  def ordered_events
-    events.sort_by { |event| [event.start_time, event.name] }
-  end
-
-  def first_event
-    ordered_events.first
-  end
-
-  def multiple_events?
-    events.many?
-  end
-
-  def multiple_laps?
-    events.any?(&:multiple_laps?)
-  end
-
-  def multiple_sub_splits?
-    events.any?(&:multiple_sub_splits?)
   end
 
   def permit_notifications?
@@ -67,24 +55,8 @@ class EventGroup < ApplicationRecord
     partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
   end
 
-  def single_lap?
-    !multiple_laps?
-  end
-
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: events})
-  end
-
-  def visible?
-    !concealed?
-  end
-
-  def split_and_effort_ids(split_name, bib_number)
-    eg = EventGroup.select('splits.id as split_id, efforts.id as effort_id')
-             .joins(events: [:splits, :efforts])
-             .where(id: self, efforts: {bib_number: bib_number}, splits: {parameterized_base_name: split_name.parameterize})
-             .first
-    eg ? [eg.split_id, eg.effort_id] : []
   end
 
   def not_expected_bibs(split_name)
@@ -92,7 +64,29 @@ class EventGroup < ApplicationRecord
     ActiveRecord::Base.connection.execute(query).values.flatten
   end
 
+  def organization_name
+    organization.name
+  end
+
   private
+
+  def conform_concealed_status
+    if saved_changes.keys.include?('concealed')
+      query = EventGroupQuery.set_concealed(id, concealed)
+      result = ActiveRecord::Base.connection.execute(query)
+      result.error_message.blank?
+    end
+  end
+
+  def home_time_zone_exists
+    unless time_zone_valid?(home_time_zone)
+      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
+    end
+  end
+
+  def notify_admin
+    AdminMailer.new_event_group(self).deliver_later
+  end
 
   def split_analyzable
     self

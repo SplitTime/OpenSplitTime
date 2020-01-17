@@ -1,0 +1,31 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Time Point</th>
+    <th class="text-center border-right">Split Time</th>
+    <th class="text-center">Matched Raw Times</th>
+    <th class="text-center">Unmatched Raw Times</th>
+    <th class="text-center border-left">Discrepancy</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% presenter.audit_rows.each do |row| %>
+    <tr class="<%= 'bg-highlight' if row.problem? %>">
+      <td><%= link_to row.name, split_raw_times_event_group_path(presenter.event_group, parameterized_split_name: row.parameterized_split_name, sub_split_kind: row.sub_split_kind) %></td>
+      <td class="text-center border-right"><%= day_time_military_format_hhmmss(row.split_time.absolute_time_local) %></td>
+      <td class="text-center">
+        <% row.matched_raw_times.each do |rt| %>
+          <div><%= link_to_raw_time_unmatch(rt.id) %> <%= link_to_raw_time_match(row.split_time, rt.id, :equals) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+        <% end %>
+      </td>
+      <td class="text-center">
+        <% row.unmatched_raw_times.each do |rt| %>
+          <div><%= link_to_raw_time_match(row.split_time, rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+        <% end %>
+      </td>
+      <td class="text-center border-left"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy, blank_zero: true) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

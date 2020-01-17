@@ -1,0 +1,53 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Series - #{@presenter.name}" %>
+<% end %>
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@presenter.name} Results" %></strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :event_series) %></li>
+            <li class="breadcrumb-item active"><%= "#{@presenter.name} Results" %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+
+      <% if current_user&.authorized_to_edit?(@presenter.event_series) %>
+        <div class="col form-inline">
+          <div>
+            <%= event_series_actions_dropdown_menu(@presenter) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <h5><%= @presenter.subtext %></h5>
+  <hr/>
+
+  <table class="table table-sm table-striped podium">
+    <% @presenter.results_categories.each do |category| %>
+      <% if category.invalid_efforts? %>
+        <%= render 'invalid_results_category', category: category %>
+      <% else %>
+        <%= render 'results_category', category: category %>
+      <% end %>
+    <% end %>
+  </table>
+</article>

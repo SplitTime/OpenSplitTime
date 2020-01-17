@@ -1,0 +1,24 @@
+<%# Requires parameter effort %>
+
+<tr>
+  <td><%= effort.personal_info %></td>
+  <td>
+    <% if effort.suggested_match %>
+        <%= link_to 'Same person >>',
+                    associate_people_event_group_path(ids: {effort.id => effort.suggested_match.id}),
+                    method: :patch,
+                    class: "btn btn-xs btn-primary" %>
+    <% end %>
+  </td>
+  <td>
+    <% if effort.suggested_match %>
+        <%= effort.suggested_match.personal_info %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to 'New person',
+                create_people_event_group_path(effort_ids: [effort.id]),
+                method: :post,
+                class: "btn btn-xs btn-success" %>
+  </td>
+</tr>

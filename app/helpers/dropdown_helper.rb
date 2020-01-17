@@ -35,6 +35,9 @@ module DropdownHelper
         {name: 'Staging',
          link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
          active: action_name == 'app'},
+        {name: 'Reconcile',
+         link: reconcile_event_group_path(view_object.event_group),
+         active: action_name == 'reconcile'},
         {name: 'Roster',
          link: roster_event_group_path(view_object.event_group),
          active: action_name == 'roster' && !params[:problem]},
@@ -43,7 +46,10 @@ module DropdownHelper
          active: action_name == 'roster' && params[:problem]},
         {name: 'Settings',
          link: event_group_path(view_object.event_group, force_settings: true),
-         active: controller_name == 'event_groups' && action_name == 'show'}
+         active: controller_name == 'event_groups' && action_name == 'show'},
+        {name: 'Notifications',
+         link: notifications_event_group_path(view_object.event_group),
+         active: controller_name == 'event_groups' && action_name == 'notifications'}
     ]
     build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end
@@ -77,10 +83,16 @@ module DropdownHelper
          active: action_name == 'spread'},
         {name: 'Summary',
          link: summary_event_path(view_object.event),
-         active: action_name == 'summary'},
+         active: action_name == 'summary' && !(params[:finished] == 'true')},
+        {name: 'Finishers',
+         link: summary_event_path(view_object.event, finished: true),
+         active: action_name == 'summary' && params[:finished] == 'true'},
         {name: 'Podium',
          link: podium_event_path(view_object.event),
          active: action_name == 'podium'},
+        {name: 'Follow',
+         link: follow_event_group_path(view_object.event_group),
+         active: action_name == 'follow'},
         {name: 'Traffic',
          link: traffic_event_group_path(view_object.event_group),
          active: action_name == 'traffic'}
@@ -100,7 +112,7 @@ module DropdownHelper
     build_dropdown_menu('Raw Times', dropdown_items, class: 'nav-item')
   end
 
-  def check_in_filter_dropdown_menu
+  def check_in_filter_dropdown
     items = [{icon_name: 'exclamation-circle', type: :solid, text: 'Problems', problem: true},
              {icon_name: 'question-circle', type: :solid, text: 'Unreconciled', unreconciled: true},
              {icon_name: 'square', type: :regular, text: 'Not checked', checked_in: false, started: false},
@@ -123,6 +135,45 @@ module DropdownHelper
            params[:unreconciled]&.to_boolean == item[:unreconciled] &&
            params[:problem]&.to_boolean == item[:problem]}
     end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def raw_time_filter_dropdown
+    items = [{icon_name: 'hand-paper', type: :solid, text: 'Stopped', stopped: true, pulled: nil, matched: nil},
+             {icon_name: 'cloud-download-alt', type: :solid, text: 'Pulled', stopped: nil, pulled: true, matched: nil},
+             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unpulled', stopped: nil, pulled: false, matched: nil},
+             {icon_name: 'check-square', type: :solid, text: 'Matched', stopped: nil, pulled: nil, matched: true},
+             {icon_name: 'square', type: :solid, text: 'Unmatched', stopped: nil, pulled: nil, matched: false},
+             {icon_name: 'asterisk', type: :solid, text: 'All', stopped: nil, pulled: nil, matched: nil}]
+
+    dropdown_items = items.map do |item|
+      {name: fa_icon(item[:icon_name], text: item[:text], type: item[:type]),
+       link: request.params.merge(
+           stopped: item[:stopped],
+           pulled: item[:pulled],
+           matched: item[:matched],
+           page: nil
+       ),
+       active: params[:stopped]&.to_boolean == item[:stopped] &&
+           params[:pulled]&.to_boolean == item[:pulled] &&
+           params[:matched]&.to_boolean == item[:matched]}
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def summary_filter_dropdown
+    items = [{text: 'All', finished: nil},
+             {text: 'Finished', finished: true},
+             {text: 'Unfinished', finished: false}]
+
+    dropdown_items = items.map do |item|
+      {name: item[:text],
+       link: request.params.merge(finished: item[:finished], page: nil),
+       active: params[:finished]&.to_boolean == item[:finished]}
+    end
+
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
@@ -138,28 +189,42 @@ module DropdownHelper
 
   def effort_actions_dropdown_menu(view_object)
     dropdown_items = [
-        {name: 'Set data status',
+        {name: 'Set Data Status',
          link: set_data_status_effort_path(view_object.effort),
-         method: :put},
+         method: :patch},
         {role: :separator},
-        {name: 'Edit times of day',
+        {name: 'Edit Times of Day',
          link: edit_split_times_effort_path(view_object.effort, display_style: :military_time)},
-        {name: 'Edit dates and times',
+        {name: 'Edit Dates and Times',
          link: edit_split_times_effort_path(view_object.effort, display_style: :absolute_time_local)},
-        {name: 'Edit elapsed times',
+        {name: 'Edit Elapsed Times',
          link: edit_split_times_effort_path(view_object.effort, display_style: :elapsed_time)},
         {role: :separator},
-        {name: 'Edit effort',
+        {name: 'Edit Entrant',
          link: edit_effort_path(view_object.effort)},
-        {name: 'Rebuild times',
+        {name: 'Rebuild Times',
          link: rebuild_effort_path(view_object.effort),
          method: :patch,
          data: {confirm: "This will delete all split times and attempt to rebuild them from the " +
              "#{pluralize(view_object.raw_times_count, 'raw time')} related to this effort. This action cannot be undone. Proceed?"},
          visible: view_object.multiple_laps? && view_object.raw_times_count.positive?},
         {role: :separator},
-        {name: 'Delete effort',
+        {name: 'Delete Entrant',
          link: effort_path(view_object.effort),
+         method: :delete,
+         data: {confirm: 'This action cannot be undone. Proceed?'},
+         class: 'text-danger'}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
+  end
+
+  def event_series_actions_dropdown_menu(view_object)
+    dropdown_items = [
+        {name: 'Edit',
+         link: edit_event_series_path(view_object.event_series)},
+        {role: :separator},
+        {name: 'Delete event series',
+         link: event_series_path(view_object.event_series),
          method: :delete,
          data: {confirm: 'This action cannot be undone. Proceed?'},
          class: 'text-danger'}
@@ -203,9 +268,9 @@ module DropdownHelper
 
   def event_actions_dropdown(event)
     dropdown_items = [
-        {name: 'Edit event',
+        {name: 'Edit/Delete Event',
          link: edit_event_path(event)},
-        {name: 'Establish drops',
+        {name: 'Establish Drops',
          link: set_stops_event_path(event),
          method: :put,
          data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
@@ -214,9 +279,9 @@ module DropdownHelper
          link: edit_start_time_event_path(event),
          visible: current_user.admin?},
         {role: :separator},
-        {name: 'Export finishers list',
+        {name: 'Export Finishers List',
          link: export_finishers_event_path(event, format: :csv)},
-        {name: 'Export to ultrasignup',
+        {name: 'Export to Ultrasignup',
          link: export_to_ultrasignup_event_path(event, format: :csv)}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
@@ -224,20 +289,49 @@ module DropdownHelper
 
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
-        {name: 'Edit group',
+        {name: 'Edit/Delete Group',
          link: edit_event_group_path(view_object)},
+        {name: 'Duplicate Group',
+         link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
+        {role: :separator},
         {name: 'Add/Remove Stewards',
          link: organization_path(view_object.organization, display_style: 'stewards')}
     ]
-    build_dropdown_menu('Edit', dropdown_items, button: true)
+    build_dropdown_menu('Group Actions', dropdown_items, button: true)
+  end
+
+  def roster_actions_dropdown(view_object)
+    dropdown_items = [
+        {name: 'Reconcile efforts',
+         link: reconcile_event_group_path(view_object.event_group)},
+        {name: 'Set data status',
+         link: set_data_status_event_group_path(view_object.event_group),
+         method: :patch}
+    ]
+    build_dropdown_menu('Actions', dropdown_items, button: true)
   end
 
   def split_name_dropdown(view_object, param: :parameterized_split_name)
     dropdown_items = view_object.ordered_split_names.map do |split_name|
       {name: split_name,
        link: request.params.merge(param => split_name.parameterize),
+       active: split_name.parameterize == view_object.split_name&.parameterize}
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def split_name_filter_dropdown(view_object, param: :parameterized_split_name)
+    default_item_filter = (request.params[:filter] || {}).except(param)
+    default_item = {name: 'All Splits',
+                    link: request.params.merge(filter: default_item_filter, page: nil),
+                    active: view_object.split_name.parameterize == 'all-splits'}
+    dropdown_items = view_object.ordered_split_names.map do |split_name|
+      {name: split_name,
+       link: request.params.deep_merge(filter: {param => split_name.parameterize}, page: nil),
        active: split_name.parameterize == view_object.split_name.parameterize}
     end
+    dropdown_items.unshift(default_item)
 
     build_dropdown_menu(nil, dropdown_items, button: true)
   end

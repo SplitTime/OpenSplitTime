@@ -2,17 +2,9 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for(@event, :html => {class: "form-horizontal", role: "form"}) do |f| %>
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :name %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :name, class: "form-control", placeholder: "Event name", autofocus: true %>
-        </div>
-      </div>
+    <%= form_for(@event, html: {class: "form-horizontal", role: "form"}) do |f| %>
 
-      <div class="form-group">
+      <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label :short_name %>
         </div>
@@ -22,7 +14,7 @@
       </div>
 
       <% if @course.nil? %>
-        <div class="form-group">
+        <div class="form-group required">
           <div class="control-label col-sm-2">
             <%= f.label :course_id %>
           </div>
@@ -40,26 +32,17 @@
         </div>
       <% end %>
 
-      <div class="form-group">
+      <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label 'Start time' %>
         </div>
         <div class="col-sm-3">
           <%= f.datetimepicker_field(:start_time_local) %>
+          <%= "(#{@event.home_time_zone})" %>
         </div>
       </div>
 
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :home_time_zone %>
-        </div>
-        <div class="col-sm-8">
-          <%= collection_select(:event, :home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                {prompt: true, selected: @event.home_time_zone || Time.zone.name}, {class: "form-control dropdown-select-field"}) %>
-        </div>
-      </div>
-
-      <div class="form-group">
+      <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label :laps_required, "Laps required" %>
         </div>
@@ -79,13 +62,21 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label :podium_template %>
         </div>
         <div class="col-sm-8">
-          <%= collection_select(:event, :results_template_id, ResultsTemplate.pluck(:id, :name), :first, :last,
-                                {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+          <div class="card" data-controller="results-template">
+            <div class="card-header">
+              <h5>
+                <%= results_template_selector(@event) %>
+              </h5>
+            </div>
+            <div class="card-body" data-target="results-template.categories">
+              <%= render 'results_templates/categories_card', template: @event.results_template %>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,77 @@
+<%= render 'shared/errors', obj: @event_series %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_with(model: @event_series,
+                  local: true,
+                  html: {class: "form-horizontal", role: "form"}) do |f| %>
+
+      <%= f.hidden_field :organization_id, value: @event_series.organization.id %>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :name %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.text_field :name, class: "form-control", value: @event_series.name, placeholder: "Event series name", autofocus: true %>
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <div class="control-label col-sm-2">
+          <%= f.label :podium_template %>
+        </div>
+        <div class="col-sm-8">
+          <div class="card" data-controller="results-template">
+            <div class="card-header">
+              <h5>
+                <%= results_template_selector(@event_series) %>
+              </h5>
+            </div>
+            <div class="card-body" data-target="results-template.categories">
+              <%= render 'results_templates/categories_card', template: @event_series.results_template %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :scoring_method %>
+        </div>
+        <div class="col-sm-8">
+          <%= collection_select(:event_series, :scoring_method, EventSeries.scoring_methods.keys, :to_sym, :titleize,
+                                {prompt: false}, {class: "form-control dropdown-select-field"}) %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <strong>Events in Series</strong>
+        </div>
+      </div>
+
+      <% @event_series.organization.event_groups.flat_map(&:events).sort_by(&:start_time).each do |event| %>
+        <div class="form-group">
+          <div class="col-sm-8">
+            <%= f.check_box "event_ids[#{event.id}]", checked: @event_series.events.include?(event) %>
+            <%= f.label :events, event.name %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <div class="col">
+          <%= f.submit(@event_series.new_record? ? 'Create Event Series' : 'Update Event Series', class: 'btn btn-primary btn-large') %>
+        </div>
+      </div>
+      <div class="col">
+        <span class="brackets">
+          <%= link_to 'Cancel', @event_series.new_record? ?
+                                    organization_path(@event_series.organization, display_style: 'event_series') :
+                                    event_series_path(@event_series) %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+</div>

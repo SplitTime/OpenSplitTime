@@ -9,21 +9,37 @@ module Results
     attr_reader :used_efforts
 
     def initialize(args)
-      @efforts = args[:efforts].to_a.sort_by(&:overall_rank)
-      @categories = args[:categories]
-      @podium_size = args[:podium_size] || efforts.size
-      @method = args[:method]
-      @point_system = args[:point_system] || []
+      ArgsValidator.validate(params: args, required: [:efforts, :template], exclusive: [:efforts, :template], class: self)
+
+      # efforts must be pre-sorted in the desired order
+      @efforts = args[:efforts]
+      @template = args[:template]
       @used_efforts = Set.new
     end
 
     def perform
-      categories.map { |category| fill(category) }
+      categories.map(&method(:fill))
     end
 
     private
 
-    attr_reader :efforts, :categories, :podium_size, :method, :point_system
+    attr_reader :sort_attribute, :efforts, :template
+
+    def aggregation_method
+      template.aggregation_method.to_sym
+    end
+
+    def podium_size
+      template.podium_size || efforts.size
+    end
+
+    def point_system
+      template.point_system || []
+    end
+
+    def categories
+      template.results_categories
+    end
 
     def fill(category)
       category.efforts = available_efforts.select { |effort| attributes_match(category, effort) }.first(podium_size)
@@ -35,8 +51,10 @@ module Results
     end
 
     def attributes_match(category, effort)
-      (category.all_genders? || effort.gender.in?(category.genders)) &&
-          (category.all_ages? || effort.age.in?(category.age_range))
+      # Check for all_ages? is necessary to properly sort overall categories
+      # when age is not provided.
+      effort.gender.in?(category.genders) &&
+          (category.all_ages? || effort.template_age.in?(category.age_range))
     end
 
     def available_efforts
@@ -44,7 +62,7 @@ module Results
     end
 
     def strict?
-      method == :strict
+      aggregation_method == :strict
     end
   end
 end

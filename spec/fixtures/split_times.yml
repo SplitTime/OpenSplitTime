@@ -14669,3 +14669,468 @@ sum_100k_on_dst_change_molas_pass_aid1_in_1:
   lap: 1
   stopped_here: false
   absolute_time: '2017-11-05 16:25:00'
+ggd30_50k_finished_second_start_1:
+  id: 192716
+  effort_id: 16686
+  split_id: 164
+  data_status: 2
+  created_at: '2019-02-21 23:20:16.855576'
+  updated_at: '2019-02-21 23:20:16.855576'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 13:00:00'
+ggd30_50k_finished_second_aid_1_1:
+  id: 192717
+  effort_id: 16686
+  split_id: 167
+  data_status: 2
+  created_at: '2019-02-21 23:20:16.863498'
+  updated_at: '2019-02-21 23:20:16.863498'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 13:52:00'
+ggd30_50k_finished_second_aid_2_1:
+  id: 192718
+  effort_id: 16686
+  split_id: 171
+  data_status: 2
+  created_at: '2019-02-21 23:20:16.865552'
+  updated_at: '2019-02-21 23:20:16.865552'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 15:01:00'
+ggd30_50k_finished_second_aid_3_1:
+  id: 192719
+  effort_id: 16686
+  split_id: 170
+  data_status: 2
+  created_at: '2019-02-21 23:20:16.867187'
+  updated_at: '2019-02-21 23:20:16.867187'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 16:15:00'
+ggd30_50k_finished_second_aid_4_1:
+  id: 192720
+  effort_id: 16686
+  split_id: 168
+  data_status: 2
+  created_at: '2019-02-21 23:20:16.868799'
+  updated_at: '2019-02-21 23:20:16.868799'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 17:48:00'
+ggd30_50k_finished_second_aid_5_1:
+  id: 192721
+  effort_id: 16686
+  split_id: 166
+  data_status: 
+  created_at: '2019-02-21 23:20:16.870347'
+  updated_at: '2019-02-21 23:20:16.870347'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 18:50:00'
+ggd30_50k_finished_second_finish_1:
+  id: 192722
+  effort_id: 16686
+  split_id: 165
+  data_status: 
+  created_at: '2019-02-21 23:20:16.872886'
+  updated_at: '2019-02-21 23:20:16.872886'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 19:12:00'
+ggd30_12m_series_finisher_start_1:
+  id: 192723
+  effort_id: 16687
+  split_id: 172
+  data_status: 2
+  created_at: '2019-02-21 23:45:05.368856'
+  updated_at: '2019-02-21 23:45:05.368856'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 16:00:00'
+ggd30_12m_series_finisher_finish_1:
+  id: 192724
+  effort_id: 16687
+  split_id: 173
+  data_status: 
+  created_at: '2019-02-21 23:45:17.026567'
+  updated_at: '2019-02-21 23:45:17.026567'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 18:55:00'
+sum_55k_series_finisher_start_1:
+  id: 192725
+  effort_id: 16688
+  split_id: 212
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.32509'
+  updated_at: '2019-02-21 23:49:30.32509'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 15:00:00'
+sum_55k_series_finisher_molas_pass_aid1_in_1:
+  id: 192726
+  effort_id: 16688
+  split_id: 218
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.32727'
+  updated_at: '2019-02-21 23:50:57.045082'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 17:30:00'
+sum_55k_series_finisher_molas_pass_aid1_out_1:
+  id: 192727
+  effort_id: 16688
+  split_id: 218
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.32863'
+  updated_at: '2019-02-21 23:50:57.04633'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 17:35:00'
+sum_55k_series_finisher_rolling_pass_aid2_in_1:
+  id: 192728
+  effort_id: 16688
+  split_id: 219
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.330647'
+  updated_at: '2019-02-21 23:50:41.578082'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 20:20:00'
+sum_55k_series_finisher_rolling_pass_aid2_out_1:
+  id: 192729
+  effort_id: 16688
+  split_id: 219
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.332352'
+  updated_at: '2019-02-21 23:50:41.579319'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 20:30:00'
+sum_55k_series_finisher_bandera_mine_aid5_in_1:
+  id: 192730
+  effort_id: 16688
+  split_id: 220
+  data_status: 2
+  created_at: '2019-02-21 23:49:30.334035'
+  updated_at: '2019-02-21 23:50:41.58025'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 22:30:00'
+sum_55k_series_finisher_bandera_mine_aid5_out_1:
+  id: 192731
+  effort_id: 16688
+  split_id: 220
+  data_status: 
+  created_at: '2019-02-21 23:49:30.335174'
+  updated_at: '2019-02-21 23:50:41.581134'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 22:44:00'
+sum_55k_series_finisher_anvil_cg_aid6_in_1:
+  id: 192732
+  effort_id: 16688
+  split_id: 221
+  data_status: 
+  created_at: '2019-02-21 23:49:30.336543'
+  updated_at: '2019-02-21 23:50:41.58201'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 00:15:00'
+sum_55k_series_finisher_anvil_cg_aid6_out_1:
+  id: 192733
+  effort_id: 16688
+  split_id: 221
+  data_status: 
+  created_at: '2019-02-21 23:49:30.337786'
+  updated_at: '2019-02-21 23:50:41.583102'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 00:25:00'
+sum_55k_series_finisher_finish_1:
+  id: 192734
+  effort_id: 16688
+  split_id: 213
+  data_status: 
+  created_at: '2019-02-21 23:49:30.338625'
+  updated_at: '2019-02-21 23:50:41.583991'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 01:20:00'
+sum_55k_slow_finisher_start_1:
+  id: 192735
+  effort_id: 16689
+  split_id: 212
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.751321'
+  updated_at: '2019-02-21 23:55:55.751321'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 15:00:00'
+sum_55k_slow_finisher_molas_pass_aid1_in_1:
+  id: 192736
+  effort_id: 16689
+  split_id: 218
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.752843'
+  updated_at: '2019-02-21 23:55:55.752843'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 18:10:00'
+sum_55k_slow_finisher_molas_pass_aid1_out_1:
+  id: 192737
+  effort_id: 16689
+  split_id: 218
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.754057'
+  updated_at: '2019-02-21 23:55:55.754057'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 18:20:00'
+sum_55k_slow_finisher_rolling_pass_aid2_in_1:
+  id: 192738
+  effort_id: 16689
+  split_id: 219
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.755142'
+  updated_at: '2019-02-21 23:55:55.755142'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 21:35:00'
+sum_55k_slow_finisher_rolling_pass_aid2_out_1:
+  id: 192739
+  effort_id: 16689
+  split_id: 219
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.756772'
+  updated_at: '2019-02-21 23:55:55.756772'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 21:45:00'
+sum_55k_slow_finisher_bandera_mine_aid5_in_1:
+  id: 192740
+  effort_id: 16689
+  split_id: 220
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.757851'
+  updated_at: '2019-02-21 23:55:55.757851'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 23:20:00'
+sum_55k_slow_finisher_bandera_mine_aid5_out_1:
+  id: 192741
+  effort_id: 16689
+  split_id: 220
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.75882'
+  updated_at: '2019-02-21 23:55:55.75882'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-23 23:40:00'
+sum_55k_slow_finisher_anvil_cg_aid6_in_1:
+  id: 192742
+  effort_id: 16689
+  split_id: 221
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.759635'
+  updated_at: '2019-02-21 23:55:55.759635'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 01:33:00'
+sum_55k_slow_finisher_anvil_cg_aid6_out_1:
+  id: 192743
+  effort_id: 16689
+  split_id: 221
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.760483'
+  updated_at: '2019-02-21 23:55:55.760483'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 64
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 01:55:00'
+sum_55k_slow_finisher_finish_1:
+  id: 192744
+  effort_id: 16689
+  split_id: 213
+  data_status: 2
+  created_at: '2019-02-21 23:55:55.761286'
+  updated_at: '2019-02-21 23:55:55.761286'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-09-24 03:21:21'
+ggd30_12m_slow_finisher_start_1:
+  id: 192745
+  effort_id: 16690
+  split_id: 172
+  data_status: 2
+  created_at: '2019-02-21 23:58:07.794197'
+  updated_at: '2019-02-21 23:58:07.794197'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 16:00:00'
+ggd30_12m_slow_finisher_finish_1:
+  id: 192746
+  effort_id: 16690
+  split_id: 173
+  data_status: 
+  created_at: '2019-02-21 23:58:26.939984'
+  updated_at: '2019-02-21 23:58:26.939984'
+  created_by: 1
+  updated_by: 1
+  sub_split_bitkey: 1
+  pacer: 
+  remarks: 
+  lap: 1
+  stopped_here: false
+  absolute_time: '2017-06-03 20:32:10'

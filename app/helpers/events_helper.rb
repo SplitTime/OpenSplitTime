@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 module EventsHelper
+  def results_template_selector(resource)
+    public_organization = Organization.new(name: 'Public Templates', results_templates: ResultsTemplate.standard)
+    private_organization = resource.organization.results_templates.present? ? resource.organization : nil
+    organizations = [public_organization, private_organization].compact
+    resource_type = resource.class.name.underscore.to_sym
+
+    grouped_collection_select(resource_type, :results_template_id, organizations, :results_templates, :name, :id, :name,
+                              {prompt: false},
+                              {class: "form-control dropdown-select-field",
+                       data: {target: 'results-template.dropdown', action: 'results-template#replaceCategories'}})
+  end
+
   def link_to_beacon_button(view_object)
     if view_object.beacon_url
       link_to event_beacon_button_text(view_object.beacon_url),
@@ -51,25 +63,6 @@ module EventsHelper
 
     link_to button_text,
             event_group_path(view_object.event_group, event_group: {concealed: !view_object.concealed?}),
-            data: {confirm: confirm_text},
-            method: :put,
-            class: 'btn btn-md btn-warning'
-  end
-
-  def link_to_toggle_ost_remote(view_object)
-    if view_object.auto_live_times?
-      button_text = 'OST Remote Manual'
-      confirm_text = "NOTE: Times imported from OST Remote into #{view_object.event_group_names} " +
-          'will need to be manually updated in the Live Entry view. Are you sure you want to proceed?'
-    else
-      button_text = 'OST Remote Auto'
-      confirm_text = "NOTE: Times imported from OST Remote into #{view_object.event_group_names} " +
-          'will be automatically updated, with only duplicate and bad times requiring attention ' +
-          'in the Live Entry view. Are you sure you want to proceed?'
-    end
-
-    link_to button_text,
-            event_group_path(view_object.event_group, event_group: {auto_live_times: !view_object.auto_live_times?}),
             data: {confirm: confirm_text},
             method: :put,
             class: 'btn btn-md btn-warning'

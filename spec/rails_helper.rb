@@ -18,6 +18,8 @@ require 'active_support/core_ext/hash/keys'
 require 'active_support/inflector'
 require 'rack/test'
 require 'webmock/rspec'
+require 'aws-sdk-s3'
+require 'aws-sdk-sns'
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -40,9 +42,13 @@ Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+FactoryBot::SyntaxRunner.class_eval do
+  include ActionDispatch::TestProcess
+end
+
 RSpec.configure do |config|
 
-  config.global_fixtures = :organizations, :courses, :event_groups, :events, :efforts, :split_times, :splits,
+  config.global_fixtures = :organizations, :courses, :event_groups, :event_series, :events, :efforts, :split_times, :splits,
       :aid_stations, :people, :notifications, :partners, :raw_times, :stewardships, :subscriptions, :users,
       :results_categories, :results_templates, :results_template_categories
 

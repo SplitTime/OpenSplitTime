@@ -9,8 +9,16 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @presenter = CoursePresenter.new(@course, params, current_user)
-    session[:return_to] = course_path(@course)
+    course = Course.where(id: @course).includes(:splits).first
+    respond_to do |format|
+      format.html do
+        @presenter = CoursePresenter.new(course, params, current_user)
+        session[:return_to] = course_path(@course)
+      end
+      format.json do
+        render json: course
+      end
+    end
   end
 
   def new

@@ -23,6 +23,8 @@ module ETL
         params[:file]
       elsif params[:file]
         File.read(params[:file])
+      elsif data_is_unparsed_json?
+        JSON.parse(params[:data]).deep_transform_keys(&:underscore)
       else
         params[:data]
       end
@@ -49,6 +51,16 @@ module ETL
 
     def parent_id_attribute
       "#{parent.class.name.underscore}_id"
+    end
+
+    def data_is_unparsed_json?
+      return false unless params[:data].is_a?(String)
+
+      begin
+        true if JSON.parse(params[:data])
+      rescue JSON::ParserError
+        false
+      end
     end
   end
 end

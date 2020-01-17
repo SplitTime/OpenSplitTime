@@ -109,6 +109,56 @@ class EventGroupQuery < BaseQuery
     result
   end
 
+  def self.set_concealed(event_group_id, boolean)
+    query = <<~SQL
+      update event_groups
+        set concealed = #{boolean}
+        where id = #{event_group_id};
+
+      with organization_subquery as
+        (select organizations.id, 
+          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+        from organizations
+          inner join event_groups on event_groups.organization_id = organizations.id
+        where organizations.id in (select organization_id from event_groups where event_groups.id = #{event_group_id})
+        group by organizations.id, organizations.concealed)
+
+      update organizations
+        set concealed = #{boolean}
+        where organizations.id in 
+          (select id 
+          from organization_subquery 
+          where should_be_concealed = #{boolean});
+
+      with person_ids as
+        (select people.id 
+        from people
+        left join efforts on efforts.person_id = people.id
+        inner join events on events.id = efforts.event_id
+        inner join event_groups on event_groups.id = events.event_group_id
+        where event_groups.id = #{event_group_id}),
+  
+      people_subquery as
+        (select people.id, 
+          people.concealed as person_concealed, 
+          case when count(case when event_groups.concealed is TRUE then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+        from people
+          left join efforts on efforts.person_id = people.id
+          inner join events on events.id = efforts.event_id
+          inner join event_groups on event_groups.id = events.event_group_id
+          where people.id in (select * from person_ids)
+        group by people.id, people.concealed)
+
+      update people
+      set concealed = #{boolean}
+      where people.id in 
+        (select id 
+        from people_subquery 
+        where should_be_concealed = #{boolean});
+    SQL
+    query.squish
+  end
+
   def self.permitted_sort_fields
     [:sortable_bib_number, :sortable_time, :first_name, :last_name]
   end

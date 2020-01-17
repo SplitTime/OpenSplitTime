@@ -1,0 +1,4 @@
+<p>
+  <%= "#{@user.full_name} (#{@user.email}) has created a new event group called" %>
+  <%= link_to @event_group.name, event_group_url(@event_group) %>
+</p>

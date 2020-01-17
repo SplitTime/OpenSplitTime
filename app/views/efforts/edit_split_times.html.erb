@@ -26,56 +26,62 @@
 
 <article class="ost-article container">
   <h5><%= @presenter.subtext %></h5>
+
   <hr/>
-
-  <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
-               html: {class: 'form-horizontal',
-                      role: 'form',
-                      data: {controller: 'inputmask',
-                             action: 'submit->inputmask#fill'}}) do |f| %>
-    <div class="row">
-      <div class="col-8">
-        <table class="table table-condensed table-striped">
-          <thead>
-          <th><h4>Split</h4></th>
-          <th><h4><%= @presenter.table_header %></h4></th>
-          </thead>
-          <tbody>
-          <% @presenter.lap_split_rows_plus_one.each do |row| %>
-            <tr class="<%= data_status_text_class[row.data_status] %>">
-              <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
-              <% row.time_points.each do |time_point| %>
-                <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
-                  <td>
-                    <%= builder.text_field @presenter.working_field,
-                                           class: 'form-control',
-                                           value: @presenter.html_value(time_point),
-                                           placeholder: @presenter.placeholder,
-                                           data: {target: "inputmask.#{@presenter.working_field.to_s.camelize(:lower)}",
-                                                  action: 'blur->inputmask#fill'},
-                                           disabled: @presenter.disable_for_time_point?(time_point),
-                                           autofocus: @presenter.autofocus_for_time_point?(time_point) %>
-                    <%= builder.hidden_field :lap, {value: time_point.lap} %>
-                    <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
-                    <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>
-                    <%= builder.hidden_field :effort_id, {value: @presenter.id} %>
-                  </td>
-                <% end %>
-              <% end %>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="col">
-        <%= f.submit("Update #{@presenter.table_header}", class: 'btn btn-primary btn-large') %>
-      </div>
-    </div>
+  <% if @presenter.suppress_form? %>
     <div class="col">
-      [ <%= link_to 'Cancel', effort_path(@presenter.effort) %> ]
+      [ <%= link_to 'Back', effort_path(@presenter.effort) %> ]
     </div>
+<% else %>
+    <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
+                 html: {class: 'form-horizontal',
+                        role: 'form',
+                        data: {controller: 'inputmask',
+                               action: 'submit->inputmask#fill'}}) do |f| %>
+      <div class="row">
+        <div class="col-8">
+          <table class="table table-condensed table-striped">
+            <thead>
+            <th><h4>Split</h4></th>
+            <th><h4><%= @presenter.table_header %></h4></th>
+            </thead>
+            <tbody>
+            <% @presenter.lap_split_rows_plus_one.each do |row| %>
+              <tr class="<%= data_status_text_class[row.data_status] %>">
+                <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
+                <% row.time_points.each do |time_point| %>
+                  <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
+                    <td>
+                      <%= builder.text_field @presenter.working_field,
+                                             class: 'form-control',
+                                             value: @presenter.html_value(time_point),
+                                             placeholder: @presenter.placeholder,
+                                             data: {target: "inputmask.#{@presenter.working_field.to_s.camelize(:lower)}",
+                                                    action: 'blur->inputmask#fill'},
+                                             disabled: @presenter.disable_for_time_point?(time_point),
+                                             autofocus: @presenter.autofocus_for_time_point?(time_point) %>
+                      <%= builder.hidden_field :lap, {value: time_point.lap} %>
+                      <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
+                      <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>
+                      <%= builder.hidden_field :effort_id, {value: @presenter.id} %>
+                    </td>
+                  <% end %>
+                <% end %>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col">
+          <%= f.submit("Update #{@presenter.table_header}", class: 'btn btn-primary btn-large') %>
+        </div>
+      </div>
+      <div class="col">
+        [ <%= link_to 'Cancel', effort_path(@presenter.effort) %> ]
+      </div>
+    <% end %>
   <% end %>
 </article>

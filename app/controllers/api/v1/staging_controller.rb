@@ -44,7 +44,6 @@ class Api::V1::StagingController < ApiController
     setter = EventCourseOrgSetter.new(event: event, event_group: event_group, course: course, organization: organization, params: params)
     setter.set_resources
     if setter.status == :ok
-      AdminMailer.new_event(event, current_user).deliver_later if params[:id] == 'new'
       render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
     else
       render json: {errors: setter.resources.map { |resource| jsonapi_error_object(resource) }}, status: setter.status
@@ -57,9 +56,9 @@ class Api::V1::StagingController < ApiController
   # PATCH /api/v1/staging/:id/update_event_visibility
   def update_event_visibility
     if %w(public private).include?(params[:status])
-      setter = EventConcealedSetter.new(event_group: @event.event_group, concealed: params[:status] == 'private')
-      setter.perform
-      render json: setter.response, status: setter.status
+      query = EventGroupQuery.set_concealed(@event.event_group_id, params[:status] == 'private')
+      ActiveRecord::Base.connection.execute(query)
+      render json: {errors: {}}, status: :ok
     else
       render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request
     end

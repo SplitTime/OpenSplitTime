@@ -18,10 +18,6 @@ bruno_fadel:
   concealed: false
   slug: bruno-fadel
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stevie-ansell
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 robby_gerlach:
   id: 13
   first_name: Robby
@@ -41,10 +37,6 @@ robby_gerlach:
   concealed: false
   slug: robby-gerlach
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_steve-barge
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 brinda_fisher:
   id: 14
   first_name: Brinda
@@ -64,10 +56,6 @@ brinda_fisher:
   concealed: false
   slug: brinda-fisher
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_liz-bauer
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 bad_status:
   id: 18
   first_name: Bad
@@ -87,10 +75,6 @@ bad_status:
   concealed: false
   slug: bad-status
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_drew-brazier
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 willis_murray:
   id: 21
   first_name: Willis
@@ -110,10 +94,6 @@ willis_murray:
   concealed: false
   slug: willis-murray
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-brockmeier
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_with_stop:
   id: 25
   first_name: Finished
@@ -133,10 +113,6 @@ finished_with_stop:
   concealed: false
   slug: finished-with-stop
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jared-campbell
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 garry_kuhlman:
   id: 39
   first_name: Garry
@@ -156,10 +132,6 @@ garry_kuhlman:
   concealed: false
   slug: garry-kuhlman
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-davis
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 donn_mckenzie:
   id: 40
   first_name: Donn
@@ -179,10 +151,6 @@ donn_mckenzie:
   concealed: false
   slug: donn-mckenzie
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_aaron-denberg
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 gilberto_mckenzie:
   id: 42
   first_name: Gilberto
@@ -202,10 +170,6 @@ gilberto_mckenzie:
   concealed: false
   slug: gilberto-mckenzie
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-douglas
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 benedict_davis:
   id: 43
   first_name: Benedict
@@ -225,10 +189,6 @@ benedict_davis:
   concealed: false
   slug: benedict-davis
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bogie-dumitrescu
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 paul_predovic:
   id: 44
   first_name: Paul
@@ -248,10 +208,6 @@ paul_predovic:
   concealed: false
   slug: paul-predovic
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-ehredt
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 erich_larson:
   id: 51
   first_name: Erich
@@ -271,10 +227,6 @@ erich_larson:
   concealed: false
   slug: erich-larson
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-foote
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 lavon_paucek:
   id: 53
   first_name: Lavon
@@ -294,10 +246,6 @@ lavon_paucek:
   concealed: false
   slug: lavon-paucek
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_anna-frost
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 irvin_harber:
   id: 61
   first_name: Irvin
@@ -317,10 +265,6 @@ irvin_harber:
   concealed: false
   slug: irvin-harber
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brett-gosney
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 santa_green:
   id: 62
   first_name: Santa
@@ -340,10 +284,6 @@ santa_green:
   concealed: false
   slug: santa-green
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_missy-gosney
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 carmine_adams:
   id: 69
   first_name: Carmine
@@ -363,10 +303,6 @@ carmine_adams:
   concealed: false
   slug: carmine-adams
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adam-hewey
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 vesta_borer:
   id: 70
   first_name: Vesta
@@ -386,10 +322,6 @@ vesta_borer:
   concealed: false
   slug: vesta-borer
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_meghan-hicks
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 susanna_abshire:
   id: 74
   first_name: Susanna
@@ -409,10 +341,6 @@ susanna_abshire:
   concealed: false
   slug: susanna-abshire
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sheila-huss
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 pat_schaden:
   id: 79
   first_name: Pat
@@ -432,10 +360,6 @@ pat_schaden:
   concealed: false
   slug: pat-schaden
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeff-jones
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 tuan_jacobs:
   id: 80
   first_name: Tuan
@@ -455,10 +379,6 @@ tuan_jacobs:
   concealed: false
   slug: tuan-jacobs
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kilian-jornet
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 rachelle_eichmann:
   id: 81
   first_name: Rachelle
@@ -478,10 +398,6 @@ rachelle_eichmann:
   concealed: false
   slug: rachelle-eichmann
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-kalmeyer
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 leif_carter:
   id: 83
   first_name: Leif
@@ -501,10 +417,6 @@ leif_carter:
   concealed: false
   slug: leif-carter
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_iker-karrera
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 leroy_leffler:
   id: 85
   first_name: Leroy
@@ -524,10 +436,6 @@ leroy_leffler:
   concealed: false
   slug: leroy-leffler
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristen-kern
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 cassondra_nienow:
   id: 97
   first_name: Cassondra
@@ -547,10 +455,6 @@ cassondra_nienow:
   concealed: false
   slug: cassondra-nienow
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kim-love-ottobre
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 gus_walker:
   id: 98
   first_name: Gus
@@ -570,10 +474,6 @@ gus_walker:
   concealed: false
   slug: gus-walker
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_joey-luther
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 donte_spencer:
   id: 99
   first_name: Donte
@@ -593,10 +493,6 @@ donte_spencer:
   concealed: false
   slug: donte-spencer
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-martin
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 ken_bradtke:
   id: 101
   first_name: Ken
@@ -616,10 +512,6 @@ ken_bradtke:
   concealed: false
   slug: ken-bradtke
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-martin
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 darius_jacobson:
   id: 108
   first_name: Darius
@@ -639,10 +531,6 @@ darius_jacobson:
   concealed: false
   slug: darius-jacobson
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeason-murphy
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 chris_rempel:
   id: 109
   first_name: Chris
@@ -662,10 +550,6 @@ chris_rempel:
   concealed: false
   slug: chris-rempel
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_doug-newton
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 samara_vandervort:
   id: 110
   first_name: Samara
@@ -685,10 +569,6 @@ samara_vandervort:
   concealed: false
   slug: samara-vandervort
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-nye
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 douglas_vandervort:
   id: 113
   first_name: Douglas
@@ -708,10 +588,6 @@ douglas_vandervort:
   concealed: false
   slug: douglas-vandervort
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-oliver
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 leandro_cole:
   id: 116
   first_name: Leandro
@@ -731,10 +607,6 @@ leandro_cole:
   concealed: false
   slug: leandro-cole
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_raymond-overson
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 elden_morissette:
   id: 119
   first_name: Elden
@@ -754,10 +626,6 @@ elden_morissette:
   concealed: false
   slug: elden-morissette
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_garrett-peltonen
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 raphael_swift:
   id: 120
   first_name: Raphael
@@ -777,10 +645,6 @@ raphael_swift:
   concealed: false
   slug: raphael-swift
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_george-peterka
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 vern_buckridge:
   id: 128
   first_name: Vern
@@ -800,10 +664,6 @@ vern_buckridge:
   concealed: false
   slug: vern-buckridge
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brian-ricketts
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 cedric_windler:
   id: 135
   first_name: Cedric
@@ -823,10 +683,6 @@ cedric_windler:
   concealed: false
   slug: cedric-windler
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_billy-simpson
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 clarence_goyette:
   id: 136
   first_name: Clarence
@@ -846,10 +702,6 @@ clarence_goyette:
   concealed: false
   slug: clarence-goyette
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_julian-smith
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 vince_willms:
   id: 141
   first_name: Vince
@@ -869,10 +721,6 @@ vince_willms:
   concealed: false
   slug: vince-willms
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_clark-sundahl
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 eddy_goldner:
   id: 147
   first_name: Eddy
@@ -892,10 +740,6 @@ eddy_goldner:
   concealed: false
   slug: eddy-goldner
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-varner
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 demetrius_moen:
   id: 148
   first_name: Demetrius
@@ -915,10 +759,6 @@ demetrius_moen:
   concealed: false
   slug: demetrius-moen
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-ward
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 robt_wintheiser:
   id: 152
   first_name: Robt
@@ -938,10 +778,6 @@ robt_wintheiser:
   concealed: false
   slug: robt-wintheiser
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_phil-wiley
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 mervin_smitham:
   id: 162
   first_name: Mervin
@@ -961,10 +797,6 @@ mervin_smitham:
   concealed: false
   slug: mervin-smitham
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_neil-blake
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 without_start:
   id: 170
   first_name: Without
@@ -984,10 +816,6 @@ without_start:
   concealed: false
   slug: without-start
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rich-desimone
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 humberto_adams:
   id: 182
   first_name: Humberto
@@ -1007,10 +835,6 @@ humberto_adams:
   concealed: false
   slug: humberto-adams
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-gordon
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 omer_yundt:
   id: 190
   first_name: Omer
@@ -1030,10 +854,6 @@ omer_yundt:
   concealed: false
   slug: omer-yundt
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-hodges
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 drop_ouray:
   id: 195
   first_name: Drop
@@ -1053,10 +873,6 @@ drop_ouray:
   concealed: false
   slug: drop-ouray
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristina-irvin
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 charlie_mueller:
   id: 205
   first_name: Charlie
@@ -1076,10 +892,6 @@ charlie_mueller:
   concealed: false
   slug: charlie-mueller
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-larsen
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 kendall_koch:
   id: 226
   first_name: Kendall
@@ -1099,10 +911,6 @@ kendall_koch:
   concealed: false
   slug: kendall-koch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-snyder
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 dropped_grouse:
   id: 249
   first_name: Dropped
@@ -1122,10 +930,6 @@ dropped_grouse:
   concealed: false
   slug: dropped-grouse
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nick-clark
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 hoyt_macejkovic:
   id: 256
   first_name: Hoyt
@@ -1145,10 +949,6 @@ hoyt_macejkovic:
   concealed: false
   slug: hoyt-macejkovic
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-ficke
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_sherman_colorado_us:
   id: 289
   first_name: Progress
@@ -1168,10 +968,6 @@ progress_sherman_colorado_us:
   concealed: false
   slug: progress-sherman-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-pearcy
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_second:
   id: 326
   first_name: Finished
@@ -1191,10 +987,6 @@ finished_second:
   concealed: false
   slug: finished-second
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lisa-ledet
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only_2019_02_01:
   id: 331
   first_name: Start
@@ -1214,10 +1006,6 @@ start_only_2019_02_01:
   concealed: false
   slug: start-only-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alexa-mcnaul
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_2019_02_01:
   id: 369
   first_name: Finished
@@ -1237,10 +1025,6 @@ finished_first_2019_02_01:
   concealed: false
   slug: finished-first-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stefan-griebel
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 not_started_2019_02_01:
   id: 384
   first_name: Not
@@ -1260,10 +1044,6 @@ not_started_2019_02_01:
   concealed: false
   slug: not-started-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jon-riebkes
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 shad_hirthe:
   id: 463
   first_name: Shad
@@ -1283,10 +1063,6 @@ shad_hirthe:
   concealed: false
   slug: shad-hirthe
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_allen-hadley
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_without_stop:
   id: 495
   first_name: Finished
@@ -1306,10 +1082,6 @@ finished_without_stop:
   concealed: false
   slug: finished-without-stop
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-jurynec
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_sherman:
   id: 656
   first_name: Progress
@@ -1329,10 +1101,6 @@ progress_sherman:
   concealed: false
   slug: progress-sherman
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_andy-jones-wilkins
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_japan:
   id: 682
   first_name: Finished
@@ -1352,10 +1120,6 @@ finished_first_japan:
   concealed: false
   slug: finished-first-japan
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tsuyoshi-kaburaki
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 claudio_wunsch:
   id: 689
   first_name: Claudio
@@ -1375,10 +1139,6 @@ claudio_wunsch:
   concealed: false
   slug: claudio-wunsch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stuart-air
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 keith_metz:
   id: 690
   first_name: Keith
@@ -1398,10 +1158,6 @@ keith_metz:
   concealed: false
   slug: keith-metz
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-mcdermott
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 major_green:
   id: 691
   first_name: Major
@@ -1421,10 +1177,6 @@ major_green:
   concealed: false
   slug: major-green
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-dirito
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 irvin_corkery:
   id: 698
   first_name: Irvin
@@ -1444,10 +1196,6 @@ irvin_corkery:
   concealed: false
   slug: irvin-corkery
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_josh-dickson
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 multiple_stops:
   id: 707
   first_name: Multiple
@@ -1467,10 +1215,6 @@ multiple_stops:
   concealed: false
   slug: multiple-stops
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rosie-warfield
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 not_started:
   id: 710
   first_name: Not
@@ -1490,10 +1234,6 @@ not_started:
   concealed: false
   slug: not-started
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only_maine_us:
   id: 818
   first_name: Start
@@ -1513,10 +1253,6 @@ start_only_maine_us:
   concealed: false
   slug: start-only-maine-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_craig-wilson
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 junior_lesch:
   id: 830
   first_name: Junior
@@ -1536,10 +1272,6 @@ junior_lesch:
   concealed: false
   slug: junior-lesch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-halladay
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_utah_us:
   id: 1265
   first_name: Finished
@@ -1559,10 +1291,6 @@ finished_first_utah_us:
   concealed: false
   slug: finished-first-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shalise-morgan
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_lap6:
   id: 1266
   first_name: Progress
@@ -1582,10 +1310,6 @@ progress_lap6:
   concealed: false
   slug: progress-lap6
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-hughes
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 multiple_stops_utah_us:
   id: 1305
   first_name: Multiple
@@ -1605,10 +1329,6 @@ multiple_stops_utah_us:
   concealed: false
   slug: multiple-stops-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tara-warren
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_last:
   id: 1324
   first_name: Finished
@@ -1628,10 +1348,6 @@ finished_last:
   concealed: false
   slug: finished-last
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-garrison
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_lap1:
   id: 1344
   first_name: Progress
@@ -1651,10 +1367,6 @@ progress_lap1:
   concealed: false
   slug: progress-lap1
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_keith-sanders
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 kory_kulas:
   id: 1356
   first_name: Kory
@@ -1674,10 +1386,6 @@ kory_kulas:
   concealed: false
   slug: kory-kulas
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bill-clements
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 benito_moen:
   id: 1365
   first_name: Benito
@@ -1697,10 +1405,6 @@ benito_moen:
   concealed: false
   slug: benito-moen
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-peterman
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 rene_mclaughlin:
   id: 1379
   first_name: Rene
@@ -1720,10 +1424,6 @@ rene_mclaughlin:
   concealed: false
   slug: rene-mclaughlin
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-brown
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only_colorado_us_2019_02_01:
   id: 1567
   first_name: Start
@@ -1743,10 +1443,6 @@ start_only_colorado_us_2019_02_01:
   concealed: false
   slug: start-only-colorado-us-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_hewitt-gaynor
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 drop_bandera:
   id: 1568
   first_name: Drop
@@ -1766,10 +1462,6 @@ drop_bandera:
   concealed: false
   slug: drop-bandera
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lynn-hall
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_rolling:
   id: 1569
   first_name: Progress
@@ -1789,10 +1481,6 @@ progress_rolling:
   concealed: false
   slug: progress-rolling
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nicole-honda
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 not_started_colorado_us_2019_02_01:
   id: 1571
   first_name: Not
@@ -1812,45 +1500,18 @@ not_started_colorado_us_2019_02_01:
   concealed: false
   slug: not-started-colorado-us-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_glenda-lainis
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-finished_second_colorado_us_2019_02_01:
-  id: 1584
-  first_name: Finished
-  last_name: Second
-  gender: 1
-  birthdate: '1973-07-23'
-  city: 
-  state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:56.192766'
-  updated_at: '2019-02-01 07:19:53.940184'
-  created_by: 1
-  updated_by: 1
-  country_code: US
-  user_id: 
-  concealed: false
-  slug: finished-second-colorado-us-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tattie-bailey
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_colorado_us:
   id: 1585
   first_name: Finished
   last_name: First
   gender: 0
-  birthdate: '1963-08-18'
+  birthdate: '1973-08-18'
   city: 
   state_code: CO
   email: 
   phone: 
   created_at: '2018-01-18 05:23:56.334499'
-  updated_at: '2019-02-01 07:19:53.950033'
+  updated_at: '2019-02-21 23:10:08.501744'
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1858,10 +1519,6 @@ finished_first_colorado_us:
   concealed: false
   slug: finished-first-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-oury
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 drop_aid4:
   id: 1689
   first_name: Drop
@@ -1881,10 +1538,6 @@ drop_aid4:
   concealed: false
   slug: drop-aid4
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nathan-evans
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_aid3:
   id: 1734
   first_name: Progress
@@ -1904,10 +1557,6 @@ progress_aid3:
   concealed: false
   slug: progress-aid3
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-hefti
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 drop_anvil:
   id: 1747
   first_name: Drop
@@ -1927,10 +1576,6 @@ drop_anvil:
   concealed: false
   slug: drop-anvil
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ian-cropper
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_cascade:
   id: 1748
   first_name: Progress
@@ -1950,10 +1595,6 @@ progress_cascade:
   concealed: false
   slug: progress-cascade
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_abram-early
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 not_started_colorado_us:
   id: 1771
   first_name: Not
@@ -1973,22 +1614,18 @@ not_started_colorado_us:
   concealed: false
   slug: not-started-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_marybeth-wittenbach
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_second_colorado_us:
   id: 1862
   first_name: Finished
   last_name: Second
   gender: 1
-  birthdate: '1984-01-16'
+  birthdate: '1973-07-23'
   city: Boulder
   state_code: CO
   email: 
   phone: 
   created_at: '2018-12-28 19:34:43.417273'
-  updated_at: '2019-02-01 07:19:53.907919'
+  updated_at: '2019-02-21 23:22:35.28103'
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1996,10 +1633,6 @@ finished_second_colorado_us:
   concealed: false
   slug: finished-second-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sierra-horton
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only_colorado_us:
   id: 1874
   first_name: Start
@@ -2019,10 +1652,6 @@ start_only_colorado_us:
   concealed: false
   slug: start-only-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_christina-gille
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first_france:
   id: 1923
   first_name: Finished
@@ -2042,10 +1671,6 @@ finished_first_france:
   concealed: false
   slug: finished-first-france
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adrien-seguret
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only_2019_02_01_07_19_53:
   id: 1926
   first_name: Start
@@ -2065,10 +1690,6 @@ start_only_2019_02_01_07_19_53:
   concealed: false
   slug: start-only-2019-02-01-07-19-53
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_caolan-macmahon
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_aid4:
   id: 2003
   first_name: Progress
@@ -2088,10 +1709,6 @@ progress_aid4:
   concealed: false
   slug: progress-aid4
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alyson-wiedenheft
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 bad_finish:
   id: 2104
   first_name: Bad
@@ -2111,33 +1728,6 @@ bad_finish:
   concealed: false
   slug: bad-finish
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jimmy-picard
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
-finished_first_2019_02_01_07_19_53:
-  id: 2128
-  first_name: Finished
-  last_name: First
-  gender: 0
-  birthdate: '1973-05-25'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:35:40.68485'
-  updated_at: '2019-02-01 07:19:53.800827'
-  created_by: 1
-  updated_by: 1
-  country_code: 
-  user_id: 
-  concealed: false
-  slug: finished-first-2019-02-01-07-19-53
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_seth-wealing
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_lap5_partial:
   id: 2169
   first_name: Progress
@@ -2157,10 +1747,6 @@ progress_lap5_partial:
   concealed: false
   slug: progress-lap5-partial
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jactest-cartest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_first:
   id: 2170
   first_name: Finished
@@ -2180,10 +1766,6 @@ finished_first:
   concealed: false
   slug: finished-first
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jamtest-coutest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 finished_lap6:
   id: 2171
   first_name: Finished
@@ -2203,10 +1785,6 @@ finished_lap6:
   concealed: false
   slug: finished-lap6
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_contest-eldtest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 progress_lap2:
   id: 2174
   first_name: Progress
@@ -2226,10 +1804,6 @@ progress_lap2:
   concealed: false
   slug: progress-lap2
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_coltest-fortest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 not_started_utah_us:
   id: 2175
   first_name: Not
@@ -2249,10 +1823,6 @@ not_started_utah_us:
   concealed: false
   slug: not-started-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
 start_only:
   id: 2176
   first_name: Start
@@ -2272,7 +1842,98 @@ start_only:
   concealed: false
   slug: start-only
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
-  photo_file_name: 
-  photo_content_type: 
-  photo_file_size: 
-  photo_updated_at: 
+on_dst_change:
+  id: 2182
+  first_name: 'On'
+  last_name: DST Change
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:43.929477'
+  updated_at: '2019-02-21 23:23:43.929477'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: on-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_on-dst-change
+across_dst_change:
+  id: 2183
+  first_name: Across
+  last_name: DST Change
+  gender: 1
+  birthdate: 
+  city: 
+  state_code: 
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:44.141109'
+  updated_at: '2019-02-21 23:23:44.141109'
+  created_by: 1
+  updated_by: 1
+  country_code: 
+  user_id: 
+  concealed: false
+  slug: across-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_across-dst-change
+un_started:
+  id: 2184
+  first_name: Un
+  last_name: Started
+  gender: 1
+  birthdate: '1988-09-01'
+  city: Fort Collins
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:23:44.276762'
+  updated_at: '2019-02-21 23:23:44.276762'
+  created_by: 1
+  updated_by: 1
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: un-started
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_un-started
+series_finisher:
+  id: 2185
+  first_name: Series
+  last_name: Finisher
+  gender: 0
+  birthdate: '1983-03-03'
+  city: Louisville
+  state_code: CO
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:40:15.216434'
+  updated_at: '2019-02-21 23:40:21.442364'
+  created_by: 1
+  updated_by: 
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: series-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_series-finisher
+slow_finisher:
+  id: 2186
+  first_name: Slow
+  last_name: Finisher
+  gender: 0
+  birthdate: '1953-03-03'
+  city: Orem
+  state_code: UT
+  email: 
+  phone: 
+  created_at: '2019-02-21 23:53:21.216763'
+  updated_at: '2019-02-21 23:53:21.216763'
+  created_by: 1
+  updated_by: 
+  country_code: US
+  user_id: 
+  concealed: false
+  slug: slow-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_slow-finisher

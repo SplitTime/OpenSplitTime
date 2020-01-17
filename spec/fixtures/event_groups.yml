@@ -4,7 +4,6 @@ ramble:
   name: Ramble
   organization_id: 6
   available_live: false
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.344937'
   updated_at: '2019-01-28 09:54:43.341208'
@@ -13,12 +12,12 @@ ramble:
   slug: ramble
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2014:
   id: 7
   name: Hardrock 2014
   organization_id: 4
   available_live: false
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.36138'
   updated_at: '2019-01-28 08:55:55.574111'
@@ -27,12 +26,12 @@ hardrock_2014:
   slug: hardrock-2014
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2015:
   id: 17
   name: Hardrock 2015
   organization_id: 4
   available_live: true
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.417957'
   updated_at: '2019-01-28 08:56:16.148917'
@@ -41,12 +40,12 @@ hardrock_2015:
   slug: hardrock-2015
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 rufa_2016:
   id: 25
   name: RUFA 2016
   organization_id: 14
   available_live: false
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.460032'
   updated_at: '2019-01-31 00:12:13.829169'
@@ -55,12 +54,12 @@ rufa_2016:
   slug: rufa-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 dirty_30:
   id: 27
   name: Dirty 30
   organization_id: 15
   available_live: true
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.472119'
   updated_at: '2019-02-01 03:16:00.099678'
@@ -69,12 +68,12 @@ dirty_30:
   slug: dirty-30
   data_entry_grouping_strategy: 1
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 hardrock_2016:
   id: 28
   name: Hardrock 2016
   organization_id: 4
   available_live: true
-  auto_live_times: false
   concealed: false
   created_at: '2017-09-18 04:35:22.480615'
   updated_at: '2019-01-28 08:56:46.152679'
@@ -83,12 +82,12 @@ hardrock_2016:
   slug: hardrock-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: true
+  home_time_zone: Mountain Time (US & Canada)
 sum:
   id: 32
   name: SUM
   organization_id: 15
   available_live: true
-  auto_live_times: false
   concealed: false
   created_at: '2018-01-18 05:09:16.755575'
   updated_at: '2019-01-30 21:36:37.160757'
@@ -97,12 +96,12 @@ sum:
   slug: sum
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)
 rufa_2017:
   id: 59
   name: RUFA 2017
   organization_id: 14
   available_live: true
-  auto_live_times: false
   concealed: false
   created_at: '2019-01-30 23:32:41.39272'
   updated_at: '2019-01-30 23:44:56.575917'
@@ -111,3 +110,4 @@ rufa_2017:
   slug: rufa-2017
   data_entry_grouping_strategy: 0
   monitor_pacers: false
+  home_time_zone: Mountain Time (US & Canada)

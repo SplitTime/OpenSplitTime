@@ -2,24 +2,23 @@
   <% "OpenSplitTime: Summary - #{@presenter.name}" %>
 <% end %>
 
-<header class="ost-header">
+<header class="ost-header d-print-none">
   <div class="container">
     <div class="ost-heading row">
       <div class="col-8">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
-          <ul class="breadcrumb breadcrumb-ost hidden-print">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-            <li class="breadcrumb-item"><%= @presenter.event.guaranteed_short_name %></li>
+            <% if @presenter.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
             <li class="breadcrumb-item active">Results summary</li>
           </ul>
         </div>
         <%= render 'time_and_course_info' %>
-      </div>
-      <div class="col-4 text-right">
-        <%= render 'shared/print_info' %>
       </div>
     </div>
     <!-- Navigation -->
@@ -27,22 +26,26 @@
   </div>
 </header>
 
-
-<aside class="ost-toolbar hidden-print">
+<aside class="ost-toolbar d-print-none">
   <div class="container">
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col form-inline">
-        <%= explore_dropdown_menu(@presenter) %>
+        <div>
+          <%= summary_filter_dropdown %>
+          <%= explore_dropdown_menu(@presenter) %>
+        </div>
       </div>
     </div>
   </div>
 </aside>
 
 <article class="ost-article container">
-  <% if @presenter.ranked_effort_rows.present? %>
-    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
-  <% else %>
+  <% if @presenter.event_efforts.empty? %>
     <h4><strong>No entrants have been added to this event.</strong></h4>
+  <% elsif @presenter.ranked_effort_rows.empty? %>
+    <h4><strong><%= "There are no #{@presenter.summary_title.downcase}." %></strong></h4>
+  <% else %>
+    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
   <% end %>
 </article>

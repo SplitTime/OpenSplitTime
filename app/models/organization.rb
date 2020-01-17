@@ -7,9 +7,13 @@ class Organization < ApplicationRecord
   extend FriendlyId
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
+
+  has_many :courses, dependent: :destroy
   has_many :event_groups, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
+  has_many :event_series, dependent: :destroy
+  has_many :results_templates, dependent: :destroy
 
   scope :with_visible_event_count, -> do
     left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
@@ -31,7 +35,7 @@ class Organization < ApplicationRecord
     end
   end
 
-  def should_be_concealed?
-    !event_groups.visible.present?
+  def owner_id
+    created_by
   end
 end

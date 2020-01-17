@@ -10,13 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_155839) do
+ActiveRecord::Schema.define(version: 2019_03_08_000739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.integer "event_id"
@@ -36,10 +57,8 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
-    t.string "gpx_file_name"
-    t.string "gpx_content_type"
-    t.integer "gpx_file_size"
-    t.datetime "gpx_updated_at"
+    t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
@@ -67,10 +86,6 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.string "email"
     t.string "slug", null: false
     t.boolean "checked_in", default: false
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.string "emergency_contact"
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
@@ -85,7 +100,6 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.string "name"
     t.integer "organization_id"
     t.boolean "available_live", default: false
-    t.boolean "auto_live_times", default: true
     t.boolean "concealed", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -94,13 +108,35 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.string "slug"
     t.integer "data_entry_grouping_strategy", default: 0
     t.boolean "monitor_pacers", default: false
+    t.string "home_time_zone"
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
   end
 
+  create_table "event_series", force: :cascade do |t|
+    t.bigint "organization_id"
+    t.bigint "results_template_id"
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "scoring_method"
+    t.index ["organization_id"], name: "index_event_series_on_organization_id"
+    t.index ["results_template_id"], name: "index_event_series_on_results_template_id"
+  end
+
+  create_table "event_series_events", force: :cascade do |t|
+    t.bigint "event_id"
+    t.bigint "event_series_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_event_series_events_on_event_id"
+    t.index ["event_series_id"], name: "index_event_series_events_on_event_series_id"
+  end
+
   create_table "events", id: :serial, force: :cascade do |t|
     t.integer "course_id", null: false
-    t.string "name", limit: 64, null: false
+    t.string "historical_name", limit: 64
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
@@ -109,11 +145,12 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.string "beacon_url"
     t.integer "laps_required"
     t.string "slug", null: false
-    t.string "home_time_zone", null: false
     t.integer "event_group_id"
     t.string "short_name"
     t.bigint "results_template_id", null: false
+    t.integer "efforts_count", default: 0
     t.index ["course_id"], name: "index_events_on_course_id"
+    t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
     t.index ["results_template_id"], name: "index_events_on_results_template_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true
@@ -176,10 +213,6 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.integer "weight", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "banner_file_name"
-    t.string "banner_content_type"
-    t.integer "banner_file_size"
-    t.datetime "banner_updated_at"
     t.string "name", null: false
     t.bigint "event_group_id", null: false
     t.index ["event_group_id"], name: "index_partners_on_event_group_id"
@@ -203,10 +236,6 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.boolean "concealed", default: false
     t.string "slug", null: false
     t.string "topic_resource_key"
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.integer "photo_file_size"
-    t.datetime "photo_updated_at"
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true
     t.index ["user_id"], name: "index_people_on_user_id"
@@ -256,9 +285,9 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
-    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end
@@ -385,11 +414,17 @@ ActiveRecord::Schema.define(version: 2019_02_14_155839) do
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
+  add_foreign_key "courses", "organizations"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
   add_foreign_key "event_groups", "organizations"
+  add_foreign_key "event_series", "organizations"
+  add_foreign_key "event_series", "results_templates"
+  add_foreign_key "event_series_events", "event_series"
+  add_foreign_key "event_series_events", "events"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "notifications", "efforts"

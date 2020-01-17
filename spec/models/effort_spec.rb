@@ -8,6 +8,7 @@ RSpec.describe Effort, type: :model do
   it_behaves_like 'data_status_methods'
   it_behaves_like 'auditable'
   it_behaves_like 'matchable'
+  it_behaves_like 'subscribable'
   it { is_expected.to strip_attribute(:first_name).collapse_spaces }
   it { is_expected.to strip_attribute(:last_name).collapse_spaces }
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
@@ -34,10 +35,10 @@ RSpec.describe Effort, type: :model do
       end
 
       it 'is invalid without an event_id' do
-        effort = build_stubbed(:effort, event: nil)
+        effort = build_stubbed(:effort, without_slug: true, event: nil)
         allow(effort).to receive(:finished?)
         expect(effort).not_to be_valid
-        expect(effort.errors[:event_id]).to include("can't be blank")
+        expect(effort.errors[:event]).to include("can't be blank")
       end
 
       it 'is invalid without a first_name' do
@@ -440,7 +441,8 @@ RSpec.describe Effort, type: :model do
     subject { build_stubbed(:effort, event: event) }
 
     context 'when the event has a start_time and a home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: 'Arizona') }
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
       it 'returns the start_time in the home_time_zone' do
         expect(subject.event_start_time_local).to be_a(ActiveSupport::TimeWithZone)
@@ -449,7 +451,8 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the event has no start_time' do
-      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Arizona') }
+      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
       it 'returns nil' do
         expect(subject.event_start_time_local).to be_nil
@@ -457,10 +460,43 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the event has no home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', home_time_zone: nil) }
+      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
         expect(subject.event_start_time_local).to be_nil
+      end
+    end
+  end
+
+  describe '#scheduled_start_offset=' do
+    subject { build_stubbed(:effort, event: event) }
+    let(:event) { build_stubbed(:event, start_time: event_start_time) }
+    before { subject.scheduled_start_offset = offset }
+
+    context 'when the event has a start_time' do
+      let(:event_start_time) { '2017-08-01 12:00:00 GMT'.in_time_zone }
+
+      context 'when the offset is positive' do
+        let(:offset) { 900 }
+        it 'sets the effort scheduled start time based on the event start time' do
+          expect(subject.scheduled_start_time).to eq(event_start_time + offset)
+        end
+      end
+
+      context 'when the offset is negative' do
+        let(:offset) { -900 }
+        it 'sets the effort scheduled start time based on the event start time' do
+          expect(subject.scheduled_start_time).to eq(event_start_time + offset)
+        end
+      end
+    end
+
+    context 'when the event has no start time' do
+      let(:event_start_time) { nil }
+      let(:offset) { 900 }
+      it 'does not set anything' do
+        expect(subject.scheduled_start_time).to be_nil
       end
     end
   end
@@ -489,8 +525,8 @@ RSpec.describe Effort, type: :model do
 
   describe '.concealed and .visible' do
     let(:concealed_event_group) { event_groups(:dirty_30) }
-    let(:visible_efforts) { Effort.joins(:event).where.not(events: {event_group_id: concealed_event_group.id}).first(5) }
-    let(:concealed_efforts) { Effort.joins(:event).where(events: {event_group_id: concealed_event_group.id}).first(5) }
+    let(:visible_efforts) { Effort.joins(:event).where.not(events: { event_group_id: concealed_event_group.id }).first(5) }
+    let(:concealed_efforts) { Effort.joins(:event).where(events: { event_group_id: concealed_event_group.id }).first(5) }
 
     before { concealed_event_group.update(concealed: true) }
 
@@ -547,23 +583,6 @@ RSpec.describe Effort, type: :model do
       it 'returns only those split_times that belong to the given lap_split' do
         expect(effort.ordered_split_times(lap_split)).to eq([split_time_1, split_time_2])
       end
-    end
-  end
-
-  describe '#photo' do
-    subject { build(:effort) }
-    let(:existing_effort) { build(:effort) }
-    let(:file_path) { "#{Rails.root}/spec/fixtures/files/potato3.jpg" }
-    let(:photo_file) { File.new(file_path) }
-
-    before do
-      existing_effort.update(photo: photo_file)
-    end
-
-    it 'copies a photo from an existing effort' do
-      expect(existing_effort.photo.exists?).to eq(true)
-      subject.update(photo: existing_effort.photo)
-      expect(subject.photo.exists?).to eq(true)
     end
   end
 

@@ -4,7 +4,7 @@ class EffortQuery < BaseQuery
 
   def self.rank_and_status(args = {})
     select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'overall_rank')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'event_id,overall_rank')
     query = <<-SQL
       with
         existing_scope as (#{existing_scope_sql}),
@@ -42,7 +42,7 @@ class EffortQuery < BaseQuery
               efforts_scoped.*,
               events.laps_required,
               events.start_time as event_start_time,
-              events.home_time_zone,
+              event_groups.home_time_zone,
               splits.base_name as final_split_name,
               splits.distance_from_start as final_lap_distance,
               split_times.lap as final_lap,
@@ -65,6 +65,7 @@ class EffortQuery < BaseQuery
               left join split_times on split_times.effort_id = efforts_scoped.id 
               left join splits on splits.id = split_times.split_id
               left join events on events.id = efforts_scoped.event_id
+              inner join event_groups on event_groups.id = events.event_group_id
               left join course_subquery on events.course_id = course_subquery.course_id
               left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
               left join start_split_times sst on split_times.effort_id = sst.effort_id
@@ -75,6 +76,7 @@ class EffortQuery < BaseQuery
 
         distance_subquery as 
           (select *, 
+              coalesce(scheduled_start_time, event_start_time) as assumed_start_time,
               case when final_lap is null then false else true end as started,
               final_lap as laps_started,
               case when final_lap_complete is true then final_lap else final_lap - 1 end as laps_finished,
@@ -91,7 +93,7 @@ class EffortQuery < BaseQuery
               end
               as finished,
               case
-                when not started and checked_in and (coalesce(scheduled_start_time, event_start_time) < current_timestamp) then true else false
+                when not started and checked_in and (assumed_start_time < current_timestamp) then true else false
               end
               as ready_to_start
            from distance_subquery),
@@ -107,26 +109,32 @@ class EffortQuery < BaseQuery
            from stopped_subquery)
 
       select #{select_sql},
-          rank() over 
-            (order by started desc,
-                      dropped, 
-                      final_lap desc nulls last, 
-                      final_lap_distance desc, 
-                      final_bitkey desc, 
-                      final_time_from_start, 
-                      gender desc, 
-                      age desc) 
+          case when started then 
+            rank() over 
+              (partition by event_id
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc) 
+            else null end
           as overall_rank, 
-          rank() over 
-            (partition by gender 
-             order by started desc,
-                      dropped, 
-                      final_lap desc nulls last, 
-                      final_lap_distance desc, 
-                      final_bitkey desc, 
-                      final_time_from_start, 
-                      gender desc, 
-                      age desc) 
+
+          case when started then
+            rank() over 
+              (partition by event_id, gender 
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc)
+            else null end
           as gender_rank
       from main_subquery
       order by #{order_sql}
@@ -189,7 +197,7 @@ class EffortQuery < BaseQuery
              from 
                       (select efforts_scoped.*, 
                               events.start_time as event_start_time, 
-                              events.home_time_zone, 
+                              event_groups.home_time_zone, 
                               split_times.effort_id, 
                               split_times.absolute_time as absolute_time_begin, 
                               split_times.lap, 

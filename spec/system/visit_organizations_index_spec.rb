@@ -60,15 +60,15 @@ RSpec.describe 'Visit the organizations index' do
     visit organizations_path
 
     verify_public_links_present
-    concealed_organizations.each { |org| expect(page).to have_link(org.name, href: organization_path(org)) }
+    concealed_organizations.each(&method(:verify_link_present))
   end
 
   def verify_public_links_present
     expect(page).to have_content('Organizations')
-    visible_organizations.each { |org| expect(page).to have_link(org.name, href: organization_path(org)) }
+    visible_organizations.each(&method(:verify_link_present))
   end
 
   def verify_concealed_links_absent
-    concealed_organizations.each { |org| expect(page).not_to have_content(org.name) }
+    concealed_organizations.each(&method(:verify_content_absent))
   end
 end

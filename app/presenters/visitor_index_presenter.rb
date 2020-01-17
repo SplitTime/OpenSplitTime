@@ -6,27 +6,22 @@ class VisitorIndexPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    EventGroup.visible.includes(events: :efforts).reject { |eg| eg.effort_count.zero? }.sort_by(&:start_time).reverse.first(number)
+    EventGroup.visible.by_group_start_time.limit(number)
   end
 
   def upcoming_courses(number)
     Course.where('next_start_time > ?', Time.current).order(:next_start_time).limit(number)
   end
 
-  def recent_user_efforts(number)
-    user_efforts.first(number)
-  end
-
-  def user_efforts
-    return nil unless avatar
-    @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
+  def recent_user_efforts
+    @recent_user_efforts ||= avatar ? avatar.efforts.joins(:event).includes(event: :event_group).order('events.start_time desc') : []
   end
 
   private
 
-  def avatar
-    current_user.avatar
-  end
-
   attr_reader :current_user
+
+  def avatar
+    @avatar ||= current_user.avatar
+  end
 end

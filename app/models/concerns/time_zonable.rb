@@ -22,10 +22,14 @@ module TimeZonable
       end
 
       define_method :"#{attribute}_local=" do |time|
-        unless time_zone_valid?(home_time_zone)
-          raise ArgumentError, "#{attribute}_local cannot be set without a valid home_time_zone"
+        if time.present?
+          unless time_zone_valid?(home_time_zone)
+            raise ArgumentError, "#{attribute}_local cannot be set without a valid home_time_zone"
+          end
+          self.send("#{attribute}=", time.to_s.in_time_zone(home_time_zone))
+        else
+          self.send("#{attribute}=", nil)
         end
-        self.send("#{attribute}=", time.to_s.in_time_zone(home_time_zone))
       end
     end
   end

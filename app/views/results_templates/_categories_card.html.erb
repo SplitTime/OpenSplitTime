@@ -1,0 +1,11 @@
+<h5><%= "#{template.podium_size ? pluralize(template.podium_size, 'Participant') : 'Unlimited Participants'} Per Category" %></h5>
+<table>
+  <tbody>
+  <% template.categories.each.with_index(1) do |category, i| %>
+    <tr>
+      <td><%= "#{i}." %></td>
+      <td><%= "#{category.name} (#{category.description})" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs nav-tabs-ost hidden-print">
+<ul class="nav nav-tabs nav-tabs-ost d-print-none">
   <%= results_dropdown_menu(view_object) %>
   <%= raw_times_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>
   <%= admin_dropdown_menu(view_object) if current_user&.authorized_to_edit?(view_object.event_group) %>

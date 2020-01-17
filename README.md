@@ -1,7 +1,7 @@
 OpenSplitTime
 ================
 
-OpenSplitTime is a site for endurance athletes, fans and families, race directors, volunteers, support crews, and data geeks. Our purpose is simple: to make it easy to collect endurance event data, play with it, plan with it, safely archive it, and never worry about it again. 
+OpenSplitTime is a site for endurance athletes, fans and families, race directors, volunteers, support crews, and data geeks. Our purpose is simple: to make it easy to collect endurance event data, play with it, plan with it, safely archive it, and never worry about it again.
 
 The site is built and maintained by OpenSplitTime Company, a Colorado nonprofit corporation. If you find the website useful, motivating, entertaining, or strangely beautiful, please consider making a small [donation](https://www.opensplittime.org/donations) to help us keep the doors open. OpenSplitTime Company is registered with the U.S. Internal Revenue Service as a 501(c)(3) charitable organization. Your donations are probably tax deductible (but if you have any question you should ask your tax advisor about that stuff).
 
@@ -14,8 +14,8 @@ Ruby on Rails
 
 This application requires:
 
-- Ruby 2.6.0
-- Rails 5.2.2
+- Ruby 2.6.5
+- Rails 5.2.4.1
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
@@ -46,8 +46,8 @@ Getting Started
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install 2.6.0`
-6. `$ rbenv local 2.6.0` (to make sure this is correct, run `$ rbenv version`)
+5. `$ rbenv install 2.6.5`
+6. `$ rbenv local 2.6.5` (to make sure this is correct, run `$ rbenv version`)
 7. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
@@ -91,10 +91,8 @@ Then run `bundle install` again.
 
 1. Install Node.js
 
-> ### Using Homebrew on MacOS
-
-
-> *Incomplete*
+> ### On MacOS
+> Download the package installer from nodejs.org. Use the LTS version (v10.16.0 as of mid-2019)
 
 > ### Using Debian/Ubuntu
 > 1. Configure repository `wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -`
@@ -103,7 +101,11 @@ Then run `bundle install` again.
 2. Install Yarn
 
 > ### Using Homebrew on MacOS
-> 1. `brew install yarn`
+> Use the yarn install script so that you can specify the version you want. The newest versions of yarn (as of mid-2019) 
+depend on Nodejs v12 and will install it as a dependency even though you have already installed Nodejs v10. Specify
+v1.13.0 instead.
+> 1. `curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0`
+> 2. Restart your terminal session
 
 > ### Using Debian/Ubuntu
 > 1. Configure yarn repository...
@@ -118,15 +120,11 @@ Then run `bundle install` again.
 **Database**
 
 1. Start your local DB `$ brew services restart postgres` or run the Postgres App
-2. `$ rake db:setup` to create the database
+2. `$ rails db:setup` to create the database
 3. `$ rails db:structure:load` to add Postgres functions
 4. `$ rails db:from_fixtures` to load seed data from test fixtures files
 5. `$ rails s` to start the server
 6. Type `localhost:3000` in a browser
-
-_Note_: I got an error running rake:db. Some problem with yarn and it was suggested that I do a `yarn install`.
-This failed for me when I was running Node version 6.4. I upgraded to the latest version via the installer
-at https://nodejs.org and then I running `yarn install` worked.
 
 *Test Users*
 
@@ -161,6 +159,14 @@ PUSHER_SECRET_KEY=xxx
 ```
 Contact us for the dev team's Pusher credentials.
 
+**Google Maps API**
+
+OpenSplitTime uses Google Maps API to display course gpx tracks and split locations. To access the API, you will need to add the following to your `.env` file:
+```
+GOOGLE_MAPS_API_KEY=xxx
+```
+Get your own free [Google Maps API key](https://console.cloud.google.com/google/maps-apis) or contact us for the dev team's credentials.
+
 **Sidekiq and Redis**
 
 OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:
@@ -171,12 +177,18 @@ You'll know you did it right when you see the awesome ASCII art.
 
 **ChromeDriver**
 
-Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew install chromedriver` or your preferred package manager for Linux or Windows.
+Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew cask install chromedriver` or your preferred package manager for Linux or Windows.
+
+**Continuous Integration**
+
+Heroku CI is used when deploying to staging and production, [Travis CI](https://travis-ci.com/SplitTime/OpenSplitTime) is configured for open source contributions, if you are having a hard time setting up your local environment but still want to make contributions you can count on Travis to run the entire suite and confirm your changes are good.
+
+[![Build Status](https://travis-ci.com/SplitTime/OpenSplitTime.svg?branch=master)](https://travis-ci.com/cabello/OpenSplitTime)
 
 Support
 -------------------------
 
-Still having issues setting up your local environment? 
+Still having issues setting up your local environment?
 Create an [issue](https://github.com/SplitTime/OpenSplitTime/issues/new) with label `support` and we will try and help as best we can!
 
 Contributing

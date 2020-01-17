@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable
-  include Delegable
-  include SplitMethods
-  include LapsRequiredMethods
-  include TimeZonable
+  include Auditable, Delegable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -15,29 +11,29 @@ class Event < ApplicationRecord
   belongs_to :course
   belongs_to :event_group
   belongs_to :results_template
+  has_many :event_series_events, dependent: :destroy
+  has_many :event_series, through: :event_series_events
   has_many :efforts, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
   has_many :partners, through: :event_group
 
-  delegate :concealed, :concealed?, :visible?, :available_live, :available_live?, :auto_live_times, :auto_live_times?,
-           :organization, :organization_id, :permit_notifications?, to: :event_group
-  delegate :stewards, to: :organization
+  delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
+           :organization, :organization_id, :permit_notifications?, :home_time_zone, to: :event_group
 
-  validates_presence_of :course_id, :name, :start_time, :laps_required, :home_time_zone, :event_group_id, :results_template
-  validates_uniqueness_of :name, case_sensitive: false
-  validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id, allow_nil: true
-  validate :home_time_zone_exists
+  validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
+  validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
   validate :course_is_consistent
 
   before_validation :add_default_results_template
-  after_destroy :destroy_orphaned_event_group
+  before_validation :conform_changed_course
+  before_save :add_all_course_splits
   after_save :validate_event_group
+  after_destroy :destroy_orphaned_event_group
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
     search(search_param)
-        .select('events.*, COUNT(efforts.id) as effort_count')
         .left_joins(:efforts).left_joins(:event_group)
         .group('events.id, event_groups.id')
   end
@@ -70,31 +66,13 @@ class Event < ApplicationRecord
     event_group&.ordered_events
   end
 
-  def destroy_orphaned_event_group
-    event_group.reload
-
-    if events_within_group.empty?
-      event_group.destroy
-    end
-  end
-
-  def validate_event_group
-    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
-
-    unless event_group.valid?
-      event_group.errors.full_messages.each { |message| errors[:base] << message }
-      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
-    end
+  def name
+    event_group_name = event_group&.name || 'Nonexistent Event Group'
+    short_name ? "#{event_group_name} (#{short_name})" : event_group_name
   end
 
   def guaranteed_short_name
     short_name || name
-  end
-
-  def home_time_zone_exists
-    unless time_zone_valid?(home_time_zone)
-      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
-    end
   end
 
   def course_is_consistent
@@ -105,22 +83,6 @@ class Event < ApplicationRecord
 
   def to_s
     slug
-  end
-
-  def reconciled_efforts
-    efforts.where.not(person_id: nil)
-  end
-
-  def unreconciled_efforts
-    efforts.where(person_id: nil)
-  end
-
-  def unreconciled_efforts?
-    unreconciled_efforts.present?
-  end
-
-  def set_all_course_splits
-    splits << course.splits
   end
 
   def split_times
@@ -152,7 +114,7 @@ class Event < ApplicationRecord
   end
 
   def finished?
-    ranked_efforts.present? && ranked_efforts.none?(&:in_progress?)
+    ranked_efforts.present? && ranked_efforts.any?(&:started?) && ranked_efforts.none?(&:in_progress?)
   end
 
   def ranked_efforts(args = {})
@@ -174,9 +136,44 @@ class Event < ApplicationRecord
     @ordered_aid_stations ||= aid_stations.sort_by(&:distance_from_start)
   end
 
+  def should_generate_new_friendly_id?
+    slug.blank? || short_name_changed? || event_group&.name_changed?
+  end
+
   private
 
   def add_default_results_template
     self.results_template ||= ResultsTemplate.default
+  end
+
+  def conform_changed_course
+    if persisted? && course_id_changed?
+      response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
+      response.errors.each { |error| errors.add(:base, error[:title]) }
+      response.successful?
+    end
+  end
+
+  def destroy_orphaned_event_group
+    event_group.reload
+
+    if events_within_group.empty?
+      event_group.destroy
+    end
+  end
+
+  def add_all_course_splits
+    if splits.empty?
+      splits << course.splits
+    end
+  end
+
+  def validate_event_group
+    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
+
+    unless event_group.valid?
+      errors.merge!(event_group.errors)
+      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
+    end
   end
 end

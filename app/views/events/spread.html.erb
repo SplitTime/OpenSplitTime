@@ -11,7 +11,9 @@
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% if @presenter.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
             <li class="breadcrumb-item"><%= @presenter.event.guaranteed_short_name %></li>
             <li class="breadcrumb-item active">Full results</li>
           </ul>
@@ -78,7 +80,7 @@
 
       <tbody>
       <% @presenter.effort_times_rows.each do |row| %>
-        <tr>
+        <tr id="<%= "effort_#{row.id}" %>">
           <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
           <td><%= row.bib_number %></td>
           <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>

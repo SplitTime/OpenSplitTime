@@ -6,7 +6,7 @@ class EventGroupTrafficPresenter < BasePresenter
   ROW_LIMIT = 500
 
   attr_reader :event_group, :band_width
-  delegate :name, :organization, :events, :home_time_zone, :available_live, :multiple_events?, to: :event_group
+  delegate :name, :organization, :events, :home_time_zone, :start_time_local, :available_live, :multiple_events?, to: :event_group
 
   def initialize(event_group, params, band_width)
     @event_group = event_group
@@ -26,6 +26,8 @@ class EventGroupTrafficPresenter < BasePresenter
 
   def table_title
     case
+    when split.nil?
+      "Unknown split."
     when query_result.empty?
       "No entrants have arrived at this aid station."
     when row_limit_exceeded?
@@ -36,11 +38,11 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def sub_split_kinds
-    @sub_split_kinds ||= split.sub_split_kinds.map { |kind| kind.downcase.to_sym }
+    @sub_split_kinds ||= split ? split.sub_split_kinds.map { |kind| kind.downcase.to_sym } : []
   end
 
   def event
-    events.first
+    event_group.first_event
   end
 
   def totals(kind)

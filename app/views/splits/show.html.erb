@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Show split - #{@presenter.base_name}" %>
+  <% "OpenSplitTime: Show split - #{@presenter.base_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,7 +7,8 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @presenter.base_name %></strong> - <%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h1>
+          <h1><strong><%= @presenter.base_name %></strong>
+            - <%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item">Courses</li>
             <li class="breadcrumb-item"><%= link_to @presenter.course.name, course_path(@presenter.course, display_style: :splits) %></li>
@@ -33,19 +34,19 @@
     <!-- Navigation -->
   </div>
 </header>
-  
+
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
       <div class="col-12 col-sm-7">
         <div>
           <% if current_user&.authorized_to_edit?(@presenter.split) %>
-              <%= link_to 'Edit Split', edit_split_path(@presenter.split), class: "btn btn-primary" %>
-              <%= link_to 'Delete Split',
-                          split_path(@presenter.split),
-                          method: :delete,
-                          data: {confirm: "Are you sure?"},
-                          class: "btn btn-danger" %>
+            <%= link_to 'Edit Split', edit_split_path(@presenter.split), class: "btn btn-primary" %>
+            <%= link_to 'Delete Split',
+                        split_path(@presenter.split),
+                        method: :delete,
+                        data: {confirm: "Are you sure?"},
+                        class: "btn btn-danger" %>
           <% end %>
         </div>
       </div>
@@ -55,8 +56,10 @@
 
 <article class="ost-article container">
   <% if @presenter.latitude && @presenter.longitude %>
-    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
-         data-locations="<%= [@presenter.split].to_json %>"
-         data-track-points="<%= @presenter.track_points.to_json %>"></div>
+    <div id="map" style="width: 100%; height: 350px;"
+         data-controller="maps"
+         data-target="maps.mapInfo"
+         data-course-id="<%= @presenter.course_id %>"
+         data-split-id="<%= @presenter.id %>"></div>
   <% end %>
 </article>

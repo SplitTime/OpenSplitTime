@@ -69,13 +69,13 @@ RSpec.describe Interactors::ChangeEffortEvent do
         expect(effort.ordered_split_times.map(&:time_point)).to match_array(time_points)
       end
 
-      it 'raises an error if distances do not coincide' do
+      it 'raises an error if split names do not coincide' do
         split = new_event.ordered_splits.second
-        split.update(distance_from_start: split.distance_from_start - 1)
+        split.update(base_name: split.base_name + '123')
         new_event.reload
         response = subject.perform!
         expect(response).not_to be_successful
-        expect(response.errors.first[:detail][:messages]).to include(/distances do not coincide/)
+        expect(response.errors.first[:detail][:messages]).to include(/split names do not coincide/)
       end
 
       it 'raises an error if sub_splits do not coincide' do

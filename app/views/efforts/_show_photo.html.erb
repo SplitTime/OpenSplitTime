@@ -1,1 +1,1 @@
-<%= link_to image_tag(@effort.photo.url(:medium)), {action: :show} %>
+<%= link_to image_tag(@effort.photo.variant(resize: '500x500')), {action: :show} %>

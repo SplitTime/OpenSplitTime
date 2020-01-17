@@ -14,33 +14,32 @@ class Effort < ApplicationRecord
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
-  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time
+  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
 
-  belongs_to :event
+  belongs_to :event, counter_cache: true
   belongs_to :person
   has_many :split_times, dependent: :destroy
-  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
+  has_many :notifications, dependent: :destroy
+  has_one_attached :photo
 
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :points
-  attr_writer :last_reported_split_time, :event_start_time
+  attr_writer :last_reported_split_time, :event_start_time, :template_age
 
   alias_attribute :participant_id, :person_id
   delegate :event_group, :events_within_group, to: :event
   delegate :organization, :concealed?, to: :event_group
-  delegate :stewards, to: :organization
 
-  validates_presence_of :event_id, :first_name, :last_name, :gender
+  validates_presence_of :event, :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
-  validates_attachment :photo,
-                       content_type: {content_type: %w(image/png image/jpeg)},
-                       file_name: {matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/]},
-                       size: {in: 0..2000.kilobytes}
+  validates :photo,
+            content_type: %w(image/png image/jpeg),
+            size: {less_than: 5000.kilobytes}
 
   before_save :reset_age_from_birthdate
 
@@ -54,8 +53,8 @@ class Effort < ApplicationRecord
   scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
   scope :add_ready_to_start, -> do
-    select('distinct on (efforts.id) efforts.*, (split_times.id is null and checked_in is true and (events.start_time < current_timestamp)) as ready_to_start')
-        .left_joins(split_times: :split)
+    select('distinct on (efforts.id) efforts.*, coalesce(scheduled_start_time, events.start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
+        .left_joins(:event, split_times: :split)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
 
@@ -95,7 +94,7 @@ class Effort < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.name_changed?
+    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.short_name_changed? || event_group&.name_changed?
   end
 
   def reset_age_from_birthdate
@@ -109,7 +108,11 @@ class Effort < ApplicationRecord
   end
 
   def calculated_start_time
-    actual_start_time || scheduled_start_time || event_start_time
+    actual_start_time || assumed_start_time
+  end
+
+  def assumed_start_time
+    attributes['assumed_start_time'] || scheduled_start_time || event_start_time
   end
 
   def event_start_time
@@ -122,6 +125,11 @@ class Effort < ApplicationRecord
 
   def scheduled_start_offset
     @scheduled_start_offset ||= (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
+  end
+
+  def scheduled_start_offset=(seconds)
+    return unless seconds.present? && event_start_time
+    self.scheduled_start_time = event_start_time + seconds.to_i
   end
 
   def event_name
@@ -257,12 +265,12 @@ class Effort < ApplicationRecord
     person_id.nil?
   end
 
-  def set_data_status
-    Interactors::UpdateEffortsStatus.perform!(self)
-  end
-
   def enriched
     event.efforts.ranked_with_status.find { |e| e.id == id }
+  end
+
+  def template_age
+    @template_age || age
   end
 
   # Methods related to stopped split_time

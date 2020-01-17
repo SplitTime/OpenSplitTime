@@ -5,10 +5,6 @@ partner_5:
   weight: 1
   created_at: '2017-06-14 14:23:53.474866'
   updated_at: '2018-06-10 11:31:53.304523'
-  banner_file_name: HR100-Partner-Black-Diamond-Banner.png
-  banner_content_type: image/png
-  banner_file_size: 459918
-  banner_updated_at: '2017-06-14 14:23:53.196112'
   name: Black Diamond Equipment
   event_group_id: 19
 partner_6:
@@ -17,9 +13,5 @@ partner_6:
   weight: 100
   created_at: '2018-06-11 10:24:00.962529'
   updated_at: '2018-06-11 10:24:00.962529'
-  banner_file_name: 
-  banner_content_type: 
-  banner_file_size: 
-  banner_updated_at: 
   name: BD
   event_group_id: 32

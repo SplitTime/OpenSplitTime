@@ -99,7 +99,8 @@ RSpec.describe Api::V1::CoursesController do
 
     via_login_and_jwt do
       context 'when provided data is valid' do
-        let(:params) { {data: {type: type, attributes: {name: 'Test Course'}}} }
+        let(:organization) { organizations(:hardrock) }
+        let(:params) { {data: {type: type, attributes: {name: 'Test Course', organization_id: organization.id}}} }
 
         it 'returns a successful json response' do
           make_request

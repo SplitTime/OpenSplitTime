@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'aws-sdk-sns'
+
 class SnsSubscriptionManager
 
   def self.generate(args)
@@ -74,7 +76,8 @@ class SnsSubscriptionManager
 
   def update
     response = sns_client.get_subscription_attributes(subscription_arn: subscription_arn)
-    attributes = response.attributes.underscore_keys
+
+    attributes = response.attributes.deep_transform_keys(&:underscore)
     if (attributes[:endpoint] == endpoint) && (attributes[:protocol] == protocol)
       subscription_arn
     else

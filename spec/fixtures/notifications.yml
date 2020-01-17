@@ -1,1 +1,1135 @@
---- {}
+---
+notification_1:
+  id: 1
+  effort_id: 16663
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:09.723887'
+  updated_at: '2019-08-18 02:21:09.723887'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_2:
+  id: 2
+  effort_id: 16667
+  distance: 0
+  bitkey: 1
+  follower_ids: "{4,3}"
+  created_at: '2019-08-18 02:21:39.637953'
+  updated_at: '2019-08-18 02:21:39.637953'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_3:
+  id: 3
+  effort_id: 16667
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3}"
+  created_at: '2019-08-18 02:21:39.643227'
+  updated_at: '2019-08-18 02:21:39.643227'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_4:
+  id: 4
+  effort_id: 16667
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.645936'
+  updated_at: '2019-08-18 02:21:39.645936'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_5:
+  id: 5
+  effort_id: 6805
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.649192'
+  updated_at: '2019-08-18 02:21:39.649192'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_6:
+  id: 6
+  effort_id: 16663
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{11,4}"
+  created_at: '2019-08-18 02:21:39.652401'
+  updated_at: '2019-08-18 02:21:39.652401'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_7:
+  id: 7
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{11}"
+  created_at: '2019-08-18 02:21:39.656086'
+  updated_at: '2019-08-18 02:21:39.656086'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_8:
+  id: 8
+  effort_id: 6805
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.659282'
+  updated_at: '2019-08-18 02:21:39.659282'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_9:
+  id: 9
+  effort_id: 16643
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.662004'
+  updated_at: '2019-08-18 02:21:39.662004'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_10:
+  id: 10
+  effort_id: 6693
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.665225'
+  updated_at: '2019-08-18 02:21:39.665225'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_11:
+  id: 11
+  effort_id: 6756
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.669213'
+  updated_at: '2019-08-18 02:21:39.669213'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_12:
+  id: 12
+  effort_id: 6695
+  distance: 0
+  bitkey: 1
+  follower_ids: "{1}"
+  created_at: '2019-08-18 02:21:39.672655'
+  updated_at: '2019-08-18 02:21:39.672655'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_13:
+  id: 13
+  effort_id: 16667
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{11,1}"
+  created_at: '2019-08-18 02:21:39.67564'
+  updated_at: '2019-08-18 02:21:39.67564'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_14:
+  id: 14
+  effort_id: 6782
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.678523'
+  updated_at: '2019-08-18 02:21:39.678523'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_15:
+  id: 15
+  effort_id: 16673
+  distance: 0
+  bitkey: 1
+  follower_ids: "{1,11}"
+  created_at: '2019-08-18 02:21:39.681017'
+  updated_at: '2019-08-18 02:21:39.681017'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_16:
+  id: 16
+  effort_id: 16673
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{1,11}"
+  created_at: '2019-08-18 02:21:39.683807'
+  updated_at: '2019-08-18 02:21:39.683807'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_17:
+  id: 17
+  effort_id: 16663
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.68646'
+  updated_at: '2019-08-18 02:21:39.68646'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_18:
+  id: 18
+  effort_id: 16643
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:21:39.688866'
+  updated_at: '2019-08-18 02:21:39.688866'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_19:
+  id: 19
+  effort_id: 6805
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{1}"
+  created_at: '2019-08-18 02:21:39.691243'
+  updated_at: '2019-08-18 02:21:39.691243'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_20:
+  id: 20
+  effort_id: 16648
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{3,1}"
+  created_at: '2019-08-18 02:21:39.693695'
+  updated_at: '2019-08-18 02:21:39.693695'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_21:
+  id: 21
+  effort_id: 16663
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{4}"
+  created_at: '2019-08-18 02:21:39.696204'
+  updated_at: '2019-08-18 02:21:39.696204'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_22:
+  id: 22
+  effort_id: 16643
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.594299'
+  updated_at: '2019-08-18 02:22:00.594299'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_23:
+  id: 23
+  effort_id: 16667
+  distance: 0
+  bitkey: 1
+  follower_ids: "{3,1}"
+  created_at: '2019-08-18 02:22:00.597465'
+  updated_at: '2019-08-18 02:22:00.597465'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_24:
+  id: 24
+  effort_id: 6695
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{4,1}"
+  created_at: '2019-08-18 02:22:00.600768'
+  updated_at: '2019-08-18 02:22:00.600768'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_25:
+  id: 25
+  effort_id: 6805
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.603909'
+  updated_at: '2019-08-18 02:22:00.603909'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_26:
+  id: 26
+  effort_id: 16643
+  distance: 0
+  bitkey: 1
+  follower_ids: "{3,1}"
+  created_at: '2019-08-18 02:22:00.606936'
+  updated_at: '2019-08-18 02:22:00.606936'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_27:
+  id: 27
+  effort_id: 6805
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.610213'
+  updated_at: '2019-08-18 02:22:00.610213'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_28:
+  id: 28
+  effort_id: 16673
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{1,11}"
+  created_at: '2019-08-18 02:22:00.613146'
+  updated_at: '2019-08-18 02:22:00.613146'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_29:
+  id: 29
+  effort_id: 16663
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{1}"
+  created_at: '2019-08-18 02:22:00.615828'
+  updated_at: '2019-08-18 02:22:00.615828'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_30:
+  id: 30
+  effort_id: 6780
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{3,11}"
+  created_at: '2019-08-18 02:22:00.619014'
+  updated_at: '2019-08-18 02:22:00.619014'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_31:
+  id: 31
+  effort_id: 6782
+  distance: 0
+  bitkey: 1
+  follower_ids: "{11,4}"
+  created_at: '2019-08-18 02:22:00.621946'
+  updated_at: '2019-08-18 02:22:00.621946'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_32:
+  id: 32
+  effort_id: 16667
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.624788'
+  updated_at: '2019-08-18 02:22:00.624788'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_33:
+  id: 33
+  effort_id: 6693
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.628353'
+  updated_at: '2019-08-18 02:22:00.628353'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_34:
+  id: 34
+  effort_id: 16673
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.631874'
+  updated_at: '2019-08-18 02:22:00.631874'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_35:
+  id: 35
+  effort_id: 6780
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.635056'
+  updated_at: '2019-08-18 02:22:00.635056'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_36:
+  id: 36
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3,4}"
+  created_at: '2019-08-18 02:22:00.637998'
+  updated_at: '2019-08-18 02:22:00.637998'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_37:
+  id: 37
+  effort_id: 6756
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.640948'
+  updated_at: '2019-08-18 02:22:00.640948'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_38:
+  id: 38
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3,11}"
+  created_at: '2019-08-18 02:22:00.64363'
+  updated_at: '2019-08-18 02:22:00.64363'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_39:
+  id: 39
+  effort_id: 16673
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:00.646174'
+  updated_at: '2019-08-18 02:22:00.646174'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_40:
+  id: 40
+  effort_id: 16648
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{4}"
+  created_at: '2019-08-18 02:22:00.648825'
+  updated_at: '2019-08-18 02:22:00.648825'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_41:
+  id: 41
+  effort_id: 6695
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{4,11}"
+  created_at: '2019-08-18 02:22:00.651511'
+  updated_at: '2019-08-18 02:22:00.651511'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_42:
+  id: 42
+  effort_id: 16673
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{11}"
+  created_at: '2019-08-18 02:22:03.740365'
+  updated_at: '2019-08-18 02:22:03.740365'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_43:
+  id: 43
+  effort_id: 6805
+  distance: 0
+  bitkey: 1
+  follower_ids: "{3,4}"
+  created_at: '2019-08-18 02:22:03.743891'
+  updated_at: '2019-08-18 02:22:03.743891'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_44:
+  id: 44
+  effort_id: 6693
+  distance: 0
+  bitkey: 1
+  follower_ids: "{4,1}"
+  created_at: '2019-08-18 02:22:03.74726'
+  updated_at: '2019-08-18 02:22:03.74726'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_45:
+  id: 45
+  effort_id: 6805
+  distance: 0
+  bitkey: 1
+  follower_ids: "{11,1}"
+  created_at: '2019-08-18 02:22:03.750294'
+  updated_at: '2019-08-18 02:22:03.750294'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_46:
+  id: 46
+  effort_id: 6756
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.753331'
+  updated_at: '2019-08-18 02:22:03.753331'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_47:
+  id: 47
+  effort_id: 16673
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.756028'
+  updated_at: '2019-08-18 02:22:03.756028'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_48:
+  id: 48
+  effort_id: 16657
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{11,1}"
+  created_at: '2019-08-18 02:22:03.758756'
+  updated_at: '2019-08-18 02:22:03.758756'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_49:
+  id: 49
+  effort_id: 16673
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.761502'
+  updated_at: '2019-08-18 02:22:03.761502'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_50:
+  id: 50
+  effort_id: 16643
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{11,1}"
+  created_at: '2019-08-18 02:22:03.764169'
+  updated_at: '2019-08-18 02:22:03.764169'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_51:
+  id: 51
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.767274'
+  updated_at: '2019-08-18 02:22:03.767274'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_52:
+  id: 52
+  effort_id: 6805
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.769888'
+  updated_at: '2019-08-18 02:22:03.769888'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_53:
+  id: 53
+  effort_id: 16648
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{3}"
+  created_at: '2019-08-18 02:22:03.772715'
+  updated_at: '2019-08-18 02:22:03.772715'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_54:
+  id: 54
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3}"
+  created_at: '2019-08-18 02:22:03.77572'
+  updated_at: '2019-08-18 02:22:03.77572'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_55:
+  id: 55
+  effort_id: 6695
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:22:03.778815'
+  updated_at: '2019-08-18 02:22:03.778815'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_56:
+  id: 56
+  effort_id: 16643
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{11,3}"
+  created_at: '2019-08-18 02:22:03.781889'
+  updated_at: '2019-08-18 02:22:03.781889'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_57:
+  id: 57
+  effort_id: 6780
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3,11}"
+  created_at: '2019-08-18 02:22:03.784907'
+  updated_at: '2019-08-18 02:22:03.784907'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_58:
+  id: 58
+  effort_id: 16667
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3,11}"
+  created_at: '2019-08-18 02:22:03.787679'
+  updated_at: '2019-08-18 02:22:03.787679'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_59:
+  id: 59
+  effort_id: 16673
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{3}"
+  created_at: '2019-08-18 02:22:03.790433'
+  updated_at: '2019-08-18 02:22:03.790433'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_60:
+  id: 60
+  effort_id: 16667
+  distance: 0
+  bitkey: 1
+  follower_ids: "{11}"
+  created_at: '2019-08-18 02:22:03.79304'
+  updated_at: '2019-08-18 02:22:03.79304'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_61:
+  id: 61
+  effort_id: 16657
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{3,11}"
+  created_at: '2019-08-18 02:22:03.795526'
+  updated_at: '2019-08-18 02:22:03.795526'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_62:
+  id: 62
+  effort_id: 6693
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.703434'
+  updated_at: '2019-08-18 02:23:49.703434'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_63:
+  id: 63
+  effort_id: 6693
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.70654'
+  updated_at: '2019-08-18 02:23:49.70654'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_64:
+  id: 64
+  effort_id: 6695
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.71005'
+  updated_at: '2019-08-18 02:23:49.71005'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_65:
+  id: 65
+  effort_id: 6695
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.712839'
+  updated_at: '2019-08-18 02:23:49.712839'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_66:
+  id: 66
+  effort_id: 16657
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.715634'
+  updated_at: '2019-08-18 02:23:49.715634'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_67:
+  id: 67
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.718365'
+  updated_at: '2019-08-18 02:23:49.718365'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_68:
+  id: 68
+  effort_id: 6782
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.721319'
+  updated_at: '2019-08-18 02:23:49.721319'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_69:
+  id: 69
+  effort_id: 16648
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.724003'
+  updated_at: '2019-08-18 02:23:49.724003'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_70:
+  id: 70
+  effort_id: 16648
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.727139'
+  updated_at: '2019-08-18 02:23:49.727139'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_71:
+  id: 71
+  effort_id: 6756
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.73015'
+  updated_at: '2019-08-18 02:23:49.73015'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_72:
+  id: 72
+  effort_id: 6695
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.732711'
+  updated_at: '2019-08-18 02:23:49.732711'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_73:
+  id: 73
+  effort_id: 16657
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.735305'
+  updated_at: '2019-08-18 02:23:49.735305'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_74:
+  id: 74
+  effort_id: 6780
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.737657'
+  updated_at: '2019-08-18 02:23:49.737657'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_75:
+  id: 75
+  effort_id: 6780
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.740214'
+  updated_at: '2019-08-18 02:23:49.740214'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_76:
+  id: 76
+  effort_id: 6780
+  distance: 4345
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.742797'
+  updated_at: '2019-08-18 02:23:49.742797'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_77:
+  id: 77
+  effort_id: 6782
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.745507'
+  updated_at: '2019-08-18 02:23:49.745507'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_78:
+  id: 78
+  effort_id: 6780
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.748012'
+  updated_at: '2019-08-18 02:23:49.748012'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_79:
+  id: 79
+  effort_id: 16648
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.75101'
+  updated_at: '2019-08-18 02:23:49.75101'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_80:
+  id: 80
+  effort_id: 16663
+  distance: 0
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.753972'
+  updated_at: '2019-08-18 02:23:49.753972'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 
+notification_81:
+  id: 81
+  effort_id: 6756
+  distance: 8690
+  bitkey: 1
+  follower_ids: "{}"
+  created_at: '2019-08-18 02:23:49.756949'
+  updated_at: '2019-08-18 02:23:49.756949'
+  created_by: 
+  updated_by: 
+  kind: 
+  topic_resource_key: 
+  subject: 
+  notice_text: 

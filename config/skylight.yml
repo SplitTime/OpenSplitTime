@@ -1,0 +1,2 @@
+#Turn off sql lexing errors
+log_sql_parse_errors: false

@@ -89,7 +89,7 @@ Rails.application.configure do
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
+  config.i18n.fallbacks = [I18n.default_locale]
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
@@ -100,19 +100,10 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.paperclip_defaults = {
-      storage: :s3,
-      preserve_files: true,
-      s3_credentials: {
-          bucket: ENV['S3_BUCKET'],
-          access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-          secret_access_key: ENV['AWS_SECRET_ACCESS_KEY'],
-          s3_region: ENV['AWS_REGION'],
-          s3_host_name: "s3-#{ENV['AWS_REGION']}.amazonaws.com",
-      }
-  }
-
   if ENV['MEMCACHEDCLOUD_SERVERS']
     config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
   end
+
+  # ActiveStorage
+  config.active_storage.service = :amazon
 end

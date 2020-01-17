@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'smarter_csv'
+
 module ETL::Extractors
   class CsvFileStrategy
     include ETL::Errors
@@ -20,6 +22,9 @@ module ETL::Extractors
       rows = SmarterCSV.process(file, remove_empty_values: false, row_sep: :auto, force_utf8: true,
                                 strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
       rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
+    rescue SmarterCSV::SmarterCSVException => exception
+      errors << smarter_csv_error(exception)
+      nil
     end
 
     private

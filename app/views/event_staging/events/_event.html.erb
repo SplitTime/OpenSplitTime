@@ -3,7 +3,7 @@
     <aside class="col-12">
       <h3>
         <strong>Provide Information About Your Event</strong>
-        <span class="help-tooltip pull-right" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="An Event is run on a Course. An Event happens once, while a Course can be reused for many Events."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip pull-right" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="An Event is run on a Course. An Event happens once, while a Course can be reused for many Events."><i class="fas fa-question-circle"></i></span>
       </h3>
       <p>Your event will be run on a Course and will belong to an Organization. You'll either use an existing Course or
         create one, and either use an existing Organization or create one.</p>
@@ -16,7 +16,7 @@
     <article class="col-12">
       <div class="form-group">
         <label class="required">What is your organization called?</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
         <div class="row">
           <div class="col-12 col-md-6 col-xl-7 pr-md-0">
             <resource-select id="organization-select" class="form-control" v-model="eventModel.eventGroup.organization" source="organizations?filter[editable]=true&sort=name">
@@ -36,7 +36,7 @@
         <div class="row">
           <div class="form-group col-12">
             <label class="required">Organization Name</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Name your Organization for the Events it organizes (like 'Hardrock 100' or for the company that organizes the Events (like 'Dirty 30 Running')."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Name your Organization for the Events it organizes (like 'Hardrock 100' or for the company that organizes the Events (like 'Dirty 30 Running')."><i class="fas fa-question-circle"></i></span>
             <input id="organization-name-field" type="text" class="form-control" placeholder="Your organization name" v-model="eventModel.eventGroup.organization.name" :disabled="!eventModel.eventGroup.organization.editable">
           </div>
           <div class="col-12" v-if="!eventModel.eventGroup.organization.id">
@@ -46,31 +46,31 @@
       </div>
       <div class="form-group">
         <label>Event Start Time</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="For an Event with multiple waves or differing start times, you will generally want to use the earliest start time."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="For an Event with multiple waves or differing start times, you will generally want to use the earliest start time."><i class="fas fa-question-circle"></i></span>
         <input-datetime v-model="eventModel.virtualStartTime"></input-datetime>
       </div>
       <div class="form-group">
         <label>Event Time Zone</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Some Tooltip"><i class="fas fa-question-circle"></i></span>
-        <select id="time-zone-select" class="form-control" v-model="eventModel.homeTimeZone">
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Some Tooltip"><i class="fas fa-question-circle"></i></span>
+        <select id="time-zone-select" class="form-control" v-model="eventModel.eventGroup.homeTimeZone">
           <option v-for="timeZone in timeZones" :value="timeZone.name">{{ timeZone.name }}&nbsp;[&nbsp;{{
             timeZone.offset }}&nbsp;]
           </option>
         </select>
       </div>
       <div class="form-group">
-        <label class="required">Event Name</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
-        <input id="event-name-field" type="text" class="form-control" placeholder="Your event name" v-model="eventModel.name" v-prefill="suggestedName()">
+        <label class="required">Event Group Name</label>
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
+        <input id="event-group-name-field" type="text" class="form-control" placeholder="Your event group name" v-model="eventModel.eventGroup.name" v-prefill="suggestedName()">
       </div>
       <div class="form-group">
         <label>Short Event Name</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Make a shorter name if this is one event in a group, for example, '50K' or '12 hour'."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Make a shorter name if this is one event in a group, for example, '50K' or '12 hour'."><i class="fas fa-question-circle"></i></span>
         <input id="event-short-name-field" type="text" class="form-control" placeholder="Short name" v-model="eventModel.shortName">
       </div>
       <div class="form-group event-info-course-row">
         <label for="event-start-time">Choose an existing course</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="fas fa-question-circle"></i></span>
         <div class="row">
           <div class="col-12 col-md-6 col-xl-7 pr-md-0">
             <resource-select id="course-select" class="form-control" v-model="eventModel.course" source="courses?filter[editable]=true&page[size]=100&sort=name">
@@ -90,12 +90,12 @@
         <div class="row">
           <div class="form-group col-12">
             <label class="required">Course Name</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Give your Course a descriptive name that is appropriate for multiple Events. If your Event is the Trailrock 50 2017, this Course might be the Trailrock 50 Course."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Give your Course a descriptive name that is appropriate for multiple Events. If your Event is the Trailrock 50 2017, this Course might be the Trailrock 50 Course."><i class="fas fa-question-circle"></i></span>
             <input id="course-name-field" type="text" class="form-control" placeholder="Your course name" v-model="eventModel.course.name" v-prefill="(eventModel.eventGroup.organization) ? eventModel.eventGroup.organization.name + ' Course' : ''">
           </div>
           <div class="form-group col-12">
             <label class="required">Course Distance</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the distance of a single lap."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the distance of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-distance-field" type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 2 }" :scale="units.forDistance()"/>
               <span class="input-group-append"><span class="input-group-text">{{ units.distance }}</span></span>
@@ -103,7 +103,7 @@
           </div>
           <div class="form-group col-6">
             <label class="required">Total Vertical Gain</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical gain for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical gain of a single lap."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Cumulative vertical gain for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical gain of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-vert-gain-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
@@ -111,7 +111,7 @@
           </div>
           <div class="form-group col-6">
             <label class="required">Total Vertical Loss</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Cumulative vertical loss for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical loss of a single lap."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Cumulative vertical loss for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical loss of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-vert-loss-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
               <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
@@ -119,7 +119,7 @@
           </div>
           <div class="form-group col-12">
             <label>Description</label>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Provide an optional description of your Course here."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Provide an optional description of your Course here."><i class="fas fa-question-circle"></i></span>
             <textarea id="course-description-field" class="form-control" placeholder="Course Description" v-model="eventModel.course.description"></textarea>
           </div>
           <div class="col-12" v-if="!eventModel.course.id">
@@ -130,7 +130,7 @@
       <div class="row">
         <div class="form-group col-4">
           <label class="required">Multiple laps?</label>
-          <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Enable this feature only if your Event consists of multiple <strong>identical</strong> laps and you are keeping track of laps as such."><i class="fas fa-question-circle"></i></span>
+          <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Enable this feature only if your Event consists of multiple <strong>identical</strong> laps and you are keeping track of laps as such."><i class="fas fa-question-circle"></i></span>
 
           <div class="form-inline">
             <label class="switchery-label">
@@ -143,7 +143,7 @@
         </div>
         <div v-show="eventModel.laps" class="form-group col-8">
           <label class="required">How many laps?</label>
-          <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Use 0 for a time-based event having unlimited laps."><i class="fas fa-question-circle"></i></span>
+          <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Use 0 for a time-based event having unlimited laps."><i class="fas fa-question-circle"></i></span>
           <input type="text" class="form-control" v-model.number="eventModel.lapsRequired" v-mask="{ alias: 'integer' }">
         </div>
       </div>

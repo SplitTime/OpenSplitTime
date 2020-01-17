@@ -70,28 +70,4 @@ RSpec.describe Person, type: :model do
       expect(person).to be_valid
     end
   end
-
-  describe '#should_be_concealed?' do
-    let(:concealed_event_group) { event_groups(:sum) }
-    let(:visible_event_group) { event_groups(:dirty_30) }
-    let(:concealed_effort) { concealed_event_group.efforts.first }
-    let(:visible_effort) { visible_event_group.efforts.first }
-
-    before { concealed_event_group.update(concealed: true) }
-
-    it 'returns true if all efforts associated with the person are concealed' do
-      person = Person.new(efforts: [concealed_effort])
-      expect(person.should_be_concealed?).to eq(true)
-    end
-
-    it 'returns false if any efforts associated with the person are visible' do
-      person = Person.new(efforts: [concealed_effort, visible_effort])
-      expect(person.should_be_concealed?).to eq(false)
-    end
-
-    it 'returns false if no efforts are associated with the person' do
-      person = Person.new(efforts: [])
-      expect(person.should_be_concealed?).to eq(false)
-    end
-  end
 end

@@ -8,7 +8,8 @@ RSpec.describe LapSplitRow, type: :model do
   let(:show_laps) { false }
 
   let(:course) { Course.new(name: 'Test Course 100') }
-  let(:event) { Event.new(name: 'Test Event 2015', course: course, start_time: "2015-07-01 06:00:00", home_time_zone: 'Mountain Time (US & Canada)', laps_required: 1) }
+  let(:event) { Event.new(course: course, event_group: event_group, start_time: '2015-07-01 06:00:00', laps_required: 1) }
+  let(:event_group) { EventGroup.new(home_time_zone: 'Mountain Time (US & Canada)')}
 
   let(:effort) { Effort.new(event: event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
 

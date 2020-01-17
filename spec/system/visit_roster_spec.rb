@@ -54,16 +54,16 @@ RSpec.describe 'visit an event group roster page and try various features' do
   end
 
   def search_button
-    find('[type=submit]')
+    find('#roster-search-submit')
   end
 
   def verify_links_present
-    expect(page).to have_content(event_group.name)
-    all_efforts.each { |effort| expect(page).to have_link(effort.full_name, href: effort_path(effort)) }
+    verify_content_present(event_group)
+    all_efforts.each { |effort| verify_link_present(effort, :full_name) }
   end
 
   def verify_single_link_present
-    expect(page).to have_link(effort_1.full_name, href: effort_path(effort_1))
-    other_efforts.each { |effort| expect(page).not_to have_content(effort.full_name) }
+    verify_link_present(effort_1, :full_name)
+    other_efforts.each { |effort| verify_content_absent(effort, :full_name) }
   end
 end

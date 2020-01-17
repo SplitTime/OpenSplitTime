@@ -27,6 +27,10 @@ module Locatable
     self.longitude = other.longitude
   end
 
+  def has_location?
+    location.present?
+  end
+
   protected
 
   def distance_threshold

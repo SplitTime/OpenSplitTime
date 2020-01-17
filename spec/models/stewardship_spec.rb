@@ -19,7 +19,7 @@ RSpec.describe Stewardship, type: :model do
 
     it 'should be invalid' do
       expect(stewardship).not_to be_valid
-      expect(stewardship.errors[:user_id]).to include("can't be blank")
+      expect(stewardship.errors[:user]).to include("can't be blank")
     end
   end
 
@@ -28,7 +28,7 @@ RSpec.describe Stewardship, type: :model do
 
     it 'should be invalid without an organization_id' do
       expect(stewardship).not_to be_valid
-      expect(stewardship.errors[:organization_id]).to include("can't be blank")
+      expect(stewardship.errors[:organization]).to include("can't be blank")
     end
   end
 end

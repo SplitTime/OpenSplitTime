@@ -22,6 +22,7 @@ module Interactors
     def perform!
       unless errors.present?
         event.course = new_course
+        event.splits = new_course.splits
         split_times.each { |st| st.split = old_new_split_map[st.split_id] }
         save_changes
       end
@@ -34,17 +35,16 @@ module Interactors
 
     def save_changes
       ActiveRecord::Base.transaction do
-        event.splits = old_new_split_map.values
         save_without_validation(event)
-        split_times.each { |st| save_without_validation(st) }
+        split_times.each(&method(:save_without_validation))
         validate_resource(event)
-        split_times.each { |st| validate_resource(st) }
+        split_times.each(&method(:validate_resource))
         raise ActiveRecord::Rollback if errors.present?
       end
     end
 
     def save_without_validation(resource)
-      resource.save(validate: false) if resource.changed?
+      resource.save(validate: false)
     end
 
     def validate_resource(resource)
@@ -56,7 +56,7 @@ module Interactors
     end
 
     def matching_new_split(existing_split)
-      new_course.splits.find { |split| split.distance_from_start == existing_split.distance_from_start }
+      new_course.splits.find { |split| split.parameterized_base_name == existing_split.parameterized_base_name }
     end
 
     def response_message
@@ -65,8 +65,8 @@ module Interactors
     end
 
     def verify_compatibility
-      errors << distance_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
-      errors << sub_split_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id].sub_split_bitkeys.include?(st.bitkey) }
+      errors << split_name_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
+      errors << sub_split_mismatch_error(event, new_course) unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
     end
   end
 end

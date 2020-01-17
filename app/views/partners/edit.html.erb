@@ -1,6 +1,26 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit partner - #{@partner.name}" %>
+  <% "OpenSplitTime: Edit Partner - #{@partner.name}" %>
 <% end %>
-<h1 align="center">Edit Partner</h1>
 
-<%= render 'form' %>
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Edit Partner - <%= @partner.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @partner.organization.name, organization_path(@partner.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @partner.event_group.name, event_group_path(@partner.event_group) %></li>
+            <li class="breadcrumb-item">Partners</li>
+            <li class="breadcrumb-item">Edit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+</article>

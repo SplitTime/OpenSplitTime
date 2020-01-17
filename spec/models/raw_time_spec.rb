@@ -30,6 +30,19 @@ RSpec.describe RawTime, type: :model do
       end
     end
 
+    context 'when split_name is valid and bib_number is valid but has one or more 0s on the front' do
+      let(:bib_number_1) { "0#{event_1_efforts.first.bib_number}"}
+      let(:bib_number_2) { "00#{event_1_efforts.second.bib_number}"}
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: course_1_split.base_name) }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: bib_number_2, split_name: course_1_split.base_name) }
+
+      it 'returns raw_times with correct effort_ids associated' do
+        raw_times = RawTime.where(id: [raw_time_1, raw_time_2]).with_relation_ids
+        efforts = event_1_efforts
+        expect(raw_times.map(&:effort_id)).to match_array(efforts.map(&:id))
+      end
+    end
+
     context 'when split_name is valid but bib_number is not valid' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '9999', split_name: course_1_split.base_name) }
 

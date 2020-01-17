@@ -32,6 +32,9 @@
       <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'events'}" do
         link_to 'Events', request.params.merge(display_style: 'events')
       end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'event_series'}" do
+        link_to 'Event Series', request.params.merge(display_style: 'event_series')
+      end %>
       <% if current_user&.authorized_fully?(@presenter.organization) %>
         <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stewards'}" do
           link_to 'Stewards', request.params.merge(display_style: 'stewards')
@@ -41,7 +44,8 @@
   </div>
 </header>
 
-<% if @presenter.display_style == 'courses' %>
+<% case @presenter.display_style %>
+<% when 'courses' %>
   <article class="ost-article container">
     <% if @presenter.courses.present? %>
       <%= render 'courses/courses', courses: @presenter.courses %>
@@ -49,7 +53,7 @@
       <h4>No courses are associated with this organization.</h4>
     <% end %>
   </article>
-<% elsif @presenter.display_style == 'stewards' %>
+<% when 'stewards' %>
   <% if current_user&.authorized_fully?(@presenter.organization) %>
 
     <aside class="ost-toolbar">
@@ -74,6 +78,26 @@
       <h4>Not authorized.</h4>
     </article>
   <% end %>
+
+<% when 'event_series' %>
+
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col offset-md-6 col-md-6">
+          <%= link_to fa_icon('plus', text: 'Add'), new_event_series_path(organization: @presenter.organization), id: 'add-event-series', class: 'btn btn-success' %>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <article class="ost-article container">
+    <% if @presenter.event_series.present? %>
+      <%= render 'event_series_list', event_series: @presenter.event_series %>
+    <% else %>
+      <h4>No event series are associated with this organization.</h4>
+    <% end %>
+  </article>
 
 <% else %>
   <article class="ost-article container">

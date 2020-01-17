@@ -1,0 +1,13 @@
+<div class="card">
+  <h4 class="card-header">Improving Performance</h4>
+  <div class="card-body">
+    <p>The more data you request, the longer the response time is likely to be, particularly when many child records are
+      included in your response. Smaller, targeted requests will naturally be faster. Always use an individual record
+      query instead of an index query when you know the id of the record for which you are querying.</p>
+    <p>The OpenSplitTime API also supports the <code>filter</code> and <code>fields</code> limiters per
+      the <%= link_to 'JSON API standard', 'https://jsonapi.org', target: '_blank' %>. Please be judicious in your use,
+      and <strong>limit the records and fields you request to data that is needed for your project</strong>. This will
+      reduce the load on the OpenSplitTime servers and result in faster response times for your project.</p>
+  </div>
+</div>
+<br/>

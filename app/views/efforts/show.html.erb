@@ -17,29 +17,16 @@
               <%= @presenter.full_name %>
             <% end %>
           </strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.event_group.organization.name, organization_path(@presenter.event_group.organization) %></li>
-            <% if @presenter.event_group.multiple_events? %>
-              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
-            <% end %>
-            <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
-            <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
-          </ul>
+          <%= effort_view_breadcrumbs(@presenter, nil) %>
         </div>
         <div class="ost-subtitle">
-          <h6>
-            <strong>Status:</strong>
-            <%= @presenter.finish_status %>
-            <%= "• #{@presenter.overall_rank.ordinalize} Place " if @presenter.overall_rank %>
-            <%= "• #{@presenter.gender_rank.ordinalize} #{@presenter.gender.titleize}" if @presenter.gender_rank %>
-            <%= "• Bib ##{@presenter.bib_number}" if @presenter.bib_number %>
-          </h6>
+          <%= effort_start_time_string(@presenter) %>
+          <%= effort_view_status(@presenter) %>
         </div>
       </div>
-      <% if @presenter.photo.present? %>
+      <% if @presenter.photo.attached? %>
         <div class="col-3">
-          <%= link_to image_tag(@presenter.photo.url(:thumb)), {action: :show_photo} %>
+          <%= link_to image_tag(@presenter.photo.variant(resize: '150x150')), {action: :show_photo} %>
         </div>
       <% end %>
       <%= render 'subscription_buttons', view_object: @presenter %>
@@ -48,7 +35,9 @@
   </div>
 </header>
 
-<aside class="ost-toolbar">
+<aside class="ost-toolbar" data-controller="roster">
+  <%= render 'event_groups/start_efforts_modal', resource: :effort %>
+
   <div class="container">
     <div class="row">
 
@@ -57,18 +46,16 @@
           <div>
             <%= effort_actions_dropdown_menu(@presenter) %>
             <% unless @presenter.has_start_time? %>
-              <%= link_to 'Start effort', start_effort_path(@presenter.effort),
-                          method: :put,
-                          class: "btn btn-success" %>
+              <%= link_to_start_effort(@presenter) %>
             <% end %>
             <% if @presenter.needs_final_stop? %>
               <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
-                          method: :put,
+                          method: :patch,
                           class: "btn btn-success" %>
             <% end %>
             <% if @presenter.has_removable_stop? %>
               <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
-                          method: :put,
+                          method: :patch,
                           class: "btn btn-success" %>
             <% end %>
             <% if @presenter.next_problem_effort %>

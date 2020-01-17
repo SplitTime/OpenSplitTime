@@ -12,6 +12,12 @@ class ResultsCategory < ApplicationRecord
   validate :gender_present?
 
   attr_accessor :efforts
+  attribute :invalid_efforts, :boolean
+
+  def self.invalid_category(attributes = {})
+    standard_attributes = {name: 'Invalid Efforts', male: true, female: true, invalid_efforts: true}
+    new(standard_attributes.merge(attributes))
+  end
 
   def age_range
     (low_age || 0)..(high_age || INF)
@@ -27,6 +33,27 @@ class ResultsCategory < ApplicationRecord
 
   def all_genders?
     male? && female?
+  end
+
+  def description
+    "#{gender_description} #{age_description}"
+  end
+
+  def age_description
+    case
+    when all_ages?
+      'all ages'
+    when age_range.begin == 0
+      "up to #{high_age}"
+    when age_range.end == INF
+      "#{low_age} and up"
+    else
+      "#{low_age} to #{high_age}"
+    end
+  end
+
+  def gender_description
+    genders.map(&:titleize).to_sentence
   end
 
   private

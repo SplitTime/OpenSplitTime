@@ -12,8 +12,7 @@ class Person < ApplicationRecord
   enum gender: [:male, :female]
   has_many :efforts, dependent: :nullify
   belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
-
-  has_attached_file :photo, styles: {medium: '640x480>', small: '320x240>', thumb: '160x120>'}, default_url: ':style/missing_person_photo.png'
+  has_one_attached :photo
 
   attr_accessor :suggested_match
 
@@ -29,10 +28,6 @@ class Person < ApplicationRecord
             format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
-  validates_attachment :photo,
-                       content_type: { content_type: %w(image/png image/jpeg)},
-                       file_name: { matches: [/png\z/, /jpe?g\z/, /PNG\z/, /JPE?G\z/] },
-                       size: { in: 0..2000.kilobytes }
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
@@ -78,10 +73,6 @@ class Person < ApplicationRecord
 
   def claimed?
     claimant.present?
-  end
-
-  def should_be_concealed?
-    efforts.present? && efforts.all?(&:concealed?) # This avoids an n + 1 query when called from EventConcealedSetter
   end
 
   def most_likely_duplicate

@@ -95,13 +95,6 @@ RSpec.describe ProtoRecord, type: :model do
     end
   end
 
-  describe '#resource_attributes' do
-    it 'returns attributes in the format returned by the record_class' do
-      pr = ProtoRecord.new(record_type: :raw_time, bib_number: '101', absolute_time: '2017-10-31 08:00:00-06:00', sub_split_kind: 'in')
-      expect(pr.resource_attributes).to eq(bib_number: '101', absolute_time: '2017-10-31 14:00:00 +0000', sub_split_kind: 'In')
-    end
-  end
-
   describe '#transform_as' do
     let(:pr) { ProtoRecord.new(attributes) }
     before { pr.transform_as(model, options) }
@@ -110,7 +103,8 @@ RSpec.describe ProtoRecord, type: :model do
       let(:model) { :effort }
       let(:attributes) { {sex: 'M', country: 'United States', state: 'California', birthdate: '09/01/66'} }
       let(:options) { {event: event} }
-      let(:event) { Event.new(id: 1, start_time: start_time) }
+      let(:event) { Event.new(id: 1, start_time: start_time, event_group: event_group) }
+      let(:event_group) { EventGroup.new(home_time_zone: 'Pacific Time (US & Canada)' )}
       let(:start_time) { '2018-06-30 08:00:00' }
 
       it 'sets the record type and normalizes data' do

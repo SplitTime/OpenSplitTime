@@ -20,6 +20,91 @@ RSpec.describe User, type: :model do
     expect(user.valid?).to be_falsey
   end
 
+  describe '#normalize_phone' do
+    subject(:user) { build(:user, phone: phone) }
+    let(:normalized_phone) { '+12025551212' }
+
+    context 'when phone is a standard US or Canada number with +1 prefix' do
+      let(:phone) { '+12025551212' }
+
+      it 'does not change phone and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with 1 prefix' do
+      let(:phone) { '12025551212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number without + or 1 prefix' do
+      let(:phone) { '2025551212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with +1 prefix and parentheses, spaces, and dashes' do
+      let(:phone) { '+1 (202) 555-1212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a standard US or Canada number with parentheses, spaces, and dashes' do
+      let(:phone) { '(202) 555-1212' }
+
+      it 'normalizes phone number and user is valid' do
+        user.validate
+        expect(user.phone).to eq(normalized_phone)
+        expect(user).to be_valid
+      end
+    end
+
+    context 'when phone is a nonstandard number' do
+      let(:phone) { '555-1212' }
+
+      it 'attempts to normalize phone number and user is not valid' do
+        user.validate
+        expect(user.phone).to eq('5551212')
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'when phone is nonsensical' do
+      let(:phone) { 'hello234' }
+
+      it 'attempts to normalize phone number and user is not valid' do
+        user.validate
+        expect(user.phone).to eq('234')
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'when phone contains no numeric data' do
+      let(:phone) { 'hello' }
+
+      it 'eliminates the data and user is valid' do
+        user.validate
+        expect(user.phone).to be_nil
+        expect(user).to be_valid
+      end
+    end
+  end
+
   describe '#interests' do
     let(:user_1) { users(:third_user) }
     let(:subject_people) { people.first(2) }
@@ -137,31 +222,16 @@ RSpec.describe User, type: :model do
     let(:event_group) { build_stubbed(:event_group, organization: organization) }
     let(:event) { build_stubbed(:event, event_group: event_group) }
     let(:effort) { build_stubbed(:effort, event: event) }
+    let(:split_time) { build_stubbed(:split_time, effort: effort) }
 
     context 'when the user is a steward' do
       let(:stewards) { [subject] }
 
-      context 'when the provided resource is an Organization' do
-        it 'returns true' do
-          expect(subject.steward_of?(organization)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an EventGroup' do
-        it 'returns true' do
-          expect(subject.steward_of?(event_group)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an Event' do
-        it 'returns true' do
-          expect(subject.steward_of?(event)).to eq(true)
-        end
-      end
-
-      context 'when the provided resource is an Effort' do
-        it 'returns true' do
-          expect(subject.steward_of?(effort)).to eq(true)
+      [:organization, :event_group, :event, :effort, :split_time].each do |resource|
+        context "when the provided resource is a/an #{resource}" do
+          it 'returns true' do
+            expect(subject.steward_of?(send(resource))).to eq(true)
+          end
         end
       end
     end
@@ -169,37 +239,20 @@ RSpec.describe User, type: :model do
     context 'when the user is not a steward' do
       let(:stewards) { [] }
 
-      context 'when the provided resource is an Organization' do
-        it 'returns false' do
-          expect(subject.steward_of?(organization)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an EventGroup' do
-        it 'returns false' do
-          expect(subject.steward_of?(event_group)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an Event' do
-        it 'returns false' do
-          expect(subject.steward_of?(event)).to eq(false)
-        end
-      end
-
-      context 'when the provided resource is an Effort' do
-        it 'returns false' do
-          expect(subject.steward_of?(effort)).to eq(false)
+      [:organization, :event_group, :event, :effort, :split_time].each do |resource|
+        context "when the provided resource is a/an #{resource}" do
+          it 'returns false' do
+            expect(subject.steward_of?(send(resource))).to eq(false)
+          end
         end
       end
     end
 
     context 'when the provided resource does not implement :stewards' do
-      let(:split_time) { build_stubbed(:split_time, effort: effort) }
-      let(:stewards) { [subject] }
+      let(:user) { build_stubbed(:user) }
 
       it 'returns false' do
-        expect(subject.steward_of?(split_time)).to eq(false)
+        expect(subject.steward_of?(user)).to eq(false)
       end
     end
   end

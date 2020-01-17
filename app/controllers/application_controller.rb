@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
   helper_method :prepared_params
 
+  impersonates :user
+
   if Rails.env.development? | Rails.env.test?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit

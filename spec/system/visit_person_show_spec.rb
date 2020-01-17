@@ -21,8 +21,6 @@ RSpec.describe 'visit a person show page' do
   end
 
   def verify_efforts
-    person.efforts.each do |effort|
-      expect(page).to have_link(effort.event_name, href: effort_path(effort))
-    end
+    person.efforts.each { |effort| verify_link_present(effort, :event_name) }
   end
 end

@@ -515,6 +515,7 @@
                 });
 
                 $('#js-bib-number').on('blur', function () {
+                    liveEntry.liveEntryForm.stripBibLeadingZeros();
                     liveEntry.liveEntryForm.updateEffortInfo();
                     liveEntry.liveEntryForm.enrichTimeData();
                 });
@@ -684,6 +685,15 @@
                     }
                 }
                 highlightSplit();
+            },
+
+            stripBibLeadingZeros: function() {
+                let $element = $('#js-bib-number');
+                let str = $element.val();
+
+                if (str !== '0') {
+                    $element.val(str.replace(/^0+/, ''))
+                }
             },
 
             /**

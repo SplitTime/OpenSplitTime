@@ -11,9 +11,9 @@
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <% if @presenter.organization %>
-              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
             <% end %>
-            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item"><%= @presenter.name %></li>
             <li class="breadcrumb-item active"><%= @presenter.display_style.titleize %></li>
           </ul>
         </div>
@@ -47,8 +47,7 @@
 <article class="ost-article container">
   <% if @presenter.course_has_location_data? %>
     <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
-         data-locations="<%= @presenter.ordered_splits.to_json %>"
-         data-track-points="<%= @presenter.track_points.to_json %>"></div>
+         data-course-id="<%= @presenter.id %>"></div>
   <% end %>
   <br/>
 

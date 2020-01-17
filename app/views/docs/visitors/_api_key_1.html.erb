@@ -1,0 +1,24 @@
+<div class="card">
+  <h4 class="card-header">API Keys</h4>
+  <div class="card-body">
+    <p>Once you have an account, you will need to pass your credentials to the OpenSplitTime API authorization
+      endpoint to receive an API Key. Get an API Key by making a <code>POST</code> request to <code>/api/v1/auth</code>
+      with your user email and password, in this manner:</p>
+    <hr/>
+    <code>$ curl --data "user[email]=you@example.com&user[password]=yourpassword"
+      https://www.opensplittime.org/api/v1/auth</code>
+    <hr/>
+    <p>
+      Of course, you will need to replace <code>you@example.com</code> with your own email address and
+      <code>yourpassword</code> with your own password.
+      <strong>The examples in this guide use the LINUX <code>curl</code> utility, but you can use any utility capable of
+        creating an HTTP POST request.</strong></p>
+    <p>OpenSplitTime will return a JSON response that looks something this:</p>
+    <hr/>
+    <code>{"token":"eyJhb.GcJIUz.I1Ni", "expiration":"2019-10-19T04:20:18.407Z"}</code>
+    <hr/>
+    <p>The value of the <code>token</code> key is your API Key. In the example above, the API Key would be
+    <code>eyJhb.GcJIUz.I1Ni</code>.</p>
+  </div>
+</div>
+<br/>

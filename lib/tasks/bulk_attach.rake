@@ -17,23 +17,25 @@ namespace :bulk_attach do
 
     resources.each do |resource|
       current_resource = "#{resource.to_param}"
-      filename = args.path_prefix + resource.send(args.key_attribute).to_s + args.path_postfix
+      url = args.path_prefix + resource.send(args.key_attribute).to_s + args.path_postfix
 
       begin
-        puts "Assigning #{filename} to #{current_resource}"
-        resource.assign_attributes(attachment_attribute => URI.parse(filename))
+        puts "Assigning #{url} to #{current_resource}"
+
+        filename = File.basename(URI.parse(url).path)
+        file = URI.open(url)
+
+        if resource.send(attachment_attribute).attach(io: file, filename: filename)
+          puts "Attached #{attachment_attribute} for #{current_resource}"
+        else
+          puts "Could not attach #{attachment_attribute} for #{current_resource}"
+          puts resource.errors.full_messages
+          puts resource.attributes
+        end
       rescue OpenURI::HTTPError => e
         puts "Error opening #{filename}"
         puts e
         next
-      end
-
-      if resource.save
-        puts "Attached #{attachment_attribute} for #{current_resource}"
-      else
-        puts "Could not attach #{attachment_attribute} for #{current_resource}"
-        puts resource.errors.full_messages
-        puts resource.attributes
       end
     end
 

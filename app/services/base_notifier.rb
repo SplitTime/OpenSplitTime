@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'aws-sdk-sns'
+
 class BaseNotifier
   include Interactors::Errors
 

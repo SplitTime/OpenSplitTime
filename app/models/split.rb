@@ -3,11 +3,9 @@
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 50 # Distance (in meters) below which split locations are deemed equivalent
 
-  include Auditable
-  include Locatable
-  include GuaranteedFindable
-  include UnitConversions
+  include Auditable, Delegable, Locatable, GuaranteedFindable, UnitConversions
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   friendly_id :course_split_name, use: [:slugged, :history]
   enum kind: [:start, :finish, :intermediate]
@@ -15,6 +13,7 @@ class Split < ApplicationRecord
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
   has_many :events, through: :aid_stations
+  delegate :organization, :stewards, to: :course
 
   before_validation :parameterize_base_name
 

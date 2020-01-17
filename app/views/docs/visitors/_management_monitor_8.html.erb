@@ -1,0 +1,40 @@
+<div class="card">
+  <h4 class="card-header">Raw Times Splits</h4>
+  <div class="card-body">
+    <p>You can see all Raw Times for any single station by visiting the Raw Times Splits screen (<strong>Raw Times >
+      Splits</strong>). This screen lists each bib number for which Raw Times have been recorded. For each bib number,
+      it shows the Split Time (if any) for that bib number at the station, and it shows all Raw Times recorded for that
+      bib number at that station.</p>
+    <p><strong>For multi-lap Events, multiple Split Times will be shown (one for each lap).</strong></p>
+    <p>The rightmost column shows the discrepancy, meaning the largest time interval among the Split Time and all
+      related Raw Times. A large discrepancy usually indicates one or more problem Raw Times or a problem Split
+      Time.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Invalid Bib Numbers</h4>
+  <div class="card-body">
+    <p>The Raw Times Splits view lists all bib numbers for which Raw Times were submitted. This includes bib numbers
+      that <strong>should not appear at the particular station</strong> (for example, because a 50K Entrant was recorded
+      at a station that only 100K Entrants should visit). This also includes bib numbers that are <strong>entirely
+      invalid</strong>, because they were not issued to any Entrant or because they include a wildcard character (*).
+    </p>
+    <p>Invalid bib numbers often represent typographical errors or transposed numbers. When you are trying to fill holes
+      or otherwise solve problems in the final Event results, it is critical to have the full record of bib numbers,
+      <strong>both valid and invalid</strong>, recorded at each station.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Switching to the Effort Audit Screen</h4>
+  <div class="card-body">
+    <p>Raw Times Splits shows Raw Times <strong>for all entrants at a single aid station</strong>. To see all raw times
+      for a <strong>single entrant at all aid stations</strong> in a similar format, visit the
+      <%= link_to 'Effort Audit Screen', docs_management_path(topic: :enter, page: 8) %>, which can be reached by
+      clicking any name in the Raw Times Splits list.</p>
+  </div>
+</div>
+<br/>

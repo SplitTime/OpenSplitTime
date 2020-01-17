@@ -13,8 +13,9 @@ module Concealable
     scope :visible, -> { where(concealed: false) }
   end
 
-  # May be overridden in models
-  def should_be_concealed?
-    false
+  def visible?
+    !concealed?
   end
+
+  alias_method :visible, :visible?
 end

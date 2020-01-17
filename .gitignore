@@ -92,7 +92,6 @@ pickle-email-*.html
 # tilde files are usually backup files from a text editor
 *~
 .ruby-gemset
-.ruby-version
 dump.rdb/public/packs
 /public/packs-test
 /public/packs
@@ -101,3 +100,6 @@ dump.rdb/public/packs
 yarn-debug.log*
 yarn-error.log
 .yarn-integrity
+
+# ActiveStorage local directory
+storage/

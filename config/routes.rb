@@ -7,19 +7,19 @@ Rails.application.routes.draw do
   get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
   get 'donation_cancel', to: 'visitors#donation_cancel'
   get 'donation_thank_you', to: 'visitors#donation_thank_you'
-  get 'getting_started', to: 'visitors#getting_started'
-  get 'getting_started_2', to: 'visitors#getting_started_2'
-  get 'getting_started_3', to: 'visitors#getting_started_3'
-  get 'getting_started_4', to: 'visitors#getting_started_4'
-  get 'getting_started_5', to: 'visitors#getting_started_5'
-  get 'course_info', to: 'visitors#course_info'
-  get 'effort_info', to: 'visitors#effort_info'
-  get 'event_info', to: 'visitors#event_info'
-  get 'person_info', to: 'visitors#person_info'
-  get 'organization_info', to: 'visitors#organization_info'
-  get 'split_info', to: 'visitors#split_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
-  get 'split_time_info', to: 'visitors#split_time_info'
+  get 'documentation', to: redirect('docs/contents')
+  get 'getting_started', to: redirect('docs/getting_started')
+  get 'management', to: redirect('docs/management')
+  get 'ost_remote', to: redirect('docs/ost_remote')
+
+  namespace :docs do
+    root to: 'visitors#contents'
+    get 'contents', to: 'visitors#contents'
+    get 'getting_started', to: 'visitors#getting_started'
+    get 'management', to: 'visitors#management'
+    get 'ost_remote', to: 'visitors#ost_remote'
+    get 'api', to: 'visitors#api'
+  end
 
   devise_for :users, controllers: {passwords: 'users/passwords', registrations: 'users/registrations', sessions: 'users/sessions'}
 
@@ -46,51 +46,57 @@ Rails.application.routes.draw do
     end
     member do
       get :analyze
+      get :audit
       get :projections
       get :place
       get :show_photo
       get :edit_split_times
       patch :update_split_times
-      put :set_data_status
-      put :start
+      patch :set_data_status
       patch :rebuild
       patch :unstart
-      put :stop
+      patch :stop
       delete :delete_split_times
     end
   end
 
-  resources :event_groups, only: [:index, :show, :create, :edit, :update, :destroy] do
+  resources :duplicate_event_groups, only: [:new, :create]
+
+  resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
     member do
       get :drop_list
+      get :follow
+      get :notifications
       get :raw_times
+      get :reconcile
       get :roster
       get :export_raw_times
-      put :set_data_status
       get :split_raw_times
       get :traffic
-      put :start_efforts
+      post :create_people
+      patch :set_data_status
+      patch :auto_reconcile
+      patch :associate_people
+      patch :start_efforts
       patch :update_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
     end
   end
 
+  resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
+
   resources :events, except: :index do
-    collection { get :series }
     member do
       get :admin
       get :edit_start_time
       get :export_finishers
       get :export_to_ultrasignup
       get :podium
-      get :reconcile
       get :spread
       get :summary
-      patch :auto_reconcile
-      post :create_people
-      put :associate_people
       put :set_stops
+      patch :reassign
       patch :update_start_time
       delete :delete_all_efforts
     end
@@ -110,7 +116,12 @@ Rails.application.routes.draw do
 
   resources :partners
   resources :raw_times, only: [:update, :destroy]
-  resources :split_times
+
+  resources :results_templates, only: [] do
+    member { get :categories}
+  end
+
+  resources :split_times, only: [:update]
   resources :splits
   resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]
@@ -119,6 +130,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root 'dashboard#dashboard'
+    post 'impersonate/:id', to: 'dashboard#impersonate', as: :impersonate
+    post 'stop_impersonating', to: 'dashboard#stop_impersonating', as: :stop_impersonating
   end
 
   namespace :live do

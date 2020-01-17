@@ -44,3 +44,4 @@ en:
       full_day_military_and_zone: "%A, %B %-d, %Y %H:%M (%Z)"
       short_day_and_time: "%m/%d %H:%M"
       datetime_input: "%m/%d/%Y %H:%M:%S"
+      date_only: "%m/%d/%y"

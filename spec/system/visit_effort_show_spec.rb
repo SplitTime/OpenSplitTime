@@ -30,7 +30,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who did not create the associated event and is not a steward' do
+    scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
       
@@ -38,7 +38,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who created the effort' do
+    scenario 'The user is the owner' do
       login_as owner, scope: :user
       visit effort_path(effort)
       
@@ -73,7 +73,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who did not create the associated event and is not a steward' do
+    scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
       
@@ -81,7 +81,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who created the effort' do
+    scenario 'The user is the owner' do
       effort.update(created_by: owner.id)
 
       login_as owner, scope: :user
@@ -89,6 +89,8 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      verify_set_stop
+      verify_remove_stop
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -97,6 +99,8 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      verify_set_stop
+      verify_remove_stop
     end
 
     scenario 'The user is an admin' do
@@ -105,6 +109,8 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      verify_set_stop
+      verify_remove_stop
     end
   end
 
@@ -118,7 +124,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who did not create the associated event and is not a steward' do
+    scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
       
@@ -126,7 +132,7 @@ RSpec.describe 'visit an effort show page' do
       verify_admin_links_absent
     end
 
-    scenario 'The user is a user who created the effort' do
+    scenario 'The user is the owner' do
       login_as owner, scope: :user
       visit effort_path(effort)
 
@@ -174,10 +180,32 @@ RSpec.describe 'visit an effort show page' do
   end
 
   def verify_admin_links_absent
-    expect(page).not_to have_content('Edit effort')
+    expect(page).not_to have_content('Edit Entrant')
+    expect(page).not_to have_content('Audit')
   end
 
   def verify_admin_links_present
-    expect(page).to have_link('Edit effort', href: edit_effort_path(effort))
+    expect(page).to have_link('Edit Entrant', href: edit_effort_path(effort))
+    expect(page).to have_link('Audit', href: audit_effort_path(effort))
+  end
+
+  def verify_set_stop
+    effort.reload
+    expect(effort.ordered_split_times.last).not_to be_stopped_here
+    click_link 'Set stop'
+
+    expect(page).to have_content 'Remove stop'
+    effort.reload
+    expect(effort.ordered_split_times.last).to be_stopped_here
+  end
+
+  def verify_remove_stop
+    effort.reload
+    expect(effort.ordered_split_times.last).to be_stopped_here
+    click_link 'Remove stop'
+
+    expect(page).to have_content 'Set stop'
+    effort.reload
+    expect(effort.ordered_split_times.last).not_to be_stopped_here
   end
 end

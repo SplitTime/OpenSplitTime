@@ -1,0 +1,34 @@
+<div class="card">
+  <h4 class="card-header">Querying the API</h4>
+  <div class="card-body">
+    <p>The OpenSplitTime API follows the JSON API standard, described in detail
+      at <%= link_to 'jsonapi.org', 'https://jsonapi.org', target: '_blank' %>. You can query for a collection of
+      records using the pluralized model name, and if you have an individual record id, you can query for an individual
+      record.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Standard Index Queries</h4>
+  <div class="card-body">
+    <p>The models available for index queries are:</p>
+    <ul>
+      <li>Organizations</li>
+      <li>Courses</li>
+      <li>Event Groups</li>
+      <li>Events</li>
+      <li>People</li>
+    </ul>
+    <p>Query any of these models by passing a GET request to the applicable endpoint and including your API key as a
+      bearer authorization in the request header. For example (you will need to replace <code>your.api.key</code> with
+      your own API Key):</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/event_groups</code>
+    <hr/>
+    <p>Records are returned in batches of 25. Links are included to obtain additional batches.</p>
+    <p>Remember that individual records are generally more useful and
+      <strong>response times will generally be faster for individual record queries than for index queries</strong>.</p>
+  </div>
+</div>
+<br/>

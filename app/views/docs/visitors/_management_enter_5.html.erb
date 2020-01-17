@@ -1,0 +1,66 @@
+<div class="card">
+  <h4 class="card-header">How OpenSplitTime Evaluates Split Times</h4>
+  <div class="card-body">
+    <p>To understand how to fix problem Efforts, it helps to understand how OpenSplitTime evaluates Split Times. When a
+      Split Time is added or changed, OpenSplitTime reviews each Split Time for the Effort sequentially, following this
+      procedure:</p>
+    <ol>
+      <li>Assume the starting Split Time is good and mark it as such</li>
+      <li>Locate the next recorded Split Time</li>
+      <li>Measure the elapsed time for the segment looking back to the previous <strong>valid Split Time</strong>,
+        ignoring questionable and bad Split Times that may exist in between
+      </li>
+      <li>Mark the Split Time as <strong>good</strong>, <strong>questionable</strong>, or <strong>bad</strong>,
+        depending on how the elapsed segment time compares to statistical tolerances for the segment
+      </li>
+      <li>Repeat steps <strong>2 through 4</strong> for each Split Time</li>
+    </ol>
+    <p>If there is no starting Split Time for an Effort, OpenSplitTime has no way of calculating elapsed segment times,
+      so it does not attempt to evaluate the validity of Split Times for that Effort.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Types of Problems</h4>
+  <div class="card-body">
+    <p>Problems fall into one of a few categories:</p>
+    <ul>
+      <li>The Entrant's time <strong>out of</strong> a station is earlier than the Entrant's time
+        <strong>into the same station</strong></li>
+      <li>The Entrant's time <strong>into one station</strong> is earlier than the Entrant's time
+        <strong>into the previous station</strong></li>
+      <li>The Entrant's time into one station is <strong>too soon after</strong> the Entrant's time into the previous
+        station
+      </li>
+      <li>The Entrant's time into one station is <strong>too long after</strong> the Entrant's time into the previous
+        station
+      </li>
+      <li>The Entrant is recorded as having <strong>stopped</strong> at one station but is <strong>recorded into a
+        later station</strong></li>
+    </ul>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Confirming and Deleting Split Times</h4>
+  <div class="card-body">
+    <p>From many points within OpenSplitTime, you can reach the Effort screen for an Entrant by clicking on the
+      Entrant's name. Split Times that OpenSplitTime evaluates as <strong>questionable</strong> will be <strong>yellow
+      and flagged with brackets</strong>. Times that OpenSplitTime evaluates as <strong>bad</strong> will be
+      <strong>red and flagged with brackets and asterisks</strong>.</p>
+    <p>So long as you are logged in as an Owner or Steward, the Effort screen shows a set of
+      <strong>Confirm (thumbs up)</strong> buttons and a set of <strong>Delete (trash can)</strong> buttons, each
+      corresponding with the listed Split Times.</p>
+    <p>If OpenSplitTime has flagged a Split Time as <strong>questionable</strong> or <strong>bad</strong>, but you know
+      that the Split Time is correct, you can confirm the Split Time by clicking the corresponding
+      <strong>Confirm (thumbs up)</strong> button. When a Split Time has been confirmed, the corresponding button
+      changes from white to green. Confirming a Split Time overrides OpenSplitTime's analysis such that the Split Time
+      is treated as valid for all purposes. You can un-confirm a Split Time by clicking the corresponding
+      <strong>Confirm</strong> button again, changing it from green to white.</p>
+    <p>If you determine that a Split Time is faulty, you can quickly delete the Split Time by clicking the <strong>red
+      trash can</strong> icon corresponding with the bad Split Time. Deleting a Split Time cannot be undone.</p>
+  </div>
+</div>
+<br/>

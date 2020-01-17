@@ -1,0 +1,19 @@
+<div class="card">
+  <h4 class="card-header">Special Queries</h4>
+  <div class="card-body">
+    <p>The OpenSplitTime API supports some additional queries that go beyond standard RESTful endpoints. In particular,
+      you can query for an event with all of its efforts and related split times in this manner:</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/events/5/spread</code>
+    <hr/>
+    <p>The response is not a standard JSON API response, but rather a more compact version that includes all
+      time data for the event. Time data can be returned in three formats: elapsed, absolute, and segment. The format
+      is determined by the <code>displayStyle</code> parameter. If no <code>displayStyle</code> parameter is passed,
+      results will be returned with absolute times.</p>
+    <p>For example, to obtain event time data with elapsed times, the request would look like this:</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer your.api.key"
+      https://www.opensplittime.org/api/v1/events/5/spread?displayStyle=elapsed</code>
+  </div>
+</div>
+<br/>

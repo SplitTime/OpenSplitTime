@@ -6,38 +6,30 @@ RSpec.describe Event, type: :model do
   include BitkeyDefinitions
 
   it_behaves_like 'auditable'
-  it { is_expected.to strip_attribute(:name).collapse_spaces }
+  it { is_expected.to strip_attribute(:short_name).collapse_spaces }
   it { is_expected.to localize_time_attribute(:start_time) }
 
   describe 'initialize' do
-    it 'is valid when created with a course, organization, event_group, name, start time, laps_required, and home_time_zone' do
+    it 'is valid when created with a course, organization, event_group, start time, laps_required' do
       event = build_stubbed(:event)
 
       expect(event.course_id).to be_present
       expect(event.event_group_id).to be_present
-      expect(event.name).to be_present
       expect(event.start_time).to be_present
       expect(event.laps_required).to be_present
-      expect(event.home_time_zone).to be_present
       expect(event).to be_valid
     end
 
     it 'is invalid without a course' do
       event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
-      expect(event.errors[:course_id]).to include("can't be blank")
+      expect(event.errors.full_messages).to include(/can't be blank/)
     end
 
     it 'is invalid without an event_group' do
       event = build_stubbed(:event, event_group: nil)
       expect(event).not_to be_valid
-      expect(event.errors[:event_group_id]).to include("can't be blank")
-    end
-
-    it 'is invalid without a name' do
-      event = build_stubbed(:event, name: nil, without_slug: true)
-      expect(event).not_to be_valid
-      expect(event.errors[:name]).to include("can't be blank")
+      expect(event.errors[:event_group]).to include("can't be blank")
     end
 
     it 'is invalid without a start date' do
@@ -52,18 +44,6 @@ RSpec.describe Event, type: :model do
       expect(event.errors[:laps_required]).to include("can't be blank")
     end
 
-    it 'is invalid without a home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: nil)
-      expect(event).not_to be_valid
-      expect(event.errors[:home_time_zone]).to include("can't be blank")
-    end
-
-    it 'is invalid with a nonexistent home_time_zone' do
-      event = build_stubbed(:event, home_time_zone: 'Narnia')
-      expect(event).to be_invalid
-      expect(event.errors[:home_time_zone]).to include("must be the name of an ActiveSupport::TimeZone object")
-    end
-
     it 'is invalid if any splits do not reconcile with the course' do
       course = build_stubbed(:course)
       other_course = build_stubbed(:course)
@@ -75,11 +55,11 @@ RSpec.describe Event, type: :model do
       expect(event.errors[:course_id]).to include(/does not reconcile with one or more splits/)
     end
 
-    it 'does not permit duplicate names' do
-      existing_event = create(:event)
-      event = build_stubbed(:event, name: existing_event.name)
+    it 'does not permit duplicate short_names within an event group' do
+      existing_event = events(:sum_55k)
+      event = build_stubbed(:event, event_group: existing_event.event_group, short_name: existing_event.short_name)
       expect(event).not_to be_valid
-      expect(event.errors[:name]).to include('has already been taken')
+      expect(event.errors[:short_name]).to include('has already been taken')
     end
 
     context 'when bib numbers are duplicated within the same event_group' do
@@ -100,71 +80,48 @@ RSpec.describe Event, type: :model do
     end
 
     context 'for split location validations' do
-      let(:event_1) { create(:event, course: course_1) }
-      let(:event_2) { create(:event, course: course_2, event_group: event_group, home_time_zone: event_1.home_time_zone) }
-      let(:event_group) { create(:event_group) }
-      let(:course_1) { create(:course) }
-      let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: 'Finish', latitude: 42, longitude: -107) }
-      let(:course_2) { create(:course) }
-      let(:course_2_split_1) { create(:split, :start, course: course_2, base_name: 'Start', latitude: 40, longitude: -105) }
-      let(:course_2_split_2) { create(:split, :finish, course: course_2, base_name: 'Finish', latitude: 42, longitude: -107) }
+      let(:event_1) { events(:sum_100k) }
+      let(:event_2) { events(:sum_55k) }
+      let(:event_group) { event_1.event_group }
+      let(:course_1) { event_1.course }
+      let(:course_1_split_1) { course_1.ordered_splits.first }
+      let(:course_1_split_2) { course_1.ordered_splits.last }
+      let(:course_2) { event_2.course }
+      let(:course_2_split_1) { course_2.ordered_splits.first }
+      let(:course_2_split_2) { course_2.ordered_splits.last }
+
       before do
-        event_1.splits << course_1_split_1
-        event_1.splits << course_1_split_2
-        event_2.splits << course_2_split_1
-        event_2.splits << course_2_split_2
+        new_event_group = create(:event_group, organization: event_group.organization)
+        event_2.update(event_group: new_event_group)
       end
 
       context 'when split names are duplicated with matching locations within the same event_group' do
         it 'is valid' do
+          expect(course_1_split_1.base_name).to eq(course_2_split_1.base_name)
+          expect(course_1_split_1.latitude).to eq(course_2_split_1.latitude)
+          expect(course_1_split_1.longitude).to eq(course_2_split_1.longitude)
           expect(event_1.errors).to be_empty
-          response = event_1.update(event_group: event_group)
+
+          response = event_2.update(event_group: event_group)
 
           expect(response).to eq(true)
-          expect(event_1.errors).to be_empty
+          expect(event_2.errors).to be_empty
         end
       end
 
       context 'when split names are duplicated with non-matching locations within the same event_group' do
-        let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: 'Start', latitude: 41, longitude: -106) }
+        before { course_2_split_1.update(longitude: course_1_split_1.longitude + 1) }
 
         it 'is invalid' do
+          expect(course_1_split_1.base_name).to eq(course_2_split_1.base_name)
+          expect(course_1_split_1.latitude).to eq(course_2_split_1.latitude)
+          expect(course_1_split_1.longitude).not_to eq(course_2_split_1.longitude)
           expect(event_1.errors).to be_empty
-          response = event_1.update(event_group: event_group)
+
+          response = event_2.update(event_group: event_group)
 
           expect(response).to eq(false)
-          expect(event_1.errors.full_messages).to include(/Location Start is incompatible within the event group/)
-        end
-      end
-    end
-
-    context 'for home_time_zone validation' do
-      let!(:event_1) { create(:event, home_time_zone: time_zone) }
-      let!(:event_2) { create(:event, event_group: event_group, home_time_zone: 'Arizona') }
-      let!(:event_group) { create(:event_group) }
-
-      context 'when time zones are consistent' do
-        let(:time_zone) { 'Arizona' }
-
-        it 'is valid' do
-          expect(event_1.errors).to be_empty
-          response = event_1.update(event_group: event_group)
-
-          expect(response).to eq(true)
-          expect(event_1.errors).to be_empty
-        end
-      end
-
-      context 'when time zones are not consistent' do
-        let(:time_zone) { 'Mountain Time (US & Canada)' }
-
-        it 'is invalid' do
-          expect(event_1.errors).to be_empty
-          response = event_1.update(event_group: event_group)
-
-          expect(response).to eq(false)
-          expect(event_1.errors.full_messages).to include(/Home time zone is inconsistent with others within the event group/)
+          expect(event_2.errors.full_messages).to include(/Location Start is incompatible within the event group/)
         end
       end
     end
@@ -273,8 +230,9 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time_local' do
-    context 'when the event specifies a valid home_time_zone' do
-      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
+    context 'when the event_group specifies a valid home_time_zone' do
+      let(:event) { build_stubbed(:event, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns the start_time in the time zone specified by event.home_time_zone' do
         event.start_time = DateTime.parse('2017-07-01T06:00+00:00')
@@ -290,7 +248,8 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when the event home_time_zone is nil' do
-      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), home_time_zone: nil) }
+      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
         expect(event.start_time_local).to be_nil
@@ -298,7 +257,8 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when the event start_time is nil' do
-      let(:event) { build_stubbed(:event, start_time: nil, home_time_zone: 'Eastern Time (US & Canada)') }
+      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns nil' do
         expect(event.start_time_local).to be_nil
@@ -307,8 +267,10 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time_local=' do
+    let(:event) { build_stubbed(:event, event_group: event_group) }
+
     context 'when home_time_zone exists' do
-      let(:event) { build_stubbed(:event, home_time_zone: 'Eastern Time (US & Canada)') }
+      let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'converts the string based on the specified home_time_zone' do
         event.start_time_local = '07/01/2017 06:00:00'
@@ -342,7 +304,7 @@ RSpec.describe Event, type: :model do
     end
 
     context 'when home_time_zone does not exist' do
-      let(:event) { build_stubbed(:event, home_time_zone: nil) }
+      let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'raises an error' do
         expect { event.start_time_local = '2017-07-01 06:00:00' }
@@ -355,8 +317,8 @@ RSpec.describe Event, type: :model do
     subject { create(:event, event_group: event_group_1) }
     let!(:event_group_1) { create(:event_group) }
     let!(:event_group_2) { create(:event_group) }
-    let!(:event_same_group) { create(:event, event_group: event_group_1, home_time_zone: subject.home_time_zone) }
-    let!(:event_different_group) { create(:event, event_group: event_group_2) }
+    let!(:event_same_group) { create(:event, :with_short_name, event_group: event_group_1) }
+    let!(:event_different_group) { create(:event, :with_short_name, event_group: event_group_2) }
 
     it 'returns the event and other members of the group as an array' do
       subject.reload

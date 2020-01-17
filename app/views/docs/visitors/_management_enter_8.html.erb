@@ -1,0 +1,66 @@
+<div class="card">
+  <h4 class="card-header">The Effort Audit Screen</h4>
+  <div class="card-body">
+    <p>You can see the all Split Times and Raw Times for a single Effort in the Effort Audit screen. You can reach this
+      screen by clicking the <strong>Audit</strong> tab from any Effort screen or by clicking an Entrant's name from the
+      <strong>Raw Times > Splits</strong> screen.</p>
+    <p>The Effort Audit screen gives you a full picture of what Raw Times have been submitted for the Entrant's bib
+      number and which of those Raw Times have been matched to which Split Times.</p>
+    <p>From this screen you can also choose to match or un-match Raw Times and, for multiple matching Raw Times, choose
+      which time (if any) should govern the Split Time.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Matching and Unmatching Raw Times</h4>
+  <div class="card-body">
+    <p>Sometimes Raw Times are not automatically matched to a Split Time. These unmatched Raw Times will appear in the
+      Unmatched Raw Times column. If there is a Split Time available, the Raw Time will have a <strong>link</strong>
+      icon allowing you to
+      match it. Click the <strong>link</strong> icon and the Raw Time will be matched to the Split Time.</p>
+    <p>A Raw Time that is already matched to a Split Time will have an <strong>un-link</strong> icon allowing you to
+      un-match it. Click
+      the <strong>un-link</strong> icon and the Raw Time will be un-matched from the Split Time.</p>
+    <p>For example, assume a runner having <strong>Bib #132</strong> comes through <strong>Aid 2</strong> at
+      <strong>10:45</strong>. A volunteer records the time using OST Remote but
+      <strong>inadvertently enters the Bib as #123</strong>. The time is synced, and OpenSplitTime evaluates
+      it as "good" and automatically creates a Split Time matching that Raw Time entry. </p>
+    <p>Now the runner wearing <strong>Bib #123</strong> comes through <strong>Aid 2</strong> and is recorded at
+      <strong>10:55</strong>, and this time is also synced. OpenSplitTime evaluates the second time as a duplicate and,
+      <strong>because it is too different from the already-matched time</strong>, it does not automatically match the
+      newly synced Raw Time.</p>
+    <p>A timing volunteer at race headquarters looks at the Effort Audit screen for <strong>Bib #123</strong> and sees a
+      <strong>matched Raw Time (10:45)</strong> and an <strong>un-matched Raw Time (10:55)</strong> for this entrant at
+      Aid 2. The volunteer determines that the 10:55 time is the correct time.</p>
+    <p>The volunteer clicks the <strong>link</strong> icon next to the 10:55 Raw Time.
+      <strong>The Raw Time is matched and the Split Time is changed to 10:55.</strong> Next, the volunteer clicks the
+      <strong>un-link</strong> icon next to the 10:45 Raw Time.
+      <strong>That Raw Time is un-matched from the Split Time.</strong></p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Changing the Governing Raw Time</h4>
+  <div class="card-body">
+    <p>You may have <strong>multiple Raw Times that you want to keep matched to a single Split Time</strong>. This may
+      happen if, for example, you have multiple volunteers at the Finish using OST Remote for redundancy. Whichever of
+      the Raw Times was synced first will be used to create the Split Time.</p>
+    <p>If the Raw Times are a few seconds apart, <strong>you may decide to leave them both matched</strong> but use the
+      other time to govern the Split Time. Click the <strong>equals (=)</strong> icon for the Raw Time you prefer. The
+      Split Time will change to match the Raw Time you clicked.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Switching to the Raw Times Splits Screen</h4>
+  <div class="card-body">
+    <p>The Effort Audit screen shows times <strong>for a single entrant at all aid stations</strong>. To see all raw
+      times for a <strong>single aid station for all entrants</strong> in a similar format, visit the
+      <%= link_to 'Raw Times Splits Screen', docs_management_path(topic: :monitor, page: 8) %>, which can be reached by
+      clicking any split name in the Effort Audit screen.</p>
+  </div>
+</div>
+<br/>

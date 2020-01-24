@@ -13,28 +13,20 @@ class EffortAnalysisView < EffortWithLapSplitRows
     analysis_rows.map(&:segment_time_typical).compact.sum
   end
 
-  def total_segment_time_over_under
-    analysis_rows.map(&:segment_time_over_under).compact.sum
+  def total_segment_time_over_under(round_to: 1.second)
+    analysis_rows.map(&:segment_time_over_under).compact.sum.round_to_nearest(round_to)
   end
 
-  def total_segment_time_over_under_truncated_minutes
-    (analysis_rows.map(&:segment_time_over_under).compact.sum / 60).floor * 60
-  end
-
-  def total_time_in_aid
-    analysis_rows.map(&:time_in_aid).compact.sum
+  def total_time_in_aid(round_to: 1.second)
+    analysis_rows.map(&:time_in_aid).compact.sum.round_to_nearest(round_to)
   end
 
   def total_time_in_aid_typical
     analysis_rows.map(&:time_in_aid_typical).compact.sum
   end
 
-  def total_time_in_aid_over_under
-    analysis_rows.map(&:time_in_aid_over_under).compact.sum
-  end
-
-  def total_time_in_aid_over_under_truncated_minutes
-    (analysis_rows.map(&:time_in_aid_over_under).compact.sum / 60).floor * 60
+  def total_time_in_aid_over_under(round_to: 1.second)
+    analysis_rows.map(&:time_in_aid_over_under).compact.sum.round_to_nearest(round_to)
   end
 
   def total_time_combined
@@ -45,12 +37,8 @@ class EffortAnalysisView < EffortWithLapSplitRows
     total_segment_time_typical && total_time_in_aid_typical && total_segment_time_typical + total_time_in_aid_typical
   end
 
-  def total_combined_time_over_under
-    total_segment_time_over_under + total_time_in_aid_over_under
-  end
-
-  def total_combined_time_over_under_truncated_minutes
-    total_segment_time_over_under_truncated_minutes + total_time_in_aid_over_under_truncated_minutes
+  def total_combined_time_over_under(round_to: 1.second)
+    (total_segment_time_over_under + total_time_in_aid_over_under).round_to_nearest(round_to)
   end
 
   def typical_finish_tfs

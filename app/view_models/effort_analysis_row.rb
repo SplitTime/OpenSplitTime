@@ -61,16 +61,22 @@ class EffortAnalysisRow
     segment_time_typical && segment_time_typical + (time_in_aid_typical || 0)
   end
 
-  def segment_time_over_under
-    segment_time && segment_time_typical && segment_time - segment_time_typical
+  def segment_time_over_under(round_to: 1.second)
+    return nil unless segment_time && segment_time_typical
+
+    segment_time.round_to_nearest(round_to) - segment_time_typical.round_to_nearest(round_to)
   end
 
-  def time_in_aid_over_under
-    time_in_aid && time_in_aid_typical && time_in_aid - time_in_aid_typical
+  def time_in_aid_over_under(round_to: 1.second)
+    return nil unless time_in_aid && time_in_aid_typical
+
+    time_in_aid.round_to_nearest(round_to) - time_in_aid_typical.round_to_nearest(round_to)
   end
 
-  def combined_time_over_under
-    segment_time_over_under && time_in_aid_over_under && segment_time_over_under + time_in_aid_over_under
+  def combined_time_over_under(round_to: 1.second)
+    return nil unless segment_time_over_under && time_in_aid_over_under
+
+    segment_time_over_under.round_to_nearest(round_to) + time_in_aid_over_under.round_to_nearest(round_to)
   end
 
   def segment_over_under_percent

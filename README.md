@@ -46,8 +46,8 @@ Getting Started
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install 2.6.1`
-6. `$ rbenv local 2.6.1` (to make sure this is correct, run `$ rbenv version`)
+5. `$ rbenv install 2.6.5`
+6. `$ rbenv local 2.6.5` (to make sure this is correct, run `$ rbenv version`)
 7. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
@@ -67,6 +67,25 @@ Getting Started
 4. `$ bundle install`
 
 *if running into weird errors first try `$ rbenv rehash` and restart your terminal*
+
+If you get this error installing the postgres gem and you installed the Posgres.app (and not via brew):
+```
+Fetching pg 0.21.0
+Installing pg 0.21.0 with native extensions
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/gems/2.6.0/gems/pg-0.21.0/ext
+/Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/bin/ruby -I /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/2.6.0 -r ./siteconf20190216-89781-dwhko7.rb extconf.rb
+checking for pg_config... no
+No pg_config... trying anyway. If building fails, please try again with
+ --with-pg-config=/path/to/pg_config
+```
+
+Then run this: `bundle config build.pg --with-pg-config=/Applications/Postgres.app/Contents/Versions/latest/bin/pg_config`
+
+-- change the path to where your pg_config is located, of course.
+
+Then run `bundle install` again.
 
 **Javascript Runtime + Yarn**
 

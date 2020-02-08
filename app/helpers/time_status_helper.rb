@@ -10,6 +10,9 @@ module TimeStatusHelper
     attributes = STATUS_INDICATOR_ATTRIBUTES[status]
     return time if attributes.nil?
 
-    fa_icon(attributes[:icon], class: ['has-tooltip', attributes[:class]].join(' '), text: time, data: {toggle: 'tooltip', 'original-title' => attributes[:tooltip_title]})
+    fa_icon(attributes[:icon],
+            class: ['has-tooltip', attributes[:class]].join(' '),
+            text: time,
+            data: {toggle: 'tooltip', 'original-title' => attributes[:tooltip_title]})
   end
 end

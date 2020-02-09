@@ -9,20 +9,13 @@ Our software engine is open source. If you have a suggestion for the site, or yo
 
 OpenSplitTime is developed and maintained by endurance athletes for endurance athletes.
 
-Performance
------------
-
-Performance analysis and monitoring is provided by [Skylight](https://www.skylight.io). Thanks to the folks at Tilde for supporting open source!
-
-[![View performance data on Skylight](https://badges.skylight.io/status/1o8bb9Iz1GqF.svg)](https://oss.skylight.io/app/applications/1o8bb9Iz1GqF)
-
 Ruby on Rails
 -------------
 
 This application requires:
 
-- Ruby 2.6.1
-- Rails 5.2.3
+- Ruby 2.6.5
+- Rails 5.2.4.1
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
@@ -53,8 +46,8 @@ Getting Started
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install 2.6.1`
-6. `$ rbenv local 2.6.1` (to make sure this is correct, run `$ rbenv version`)
+5. `$ rbenv install 2.6.5`
+6. `$ rbenv local 2.6.5` (to make sure this is correct, run `$ rbenv version`)
 7. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
@@ -74,6 +67,25 @@ Getting Started
 4. `$ bundle install`
 
 *if running into weird errors first try `$ rbenv rehash` and restart your terminal*
+
+If you get this error installing the postgres gem and you installed the Posgres.app (and not via brew):
+```
+Fetching pg 0.21.0
+Installing pg 0.21.0 with native extensions
+Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+
+    current directory: /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/gems/2.6.0/gems/pg-0.21.0/ext
+/Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/bin/ruby -I /Volumes/InternalDataDrive/Users/bwright/.rbenv/versions/2.6.0/lib/ruby/2.6.0 -r ./siteconf20190216-89781-dwhko7.rb extconf.rb
+checking for pg_config... no
+No pg_config... trying anyway. If building fails, please try again with
+ --with-pg-config=/path/to/pg_config
+```
+
+Then run this: `bundle config build.pg --with-pg-config=/Applications/Postgres.app/Contents/Versions/latest/bin/pg_config`
+
+-- change the path to where your pg_config is located, of course.
+
+Then run `bundle install` again.
 
 **Javascript Runtime + Yarn**
 
@@ -165,7 +177,7 @@ You'll know you did it right when you see the awesome ASCII art.
 
 **ChromeDriver**
 
-Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew install chromedriver` or your preferred package manager for Linux or Windows.
+Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew cask install chromedriver` or your preferred package manager for Linux or Windows.
 
 **Continuous Integration**
 

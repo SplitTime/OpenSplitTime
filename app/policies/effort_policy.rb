@@ -21,6 +21,10 @@ class EffortPolicy < ApplicationPolicy
     @effort = effort
   end
 
+  def audit?
+    user.authorized_to_edit?(effort)
+  end
+
   def unstart?
     user.authorized_to_edit?(effort)
   end

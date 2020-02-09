@@ -1,6 +1,5 @@
 class EventSeries < ApplicationRecord
-  include Delegable
-  include MultiEventable
+  include Delegable, MultiEventable
   extend FriendlyId
 
   enum scoring_method: [:time, :rank, :points]
@@ -12,7 +11,6 @@ class EventSeries < ApplicationRecord
   has_many :events, through: :event_series_events
   has_many :efforts, through: :events
 
-  delegate :stewards, to: :organization
   delegate :home_time_zone, to: :first_event
 
   validates_presence_of :name, :organization, :results_template, :scoring_method

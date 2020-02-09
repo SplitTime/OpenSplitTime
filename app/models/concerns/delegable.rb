@@ -7,6 +7,8 @@ module Delegable
     scope :delegated, -> (user_id) { where('stewardships.user_id = ? OR organizations.created_by = ?', user_id, user_id) }
   end
 
+  delegate :stewards, to: :organization
+
   def owner_id
     organization.created_by
   end

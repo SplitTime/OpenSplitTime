@@ -319,7 +319,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
             expect(response.status).to eq(201)
             parsed_response = JSON.parse(response.body)
-            expect(parsed_response['data'].map { |record| record['type'] }).to all (eq('rawTimes'))
+            expect(parsed_response['data'].map { |record| record['type'] }).to all eq('rawTimes')
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
             expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
@@ -335,6 +335,33 @@ RSpec.describe Api::V1::EventGroupsController do
             raw_times = RawTime.last(2)
 
             expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, raw_times.sort_by(&:id))
+          end
+        end
+      end
+
+      context 'when raw_times include leading zeros' do
+        via_login_and_jwt do
+          let(:data) { [
+              {type: 'raw_time',
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: 'in', absoluteTime: absolute_time_in,
+                            withPacer: 'true', stoppedHere: 'false', source: source}},
+              {type: 'raw_time',
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: 'out', absoluteTime: absolute_time_out,
+                            withPacer: 'true', stoppedHere: 'true', source: source}}
+          ] }
+          let(:bib_number_leading_zeros) { "00#{bib_number}" }
+
+          it 'creates_raw_times' do
+            expect { make_request }.to change { RawTime.count }.by(2)
+            raw_times = RawTime.last(2)
+
+            expect(response.status).to eq(201)
+            parsed_response = JSON.parse(response.body)
+            expect(parsed_response['data'].map { |record| record['type'] }).to all eq('rawTimes')
+            expect(raw_times.map(&:bib_number)).to all eq(bib_number_leading_zeros)
+            expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
+            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
         end
       end
@@ -586,6 +613,21 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(raw_times.map { |rt| rt['splitTimeExists'] }).to eq([true, true])
           expect(raw_times.map { |rt| rt['stoppedHere'] }).to eq([false, true])
           expect(raw_times.map { |rt| rt['withPacer'] }).to eq([true, true])
+        end
+      end
+    end
+
+    context 'when the bib number includes leading zeros' do
+      let(:raw_time_attributes_1) { {bib_number: "00#{effort_1.bib_number}", entered_time: '11:22:33', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'in'} }
+      let(:raw_time_attributes_2) { {bib_number: "00#{effort_1.bib_number}", entered_time: '11:23:34', split_name: 'Telluride', with_pacer: 'true', sub_split_kind: 'out', stopped_here: 'true'} }
+
+      via_login_and_jwt do
+        it 'does not result in an error' do
+          response = make_request
+          result = JSON.parse(response.body)
+          raw_time_row = result.dig('data', 'rawTimeRow')
+
+          expect(raw_time_row['errors']).to eq([])
         end
       end
     end

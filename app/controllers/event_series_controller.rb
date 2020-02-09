@@ -13,7 +13,7 @@ class EventSeriesController < ApplicationController
                        .includes(event_groups: {events: :efforts}).first
 
     if organization
-      @event_series = EventSeries.new(organization: organization)
+      @event_series = EventSeries.new(organization: organization, results_template: ResultsTemplate.default)
       authorize @event_series
     else
       flash[:warning] = 'A new event series must be created using an existing organization'

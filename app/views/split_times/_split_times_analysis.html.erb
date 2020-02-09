@@ -40,12 +40,12 @@
       <td><%= analysis_row.name %></td>
       <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
       <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
-      <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under) %></td>
+      <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under(round_to: 1.minute)) %></td>
       <% if view_object.multiple_sub_splits? %>
         <td class="text-center"><%= [time_format_minutes(analysis_row.time_in_aid), time_format_minutes(analysis_row.time_in_aid_typical)].join(' / ') %></td>
-        <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under) %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under(round_to: 1.minute)) %></td>
         <td class="text-center"><%= [time_format_xxhyym(analysis_row.combined_time), time_format_xxhyym(analysis_row.combined_time_typical)].join(' / ') %></td>
-        <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under) %></td>
+        <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under(round_to: 1.minute)) %></td>
       <% end %>
     </tr>
   <% end %>
@@ -56,20 +56,20 @@
       <strong><%= [time_format_xxhyym(view_object.total_segment_time), time_format_xxhyym(view_object.total_segment_time_typical)].join(' / ') %></strong>
     </td>
     <td class="text-center">
-      <strong><%= time_format_minutes(view_object.total_segment_time_over_under) %></strong>
+      <strong><%= time_format_minutes(view_object.total_segment_time_over_under(round_to: 1.minute)) %></strong>
     </td>
     <% if view_object.multiple_sub_splits? %>
       <td class="text-center">
         <strong><%= [time_format_xxhyym(view_object.total_time_in_aid), time_format_xxhyym(view_object.total_time_in_aid_typical)].join(' / ') %></strong>
       </td>
       <td class="text-center">
-        <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under) %></strong>
+        <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under(round_to: 1.minute)) %></strong>
       </td>
       <td class="text-center">
         <strong><%= [time_format_xxhyym(view_object.total_time_combined), time_format_xxhyym(view_object.total_time_combined_typical)].join(' / ') %></strong>
       </td>
       <td class="text-center">
-        <strong><%= time_format_minutes(view_object.total_combined_time_over_under) %></strong>
+        <strong><%= time_format_minutes(view_object.total_combined_time_over_under(round_to: 1.minute)) %></strong>
       </td>
     <% end %>
   </tr>

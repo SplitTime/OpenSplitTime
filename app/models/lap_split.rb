@@ -67,6 +67,10 @@ class LapSplit
     lap && split.try(:id) && split.out_bitkey && TimePoint.new(lap, split_id, split.out_bitkey)
   end
 
+  def time_point(bitkey)
+    lap && split&.id && split.bitkeys.include?(bitkey) && TimePoint.new(lap, split_id, bitkey)
+  end
+
   def distance_from_start
     lap == 1 ? split.distance_from_start : (lap - 1) * course.distance + split.distance_from_start
   end

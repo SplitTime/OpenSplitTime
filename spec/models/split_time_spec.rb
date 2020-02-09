@@ -123,6 +123,69 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe 'before_update' do
+    subject { split_times(:sum_100k_drop_anvil_rolling_pass_aid2_out_1) }
+    let(:proposed_time) { raw_times(:raw_time_87) }
+    let(:proposed_time_id) { proposed_time.id }
+
+    before { subject.matching_raw_time_id = proposed_time_id }
+
+    shared_examples 'conforms and matches the proposed time' do
+      it 'conforms the split_time with the raw_time' do
+        expect(subject.military_time).not_to eq(proposed_time.military_time)
+        subject.save
+        expect(subject.military_time).to eq(proposed_time.military_time)
+      end
+
+      it 'matches the raw_time to the split_time' do
+        expect(subject.raw_times).not_to include(proposed_time)
+
+        subject.save
+        subject.reload
+        expect(subject.raw_times).to include(proposed_time)
+      end
+    end
+
+    shared_examples 'does not conform or match the proposed time' do
+      it 'does not change the split_time' do
+        expect { subject.save }.not_to change { subject.military_time }
+      end
+
+      it 'does not match the raw_time to the split_time' do
+        subject.save
+        subject.reload
+        expect(subject.raw_times).not_to include(proposed_time)
+      end
+    end
+
+    context 'when matching_raw_time_id is set and exists' do
+      include_examples 'conforms and matches the proposed time'
+    end
+
+    context 'when matching_raw_time_id is not found' do
+      let(:proposed_time_id) { 0 }
+      include_examples 'does not conform or match the proposed time'
+    end
+
+    context 'when matching_raw_time_id is nil' do
+      let(:proposed_time_id) { nil }
+      include_examples 'does not conform or match the proposed time'
+    end
+
+    context 'when the proposed time relates to another bib number in the same event group' do
+      let(:proposed_time) { raw_times(:raw_time_76) }
+      before { expect(proposed_time.bib_number.to_i).not_to eq(subject.bib_number) }
+      before { expect(proposed_time.event_group_id).to eq(subject.event_group_id) }
+      include_examples 'conforms and matches the proposed time'
+    end
+
+    context 'when the proposed time relates to another event group' do
+      let(:proposed_time) { raw_times(:raw_time_50) }
+      before { expect(proposed_time.event_group_id).not_to eq(subject.event_group_id) }
+      include_examples 'does not conform or match the proposed time'
+    end
+  end
+
   describe 'virtual time attributes' do
     subject(:split_time) { effort.ordered_split_times.second }
     let(:effort) { efforts(:hardrock_2014_finished_first) }

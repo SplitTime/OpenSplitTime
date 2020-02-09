@@ -1,0 +1,90 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event group roster - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Roster</li>
+          </ul>
+        </div>
+        <%= render 'events/time_and_course_info' %>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <div class="card">
+    <h3 class="card-header"><strong>Subscriptions</strong></h3>
+    <div class="card-body">
+      <% if @presenter.subs_count_by_protocol.present? %>
+        <h4 class="card-text">
+          <%= "Tracking #{pluralize(@presenter.total_subscriptions_count, 'subscription')}" %>
+        </h4>
+        <table class="table table-striped table-sm">
+          <thead>
+          <tr>
+            <th>Type</th>
+            <th class="text-center">Subscriptions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @presenter.subs_count_by_protocol.each do |protocol, count| %>
+            <tr>
+              <td><%= protocol %></td>
+              <td class="text-center"><%= count %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <h4 class="card-text">No subscriptions exist for this event group</h4>
+      <% end %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3 class="card-header"><strong>Notifications</strong></h3>
+    <div class="card-body">
+      <% if @presenter.noticed_efforts_with_count.present? %>
+        <h4 class="card-text">
+          <%= "Sent #{pluralize(@presenter.total_notifications_count, 'notification')} relating to #{pluralize(@presenter.total_noticed_efforts_count, 'entrant')}" %>
+        </h4>
+        <table class="table table-striped table-sm">
+          <thead>
+          <tr>
+            <th>Bib</th>
+            <th>Name</th>
+            <th class="text-center">Notifications</th>
+          </tr>
+          </thead>
+        <tbody>
+        <% @presenter.noticed_efforts_with_count.each do |effort| %>
+          <tr>
+            <td><%= effort.bib_number %></td>
+            <td><%= effort.full_name %></td>
+            <td class="text-center"><%= effort.notifications_count %></td>
+          </tr>
+        <% end %>
+        </tbody>
+        </table>
+      <% else %>
+        <h4 class="card-text">No notifications have been sent for this event group</h4>
+      <% end %>
+    </div>
+  </div>
+</article>

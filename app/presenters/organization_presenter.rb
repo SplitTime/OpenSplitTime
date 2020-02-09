@@ -21,7 +21,7 @@ class OrganizationPresenter < BasePresenter
   end
 
   def event_series
-    organization.event_series.includes(:events)
+    organization.event_series.includes(events: :event_group).sort_by(&:start_time).reverse
   end
 
   def event_date_range(series)

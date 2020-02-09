@@ -7,11 +7,7 @@ class SplitTime < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
 
-  include Auditable
-  include DataStatusMethods
-  include GuaranteedFindable
-  include TimePointMethods
-  include TimeZonable
+  include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, TimePointMethods, TimeZonable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   belongs_to :effort
@@ -19,9 +15,10 @@ class SplitTime < ApplicationRecord
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey
   alias_attribute :with_pacer, :pacer
-  attr_accessor :raw_time_id, :time_exists, :imposed_order, :segment_time
+  attr_accessor :imposed_order, :segment_time, :time_exists
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
+  attribute :matching_raw_time_id, :integer
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
@@ -42,6 +39,7 @@ class SplitTime < ApplicationRecord
                                                     .where(aid_stations: {id: aid_station_id}) }
 
   before_validation :destroy_if_blank
+  before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -66,6 +64,8 @@ class SplitTime < ApplicationRecord
     query = SplitTimeQuery.with_time_point_rank
     self.find_by_sql(query)
   end
+
+  delegate :event_group, :organization, to: :effort
 
   def to_s
     "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"
@@ -168,6 +168,10 @@ class SplitTime < ApplicationRecord
     @event_name ||= effort&.event_name || '[unknown event]'
   end
 
+  def event_group_id
+    @event_group_id ||= event_group&.id
+  end
+
   def start?
     !!split&.start?
   end
@@ -188,5 +192,10 @@ class SplitTime < ApplicationRecord
 
   def destroy_if_blank
     self.destroy if elapsed_time == ''
+  end
+
+  def set_matching_raw_time
+    SplitTimes::MatchToRawTime.perform!(self, matching_raw_time_id)
+    raise ActiveRecord::Rollback if errors.present?
   end
 end

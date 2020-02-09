@@ -7,10 +7,10 @@ class EventGroupsController < ApplicationController
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
-                              .search(params[:search])
-                              .by_group_start_time
-                              .preload(:events)
-                              .paginate(page: params[:page], per_page: 25)
+                            .search(params[:search])
+                            .by_group_start_time
+                            .preload(:events)
+                            .paginate(page: params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end
@@ -52,6 +52,12 @@ class EventGroupsController < ApplicationController
 
     event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def notifications
+    authorize @event_group
+
+    @presenter = EventGroupNotificationsPresenter.new(@event_group)
   end
 
   def drop_list
@@ -108,7 +114,7 @@ class EventGroupsController < ApplicationController
   def set_data_status
     authorize @event_group
 
-    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
+    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: { split_times: :split }).first
     response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
     set_flash_message(response)
     redirect_to roster_event_group_path(@event_group)
@@ -131,9 +137,9 @@ class EventGroupsController < ApplicationController
       end
       format.json do
         if response.successful?
-          render json: {success: true}, status: :created
+          render json: { success: true }, status: :created
         else
-          render json: {success: false, errors: response.errors}
+          render json: { success: false, errors: response.errors }
         end
       end
     end

@@ -20,7 +20,6 @@ class Event < ApplicationRecord
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :organization_id, :permit_notifications?, :home_time_zone, to: :event_group
-  delegate :stewards, to: :organization
 
   validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id

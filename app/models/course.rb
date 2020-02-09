@@ -15,7 +15,6 @@ class Course < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
-  delegate :stewards, to: :organization
 
   attribute :distance_preferred, :float
   attribute :vert_gain_preferred, :float

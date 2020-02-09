@@ -36,7 +36,7 @@ RSpec.describe 'Visit an organization show page and try various features' do
     verify_outside_content_absent
   end
 
-  scenario 'The user is a non-admin user that did not create the organization and is not a steward of the organization' do
+  scenario 'The user is not the owner and not a steward' do
     login_as user, scope: :user
     visit organization_path(organization)
 
@@ -45,7 +45,7 @@ RSpec.describe 'Visit an organization show page and try various features' do
     verify_outside_content_absent
   end
 
-  scenario 'The user is a non-admin user that created the organization' do
+  scenario 'The user owns the organization' do
     login_as owner, scope: :user
     visit organization_path(organization)
 
@@ -54,7 +54,7 @@ RSpec.describe 'Visit an organization show page and try various features' do
     verify_outside_content_absent
   end
 
-  scenario 'The user is a non-admin user that is a steward of the organization' do
+  scenario 'The user is a steward of the organization' do
     login_as steward, scope: :user
     visit organization_path(organization)
 
@@ -78,6 +78,15 @@ RSpec.describe 'Visit an organization show page and try various features' do
 
     expect(page).to have_content(visible_event_1.course.name)
     expect(page).to have_content(visible_event_2.course.name)
+  end
+
+  scenario 'The user is a visitor that clicks the Event Series link' do
+    visit organization_path(organization)
+    click_link 'Event Series'
+
+    organization.event_series.each do |series|
+      expect(page).to have_content(series.name)
+    end
   end
 
   scenario 'The user is an owner that clicks the Stewards link' do
@@ -116,6 +125,7 @@ RSpec.describe 'Visit an organization show page and try various features' do
     expect(page).to have_content(organization.name)
     expect(page).to have_content('Courses')
     expect(page).to have_content('Events')
+    expect(page).to have_content('Event Series')
 
     expect(page).to have_content(visible_event_group.name)
     expect(page).to have_content(visible_event_1.guaranteed_short_name)

@@ -103,3 +103,6 @@ yarn-error.log
 
 # ActiveStorage local directory
 storage/
+
+# Snyk working file
+.snyk

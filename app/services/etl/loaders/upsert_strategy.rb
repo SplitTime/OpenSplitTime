@@ -5,6 +5,7 @@ module ETL::Loaders
 
     def post_initialize(options)
       @unique_key = options[:unique_key]&.map { |attribute| attribute.to_s.underscore.to_sym }
+      @parent = options[:parent]
     end
 
     def custom_load
@@ -22,7 +23,7 @@ module ETL::Loaders
 
     private
 
-    attr_reader :unique_key
+    attr_reader :unique_key, :parent
 
     def record_from_proto(proto_record)
       record = fetch_record(proto_record)
@@ -31,12 +32,18 @@ module ETL::Loaders
     end
 
     def fetch_record(proto_record)
-      model_class = proto_record.record_class
-      attributes = proto_record.resource_attributes(unique_key)
-      unique_attributes = attributes.slice(*unique_key)
-      record = unique_key_valid?(unique_key, unique_attributes) ?
-                   model_class.find_or_initialize_by(unique_attributes) :
-                   model_class.new
+      plural_model_class = proto_record.record_type.to_s.pluralize
+      temp_resource = parent.send(plural_model_class).new
+      temp_resource.assign_attributes(proto_record.to_h) # Use the class to cast attributes and convert virtual attributes
+
+      joined_attributes = proto_record.to_h.keys | (unique_key || [])
+      attributes = joined_attributes.map { |attribute_name| [attribute_name, temp_resource.send(attribute_name)] }.to_h
+
+      unique_attrs = attributes.slice(*unique_key)
+
+      record = unique_key_valid?(unique_key, unique_attrs) ?
+                 parent.send(plural_model_class).find_or_initialize_by(unique_attrs) :
+                 parent.send(plural_model_class).new
       record.assign_attributes(attributes)
       record
     end

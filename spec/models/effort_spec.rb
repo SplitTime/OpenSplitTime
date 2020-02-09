@@ -469,6 +469,38 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe '#scheduled_start_offset=' do
+    subject { build_stubbed(:effort, event: event) }
+    let(:event) { build_stubbed(:event, start_time: event_start_time) }
+    before { subject.scheduled_start_offset = offset }
+
+    context 'when the event has a start_time' do
+      let(:event_start_time) { '2017-08-01 12:00:00 GMT'.in_time_zone }
+
+      context 'when the offset is positive' do
+        let(:offset) { 900 }
+        it 'sets the effort scheduled start time based on the event start time' do
+          expect(subject.scheduled_start_time).to eq(event_start_time + offset)
+        end
+      end
+
+      context 'when the offset is negative' do
+        let(:offset) { -900 }
+        it 'sets the effort scheduled start time based on the event start time' do
+          expect(subject.scheduled_start_time).to eq(event_start_time + offset)
+        end
+      end
+    end
+
+    context 'when the event has no start time' do
+      let(:event_start_time) { nil }
+      let(:offset) { 900 }
+      it 'does not set anything' do
+        expect(subject.scheduled_start_time).to be_nil
+      end
+    end
+  end
+
   describe '#concealed?' do
     subject { build_stubbed(:effort, event: event) }
 
@@ -493,8 +525,8 @@ RSpec.describe Effort, type: :model do
 
   describe '.concealed and .visible' do
     let(:concealed_event_group) { event_groups(:dirty_30) }
-    let(:visible_efforts) { Effort.joins(:event).where.not(events: {event_group_id: concealed_event_group.id}).first(5) }
-    let(:concealed_efforts) { Effort.joins(:event).where(events: {event_group_id: concealed_event_group.id}).first(5) }
+    let(:visible_efforts) { Effort.joins(:event).where.not(events: { event_group_id: concealed_event_group.id }).first(5) }
+    let(:concealed_efforts) { Effort.joins(:event).where(events: { event_group_id: concealed_event_group.id }).first(5) }
 
     before { concealed_event_group.update(concealed: true) }
 

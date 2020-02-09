@@ -26,7 +26,6 @@ class EventGroup < ApplicationRecord
   accepts_nested_attributes_for :organization
 
   attr_accessor :duplicate_event_date
-  delegate :stewards, to: :organization
 
   scope :standard_includes, -> { includes(events: :splits) }
   scope :by_group_start_time, -> do

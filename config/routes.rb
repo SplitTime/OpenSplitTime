@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     end
     member do
       get :analyze
+      get :audit
       get :projections
       get :place
       get :show_photo
@@ -67,6 +68,7 @@ Rails.application.routes.draw do
       get :drop_list
       get :export_raw_times
       get :follow
+      get :notifications
       get :raw_times
       get :reconcile
       get :roster
@@ -121,7 +123,7 @@ Rails.application.routes.draw do
     member { get :categories}
   end
 
-  resources :split_times
+  resources :split_times, only: [:update]
   resources :splits
 
   resources :stage_event_groups, only: [:new, :create, :edit, :update]

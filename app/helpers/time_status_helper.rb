@@ -6,7 +6,7 @@ STATUS_INDICATOR_ATTRIBUTES = {
 }.with_indifferent_access
 
 module TimeStatusHelper
-  def time_with_status_indicator(time, status)
+  def text_with_status_indicator(time, status)
     attributes = STATUS_INDICATOR_ATTRIBUTES[status]
     return time if attributes.nil?
 

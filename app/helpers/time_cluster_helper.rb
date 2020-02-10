@@ -10,7 +10,7 @@ module TimeClusterHelper
         time_array = formatted_times.zip(cluster.time_data_statuses)
 
         time_array.map.with_index(1) do |(formatted_time, status), i|
-          concat time_with_status_indicator(formatted_time, status)
+          concat text_with_status_indicator(formatted_time, status)
           concat ' / ' unless i == time_array.size
         end
       else

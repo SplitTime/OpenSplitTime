@@ -43,14 +43,16 @@
           <table class="table table-condensed table-striped">
             <thead>
             <th><h4>Split</h4></th>
+            <th></th>
             <th><h4><%= @presenter.table_header %></h4></th>
             </thead>
             <tbody>
             <% @presenter.lap_split_rows_plus_one.each do |row| %>
-              <tr class="<%= data_status_text_class[row.data_status] %>">
+              <tr>
                 <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
                 <% row.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
+                    <td><%= text_with_status_indicator('', @presenter.guaranteed_split_time(time_point).data_status) %></td>
                     <td>
                       <%= builder.text_field @presenter.working_field,
                                              class: 'form-control',

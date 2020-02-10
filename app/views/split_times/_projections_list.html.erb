@@ -9,7 +9,7 @@
 
   <tbody>
   <% view_object.actual_lap_split_rows.each do |row| %>
-    <tr class="<%= data_status_text_class[row.data_status] %>">
+    <tr>
       <td><%= strong_conditional row.name, row.done? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
       <td></td>

@@ -83,7 +83,7 @@ module ETL::Extractors
     end
 
     def validate_setup
-      errors << missing_table_error unless times_table.present? && runner_info.present?
+      errors << missing_table_error unless times_table.present? && runner_info.present? && records_table.present?
     end
   end
 end

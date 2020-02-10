@@ -13,10 +13,10 @@
   </thead>
   <tbody>
     <% efforts.each do |effort| %>
-      <tr class="<%= data_status_text_class[effort.data_status] %>">
+      <tr>
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
-      <td class="text-right"><%= effort.finish_status %></td>
+      <td class="text-right"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>
           <td class="text-right"><%= link_to 'Disassociate',
                                              effort_path(effort, effort: {person_id: nil}, button: :disassociate),

@@ -30,7 +30,7 @@ class SplitTime < ApplicationRecord
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
   scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
-  scope :with_time_record_matchers, -> { joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number::text as bib_number") }
+  scope :with_time_record_matchers, -> { joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter

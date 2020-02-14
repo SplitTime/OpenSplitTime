@@ -51,16 +51,17 @@ module Interactors
 
     def matching_record(split_time, time_record)
       (split_time.split_id == time_record.split_id) &&
-          (split_time.bitkey == time_record.bitkey) &&
-          (split_time.bib_number == time_record.bib_number) &&
-          (!split_time.stopped_here == !time_record.stopped_here) &&
-          (!split_time.pacer == !time_record.with_pacer) &&
-          time_matches(split_time, time_record)
+        (split_time.bitkey == time_record.bitkey) &&
+        time_record.matchable_bib_number.present? &&
+        (split_time.bib_number == time_record.matchable_bib_number) &&
+        (!split_time.stopped_here == !time_record.stopped_here) &&
+        (!split_time.pacer == !time_record.with_pacer) &&
+        time_matches(split_time, time_record)
     end
 
     def time_matches(split_time, time_record)
       (time_record.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance) ||
-          (time_record.entered_time && (Time.parse(split_time.military_time) - Time.parse(time_record.entered_time)).abs <= tolerance)
+        (time_record.entered_time && (Time.parse(split_time.military_time) - Time.parse(time_record.entered_time)).abs <= tolerance)
     end
 
     def matched

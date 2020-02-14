@@ -179,6 +179,7 @@ class Api::V1::EventGroupsController < ApiController
       # :id is already assigned if it is valid; :event_group_id is already assigned by
       # @resource.raw_times.find_by or @resource.raw_times.new
       raw_time.assign_attributes(attributes.except(:id, :event_group_id))
+      raw_time.run_callbacks(:validation)
       raw_time
     end
 

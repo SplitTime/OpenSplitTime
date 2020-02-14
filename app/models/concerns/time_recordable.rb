@@ -67,10 +67,4 @@ module TimeRecordable
     return @puller if defined?(@puller)
     User.find_by(id: pulled_by) if pulled_by
   end
-
-  private
-
-  def create_sortable_bib_number
-    self.sortable_bib_number = bib_number&.gsub(/\D/, '0').to_i
-  end
 end

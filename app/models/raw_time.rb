@@ -26,6 +26,7 @@ class RawTime < ApplicationRecord
 
   before_validation :parameterize_split_name
   before_validation :create_sortable_bib_number
+  before_validation :create_matchable_bib_number
 
   validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}
@@ -115,6 +116,14 @@ class RawTime < ApplicationRecord
   end
 
   private
+
+  def create_sortable_bib_number
+    self.sortable_bib_number = bib_number&.gsub(/\D/, '0').to_i
+  end
+
+  def create_matchable_bib_number
+    self.matchable_bib_number = bib_number&.numeric? ? bib_number.to_i : nil
+  end
 
   def parameterize_split_name
     self.parameterized_split_name = split_name&.parameterize

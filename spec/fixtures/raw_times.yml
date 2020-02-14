@@ -16,11 +16,12 @@ raw_time_49:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.732619'
-  updated_at: '2018-06-11 10:56:14.732619'
+  updated_at: '2020-02-14 08:08:54.171286'
   parameterized_split_name: pole-creek
   remarks: 
   sortable_bib_number: 102
   data_status: 
+  matchable_bib_number: 102
 raw_time_50:
   id: 50
   event_group_id: 17
@@ -38,11 +39,12 @@ raw_time_50:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.735995'
-  updated_at: '2018-06-11 10:56:14.735995'
+  updated_at: '2020-02-14 08:08:54.176666'
   parameterized_split_name: pole-creek
   remarks: 
   sortable_bib_number: 103
   data_status: 
+  matchable_bib_number: 103
 raw_time_67:
   id: 67
   event_group_id: 32
@@ -60,11 +62,12 @@ raw_time_67:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.798201'
-  updated_at: '2018-06-11 10:56:14.798201'
+  updated_at: '2020-02-14 08:08:54.185329'
   parameterized_split_name: molas-pass-aid1
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_68:
   id: 68
   event_group_id: 32
@@ -82,11 +85,12 @@ raw_time_68:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.801611'
-  updated_at: '2018-06-11 10:56:14.801611'
+  updated_at: '2020-02-14 08:08:54.18925'
   parameterized_split_name: molas-pass-aid1
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_69:
   id: 69
   event_group_id: 32
@@ -104,11 +108,12 @@ raw_time_69:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.805381'
-  updated_at: '2018-06-11 10:56:14.805381'
+  updated_at: '2020-02-14 08:08:54.193883'
   parameterized_split_name: anvil-cg-aid6
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_70:
   id: 70
   event_group_id: 32
@@ -126,11 +131,12 @@ raw_time_70:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.809416'
-  updated_at: '2018-06-11 10:56:14.809416'
+  updated_at: '2020-02-14 08:08:54.20209'
   parameterized_split_name: anvil-cg-aid6
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_73:
   id: 73
   event_group_id: 32
@@ -148,11 +154,12 @@ raw_time_73:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.819696'
-  updated_at: '2018-06-11 10:56:14.819696'
+  updated_at: '2020-02-14 08:08:54.206927'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_74:
   id: 74
   event_group_id: 32
@@ -170,11 +177,12 @@ raw_time_74:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.825046'
-  updated_at: '2018-06-11 10:56:14.825046'
+  updated_at: '2020-02-14 08:08:54.263475'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_75:
   id: 75
   event_group_id: 32
@@ -192,11 +200,12 @@ raw_time_75:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.828907'
-  updated_at: '2018-06-11 10:56:14.828907'
+  updated_at: '2020-02-14 08:08:54.266843'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_76:
   id: 76
   event_group_id: 32
@@ -214,11 +223,12 @@ raw_time_76:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.832235'
-  updated_at: '2018-06-11 10:56:14.832235'
+  updated_at: '2020-02-14 08:08:54.270025'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_77:
   id: 77
   event_group_id: 32
@@ -236,11 +246,12 @@ raw_time_77:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.835982'
-  updated_at: '2018-06-11 10:56:14.835982'
+  updated_at: '2020-02-14 08:08:54.273103'
   parameterized_split_name: start
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_78:
   id: 78
   event_group_id: 32
@@ -258,11 +269,12 @@ raw_time_78:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.840667'
-  updated_at: '2018-06-11 10:56:14.840667'
+  updated_at: '2020-02-14 08:08:54.276343'
   parameterized_split_name: molas-pass-aid1
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_79:
   id: 79
   event_group_id: 32
@@ -280,11 +292,12 @@ raw_time_79:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.84431'
-  updated_at: '2018-06-11 10:56:14.84431'
+  updated_at: '2020-02-14 08:08:54.383085'
   parameterized_split_name: molas-pass-aid1
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_80:
   id: 80
   event_group_id: 32
@@ -302,11 +315,12 @@ raw_time_80:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.847562'
-  updated_at: '2018-06-11 10:56:14.847562'
+  updated_at: '2020-02-14 08:08:54.422543'
   parameterized_split_name: cascade-creek-rd-aid3
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_81:
   id: 81
   event_group_id: 32
@@ -324,11 +338,12 @@ raw_time_81:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.851043'
-  updated_at: '2018-06-11 10:56:14.851043'
+  updated_at: '2020-02-14 08:08:54.428582'
   parameterized_split_name: cascade-creek-rd-aid3
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_82:
   id: 82
   event_group_id: 32
@@ -346,11 +361,12 @@ raw_time_82:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.854819'
-  updated_at: '2018-06-11 10:56:14.854819'
+  updated_at: '2020-02-14 08:08:54.433537'
   parameterized_split_name: engineer-mtn-th-aid4
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_83:
   id: 83
   event_group_id: 32
@@ -368,11 +384,12 @@ raw_time_83:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.858689'
-  updated_at: '2018-06-11 10:56:14.858689'
+  updated_at: '2020-02-14 08:08:54.443909'
   parameterized_split_name: engineer-mtn-th-aid4
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_84:
   id: 84
   event_group_id: 32
@@ -390,11 +407,12 @@ raw_time_84:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.862327'
-  updated_at: '2018-06-11 10:56:14.862327'
+  updated_at: '2020-02-14 08:08:54.449647'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 
+  matchable_bib_number: 101
 raw_time_85:
   id: 85
   event_group_id: 32
@@ -412,11 +430,12 @@ raw_time_85:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.865972'
-  updated_at: '2018-06-11 10:56:14.865972'
+  updated_at: '2020-02-14 08:08:54.456282'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 
+  matchable_bib_number: 101
 raw_time_86:
   id: 86
   event_group_id: 32
@@ -434,11 +453,12 @@ raw_time_86:
   created_by: 
   updated_by: 
   created_at: '2018-06-11 10:56:14.86953'
-  updated_at: '2018-06-11 10:56:14.86953'
+  updated_at: '2020-02-14 08:08:54.463522'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_87:
   id: 87
   event_group_id: 32
@@ -456,11 +476,12 @@ raw_time_87:
   created_by: 
   updated_by: 
   created_at: '2018-06-11 10:56:14.873617'
-  updated_at: '2018-06-11 10:56:14.873617'
+  updated_at: '2020-02-14 08:08:54.473485'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_88:
   id: 88
   event_group_id: 32
@@ -478,11 +499,12 @@ raw_time_88:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.877397'
-  updated_at: '2018-07-27 03:39:21.964139'
+  updated_at: '2020-02-14 08:08:54.478597'
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 999
   data_status: 
+  matchable_bib_number: 999
 raw_time_89:
   id: 89
   event_group_id: 32
@@ -500,11 +522,12 @@ raw_time_89:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.880784'
-  updated_at: '2018-06-11 10:56:14.880784'
+  updated_at: '2020-02-14 08:08:54.49242'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_91:
   id: 91
   event_group_id: 32
@@ -522,11 +545,12 @@ raw_time_91:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-29 04:42:41.128703'
-  updated_at: '2018-07-27 03:40:09.010245'
+  updated_at: '2020-02-14 08:08:54.501138'
   parameterized_split_name: start
   remarks: ''
   sortable_bib_number: 777
   data_status: 
+  matchable_bib_number: 777
 raw_time_92:
   id: 92
   event_group_id: 32
@@ -544,11 +568,12 @@ raw_time_92:
   created_by: 
   updated_by: 
   created_at: '2018-06-29 05:01:22.505217'
-  updated_at: '2018-06-29 05:01:22.505217'
+  updated_at: '2020-02-14 08:08:54.506504'
   parameterized_split_name: start
   remarks: 
   sortable_bib_number: 777
   data_status: 
+  matchable_bib_number: 777
 raw_time_176:
   id: 176
   event_group_id: 32
@@ -566,11 +591,12 @@ raw_time_176:
   created_by: 
   updated_by: 
   created_at: '2018-10-25 20:05:12.500786'
-  updated_at: '2018-10-25 20:05:12.500786'
+  updated_at: '2020-02-14 08:08:54.513966'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 130
   data_status: 
+  matchable_bib_number: 130
 raw_time_177:
   id: 177
   event_group_id: 32
@@ -588,11 +614,12 @@ raw_time_177:
   created_by: 1
   updated_by: 1
   created_at: '2018-10-25 20:06:21.05898'
-  updated_at: '2018-11-14 05:48:25.82757'
+  updated_at: '2020-02-14 08:08:54.521708'
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
   data_status: 0
+  matchable_bib_number: 130
 raw_time_178:
   id: 178
   event_group_id: 32
@@ -610,11 +637,12 @@ raw_time_178:
   created_by: 1
   updated_by: 1
   created_at: '2018-10-25 20:06:31.146819'
-  updated_at: '2018-11-14 05:48:27.597464'
+  updated_at: '2020-02-14 08:08:54.537936'
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
   data_status: 0
+  matchable_bib_number: 130
 raw_time_1100:
   id: 1100
   event_group_id: 32
@@ -632,11 +660,12 @@ raw_time_1100:
   created_by: 1
   updated_by: 1
   created_at: '2018-11-14 05:48:22.555587'
-  updated_at: '2018-11-14 05:48:22.568694'
+  updated_at: '2020-02-14 08:08:54.546191'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 130
   data_status: 2
+  matchable_bib_number: 130
 raw_time_1106:
   id: 1106
   event_group_id: 32
@@ -654,11 +683,12 @@ raw_time_1106:
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:24:15.750994'
-  updated_at: '2018-12-09 02:24:15.771129'
+  updated_at: '2020-02-14 08:08:54.552154'
   parameterized_split_name: bandera-mine-aid5
   remarks: 
   sortable_bib_number: 103
   data_status: 2
+  matchable_bib_number: 103
 raw_time_1110:
   id: 1110
   event_group_id: 32
@@ -676,11 +706,12 @@ raw_time_1110:
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:25:03.158886'
-  updated_at: '2018-12-09 02:25:03.165771'
+  updated_at: '2020-02-14 08:08:54.557109'
   parameterized_split_name: anvil-cg-aid6
   remarks: 
   sortable_bib_number: 103
   data_status: 2
+  matchable_bib_number: 103
 raw_time_1111:
   id: 1111
   event_group_id: 32
@@ -698,11 +729,12 @@ raw_time_1111:
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:26:54.170813'
-  updated_at: '2018-12-09 02:26:54.178288'
+  updated_at: '2020-02-14 08:08:54.561129'
   parameterized_split_name: anvil-cg-aid6
   remarks: 
   sortable_bib_number: 103
   data_status: 2
+  matchable_bib_number: 103
 raw_time_1117:
   id: 1117
   event_group_id: 32
@@ -720,11 +752,12 @@ raw_time_1117:
   created_by: 1
   updated_by: 1
   created_at: '2018-12-15 17:29:59.172639'
-  updated_at: '2018-12-15 17:29:59.183563'
+  updated_at: '2020-02-14 08:08:54.570039'
   parameterized_split_name: anvil-cg-aid6
   remarks: 
   sortable_bib_number: 103
   data_status: 2
+  matchable_bib_number: 103
 raw_time_1122:
   id: 1122
   event_group_id: 32
@@ -742,11 +775,12 @@ raw_time_1122:
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:15.069786'
-  updated_at: '2019-01-25 00:23:15.086917'
+  updated_at: '2020-02-14 08:08:54.574315'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 2
+  matchable_bib_number: 101
 raw_time_1123:
   id: 1123
   event_group_id: 32
@@ -764,11 +798,12 @@ raw_time_1123:
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:15.075882'
-  updated_at: '2019-01-25 00:23:15.095732'
+  updated_at: '2020-02-14 08:08:54.57841'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 2
+  matchable_bib_number: 101
 raw_time_1124:
   id: 1124
   event_group_id: 32
@@ -786,11 +821,12 @@ raw_time_1124:
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:57.469491'
-  updated_at: '2019-01-25 00:23:57.48348'
+  updated_at: '2020-02-14 08:08:54.587049'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 2
+  matchable_bib_number: 101
 raw_time_1125:
   id: 1125
   event_group_id: 32
@@ -808,11 +844,12 @@ raw_time_1125:
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:57.472951'
-  updated_at: '2019-01-25 00:23:57.492574'
+  updated_at: '2020-02-14 08:08:54.592574'
   parameterized_split_name: rolling-pass-aid2
   remarks: 
   sortable_bib_number: 101
   data_status: 2
+  matchable_bib_number: 101
 raw_time_1126:
   id: 1126
   event_group_id: 32
@@ -830,8 +867,9 @@ raw_time_1126:
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:25:12.56445'
-  updated_at: '2019-01-25 00:25:12.575728'
+  updated_at: '2020-02-14 08:08:54.597859'
   parameterized_split_name: start
   remarks: 
   sortable_bib_number: 114
   data_status: 2
+  matchable_bib_number: 114

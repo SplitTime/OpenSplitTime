@@ -139,7 +139,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       end
     end
 
-    context 'when all attributes match but bib_number is different' do
+    context 'when bib_number is different' do
       let(:matching_split_times) { [split_time_1, split_time_3] }
       let(:raw_times) { [raw_time_1, raw_time_2, raw_time_3] }
       let(:matching_raw_times) { [raw_time_1, raw_time_3] }
@@ -147,7 +147,20 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
 
       before { raw_time_2.update(bib_number: effort.bib_number + 1) }
 
-      it 'sets split_time for all raw_times' do
+      it 'sets split_time for matching raw_times only' do
+        verify_raw_times
+      end
+    end
+
+    context 'when the raw time bib number has a leading zero' do
+      let(:matching_split_times) { split_times }
+      let(:raw_times) { [raw_time_1, raw_time_2, raw_time_3] }
+      let(:matching_raw_times) { [raw_time_1, raw_time_2, raw_time_3] }
+      let(:non_matching_raw_times) { [] }
+
+      before { raw_time_2.update(bib_number: "0#{effort.bib_number}") }
+
+      it 'sets split_time for all raw times' do
         verify_raw_times
       end
     end
@@ -222,7 +235,9 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
 
     def verify_raw_times
       expect(raw_times.map(&:split_time_id)).to all be_nil
+
       response = subject.perform!
+
       expect(response).to be_successful
       expect(response.resources[:matched]).to match_array(matching_raw_times)
       expect(response.resources[:unmatched]).to match_array(non_matching_raw_times)

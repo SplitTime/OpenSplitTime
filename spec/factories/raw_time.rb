@@ -8,8 +8,7 @@ FactoryBot.define do
     source { 'ost-test' }
 
     after(:build, :stub) do |raw_time|
-      raw_time.send(:parameterize_split_name)
-      raw_time.send(:create_sortable_bib_number)
+      raw_time.run_callbacks(:validation)
     end
   end
 end

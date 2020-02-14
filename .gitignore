@@ -33,6 +33,9 @@ db/*.sqlite3
 # add /config/database.yml if it contains passwords
 # /config/database.yml
 
+# RubyMine debugger config
+/config/spring.rb
+
 # various artifacts
 **.war
 *.rbc

@@ -22,7 +22,8 @@ class RawTimeQuery < BaseQuery
                 SELECT ef.id, ef.event_id, ef.bib_number, ef.last_name, ev.event_group_id
                 FROM efforts ef
                 INNER JOIN events ev ON ef.event_id = ev.id
-               ) e ON r.bib_number = e.bib_number::text
+               ) e ON r.matchable_bib_number is not null
+                   AND r.matchable_bib_number = e.bib_number
                    AND e.event_group_id = r.event_group_id
     LEFT JOIN LATERAL (
                 SELECT a.split_id FROM aid_stations a

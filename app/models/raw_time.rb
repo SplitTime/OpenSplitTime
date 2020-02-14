@@ -47,18 +47,18 @@ class RawTime < ApplicationRecord
   end
 
   def effort
-    @effort = nil if bib_number.nil? || bib_number.include?('*')
+    @effort = nil if matchable_bib_number.nil?
     return @effort if defined?(@effort)
 
-    if attributes['effort_id']
+    if has_effort_id?
       @effort = Effort.find(attributes['effort_id'])
     else
-      @effort = Effort.joins(:event).find_by(bib_number: bib_number, events: {event_group_id: event_group_id})
+      @effort = Effort.joins(:event).find_by(bib_number: matchable_bib_number, events: {event_group_id: event_group_id})
     end
   end
 
   def effort_id
-    attributes['effort_id'] || effort&.id
+    attributes.has_key?('effort_id') ? attributes['effort_id'] : effort&.id
   end
 
   def has_effort_id?
@@ -66,18 +66,18 @@ class RawTime < ApplicationRecord
   end
 
   def event
-    @event = nil if bib_number.nil? || bib_number.include?('*')
+    @event = nil if matchable_bib_number.nil?
     return @event if defined?(@event)
 
-    if attributes['event_id']
+    if has_event_id?
       @event = Event.find(attributes['event_id'])
     else
-      @event = Event.joins(:efforts).find_by(event_group: event_group_id, efforts: {bib_number: bib_number})
+      @event = Event.joins(:efforts).find_by(event_group: event_group_id, efforts: {bib_number: matchable_bib_number})
     end
   end
 
   def event_id
-    attributes['event_id'] || event&.id
+    attributes.has_key?('event_id') ? attributes['event_id'] : event&.id
   end
 
   def has_event_id?
@@ -85,7 +85,7 @@ class RawTime < ApplicationRecord
   end
 
   def split
-    @split = nil if bib_number.nil? || bib_number.include?('*') ||
+    @split = nil if matchable_bib_number.nil? ||
         (attributes.has_key?('split_id') && attributes['split_id'].nil?)
     return @split if defined?(@split)
 

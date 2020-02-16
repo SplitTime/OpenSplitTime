@@ -69,7 +69,14 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
+
+  # Suppress ActionView render information from the logger
+  ActiveSupport::on_load :action_view do
+    %w[render_template render_partial render_collection].each do |event|
+      ActiveSupport::Notifications.unsubscribe "#{event}.action_view"
+    end
+  end
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]

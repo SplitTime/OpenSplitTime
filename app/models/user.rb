@@ -11,6 +11,7 @@ class User < ApplicationRecord
   enum pref_elevation_unit: [:feet, :meters]
   strip_attributes collapse_spaces: true
   friendly_id :slug_candidates, use: [:slugged, :history]
+  has_paper_trail
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :subscribable, source_type: 'Person'

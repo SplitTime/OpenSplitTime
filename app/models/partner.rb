@@ -5,6 +5,7 @@ class Partner < ApplicationRecord
   scope :with_banners, -> { joins(:banner_attachment).where.not(banner_link: nil) }
 
   strip_attributes collapse_spaces: true
+  has_paper_trail
 
   has_one_attached :banner
 

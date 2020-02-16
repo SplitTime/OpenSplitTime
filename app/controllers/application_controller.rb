@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :store_user_location!, if: :storable_location?
   before_action :set_current_user
+  before_action :set_paper_trail_whodunnit
   helper_method :prepared_params
 
   impersonates :user

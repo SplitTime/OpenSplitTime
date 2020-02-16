@@ -12,6 +12,7 @@ class RawTime < ApplicationRecord
   include TimeZonable
 
   zonable_attribute :absolute_time
+  has_paper_trail
 
   belongs_to :event_group
   belongs_to :split_time

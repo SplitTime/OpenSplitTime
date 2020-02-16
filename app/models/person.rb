@@ -8,6 +8,7 @@ class Person < ApplicationRecord
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone], :regex => /[^0-9|+]/
   friendly_id :slug_candidates, use: [:slugged, :history]
+  has_paper_trail
 
   enum gender: [:male, :female]
   has_many :efforts, dependent: :nullify

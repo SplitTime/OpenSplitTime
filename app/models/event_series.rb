@@ -4,6 +4,7 @@ class EventSeries < ApplicationRecord
 
   enum scoring_method: [:time, :rank, :points]
   friendly_id :name, use: [:slugged, :history]
+  has_paper_trail
 
   belongs_to :organization
   belongs_to :results_template

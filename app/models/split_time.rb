@@ -10,6 +10,8 @@ class SplitTime < ApplicationRecord
   include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, TimePointMethods, TimeZonable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
+  has_paper_trail
+
   belongs_to :effort
   belongs_to :split
   has_many :raw_times, dependent: :nullify

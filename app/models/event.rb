@@ -7,6 +7,7 @@ class Event < ApplicationRecord
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   zonable_attributes :start_time
+  has_paper_trail
 
   belongs_to :course
   belongs_to :event_group

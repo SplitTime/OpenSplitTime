@@ -10,6 +10,7 @@ class Course < ApplicationRecord
   zonable_attribute :next_start_time
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
+  has_paper_trail
 
   belongs_to :organization
   has_many :events, dependent: :restrict_with_error

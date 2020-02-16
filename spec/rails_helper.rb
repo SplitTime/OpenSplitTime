@@ -20,6 +20,8 @@ require 'rack/test'
 require 'webmock/rspec'
 require 'aws-sdk-s3'
 require 'aws-sdk-sns'
+require 'paper_trail/frameworks/rspec'
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

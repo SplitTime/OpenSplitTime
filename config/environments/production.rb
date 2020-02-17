@@ -108,7 +108,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   if ENV['MEMCACHEDCLOUD_SERVERS']
-    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(','), {namespace: Rails.env, username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
+    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(','), {username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
   end
 
   # ActiveStorage

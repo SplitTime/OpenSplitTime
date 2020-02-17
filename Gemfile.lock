@@ -129,7 +129,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.5)
-    dalli (2.7.9)
+    dalli (2.7.10)
     derailed (0.1.0)
       derailed_benchmarks
     derailed_benchmarks (1.3.5)

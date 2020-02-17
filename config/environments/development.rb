@@ -49,7 +49,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   if ENV['MEMCACHEDCLOUD_SERVERS']
-    config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
+    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(','), {namespace: Rails.env, username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
   end
 
   config.assets.quiet = true

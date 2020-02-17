@@ -17,13 +17,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: ENV['BASE_URI'], protocol: 'http'}
 
   config.action_mailer.smtp_settings = {
-      address: 'smtp.sendgrid.net',
-      port: '587',
-      authentication: :plain,
-      user_name: ENV['SENDGRID_USERNAME'],
-      password: ENV['SENDGRID_PASSWORD'],
-      domain: 'heroku.com',
-      enable_starttls_auto: true
+    address: 'smtp.sendgrid.net',
+    port: '587',
+    authentication: :plain,
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: 'heroku.com',
+    enable_starttls_auto: true
   }
 
   config.active_job.queue_adapter = :sidekiq
@@ -108,7 +108,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   if ENV['MEMCACHEDCLOUD_SERVERS']
-    config.cache_store = :dalli_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','), { namespace: Rails.env, expires_in: 4.hours, compress: true, username: ENV['MEMCACHEDCLOUD_USERNAME'], password: ENV['MEMCACHEDCLOUD_PASSWORD'] }
+    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(','), {namespace: Rails.env, username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
   end
 
   # ActiveStorage

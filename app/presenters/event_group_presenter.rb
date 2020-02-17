@@ -60,7 +60,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def events
-    @events ||= event_group.events.select_with_params('').order(:start_time).to_a
+    @events ||= event_group.ordered_events
   end
 
   def event_group_names
@@ -72,8 +72,13 @@ class EventGroupPresenter < BasePresenter
   end
 
   def candidate_events
-    (organization.events.select_with_params('').order(start_time: :desc) - events)
-        .select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
+    org_events = organization.events.select_with_params('').order(start_time: :desc)
+
+    if event
+      (org_events - events).select { |event| (event.start_time - events.first.start_time).abs < CANDIDATE_SEPARATION_LIMIT }
+    else
+      org_events
+    end
   end
 
   def show_visibility_columns?
@@ -90,6 +95,10 @@ class EventGroupPresenter < BasePresenter
 
   def check_in_button_param
     :check_in_group
+  end
+
+  def event_start_time_local
+    event&.start_time_local
   end
 
   def method_missing(method)

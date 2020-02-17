@@ -35,9 +35,13 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      redirect_to courses_path
+      respond_to do |format|
+        format.json { render json: {success: true, id: @course.id, type: 'course'}, status: :created }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.json { render json: {success: false, errors: jsonapi_error_object(@course)}, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -45,9 +49,13 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to @course, notice: 'Course updated'
+      respond_to do |format|
+        format.json { render json: {success: true, id: @course.id, type: 'course'}, status: :ok }
+      end
     else
-      render 'edit'
+      respond_to do |format|
+        format.json { render json: {success: false, errors: jsonapi_error_object(@course)}, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -105,6 +113,19 @@ class CoursesController < ApplicationController
 
     if request.path != course_path(@course)
       redirect_numeric_to_friendly(@course, params[:id])
+    end
+  end
+
+  def staging_redirect_path
+    case params[:button]
+    when 'Continue'
+      roster_event_group_path(@event_group)
+    when 'Previous'
+      edit_event_path(@event_group.events.where(course_id: @course.id).first)
+    when 'Save'
+      courses_event_group_path(@event_group, course_id: @course.id)
+    else
+      course_path(@course)
     end
   end
 end

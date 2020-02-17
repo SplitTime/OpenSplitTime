@@ -25,6 +25,7 @@ class EventGroup < ApplicationRecord
   validates_with GroupedEventsValidator
 
   accepts_nested_attributes_for :events
+  accepts_nested_attributes_for :organization
 
   attr_accessor :duplicate_event_date
 
@@ -47,6 +48,10 @@ class EventGroup < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def organization_name
+    organization.name
   end
 
   def permit_notifications?

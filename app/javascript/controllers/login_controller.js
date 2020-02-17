@@ -4,15 +4,15 @@ export default class extends Controller {
 
     static targets = ["error"]
 
-    onClickSubmit() {
+    hideErrors() {
         $(this.errorTarget).fadeOut()
     }
 
-    onPostSuccess() {
+    reloadPage() {
         reloadWithTurbolinks()
     }
 
-    onPostError() {
+    showErrors() {
         $(this.errorTarget).fadeIn()
     }
 }

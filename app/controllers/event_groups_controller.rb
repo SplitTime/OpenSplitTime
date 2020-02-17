@@ -2,7 +2,7 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index, :create]
+  before_action :set_event_group, except: [:index]
   after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list]
 
   def index
@@ -22,20 +22,6 @@ class EventGroupsController < ApplicationController
     end
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
     session[:return_to] = event_group_path(@event_group, force_settings: true)
-  end
-
-  def edit
-    authorize @event_group
-  end
-
-  def update
-    authorize @event_group
-
-    if @event_group.update(permitted_params)
-      redirect_to event_group_path(@event_group, force_settings: true)
-    else
-      render 'edit'
-    end
   end
 
   def destroy

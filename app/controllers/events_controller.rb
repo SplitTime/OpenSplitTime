@@ -1,54 +1,19 @@
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
-  before_action :set_event, except: [:new, :create, :series]
-  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :place, :analyze]
+  before_action :set_event, except: [:index, :new, :create]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
 
   def show
-    redirect_to :spread_event
-  end
-
-  def new
-    if params[:course_id]
-      @event = Event.new(course_id: params[:course_id], laps_required: 1)
-      @course = Course.friendly.find(params[:course_id])
-    else
-      @event = Event.new(laps_required: 1)
-    end
-    authorize @event
-  end
-
-  def edit
-    authorize @event
-  end
-
-  def create
-    @event = Event.new(permitted_params)
-    authorize @event
-
-    if @event.save
-      redirect_to event_group_path(@event.event_group)
-    else
-      render 'new'
-    end
-  end
-
-  def update
-    authorize @event
-
-    if @event.update(permitted_params)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
-    else
-      render 'edit'
-    end
+    redirect_to :spread_event, status: 301
   end
 
   def destroy
     authorize @event
     @event.destroy
 
-    redirect_to event_groups_path
+    redirect_to edit_stage_event_group_path(@event.event_group, step: :event_details)
   end
 
   def reassign

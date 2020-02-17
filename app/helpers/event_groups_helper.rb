@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 
 module EventGroupsHelper
+  def organizations_selector(form)
+    organizations = OrganizationPolicy::Scope.new(current_user, Organization).editable.sort_by(&:name)
+
+    form.collection_select(:organization_id, organizations, :id, :name,
+                           {prompt: 'Choose an organization'},
+                           {autofocus: true,
+                            class: "form-control dropdown-select-field",
+                            data: {target: 'eg-form.orgDropdown',
+                                   action: 'eg-form#setOrgForm eg-form#fillEventGroupName'}})
+  end
+
   def link_to_start_ready_efforts(view_object)
     if view_object.ready_efforts.present?
       content_tag :div, class: 'btn-group' do

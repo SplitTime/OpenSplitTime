@@ -32,9 +32,6 @@ module DropdownHelper
 
   def admin_dropdown_menu(view_object)
     dropdown_items = [
-        {name: 'Staging',
-         link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
-         active: action_name == 'app'},
         {name: 'Reconcile',
          link: reconcile_event_group_path(view_object.event_group),
          active: action_name == 'reconcile'},
@@ -55,48 +52,58 @@ module DropdownHelper
   end
 
   def live_dropdown_menu(view_object)
-    dropdown_items = [
-        {name: 'Time Entry',
-         link: live_entry_live_event_group_path(view_object.event_group),
-         active: action_name == 'live_entry',
-         visible: view_object.available_live},
-        {name: 'Drops',
-         link: drop_list_event_group_path(view_object.event_group),
-         active: action_name == 'drop_list'},
-        {name: 'Progress',
-         link: progress_report_live_event_path(view_object.event),
-         active: action_name == 'progress_report'},
-        {name: 'Aid Stations',
-         link: aid_station_report_live_event_path(view_object.event),
-         active: action_name == 'aid_station_report'},
-        {name: 'Aid Detail',
-         link: aid_station_detail_live_event_path(view_object.event),
-         active: action_name == 'aid_station_detail'}
-    ]
+    if view_object.event.present?
+      dropdown_items = [
+          {name: 'Time Entry',
+           link: live_entry_live_event_group_path(view_object.event_group),
+           active: action_name == 'live_entry',
+           visible: view_object.available_live},
+          {name: 'Drops',
+           link: drop_list_event_group_path(view_object.event_group),
+           active: action_name == 'drop_list'},
+          {name: 'Progress',
+           link: progress_report_live_event_path(view_object.event),
+           active: action_name == 'progress_report'},
+          {name: 'Aid Stations',
+           link: aid_station_report_live_event_path(view_object.event),
+           active: action_name == 'aid_station_report'},
+          {name: 'Aid Detail',
+           link: aid_station_detail_live_event_path(view_object.event),
+           active: action_name == 'aid_station_detail'}
+      ]
+    else
+      dropdown_items = []
+    end
+
     build_dropdown_menu('Live', dropdown_items, class: 'nav-item')
   end
 
   def results_dropdown_menu(view_object)
-    dropdown_items = [
-        {name: 'Full',
-         link: spread_event_path(view_object.event),
-         active: action_name == 'spread'},
-        {name: 'Summary',
-         link: summary_event_path(view_object.event),
-         active: action_name == 'summary' && !(params[:finished] == 'true')},
-        {name: 'Finishers',
-         link: summary_event_path(view_object.event, finished: true),
-         active: action_name == 'summary' && params[:finished] == 'true'},
-        {name: 'Podium',
-         link: podium_event_path(view_object.event),
-         active: action_name == 'podium'},
-        {name: 'Follow',
-         link: follow_event_group_path(view_object.event_group),
-         active: action_name == 'follow'},
-        {name: 'Traffic',
-         link: traffic_event_group_path(view_object.event_group),
-         active: action_name == 'traffic'}
-    ]
+    if view_object.event.present?
+      dropdown_items = [
+          {name: 'Full',
+           link: spread_event_path(view_object.event),
+           active: action_name == 'spread'},
+          {name: 'Summary',
+           link: summary_event_path(view_object.event),
+           active: action_name == 'summary'},
+          {name: 'Finishers',
+           link: summary_event_path(view_object.event, finished: true),
+           active: action_name == 'summary' && params[:finished] == 'true'},
+          {name: 'Podium',
+           link: podium_event_path(view_object.event),
+           active: action_name == 'podium'},
+          {name: 'Follow',
+           link: follow_event_group_path(view_object.event_group),
+           active: action_name == 'follow'},
+          {name: 'Traffic',
+           link: traffic_event_group_path(view_object.event_group),
+           active: action_name == 'traffic'}
+      ]
+    else
+      dropdown_items = []
+    end
+
     build_dropdown_menu('Results', dropdown_items, class: 'nav-item')
   end
 
@@ -269,8 +276,8 @@ module DropdownHelper
   def event_actions_dropdown(event)
     dropdown_items = [
         {name: 'Edit/Delete Event',
-         link: edit_event_path(event)},
-        {name: 'Establish Drops',
+         link: edit_stage_event_group_path(event.event_group, step: :event_details, event: {id: event.id})},
+        {name: 'Establish drops',
          link: set_stops_event_path(event),
          method: :put,
          data: {confirm: 'NOTE: For every effort that is unfinished, this will flag the effort as having stopped ' +
@@ -290,7 +297,7 @@ module DropdownHelper
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
         {name: 'Edit/Delete Group',
-         link: edit_event_group_path(view_object)},
+         link: edit_stage_event_group_path(view_object, step: :your_event)},
         {name: 'Duplicate Group',
          link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
         {role: :separator},

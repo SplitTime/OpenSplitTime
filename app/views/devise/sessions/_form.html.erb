@@ -1,7 +1,7 @@
 <!--Requires local variable modal (boolean)-->
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), format: :json, remote: true,
-             data: {action: "ajax:success->login#onPostSuccess ajax:error->login#onPostError"}) do |f| %>
+             data: {action: 'ajax:success->login#reloadPage ajax:error->login#showErrors'}) do |f| %>
   <div class="form-group">
     <%= f.label :email %>
     <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
@@ -23,6 +23,6 @@
 
   <div class="form-group">
     <%= f.submit t('devise.sessions.new.sign_in'), id: 'log-in-modal-submit', class: 'btn btn-primary',
-                 data: {action: 'click->login#onClickSubmit'} %>
+                 data: {action: 'click->login#hideErrors'} %>
   </div>
 <% end %>

@@ -62,15 +62,16 @@ Rails.application.routes.draw do
 
   resources :duplicate_event_groups, only: [:new, :create]
 
-  resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
+  resources :event_groups, only: [:index, :show, :destroy] do
     member do
+      get :courses
       get :drop_list
+      get :export_raw_times
       get :follow
       get :notifications
       get :raw_times
       get :reconcile
       get :roster
-      get :export_raw_times
       get :split_raw_times
       get :traffic
       post :create_people
@@ -81,12 +82,13 @@ Rails.application.routes.draw do
       patch :update_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
+      resources :events, only: [:index, :new, :create]
     end
   end
 
   resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
 
-  resources :events, except: :index do
+  resources :events, only: [:show, :destroy] do
     member do
       get :admin
       get :edit_start_time
@@ -123,6 +125,9 @@ Rails.application.routes.draw do
 
   resources :split_times, only: [:update]
   resources :splits
+
+  resources :stage_event_groups, only: [:new, :create, :edit, :update]
+
   resources :stewardships, only: [:create, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 

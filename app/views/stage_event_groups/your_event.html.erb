@@ -1,0 +1,159 @@
+<% content_for :title do %>
+  <% if @event_group.persisted? %>
+    <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
+  <% else %>
+    <% 'OpenSplitTime: New Event Group' %>
+  <% end %>
+<% end %>
+
+<%= render partial: 'organizations/new' %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong>
+              <% if @presenter.event_group.persisted? %>
+                <%= "Staging: #{@presenter.name}" %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %>
+              <% else %>
+                Staging: Create Event
+              <% end %>
+            </strong>
+          </h1>
+          <%= render 'shared/staging_breadcrumbs' %>
+        </div>
+      </div>
+    </div>
+
+    <aside class="ost-toolbar">
+      <div class="container">
+        <%= staging_progress_bar(@presenter) %>
+      </div>
+    </aside>
+
+  </div>
+</header>
+
+<%= render 'shared/errors', obj: @presenter.event_group %>
+
+<article class="ost-article container">
+  <div class="col-12 row">
+    <aside class="col-12">
+      <h3>
+        <strong>Provide Information About Your Organization and Event</strong>
+      </h3>
+      <p>Your event group will belong to an Organization. You'll either use an existing Organization or create one.</p>
+    </aside>
+
+    <article class="col-12" data-controller="staging eg-form">
+      <%= form_with(model: @presenter.event_group, url: @presenter.event_group.persisted? ? stage_event_group_path(@presenter.event_group) : stage_event_groups_path, local: true, html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <%= staging_hidden_continue_button %>
+
+        <div class="form-group">
+          <div class="col-12">
+            <%= staging_continue_submit_button %>
+            <%= staging_save_submit_button %>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <span class="brackets"><%= link_to 'Cancel', @presenter.cancel_link %></span>
+        </div>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <label class="required">What is your organization called?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Your Organization is the administrative umbrella for your Events and provides a home page to organize related Events. You will be able to choose trusted Organization Stewards who have access to all Event data within an Organization."><i class="fas fa-question-circle"></i></span>
+              <div class="row">
+                <div class="col">
+                  <%= organizations_selector(form) %>
+                </div>
+                <div class="col">
+                  <%= link_to 'Create a New Organization', '#', class: 'btn btn-outline-secondary form-control dropdown-select-field', data: {toggle: 'modal', target: '#new-org-modal'} %>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col" data-target="eg-form.orgDescription"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col-12" data-target="eg-form.eventGroupName">
+              <label class="required">What will you call your event?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="A name will be suggested based on your organization name and event year, but feel free to change to your liking."><i class="fas fa-question-circle"></i></span>
+              <%= form.text_field :name, class: "form-control", placeholder: "Event name", data: {action: 'blur->eg-form#freezeEventGroupName'} %>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="required">In what time zone will your event occur?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
+              <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
+                                         {selected: @presenter.event_group.home_time_zone || 'Mountain Time (US & Canada)'},
+                                         {class: "form-control dropdown-select-field"}) %>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="required">Will you monitor pacers?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose 'Yes' only if you will actively track pacers using OST Remote"><i class="fas fa-question-circle"></i></span>
+              <div>
+                <div><%= form.radio_button :monitor_pacers, true %> Yes</div>
+                <div><%= form.radio_button :monitor_pacers, false %> No</div>
+              </div>
+            </div>
+
+            <div class="form-group col-12">
+              <label class="required">How will data entry points be grouped in OST Remote?</label>
+              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'"><i class="fas fa-question-circle"></i></span>
+              <div>
+                <%= form.select(:data_entry_grouping_strategy,
+                                EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },
+                                {},
+                                {class: "form-control dropdown-select-field"}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+          <div class="col-12">
+            <%= staging_continue_submit_button %>
+            <%= staging_save_submit_button %>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <span class="brackets"><%= link_to 'Cancel', @presenter.cancel_link %></span>
+        </div>
+      <% end %>
+    </article>
+  </div>
+</article>
+
+<% if @event_group.persisted? %>
+  <article class="ost-article container">
+    <% if current_user.authorized_fully?(@event_group) %>
+      <hr>
+      <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),
+                                  resource: @event_group,
+                                  noteworthy_associations: [:events, :entrants, :split_times],
+                                  class: 'btn btn-danger') %>
+
+      <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
+                                   class: 'btn btn-outline-secondary text-danger',
+                                   message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
+                                   required_pattern: "#{@event_group.name.upcase} TIMES",
+                                   strong_confirm_id: "strong-confirm-times-event-group-#{@event_group.id}") %>
+    <% end %>
+  </article>
+<% end %>

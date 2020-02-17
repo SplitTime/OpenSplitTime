@@ -24,6 +24,7 @@
 //= require vue
 //= require vue-router
 //= require local-time
+//= require activestorage
 //= require_tree .
 
 Vue.use( VueRouter );

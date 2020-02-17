@@ -8,9 +8,9 @@ module EventsHelper
     resource_type = resource.class.name.underscore.to_sym
 
     grouped_collection_select(resource_type, :results_template_id, organizations, :results_templates, :name, :id, :name,
-                              {prompt: false},
+                              {selected: resource.results_template_id},
                               {class: "form-control dropdown-select-field",
-                       data: {target: 'results-template.dropdown', action: 'results-template#replaceCategories'}})
+                               data: {target: 'results-template.dropdown', action: 'results-template#replaceCategories'}})
   end
 
   def link_to_beacon_button(view_object)

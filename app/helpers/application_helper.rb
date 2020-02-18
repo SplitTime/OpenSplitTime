@@ -4,6 +4,10 @@ module ApplicationHelper
   include TimeFormats
   include MeasurementFormats
 
+  def request_params_digest
+    ::Digest::MD5.base64digest(request.params.to_json)
+  end
+
   def day_time_current_military_full(zone)
     l(Time.current.in_time_zone(zone), format: :full_day_military_and_zone)
   end

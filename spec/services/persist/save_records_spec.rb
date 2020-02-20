@@ -25,8 +25,9 @@ RSpec.describe Persist::SaveRecords do
       it 'does not save any resource, and returns errors and a descriptive message' do
         response = subject.perform!
         expect(response).not_to be_successful
-        expect(response.errors.first[:title]).to match(/could not be updated/)
-        expect(response.message).to match(/could not be saved/)
+        first_error = response.errors.first
+        expect(first_error[:title]).to match(/could not be saved/)
+        expect(first_error[:detail][:messages]).to include(/Email can't be blank/)
       end
     end
   end

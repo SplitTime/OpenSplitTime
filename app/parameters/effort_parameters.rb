@@ -42,8 +42,8 @@ class EffortParameters < BaseParameters
      :"bib_#" => :bib_number,
      dob: :birthdate,
      birthday: :birthdate,
-     :"birth_date" => :birthdate,
-     :"date_of_birth" => :birthdate,
+     birth_date: :birthdate,
+     date_of_birth: :birthdate,
      emergency_name: :emergency_contact,
      start_time: :scheduled_start_time_local}
   end

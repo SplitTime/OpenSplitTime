@@ -8,7 +8,7 @@ RSpec.describe Organization, type: :model do
   it { is_expected.to strip_attribute(:description).collapse_spaces }
   subject(:organization) { described_class.new(name: name, owner_id: owner_id) }
   let(:name) { nil }
-  let(:owner_id) { nil }
+  let(:owner_id) { 1 }
 
   describe '#initialize' do
     context 'when created with a unique name' do
@@ -28,7 +28,6 @@ RSpec.describe Organization, type: :model do
 
     context 'with a duplicate name' do
       let(:name) { 'Hardrock' }
-
       it 'is invalid' do
         expect(organization).not_to be_valid
         expect(organization.errors[:name]).to include('has already been taken')
@@ -64,15 +63,15 @@ RSpec.describe Organization, type: :model do
 
     context 'when the email does not exist' do
       let(:provided_email) { 'random@email.com' }
-      it 'sets owner_id to nil' do
-        expect(subject.owner_id).to be_nil
+      it 'sets owner_id to not found' do
+        expect(subject.owner_id).to eq(Organization::NOT_FOUND_OWNER_ID)
       end
     end
 
     context 'when the email provided is nil' do
       let(:provided_email) { nil }
-      it 'sets owner_id to nil' do
-        expect(subject.owner_id).to be_nil
+      it 'sets owner_id to not found' do
+        expect(subject.owner_id).to eq(Organization::NOT_FOUND_OWNER_ID)
       end
     end
   end

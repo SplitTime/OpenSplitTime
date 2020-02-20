@@ -17,7 +17,7 @@ class Effort < ApplicationRecord
   zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
   has_paper_trail
 
-  belongs_to :event, counter_cache: true
+  belongs_to :event, counter_cache: true, touch: true
   belongs_to :person
   has_many :split_times, dependent: :destroy
   has_many :notifications, dependent: :destroy

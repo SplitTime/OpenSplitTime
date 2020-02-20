@@ -17,8 +17,8 @@ Rails.application.configure do
   config.action_mailer.default_url_options = {host: ENV['BASE_URI']}
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
+  config.consider_all_requests_local = true
+  config.action_controller.perform_caching = true
 
   # Do care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = true
@@ -48,9 +48,7 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  if ENV['MEMCACHEDCLOUD_SERVERS']
-    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(','), {namespace: Rails.env, username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
-  end
+  config.cache_store = :dalli_store, 'localhost', {:namespace => 'ost-dev', :expires_in => 1.day, :compress => true}
 
   config.assets.quiet = true
 

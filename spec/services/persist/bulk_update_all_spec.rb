@@ -3,46 +3,17 @@ require 'rails_helper'
 RSpec.describe Persist::BulkUpdateAll do
   subject { Persist::BulkUpdateAll.new(model, resources, update_fields: update_fields) }
   let(:model) { User }
+  let(:resources) { build_stubbed_list(:user, 3) }
   let(:update_fields) { [:pref_distance_unit, :pref_elevation_unit] }
 
   describe '#initialize' do
-    let(:resources) { build_stubbed_list(:user, 3) }
-
-    context 'when provided with a model, resources, and update_fields' do
-      it 'initializes without error' do
-        expect { subject }.not_to raise_error
-      end
-    end
-
-    context 'when no model argument is given' do
-      let(:model) { nil }
-
-      it 'raises an error' do
-        expect { subject }.to raise_error(/model must be provided/)
-      end
-    end
-
-    context 'when no resources argument is given' do
-      let(:resources) { nil }
-
-      it 'raises an error' do
-        expect { subject }.to raise_error(/resources must be provided/)
-      end
-    end
+    include_examples 'initializes with model and resources'
 
     context 'when no update_fields argument is given' do
       let(:update_fields) { nil }
 
       it 'raises an error' do
         expect { subject }.to raise_error(/update_fields must be provided/)
-      end
-    end
-
-    context 'when any resource is not a member of the model class' do
-      let(:resources) { [Effort.new] }
-
-      it 'raises an error' do
-        expect { subject }.to raise_error(/all resources must be members of the model class/)
       end
     end
   end

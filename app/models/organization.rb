@@ -21,6 +21,8 @@ class Organization < ApplicationRecord
         .where(event_groups: {concealed: false}).group('organizations.id, event_groups.organization_id')
   end
 
+  alias_attribute :owner_id, :created_by
+
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false
 
@@ -36,7 +38,12 @@ class Organization < ApplicationRecord
     end
   end
 
-  def owner_id
-    created_by
+  def owner_email
+    User.find_by(id: owner_id)&.email
+  end
+
+  def owner_email=(email)
+    user = User.find_by(email: email)
+    self.created_by = user&.id
   end
 end

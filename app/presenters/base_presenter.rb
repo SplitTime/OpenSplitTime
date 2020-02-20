@@ -37,6 +37,10 @@ class BasePresenter
     params[:per_page] || 200
   end
 
+  def request_params_digest
+    ::Digest::MD5.base64digest(params.to_json)
+  end
+
   def search_text
     params[:search]
   end

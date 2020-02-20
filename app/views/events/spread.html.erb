@@ -55,7 +55,7 @@
 <% end %>
 
 <article class="ost-article container">
-  <% cache [@presenter.event, request_params_digest] do %>
+  <% cache @presenter.cache_key do %>
     <table class="table table-sm table-striped">
       <thead>
       <tr>

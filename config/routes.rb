@@ -118,7 +118,7 @@ Rails.application.routes.draw do
   resources :raw_times, only: [:update, :destroy]
 
   resources :results_templates, only: [] do
-    member { get :categories}
+    member { get :categories }
   end
 
   resources :split_times, only: [:update]
@@ -129,14 +129,10 @@ Rails.application.routes.draw do
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
   namespace :admin do
-    resources :impersonate, only: [] do
-      member do
-        post :start
-        post :stop
-      end
-    end
+    get 'dashboard', to: 'dashboard#dashboard'
+    post 'impersonate/start/:id', to: 'impersonate#start', as: 'impersonate_start'
+    post 'impersonate/stop', to: 'impersonate#stop', as: 'impersonate_stop'
     resources :versions, only: [:index, :show]
-    root 'dashboard#dashboard'
   end
 
   namespace :live do

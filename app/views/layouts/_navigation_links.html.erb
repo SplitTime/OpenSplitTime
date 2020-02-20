@@ -5,5 +5,5 @@
     <li class="nav-item"><%= link_to 'My Stuff', my_stuff_user_path(current_user), class: 'nav-link' %></li>
 <% end %>
 <% if current_user&.admin? %>
-    <li class="nav-item"><%= link_to 'Dashboard', admin_root_path, class: 'nav-link' %></li>
+    <li class="nav-item"><%= link_to 'Dashboard', admin_dashboard_path, class: 'nav-link' %></li>
 <% end %>

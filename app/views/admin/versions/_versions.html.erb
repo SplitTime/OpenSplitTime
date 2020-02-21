@@ -1,0 +1,22 @@
+<table class="table table-centered table-fixed-sm table-striped">
+  <thead>
+  <tr>
+    <th>Version ID</th>
+    <th>Event</th>
+    <th>Record Type</th>
+    <th>Record ID</th>
+    <th>Whodunnit</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% versions.each do |version| %>
+      <tr>
+        <td><strong><%= link_to version.id, admin_version_path(version) %></strong></td>
+        <td><%= version.event %></td>
+        <td><%= version.item_type %></td>
+        <td><%= version.item_id %></td>
+        <td><%= link_to version.whodunnit, user_path(version.whodunnit) if version.whodunnit %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

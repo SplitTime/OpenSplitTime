@@ -5,11 +5,11 @@ module Persist
     include Interactors::Errors
     include ActionView::Helpers::TextHelper
 
-    def self.perform!(model, resources, options)
+    def self.perform!(model, resources, options = {})
       new(model, resources, options).perform!
     end
 
-    def initialize(model, resources, options)
+    def initialize(model, resources, options = {})
       @model = model
       @resources = resources
       @update_fields = options[:update_fields].nil? ? [] : Array.wrap(options[:update_fields])

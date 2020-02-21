@@ -7,12 +7,8 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
 
-  def cache_expire
-    simple? ? 5.seconds : 20.seconds
-  end
-
   def cache_key
-    "#{Rails.env}/events/#{to_param}/spread/display_style=#{display_style}&sort=#{sort_string}&filter=#{filter_hash}"
+    [event, request_params_digest]
   end
 
   def display_style

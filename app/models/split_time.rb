@@ -12,7 +12,7 @@ class SplitTime < ApplicationRecord
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   has_paper_trail
 
-  belongs_to :effort
+  belongs_to :effort, touch: true
   belongs_to :split
   has_many :raw_times, dependent: :nullify
   alias_attribute :bitkey, :sub_split_bitkey

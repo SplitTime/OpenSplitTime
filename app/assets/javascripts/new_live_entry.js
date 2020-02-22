@@ -640,15 +640,16 @@
                                             var d = new Date(time);
                                             var hours = ('0' + d.getHours()).slice(-2);
                                             var minutes = ('0' + d.getMinutes()).slice(-2);
-                                            var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
-                                            return days[d.getDay()] + ' ' + hours + ':' + minutes + status;
+                                            var seconds = ('0' + d.getSeconds()).slice(-2);
+                                        var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
+                                            return days[d.getDay()] + ' ' + hours + ':' + minutes + ':' + seconds + status;
                                         }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function(time) {
                                             if (time === null) return '--:--';
                                             var hours = Math.floor(time / (60 * 60));
                                             var minutes = Math.floor((time / 60) % 60);
-                                            // var seconds = Math.floor(time % 60);
-                                            return hours + ':' + ('0' + minutes).slice(-2);
+                                            var seconds = Math.floor(time % 60);
+                                            return hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
                                         }).join(' / ') + '</td>\
                                         <td>' + (stopped.some(function(b){ return b; }) ? '<i class="icon-stopped"></i>' : '') + '</td>\
                                         <td class="pacer-only">\

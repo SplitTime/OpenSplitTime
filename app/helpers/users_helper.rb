@@ -14,7 +14,7 @@ module UsersHelper
   end
 
   def link_to_become_user(user)
-    url = admin_impersonate_path(user)
+    url = admin_impersonate_start_path(user)
     options = {method: :post,
                data: {toggle: :tooltip,
                       placement: :bottom,

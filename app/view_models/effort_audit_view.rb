@@ -20,6 +20,10 @@ class EffortAuditView < EffortWithLapSplitRows
     end
   end
 
+  def rebuildable?
+    raw_times.size.positive? && multiple_laps?
+  end
+
   private
 
   def raw_times

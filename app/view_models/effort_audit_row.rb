@@ -23,7 +23,7 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
   private
 
   def raw_times
-    @raw_times ||= matched_raw_times + unmatched_raw_times
+    matched_raw_times
   end
 
   def split_times

@@ -76,4 +76,30 @@ module RawTimesHelper
 
     link_to fa_icon(:unlink), url, options
   end
+
+  def link_to_raw_time_associate(raw_time_id)
+    url = raw_time_path(raw_time_id, raw_time: {disassociated_from_effort: false})
+    tooltip = 'Associate this raw time with this effort'
+    options = {method: :patch,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original_title' => tooltip},
+               id: "associate-raw-time-#{raw_time_id}",
+               class: 'btn btn-sm btn-success has-tooltip'}
+
+    link_to fa_icon(:plus_square), url, options
+  end
+
+  def link_to_raw_time_disassociate(raw_time_id)
+    url = raw_time_path(raw_time_id, raw_time: {disassociated_from_effort: true})
+    tooltip = 'Disassociate this raw time from this effort'
+    options = {method: :patch,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original_title' => tooltip},
+               id: "disassociate-raw-time-#{raw_time_id}",
+               class: 'btn btn-sm btn-danger has-tooltip'}
+
+    link_to fa_icon(:minus_square), url, options
+  end
 end

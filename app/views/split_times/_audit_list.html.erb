@@ -23,13 +23,13 @@
 
       <td class="text-center">
         <% row.matched_raw_times.each do |rt| %>
-          <div><%= link_to_raw_time_unmatch(rt.id) %> <%= link_to_raw_time_match(row.split_time, rt.id, :equals) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+          <div><%= link_to_raw_time_match(row.split_time, rt.id, :equals) %> <%= link_to_raw_time_unmatch(rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
         <% end %>
       </td>
 
       <td class="text-center">
         <% row.unmatched_raw_times.each do |rt| %>
-          <div><%= link_to_raw_time_match(row.split_time, rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+          <div><%= link_to_raw_time_match(row.split_time, rt.id) %> <%= link_to_raw_time_disassociate(rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
         <% end %>
       </td>
 

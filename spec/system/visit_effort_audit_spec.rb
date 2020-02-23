@@ -27,6 +27,7 @@ RSpec.describe 'visit an effort audit page' do
 
   let(:matched_raw_time) { split_time.raw_times.first }
   let(:unmatched_raw_time) { raw_times(:raw_time_87) }
+  let(:disassociated_raw_time) { raw_times(:raw_time_86)}
 
   shared_examples 'authorized user visits and clicks links' do
     scenario 'The user visits the page' do
@@ -66,6 +67,28 @@ RSpec.describe 'visit an effort audit page' do
       expect(page).not_to have_link(id: "unmatch-raw-time-#{matched_raw_time.id}")
       expect(split_time.raw_times).not_to include(unmatched_raw_time)
       expect(split_time.raw_times).not_to include(matched_raw_time)
+    end
+
+    scenario 'The user disassociates and associates a raw time' do
+      visit audit_effort_path(effort)
+
+      expect(page).not_to have_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
+      expect(page).to have_link(id: "disassociate-raw-time-#{disassociated_raw_time.id}")
+      expect(disassociated_raw_time.disassociated_from_effort?).not_to eq(true)
+
+      click_link(id: "disassociate-raw-time-#{disassociated_raw_time.id}")
+      disassociated_raw_time.reload
+
+      expect(page).to have_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
+      expect(page).not_to have_link(id: "disassociate-raw-time-#{disassociated_raw_time.id}")
+      expect(disassociated_raw_time.disassociated_from_effort?).to eq(true)
+
+      click_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
+      disassociated_raw_time.reload
+
+      expect(page).not_to have_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
+      expect(page).to have_link(id: "disassociate-raw-time-#{disassociated_raw_time.id}")
+      expect(disassociated_raw_time.disassociated_from_effort?).not_to eq(true)
     end
   end
 

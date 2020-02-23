@@ -23,7 +23,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
 
   describe '#perform!' do
     context 'when raw_times exist and split_times are in incorrect order' do
-      let(:disordered_absolute_times) { ['2017-02-11 14:00:00',
+      let(:disordered_absolute_times) { ['2017-02-11 14:00:10',
                                          '2017-02-11 19:33:20',
                                          '2017-02-11 19:50:00',
                                          '2017-02-11 16:05:43',
@@ -38,6 +38,11 @@ RSpec.describe Interactors::RebuildEffortTimes do
           RawTime.create!(event_group: effort.event_group, bib_number: effort.bib_number, split_name: st.split.base_name,
                           absolute_time: st.absolute_time, bitkey: st.bitkey, source: 'rebuild_effort_test')
         end
+      end
+
+      it 'preserves the existing starting absolute time' do
+        subject.perform!
+        expect(effort.ordered_split_times.first.absolute_time).to eq('2017-02-11 14:00:10')
       end
 
       context 'when raw_times are not duplicated' do
@@ -70,10 +75,11 @@ RSpec.describe Interactors::RebuildEffortTimes do
           duplicate_time = st.absolute_time + 1.minute
           earlier_creation_time = st.created_at - 1.minute
           RawTime.create!(event_group: effort.event_group, bib_number: effort.bib_number, split_name: st.split.base_name,
-                          absolute_time: duplicate_time, bitkey: st.bitkey, source: 'ignored', created_at: earlier_creation_time)
+                          absolute_time: duplicate_time, bitkey: st.bitkey, source: 'rebuild_effort_test',
+                          created_at: earlier_creation_time)
         end
 
-        it 'reorders the split_times, retaining sub_split integrity and ignoring the duplicate time' do
+        it 'reorders the split_times, retaining sub_split integrity and skipping the duplicate time' do
           old_split_times = ordered_split_times.dup
           response = subject.perform!
           expect(response).to be_successful
@@ -86,7 +92,8 @@ RSpec.describe Interactors::RebuildEffortTimes do
         it 'matches raw_times with the newly created split_times' do
           subject.perform!
           raw_times = RawTime.where(source: 'rebuild_effort_test')
-          expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
+          expect(raw_times.pluck(:split_time_id)).to all be_present
+          expect(raw_times.pluck(:split_time_id)).to match_array(effort.ordered_split_times[1..-1].map(&:id) + [effort.ordered_split_times[1].id])
         end
       end
 

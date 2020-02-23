@@ -19,6 +19,7 @@ module Interactors
       ArgsValidator.validate(params: args, required: [:effort, :current_user_id], exclusive: [:effort, :current_user_id], class: self.class)
       @effort = args[:effort]
       @current_user_id = args[:current_user_id]
+      @existing_start_time = effort.calculated_start_time
       @errors = []
       validate_setup
     end
@@ -38,7 +39,7 @@ module Interactors
 
     private
 
-    attr_reader :effort, :current_user_id, :errors
+    attr_reader :effort, :current_user_id, :existing_start_time, :errors
     delegate :event_group, :event, to: :effort
 
     def destroy_split_times
@@ -53,10 +54,11 @@ module Interactors
     def build_split_times
       time_points = event.cycled_time_points
       effort.split_times.new(time_point: time_points.next,
-                             absolute_time: effort_start_time,
+                             absolute_time: existing_start_time,
                              created_by: current_user_id)
 
-      non_duplicated_raw_times.each do |rt|
+      duplicate_raw_time_chunks.each do |chunk|
+        rt = chunk.max_by(&:created_at)
         time_point = time_points.next
 
         until time_point.sub_split == rt.sub_split
@@ -64,7 +66,7 @@ module Interactors
         end
 
         effort.split_times.new(time_point: time_point, absolute_time: rt.absolute_time, pacer: rt.with_pacer,
-                               stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: [rt],
+                               stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: chunk,
                                created_by: current_user_id)
       end
     end
@@ -77,8 +79,8 @@ module Interactors
       effort.scheduled_start_time || effort.event_start_time
     end
 
-    def non_duplicated_raw_times
-      relevant_raw_times.chunk_while { |i, j| time_is_duplicate?(i, j) }.map { |chunk| chunk.max_by(&:created_at) }
+    def duplicate_raw_time_chunks
+      relevant_raw_times.chunk_while { |i, j| time_is_duplicate?(i, j) }
     end
 
     def time_is_duplicate?(i, j)

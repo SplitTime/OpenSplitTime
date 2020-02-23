@@ -88,7 +88,7 @@ module Interactors
     end
 
     def relevant_raw_times
-      ordered_raw_times.reject { |rt| rt.absolute_time < effort_start_time }
+      ordered_raw_times.reject { |rt| rt.disassociated_from_effort || rt.absolute_time < effort_start_time }
     end
 
     def ordered_raw_times

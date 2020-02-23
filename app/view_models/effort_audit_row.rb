@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :matched_raw_times, :unmatched_raw_times,
-                            keyword_init: true) do
+                            :disassociated_raw_times, keyword_init: true) do
   include Discrepancy
 
   def name
@@ -23,7 +23,7 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
   private
 
   def raw_times
-    @raw_times ||= matched_raw_times + unmatched_raw_times
+    matched_raw_times
   end
 
   def split_times

@@ -113,7 +113,7 @@ class EffortsController < ApplicationController
     effort = Effort.where(id: @effort.id).includes(event: :splits).first
     response = Interactors::RebuildEffortTimes.perform!(effort: effort, current_user_id: current_user.id)
     set_flash_message(response) unless response.successful?
-    redirect_to effort_path(effort)
+    redirect_to request.referrer || audit_effort_path(effort)
   end
 
   def unstart

@@ -4,7 +4,7 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe Interactors::RebuildEffortTimes do
-  subject { Interactors::RebuildEffortTimes.new(effort: effort, current_user_id: current_user_id) }
+  subject { described_class.new(effort: effort, current_user_id: current_user_id) }
   let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
   let(:current_user_id) { 1 }
   let(:ordered_split_times) { effort.ordered_split_times }
@@ -94,6 +94,19 @@ RSpec.describe Interactors::RebuildEffortTimes do
           raw_times = RawTime.where(source: 'rebuild_effort_test')
           expect(raw_times.pluck(:split_time_id)).to all be_present
           expect(raw_times.pluck(:split_time_id)).to match_array(effort.ordered_split_times[1..-1].map(&:id) + [effort.ordered_split_times[1].id])
+        end
+      end
+      
+      context 'when raw_times are disassociated' do
+        let(:disassociated_raw_time) { RawTime.where(source: 'rebuild_effort_test', absolute_time: disassociated_time) }
+        let(:disassociated_time) { '2017-02-11 16:05:43' }
+        before { disassociated_raw_time.update(disassociated_from_effort: true) }
+        
+        it 'ignores the disassociated raw time' do
+          subject.perform!
+          expect(effort.ordered_split_times.size).to eq(disordered_absolute_times.size - 1)
+          expected_absolute_times = disordered_absolute_times.sort - [disassociated_time]
+          expect(effort.ordered_split_times.map(&:absolute_time)).to eq(expected_absolute_times)
         end
       end
 

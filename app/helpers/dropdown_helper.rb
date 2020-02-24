@@ -339,9 +339,10 @@ module DropdownHelper
   def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
     icon_name = prior_or_next == :prior ? 'caret-left' : 'caret-right'
     target = view_object.send("#{prior_or_next}_#{param}")
+    merge_param = target.present? ? {param => target} : {}
 
     link_to fa_icon(icon_name, class: 'fa-lg'),
-            request.params.merge(param => target),
+            request.params.merge(merge_param),
             class: 'btn btn-outline-secondary',
             disabled: target.blank?
   end

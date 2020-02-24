@@ -336,7 +336,7 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
-  def split_name_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
+  def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
     icon_name = prior_or_next == :prior ? 'caret-left' : 'caret-right'
     target = view_object.send("#{prior_or_next}_#{param}")
 

@@ -19,5 +19,7 @@
 
   <% if @presenter.actual_lap_split_rows.present? %>
     <%= render 'split_times/projections_list', view_object: @presenter %>
+  <% else %>
+    <h4><%= "No projections are available. The entrant has not started." %></h4>
   <% end %>
 </article>

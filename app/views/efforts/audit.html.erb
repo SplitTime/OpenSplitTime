@@ -5,32 +5,9 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong>
-            <% if @presenter.person %>
-              <%= link_to @presenter.full_name, person_path(@presenter.person) %>
-            <% else %>
-              <%= @presenter.full_name %>
-            <% end %>
-          </strong></h1>
-          <%= effort_view_breadcrumbs(@presenter, 'Audit') %>
-        </div>
-        <div class="ost-subtitle">
-          <%= effort_start_time_string(@presenter) %>
-          <%= effort_view_status(@presenter) %>
-        </div>
-      </div>
-    </div>
-    <%= effort_view_tabs(@presenter) %>
-  </div>
-</header>
+<%= render 'effort_header', view_object: @presenter, title: 'Audit' %>
 
 <article class="ost-article container">
-
   <% if @presenter.lap_split_rows.present? %>
     <%= render 'split_times/audit_list', presenter: @presenter %>
   <% end %>

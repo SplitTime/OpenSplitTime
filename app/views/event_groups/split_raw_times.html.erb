@@ -31,9 +31,9 @@
       <div class="col form-inline">
         <div class="dropdown float-left-button">
           <div class="btn-group btn-group-ost pull-right">
-            <%= split_name_nav_button(@presenter, :prior) %>
+            <%= prior_next_nav_button(@presenter, :prior) %>
             <%= split_name_dropdown(@presenter) %>
-            <%= split_name_nav_button(@presenter, :next) %>
+            <%= prior_next_nav_button(@presenter, :next) %>
           </div>
           <% if @presenter.sub_split_kinds.many? %>
             <%= sub_split_kind_dropdown(@presenter) %>

@@ -2,31 +2,7 @@
   <% "OpenSplitTime: Place detail - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong>
-            <% if @presenter.person %>
-              <%= link_to @presenter.full_name, person_path(@presenter.person) %>
-            <% else %>
-              <%= @presenter.full_name %>
-            <% end %>
-          </strong></h1>
-          <%= effort_view_breadcrumbs(@presenter, 'Place') %>
-        </div>
-        <div class="ost-subtitle">
-          <%= effort_start_time_string(@presenter) %>
-          <%= effort_view_status(@presenter) %>
-        </div>
-      </div>
-      <%= render 'subscription_buttons', view_object: @presenter %>
-    </div>
-    <%= effort_view_tabs(@presenter) %>
-  </div>
-</header>
+<%= render 'effort_header', view_object: @presenter, title: 'Place' %>
 
 <article class="ost-article container">
   <% if !@presenter.started? %>

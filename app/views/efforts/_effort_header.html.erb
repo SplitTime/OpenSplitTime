@@ -1,0 +1,35 @@
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <div class="btn-group btn-group-ost pull-right">
+            <%= prior_next_nav_button(view_object, :prior, param: :id) %>
+            <%= prior_next_nav_button(view_object, :next, param: :id) %>
+          </div>
+          <h1><strong>
+            <% if view_object.person %>
+              <%= link_to view_object.full_name, person_path(view_object.person) %>
+            <% else %>
+              <%= view_object.full_name %>
+            <% end %>
+          </strong></h1>
+          <%= effort_view_breadcrumbs(view_object, title) %>
+        </div>
+        <div class="ost-subtitle">
+          <%= effort_start_time_string(view_object) %>
+          <%= effort_view_status(view_object) %>
+        </div>
+      </div>
+      <% unless action_name == 'audit' %>
+        <% if view_object.photo.attached? %>
+          <div class="col-3">
+            <%= link_to image_tag(view_object.photo.variant(resize: '150x150')), {action: :show_photo} %>
+          </div>
+        <% end %>
+        <%= render 'subscription_buttons', view_object: view_object %>
+      <% end %>
+    </div>
+    <%= effort_view_tabs(view_object) %>
+  </div>
+</header>

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class EffortQuery < BaseQuery
-
   def self.rank_and_status(args = {})
     select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
     order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'event_id,overall_rank')
-    query = <<-SQL
+
+    <<-SQL.squish
       with
         existing_scope as (#{existing_scope_sql}),
 
@@ -135,11 +135,34 @@ class EffortQuery < BaseQuery
                         gender desc, 
                         age desc)
             else null end
-          as gender_rank
+          as gender_rank,
+
+          lag(id) over
+              (partition by event_id
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc) 
+          as prior_effort_id,
+
+          lead(id) over
+              (partition by event_id
+               order by started desc,
+                        dropped, 
+                        final_lap desc nulls last, 
+                        final_lap_distance desc, 
+                        final_bitkey desc, 
+                        final_time_from_start, 
+                        gender desc, 
+                        age desc) 
+          as next_effort_id
       from main_subquery
       order by #{order_sql}
     SQL
-    query.squish
   end
 
   def self.over_segment(segment)
@@ -148,7 +171,7 @@ class EffortQuery < BaseQuery
     end_id = segment.end_id
     end_bitkey = segment.end_bitkey
 
-    query = <<-sql
+    <<-SQL.squish
       with
         existing_scope as (#{existing_scope_sql}),
         
@@ -241,12 +264,11 @@ class EffortQuery < BaseQuery
         left join farthest_split_times on farthest_split_times.effort_id = main_subquery.effort_id
       where event_group_concealed = 'f'
       order by overall_rank
-    sql
-    query.squish
+    SQL
   end
 
   def self.shift_event_scheduled_times(event, shift_seconds, current_user)
-    query = <<-SQL
+    <<-SQL.squish
         with time_subquery as 
            (select ef.id, ef.scheduled_start_time + (#{shift_seconds} * interval '1 second') as computed_time
             from efforts ef
@@ -259,7 +281,6 @@ class EffortQuery < BaseQuery
         from time_subquery
         where efforts.id = time_subquery.id
     SQL
-    query.squish
   end
 
   def self.existing_scope_sql

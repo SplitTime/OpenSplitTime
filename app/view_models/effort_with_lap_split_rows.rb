@@ -52,6 +52,14 @@ class EffortWithLapSplitRows
     difference(prior_lap_row&.times_from_start&.first, lap_row&.times_from_start&.first)
   end
 
+  def prior_id
+    effort.prior_effort_id
+  end
+
+  def next_id
+    effort.next_effort_id
+  end
+
   def method_missing(method)
     effort.send(method)
   end

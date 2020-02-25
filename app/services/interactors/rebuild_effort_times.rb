@@ -75,10 +75,6 @@ module Interactors
       Interactors::SetEffortStatus.perform(effort)
     end
 
-    def effort_start_time
-      effort.scheduled_start_time || effort.event_start_time
-    end
-
     def duplicate_raw_time_chunks
       relevant_raw_times.chunk_while { |i, j| time_is_duplicate?(i, j) }
     end
@@ -88,7 +84,7 @@ module Interactors
     end
 
     def relevant_raw_times
-      ordered_raw_times.reject { |rt| rt.disassociated_from_effort || rt.absolute_time < effort_start_time }
+      ordered_raw_times.reject { |rt| rt.disassociated_from_effort || rt.absolute_time < existing_start_time }
     end
 
     def ordered_raw_times

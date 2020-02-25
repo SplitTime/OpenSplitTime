@@ -31,10 +31,10 @@
     <div class="card-body">
       <% if @presenter.stats_available? %>
         <h4 class="card-text">
-          <%= "Aggregate distance covered: #{@presenter.total_distance}" %>
+          <%= "Aggregate distance covered: #{d @presenter.total_distance} #{preferred_distance_unit}" %>
         </h4>
         <h4 class="card-text">
-          <%= "Aggregate vertical gain: #{@presenter.total_vert_gain}" %>
+          <%= "Aggregate vertical gain: #{e @presenter.total_vert_gain} #{preferred_elevation_unit}" %>
         </h4>
         <h4 class="card-text">
           <%= "Total laps: #{@presenter.total_laps}" %>

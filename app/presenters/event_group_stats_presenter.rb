@@ -4,14 +4,30 @@ class EventGroupStatsPresenter < BasePresenter
   attr_reader :event_group
   delegate :efforts, :name, :organization, :events, :home_time_zone, :start_time_local, :available_live,
            :concealed?, :multiple_events?, to: :event_group
-  delegate :multiple_laps?, to: :event
+  delegate :multiple_laps?, :laps_unlimited?, to: :event
 
   def initialize(event_group)
     @event_group = event_group
   end
 
-  def ranked_efforts
-    @ranked_efforts ||= efforts.ranked_with_status
+  def entrants_count
+    ranked_efforts.count
+  end
+
+  def entrants_dropped_count
+    ranked_efforts.count(&:dropped?)
+  end
+
+  def entrants_finished_count
+    ranked_efforts.count(&:finished?)
+  end
+
+  def entrants_in_progress_count
+    ranked_efforts.count(&:in_progress?)
+  end
+
+  def entrants_started_count
+    ranked_efforts.count(&:started?)
   end
 
   def event
@@ -25,6 +41,10 @@ class EventGroupStatsPresenter < BasePresenter
         .where.not(notifications: {follower_ids: []})
         .group("efforts.id")
         .order(notifications_count: :desc).to_a
+  end
+
+  def ranked_efforts
+    @ranked_efforts ||= efforts.ranked_with_status
   end
 
   def stats_available?

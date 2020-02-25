@@ -27,7 +27,36 @@
 
 <article class="ost-article container">
   <div class="card">
-    <h3 class="card-header"><strong>Totals</strong></h3>
+    <h3 class="card-header"><strong>Entrants</strong></h3>
+    <div class="card-body">
+      <h4 class="card-text">
+        <%= "Total Entrants: #{@presenter.entrants_count}" %>
+      </h4>
+
+      <h4 class="card-text">
+        <%= "Started: #{@presenter.entrants_started_count}" %>
+      </h4>
+
+      <h4 class="card-text">
+        <%= "In Progress: #{@presenter.entrants_in_progress_count}" %>
+      </h4>
+
+      <% unless @presenter.laps_unlimited? %>
+        <h4 class="card-text">
+          <%= "Dropped: #{@presenter.entrants_dropped_count}" %>
+        </h4>
+      <% end %>
+
+      <h4 class="card-text">
+        <%= "Finished: #{@presenter.entrants_finished_count}" %>
+      </h4>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="card">
+    <h3 class="card-header"><strong>Achievements</strong></h3>
     <div class="card-body">
       <% if @presenter.stats_available? %>
         <h4 class="card-text">

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EventGroupNotificationsPresenter < BasePresenter
+class EventGroupStatsPresenter < BasePresenter
   attr_reader :event_group
   delegate :efforts, :name, :organization, :events, :home_time_zone, :start_time_local, :available_live,
            :concealed?, :multiple_events?, to: :event_group

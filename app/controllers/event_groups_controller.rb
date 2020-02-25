@@ -68,10 +68,10 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
-  def notifications
+  def stats
     authorize @event_group
 
-    @presenter = EventGroupNotificationsPresenter.new(@event_group)
+    @presenter = EventGroupStatsPresenter.new(@event_group)
   end
 
   def drop_list

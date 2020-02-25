@@ -32,7 +32,9 @@ class EffortQuery < BaseQuery
            where effort_id in (select id from efforts_scoped) and stopped_here = true),
 
         course_subquery as 
-          (select courses.id as course_id, splits.distance_from_start as course_distance
+          (select courses.id as course_id, 
+                  splits.distance_from_start as course_distance,
+                  splits.vert_gain_from_start as course_vert_gain
            from courses
            inner join splits on splits.course_id = courses.id
            where splits.kind = 1),
@@ -45,6 +47,7 @@ class EffortQuery < BaseQuery
               event_groups.home_time_zone,
               splits.base_name as final_split_name,
               splits.distance_from_start as final_lap_distance,
+              splits.vert_gain_from_start as final_lap_vert_gain,
               split_times.lap as final_lap,
               split_times.split_id as final_split_id, 
               split_times.sub_split_bitkey as final_bitkey,
@@ -59,6 +62,7 @@ class EffortQuery < BaseQuery
               stopped_bitkey,
               stopped_absolute_time,
               course_distance,
+              course_vert_gain,
               case when splits.kind = 1 then true else false end as final_lap_complete,
               case when split_times.lap > 1 or splits.kind in (1, 2) then true else false end as beyond_start
            from efforts_scoped
@@ -80,7 +84,8 @@ class EffortQuery < BaseQuery
               case when final_lap is null then false else true end as started,
               final_lap as laps_started,
               case when final_lap_complete is true then final_lap else final_lap - 1 end as laps_finished,
-              (final_lap - 1) * course_distance + final_lap_distance as final_distance
+              (final_lap - 1) * course_distance + final_lap_distance as final_distance,
+              (final_lap - 1) * course_vert_gain + final_lap_vert_gain as final_vert_gain
            from base_subquery),
 
         finished_subquery as 

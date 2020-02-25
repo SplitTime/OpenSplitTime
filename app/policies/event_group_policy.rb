@@ -48,7 +48,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def notifications?
+  def stats?
     user.authorized_to_edit?(event_group)
   end
 

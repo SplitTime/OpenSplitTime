@@ -66,12 +66,12 @@ Rails.application.routes.draw do
     member do
       get :drop_list
       get :follow
-      get :notifications
       get :raw_times
       get :reconcile
       get :roster
       get :export_raw_times
       get :split_raw_times
+      get :stats
       get :traffic
       post :create_people
       patch :set_data_status

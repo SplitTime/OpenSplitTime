@@ -27,6 +27,31 @@
 
 <article class="ost-article container">
   <div class="card">
+    <h3 class="card-header"><strong>Totals</strong></h3>
+    <div class="card-body">
+      <% if @presenter.stats_available? %>
+        <h4 class="card-text">
+          <%= "Aggregate distance covered: #{d @presenter.total_distance} #{preferred_distance_unit}" %>
+        </h4>
+
+        <h4 class="card-text">
+          <%= "Aggregate vertical gain: #{e @presenter.total_vert_gain} #{preferred_elevation_unit}" %>
+        </h4>
+
+        <% if @presenter.multiple_laps? %>
+          <h4 class="card-text">
+            <%= "Total laps: #{@presenter.total_laps}" %>
+          </h4>
+        <% end %>
+      <% else %>
+        <h4 class="card-text">No stats are yet available</h4>
+      <% end %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="card">
     <h3 class="card-header"><strong>Subscriptions</strong></h3>
     <div class="card-body">
       <% if @presenter.subs_count_by_protocol.present? %>
@@ -72,15 +97,16 @@
             <th class="text-center">Notifications</th>
           </tr>
           </thead>
-        <tbody>
-        <% @presenter.noticed_efforts_with_count.each do |effort| %>
-          <tr>
-            <td><%= effort.bib_number %></td>
-            <td><%= effort.full_name %></td>
-            <td class="text-center"><%= effort.notifications_count %></td>
-          </tr>
-        <% end %>
-        </tbody>
+
+          <tbody>
+          <% @presenter.noticed_efforts_with_count.each do |effort| %>
+            <tr>
+              <td><%= effort.bib_number %></td>
+              <td><%= effort.full_name %></td>
+              <td class="text-center"><%= effort.notifications_count %></td>
+            </tr>
+          <% end %>
+          </tbody>
         </table>
       <% else %>
         <h4 class="card-text">No notifications have been sent for this event group</h4>

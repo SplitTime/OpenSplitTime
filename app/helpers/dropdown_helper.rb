@@ -47,9 +47,9 @@ module DropdownHelper
         {name: 'Settings',
          link: event_group_path(view_object.event_group, force_settings: true),
          active: controller_name == 'event_groups' && action_name == 'show'},
-        {name: 'Notifications',
-         link: notifications_event_group_path(view_object.event_group),
-         active: controller_name == 'event_groups' && action_name == 'notifications'}
+        {name: 'Stats',
+         link: stats_event_group_path(view_object.event_group),
+         active: controller_name == 'event_groups' && action_name == 'stats'}
     ]
     build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end

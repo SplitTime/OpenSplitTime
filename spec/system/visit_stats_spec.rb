@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'visit an event group notifications page' do
+RSpec.describe 'visit an event group stats_page' do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -22,21 +22,21 @@ RSpec.describe 'visit an event group notifications page' do
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
-      visit notifications_event_group_path(event_group)
+      visit stats_event_group_path(event_group)
       verify_links_present
       verify_counts_text
     end
 
     scenario 'The user is the owner of the organization' do
       login_as owner, scope: :user
-      visit notifications_event_group_path(event_group)
+      visit stats_event_group_path(event_group)
       verify_links_present
       verify_counts_text
     end
 
     scenario 'The user is a steward of the event_group' do
       login_as steward, scope: :user
-      visit notifications_event_group_path(event_group)
+      visit stats_event_group_path(event_group)
       verify_links_present
       verify_counts_text
     end
@@ -47,7 +47,7 @@ RSpec.describe 'visit an event group notifications page' do
 
     scenario 'The user is the owner of the organization' do
       login_as owner, scope: :user
-      visit notifications_event_group_path(event_group)
+      visit stats_event_group_path(event_group)
       verify_links_present
       verify_no_notices_text
       verify_no_subs_text

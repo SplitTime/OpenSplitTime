@@ -27,6 +27,27 @@
 
 <article class="ost-article container">
   <div class="card">
+    <h3 class="card-header"><strong>Totals</strong></h3>
+    <div class="card-body">
+      <% if @presenter.stats_available? %>
+        <h4 class="card-text">
+          <%= "Aggregate distance covered: #{@presenter.total_distance}" %>
+        </h4>
+        <h4 class="card-text">
+          <%= "Aggregate vertical gain: #{@presenter.total_vert_gain}" %>
+        </h4>
+        <h4 class="card-text">
+          <%= "Total laps: #{@presenter.total_laps}" %>
+        </h4>
+      <% else %>
+        <h4 class="card-text">No stats are yet available</h4>
+      <% end %>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="card">
     <h3 class="card-header"><strong>Subscriptions</strong></h3>
     <div class="card-body">
       <% if @presenter.subs_count_by_protocol.present? %>

@@ -18,6 +18,7 @@ class EventGroup < ApplicationRecord
 
   after_create :notify_admin
   after_save :conform_concealed_status
+  after_save :touch_all_events
 
   validates_presence_of :name, :organization, :home_time_zone
   validates_uniqueness_of :name, case_sensitive: false
@@ -92,5 +93,9 @@ class EventGroup < ApplicationRecord
 
   def split_analyzable
     self
+  end
+
+  def touch_all_events
+    events.update_all(updated_at: Time.current)
   end
 end

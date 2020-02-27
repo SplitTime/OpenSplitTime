@@ -55,6 +55,26 @@ RSpec.describe EventGroup, type: :model do
     end
   end
 
+  describe "after_save" do
+    let(:event_group) { event_groups(:dirty_30) }
+    let(:events) { event_group.events }
+
+    it "touches all events" do
+      events.each do |event|
+        event.reload
+        expect(event.updated_at > 1.minute.ago).not_to eq(true)
+      end
+
+      expect(event_group).to be_available_live
+      event_group.update(available_live: false)
+
+      events.each do |event|
+        event.reload
+        expect(event.updated_at > 1.minute.ago).to eq(true)
+      end
+    end
+  end
+
   describe '#multiple_laps?' do
     subject { build_stubbed(:event_group, events: events) }
     let(:event_1) { build_stubbed(:event, laps_required: 1) }

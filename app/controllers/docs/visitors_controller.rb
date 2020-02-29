@@ -25,6 +25,8 @@ class Docs::VisitorsController < ApplicationController
 
   def render_using_presenter(presenter)
     @presenter = presenter.new(params, current_user)
+    raise ActionController::RoutingError, 'Not Found' unless @presenter.valid_params?
+
     render :docs
   end
 end

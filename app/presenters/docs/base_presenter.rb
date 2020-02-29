@@ -37,6 +37,10 @@ module Docs
       "#{category}_#{topic}_#{page}"
     end
 
+    def valid_params?
+      File.exists?(Rails.root.join("app/views/docs/visitors/_#{partial}.html.erb"))
+    end
+
     private
 
     def default_topic

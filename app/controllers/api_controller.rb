@@ -6,7 +6,6 @@ class ApiController < ApplicationController
   before_action :authenticate_user!
   after_action :verify_authorized
   after_action :report_to_ga
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   def index
     authorize controller_class
@@ -73,10 +72,6 @@ class ApiController < ApplicationController
 
   def set_default_format
     request.format = :json
-  end
-
-  def record_not_found
-    render json: {errors: ['record not found']}, status: :not_found
   end
 
   def json_web_token_present?

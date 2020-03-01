@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get 'management', to: redirect('docs/management')
   get 'ost_remote', to: redirect('docs/ost_remote')
 
+  get '/404', to: "errors#not_found"
+  get '/422', to: "errors#unprocessable_entity"
+  get '/500', to: "errors#internal_server_error"
+
   namespace :docs do
     root to: 'visitors#contents'
     get 'contents', to: 'visitors#contents'

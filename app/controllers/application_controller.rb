@@ -66,6 +66,18 @@ class ApplicationController < ActionController::Base
     params[:controller].split('/').last.to_s.singularize
   end
 
+  def internal_server_error_json
+    render json: {errors: ['internal server error']}, status: :internal_server_error
+  end
+
+  def record_not_found_json
+    render json: {errors: ['record not found']}, status: :not_found
+  end
+
+  def unprocessable_entity_json
+    render json: {errors: ['unprocessable entity']}, status: :unprocessable_entity
+  end
+
   def user_not_authorized
     flash[:alert] = 'Access denied.'
     redirect_to (request.referrer || root_path)

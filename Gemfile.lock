@@ -287,6 +287,10 @@ GEM
     rails_12factor (0.0.3)
       rails_serve_static_assets
       rails_stdout_logging
+    rails_real_favicon (0.0.13)
+      json (>= 1.7, < 3)
+      rails
+      rubyzip (~> 1)
     rails_serve_static_assets (0.0.5)
     rails_stdout_logging (0.0.5)
     railties (5.2.4.1)
@@ -491,6 +495,7 @@ DEPENDENCIES
   rails (< 6.0)
   rails-erd
   rails_12factor
+  rails_real_favicon
   record_tag_helper (>= 1.0.0)
   rest-client
   rspec (~> 3.8)

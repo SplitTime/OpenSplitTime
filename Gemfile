@@ -61,6 +61,7 @@ group :development do
   gem 'derailed'
   gem 'derailed_benchmarks'
   gem 'rails-erd'
+  gem 'rails_real_favicon'
   gem 'spring'
   gem 'web-console', '~> 3.7', '>= 3.7.0'
 end

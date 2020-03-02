@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   impersonates :user
 
-  if Rails.env.development? | Rails.env.test?
+  if Rails.env.development? || Rails.env.test?
     # https://github.com/RailsApps/rails-devise-pundit/issues/10
     include Pundit
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -66,9 +66,21 @@ class ApplicationController < ActionController::Base
     params[:controller].split('/').last.to_s.singularize
   end
 
+  def internal_server_error_json
+    render json: {errors: ['internal server error']}, status: :internal_server_error
+  end
+
+  def record_not_found_json
+    render json: {errors: ['record not found']}, status: :not_found
+  end
+
+  def unprocessable_entity_json
+    render json: {errors: ['unprocessable entity']}, status: :unprocessable_entity
+  end
+
   def user_not_authorized
     flash[:alert] = 'Access denied.'
-    redirect_to (request.referrer || root_path)
+    redirect_to(request.referrer || root_path)
   end
 
   def set_current_user

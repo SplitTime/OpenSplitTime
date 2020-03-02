@@ -75,7 +75,7 @@ class ApiController < ApplicationController
   end
 
   def json_web_token_present?
-    current_user.try(:has_json_web_token)
+    !!current_user&.has_json_web_token
   end
 
   def report_to_ga

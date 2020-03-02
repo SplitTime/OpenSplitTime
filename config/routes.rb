@@ -133,7 +133,8 @@ Rails.application.routes.draw do
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
   namespace :admin do
-    get 'dashboard', to: 'dashboard#dashboard'
+    get 'dashboard', to: 'dashboard#show'
+    get 'dashboard/timeout', to: 'dashboard#timeout'
     post 'impersonate/start/:id', to: 'impersonate#start', as: 'impersonate_start'
     post 'impersonate/stop', to: 'impersonate#stop', as: 'impersonate_stop'
     resources :versions, only: [:index, :show]

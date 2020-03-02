@@ -1,7 +1,7 @@
 module Admin
   class DashboardController < Admin::BaseController
-    def dashboard
-      authorize :dashboard, :show?
+    def show
+      authorize :dashboard, policy_class: Admin::DashboardPolicy
     end
   end
 end

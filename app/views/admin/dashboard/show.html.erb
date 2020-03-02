@@ -41,4 +41,11 @@
   <p>
     <h4>Actions</h4>
   </p>
+  <div class="row">
+    <div class="col">
+      <%= link_to 'Test timeout', admin_dashboard_timeout_path,
+                  class: 'btn btn-danger',
+                  data: {confirm: 'This will intentionally timeout a server by sleeping for up to 35 seconds. Are you sure you want to do that?'} %>
+    </div>
+  </div>
 </article>

@@ -8,5 +8,9 @@ module Admin
     def show?
       user.admin?
     end
+
+    def timeout?
+      user.admin?
+    end
   end
 end

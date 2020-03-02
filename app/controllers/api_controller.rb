@@ -6,7 +6,7 @@ class ApiController < ApplicationController
   before_action :authenticate_user!
   after_action :verify_authorized
   after_action :report_to_ga
-  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found_json
 
   def index
     authorize controller_class

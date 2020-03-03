@@ -5,6 +5,9 @@ class ErrorsController < ApplicationController
     respond_to do |format|
       format.html { render status: :not_found }
       format.json { record_not_found_json }
+      format.js { record_not_found_json }
+      format.text { record_not_found_json }
+      format.csv { record_not_found_json }
     end
   end
 

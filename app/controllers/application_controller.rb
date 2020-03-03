@@ -7,6 +7,8 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   helper_method :prepared_params
 
+  rescue_from ActionController::UnknownFormat, with: :not_acceptable_head
+
   impersonates :user
 
   if Rails.env.development? || Rails.env.test?
@@ -68,6 +70,10 @@ class ApplicationController < ActionController::Base
 
   def internal_server_error_json
     render json: {errors: ['internal server error']}, status: :internal_server_error
+  end
+
+  def not_acceptable_head
+    head :not_acceptable
   end
 
   def record_not_found_json

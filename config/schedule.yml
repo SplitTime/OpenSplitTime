@@ -1,0 +1,4 @@
+sweep_subscriptions:
+  cron: "0 7 * * *"
+  class: "SweepSubscriptionsJob"
+  queue: default

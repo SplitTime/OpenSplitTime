@@ -16,6 +16,13 @@ Rails.application.routes.draw do
   get '/422', to: "errors#unprocessable_entity"
   get '/500', to: "errors#internal_server_error"
 
+  require 'sidekiq/web'
+  require 'sidekiq/cron/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
   namespace :docs do
     root to: 'visitors#contents'
     get 'contents', to: 'visitors#contents'

@@ -6,7 +6,7 @@ class SweepSubscriptionsJob < ApplicationJob
   def perform
     start_time = Time.current
     report = ''
-    report += "Started job at #{start_time}\n"
+    report += "Started job for #{ENV['HEROKU_APP_NAME']} at #{start_time}\n"
 
     problem_subs = []
     obsolete_subs = Subscription.joins('join efforts on efforts.id = subscriptions.subscribable_id join events on events.id = efforts.event_id')
@@ -16,7 +16,7 @@ class SweepSubscriptionsJob < ApplicationJob
     if count == 0
       report += "No obsolete subscriptions found\n"
     else
-      report += "Found #{count} obsolete subscriptions\n"
+      report += "Found #{count} obsolete subscription(s)\n"
 
       obsolete_subs.find_in_batches do |subs|
         subs.each do |sub|
@@ -27,11 +27,11 @@ class SweepSubscriptionsJob < ApplicationJob
       if problem_subs.present?
         report += "Could not destroy the following #{problem_subs.size} subscriptions: #{problem_subs.join(', ')}\n"
       else
-        report += "All #{count} obsolete subscriptions were destroyed\n"
+        report += "Destroyed all #{count} obsolete subscription(s)\n"
       end
     end
 
-    duration = Time.current - start_time
+    duration = (Time.current - start_time).round(1)
     report += "Finished job in #{duration} seconds at #{Time.current}\n"
 
     AdminMailer.job_report(self.class, report).deliver_now

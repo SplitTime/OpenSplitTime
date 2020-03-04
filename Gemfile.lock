@@ -387,6 +387,8 @@ GEM
     selenium-webdriver (3.141.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
+    shortener (0.8.0)
+      voight_kampff (~> 1.1.2)
     sidekiq (5.2.5)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (>= 1.5.0)
@@ -436,6 +438,8 @@ GEM
     unicode-display_width (1.4.1)
     uniform_notifier (1.12.1)
     vcr (4.0.0)
+    voight_kampff (1.1.4)
+      rack (>= 1.4, < 3.0)
     vuejs-rails (2.5.13)
     warden (1.2.8)
       rack (>= 2.0.6)
@@ -521,6 +525,7 @@ DEPENDENCIES
   sass-rails (~> 5.0.7)
   scout_apm
   selenium-webdriver
+  shortener
   sidekiq
   sidekiq-cron
   simplecov

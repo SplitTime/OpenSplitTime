@@ -25,9 +25,9 @@ class SweepSubscriptionsJob < ApplicationJob
       end
 
       if problem_subs.present?
-        report += "Could not destroy the following subscriptions: #{problem_subs.join(', ')}\n"
+        report += "Could not destroy the following #{problem_subs.size} subscriptions: #{problem_subs.join(', ')}\n"
       else
-        report += "All obsolete subscriptions were destroyed\n"
+        report += "All #{count} obsolete subscriptions were destroyed\n"
       end
     end
 

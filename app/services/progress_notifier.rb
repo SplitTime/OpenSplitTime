@@ -22,12 +22,12 @@ class ProgressNotifier < BaseNotifier
   end
 
   def shortened_url
-    key = Shortener::ShortenedUrl.generate!(effort_url).unique_key
+    key = Shortener::ShortenedUrl.generate!(effort_path).unique_key
 
     "#{OST::SHORTENED_URI}/#{key}"
   end
 
-  def effort_url
+  def effort_path
     "/efforts/#{effort_data[:effort_slug]}"
   end
 

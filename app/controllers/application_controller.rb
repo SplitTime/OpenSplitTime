@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :set_current_user
   before_action :set_paper_trail_whodunnit
+  before_action :set_raven_context
   helper_method :prepared_params
 
   rescue_from ActionController::UnknownFormat, with: :not_acceptable_head
@@ -99,6 +100,11 @@ class ApplicationController < ActionController::Base
     else
       flash[:warning] = [flash[:warning], response.message_with_error_report].compact.join("\n").presence
     end
+  end
+
+  def set_raven_context
+    Raven.user_context(id: current_user&.id)
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
   def jsonapi_error_object(record)

@@ -18,7 +18,8 @@ class EffortProgressData
     @effort_data ||= {full_name: full_name,
                       event_name: event_name,
                       split_times_data: split_times_data,
-                      effort_id: effort.id}
+                      effort_id: effort.id,
+                      effort_slug: effort.slug}
   end
 
   private

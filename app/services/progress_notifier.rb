@@ -17,9 +17,15 @@ class ProgressNotifier < BaseNotifier
     <<~MESSAGE
       #{effort_data[:full_name]} made progress at #{effort_data[:event_name]}:
       #{times_text}
-      Full results: #{ENV['BASE_URI']}/efforts/#{effort_data[:effort_id]}
+      Full results: #{shortened_url}
       Thank you for using OpenSplitTime!
     MESSAGE
+  end
+
+  def shortened_url
+    effort_url = "/efforts/#{effort_data[:effort_slug]}"
+    key = Shortener::ShortenedUrl.generate!(effort_url).unique_key
+    "#{OST::SHORTENED_URI}/#{key}"
   end
 
   def times_text

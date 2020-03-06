@@ -32,7 +32,8 @@ RSpec.describe EffortProgressData do
     let(:expected_effort_data) { {full_name: effort.full_name,
                                   event_name: event.name,
                                   split_times_data: expected_split_times_data,
-                                  effort_id: effort.id} }
+                                  effort_id: effort.id,
+                                  effort_slug: effort.slug} }
 
     let(:expected_split_times_data) {
       [{split_name: expected_in_split_name,

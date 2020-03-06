@@ -208,4 +208,6 @@ Rails.application.routes.draw do
   namespace :event_staging do
     get '/:id/app', to: 'events#app', as: 'app'
   end
+
+  get '/:id' => "shortener/shortened_urls#show"
 end

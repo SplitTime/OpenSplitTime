@@ -18,7 +18,8 @@ class EffortProgressData
     @effort_data ||= {full_name: full_name,
                       event_name: event_name,
                       split_times_data: split_times_data,
-                      effort_id: effort.id}
+                      effort_id: effort.id,
+                      effort_slug: effort.slug}
   end
 
   private
@@ -29,7 +30,7 @@ class EffortProgressData
     split_times.sort_by(&:absolute_time).map do |split_time|
       {split_name: split_name(split_time),
        split_distance: split_distance(split_time),
-       absolute_time_local: split_time.absolute_time_local.strftime('%A %l:%M%p'),
+       absolute_time_local: I18n.localize(split_time.absolute_time_local, format: :day_and_ampm),
        elapsed_time: TimeConversion.seconds_to_hms(split_time.time_from_start.to_i),
        pacer: split_time.pacer,
        stopped_here: split_time.stopped_here}

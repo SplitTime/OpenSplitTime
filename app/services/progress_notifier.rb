@@ -17,9 +17,18 @@ class ProgressNotifier < BaseNotifier
     <<~MESSAGE
       #{effort_data[:full_name]} made progress at #{effort_data[:event_name]}:
       #{times_text}
-      Full results: #{ENV['BASE_URI']}/efforts/#{effort_data[:effort_id]}
-      Thank you for using OpenSplitTime!
+      Results on OpenSplitTime: #{shortened_url}
     MESSAGE
+  end
+
+  def shortened_url
+    key = Shortener::ShortenedUrl.generate!(effort_path).unique_key
+
+    "#{OST::SHORTENED_URI}/#{key}"
+  end
+
+  def effort_path
+    "/efforts/#{effort_data[:effort_slug]}"
   end
 
   def times_text
@@ -31,8 +40,8 @@ class ProgressNotifier < BaseNotifier
   def follower_update_body_text(split_time_data)
     "#{split_time_data[:split_name]} " +
         "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " +
-        "#{split_time_data[:absolute_time_local]}, " +
-        "elapsed: #{split_time_data[:elapsed_time]}" +
+        "#{split_time_data[:absolute_time_local]} " +
+        "(+#{split_time_data[:elapsed_time]})" +
         "#{split_time_data[:stopped_here] ? ' and stopped there' : ''}"
   end
 end

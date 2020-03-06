@@ -23,15 +23,16 @@ RSpec.describe ProgressNotifier do
       stubbed_response = OpenStruct.new(successful?: true)
       subject = ProgressNotifier.new(topic_arn: topic_arn, effort_data: effort_data, sns_client: sns_client)
       expected_subject = 'Update for Joe LastName 1 at Test Event 1 from OpenSplitTime'
-      full_url = subject.send()
-      expected_shortened_url = Shortener::ShortenedUrl.find_by(url: full_url).unique_key
+      full_path = subject.send(:effort_url)
+      expected_key = Shortener::ShortenedUrl.find_by(url: full_path).unique_key
+      expected_shortened_url = "#{OST::SHORTENED_URI}/#{expected_key}"
       expected_message = <<~MESSAGE
         Joe LastName 1 made progress at Test Event 1:
         Split 1 In (Mile 6.2), Friday  7:40AM, elapsed: 01:40:00
         Split 1 Out (Mile 6.2), Friday  7:50AM, elapsed: 01:50:00 and stopped there
-        Full results: #{expected_shortened_url}
-        Thank you for using OpenSplitTime!
+        Results on OpenSplitTime: #{expected_shortened_url}
       MESSAGE
+
       expect(sns_client).to receive(:publish).with(topic_arn: topic_arn, subject: expected_subject, message: expected_message).and_return(stubbed_response)
       subject.publish
     end

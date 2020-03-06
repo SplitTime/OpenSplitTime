@@ -5,8 +5,8 @@ RSpec.describe ProgressNotifier do
   let(:topic_arn) { 'arn:aws:sns:us-west-2:998989370925:d-follow_joe-lastname-1' }
   let(:effort_data) { {full_name: 'Joe LastName 1',
                        event_name: 'Test Event 1',
-                       split_times_data: [{split_name: 'Split 1 In', split_distance: 10000, absolute_time_local: 'Friday  7:40AM', elapsed_time: '01:40:00', pacer: nil, stopped_here: false},
-                                          {split_name: 'Split 1 Out', split_distance: 10000, absolute_time_local: 'Friday  7:50AM', elapsed_time: '01:50:00', pacer: nil, stopped_here: true}],
+                       split_times_data: [{split_name: 'Split 1 In', split_distance: 10000, absolute_time_local: 'Fri 11:40AM', elapsed_time: '01:40:00', pacer: nil, stopped_here: false},
+                                          {split_name: 'Split 1 Out', split_distance: 10000, absolute_time_local: 'Fri 11:50AM', elapsed_time: '01:50:00', pacer: nil, stopped_here: true}],
                        effort_id: 101,
                        effort_slug: 'joe-lastname-1-at-test-event-1'} }
   let(:sns_client) { Aws::SNS::Client.new(stub_responses: true) }
@@ -22,8 +22,8 @@ RSpec.describe ProgressNotifier do
     let(:expected_message) {
       <<~MESSAGE
         Joe LastName 1 made progress at Test Event 1:
-        Split 1 In (Mile 6.2), Friday  7:40AM, elapsed: 01:40:00
-        Split 1 Out (Mile 6.2), Friday  7:50AM, elapsed: 01:50:00 and stopped there
+        Split 1 In (Mile 6.2), Fri 11:40AM (+01:40:00)
+        Split 1 Out (Mile 6.2), Fri 11:50AM (+01:50:00) and stopped there
         Results on OpenSplitTime: #{expected_shortened_url}
       MESSAGE
     }

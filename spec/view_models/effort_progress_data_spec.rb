@@ -38,13 +38,13 @@ RSpec.describe EffortProgressData do
     let(:expected_split_times_data) {
       [{split_name: expected_in_split_name,
         split_distance: expected_in_distance,
-        absolute_time_local: in_split_time.absolute_time_local.strftime('%A %l:%M%p'),
+        absolute_time_local: I18n.localize(in_split_time.absolute_time_local, format: :day_and_ampm),
         elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
         pacer: in_split_time.pacer,
         stopped_here: in_split_time.stopped_here},
        {split_name: expected_out_split_name,
         split_distance: expected_out_distance,
-        absolute_time_local: out_split_time.absolute_time_local.strftime('%A %l:%M%p'),
+        absolute_time_local: I18n.localize(out_split_time.absolute_time_local, format: :day_and_ampm),
         elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
         pacer: out_split_time.pacer,
         stopped_here: out_split_time.stopped_here}]

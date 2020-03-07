@@ -7,6 +7,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
+          <div>
+            <%= link_to_refresh %>
+          </div>
           <h1>
             <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
           </h1>

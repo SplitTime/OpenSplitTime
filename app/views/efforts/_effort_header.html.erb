@@ -1,12 +1,13 @@
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
-      <div class="col">
+      <div class="col-auto">
         <div class="ost-title">
-          <div class="btn-group btn-group-ost pull-right">
+          <div class="btn-group btn-group-ost">
             <%= prior_next_nav_button(view_object, :prior, param: :id) %>
             <%= prior_next_nav_button(view_object, :next, param: :id) %>
           </div>
+          <%= link_to_refresh %>
           <h1><strong>
             <% if view_object.person %>
               <%= link_to view_object.full_name, person_path(view_object.person) %>

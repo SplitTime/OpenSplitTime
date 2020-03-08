@@ -2,7 +2,7 @@
 
 module NavigationHelper
   def link_to_refresh
-    tooltip_title = 'Refresh page [CTRL-R]'
+    tooltip_title = 'Refresh [Ctrl-R]'
     content_tag(:span, data: {controller: 'navigation animation'}) do
       link_to fa_icon(:redo),
               request.params,

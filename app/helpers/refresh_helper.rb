@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module NavigationHelper
+module RefreshHelper
   def link_to_refresh
     tooltip_title = 'Refresh [Ctrl-R]'
     content_tag(:span, data: {controller: 'navigation animation'}) do

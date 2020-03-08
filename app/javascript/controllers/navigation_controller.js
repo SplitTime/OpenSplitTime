@@ -4,11 +4,6 @@ export default class extends Controller {
 
     static targets = ['refreshButton', 'priorButton', 'nextButton'];
 
-    spinIcon(e) {
-        let icon = e.currentTarget.getElementsByTagName('I')[0];
-        icon.classList.add('fa-spin');
-    }
-
     evaluateKeyup(e) {
         let shortcutInvoked = (e.ctrlKey === true || e.target.tagName !== 'INPUT') && e.altKey === false;
 

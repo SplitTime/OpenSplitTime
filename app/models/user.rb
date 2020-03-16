@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   extend FriendlyId
 
   devise :database_authenticatable, :registerable, :confirmable,

@@ -492,7 +492,7 @@ DEPENDENCIES
   devise (>= 4.7.1)
   devise-bootstrap-views
   dotenv-rails (>= 2.6.0)
-  factory_bot_rails (>= 4.11.1)
+  factory_bot_rails (~> 5.0)
   ffaker
   font_awesome5_rails (>= 0.6.0)
   friendly_id (~> 5.2.0)

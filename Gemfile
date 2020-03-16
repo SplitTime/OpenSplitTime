@@ -56,7 +56,7 @@ gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'
 gem 'webpacker', '~> 4.0', '>= 4.0.7'
-gem 'will_paginate', '~>3.1.7'
+gem 'will_paginate', '~> 3.3'
 
 group :development do
   gem 'better_errors', '>= 2.3'
@@ -70,8 +70,8 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 2.18', '>= 2.18.0'
-  gem 'factory_bot_rails', '>= 4.11.1', require: false
+  gem 'capybara', '~> 3.0'
+  gem 'factory_bot_rails', '~> 5.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false

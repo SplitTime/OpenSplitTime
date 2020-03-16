@@ -70,7 +70,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 2.18', '>= 2.18.0'
+  gem 'capybara', '~> 3.0'
   gem 'factory_bot_rails', '~> 5.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'

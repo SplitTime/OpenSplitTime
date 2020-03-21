@@ -4,6 +4,14 @@ class CoursePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
+
+    def delegated_records
+      scope.where(organization_id: authorized_organizations)
+    end
+
+    def owned_records
+      scope.where(organization_id: owned_organizations)
+    end
   end
 
   attr_reader :course

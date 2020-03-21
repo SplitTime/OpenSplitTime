@@ -10,7 +10,7 @@ module Concealable
 
   included do
     scope :concealed, -> { where(concealed: true) }
-    scope :visible, -> { where(concealed: false) }
+    scope :visible, -> { where(concealed: [false, nil]) }
   end
 
   def visible?

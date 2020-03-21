@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-
   attr_reader :organization
   delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
 
@@ -30,7 +29,8 @@ class OrganizationPresenter < BasePresenter
   end
 
   def courses
-    @courses ||= Course.includes(:splits, :events).used_for_organization(organization)
+    scoped_courses = CoursePolicy::Scope.new(current_user, Course).viewable
+    @courses ||= organization.courses.includes(:splits, :events).where(id: scoped_courses)
   end
 
   def display_style

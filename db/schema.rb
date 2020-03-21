@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_04_154928) do
+ActiveRecord::Schema.define(version: 2020_03_21_141509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.datetime "next_start_time"
     t.string "slug", null: false
     t.bigint "organization_id"
+    t.boolean "concealed", default: false
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end

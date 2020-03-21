@@ -17,6 +17,16 @@ class Organization < ApplicationRecord
   has_many :event_series, dependent: :destroy
   has_many :results_templates, dependent: :destroy
 
+  scope :owned_by, ->(user) { user.present? ? where(created_by: user.id) : none }
+  scope :authorized_for, ->(user) do
+    if user.present?
+      left_joins(:stewardships)
+        .where('organizations.created_by = ? or stewardships.user_id = ?', user.id, user.id)
+        .distinct
+    else
+      none
+    end
+  end
   scope :with_visible_event_count, -> do
     left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
       .where(event_groups: {concealed: false}).group('organizations.id, event_groups.organization_id')

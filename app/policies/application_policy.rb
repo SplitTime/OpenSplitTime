@@ -27,7 +27,7 @@ class ApplicationPolicy
       elsif user.nil?
         visible_records
       else
-        scope.where(id: (visible_records + created_records + delegated_records).uniq)
+        scope.where(id: (visible_records + owned_records + created_records + delegated_records).uniq)
       end
     end
     alias_method :viewable, :resolve_viewable
@@ -37,6 +37,11 @@ class ApplicationPolicy
       scope.respond_to?(:visible) ? scope.visible : scope.all
     end
 
+    # May be overridden by model policies
+    def owned_records
+      scope.none
+    end
+
     def created_records
       scope.where(created_by: user.id)
     end
@@ -44,6 +49,14 @@ class ApplicationPolicy
     # May be overridden by model policies
     def delegated_records
       scope.none
+    end
+
+    def authorized_organizations
+      Organization.authorized_for(user)
+    end
+
+    def owned_organizations
+      Organization.owned_by(user)
     end
   end
 

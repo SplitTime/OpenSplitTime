@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
 
   def index
-    @courses = Course.paginate(page: params[:page], per_page: 25).order(:name)
+    @courses = policy_scope(Course).paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = courses_path
   end
 
@@ -101,7 +101,7 @@ class CoursesController < ApplicationController
   private
 
   def set_course
-    @course = Course.friendly.find(params[:id])
+    @course = policy_scope(Course).friendly.find(params[:id])
 
     if request.path != course_path(@course)
       redirect_numeric_to_friendly(@course, params[:id])

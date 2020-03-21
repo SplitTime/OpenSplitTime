@@ -117,7 +117,7 @@ class EventGroupQuery < BaseQuery
 
       with organization_subquery as
         (select organizations.id, 
-          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from organizations
           inner join event_groups on event_groups.organization_id = organizations.id
         where organizations.id in (select organization_id from event_groups where event_groups.id = #{event_group_id})
@@ -139,7 +139,7 @@ class EventGroupQuery < BaseQuery
   
       people_subquery as
         (select people.id, 
-          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from people
           left join efforts on efforts.person_id = people.id
           inner join events on events.id = efforts.event_id
@@ -162,7 +162,7 @@ class EventGroupQuery < BaseQuery
        
       courses_subquery as
         (select courses.id,
-          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from courses
           inner join events on events.course_id = courses.id
           inner join event_groups on event_groups.id = events.event_group_id

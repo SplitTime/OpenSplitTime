@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 2020_03_21_141509) do
     t.datetime "next_start_time"
     t.string "slug", null: false
     t.bigint "organization_id"
-    t.boolean "concealed"
+    t.boolean "concealed", default: false
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end

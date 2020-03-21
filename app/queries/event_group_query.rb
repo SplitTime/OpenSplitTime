@@ -121,7 +121,7 @@ class EventGroupQuery < BaseQuery
         from organizations
           inner join event_groups on event_groups.organization_id = organizations.id
         where organizations.id in (select organization_id from event_groups where event_groups.id = #{event_group_id})
-        group by organizations.id, organizations.concealed)
+        group by organizations.id)
 
       update organizations
         set concealed = #{boolean}
@@ -132,22 +132,20 @@ class EventGroupQuery < BaseQuery
 
       with person_ids as
         (select people.id 
-        from people
-        left join efforts on efforts.person_id = people.id
-        inner join events on events.id = efforts.event_id
-        inner join event_groups on event_groups.id = events.event_group_id
-        where event_groups.id = #{event_group_id}),
+         from people
+         left join efforts on efforts.person_id = people.id
+         inner join events on events.id = efforts.event_id
+         where events.event_group_id = #{event_group_id}),
   
       people_subquery as
         (select people.id, 
-          people.concealed as person_concealed, 
-          case when count(case when event_groups.concealed is TRUE then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
         from people
           left join efforts on efforts.person_id = people.id
           inner join events on events.id = efforts.event_id
           inner join event_groups on event_groups.id = events.event_group_id
-          where people.id in (select * from person_ids)
-        group by people.id, people.concealed)
+        where people.id in (select * from person_ids)
+        group by people.id)
 
       update people
       set concealed = #{boolean}

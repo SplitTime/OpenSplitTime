@@ -16,7 +16,6 @@ class Course < ApplicationRecord
 
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
-  scope :used_for_organization, -> (organization) { organization.courses }
   scope :standard_includes, -> { includes(:splits) }
 
   validates_presence_of :name, :organization

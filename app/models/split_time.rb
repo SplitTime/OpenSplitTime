@@ -27,10 +27,16 @@ class SplitTime < ApplicationRecord
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
+
   scope :with_time_from_start, -> do
     select('split_times.*, extract(epoch from split_times.absolute_time - sst.absolute_time) as time_from_start')
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
+
+  scope :with_policy_scope_attributes, -> do
+    from(select('split_times.*, event_groups.organization_id, event_groups.concealed').joins(effort: {event: :event_group}), :split_times)
+  end
+
   scope :with_time_record_matchers, -> { joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event

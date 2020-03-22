@@ -17,6 +17,8 @@ class EventSeries < ApplicationRecord
   validates_presence_of :name, :organization, :results_template, :scoring_method
   validate :point_system_present, if: :points?
 
+  scope :with_policy_scope_attributes, -> { from(select('event_series.*, false as concealed'), :event_series) }
+
   private
 
   def point_system_present

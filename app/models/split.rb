@@ -33,7 +33,8 @@ class Split < ApplicationRecord
   attribute :kind, default: :intermediate
 
   scope :ordered, -> { order(:distance_from_start) }
-  scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }
+  scope :with_course_name, -> { from(select('splits.*, courses.name as course_name').joins(:course), :splits) }
+  scope :with_organization_id, -> { from(select('splits.*, courses.organization_id').joins(:course), :splits) }
   scope :location_bounded_by, -> (params) { where(latitude: params[:south]..params[:north],
                                                   longitude: params[:west]..params[:east]) }
   scope :location_bounded_across_dateline, -> (params) { where(latitude: params[:south]..params[:north])

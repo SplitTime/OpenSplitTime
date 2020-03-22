@@ -20,7 +20,7 @@ class Event < ApplicationRecord
   has_many :partners, through: :event_group
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
-           :organization, :organization_id, :permit_notifications?, :home_time_zone, to: :event_group
+           :organization, :permit_notifications?, :home_time_zone, to: :event_group
 
   validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
@@ -41,6 +41,7 @@ class Event < ApplicationRecord
   scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
+  scope :with_organization_id, -> { from(select('events.*, event_groups.organization_id').joins(:event_group), :events) }
 
   def self.search(search_param)
     return all if search_param.blank?
@@ -96,6 +97,10 @@ class Event < ApplicationRecord
 
   def course_name
     course.name
+  end
+
+  def organization_id
+    attributes.key?('organization_id') ? attributes['organization_id'] : organization&.id
   end
 
   def organization_name

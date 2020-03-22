@@ -15,7 +15,7 @@ module Delegable
   extend ActiveSupport::Concern
 
   included do
-    scope :with_policy_scope_attributes, ->{ all }
+    scope :with_policy_scope_attributes, -> { all } # May be overridden by the including class
     scope :owned_by, ->(user) { with_policy_scope_attributes.where("#{table_name}.organization_id in (?)", user.owned_organization_ids) }
     scope :visible, -> { with_policy_scope_attributes.where("#{table_name}.concealed is not true") }
 

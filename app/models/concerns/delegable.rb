@@ -17,6 +17,7 @@ module Delegable
   included do
     scope :with_policy_scope_attributes, ->{ all }
     scope :owned_by, ->(user) { with_policy_scope_attributes.where("#{table_name}.organization_id in (?)", user.owned_organization_ids) }
+    scope :visible, -> { with_policy_scope_attributes.where("#{table_name}.concealed is not true") }
 
     scope :delegated_to, ->(user) do
       with_policy_scope_attributes

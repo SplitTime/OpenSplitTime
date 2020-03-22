@@ -32,6 +32,8 @@ class RawTime < ApplicationRecord
   validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}
 
+  scope :with_organization_id, -> { from(select('raw_times.*, event_groups.organization_id').joins(:event_group), :raw_times) }
+
   def self.with_relation_ids(args = {})
     query = RawTimeQuery.with_relations(args)
     self.find_by_sql(query)

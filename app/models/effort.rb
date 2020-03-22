@@ -58,6 +58,7 @@ class Effort < ApplicationRecord
         .left_joins(:event, split_times: :split)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
+  scope :with_organization_id, -> { from(select('efforts.*, event_groups.organization_id').joins(event: :event_group), :efforts) }
 
   def self.null_record
     @null_record ||= Effort.new(first_name: '', last_name: '')

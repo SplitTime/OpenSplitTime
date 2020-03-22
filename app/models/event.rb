@@ -38,8 +38,6 @@ class Event < ApplicationRecord
         .left_joins(:efforts).left_joins(:event_group)
         .group('events.id, event_groups.id')
   end
-  scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
-  scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
   scope :with_policy_scope_attributes, -> do
     from(select('events.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :events)

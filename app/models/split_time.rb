@@ -31,7 +31,6 @@ class SplitTime < ApplicationRecord
     select('split_times.*, extract(epoch from split_times.absolute_time - sst.absolute_time) as time_from_start')
         .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
   end
-  scope :visible, -> { includes(effort: {event: :event_group}).where('event_groups.concealed = ?', 'f') }
   scope :with_time_record_matchers, -> { joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number") }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event

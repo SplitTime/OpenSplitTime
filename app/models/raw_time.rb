@@ -4,7 +4,7 @@ class RawTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good]
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:questionable]]
 
-  include Auditable, DataStatusMethods, Delegable, TimePointMethods, TimeRecordable, TimeZonable
+  include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, TimePointMethods, TimeRecordable, TimeZonable
 
   zonable_attribute :absolute_time
   has_paper_trail

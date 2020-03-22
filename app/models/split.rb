@@ -3,7 +3,7 @@
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 50 # Distance (in meters) below which split locations are deemed equivalent
 
-  include Auditable, Delegable, Locatable, GuaranteedFindable, UnitConversions
+  include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

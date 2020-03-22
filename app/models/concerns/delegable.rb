@@ -11,7 +11,7 @@ module Delegable
 
   included do
     scope :with_organization_id, -> { all }
-    scope :owned_by, -> (user) { with_organization_id.where("#{table_name}.organization_id in (?)", user.owned_organization_ids) }
+    scope :owned_by, ->(user) { with_organization_id.where("#{table_name}.organization_id in (?)", user.owned_organization_ids) }
     scope :delegated_to, ->(user) do
       with_organization_id
         .where("#{table_name}.organization_id in (?)", user.delegated_organization_ids)

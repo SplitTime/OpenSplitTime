@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-# The including class must contain an organization_id attribute and a
-# concealed attribute *or* must override the :with_policy_scope_attributes
-# scope using joins to put an organization_id attribute and a concealed
-# attribute on returned records, for example:
+# The including class must contain an `organization_id` attribute and a
+# `concealed` attribute *or* must override the :with_policy_scope_attributes
+# scope using joins to put an `organization_id` attribute and a `concealed`
+# attribute on scoped records, for example:
 #
 # scope :with_policy_scope_attributes, -> do
 #   from(select('events.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :events)
 # end
+#
+# The including class must also respond to `organization`.
 #
 module Delegable
   extend ActiveSupport::Concern

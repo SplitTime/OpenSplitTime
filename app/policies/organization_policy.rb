@@ -2,13 +2,15 @@
 
 class OrganizationPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    attr_reader :user, :scope
-
     def post_initialize
     end
 
-    def delegated_records
-      user ? scope.joins(:stewardships).where(stewardships: {user_id: user.id}) : scope.none
+    def authorized_to_edit_records
+      scope.owned_by(user)
+    end
+
+    def authorized_to_view_records
+      scope.visible_or_authorized_for(user)
     end
   end
 

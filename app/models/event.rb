@@ -41,7 +41,9 @@ class Event < ApplicationRecord
   scope :concealed, -> { includes(:event_group).where(event_groups: {concealed: true}) }
   scope :visible, -> { includes(:event_group).where(event_groups: {concealed: false}) }
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
-  scope :with_organization_id, -> { from(select('events.*, event_groups.organization_id').joins(:event_group), :events) }
+  scope :with_policy_scope_attributes, -> do
+    from(select('events.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :events)
+  end
 
   def self.search(search_param)
     return all if search_param.blank?

@@ -83,8 +83,6 @@ RSpec.describe 'visit an effort show page' do
     end
 
     scenario 'The user is the owner' do
-      effort.update(created_by: owner.id)
-
       login_as owner, scope: :user
       visit effort_path(effort)
       

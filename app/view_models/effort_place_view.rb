@@ -36,7 +36,10 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def peers
-    @peers ||= Effort.where(id: frequent_encountered_ids).select(:id, :first_name, :last_name, :slug)
+    @peers ||= Effort.select(:id, :first_name, :last_name, :slug)
+                 .where(id: frequent_encountered_ids)
+                 .index_by(&:id)
+                 .values_at(*frequent_encountered_ids)
   end
 
   private
@@ -62,8 +65,8 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def frequent_encountered_ids
-    place_detail_rows.flat_map(&:encountered_ids).compact
-      .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
+    @frequent_encountered_ids ||= place_detail_rows.flat_map(&:encountered_ids).compact
+                                    .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
   end
 
   def ordered_efforts_at_time_points

@@ -108,6 +108,10 @@ class EffortsController < ApplicationController
     render "place"
   end
 
+  def place
+    @presenter = EffortPlaceView.new(@effort)
+  end
+
   def rebuild
     authorize @effort
 

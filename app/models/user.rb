@@ -94,6 +94,14 @@ class User < ApplicationRecord
     resource.respond_to?(:stewards) ? resource.stewards.include?(self) : false
   end
 
+  def delegated_organization_ids
+    Organization.authorized_for(self).pluck(:id)
+  end
+
+  def owned_organization_ids
+    Organization.owned_by(self).pluck(:id)
+  end
+
   def full_name
     [first_name, last_name].join(' ')
   end

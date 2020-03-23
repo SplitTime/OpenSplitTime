@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  include Auditable
-  include Delegable
-  include SplitMethods
-  include TimeZonable
+  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable
   extend FriendlyId
 
   zonable_attribute :next_start_time
@@ -19,8 +16,8 @@ class Course < ApplicationRecord
 
   accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
-  scope :used_for_organization, -> (organization) { organization.courses }
   scope :standard_includes, -> { includes(:splits) }
+  scope :with_policy_scope_attributes, -> { all }
 
   validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false

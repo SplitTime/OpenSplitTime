@@ -2,15 +2,14 @@
 
 # Used for models with a 'concealed' attribute.
 
-# Not used on the Effort module, which needs custom logic entirely based on the
-# associated event's concealed status.
+# Not used on the Event or Effort models, which need custom logic based on the
+# concealed status of parent or grandparent records.
 
 module Concealable
   extend ActiveSupport::Concern
 
   included do
-    scope :concealed, -> { where(concealed: true) }
-    scope :visible, -> { where(concealed: false) }
+    scope :visible, -> { where("#{table_name}.concealed is not true") }
   end
 
   def visible?

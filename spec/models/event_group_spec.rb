@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe EventGroup, type: :model do
-
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe '#initialize' do
@@ -71,6 +70,94 @@ RSpec.describe EventGroup, type: :model do
       events.each do |event|
         event.reload
         expect(event.updated_at > 1.minute.ago).to eq(true)
+      end
+    end
+
+    describe "conforms the concealed status of related records" do
+      before do
+        subject_event_group.update(concealed: subject_event_group_existing_concealed)
+        other_event_group.update(concealed: other_event_group_concealed)
+      end
+
+      shared_examples "makes the conforming record visible" do
+        it "makes the conforming record visible" do
+          expect(conforming_record.reload).to be_concealed
+          subject_event_group.update(concealed: subject_event_group_concealed)
+          expect(conforming_record.reload).not_to be_concealed
+        end
+      end
+
+      shared_examples "conceals the conforming record" do
+        it "conceals the conforming record" do
+          expect(conforming_record.reload).not_to be_concealed
+          subject_event_group.update(concealed: subject_event_group_concealed)
+          expect(conforming_record.reload).to be_concealed
+        end
+      end
+
+      shared_examples "does not conceal the conforming record" do
+        it "does not conceal the conforming record" do
+          expect(conforming_record.reload).not_to be_concealed
+          subject_event_group.update(concealed: subject_event_group_concealed)
+          expect(conforming_record.reload).not_to be_concealed
+        end
+      end
+
+      shared_examples "conceals and makes visible the conforming record" do
+        context "when hiding the subject event group" do
+          let(:subject_event_group_existing_concealed) { false }
+          let(:subject_event_group_concealed) { true }
+          context "when another event group for the organization is visible" do
+            let(:other_event_group_concealed) { false }
+            include_examples "does not conceal the conforming record"
+          end
+
+          context "when all other event groups for the organization are concealed" do
+            let(:other_event_group_concealed) { true }
+            include_examples "conceals the conforming record"
+          end
+        end
+
+        context "when making the subject event group visible" do
+          let(:subject_event_group_existing_concealed) { true }
+          let(:subject_event_group_concealed) { false }
+          context "when another event group for the organization is visible" do
+            let(:other_event_group_concealed) { false }
+            include_examples "does not conceal the conforming record"
+          end
+
+          context "when all other event groups for the organization are concealed" do
+            let(:other_event_group_concealed) { true }
+            include_examples "makes the conforming record visible"
+          end
+        end
+      end
+
+      describe "conforms the concealed status of the organization" do
+        let(:organization) { subject_event_group.organization }
+        let(:subject_event_group) { event_groups(:rufa_2017) }
+        let(:other_event_group) { event_groups(:rufa_2016) }
+        let(:conforming_record) { organization }
+
+        include_examples "conceals and makes visible the conforming record"
+      end
+
+      describe "conforms concealed status of people" do
+        let(:person) { people(:finished_first_colorado_us) }
+        let(:subject_event_group) { event_groups(:sum) }
+        let(:other_event_group) { event_groups(:dirty_30) }
+        let(:conforming_record) { person }
+
+        include_examples "conceals and makes visible the conforming record"
+      end
+
+      describe "conforms concealed status of courses" do
+        let(:course) { courses(:rufa_course) }
+        let(:subject_event_group) { event_groups(:rufa_2017) }
+        let(:other_event_group) { event_groups(:rufa_2016) }
+        let(:conforming_record) { course }
+
+        include_examples "conceals and makes visible the conforming record"
       end
     end
   end

@@ -13,14 +13,14 @@ class PlaceDetailRow
     ArgsValidator.validate(params: args,
                            required: [:lap_split, :split_times],
                            exclusive: [:lap_split, :split_times, :previous_lap_split, :show_laps,
-                                       :effort_name, :efforts],
+                                       :effort_name, :effort_ids_by_category],
                            class: self.class)
     @lap_split = args[:lap_split]
     @split_times = args[:split_times] || []
     @previous_lap_split = args[:previous_lap_split]
     @show_laps = args[:show_laps]
     @effort_name = args[:effort_name]
-    @efforts = args[:efforts]
+    @effort_ids_by_category = args[:effort_ids_by_category]
   end
 
   def name
@@ -40,20 +40,14 @@ class PlaceDetailRow
   end
 
   CATEGORIES.each do |category|
-    define_method("#{category}") do
-      efforts[category]
-    end
-  end
-
-  CATEGORIES.each do |category|
     define_method("#{category}_count") do
-      method("#{category}").call.size
+      method("#{category}_ids").call.size
     end
   end
 
   CATEGORIES.each do |category|
     define_method("#{category}_ids") do
-      method("#{category}").call.map(&:id)
+      effort_ids_by_category[category]
     end
   end
 
@@ -65,7 +59,7 @@ class PlaceDetailRow
 
   private
 
-  attr_reader :lap_split, :previous_lap_split, :show_laps, :effort_name, :efforts
+  attr_reader :lap_split, :previous_lap_split, :show_laps, :effort_name, :effort_ids_by_category
 
   def persons(number)
     number == 1 ? "#{number} person" : "#{number} people"

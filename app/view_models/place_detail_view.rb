@@ -69,17 +69,20 @@ class PlaceDetailView
     prior_time_point = lap_splits.first.time_point_in
     lap_splits.each do |lap_split|
       next if lap_split.start?
+
       previous_lap_split = lap_splits.find { |ls| ls.key == prior_time_point.lap_split_key }
       efforts = {passed_segment: efforts_passed(prior_time_point, lap_split.time_point_in),
                  passed_in_aid: efforts_passed(lap_split.time_point_in, lap_split.time_point_out),
                  passed_by_segment: efforts_passed_by(prior_time_point, lap_split.time_point_in),
                  passed_by_in_aid: efforts_passed_by(lap_split.time_point_in, lap_split.time_point_out),
                  together_in_aid: efforts_together_in_aid(lap_split)}
+      effort_ids_by_category = efforts.transform_values { |effort_array| effort_array.map(&:id) }
+
       place_detail_row = PlaceDetailRow.new(effort_name: effort.name,
                                             lap_split: lap_split,
                                             previous_lap_split: previous_lap_split,
                                             split_times: related_split_times(lap_split),
-                                            efforts: efforts,
+                                            effort_ids_by_category: effort_ids_by_category,
                                             show_laps: event.multiple_laps?)
       place_detail_rows << place_detail_row
       prior_time_point = place_detail_row.end_time_point if place_detail_row.end_time_point

@@ -47,7 +47,7 @@ class PlaceDetailRow
 
   CATEGORIES.each do |category|
     define_method("#{category}_table_title") do
-      table_titles[category]
+      table_titles_by_category[category]
     end
   end
 
@@ -59,7 +59,7 @@ class PlaceDetailRow
     "#{number} person".pluralize(number)
   end
 
-  def table_titles
+  def table_titles_by_category
     {passed_segment: "#{effort_name} passed #{persons(passed_segment_ids.size)} between" +
         " #{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
      passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_ids.size)} in aid at #{split_base_name(lap_split)}",

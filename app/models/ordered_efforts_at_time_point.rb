@@ -1,5 +1,9 @@
-OrderedEffortsAtTimePoint = Struct.new(:lap, :split_id, :sub_split_bitkey, :effort_ids, keyword_init: true) do
-  def effort_id_array
-    effort_ids.gsub(/[^\d,]/, "").split(",").map(&:to_i)
-  end
+class OrderedEffortsAtTimePoint
+  include ActiveModel::Model
+  include ActiveModel::Attributes
+
+  attribute :lap, :integer
+  attribute :split_id, :integer
+  attribute :sub_split_bitkey, :integer
+  attribute :effort_ids, :integer_array_from_string
 end

@@ -5,7 +5,7 @@ class SplitsController < ApplicationController
 
   def index
     order = prepared_params[:sort].presence || [:course_id, :distance_from_start]
-    @splits = Split.order(order).where(prepared_params[:filter])
+    @splits = policy_scope(Split).order(order).where(prepared_params[:filter])
 
     respond_to do |format|
       format.html do
@@ -70,7 +70,7 @@ class SplitsController < ApplicationController
   private
 
   def set_split
-    @split = Split.friendly.find(params[:id])
+    @split = policy_scope(Split).friendly.find(params[:id])
     redirect_numeric_to_friendly(@split, params[:id])
   end
 end

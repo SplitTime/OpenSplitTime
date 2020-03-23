@@ -16,7 +16,7 @@ class ApplicationPolicy
       elsif user.nil?
         scope.none
       else
-        scope.where(id: (created_records.ids + delegated_records.ids).uniq)
+        authorized_to_edit_records
       end
     end
     alias_method :editable, :resolve_editable
@@ -27,7 +27,7 @@ class ApplicationPolicy
       elsif user.nil?
         visible_records
       else
-        scope.where(id: (visible_records + owned_records + created_records + delegated_records).uniq)
+        authorized_to_view_records
       end
     end
     alias_method :viewable, :resolve_viewable
@@ -38,25 +38,13 @@ class ApplicationPolicy
     end
 
     # May be overridden by model policies
-    def owned_records
+    def authorized_to_edit_records
       scope.none
-    end
-
-    def created_records
-      scope.where(created_by: user.id)
     end
 
     # May be overridden by model policies
-    def delegated_records
-      scope.none
-    end
-
-    def authorized_organizations
-      Organization.authorized_for(user)
-    end
-
-    def owned_organizations
-      Organization.owned_by(user)
+    def authorized_to_view_records
+      visible_records
     end
   end
 

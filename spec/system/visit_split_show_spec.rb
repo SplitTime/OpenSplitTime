@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'visit an effort show page' do
+RSpec.describe 'visit a split show page' do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -13,19 +13,21 @@ RSpec.describe 'visit an effort show page' do
     organization.stewards << steward
   end
 
-  let(:event) { effort.event }
+  let(:event) { events(:hardrock_2016) }
   let(:event_group) { event.event_group}
   let(:organization) { event_group.organization }
 
-  let(:completed_effort) { efforts(:hardrock_2014_finished_first) }
-  let(:in_progress_effort) { efforts(:hardrock_2014_progress_sherman) }
-  let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
+  let(:course) { event.course }
 
-  context 'When the effort is finished' do
-    let(:effort) { completed_effort }
+  let(:start_split) { course.ordered_splits.first }
+  let(:intermediate_split) { course.ordered_splits.second }
+  let(:finish_split) { course.ordered_splits.last }
+
+  context 'When the split is a start split' do
+    let(:split) { start_split }
 
     scenario 'The user is a visitor' do
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -33,7 +35,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -41,7 +43,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is the owner' do
       login_as owner, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_present
@@ -49,7 +51,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is a steward of the organization related to the event' do
       login_as steward, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_present
@@ -57,18 +59,18 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_present
     end
   end
 
-  context 'When the effort is in progress' do
-    let(:effort) { in_progress_effort }
+  context 'When the split is intermediate' do
+    let(:split) { intermediate_split }
 
     scenario 'The user is a visitor' do
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -76,7 +78,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -84,40 +86,34 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is the owner' do
       login_as owner, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_present
-      verify_set_stop
-      verify_remove_stop
     end
 
     scenario 'The user is a steward of the organization related to the event' do
       login_as steward, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_present
-      verify_set_stop
-      verify_remove_stop
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
-      visit effort_path(effort)
-      
+      visit split_path(split)
+
       verify_page_content
       verify_admin_links_present
-      verify_set_stop
-      verify_remove_stop
     end
   end
 
-  context 'When the effort is not started' do
-    let(:effort) { unstarted_effort }
+  context 'When the split is a finish split' do
+    let(:split) { finish_split }
 
     scenario 'The user is a visitor' do
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -125,7 +121,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
       
       verify_page_content
       verify_admin_links_absent
@@ -133,7 +129,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is the owner' do
       login_as owner, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
@@ -141,7 +137,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is a steward of the organization related to the event' do
       login_as steward, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
@@ -149,16 +145,16 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
     end
   end
 
-  context 'when the effort is hidden' do
-    let(:effort) { completed_effort }
-    before { event_group.update(concealed: true) }
+  context 'when the course is hidden' do
+    let(:split) { intermediate_split }
+    before { course.update(concealed: true) }
 
     scenario 'The user is a visitor' do
       verify_page_not_found
@@ -171,7 +167,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is the owner' do
       login_as owner, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
@@ -179,7 +175,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is a steward of the organization related to the event' do
       login_as steward, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
@@ -187,7 +183,7 @@ RSpec.describe 'visit an effort show page' do
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
-      visit effort_path(effort)
+      visit split_path(split)
 
       verify_page_content
       verify_admin_links_present
@@ -195,57 +191,19 @@ RSpec.describe 'visit an effort show page' do
   end
 
   def verify_page_content
-    expect(page).to have_content(effort.full_name)
-    expect(page).to have_content('Split times')
-
-    if effort == in_progress_effort
-      expect(page).to have_link('Projections', href: projections_effort_path(effort))
-    else
-      expect(page).not_to have_content('Projections')
-    end
-
-    if effort == unstarted_effort
-      expect(page).not_to have_content('Analyze times')
-      expect(page).not_to have_content('Places + peers')
-    else
-      expect(page).to have_link('Analyze times', href: analyze_effort_path(effort))
-      expect(page).to have_link('Places + peers', href: place_effort_path(effort))
-    end
-
-    event.splits.each { |split| expect(page).to have_content(split.base_name) }
+    expect(page).to have_content(split.base_name)
+    expect(page).to have_content(course.name)
   end
 
   def verify_admin_links_absent
-    expect(page).not_to have_content('Edit Entrant')
-    expect(page).not_to have_content('Audit')
+    expect(page).not_to have_content('Edit Split')
   end
 
   def verify_admin_links_present
-    expect(page).to have_link('Edit Entrant', href: edit_effort_path(effort))
-    expect(page).to have_link('Audit', href: audit_effort_path(effort))
-  end
-
-  def verify_set_stop
-    effort.reload
-    expect(effort.ordered_split_times.last).not_to be_stopped_here
-    click_link 'Set stop'
-
-    expect(page).to have_content 'Remove stop'
-    effort.reload
-    expect(effort.ordered_split_times.last).to be_stopped_here
-  end
-
-  def verify_remove_stop
-    effort.reload
-    expect(effort.ordered_split_times.last).to be_stopped_here
-    click_link 'Remove stop'
-
-    expect(page).to have_content 'Set stop'
-    effort.reload
-    expect(effort.ordered_split_times.last).not_to be_stopped_here
+    expect(page).to have_link('Edit Split', href: edit_split_path(split))
   end
 
   def verify_page_not_found
-    expect { visit effort_path(effort) }.to raise_error ::ActiveRecord::RecordNotFound
+    expect { visit split_path(split) }.to raise_error ::ActiveRecord::RecordNotFound
   end
 end

@@ -53,7 +53,11 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_passed(begin_time_point, end_time_point)
-    []
+    starting_oeatp = ordered_efforts_at_time_points.find { |oeapt| oeapt.time_point == begin_time_point }
+    starting_order = starting_oeatp&.effort_ids || []
+    ending_oeatp = ordered_efforts_at_time_points.find { |oeapt| oeapt.time_point == end_time_point }
+    ending_order = ending_oeatp&.effort_ids || []
+    ending_order.elements_after(effort.id) - starting_order.elements_after(effort.id)
   end
 
   def effort_ids_passed_by(begin_time_point, end_time_point)
@@ -70,9 +74,12 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def ordered_efforts_at_time_points
-    query = EventQuery.ordered_efforts_at_time_points(event.id)
-    result = ActiveRecord::Base.connection.execute(query).to_a
-    result.map { |row| OrderedEffortsAtTimePoint.new(row) }
+    @ordered_efforts_at_time_points ||=
+      begin
+        query = EventQuery.ordered_efforts_at_time_points(event.id)
+        result = ActiveRecord::Base.connection.execute(query).to_a
+        result.map { |row| OrderedEffortsAtTimePoint.new(row) }
+      end
   end
 
   def related_split_times(lap_split)

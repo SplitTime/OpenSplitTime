@@ -268,7 +268,7 @@ class Effort < ApplicationRecord
   end
 
   def enriched
-    event.efforts.ranked_with_status.find { |e| e.id == id }
+    event.efforts.ranked_with_status(effort_id: id).first
   end
 
   def template_age

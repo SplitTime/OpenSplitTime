@@ -83,12 +83,9 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def ordered_efforts_at_time_points
-    @ordered_efforts_at_time_points ||=
-      begin
-        query = EventQuery.ordered_efforts_at_time_points(event.id)
-        result = ActiveRecord::Base.connection.execute(query).to_a
-        result.map { |row| OrderedEffortsAtTimePoint.new(row) }
-      end
+    query = EventQuery.ordered_efforts_at_time_points(event.id)
+    result = ActiveRecord::Base.connection.execute(query).to_a
+    result.map { |row| OrderedEffortsAtTimePoint.new(row) }
   end
 
   def effort_info_array

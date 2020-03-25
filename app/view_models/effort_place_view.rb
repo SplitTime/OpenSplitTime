@@ -4,6 +4,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
   TimePointWithEffortInfo = Struct.new(:time_point, :rank, :ids_ahead)
+  CategorizedEffortIds = Struct.new(:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid, keyword_init: true)
 
   def initialize(args_effort)
     @effort = args_effort.enriched
@@ -19,7 +20,7 @@ class EffortPlaceView < EffortWithLapSplitRows
           next if lap_split.start?
 
           previous_lap_split = lap_splits.find { |ls| ls.key == prior_time_point.lap_split_key }
-          effort_ids_by_category = categorize_effort_ids(lap_split, prior_time_point)
+          effort_ids_by_category = categorized_effort_ids(lap_split, prior_time_point)
 
           place_detail_row = PlaceDetailRow.new(effort_name: effort.name,
                                                 lap_split: lap_split,
@@ -47,12 +48,12 @@ class EffortPlaceView < EffortWithLapSplitRows
 
   private
 
-  def categorize_effort_ids(lap_split, prior_time_point)
-    {passed_segment: effort_ids_passed(prior_time_point, lap_split.time_point_in),
-     passed_in_aid: effort_ids_passed(lap_split.time_point_in, lap_split.time_point_out),
-     passed_by_segment: effort_ids_passed_by(prior_time_point, lap_split.time_point_in),
-     passed_by_in_aid: effort_ids_passed_by(lap_split.time_point_in, lap_split.time_point_out),
-     together_in_aid: effort_ids_together_in_aid(lap_split)}
+  def categorized_effort_ids(lap_split, prior_time_point)
+    CategorizedEffortIds.new(passed_segment: effort_ids_passed(prior_time_point, lap_split.time_point_in),
+                             passed_in_aid: effort_ids_passed(lap_split.time_point_in, lap_split.time_point_out),
+                             passed_by_segment: effort_ids_passed_by(prior_time_point, lap_split.time_point_in),
+                             passed_by_in_aid: effort_ids_passed_by(lap_split.time_point_in, lap_split.time_point_out),
+                             together_in_aid: effort_ids_together_in_aid(lap_split))
   end
 
   def effort_ids_passed(begin_time_point, end_time_point)

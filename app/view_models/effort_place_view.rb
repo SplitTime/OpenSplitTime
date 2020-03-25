@@ -3,8 +3,11 @@
 class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
+  TimePointWithEffortInfo = Struct.new(:time_point, :rank, :ids_before, :ids_after)
+
   def initialize(args_effort)
     @effort = args_effort.enriched
+    set_time_point_ranks
   end
 
   def place_detail_rows
@@ -82,7 +85,24 @@ class EffortPlaceView < EffortWithLapSplitRows
       end
   end
 
+  def effort_info_array
+    ordered_efforts_at_time_points.map do |oeatp|
+      effort_ids = oeatp.effort_ids
+      TimePointWithEffortInfo.new(oeatp.time_point, effort_ids.index(effort.id) + 1, effort_ids.elements_before(effort.id), effort_ids.elements_after(effort.id))
+    end
+  end
+
+  def effort_info_by_time_point
+    @effort_info_by_time_point ||= effort_info_array.index_by(&:time_point)
+  end
+
   def related_split_times(lap_split)
     lap_split.time_points.map { |tp| indexed_split_times[tp] }
+  end
+
+  def set_time_point_ranks
+    ordered_split_times.each do |split_time|
+      split_time.time_point_rank = effort_info_by_time_point[split_time.time_point].rank
+    end
   end
 end

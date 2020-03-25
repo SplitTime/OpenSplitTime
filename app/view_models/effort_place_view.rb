@@ -57,15 +57,20 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_passed(begin_time_point, end_time_point)
-    end_ids_ahead = effort_info_by_time_point[end_time_point]&.ids_ahead || []
-    begin_ids_ahead = effort_info_by_time_point[begin_time_point]&.ids_ahead || []
-    begin_ids_ahead - end_ids_ahead
+    effort_ids_moved_ahead(begin_time_point, end_time_point)
   end
 
   def effort_ids_passed_by(begin_time_point, end_time_point)
-    end_ids_ahead = effort_info_by_time_point[end_time_point]&.ids_ahead || []
-    begin_ids_ahead = effort_info_by_time_point[begin_time_point]&.ids_ahead || []
-    end_ids_ahead - begin_ids_ahead
+    effort_ids_moved_ahead(end_time_point, begin_time_point)
+  end
+
+  def effort_ids_moved_ahead(time_point_1, time_point_2)
+    # Return empty array if either time point is nil or the starting time point
+    return [] if ([time_point_1, time_point_2] & [nil, time_points.first]).present?
+
+    ids_ahead_1 = effort_info_by_time_point[time_point_1]&.ids_ahead || []
+    ids_ahead_2 = effort_info_by_time_point[time_point_2]&.ids_ahead || []
+    ids_ahead_1 - ids_ahead_2
   end
 
   def effort_ids_together_in_aid(lap_split)

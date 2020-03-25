@@ -7,7 +7,7 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <% if @current_user %>
-    <script id="current_user" type="text/json"><%= raw(UserSerializer.new(@current_user).to_json) %></script>
+    <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
   <% end %>
   <%= javascript_pack_tag 'application' %>
   <%= javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>

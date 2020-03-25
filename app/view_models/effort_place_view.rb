@@ -3,7 +3,7 @@
 class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
-  TimePointWithEffortInfo = Struct.new(:time_point, :rank, :ids_before, :ids_after)
+  TimePointWithEffortInfo = Struct.new(:time_point, :rank, :ids_ahead)
 
   def initialize(args_effort)
     @effort = args_effort.enriched
@@ -56,15 +56,15 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_passed(begin_time_point, end_time_point)
-    starting_oeatp = ordered_efforts_at_time_points.find { |oeapt| oeapt.time_point == begin_time_point }
-    starting_order = starting_oeatp&.effort_ids || []
-    ending_oeatp = ordered_efforts_at_time_points.find { |oeapt| oeapt.time_point == end_time_point }
-    ending_order = ending_oeatp&.effort_ids || []
-    ending_order.elements_after(effort.id) - starting_order.elements_after(effort.id)
+    end_ids_ahead = effort_info_by_time_point[end_time_point]&.ids_ahead || []
+    begin_ids_ahead = effort_info_by_time_point[begin_time_point]&.ids_ahead || []
+    begin_ids_ahead - end_ids_ahead
   end
 
   def effort_ids_passed_by(begin_time_point, end_time_point)
-    []
+    end_ids_ahead = effort_info_by_time_point[end_time_point]&.ids_ahead || []
+    begin_ids_ahead = effort_info_by_time_point[begin_time_point]&.ids_ahead || []
+    end_ids_ahead - begin_ids_ahead
   end
 
   def effort_ids_together_in_aid(lap_split)
@@ -88,7 +88,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   def effort_info_array
     ordered_efforts_at_time_points.map do |oeatp|
       effort_ids = oeatp.effort_ids
-      TimePointWithEffortInfo.new(oeatp.time_point, effort_ids.index(effort.id) + 1, effort_ids.elements_before(effort.id), effort_ids.elements_after(effort.id))
+      TimePointWithEffortInfo.new(oeatp.time_point, effort_ids.index(effort.id) + 1, effort_ids.elements_before(effort.id))
     end
   end
 

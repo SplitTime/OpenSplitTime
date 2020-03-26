@@ -13,7 +13,7 @@ class EffortWithLapSplitRows
   end
 
   def event
-    @event ||= Event.where(id: effort.event_id).includes(:efforts, :splits).first
+    @event ||= Event.where(id: effort.event_id).includes(:splits).first
   end
 
   def total_time_in_aid
@@ -118,7 +118,7 @@ class EffortWithLapSplitRows
 
   def loaded_effort
     return @loaded_effort if defined?(@loaded_effort)
-    temp_effort = Effort.where(id: effort).includes(:event, :person, split_times: :split).first
+    temp_effort = Effort.where(id: effort).includes(split_times: :split).first
     AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
     @loaded_effort = temp_effort
   end

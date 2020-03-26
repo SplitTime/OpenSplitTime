@@ -31,10 +31,6 @@ class EffortPlaceView < EffortWithLapSplitRows
       end
   end
 
-  def event
-    @event ||= Event.where(id: effort.event_id).includes(:splits).first
-  end
-
   def peers
     @peers ||= Effort.select(:id, :first_name, :last_name, :slug)
                  .where(id: frequent_encountered_ids)

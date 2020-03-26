@@ -4,6 +4,7 @@ class EffortQuery < BaseQuery
   def self.rank_and_status(args = {})
     select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
     order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'event_id,overall_rank')
+    where_clause = args[:effort_id].present? ? "where id = #{args[:effort_id]}" : ''
 
     <<-SQL.squish
       with
@@ -166,6 +167,7 @@ class EffortQuery < BaseQuery
                         age desc) 
           as next_effort_id
       from main_subquery
+      #{where_clause}
       order by #{order_sql}
     SQL
   end

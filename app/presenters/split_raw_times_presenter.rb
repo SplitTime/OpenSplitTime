@@ -46,8 +46,4 @@ class SplitRawTimesPresenter < BasePresenter
   def bitkey
     @bitkey ||= SubSplit.bitkey(sub_split_kind)
   end
-
-  def universal_bib_row_attributes
-    {single_lap: single_lap?}
-  end
 end

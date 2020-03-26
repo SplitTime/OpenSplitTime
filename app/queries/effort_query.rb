@@ -112,61 +112,65 @@ class EffortQuery < BaseQuery
         main_subquery as 
           (select *,
               case when stopped and not finished then true else false end as dropped
-           from stopped_subquery)
+           from stopped_subquery),
 
-      select #{select_sql},
-          case when started then 
-            rank() over 
-              (partition by event_id
-               order by started desc,
-                        dropped, 
-                        final_lap desc nulls last, 
-                        final_lap_distance desc, 
-                        final_bitkey desc, 
-                        final_time_from_start, 
-                        gender desc, 
-                        age desc) 
-            else null end
-          as overall_rank, 
+        ranking_subquery as
+          (select #{select_sql},
+              case when started then 
+                rank() over 
+                  (partition by event_id
+                   order by started desc,
+                            dropped, 
+                            final_lap desc nulls last, 
+                            final_lap_distance desc, 
+                            final_bitkey desc, 
+                            final_time_from_start, 
+                            gender desc, 
+                            age desc) 
+                else null end
+              as overall_rank, 
 
-          case when started then
-            rank() over 
-              (partition by event_id, gender 
-               order by started desc,
-                        dropped, 
-                        final_lap desc nulls last, 
-                        final_lap_distance desc, 
-                        final_bitkey desc, 
-                        final_time_from_start, 
-                        gender desc, 
-                        age desc)
-            else null end
-          as gender_rank,
+              case when started then
+                rank() over 
+                  (partition by event_id, gender 
+                   order by started desc,
+                            dropped, 
+                            final_lap desc nulls last, 
+                            final_lap_distance desc, 
+                            final_bitkey desc, 
+                            final_time_from_start, 
+                            gender desc, 
+                            age desc)
+                else null end
+              as gender_rank,
 
-          lag(id) over
-              (partition by event_id
-               order by started desc,
-                        dropped, 
-                        final_lap desc nulls last, 
-                        final_lap_distance desc, 
-                        final_bitkey desc, 
-                        final_time_from_start, 
-                        gender desc, 
-                        age desc) 
-          as prior_effort_id,
+              lag(id) over
+                  (partition by event_id
+                   order by started desc,
+                            dropped, 
+                            final_lap desc nulls last, 
+                            final_lap_distance desc, 
+                            final_bitkey desc, 
+                            final_time_from_start, 
+                            gender desc, 
+                            age desc) 
+              as prior_effort_id,
 
-          lead(id) over
-              (partition by event_id
-               order by started desc,
-                        dropped, 
-                        final_lap desc nulls last, 
-                        final_lap_distance desc, 
-                        final_bitkey desc, 
-                        final_time_from_start, 
-                        gender desc, 
-                        age desc) 
-          as next_effort_id
-      from main_subquery
+              lead(id) over
+                  (partition by event_id
+                   order by started desc,
+                            dropped, 
+                            final_lap desc nulls last, 
+                            final_lap_distance desc, 
+                            final_bitkey desc, 
+                            final_time_from_start, 
+                            gender desc, 
+                            age desc) 
+              as next_effort_id
+          from main_subquery)
+
+      select *
+      from ranking_subquery
       #{where_clause}
       order by #{order_sql}
     SQL

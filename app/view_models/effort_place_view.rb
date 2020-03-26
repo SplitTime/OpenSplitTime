@@ -61,12 +61,20 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_moved_ahead(time_point_1, time_point_2)
-    # Return empty array if either time point is nil or the starting time point
-    return [] if ([time_point_1, time_point_2] & [nil, time_points.first]).present?
+    return [] if time_point_first_or_nil?(time_point_1, time_point_2)
+    return [] if time_point_missing_rank?(time_point_1, time_point_2)
 
-    ids_ahead_1 = effort_info_by_time_point[time_point_1]&.ids_ahead || []
-    ids_ahead_2 = effort_info_by_time_point[time_point_2]&.ids_ahead || []
+    ids_ahead_1 = effort_info_by_time_point[time_point_1].ids_ahead
+    ids_ahead_2 = effort_info_by_time_point[time_point_2].ids_ahead
     ids_ahead_1 - ids_ahead_2
+  end
+
+  def time_point_missing_rank?(time_point_1, time_point_2)
+    [time_point_1, time_point_2].any? { |tp| effort_info_by_time_point[tp].rank.nil? }
+  end
+
+  def time_point_first_or_nil?(time_point_1, time_point_2)
+    [time_point_1, time_point_2].any? { |tp| tp.nil? || tp == time_points.first }
   end
 
   def effort_ids_together_in_aid(lap_split)
@@ -87,7 +95,11 @@ class EffortPlaceView < EffortWithLapSplitRows
   def effort_info_array
     ordered_efforts_at_time_points.map do |oeatp|
       effort_ids = oeatp.effort_ids
-      TimePointWithEffortInfo.new(oeatp.time_point, effort_ids.index(effort.id) + 1, effort_ids.elements_before(effort.id))
+      effort_index = effort_ids.index(effort.id)
+      effort_rank = effort_index ? effort_index + 1 : nil
+      ids_ahead = effort_index ? effort_ids.elements_before(effort.id) : []
+
+      TimePointWithEffortInfo.new(oeatp.time_point, effort_rank, ids_ahead)
     end
   end
 

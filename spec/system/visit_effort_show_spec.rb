@@ -23,12 +23,14 @@ RSpec.describe 'visit an effort show page' do
 
   context 'When the effort is finished' do
     let(:effort) { completed_effort }
+    let(:next_effort) { efforts(:hardrock_2014_finished_with_stop) }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
       
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is not the owner and is not a steward' do
@@ -37,6 +39,7 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is the owner' do
@@ -45,6 +48,7 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -53,6 +57,7 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is an admin' do
@@ -61,66 +66,81 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
   end
 
   context 'When the effort is in progress' do
     let(:effort) { in_progress_effort }
+    let(:prior_effort) { efforts(:hardrock_2014_pat_schaden) }
+    let(:next_effort) { efforts(:hardrock_2014_multiple_stops) }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is not the owner and is not a steward' do
       login_as user, scope: :user
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is the owner' do
       login_as owner, scope: :user
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_present
       verify_set_stop
       verify_remove_stop
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
       login_as steward, scope: :user
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_present
       verify_set_stop
       verify_remove_stop
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
 
     scenario 'The user is an admin' do
       login_as admin, scope: :user
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_present
       verify_set_stop
       verify_remove_stop
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+      expect(page).to have_link(nil, href: effort_path(next_effort.id))
     end
   end
 
   context 'When the effort is not started' do
     let(:effort) { unstarted_effort }
+    let(:prior_effort) { efforts(:hardrock_2014_drop_ouray) }
 
     scenario 'The user is a visitor' do
       visit effort_path(effort)
-      
+
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
     end
 
     scenario 'The user is not the owner and is not a steward' do
@@ -129,6 +149,7 @@ RSpec.describe 'visit an effort show page' do
       
       verify_page_content
       verify_admin_links_absent
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
     end
 
     scenario 'The user is the owner' do
@@ -137,6 +158,7 @@ RSpec.describe 'visit an effort show page' do
 
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
     end
 
     scenario 'The user is a steward of the organization related to the event' do
@@ -145,6 +167,7 @@ RSpec.describe 'visit an effort show page' do
 
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
     end
 
     scenario 'The user is an admin' do
@@ -153,6 +176,7 @@ RSpec.describe 'visit an effort show page' do
 
       verify_page_content
       verify_admin_links_present
+      expect(page).to have_link(nil, href: effort_path(prior_effort.id))
     end
   end
 

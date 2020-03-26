@@ -21,6 +21,7 @@ class SplitTime < ApplicationRecord
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
   attribute :matching_raw_time_id, :integer
+  attribute :time_point_rank, :integer
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }

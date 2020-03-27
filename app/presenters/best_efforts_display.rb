@@ -9,25 +9,16 @@ class BestEffortsDisplay < BasePresenter
   def initialize(course, params = {})
     @course = course
     @params = params
-    @events = Event.where(id: all_efforts.map(&:event_id).uniq).order(start_time: :desc).to_a
   end
 
   def filtered_efforts
-    selected_efforts.paginate(page: page, per_page: per_page)
-  end
-
-  def selected_efforts
-    (gender_text != 'combined') || search_text.present? ?
-        all_efforts.select { |effort| filter_ids.include?(effort.id) } :
-        all_efforts
+    all_efforts.over_segment(segment).unscope(:where, :joins)
+      .where(filter_hash).search(search_text)
+      .paginate(page: page, per_page: per_page)
   end
 
   def all_efforts_count
-    all_efforts.size
-  end
-
-  def filtered_efforts_count
-    filtered_efforts.total_entries
+    all_efforts.count
   end
 
   def effort_rows
@@ -88,7 +79,11 @@ class BestEffortsDisplay < BasePresenter
 
   private
 
-  attr_reader :events, :params
+  attr_reader :params
+
+  def events
+    @events ||= Event.where(id: all_efforts.select('distinct on (event_id) event_id')).order(start_time: :desc).to_a
+  end
 
   def segment
     return @segment if defined?(@segment)
@@ -109,11 +104,7 @@ class BestEffortsDisplay < BasePresenter
     params[:split2]
   end
 
-  def filter_ids
-    @filter_ids ||= Effort.joins(:event).where(events: {course: course}).where(filter_hash).search(search_text).ids.to_set
-  end
-
   def all_efforts
-    @all_efforts ||= Effort.find_by_sql(EffortQuery.over_segment(segment))
+    Effort.joins(:event).where(events: {course: course})
   end
 end

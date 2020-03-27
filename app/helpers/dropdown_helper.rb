@@ -251,7 +251,7 @@ module DropdownHelper
   def gender_dropdown_menu(view_object)
     dropdown_items = %w(combined male female).map do |gender|
       {name: gender.titleize,
-       link: request.params.merge(filter: {gender: gender}),
+       link: request.params.merge(filter: {gender: gender}, page: nil),
        active: view_object.gender_text == gender}
     end
     build_dropdown_menu(nil, dropdown_items, button: true)

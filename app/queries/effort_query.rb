@@ -269,12 +269,13 @@ class EffortQuery < BaseQuery
                 case when laps_finished >= laps_required then true else false end 
               end
               as finished,
-              sst.absolute_time as actual_start_time
+              sst.absolute_time as actual_start_time,
+              to_char((segment_seconds || ' second')::interval, 'HH24:MI:SS') as segment_duration
       from main_subquery 
         left join start_split_times sst on sst.effort_id = main_subquery.effort_id
         left join stopped_split_times on stopped_split_times.effort_id = main_subquery.effort_id
         left join farthest_split_times on farthest_split_times.effort_id = main_subquery.effort_id
-      where event_group_concealed = 'f'
+      where event_group_concealed is false and segment_seconds > 0
       order by overall_rank)
       as efforts
     SQL

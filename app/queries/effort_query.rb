@@ -176,15 +176,16 @@ class EffortQuery < BaseQuery
     SQL
   end
 
-  def self.over_segment(segment)
+  def self.over_segment_subquery(segment, existing_scope)
     begin_id = segment.begin_id
     begin_bitkey = segment.begin_bitkey
     end_id = segment.end_id
     end_bitkey = segment.end_bitkey
+    existing_scope_subquery = sql_for_existing_scope(existing_scope)
 
     <<-SQL.squish
-      with
-        existing_scope as (#{existing_scope_sql}),
+      (with
+        existing_scope as (#{existing_scope_subquery}),
         
         efforts_scoped as 
             (select efforts.*
@@ -274,7 +275,8 @@ class EffortQuery < BaseQuery
         left join stopped_split_times on stopped_split_times.effort_id = main_subquery.effort_id
         left join farthest_split_times on farthest_split_times.effort_id = main_subquery.effort_id
       where event_group_concealed = 'f'
-      order by overall_rank
+      order by overall_rank)
+      as efforts
     SQL
   end
 
@@ -297,6 +299,10 @@ class EffortQuery < BaseQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
+  end
+
+  def self.sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
   end
 
   def self.permitted_column_names

@@ -51,6 +51,7 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
+  scope :over_segment, -> (segment) { from(EffortQuery.over_segment_subquery(segment, self)) }
   scope :add_ready_to_start, -> do
     select('distinct on (efforts.id) efforts.*, coalesce(scheduled_start_time, events.start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
         .left_joins(:event, split_times: :split)

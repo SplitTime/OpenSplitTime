@@ -110,7 +110,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def filter_ids
-    @filter_ids ||= Effort.where(filter_hash).search(search_text).ids.to_set
+    @filter_ids ||= Effort.joins(:event).where(events: {course: course}).where(filter_hash).search(search_text).ids.to_set
   end
 
   def all_efforts

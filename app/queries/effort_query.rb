@@ -188,9 +188,9 @@ class EffortQuery < BaseQuery
         existing_scope as (#{existing_scope_subquery}),
         
         efforts_scoped as 
-            (select efforts.*
-             from efforts
-             inner join existing_scope on existing_scope.id = efforts.id),
+            (select e.id, e.event_id, e.first_name, e.last_name, e.gender, e.birthdate, e.age, e.city, e.state_code, e.country_code, e.slug
+             from efforts e
+             inner join existing_scope on existing_scope.id = e.id),
                                        
         start_split_times as
           (select effort_id, absolute_time

@@ -3,7 +3,7 @@
 class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
-  TimePointWithEffortInfo = Struct.new(:time_point, :rank, :ids_ahead)
+  TimePointWithEffortRank = Struct.new(:time_point, :rank, :ids_ahead)
   CategorizedEffortIds = Struct.new(:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid, keyword_init: true)
 
   def initialize(args_effort)
@@ -101,7 +101,7 @@ class EffortPlaceView < EffortWithLapSplitRows
       effort_rank = effort_index ? effort_index + 1 : nil
       ids_ahead = effort_index ? effort_ids.elements_before(effort.id) : []
 
-      TimePointWithEffortInfo.new(oeatp.time_point, effort_rank, ids_ahead)
+      TimePointWithEffortRank.new(oeatp.time_point, effort_rank, ids_ahead)
     end
   end
 

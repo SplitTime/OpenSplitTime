@@ -3,7 +3,6 @@
 class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
-  TimePointWithEffortRank = Struct.new(:time_point, :rank, :ids_ahead)
   CategorizedEffortIds = Struct.new(:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid, keyword_init: true)
 
   def initialize(args_effort)
@@ -64,8 +63,8 @@ class EffortPlaceView < EffortWithLapSplitRows
     return [] if time_point_first_or_nil?(time_point_1, time_point_2)
     return [] if time_point_missing_rank?(time_point_1, time_point_2)
 
-    ids_ahead_1 = effort_info_by_time_point[time_point_1].ids_ahead
-    ids_ahead_2 = effort_info_by_time_point[time_point_2].ids_ahead
+    ids_ahead_1 = effort_info_by_time_point[time_point_1].effort_ids_ahead
+    ids_ahead_2 = effort_info_by_time_point[time_point_2].effort_ids_ahead
     ids_ahead_1 - ids_ahead_2
   end
 
@@ -90,23 +89,8 @@ class EffortPlaceView < EffortWithLapSplitRows
                                     .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
   end
 
-  def ordered_efforts_at_time_points
-    OrderedEffortsAtTimePoint.execute_query(event.id)
-  end
-
-  def effort_info_array
-    ordered_efforts_at_time_points.map do |oeatp|
-      effort_ids = oeatp.effort_ids
-      effort_index = effort_ids.index(effort.id)
-      effort_rank = effort_index ? effort_index + 1 : nil
-      ids_ahead = effort_index ? effort_ids.elements_before(effort.id) : []
-
-      TimePointWithEffortRank.new(oeatp.time_point, effort_rank, ids_ahead)
-    end
-  end
-
   def effort_info_by_time_point
-    @effort_info_by_time_point ||= effort_info_array.index_by(&:time_point)
+    @effort_info_by_time_point ||= TimePointWithEffortRank.execute_query(effort).index_by(&:time_point)
   end
 
   def related_split_times(lap_split)

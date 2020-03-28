@@ -2,7 +2,8 @@
 
 class BestEffortsDisplay < BasePresenter
   attr_reader :course
-  delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :to_param, to: :course
+  delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
+           :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
@@ -71,10 +72,6 @@ class BestEffortsDisplay < BasePresenter
 
   def split2
     params[:split2] || ordered_splits.last.to_param
-  end
-
-  def organization
-    events.first&.organization
   end
 
   private

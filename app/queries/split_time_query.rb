@@ -233,10 +233,10 @@ class SplitTimeQuery < BaseQuery
           ranking_subquery as
               (select effort_id, lap, split_id, sub_split_bitkey, distance_from_start,
                   case when distance_from_start = 0 then null else
-                       rank() over (partition by lap, distance_from_start, sub_split_bitkey 
-                                    order by lap, distance_from_start, sub_split_bitkey, elapsed_time) end as time_point_rank,
+                       row_number() over (partition by lap, split_id, sub_split_bitkey 
+                                          order by lap, distance_from_start, sub_split_bitkey, elapsed_time) end as time_point_rank,
                     case when distance_from_start = 0 then null else
-                       array_agg(effort_id) over (partition by lap, distance_from_start, sub_split_bitkey 
+                       array_agg(effort_id) over (partition by lap, split_id, sub_split_bitkey 
                                                   order by lap, distance_from_start, sub_split_bitkey, elapsed_time
                                                   rows between unbounded preceding and 1 preceding) end as effort_ids_ahead
                from elapsed_times)

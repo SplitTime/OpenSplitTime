@@ -23,7 +23,7 @@ class EffortPlaceView < EffortWithLapSplitRows
           place_detail_row = PlaceDetailRow.new(effort_name: effort.name,
                                                 lap_split: lap_split,
                                                 previous_lap_split: previous_lap_split,
-                                                split_times: related_split_times(lap_split),
+                                                split_times: related_split_times(lap_split.time_points),
                                                 effort_ids_by_category: effort_ids_by_category,
                                                 show_laps: event.multiple_laps?)
           rows << place_detail_row
@@ -59,20 +59,15 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_moved_ahead(time_point_1, time_point_2)
-    return [] if time_point_first_or_nil?(time_point_1, time_point_2)
-    return [] if time_point_missing_rank?(time_point_1, time_point_2)
+    return [] if split_time_missing_rank?(time_point_1, time_point_2)
 
     ids_ahead_1 = indexed_split_times[time_point_1].effort_ids_ahead
     ids_ahead_2 = indexed_split_times[time_point_2].effort_ids_ahead
     ids_ahead_1 - ids_ahead_2
   end
 
-  def time_point_missing_rank?(time_point_1, time_point_2)
-    [time_point_1, time_point_2].any? { |tp| indexed_split_times[tp]&.time_point_rank.nil? }
-  end
-
-  def time_point_first_or_nil?(time_point_1, time_point_2)
-    [time_point_1, time_point_2].any? { |tp| tp.nil? || tp == time_points.first }
+  def split_time_missing_rank?(*time_points)
+    related_split_times(time_points).any? { |st| st&.time_point_rank.nil? }
   end
 
   def effort_ids_together_in_aid(lap_split)
@@ -88,8 +83,8 @@ class EffortPlaceView < EffortWithLapSplitRows
                                     .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
   end
 
-  def related_split_times(lap_split)
-    lap_split.time_points.map { |tp| indexed_split_times[tp] }
+  def related_split_times(time_points)
+    indexed_split_times.values_at(*time_points)
   end
 
   def ordered_split_times

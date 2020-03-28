@@ -1,7 +1,7 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place, :place_old]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
   before_action :set_effort, except: [:index, :new, :create, :associate_people, :mini_table, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place, :place_old]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
 
   before_action do
     locale = params[:locale]
@@ -101,11 +101,6 @@ class EffortsController < ApplicationController
     authorize @effort
 
     @presenter = EffortAuditView.new(@effort)
-  end
-
-  def place_old
-    @presenter = PlaceDetailView.new(@effort)
-    render "place"
   end
 
   def place

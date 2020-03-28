@@ -60,7 +60,6 @@ Rails.application.routes.draw do
       get :audit
       get :projections
       get :place
-      get :place_old
       get :show_photo
       get :edit_split_times
       patch :update_split_times

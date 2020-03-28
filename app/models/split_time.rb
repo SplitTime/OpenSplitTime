@@ -21,13 +21,13 @@ class SplitTime < ApplicationRecord
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
   attribute :matching_raw_time_id, :integer
-  attribute :time_point_rank, :integer
 
   scope :ordered, -> { joins(:split).order('split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey') }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
+  scope :with_time_point_rank, -> { from(SplitTimeQuery.with_time_point_rank(self)) }
 
   scope :with_time_from_start, -> do
     select('split_times.*, extract(epoch from split_times.absolute_time - sst.absolute_time) as time_from_start')
@@ -65,12 +65,6 @@ class SplitTime < ApplicationRecord
   def self.effort_times(args)
     query = SplitTimeQuery.effort_times(args)
     ActiveRecord::Base.connection.execute(query).values.to_h
-  end
-
-  def self.with_time_point_rank
-    return [] if SplitTimeQuery.existing_scope_sql.blank?
-    query = SplitTimeQuery.with_time_point_rank
-    self.find_by_sql(query)
   end
 
   delegate :event_group, :organization, to: :effort

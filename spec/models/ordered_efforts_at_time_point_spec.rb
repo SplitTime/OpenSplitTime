@@ -29,6 +29,20 @@ RSpec.describe OrderedEffortsAtTimePoint do
         expect(subject.effort_ids).to eq([])
       end
     end
+
+    context 'when given an array' do
+      let(:effort_ids) { [1, 2, 3] }
+      it 'returns the array' do
+        expect(subject.effort_ids).to eq([1, 2, 3])
+      end
+    end
+
+    context 'when given nil' do
+      let(:effort_ids) { nil }
+      it 'casts as an empty array' do
+        expect(subject.effort_ids).to eq([])
+      end
+    end
   end
 
   describe '.execute_query' do

@@ -16,6 +16,6 @@ class EffortsTogetherInAid
   end
 
   def lap_split_key
-    LapSplitKey.new(lap, split_id)
+    ::LapSplitKey.new(lap, split_id)
   end
 end

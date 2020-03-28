@@ -7,7 +7,6 @@ class EffortPlaceView < EffortWithLapSplitRows
 
   def initialize(args_effort)
     @effort = args_effort.enriched
-    set_time_point_ranks
   end
 
   def place_detail_rows
@@ -63,13 +62,13 @@ class EffortPlaceView < EffortWithLapSplitRows
     return [] if time_point_first_or_nil?(time_point_1, time_point_2)
     return [] if time_point_missing_rank?(time_point_1, time_point_2)
 
-    ids_ahead_1 = effort_info_by_time_point[time_point_1].effort_ids_ahead
-    ids_ahead_2 = effort_info_by_time_point[time_point_2].effort_ids_ahead
+    ids_ahead_1 = indexed_split_times[time_point_1].effort_ids_ahead
+    ids_ahead_2 = indexed_split_times[time_point_2].effort_ids_ahead
     ids_ahead_1 - ids_ahead_2
   end
 
   def time_point_missing_rank?(time_point_1, time_point_2)
-    [time_point_1, time_point_2].any? { |tp| effort_info_by_time_point[tp].rank.nil? }
+    [time_point_1, time_point_2].any? { |tp| indexed_split_times[tp]&.time_point_rank.nil? }
   end
 
   def time_point_first_or_nil?(time_point_1, time_point_2)
@@ -81,7 +80,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def efforts_together_in_aid
-    @efforts_together_in_aid = EffortsTogetherInAid.execute_query(effort.id)
+    @efforts_together_in_aid ||= EffortsTogetherInAid.execute_query(effort.id)
   end
 
   def frequent_encountered_ids
@@ -89,17 +88,11 @@ class EffortPlaceView < EffortWithLapSplitRows
                                     .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
   end
 
-  def effort_info_by_time_point
-    @effort_info_by_time_point ||= TimePointWithEffortRank.execute_query(effort).index_by(&:time_point)
-  end
-
   def related_split_times(lap_split)
     lap_split.time_points.map { |tp| indexed_split_times[tp] }
   end
 
-  def set_time_point_ranks
-    ordered_split_times.each do |split_time|
-      split_time.time_point_rank = effort_info_by_time_point[split_time.time_point].rank
-    end
+  def ordered_split_times
+    @ordered_split_times ||= effort.split_times.with_time_point_rank.to_a
   end
 end

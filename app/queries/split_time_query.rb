@@ -195,54 +195,57 @@ class SplitTimeQuery < BaseQuery
     end
   end
 
-  def self.with_time_point_rank
-    query = <<-SQL
-      with
-        existing_scope as (#{existing_scope_sql}),
+  def self.with_time_point_rank(existing_scope)
+    existing_scope_subquery = sql_for_existing_scope(existing_scope)
 
-        split_times_scoped as 
-          (select split_times.*
-           from split_times
-           inner join existing_scope on existing_scope.id = split_times.id),
+    <<-SQL.squish
+      (with existing_scope as (#{existing_scope_subquery}),
 
-        start_split_times as
-          (select split_times.id, effort_id, absolute_time
-           from split_times
-           inner join splits on splits.id = split_times.split_id
-           where lap = 1 and kind = 0 and effort_id in (select effort_id from split_times_scoped)
-           order by effort_id),
+          split_times_scoped as 
+              (select split_times.*
+               from split_times
+               inner join existing_scope on existing_scope.id = split_times.id),
 
-        main_subquery as
-          (select split_times_scoped.effort_id, lap, split_id, sub_split_bitkey,
-            extract(epoch from (split_times_scoped.absolute_time - sst.absolute_time)) as seconds_from_start,
-            split_times_scoped.absolute_time, 
-            efforts.gender as effort_gender, 
-            efforts.age as effort_age, 
-            efforts.id as tiebreaker_id, 
-            event_groups.home_time_zone
-          from split_times_scoped
-          inner join efforts on efforts.id = split_times_scoped.effort_id
-          inner join events on events.id = efforts.event_id
-          inner join event_groups on event_groups.id = events.event_group_id
-          left join start_split_times sst on sst.effort_id = split_times_scoped.effort_id 
-          where sst.id != split_times_scoped.id)
+          event_ids as
+             (select distinct event_id 
+              from split_times_scoped 
+                join efforts on efforts.id = split_times_scoped.effort_id),
 
-      select *, 
-            rank() over 
-                (partition by lap, 
-                              split_id, 
-                              sub_split_bitkey 
-                order by seconds_from_start, 
-                         effort_gender desc, 
-                         effort_age desc,
-                         tiebreaker_id) 
-            as time_point_rank,
-            absolute_time,
-            home_time_zone
-      from main_subquery 
-      order by time_point_rank
+          start_times as
+              (select effort_id, absolute_time as start_time
+               from split_times
+                  join efforts on efforts.id = split_times.effort_id
+                  join splits on splits.id = split_times.split_id
+               where efforts.event_id in (select event_id from event_ids)
+                 and split_times.lap = 1 
+                 and splits.kind = #{Split.kinds[:start]}
+                 and split_times.sub_split_bitkey = #{SubSplit::IN_BITKEY}),
+
+          elapsed_times as
+              (select lap, ast.split_id, ast.sub_split_bitkey, ast.effort_id, distance_from_start,
+                      ast.absolute_time - start_times.start_time as elapsed_time
+               from split_times ast
+                  join efforts on efforts.id = ast.effort_id
+                  join splits on splits.id = ast.split_id
+                  join start_times on start_times.effort_id = ast.effort_id
+               where efforts.event_id in (select event_id from event_ids)),
+            
+          ranking_subquery as
+              (select effort_id, lap, split_id, sub_split_bitkey, distance_from_start,
+                  case when distance_from_start = 0 then null else
+                       row_number() over (partition by lap, split_id, sub_split_bitkey 
+                                          order by lap, distance_from_start, sub_split_bitkey, elapsed_time) end as time_point_rank,
+                    case when distance_from_start = 0 then null else
+                       array_agg(effort_id) over (partition by lap, split_id, sub_split_bitkey 
+                                                  order by lap, distance_from_start, sub_split_bitkey, elapsed_time
+                                                  rows between unbounded preceding and 1 preceding) end as effort_ids_ahead
+               from elapsed_times)
+
+      select split_times_scoped.*, time_point_rank, effort_ids_ahead
+      from split_times_scoped
+        left join ranking_subquery using (effort_id, lap, split_id, sub_split_bitkey)
+      order by lap, distance_from_start, sub_split_bitkey) as split_times
     SQL
-    query.squish
   end
 
   # It is critical to reset_database_timezone after running this query.
@@ -436,6 +439,10 @@ class SplitTimeQuery < BaseQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     SplitTime.connection.unprepared_statement { SplitTime.reorder(nil).select("id").to_sql }
+  end
+
+  def self.sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
   end
 
   def self.valid_statuses_list

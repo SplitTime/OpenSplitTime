@@ -113,7 +113,7 @@ class EffortWithLapSplitRows
   end
 
   def last_lap
-    ordered_split_times.map(&:lap).last || 1
+    ordered_split_times.last&.lap || 1
   end
 
   def loaded_effort

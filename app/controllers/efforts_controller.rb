@@ -104,7 +104,7 @@ class EffortsController < ApplicationController
   end
 
   def place
-    @presenter = PlaceDetailView.new(@effort)
+    @presenter = EffortPlaceView.new(@effort)
   end
 
   def rebuild

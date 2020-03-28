@@ -107,4 +107,8 @@ class BestEffortsDisplay < BasePresenter
   def all_efforts
     Effort.joins(:event).where(events: {course: course})
   end
+
+  def per_page
+    params[:per_page] || 50
+  end
 end

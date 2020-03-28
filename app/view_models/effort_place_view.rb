@@ -78,7 +78,11 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def effort_ids_together_in_aid(lap_split)
-    []
+    efforts_together_in_aid.find { |etia| etia.lap_split_key == lap_split.key }&.together_effort_ids || []
+  end
+
+  def efforts_together_in_aid
+    @efforts_together_in_aid = EffortsTogetherInAid.execute_query(effort.id)
   end
 
   def frequent_encountered_ids

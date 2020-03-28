@@ -23,12 +23,12 @@ class EffortsTogetherInAid
             join split_times ost on ist.effort_id = ost.effort_id and ist.lap = ost.lap and ist.split_id = ost.split_id and ost.sub_split_bitkey = 64
             join efforts on efforts.id = ist.effort_id
             join events on efforts.event_id = events.id
-          where ist.effort_id = #{effort_id} and ist.sub_split_bitkey = 1),
+          where ist.effort_id = #{effort_id} and ist.sub_split_bitkey = #{SubSplit::IN_BITKEY}),
 
         group_split_times as
           (select effort_id, lap, split_id, 
-              case when sub_split_bitkey = 1 then absolute_time else null end as in_time,
-              case when sub_split_bitkey = 64 then absolute_time else null end as out_time
+              case when sub_split_bitkey = #{SubSplit::IN_BITKEY} then absolute_time else null end as in_time,
+              case when sub_split_bitkey = #{SubSplit::OUT_BITKEY} then absolute_time else null end as out_time
           from split_times
             join efforts on efforts.id = split_times.effort_id
             join events on efforts.event_id = events.id

@@ -22,7 +22,7 @@ class OrderedEffortsAtTimePoint
         from split_times
            join efforts on efforts.id = split_times.effort_id
            join splits on splits.id = split_times.split_id
-        where efforts.event_id = #{event_id} and split_times.lap = 1 and split_times.sub_split_bitkey = 1 and splits.kind = 0),
+        where efforts.event_id = #{event_id} and split_times.lap = 1 and split_times.sub_split_bitkey = #{SubSplit::IN_BITKEY} and splits.kind = #{Split.kinds[:start]}),
 
       elapsed_times as	
         (select lap, ast.split_id, ast.sub_split_bitkey, ast.effort_id, distance_from_start, ast.absolute_time - start_times.start_time as elapsed_time

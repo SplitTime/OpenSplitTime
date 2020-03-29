@@ -7,9 +7,10 @@ class BestEffortsDisplay < BasePresenter
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
-  def initialize(course, params = {})
+  def initialize(course, params, current_user)
     @course = course
     @params = params
+    @current_user = current_user
   end
 
   def filtered_efforts
@@ -76,10 +77,14 @@ class BestEffortsDisplay < BasePresenter
 
   private
 
-  attr_reader :params
+  attr_reader :params, :current_user
 
   def events
-    @events ||= Event.where(id: all_efforts.select('distinct on (event_id) event_id')).order(start_time: :desc).to_a
+    @events ||=
+      begin
+        subquery = course.events.select('distinct on (events.id) events.id, event_group_id, course_id, events.start_time').joins(:efforts)
+        EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(start_time: :desc).to_a
+      end
   end
 
   def segment
@@ -102,7 +107,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def all_efforts
-    Effort.joins(:event).where(events: {course: course})
+    @all_efforts ||= Effort.where(event: events)
   end
 
   def per_page

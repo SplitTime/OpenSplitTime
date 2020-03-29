@@ -74,7 +74,7 @@ class CoursesController < ApplicationController
       flash[:danger] = 'No efforts yet run on this course'
       redirect_to course_path(@course)
     else
-      @presenter = BestEffortsDisplay.new(@course, prepared_params)
+      @presenter = BestEffortsDisplay.new(@course, prepared_params, current_user)
       session[:return_to] = best_efforts_course_path(@course)
     end
   end

@@ -238,8 +238,7 @@ class EffortQuery < BaseQuery
                               split_times.lap, 
                               split_times.split_id, 
                               split_times.sub_split_bitkey,
-                              events.laps_required,
-                              event_groups.concealed as event_group_concealed
+                              events.laps_required
                       from efforts_scoped
                         inner join split_times on split_times.effort_id = efforts_scoped.id 
                         inner join events on events.id = efforts_scoped.event_id
@@ -275,7 +274,7 @@ class EffortQuery < BaseQuery
         left join start_split_times sst on sst.effort_id = main_subquery.effort_id
         left join stopped_split_times on stopped_split_times.effort_id = main_subquery.effort_id
         left join farthest_split_times on farthest_split_times.effort_id = main_subquery.effort_id
-      where event_group_concealed is false and segment_seconds > 0
+      where segment_seconds > 0
       order by overall_rank)
       as efforts
     SQL

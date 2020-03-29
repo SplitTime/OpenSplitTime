@@ -177,105 +177,111 @@ class EffortQuery < BaseQuery
   end
 
   def self.over_segment_subquery(segment, existing_scope)
-    begin_id = segment.begin_id
-    begin_bitkey = segment.begin_bitkey
-    end_id = segment.end_id
-    end_bitkey = segment.end_bitkey
+    segment_start_id = segment.begin_id
+    segment_start_bitkey = segment.begin_bitkey
+    segment_end_id = segment.end_id
+    segment_end_bitkey = segment.end_bitkey
     existing_scope_subquery = sql_for_existing_scope(existing_scope)
 
     <<-SQL.squish
       (with
-        existing_scope as (#{existing_scope_subquery}),
-        
-        efforts_scoped as 
-            (select e.id, e.event_id, e.first_name, e.last_name, e.gender, e.birthdate, e.age, e.city, e.state_code, e.country_code, e.slug
-             from efforts e
-             inner join existing_scope on existing_scope.id = e.id),
-                                       
-        start_split_times as
-          (select effort_id, absolute_time
-           from split_times
-           inner join splits on splits.id = split_times.split_id
-           where lap = 1 and kind = 0 and effort_id in (select id from efforts_scoped)
-           order by effort_id),
 
-        stopped_split_times as 
-            (select id as stopped_split_time_id, 
-                    lap as stopped_lap, 
-                    split_id as stopped_split_id, 
-                    sub_split_bitkey as stopped_bitkey, 
-                    absolute_time as stopped_time, 
-                    effort_id
-             from split_times
-             where stopped_here = true and effort_id in (select id from efforts_scoped)),
-                                      
-        farthest_split_times as 
-            (select distinct on(st.effort_id)
-                    st.effort_id, 
-                    st.lap as final_lap,
-                    s.distance_from_start as final_lap_distance,
-                    st.sub_split_bitkey as final_bitkey,
-                    case when s.kind = 1 then true else false end as final_lap_complete,
-                    case when s.kind = 1 then st.lap else st.lap - 1 end as laps_finished
-             from split_times st
-                left join splits s on s.id = st.split_id
-             where st.effort_id in (select id from efforts_scoped)
-             order by st.effort_id, 
-                      final_lap desc,
-                      final_lap_distance desc, 
-                      final_bitkey desc),
-                                          
-        main_subquery as   
-            (select e1.*,
-                    absolute_time_begin as segment_start_time,
-                    extract(epoch from(absolute_time_end - absolute_time_begin)) as segment_seconds
-             from 
-                      (select efforts_scoped.*, 
-                              events.start_time as event_start_time, 
-                              event_groups.home_time_zone, 
-                              split_times.effort_id, 
-                              split_times.absolute_time as absolute_time_begin, 
-                              split_times.lap, 
-                              split_times.split_id, 
-                              split_times.sub_split_bitkey,
-                              events.laps_required
-                      from efforts_scoped
-                        inner join split_times on split_times.effort_id = efforts_scoped.id 
-                        inner join events on events.id = efforts_scoped.event_id
-                        inner join event_groups on event_groups.id = events.event_group_id
-                      where split_times.split_id = #{begin_id} and split_times.sub_split_bitkey = #{begin_bitkey}) 
-                  as e1, 
-                      (select efforts_scoped.id, 
-                              split_times.effort_id, 
-                              split_times.absolute_time as absolute_time_end, 
-                              split_times.lap, 
-                              split_times.split_id, 
-                              split_times.sub_split_bitkey 
-                      from efforts_scoped
-                      inner join split_times on split_times.effort_id = efforts_scoped.id 
-                      where split_times.split_id = #{end_id} and split_times.sub_split_bitkey = #{end_bitkey}) 
-                  as e2 
-                  where (e1.effort_id = e2.effort_id and e1.lap = e2.lap))
-                
-      select main_subquery.*, 
-              lap, 
-              rank() over (order by segment_seconds, gender, -age, lap) as overall_rank, 
-              rank() over (partition by gender order by segment_seconds, -age, lap) as gender_rank,
-              case 
-              when main_subquery.laps_required = 0 then
-                case when stopped_split_time_id is null then false else true end  
-              else
-                case when laps_finished >= laps_required then true else false end 
-              end
-              as finished,
-              sst.absolute_time as actual_start_time,
-              to_char((segment_seconds || ' second')::interval, 'HH24:MI:SS') as segment_duration
-      from main_subquery 
-        left join start_split_times sst on sst.effort_id = main_subquery.effort_id
-        left join stopped_split_times on stopped_split_times.effort_id = main_subquery.effort_id
-        left join farthest_split_times on farthest_split_times.effort_id = main_subquery.effort_id
-      where segment_seconds > 0
+      existing_scope as (#{existing_scope_subquery}),
+
+      effort_start_time as (
+          select effort_id, absolute_time
+          from split_times
+          inner join splits on splits.id = split_times.split_id
+          where lap = 1 and kind = #{Split.kinds[:start]}
+          order by effort_id
+      ),
+
+      effort_stopped as (
+          select effort_id
+          from split_times
+          where stopped_here = true
+      ),
+
+      effort_laps_finished as (
+          select st.effort_id, max(st.lap) as laps_finished
+          from split_times st
+          left join splits s on s.id = st.split_id
+          where s.kind = #{Split.kinds[:finish]}
+          group by st.effort_id
+      ),
+
+      segment_start as (
+          select
+              efforts.*,
+              events.start_time as event_start_time,
+              event_groups.home_time_zone,
+              split_times.effort_id,
+              split_times.absolute_time as segment_start_time,
+              split_times.lap,
+              split_times.split_id,
+              split_times.sub_split_bitkey,
+              events.laps_required
+          from efforts
+          inner join split_times on split_times.effort_id = efforts.id
+          inner join events on events.id = efforts.event_id
+          inner join event_groups on event_groups.id = events.event_group_id
+          where split_times.split_id = #{segment_start_id} and split_times.sub_split_bitkey = #{segment_start_bitkey}
+      ),
+
+      segment_end as (
+          select effort_id, lap, absolute_time as segment_end_time
+          from split_times
+          where split_times.split_id = #{segment_end_id} and split_times.sub_split_bitkey = #{segment_end_bitkey}
+      )
+
+      select
+          ss.id,
+          ss.event_id,
+          ss.first_name,
+          ss.last_name,
+          ss.gender,
+          ss.birthdate,
+          ss.age,
+          ss.city,
+          ss.state_code,
+          ss.country_code,
+          ss.slug,
+          ss.event_start_time,
+          ss.home_time_zone,
+          ss.effort_id,
+          ss.segment_start_time as absolute_time_begin,
+          ss.lap,
+          ss.split_id,
+          ss.sub_split_bitkey,
+          ss.laps_required,
+          ss.segment_start_time,
+          extract(epoch from (segment_end_time - segment_start_time)) as segment_seconds,
+          to_char(
+              (extract(epoch from (segment_end_time - segment_start_time)) || ' second')::interval,
+              'HH24:MI:SS'
+          ) as segment_duration,
+          rank() over (
+              order by segment_end_time - segment_start_time, gender, -age, ss.lap
+          ) as overall_rank,
+          rank() over (
+              partition by gender
+              order by segment_end_time - segment_start_time, -age, ss.lap
+          ) as gender_rank,
+          (
+              laps_required = 0
+                  and ss.effort_id in (select effort_id from effort_stopped)
+          ) or (
+              laps_required > 0 and coalesce(laps_finished, 0) >= laps_required
+          ) as finished,
+          est.absolute_time as actual_start_time
+      from segment_start ss
+      inner join segment_end se on se.effort_id = ss.effort_id and se.lap = ss.lap
+      left join effort_start_time est on est.effort_id = ss.effort_id
+      left join effort_laps_finished elf on elf.effort_id = ss.effort_id
+      where segment_end_time - segment_start_time > interval '0'
+          and ss.id in (select id from existing_scope)
       order by overall_rank)
+
       as efforts
     SQL
   end

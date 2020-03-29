@@ -220,8 +220,7 @@ class EffortQuery < BaseQuery
               split_times.lap,
               split_times.split_id,
               split_times.sub_split_bitkey,
-              events.laps_required,
-              event_groups.concealed as event_group_concealed
+              events.laps_required
           from efforts
           inner join split_times on split_times.effort_id = efforts.id
           inner join events on events.id = efforts.event_id
@@ -255,7 +254,6 @@ class EffortQuery < BaseQuery
           ss.split_id,
           ss.sub_split_bitkey,
           ss.laps_required,
-          ss.event_group_concealed,
           ss.segment_start_time,
           extract(epoch from (segment_end_time - segment_start_time)) as segment_seconds,
           ss.lap,
@@ -281,8 +279,7 @@ class EffortQuery < BaseQuery
       inner join segment_end se on se.effort_id = ss.effort_id and se.lap = ss.lap
       left join effort_start_time est on est.effort_id = ss.effort_id
       left join effort_laps_finished elf on elf.effort_id = ss.effort_id
-      where event_group_concealed is false
-          and segment_end_time - segment_start_time > interval '0'
+      where segment_end_time - segment_start_time > interval '0'
           and ss.id in (select id from existing_scope)
       order by overall_rank)
 

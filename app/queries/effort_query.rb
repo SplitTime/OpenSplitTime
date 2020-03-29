@@ -256,7 +256,10 @@ class EffortQuery < BaseQuery
           ss.laps_required,
           ss.segment_start_time,
           extract(epoch from (segment_end_time - segment_start_time)) as segment_seconds,
-          ss.lap,
+          to_char(
+              (extract(epoch from (segment_end_time - segment_start_time)) || ' second')::interval,
+              'HH24:MI:SS'
+          ) as segment_duration,
           rank() over (
               order by segment_end_time - segment_start_time, gender, -age, ss.lap
           ) as overall_rank,
@@ -270,11 +273,7 @@ class EffortQuery < BaseQuery
           ) or (
               laps_required > 0 and laps_finished >= laps_required
           ) as finished,
-          est.absolute_time as actual_start_time,
-          to_char(
-              (extract(epoch from (segment_end_time - segment_start_time)) || ' second')::interval,
-              'HH24:MI:SS'
-          ) as segment_duration
+          est.absolute_time as actual_start_time
       from segment_start ss
       inner join segment_end se on se.effort_id = ss.effort_id and se.lap = ss.lap
       left join effort_start_time est on est.effort_id = ss.effort_id

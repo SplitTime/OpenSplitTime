@@ -271,7 +271,7 @@ class EffortQuery < BaseQuery
               laps_required = 0
                   and ss.effort_id in (select effort_id from effort_stopped)
           ) or (
-              laps_required > 0 and laps_finished >= laps_required
+              laps_required > 0 and coalesce(laps_finished, 0) >= laps_required
           ) as finished,
           est.absolute_time as actual_start_time
       from segment_start ss

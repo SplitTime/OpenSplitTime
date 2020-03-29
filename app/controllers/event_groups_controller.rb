@@ -81,6 +81,11 @@ class EventGroupsController < ApplicationController
 
   def follow
     @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
+
+    if @presenter.event_group_finished?
+      flash[:success] = "#{@presenter.name} is completed."
+      redirect_to event_group_path(@event_group)
+    end
   end
 
   def traffic

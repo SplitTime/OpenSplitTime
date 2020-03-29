@@ -177,27 +177,22 @@ class EffortQuery < BaseQuery
   end
 
   def self.over_segment_subquery(segment, existing_scope)
-    begin_id = segment.begin_id
-    begin_bitkey = segment.begin_bitkey
-    end_id = segment.end_id
-    end_bitkey = segment.end_bitkey
+    segment_start_id = segment.begin_id
+    segment_start_bitkey = segment.begin_bitkey
+    segment_end_id = segment.end_id
+    segment_end_bitkey = segment.end_bitkey
     existing_scope_subquery = sql_for_existing_scope(existing_scope)
 
     <<-SQL.squish
       (with
 
-      existing_scope as (
-          select efforts.id
-          from efforts
-          inner join events on events.id = efforts.event_id
-          where course_id = 2
-      ),
+      existing_scope as (#{existing_scope_subquery}),
 
       effort_start_time as (
           select effort_id, absolute_time
           from split_times
           inner join splits on splits.id = split_times.split_id
-          where lap = 1 and kind = 0
+          where lap = 1 and kind = #{Split.kinds[:start]}
           order by effort_id
       ),
 
@@ -211,7 +206,7 @@ class EffortQuery < BaseQuery
           select st.effort_id, max(st.lap) as laps_finished
           from split_times st
           left join splits s on s.id = st.split_id
-          where s.kind = 1
+          where s.kind = #{Split.kinds[:finish]}
           group by st.effort_id
       ),
 
@@ -231,13 +226,13 @@ class EffortQuery < BaseQuery
           inner join split_times on split_times.effort_id = efforts.id
           inner join events on events.id = efforts.event_id
           inner join event_groups on event_groups.id = events.event_group_id
-          where split_times.split_id = 31 and split_times.sub_split_bitkey = 1
+          where split_times.split_id = #{segment_start_id} and split_times.sub_split_bitkey = #{segment_start_bitkey}
       ),
 
       segment_end as (
           select effort_id, lap, absolute_time as segment_end_time
           from split_times
-          where split_times.split_id = 58 and split_times.sub_split_bitkey = 1
+          where split_times.split_id = #{segment_end_id} and split_times.sub_split_bitkey = #{segment_end_bitkey}
       )
 
       select

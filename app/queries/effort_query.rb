@@ -99,7 +99,7 @@ class EffortQuery < BaseQuery
               end
               as finished,
               case
-                when not started and checked_in and (assumed_start_time < current_timestamp) then true else false
+                when checked_in and actual_start_time is null and (assumed_start_time < current_timestamp) then true else false
               end
               as ready_to_start
            from distance_subquery),

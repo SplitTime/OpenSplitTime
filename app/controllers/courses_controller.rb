@@ -6,7 +6,7 @@ class CoursesController < ApplicationController
   def index
     authorize Course
 
-    @courses = policy_scope(Course).paginate(page: params[:page], per_page: 25).order(:name)
+    @courses = policy_scope(Course).includes(:events, :splits).with_attached_gpx.order(:name).paginate(page: params[:page], per_page: 25)
     session[:return_to] = courses_path
   end
 

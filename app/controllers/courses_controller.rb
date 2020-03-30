@@ -4,6 +4,8 @@ class CoursesController < ApplicationController
   after_action :verify_authorized, except: [:show, :best_efforts, :plan_effort]
 
   def index
+    authorize Course
+
     @courses = policy_scope(Course).paginate(page: params[:page], per_page: 25).order(:name)
     session[:return_to] = courses_path
   end

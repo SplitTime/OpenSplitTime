@@ -10,7 +10,7 @@ class EffortQuery < BaseQuery
       with
         existing_scope as (#{existing_scope_sql}),
 
-        efforts_scoped as 
+        efforts_scoped as
           (select efforts.*
            from efforts
            inner join existing_scope on existing_scope.id = efforts.id),
@@ -22,26 +22,26 @@ class EffortQuery < BaseQuery
            where lap = 1 and kind = 0 and effort_id in (select id from efforts_scoped)
            order by effort_id),
 
-        stopped_split_times as 
-          (select  split_times.id as stopped_split_time_id, 
-                   split_times.lap as stopped_lap, 
-                   split_times.split_id as stopped_split_id, 
-                   split_times.sub_split_bitkey as stopped_bitkey, 
-                   split_times.absolute_time as stopped_absolute_time, 
+        stopped_split_times as
+          (select  split_times.id as stopped_split_time_id,
+                   split_times.lap as stopped_lap,
+                   split_times.split_id as stopped_split_id,
+                   split_times.sub_split_bitkey as stopped_bitkey,
+                   split_times.absolute_time as stopped_absolute_time,
                    split_times.effort_id
            from split_times
            where effort_id in (select id from efforts_scoped) and stopped_here = true),
 
-        course_subquery as 
-          (select courses.id as course_id, 
+        course_subquery as
+          (select courses.id as course_id,
                   splits.distance_from_start as course_distance,
                   splits.vert_gain_from_start as course_vert_gain
            from courses
            inner join splits on splits.course_id = courses.id
            where splits.kind = 1),
 
-        base_subquery as 
-          (select distinct on(efforts_scoped.id) 
+        base_subquery as
+          (select distinct on(efforts_scoped.id)
               efforts_scoped.*,
               events.laps_required,
               events.start_time as event_start_time,
@@ -50,7 +50,7 @@ class EffortQuery < BaseQuery
               splits.distance_from_start as final_lap_distance,
               splits.vert_gain_from_start as final_lap_vert_gain,
               split_times.lap as final_lap,
-              split_times.split_id as final_split_id, 
+              split_times.split_id as final_split_id,
               split_times.sub_split_bitkey as final_bitkey,
               split_times.absolute_time as final_absolute_time,
               sst.absolute_time as actual_start_time,
@@ -67,20 +67,20 @@ class EffortQuery < BaseQuery
               case when splits.kind = 1 then true else false end as final_lap_complete,
               case when split_times.lap > 1 or splits.kind in (1, 2) then true else false end as beyond_start
            from efforts_scoped
-              left join split_times on split_times.effort_id = efforts_scoped.id 
+              left join split_times on split_times.effort_id = efforts_scoped.id
               left join splits on splits.id = split_times.split_id
               left join events on events.id = efforts_scoped.event_id
               inner join event_groups on event_groups.id = events.event_group_id
               left join course_subquery on events.course_id = course_subquery.course_id
               left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
               left join start_split_times sst on split_times.effort_id = sst.effort_id
-           order by efforts_scoped.id, 
+           order by efforts_scoped.id,
                     final_lap desc,
-                    final_lap_distance desc, 
+                    final_lap_distance desc,
                     final_bitkey desc),
 
-        distance_subquery as 
-          (select *, 
+        distance_subquery as
+          (select *,
               coalesce(scheduled_start_time, event_start_time) as assumed_start_time,
               case when final_lap is null then false else true end as started,
               final_lap as laps_started,
@@ -89,13 +89,13 @@ class EffortQuery < BaseQuery
               (final_lap - 1) * course_vert_gain + final_lap_vert_gain as final_vert_gain
            from base_subquery),
 
-        finished_subquery as 
+        finished_subquery as
           (select *,
-              case 
+              case
               when laps_required = 0 then
-                case when stopped_split_time_id is null then false else true end  
+                case when stopped_split_time_id is null then false else true end
               else
-                case when laps_finished >= laps_required then true else false end 
+                case when laps_finished >= laps_required then true else false end
               end
               as finished,
               case
@@ -104,42 +104,42 @@ class EffortQuery < BaseQuery
               as ready_to_start
            from distance_subquery),
 
-        stopped_subquery as 
+        stopped_subquery as
           (select *,
               case when finished or stopped_split_time_id is not null then true else false end as stopped
            from finished_subquery),
 
-        main_subquery as 
+        main_subquery as
           (select *,
               case when stopped and not finished then true else false end as dropped
            from stopped_subquery),
 
         ranking_subquery as
           (select #{select_sql},
-              case when started then 
-                rank() over 
+              case when started then
+                rank() over
                   (partition by event_id
                    order by started desc,
-                            dropped, 
-                            final_lap desc nulls last, 
-                            final_lap_distance desc, 
-                            final_bitkey desc, 
-                            final_time_from_start, 
-                            gender desc, 
-                            age desc) 
+                            dropped,
+                            final_lap desc nulls last,
+                            final_lap_distance desc,
+                            final_bitkey desc,
+                            final_time_from_start,
+                            gender desc,
+                            age desc)
                 else null end
-              as overall_rank, 
+              as overall_rank,
 
               case when started then
-                rank() over 
-                  (partition by event_id, gender 
+                rank() over
+                  (partition by event_id, gender
                    order by started desc,
-                            dropped, 
-                            final_lap desc nulls last, 
-                            final_lap_distance desc, 
-                            final_bitkey desc, 
-                            final_time_from_start, 
-                            gender desc, 
+                            dropped,
+                            final_lap desc nulls last,
+                            final_lap_distance desc,
+                            final_bitkey desc,
+                            final_time_from_start,
+                            gender desc,
                             age desc)
                 else null end
               as gender_rank,
@@ -147,25 +147,25 @@ class EffortQuery < BaseQuery
               lag(id) over
                   (partition by event_id
                    order by started desc,
-                            dropped, 
-                            final_lap desc nulls last, 
-                            final_lap_distance desc, 
-                            final_bitkey desc, 
-                            final_time_from_start, 
-                            gender desc, 
-                            age desc) 
+                            dropped,
+                            final_lap desc nulls last,
+                            final_lap_distance desc,
+                            final_bitkey desc,
+                            final_time_from_start,
+                            gender desc,
+                            age desc)
               as prior_effort_id,
 
               lead(id) over
                   (partition by event_id
                    order by started desc,
-                            dropped, 
-                            final_lap desc nulls last, 
-                            final_lap_distance desc, 
-                            final_bitkey desc, 
-                            final_time_from_start, 
-                            gender desc, 
-                            age desc) 
+                            dropped,
+                            final_lap desc nulls last,
+                            final_lap_distance desc,
+                            final_bitkey desc,
+                            final_time_from_start,
+                            gender desc,
+                            age desc)
               as next_effort_id
           from main_subquery)
 
@@ -288,11 +288,11 @@ class EffortQuery < BaseQuery
 
   def self.shift_event_scheduled_times(event, shift_seconds, current_user)
     <<-SQL.squish
-        with time_subquery as 
+        with time_subquery as
            (select ef.id, ef.scheduled_start_time + (#{shift_seconds} * interval '1 second') as computed_time
             from efforts ef
             where ef.event_id = #{event.id})
-          
+        
         update efforts
         set scheduled_start_time = computed_time,
             updated_at = current_timestamp,

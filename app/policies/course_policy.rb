@@ -20,7 +20,11 @@ class CoursePolicy < ApplicationPolicy
     @course = course
   end
 
-  # Course destruction could affect events that belong to users other than the course owner
+  # The course index is only for admin convenience
+  def index?
+    user.admin?
+  end
+
   def destroy?
     user.admin?
   end

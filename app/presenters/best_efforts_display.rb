@@ -16,7 +16,14 @@ class BestEffortsDisplay < BasePresenter
   def filtered_efforts
     all_efforts.over_segment(segment).unscope(:where, :joins)
       .where(filter_hash).search(search_text)
-      .paginate(page: page, per_page: per_page)
+      .paginate(page: page, per_page: per_page, total_entries: filtered_efforts_count)
+  end
+
+  # This method duplicates some code from filtered_efforts, but it allows us to do a very
+  # inexpensive count of records instead of running the expensive over_segment subquery
+  # twice, once just to get the count.
+  def filtered_efforts_count
+    @filtered_efforts_count ||= all_efforts.where(filter_hash).search(search_text).count
   end
 
   def all_efforts_count

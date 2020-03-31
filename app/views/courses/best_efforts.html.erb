@@ -57,7 +57,7 @@
       from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
     </h5>
 
-    <% if @presenter.filtered_efforts.present? %>
+    <% if @presenter.filtered_efforts_count > 0 %>
       <%= render 'efforts/efforts_list_segment', presenter: @presenter %>
 
       <div class="row">

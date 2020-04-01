@@ -95,7 +95,7 @@ class PeopleController < ApplicationController
   private
 
   def set_person
-    @person = Person.friendly.find(params[:id])
+    @person = policy_scope(Person).friendly.find(params[:id])
     redirect_numeric_to_friendly(@person, params[:id])
   end
 end

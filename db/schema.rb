@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_21_141509) do
+ActiveRecord::Schema.define(version: 2020_04_02_233236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 2020_03_21_141509) do
     t.integer "data_status"
     t.integer "matchable_bib_number"
     t.boolean "disassociated_from_effort"
+    t.integer "entered_lap"
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["parameterized_split_name"], name: "index_raw_times_on_parameterized_split_name"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"

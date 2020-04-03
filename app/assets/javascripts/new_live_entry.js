@@ -742,7 +742,7 @@
                     var outRawTime = liveEntry.currentRawTime('out');
 
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-                        $('#js-lap-number').val(rawTime.lap);
+                        $('#js-lap-number').val(rawTime.enteredLap);
                         $('#js-lap-number:focus').select();
                     }
 
@@ -768,7 +768,7 @@
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
-                                lap: $('#js-lap-number').val(),
+                                enteredLap: $('#js-lap-number').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
                                 stoppedHere: $('#js-dropped').prop('checked'),
@@ -795,7 +795,7 @@
 
                 $('#js-unique-id').val(rawTimeRow.uniqueId);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
-                $('#js-lap-number').val(rawTime.lap);
+                $('#js-lap-number').val(rawTime.enteredLap);
                 $inTimeField.val(inRawTime.enteredTime);
                 $outTimeField.val(outRawTime.enteredTime);
                 $('#js-pacer-in').prop('checked', inRawTime.withPacer);
@@ -1087,7 +1087,7 @@
                         <td class="event-name js-event-name group-only">' + event.name + '</td>\
                         <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + rawTime.lap + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + rawTime.enteredLap + '</td>\
                         <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.enteredTime || '') + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.enteredTime || '') + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
@@ -1271,7 +1271,7 @@
                         return {
                             bibNumber: rawTime.bibNumber,
                             enteredTime: rawTime.enteredTime,
-                            lap: rawTime.lap,
+                            lap: rawTime.enteredLap,
                             splitName: rawTime.splitName,
                             subSplitKind: rawTime.subSplitKind,
                             stoppedHere: rawTime.stoppedHere

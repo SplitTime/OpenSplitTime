@@ -131,7 +131,6 @@
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
-            liveEntry.PopulatingFromRow = false;
         },
 
         pusher: {
@@ -701,15 +700,6 @@
              * Adds dataStatus and splitTimeExists to rawTimes in the form.
              */
             enrichTimeData: function () {
-                if (liveEntry.PopulatingFromRow) {
-                    // Do nothing.
-                    // This fn is being called from several places based on different actions.
-                    // None of them are needed if the form is being populated by the system from a
-                    // local row's data (i.e., if a user clicks on Edit icon in a Local Data Workspace row).
-                    // PopulatingFromRow will be on while the form is populated by that action
-                    // and turned off when that's done.
-                    return $.Deferred().resolve();
-                }
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -1164,7 +1154,6 @@
             timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
-                    liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
@@ -1172,7 +1161,6 @@
                     $row.addClass('bg-highlight');
                     liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
-                    liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.enrichTimeData();
                     liveEntry.liveEntryForm.updateEffortInfo();
                 });

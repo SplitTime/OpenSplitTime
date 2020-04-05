@@ -6,7 +6,8 @@ class ProcessImportedRawTimesJob < ApplicationJob
   queue_as :default
 
   def perform(event_group, raw_times)
-    match_response = Interactors::MatchRawTimesToSplitTimes.perform!(event_group: event_group, raw_times: raw_times)
+    loaded_raw_times = ::RawTimes::SetAbsoluteTimeAndLap.perform(event_group, raw_times)
+    match_response = Interactors::MatchRawTimesToSplitTimes.perform!(event_group: event_group, raw_times: loaded_raw_times)
 
     if match_response.successful?
       unmatched_raw_times = match_response.resources[:unmatched]

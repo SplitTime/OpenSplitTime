@@ -51,7 +51,7 @@ module RawTimes
       if raw_time.entered_time =~ MILITARY_TIME_REGEX
         raw_time.absolute_time = calculated_absolute_time(raw_time)
       else
-        raw_time.absolute_time = raw_time.entered_time.in_time_zone(time_zone)
+        raw_time.absolute_time = raw_time.entered_time.in_time_zone(event_group.home_time_zone)
       end
     end
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# raw_times provided to this class must be pre-loaded with relation ids
+# (event_id, effort_id, split_id)
 module Interactors
   class MatchRawTimesToSplitTimes
     include Interactors::Errors
@@ -21,7 +23,7 @@ module Interactors
       if errors.present?
         Interactors::Response.new(errors, "Raw times could not be matched. ", {})
       else
-        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: loaded_raw_times, split_times: split_times, tolerance: tolerance)
+        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: raw_times, split_times: split_times, tolerance: tolerance)
       end
     end
 
@@ -30,13 +32,9 @@ module Interactors
     attr_reader :event_group, :raw_times, :tolerance, :errors
 
     def split_times
-      SplitTime.where(effort_id: loaded_raw_times.map(&:effort_id)).with_time_record_matchers
+      SplitTime.where(effort_id: raw_times.map(&:effort_id)).with_time_record_matchers
     end
     
-    def loaded_raw_times
-      RawTime.where(id: raw_times).with_relation_ids
-    end
-
     def validate_setup
       errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
     end

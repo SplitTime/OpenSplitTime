@@ -14,14 +14,14 @@ RSpec.describe RowifyRawTimes do
   let(:split_name_1) { event_1.ordered_splits.second.base_name }
   let(:split_name_2) { event_2.ordered_splits.third.base_name }
 
-  let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 1, stopped_here: false) }
-  let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 64, stopped_here: true) }
-  let!(:raw_time_3) { create(:raw_time, event_group: event_group, bib_number: bib_number_2, split_name: split_name_1, bitkey: 1, with_pacer: true) }
-  let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: bib_number_2, split_name: split_name_1, bitkey: 64, with_pacer: true) }
-  let!(:raw_time_5) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 1) }
-  let!(:raw_time_6) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 64) }
-  let!(:raw_time_7) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 64) }
-  let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: '55', split_name: split_name_1, bitkey: 64) }
+  let!(:raw_time_1) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 1, stopped_here: false) }
+  let!(:raw_time_2) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 64, stopped_here: true) }
+  let!(:raw_time_3) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_2, split_name: split_name_1, bitkey: 1, with_pacer: true) }
+  let!(:raw_time_4) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_2, split_name: split_name_1, bitkey: 64, with_pacer: true) }
+  let!(:raw_time_5) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 1) }
+  let!(:raw_time_6) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 64) }
+  let!(:raw_time_7) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 64) }
+  let!(:raw_time_8) { create(:raw_time, :with_absolute_time, event_group: event_group, bib_number: '55', split_name: split_name_1, bitkey: 64) }
 
   let(:raw_time_rows) { subject.build }
   let(:raw_time_pairs) { raw_time_rows.map(&:raw_times) }

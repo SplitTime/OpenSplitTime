@@ -943,7 +943,7 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:event_group) { event.event_group }
     let(:request_params) { {id: event_group.id} }
     before do
-      create_list(:raw_time, 3, event_group: event_group, split_name: split.base_name)
+      create_list(:raw_time, 3, :with_absolute_time, event_group: event_group, split_name: split.base_name)
     end
 
     via_login_and_jwt do

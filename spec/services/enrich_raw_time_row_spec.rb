@@ -159,8 +159,8 @@ RSpec.describe EnrichRawTimeRow do
       let(:split) { course.splits.find_by(base_name: 'Finish') }
 
       context 'when raw_times do not have a lap attached' do
-        let(:raw_time_1) { build_stubbed(:raw_time, event_group: event_group, bib_number: bib_number, split_name: base_name, sub_split_kind: 'in', stopped_here: false) }
-        let(:raw_time_2) { build_stubbed(:raw_time, event_group: event_group, bib_number: bib_number, split_name: base_name, sub_split_kind: 'out', stopped_here: true) }
+        let(:raw_time_1) { build_stubbed(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number, split_name: base_name, sub_split_kind: 'in', stopped_here: false) }
+        let(:raw_time_2) { build_stubbed(:raw_time, :with_absolute_time, event_group: event_group, bib_number: bib_number, split_name: base_name, sub_split_kind: 'out', stopped_here: true) }
 
         it 'calls FindExpectedLap, and verifies raw_times' do
           result_row = subject.perform

@@ -27,7 +27,12 @@ module RawTimes
 
     def set_split_time_exists
       raw_times.each do |raw_time|
-        raw_time.split_time_exists = existing_split_times.any? { |st| st.time_point == raw_time.time_point }
+        existing_split_time = indexed_existing_split_times[raw_time.time_point]
+        raw_time.split_time_exists = existing_split_time.present?
+        if existing_split_time.present?
+          raw_time.split_time_replaceable =
+            (existing_split_time.absolute_time - raw_time.absolute_time).abs <= RawTimes::Constants::MATCH_TOLERANCE
+        end
       end
     end
 
@@ -38,15 +43,21 @@ module RawTimes
     end
 
     def set_data_status
-      ::Interactors::SetEffortStatus.perform(effort, ordered_split_times: combined_split_times, lap_splits: effort_lap_splits, times_container: times_container)
+      ::Interactors::SetEffortStatus.perform(effort,
+                                             ordered_split_times: combined_split_times,
+                                             lap_splits: effort_lap_splits,
+                                             times_container: times_container)
     end
 
     def combined_split_times
       existing_split_times.each { |st| st.data_status = :confirmed if st.good? }
-      indexed_existing_split_times = existing_split_times.index_by(&:time_point)
       indexed_new_split_times = new_split_times.index_by(&:time_point)
       indexed_split_times = indexed_existing_split_times.merge(indexed_new_split_times)
-      indexed_split_times.values_at(*effort_time_points)
+      indexed_split_times.values_at(*effort_time_points).compact
+    end
+
+    def indexed_existing_split_times
+      @indexed_existing_split_times ||= existing_split_times.index_by(&:time_point)
     end
 
     def existing_split_times

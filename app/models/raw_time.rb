@@ -16,6 +16,7 @@ class RawTime < ApplicationRecord
 
   attribute :lap, :integer
   attribute :split_time_exists, :boolean
+  attribute :split_time_replaceable, :boolean
   attribute :bitkey_valid, :boolean
   attribute :lap_valid, :boolean
   attribute :distance_from_start, :integer
@@ -118,6 +119,10 @@ class RawTime < ApplicationRecord
     absolute_time.present? || entered_time.present?
   end
 
+  def complete?
+    effort_id && event_id && split_id && lap && absolute_time && bitkey_valid? && lap_valid?
+  end
+
   private
 
   def create_sortable_bib_number
@@ -134,9 +139,5 @@ class RawTime < ApplicationRecord
 
   def home_time_zone
     @home_time_zone ||= attributes['home_time_zone'] || event_group.home_time_zone
-  end
-
-  def complete?
-    effort_id && event_id && split_id && lap && absolute_time && bitkey_valid? && lap_valid?
   end
 end

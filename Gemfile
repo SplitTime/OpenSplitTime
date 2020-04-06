@@ -16,6 +16,7 @@ gem 'bootstrap-will_paginate'
 gem 'bootstrap4-datetime-picker-rails', '>= 0.3.1'
 gem 'carmen'
 gem 'coffee-rails', '>= 4.2.2'
+gem 'coverband'
 gem 'dalli'
 gem 'devise', '>= 4.7.1'
 gem 'devise-bootstrap-views'
@@ -74,7 +75,6 @@ group :test do
   gem 'factory_bot_rails', '~> 5.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'
-  gem 'simplecov', require: false
   gem 'vcr', '~> 4.0'
   gem 'webmock', '~> 3.5'
 end

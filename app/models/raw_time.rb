@@ -134,4 +134,8 @@ class RawTime < ApplicationRecord
   def home_time_zone
     @home_time_zone ||= attributes['home_time_zone'] || event_group.home_time_zone
   end
+
+  def complete?
+    effort_id && event_id && split_id && lap && absolute_time && bitkey_valid? && lap_valid?
+  end
 end

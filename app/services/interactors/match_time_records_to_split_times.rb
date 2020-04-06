@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# This class matches raw times to existing split times based on
+# several matching criteria and a specified time tolerance.
+# Raw times having identical characteristics to an existing split time
+# except for the stopped_here flag should be matched later in the
+# process pipeline.
 module Interactors
   class MatchTimeRecordsToSplitTimes
     include Interactors::Errors
@@ -15,7 +20,7 @@ module Interactors
                              class: self.class)
       @time_records = args[:time_records]
       @split_times = args[:split_times]
-      @tolerance = args[:tolerance] || 1.minute
+      @tolerance = args[:tolerance] || RawTimes::Constants::MATCH_TOLERANCE
       @errors = []
       @resources = {matched: [], unmatched: []}
     end

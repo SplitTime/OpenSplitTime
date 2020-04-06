@@ -14,7 +14,7 @@ module Interactors
       ArgsValidator.validate(params: args, required: [:event_group, :raw_times], exclusive: [:event_group, :raw_times, :tolerance], class: self.class)
       @event_group = args[:event_group]
       @raw_times = args[:raw_times]
-      @tolerance = args[:tolerance] || 1.minute
+      @tolerance = args[:tolerance] || RawTimes::Constants::MATCH_TOLERANCE
       @errors = []
       validate_setup
     end

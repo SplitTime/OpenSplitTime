@@ -12,6 +12,7 @@ Coverband.configure do |config|
   config.ignore += [
     'config/application.rb',
     'config/boot.rb',
+    'config/coverband.rb',
     'config/puma.rb',
     'config/sitemap.rb',
     'bin/*',

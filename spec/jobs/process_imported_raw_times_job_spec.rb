@@ -4,7 +4,7 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe ProcessImportedRawTimesJob do
-  subject { ProcessImportedRawTimesJob.new }
+  subject { described_class.new }
   let(:perform_process) { subject.perform(event_group, raw_times) }
 
   let(:course) { courses(:hardrock_cw) }

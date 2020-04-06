@@ -47,8 +47,15 @@
                   class: 'btn btn-danger',
                   data: {confirm: 'This will intentionally timeout a server by sleeping for up to 35 seconds. Are you sure you want to do that?'} %>
     </div>
+
     <div class="col">
       <%= link_to 'Sidekiq web', sidekiq_web_path,
+                  target: '_blank',
+                  class: 'btn btn-success' %>
+    </div>
+
+    <div class="col">
+      <%= link_to 'Code coverage', coverage_path,
                   target: '_blank',
                   class: 'btn btn-success' %>
     </div>

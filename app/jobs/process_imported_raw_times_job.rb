@@ -11,9 +11,12 @@ class ProcessImportedRawTimesJob < ApplicationJob
 
     if match_response.successful?
       unmatched_raw_times = match_response.resources[:unmatched]
-      raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: unmatched_raw_times)
-      Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
-                                              force_submit: false, mark_as_pulled: false)
+      update_response = ::Interactors::UpdateEffortsFromRawTimes.perform!(event_group, unmatched_raw_times)
+      Rails.logger.error(update_response.message_with_error_report) unless update_response.successful?
+
+      upserted_split_times = update_response.resources[:upserted_split_times]
+      BulkProgressNotifier.notify(upserted_split_times) if event_group.permit_notifications?
+
       report_raw_times_available(event_group)
     else
       Rails.logger.error(match_response.message_with_error_report)

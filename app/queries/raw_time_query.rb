@@ -1,7 +1,7 @@
 class RawTimeQuery < BaseQuery
 
   def self.with_relations(args = {})
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number, lap, distance_from_start, bitkey')
 
     query = <<-SQL
 
@@ -17,6 +17,7 @@ class RawTimeQuery < BaseQuery
      e.last_name AS effort_last_name,
      e.event_id, 
      s.split_id,
+     s.distance_from_start,
      r.bitkey & s.sub_split_bitmap > 0 as bitkey_valid,
      e.laps_required = 0 or r.entered_lap is null or r.entered_lap <= e.laps_required as lap_valid
     FROM raw_times_scoped r
@@ -28,7 +29,7 @@ class RawTimeQuery < BaseQuery
                    AND r.matchable_bib_number = e.bib_number
                    AND e.event_group_id = r.event_group_id
     LEFT JOIN LATERAL (
-                SELECT a.split_id, s.sub_split_bitmap
+                SELECT a.split_id, s.sub_split_bitmap, s.distance_from_start
                 FROM aid_stations a
                 INNER JOIN splits s ON a.split_id = s.id
                 WHERE a.event_id = e.event_id

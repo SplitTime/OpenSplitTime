@@ -127,6 +127,8 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.2)
+    coverband (4.2.4)
+      redis
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
@@ -488,6 +490,7 @@ DEPENDENCIES
   capybara (~> 3.0)
   carmen
   coffee-rails (>= 4.2.2)
+  coverband
   dalli
   derailed
   derailed_benchmarks

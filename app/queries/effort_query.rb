@@ -307,10 +307,6 @@ class EffortQuery < BaseQuery
     Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
   end
 
-  def self.sql_for_existing_scope(scope)
-    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
-  end
-
   def self.permitted_column_names
     EffortParameters.enriched_query
   end

@@ -75,7 +75,6 @@ group :test do
   gem 'factory_bot_rails', '~> 5.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'
-  gem 'simplecov', require: false
   gem 'vcr', '~> 4.0'
   gem 'webmock', '~> 3.5'
 end

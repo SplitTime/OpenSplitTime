@@ -16,17 +16,20 @@ class RawTimeQuery < BaseQuery
      e.id AS effort_id,
      e.last_name AS effort_last_name,
      e.event_id, 
-     s.split_id
+     s.split_id,
+     r.bitkey & s.sub_split_bitmap > 0 as bitkey_valid,
+     e.laps_required = 0 or r.entered_lap is null or r.entered_lap <= e.laps_required as lap_valid
     FROM raw_times_scoped r
     LEFT JOIN (
-                SELECT ef.id, ef.event_id, ef.bib_number, ef.last_name, ev.event_group_id
+                SELECT ef.id, ef.event_id, ef.bib_number, ef.last_name, ev.event_group_id, ev.laps_required
                 FROM efforts ef
                 INNER JOIN events ev ON ef.event_id = ev.id
                ) e ON r.matchable_bib_number is not null
                    AND r.matchable_bib_number = e.bib_number
                    AND e.event_group_id = r.event_group_id
     LEFT JOIN LATERAL (
-                SELECT a.split_id FROM aid_stations a
+                SELECT a.split_id, s.sub_split_bitmap
+                FROM aid_stations a
                 INNER JOIN splits s ON a.split_id = s.id
                 WHERE a.event_id = e.event_id
                 AND s.parameterized_base_name = r.parameterized_split_name

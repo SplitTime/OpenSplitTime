@@ -16,6 +16,8 @@ class RawTime < ApplicationRecord
 
   attribute :lap, :integer
   attribute :split_time_exists, :boolean
+  attribute :bitkey_valid, :boolean
+  attribute :lap_valid, :boolean
 
   attr_accessor :new_split_time
   attr_writer :effort, :event, :split

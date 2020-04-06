@@ -17,7 +17,7 @@ end
 before_fork do
   require 'puma_worker_killer'
 
-  PumaWorkerKiller.enable_rolling_restart(12.hours)
+  PumaWorkerKiller.enable_rolling_restart(24.hours)
 end
 
 if %w(development test).include?(ENV['RACK_ENV'])

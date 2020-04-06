@@ -1,7 +1,7 @@
 class RawTimeQuery < BaseQuery
 
   def self.with_relations(args = {})
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number, lap, distance_from_start, bitkey')
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number')
 
     query = <<-SQL
 

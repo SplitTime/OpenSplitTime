@@ -3,10 +3,10 @@ raw_time_49:
   id: 49
   event_group_id: 17
   split_time_id: 
-  split_name: Pole Creek
+  split_name: Sherman
   bitkey: 1
-  bib_number: '102'
-  absolute_time: '2017-07-07 16:31:00'
+  bib_number: '103'
+  absolute_time: '2015-07-10 22:10:00'
   entered_time: 
   with_pacer: 
   stopped_here: 
@@ -16,20 +16,22 @@ raw_time_49:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.732619'
-  updated_at: '2020-02-14 08:08:54.171286'
-  parameterized_split_name: pole-creek
+  updated_at: '2020-04-07 13:23:20.698946'
+  parameterized_split_name: sherman
   remarks: 
-  sortable_bib_number: 102
+  sortable_bib_number: 103
   data_status: 
-  matchable_bib_number: 102
+  matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_50:
   id: 50
   event_group_id: 17
   split_time_id: 
-  split_name: Pole Creek
+  split_name: Sherman
   bitkey: 64
   bib_number: '103'
-  absolute_time: '2017-07-07 20:20:00'
+  absolute_time: '2015-07-10 22:20:00'
   entered_time: 
   with_pacer: 
   stopped_here: 
@@ -39,12 +41,14 @@ raw_time_50:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.735995'
-  updated_at: '2020-02-14 08:08:54.176666'
-  parameterized_split_name: pole-creek
+  updated_at: '2020-04-07 13:23:20.707143'
+  parameterized_split_name: sherman
   remarks: 
   sortable_bib_number: 103
   data_status: 
   matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_67:
   id: 67
   event_group_id: 32
@@ -68,6 +72,8 @@ raw_time_67:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_68:
   id: 68
   event_group_id: 32
@@ -91,6 +97,8 @@ raw_time_68:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_69:
   id: 69
   event_group_id: 32
@@ -114,6 +122,8 @@ raw_time_69:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_70:
   id: 70
   event_group_id: 32
@@ -137,6 +147,8 @@ raw_time_70:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_73:
   id: 73
   event_group_id: 32
@@ -160,6 +172,8 @@ raw_time_73:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_74:
   id: 74
   event_group_id: 32
@@ -183,6 +197,8 @@ raw_time_74:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_75:
   id: 75
   event_group_id: 32
@@ -206,6 +222,8 @@ raw_time_75:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_76:
   id: 76
   event_group_id: 32
@@ -229,6 +247,8 @@ raw_time_76:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_77:
   id: 77
   event_group_id: 32
@@ -252,6 +272,8 @@ raw_time_77:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_78:
   id: 78
   event_group_id: 32
@@ -275,6 +297,8 @@ raw_time_78:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_79:
   id: 79
   event_group_id: 32
@@ -298,6 +322,8 @@ raw_time_79:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_80:
   id: 80
   event_group_id: 32
@@ -321,6 +347,8 @@ raw_time_80:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_81:
   id: 81
   event_group_id: 32
@@ -344,6 +372,8 @@ raw_time_81:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_82:
   id: 82
   event_group_id: 32
@@ -367,6 +397,8 @@ raw_time_82:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_83:
   id: 83
   event_group_id: 32
@@ -390,6 +422,8 @@ raw_time_83:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_84:
   id: 84
   event_group_id: 32
@@ -413,6 +447,8 @@ raw_time_84:
   sortable_bib_number: 101
   data_status: 
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_85:
   id: 85
   event_group_id: 32
@@ -436,6 +472,8 @@ raw_time_85:
   sortable_bib_number: 101
   data_status: 
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_86:
   id: 86
   event_group_id: 32
@@ -459,6 +497,8 @@ raw_time_86:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_87:
   id: 87
   event_group_id: 32
@@ -482,6 +522,8 @@ raw_time_87:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_88:
   id: 88
   event_group_id: 32
@@ -505,6 +547,8 @@ raw_time_88:
   sortable_bib_number: 999
   data_status: 
   matchable_bib_number: 999
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_89:
   id: 89
   event_group_id: 32
@@ -528,6 +572,8 @@ raw_time_89:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_91:
   id: 91
   event_group_id: 32
@@ -551,6 +597,8 @@ raw_time_91:
   sortable_bib_number: 777
   data_status: 
   matchable_bib_number: 777
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_92:
   id: 92
   event_group_id: 32
@@ -574,6 +622,8 @@ raw_time_92:
   sortable_bib_number: 777
   data_status: 
   matchable_bib_number: 777
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_176:
   id: 176
   event_group_id: 32
@@ -597,6 +647,8 @@ raw_time_176:
   sortable_bib_number: 130
   data_status: 
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_177:
   id: 177
   event_group_id: 32
@@ -620,6 +672,8 @@ raw_time_177:
   sortable_bib_number: 130
   data_status: 0
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_178:
   id: 178
   event_group_id: 32
@@ -643,6 +697,8 @@ raw_time_178:
   sortable_bib_number: 130
   data_status: 0
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1100:
   id: 1100
   event_group_id: 32
@@ -666,6 +722,8 @@ raw_time_1100:
   sortable_bib_number: 130
   data_status: 2
   matchable_bib_number: 130
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1106:
   id: 1106
   event_group_id: 32
@@ -689,6 +747,8 @@ raw_time_1106:
   sortable_bib_number: 103
   data_status: 2
   matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1110:
   id: 1110
   event_group_id: 32
@@ -712,6 +772,8 @@ raw_time_1110:
   sortable_bib_number: 103
   data_status: 2
   matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1111:
   id: 1111
   event_group_id: 32
@@ -735,6 +797,8 @@ raw_time_1111:
   sortable_bib_number: 103
   data_status: 2
   matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1117:
   id: 1117
   event_group_id: 32
@@ -758,6 +822,8 @@ raw_time_1117:
   sortable_bib_number: 103
   data_status: 2
   matchable_bib_number: 103
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1122:
   id: 1122
   event_group_id: 32
@@ -781,6 +847,8 @@ raw_time_1122:
   sortable_bib_number: 101
   data_status: 2
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1123:
   id: 1123
   event_group_id: 32
@@ -804,6 +872,8 @@ raw_time_1123:
   sortable_bib_number: 101
   data_status: 2
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1124:
   id: 1124
   event_group_id: 32
@@ -827,6 +897,8 @@ raw_time_1124:
   sortable_bib_number: 101
   data_status: 2
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1125:
   id: 1125
   event_group_id: 32
@@ -850,6 +922,8 @@ raw_time_1125:
   sortable_bib_number: 101
   data_status: 2
   matchable_bib_number: 101
+  disassociated_from_effort: 
+  entered_lap: 
 raw_time_1126:
   id: 1126
   event_group_id: 32
@@ -873,3 +947,5 @@ raw_time_1126:
   sortable_bib_number: 114
   data_status: 2
   matchable_bib_number: 114
+  disassociated_from_effort: 
+  entered_lap: 

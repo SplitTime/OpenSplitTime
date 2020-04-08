@@ -19,6 +19,8 @@ module RawTimes
       set_split_time_exists
       append_split_times
       set_data_status
+
+      raw_times
     end
 
     private
@@ -44,10 +46,13 @@ module RawTimes
     end
 
     def set_data_status
+      return unless new_split_times.present?
+
       ::Interactors::SetEffortStatus.perform(effort,
                                              ordered_split_times: combined_split_times,
                                              lap_splits: effort_lap_splits,
                                              times_container: times_container)
+      raw_times.select(&:new_split_time).each { |rt| rt.data_status = rt.new_split_time.data_status }
     end
 
     def combined_split_times
@@ -62,7 +67,7 @@ module RawTimes
     end
 
     def existing_split_times
-      effort.ordered_split_times.map(&:dup)
+      @existing_split_times ||= effort.ordered_split_times.map(&:dup)
     end
 
     def new_split_times

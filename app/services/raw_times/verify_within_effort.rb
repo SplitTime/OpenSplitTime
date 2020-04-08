@@ -38,6 +38,7 @@ module RawTimes
 
     def append_split_times
       raw_times.each do |raw_time|
+        next unless raw_time.time_point_complete?
         raw_time.new_split_time = ::SplitTimeFromRawTime.build(raw_time, effort: effort, event: event)
       end
     end
@@ -86,7 +87,6 @@ module RawTimes
 
     def validate_setup
       raw_times.each do |raw_time|
-        raise ArgumentError, "#{raw_time} is incomplete" unless raw_time.complete?
         raise ArgumentError, "#{raw_time} does not match the provided effort #{effort}" unless raw_time.effort_id == effort.id
       end
     end

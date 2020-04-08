@@ -17,9 +17,9 @@ class RawTime < ApplicationRecord
   attribute :lap, :integer
   attribute :split_time_exists, :boolean
   attribute :split_time_replaceable, :boolean
-  attribute :bitkey_valid, :boolean
-  attribute :lap_valid, :boolean
-  attribute :distance_from_start, :integer
+  attribute :bitkey_valid, :boolean # Set by the with_relation_ids method
+  attribute :lap_valid, :boolean # Set by the with_relation_ids method
+  attribute :distance_from_start, :integer # Set by the with_relation_ids method
 
   attr_accessor :new_split_time
   attr_writer :effort, :event, :split
@@ -119,8 +119,8 @@ class RawTime < ApplicationRecord
     absolute_time.present? || entered_time.present?
   end
 
-  def complete?
-    effort_id && event_id && split_id && lap && absolute_time && bitkey_valid? && lap_valid?
+  def time_point_complete?
+    time_point.complete?
   end
 
   private

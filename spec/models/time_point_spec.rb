@@ -16,7 +16,7 @@ RSpec.describe TimePoint, type: :model do
       end
     end
 
-    context 'with a nil arguments' do
+    context 'with nil arguments' do
       let(:lap) { nil }
       let(:split_id) { nil }
       let(:bitkey) { nil }

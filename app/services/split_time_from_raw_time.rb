@@ -1,4 +1,8 @@
 class SplitTimeFromRawTime
+  # TODO: This method should be called only when a the raw time is complete, meaning
+  # among other things that it has an absolute_time. But currently this method is called
+  # by VerifyRawTimeRow, which does not guarantee presence of an absolute_time. Once that
+  # is changed, the conditional `if raw_time.absolute_time?` should be removed.
   def self.build(raw_time, args)
     effort = args[:effort]
     event = args[:event]

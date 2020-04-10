@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# The raw_time_row must have an effort attached to it.
+# The first raw_time must have an effort attached to it.
 # Each raw_time should already have a new_split_time attached to it,
-# for example, as a result of the EnrichRawTimeRow service.
+# for example, as a result of the EnrichRawTimeRow or
+# RawTimes::VerifyWithinEffort service.
 
 # The new_split_times will overwrite any existing split_times from the same effort on the same time_point.
 
@@ -49,7 +50,7 @@ module Interactors
 
     attr_reader :event_group, :raw_time_row, :times_container, :upserted_split_times, :errors
     delegate :events, to: :event_group
-    delegate :raw_times, :effort, to: :raw_time_row
+    delegate :raw_times, to: :raw_time_row
 
     def create_and_update_resources(raw_time)
       new_split_time = raw_time.new_split_time
@@ -83,9 +84,13 @@ module Interactors
       end
     end
 
+    def effort
+      raw_times.first&.effort
+    end
+
     def validate_setup
       errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
-      errors << missing_effort_error unless raw_time_row.effort
+      errors << missing_effort_error if raw_times.present? && effort.nil?
       errors << missing_new_split_time_error(raw_times.reject(&:new_split_time).first) unless raw_times.all?(&:new_split_time)
     end
   end

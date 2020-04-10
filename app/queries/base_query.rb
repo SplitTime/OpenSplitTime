@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class BaseQuery
+  def self.sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
+  end
+
   def self.sql_safe_integer_list(array)
     array.flatten.compact.map(&:to_i).join(',')
   end
@@ -21,7 +25,6 @@ class BaseQuery
   # Converts an ActiveRecord-style hash to a SQL string for a WHERE clause
   # {efforts: {event_id: 12, first_name: 'Bill'}} becomes
   # "efforts.event_id = 12 and efforts.first_name = 'Bill'"
-
   def self.where_string_from_hash(hash)
     hash.map do |table, criteria|
       criteria.map do |field, value|

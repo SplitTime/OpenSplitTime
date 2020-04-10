@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SplitTimeQuery < BaseQuery
-
   def self.typical_segment_time(segment, effort_ids)
     # Params should all be integers, but convert them to integers
     # to protect against SQL injection
@@ -439,10 +438,6 @@ class SplitTimeQuery < BaseQuery
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
     SplitTime.connection.unprepared_statement { SplitTime.reorder(nil).select("id").to_sql }
-  end
-
-  def self.sql_for_existing_scope(scope)
-    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
   end
 
   def self.valid_statuses_list

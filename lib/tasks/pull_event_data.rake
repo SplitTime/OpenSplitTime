@@ -16,14 +16,6 @@ namespace :pull_event do
 
 
   desc 'Pulls and imports time data from my.raceresult.com into an event having existing efforts'
-  task :race_result_times, [:event_id, :rr_event_id, :rr_contest_id, :rr_format] => :environment do |_, args|
-    source_uri = ETL::Helpers::RaceResultUriBuilder
-                     .new(args[:rr_event_id], args[:rr_contest_id], args[:rr_format]).full_uri
-    Rake::Task['pull_event:from_uri'].invoke(args[:event_id], source_uri, :race_result_times)
-  end
-
-
-  desc 'Pulls and imports time data from my.raceresult.com into an event having existing efforts'
   task :race_result_api_times, [:event_id, :rr_event_id, :rr_api_key] => :environment do |_, args|
     source_uri = ETL::Helpers::RaceResultApiUriBuilder
                      .new(args[:rr_event_id], args[:rr_api_key]).full_uri

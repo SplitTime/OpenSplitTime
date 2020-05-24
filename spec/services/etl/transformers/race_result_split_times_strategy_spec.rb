@@ -40,16 +40,23 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
                          section1_split: '', section2_split: '', section3_split: '',
                          section4_split: '', section5_split: '', section6_split: '',
                          elapsed: '', time: 'DNS', pace: '*'),
+          OpenStruct.new(rr_id: '634', place: '*', bib: '634', name: 'Waltest Bertest', sex: 'M', age: '77',
+                         section1_split: '', section2_split: '', section3_split: '',
+                         section4_split: '', section5_split: '', section6_split: '',
+                         elapsed: '', time: '', pace: '*'),
           OpenStruct.new(rr_id: '62', place: '*', bib: '62', name: 'N.n. 62', sex: '', age: 'n/a',
                          section1_split: '', section2_split: '', section3_split: '',
                          section4_split: '', section5_split: '', section6_split: '',
-                         elapsed: '', time: '', pace: '*')
+                         elapsed: '', time: '', pace: '*'),
         ] }
         let(:expected_times_from_start) { [0.0, 2581.36, 6308.86, 9463.56, 13571.37, 16655.3, 17736.43] }
 
-        it 'returns the same number of ProtoRecords as it is given OpenStructs' do
-          expect(proto_records.size).to eq(6)
+        it 'returns ProtoRecord objects' do
           expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
+        end
+
+        it 'filters out records that do not have a gender' do
+          expect(proto_records.size).to eq(6)
         end
 
         it 'returns rows with effort headers transformed to match the database' do
@@ -58,16 +65,16 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
         end
 
         it 'returns genders transformed to "male" or "female"' do
-          expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'male', 'female', nil])
+          expect(proto_records.map { |pr| pr[:gender] }).to eq(['male', 'female', 'female', 'male', 'female', 'male'])
         end
 
         it 'splits full names into first names and last names' do
-          expect(proto_records.map { |pr| pr[:first_name] }).to eq(%w(Jatest Sutest Castest Bestest Mictest N.n.))
-          expect(proto_records.map { |pr| pr[:last_name] }).to eq(%w(Schtest Ritest Pertest Sartest Hintest 62))
+          expect(proto_records.map { |pr| pr[:first_name] }).to eq(%w(Jatest Sutest Castest Bestest Mictest Waltest))
+          expect(proto_records.map { |pr| pr[:last_name] }).to eq(%w(Schtest Ritest Pertest Sartest Hintest Bertest))
         end
 
         it 'assigns event.id to :event_id key' do
-          expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * parsed_structs.size)
+          expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * (parsed_structs.size - 1))
         end
 
         it 'sorts split headers and returns an array of children' do

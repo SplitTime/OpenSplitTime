@@ -39,7 +39,7 @@ module ETL::Transformers
       relocate_status_indicators!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
-      proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?)
+      proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?, time_attribute: :absolute_time)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
     end
@@ -67,6 +67,7 @@ module ETL::Transformers
       start_calcs = calcs_from_start(segment_seconds, start_seconds)
       finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
       proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
+      proto_record[:absolute_times] = proto_record[:times_from_start].map { |tfs| event.start_time + tfs if tfs.present? }
     end
 
     def calcs_from_start(segment_seconds, start_seconds)
@@ -89,14 +90,14 @@ module ETL::Transformers
 
     def mark_for_destruction!(proto_record)
       proto_record.children.each do |child_record|
-        child_record.record_action = :destroy if child_record[:time_from_start].blank?
+        child_record.record_action = :destroy if child_record[:absolute_time].blank?
       end
     end
 
     def set_stop!(proto_record)
       stop_indicators = %w(DNF DSQ)
       if stop_indicators.include?(proto_record[:status_indicator])
-        stopped_child_record = proto_record.children.reverse.find { |pr| pr[:time_from_start].present? }
+        stopped_child_record = proto_record.children.reverse.find { |pr| pr[:absolute_time].present? }
         (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end
     end

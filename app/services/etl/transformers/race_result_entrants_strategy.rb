@@ -11,6 +11,7 @@ module ETL::Transformers
 
     def transform
       return if errors.present?
+
       proto_records.each do |proto_record|
         proto_record.record_type = :effort
         proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
@@ -20,7 +21,10 @@ module ETL::Transformers
         proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end
-      proto_records
+
+      # RaceResult sometimes includes no-name runners ("N.n.") who have no gender.
+      # We need to filter these out or they will cause the import to fail.
+      proto_records.select { |record| record[:gender].present? }
     end
 
     private

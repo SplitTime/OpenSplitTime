@@ -43,6 +43,7 @@ module ETL::Transformers
       relocate_status_indicators!(proto_record)
       extract_times!(proto_record)
       transform_times!(proto_record)
+      add_empty_times!(proto_record) if finish_times_only?
       proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?, time_attribute: :absolute_time)
       mark_for_destruction!(proto_record)
       set_stop!(proto_record)
@@ -72,6 +73,14 @@ module ETL::Transformers
       finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
       proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
       proto_record[:absolute_times] = proto_record[:times_from_start].map { |tfs| event.start_time + tfs if tfs.present? }
+    end
+
+    def add_empty_times!(proto_record)
+      return if time_points.size == proto_record[:absolute_times].size
+
+      empty_times_needed = time_points.size - proto_record[:absolute_times].size
+      empty_times = Array.new(empty_times_needed)
+      proto_record[:absolute_times].insert(1, *empty_times)
     end
 
     def calcs_from_start(segment_seconds, start_seconds)
@@ -126,10 +135,16 @@ module ETL::Transformers
       options[:delete_blank_times]
     end
 
+    def finish_times_only?
+      time_keys.size == 1
+    end
+
     def validate_setup
-      errors << missing_event_error unless event.present?
-      (errors << split_mismatch_error(event, time_points.size, time_keys.size + 1)) if event.present? && !event.laps_unlimited? &&
-          (time_keys.size + 1 != time_points.size)
+      errors << missing_event_error and return unless event.present?
+
+      if !event.laps_unlimited? && !finish_times_only? && (time_keys.size + 1 != time_points.size)
+        errors << split_mismatch_error(event, time_points.size, time_keys.size + 1)
+      end
     end
   end
 end

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module ETL::Transformers
+  # The RaceResult API is ideal for importing times, because it provides
+  # absolute times, avoiding the calculation complexity required when
+  # importing times from non-API json endpoints. However, the API
+  # endpoint does not provide runner age and gender information, so this
+  # transformer must be used to import data into an existing event that
+  # already has runner information.
   class RaceResultApiSplitTimesStrategy < BaseTransformer
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
@@ -11,6 +17,7 @@ module ETL::Transformers
 
     def transform
       return if errors.present?
+
       proto_records.each do |proto_record|
         transform_time_data!(proto_record)
         proto_record.record_type = :effort
@@ -20,6 +27,7 @@ module ETL::Transformers
         proto_record.slice_permitted!
         proto_record.merge_attributes!(global_attributes)
       end
+
       proto_records
     end
 

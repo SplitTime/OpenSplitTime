@@ -13,12 +13,12 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
   let(:fifth_proto_record) { proto_records.fifth }
   let(:last_proto_record) { proto_records.last }
   let(:expected_absolute_times) { expected_times_from_start.map { |tfs| event.start_time + tfs if tfs.present? } }
+  let(:time_points) { event.required_time_points }
 
   describe '#transform' do
     context 'when event is present and splits count matches split fields count' do
       context 'when the parsed structs contain one or more section splits in addition to the finish time' do
         let(:event) { events(:ggd30_50k) }
-        let(:time_points) { event.required_time_points }
         let(:parsed_structs) { [
           OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                          section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',
@@ -77,19 +77,20 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
           expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * (parsed_structs.size - 1))
         end
 
-        it 'sorts split headers and returns an array of children' do
-          records = first_proto_record.children
-          expected_absolute_times
-          expect(records.size).to eq(7)
-          expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-          expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-        end
-
         context 'when options[:delete_blank_times] is true' do
           let(:options) { {parent: event, delete_blank_times: true} }
+
+          context 'when all times are present' do
+            let(:records) { first_proto_record.children }
+            it 'sorts split headers and returns an array of children' do
+              expect(records.size).to eq(7)
+              expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+              expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+              expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+              expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+            end
+          end
 
           context 'when some times are not present' do
             let(:records) { third_proto_record.children }
@@ -123,31 +124,32 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
 
             it 'returns expected split_id array' do
-              time_points = event.required_time_points
               expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
             end
           end
 
-          context 'when :time is DNF' do
+          context 'when time is DNF' do
             let(:records) { third_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
             end
           end
 
-          context 'when :time is DSQ' do
+          context 'when time is DSQ' do
             let(:records) { fourth_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
             end
           end
 
-          it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          context 'when time is not DNF' do
+            it 'does not set stopped_here attribute' do
+              expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            end
           end
         end
 
@@ -181,7 +183,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
           end
 
-          context 'when :time is DNF' do
+          context 'when time is DNF' do
             let(:records) { third_proto_record.children }
             it 'sets [:stopped_here] attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
@@ -189,26 +191,25 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
           end
 
-          context 'when :time is DSQ' do
+          context 'when time is DSQ' do
             let(:records) { fourth_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true])
             end
           end
 
-          it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          context 'when time is not DNF' do
+            it 'does not set stopped_here attribute' do
+              expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            end
           end
         end
       end
 
-      context 'when parsed_structs do not contain section splits and the provided event has only start and finish splits' do
-        let(:event) { events(:ramble) }
-        let(:options) { {parent: event} }
-        let(:proto_records) { subject.transform }
+      context 'when parsed_structs do not contain section splits' do
         let(:parsed_structs) { [
           OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                          div_place: '3/10', sex_place: '3/50', time: '4:55:36.43', pace: '09:30'),
@@ -224,76 +225,98 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
                          div_place: '*', sex_place: '*', time: '', pace: '*')
         ] }
 
-        it 'does not raise an error' do
-          expect(subject.errors).to be_empty
+        context 'when the provided event has only start and finish splits' do
+          let(:event) { events(:ramble) }
+          it 'does not raise an error' do
+            expect(subject.errors).to be_empty
+          end
+
+          context 'when all times are present' do
+            let(:records) { first_proto_record.children }
+            let(:expected_times_from_start) { [0.0, 17736.43] }
+            it 'attaches child records for start and finish splits only' do
+              expect(records.size).to eq(2)
+              expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+              expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+              expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+              expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+            end
+          end
+
+          context 'when options[:delete_blank_times] is true' do
+            let(:options) { {parent: event, delete_blank_times: true} }
+
+            context 'when the record is DNF' do
+              let(:records) { third_proto_record.children }
+              let(:expected_times_from_start) { [0.0, nil] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+
+            context 'when the record is DSQ' do
+              let(:records) { fourth_proto_record.children }
+              let(:expected_times_from_start) { [0.0, nil] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+
+            context 'when the record is DNS' do
+              let(:records) { fifth_proto_record.children }
+              let(:expected_times_from_start) { [nil, nil] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+          end
+
+          context 'when options[:delete_blank_times] is false' do
+            let(:options) { {parent: event, delete_blank_times: false} }
+
+            context 'when the record is DNF' do
+              let(:records) { third_proto_record.children }
+              let(:expected_times_from_start) { [0.0] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+
+            context 'when the record is DSQ' do
+              let(:records) { fourth_proto_record.children }
+              let(:expected_times_from_start) { [0.0] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+
+            context 'when the record is DNS' do
+              let(:records) { fifth_proto_record.children }
+              let(:expected_times_from_start) { [] }
+              it 'returns expected absolute times' do
+                expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+              end
+            end
+          end
         end
 
-        context 'when all times are present' do
-          let(:records) { first_proto_record.children }
-          let(:expected_times_from_start) { [0.0, 17736.43] }
-          it 'attaches child records for start and finish splits only' do
-            records = first_proto_record.children
-            time_points = event.required_time_points
-            expect(records.size).to eq(2)
-            expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-            expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-            expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-          end
-        end
+        context 'when the provided event has more than start and finish splits' do
+          let(:event) { events(:ggd30_50k) }
 
-        context 'when options[:delete_blank_times] is true' do
-          let(:options) { {parent: event, delete_blank_times: true} }
-
-          context 'when the record is DNF' do
-            let(:records) { third_proto_record.children }
-            let(:expected_times_from_start) { [0.0, nil] }
-            it 'returns expected absolute times' do
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+          context 'when all times are present' do
+            let(:records) { first_proto_record.children }
+            let(:expected_times_from_start) { [0.0, 17736.43] }
+            it 'does not raise an error' do
+              expect { subject }.not_to raise_error
             end
-          end
 
-          context 'when the record is DSQ' do
-            let(:records) { fourth_proto_record.children }
-            let(:expected_times_from_start) { [0.0, nil] }
-            it 'returns expected absolute times' do
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-            end
-          end
-
-          context 'when the record is DNS' do
-            let(:records) { fifth_proto_record.children }
-            let(:expected_times_from_start) { [nil, nil] }
-            it 'returns expected absolute times' do
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-            end
-          end
-        end
-
-        context 'when options[:delete_blank_times] is false' do
-          let(:options) { {parent: event, delete_blank_times: false} }
-
-          context 'when the record is DNF' do
-            let(:records) { third_proto_record.children }
-            let(:expected_times_from_start) { [0.0] }
-            it 'returns expected absolute times' do
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-            end
-          end
-
-          context 'when the record is DSQ' do
-            let(:records) { fourth_proto_record.children }
-            let(:expected_times_from_start) { [0.0] }
-            it 'returns expected absolute times' do
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-            end
-          end
-
-          context 'when the record is DNS' do
-            let(:records) { fifth_proto_record.children }
-            let(:expected_times_from_start) { [] }
-            it 'returns expected absolute times' do
+            it 'uses nils for all but start and finish splits' do
+              expect(records.size).to eq(2)
+              expect(records.map(&:record_type)).to all eq(:split_time)
+              expect(records.map { |pr| pr[:lap] }).to eq([1, 1])
+              expect(records.map { |pr| pr[:split_id] }).to eq([time_points.first.split_id, time_points.last.split_id])
+              expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq([time_points.first.bitkey, time_points.last.bitkey])
               expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
             end
           end
@@ -316,7 +339,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
       end
     end
 
-    context 'when event time_points do not match the provided segment times' do
+    context 'when the provided segment times are more than 1 and do not match event time points' do
       let(:event) { events(:ramble) }
       let(:parsed_structs) { [OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
                                              section1_split: '0:43:01.36', section4_split: '1:08:27.81', section5_split: '0:51:23.93',

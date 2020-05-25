@@ -77,19 +77,20 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
           expect(proto_records.map { |pr| pr[:event_id] }).to eq([event.id] * (parsed_structs.size - 1))
         end
 
-        it 'sorts split headers and returns an array of children' do
-          records = first_proto_record.children
-          expected_absolute_times
-          expect(records.size).to eq(7)
-          expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-          expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
-        end
-
         context 'when options[:delete_blank_times] is true' do
           let(:options) { {parent: event, delete_blank_times: true} }
+
+          context 'when all times are present' do
+            let(:records) { first_proto_record.children }
+            it 'sorts split headers and returns an array of children' do
+              expect(records.size).to eq(7)
+              expect(records.map(&:record_type)).to eq([:split_time] * records.size)
+              expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+              expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+              expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_absolute_times)
+            end
+          end
 
           context 'when some times are not present' do
             let(:records) { third_proto_record.children }
@@ -127,26 +128,28 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
           end
 
-          context 'when :time is DNF' do
+          context 'when time is DNF' do
             let(:records) { third_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
             end
           end
 
-          context 'when :time is DSQ' do
+          context 'when time is DSQ' do
             let(:records) { fourth_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true, nil, nil, nil, nil])
             end
           end
 
-          it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          context 'when time is not DNF' do
+            it 'does not set stopped_here attribute' do
+              expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            end
           end
         end
 
@@ -180,7 +183,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
           end
 
-          context 'when :time is DNF' do
+          context 'when time is DNF' do
             let(:records) { third_proto_record.children }
             it 'sets [:stopped_here] attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
@@ -188,18 +191,20 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
             end
           end
 
-          context 'when :time is DSQ' do
+          context 'when time is DSQ' do
             let(:records) { fourth_proto_record.children }
-            it 'sets [:stopped_here] attribute on the final child record' do
+            it 'sets stopped_here attribute on the final child record' do
               expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
               expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true])
             end
           end
 
-          it 'does not set [:stopped_here] attribute if [:time] != "DNF"' do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+          context 'when time is not DNF' do
+            it 'does not set stopped_here attribute' do
+              expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+              expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            end
           end
         end
       end

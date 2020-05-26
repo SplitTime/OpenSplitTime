@@ -212,17 +212,17 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
       context 'when parsed_structs do not contain section splits' do
         let(:parsed_structs) { [
           OpenStruct.new(rr_id: '5', place: '3', bib: '5', name: 'Jatest Schtest', sex: 'M', age: '39',
-                         div_place: '3/10', sex_place: '3/50', time: '4:55:36.43', pace: '09:30'),
+                         div_place: '3/10', sex_place: '3/50', chip_time: '4:55:36.43', pace: '09:30'),
           OpenStruct.new(rr_id: '327', place: '67', bib: '327', name: 'Sutest Ritest', sex: 'F', age: '46',
-                         div_place: '1/25', sex_place: '2/75', time: '6:32:45.84', pace: '12:38'),
+                         div_place: '1/25', sex_place: '2/75', chip_time: '6:32:45.84', pace: '12:38'),
           OpenStruct.new(rr_id: '661', place: '*', bib: '661', name: 'Castest Pertest', sex: 'F', age: '31',
-                         div_place: '*', sex_place: '*', time: 'DNF', pace: '*'),
+                         div_place: '*', sex_place: '*', chip_time: 'DNF', pace: '*'),
           OpenStruct.new(rr_id: '662', place: '*', bib: '662', name: 'Bestest Sartest', sex: 'M', age: '31',
-                         div_place: '*', sex_place: '*', time: 'DSQ', pace: '*'),
+                         div_place: '*', sex_place: '*', chip_time: 'DSQ', pace: '*'),
           OpenStruct.new(rr_id: '633', place: '*', bib: '633', name: 'Mictest Hintest', sex: 'F', age: '35',
-                         div_place: '*', sex_place: '*', time: 'DNS', pace: '*'),
+                         div_place: '*', sex_place: '*', chip_time: 'DNS', pace: '*'),
           OpenStruct.new(rr_id: '62', place: '*', bib: '62', name: 'N.n. 62', sex: '', age: 'n/a',
-                         div_place: '*', sex_place: '*', time: '', pace: '*')
+                         div_place: '*', sex_place: '*', chip_time: '', pace: '*')
         ] }
 
         context 'when the provided event has only start and finish splits' do

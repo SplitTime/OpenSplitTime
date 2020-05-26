@@ -34,6 +34,7 @@ module ETL::Transformers
 
     def add_section_times!
       proto_records.each do |proto_record|
+        proto_record.map_keys!(chip_time: :time)
         proto_record[:section1_split] = ((proto_record[:time] == 'DNS') ? '' : proto_record[:time])
       end
       @time_keys = ['section1_split']

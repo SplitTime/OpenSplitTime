@@ -2,6 +2,7 @@
 
 module ETL::Transformers
   class EffortsWithTimesStrategy < BaseTransformer
+    DEFAULT_START_KEY = 'start'
     TIME_ATTRIBUTE_MAP = {elapsed: :absolute_time, military: :military_time}
 
     def initialize(parsed_structs, options)
@@ -26,6 +27,7 @@ module ETL::Transformers
     attr_reader :proto_records
 
     def transform_time_data!(proto_record)
+      add_missing_start_keys(proto_record)
       fill_missing_start_times(proto_record)
       extract_times(proto_record)
       transform_times(proto_record)
@@ -33,9 +35,15 @@ module ETL::Transformers
       proto_record.set_split_time_stop!
     end
 
+    def add_missing_start_keys(proto_record)
+      unless proto_record.has_key?(guaranteed_start_key)
+        proto_record[guaranteed_start_key] = nil
+      end
+    end
+
     def fill_missing_start_times(proto_record)
       if missing_start_time?(proto_record)
-        proto_record[start_key] = default_start_value
+        proto_record[guaranteed_start_key] = default_start_value
       end
     end
 
@@ -54,8 +62,12 @@ module ETL::Transformers
       end
     end
 
+    def guaranteed_start_key
+      @guaranteed_start_key ||= start_key || DEFAULT_START_KEY
+    end
+
     def time_keys
-      @time_keys ||= attribute_keys.elements_after(start_key, inclusive: true)
+      @time_keys ||= finish_times_only? ? [DEFAULT_START_KEY, finish_key] : attribute_keys.elements_after(start_key, inclusive: true)
     end
 
     def time_format
@@ -76,11 +88,15 @@ module ETL::Transformers
     end
 
     def missing_start_time?(proto_record)
-      proto_record[start_key].blank? && time_keys.map { |key| proto_record[key].presence }.compact.present?
+      proto_record[guaranteed_start_key].blank? && time_keys.map { |key| proto_record[key].presence }.compact.present?
     end
 
     def start_key
-      attribute_keys.find { |key| key.to_s.start_with?('start') }
+      @start_key ||= attribute_keys.find { |key| key.to_s.start_with?('start') }
+    end
+
+    def finish_key
+      @finish_key ||= attribute_keys.find { |key| key.to_s.start_with?('finish') || key.to_s.start_with?('time') }
     end
 
     def default_start_value
@@ -92,13 +108,19 @@ module ETL::Transformers
       end
     end
 
+    def finish_times_only?
+      start_key.nil? && finish_key.present?
+    end
+
     def validate_setup
       errors << missing_event_error unless event.present?
       return unless proto_records.present?
+      errors << value_not_permitted_error(:time_format, TIME_ATTRIBUTE_MAP.keys, time_format) unless TIME_ATTRIBUTE_MAP.keys.include?(time_format)
+      return if finish_times_only?
+
       errors << missing_start_key_error unless start_key
       (errors << split_mismatch_error(event, time_points.size, time_keys.size)) if event.present? && !event.laps_unlimited? &&
-          (time_keys.size != time_points.size)
-      errors << value_not_permitted_error(:time_format, TIME_ATTRIBUTE_MAP.keys, time_format) unless TIME_ATTRIBUTE_MAP.keys.include?(time_format)
+        (time_keys.size != time_points.size)
     end
   end
 end

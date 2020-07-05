@@ -5,6 +5,45 @@ require 'rails_helper'
 RSpec.describe ProtoRecord, type: :model do
   it_behaves_like 'transformable'
 
+  describe '#[]' do
+    let(:pr) { ProtoRecord.new(first_name: 'Joe', age: 20, gender: 'male') }
+    let(:result) { pr[key] }
+    context 'when given nil' do
+      let(:key) { nil }
+      it 'returns nil' do
+        expect(result).to be_nil
+      end
+    end
+
+    context 'when given a string for an existing key' do
+      let(:key) { 'first_name' }
+      it 'returns the value' do
+        expect(result).to eq('Joe')
+      end
+    end
+
+    context 'when given a symbol for an existing key' do
+      let(:key) { :first_name }
+      it 'returns the value' do
+        expect(result).to eq('Joe')
+      end
+    end
+
+    context 'when given a string for a non-existing key' do
+      let(:key) { 'non_existing' }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+
+    context "when given a symbol for a non-existing key" do
+      let(:key) { :non_existing }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+  end
+
   describe '#[]=' do
     it 'may be used to add a key to an existing proto_record' do
       pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')

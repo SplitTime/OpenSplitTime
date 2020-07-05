@@ -246,6 +246,8 @@ Devise.setup do |config|
   config.warden do |manager|
     manager.strategies.add :jwt_strategy, Devise::Strategies::JwtStrategy
     manager.default_strategies(scope: :user).unshift :jwt_strategy
+
+    manager.failure_app = CustomFailure
   end
 
   # ==> Mountable engine configurations

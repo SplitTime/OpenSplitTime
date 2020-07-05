@@ -7,7 +7,7 @@ RSpec.describe Api::V1::CoursesController do
   let(:type) { 'courses' }
 
   describe '#index' do
-    subject(:make_request) { get :index, params: params }
+    subject(:make_request) { get :index, params: params, format: :json }
     let(:params) { {} }
 
     via_login_and_jwt do
@@ -59,10 +59,17 @@ RSpec.describe Api::V1::CoursesController do
         end
       end
     end
+
+    context "without logging in" do
+      it "returns unauthorized" do
+        make_request
+        expect(response.status).to eq(401)
+      end
+    end
   end
 
   describe '#show' do
-    subject(:make_request) { get :show, params: params }
+    subject(:make_request) { get :show, params: params, format: :json }
 
     via_login_and_jwt do
       context 'when an existing course.id is provided' do
@@ -92,10 +99,27 @@ RSpec.describe Api::V1::CoursesController do
         end
       end
     end
+
+    context 'without logging in' do
+      context 'when an existing course id is provided' do
+        let(:params) { {id: course} }
+        it "returns a successful 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it "returns data of a single course" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id'].to_i).to eq(course.id)
+          expect(response.body).to be_jsonapi_response_for(type)
+        end
+      end
+    end
   end
 
   describe '#create' do
-    subject(:make_request) { post :create, params: params }
+    subject(:make_request) { post :create, params: params, format: :json }
 
     via_login_and_jwt do
       context 'when provided data is valid' do
@@ -118,7 +142,7 @@ RSpec.describe Api::V1::CoursesController do
   end
 
   describe '#update' do
-    subject(:make_request) { put :update, params: params }
+    subject(:make_request) { put :update, params: params, format: :json }
     let(:params) { {id: course_id, data: {type: type, attributes: attributes}} }
     let(:attributes) { {name: 'Updated Course Name'} }
 
@@ -153,7 +177,7 @@ RSpec.describe Api::V1::CoursesController do
   end
 
   describe '#destroy' do
-    subject(:make_request) { delete :destroy, params: {id: course_id} }
+    subject(:make_request) { delete :destroy, params: {id: course_id}, format: :json }
 
     via_login_and_jwt do
       context 'when the record exists' do

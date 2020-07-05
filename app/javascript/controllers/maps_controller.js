@@ -14,7 +14,7 @@ export default class extends Controller {
             success: function (response) {
                 const attributes = response.data.attributes;
 
-                var locations = null;
+                let locations = null;
                 if(splitId === undefined) {
                     locations = attributes.locations;
                 } else {

@@ -11,8 +11,8 @@ export default class extends Controller {
         Rails.ajax({
             url: "/api/v1/courses/" + courseId,
             type: "GET",
-            success: function (data) {
-                const attributes = data.data.attributes;
+            success: function (response) {
+                const attributes = response.data.attributes;
 
                 var locations = null;
                 if(splitId === undefined) {

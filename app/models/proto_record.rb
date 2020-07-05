@@ -14,7 +14,11 @@ class ProtoRecord
     validate_setup
   end
 
-  delegate :[], :[]=, :to_h, :delete_field, to: :attributes
+  delegate :[]=, :to_h, :delete_field, to: :attributes
+
+  def [](key)
+    key.nil? ? nil : attributes[key]
+  end
 
   def has_key?(key)
     attributes.to_h.has_key?(key)

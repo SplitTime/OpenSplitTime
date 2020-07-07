@@ -56,7 +56,9 @@ class Course < ApplicationRecord
       begin
         file = gpx.download
         gpx_file = GPX::GPXFile.new(gpx_data: file)
-        points = gpx_file.tracks.flat_map(&:points).presence || gpx_file.routes.flat_map(&:points).presence || gpx_file.waypoints
+        points = gpx_file.tracks.flat_map(&:points).presence ||
+          gpx_file.routes.flat_map(&:points).presence ||
+          gpx_file.waypoints
 
         points.map { |point| {lat: point.lat, lon: point.lon} }
       end

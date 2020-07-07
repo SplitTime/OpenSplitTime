@@ -51,11 +51,17 @@ class Course < ApplicationRecord
 
   def track_points
     return [] unless gpx.attached?
-    return @track_points if defined?(@track_points)
-    file = gpx.download
-    gpx_file = GPX::GPXFile.new(gpx_data: file)
-    points = gpx_file.tracks.flat_map(&:points)
-    @track_points = points.map { |track_point| {lat: track_point.lat, lon: track_point.lon} }
+
+    @track_points ||=
+      begin
+        file = gpx.download
+        gpx_file = GPX::GPXFile.new(gpx_data: file)
+        points = gpx_file.tracks.flat_map(&:points).presence ||
+          gpx_file.routes.flat_map(&:points).presence ||
+          gpx_file.waypoints
+
+        points.map { |point| {lat: point.lat, lon: point.lon} }
+      end
   end
 
   def vert_gain

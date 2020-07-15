@@ -101,20 +101,20 @@ RSpec.describe ProcessImportedRawTimesJob do
       end
     end
 
-    context 'when raw times have absolute times' do
+    context 'when raw times have absolute times but no entered times' do
       let(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: 'in',
-                                absolute_time: absolute_time_in, with_pacer: 'true', stopped_here: 'false', source: source) }
+                                absolute_time: absolute_time_in, entered_time: nil, with_pacer: 'true', stopped_here: 'false', source: source) }
       let(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: 'out',
-                                absolute_time: absolute_time_out, with_pacer: 'true', stopped_here: 'true', source: source) }
+                                absolute_time: absolute_time_out, entered_time: nil, with_pacer: 'true', stopped_here: 'true', source: source) }
 
       include_examples 'processes raw times as expected'
     end
 
-    context 'when raw times have entered times' do
+    context 'when raw times have entered times but no absolute times' do
       let(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: 'in',
-                                entered_time: absolute_time_in, with_pacer: 'true', stopped_here: 'false', source: source) }
+                                absolute_time: nil, entered_time: absolute_time_in, with_pacer: 'true', stopped_here: 'false', source: source) }
       let(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: 'out',
-                                entered_time: absolute_time_out, with_pacer: 'true', stopped_here: 'true', source: source) }
+                                absolute_time: nil, entered_time: absolute_time_out, with_pacer: 'true', stopped_here: 'true', source: source) }
 
       include_examples 'processes raw times as expected'
     end

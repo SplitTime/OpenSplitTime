@@ -62,6 +62,15 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :notice_text %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.text_area :notice_text, class: "form-control", placeholder: "Any notice that should appear on the results view." %>
+        </div>
+      </div>
+
       <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label :podium_template %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_233236) do
+ActiveRecord::Schema.define(version: 2020_07_15_123416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_233236) do
     t.string "short_name"
     t.bigint "results_template_id", null: false
     t.integer "efforts_count", default: 0
+    t.string "notice_text"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"

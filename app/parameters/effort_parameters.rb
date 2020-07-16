@@ -2,7 +2,7 @@
 
 class EffortParameters < BaseParameters
   def self.csv_export_attributes
-    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone scheduled_start_time_local)
+    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone scheduled_start_time_local comments)
   end
 
   def self.permitted_query

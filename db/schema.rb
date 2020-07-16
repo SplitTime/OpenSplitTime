@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_123416) do
+ActiveRecord::Schema.define(version: 2020_07_15_220337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2020_07_15_123416) do
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
     t.string "topic_resource_key"
+    t.string "comments"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true

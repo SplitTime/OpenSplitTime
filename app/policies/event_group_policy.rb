@@ -52,6 +52,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def finish_line?
+    user.authorized_to_edit?(event_group)
+  end
+
   def delete_all_times?
     user.authorized_fully?(event_group)
   end

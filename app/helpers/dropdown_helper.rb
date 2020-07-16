@@ -49,7 +49,10 @@ module DropdownHelper
          active: controller_name == 'event_groups' && action_name == 'show'},
         {name: 'Stats',
          link: stats_event_group_path(view_object.event_group),
-         active: controller_name == 'event_groups' && action_name == 'stats'}
+         active: controller_name == 'event_groups' && action_name == 'stats'},
+        {name: 'Finish Line',
+         link: finish_line_event_group_path(view_object.event_group),
+         active: controller_name == 'event_groups' && action_name == 'finish_line'},
     ]
     build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end

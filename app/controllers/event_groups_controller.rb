@@ -79,6 +79,12 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
+  def finish_line
+    authorize @event_group
+
+    @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
   def follow
     @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
 

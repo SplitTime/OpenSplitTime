@@ -1,0 +1,11 @@
+<div class="card">
+  <% if @efforts.present? %>
+    <h3 class="card-header"><strong><%= "##{@efforts.first.bib_number} #{@efforts.first.full_name}" %></strong></h3>
+    <div class="card-body">
+    </div>
+  <% else %>
+    <h3 class="card-header"><strong><%= "Not Found" %></strong></h3>
+    <div class="card-body">
+    </div>
+  <% end %>
+</div>

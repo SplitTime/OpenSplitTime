@@ -25,3 +25,10 @@
   </div>
 </header>
 
+<article class="ost-article container">
+  <div data-controller="finish-line" data-finish-line-event-group-id="<%= @presenter.id %>">
+    <input placeholder="Bib #" data-target="finish-line.search" data-action="blur->finish-line#checkInput keyup->finish-line#checkInput">
+    <hr/>
+    <div data-target="finish-line.result"></div>
+  </div>
+</article>

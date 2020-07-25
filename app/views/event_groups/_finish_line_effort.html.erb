@@ -1,7 +1,16 @@
 <div class="card">
   <% if @efforts.present? %>
-    <h3 class="card-header"><strong><%= "##{@efforts.first.bib_number} #{@efforts.first.full_name}" %></strong></h3>
+    <% effort = @efforts.first %>
+    <h3 class="card-header"><strong><%= "##{effort.bib_number} #{effort.full_name}" %></strong></h3>
     <div class="card-body">
+      <h4 class="card-text"><%= effort.bio %></h4>
+      <h4 class="card-text"><%= effort.flexible_geolocation %></h4>
+      <hr/>
+      <% days = effort.days_away_from_birthday %>
+      <% if days.present? && days < 3 %>
+        <h4 class="card-text"><%= effort.birthday_notice %></h4>
+      <% end %>
+      <h4 class="card-text"><%= effort.comments %></h4>
     </div>
   <% else %>
     <h3 class="card-header"><strong><%= "Not Found" %></strong></h3>

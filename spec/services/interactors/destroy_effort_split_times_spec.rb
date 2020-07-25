@@ -48,11 +48,12 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
       end
     end
 
-    context 'when split_time_ids are not included in effort.split_time ids' do
-      let(:split_time_ids) { %w[0, 1] }
+    context 'when split_time_ids belong to another effort' do
+      let(:other_effort) { efforts(:hardrock_2015_tuan_jacobs) }
+      let(:split_time_ids) { other_effort.ordered_split_times.first(2).map(&:id) }
 
       it 'raises an error' do
-        expect { subject }.to raise_error(/split_time ids 0, 1 do not correspond to effort/)
+        expect { subject }.to raise_error(/do not correspond to effort/)
       end
     end
   end

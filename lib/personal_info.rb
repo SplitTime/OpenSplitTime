@@ -9,6 +9,24 @@ module PersonalInfo
     [gender&.titlecase, age&.to_i].compact.join(', ')
   end
 
+  def birthday_notice
+    days = days_away_from_birthday
+    return nil unless days.present?
+
+    text = case days
+           when 0
+             "today"
+           when 1
+             "tomorrow"
+           when -1
+             "yesterday"
+           end
+
+    text ||= days.positive? ? "#{days} days from now" : "#{days.abs} days ago"
+
+    "Birthday #{text}"
+  end
+
   def country
     @country ||= Carmen::Country.coded(country_code)
   end

@@ -22,6 +22,14 @@ module PersonalInfo
     birthdate && ((Time.current - birthdate.in_time_zone) / 1.year).to_i
   end
 
+  def days_away_from_birthday
+    return nil unless birthdate.present?
+
+    current_date = Time.current.in_time_zone(home_time_zone).to_date
+    closest_anniversary = birthdate.closest_anniversary(current_date)
+    (closest_anniversary - current_date).to_i
+  end
+
   def flexible_geolocation
     [city, flexible_state, flexible_country].select(&:present?).join(', ')
   end

@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PersonalInfo, type: :module do
+  include ::ActiveSupport::Testing::TimeHelpers
 
   describe '#current_age_from_birthdate' do
     subject { build_stubbed(:effort, birthdate: birthdate) }
@@ -20,6 +21,56 @@ RSpec.describe PersonalInfo, type: :module do
 
       it 'calculates and returns the age' do
         expect(subject.current_age_from_birthdate).to eq(20)
+      end
+    end
+  end
+
+  describe "#days_away_from_birthday" do
+    subject { build_stubbed(:effort, birthdate: birthdate) }
+
+    before { allow(subject).to receive(:home_time_zone).and_return("Arizona") }
+    before { travel_to "2020-12-15 12:00:00" }
+    after { travel_back }
+
+    context "when birthdate is the same day" do
+      let(:birthdate) { "1980-12-15" }
+      it "returns 0" do
+        expect(subject.days_away_from_birthday).to eq(0)
+      end
+    end
+
+    context "when birthdate is the next day" do
+      let(:birthdate) { "1980-12-16" }
+      it "returns 1" do
+        expect(subject.days_away_from_birthday).to eq(1)
+      end
+    end
+
+    context "when birthdate is the previous day" do
+      let(:birthdate) { "1980-12-14" }
+      it "returns -1" do
+        expect(subject.days_away_from_birthday).to eq(-1)
+      end
+    end
+
+    context "when birthdate is in a future month" do
+      let(:birthdate) { "1980-02-15" }
+      it "returns the expected value" do
+        expect(subject.days_away_from_birthday).to eq(62)
+      end
+    end
+
+    context "when birthdate is in a past month" do
+      let(:birthdate) { "1980-10-15" }
+      it "returns the expected value" do
+        expect(subject.days_away_from_birthday).to eq(-61)
+      end
+    end
+
+    context "when birthdate does not exist" do
+      let(:birthdate) { nil }
+      it "returns nil" do
+        expect(subject.days_away_from_birthday).to be_nil
       end
     end
   end

@@ -7,7 +7,7 @@
       <h4 class="card-text"><%= effort.flexible_geolocation %></h4>
       <hr/>
       <% days = effort.days_away_from_birthday %>
-      <% if days.present? && days < 3 %>
+      <% if days.present? && days.abs < 3 %>
         <h4 class="card-text"><%= effort.birthday_notice %></h4>
       <% end %>
       <h4 class="card-text"><%= effort.comments %></h4>

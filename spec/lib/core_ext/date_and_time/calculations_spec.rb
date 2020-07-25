@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "../../../lib/core_ext/date_helper"
+require_relative "../../../rails_helper"
 
-RSpec.describe ActionView::Helpers::DateHelper do
-  class DummyDateHelperClass
-    include ::ActionView::Helpers::DateHelper
-  end
-
+RSpec.describe ::CoreExt::DateAndTime::Calculations do
   describe ".closest_anniversary" do
     non_leap_year_examples =
       [
@@ -22,8 +18,9 @@ RSpec.describe ActionView::Helpers::DateHelper do
       ]
 
     shared_examples "returns the expected result" do |anniversary_date, compare_date, expected|
+      subject { anniversary_date.closest_anniversary(compare_date, options) }
       it "returns the expected result" do
-        expect(::DummyDateHelperClass.new.closest_anniversary(anniversary_date, compare_date, options)).to eq(expected)
+        expect(subject).to eq(expected)
       end
     end
 

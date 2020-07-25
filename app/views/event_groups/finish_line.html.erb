@@ -36,6 +36,10 @@
       </div>
     </div>
     <hr/>
+
     <div data-target="finish-line.result"></div>
+    <hr/>
+
+    <%= render "effort_button_card", efforts: @presenter.recently_finished_efforts, title: "Recently Finished" %>
   </div>
 </article>

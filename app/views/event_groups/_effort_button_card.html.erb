@@ -1,0 +1,22 @@
+<!--Requires local variables efforts and title-->
+
+<div class="card">
+  <h3 class="card-header"><strong><%= title %></strong></h3>
+  <div class="card">
+    <div class="card-body">
+      <% if efforts.present? %>
+        <% efforts.each do |effort| %>
+          <div class="card">
+            <button class="btn btn-primary btn-lg text-lg-left" data-action="click->finish-line#lookup keyup->finish-line#lookup" data-bib-number="<%= effort.bib_number %>">
+              <%= "##{effort.bib_number} #{effort.full_name}" %>
+            </button>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="card">
+          <h3 class="card-header">[None]</h3>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

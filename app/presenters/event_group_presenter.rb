@@ -6,7 +6,8 @@ class EventGroupPresenter < BasePresenter
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
   DEFAULT_DISPLAY_STYLE = 'events'
-  RECENT_FINISH_THRESHOLD = 10.minutes
+  RECENT_FINISH_THRESHOLD = 30.minutes
+  RECENT_FINISH_COUNT_LIMIT = 10
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -63,7 +64,7 @@ class EventGroupPresenter < BasePresenter
 
   def recently_finished_efforts
     ranked_efforts.select { |effort| effort.finished? && effort.final_absolute_time > RECENT_FINISH_THRESHOLD.ago }
-      .sort_by(&:final_absolute_time)
+      .sort_by { |effort| -effort.final_absolute_time.to_i }.first(RECENT_FINISH_COUNT_LIMIT)
   end
 
   def events

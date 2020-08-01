@@ -54,9 +54,10 @@ class ProtoRecord
       normalize_state_code!
       create_country_from_state!
       normalize_date!(:birthdate)
-      convert_start_offset!(event.start_time)
+      add_date_to_time!(:scheduled_start_time_local, event.start_time_local.to_date)
       normalize_datetime!(:scheduled_start_time_local)
       localize_datetime!(:scheduled_start_time_local, :scheduled_start_time, event.home_time_zone)
+      convert_start_offset!(event.start_time) if self[:scheduled_start_time].nil?
       self[:event_id] = event.id
 
       # If no scheduled_start_time can be determined, set it to the event start time

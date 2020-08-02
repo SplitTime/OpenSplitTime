@@ -49,6 +49,7 @@ class SplitTime < ApplicationRecord
 
   before_validation :destroy_if_blank
   before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
+  before_save :sync_elapsed_seconds
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -111,6 +112,10 @@ class SplitTime < ApplicationRecord
 
   def elapsed_time=(elapsed_time)
     self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
+  end
+
+  def elapsed_seconds=(_)
+    raise ArgumentError, "Elapsed seconds is a read-only attribute"
   end
 
   def time_from_start
@@ -200,5 +205,29 @@ class SplitTime < ApplicationRecord
   def set_matching_raw_time
     SplitTimes::MatchToRawTime.perform!(self, matching_raw_time_id)
     raise ActiveRecord::Rollback if errors.present?
+  end
+
+  def sync_elapsed_seconds
+    return unless will_save_change_to_absolute_time? && effort.present?
+
+    if starting_split_time?
+      sync_effort_elapsed_seconds
+    else
+      starting_split_time = effort.starting_split_time
+      seconds = starting_split_time&.absolute_time.nil? || absolute_time.nil? ? nil : absolute_time - starting_split_time.absolute_time
+      write_attribute(:elapsed_seconds, seconds)
+    end
+  end
+
+  def sync_effort_elapsed_seconds
+    return unless starting_split_time?
+
+    write_attribute(:elapsed_seconds, 0)
+
+    effort.split_times.where.not(id: id).each do |st|
+      seconds = st.absolute_time.nil? || absolute_time.nil? ? nil : st.absolute_time - absolute_time
+      st.write_attribute(:elapsed_seconds, seconds)
+      st.save!
+    end
   end
 end

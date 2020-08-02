@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_220337) do
+ActiveRecord::Schema.define(version: 2020_08_01_232418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -475,4 +475,47 @@ ActiveRecord::Schema.define(version: 2020_07_15_220337) do
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"
+
+  create_view "effort_segments", materialized: true, sql_definition: <<-SQL
+      WITH sub_splits AS (
+           SELECT DISTINCT ON (split_times.split_id, split_times.sub_split_bitkey) splits.course_id,
+              split_times.split_id,
+              split_times.sub_split_bitkey,
+              splits.distance_from_start
+             FROM (split_times
+               JOIN splits ON ((splits.id = split_times.split_id)))
+          ), sub_split_segments AS (
+           SELECT ss1.course_id,
+              ss1.split_id AS begin_split_id,
+              ss1.sub_split_bitkey AS begin_bitkey,
+              ss1.distance_from_start AS begin_distance,
+              ss2.split_id AS end_split_id,
+              ss2.sub_split_bitkey AS end_bitkey,
+              ss2.distance_from_start AS end_distance
+             FROM (sub_splits ss1
+               CROSS JOIN sub_splits ss2)
+            WHERE ((ss1.course_id = ss2.course_id) AND (((ss1.distance_from_start = ss2.distance_from_start) AND (ss1.sub_split_bitkey < ss2.sub_split_bitkey)) OR (ss1.distance_from_start < ss2.distance_from_start)))
+          )
+   SELECT sss.course_id,
+      sss.begin_split_id,
+      sss.begin_bitkey,
+      sss.end_split_id,
+      sss.end_bitkey,
+      bst.effort_id,
+      bst.lap,
+      bst.absolute_time AS begin_time,
+      est.absolute_time AS end_time,
+      date_part('epoch'::text, (est.absolute_time - bst.absolute_time)) AS elapsed_seconds,
+          CASE
+              WHEN ((bst.data_status IS NULL) OR (est.data_status IS NULL)) THEN NULL::integer
+              WHEN (bst.data_status < est.data_status) THEN bst.data_status
+              ELSE est.data_status
+          END AS data_status
+     FROM ((sub_split_segments sss
+       JOIN split_times bst ON (((bst.split_id = sss.begin_split_id) AND (bst.sub_split_bitkey = sss.begin_bitkey))))
+       JOIN split_times est ON (((est.split_id = sss.end_split_id) AND (est.sub_split_bitkey = sss.end_bitkey) AND (est.effort_id = bst.effort_id) AND (est.lap = bst.lap))))
+    ORDER BY sss.course_id, sss.begin_distance, sss.begin_bitkey, sss.end_distance, sss.end_bitkey, bst.lap, bst.effort_id;
+  SQL
+  add_index "effort_segments", ["effort_id", "lap", "begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey"], name: "index_effort_segments_on_unique_fields", unique: true
+
 end

@@ -242,6 +242,36 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe "before destroy" do
+    context "for a starting split time when later split times exist" do
+      subject { split_times(:hardrock_2016_brinda_fisher_start_1) }
+      let(:effort) { subject.effort }
+      it "sets elapsed seconds for all effort split times to nil" do
+        subject.update(absolute_time: "2016-07-15 11:00:00")
+
+        effort.ordered_split_times.each(&:reload)
+        expect(effort.ordered_split_times.map(&:elapsed_seconds)).to eq([0.0, 43020.0, 43200.0, 68160.0, 69900.0, 97500.0, 98340.0])
+
+        subject.destroy
+
+        effort.reload
+        effort.ordered_split_times.each(&:reload)
+        expect(effort.ordered_split_times.map(&:elapsed_seconds)).to all be_nil
+      end
+    end
+
+    context "for a starting split time when no other split times exist" do
+      subject { split_times(:hardrock_2016_start_only_start_1) }
+      let(:effort) { subject.effort }
+      it "behaves as expected" do
+        subject.destroy
+
+        effort.reload
+        expect(effort.split_times.count).to eq(0)
+      end
+    end
+  end
+
   describe 'virtual time attributes' do
     subject(:split_time) { effort.ordered_split_times.second }
     let(:effort) { efforts(:hardrock_2014_finished_first) }

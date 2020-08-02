@@ -114,6 +114,10 @@ class SplitTime < ApplicationRecord
     self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
   end
 
+  def elapsed_seconds=(_)
+    raise ArgumentError, "Elapsed seconds is a read-only attribute"
+  end
+
   def time_from_start
     return attributes['time_from_start'] if attributes.has_key?('time_from_start')
     return nil unless absolute_time
@@ -211,18 +215,19 @@ class SplitTime < ApplicationRecord
     else
       starting_split_time = effort.starting_split_time
       seconds = starting_split_time&.absolute_time.nil? || absolute_time.nil? ? nil : absolute_time - starting_split_time.absolute_time
-      assign_attributes(elapsed_seconds: seconds)
+      write_attribute(:elapsed_seconds, seconds)
     end
   end
 
   def sync_effort_elapsed_seconds
     return unless starting_split_time?
 
-    assign_attributes(elapsed_seconds: 0)
+    write_attribute(:elapsed_seconds, 0)
 
     effort.split_times.where.not(id: id).each do |st|
       seconds = st.absolute_time.nil? || absolute_time.nil? ? nil : st.absolute_time - absolute_time
-      st.update!(elapsed_seconds: seconds)
+      st.write_attribute(:elapsed_seconds, seconds)
+      st.save!
     end
   end
 end

@@ -198,7 +198,10 @@ RSpec.describe SplitTime, kind: :model do
       end
 
       context "if elapsed seconds is already set" do
-        before { subject.update(elapsed_seconds: 11.hours) }
+        before do
+          subject.write_attribute(:elapsed_seconds, 11.hours)
+          subject.save!
+        end
         it "sets elapsed seconds based on absolute time" do
           expect(subject.elapsed_seconds).to eq(11.hours)
           subject.update!(absolute_time: "2016-07-15 22:00:00")

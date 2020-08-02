@@ -18,6 +18,7 @@ namespace :temp do
     starting_split_times.find_each do |sst|
       progress_bar.increment!
       sst.send(:sync_effort_elapsed_seconds)
+      sst.save!
     rescue ActiveRecordError => e
       puts "Could not initialize for effort #{sst.effort_id}:"
       puts e

@@ -192,7 +192,9 @@ RSpec.describe SplitTime, kind: :model do
       context "if elapsed seconds is not already set" do
         it "sets elapsed seconds based on absolute time" do
           expect(subject.elapsed_seconds).to be_nil
+
           subject.update!(absolute_time: "2016-07-15 22:00:00")
+          subject.reload
           expect(subject.elapsed_seconds).to eq(10.hours)
         end
       end
@@ -204,7 +206,9 @@ RSpec.describe SplitTime, kind: :model do
         end
         it "sets elapsed seconds based on absolute time" do
           expect(subject.elapsed_seconds).to eq(11.hours)
+
           subject.update!(absolute_time: "2016-07-15 22:00:00")
+          subject.reload
           expect(subject.elapsed_seconds).to eq(10.hours)
         end
       end
@@ -216,7 +220,9 @@ RSpec.describe SplitTime, kind: :model do
       let(:split) { splits(:hardrock_cw_sherman) }
       it "sets elapsed seconds based on absolute time" do
         expect(subject.elapsed_seconds).to be_nil
+
         subject.save
+        subject.reload
         expect(subject.elapsed_seconds).to eq(33.hours)
       end
     end

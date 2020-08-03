@@ -30,6 +30,7 @@ class EventGroup < ApplicationRecord
   attr_accessor :duplicate_event_date
 
   scope :standard_includes, -> { includes(events: :splits) }
+  scope :with_policy_scope_attributes, -> { all }
   scope :by_group_start_time, -> do
     joins(:events)
         .select('event_groups.*, min(events.start_time) as group_start_time')

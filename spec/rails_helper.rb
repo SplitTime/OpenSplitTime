@@ -103,6 +103,4 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   Aws.config.update(stub_responses: true)
-
-  FactoryBot.allow_class_lookup = false
 end

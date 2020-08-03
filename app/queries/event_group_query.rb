@@ -117,11 +117,11 @@ class EventGroupQuery < BaseQuery
 
       with organization_subquery as
         (select organizations.id, 
-          case when count(case when event_groups.concealed is true then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from organizations
           inner join event_groups on event_groups.organization_id = organizations.id
         where organizations.id in (select organization_id from event_groups where event_groups.id = #{event_group_id})
-        group by organizations.id, organizations.concealed)
+        group by organizations.id)
 
       update organizations
         set concealed = #{boolean}
@@ -132,29 +132,49 @@ class EventGroupQuery < BaseQuery
 
       with person_ids as
         (select people.id 
-        from people
-        left join efforts on efforts.person_id = people.id
-        inner join events on events.id = efforts.event_id
-        inner join event_groups on event_groups.id = events.event_group_id
-        where event_groups.id = #{event_group_id}),
+         from people
+         left join efforts on efforts.person_id = people.id
+         inner join events on events.id = efforts.event_id
+         where events.event_group_id = #{event_group_id}),
   
       people_subquery as
         (select people.id, 
-          people.concealed as person_concealed, 
-          case when count(case when event_groups.concealed is TRUE then 1 else null end) = count(event_groups.id) then true else false end as should_be_concealed
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from people
           left join efforts on efforts.person_id = people.id
           inner join events on events.id = efforts.event_id
           inner join event_groups on event_groups.id = events.event_group_id
-          where people.id in (select * from person_ids)
-        group by people.id, people.concealed)
+        where people.id in (select * from person_ids)
+        group by people.id)
 
       update people
       set concealed = #{boolean}
       where people.id in 
         (select id 
-        from people_subquery 
-        where should_be_concealed = #{boolean});
+         from people_subquery 
+         where should_be_concealed = #{boolean});
+
+      with course_ids as
+        (select distinct courses.id
+         from courses
+           left join events on events.course_id = courses.id
+         where events.event_group_id = #{event_group_id}),
+       
+      courses_subquery as
+        (select courses.id,
+          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
+        from courses
+          inner join events on events.course_id = courses.id
+          inner join event_groups on event_groups.id = events.event_group_id
+        where courses.id in (select * from course_ids)
+        group by courses.id)
+
+      update courses
+      set concealed = #{boolean}
+      where courses.id in
+        (select id
+         from courses_subquery
+         where should_be_concealed = #{boolean});
     SQL
     query.squish
   end

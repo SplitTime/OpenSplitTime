@@ -54,7 +54,7 @@ module Interactors
     end
 
     def mismatched_split_time_ids
-      split_time_ids - effort.split_times.map(&:id)
+      SplitTime.where(id: split_time_ids).where.not(effort_id: effort.id).ids
     end
   end
 end

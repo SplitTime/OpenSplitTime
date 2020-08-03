@@ -10,6 +10,13 @@ module ETL::Transformable
     end
   end
 
+  def add_date_to_time!(attribute, date)
+    time_string = self[attribute]
+    return unless time_string.present? && time_string =~ TimeConversion::MILITARY_FORMAT
+
+    self[attribute] = "#{date.to_date.to_s} #{time_string}"
+  end
+
   def align_split_distance!(split_distances)
     return unless self[:distance_from_start].present?
     match_threshold = 10
@@ -27,7 +34,8 @@ module ETL::Transformable
     return unless has_key?(:start_offset)
     start_offset = self[:start_offset].to_s.gsub(/[^\d:-]/, '')
     return unless start_offset.present?
-    seconds = start_offset.include?(':') ? TimeConversion.hms_to_seconds(start_offset) : start_offset.to_i
+
+    seconds = start_offset =~ TimeConversion::HMS_FORMAT ? TimeConversion.hms_to_seconds(start_offset) : start_offset.to_i
     self[:scheduled_start_time] ||= event_start_time + seconds
   end
 

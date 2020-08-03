@@ -2,32 +2,32 @@
 
 class BestEffortsDisplay < BasePresenter
   attr_reader :course
-  delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :to_param, to: :course
+  delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
+           :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
-  def initialize(course, params = {})
+  def initialize(course, params, current_user)
     @course = course
     @params = params
-    @events = Event.where(id: all_efforts.map(&:event_id).uniq).order(start_time: :desc).to_a
+    @current_user = current_user
   end
 
   def filtered_efforts
-    selected_efforts.paginate(page: page, per_page: per_page)
+    all_efforts.over_segment(segment).unscope(:where, :joins)
+      .where(filter_hash).search(search_text)
+      .paginate(page: page, per_page: per_page, total_entries: filtered_efforts_count)
   end
 
-  def selected_efforts
-    (gender_text != 'combined') || search_text.present? ?
-        all_efforts.select { |effort| filter_ids.include?(effort.id) } :
-        all_efforts
+  # This method duplicates some code from filtered_efforts, but it allows us to do a very
+  # inexpensive count of records instead of running the expensive over_segment subquery
+  # twice, once just to get the count.
+  def filtered_efforts_count
+    @filtered_efforts_count ||= all_efforts.where(filter_hash).search(search_text).count
   end
 
   def all_efforts_count
-    all_efforts.size
-  end
-
-  def filtered_efforts_count
-    filtered_efforts.total_entries
+    all_efforts.count
   end
 
   def effort_rows
@@ -82,13 +82,17 @@ class BestEffortsDisplay < BasePresenter
     params[:split2] || ordered_splits.last.to_param
   end
 
-  def organization
-    events.first&.organization
-  end
-
   private
 
-  attr_reader :events, :params
+  attr_reader :params, :current_user
+
+  def events
+    @events ||=
+      begin
+        subquery = course.events.select('distinct on (events.id) events.id, event_group_id, course_id, events.start_time').joins(:efforts)
+        EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(start_time: :desc).to_a
+      end
+  end
 
   def segment
     return @segment if defined?(@segment)
@@ -109,11 +113,11 @@ class BestEffortsDisplay < BasePresenter
     params[:split2]
   end
 
-  def filter_ids
-    @filter_ids ||= Effort.where(filter_hash).search(search_text).ids.to_set
+  def all_efforts
+    @all_efforts ||= Effort.where(event: events)
   end
 
-  def all_efforts
-    @all_efforts ||= Effort.find_by_sql(EffortQuery.over_segment(segment))
+  def per_page
+    params[:per_page] || 50
   end
 end

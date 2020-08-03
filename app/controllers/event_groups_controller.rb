@@ -3,7 +3,7 @@
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
   before_action :set_event_group, except: [:index, :create]
-  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list]
+  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list, :efforts]
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
@@ -46,6 +46,19 @@ class EventGroupsController < ApplicationController
     redirect_to event_groups_path
   end
 
+  def efforts
+    @efforts = policy_scope(@event_group.efforts)
+                 .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+                 .where(prepared_params[:filter])
+
+    respond_to do |format|
+      format.json do
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
+        render json: {efforts: @efforts, html: html}
+      end
+    end
+  end
+
   def raw_times
     authorize @event_group
     params[:sort] ||= '-created_at'
@@ -79,8 +92,19 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
+  def finish_line
+    authorize @event_group
+
+    @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
   def follow
     @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
+
+    if @presenter.event_group_finished?
+      flash[:success] = "#{@presenter.name} is completed."
+      redirect_to event_group_path(@event_group)
+    end
   end
 
   def traffic

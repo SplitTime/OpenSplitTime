@@ -1,10 +1,12 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :plan_effort]
+  before_action :authenticate_user!, except: [:show, :best_efforts, :plan_effort]
   before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
+  after_action :verify_authorized, except: [:show, :best_efforts, :plan_effort]
 
   def index
-    @courses = Course.paginate(page: params[:page], per_page: 25).order(:name)
+    authorize Course
+
+    @courses = policy_scope(Course).includes(:events, :splits).with_attached_gpx.order(:name).paginate(page: params[:page], per_page: 25)
     session[:return_to] = courses_path
   end
 
@@ -74,7 +76,7 @@ class CoursesController < ApplicationController
       flash[:danger] = 'No efforts yet run on this course'
       redirect_to course_path(@course)
     else
-      @presenter = BestEffortsDisplay.new(@course, prepared_params)
+      @presenter = BestEffortsDisplay.new(@course, prepared_params, current_user)
       session[:return_to] = best_efforts_course_path(@course)
     end
   end
@@ -101,7 +103,7 @@ class CoursesController < ApplicationController
   private
 
   def set_course
-    @course = Course.friendly.find(params[:id])
+    @course = policy_scope(Course).friendly.find(params[:id])
 
     if request.path != course_path(@course)
       redirect_numeric_to_friendly(@course, params[:id])

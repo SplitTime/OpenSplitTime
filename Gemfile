@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.6.5'
+ruby '2.6.6'
 source 'https://rubygems.org'
 gem 'active_model_serializers', '>= 0.10.8'
 gem 'active_storage_validations', '>= 0.6.1'
@@ -16,6 +16,7 @@ gem 'bootstrap-will_paginate'
 gem 'bootstrap4-datetime-picker-rails', '>= 0.3.1'
 gem 'carmen'
 gem 'coffee-rails', '>= 4.2.2'
+gem 'coverband'
 gem 'dalli'
 gem 'devise', '>= 4.7.1'
 gem 'devise-bootstrap-views'
@@ -31,7 +32,7 @@ gem 'local_time'
 gem 'mini_magick', '>= 4.9.4'
 gem 'momentjs-rails', '>= 2.20.1'
 gem 'paper_trail'
-gem 'pg', '~> 0.20'
+gem 'pg'
 gem 'pg_search'
 gem 'pretender', '~> 0.3', '>= 0.3.4'
 gem 'progress_bar'
@@ -43,6 +44,7 @@ gem 'rails', '< 6.0'
 gem 'record_tag_helper', '>= 1.0.0'
 gem 'rest-client'
 gem 'sass-rails', '~> 5.0.7'
+gem 'scenic'
 gem 'scout_apm'
 gem 'sentry-raven'
 gem 'shortener'
@@ -57,7 +59,7 @@ gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'
 gem 'webpacker', '~> 4.0', '>= 4.0.7'
-gem 'will_paginate', '~>3.1.7'
+gem 'will_paginate', '~> 3.3'
 
 group :development do
   gem 'better_errors', '>= 2.3'
@@ -71,11 +73,10 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 2.18', '>= 2.18.0'
-  gem 'factory_bot_rails', '>= 4.11.1', require: false
+  gem 'capybara', '~> 3.0'
+  gem 'factory_bot_rails', '~> 5.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'
-  gem 'simplecov', require: false
   gem 'vcr', '~> 4.0'
   gem 'webmock', '~> 3.5'
 end

@@ -131,7 +131,6 @@
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
-            liveEntry.PopulatingFromRow = false;
         },
 
         pusher: {
@@ -701,15 +700,6 @@
              * Adds dataStatus and splitTimeExists to rawTimes in the form.
              */
             enrichTimeData: function () {
-                if (liveEntry.PopulatingFromRow) {
-                    // Do nothing.
-                    // This fn is being called from several places based on different actions.
-                    // None of them are needed if the form is being populated by the system from a
-                    // local row's data (i.e., if a user clicks on Edit icon in a Local Data Workspace row).
-                    // PopulatingFromRow will be on while the form is populated by that action
-                    // and turned off when that's done.
-                    return $.Deferred().resolve();
-                }
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -742,7 +732,7 @@
                     var outRawTime = liveEntry.currentRawTime('out');
 
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-                        $('#js-lap-number').val(rawTime.lap);
+                        $('#js-lap-number').val(rawTime.enteredLap);
                         $('#js-lap-number:focus').select();
                     }
 
@@ -768,7 +758,7 @@
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
-                                lap: $('#js-lap-number').val(),
+                                enteredLap: $('#js-lap-number').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
                                 stoppedHere: $('#js-dropped').prop('checked'),
@@ -795,7 +785,7 @@
 
                 $('#js-unique-id').val(rawTimeRow.uniqueId);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
-                $('#js-lap-number').val(rawTime.lap);
+                $('#js-lap-number').val(rawTime.enteredLap);
                 $inTimeField.val(inRawTime.enteredTime);
                 $outTimeField.val(outRawTime.enteredTime);
                 $('#js-pacer-in').prop('checked', inRawTime.withPacer);
@@ -1087,7 +1077,7 @@
                         <td class="event-name js-event-name group-only">' + event.name + '</td>\
                         <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + rawTime.lap + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + rawTime.enteredLap + '</td>\
                         <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.enteredTime || '') + timeInIcon + '</td>\
                         <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.enteredTime || '') + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
@@ -1164,7 +1154,6 @@
             timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
-                    liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
@@ -1172,7 +1161,6 @@
                     $row.addClass('bg-highlight');
                     liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
-                    liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.enrichTimeData();
                     liveEntry.liveEntryForm.updateEffortInfo();
                 });
@@ -1271,7 +1259,7 @@
                         return {
                             bibNumber: rawTime.bibNumber,
                             enteredTime: rawTime.enteredTime,
-                            lap: rawTime.lap,
+                            lap: rawTime.enteredLap,
                             splitName: rawTime.splitName,
                             subSplitKind: rawTime.subSplitKind,
                             stoppedHere: rawTime.stoppedHere

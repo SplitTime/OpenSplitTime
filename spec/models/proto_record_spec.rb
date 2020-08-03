@@ -5,6 +5,45 @@ require 'rails_helper'
 RSpec.describe ProtoRecord, type: :model do
   it_behaves_like 'transformable'
 
+  describe '#[]' do
+    let(:pr) { ProtoRecord.new(first_name: 'Joe', age: 20, gender: 'male') }
+    let(:result) { pr[key] }
+    context 'when given nil' do
+      let(:key) { nil }
+      it 'returns nil' do
+        expect(result).to be_nil
+      end
+    end
+
+    context 'when given a string for an existing key' do
+      let(:key) { 'first_name' }
+      it 'returns the value' do
+        expect(result).to eq('Joe')
+      end
+    end
+
+    context 'when given a symbol for an existing key' do
+      let(:key) { :first_name }
+      it 'returns the value' do
+        expect(result).to eq('Joe')
+      end
+    end
+
+    context 'when given a string for a non-existing key' do
+      let(:key) { 'non_existing' }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+
+    context "when given a symbol for a non-existing key" do
+      let(:key) { :non_existing }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+  end
+
   describe '#[]=' do
     it 'may be used to add a key to an existing proto_record' do
       pr = ProtoRecord.new(first_name: 'Joe', age: 21, gender: 'male')
@@ -99,17 +138,57 @@ RSpec.describe ProtoRecord, type: :model do
     let(:pr) { ProtoRecord.new(attributes) }
     before { pr.transform_as(model, options) }
 
-    context 'for an effort' do
+    context "for an effort" do
       let(:model) { :effort }
-      let(:attributes) { {sex: 'M', country: 'United States', state: 'California', birthdate: '09/01/66'} }
+      let(:attributes) { {sex: "M", country: "United States", state: "California", birthdate: "09/01/66"}.merge(start_time_attributes).merge(start_offset_attributes) }
+      let(:start_time_attributes) { {} }
+      let(:start_offset_attributes) { {} }
       let(:options) { {event: event} }
-      let(:event) { Event.new(id: 1, start_time: start_time, event_group: event_group) }
-      let(:event_group) { EventGroup.new(home_time_zone: 'Pacific Time (US & Canada)' )}
-      let(:start_time) { '2018-06-30 08:00:00' }
+      let(:event) { Event.new(id: 1, event_group: event_group, start_time_local: start_time) }
+      let(:event_group) { EventGroup.new(home_time_zone: "Pacific Time (US & Canada)") }
+      let(:start_time) { "2018-06-30 08:00:00" }
 
-      it 'sets the record type and normalizes data' do
+      it "sets the record type and normalizes data" do
         expect(pr.record_type).to eq(:effort)
-        expect(pr.to_h).to eq({gender: 'male', country_code: 'US', state_code: 'CA', birthdate: '1966-09-01', event_id: event.id, scheduled_start_time: start_time})
+        expect(pr.to_h).to eq({gender: "male", country_code: "US", state_code: "CA", birthdate: "1966-09-01", event_id: event.id, scheduled_start_time: event.start_time})
+      end
+
+      context "when scheduled start time is not provided" do
+        context "and start offset is not provided" do
+          it "sets scheduled start time to that of the event" do
+            expect(pr[:scheduled_start_time]).to eq(event.start_time)
+          end
+        end
+
+        context "and start offset is provided" do
+          let(:start_offset_attributes) { {start_offset: "0:30:00"} }
+          it "sets scheduled start time using the start offset" do
+            expect(pr[:scheduled_start_time]).to eq(event.start_time + 30.minutes)
+          end
+        end
+      end
+      
+      context "when scheduled start time is provided as a standard datetime" do
+        let(:start_time_attributes) { {scheduled_start_time_local: "2018-06-30 09:00:00"}}
+        context "and start offset is not provided" do
+          it "uses the scheduled start time" do
+            expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+          end
+        end
+
+        context "and start offset is provided" do
+          let(:start_offset_attributes) { {start_offset: "0:30:00"} }
+          it "ignores the start offset and uses the scheduled start time" do
+            expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+          end
+        end
+      end
+
+      context "when scheduled start time is provided as a time only" do
+        let(:start_time_attributes) { {scheduled_start_time_local: "09:00:00"} }
+        it "infers the event date" do
+          expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+        end
       end
     end
 

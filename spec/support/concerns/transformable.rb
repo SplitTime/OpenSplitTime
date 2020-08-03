@@ -32,6 +32,33 @@ RSpec.shared_examples_for 'transformable' do
     end
   end
 
+  describe "#add_date_to_time!" do
+    examples =
+      [
+        {time_string: "08:30:30", date: "2020-07-15", expected: "2020-07-15 08:30:30"},
+        {time_string: "08:30:30", date: "2020-07-15 10:00:00", expected: "2020-07-15 08:30:30"},
+        {time_string: "08:30:30", date: "2020-07-15 10:00:00".to_datetime, expected: "2020-07-15 08:30:30"},
+        {time_string: "08:30:30", date: "2020-07-15".to_date, expected: "2020-07-15 08:30:30"},
+        {time_string: "08:30:30", date: "2020-07-15".to_datetime, expected: "2020-07-15 08:30:30"},
+        {time_string: "2020-07-10 08:00:00", date: "2020-07-15", expected: "2020-07-10 08:00:00"},
+        {time_string: "hello", date: "2020-07-15", expected: "hello"},
+        {time_string: "", date: "2020-07-15", expected: ""},
+        {time_string: nil, date: "2020-07-15", expected: nil},
+      ]
+
+    examples.each do |example|
+      time_string = example[:time_string]
+      date = example[:date]
+      expected = example[:expected]
+
+      context "when time string is #{time_string} and date is #{date}" do
+        let(:attributes) { {scheduled_start_time_local: time_string} }
+        before { subject.add_date_to_time!(:scheduled_start_time_local, date) }
+        it { expect(subject[:scheduled_start_time_local]).to eq(expected) }
+      end
+    end
+  end
+
   describe '#align_split_distance!' do
     let!(:course_distances) { [0, 3000, 6000, 9000] }
 
@@ -368,7 +395,7 @@ RSpec.shared_examples_for 'transformable' do
     context 'when provided with an American mm/dd/yy hh:mm:ss format' do
       let(:start_time) { '09/29/67 06:30:00' }
 
-      it 'corrects the year to between 1920 and 2019' do
+      it 'corrects the year to between 19xx and 20xx' do
         subject.normalize_datetime!(:start_time)
         expect(subject[:start_time]).to eq('1967-09-29 06:30:00')
       end

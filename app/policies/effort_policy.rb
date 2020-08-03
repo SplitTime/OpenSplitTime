@@ -5,13 +5,12 @@ class EffortPolicy < ApplicationPolicy
     def post_initialize
     end
 
-    def delegated_records
-      if user
-        scope.joins(event: {event_group: {organization: :stewardships}})
-            .includes(event: {event_group: {organization: :stewardships}}).delegated(user.id)
-      else
-        scope.none
-      end
+    def authorized_to_edit_records
+      scope.delegated_to(user)
+    end
+
+    def authorized_to_view_records
+      scope.visible_or_delegated_to(user)
     end
   end
 

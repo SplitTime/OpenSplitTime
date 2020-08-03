@@ -1,0 +1,45 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event group finish line - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Finish Line</li>
+          </ul>
+        </div>
+        <%= render 'events/time_and_course_info' %>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <%= render 'events/view_buttons', view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <div data-controller="finish-line" data-finish-line-event-group-id="<%= @presenter.id %>">
+    <div class="row">
+      <div class="col">
+        <input inputmode="numeric" pattern="[0-9]*" type="text" placeholder="Bib #" style="height: 3rem; width: 10rem; font-size: 2em; font-weight: bold" data-target="finish-line.search" data-action="blur->finish-line#checkInput keyup->finish-line#checkInput">
+      </div>
+      <div class="col">
+        <button class="btn btn-lg btn-primary" data-action="finish-line#checkInput">Go</button>
+      </div>
+    </div>
+    <hr/>
+
+    <div data-target="finish-line.result"></div>
+    <hr/>
+
+    <%= render "effort_button_card", efforts: @presenter.recently_finished_efforts, title: "Recently Finished" %>
+  </div>
+</article>

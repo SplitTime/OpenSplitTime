@@ -7,8 +7,8 @@ class Effort < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
-  include Auditable, DataStatusMethods, Delegable, GuaranteedFindable, LapsRequiredMethods, PersonalInfo,
-          Searchable, Subscribable, TimeZonable, Matchable
+  include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, LapsRequiredMethods,
+          PersonalInfo, Searchable, Subscribable, TimeZonable, Matchable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -51,12 +51,14 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
-  scope :concealed, -> { includes(event: :event_group).where(event_groups: {concealed: true}) }
-  scope :visible, -> { includes(event: :event_group).where(event_groups: {concealed: false}) }
+  scope :over_segment, -> (segment) { from(EffortQuery.over_segment_subquery(segment, self)) }
   scope :add_ready_to_start, -> do
     select('distinct on (efforts.id) efforts.*, coalesce(scheduled_start_time, events.start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
         .left_joins(:event, split_times: :split)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
+  end
+  scope :with_policy_scope_attributes, -> do
+    from(select('efforts.*, event_groups.organization_id, event_groups.concealed').joins(event: :event_group), :efforts)
   end
 
   def self.null_record
@@ -267,7 +269,7 @@ class Effort < ApplicationRecord
   end
 
   def enriched
-    event.efforts.ranked_with_status.find { |e| e.id == id }
+    event.efforts.ranked_with_status(effort_id: id).first
   end
 
   def template_age

@@ -9,7 +9,7 @@ class EffortsController < ApplicationController
   end
 
   def index
-    @efforts = Effort.order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+    @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
                    .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
@@ -104,7 +104,7 @@ class EffortsController < ApplicationController
   end
 
   def place
-    @presenter = PlaceDetailView.new(@effort)
+    @presenter = EffortPlaceView.new(@effort)
   end
 
   def rebuild
@@ -207,7 +207,7 @@ class EffortsController < ApplicationController
   end
 
   def set_effort
-    @effort = Effort.friendly.find(params[:id])
+    @effort = policy_scope(Effort).friendly.find(params[:id])
     redirect_numeric_to_friendly(@effort, params[:id])
   end
 end

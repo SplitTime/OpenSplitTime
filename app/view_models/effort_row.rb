@@ -13,6 +13,8 @@ class EffortRow < SimpleDelegator
     final_absolute_time.in_time_zone(home_time_zone)
   end
 
+  alias_method :final_absolute_time_local, :final_day_and_time
+
   def year_and_lap
     multiple_laps? ? "#{segment_start_time.year} / Lap #{lap}" : "#{segment_start_time.year}"
   end

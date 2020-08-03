@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_04_154928) do
+ActiveRecord::Schema.define(version: 2020_08_03_033344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.datetime "next_start_time"
     t.string "slug", null: false
     t.bigint "organization_id"
+    t.boolean "concealed"
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
@@ -90,6 +91,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.string "emergency_phone"
     t.datetime "scheduled_start_time"
     t.string "topic_resource_key"
+    t.string "comments"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true
@@ -149,6 +151,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.string "short_name"
     t.bigint "results_template_id", null: false
     t.integer "efforts_count", default: 0
+    t.string "notice_text"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
@@ -264,6 +267,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.integer "data_status"
     t.integer "matchable_bib_number"
     t.boolean "disassociated_from_effort"
+    t.integer "entered_lap"
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["parameterized_split_name"], name: "index_raw_times_on_parameterized_split_name"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
@@ -339,6 +343,7 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
     t.integer "lap", null: false
     t.boolean "stopped_here", default: false
     t.datetime "absolute_time", null: false
+    t.float "elapsed_seconds"
     t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
     t.index ["effort_id"], name: "index_split_times_on_effort_id"
     t.index ["lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_time_point"
@@ -471,4 +476,45 @@ ActiveRecord::Schema.define(version: 2020_03_04_154928) do
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"
+
+  create_view "effort_segments", sql_definition: <<-SQL
+      WITH sub_splits AS (
+           SELECT DISTINCT ON (split_times.split_id, split_times.sub_split_bitkey) splits.course_id,
+              split_times.split_id,
+              split_times.sub_split_bitkey,
+              splits.distance_from_start
+             FROM (split_times
+               JOIN splits ON ((splits.id = split_times.split_id)))
+          ), sub_split_segments AS (
+           SELECT ss1.course_id,
+              ss1.split_id AS begin_split_id,
+              ss1.sub_split_bitkey AS begin_bitkey,
+              ss1.distance_from_start AS begin_distance,
+              ss2.split_id AS end_split_id,
+              ss2.sub_split_bitkey AS end_bitkey,
+              ss2.distance_from_start AS end_distance
+             FROM (sub_splits ss1
+               CROSS JOIN sub_splits ss2)
+            WHERE ((ss1.course_id = ss2.course_id) AND (((ss1.distance_from_start = ss2.distance_from_start) AND (ss1.sub_split_bitkey < ss2.sub_split_bitkey)) OR (ss1.distance_from_start < ss2.distance_from_start)))
+          )
+   SELECT sss.course_id,
+      sss.begin_split_id,
+      sss.begin_bitkey,
+      sss.end_split_id,
+      sss.end_bitkey,
+      bst.effort_id,
+      bst.lap,
+      bst.absolute_time AS begin_time,
+      est.absolute_time AS end_time,
+      (est.elapsed_seconds - bst.elapsed_seconds) AS elapsed_seconds,
+          CASE
+              WHEN ((bst.data_status IS NULL) OR (est.data_status IS NULL)) THEN NULL::integer
+              WHEN (bst.data_status < est.data_status) THEN bst.data_status
+              ELSE est.data_status
+          END AS data_status
+     FROM ((sub_split_segments sss
+       JOIN split_times bst ON (((bst.split_id = sss.begin_split_id) AND (bst.sub_split_bitkey = sss.begin_bitkey))))
+       JOIN split_times est ON (((est.split_id = sss.end_split_id) AND (est.sub_split_bitkey = sss.end_bitkey) AND (est.effort_id = bst.effort_id) AND (est.lap = bst.lap))))
+    ORDER BY sss.course_id, sss.begin_distance, sss.begin_bitkey, sss.end_distance, sss.end_bitkey, bst.lap, bst.effort_id;
+  SQL
 end

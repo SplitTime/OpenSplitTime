@@ -50,6 +50,10 @@
   </div>
 </aside>
 
+<% if @presenter.notice_text? %>
+  <%= render 'results_notice', notice_text: @presenter.notice_text %>
+<% end %>
+
 <% if @presenter.show_partner_banners? %>
   <%= render 'partner_banner', partner: @presenter.partner_with_banner, organization_name: @presenter.organization_name %>
 <% end %>

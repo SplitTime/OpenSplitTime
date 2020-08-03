@@ -311,7 +311,7 @@ RSpec.describe Api::V1::EventGroupsController do
       ] }
       let(:source) { 'ost-remote-1234' }
 
-      context 'when raw_time data is valid' do
+      shared_examples 'creates and processes raw times' do |time_attribute|
         via_login_and_jwt do
           it 'creates raw_times' do
             expect { make_request }.to change { RawTime.count }.by(2)
@@ -322,7 +322,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(parsed_response['data'].map { |record| record['type'] }).to all eq('rawTimes')
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map(&time_attribute).map(&:to_datetime)).to eq([absolute_time_in, absolute_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
 
@@ -337,6 +337,23 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, raw_times.sort_by(&:id))
           end
         end
+      end
+
+      context 'when raw_time data is valid' do
+        include_examples 'creates and processes raw times', :absolute_time
+      end
+
+      context 'when raw_times use enteredTime instead of absoluteTime' do
+        let(:data) { [
+          {type: 'raw_time',
+           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: 'in', enteredTime: absolute_time_in,
+                        withPacer: 'true', stoppedHere: 'false', source: source}},
+          {type: 'raw_time',
+           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: 'out', enteredTime: absolute_time_out,
+                        withPacer: 'true', stoppedHere: 'true', source: source}}
+        ] }
+
+        include_examples 'creates and processes raw times', :entered_time
       end
 
       context 'when raw_times include leading zeros' do
@@ -837,6 +854,7 @@ RSpec.describe Api::V1::EventGroupsController do
                                'bibNumber' => bib_number_1,
                                'absoluteTime' => nil,
                                'enteredTime' => '14:00:00',
+                               'enteredLap' => nil,
                                'withPacer' => false,
                                'stoppedHere' => false,
                                'source' => 'Live Entry (1)',
@@ -851,6 +869,7 @@ RSpec.describe Api::V1::EventGroupsController do
                                'bibNumber' => bib_number_1,
                                'absoluteTime' => nil,
                                'enteredTime' => '14:05:00',
+                               'enteredLap' => nil,
                                'withPacer' => false,
                                'stoppedHere' => false,
                                'source' => 'Live Entry (1)',

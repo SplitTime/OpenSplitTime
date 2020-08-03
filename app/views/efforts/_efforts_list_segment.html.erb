@@ -27,7 +27,7 @@
         <% unless presenter.segment_ends_at_finish? %>
           <td class="text-center"><%= humanize_boolean(effort_row.finished?) %></td>
         <% end %>
-        <td class="text-right"><%= time_format_hhmmss(effort_row.segment_seconds) %></td>
+        <td class="text-right"><%= effort_row.segment_duration %></td>
       </tr>
   <% end %>
   </tbody>

@@ -6,6 +6,8 @@ class EventGroupPresenter < BasePresenter
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
   DEFAULT_DISPLAY_STYLE = 'events'
+  RECENT_FINISH_THRESHOLD = 30.minutes
+  RECENT_FINISH_COUNT_LIMIT = 10
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -15,6 +17,7 @@ class EventGroupPresenter < BasePresenter
 
   def ranked_efforts
     return @ranked_efforts if defined?(@ranked_efforts)
+
     @ranked_efforts = event_group_efforts.ranked_with_status(sort: sort_hash.presence || {bib_number: :asc})
     @ranked_efforts.each { |effort| effort.event = indexed_events[effort.event_id] }
     @ranked_efforts
@@ -57,6 +60,11 @@ class EventGroupPresenter < BasePresenter
 
   def dropped_efforts_count
     dropped_effort_rows.size
+  end
+
+  def recently_finished_efforts
+    ranked_efforts.select { |effort| effort.finished? && effort.final_absolute_time > RECENT_FINISH_THRESHOLD.ago }
+      .sort_by { |effort| -effort.final_absolute_time.to_i }.first(RECENT_FINISH_COUNT_LIMIT)
   end
 
   def events

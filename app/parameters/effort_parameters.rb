@@ -2,7 +2,7 @@
 
 class EffortParameters < BaseParameters
   def self.csv_export_attributes
-    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone scheduled_start_time_local)
+    %w(first_name last_name gender birthdate bib_number city state country phone email emergency_contact emergency_phone scheduled_start_time_local comments)
   end
 
   def self.permitted_query
@@ -26,7 +26,7 @@ class EffortParameters < BaseParameters
     [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
      :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
      :scheduled_start_offset, :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
-     split_times_attributes: [*SplitTimeParameters.permitted]]
+     :comments, split_times_attributes: [*SplitTimeParameters.permitted]]
   end
 
   def self.mapping

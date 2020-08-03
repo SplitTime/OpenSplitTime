@@ -49,7 +49,10 @@ module DropdownHelper
          active: controller_name == 'event_groups' && action_name == 'show'},
         {name: 'Stats',
          link: stats_event_group_path(view_object.event_group),
-         active: controller_name == 'event_groups' && action_name == 'stats'}
+         active: controller_name == 'event_groups' && action_name == 'stats'},
+        {name: 'Finish Line',
+         link: finish_line_event_group_path(view_object.event_group),
+         active: controller_name == 'event_groups' && action_name == 'finish_line'},
     ]
     build_dropdown_menu('Admin', dropdown_items, class: 'nav-item')
   end
@@ -251,7 +254,7 @@ module DropdownHelper
   def gender_dropdown_menu(view_object)
     dropdown_items = %w(combined male female).map do |gender|
       {name: gender.titleize,
-       link: request.params.merge(filter: {gender: gender}),
+       link: request.params.merge(filter: {gender: gender}, page: nil),
        active: view_object.gender_text == gender}
     end
     build_dropdown_menu(nil, dropdown_items, button: true)
@@ -340,11 +343,21 @@ module DropdownHelper
     icon_name = prior_or_next == :prior ? 'caret-left' : 'caret-right'
     target = view_object.send("#{prior_or_next}_#{param}")
     merge_param = target.present? ? {param => target} : {}
+    titleized_prior_or_next = prior_or_next.to_s.titleize
+    tooltip_title = "#{titleized_prior_or_next} [Ctrl-#{titleized_prior_or_next.first}]"
 
-    link_to fa_icon(icon_name, class: 'fa-lg'),
-            request.params.merge(merge_param),
-            class: 'btn btn-outline-secondary',
-            disabled: target.blank?
+    content_tag :span, data: {controller: :navigation} do
+      link_to fa_icon(icon_name, class: 'fa-lg'),
+              request.params.merge(merge_param),
+              id: "#{prior_or_next}-button",
+              class: 'btn btn-outline-secondary has-tooltip',
+              data: {action: 'keyup@document->navigation#evaluateKeyup',
+                     target: "navigation.#{prior_or_next}Button",
+                     toggle: 'tooltip',
+                     placement: :bottom,
+                     'original-title' => tooltip_title},
+              disabled: target.blank?
+    end
   end
 
   def sub_split_kind_dropdown(view_object)

@@ -3,7 +3,7 @@
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 50 # Distance (in meters) below which split locations are deemed equivalent
 
-  include Auditable, Delegable, Locatable, GuaranteedFindable, UnitConversions
+  include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -33,7 +33,10 @@ class Split < ApplicationRecord
   attribute :kind, default: :intermediate
 
   scope :ordered, -> { order(:distance_from_start) }
-  scope :with_course_name, -> { select('splits.*, courses.name as course_name').joins(:course) }
+  scope :with_course_name, -> { from(select('splits.*, courses.name as course_name').joins(:course), :splits) }
+  scope :with_policy_scope_attributes, -> do
+    from(select('splits.*, courses.organization_id, courses.concealed').joins(:course), :splits)
+  end
   scope :location_bounded_by, -> (params) { where(latitude: params[:south]..params[:north],
                                                   longitude: params[:west]..params[:east]) }
   scope :location_bounded_across_dateline, -> (params) { where(latitude: params[:south]..params[:north])

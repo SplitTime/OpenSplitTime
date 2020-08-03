@@ -175,6 +175,71 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
       end
     end
 
+    context 'when given only finish times' do
+      let(:event) { events(:ramble) }
+      let(:options) { {parent: event, time_format: :elapsed} }
+      let(:structs) { [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: 'Chris', Last_name: 'Dickey', Gender: 'male', Age: 43, State_code: 'CO', Country_code: 'US',
+                                      Finish: '0:20:05'),
+                       OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: 'Bob', Last_name: 'Cratchett', Gender: 'male', Age: 43, State_code: 'CO', Country_code: 'US',
+                                      Finish: '1:00:10'),
+                       OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: 'Michael', Last_name: "O'Connor", Gender: 'male', Age: 40, State_code: 'IL', Country_code: 'US',
+                                      Finish: '')
+      ] }
+
+      it 'does not raise an error' do
+        expect { subject.transform }.not_to raise_error
+      end
+
+      it 'transforms without error' do
+        subject.transform
+        expect(subject.errors).to be_empty
+      end
+
+      it 'returns proto_records, assigns event_id, and returns correct keys' do
+        expect(proto_records.size).to eq(structs.size)
+        expect(proto_records).to all be_a(ProtoRecord)
+
+        %i(age event_id first_name gender last_name state_code country_code).each do |expected_key|
+          expect(keys).to include(expected_key)
+        end
+
+        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+      end
+
+      context 'for a complete proto_record' do
+        let(:subject_proto_record) { proto_records.first }
+
+        it 'returns an array of children with expected attributes' do
+          time_points = event.required_time_points
+          expect(children.size).to eq(2)
+          expect(children.map(&:record_type)).to all eq(:split_time)
+          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1])
+        end
+
+        it 'assigns time attributes properly' do
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1205].map { |e| start_time + e })
+        end
+      end
+
+      context 'for another complete proto_record' do
+        let(:subject_proto_record) { proto_records.second }
+
+        it 'assigns time attributes properly' do
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 3610].map { |e| start_time + e })
+        end
+      end
+
+      context 'for a proto record that has no finish time' do
+        let(:subject_proto_record) { proto_records.last }
+        it 'does not assign a start or finish time' do
+          expect(children.size).to eq(0)
+        end
+      end
+    end
+
     context 'when an event has unlimited laps' do
       let(:options) { {parent: event} }
       let(:event) { events(:rufa_2016) }

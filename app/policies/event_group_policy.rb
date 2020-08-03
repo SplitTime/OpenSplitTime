@@ -5,12 +5,12 @@ class EventGroupPolicy < ApplicationPolicy
     def post_initialize
     end
 
-    def delegated_records
-      if user
-        scope.joins(organization: :stewardships).includes(organization: :stewardships).delegated(user.id)
-      else
-        scope.none
-      end
+    def authorized_to_edit_records
+      scope.delegated_to(user)
+    end
+
+    def authorized_to_view_records
+      scope.visible_or_delegated_to(user)
     end
   end
 
@@ -49,6 +49,10 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def stats?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def finish_line?
     user.authorized_to_edit?(event_group)
   end
 

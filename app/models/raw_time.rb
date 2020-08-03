@@ -4,12 +4,7 @@ class RawTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good]
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:questionable]]
 
-  include Auditable
-  include DataStatusMethods
-  include Delegable
-  include TimePointMethods
-  include TimeRecordable
-  include TimeZonable
+  include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, TimePointMethods, TimeRecordable, TimeZonable
 
   zonable_attribute :absolute_time
   has_paper_trail
@@ -31,6 +26,10 @@ class RawTime < ApplicationRecord
 
   validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d\*]+\z/, message: 'may contain only digits and asterisks'}
+
+  scope :with_policy_scope_attributes, -> do
+    from(select('raw_times.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :raw_times)
+  end
 
   def self.with_relation_ids(args = {})
     query = RawTimeQuery.with_relations(args)

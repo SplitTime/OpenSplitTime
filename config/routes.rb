@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   end
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Coverband::Reporters::Web.new, at: '/coverage', as: :coverage
+  end
+
   namespace :docs do
     root to: 'visitors#contents'
     get 'contents', to: 'visitors#contents'
@@ -76,6 +80,8 @@ Rails.application.routes.draw do
   resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
     member do
       get :drop_list
+      get :efforts
+      get :finish_line
       get :follow
       get :raw_times
       get :reconcile

@@ -2,8 +2,7 @@
 
 module Searchable
   extend ActiveSupport::Concern
-
-  include PgSearch
+  include PgSearch::Model
 
   included do
     pg_search_scope :search_names, against: [:first_name, :last_name], using: :dmetaphone

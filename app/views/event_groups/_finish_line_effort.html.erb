@@ -1,5 +1,11 @@
 <div class="card">
-  <% if @efforts.present? %>
+  <% if @efforts.nil? %>
+    <div class="card">
+      <h3 class="card-header"><strong><%= "Enter a bib number" %></strong></h3>
+      <div class="card-body">
+      </div>
+    </div>
+  <% elsif @efforts.present? %>
     <% effort = ::EffortRow.new(@efforts.first.enriched) %>
     <div class="card">
       <h3 class="card-header"><strong><%= "##{effort.bib_number} #{effort.full_name}" %></strong></h3>

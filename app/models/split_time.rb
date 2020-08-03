@@ -49,6 +49,8 @@ class SplitTime < ApplicationRecord
 
   before_validation :destroy_if_blank
   before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
+  after_save :sync_elapsed_seconds
+  after_destroy :sync_elapsed_seconds
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -111,6 +113,10 @@ class SplitTime < ApplicationRecord
 
   def elapsed_time=(elapsed_time)
     self.time_from_start = TimeConversion.hms_to_seconds(elapsed_time)
+  end
+
+  def elapsed_seconds=(_)
+    raise ArgumentError, "Elapsed seconds is a read-only attribute"
   end
 
   def time_from_start
@@ -200,5 +206,13 @@ class SplitTime < ApplicationRecord
   def set_matching_raw_time
     SplitTimes::MatchToRawTime.perform!(self, matching_raw_time_id)
     raise ActiveRecord::Rollback if errors.present?
+  end
+
+  def sync_elapsed_seconds
+    query = SplitTimeQuery.set_effort_elapsed_times(effort_id)
+    result = ActiveRecord::Base.connection.execute(query)
+    status = result.cmd_status
+
+    raise ::ActiveRecord::Rollback unless status.start_with?("UPDATE")
   end
 end

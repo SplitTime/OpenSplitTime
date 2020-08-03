@@ -167,6 +167,8 @@ GEM
     factory_bot_rails (5.1.1)
       factory_bot (~> 5.1.0)
       railties (>= 4.2.0)
+    faraday (1.0.1)
+      multipart-post (>= 1.2, < 3)
     ffaker (2.14.0)
     ffi (1.12.2)
     font_awesome5_rails (1.0.0)
@@ -230,6 +232,7 @@ GEM
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     multi_json (1.14.1)
+    multipart-post (2.1.1)
     netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.10)
@@ -396,6 +399,8 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    sentry-raven (3.0.0)
+      faraday (>= 1.0)
     shortener (0.8.0)
       voight_kampff (~> 1.1.2)
     sidekiq (6.0.5)
@@ -530,6 +535,7 @@ DEPENDENCIES
   scenic
   scout_apm
   selenium-webdriver
+  sentry-raven
   shortener
   sidekiq
   sidekiq-cron

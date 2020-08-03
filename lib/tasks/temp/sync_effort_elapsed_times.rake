@@ -8,19 +8,18 @@ namespace :temp do
   task :initialize_elapsed_seconds => :environment do
     puts "Initializing the elapsed_seconds column"
 
-    starting_split_times = ::SplitTime.joins(:split).where(lap: 1, bitkey: ::SubSplit::IN_BITKEY, splits: {kind: :start})
-    starting_split_times_count = starting_split_times.count
+    efforts = Effort.all
+    efforts_count = efforts.count
 
-    puts "Found #{starting_split_times_count} starting split times"
+    puts "Found #{efforts_count} efforts"
 
-    progress_bar = ::ProgressBar.new(starting_split_times_count)
+    progress_bar = ::ProgressBar.new(efforts_count)
 
-    starting_split_times.find_each do |sst|
+    efforts.find_each do |effort|
       progress_bar.increment!
-      sst.send(:sync_effort_elapsed_seconds)
-      sst.save!
+      effort.split_times.first&.send(:sync_elapsed_seconds)
     rescue ActiveRecordError => e
-      puts "Could not initialize for effort #{sst.effort_id}:"
+      puts "Could not initialize for effort #{effort.id}:"
       puts e
     end
   end

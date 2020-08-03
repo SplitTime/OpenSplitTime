@@ -40,6 +40,7 @@
     <div data-target="finish-line.result"></div>
     <hr/>
 
-    <%= render "effort_button_card", efforts: @presenter.recently_finished_efforts, title: "Recently Finished" %>
+    <%= render "effort_button_card", efforts: @presenter.recent_arrivals_at_finish, title: "Recently Finished" %>
+    <%= render "effort_button_card", efforts: @presenter.expected_arrivals_at_finish, title: "Next Expected" %>
   </div>
 </article>

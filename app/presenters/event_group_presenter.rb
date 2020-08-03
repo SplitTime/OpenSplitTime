@@ -8,6 +8,7 @@ class EventGroupPresenter < BasePresenter
   DEFAULT_DISPLAY_STYLE = 'events'
   RECENT_FINISH_THRESHOLD = 30.minutes
   RECENT_FINISH_COUNT_LIMIT = 10
+  EXPECTED_FINISH_COUNT_LIMIT = 10
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -62,9 +63,22 @@ class EventGroupPresenter < BasePresenter
     dropped_effort_rows.size
   end
 
-  def recently_finished_efforts
-    ranked_efforts.select { |effort| effort.finished? && effort.final_absolute_time > RECENT_FINISH_THRESHOLD.ago }
-      .sort_by { |effort| -effort.final_absolute_time.to_i }.first(RECENT_FINISH_COUNT_LIMIT)
+  def projected_arrivals_at_finish
+    @projected_arrivals_at_finish ||=
+      begin
+        finish_split_name = event.ordered_splits.last.parameterized_base_name
+        ::ProjectedArrivalsAtSplit.execute_query(event_group.id, finish_split_name)
+      end
+  end
+
+  def expected_arrivals_at_finish
+    projected_arrivals_at_finish.select(&:expected?).first(EXPECTED_FINISH_COUNT_LIMIT)
+  end
+
+  def recent_arrivals_at_finish
+    projected_arrivals_at_finish
+      .select { |arrival| arrival.completed? && arrival.projected_time > RECENT_FINISH_THRESHOLD.ago }
+      .first(RECENT_FINISH_COUNT_LIMIT)
   end
 
   def events

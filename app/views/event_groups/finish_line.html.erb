@@ -29,7 +29,8 @@
   <div data-controller="finish-line" data-finish-line-event-group-id="<%= @presenter.id %>">
     <div class="row">
       <div class="col">
-        <input inputmode="numeric" pattern="[0-9]*" type="text" placeholder="Bib #" style="height: 3rem; width: 10rem; font-size: 2em; font-weight: bold" data-target="finish-line.search" data-action="blur->finish-line#checkInput keyup->finish-line#checkInput">
+        <input class="input-xl" inputmode="numeric" pattern="[0-9]*" type="text" placeholder="Bib #"
+               data-target="finish-line.search" data-action="blur->finish-line#checkInput keyup->finish-line#checkInput">
       </div>
       <div class="col">
         <button class="btn btn-lg btn-primary" data-action="finish-line#checkInput">Go</button>
@@ -40,6 +41,7 @@
     <div data-target="finish-line.result"></div>
     <hr/>
 
-    <%= render "effort_button_card", efforts: @presenter.recently_finished_efforts, title: "Recently Finished" %>
+    <%= render "effort_button_card", arrivals: @presenter.recent_arrivals_at_finish, title: "Recently Finished (Finish Time)", time_zone: @presenter.home_time_zone %>
+    <%= render "effort_button_card", arrivals: @presenter.expected_arrivals_at_finish, title: "Next Expected (Projected Time)", time_zone: @presenter.home_time_zone %>
   </div>
 </article>

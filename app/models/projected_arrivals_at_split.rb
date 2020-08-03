@@ -101,7 +101,7 @@ class ProjectedArrivalsAtSplit
       select efforts.id as effort_id, first_name, last_name, bib_number, projected_time, completed, stopped
       from efforts
                join projected_times on projected_times.effort_id = efforts.id
-      order by projected_time desc
+      order by projected_time desc nulls last
     SQL
   end
 

@@ -24,16 +24,16 @@ select course_id,
        end_bitkey,
        bst.effort_id,
        bst.lap,
-       bst.absolute_time                                           as begin_time,
-       est.absolute_time                                           as end_time,
-       extract(epoch from (est.absolute_time - bst.absolute_time)) as elapsed_seconds,
+       bst.absolute_time                         as begin_time,
+       est.absolute_time                         as end_time,
+       est.elapsed_seconds - bst.elapsed_seconds as elapsed_seconds,
        case
            when bst.data_status is null or est.data_status is null
                then null
            when bst.data_status < est.data_status
                then bst.data_status
            else est.data_status
-           end                                                     as data_status
+           end                                   as data_status
 from sub_split_segments sss
          join split_times bst on bst.split_id = begin_split_id and bst.sub_split_bitkey = begin_bitkey
          join split_times est on est.split_id = end_split_id and est.sub_split_bitkey = end_bitkey and

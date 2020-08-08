@@ -4,7 +4,7 @@ hardrock_2015:
   course_id: 4
   historical_name: Hardrock 2015
   created_at: '2016-04-16 19:25:07.717306'
-  updated_at: '2019-02-21 18:03:17.186915'
+  updated_at: '2020-08-08 19:04:59.836439'
   created_by: 1
   updated_by: 1
   start_time: '2015-07-10 12:00:00'
@@ -15,12 +15,13 @@ hardrock_2015:
   short_name: 
   results_template_id: 7
   efforts_count: 30
+  notice_text: 
 ramble:
   id: 14
   course_id: 9
   historical_name: Ramble
   created_at: '2016-05-08 07:14:16.23639'
-  updated_at: '2019-02-21 18:03:17.303974'
+  updated_at: '2020-08-08 19:04:59.844186'
   created_by: 1
   updated_by: 1
   start_time: '2006-09-16 14:00:00'
@@ -31,12 +32,13 @@ ramble:
   short_name: 
   results_template_id: 7
   efforts_count: 4
+  notice_text: 
 hardrock_2014:
   id: 17
   course_id: 12
   historical_name: Hardrock 2014
   created_at: '2016-05-23 01:05:15.602165'
-  updated_at: '2019-02-21 18:03:17.319242'
+  updated_at: '2020-08-08 19:04:59.845718'
   created_by: 1
   updated_by: 1
   start_time: '2014-07-11 12:00:00'
@@ -47,12 +49,13 @@ hardrock_2014:
   short_name: 
   results_template_id: 7
   efforts_count: 19
+  notice_text: 
 rufa_2016:
   id: 34
   course_id: 20
   historical_name: RUFA 2016
   created_at: '2017-01-28 13:22:25.985588'
-  updated_at: '2019-02-21 18:03:17.337365'
+  updated_at: '2020-08-08 19:04:59.847193'
   created_by: 1
   updated_by: 1
   start_time: '2016-02-13 13:00:00'
@@ -63,12 +66,13 @@ rufa_2016:
   short_name: 
   results_template_id: 7
   efforts_count: 4
+  notice_text: 
 rufa_2017_24h:
   id: 36
   course_id: 20
   historical_name: RUFA 2017 24H
   created_at: '2017-03-28 07:18:29.860735'
-  updated_at: '2019-02-21 18:03:17.353386'
+  updated_at: '2020-08-08 19:04:59.848674'
   created_by: 1
   updated_by: 1
   start_time: '2017-02-11 13:00:00'
@@ -79,12 +83,13 @@ rufa_2017_24h:
   short_name: 24H
   results_template_id: 7
   efforts_count: 6
+  notice_text: 
 hardrock_2016:
   id: 37
   course_id: 12
   historical_name: Hardrock 2016
   created_at: '2017-04-18 08:19:16.928331'
-  updated_at: '2019-02-21 18:03:17.374999'
+  updated_at: '2020-08-08 19:04:59.850133'
   created_by: 1
   updated_by: 1
   start_time: '2016-07-15 12:00:00'
@@ -95,12 +100,13 @@ hardrock_2016:
   short_name: 
   results_template_id: 7
   efforts_count: 19
+  notice_text: 
 ggd30_50k:
   id: 48
   course_id: 26
   historical_name: GGD30 50K
   created_at: '2017-05-28 13:58:46.392428'
-  updated_at: '2019-02-21 18:03:17.390583'
+  updated_at: '2020-08-08 19:04:59.851567'
   created_by: 1
   updated_by: 1
   start_time: '2017-06-04 01:00:00'
@@ -111,12 +117,13 @@ ggd30_50k:
   short_name: 50K
   results_template_id: 7
   efforts_count: 8
+  notice_text: 
 ggd30_12m:
   id: 49
   course_id: 27
   historical_name: GGD30 12M
   created_at: '2017-06-09 09:51:15.491594'
-  updated_at: '2019-02-21 18:03:17.407428'
+  updated_at: '2020-08-08 19:04:59.852935'
   created_by: 1
   updated_by: 1
   start_time: '2017-06-04 02:00:00'
@@ -127,12 +134,13 @@ ggd30_12m:
   short_name: 12-miler
   results_template_id: 7
   efforts_count: 6
+  notice_text: 
 sum_100k:
   id: 56
   course_id: 31
   historical_name: SUM 100K
   created_at: '2018-01-18 05:09:16.764958'
-  updated_at: '2019-02-21 18:03:17.425166'
+  updated_at: '2020-08-08 19:04:59.854183'
   created_by: 1
   updated_by: 1
   start_time: '2017-09-23 13:00:00'
@@ -143,12 +151,13 @@ sum_100k:
   short_name: 100K
   results_template_id: 7
   efforts_count: 5
+  notice_text: 
 sum_55k:
   id: 57
   course_id: 32
   historical_name: SUM 55K
   created_at: '2018-01-18 05:15:20.769855'
-  updated_at: '2019-02-21 18:03:17.46438'
+  updated_at: '2020-08-08 19:04:59.856993'
   created_by: 1
   updated_by: 1
   start_time: '2017-09-23 15:00:00'
@@ -159,12 +168,13 @@ sum_55k:
   short_name: 55K
   results_template_id: 3
   efforts_count: 8
+  notice_text: 
 rufa_2017_12h:
   id: 70
   course_id: 20
   historical_name: RUFA 2017 12H
   created_at: '2019-01-30 17:38:14.220608'
-  updated_at: '2019-02-21 18:03:17.484641'
+  updated_at: '2020-08-08 19:04:59.858665'
   created_by: 1
   updated_by: 1
   start_time: '2017-02-11 14:00:00'
@@ -175,3 +185,4 @@ rufa_2017_12h:
   short_name: 12H
   results_template_id: 7
   efforts_count: 6
+  notice_text: 

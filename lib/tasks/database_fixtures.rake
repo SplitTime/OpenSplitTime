@@ -5,7 +5,18 @@
 namespace :db do
   desc 'Convert development database to Rails test fixtures'
   task to_fixtures: :environment do
-    TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations active_storage_blobs active_storage_attachments].freeze
+    TABLES_TO_SKIP = [
+      "active_storage_attachments",
+      "active_storage_blobs",
+      "ar_internal_metadata",
+      "delayed_jobs",
+      "friendly_id_slugs",
+      "locations",
+      "schema_info",
+      "schema_migrations",
+      "shortened_urls",
+      "versions",
+    ].freeze
 
     begin
       ActiveRecord::Base.establish_connection
@@ -51,7 +62,18 @@ namespace :db do
   task from_fixtures: :environment do
     process_start_time = Time.current
 
-    TABLES_TO_SKIP = %w[ar_internal_metadata delayed_jobs schema_info schema_migrations friendly_id_slugs locations active_storage_blobs active_storage_attachments versions].freeze
+    TABLES_TO_SKIP = [
+      "active_storage_attachments",
+      "active_storage_blobs",
+      "ar_internal_metadata",
+      "delayed_jobs",
+      "friendly_id_slugs",
+      "locations",
+      "schema_info",
+      "schema_migrations",
+      "shortened_urls",
+      "versions",
+    ].freeze
 
     begin
       ActiveRecord::Base.establish_connection

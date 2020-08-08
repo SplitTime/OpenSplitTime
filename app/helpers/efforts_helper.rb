@@ -29,7 +29,7 @@ module EffortsHelper
 
   def last_reported_elapsed_time(effort_row)
     if effort_row.started?
-      "#{time_format_hhmmss(effort_row.final_time_from_start)}"
+      "#{time_format_hhmmss(effort_row.final_elapsed_seconds)}"
     else
       '--'
     end

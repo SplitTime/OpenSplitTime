@@ -54,7 +54,7 @@ module Results
     end
 
     def indexed_times_from_start
-      indexed_efforts.transform_values { |effort| effort.final_time_from_start.to_i }
+      indexed_efforts.transform_values { |effort| effort.final_elapsed_seconds.to_i }
     end
 
     def total_time_from_start

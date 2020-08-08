@@ -1,5 +1,5 @@
 <div class="card">
-  <% if @efforts.nil? %>
+  <% if @efforts.nil? # No search was performed %>
     <div class="card">
       <h3 class="card-header"><strong><%= "Enter a bib number" %></strong></h3>
       <div class="card-body">
@@ -25,7 +25,7 @@
         <h4 class="card-text"><%= effort.comments %></h4>
       </div>
     </div>
-  <% else %>
+  <% else # @efforts == []; Empty search result %>
     <div class="card">
       <h3 class="card-header"><strong><%= "Not Found" %></strong></h3>
       <div class="card-body">

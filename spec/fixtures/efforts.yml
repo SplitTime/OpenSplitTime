@@ -28,6 +28,7 @@ hardrock_2015_tuan_jacobs:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_erich_larson:
   id: 8
   event_id: 4
@@ -57,6 +58,7 @@ hardrock_2015_erich_larson:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_leif_carter:
   id: 15
   event_id: 4
@@ -86,6 +88,7 @@ hardrock_2015_leif_carter:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_carmine_adams:
   id: 20
   event_id: 4
@@ -115,6 +118,7 @@ hardrock_2015_carmine_adams:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_garry_kuhlman:
   id: 24
   event_id: 4
@@ -144,6 +148,7 @@ hardrock_2015_garry_kuhlman:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_darius_jacobson:
   id: 25
   event_id: 4
@@ -173,6 +178,7 @@ hardrock_2015_darius_jacobson:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_santa_green:
   id: 29
   event_id: 4
@@ -202,6 +208,7 @@ hardrock_2015_santa_green:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_gilberto_mckenzie:
   id: 31
   event_id: 4
@@ -231,6 +238,7 @@ hardrock_2015_gilberto_mckenzie:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_vince_willms:
   id: 47
   event_id: 4
@@ -260,6 +268,7 @@ hardrock_2015_vince_willms:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_cedric_windler:
   id: 50
   event_id: 4
@@ -289,6 +298,7 @@ hardrock_2015_cedric_windler:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_chris_rempel:
   id: 56
   event_id: 4
@@ -318,6 +328,7 @@ hardrock_2015_chris_rempel:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_robby_gerlach:
   id: 57
   event_id: 4
@@ -347,6 +358,7 @@ hardrock_2015_robby_gerlach:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_rachelle_eichmann:
   id: 59
   event_id: 4
@@ -376,6 +388,7 @@ hardrock_2015_rachelle_eichmann:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_elden_morissette:
   id: 61
   event_id: 4
@@ -405,6 +418,7 @@ hardrock_2015_elden_morissette:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_leroy_leffler:
   id: 63
   event_id: 4
@@ -434,6 +448,7 @@ hardrock_2015_leroy_leffler:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_samara_vandervort:
   id: 73
   event_id: 4
@@ -463,6 +478,7 @@ hardrock_2015_samara_vandervort:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_robt_wintheiser:
   id: 94
   event_id: 4
@@ -492,6 +508,7 @@ hardrock_2015_robt_wintheiser:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_demetrius_moen:
   id: 96
   event_id: 4
@@ -521,6 +538,7 @@ hardrock_2015_demetrius_moen:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_vern_buckridge:
   id: 105
   event_id: 4
@@ -550,6 +568,7 @@ hardrock_2015_vern_buckridge:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_donte_spencer:
   id: 112
   event_id: 4
@@ -579,6 +598,7 @@ hardrock_2015_donte_spencer:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_bruno_fadel:
   id: 116
   event_id: 4
@@ -608,6 +628,7 @@ hardrock_2015_bruno_fadel:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_gus_walker:
   id: 117
   event_id: 4
@@ -637,6 +658,7 @@ hardrock_2015_gus_walker:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_susanna_abshire:
   id: 121
   event_id: 4
@@ -666,6 +688,7 @@ hardrock_2015_susanna_abshire:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_leandro_cole:
   id: 125
   event_id: 4
@@ -695,6 +718,7 @@ hardrock_2015_leandro_cole:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_benedict_davis:
   id: 129
   event_id: 4
@@ -724,6 +748,7 @@ hardrock_2015_benedict_davis:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_raphael_swift:
   id: 136
   event_id: 4
@@ -753,6 +778,7 @@ hardrock_2015_raphael_swift:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_bad_status:
   id: 138
   event_id: 4
@@ -782,6 +808,7 @@ hardrock_2015_bad_status:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_irvin_harber:
   id: 141
   event_id: 4
@@ -811,6 +838,7 @@ hardrock_2015_irvin_harber:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_cassondra_nienow:
   id: 155
   event_id: 4
@@ -840,6 +868,7 @@ hardrock_2015_cassondra_nienow:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2015_donn_mckenzie:
   id: 158
   event_id: 4
@@ -869,6 +898,7 @@ hardrock_2015_donn_mckenzie:
   emergency_phone: 
   scheduled_start_time: '2015-07-10 12:00:00'
   topic_resource_key: 
+  comments: 
 ramble_finished_first:
   id: 1040
   event_id: 14
@@ -898,6 +928,7 @@ ramble_finished_first:
   emergency_phone: 
   scheduled_start_time: '2006-09-16 14:00:00'
   topic_resource_key: 
+  comments: 
 ramble_finished_second:
   id: 1048
   event_id: 14
@@ -927,6 +958,7 @@ ramble_finished_second:
   emergency_phone: 
   scheduled_start_time: '2006-09-16 14:00:00'
   topic_resource_key: 
+  comments: 
 ramble_start_only:
   id: 1051
   event_id: 14
@@ -956,6 +988,7 @@ ramble_start_only:
   emergency_phone: 
   scheduled_start_time: '2006-09-16 14:00:00'
   topic_resource_key: 
+  comments: 
 ramble_not_started:
   id: 1061
   event_id: 14
@@ -985,6 +1018,7 @@ ramble_not_started:
   emergency_phone: 
   scheduled_start_time: '2006-09-16 14:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_finished_first:
   id: 4172
   event_id: 17
@@ -1014,6 +1048,7 @@ hardrock_2014_finished_first:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_finished_with_stop:
   id: 4173
   event_id: 17
@@ -1043,6 +1078,7 @@ hardrock_2014_finished_with_stop:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_finished_without_stop:
   id: 4174
   event_id: 17
@@ -1072,6 +1108,7 @@ hardrock_2014_finished_without_stop:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_claudio_wunsch:
   id: 4192
   event_id: 17
@@ -1101,6 +1138,7 @@ hardrock_2014_claudio_wunsch:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_paul_predovic:
   id: 4199
   event_id: 17
@@ -1130,6 +1168,7 @@ hardrock_2014_paul_predovic:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_keith_metz:
   id: 4206
   event_id: 17
@@ -1159,6 +1198,7 @@ hardrock_2014_keith_metz:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_major_green:
   id: 4207
   event_id: 17
@@ -1188,6 +1228,7 @@ hardrock_2014_major_green:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_humberto_adams:
   id: 4221
   event_id: 17
@@ -1217,6 +1258,7 @@ hardrock_2014_humberto_adams:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_omer_yundt:
   id: 4246
   event_id: 17
@@ -1246,6 +1288,7 @@ hardrock_2014_omer_yundt:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_pat_schaden:
   id: 4247
   event_id: 17
@@ -1275,6 +1318,7 @@ hardrock_2014_pat_schaden:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_clarence_goyette:
   id: 4249
   event_id: 17
@@ -1304,6 +1348,7 @@ hardrock_2014_clarence_goyette:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_irvin_corkery:
   id: 4251
   event_id: 17
@@ -1333,6 +1378,7 @@ hardrock_2014_irvin_corkery:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_willis_murray:
   id: 4253
   event_id: 17
@@ -1362,6 +1408,7 @@ hardrock_2014_willis_murray:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_ken_bradtke:
   id: 4256
   event_id: 17
@@ -1391,6 +1438,7 @@ hardrock_2014_ken_bradtke:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_progress_sherman:
   id: 4277
   event_id: 17
@@ -1420,6 +1468,7 @@ hardrock_2014_progress_sherman:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_multiple_stops:
   id: 4293
   event_id: 17
@@ -1449,6 +1498,7 @@ hardrock_2014_multiple_stops:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_without_start:
   id: 4294
   event_id: 17
@@ -1478,6 +1528,7 @@ hardrock_2014_without_start:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_drop_ouray:
   id: 4295
   event_id: 17
@@ -1507,6 +1558,7 @@ hardrock_2014_drop_ouray:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2014_not_started:
   id: 4302
   event_id: 17
@@ -1536,6 +1588,7 @@ hardrock_2014_not_started:
   emergency_phone: 
   scheduled_start_time: '2014-07-11 12:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2016_finished_first:
   id: 6518
   event_id: 34
@@ -1565,6 +1618,7 @@ rufa_2016_finished_first:
   emergency_phone: 
   scheduled_start_time: '2016-02-13 13:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2016_finished_second:
   id: 6520
   event_id: 34
@@ -1594,6 +1648,7 @@ rufa_2016_finished_second:
   emergency_phone: 
   scheduled_start_time: '2016-02-13 13:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2016_progress_lap1:
   id: 6560
   event_id: 34
@@ -1623,6 +1678,7 @@ rufa_2016_progress_lap1:
   emergency_phone: 
   scheduled_start_time: '2016-02-13 13:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2016_not_started:
   id: 6561
   event_id: 34
@@ -1652,6 +1708,7 @@ rufa_2016_not_started:
   emergency_phone: 
   scheduled_start_time: '2016-02-13 15:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_finished_first:
   id: 6693
   event_id: 36
@@ -1681,6 +1738,7 @@ rufa_2017_24h_finished_first:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 13:10:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_progress_lap6:
   id: 6695
   event_id: 36
@@ -1710,6 +1768,7 @@ rufa_2017_24h_progress_lap6:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_multiple_stops:
   id: 6756
   event_id: 36
@@ -1739,6 +1798,7 @@ rufa_2017_24h_multiple_stops:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_finished_last:
   id: 6780
   event_id: 36
@@ -1768,6 +1828,7 @@ rufa_2017_24h_finished_last:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 15:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_not_started:
   id: 6782
   event_id: 36
@@ -1797,6 +1858,7 @@ rufa_2017_24h_not_started:
   emergency_phone: 
   scheduled_start_time: '2017-02-12 01:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_24h_progress_lap1:
   id: 6805
   event_id: 36
@@ -1826,6 +1888,7 @@ rufa_2017_24h_progress_lap1:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 16:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_lavon_paucek:
   id: 7270
   event_id: 37
@@ -1855,6 +1918,7 @@ hardrock_2016_lavon_paucek:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_vesta_borer:
   id: 7284
   event_id: 37
@@ -1884,6 +1948,7 @@ hardrock_2016_vesta_borer:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_kory_kulas:
   id: 7289
   event_id: 37
@@ -1913,6 +1978,7 @@ hardrock_2016_kory_kulas:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_shad_hirthe:
   id: 7297
   event_id: 37
@@ -1942,6 +2008,7 @@ hardrock_2016_shad_hirthe:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_douglas_vandervort:
   id: 7302
   event_id: 37
@@ -1971,6 +2038,7 @@ hardrock_2016_douglas_vandervort:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_missing_telluride_out:
   id: 7308
   event_id: 37
@@ -2000,6 +2068,7 @@ hardrock_2016_missing_telluride_out:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_junior_lesch:
   id: 7311
   event_id: 37
@@ -2029,6 +2098,7 @@ hardrock_2016_junior_lesch:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_eddy_goldner:
   id: 7315
   event_id: 37
@@ -2058,6 +2128,7 @@ hardrock_2016_eddy_goldner:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_progress_sherman:
   id: 7328
   event_id: 37
@@ -2087,6 +2158,7 @@ hardrock_2016_progress_sherman:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_benito_moen:
   id: 7337
   event_id: 37
@@ -2116,6 +2188,7 @@ hardrock_2016_benito_moen:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_kendall_koch:
   id: 7340
   event_id: 37
@@ -2145,6 +2218,7 @@ hardrock_2016_kendall_koch:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_charlie_mueller:
   id: 7343
   event_id: 37
@@ -2174,6 +2248,7 @@ hardrock_2016_charlie_mueller:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_brinda_fisher:
   id: 7376
   event_id: 37
@@ -2203,6 +2278,7 @@ hardrock_2016_brinda_fisher:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_rene_mclaughlin:
   id: 7380
   event_id: 37
@@ -2232,6 +2308,7 @@ hardrock_2016_rene_mclaughlin:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_dropped_grouse:
   id: 7396
   event_id: 37
@@ -2261,6 +2338,7 @@ hardrock_2016_dropped_grouse:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_mervin_smitham:
   id: 7400
   event_id: 37
@@ -2290,6 +2368,7 @@ hardrock_2016_mervin_smitham:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_rhett_auer:
   id: 7404
   event_id: 37
@@ -2319,6 +2398,7 @@ hardrock_2016_rhett_auer:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_hoyt_macejkovic:
   id: 7407
   event_id: 37
@@ -2348,6 +2428,7 @@ hardrock_2016_hoyt_macejkovic:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 hardrock_2016_start_only:
   id: 7411
   event_id: 37
@@ -2377,6 +2458,7 @@ hardrock_2016_start_only:
   emergency_phone: 
   scheduled_start_time: '2016-07-15 12:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_finished_first:
   id: 15626
   event_id: 48
@@ -2406,6 +2488,7 @@ ggd30_50k_finished_first:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_bad_finish:
   id: 15664
   event_id: 48
@@ -2435,6 +2518,7 @@ ggd30_50k_bad_finish:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_progress_aid4:
   id: 15891
   event_id: 48
@@ -2464,6 +2548,7 @@ ggd30_50k_progress_aid4:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_progress_aid3:
   id: 15901
   event_id: 48
@@ -2493,6 +2578,7 @@ ggd30_50k_progress_aid3:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_drop_aid4:
   id: 15931
   event_id: 48
@@ -2522,6 +2608,7 @@ ggd30_50k_drop_aid4:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_start_only:
   id: 16023
   event_id: 48
@@ -2551,6 +2638,7 @@ ggd30_50k_start_only:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_50k_not_started:
   id: 16032
   event_id: 48
@@ -2580,6 +2668,7 @@ ggd30_50k_not_started:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 13:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_12m_start_only:
   id: 16094
   event_id: 49
@@ -2609,6 +2698,7 @@ ggd30_12m_start_only:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_12m_finished_second:
   id: 16107
   event_id: 49
@@ -2638,6 +2728,7 @@ ggd30_12m_finished_second:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_12m_finished_first:
   id: 16173
   event_id: 49
@@ -2667,6 +2758,7 @@ ggd30_12m_finished_first:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
   topic_resource_key: 
+  comments: 
 ggd30_12m_not_started:
   id: 16209
   event_id: 49
@@ -2696,6 +2788,7 @@ ggd30_12m_not_started:
   emergency_phone: 
   scheduled_start_time: '2017-06-03 16:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_finished_first:
   id: 16227
   event_id: 57
@@ -2725,6 +2818,7 @@ sum_55k_finished_first:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_finished_second:
   id: 16229
   event_id: 57
@@ -2754,6 +2848,7 @@ sum_55k_finished_second:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_not_started:
   id: 16242
   event_id: 57
@@ -2783,6 +2878,7 @@ sum_55k_not_started:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_progress_rolling:
   id: 16244
   event_id: 57
@@ -2812,6 +2908,7 @@ sum_55k_progress_rolling:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_drop_bandera:
   id: 16245
   event_id: 57
@@ -2841,6 +2938,7 @@ sum_55k_drop_bandera:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_55k_start_only:
   id: 16246
   event_id: 57
@@ -2870,6 +2968,7 @@ sum_55k_start_only:
   emergency_phone: 
   scheduled_start_time: '2017-10-07 15:00:00'
   topic_resource_key: 
+  comments: 
 sum_100k_drop_anvil:
   id: 16247
   event_id: 56
@@ -2899,6 +2998,7 @@ sum_100k_drop_anvil:
   emergency_phone: 
   scheduled_start_time: '2017-09-23 13:00:00'
   topic_resource_key: 
+  comments: 
 sum_100k_progress_cascade:
   id: 16248
   event_id: 56
@@ -2928,6 +3028,7 @@ sum_100k_progress_cascade:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_finished_first:
   id: 16643
   event_id: 70
@@ -2957,6 +3058,7 @@ rufa_2017_12h_finished_first:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_finished_lap6:
   id: 16648
   event_id: 70
@@ -2986,6 +3088,7 @@ rufa_2017_12h_finished_lap6:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_progress_lap5_partial:
   id: 16657
   event_id: 70
@@ -3015,6 +3118,7 @@ rufa_2017_12h_progress_lap5_partial:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_progress_lap2:
   id: 16663
   event_id: 70
@@ -3044,6 +3148,7 @@ rufa_2017_12h_progress_lap2:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_start_only:
   id: 16667
   event_id: 70
@@ -3073,6 +3178,7 @@ rufa_2017_12h_start_only:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 rufa_2017_12h_not_started:
   id: 16673
   event_id: 70
@@ -3102,6 +3208,7 @@ rufa_2017_12h_not_started:
   emergency_phone: 
   scheduled_start_time: '2017-02-11 14:00:00'
   topic_resource_key: 
+  comments: 
 sum_100k_un_started:
   id: 16683
   event_id: 56
@@ -3131,6 +3238,7 @@ sum_100k_un_started:
   emergency_phone: 
   scheduled_start_time: '2017-09-23 13:00:00'
   topic_resource_key: 
+  comments: 
 sum_100k_on_dst_change:
   id: 16684
   event_id: 56
@@ -3160,6 +3268,7 @@ sum_100k_on_dst_change:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 sum_100k_across_dst_change:
   id: 16685
   event_id: 56
@@ -3189,6 +3298,7 @@ sum_100k_across_dst_change:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 ggd30_50k_finished_second:
   id: 16686
   event_id: 48
@@ -3218,6 +3328,7 @@ ggd30_50k_finished_second:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 ggd30_12m_series_finisher:
   id: 16687
   event_id: 49
@@ -3247,6 +3358,7 @@ ggd30_12m_series_finisher:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 sum_55k_series_finisher:
   id: 16688
   event_id: 57
@@ -3276,6 +3388,7 @@ sum_55k_series_finisher:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 sum_55k_slow_finisher:
   id: 16689
   event_id: 57
@@ -3305,6 +3418,7 @@ sum_55k_slow_finisher:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 
 ggd30_12m_slow_finisher:
   id: 16690
   event_id: 49
@@ -3334,3 +3448,4 @@ ggd30_12m_slow_finisher:
   emergency_phone: 
   scheduled_start_time: 
   topic_resource_key: 
+  comments: 

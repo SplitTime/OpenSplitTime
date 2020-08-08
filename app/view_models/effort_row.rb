@@ -10,7 +10,7 @@ class EffortRow < SimpleDelegator
   end
 
   def final_day_and_time
-    final_absolute_time.in_time_zone(home_time_zone)
+    final_absolute_time&.in_time_zone(home_time_zone)
   end
 
   alias_method :final_absolute_time_local, :final_day_and_time

@@ -1,5 +1,6 @@
 <div class="card">
-  <% if @efforts.nil? # No search was performed %>
+  <% if @efforts.nil?
+       # No search was performed %>
     <div class="card">
       <h3 class="card-header"><strong><%= "Enter a bib number" %></strong></h3>
       <div class="card-body">
@@ -13,7 +14,9 @@
         <h4 class="card-text"><%= effort.bio %></h4>
         <h4 class="card-text"><%= effort.flexible_geolocation %></h4>
         <hr/>
-        <h4 class="card-text"><%= "Last recorded at: #{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %></h4>
+        <% if effort.final_absolute_time %>
+          <h4 class="card-text"><%= "Last recorded at: #{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %></h4>
+        <% end %>
         <h4 class="card-text"><%= "Status: #{effort.effort_status}" %></h4>
         <h4 class="card-text"><%= "Overall rank at #{effort.final_split_name}: #{effort.overall_rank}" %></h4>
         <h4 class="card-text"><%= "Gender rank at #{effort.final_split_name}: #{effort.gender_rank}" %></h4>
@@ -25,7 +28,8 @@
         <h4 class="card-text"><%= effort.comments %></h4>
       </div>
     </div>
-  <% else # @efforts == []; Empty search result %>
+  <% else
+       # @efforts == []; Empty search result %>
     <div class="card">
       <h3 class="card-header"><strong><%= "Not Found" %></strong></h3>
       <div class="card-body">

@@ -58,7 +58,7 @@ class EffortQuery < BaseQuery
                            split_times.absolute_time                                   as final_absolute_time,
                            sst.absolute_time                                           as actual_start_time,
                            extract(epoch from (sst.absolute_time - events.start_time)) as start_offset,
-                           extract(epoch from (split_times.absolute_time - sst.absolute_time)) as final_time_from_start,
+                           split_times.elapsed_seconds                                 as final_elapsed_seconds,
                            split_times.id                                              as final_split_time_id,
                            stopped_split_time_id,
                            stopped_lap,
@@ -132,7 +132,7 @@ class EffortQuery < BaseQuery
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_time_from_start,
+                                       final_elapsed_seconds,
                                        gender desc,
                                        age desc)
                            else null end
@@ -146,7 +146,7 @@ class EffortQuery < BaseQuery
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_time_from_start,
+                                       final_elapsed_seconds,
                                        gender desc,
                                        age desc)
                            else null end
@@ -158,7 +158,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_time_from_start,
+                               final_elapsed_seconds,
                                gender desc,
                                age desc)
                            as prior_effort_id,
@@ -169,7 +169,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_time_from_start,
+                               final_elapsed_seconds,
                                gender desc,
                                age desc)
                            as next_effort_id

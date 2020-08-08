@@ -56,7 +56,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def farthest_recorded_time
-    effort.final_time_from_start
+    effort.final_elapsed_seconds
   end
 
   def farthest_recorded_split_name

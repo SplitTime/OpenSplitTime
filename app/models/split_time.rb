@@ -50,7 +50,9 @@ class SplitTime < ApplicationRecord
   before_validation :destroy_if_blank
   before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
   after_save :sync_elapsed_seconds
+  after_save :set_effort_segments
   after_destroy :sync_elapsed_seconds
+  after_destroy :delete_effort_segments
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -201,6 +203,16 @@ class SplitTime < ApplicationRecord
 
   def destroy_if_blank
     self.destroy if elapsed_time == ''
+  end
+
+  def delete_effort_segments
+    result = EffortSegment.delete_for_split_time(self)
+    raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
+  end
+
+  def set_effort_segments
+    result = EffortSegment.set_for_split_time(self)
+    raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("INSERT")
   end
 
   def set_matching_raw_time

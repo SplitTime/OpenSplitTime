@@ -206,19 +206,13 @@ class SplitTime < ApplicationRecord
   end
 
   def destroy_effort_segments
-    query = EffortSegmentQuery.destroy_for_split_time(self)
-    result = ActiveRecord::Base.connection.execute(query)
-    status = result.cmd_status
-
-    raise ::ActiveRecord::Rollback unless status.start_with?("DELETE")
+    result = EffortSegment.destroy_for_split_time(self)
+    raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
   end
 
   def set_effort_segments
-    query = EffortSegmentQuery.set_for_split_time(self)
-    result = ActiveRecord::Base.connection.execute(query)
-    status = result.cmd_status
-
-    raise ::ActiveRecord::Rollback unless status.start_with?("INSERT")
+    result = EffortSegment.set_for_split_time(self)
+    raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("INSERT")
   end
 
   def set_matching_raw_time

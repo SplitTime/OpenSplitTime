@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_09_072259) do
+ActiveRecord::Schema.define(version: 2020_08_09_074801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -61,6 +61,24 @@ ActiveRecord::Schema.define(version: 2020_08_09_072259) do
     t.boolean "concealed"
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
+  end
+
+  create_table "effort_segments", id: false, force: :cascade do |t|
+    t.integer "course_id"
+    t.integer "begin_split_id"
+    t.integer "begin_bitkey"
+    t.integer "end_split_id"
+    t.integer "end_bitkey"
+    t.integer "effort_id"
+    t.integer "lap"
+    t.datetime "begin_time"
+    t.datetime "end_time"
+    t.integer "elapsed_seconds"
+    t.integer "data_status"
+    t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey", "effort_id", "lap"], name: "index_effort_segments_on_unique_attributes", unique: true
+    t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey"], name: "index_effort_segments_on_sub_splits"
+    t.index ["course_id"], name: "index_effort_segments_on_course_id"
+    t.index ["effort_id"], name: "index_effort_segments_on_effort_id"
   end
 
   create_table "efforts", id: :serial, force: :cascade do |t|

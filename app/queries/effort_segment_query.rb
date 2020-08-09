@@ -63,7 +63,7 @@ class EffortSegmentQuery < BaseQuery
     SQL
   end
 
-  def self.destroy_for_effort(effort)
+  def self.delete_for_effort(effort)
     <<~SQL.squish
       delete
       from effort_segments
@@ -71,7 +71,7 @@ class EffortSegmentQuery < BaseQuery
     SQL
   end
 
-  def self.destroy_for_split_time(split_time)
+  def self.delete_for_split_time(split_time)
     effort_id = split_time.effort_id
     lap = split_time.lap
     split_id = split_time.split_id

@@ -276,8 +276,8 @@ class Effort < ApplicationRecord
     @template_age || age
   end
 
-  def destroy_effort_segments
-    result = EffortSegment.destroy_for_effort(self)
+  def delete_effort_segments
+    result = EffortSegment.delete_for_effort(self)
     raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
   end
 

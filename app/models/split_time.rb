@@ -52,7 +52,7 @@ class SplitTime < ApplicationRecord
   after_save :sync_elapsed_seconds
   after_save :set_effort_segments
   after_destroy :sync_elapsed_seconds
-  after_destroy :destroy_effort_segments
+  after_destroy :delete_effort_segments
 
   validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
@@ -205,8 +205,8 @@ class SplitTime < ApplicationRecord
     self.destroy if elapsed_time == ''
   end
 
-  def destroy_effort_segments
-    result = EffortSegment.destroy_for_split_time(self)
+  def delete_effort_segments
+    result = EffortSegment.delete_for_split_time(self)
     raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
   end
 

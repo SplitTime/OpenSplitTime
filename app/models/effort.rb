@@ -276,6 +276,22 @@ class Effort < ApplicationRecord
     @template_age || age
   end
 
+  def destroy_effort_segments
+    query = EffortSegmentQuery.destroy_for_effort(self)
+    result = ActiveRecord::Base.connection.execute(query)
+    status = result.cmd_status
+
+    raise ::ActiveRecord::Rollback unless status.start_with?("DELETE")
+  end
+
+  def set_effort_segments
+    query = EffortSegmentQuery.set_for_effort(self)
+    result = ActiveRecord::Base.connection.execute(query)
+    status = result.cmd_status
+
+    raise ::ActiveRecord::Rollback unless status.start_with?("INSERT")
+  end
+
   # Methods related to stopped split_time
 
   # Uses a reverse sort in order to get the most recent stopped_here split_time

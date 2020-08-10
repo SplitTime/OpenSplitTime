@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_09_074801) do
+ActiveRecord::Schema.define(version: 2020_08_10_043401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -494,4 +494,42 @@ ActiveRecord::Schema.define(version: 2020_08_09_074801) do
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"
+
+  create_view "best_effort_segments", sql_definition: <<-SQL
+      WITH completed_lap_subquery AS (
+           SELECT DISTINCT ON (split_times.effort_id) split_times.effort_id,
+                  CASE
+                      WHEN (splits.kind = 1) THEN split_times.lap
+                      ELSE (split_times.lap - 1)
+                  END AS completed_laps
+             FROM (split_times
+               JOIN splits ON ((splits.id = split_times.split_id)))
+            ORDER BY split_times.effort_id, split_times.lap DESC, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC
+          )
+   SELECT es.effort_id,
+      e.first_name,
+      e.last_name,
+      e.bib_number,
+      e.city,
+      e.state_code,
+      e.country_code,
+      e.age,
+      e.gender,
+      e.slug,
+      es.begin_split_id,
+      es.begin_bitkey,
+      es.end_split_id,
+      es.end_bitkey,
+      es.lap,
+      es.begin_time,
+      es.elapsed_seconds,
+      eg.home_time_zone,
+      (ev.laps_required <> 1) AS multiple_laps,
+      (cls.completed_laps >= ev.laps_required) AS finished
+     FROM ((((efforts e
+       JOIN effort_segments es ON ((es.effort_id = e.id)))
+       JOIN events ev ON ((ev.id = e.event_id)))
+       JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
+       JOIN completed_lap_subquery cls ON ((cls.effort_id = e.id)));
+  SQL
 end

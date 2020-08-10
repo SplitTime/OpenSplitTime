@@ -18,6 +18,10 @@ namespace :db do
       "versions",
     ].freeze
 
+    PRIMARY_KEY_MAP = {
+      "effort_segments" => "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap"
+    }
+
     begin
       ActiveRecord::Base.establish_connection
       ActiveRecord::Base.connection.tables.each do |table_name|
@@ -26,7 +30,8 @@ namespace :db do
         counter = 0
         file_path = "#{Rails.root}/spec/fixtures/#{table_name}.yml"
         File.open(file_path, 'w') do |file|
-          rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY id")
+          primary_key = PRIMARY_KEY_MAP[table_name] || "id"
+          rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{primary_key}")
           data = rows.each_with_object({}) do |record, hash|
             suffix = if record['id'].blank?
                        counter += 1

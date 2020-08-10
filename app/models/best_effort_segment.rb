@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class BestEffortSegment < ::ApplicationRecord
-  include DatabaseRankable, PersonalInfo
+  include DatabaseRankable, PersonalInfo, TimeZonable
 
   enum gender: [:male, :female]
+
+  zonable_attribute :begin_time
 
   scope :for_efforts, -> (efforts) { where(effort_id: efforts) }
   scope :over_segment, -> (segment) do
@@ -19,6 +21,6 @@ class BestEffortSegment < ::ApplicationRecord
 
   def year_and_lap
     lap_string = multiple_laps? ? "Lap #{lap}" : nil
-    [begin_time.in_time_zone(home_time_zone).year, lap_string].compact.join(" / ")
+    [begin_time_local.year, lap_string].compact.join(" / ")
   end
 end

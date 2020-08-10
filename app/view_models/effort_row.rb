@@ -15,10 +15,6 @@ class EffortRow < SimpleDelegator
 
   alias_method :final_absolute_time_local, :final_day_and_time
 
-  def year_and_lap
-    multiple_laps? ? "#{segment_start_time.year} / Lap #{lap}" : "#{segment_start_time.year}"
-  end
-
   def ultrasignup_finish_status
     ULTRASIGNUP_STATUS_TABLE[effort_status] || "#{name} (id: #{id}, bib: #{bib_number}) is in progress"
   end

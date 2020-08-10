@@ -16,6 +16,9 @@ RSpec.describe 'Visit the best efforts page and search for an effort' do
   let(:effort_1) { event.efforts.ranked_with_status.first }
   let(:other_efforts) { event.efforts.where.not(id: effort_1.id) }
 
+  before(:all) { EffortSegment.set_all }
+  after(:all) { EffortSegment.delete_all }
+
   scenario 'Visitor visits the page and searches for a name' do
     visit best_efforts_course_path(course)
 

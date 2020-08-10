@@ -15,19 +15,19 @@
   </tr>
   </thead>
   <tbody>
-  <% presenter.effort_rows.each do |effort_row| %>
+  <% presenter.filtered_segments.each do |segment| %>
       <tr>
         <td>
-          <%= "#{effort_row.overall_rank}/#{effort_row.gender_rank}" %>
+          <%= "#{segment.overall_rank}/#{segment.gender_rank}" %>
         </td>
-        <td><strong><%= link_to effort_row.full_name, effort_path(effort_row) %></strong></td>
-        <td><%= effort_row.bio_historic %></td>
-        <td><%= effort_row.flexible_geolocation %></td>
-        <td><%= effort_row.year_and_lap %></td>
+        <td><strong><%= link_to segment.full_name, effort_path(segment) %></strong></td>
+        <td><%= segment.bio_historic %></td>
+        <td><%= segment.flexible_geolocation %></td>
+        <td><%= segment.year_and_lap %></td>
         <% unless presenter.segment_ends_at_finish? %>
-          <td class="text-center"><%= humanize_boolean(effort_row.finished?) %></td>
+          <td class="text-center"><%= humanize_boolean(segment.finished?) %></td>
         <% end %>
-        <td class="text-right"><%= effort_row.segment_duration %></td>
+        <td class="text-right"><%= ::TimeConversion.seconds_to_hms(segment.elapsed_seconds) %></td>
       </tr>
   <% end %>
   </tbody>

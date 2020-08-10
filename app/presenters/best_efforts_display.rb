@@ -13,25 +13,18 @@ class BestEffortsDisplay < BasePresenter
     @current_user = current_user
   end
 
-  def filtered_efforts
-    all_efforts.over_segment(segment).unscope(:where, :joins)
-      .where(filter_hash).search(search_text)
-      .paginate(page: page, per_page: per_page, total_entries: filtered_efforts_count)
+  def filtered_segments
+    BestEffortSegment.from(ranked_segments, :best_effort_segments)
+      .where(effort_id: filtered_efforts)
+      .paginate(page: page, per_page: per_page)
   end
 
-  # This method duplicates some code from filtered_efforts, but it allows us to do a very
-  # inexpensive count of records instead of running the expensive over_segment subquery
-  # twice, once just to get the count.
-  def filtered_efforts_count
-    @filtered_efforts_count ||= all_efforts.where(filter_hash).search(search_text).count
+  def filtered_segments_count
+    @filtered_segments_count ||= filtered_segments.count
   end
 
   def all_efforts_count
-    all_efforts.count
-  end
-
-  def effort_rows
-    @effort_rows ||= filtered_efforts.map { |effort| EffortRow.new(effort) }
+    @all_efforts_count ||= all_efforts.count
   end
 
   def segment_name
@@ -39,7 +32,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def events_count
-    events.size
+    @events_count ||= events.size
   end
 
   def earliest_event_date
@@ -52,10 +45,6 @@ class BestEffortsDisplay < BasePresenter
 
   def most_recent_event
     events.select { |event| event.start_time < Time.now }.sort_by(&:start_time).last
-  end
-
-  def title_text
-    "#{gender_text.upcase} • #{segment_name.upcase}"
   end
 
   def time_header_text
@@ -75,11 +64,11 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def split1
-    params[:split1] || ordered_splits.first.to_param
+    split_1_id || ordered_splits.first.to_param
   end
 
   def split2
-    params[:split2] || ordered_splits.last.to_param
+    split_2_id || ordered_splits.last.to_param
   end
 
   private
@@ -114,7 +103,20 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def all_efforts
-    @all_efforts ||= Effort.where(event: events)
+    Effort.where(event: events)
+  end
+
+  def filtered_efforts
+    all_efforts.where(filter_hash).search(search_text)
+  end
+
+  def all_segments
+    BestEffortSegment.over_segment(segment).for_efforts(all_efforts)
+  end
+
+  def ranked_segments
+    BestEffortSegment.from(all_segments, :best_effort_segments)
+      .with_overall_and_gender_rank(:elapsed_seconds)
   end
 
   def per_page

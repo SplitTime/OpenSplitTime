@@ -1,0 +1,34 @@
+<div data-controller="infinite-scroll"
+     data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
+     data-infinite-scroll-html-template="best_effort_segments/rows">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>
+        Overall/<br>Gender
+      </th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>From</th>
+      <th>Year</th>
+      <% unless @presenter.segment_ends_at_finish? %>
+        <th class="text-center">Finished?</th>
+      <% end %>
+      <th class="text-right"><%= @presenter.time_header_text %></th>
+    </tr>
+    </thead>
+    <tbody data-target="infinite-scroll.result">
+    <%= render "best_effort_segments/rows", segments: @presenter.filtered_segments %>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col text-center" data-target="infinite-scroll.link">
+      <% if @presenter.filtered_segments_count == @presenter.per_page %>
+        <%= link_to "Show More", "#", data: {action: "infinite-scroll#load"} %>
+      <% else %>
+        <p>End of List</p>
+      <% end %>
+    </div>
+  </div>
+</div>

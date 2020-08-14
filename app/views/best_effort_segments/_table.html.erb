@@ -1,0 +1,20 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>
+      Overall/<br>Gender
+    </th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>From</th>
+    <th>Year</th>
+    <% unless presenter.segment_ends_at_finish? %>
+      <th class="text-center">Finished?</th>
+    <% end %>
+    <th class="text-right"><%= presenter.time_header_text %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render "best_effort_segments/rows", segments: presenter.filtered_segments %>
+  </tbody>
+</table>

@@ -15,6 +15,10 @@ class BestEffortSegment < ::ApplicationRecord
           end_bitkey: segment.end_bitkey)
   end
 
+  def ends_at_finish?
+    end_split_kind == Split.kinds[:finish]
+  end
+
   def to_param
     slug
   end

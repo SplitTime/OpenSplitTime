@@ -58,7 +58,7 @@
     </h5>
 
     <% if @presenter.filtered_segments_count.positive? %>
-      <%= render 'efforts/efforts_list_segment', presenter: @presenter %>
+      <%= render "best_effort_segments/table", presenter: @presenter %>
 
       <div class="row">
         <div class="col text-center">

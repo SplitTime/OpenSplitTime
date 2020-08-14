@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class BestEffortsDisplay < BasePresenter
-  attr_reader :course
+  attr_reader :course, :view_context, :request
   delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
            :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
            :begin_id, :end_id, :begin_bitkey, :end_bitkey, to: :segment
 
-  def initialize(course, params, current_user)
+  def initialize(course, view_context)
     @course = course
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @request = view_context.request
+    @params = view_context.prepared_params
+    @current_user = view_context.current_user
   end
 
   def filtered_segments
@@ -60,8 +62,8 @@ class BestEffortsDisplay < BasePresenter
     segment.ends_at_finish?
   end
 
-  def next_page
-    page + 1
+  def next_page_url
+    view_context.url_for(request.params.merge(page: page + 1)) if filtered_segments_count == per_page
   end
 
   def ordered_splits
@@ -73,7 +75,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def per_page
-    params[:per_page]&.to_i || 10
+    params[:per_page]&.to_i || 30
   end
 
   def split1
@@ -98,6 +100,7 @@ class BestEffortsDisplay < BasePresenter
 
   def segment
     return @segment if defined?(@segment)
+
     split1 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_1_id) } || ordered_splits.first
     split2 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_2_id) } || ordered_splits.last
     begin_split, end_split = [split1, split2].sort_by { |split| ordered_splits.index(split) }

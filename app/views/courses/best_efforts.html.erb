@@ -58,21 +58,10 @@
     </h5>
 
     <% if @presenter.filtered_segments_count.positive? %>
-      <%= render "best_effort_segments/table", presenter: @presenter %>
-
-      <div class="row">
-        <div class="col text-center">
-          <% if @presenter.filtered_segments_count == @presenter.per_page %>
-            <%= link_to "Show More", request.params.merge(page: @presenter.next_page) %>
-          <% else %>
-            <p>End of List</p>
-          <% end %>
-        </div>
-      </div>
+      <%= render "best_effort_segments/table" %>
     <% elsif params[:search].present? && params[:search].length < 3 %>
       <h4>Search parameter is too short</h4>
     <% else %>
-
       <h4>No efforts match this search</h4>
     <% end %>
   <% else %>

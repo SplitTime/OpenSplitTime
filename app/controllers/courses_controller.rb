@@ -66,18 +66,21 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    if params[:split1] && params[:split2] && params[:split1] == params[:split2]
-      flash[:warning] = 'Select two different splits'
-      redirect_to request.params.merge(split1: nil, split2: nil)
-    elsif @course.visible_events.empty?
-      flash[:danger] = 'No events yet held on this course'
-      redirect_to course_path(@course)
-    elsif Effort.visible.on_course(@course).empty?
-      flash[:danger] = 'No efforts yet run on this course'
-      redirect_to course_path(@course)
-    else
-      @presenter = BestEffortsDisplay.new(@course, prepared_params, current_user)
-      session[:return_to] = best_efforts_course_path(@course)
+    # If someone tries to use a segment with the same begin and end split,
+    # just null them both out (which results in start/finish)
+    if params[:split1].present? && params[:split1] == params[:split2]
+      params[:split1] = params[:split2] = nil
+    end
+
+    @presenter = BestEffortsDisplay.new(@course, view_context)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        segments = @presenter.filtered_segments
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], locals: {segments: segments}) : ""
+        render json: {best_effort_segments: segments, html: html, links: {next: @presenter.next_page_url}}
+      end
     end
   end
 

@@ -17,9 +17,10 @@ class BestEffortsDisplay < BasePresenter
 
   def filtered_segments
     @filtered_segments ||= BestEffortSegment.from(ranked_segments, :best_effort_segments)
-      .where(effort_id: filtered_efforts)
-      .paginate(page: page, per_page: per_page, total_entries: 0)
-      .to_a
+                             .where(effort_id: filtered_efforts)
+                             .order(:overall_rank)
+                             .paginate(page: page, per_page: per_page, total_entries: 0)
+                             .to_a
   end
 
   def filtered_segments_count

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_011546) do
+ActiveRecord::Schema.define(version: 2020_08_14_012508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 2020_08_14_011546) do
     t.datetime "begin_time"
     t.datetime "end_time"
     t.integer "elapsed_seconds"
-    t.integer "data_status"
     t.integer "begin_split_kind"
     t.integer "end_split_kind"
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey", "effort_id", "lap"], name: "index_effort_segments_on_unique_attributes", unique: true

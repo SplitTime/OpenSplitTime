@@ -58,8 +58,7 @@ class EffortSegmentQuery < BaseQuery
       on conflict (begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap) do update
           set begin_time      = EXCLUDED.begin_time,
               end_time        = EXCLUDED.end_time,
-              elapsed_seconds = EXCLUDED.elapsed_seconds,
-              data_status     = null;
+              elapsed_seconds = EXCLUDED.elapsed_seconds;
     SQL
   end
 

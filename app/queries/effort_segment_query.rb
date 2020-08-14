@@ -26,6 +26,7 @@ class EffortSegmentQuery < BaseQuery
                        effort_id,
                        lap,
                        split_id,
+                       kind,
                        sub_split_bitkey,
                        distance_from_start,
                        absolute_time,
@@ -44,7 +45,9 @@ class EffortSegmentQuery < BaseQuery
                        ss1.lap,
                        ss1.absolute_time                         as begin_time,
                        ss2.absolute_time                         as end_time,
-                       ss2.elapsed_seconds - ss1.elapsed_seconds as elapsed_seconds
+                       ss2.elapsed_seconds - ss1.elapsed_seconds as elapsed_seconds,
+                       ss1.kind                                  as begin_split_kind,
+                       ss2.kind                                  as end_split_kind
                 from sub_splits ss1
                          cross join sub_splits ss2
                 where ss1.lap = ss2.lap

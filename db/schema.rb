@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_012508) do
+ActiveRecord::Schema.define(version: 2020_08_14_040556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -519,8 +519,10 @@ ActiveRecord::Schema.define(version: 2020_08_14_012508) do
       e.slug,
       es.begin_split_id,
       es.begin_bitkey,
+      es.begin_split_kind,
       es.end_split_id,
       es.end_bitkey,
+      es.end_split_kind,
       es.lap,
       es.begin_time,
       es.elapsed_seconds,

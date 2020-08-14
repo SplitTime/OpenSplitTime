@@ -51,7 +51,7 @@
   <h4>
     <strong><%= "#{@presenter.segment_name}: #{d(@presenter.distance)} #{pdu}, #{e(@presenter.vert_gain)} #{peu} elevation gain, #{e(@presenter.vert_loss)} #{peu} elevation loss" %></strong>
   </h4>
-  <% if @presenter.all_efforts_count.positive?  %>
+  <% if @presenter.all_efforts_count.positive? %>
     <h5>
       <%= "Searched #{pluralize(@presenter.events_count, 'event')}
       from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
@@ -61,8 +61,12 @@
       <%= render 'efforts/efforts_list_segment', presenter: @presenter %>
 
       <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_segments, inner_window: 2, outer_window: 0) %>
+        <div class="col text-center">
+          <% if @presenter.filtered_segments_count == @presenter.per_page %>
+            <%= link_to "Show More", request.params.merge(page: @presenter.next_page) %>
+          <% else %>
+            <p>End of List</p>
+          <% end %>
         </div>
       </div>
     <% elsif params[:search].present? && params[:search].length < 3 %>

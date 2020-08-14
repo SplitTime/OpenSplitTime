@@ -14,13 +14,14 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def filtered_segments
-    BestEffortSegment.from(ranked_segments, :best_effort_segments)
+    @filtered_segments ||= BestEffortSegment.from(ranked_segments, :best_effort_segments)
       .where(effort_id: filtered_efforts)
-      .paginate(page: page, per_page: per_page)
+      .paginate(page: page, per_page: per_page, total_entries: 0)
+      .to_a
   end
 
   def filtered_segments_count
-    @filtered_segments_count ||= filtered_segments.count
+    @filtered_segments_count ||= filtered_segments.size
   end
 
   def all_efforts_count
@@ -59,8 +60,20 @@ class BestEffortsDisplay < BasePresenter
     segment.ends_at_finish?
   end
 
+  def next_page
+    page + 1
+  end
+
   def ordered_splits
     @ordered_splits ||= course.ordered_splits
+  end
+
+  def page
+    params[:page]&.to_i || 1
+  end
+
+  def per_page
+    params[:per_page]&.to_i || 10
   end
 
   def split1
@@ -117,9 +130,5 @@ class BestEffortsDisplay < BasePresenter
   def ranked_segments
     BestEffortSegment.from(all_segments, :best_effort_segments)
       .with_overall_and_gender_rank(:elapsed_seconds)
-  end
-
-  def per_page
-    params[:per_page] || 50
   end
 end

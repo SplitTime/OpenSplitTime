@@ -76,7 +76,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def per_page
-    params[:per_page]&.to_i || 30
+    params[:per_page]&.to_i || 25
   end
 
   def split1

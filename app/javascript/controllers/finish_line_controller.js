@@ -31,7 +31,8 @@ export default class extends Controller {
             url: url,
             dataType: "json",
             success: (data) => {
-                this.data.set("effortId", data.efforts[0].id)
+                const id = data.efforts[0] ? data.efforts[0].id : null
+                this.data.set("effortId", id)
                 this.resultTarget.innerHTML = data.html
             }
         })

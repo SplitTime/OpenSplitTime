@@ -14,18 +14,20 @@ class EffortProjectionsView < EffortWithLapSplitRows
 
   def explanation
     case
+    when !started?
+      "The participant has not started."
     when !beyond_start?
-      'The participant must first be recorded beyond the start.'
+      "The participant must first be recorded beyond the start."
     when effort_start_time.nil?
-      'The participant does not have a recorded start time.'
+      "The participant does not have a recorded start time."
     when last_valid_split_time.nil?
-      'The participant has recorded times but none are valid.'
+      "The participant has recorded times but none are valid."
     when dropped?
-      'The participant has dropped.'
+      "The participant has dropped."
     when finished?
-      'The participant has finished.'
+      "The participant has finished."
     else
-      'Available data is insufficient.'
+      "Available data is insufficient."
     end
   end
 

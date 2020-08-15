@@ -9,17 +9,22 @@
   <% elsif @efforts.present? %>
     <% effort = ::EffortRow.new(@efforts.first.enriched) %>
     <div class="card">
-      <h3 class="card-header"><strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong></h3>
+      <h3 class="card-header">
+        <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong></h3>
       <div class="card-body">
         <h4 class="card-text"><%= effort.bio %></h4>
         <h4 class="card-text"><%= effort.flexible_geolocation %></h4>
         <hr/>
         <h4 class="card-text"><strong>Status: </strong><%= effort.effort_status %></h4>
         <% if effort.final_absolute_time %>
-          <h4 class="card-text"><strong>Last recorded at: </strong><%= "#{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %></h4>
+          <h4 class="card-text">
+            <strong>Last recorded at: </strong><%= "#{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %>
+          </h4>
         <% end %>
-        <h4 class="card-text"><strong><%= "Rank at #{effort.final_split_name}:" %></strong></h4>
-        <h4 class="card-text"><%= "#{effort.overall_rank.ordinalize} Overall, #{effort.gender_rank.ordinalize} #{effort.gender.titleize}" %></h4>
+        <% if effort.beyond_start? %>
+          <h4 class="card-text"><strong><%= "Rank at #{effort.final_split_name}:" %></strong></h4>
+          <h4 class="card-text"><%= "#{effort.overall_rank.ordinalize} Overall, #{effort.gender_rank.ordinalize} #{effort.gender.titleize}" %></h4>
+        <% end %>
         <hr/>
         <% days = effort.days_away_from_birthday %>
         <% if days.present? && days.abs < 3 %>

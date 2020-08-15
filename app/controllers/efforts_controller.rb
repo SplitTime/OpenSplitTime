@@ -91,6 +91,14 @@ class EffortsController < ApplicationController
 
   def projections
     @presenter = EffortProjectionsView.new(@effort)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
+        render json: {efforts: @presenter.effort, html: html}
+      end
+    end
   end
 
   def analyze
@@ -208,6 +216,6 @@ class EffortsController < ApplicationController
 
   def set_effort
     @effort = policy_scope(Effort).friendly.find(params[:id])
-    redirect_numeric_to_friendly(@effort, params[:id])
+    redirect_numeric_to_friendly(@effort, params[:id]) if request.format.html?
   end
 end

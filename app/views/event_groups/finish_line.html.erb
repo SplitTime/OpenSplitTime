@@ -28,6 +28,8 @@
 
 <article class="ost-article container">
   <div data-controller="finish-line" data-finish-line-event-group-id="<%= @presenter.id %>">
+    <%= render "efforts/projections_modal" %>
+
     <div class="row">
       <div class="col">
         <input class="input-xl" inputmode="numeric" pattern="[0-9]*" type="text" placeholder="Bib #"

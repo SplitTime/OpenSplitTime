@@ -4,14 +4,41 @@ export default class extends Controller {
 
     static targets = ["link", "result"]
 
-    load(event) {
-        event.preventDefault()
+    initialize() {
+        let options = {
+            rootMargin: '100px',
+        }
 
-        const htmlTemplate = this.data.get("htmlTemplate")
+        this.intersectionObserver = new IntersectionObserver(entries => this.processIntersectionEntries(entries), options)
+    }
+
+    connect() {
+        this.intersectionObserver.observe(this.linkTarget)
+    }
+
+    disconnect() {
+        this.intersectionObserver.unobserve(this.linkTarget)
+    }
+
+    processIntersectionEntries(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                this.load()
+            }
+        })
+    }
+
+    loadFromClick(event) {
+        event.preventDefault()
+        this.load()
+    }
+
+    load() {
         const nextPageUrl = this.data.get("nextPageUrl")
+        const htmlTemplate = this.data.get("htmlTemplate")
         const endOfListHtml = "<p>End of List</p>"
 
-        if (nextPageUrl) {
+        if (nextPageUrl !== "null") {
             const url = nextPageUrl + "&html_template=" + htmlTemplate
 
             Rails.ajax({
@@ -19,8 +46,8 @@ export default class extends Controller {
                 url: url,
                 dataType: "json",
                 success: (data) => {
-                    this.resultTarget.innerHTML += data.html
                     this.data.set("nextPageUrl", data.links.next)
+                    this.resultTarget.innerHTML += data.html
                     if (data.links.next === null) {
                         this.linkTarget.innerHTML = endOfListHtml
                     }

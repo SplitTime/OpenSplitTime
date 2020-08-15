@@ -43,7 +43,7 @@
     </div>
     <hr/>
 
-    <%= render "effort_button_card", arrivals: @presenter.recent_arrivals_at_finish, title: "Recently Finished (Finish Time)", time_zone: @presenter.home_time_zone %>
-    <%= render "effort_button_card", arrivals: @presenter.expected_arrivals_at_finish, title: "Next Expected (Projected Time)", time_zone: @presenter.home_time_zone %>
+    <%= render "effort_button_card", arrivals: @presenter.recent_arrivals_at_finish, title: "Recently Finished (Finish Time)", time_zone: @presenter.home_time_zone, multiple_events: @presenter.multiple_events? %>
+    <%= render "effort_button_card", arrivals: @presenter.expected_arrivals_at_finish, title: "Next Expected (Projected Time)", time_zone: @presenter.home_time_zone, multiple_events: @presenter.multiple_events? %>
   </div>
 </article>

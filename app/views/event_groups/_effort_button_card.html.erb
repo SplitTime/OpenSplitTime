@@ -1,4 +1,4 @@
-<!--Requires local variables efforts and title-->
+<!--Requires local variables arrivals, time_zone, multiple_events, and title-->
 
 <div class="card">
   <h3 class="card-header"><strong><%= title %></strong></h3>
@@ -8,8 +8,7 @@
         <% arrivals.each do |arrival| %>
           <div class="card">
             <button class="btn btn-primary btn-lg text-lg-left" data-action="click->finish-line#lookup keyup->finish-line#lookup" data-bib-number="<%= arrival.bib_number %>">
-              <%= "##{arrival.bib_number} #{arrival.full_name}
-              (#{(arrival.projected_time.present? ? l(arrival.projected_time.in_time_zone(time_zone), format: :day_and_military) : 'Time not known')})" %>
+              <%= effort_button_card_text(arrival, time_zone, multiple_events) %>
             </button>
           </div>
         <% end %>

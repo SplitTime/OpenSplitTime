@@ -11,6 +11,7 @@ class ProjectedArrivalsAtSplit
   attribute :projected_time, :datetime
   attribute :completed, :boolean
   attribute :stopped, :boolean
+  attribute :event_short_name, :string
 
   alias_attribute :completed?, :completed
   alias_attribute :stopped?, :stopped
@@ -98,9 +99,17 @@ class ProjectedArrivalsAtSplit
                          left join split_times st on st.effort_id = cs.effort_id and st.stopped_here = true
                 order by cs.effort_id)
 
-      select efforts.id as effort_id, first_name, last_name, bib_number, projected_time, completed, stopped
+      select efforts.id as effort_id, 
+                           first_name, 
+                           last_name, 
+                           bib_number, 
+                           projected_time, 
+                           completed, 
+                           stopped,
+                           short_name as event_short_name
       from efforts
                join projected_times on projected_times.effort_id = efforts.id
+               join events on events.id = efforts.event_id
       order by projected_time desc nulls last
     SQL
   end

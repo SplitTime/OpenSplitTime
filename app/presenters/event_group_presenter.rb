@@ -72,7 +72,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def expected_arrivals_at_finish
-    projected_arrivals_at_finish.select(&:expected?).first(EXPECTED_FINISH_COUNT_LIMIT)
+    projected_arrivals_at_finish.select(&:expected?).reverse.first(EXPECTED_FINISH_COUNT_LIMIT)
   end
 
   def recent_arrivals_at_finish

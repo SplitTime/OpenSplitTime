@@ -34,6 +34,7 @@ export default class extends Controller {
                 const id = data.efforts[0] ? data.efforts[0].id : null
                 this.data.set("effortId", id)
                 this.resultTarget.innerHTML = data.html
+                this.resultTarget.scrollIntoView()
             },
             error: () => {
                 this.data.set("effortId", null)

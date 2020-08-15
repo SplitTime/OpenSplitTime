@@ -77,7 +77,7 @@ class EventGroupPresenter < BasePresenter
 
   def recent_arrivals_at_finish
     projected_arrivals_at_finish
-      .select { |arrival| arrival.completed? && arrival.projected_time > RECENT_FINISH_THRESHOLD.ago }
+      .select { |arrival| arrival.completed? && arrival.projected_time.present? && arrival.projected_time > RECENT_FINISH_THRESHOLD.ago }
       .first(RECENT_FINISH_COUNT_LIMIT)
   end
 

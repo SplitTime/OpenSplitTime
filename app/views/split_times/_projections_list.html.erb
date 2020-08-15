@@ -8,7 +8,7 @@
   </thead>
 
   <tbody>
-  <% view_object.actual_lap_split_rows.each do |row| %>
+  <% @presenter.actual_lap_split_rows.each do |row| %>
     <tr>
       <td><%= strong_conditional row.name, row.done? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
@@ -19,7 +19,7 @@
   <% end %>
   </tbody>
 
-  <% if view_object.projected_lap_split_rows.present? %>
+  <% if @presenter.projected_lap_split_rows.present? %>
     <thead>
     <tr>
       <th colspan="5"></th>
@@ -39,7 +39,7 @@
     </thead>
 
     <tbody>
-    <% view_object.projected_lap_split_rows.each do |row| %>
+    <% @presenter.projected_lap_split_rows.each do |row| %>
       <tr class="table-primary">
         <td><%= strong_conditional row.name, row.done? %></td>
         <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
@@ -51,7 +51,7 @@
     </tbody>
   <% end %>
 </table>
-<% unless view_object.projected_lap_split_rows.present? %>
+<% unless @presenter.projected_lap_split_rows.present? %>
   <hr/>
-  <h4><%= "No projections are available. #{@presenter.explanation}" %></h4>
+  <h4><%= @presenter.explanation %></h4>
 <% end %>

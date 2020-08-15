@@ -10,7 +10,11 @@
     <% effort = ::EffortRow.new(@efforts.first.enriched) %>
     <div class="card">
       <h3 class="card-header">
-        <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong></h3>
+        <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong>
+        <button type="button" class="float-right btn btn-success" data-action="click->finish-line#showProjectionsModal">
+          <span>Details</span>
+        </button>
+      </h3>
       <div class="card-body">
         <h4 class="card-text"><%= effort.bio %></h4>
         <h4 class="card-text"><%= effort.flexible_geolocation %></h4>

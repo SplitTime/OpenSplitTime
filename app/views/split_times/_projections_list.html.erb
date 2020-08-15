@@ -13,7 +13,7 @@
       <td><%= strong_conditional row.name, row.done? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
       <td></td>
-      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm, with_status: true), row.done? %></td>
+      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_with_seconds, with_status: true), row.done? %></td>
       <td></td>
     </tr>
   <% end %>
@@ -44,7 +44,7 @@
         <td><%= strong_conditional row.name, row.done? %></td>
         <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
         <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm), row.done? %></td>
+        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_without_seconds), row.done? %></td>
         <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %></td>
       </tr>
     <% end %>

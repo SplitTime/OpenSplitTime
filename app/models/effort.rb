@@ -139,6 +139,10 @@ class Effort < ApplicationRecord
     @event_name ||= event&.name
   end
 
+  def event_short_name
+    @event_short_name ||= event&.short_name
+  end
+
   def laps_required
     @laps_required ||= attributes['laps_required'] || event.laps_required
   end

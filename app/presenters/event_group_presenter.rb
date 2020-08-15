@@ -6,8 +6,8 @@ class EventGroupPresenter < BasePresenter
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
   DEFAULT_DISPLAY_STYLE = 'events'
-  RECENT_FINISH_THRESHOLD = 30.minutes
-  RECENT_FINISH_COUNT_LIMIT = 10
+  RECENT_FINISH_THRESHOLD = 20.minutes
+  RECENT_FINISH_COUNT_LIMIT = 6
   EXPECTED_FINISH_COUNT_LIMIT = 10
 
   def initialize(event_group, params, current_user)

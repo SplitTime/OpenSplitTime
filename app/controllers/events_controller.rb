@@ -115,8 +115,8 @@ class EventsController < ApplicationController
     redirect_to event_group_path(@event.event_group, force_settings: true)
   end
 
-  # This action updates the event start_time and adjusts time_from_start on all
-  # existing non-start split_times to keep absolute time consistent.
+  # This action updates the event scheduled start time and adjusts absolute time on all
+  # existing split_times to keep elapsed times consistent.
 
   def edit_start_time
     authorize @event
@@ -128,7 +128,7 @@ class EventsController < ApplicationController
     @event.assign_attributes(permitted_params)
 
     if @event.valid?
-      new_start_time = @event.start_time_local.to_s
+      new_start_time = @event.scheduled_start_time_local.to_s
       @event.reload
       response = EventUpdateStartTimeJob.perform_now(@event, new_start_time: new_start_time, current_user: current_user)
       set_flash_message(response)

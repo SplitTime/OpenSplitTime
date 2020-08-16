@@ -169,7 +169,7 @@ RSpec.describe SegmentTimesPlanner do
         let(:expected_time) { 3500 }
 
         it 'returns values corresponding to the expected times from start' do
-          expected = [0, 1000, 1500, 3500].map{ |seconds| event.start_time + seconds }
+          expected = [0, 1000, 1500, 3500].map{ |seconds| event.scheduled_start_time + seconds }
           expect(subject.absolute_times.values).to eq(expected)
         end
       end
@@ -178,7 +178,7 @@ RSpec.describe SegmentTimesPlanner do
         let(:expected_time) { 4000 }
 
         it 'returns values adjusted to pace' do
-          expected = [0, 1143, 1714, 4000].map{ |seconds| event.start_time + seconds }
+          expected = [0, 1143, 1714, 4000].map{ |seconds| event.scheduled_start_time + seconds }
           expect(subject.absolute_times.values).to eq(expected)
         end
       end

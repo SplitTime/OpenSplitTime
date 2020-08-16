@@ -12,7 +12,7 @@ RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
   let(:fourth_proto_record) { proto_records.fourth }
   let(:fifth_proto_record) { proto_records.fifth }
   let(:last_proto_record) { proto_records.last }
-  let(:expected_absolute_times) { expected_times_from_start.map { |tfs| event.start_time + tfs if tfs.present? } }
+  let(:expected_absolute_times) { expected_times_from_start.map { |tfs| event.scheduled_start_time + tfs if tfs.present? } }
   let(:time_points) { event.required_time_points }
 
   describe '#transform' do

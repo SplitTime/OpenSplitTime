@@ -7,15 +7,15 @@ RSpec.describe Event, type: :model do
 
   it_behaves_like 'auditable'
   it { is_expected.to strip_attribute(:short_name).collapse_spaces }
-  it { is_expected.to localize_time_attribute(:start_time) }
+  it { is_expected.to localize_time_attribute(:scheduled_start_time) }
 
   describe 'initialize' do
-    it 'is valid when created with a course, organization, event_group, start time, laps_required' do
+    it 'is valid when created with a course, organization, event_group, scheduled start time, laps_required' do
       event = build_stubbed(:event)
 
       expect(event.course_id).to be_present
       expect(event.event_group_id).to be_present
-      expect(event.start_time).to be_present
+      expect(event.scheduled_start_time).to be_present
       expect(event.laps_required).to be_present
       expect(event).to be_valid
     end
@@ -23,7 +23,7 @@ RSpec.describe Event, type: :model do
     it 'is invalid without a course' do
       event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
-      expect(event.errors.full_messages).to include(/can't be blank/)
+      expect(event.errors[:course_id]).to include("can't be blank")
     end
 
     it 'is invalid without an event_group' do
@@ -32,10 +32,10 @@ RSpec.describe Event, type: :model do
       expect(event.errors[:event_group]).to include("can't be blank")
     end
 
-    it 'is invalid without a start date' do
-      event = build_stubbed(:event, start_time: nil)
+    it 'is invalid without a scheduled start time' do
+      event = build_stubbed(:event, scheduled_start_time: nil)
       expect(event).not_to be_valid
-      expect(event.errors[:start_time]).to include("can't be blank")
+      expect(event.errors[:scheduled_start_time]).to include("can't be blank")
     end
 
     it 'is invalid without a laps_required' do
@@ -229,76 +229,76 @@ RSpec.describe Event, type: :model do
     end
   end
 
-  describe '#start_time_local' do
+  describe '#scheduled_start_time_local' do
     context 'when the event_group specifies a valid home_time_zone' do
       let(:event) { build_stubbed(:event, event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns the start_time in the time zone specified by event.home_time_zone' do
-        event.start_time = DateTime.parse('2017-07-01T06:00+00:00')
-        expect(event.start_time_local.time_zone.name).to eq(event.home_time_zone)
-        expect(event.start_time_local.to_s).to eq('2017-07-01 02:00:00 -0400')
+        event.scheduled_start_time = DateTime.parse('2017-07-01T06:00+00:00')
+        expect(event.scheduled_start_time_local.time_zone.name).to eq(event.home_time_zone)
+        expect(event.scheduled_start_time_local.to_s).to eq('2017-07-01 02:00:00 -0400')
       end
 
       it 'properly senses daylight savings time where applicable' do
-        event.start_time = DateTime.parse('2017-12-15T06:00+00:00')
-        expect(event.start_time_local.time_zone.name).to eq(event.home_time_zone)
-        expect(event.start_time_local.to_s).to eq('2017-12-15 01:00:00 -0500')
+        event.scheduled_start_time = DateTime.parse('2017-12-15T06:00+00:00')
+        expect(event.scheduled_start_time_local.time_zone.name).to eq(event.home_time_zone)
+        expect(event.scheduled_start_time_local.to_s).to eq('2017-12-15 01:00:00 -0500')
       end
     end
 
     context 'when the event home_time_zone is nil' do
-      let(:event) { build_stubbed(:event, start_time: DateTime.parse('2017-07-01T06:00+00:00'), event_group: event_group) }
+      let(:event) { build_stubbed(:event, scheduled_start_time: DateTime.parse('2017-07-01T06:00+00:00'), event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
-        expect(event.start_time_local).to be_nil
+        expect(event.scheduled_start_time_local).to be_nil
       end
     end
 
     context 'when the event start_time is nil' do
-      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+      let(:event) { build_stubbed(:event, scheduled_start_time: nil, event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'returns nil' do
-        expect(event.start_time_local).to be_nil
+        expect(event.scheduled_start_time_local).to be_nil
       end
     end
   end
 
-  describe '#start_time_local=' do
+  describe '#scheduled_start_time_local=' do
     let(:event) { build_stubbed(:event, event_group: event_group) }
 
     context 'when home_time_zone exists' do
       let(:event_group) { build(:event_group, home_time_zone: 'Eastern Time (US & Canada)') }
 
       it 'converts the string based on the specified home_time_zone' do
-        event.start_time_local = '07/01/2017 06:00:00'
-        start_time = event.start_time.in_time_zone('GMT')
+        event.scheduled_start_time_local = '07/01/2017 06:00:00'
+        start_time = event.scheduled_start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 10:00:00 -0000')
       end
 
       it 'works properly with a 24-hour time' do
-        event.start_time_local = '07/01/2017 16:00:00'
-        start_time = event.start_time.in_time_zone('GMT')
+        event.scheduled_start_time_local = '07/01/2017 16:00:00'
+        start_time = event.scheduled_start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 20:00:00 -0000')
       end
 
       it 'works properly with AM/PM time' do
-        event.start_time_local = '07/01/2017 04:00:00 PM'
-        start_time = event.start_time.in_time_zone('GMT')
+        event.scheduled_start_time_local = '07/01/2017 04:00:00 PM'
+        start_time = event.scheduled_start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 20:00:00 -0000')
       end
 
       it 'works properly with date formatted in yyyy-mm-dd style' do
-        event.start_time_local = '2017-07-01 16:00:00'
-        start_time = event.start_time.in_time_zone('GMT')
+        event.scheduled_start_time_local = '2017-07-01 16:00:00'
+        start_time = event.scheduled_start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-07-01 20:00:00 -0000')
       end
 
       it 'works properly regardless of daylight savings time' do
-        event.start_time_local = '2017-12-15 16:00:00'
-        start_time = event.start_time.in_time_zone('GMT')
+        event.scheduled_start_time_local = '2017-12-15 16:00:00'
+        start_time = event.scheduled_start_time.in_time_zone('GMT')
         expect(start_time).to eq('2017-12-15 21:00:00 -0000')
       end
     end
@@ -307,8 +307,8 @@ RSpec.describe Event, type: :model do
       let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'raises an error' do
-        expect { event.start_time_local = '2017-07-01 06:00:00' }
-            .to raise_error(/start_time_local cannot be set without a valid home_time_zone/)
+        expect { event.scheduled_start_time_local = '2017-07-01 06:00:00' }
+            .to raise_error(/scheduled_start_time_local cannot be set without a valid home_time_zone/)
       end
     end
   end

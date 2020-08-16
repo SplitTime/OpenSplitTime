@@ -104,7 +104,7 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     new_events = Event.last(2)
     new_events.each do |event|
       verify_link_present(event)
-      expect(event.start_time_local.to_date).to eq(new_date.to_date)
+      expect(event.scheduled_start_time_local.to_date).to eq(new_date.to_date)
     end
   end
 

@@ -51,7 +51,7 @@ module ETL::Transformers
       proto_record[:absolute_times] = proto_record[:times_of_day].map do |time|
         next unless time.present?
         seconds = ActiveSupport::TimeZone[event.home_time_zone].parse(time).seconds_since_midnight
-        event.start_time_local.at_midnight + seconds
+        event.scheduled_start_time_local.at_midnight + seconds
       end
     end
 

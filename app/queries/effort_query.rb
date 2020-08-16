@@ -47,7 +47,7 @@ class EffortQuery < BaseQuery
                (select distinct on (efforts_scoped.id) 
                            efforts_scoped.*,
                            events.laps_required,
-                           events.start_time                                           as event_start_time,
+                           events.scheduled_start_time                                 as event_start_time,
                            event_groups.home_time_zone,
                            splits.base_name                                            as final_split_name,
                            splits.distance_from_start                                  as final_lap_distance,
@@ -57,7 +57,8 @@ class EffortQuery < BaseQuery
                            split_times.sub_split_bitkey                                as final_bitkey,
                            split_times.absolute_time                                   as final_absolute_time,
                            sst.absolute_time                                           as actual_start_time,
-                           extract(epoch from (sst.absolute_time - events.start_time)) as start_offset,
+                           extract(epoch from 
+                               (sst.absolute_time - events.scheduled_start_time))      as start_offset,
                            split_times.elapsed_seconds                                 as final_elapsed_seconds,
                            split_times.id                                              as final_split_time_id,
                            stopped_split_time_id,
@@ -219,10 +220,10 @@ class EffortQuery < BaseQuery
       segment_start as (
           select
               efforts.*,
-              events.start_time as event_start_time,
+              events.scheduled_start_time as event_start_time,
               event_groups.home_time_zone,
               split_times.effort_id,
-              split_times.absolute_time as segment_start_time,
+              split_times.absolute_time   as segment_start_time,
               split_times.lap,
               split_times.split_id,
               split_times.sub_split_bitkey,

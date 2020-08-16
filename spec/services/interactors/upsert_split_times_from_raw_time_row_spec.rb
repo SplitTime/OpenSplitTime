@@ -10,7 +10,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   let(:event_group) { create(:event_group, available_live: true) }
   let(:raw_time_row) { RawTimeRow.new(raw_times, effort) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
 
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10000, stopped_here: false) }
@@ -18,7 +18,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   let!(:split_time_4) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: start_time + 20000, stopped_here: false) }
 
   let(:effort) { create(:effort, :with_bib_number, event: event) }
-  let(:event) { create(:event, course: course, event_group: event_group, start_time_local: '2018-02-10 06:00:00') }
+  let(:event) { create(:event, course: course, event_group: event_group, scheduled_start_time_local: '2018-02-10 06:00:00') }
   let(:course) { create(:course) }
   let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }

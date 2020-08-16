@@ -21,7 +21,7 @@ class Person < ApplicationRecord
   scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
 
   SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +
-      'ROUND(AVG((extract(epoch from(current_date - events.start_time))/60/60/24/365.25) + efforts.age)) ' +
+      'ROUND(AVG((extract(epoch from(current_date - events.scheduled_start_time))/60/60/24/365.25) + efforts.age)) ' +
       'as current_age_from_efforts'}
 
   validates_presence_of :first_name, :last_name, :gender

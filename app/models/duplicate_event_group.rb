@@ -37,7 +37,7 @@ class DuplicateEventGroup
     new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false)
     existing_event_group.events.each do |existing_event|
       new_event = existing_event.dup
-      new_event.assign_attributes(start_time: existing_event.start_time + offset, historical_name: nil, beacon_url: nil, efforts_count: 0)
+      new_event.assign_attributes(scheduled_start_time: existing_event.scheduled_start_time + offset, historical_name: nil, beacon_url: nil, efforts_count: 0)
       new_event_group.events << new_event
     end
   end
@@ -54,7 +54,7 @@ class DuplicateEventGroup
   end
 
   def offset
-    @offset ||= (new_start_date.to_date - existing_event_group.start_time_local.to_date).days
+    @offset ||= (new_start_date.to_date - existing_event_group.scheduled_start_time_local.to_date).days
   end
 
   def existing_event_group

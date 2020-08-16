@@ -17,7 +17,7 @@ class AidStationsDisplay < LiveEventFramework
   end
 
   def start_time
-    event.start_time_local
+    event.scheduled_start_time_local
   end
 
   private

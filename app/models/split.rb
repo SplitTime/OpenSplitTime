@@ -158,11 +158,11 @@ class Split < ApplicationRecord
   end
 
   def earliest_event_date
-    events.visible.earliest&.start_time
+    events.visible.earliest&.scheduled_start_time
   end
 
   def most_recent_event_date
-    events.visible.most_recent&.start_time
+    events.visible.most_recent&.scheduled_start_time
   end
 
   private

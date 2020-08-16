@@ -19,7 +19,7 @@ class CoursePresenter < BasePresenter
   end
 
   def events
-    @events ||= ::EventPolicy::Scope.new(current_user, course.events).viewable.order(start_time: :desc).to_a
+    @events ||= ::EventPolicy::Scope.new(current_user, course.events).viewable.order(scheduled_start_time: :desc).to_a
   end
 
   def organization

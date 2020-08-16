@@ -22,7 +22,7 @@ RSpec.describe Effort, type: :model do
       let(:person) { build_stubbed(:person) }
 
       it 'saves a generic factory-created record to the database' do
-        expect { create(:effort) }.to change { Effort.count }.by (1)
+        expect { create(:effort) }.to change { Effort.count }.by(1)
       end
 
       it 'is valid when created with an event_id, first_name, last_name, and gender' do
@@ -104,7 +104,7 @@ RSpec.describe Effort, type: :model do
 
   describe '#reset_age_from_birthdate' do
     subject { build_stubbed(:effort, event: event, age: age, birthdate: birthdate) }
-    let(:event) { build_stubbed(:event, start_time: '2018-10-31 06:00:00') }
+    let(:event) { build_stubbed(:event, scheduled_start_time: '2018-10-31 06:00:00') }
 
     context 'when age is nil and birthdate is provided' do
       let(:age) { nil }
@@ -149,11 +149,11 @@ RSpec.describe Effort, type: :model do
 
   describe '#current_age_approximate' do
     subject { build_stubbed(:effort, event: event, age: age) }
-    let(:event) { build_stubbed(:event, start_time: start_time) }
+    let(:event) { build_stubbed(:event, scheduled_start_time: scheduled_start_time) }
 
     context 'when age is not present' do
       let(:age) { nil }
-      let(:start_time) { Time.current - 2.years }
+      let(:scheduled_start_time) { Time.current - 2.years }
 
       it 'returns nil' do
         expect(subject.current_age_approximate).to be_nil
@@ -162,7 +162,7 @@ RSpec.describe Effort, type: :model do
 
     context 'when age is present and the event is in the past' do
       let(:age) { 40 }
-      let(:start_time) { Time.current - 2.years }
+      let(:scheduled_start_time) { Time.current - 2.years }
 
       it 'calculates approximate age at the current time based on age at time of effort' do
         expect(subject.current_age_approximate).to eq(42)
@@ -171,7 +171,7 @@ RSpec.describe Effort, type: :model do
 
     context 'when the event is in the future' do
       let(:age) { 40 }
-      let(:start_time) { Time.current + 2.years }
+      let(:scheduled_start_time) { Time.current + 2.years }
 
       it 'functions properly' do
         expect(subject.current_age_approximate).to eq(38)
@@ -440,18 +440,18 @@ RSpec.describe Effort, type: :model do
   describe '#event_start_time_local' do
     subject { build_stubbed(:effort, event: event) }
 
-    context 'when the event has a start_time and a home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+    context 'when the event has a scheduled_start_time and a home_time_zone' do
+      let(:event) { build_stubbed(:event, scheduled_start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
-      it 'returns the start_time in the home_time_zone' do
+      it 'returns the scheduled_start_time in the home_time_zone' do
         expect(subject.event_start_time_local).to be_a(ActiveSupport::TimeWithZone)
         expect(subject.event_start_time_local).to eq('Tue, 01 Aug 2017 05:00:00 MST -07:00')
       end
     end
 
-    context 'when the event has no start_time' do
-      let(:event) { build_stubbed(:event, start_time: nil, event_group: event_group) }
+    context 'when the event has no scheduled_start_time' do
+      let(:event) { build_stubbed(:event, scheduled_start_time: nil, event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: 'Arizona') }
 
       it 'returns nil' do
@@ -460,7 +460,7 @@ RSpec.describe Effort, type: :model do
     end
 
     context 'when the event has no home_time_zone' do
-      let(:event) { build_stubbed(:event, start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
+      let(:event) { build_stubbed(:event, scheduled_start_time: '2017-08-01 12:00:00 GMT', event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: nil) }
 
       it 'returns nil' do
@@ -471,10 +471,10 @@ RSpec.describe Effort, type: :model do
 
   describe '#scheduled_start_offset=' do
     subject { build_stubbed(:effort, event: event) }
-    let(:event) { build_stubbed(:event, start_time: event_start_time) }
+    let(:event) { build_stubbed(:event, scheduled_start_time: event_start_time) }
     before { subject.scheduled_start_offset = offset }
 
-    context 'when the event has a start_time' do
+    context 'when the event has a scheduled_start_time' do
       let(:event_start_time) { '2017-08-01 12:00:00 GMT'.in_time_zone }
 
       context 'when the offset is positive' do

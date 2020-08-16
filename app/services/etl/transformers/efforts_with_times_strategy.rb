@@ -55,7 +55,7 @@ module ETL::Transformers
       if time_format == :elapsed
         proto_record[:absolute_times] = proto_record[:times].map do |time_string|
           seconds = TimeConversion.hms_to_seconds(time_string)
-          seconds ? event.start_time + seconds : nil
+          seconds ? event.scheduled_start_time + seconds : nil
         end
       elsif time_format == :military
         proto_record[:military_times] = proto_record[:times].map(&:presence)
@@ -104,7 +104,7 @@ module ETL::Transformers
       when :elapsed
         '00:00:00'
       else
-        TimeConversion.absolute_to_hms(event.start_time_local)
+        TimeConversion.absolute_to_hms(event.scheduled_start_time_local)
       end
     end
 

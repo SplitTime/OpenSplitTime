@@ -40,15 +40,15 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def earliest_event_date
-    events.last.start_time.to_date.to_formatted_s(:long)
+    events.last.scheduled_start_time.to_date.to_formatted_s(:long)
   end
 
   def most_recent_event_date
-    most_recent_event && most_recent_event.start_time.to_date.to_formatted_s(:long)
+    most_recent_event && most_recent_event.scheduled_start_time.to_date.to_formatted_s(:long)
   end
 
   def most_recent_event
-    events.select { |event| event.start_time < Time.now }.sort_by(&:start_time).last
+    events.select { |event| event.scheduled_start_time < Time.now }.sort_by(&:scheduled_start_time).last
   end
 
   def time_header_text
@@ -94,8 +94,8 @@ class BestEffortsDisplay < BasePresenter
   def events
     @events ||=
       begin
-        subquery = course.events.select('distinct on (events.id) events.id, event_group_id, course_id, events.start_time').joins(:efforts)
-        EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(start_time: :desc).to_a
+        subquery = course.events.select('distinct on (events.id) events.id, event_group_id, course_id, events.scheduled_start_time').joins(:efforts)
+        EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(scheduled_start_time: :desc).to_a
       end
   end
 

@@ -11,8 +11,8 @@ RSpec.describe FindExpectedLap do
   let(:split_id) { split.id }
   let(:bitkey) { in_bitkey }
 
-  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, start_time_local: '2018-06-22 06:00:00') }
-  let(:start_time) { event.start_time }
+  let(:event) { build_stubbed(:event, laps_required: 0, splits: splits, scheduled_start_time_local: '2018-06-22 06:00:00') }
+  let(:start_time) { event.scheduled_start_time }
   let(:splits) { [start_split, aid_1_split, aid_2_split, finish_split] }
   let(:start_split) { build_stubbed(:split, :start, base_name: 'Start') }
   let(:aid_1_split) { build_stubbed(:split, base_name: 'Aid 1') }

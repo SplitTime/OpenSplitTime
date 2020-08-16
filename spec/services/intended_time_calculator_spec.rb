@@ -9,7 +9,7 @@ RSpec.describe IntendedTimeCalculator do
                                        prior_valid_split_time: prior_valid_split_time) }
   let(:event) { effort.event }
   let(:home_time_zone) { event.home_time_zone }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
   let(:time_points) { event.required_time_points }
   let(:time_point) { time_points.second }
   let(:military_time) { '15:30:45' }
@@ -153,10 +153,10 @@ RSpec.describe IntendedTimeCalculator do
       let(:time_point) { time_points.elements_after(prior_valid_split_time.time_point).first }
       let(:military_time) { '09:30:00' }
 
-      before { effort.event.update(start_time_local: start_time_local) }
+      before { effort.event.update(scheduled_start_time_local: scheduled_start_time_local) }
 
       context 'when the event starts on a day before the DST change' do
-        let(:start_time_local) { '2017-09-23 07:00:00' }
+        let(:scheduled_start_time_local) { '2017-09-23 07:00:00' }
         let(:expected_time_string) { '2017-11-05 09:30:00' }
 
         it 'calculates intended day and time properly' do
@@ -165,7 +165,7 @@ RSpec.describe IntendedTimeCalculator do
       end
 
       context 'when the event starts before the DST change on the day of the DST change' do
-        let(:start_time_local) { '2017-11-05 01:00:00' }
+        let(:scheduled_start_time_local) { '2017-11-05 01:00:00' }
         let(:expected_time_string) { '2017-11-05 09:30:00' }
 
         it 'calculates intended day and time properly' do
@@ -174,7 +174,7 @@ RSpec.describe IntendedTimeCalculator do
       end
 
       context 'when the event starts after the DST change' do
-        let(:start_time_local) { '2017-11-05 07:00:00' }
+        let(:scheduled_start_time_local) { '2017-11-05 07:00:00' }
         let(:expected_time_string) { '2017-11-05 09:30:00' }
 
         it 'calculates intended day and time properly' do
@@ -185,7 +185,7 @@ RSpec.describe IntendedTimeCalculator do
       context 'when the effort starts before the DST change and the intended time is after' do
         let(:effort) { efforts(:sum_100k_across_dst_change) }
         let(:military_time) { '02:30:00' }
-        let(:start_time_local) { '2017-11-05 00:30:00' }
+        let(:scheduled_start_time_local) { '2017-11-05 00:30:00' }
         let(:expected_time_string) { '2017-11-05 02:30:00' }
 
         it 'calculates intended day and time properly' do

@@ -30,11 +30,11 @@ class Course < ApplicationRecord
   end
 
   def earliest_event_date
-    events.earliest&.start_time
+    events.earliest&.scheduled_start_time
   end
 
   def most_recent_event_date
-    events.most_recent&.start_time
+    events.most_recent&.scheduled_start_time
   end
 
   def visible_events

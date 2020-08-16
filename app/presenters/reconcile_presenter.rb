@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReconcilePresenter < BasePresenter
-  delegate :name, :organization, :start_time_local, :available_live, :efforts, :unreconciled_efforts, :id, :concealed?,
+  delegate :name, :organization, :scheduled_start_time_local, :available_live, :efforts, :unreconciled_efforts, :id, :concealed?,
            to: :parent
 
   def initialize(args)

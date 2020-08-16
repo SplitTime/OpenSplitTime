@@ -6,7 +6,8 @@ class EventGroupTrafficPresenter < BasePresenter
   ROW_LIMIT = 500
 
   attr_reader :event_group, :band_width
-  delegate :name, :organization, :events, :home_time_zone, :start_time_local, :available_live, :multiple_events?, to: :event_group
+  delegate :name, :organization, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
+           :multiple_events?, to: :event_group
 
   def initialize(event_group, params, band_width)
     @event_group = event_group

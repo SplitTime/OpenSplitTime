@@ -9,7 +9,7 @@ RSpec.describe ETL::Transformers::EffortsWithTimesStrategy do
   let(:keys) { proto_records.first.to_h.keys }
   let(:children) { subject_proto_record.children }
   let(:time_points) { event.required_time_points }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
 
   describe '#transform' do
     context 'when given valid data using elapsed times' do

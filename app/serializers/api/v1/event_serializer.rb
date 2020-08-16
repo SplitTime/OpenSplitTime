@@ -3,9 +3,9 @@
 module Api
   module V1
     class EventSerializer < ::Api::V1::BaseSerializer
-      attributes :id, :course_id, :organization_id, :name, :start_time, :home_time_zone, :start_time_local,
-                 :start_time_in_home_zone, :concealed, :laps_required, :maximum_laps, :multi_lap, :slug, :short_name,
-                 :multiple_sub_splits, :parameterized_split_names, :split_names
+      attributes :id, :course_id, :organization_id, :name, :start_time, :scheduled_start_time, :home_time_zone, :start_time_local,
+                 :start_time_in_home_zone, :scheduled_start_time_local, :concealed, :laps_required, :maximum_laps,
+                 :multi_lap, :slug, :short_name, :multiple_sub_splits, :parameterized_split_names, :split_names
       link(:self) { api_v1_event_path(object) }
 
       has_many :efforts
@@ -15,8 +15,18 @@ module Api
       belongs_to :event_group
 
       # Included for backward compatibility
+      def start_time
+        object.scheduled_start_time
+      end
+
+      # Included for backward compatibility
       def start_time_in_home_zone
-        object.start_time_local
+        object.scheduled_start_time_local
+      end
+
+      # Included for backward compatibility
+      def start_time_local
+        object.scheduled_start_time_local
       end
 
       def multi_lap

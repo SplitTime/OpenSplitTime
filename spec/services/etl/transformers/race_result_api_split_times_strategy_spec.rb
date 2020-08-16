@@ -12,11 +12,11 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
   let(:last_proto_record) { proto_records.last }
 
   describe '#transform' do
-    let(:start_time) { event.start_time }
+    let(:start_time) { event.scheduled_start_time }
 
     context 'when event is present and splits count matches split fields count' do
       let(:event) { events(:ggd30_50k) }
-      before { event.update(start_time_local: '2018-10-31 07:00:00') }
+      before { event.update(scheduled_start_time_local: '2018-10-31 07:00:00') }
       let(:time_points) { event.required_time_points }
       let(:parsed_structs) { [
           OpenStruct.new(time_0: '7:05:05 AM',

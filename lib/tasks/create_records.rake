@@ -17,7 +17,7 @@ namespace :create_records do
     abort "Event group #{event_group_id} not found" unless event_group
 
     puts "Building test data:"
-    events = event_group.events.order(:start_time)
+    events = event_group.events.order(:scheduled_start_time)
     puts "Found #{pluralize(events.size, 'event')}: #{events.map(&:name).to_sentence}"
 
     events.each_with_index do |event, i|
@@ -36,7 +36,7 @@ namespace :create_records do
 
         effort = event.efforts.new(bib_number: bib_number, first_name: first_name, last_name: last_name, gender: gender,
                                    birthdate: birthdate, country_code: country_code, state_code: state_code, city: city,
-                                   scheduled_start_time: event.start_time, emergency_phone: emergency_phone,
+                                   scheduled_start_time: event.scheduled_start_time, emergency_phone: emergency_phone,
                                    emergency_contact: emergency_contact, created_by: user_id)
 
         effort_description = "#{effort.full_name} using bib number #{bib_number} for #{event.name}"
@@ -120,7 +120,7 @@ namespace :create_records do
     sampled_bib_numbers.each do |bib_number|
       event_id = grouped_bib_numbers.find { |_, bib_numbers| bib_numbers.include?(bib_number) }.first
       event = indexed_events[event_id]
-      event_start_time = event.start_time_local
+      event_start_time = event.scheduled_start_time_local
       laps_required = event.laps_required
       speed_factor = rand(0.75..1.5)
 

@@ -18,7 +18,7 @@ module Interactors
                              class: self.class)
       @event = event
       @new_start_time = args[:new_start_time].in_time_zone(event.home_time_zone)
-      @old_start_time = event.start_time_local
+      @old_start_time = event.scheduled_start_time_local
       @current_user = User.current
       @errors = []
     end
@@ -38,7 +38,7 @@ module Interactors
     private
 
     def update_event
-      event.update!(start_time: new_start_time)
+      event.update!(scheduled_start_time: new_start_time)
     rescue ActiveRecord::ActiveRecordError => exception
       errors << active_record_error(exception)
     end

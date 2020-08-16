@@ -14,7 +14,7 @@ class VisitorIndexPresenter < BasePresenter
   end
 
   def recent_user_efforts
-    @recent_user_efforts ||= avatar ? avatar.efforts.joins(:event).includes(event: :event_group).order('events.start_time desc') : []
+    @recent_user_efforts ||= avatar ? avatar.efforts.joins(:event).includes(event: :event_group).order('events.scheduled_start_time desc') : []
   end
 
   private

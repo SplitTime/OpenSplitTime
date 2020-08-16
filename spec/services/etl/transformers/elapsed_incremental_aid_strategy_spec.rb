@@ -13,7 +13,7 @@ RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
   let(:first_proto_record) { proto_records.first }
 
   let(:event) { build_stubbed(:event, course: course) }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
   let(:course) { build_stubbed(:course) }
   let(:start) { build_stubbed(:split, :start, course: course, base_name: 'Start') }
   let(:dry_fork) { build_stubbed(:split, course: course, base_name: 'Dry Fork Outbound', sub_split_bitmap: 65, distance_from_start: 17220) }

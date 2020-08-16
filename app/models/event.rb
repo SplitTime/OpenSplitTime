@@ -6,7 +6,7 @@ class Event < ApplicationRecord
 
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
-  zonable_attributes :start_time
+  zonable_attributes :scheduled_start_time
   has_paper_trail
 
   belongs_to :course
@@ -19,12 +19,10 @@ class Event < ApplicationRecord
   has_many :splits, through: :aid_stations
   has_many :partners, through: :event_group
 
-  alias_attribute :start_time, :scheduled_start_time
-
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :permit_notifications?, :home_time_zone, to: :event_group
 
-  validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
+  validates_presence_of :course_id, :scheduled_start_time, :laps_required, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
   validate :course_is_consistent
 
@@ -51,15 +49,15 @@ class Event < ApplicationRecord
   end
 
   def self.latest
-    order(start_time: :desc).first
+    order(scheduled_start_time: :desc).first
   end
 
   def self.earliest
-    order(:start_time).first
+    order(:scheduled_start_time).first
   end
 
   def self.most_recent
-    where('start_time < ?', Time.now).order(start_time: :desc).first
+    where('scheduled_start_time < ?', Time.now).order(scheduled_start_time: :desc).first
   end
 
   def events_within_group

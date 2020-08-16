@@ -62,7 +62,7 @@ module Interactors
     end
 
     def new_event_group_name
-      "#{event.start_time.year} #{old_event_group.organization.name}"
+      "#{event.scheduled_start_time.year} #{old_event_group.organization.name}"
     end
 
     def message

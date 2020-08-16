@@ -22,16 +22,32 @@ RSpec.describe Organization, type: :model do
     context "without a name" do
       let(:name) { nil }
       it "is invalid" do
-        expect(organization).not_to be_valid
-        expect(organization.errors[:name]).to include("can't be blank")
+        expect(subject).to be_invalid
+        expect(subject.errors[:name]).to include("can't be blank")
       end
     end
 
     context "with a duplicate name" do
       let(:name) { "Hardrock" }
       it "is invalid" do
-        expect(organization).not_to be_valid
-        expect(organization.errors[:name]).to include("has already been taken")
+        expect(subject).to be_invalid
+        expect(subject.errors[:name]).to include("has already been taken")
+      end
+    end
+
+    context "without an owner" do
+      let(:owner_id) { nil }
+      it "is invalid" do
+        expect(subject).to be_invalid
+        expect(subject.errors[:owner_id]).to include("does not exist")
+      end
+    end
+
+    context "with an owner id that does not exist" do
+      let(:owner_id) { -1 }
+      it "is invalid" do
+        expect(subject).to be_invalid
+        expect(subject.errors[:owner_id]).to include("does not exist")
       end
     end
   end

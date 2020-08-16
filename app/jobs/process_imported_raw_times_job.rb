@@ -14,7 +14,7 @@ class ProcessImportedRawTimesJob < ApplicationJob
       unmatched_raw_times = match_response.resources[:unmatched]
       raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: unmatched_raw_times)
       Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
-                                              force_submit: false, mark_as_pulled: false)
+                                              force_submit: false, mark_as_reviewed: false)
       report_raw_times_available(event_group)
     else
       Rails.logger.error(match_response.message_with_error_report)

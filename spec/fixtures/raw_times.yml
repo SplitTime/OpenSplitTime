@@ -11,8 +11,8 @@ raw_time_49:
   with_pacer: 
   stopped_here: 
   source: internal
-  pulled_by: 1
-  pulled_at: '2017-07-08 22:38:12.817174'
+  reviewed_by: 1
+  reviewed_at: '2017-07-08 22:38:12.817174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.732619'
@@ -36,8 +36,8 @@ raw_time_50:
   with_pacer: 
   stopped_here: 
   source: internal
-  pulled_by: 1
-  pulled_at: '2017-07-08 22:38:12.817174'
+  reviewed_by: 1
+  reviewed_at: '2017-07-08 22:38:12.817174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.735995'
@@ -61,8 +61,8 @@ raw_time_67:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.798201'
@@ -86,8 +86,8 @@ raw_time_68:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.801611'
@@ -111,8 +111,8 @@ raw_time_69:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.805381'
@@ -136,8 +136,8 @@ raw_time_70:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.809416'
@@ -161,8 +161,8 @@ raw_time_73:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.819696'
@@ -186,8 +186,8 @@ raw_time_74:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.825046'
@@ -211,8 +211,8 @@ raw_time_75:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.828907'
@@ -236,8 +236,8 @@ raw_time_76:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.832235'
@@ -261,8 +261,8 @@ raw_time_77:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.835982'
@@ -286,8 +286,8 @@ raw_time_78:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.840667'
@@ -311,8 +311,8 @@ raw_time_79:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.84431'
@@ -336,8 +336,8 @@ raw_time_80:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.847562'
@@ -361,8 +361,8 @@ raw_time_81:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.851043'
@@ -386,8 +386,8 @@ raw_time_82:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.854819'
@@ -411,8 +411,8 @@ raw_time_83:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.858689'
@@ -436,8 +436,8 @@ raw_time_84:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.862327'
@@ -461,8 +461,8 @@ raw_time_85:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.865972'
@@ -486,8 +486,8 @@ raw_time_86:
   with_pacer: 
   stopped_here: 
   source: internal
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 
   updated_by: 
   created_at: '2018-06-11 10:56:14.86953'
@@ -511,8 +511,8 @@ raw_time_87:
   with_pacer: 
   stopped_here: 
   source: internal
-  pulled_by: 1
-  pulled_at: '2018-04-30 22:46:06.425174'
+  reviewed_by: 1
+  reviewed_at: '2018-04-30 22:46:06.425174'
   created_by: 
   updated_by: 
   created_at: '2018-06-11 10:56:14.873617'
@@ -536,8 +536,8 @@ raw_time_88:
   with_pacer: 
   stopped_here: 
   source: internal
-  pulled_by: 1
-  pulled_at: '2018-07-27 03:39:21.94946'
+  reviewed_by: 1
+  reviewed_at: '2018-07-27 03:39:21.94946'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.877397'
@@ -561,8 +561,8 @@ raw_time_89:
   with_pacer: false
   stopped_here: false
   source: ost-live-entry
-  pulled_by: 
-  pulled_at: 
+  reviewed_by:
+  reviewed_at:
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.880784'
@@ -586,8 +586,8 @@ raw_time_91:
   with_pacer: false
   stopped_here: false
   source: internal
-  pulled_by: 1
-  pulled_at: '2018-07-27 03:40:08.987644'
+  reviewed_by: 1
+  reviewed_at: '2018-07-27 03:40:08.987644'
   created_by: 1
   updated_by: 1
   created_at: '2018-06-29 04:42:41.128703'
@@ -611,8 +611,8 @@ raw_time_92:
   with_pacer: false
   stopped_here: false
   source: internal
-  pulled_by: 1
-  pulled_at: '2018-07-27 03:24:12.907737'
+  reviewed_by: 1
+  reviewed_at: '2018-07-27 03:24:12.907737'
   created_by: 
   updated_by: 
   created_at: '2018-06-29 05:01:22.505217'
@@ -636,8 +636,8 @@ raw_time_176:
   with_pacer: false
   stopped_here: false
   source: another
-  pulled_by: 1
-  pulled_at: '2018-11-14 05:48:02.521295'
+  reviewed_by: 1
+  reviewed_at: '2018-11-14 05:48:02.521295'
   created_by: 
   updated_by: 
   created_at: '2018-10-25 20:05:12.500786'
@@ -661,8 +661,8 @@ raw_time_177:
   with_pacer: false
   stopped_here: false
   source: another
-  pulled_by: 1
-  pulled_at: '2018-11-14 05:48:25.812628'
+  reviewed_by: 1
+  reviewed_at: '2018-11-14 05:48:25.812628'
   created_by: 1
   updated_by: 1
   created_at: '2018-10-25 20:06:21.05898'
@@ -686,8 +686,8 @@ raw_time_178:
   with_pacer: false
   stopped_here: false
   source: another
-  pulled_by: 1
-  pulled_at: '2018-11-14 05:48:27.582171'
+  reviewed_by: 1
+  reviewed_at: '2018-11-14 05:48:27.582171'
   created_by: 1
   updated_by: 1
   created_at: '2018-10-25 20:06:31.146819'
@@ -711,8 +711,8 @@ raw_time_1100:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2018-11-14 05:48:22.55383'
+  reviewed_by: 1
+  reviewed_at: '2018-11-14 05:48:22.55383'
   created_by: 1
   updated_by: 1
   created_at: '2018-11-14 05:48:22.555587'
@@ -736,8 +736,8 @@ raw_time_1106:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2018-12-09 02:24:15.750492'
+  reviewed_by: 1
+  reviewed_at: '2018-12-09 02:24:15.750492'
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:24:15.750994'
@@ -761,8 +761,8 @@ raw_time_1110:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2018-12-09 02:25:03.158304'
+  reviewed_by: 1
+  reviewed_at: '2018-12-09 02:25:03.158304'
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:25:03.158886'
@@ -786,8 +786,8 @@ raw_time_1111:
   with_pacer: false
   stopped_here: true
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2018-12-09 02:26:54.169992'
+  reviewed_by: 1
+  reviewed_at: '2018-12-09 02:26:54.169992'
   created_by: 1
   updated_by: 1
   created_at: '2018-12-09 02:26:54.170813'
@@ -811,8 +811,8 @@ raw_time_1117:
   with_pacer: false
   stopped_here: true
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2018-12-15 17:29:59.171376'
+  reviewed_by: 1
+  reviewed_at: '2018-12-15 17:29:59.171376'
   created_by: 1
   updated_by: 1
   created_at: '2018-12-15 17:29:59.172639'
@@ -836,8 +836,8 @@ raw_time_1122:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2019-01-25 00:23:15.068615'
+  reviewed_by: 1
+  reviewed_at: '2019-01-25 00:23:15.068615'
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:15.069786'
@@ -861,8 +861,8 @@ raw_time_1123:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2019-01-25 00:23:15.075358'
+  reviewed_by: 1
+  reviewed_at: '2019-01-25 00:23:15.075358'
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:15.075882'
@@ -886,8 +886,8 @@ raw_time_1124:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2019-01-25 00:23:57.46847'
+  reviewed_by: 1
+  reviewed_at: '2019-01-25 00:23:57.46847'
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:57.469491'
@@ -911,8 +911,8 @@ raw_time_1125:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2019-01-25 00:23:57.472413'
+  reviewed_by: 1
+  reviewed_at: '2019-01-25 00:23:57.472413'
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:23:57.472951'
@@ -936,8 +936,8 @@ raw_time_1126:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  pulled_by: 1
-  pulled_at: '2019-01-25 00:25:12.56391'
+  reviewed_by: 1
+  reviewed_at: '2019-01-25 00:25:12.56391'
   created_by: 1
   updated_by: 1
   created_at: '2019-01-25 00:25:12.56445'

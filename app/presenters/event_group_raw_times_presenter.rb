@@ -41,7 +41,7 @@ class EventGroupRawTimesPresenter < BasePresenter
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
       raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
       raw_time.creator = raw_time.created_by? ? indexed_users[raw_time.created_by] : nil
-      raw_time.puller = raw_time.pulled_by? ? indexed_users[raw_time.pulled_by] : nil
+      raw_time.reviewer = raw_time.reviewed_by? ? indexed_users[raw_time.reviewed_by] : nil
     end
   end
 
@@ -78,11 +78,11 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def user_ids
-    @user_ids ||= filtered_raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.pulled_by] }.compact.uniq
+    @user_ids ||= filtered_raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.reviewed_by] }.compact.uniq
   end
 
   def matches_criteria?(raw_time)
-    matches_stopped_criteria?(raw_time) && matches_pulled_criteria?(raw_time) && matches_matched_criteria?(raw_time)
+    matches_stopped_criteria?(raw_time) && matches_reviewed_criteria?(raw_time) && matches_matched_criteria?(raw_time)
   end
 
   def matches_stopped_criteria?(raw_time)
@@ -96,12 +96,12 @@ class EventGroupRawTimesPresenter < BasePresenter
     end
   end
 
-  def matches_pulled_criteria?(raw_time)
-    case params[:pulled]&.to_boolean
+  def matches_reviewed_criteria?(raw_time)
+    case params[:reviewed]&.to_boolean
     when true
-      raw_time.pulled_by.present?
+      raw_time.reviewed_by.present?
     when false
-      raw_time.pulled_by.blank?
+      raw_time.reviewed_by.blank?
     else # value is nil so do not filter
       true
     end

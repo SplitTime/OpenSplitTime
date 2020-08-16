@@ -17,19 +17,19 @@ module RawTimesHelper
     end
   end
 
-  def link_to_toggle_raw_time_pull(raw_time)
-    if raw_time.pulled_by? || raw_time.pulled_at?
-      pulled_by = nil
-      pulled_at = nil
-      tooltip_text = 'Mark as not pulled'
+  def link_to_toggle_raw_time_review(raw_time)
+    if raw_time.reviewed_by? || raw_time.reviewed_at?
+      reviewed_by = nil
+      reviewed_at = nil
+      tooltip_text = 'Mark as not reviewed'
       button_class = 'primary'
     else
-      pulled_by = current_user.id
-      pulled_at = Time.current
-      tooltip_text = 'Mark as pulled'
+      reviewed_by = current_user.id
+      reviewed_at = Time.current
+      tooltip_text = 'Mark as reviewed'
       button_class = 'outline-secondary'
     end
-    url = raw_time_path(raw_time, raw_time: {pulled_by: pulled_by, pulled_at: pulled_at}, referrer_path: request.params)
+    url = raw_time_path(raw_time, raw_time: {reviewed_by: reviewed_by, reviewed_at: reviewed_at}, referrer_path: request.params)
     options = {method: :patch,
                data: {toggle: :tooltip, placement: :bottom, 'original-title' => tooltip_text},
                class: "btn btn-#{button_class} has-tooltip click-spinner"}

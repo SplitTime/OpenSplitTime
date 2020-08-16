@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.pusherapp.com/apps/328773/events?auth_key=7996e63c91b42e483b50&auth_signature=dee88862db3acaa2dd2866a7636375e7ada7b8bbbdd451b668e45ab62427d086&auth_timestamp=1521537953&auth_version=1.0&body_md5=7f4c2c2d3fa1ac43ee96b621d60dd724
     body:
       encoding: UTF-8
-      string: '{"name":"update","channels":["live-times-available.event_group.151"],"data":"{\"unconsidered\":0,\"unmatched\":0}"}'
+      string: '{"name":"update","channels":["live-times-available.event_group.151"],"data":"{\"unreviewed\":0,\"unmatched\":0}"}'
     headers:
       User-Agent:
       - HTTPClient/1.0 (2.8.3, ruby 2.5.0 (2017-12-25))

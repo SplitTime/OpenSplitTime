@@ -143,23 +143,23 @@ module DropdownHelper
   end
 
   def raw_time_filter_dropdown
-    items = [{icon_name: 'hand-paper', type: :solid, text: 'Stopped', stopped: true, pulled: nil, matched: nil},
-             {icon_name: 'cloud-download-alt', type: :solid, text: 'Pulled', stopped: nil, pulled: true, matched: nil},
-             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unpulled', stopped: nil, pulled: false, matched: nil},
-             {icon_name: 'check-square', type: :solid, text: 'Matched', stopped: nil, pulled: nil, matched: true},
-             {icon_name: 'square', type: :solid, text: 'Unmatched', stopped: nil, pulled: nil, matched: false},
-             {icon_name: 'asterisk', type: :solid, text: 'All', stopped: nil, pulled: nil, matched: nil}]
+    items = [{icon_name: 'hand-paper', type: :solid, text: 'Stopped', stopped: true, reviewed: nil, matched: nil},
+             {icon_name: 'cloud-download-alt', type: :solid, text: 'Reviewed', stopped: nil, reviewed: true, matched: nil},
+             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unreviewed', stopped: nil, reviewed: false, matched: nil},
+             {icon_name: 'check-square', type: :solid, text: 'Matched', stopped: nil, reviewed: nil, matched: true},
+             {icon_name: 'square', type: :solid, text: 'Unmatched', stopped: nil, reviewed: nil, matched: false},
+             {icon_name: 'asterisk', type: :solid, text: 'All', stopped: nil, reviewed: nil, matched: nil}]
 
     dropdown_items = items.map do |item|
       {name: fa_icon(item[:icon_name], text: item[:text], type: item[:type]),
        link: request.params.merge(
            stopped: item[:stopped],
-           pulled: item[:pulled],
+           reviewed: item[:reviewed],
            matched: item[:matched],
            page: nil
        ),
        active: params[:stopped]&.to_boolean == item[:stopped] &&
-           params[:pulled]&.to_boolean == item[:pulled] &&
+           params[:reviewed]&.to_boolean == item[:reviewed] &&
            params[:matched]&.to_boolean == item[:matched]}
     end
 

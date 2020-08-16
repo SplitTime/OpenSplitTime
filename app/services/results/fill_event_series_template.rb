@@ -35,7 +35,7 @@ module Results
     end
 
     def events
-      event_series.events.sort_by(&:start_time)
+      event_series.events.sort_by(&:scheduled_start_time)
     end
 
     def scored_series_efforts

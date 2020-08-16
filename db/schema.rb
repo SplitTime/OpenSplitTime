@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_16_133049) do
+ActiveRecord::Schema.define(version: 2020_08_16_171759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -274,8 +274,8 @@ ActiveRecord::Schema.define(version: 2020_08_16_133049) do
     t.boolean "with_pacer", default: false
     t.boolean "stopped_here", default: false
     t.string "source", null: false
-    t.integer "pulled_by"
-    t.datetime "pulled_at"
+    t.integer "reviewed_by"
+    t.datetime "reviewed_at"
     t.integer "created_by"
     t.integer "updated_by"
     t.datetime "created_at", null: false

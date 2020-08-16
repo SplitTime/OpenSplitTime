@@ -51,8 +51,16 @@ class Organization < ApplicationRecord
     end
   end
 
+  def owner
+    @owner ||= User.find_by(id: owner_id)
+  end
+
+  def owner_full_name
+    owner&.full_name
+  end
+
   def owner_email
-    User.find_by(id: owner_id)&.email
+    owner&.email
   end
 
   def owner_email=(email)

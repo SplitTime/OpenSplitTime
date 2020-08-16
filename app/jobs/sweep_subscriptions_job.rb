@@ -10,7 +10,7 @@ class SweepSubscriptionsJob < ApplicationJob
 
     problem_subs = []
     obsolete_subs = Subscription.joins('join efforts on efforts.id = subscriptions.subscribable_id join events on events.id = efforts.event_id')
-                      .where("subscriptions.subscribable_type = 'Effort' and events.start_time < ?", 1.year.ago)
+                      .where("subscriptions.subscribable_type = 'Effort' and events.scheduled_start_time < ?", 1.year.ago)
 
     count = obsolete_subs.count
     if count == 0

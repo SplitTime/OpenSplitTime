@@ -16,7 +16,7 @@ class EventSeriesPresenter < BasePresenter
   end
 
   def events
-    event_series.events.sort_by(&:start_time)
+    event_series.events.sort_by(&:scheduled_start_time)
   end
 
   def subtext

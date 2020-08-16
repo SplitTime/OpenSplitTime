@@ -16,11 +16,11 @@ class OrganizationPresenter < BasePresenter
         .joins(:events) # Excludes "orphaned" event_groups (having no events)
         .where(id: scoped_event_groups.map(&:id), organization: organization)
         .includes(events: :efforts).includes(:organization)
-        .sort_by { |event_group| -event_group.start_time.to_i }
+        .sort_by { |event_group| -event_group.scheduled_start_time.to_i }
   end
 
   def event_series
-    organization.event_series.includes(events: :event_group).sort_by(&:start_time).reverse
+    organization.event_series.includes(events: :event_group).sort_by(&:scheduled_start_time).reverse
   end
 
   def event_date_range(series)
@@ -50,6 +50,6 @@ class OrganizationPresenter < BasePresenter
   attr_reader :params, :current_user
 
   def event_dates(series)
-    series.events.map(&:start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }
+    series.events.map(&:scheduled_start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }
   end
 end

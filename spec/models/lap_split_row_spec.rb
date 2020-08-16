@@ -8,7 +8,7 @@ RSpec.describe LapSplitRow, type: :model do
   let(:show_laps) { false }
 
   let(:course) { Course.new(name: 'Test Course 100') }
-  let(:event) { Event.new(course: course, event_group: event_group, start_time: '2015-07-01 06:00:00', laps_required: 1) }
+  let(:event) { Event.new(course: course, event_group: event_group, scheduled_start_time: '2015-07-01 06:00:00', laps_required: 1) }
   let(:event_group) { EventGroup.new(home_time_zone: 'Mountain Time (US & Canada)')}
 
   let(:effort) { Effort.new(event: event, bib_number: 1, city: 'Vancouver', state_code: 'BC', country_code: 'CA', age: 50, first_name: 'Jen', last_name: 'Huckster', gender: 'female') }
@@ -33,25 +33,25 @@ RSpec.describe LapSplitRow, type: :model do
 
   let(:split_time_data_blank) { SplitTimeData.new }
   let(:split_time_data_1) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_1.id, bitkey: in_bitkey, time_from_start: tfs_1, segment_time: nil,
-                                              absolute_time_string: (event_start_time + tfs_1).to_s, absolute_time_local_string: (event.start_time_local + tfs_1).to_s,
+                                              absolute_time_string: (event_start_time + tfs_1).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_1).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_2) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey, time_from_start: tfs_2, segment_time: tfs_2 - tfs_1,
-                                              absolute_time_string: (event_start_time + tfs_2).to_s, absolute_time_local_string: (event.start_time_local + tfs_2).to_s,
+                                              absolute_time_string: (event_start_time + tfs_2).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_2).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_3) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: out_bitkey, time_from_start: tfs_3, segment_time: tfs_3 - tfs_2,
-                                              absolute_time_string: (event_start_time + tfs_3).to_s, absolute_time_local_string: (event.start_time_local + tfs_3).to_s,
+                                              absolute_time_string: (event_start_time + tfs_3).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_3).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_4) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, time_from_start: tfs_4, segment_time: tfs_4 - tfs_3,
-                                              absolute_time_string: (event_start_time + tfs_4).to_s, absolute_time_local_string: (event.start_time_local + tfs_4).to_s,
+                                              absolute_time_string: (event_start_time + tfs_4).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_4).to_s,
                                               data_status_numeric: 2) }
   let(:split_time_data_5) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, time_from_start: tfs_5, segment_time: tfs_5 - tfs_4,
-                                              absolute_time_string: (event_start_time + tfs_5).to_s, absolute_time_local_string: (event.start_time_local + tfs_5).to_s,
+                                              absolute_time_string: (event_start_time + tfs_5).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_5).to_s,
                                               data_status_numeric: 0) }
   let(:split_time_data_6) { SplitTimeData.new(effort_id: effort.id, lap: 1, split_id: split_4.id, bitkey: in_bitkey, time_from_start: tfs_6, segment_time: tfs_6 - tfs_5,
-                                              absolute_time_string: (event_start_time + tfs_6).to_s, absolute_time_local_string: (event.start_time_local + tfs_6).to_s,
+                                              absolute_time_string: (event_start_time + tfs_6).to_s, absolute_time_local_string: (event.scheduled_start_time_local + tfs_6).to_s,
                                               data_status_numeric: 2) }
 
-  let(:event_start_time) { event.start_time }
+  let(:event_start_time) { event.scheduled_start_time }
 
   describe '#initialize' do
     context 'when initialized with a lap_split and valid split_times for a split with in and out sub_splits' do

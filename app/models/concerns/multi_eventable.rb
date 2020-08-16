@@ -3,10 +3,10 @@
 module MultiEventable
   extend ActiveSupport::Concern
 
-  delegate :start_time, :start_time_local, to: :first_event, allow_nil: true
+  delegate :scheduled_start_time, :scheduled_start_time_local, to: :first_event, allow_nil: true
 
   def ordered_events
-    events.sort_by { |event| [event.start_time, event.name] }
+    events.sort_by { |event| [event.scheduled_start_time, event.name] }
   end
 
   def first_event

@@ -158,7 +158,7 @@ RSpec.describe 'Event staging app flow', type: :system, js: true do
 
       event.reload
       expect(event.name).to eq('Updated Event Name')
-      expect(event.start_time).to eq('2017-10-01 07:30 -07:00')
+      expect(event.scheduled_start_time).to eq('2017-10-01 07:30 -07:00')
     end
 
     xscenario 'Add a split' do

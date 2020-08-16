@@ -7,7 +7,7 @@ hardrock_2015:
   updated_at: '2020-08-08 19:04:59.836439'
   created_by: 1
   updated_by: 1
-  start_time: '2015-07-10 12:00:00'
+  scheduled_start_time: '2015-07-10 12:00:00'
   beacon_url: 
   laps_required: 1
   slug: hardrock-2015
@@ -24,7 +24,7 @@ ramble:
   updated_at: '2020-08-08 19:04:59.844186'
   created_by: 1
   updated_by: 1
-  start_time: '2006-09-16 14:00:00'
+  scheduled_start_time: '2006-09-16 14:00:00'
   beacon_url: 
   laps_required: 1
   slug: ramble
@@ -41,7 +41,7 @@ hardrock_2014:
   updated_at: '2020-08-08 19:04:59.845718'
   created_by: 1
   updated_by: 1
-  start_time: '2014-07-11 12:00:00'
+  scheduled_start_time: '2014-07-11 12:00:00'
   beacon_url: 
   laps_required: 1
   slug: hardrock-2014
@@ -58,7 +58,7 @@ rufa_2016:
   updated_at: '2020-08-08 19:04:59.847193'
   created_by: 1
   updated_by: 1
-  start_time: '2016-02-13 13:00:00'
+  scheduled_start_time: '2016-02-13 13:00:00'
   beacon_url: 
   laps_required: 0
   slug: rufa-2016
@@ -75,7 +75,7 @@ rufa_2017_24h:
   updated_at: '2020-08-08 19:04:59.848674'
   created_by: 1
   updated_by: 1
-  start_time: '2017-02-11 13:00:00'
+  scheduled_start_time: '2017-02-11 13:00:00'
   beacon_url: 
   laps_required: 0
   slug: rufa-2017-24h
@@ -92,7 +92,7 @@ hardrock_2016:
   updated_at: '2020-08-08 19:04:59.850133'
   created_by: 1
   updated_by: 1
-  start_time: '2016-07-15 12:00:00'
+  scheduled_start_time: '2016-07-15 12:00:00'
   beacon_url: http://trackleaders.com/hardrock16
   laps_required: 1
   slug: hardrock-2016
@@ -109,7 +109,7 @@ ggd30_50k:
   updated_at: '2020-08-08 19:04:59.851567'
   created_by: 1
   updated_by: 1
-  start_time: '2017-06-04 01:00:00'
+  scheduled_start_time: '2017-06-04 01:00:00'
   beacon_url: https://goldengatedirty30.maprogress.com
   laps_required: 1
   slug: ggd30-50k
@@ -126,7 +126,7 @@ ggd30_12m:
   updated_at: '2020-08-08 19:04:59.852935'
   created_by: 1
   updated_by: 1
-  start_time: '2017-06-04 02:00:00'
+  scheduled_start_time: '2017-06-04 02:00:00'
   beacon_url: 
   laps_required: 1
   slug: ggd30-12m
@@ -143,7 +143,7 @@ sum_100k:
   updated_at: '2020-08-08 19:04:59.854183'
   created_by: 1
   updated_by: 1
-  start_time: '2017-09-23 13:00:00'
+  scheduled_start_time: '2017-09-23 13:00:00'
   beacon_url: 
   laps_required: 1
   slug: sum-100k
@@ -160,7 +160,7 @@ sum_55k:
   updated_at: '2020-08-08 19:04:59.856993'
   created_by: 1
   updated_by: 1
-  start_time: '2017-09-23 15:00:00'
+  scheduled_start_time: '2017-09-23 15:00:00'
   beacon_url: 
   laps_required: 1
   slug: sum-55k
@@ -177,7 +177,7 @@ rufa_2017_12h:
   updated_at: '2020-08-08 19:04:59.858665'
   created_by: 1
   updated_by: 1
-  start_time: '2017-02-11 14:00:00'
+  scheduled_start_time: '2017-02-11 14:00:00'
   beacon_url: 
   laps_required: 0
   slug: rufa-2017-12h

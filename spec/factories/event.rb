@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :event do
-    start_time { FFaker::Time.datetime }
+    scheduled_start_time { FFaker::Time.datetime }
     laps_required { 1 }
     course
     event_group

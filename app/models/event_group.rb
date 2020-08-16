@@ -33,7 +33,7 @@ class EventGroup < ApplicationRecord
   scope :with_policy_scope_attributes, -> { all }
   scope :by_group_start_time, -> do
     joins(:events)
-        .select('event_groups.*, min(events.start_time) as group_start_time')
+        .select('event_groups.*, min(events.scheduled_start_time) as group_start_time')
         .group(:id)
         .order('group_start_time desc')
   end

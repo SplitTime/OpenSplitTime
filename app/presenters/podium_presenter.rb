@@ -4,7 +4,7 @@ class PodiumPresenter < BasePresenter
 
   attr_reader :event
   delegate :name, :course, :course_name, :organization, :organization_name, :to_param, :multiple_laps?,
-           :event_group, :ordered_events_within_group, :start_time_local, to: :event
+           :event_group, :ordered_events_within_group, :scheduled_start_time_local, to: :event
   delegate :available_live, :multiple_events?, to: :event_group
 
   def initialize(event, template, current_user)

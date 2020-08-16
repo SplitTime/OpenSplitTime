@@ -2,7 +2,7 @@
 
 class EventGroupFollowPresenter < BasePresenter
   attr_reader :event_group, :current_user
-  delegate :name, :organization, :organization_name, :events, :home_time_zone, :start_time_local, :available_live,
+  delegate :name, :organization, :organization_name, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :multiple_events?, to: :event_group
 
   def initialize(event_group, params, current_user)

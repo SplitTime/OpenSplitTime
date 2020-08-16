@@ -7,7 +7,7 @@ RSpec.describe TypicalEffort, type: :model do
                               time_points: time_points, expected_time_point: expected_time_point) }
   let(:event) { events(:hardrock_2016) }
   let(:expected_time_from_start) { 1.hour }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
   let(:time_points) { event.required_time_points }
   let(:expected_time_point) { nil }
 

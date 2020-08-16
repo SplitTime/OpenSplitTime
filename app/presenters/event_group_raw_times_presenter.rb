@@ -11,7 +11,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def events
-    @events ||= event_group.events.sort_by(&:start_time)
+    @events ||= event_group.events.sort_by(&:scheduled_start_time)
   end
 
   def event_group_names

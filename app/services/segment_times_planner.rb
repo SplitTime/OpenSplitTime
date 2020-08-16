@@ -11,7 +11,7 @@ class SegmentTimesPlanner
     @event = args[:event]
     @time_points = args[:time_points]
     @similar_effort_ids = args[:similar_effort_ids]
-    @start_time = args[:start_time] || event.start_time
+    @start_time = args[:start_time] || event.scheduled_start_time
     @times_container = args[:times_container] ||
         SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids)
     @serial_segments = args[:serial_segments] ||

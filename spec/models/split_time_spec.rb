@@ -12,7 +12,7 @@ RSpec.describe SplitTime, kind: :model do
 
   describe 'validations' do
     context 'for validations that do not depend on existing records in the database' do
-      subject(:split_time) { build_stubbed(:split_time, effort: effort, split: start_split, bitkey: in_bitkey, absolute_time: event.start_time) }
+      subject(:split_time) { build_stubbed(:split_time, effort: effort, split: start_split, bitkey: in_bitkey, absolute_time: event.scheduled_start_time) }
       let(:course) { build_stubbed(:course) }
       let(:start_split) { build_stubbed(:split, :start, course: course) }
       let(:intermediate_split) { build_stubbed(:split, course: course) }
@@ -81,10 +81,10 @@ RSpec.describe SplitTime, kind: :model do
       let(:event) { create(:event, course: course) }
       let(:effort) { build(:effort, event: event) }
 
-      before { create(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 1.hour) }
+      before { create(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.scheduled_start_time + 1.hour) }
 
       context 'when more than one of a given time_point exists within an effort' do
-        let(:split_time) { build_stubbed(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.start_time + 2.hours) }
+        let(:split_time) { build_stubbed(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.scheduled_start_time + 2.hours) }
 
         it 'is invalid' do
           expect(split_time).not_to be_valid
@@ -541,12 +541,12 @@ RSpec.describe SplitTime, kind: :model do
           let(:time_arg) { '09:30:00' }
 
           before do
-            effort.event.update(start_time_local: start_time_local)
+            effort.event.update(scheduled_start_time_local: scheduled_start_time_local)
             split_time.military_time = time_arg
           end
 
           context 'when the event starts on a day before the DST change' do
-            let(:start_time_local) { '2017-09-23 07:00:00' }
+            let(:scheduled_start_time_local) { '2017-09-23 07:00:00' }
 
             it 'sets time attributes correctly' do
               expect(split_time.military_time).to eq(time_arg)
@@ -554,7 +554,7 @@ RSpec.describe SplitTime, kind: :model do
           end
 
           context 'when the event starts before the DST change on the day of the DST change' do
-            let(:start_time_local) { '2017-11-05 01:00:00' }
+            let(:scheduled_start_time_local) { '2017-11-05 01:00:00' }
 
             it 'sets absolute_time properly' do
               expect(split_time.military_time).to eq(time_arg)
@@ -562,7 +562,7 @@ RSpec.describe SplitTime, kind: :model do
           end
 
           context 'when the event starts after the DST change' do
-            let(:start_time_local) { '2017-11-05 07:00:00' }
+            let(:scheduled_start_time_local) { '2017-11-05 07:00:00' }
 
             it 'sets absolute_time properly' do
               expect(split_time.military_time).to eq(time_arg)

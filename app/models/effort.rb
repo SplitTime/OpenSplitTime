@@ -53,7 +53,7 @@ class Effort < ApplicationRecord
   scope :checked_in, -> { where(checked_in: true) }
   scope :over_segment, -> (segment) { from(EffortQuery.over_segment_subquery(segment, self)) }
   scope :add_ready_to_start, -> do
-    select('distinct on (efforts.id) efforts.*, coalesce(scheduled_start_time, events.start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(scheduled_start_time, events.start_time) < current_timestamp)) as ready_to_start')
+    select('distinct on (efforts.id) efforts.*, coalesce(efforts.scheduled_start_time, events.scheduled_start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(efforts.scheduled_start_time, events.scheduled_start_time) < current_timestamp)) as ready_to_start')
         .left_joins(:event, split_times: :split)
         .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
   end
@@ -119,7 +119,7 @@ class Effort < ApplicationRecord
   end
 
   def event_start_time
-    @event_start_time ||= attributes['event_start_time'] || event&.start_time
+    @event_start_time ||= attributes['event_start_time'] || event&.scheduled_start_time
   end
 
   def home_time_zone

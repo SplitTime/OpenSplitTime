@@ -73,7 +73,7 @@ module ETL::Transformers
       start_calcs = calcs_from_start(segment_seconds, start_seconds)
       finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
       proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
-      proto_record[:absolute_times] = proto_record[:times_from_start].map { |tfs| event.start_time + tfs if tfs.present? }
+      proto_record[:absolute_times] = proto_record[:times_from_start].map { |tfs| event.scheduled_start_time + tfs if tfs.present? }
     end
 
     def add_empty_times!(proto_record)

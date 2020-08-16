@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
   let(:event) { events(:ggd30_50k) }
-  let(:start_time) { event.start_time }
+  let(:start_time) { event.scheduled_start_time }
   let(:subject_splits) { event.ordered_splits }
   let(:split_ids) { subject_splits.map(&:id) }
   let(:invalid_split_id) { 0 }

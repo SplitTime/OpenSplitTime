@@ -9,7 +9,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    event_groups.sort_by { |eg| eg.start_time || Time.current }.reverse.first(number)
+    event_groups.sort_by { |eg| eg.scheduled_start_time || Time.current }.reverse.first(number)
   end
 
   def event_groups
@@ -17,7 +17,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_series(number)
-    event_series.sort_by(&:start_time).reverse.first(number)
+    event_series.sort_by(&:scheduled_start_time).reverse.first(number)
   end
 
   def event_series

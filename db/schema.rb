@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_040556) do
+ActiveRecord::Schema.define(version: 2020_08_16_133049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040556) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
-    t.datetime "start_time"
+    t.datetime "scheduled_start_time"
     t.string "beacon_url"
     t.integer "laps_required"
     t.string "slug", null: false

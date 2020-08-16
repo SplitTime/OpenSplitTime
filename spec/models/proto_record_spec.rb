@@ -144,26 +144,26 @@ RSpec.describe ProtoRecord, type: :model do
       let(:start_time_attributes) { {} }
       let(:start_offset_attributes) { {} }
       let(:options) { {event: event} }
-      let(:event) { Event.new(id: 1, event_group: event_group, start_time_local: start_time) }
+      let(:event) { Event.new(id: 1, event_group: event_group, scheduled_start_time_local: start_time) }
       let(:event_group) { EventGroup.new(home_time_zone: "Pacific Time (US & Canada)") }
       let(:start_time) { "2018-06-30 08:00:00" }
 
       it "sets the record type and normalizes data" do
         expect(pr.record_type).to eq(:effort)
-        expect(pr.to_h).to eq({gender: "male", country_code: "US", state_code: "CA", birthdate: "1966-09-01", event_id: event.id, scheduled_start_time: event.start_time})
+        expect(pr.to_h).to eq({gender: "male", country_code: "US", state_code: "CA", birthdate: "1966-09-01", event_id: event.id, scheduled_start_time: event.scheduled_start_time})
       end
 
       context "when scheduled start time is not provided" do
         context "and start offset is not provided" do
           it "sets scheduled start time to that of the event" do
-            expect(pr[:scheduled_start_time]).to eq(event.start_time)
+            expect(pr[:scheduled_start_time]).to eq(event.scheduled_start_time)
           end
         end
 
         context "and start offset is provided" do
           let(:start_offset_attributes) { {start_offset: "0:30:00"} }
           it "sets scheduled start time using the start offset" do
-            expect(pr[:scheduled_start_time]).to eq(event.start_time + 30.minutes)
+            expect(pr[:scheduled_start_time]).to eq(event.scheduled_start_time + 30.minutes)
           end
         end
       end
@@ -172,14 +172,14 @@ RSpec.describe ProtoRecord, type: :model do
         let(:start_time_attributes) { {scheduled_start_time_local: "2018-06-30 09:00:00"}}
         context "and start offset is not provided" do
           it "uses the scheduled start time" do
-            expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+            expect(pr[:scheduled_start_time]).to eq(event.scheduled_start_time + 1.hour)
           end
         end
 
         context "and start offset is provided" do
           let(:start_offset_attributes) { {start_offset: "0:30:00"} }
           it "ignores the start offset and uses the scheduled start time" do
-            expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+            expect(pr[:scheduled_start_time]).to eq(event.scheduled_start_time + 1.hour)
           end
         end
       end
@@ -187,7 +187,7 @@ RSpec.describe ProtoRecord, type: :model do
       context "when scheduled start time is provided as a time only" do
         let(:start_time_attributes) { {scheduled_start_time_local: "09:00:00"} }
         it "infers the event date" do
-          expect(pr[:scheduled_start_time]).to eq(event.start_time + 1.hour)
+          expect(pr[:scheduled_start_time]).to eq(event.scheduled_start_time + 1.hour)
         end
       end
     end

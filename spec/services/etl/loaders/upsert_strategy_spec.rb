@@ -50,7 +50,7 @@ RSpec.describe ETL::Loaders::UpsertStrategy do
     end
 
     context 'when proto_records are efforts for an event with scheduled start offset' do
-      let(:event) { create(:event, event_group: event_group, start_time_local: event_start_time) }
+      let(:event) { create(:event, event_group: event_group, scheduled_start_time_local: event_start_time) }
       let(:event_group) { create(:event_group, home_time_zone: 'Mountain Time (US & Canada)')}
       let(:event_start_time) { '2019-09-14 07:45:00' }
       let(:options) { {parent: event, event: event, unique_key: [:first_name, :last_name], current_user_id: 111} }
@@ -63,7 +63,7 @@ RSpec.describe ETL::Loaders::UpsertStrategy do
       it 'sets scheduled start time correctly' do
         expect { subject.load_records }.to change { Effort.count }.by(1)
         effort = Effort.last
-        expect(effort.scheduled_start_time).to eq(event.start_time + offset)
+        expect(effort.scheduled_start_time).to eq(event.scheduled_start_time + offset)
       end
     end
   end

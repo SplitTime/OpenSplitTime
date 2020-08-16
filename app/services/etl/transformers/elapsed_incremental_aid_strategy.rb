@@ -69,7 +69,7 @@ module ETL::Transformers
     end
 
     def calculate_absolute_times
-      proto_record[:absolute_times] = proto_record[:times_from_start].map { |seconds| seconds ? event.start_time + seconds : nil }
+      proto_record[:absolute_times] = proto_record[:times_from_start].map { |seconds| seconds ? event.scheduled_start_time + seconds : nil }
     end
 
     def global_attributes

@@ -17,7 +17,7 @@ module RawTimesHelper
     end
   end
 
-  def link_to_toggle_raw_time_pull(raw_time)
+  def link_to_toggle_raw_time_review(raw_time)
     if raw_time.reviewed_by? || raw_time.reviewed_at?
       reviewed_by = nil
       reviewed_at = nil

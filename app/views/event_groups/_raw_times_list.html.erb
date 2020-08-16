@@ -91,12 +91,12 @@
             <td><%= raw_time.source_text %></td>
             <td><%= raw_time.creator_full_name %></td>
             <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
-            <td><%= raw_time.puller_full_name %></td>
+            <td><%= raw_time.reviewer_full_name %></td>
             <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
             <td><%= raw_time.matched? ? 'Yes' : 'No' %></td>
             <td>
               <div class="col-xs-12 text-nowrap">
-                <%= link_to_toggle_raw_time_pull(raw_time) %>
+                <%= link_to_toggle_raw_time_review(raw_time) %>
                 <%= link_to_raw_time_delete(raw_time) %>
               </div>
             </td>

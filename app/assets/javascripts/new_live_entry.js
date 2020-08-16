@@ -154,9 +154,9 @@
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
-                    var unconsideredCount = (typeof data.unconsidered === 'number') ? data.unconsidered : 0;
+                    var unreviewedCount = (typeof data.unreviewed === 'number') ? data.unreviewed : 0;
                     var unmatchedCount = (typeof data.unmatched === 'number') ? data.unmatched : 0;
-                    liveEntry.pusher.displayNewCount(unconsideredCount, unmatchedCount);
+                    liveEntry.pusher.displayNewCount(unreviewedCount, unmatchedCount);
                 });
 
                 $(document).on('click', '[href="#js-pull-times"]', function() {
@@ -164,14 +164,14 @@
                 });
             },
 
-            displayNewCount: function (unconsideredCount, unmatchedCount) {
-                var unconsideredText = (unconsideredCount > 0) ? unconsideredCount : '';
+            displayNewCount: function (unreviewedCount, unmatchedCount) {
+                var unreviewedText = (unreviewedCount > 0) ? unreviewedCount : '';
                 var unmatchedText = (unmatchedCount > 0) ? unmatchedCount : '';
-                $('#js-pull-times-count').text(unconsideredText);
+                $('#js-pull-times-count').text(unreviewedText);
                 $('#js-force-pull-times-count').text(unmatchedText);
 
                 var notifier = liveEntry.pusher.notification;
-                if (unconsideredCount > 0) {
+                if (unreviewedCount > 0) {
                     if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
                         liveEntry.pusher.notification = $.notify({
                             icon: 'fas fa-stopwatch',

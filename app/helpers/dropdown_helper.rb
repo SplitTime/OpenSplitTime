@@ -145,7 +145,7 @@ module DropdownHelper
   def raw_time_filter_dropdown
     items = [{icon_name: 'hand-paper', type: :solid, text: 'Stopped', stopped: true, reviewed: nil, matched: nil},
              {icon_name: 'cloud-download-alt', type: :solid, text: 'Reviewed', stopped: nil, reviewed: true, matched: nil},
-             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unpulled', stopped: nil, reviewed: false, matched: nil},
+             {icon_name: 'cloud-upload-alt', type: :solid, text: 'Unreviewed', stopped: nil, reviewed: false, matched: nil},
              {icon_name: 'check-square', type: :solid, text: 'Matched', stopped: nil, reviewed: nil, matched: true},
              {icon_name: 'square', type: :solid, text: 'Unmatched', stopped: nil, reviewed: nil, matched: false},
              {icon_name: 'asterisk', type: :solid, text: 'All', stopped: nil, reviewed: nil, matched: nil}]

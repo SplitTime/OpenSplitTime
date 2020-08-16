@@ -76,7 +76,7 @@ module Api
         default_record_limit = 50
         record_limit = params.dig(:page, :size) || default_record_limit
 
-        scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unconsidered
+        scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unreviewed
 
         # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
         # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.

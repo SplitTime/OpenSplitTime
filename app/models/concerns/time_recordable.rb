@@ -4,12 +4,12 @@ module TimeRecordable
   extend ActiveSupport::Concern
 
   included do
-    scope :unconsidered, -> { where(reviewed_by: nil).where(split_time: nil) }
+    scope :unreviewed, -> { where(reviewed_by: nil).where(split_time: nil) }
     scope :unmatched, -> { where(split_time: nil) }
     validate :absolute_or_entered_time
   end
 
-  attr_writer :creator, :puller
+  attr_writer :creator, :reviewer
 
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
@@ -21,8 +21,8 @@ module TimeRecordable
     creator&.full_name || '--'
   end
 
-  def puller_full_name
-    puller&.full_name || '--'
+  def reviewer_full_name
+    reviewer&.full_name || '--'
   end
 
   def effort_full_name
@@ -60,11 +60,11 @@ module TimeRecordable
 
   def creator
     return @creator if defined?(@creator)
-    User.find_by(id: created_by) if created_by
+    @creator = User.find_by(id: created_by) if created_by
   end
 
-  def puller
-    return @puller if defined?(@puller)
-    User.find_by(id: reviewed_by) if reviewed_by
+  def reviewer
+    return @reviewer if defined?(@reviewer)
+    @reviewer = User.find_by(id: reviewed_by) if reviewed_by
   end
 end

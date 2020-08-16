@@ -495,7 +495,7 @@ RSpec.describe Api::V1::EventGroupsController do
       allow(Pusher).to receive(:trigger)
     end
 
-    context 'when unpulled raw_times are available' do
+    context 'when unreviewed raw_times are available' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, absolute_time: '2017-07-01 11:22:33-0600', split_name: 'Finish') }
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, absolute_time: '2017-07-01 12:23:34-0600', split_name: 'Finish') }
 
@@ -516,7 +516,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
-    context 'when unpulled raw_times have in and out times that can be paired' do
+    context 'when unreviewed raw_times have in and out times that can be paired' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 11:22:33', split_name: 'Telluride', sub_split_kind: 'in') }
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Telluride', sub_split_kind: 'out') }
 
@@ -538,7 +538,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
-    context 'when unpulled raw_times do not match existing bib numbers' do
+    context 'when unreviewed raw_times do not match existing bib numbers' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 11:22:33', split_name: 'Telluride', sub_split_kind: 'in') }
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 12:23:34', split_name: 'Telluride', sub_split_kind: 'out') }
 
@@ -559,7 +559,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
-    context 'when unpulled raw_times do not match existing split names' do
+    context 'when unreviewed raw_times do not match existing split names' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Nonexistent', sub_split_kind: 'in') }
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 12:23:34', split_name: 'Nonexistent', sub_split_kind: 'out') }
 
@@ -580,7 +580,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
-    context 'when no unpulled raw_times are available' do
+    context 'when no unreviewed raw_times are available' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish', reviewed_by: 1, reviewed_at: Time.now) }
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish', reviewed_by: 1, reviewed_at: Time.now) }
 
@@ -967,7 +967,7 @@ RSpec.describe Api::V1::EventGroupsController do
       it 'sends a push notification that includes the count of available times' do
         allow(Pusher).to receive(:trigger)
         make_request
-        expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unconsidered: 3, unmatched: 3}]
+        expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unreviewed: 3, unmatched: 3}]
         expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
       end
     end

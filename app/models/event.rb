@@ -19,6 +19,8 @@ class Event < ApplicationRecord
   has_many :splits, through: :aid_stations
   has_many :partners, through: :event_group
 
+  alias_attribute :start_time, :scheduled_start_time
+
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :permit_notifications?, :home_time_zone, to: :event_group
 

@@ -21,12 +21,12 @@ module RawTimesHelper
     if raw_time.reviewed_by? || raw_time.reviewed_at?
       reviewed_by = nil
       reviewed_at = nil
-      tooltip_text = 'Mark as not reviewed'
+      tooltip_text = 'This raw time has been reviewed by a human. Click to mark it as not reviewed.'
       button_class = 'primary'
     else
       reviewed_by = current_user.id
       reviewed_at = Time.current
-      tooltip_text = 'Mark as reviewed'
+      tooltip_text = 'This raw time has not been reviewed by a human. Click to mark it as having been reviewed.'
       button_class = 'outline-secondary'
     end
     url = raw_time_path(raw_time, raw_time: {reviewed_by: reviewed_by, reviewed_at: reviewed_at}, referrer_path: request.params)
@@ -34,7 +34,7 @@ module RawTimesHelper
                data: {toggle: :tooltip, placement: :bottom, 'original-title' => tooltip_text},
                class: "btn btn-#{button_class} has-tooltip click-spinner"}
 
-    link_to fa_icon('cloud-download-alt'), url, options
+    link_to fa_icon('glasses'), url, options
   end
 
   def link_to_raw_time_delete(raw_time)

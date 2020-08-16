@@ -54,20 +54,20 @@ module Api
         times_container = SegmentTimesContainer.new(calc_model: :stats)
         raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-        raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+        raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
 
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
       end
 
       def pull_raw_times
 
-        # This endpoint searches for un-pulled raw_times belonging to the event_group,
-        # selects a batch, marks them as pulled, combines them into time_rows, and returns them
+        # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
+        # selects a batch, marks them as reviewed, combines them into time_rows, and returns them
         # to the live entry page.
 
         # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
         # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
-        # even if they are marked as already having been pulled.
+        # even if they are marked as already having been reviewed.
 
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
@@ -87,7 +87,7 @@ module Api
         times_container = SegmentTimesContainer.new(calc_model: :stats)
         raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-        raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+        raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
         report_raw_times_available(event_group)
 
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
@@ -140,7 +140,7 @@ module Api
         if errors.empty?
           force_submit = !!params[:force_submit]&.to_boolean
           response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
-                                                             force_submit: force_submit, mark_as_pulled: true, current_user_id: current_user.id)
+                                                             force_submit: force_submit, mark_as_reviewed: true, current_user_id: current_user.id)
           problem_rows = response.resources[:problem_rows]
           report_raw_times_available(event_group)
 

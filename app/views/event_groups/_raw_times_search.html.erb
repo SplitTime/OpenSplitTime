@@ -6,7 +6,7 @@
                        autofocus: true,
                        class: 'form-control search-box' %>
     <%= hidden_field_tag :stopped, request.params[:stopped] %>
-    <%= hidden_field_tag :pulled, request.params[:pulled] %>
+    <%= hidden_field_tag :reviewed, request.params[:reviewed] %>
     <%= hidden_field_tag :matched, request.params[:matched] %>
     <span class="input-group-append">
         <%= button_tag(type: :submit, class: 'btn btn-primary') do %>

@@ -65,8 +65,8 @@
           <th><%= link_to_reversing_sort_heading('Source', 'source,sortable_bib_number', view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Created by', 'created_by,sortable_bib_number', view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Created at', 'created_at,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Pulled by', 'pulled_by,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Pulled at', 'pulled_at,sortable_bib_number', view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading('Reviewed by', 'reviewed_by,sortable_bib_number', view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading('Reviewed at', 'reviewed_at,sortable_bib_number', view_object.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading('Match?', 'split_time_id,sortable_bib_number', view_object.existing_sort) %></th>
           <th></th>
         </tr>
@@ -92,7 +92,7 @@
             <td><%= raw_time.creator_full_name %></td>
             <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
             <td><%= raw_time.puller_full_name %></td>
-            <td><%= raw_time.pulled_at ? l(raw_time.pulled_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
+            <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
             <td><%= raw_time.matched? ? 'Yes' : 'No' %></td>
             <td>
               <div class="col-xs-12 text-nowrap">

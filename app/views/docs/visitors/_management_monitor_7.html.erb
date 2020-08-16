@@ -2,16 +2,16 @@
   <h4 class="card-header">The Raw Times List View</h4>
   <div class="card-body">
     <p>You can see all Raw Times for an entire Event Group by visiting the Raw Times List screen (<strong>Raw Times >
-      List</strong>). By default, Raw Times are sorted by time created. The sort order can be changed by clicking any of
-      the blue headings in the table.</p>
+      List</strong>). By default, Raw Times are sorted by time created with most recent Raw Times at the top. The sort
+      order can be changed by clicking any of the blue headings in the table.</p>
     <p>In most cases, the Raw Times List is more useful when filtered to show Raw Times related to only one or a few
       Efforts. You can filter Raw Times by typing a bib number (or multiple bib numbers separated by spaces or commas)
       into the search box and clicking the blue <strong>Search</strong> icon.</p>
     <p>Each Raw Time indicates its bib number, the related name and Event (if the bib is valid), the station where the
       Raw Time was recorded, the time information, whether or not the Entrant stopped at that point, and the source and
-      creation time for the record. In addition, each Raw Time indicates if it has been <strong>pulled for
-      review</strong> by a human, and if so, when and by whom. Finally, it indicates whether the Raw Time has been
-      <strong>matched to a Split Time</strong>.</p>
+      creation time for the record. In addition, each Raw Time indicates if it has been <strong>reviewed</strong> by a
+      human, and if so, when and by whom. Finally, it indicates whether the Raw Time has been <strong>matched to a
+      Split Time</strong>.</p>
   </div>
 </div>
 <br/>
@@ -27,18 +27,18 @@
 <br/>
 
 <div class="card">
-  <h4 class="card-header">Pulled for Review and Matched</h4>
+  <h4 class="card-header">Reviewed and Matched</h4>
   <div class="card-body">
     <p>When a Raw Time is submitted by OST Remote, it is saved to the database and analyzed. If OpenSplitTime evaluates
       the Raw Time as <strong>good</strong> or <strong>questionable</strong>, it will be saved as a Split Time
       automatically without human review. When a Raw Time is automatically <strong>saved</strong> as a Split Time, it is
       also automatically <strong>matched</strong> with that Split Time.</p>
     <p>In a typical Event Group, most Raw Times will be automatically saved as Split Times. As a result, they will show
-      as being <strong>matched</strong> but <strong>not pulled for review</strong>.</p>
+      as being <strong>matched</strong> but <strong>not reviewed</strong>.</p>
     <p>When a Raw Time is submitted by OST Remote and OpenSplitTime evaluates the time as <strong>bad</strong>, the Raw
       Time is not automatically saved as a Split Time. These Raw Times will initially show as being <strong>not
-      matched</strong> and also <strong>not pulled for review</strong>. When these Raw Times are pulled for review into
-      the Live Entry screen, they will be marked as <strong>pulled for review</strong>. If these times are submitted
+      matched</strong> and also <strong>not reviewed</strong>. When these Raw Times are pulled for review into
+      the Live Entry screen, they will be marked as <strong>reviewed</strong>. If these times are submitted
       without change, they will be marked as <strong>matched</strong>. If (as is more often the case) these times are
       modified in the Live Entry view before being submitted, they will be marked as <strong>not matched</strong>, and
       instead a new Raw Time record will be created for the modified time entry.</p>
@@ -47,12 +47,12 @@
 <br/>
 
 <div class="card">
-  <h4 class="card-header">Un-Pulling and Deleting Raw Times</h4>
+  <h4 class="card-header">Un-Reviewing and Deleting Raw Times</h4>
   <div class="card-body">
-    <p>If a Raw Time has been pulled for review, the <strong>Pulled</strong> icon next to the Raw Time will be blue, and
-      if it has not been pulled for review, the <strong>Pulled</strong> icon will be white.</p>
-    <p>If a Raw Time has been pulled for review but for some reason you need to pull it for review again, you can click
-      the blue Pulled icon. The icon will change to white, and the Raw Time will be available to pull once again.
+    <p>If a Raw Time has been reviewed, the <strong>Reviewed</strong> icon next to the Raw Time will be blue, and
+      if it has not been reviewed, the <strong>Reviewed</strong> icon will be white.</p>
+    <p>If a Raw Time has been reviewed but you need to pull it for review again, you can click the blue Reviewed icon.
+      The icon will change to white, and the Raw Time will be available to pull for review once again.
       <strong>This is not common</strong>. It probably will be used only when a Raw Time was pulled for review and then
       inadvertently discarded from the Live Entry Local Data Workspace when it should have been modified and submitted.
     </p>

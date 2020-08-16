@@ -500,9 +500,9 @@ RSpec.describe Api::V1::EventGroupsController do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, absolute_time: '2017-07-01 12:23:34-0600', split_name: 'Finish') }
 
       via_login_and_jwt do
-        it 'marks the raw_times as having been pulled and returns raw_time_rows with entered_times' do
+        it 'marks the raw_times as having been reviewed and returns raw_time_rows with entered_times' do
           response = make_request
-          expect(RawTime.last(2).pluck(:pulled_by)).to all eq(current_user.id)
+          expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
           time_rows = result.dig('data', 'rawTimeRows')
@@ -521,9 +521,9 @@ RSpec.describe Api::V1::EventGroupsController do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Telluride', sub_split_kind: 'out') }
 
       via_login_and_jwt do
-        it 'marks the raw_times as having been pulled and returns them in a single raw_time_row' do
+        it 'marks the raw_times as having been reviewed and returns them in a single raw_time_row' do
           response = make_request
-          expect(RawTime.last(2).pluck(:pulled_by)).to all eq(current_user.id)
+          expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
           time_rows = result.dig('data', 'rawTimeRows')
@@ -543,9 +543,9 @@ RSpec.describe Api::V1::EventGroupsController do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '999', absolute_time: '2017-07-01 12:23:34', split_name: 'Telluride', sub_split_kind: 'out') }
 
       via_login_and_jwt do
-        it 'marks the raw_times as having been pulled and returns a raw_time_row with event and effort attributes set to nil' do
+        it 'marks the raw_times as having been reviewed and returns a raw_time_row with event and effort attributes set to nil' do
           response = make_request
-          expect(RawTime.last(2).pluck(:pulled_by)).to all eq(current_user.id)
+          expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
           time_rows = result.dig('data', 'rawTimeRows')
@@ -564,9 +564,9 @@ RSpec.describe Api::V1::EventGroupsController do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 12:23:34', split_name: 'Nonexistent', sub_split_kind: 'out') }
 
       via_login_and_jwt do
-        it 'marks the raw_times as having been pulled and returns a raw_time_row with event and effort attributes loaded' do
+        it 'marks the raw_times as having been reviewed and returns a raw_time_row with event and effort attributes loaded' do
           response = make_request
-          expect(RawTime.last(2).pluck(:pulled_by)).to all eq(current_user.id)
+          expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
 
           result = JSON.parse(response.body)
           time_rows = result.dig('data', 'rawTimeRows')
@@ -581,8 +581,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context 'when no unpulled raw_times are available' do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish', pulled_by: 1, pulled_at: Time.now) }
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: '111', absolute_time: '2017-07-01 11:22:33', split_name: 'Finish', reviewed_by: 1, reviewed_at: Time.now) }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: '112', absolute_time: '2017-07-01 12:23:34', split_name: 'Finish', reviewed_by: 1, reviewed_at: Time.now) }
 
       via_login_and_jwt do
         it 'returns an empty array' do

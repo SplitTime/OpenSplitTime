@@ -4,7 +4,7 @@ module TimeRecordable
   extend ActiveSupport::Concern
 
   included do
-    scope :unconsidered, -> { where(pulled_by: nil).where(split_time: nil) }
+    scope :unconsidered, -> { where(reviewed_by: nil).where(split_time: nil) }
     scope :unmatched, -> { where(split_time: nil) }
     validate :absolute_or_entered_time
   end
@@ -65,6 +65,6 @@ module TimeRecordable
 
   def puller
     return @puller if defined?(@puller)
-    User.find_by(id: pulled_by) if pulled_by
+    User.find_by(id: reviewed_by) if reviewed_by
   end
 end

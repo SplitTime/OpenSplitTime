@@ -5,7 +5,7 @@ module Api
     class EventGroupSerializer < ::Api::V1::BaseSerializer
       attributes :id, :name, :organization_id, :concealed, :available_live, :monitor_pacers, :slug,
                  :multi_lap, :maximum_laps, :data_entry_groups, :unpaired_data_entry_groups, :home_time_zone
-      link(:self) { api_v1_event_group_path(object) }
+      link :self, :url
 
       has_many :events
       belongs_to :organization

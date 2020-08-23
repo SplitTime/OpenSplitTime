@@ -6,7 +6,7 @@ module Api
       attributes :id, :course_id, :organization_id, :name, :start_time, :scheduled_start_time, :home_time_zone, :start_time_local,
                  :start_time_in_home_zone, :scheduled_start_time_local, :concealed, :laps_required, :maximum_laps,
                  :multi_lap, :slug, :short_name, :multiple_sub_splits, :parameterized_split_names, :split_names
-      link(:self) { api_v1_event_path(object) }
+      link :self, :url
 
       has_many :efforts
       has_many :splits

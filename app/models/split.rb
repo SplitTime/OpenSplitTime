@@ -50,6 +50,10 @@ class Split < ApplicationRecord
     slug
   end
 
+  def api_url
+    Rails.application.routes.url_helpers.api_v1_split_path(self)
+  end
+
   def distance_in_preferred_units
     Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end

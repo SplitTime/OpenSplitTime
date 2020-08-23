@@ -29,6 +29,10 @@ class Course < ApplicationRecord
     slug
   end
 
+  def api_url
+    Rails.application.routes.url_helpers.api_v1_course_path(self)
+  end
+
   def earliest_event_date
     events.earliest&.scheduled_start_time
   end

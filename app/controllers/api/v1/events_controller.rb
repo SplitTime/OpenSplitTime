@@ -48,7 +48,7 @@ module Api
         params[:display_style] ||= 'absolute'
         presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
         spread_display = Rails.cache.fetch("#{presenter.cache_key}/json", expires_in: 1.minute) do
-          ActiveModelSerializers::Adapter.create(EventSpreadSerializer.new(presenter), adapter: :json_api, include: :effort_times_rows).to_json
+          ::Api::V1::EventSpreadSerializer.new(presenter).to_json
         end
         render json: spread_display
       end

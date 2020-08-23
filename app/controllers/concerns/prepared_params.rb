@@ -12,10 +12,6 @@ class PreparedParams
     send(method_name)
   end
 
-  def data
-    @data ||= ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
-  end
-
   def editable
     params[:filter] && params[:filter][:editable]&.to_boolean
   end

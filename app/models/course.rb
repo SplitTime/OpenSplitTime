@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable
+  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable, UrlAccessible
   extend FriendlyId
 
   zonable_attribute :next_start_time
@@ -27,10 +27,6 @@ class Course < ApplicationRecord
 
   def to_s
     slug
-  end
-
-  def api_url
-    Rails.application.routes.url_helpers.api_v1_course_path(self)
   end
 
   def earliest_event_date

@@ -6,7 +6,7 @@ module Api
       set_type :aid_stations
 
       attributes :id, :event_id, :split_id
-      link :self, :api_url
+      link :self, :api_v1_url
 
       belongs_to :event
       belongs_to :split

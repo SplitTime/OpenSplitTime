@@ -6,7 +6,7 @@ module Api
       set_type :organizations
 
       attributes :id, :name, :description, :concealed
-      link :self, :api_url
+      link :self, :api_v1_url
     end
   end
 end

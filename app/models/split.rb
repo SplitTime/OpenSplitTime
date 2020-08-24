@@ -3,7 +3,7 @@
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 50 # Distance (in meters) below which split locations are deemed equivalent
 
-  include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions
+  include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -48,10 +48,6 @@ class Split < ApplicationRecord
 
   def to_s
     slug
-  end
-
-  def api_url
-    Rails.application.routes.url_helpers.api_v1_split_path(self)
   end
 
   def distance_in_preferred_units

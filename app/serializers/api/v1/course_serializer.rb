@@ -16,7 +16,7 @@ module Api
         end
       end
 
-      link :self, :api_url
+      link :self, :api_v1_url
 
       has_many :splits
       belongs_to :organization

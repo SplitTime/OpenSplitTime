@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AidStation < ApplicationRecord
+  include UrlAccessible
+
   belongs_to :event, touch: true
   belongs_to :split
 
@@ -19,10 +21,6 @@ class AidStation < ApplicationRecord
 
   def to_s
     "#{event.slug} at #{split.slug}"
-  end
-
-  def api_url
-    Rails.application.routes.url_helpers.api_v1_aid_station_path(self)
   end
 
   def course_name

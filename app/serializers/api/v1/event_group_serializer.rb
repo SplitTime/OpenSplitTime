@@ -13,15 +13,23 @@ module Api
       belongs_to :organization
 
       attribute :data_entry_groups do |event_group|
-        CombineEventGroupSplitAttributes.perform(event_group,
-                                                 pair_by_location: event_group.location_grouped?,
-                                                 node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name])
+        groups = CombineEventGroupSplitAttributes.perform(
+          event_group,
+          pair_by_location: event_group.location_grouped?,
+          node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name]
+        )
+
+        groups.map { |group| group.deep_transform_keys! { |key| key.camelize(:lower) } }
       end
 
       attribute :unpaired_data_entry_groups do |event_group|
-        CombineEventGroupSplitAttributes.perform(event_group,
-                                                 pair_by_location: false,
-                                                 node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name])
+        groups = CombineEventGroupSplitAttributes.perform(
+          event_group,
+          pair_by_location: false,
+          node_attributes: [:sub_split_kind, :label, :split_name, :parameterized_split_name]
+        )
+
+        groups.map { |group| group.deep_transform_keys! { |key| key.camelize(:lower) } }
       end
     end
   end

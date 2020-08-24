@@ -3,6 +3,8 @@
 module Api
   module V1
     class CourseSerializer < ::Api::V1::BaseSerializer
+      set_type :courses
+
       attributes :id, :name, :description, :track_points
       attribute(:editable) do |course, params|
         current_user = params[:current_user]

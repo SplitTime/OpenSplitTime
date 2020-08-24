@@ -9,7 +9,7 @@ module Api
 
       # GET /api/v1/events/:id
       def show
-        render json: @event, include: prepared_params[:include], fields: prepared_params[:fields]
+        serialize_and_render(@event)
       end
 
       # POST /api/v1/events
@@ -19,27 +19,27 @@ module Api
 
         if event.save
           event.reload
-          render json: event, status: :created
+          serialize_and_render(event, status: :created)
         else
-          render json: {errors: ['event not created'], detail: "#{event.errors.full_messages}"}, status: :unprocessable_entity
+          render_errors(event)
         end
       end
 
       # PUT /api/v1/events/:id
       def update
         if @event.update(permitted_params)
-          render json: @event
+          serialize_and_render(@event)
         else
-          render json: {errors: ['event not updated'], detail: "#{@event.errors.full_messages}"}, status: :unprocessable_entity
+          render_errors(@event)
         end
       end
 
       # DELETE /api/v1/events/:id
       def destroy
         if @event.destroy
-          render json: @event
+          serialize_and_render(@event)
         else
-          render json: {errors: ['event not destroyed'], detail: "#{@event.errors.full_messages}"}, status: :unprocessable_entity
+          render_errors(@event)
         end
       end
 
@@ -47,10 +47,7 @@ module Api
       def spread
         params[:display_style] ||= 'absolute'
         presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
-        spread_display = Rails.cache.fetch("#{presenter.cache_key}/json", expires_in: 1.minute) do
-          ::Api::V1::EventSpreadSerializer.new(presenter).to_json
-        end
-        render json: spread_display
+        serialize_and_render(presenter, serializer: ::Api::V1::EventSpreadSerializer)
       end
 
       def import

@@ -7,6 +7,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
 
+  def api_v1_url
+    Rails.application.routes.url_helpers.spread_api_v1_event_path(self)
+  end
+
   def cache_key
     [event, request_params_digest]
   end
@@ -27,6 +31,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
                              split_times: split_times_by_effort.fetch(effort.id, []),
                              display_style: display_style)
         end
+  end
+
+  def effort_times_row_ids
+    effort_times_rows.map(&:id)
   end
 
   def lap_splits

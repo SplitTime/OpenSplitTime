@@ -8,8 +8,10 @@ module Api
 
       def show
         authorize @resource
+
         event_group = EventGroup.includes(organization: :stewards, events: [:efforts, :splits]).where(id: @resource.id).first
-        render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
+
+        serialize_and_render(event_group)
       end
 
       def import

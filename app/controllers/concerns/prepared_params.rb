@@ -13,7 +13,9 @@ class PreparedParams
   end
 
   def data
-    # @data ||= ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
+    @data ||= params.require(:data).require(:attributes).permit(permitted)
+  rescue ::ActionController::ParameterMissing
+    nil
   end
 
   def editable
@@ -35,7 +37,7 @@ class PreparedParams
   end
 
   def include
-    @include ||= params[:include].to_s.underscore
+    @include ||= params[:include].to_s.split(",").map { |model| model.camelize(:lower) }
   end
 
   def original_params

@@ -9,7 +9,9 @@ module Api
         authorized_scope = policy_class::Scope.new(current_user, controller_class)
         working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
         @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort]).standard_includes
-        paginate json: @resources, include: prepared_params[:include], fields: prepared_params[:fields]
+        @resources = paginate @resources
+
+        serialize_and_render(@resources, is_collection: true)
       end
 
       def show
@@ -33,7 +35,7 @@ module Api
         authorize @resource
 
         if @resource.update(permitted_params)
-          serialize_and_render(@resource, status: :updated)
+          serialize_and_render(@resource)
         else
           render_errors(@resource)
         end
@@ -43,7 +45,7 @@ module Api
         authorize @resource
 
         if @resource.destroy
-          serialize_and_render(@resource, status: :deleted)
+          serialize_and_render(@resource)
         else
           render_errors(@resource)
         end
@@ -56,26 +58,29 @@ module Api
       end
 
       def serialize_and_render(resource, options = {})
-        status = options[:status] || :ok
-        serializer_class = options[:serializer] || serializer_for(resource.class)
-        serializer = serializer_class.new(resource,
-                                          {params: {current_user: current_user},
-                                           include: params[:include],
-                                           fields: prepared_params[:fields]})
-        render json: serializer.to_json, status: status
+        status = options.delete(:status) || :ok
+        serializer_class = options.delete(:serializer) || serializer_for_controller
+        options[:include] = prepared_params[:include]
+        options[:fields] = prepared_params[:fields]
+        serializer_params = {params: {current_user: current_user}}
+
+        serializer = serializer_class.new(resource, serializer_params.merge(options))
+
+        render json: serializer.serializable_hash.to_json, status: status
       end
 
-      def serializer_for(klass)
-        namespace = "::Api::V1::"
-        serializer_name = klass.name.to_s.demodulize.classify + "Serializer"
-        serializer_class_name = namespace + serializer_name
-        begin
-          serializer_class_name.constantize
-        rescue NameError
-          raise NameError, "#{self.name} cannot resolve a serializer class for '#{name}'.  " \
+      def serializer_for_controller
+        @serializer_class ||=
+          begin
+            namespace = "::Api::V1::"
+            serializer_name = "#{controller_class}Serializer"
+            serializer_class_name = namespace + serializer_name
+            serializer_class_name.constantize
+          rescue NameError
+            raise NameError, "#{self.name} cannot resolve a serializer class for '#{controller_class}'.  " \
                            "Attempted to find '#{serializer_class_name}'. " \
                            "Consider specifying the serializer directly through options[:serializer]."
-        end
+          end
       end
 
       def set_resource

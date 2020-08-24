@@ -3,6 +3,8 @@
 module Api
   module V1
     class EffortSerializer < ::Api::V1::BaseSerializer
+      set_type :efforts
+
       PRIVATE_ATTRIBUTES = [:phone,
                             :email,
                             :birthdate,

@@ -3,6 +3,8 @@
 module Api
   module V1
     class EffortTimesRowSerializer < ::Api::V1::BaseSerializer
+      set_type :effort_times_rows
+
       attributes *EffortTimesRow::EXPORT_ATTRIBUTES, :display_style, :stopped, :dropped, :finished
       attribute :elapsed_times, if: Proc.new { |row| row.show_elapsed_times? }
       attribute :absolute_times, if: Proc.new { |row| row.show_absolute_times? }

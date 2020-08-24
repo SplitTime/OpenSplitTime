@@ -1,6 +1,8 @@
 module Api
   module V1
     class BaseController < ::ApiController
+      API_NAMESPACE = "::Api::V1::"
+
       before_action :set_default_format
 
       def index
@@ -59,7 +61,12 @@ module Api
 
       def serialize_and_render(resource, options = {})
         status = options.delete(:status) || :ok
-        serializer_class = options.delete(:serializer) || serializer_for_controller
+
+        first_record = resource.is_a?(::Enumerable) ? resource.first : resource
+        serializer_class = options.delete(:serializer) ||
+          serializer_for_record(first_record) ||
+          ::Api::V1::BaseSerializer
+
         options[:include] = prepared_params[:include]
         options[:fields] = prepared_params[:fields]
         serializer_params = {params: {current_user: current_user}}
@@ -69,18 +76,15 @@ module Api
         render json: serializer.serializable_hash.to_json, status: status
       end
 
-      def serializer_for_controller
-        @serializer_class ||=
-          begin
-            namespace = "::Api::V1::"
-            serializer_name = "#{controller_class}Serializer"
-            serializer_class_name = namespace + serializer_name
-            serializer_class_name.constantize
-          rescue NameError
-            raise NameError, "#{self.name} cannot resolve a serializer class for '#{controller_class}'.  " \
+      def serializer_for_record(record)
+        return nil if record.nil?
+
+        serializer_class_name = "#{API_NAMESPACE}#{record.model_name}Serializer"
+        serializer_class_name.constantize
+      rescue NameError
+        raise NameError, "#{self.name} cannot resolve a serializer class for '#{record.model_name}'.  " \
                            "Attempted to find '#{serializer_class_name}'. " \
                            "Consider specifying the serializer directly through options[:serializer]."
-          end
       end
 
       def set_resource

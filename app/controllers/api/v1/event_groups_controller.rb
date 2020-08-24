@@ -21,14 +21,18 @@ module Api
         importer = ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
+        first_record = importer.saved_records.first
 
         if importer.strict?
           if errors.present?
             render json: {errors: errors}, status: :unprocessable_entity
           else
             ETL::EventGroupImportProcess.perform!(@resource, importer)
-            response = limited_response ? {} : importer.saved_records
-            render json: response, status: :created
+            if limited_response || first_record.nil?
+              render json: {}, status: :created
+            else
+              serialize_and_render(importer.saved_records, status: :created)
+            end
           end
         else
           ETL::EventGroupImportProcess.perform!(@resource, importer)
@@ -36,7 +40,9 @@ module Api
                        {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
                         destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
                         errors: errors}
-          render json: response, status: importer.saved_records.present? ? :created : :unprocessable_entity
+          status = importer.saved_records.present? ? :created : :unprocessable_entity
+
+          serialize_and_render(response, status: status)
         end
       end
 

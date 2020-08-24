@@ -43,6 +43,10 @@ class Organization < ApplicationRecord
     slug
   end
 
+  def api_url
+    Rails.application.routes.url_helpers.api_v1_organization_path(self)
+  end
+
   def events
     if event_groups.loaded? && event_groups.all? { |eg| eg.events.loaded? }
       event_groups.flat_map(&:events)

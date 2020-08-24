@@ -8,7 +8,7 @@ module Api
       after_action :verify_authorized, except: :show
 
       def show
-        render json: ::Api::V1::CourseSerializer.new(@resource, {include: params[:include], fields: prepared_params[:fields]}).to_hash
+        serialize_and_render(@resource)
       end
     end
   end

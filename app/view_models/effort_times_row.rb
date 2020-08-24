@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class EffortTimesRow
-  include ActiveModel::Serialization
   include PersonalInfo, Rankable, TimeFormats
 
   EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
@@ -37,6 +36,58 @@ class EffortTimesRow
                       show_indicator_for_stop: show_indicator_for_stop?(lap_split))
     end
   end
+  
+  def show_elapsed_times?
+    display_style.in? %w(elapsed all)
+  end
+
+  def show_absolute_times?
+    display_style.in? %w(ampm military absolute all)
+  end
+
+  def show_segment_times?
+    display_style.in? %w(segment all)
+  end
+
+  def show_pacer_flags?
+    display_style == 'all'
+  end
+
+  def show_stopped_here_flags?
+    display_style == 'all'
+  end
+
+  def show_time_data_statuses?
+    display_style == 'all'
+  end
+
+  def elapsed_times
+    time_clusters.map(&:times_from_start)
+  end
+
+  def absolute_times
+    time_clusters.map(&:absolute_times_local)
+  end
+
+  def segment_times
+    time_clusters.map { |tc| [tc.segment_time, tc.time_in_aid] }
+  end
+
+  def time_data_statuses
+    time_clusters.map(&:time_data_statuses)
+  end
+
+  def pacer_flags
+    time_clusters.map(&:pacer_flags)
+  end
+
+  def stopped_here_flags
+    time_clusters.map(&:stopped_here_flags)
+  end
+
+  alias_method :stopped, :stopped?
+  alias_method :dropped, :dropped?
+  alias_method :finished, :finished?
 
   private
 

@@ -17,6 +17,10 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
                                              display_style: 'all')
   end
 
+  def effort_times_row_id
+    effort.id
+  end
+
   def event_split_header_data
     event_presenter.split_header_data.first(time_cluster_count)
   end

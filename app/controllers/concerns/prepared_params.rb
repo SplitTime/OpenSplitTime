@@ -37,7 +37,7 @@ class PreparedParams
   end
 
   def include
-    @include ||= params[:include].to_s.split(",").map { |model| model.camelize(:lower) }
+    @include ||= params[:include].to_s.split(",").map(&:underscore)
   end
 
   def original_params

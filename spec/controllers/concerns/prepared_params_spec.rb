@@ -17,13 +17,13 @@ RSpec.describe PreparedParams do
 
   describe '#data' do
     let(:params) { ActionController::Parameters.new(data: data_params) }
-    let(:permitted) { [:id, :name, :age] }
+    let(:permitted) { [:name, :age] }
 
     context 'when provided with params[:data] in jsonapi format' do
       let(:data_params) { {id: 123, attributes: {name: 'John Doe', age: 50}} }
 
-      it 'returns a hash containing the id and attributes in a single hash' do
-        expected = {'id' => 123, 'name' => 'John Doe', 'age' => 50}
+      it 'returns a hash containing the attributes' do
+        expected = {'name' => 'John Doe', 'age' => 50}
         validate_param('data', expected)
       end
 
@@ -37,7 +37,7 @@ RSpec.describe PreparedParams do
       let(:data_params) { {id: 123, attributes: {name: 'John Doe', age: 50, role: 'admin'}} }
 
       it 'returns a hash containing only the permitted attributes' do
-        expected = {'id' => 123, 'name' => 'John Doe', 'age' => 50}
+        expected = {'name' => 'John Doe', 'age' => 50}
         validate_param('data', expected)
       end
     end
@@ -123,17 +123,26 @@ RSpec.describe PreparedParams do
       let(:field_params) { {'split_times' => 'subSplitBitkey,countryCode'} }
 
       it 'returns a hash with the model name as the key and an array of fields as the value' do
-        expected = {'split_times' => [:sub_split_bitkey, :country_code]}
+        expected = {'split_times' => [:subSplitBitkey, :countryCode]}
+        validate_param('fields', expected)
+      end
+    end
+
+    context 'when provided with underscored field names in jsonapi format' do
+      let(:field_params) { {'split_times' => 'sub_split_bitkey,country_code'} }
+
+      it 'returns a hash with the model name as the key and an array of fields as the value' do
+        expected = {'split_times' => [:subSplitBitkey, :countryCode]}
         validate_param('fields', expected)
       end
     end
 
     context 'when provided with fields for multiple models in jsonapi format' do
       let(:field_params) { {'courses' => 'name,description',
-                            'splits' => 'latitude,longitude'} }
+                            'splits' => 'latitude,longitude,distance_from_start'} }
 
       it 'returns a hash with the model names as the keys and arrays of fields as the values' do
-        expected = {'courses' => [:name, :description], 'splits' => [:latitude, :longitude]}
+        expected = {'courses' => [:name, :description], 'splits' => [:latitude, :longitude, :distanceFromStart]}
         validate_param('fields', expected)
       end
     end
@@ -352,8 +361,8 @@ RSpec.describe PreparedParams do
     context 'when provided with camelCased models and relations in jsonapi format' do
       let(:include_params) { 'course,split.splitTimes' }
 
-      it 'returns a string with camelCase converted to underscore' do
-        expected = 'course,split.split_times'
+      it 'returns an array with camelCase converted to underscore' do
+        expected = ["course", "split.split_times"]
         validate_param('include', expected)
       end
     end
@@ -361,8 +370,8 @@ RSpec.describe PreparedParams do
     context 'when provided with an empty string' do
       let(:include_params) { '' }
 
-      it 'returns an empty string' do
-        expected = ''
+      it 'returns an empty array' do
+        expected = []
         validate_param('include', expected)
       end
     end
@@ -370,8 +379,8 @@ RSpec.describe PreparedParams do
     context 'when include param is nil' do
       let(:include_params) { nil }
 
-      it 'returns an empty string' do
-        expected = ''
+      it 'returns an empty array' do
+        expected = []
         validate_param('include', expected)
       end
     end

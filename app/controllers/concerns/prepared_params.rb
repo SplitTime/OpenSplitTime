@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PreparedParams
   SPECIAL_FILTER_FIELDS = %i(editable search)
   BOOLEAN_FILTER_ATTRIBUTES = %i(ready_to_start)
@@ -15,7 +17,7 @@ class PreparedParams
   def data
     @data ||= params.require(:data).require(:attributes).permit(permitted)
   rescue ::ActionController::ParameterMissing
-    nil
+    {}
   end
 
   def editable

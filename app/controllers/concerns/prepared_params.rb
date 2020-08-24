@@ -18,8 +18,8 @@ class PreparedParams
 
   def fields
     @fields ||= (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
-                    .map {|resource, fields| {resource => fields.split(',').map {|field| field.underscore.to_sym}}}
-                    .reduce({}, :merge).with_indifferent_access
+                  .transform_values { |fields| fields.split(',').map { |field| field.camelize(:lower).to_sym } }
+                  .with_indifferent_access
   end
 
   def filter

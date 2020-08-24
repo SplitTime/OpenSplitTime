@@ -3,8 +3,10 @@
 module Api
   module V1
     class AidStationSerializer < ::Api::V1::BaseSerializer
+      set_type :aid_stations
+
       attributes :id, :event_id, :split_id
-      link :self, :url
+      link :self, :api_url
 
       belongs_to :event
       belongs_to :split

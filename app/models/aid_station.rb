@@ -21,6 +21,10 @@ class AidStation < ApplicationRecord
     "#{event.slug} at #{split.slug}"
   end
 
+  def api_url
+    Rails.application.routes.url_helpers.api_v1_aid_station_path(self)
+  end
+
   def course_name
     course.name
   end

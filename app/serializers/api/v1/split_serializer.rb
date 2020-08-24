@@ -11,10 +11,6 @@ module Api
       link :self, :api_v1_url
 
       belongs_to :course
-
-      def sub_split_kinds
-        object.name_extensions
-      end
     end
   end
 end

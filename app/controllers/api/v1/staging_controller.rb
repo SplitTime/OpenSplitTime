@@ -25,7 +25,7 @@ module Api
       # GET /api/vi/staging/:id/get_locations?west=&east=&south=&north=
       def get_locations
         splits = SplitLocationFinder.splits(params).where.not(course_id: @event.course_id)
-        render json: splits, each_serializer: SplitLocationSerializer
+        serialize_and_render(splits, serializer: SplitLocationSerializer)
       end
 
       # Creates or updates the given event, course, and organization

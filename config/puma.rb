@@ -31,7 +31,13 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 # before forking the application. This takes advantage of Copy On Write
 # process behavior so workers use less memory.
 #
-# preload_app!
+preload_app!
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+# Set a long timeout in development and test environments
+# to allow for more effective debugging.
+if %w(development test).include?(ENV["RACK_ENV"])
+  worker_timeout 10.minutes
+end

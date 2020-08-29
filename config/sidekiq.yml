@@ -1,4 +1,3 @@
-
 :verbose: false
 :concurrency: 5
 
@@ -11,3 +10,4 @@ production:
 :queues:
   - default
   - mailers
+  - open_split_time_production_default

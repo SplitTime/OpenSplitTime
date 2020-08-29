@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable
+  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable, UrlAccessible
   extend FriendlyId
 
   zonable_attribute :next_start_time

@@ -3,7 +3,7 @@
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped]
 
-  include Auditable, Concealable, Delegable, MultiEventable, Reconcilable, SplitAnalyzable, TimeZonable
+  include Auditable, Concealable, Delegable, MultiEventable, Reconcilable, SplitAnalyzable, TimeZonable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

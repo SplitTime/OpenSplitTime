@@ -3,21 +3,23 @@
 module Api
   module V1
     class EventSpreadSerializer < ::Api::V1::BaseSerializer
-      attributes :name, :course_name, :organization_name, :event_start_time, :event_start_time_local, :display_style, :split_header_data
-      link(:self) { spread_api_v1_event_path(object.event) }
+      set_type :event_spread_displays
+
+      attributes :name, :course_name, :organization_name, :display_style, :split_header_data
+      link :self, :api_v1_url
 
       has_many :effort_times_rows
 
-      def event_start_time
-        object.scheduled_start_time_local
+      attribute :event_start_time do |event|
+        event.scheduled_start_time_local
       end
 
-      def event_start_time_local
-        object.scheduled_start_time_local
+      attribute :event_start_time_local do |event|
+        event.scheduled_start_time_local
       end
 
-      def event_scheduled_start_time_local
-        object.scheduled_start_time_local
+      attribute :event_scheduled_start_time_local do |event|
+        event.scheduled_start_time_local
       end
     end
   end

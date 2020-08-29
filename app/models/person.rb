@@ -2,7 +2,7 @@
 
 class Person < ApplicationRecord
 
-  include Auditable, Concealable, PersonalInfo, Searchable, Subscribable, Matchable
+  include Auditable, Concealable, PersonalInfo, Searchable, Subscribable, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

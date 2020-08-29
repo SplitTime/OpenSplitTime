@@ -13,6 +13,11 @@ module MultiEventable
     ordered_events.first
   end
 
+  def maximum_laps
+    laps_required_array = events.map(&:laps_required)
+    laps_required_array.min == 0 ? nil : laps_required_array.max
+  end
+
   def multiple_events?
     events.many?
   end
@@ -20,6 +25,7 @@ module MultiEventable
   def multiple_laps?
     events.any?(&:multiple_laps?)
   end
+  alias_method :multi_lap, :multiple_laps?
 
   def multiple_sub_splits?
     events.any?(&:multiple_sub_splits?)

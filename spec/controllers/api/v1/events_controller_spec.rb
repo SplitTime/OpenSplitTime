@@ -153,7 +153,7 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#spread' do
     subject(:make_request) { get :spread, params: params }
-    let(:params) { {id: event_id, display_style: display_style} }
+    let(:params) { {id: event_id, include: "effort_times_rows", display_style: display_style} }
     let(:event_id) { event.id }
     let(:display_style) { 'absolute' }
     before { Rails.cache.clear }
@@ -234,7 +234,7 @@ RSpec.describe Api::V1::EventsController do
         end
 
         context 'when a sort param is provided' do
-          let(:params) { {id: event.id, sort: 'last_name'} }
+          let(:params) { {id: event.id, include: "effort_times_rows", sort: 'last_name'} }
 
           it 'sorts effort data based on the sort param' do
             make_request
@@ -264,7 +264,7 @@ RSpec.describe Api::V1::EventsController do
           expect { make_request }.to change { Effort.count }.by(3)
           expect(response.status).to eq(201)
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].size).to eq(3)
+          expect(parsed_response).to eq({})
         end
       end
 
@@ -275,14 +275,18 @@ RSpec.describe Api::V1::EventsController do
         it 'sets scheduled_start_time based on the start_time or start_offset or event start_time' do
           expect { make_request }.to change { Effort.count }.by(3)
           expect(response.status).to eq(201)
-          parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data'].size).to eq(3)
 
-          start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone(event_group.home_time_zone) }
+          efforts = Effort.last(3)
           expected_absolute_times = ['2017-06-03 19:30:00 -0600',
                                      '2017-06-03 08:00:00 -0600',
-                                     '2017-06-03 19:00:00 -0600']
-          expect(start_times).to eq(expected_absolute_times)
+                                     '2017-06-03 19:00:00 -0600'].map(&:to_datetime)
+          expect(efforts.map(&:scheduled_start_time)).to match_array(expected_absolute_times)
+
+          # parsed_response = JSON.parse(response.body)
+          # expect(parsed_response['data'].size).to eq(3)
+          #
+          # start_times = parsed_response['data'].map { |row| row['attributes']['scheduledStartTime']&.in_time_zone(event_group.home_time_zone) }
+          # expect(start_times).to eq(expected_absolute_times)
         end
       end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable
+  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

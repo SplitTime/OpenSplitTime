@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AidStation < ApplicationRecord
+  include UrlAccessible
+
   belongs_to :event, touch: true
   belongs_to :split
 

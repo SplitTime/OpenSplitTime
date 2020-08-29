@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class PreparedParams
   SPECIAL_FILTER_FIELDS = %i(editable search)
   BOOLEAN_FILTER_ATTRIBUTES = %i(ready_to_start)
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
-    @permitted = permitted.map(&:to_s)
-    @permitted_query = (permitted_query || permitted).map(&:to_s)
+    @permitted = (permitted || []).map(&:to_s)
+    @permitted_query = (permitted_query || @permitted).map(&:to_s)
   end
 
   def [](method_name)
@@ -13,7 +15,9 @@ class PreparedParams
   end
 
   def data
-    @data ||= ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: permitted).with_indifferent_access
+    @data ||= params.require(:data).require(:attributes).permit(permitted)
+  rescue ::ActionController::ParameterMissing
+    {}
   end
 
   def editable
@@ -22,8 +26,8 @@ class PreparedParams
 
   def fields
     @fields ||= (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
-                    .map {|resource, fields| {resource => fields.split(',').map {|field| field.underscore.to_sym}}}
-                    .reduce({}, :merge).with_indifferent_access
+                  .transform_values { |fields| fields.split(',').map { |field| field.camelize(:lower).to_sym } }
+                  .with_indifferent_access
   end
 
   def filter
@@ -35,7 +39,7 @@ class PreparedParams
   end
 
   def include
-    @include ||= params[:include].to_s.underscore
+    @include ||= params[:include].to_s.split(",").map(&:underscore)
   end
 
   def original_params

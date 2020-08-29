@@ -8,7 +8,7 @@ module Api
       after_action :verify_authorized, except: :show
 
       def show
-        render json: @resource, include: prepared_params[:include], fields: prepared_params[:fields]
+        serialize_and_render(@resource)
       end
     end
   end

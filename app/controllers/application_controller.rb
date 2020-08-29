@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   end
 
   def prepared_params
-    @prepared_params ||= PreparedParams.new(params, params_class.permitted, params_class.permitted_query)
+    @prepared_params ||= PreparedParams.new(params, params_class&.permitted, params_class&.permitted_query)
   end
 
   def permitted_params
@@ -51,15 +51,15 @@ class ApplicationController < ActionController::Base
   end
 
   def params_class
-    @params_class ||= "#{controller_class}Parameters".constantize
+    @params_class ||= "#{controller_class}Parameters".safe_constantize
   end
 
   def policy_class
-    @policy_class ||= "#{controller_class}Policy".constantize
+    @policy_class ||= "#{controller_class}Policy".safe_constantize
   end
 
   def controller_class
-    controller_class_name.camelcase.constantize
+    controller_class_name.camelcase.safe_constantize
   end
 
   def controller_class_name

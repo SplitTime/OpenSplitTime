@@ -24,11 +24,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.10)
-      actionpack (>= 4.1, < 6.1)
-      activemodel (>= 4.1, < 6.1)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     active_record_query_trace (1.7)
     active_storage_validations (0.8.7)
       rails (>= 5.2.0)
@@ -113,8 +108,6 @@ GEM
       xpath (~> 3.2)
     carmen (1.1.3)
       activesupport (>= 3.0.0)
-    case_transform (0.2)
-      activesupport
     childprocess (3.0.0)
     choice (0.2.0)
     coderay (1.1.2)
@@ -207,7 +200,8 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.3.0)
-    jsonapi-renderer (0.2.2)
+    jsonapi-serializer (2.0.0)
+      activesupport (>= 4.2)
     jwt (2.2.1)
     local_time (2.1.0)
     loofah (2.6.0)
@@ -475,7 +469,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (>= 0.10.8)
   active_record_query_trace
   active_storage_validations (>= 0.6.1)
   activerecord-import
@@ -508,6 +501,7 @@ DEPENDENCIES
   jquery-fileupload-rails (>= 1.0.0)
   jquery-rails (>= 4.3.5)
   jquery-ui-rails (~> 6.0, >= 6.0.1)
+  jsonapi-serializer
   jwt
   local_time
   mini_magick (>= 4.9.4)

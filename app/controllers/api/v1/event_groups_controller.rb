@@ -8,8 +8,10 @@ module Api
 
       def show
         authorize @resource
+
         event_group = EventGroup.includes(organization: :stewards, events: [:efforts, :splits]).where(id: @resource.id).first
-        render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
+
+        serialize_and_render(event_group)
       end
 
       def import
@@ -19,22 +21,17 @@ module Api
         importer = ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
+        first_record = importer.saved_records.first
 
-        if importer.strict?
-          if errors.present?
-            render json: {errors: errors}, status: :unprocessable_entity
-          else
-            ETL::EventGroupImportProcess.perform!(@resource, importer)
-            response = limited_response ? {} : importer.saved_records
-            render json: response, status: :created
-          end
+        if errors.present?
+          render json: {errors: errors}, status: :unprocessable_entity
         else
           ETL::EventGroupImportProcess.perform!(@resource, importer)
-          response = limited_response ? {} :
-                       {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                        destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                        errors: errors}
-          render json: response, status: importer.saved_records.present? ? :created : :unprocessable_entity
+          if limited_response
+            render json: {}, status: :created
+          else
+            serialize_and_render(importer.saved_records, status: :created)
+          end
         end
       end
 

@@ -2,7 +2,10 @@
 
 module Api
   module V1
-    class BaseSerializer < ActiveModel::Serializer
+    class BaseSerializer
+      include ::JSONAPI::Serializer
+
+      set_key_transform :camel_lower
 
       def editable
         return false unless current_user

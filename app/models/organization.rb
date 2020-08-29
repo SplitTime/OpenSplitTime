@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
-  include Auditable
-  include Concealable
+  include Auditable, Concealable, UrlAccessible
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   has_paper_trail

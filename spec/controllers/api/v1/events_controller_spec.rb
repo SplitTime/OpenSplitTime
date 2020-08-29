@@ -153,7 +153,7 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#spread' do
     subject(:make_request) { get :spread, params: params }
-    let(:params) { {id: event_id, include: "effort_times_rows", display_style: display_style} }
+    let(:params) { {id: event_id, display_style: display_style} }
     let(:event_id) { event.id }
     let(:display_style) { 'absolute' }
     before { Rails.cache.clear }
@@ -234,7 +234,7 @@ RSpec.describe Api::V1::EventsController do
         end
 
         context 'when a sort param is provided' do
-          let(:params) { {id: event.id, include: "effort_times_rows", sort: 'last_name'} }
+          let(:params) { {id: event.id, sort: 'last_name'} }
 
           it 'sorts effort data based on the sort param' do
             make_request

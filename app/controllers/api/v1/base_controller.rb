@@ -67,8 +67,9 @@ module Api
           serializer_for_record(first_record) ||
           ::Api::V1::BaseSerializer
 
-        options[:include] = prepared_params[:include]
-        options[:fields] = prepared_params[:fields]
+        options[:include] = *options[:include] if options[:include].present?
+        options[:include] ||= prepared_params[:include]
+        options[:fields] ||= prepared_params[:fields]
         serializer_params = {params: {current_user: current_user}}
 
         serializer = serializer_class.new(resource, serializer_params.merge(options))

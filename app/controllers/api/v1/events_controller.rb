@@ -47,7 +47,7 @@ module Api
       def spread
         params[:display_style] ||= 'absolute'
         presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
-        serialize_and_render(presenter, serializer: ::Api::V1::EventSpreadSerializer)
+        serialize_and_render(presenter, include: :effort_times_rows, serializer: ::Api::V1::EventSpreadSerializer)
       end
 
       def import

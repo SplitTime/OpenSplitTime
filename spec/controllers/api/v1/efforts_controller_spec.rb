@@ -39,6 +39,49 @@ RSpec.describe Api::V1::EffortsController do
     end
   end
 
+  describe '#with_times_row' do
+    subject(:make_request) { get :with_times_row, params: params }
+    let(:type) { "effort_with_times_rows" }
+
+    via_login_and_jwt do
+      context 'when an existing effort.id is provided' do
+        let(:params) { {id: effort} }
+
+        it 'returns a successful 200 response' do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it 'returns data of a single effort' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['data']['id'].to_i).to eq(effort.id)
+          expect(response.body).to be_jsonapi_response_for(type)
+        end
+
+        it 'includes effort times row information' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          times_row = parsed_response["included"].first
+          expect(times_row["type"]).to eq("effortTimesRows")
+          expect(times_row.dig("attributes", "firstName")).to eq(effort.first_name)
+          expect(times_row.dig("attributes", "elapsedTimes").size).to eq(7)
+        end
+      end
+
+      context 'if the effort does not exist' do
+        let(:params) { {id: 0} }
+
+        it 'returns an error' do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response['errors']).to include(/not found/)
+          expect(response.status).to eq(404)
+        end
+      end
+    end
+  end
+
   describe '#create' do
     subject(:make_request) { post :create, params: params }
     let(:event) { events(:hardrock_2014) }

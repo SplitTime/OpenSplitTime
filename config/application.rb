@@ -1,9 +1,9 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
+# you"ve limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module OpenSplitTime
@@ -15,7 +15,10 @@ module OpenSplitTime
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.time_zone = 'UTC'
+    config.time_zone = "UTC"
+
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "*.rb")].each { |l| require l }
 
     config.exceptions_app = self.routes
   end

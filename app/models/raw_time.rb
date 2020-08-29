@@ -10,7 +10,7 @@ class RawTime < ApplicationRecord
   has_paper_trail
 
   belongs_to :event_group
-  belongs_to :split_time
+  belongs_to :split_time, optional: true
 
   delegate :organization, :stewards, to: :event_group
 

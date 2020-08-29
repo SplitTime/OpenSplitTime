@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PeopleController do
-  let(:person) { create(:person) }
+  let!(:person) { create(:person) }
   let(:type) { 'people' }
 
   describe '#show' do

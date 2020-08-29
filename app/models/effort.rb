@@ -18,7 +18,7 @@ class Effort < ApplicationRecord
   has_paper_trail
 
   belongs_to :event, counter_cache: true, touch: true
-  belongs_to :person
+  belongs_to :person, optional: true
   has_many :split_times, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_one_attached :photo

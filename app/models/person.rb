@@ -12,7 +12,7 @@ class Person < ApplicationRecord
 
   enum gender: [:male, :female]
   has_many :efforts, dependent: :nullify
-  belongs_to :claimant, class_name: 'User', foreign_key: 'user_id'
+  belongs_to :claimant, class_name: 'User', foreign_key: 'user_id', optional: true
   has_one_attached :photo
 
   attr_accessor :suggested_match

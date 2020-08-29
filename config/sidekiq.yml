@@ -10,4 +10,3 @@ production:
 :queues:
   - default
   - mailers
-  - open_split_time_production_default

@@ -108,6 +108,14 @@ RSpec.describe ProcessImportedRawTimesJob do
                                 absolute_time: absolute_time_out, entered_time: nil, with_pacer: 'true', stopped_here: 'true', source: source) }
 
       include_examples 'processes raw times as expected'
+
+      it "sets entered times without changing absolute times" do
+        perform_process
+        raw_times.each(&:reload)
+
+        expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+        expect(raw_times.map { |rt| time_zone.parse(rt.entered_time) }).to eq([absolute_time_in, absolute_time_out])
+      end
     end
 
     context 'when raw times have entered times but no absolute times' do
@@ -117,6 +125,14 @@ RSpec.describe ProcessImportedRawTimesJob do
                                 absolute_time: nil, entered_time: absolute_time_out, with_pacer: 'true', stopped_here: 'true', source: source) }
 
       include_examples 'processes raw times as expected'
+
+      it "sets absolute times without changing entered times" do
+        perform_process
+        raw_times.each(&:reload)
+
+        expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+        expect(raw_times.map { |rt| time_zone.parse(rt.entered_time) }).to eq([absolute_time_in, absolute_time_out])
+      end
     end
   end
 end

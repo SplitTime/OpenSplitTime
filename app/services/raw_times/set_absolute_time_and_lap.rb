@@ -37,12 +37,16 @@ module RawTimes
       end
     end
 
-    # OST Remote currently sets absolute_time directly, so we need to
-    # copy absolute_time to entered_time if absolute_time exists.
+    # Versions of OST Remote prior to July 2020 set absolute_time directly,
+    # making it necessary to copy absolute_time to entered_time
+    # if absolute_time exists.
     #
     # This method can be removed once OST Remote sets entered_time
     # instead of absolute_time (and there has been plenty of time for
-    # users to upgrade).
+    # users to upgrade). January 2021 should be about right.
+    #
+    # See also the RowifyRawTimes class.
+    #
     def set_entered_from_absolute_time(raw_time)
       raw_time.entered_time = raw_time.absolute_time
     end

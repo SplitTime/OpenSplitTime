@@ -21,7 +21,6 @@ module Api
         importer = ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
-        first_record = importer.saved_records.first
 
         if errors.present?
           render json: {errors: errors}, status: :unprocessable_entity

@@ -4,8 +4,6 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
-  before { allow(Pusher).to receive(:trigger) }
-
   let(:event_group) { event_groups(:dirty_30) }
   let(:type) { 'event_groups' }
 
@@ -282,9 +280,6 @@ RSpec.describe Api::V1::EventGroupsController do
   describe '#import' do
     subject(:make_request) { post :import, params: request_params }
 
-    before(:each) { VCR.insert_cassette("api/v1/event_groups_controller", match_requests_on: [:host]) }
-    after(:each) { VCR.eject_cassette }
-
     let(:course) { courses(:hardrock_cw) }
     let(:ordered_splits) { course.ordered_splits }
     let(:event_group) { event.event_group }
@@ -490,10 +485,6 @@ RSpec.describe Api::V1::EventGroupsController do
     let!(:effort_1_split_time_2) { split_times(:hardrock_2016_progress_sherman_telluride_in_1) }
 
     let(:current_user) { controller.current_user }
-
-    before do
-      allow(Pusher).to receive(:trigger)
-    end
 
     context 'when unreviewed raw_times are available' do
       let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, absolute_time: '2017-07-01 11:22:33-0600', split_name: 'Finish') }
@@ -965,10 +956,9 @@ RSpec.describe Api::V1::EventGroupsController do
 
     via_login_and_jwt do
       it 'sends a push notification that includes the count of available times' do
-        allow(Pusher).to receive(:trigger)
+        expected_rt_args = ["event_groups:#{event_group.id}", {unreviewed: 3, unmatched: 3}]
+        expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
         make_request
-        expected_rt_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unreviewed: 3, unmatched: 3}]
-        expect(Pusher).to have_received(:trigger).with(*expected_rt_args)
       end
     end
   end

@@ -249,8 +249,6 @@ RSpec.describe Api::V1::EventsController do
 
   describe '#import' do
     subject(:make_request) { post :import, params: request_params }
-    before(:each) { VCR.insert_cassette("api/v1/events_controller", match_requests_on: [:host]) }
-    after(:each) { VCR.eject_cassette }
 
     let(:event) { events(:ggd30_50k) }
     let(:event_group) { event.event_group }

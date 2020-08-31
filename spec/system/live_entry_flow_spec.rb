@@ -4,8 +4,6 @@ require 'rails_helper'
 include BitkeyDefinitions
 
 RSpec.describe 'Live entry app flow', type: :system, js: true do
-  before { allow(Pusher).to receive(:trigger) }
-
   let(:user) { users(:admin_user) }
   let(:event_1) { events(:sum_100k) }
   let(:event_2) { events(:sum_55k) }
@@ -26,7 +24,6 @@ RSpec.describe 'Live entry app flow', type: :system, js: true do
   let(:slider_effort_name) { find_by_id('js-effort-name') }
   let(:submit_all_button) { find_by_id('js-submit-all-time-rows') }
   let(:discard_all_button) { find_by_id('js-delete-all-time-rows') }
-
 
   context 'for previously unstarted efforts' do
     let(:effort_1) { efforts(:sum_100k_un_started) }

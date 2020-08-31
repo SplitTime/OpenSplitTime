@@ -33,10 +33,14 @@ export default class extends Controller {
     }
 
     displayNewCount(unreviewedCount, unmatchedCount) {
+        const countBadge = document.getElementById("js-pull-times-count");
+        const forceCountBadge = document.getElementById("js-force-pull-times-count");
+        const unreviewedClass = (unreviewedCount > 0) ? "badge badge-danger" : "badge";
         const unreviewedText = (unreviewedCount > 0) ? unreviewedCount : "";
         const unmatchedText = (unmatchedCount > 0) ? unmatchedCount : "";
-        document.getElementById("js-pull-times-count").textContent = unreviewedText
-        document.getElementById("js-force-pull-times-count").textContent = unmatchedText
+        countBadge.className = unreviewedClass
+        countBadge.textContent = unreviewedText
+        forceCountBadge.textContent = unmatchedText
 
         if (unreviewedCount > 0) {
             const notifier = this.data.get("notifier");

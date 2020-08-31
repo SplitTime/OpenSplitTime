@@ -35,8 +35,8 @@ export default class extends Controller {
     displayNewCount(unreviewedCount, unmatchedCount) {
         const unreviewedText = (unreviewedCount > 0) ? unreviewedCount : "";
         const unmatchedText = (unmatchedCount > 0) ? unmatchedCount : "";
-        $("#js-pull-times-count").text(unreviewedText);
-        $("#js-force-pull-times-count").text(unmatchedText);
+        document.getElementById("js-pull-times-count").textContent = unreviewedText
+        document.getElementById("js-force-pull-times-count").textContent = unmatchedText
 
         if (unreviewedCount > 0) {
             const notifier = this.data.get("notifier");

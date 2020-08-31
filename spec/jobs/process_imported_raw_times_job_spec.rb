@@ -55,12 +55,14 @@ RSpec.describe ProcessImportedRawTimesJob do
 
         before { event_group.update(available_live: true, concealed: false) }
 
-        it 'sends a push notification that includes the count of available raw times' do
+        it 'sends a push notification that includes the count of available times' do
           expect(event.permit_notifications?).to be(true)
-          allow(Pusher).to receive(:trigger)
+
+          expected_rt_args = ["event_groups:#{event_group.id}",
+                              event: "raw_times_available",
+                              detail: {unreviewed: 2, unmatched: 2}]
+          expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
           perform_process
-          expected_args = ["raw-times-available.event_group.#{event_group.id}", 'update', {unreviewed: 2, unmatched: 2}]
-          expect(Pusher).to have_received(:trigger).with(*expected_args)
         end
       end
 

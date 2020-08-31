@@ -149,16 +149,6 @@ S3_BUCKET=your_aws_bucket
 ```
 Use your own credentials or contact us if you would like to use the dev group's credentials.
 
-**Pusher**
-
-OpenSplitTime uses Pusher for messaging with workers and to notify Live Entry operators of times that need attention. Specifically, you will need to add the following to your `.env` file:
-```
-PUSHER_APP_ID=xxx
-PUSHER_KEY=xxx
-PUSHER_SECRET_KEY=xxx
-```
-Contact us for the dev team's Pusher credentials.
-
 **Google Maps API**
 
 OpenSplitTime uses Google Maps API to display course gpx tracks and split locations. To access the API, you will need to add the following to your `.env` file:

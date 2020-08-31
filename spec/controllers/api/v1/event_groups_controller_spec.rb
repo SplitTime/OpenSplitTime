@@ -956,7 +956,9 @@ RSpec.describe Api::V1::EventGroupsController do
 
     via_login_and_jwt do
       it 'sends a push notification that includes the count of available times' do
-        expected_rt_args = ["event_groups:#{event_group.id}", {unreviewed: 3, unmatched: 3}]
+        expected_rt_args = ["event_groups:#{event_group.id}",
+                            event: "raw_times_available",
+                            detail: {unreviewed: 3, unmatched: 3}]
         expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
         make_request
       end

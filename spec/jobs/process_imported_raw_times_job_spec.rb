@@ -58,7 +58,9 @@ RSpec.describe ProcessImportedRawTimesJob do
         it 'sends a push notification that includes the count of available times' do
           expect(event.permit_notifications?).to be(true)
 
-          expected_rt_args = ["event_groups:#{event_group.id}", {unreviewed: 2, unmatched: 2}]
+          expected_rt_args = ["event_groups:#{event_group.id}",
+                              event: "raw_times_available",
+                              detail: {unreviewed: 2, unmatched: 2}]
           expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
           perform_process
         end

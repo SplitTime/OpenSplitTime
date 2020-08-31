@@ -40,7 +40,6 @@
                     liveEntry.header.init();
                     liveEntry.liveEntryForm.init();
                     liveEntry.timeRowsTable.init();
-                    liveEntry.pusher.init();
                 });
         },
 
@@ -131,55 +130,6 @@
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
-        },
-
-        pusher: {
-            init: function () {
-                if (!liveEntry.currentEventGroupId) {
-                    // Just for safety, abort this init if there is no event data
-                    // and avoid breaking execution
-                    return;
-                }
-                // Listen to push notifications
-
-                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
-                var pusher = new Pusher(liveTimesPusherKey);
-                var channel = pusher.subscribe('raw-times-available.event_group.' + liveEntry.currentEventGroupId);
-
-                channel.bind('update', function (data) {
-                    // New value pushed from the server
-                    // Display updated number of new live times on Pull Times button
-                    var unreviewedCount = (typeof data.unreviewed === 'number') ? data.unreviewed : 0;
-                    var unmatchedCount = (typeof data.unmatched === 'number') ? data.unmatched : 0;
-                    liveEntry.pusher.displayNewCount(unreviewedCount, unmatchedCount);
-                });
-
-                $(document).on('click', '[href="#js-pull-times"]', function() {
-                    
-                });
-            },
-
-            displayNewCount: function (unreviewedCount, unmatchedCount) {
-                var unreviewedText = (unreviewedCount > 0) ? unreviewedCount : '';
-                var unmatchedText = (unmatchedCount > 0) ? unmatchedCount : '';
-                $('#js-pull-times-count').text(unreviewedText);
-                $('#js-force-pull-times-count').text(unmatchedText);
-
-                var notifier = liveEntry.pusher.notification;
-                if (unreviewedCount > 0) {
-                    if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
-                        liveEntry.pusher.notification = $.notify({
-                            icon: 'fas fa-stopwatch',
-                            title:'New Live Times Available',
-                            message: 'Click to pull times.',
-                            url: '#js-pull-times',
-                            target: '_self'
-                        }, {delay: 0});
-                    }
-                } else if (notifier) {
-                    notifier.close();
-                }
-            }
         },
 
         /**

@@ -146,11 +146,6 @@
                 var pusher = new Pusher(liveTimesPusherKey);
                 var channel = pusher.subscribe('raw-times-available.event_group.' + liveEntry.currentEventGroupId);
 
-                channel.bind('pusher:subscription_succeeded', function () {
-                    // Force the server to trigger a push for initial display
-                    liveEntry.triggerRawTimesPush();
-                });
-
                 channel.bind('update', function (data) {
                     // New value pushed from the server
                     // Display updated number of new live times on Pull Times button
@@ -185,14 +180,6 @@
                     notifier.close();
                 }
             }
-        },
-
-        triggerRawTimesPush: function () {
-            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_raw_times_push';
-            $.ajax({
-                url: endpoint,
-                cache: false
-            });
         },
 
         /**

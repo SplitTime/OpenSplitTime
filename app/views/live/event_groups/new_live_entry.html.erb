@@ -3,11 +3,11 @@
 <% end %>
 
 <header class="ost-header">
-  <div class="container">
+  <div class="container" data-controller="notification" data-notification-channel="EventGroupsChannel" data-notification-id="<%= @event_group.id %>">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>  
+          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>

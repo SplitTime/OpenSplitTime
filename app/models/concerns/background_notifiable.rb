@@ -29,11 +29,16 @@ module BackgroundNotifiable
     end
   end
 
-  def report_raw_times_available(resource)
-    channel = "raw-times-available.#{resource.class.to_s.underscore}.#{resource.id}"
-    message = {unreviewed: resource.raw_times.unreviewed.size,
-               unmatched: resource.raw_times.unmatched.size}
-    Pusher.trigger(channel, 'update', message)
+  def report_raw_times_available(event_group)
+    channel = "raw-times-available.#{event_group.class.to_s.underscore}.#{event_group.id}"
+    message = {unreviewed: event_group.raw_times.unreviewed.size,
+               unmatched: event_group.raw_times.unmatched.size}
+    ::Pusher.trigger(channel, 'update', message)
+
+    channel = "event_groups:#{event_group.id}"
+    message = {unreviewed: event_group.raw_times.unreviewed.size,
+               unmatched: event_group.raw_times.unmatched.size}
+    ::ActionCable.server.broadcast(channel, message)
   end
 
   private

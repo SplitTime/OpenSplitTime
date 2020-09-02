@@ -25,6 +25,20 @@ RSpec.describe ::Projection, type: :model do
         expect(projection.high_seconds).to be_within(100).of(48_200)
       end
     end
+
+    context "when given a starting split time" do
+      let(:split_time) { effort.ordered_split_times.first }
+      it "returns an empty array" do
+        expect(subject).to eq([])
+      end
+    end
+
+    context "when given no subject time points" do
+      let(:subject_time_points) { [] }
+      it "returns an empty array" do
+        expect(subject).to eq([])
+      end
+    end
   end
 
   describe "#time_point" do

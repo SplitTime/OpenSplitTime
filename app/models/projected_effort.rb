@@ -22,7 +22,7 @@ class ProjectedEffort
   end
 
   def effort_years
-    projections.flat_map { |projection| projection.effort_years.split(',') }.uniq.sort
+    projections.flat_map(&:effort_years).uniq.sort
   end
 
   def effort_count
@@ -39,7 +39,7 @@ class ProjectedEffort
   end
 
   def projections
-    @projections ||= SplitTimeQuery.projections(baseline_split_time, starting_time_point, projected_time_points)
+    @projections ||= Projection.execute_query(baseline_split_time, starting_time_point, projected_time_points)
   end
 
   def baseline_time

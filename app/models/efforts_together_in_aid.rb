@@ -1,19 +1,10 @@
 # frozen_string_literal: true
 
-class EffortsTogetherInAid
-  include ::ActiveModel::Model
-  include ::ActiveModel::Attributes
-
+class EffortsTogetherInAid < ::ApplicationQuery
   attribute :effort_id, :integer
   attribute :lap, :integer
   attribute :split_id, :integer
   attribute :together_effort_ids, :integer_array_from_string
-
-  def self.execute_query(effort_id)
-    query = sql(effort_id)
-    result = ::ActiveRecord::Base.connection.execute(query)
-    result.map { |row| new(row) }
-  end
 
   def self.sql(effort_id)
     <<~SQL.squish

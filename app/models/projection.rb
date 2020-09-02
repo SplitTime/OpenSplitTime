@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
-class Projection
-  include ::ActiveModel::Model
-  include ::ActiveModel::Attributes
-
-  NULL_QUERY = "select * from generate_series(0, -1) x;"
-
+class Projection < ::ApplicationQuery
   attribute :lap, :integer
   attribute :split_id, :integer
   attribute :sub_split_bitkey, :integer
@@ -19,12 +14,6 @@ class Projection
   attribute :high_seconds, :integer
 
   alias_attribute :bitkey, :sub_split_bitkey
-
-  def self.execute_query(*args)
-    query = sql(*args)
-    result = ::ActiveRecord::Base.connection.execute(query)
-    result.map { |row| new(row) }
-  end
 
   def self.sql(split_time, starting_time_point, subject_time_points)
     unless split_time && starting_time_point && subject_time_points

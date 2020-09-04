@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectedArrivalsAtSplit
-  include ::ActiveModel::Model
-  include ::ActiveModel::Attributes
-
+class ProjectedArrivalsAtSplit < ::ApplicationQuery
   attribute :effort_id, :integer
   attribute :first_name, :string
   attribute :last_name, :string
@@ -15,12 +12,6 @@ class ProjectedArrivalsAtSplit
 
   alias_attribute :completed?, :completed
   alias_attribute :stopped?, :stopped
-
-  def self.execute_query(*args)
-    query = sql(*args)
-    result = ::ActiveRecord::Base.connection.execute(query)
-    result.map { |row| new(row) }
-  end
 
   def self.sql(event_group_id, parameterized_split_name)
     <<~SQL.squish

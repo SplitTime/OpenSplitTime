@@ -15,7 +15,7 @@ RSpec.describe 'start ready efforts from the event groups roster page' do
 
   let(:event_group) { event_groups(:hardrock_2014) }
   let(:organization) { event_group.organization }
-  let(:event_group_efforts) { event_group.efforts.ranked_with_status }
+  let(:event_group_efforts) { event_group.efforts.roster_subquery }
 
   context 'when no efforts are ready to start' do
     before { expect(event_group_efforts.map(&:ready_to_start)).to all eq(false) }

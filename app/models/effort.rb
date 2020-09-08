@@ -52,11 +52,7 @@ class Effort < ApplicationRecord
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :over_segment, -> (segment) { from(EffortQuery.over_segment_subquery(segment, self)) }
-  scope :add_ready_to_start, -> do
-    select('distinct on (efforts.id) efforts.*, coalesce(efforts.scheduled_start_time, events.scheduled_start_time) as assumed_start_time, (split_times.id is null and checked_in is true and (coalesce(efforts.scheduled_start_time, events.scheduled_start_time) < current_timestamp)) as ready_to_start')
-        .left_joins(:event, split_times: :split)
-        .order('efforts.id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey')
-  end
+  scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
   scope :with_policy_scope_attributes, -> do
     from(select('efforts.*, event_groups.organization_id, event_groups.concealed').joins(event: :event_group), :efforts)
   end
@@ -127,7 +123,11 @@ class Effort < ApplicationRecord
   end
 
   def scheduled_start_offset
-    @scheduled_start_offset ||= (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
+    @scheduled_start_offset ||=
+      begin
+        return attributes['scheduled_start_offset'] if attributes.has_key?('scheduled_start_offset')
+        (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
+      end
   end
 
   def scheduled_start_offset=(seconds)

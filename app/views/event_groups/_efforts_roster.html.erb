@@ -1,4 +1,4 @@
-<% if @presenter.event_group_efforts.blank? %>
+<% if @presenter.roster_efforts.blank? %>
   <article class="ost-article container">
     <h3>No entrants have been added to this event group.</h3>
   </article>
@@ -23,30 +23,29 @@
     </aside>
 
     <article class="ost-article container">
-      <% if @presenter.filtered_ranked_efforts.present? %>
-
-        <% if @presenter.unreconciled_efforts.present? %>
-          <div class="row">
-            <div class="col">
-              <div class="card border-primary">
-                <h4 class="card-header bg-primary text-white"><strong>Note</strong></h4>
-                <div class="card-body">
-                  <h5 class="card-text">
-                    Unreconciled efforts exist. Please <%= link_to 'reconcile', reconcile_event_group_path(@presenter.event_group) %> when you have a moment.
-                  </h5>
-                </div>
+      <% if @presenter.unreconciled_efforts.present? %>
+        <div class="row">
+          <div class="col">
+            <div class="card border-primary">
+              <h4 class="card-header bg-primary text-white"><strong>Note</strong></h4>
+              <div class="card-body">
+                <h5 class="card-text">
+                  Unreconciled efforts exist. Please <%= link_to 'reconcile', reconcile_event_group_path(@presenter.event_group) %> when you have a moment.
+                </h5>
               </div>
             </div>
           </div>
-          <br/>
-        <% end %>
+        </div>
+        <br/>
+      <% end %>
 
+      <% if @presenter.filtered_roster_efforts.present? %>
         <div class="row">
           <div class="col-xs-8">
-            <% if @presenter.filtered_ranked_efforts_count == @presenter.efforts_count %>
-              <h4><%= "#{@presenter.efforts_count} efforts" %></h4>
+            <% if @presenter.filtered_roster_efforts_count == @presenter.roster_efforts_count %>
+              <h4><%= "#{@presenter.roster_efforts_count} efforts" %></h4>
             <% else %>
-              <h4><%= "Showing #{@presenter.filtered_ranked_efforts_count} of #{@presenter.efforts_count} efforts" %></h4>
+              <h4><%= "Showing #{@presenter.filtered_roster_efforts_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
             <% end %>
           </div>
           <div class="col-xs-4 text-right">
@@ -55,7 +54,7 @@
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@presenter.filtered_ranked_efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 
@@ -83,7 +82,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @presenter.filtered_ranked_efforts.each do |effort| %>
+          <% @presenter.filtered_roster_efforts.each do |effort| %>
             <tr>
               <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
               <% if @presenter.multiple_events? %>
@@ -111,7 +110,7 @@
 
         <div class="row">
           <div class="col-xs-8">
-            <%= will_paginate(@presenter.filtered_ranked_efforts, inner_window: 2, outer_window: 0) %>
+            <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
           </div>
         </div>
 

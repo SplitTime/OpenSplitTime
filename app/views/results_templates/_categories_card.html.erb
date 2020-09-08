@@ -1,10 +1,17 @@
 <h5><%= "#{template.podium_size ? pluralize(template.podium_size, 'Participant') : 'Unlimited Participants'} Per Category" %></h5>
 <table>
   <tbody>
-  <% template.categories.each.with_index(1) do |category, i| %>
+  <% template.results_template_categories.includes(:results_category).each do |rtc| %>
     <tr>
-      <td><%= "#{i}." %></td>
-      <td><%= "#{category.name} (#{category.description})" %></td>
+      <td class="text-danger"><%= "#{'*' if rtc.fixed_position}" %></td>
+      <td><%= "#{rtc.position}." %></td>
+      <td><%= "#{rtc.category_name} (#{rtc.category_description})" %></td>
+    </tr>
+  <% end %>
+
+  <% if template.results_template_categories.any?(&:fixed_position?) %>
+    <tr>
+      <td colspan="3" class="text-danger">* Position is fixed</td>
     </tr>
   <% end %>
   </tbody>

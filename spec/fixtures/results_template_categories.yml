@@ -6,6 +6,7 @@ results_template_category_1:
   created_at: '2019-02-14 05:23:14.60864'
   updated_at: '2019-02-14 05:23:14.60864'
   position: 1
+  fixed_position: true
 results_template_category_2:
   id: 2
   results_template_id: 1
@@ -13,6 +14,7 @@ results_template_category_2:
   created_at: '2019-02-14 05:23:14.612271'
   updated_at: '2019-02-14 05:23:14.612271'
   position: 2
+  fixed_position: true
 results_template_category_3:
   id: 3
   results_template_id: 1
@@ -20,6 +22,7 @@ results_template_category_3:
   created_at: '2019-02-14 05:23:14.640713'
   updated_at: '2019-02-14 05:23:14.640713'
   position: 3
+  fixed_position: true
 results_template_category_4:
   id: 4
   results_template_id: 1
@@ -27,6 +30,7 @@ results_template_category_4:
   created_at: '2019-02-14 05:23:14.643194'
   updated_at: '2019-02-14 05:23:14.643194'
   position: 4
+  fixed_position: true
 results_template_category_5:
   id: 5
   results_template_id: 1

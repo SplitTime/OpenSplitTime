@@ -83,7 +83,7 @@ class EventsController < ApplicationController
 
   def podium
     template = Results::FillEventTemplate.perform(@event)
-    @presenter = PodiumPresenter.new(@event, template, current_user)
+    @presenter = PodiumPresenter.new(@event, template, prepared_params, current_user)
   end
 
   # Event admin actions

@@ -4,4 +4,12 @@ class ResultsTemplateCategory < ApplicationRecord
 
   acts_as_list scope: :results_template
   validates_presence_of :results_category, :results_template
+
+  def category_description
+    results_category.description
+  end
+
+  def category_name
+    results_category.name
+  end
 end

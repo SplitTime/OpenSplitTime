@@ -8,7 +8,7 @@ module Results
 
     def initialize(event)
       @event = event
-      @template = event.results_template
+      @template = event.results_template.dup_with_categories
     end
 
     def perform

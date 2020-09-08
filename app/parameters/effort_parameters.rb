@@ -19,7 +19,7 @@ class EffortParameters < BaseParameters
      :final_distance, :finished, :stopped, :dropped, :overall_rank, :gender_rank, :full_name, :bio_historic,
      :prior_to_here_info, :stopped_here_info, :dropped_here_info, :recorded_here_info, :after_here_info,
      :expected_here_info, :due_next_info, :last_reported_info, :state_and_country, :ready_to_start,
-     :scheduled_start_time, :assumed_start_time, :actual_start_time]
+     :scheduled_start_time, :assumed_start_time, :actual_start_time, :fastest_seconds]
   end
 
   def self.permitted

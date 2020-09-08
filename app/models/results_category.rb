@@ -24,6 +24,12 @@ class ResultsCategory < ApplicationRecord
     new(standard_attributes.merge(attributes))
   end
 
+  def fastest_seconds
+    return INF unless efforts.present?
+
+    efforts.first.final_elapsed_seconds
+  end
+
   def age_range
     (low_age || 0)..(high_age || INF)
   end

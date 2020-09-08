@@ -40,7 +40,7 @@
 <article class="ost-article container">
   <% if @presenter.template_name %>
     <table class="table table-sm table-striped">
-      <% @presenter.categories.each do |category| %>
+      <% @presenter.sorted_categories.each do |category| %>
         <%= render 'podium_category', category: category %>
       <% end %>
     </table>

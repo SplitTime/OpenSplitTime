@@ -94,10 +94,6 @@ class EventGroupPresenter < BasePresenter
     event_group.efforts.includes(:event)
   end
 
-  def check_in_button_param
-    :check_in_group
-  end
-
   def method_missing(method)
     event_group.send(method)
   end

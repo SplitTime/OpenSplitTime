@@ -15,15 +15,6 @@ class EffortQuery < BaseQuery
                 from efforts
                          inner join existing_scope on existing_scope.id = efforts.id),
 
-           start_split_times as
-               (select effort_id, absolute_time
-                from split_times
-                         inner join splits on splits.id = split_times.split_id
-                where lap = 1
-                  and kind = 0
-                  and effort_id in (select id from efforts_scoped)
-                order by effort_id),
-
            stopped_split_times as
                (select split_times.id               as stopped_split_time_id,
                        split_times.lap              as stopped_lap,
@@ -56,9 +47,6 @@ class EffortQuery < BaseQuery
                            split_times.split_id                                        as final_split_id,
                            split_times.sub_split_bitkey                                as final_bitkey,
                            split_times.absolute_time                                   as final_absolute_time,
-                           sst.absolute_time                                           as actual_start_time,
-                           extract(epoch from 
-                               (sst.absolute_time - events.scheduled_start_time))      as start_offset,
                            split_times.elapsed_seconds                                 as final_elapsed_seconds,
                            split_times.id                                              as final_split_time_id,
                            stopped_split_time_id,
@@ -68,10 +56,7 @@ class EffortQuery < BaseQuery
                            stopped_absolute_time,
                            course_distance,
                            course_vert_gain,
-                           case when splits.kind = 1 then true else false end          as final_lap_complete,
-                           case
-                               when split_times.lap > 1 or splits.kind in (1, 2) then true
-                               else false end                                          as beyond_start
+                           case when splits.kind = 1 then true else false end          as final_lap_complete
                 from efforts_scoped
                          left join split_times on split_times.effort_id = efforts_scoped.id
                          left join splits on splits.id = split_times.split_id
@@ -79,7 +64,6 @@ class EffortQuery < BaseQuery
                          inner join event_groups on event_groups.id = events.event_group_id
                          left join course_subquery on events.course_id = course_subquery.course_id
                          left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
-                         left join start_split_times sst on split_times.effort_id = sst.effort_id
                 order by efforts_scoped.id,
                          final_lap desc,
                          final_lap_distance desc,
@@ -103,13 +87,7 @@ class EffortQuery < BaseQuery
                            else
                                case when laps_finished >= laps_required then true else false end
                            end
-                           as finished,
-                       case
-                           when checked_in and actual_start_time is null and (assumed_start_time < current_timestamp)
-                               then true
-                           else false
-                           end
-                           as ready_to_start
+                           as finished
                 from distance_subquery),
 
            stopped_subquery as
@@ -180,6 +158,68 @@ class EffortQuery < BaseQuery
       from ranking_subquery
       #{where_clause}
       order by #{order_sql}
+    SQL
+  end
+
+  def self.roster_subquery(existing_scope)
+    existing_scope_subquery = sql_for_existing_scope(existing_scope)
+
+    <<~SQL.squish
+      (with 
+           existing_scope as (
+               #{existing_scope_subquery}
+           ),
+
+           starting_split_times as (
+               select effort_id, absolute_time
+               from split_times
+                        join splits on splits.id = split_times.split_id
+               where kind = 0
+                 and lap = 1
+           ),
+
+           beyond_start_split_times as (
+               select effort_id
+               from split_times
+                        join splits on splits.id = split_times.split_id
+               where kind != 0
+                  or lap != 1
+           )
+
+      select distinct on (ef.id) 
+          ef.id, 
+          ef.slug, 
+          ef.event_id, 
+          ef.person_id, 
+          ef.bib_number, 
+          ef.city, 
+          ef.state_code, 
+          ef.country_code, 
+          ef.age, 
+          ef.gender, 
+          ef.first_name, 
+          ef.last_name, 
+          ef.birthdate, 
+          ef.data_status, 
+          ef.checked_in, 
+          ef.emergency_contact, 
+          ef.emergency_phone,
+          sst.absolute_time                                                                     as actual_start_time,
+          sst.absolute_time is not null                                                         as started,
+          bsst.effort_id is not null                                                            as beyond_start,
+          coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
+          extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
+          (checked_in and 
+              sst.absolute_time is null and 
+              (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
+      from efforts ef
+               join events ev on ev.id = ef.event_id
+               left join starting_split_times sst on sst.effort_id = ef.id
+               left join beyond_start_split_times bsst on bsst.effort_id = ef.id
+      where ef.id in (select id from existing_scope)
+      )
+
+      as efforts
     SQL
   end
 

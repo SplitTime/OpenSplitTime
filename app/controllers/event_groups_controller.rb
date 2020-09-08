@@ -77,7 +77,7 @@ class EventGroupsController < ApplicationController
   def roster
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
+    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
@@ -162,7 +162,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     filter = prepared_params[:filter]
-    efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
+    efforts = @event_group.efforts.includes(:event, split_times: :split).roster_subquery
     filtered_efforts = Effort.from(efforts, :efforts).where(filter)
     start_time = params[:actual_start_time]
 

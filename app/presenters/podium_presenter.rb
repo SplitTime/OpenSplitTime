@@ -45,8 +45,21 @@ class PodiumPresenter < BasePresenter
   end
 
   def fastest_seconds_sorted_categories
-    category_pairs = categories.group_by { |c| [c.low_age, c.high_age] }.values.map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
-    category_pairs.sort_by { |first, _| [first.fixed_position? ? first.position : (1.0 / 0), first.fastest_seconds, first.position] }.flatten
+    ordered_fixed_categories + ordered_floating_categories
+  end
+
+  def ordered_fixed_categories
+    categories.select(&:fixed_position?)
+      .group_by { |c| [c.low_age, c.high_age] }.values
+      .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
+      .flatten
+  end
+
+  def ordered_floating_categories
+    categories.reject(&:fixed_position?)
+      .partition(&:male?)
+      .map { |gender_group| gender_group.sort_by(&:fastest_seconds) }
+      .transpose.flatten
   end
 
   attr_reader :template, :params, :current_user

@@ -26,6 +26,10 @@ class PodiumPresenter < BasePresenter
     end
   end
 
+  def sort_method
+    params[:sort].keys.first&.to_sym || :category
+  end
+
   def template_name
     template&.name
   end
@@ -37,7 +41,7 @@ class PodiumPresenter < BasePresenter
   private
 
   def fastest_seconds_sort?
-    params[:sort].keys.first == "fastest_seconds"
+    sort_method == :fastest_times
   end
 
   def fastest_seconds_sorted_categories

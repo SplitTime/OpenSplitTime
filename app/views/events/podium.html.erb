@@ -33,6 +33,15 @@
       <div class="col form-inline">
         <%= explore_dropdown_menu(@presenter) %>
       </div>
+      <div class="col form-inline">
+        <div class="btn-group btn-group-ost">
+          <% [:category, :fastest_times].each do |sort_method| %>
+            <%= link_to sort_method.to_s.titleize,
+                        request.params.merge(sort: sort_method),
+                        class: "btn #{ @presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary' }" %>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </aside>

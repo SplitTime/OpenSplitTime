@@ -60,7 +60,7 @@ class EffortsController < ApplicationController
       case params[:button]&.to_sym
       when :check_in_group
         event_group = effort.event_group
-        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        view_object = EventGroupRosterPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       when :check_in_effort_show
         effort = effort_with_splits
@@ -134,7 +134,7 @@ class EffortsController < ApplicationController
       case params[:button]&.to_sym
       when :check_in_group
         event_group = effort.event_group
-        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        view_object = EventGroupRosterPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       else
         redirect_to request.referrer

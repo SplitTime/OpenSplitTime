@@ -1,6 +1,6 @@
 <thead>
 <tr>
-  <th><%= category.name %></th>
+  <th><%= "#{'*' if category.fixed_position} #{category.name}" %></th>
   <% if @presenter.multiple_laps? %>
     <th>Laps</th>
   <% end %>

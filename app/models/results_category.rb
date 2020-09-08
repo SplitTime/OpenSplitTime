@@ -14,6 +14,11 @@ class ResultsCategory < ApplicationRecord
   attr_accessor :efforts
   attribute :invalid_efforts, :boolean
 
+  # `position` and `fixed_position` are persisted on the results_template_categories
+  # table, but can be set here for convenience, e.g., by ResultsTemplate#dup_with_categories
+  attribute :position, :integer
+  attribute :fixed_position, :boolean
+
   def self.invalid_category(attributes = {})
     standard_attributes = {name: 'Invalid Efforts', male: true, female: true, invalid_efforts: true}
     new(standard_attributes.merge(attributes))

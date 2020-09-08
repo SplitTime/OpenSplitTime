@@ -78,7 +78,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).first
-    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+    @presenter = EventGroupRosterPresenter.new(event_group, prepared_params, current_user)
   end
 
   def stats

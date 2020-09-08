@@ -59,7 +59,9 @@ class PodiumPresenter < BasePresenter
     categories.reject(&:fixed_position?)
       .partition(&:male?)
       .map { |gender_group| gender_group.sort_by(&:fastest_seconds) }
-      .transpose.flatten
+      .transpose
+      .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
+      .flatten
   end
 
   attr_reader :template, :params, :current_user

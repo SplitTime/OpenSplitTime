@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_16_171759) do
+ActiveRecord::Schema.define(version: 2020_09_08_090619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -313,6 +313,7 @@ ActiveRecord::Schema.define(version: 2020_08_16_171759) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
+    t.boolean "fixed_position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
   end

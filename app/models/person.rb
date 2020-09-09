@@ -17,7 +17,7 @@ class Person < ApplicationRecord
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group('people.id') }
+  scope :with_age_and_effort_count, -> { from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group('people.id'), :people) }
   scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
 
   SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +

@@ -61,8 +61,8 @@ raw_time_67:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.798201'
@@ -86,8 +86,8 @@ raw_time_68:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.801611'
@@ -111,8 +111,8 @@ raw_time_69:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.805381'
@@ -136,8 +136,8 @@ raw_time_70:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.809416'
@@ -161,8 +161,8 @@ raw_time_73:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.819696'
@@ -186,8 +186,8 @@ raw_time_74:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.825046'
@@ -261,8 +261,8 @@ raw_time_77:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.835982'
@@ -286,8 +286,8 @@ raw_time_78:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.840667'
@@ -311,8 +311,8 @@ raw_time_79:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.84431'
@@ -336,8 +336,8 @@ raw_time_80:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.847562'
@@ -361,8 +361,8 @@ raw_time_81:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.851043'
@@ -386,8 +386,8 @@ raw_time_82:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.854819'
@@ -411,8 +411,8 @@ raw_time_83:
   with_pacer: false
   stopped_here: 
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.858689'
@@ -561,8 +561,8 @@ raw_time_89:
   with_pacer: false
   stopped_here: false
   source: ost-live-entry
-  reviewed_by:
-  reviewed_at:
+  reviewed_by: 
+  reviewed_at: 
   created_by: 1
   updated_by: 1
   created_at: '2018-06-11 10:56:14.880784'

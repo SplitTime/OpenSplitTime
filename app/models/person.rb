@@ -30,6 +30,8 @@ class Person < ApplicationRecord
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
 
+  before_save :sync_state_and_country
+
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
   def self.search(param)
@@ -84,5 +86,24 @@ class Person < ApplicationRecord
 
   def generate_new_topic_resource?
     true
+  end
+
+  def sync_state_and_country
+    return unless will_save_change_to_state_code? || will_save_change_to_country_code?
+
+    sync_state
+    sync_country
+  end
+
+  def sync_state
+    return unless state_code.present? && country_code.present?
+
+    self.state_name = ::Carmen::Country.coded(country_code)&.subregions&.coded(state_code)&.name
+  end
+
+  def sync_country
+    return unless country_code.present?
+
+    self.country_name = ::Carmen::Country.coded(country_code)&.name
   end
 end

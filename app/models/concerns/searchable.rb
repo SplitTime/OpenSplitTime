@@ -5,7 +5,12 @@ module Searchable
   include PgSearch::Model
 
   included do
-    pg_search_scope :search_names, against: [:first_name, :last_name], using: :dmetaphone
+    pg_search_scope :search_names,
+                    against: [:first_name, :last_name],
+                    using: {tsearch: { prefix: true },
+                            dmetaphone: {}},
+                    ranked_by: ":tsearch + (0.5 * :dmetaphone)"
+
     scope :names_include_all, -> (param) { param.present? ? search_names(param) : all }
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }

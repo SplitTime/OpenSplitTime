@@ -18,7 +18,7 @@ class PeopleController < ApplicationController
     params[:sort] ||= 'last_name,first_name' unless prepared_params[:search].present?
 
     @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
-    @people = @people.search(prepared_params[:search]) if prepared_params[:search].present?
+    @people = @people.search(prepared_params[:search])
     @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
     @people = @people.paginate(page: params[:page], per_page: 25)
 

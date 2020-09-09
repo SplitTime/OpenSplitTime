@@ -13,12 +13,15 @@ class PeopleController < ApplicationController
   end
 
   def index
-    params[:sort] ||= 'last_name,first_name'
-    @people = policy_class::Scope.new(current_user, controller_class).viewable
-                        .search(prepared_params[:search])
-                        .with_age_and_effort_count
-                        .order(prepared_params[:sort_text])
-                        .paginate(page: params[:page], per_page: 25)
+    # Sort will destroy fuzzy match ranking, so don't automatically
+    # set it if a search param exists
+    params[:sort] ||= 'last_name,first_name' unless prepared_params[:search].present?
+
+    @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
+    @people = @people.search(prepared_params[:search]) if prepared_params[:search].present?
+    @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
+    @people.paginate(page: params[:page], per_page: 25)
+
     session[:return_to] = people_path
   end
 

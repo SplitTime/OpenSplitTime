@@ -38,6 +38,7 @@ results_template_category_5:
   created_at: '2019-02-14 05:23:14.645254'
   updated_at: '2019-02-14 05:23:14.645254'
   position: 5
+  fixed_position: 
 results_template_category_6:
   id: 6
   results_template_id: 1
@@ -45,6 +46,7 @@ results_template_category_6:
   created_at: '2019-02-14 05:23:14.64728'
   updated_at: '2019-02-14 05:23:14.64728'
   position: 6
+  fixed_position: 
 results_template_category_7:
   id: 7
   results_template_id: 1
@@ -52,6 +54,7 @@ results_template_category_7:
   created_at: '2019-02-14 05:23:14.649226'
   updated_at: '2019-02-14 05:23:14.649226'
   position: 7
+  fixed_position: 
 results_template_category_8:
   id: 8
   results_template_id: 1
@@ -59,6 +62,7 @@ results_template_category_8:
   created_at: '2019-02-14 05:23:14.651033'
   updated_at: '2019-02-14 05:23:14.651033'
   position: 8
+  fixed_position: 
 results_template_category_9:
   id: 9
   results_template_id: 1
@@ -66,6 +70,7 @@ results_template_category_9:
   created_at: '2019-02-14 05:23:14.652781'
   updated_at: '2019-02-14 05:23:14.652781'
   position: 9
+  fixed_position: 
 results_template_category_10:
   id: 10
   results_template_id: 1
@@ -73,6 +78,7 @@ results_template_category_10:
   created_at: '2019-02-14 05:23:14.654557'
   updated_at: '2019-02-14 05:23:14.654557'
   position: 10
+  fixed_position: 
 results_template_category_11:
   id: 11
   results_template_id: 1
@@ -80,6 +86,7 @@ results_template_category_11:
   created_at: '2019-02-14 05:23:14.656262'
   updated_at: '2019-02-14 05:23:14.656262'
   position: 11
+  fixed_position: 
 results_template_category_12:
   id: 12
   results_template_id: 1
@@ -87,6 +94,7 @@ results_template_category_12:
   created_at: '2019-02-14 05:23:14.657967'
   updated_at: '2019-02-14 05:23:14.657967'
   position: 12
+  fixed_position: 
 results_template_category_13:
   id: 13
   results_template_id: 1
@@ -94,6 +102,7 @@ results_template_category_13:
   created_at: '2019-02-14 05:23:14.65963'
   updated_at: '2019-02-14 05:23:14.65963'
   position: 13
+  fixed_position: 
 results_template_category_14:
   id: 14
   results_template_id: 1
@@ -101,6 +110,7 @@ results_template_category_14:
   created_at: '2019-02-14 05:23:14.661252'
   updated_at: '2019-02-14 05:23:14.661252'
   position: 14
+  fixed_position: 
 results_template_category_15:
   id: 15
   results_template_id: 1
@@ -108,6 +118,7 @@ results_template_category_15:
   created_at: '2019-02-14 05:23:14.662843'
   updated_at: '2019-02-14 05:23:14.662843'
   position: 15
+  fixed_position: 
 results_template_category_16:
   id: 16
   results_template_id: 1
@@ -115,6 +126,7 @@ results_template_category_16:
   created_at: '2019-02-14 05:23:14.664436'
   updated_at: '2019-02-14 05:23:14.664436'
   position: 16
+  fixed_position: 
 results_template_category_17:
   id: 17
   results_template_id: 2
@@ -122,6 +134,7 @@ results_template_category_17:
   created_at: '2019-02-14 05:23:14.672381'
   updated_at: '2019-02-14 05:23:14.672381'
   position: 1
+  fixed_position: 
 results_template_category_18:
   id: 18
   results_template_id: 2
@@ -129,6 +142,7 @@ results_template_category_18:
   created_at: '2019-02-14 05:23:14.674256'
   updated_at: '2019-02-14 05:23:14.674256'
   position: 2
+  fixed_position: 
 results_template_category_19:
   id: 19
   results_template_id: 2
@@ -136,6 +150,7 @@ results_template_category_19:
   created_at: '2019-02-14 05:23:14.675766'
   updated_at: '2019-02-14 05:23:14.675766'
   position: 3
+  fixed_position: 
 results_template_category_20:
   id: 20
   results_template_id: 2
@@ -143,6 +158,7 @@ results_template_category_20:
   created_at: '2019-02-14 05:23:14.677232'
   updated_at: '2019-02-14 05:23:14.677232'
   position: 4
+  fixed_position: 
 results_template_category_21:
   id: 21
   results_template_id: 2
@@ -150,6 +166,7 @@ results_template_category_21:
   created_at: '2019-02-14 05:23:14.6787'
   updated_at: '2019-02-14 05:23:14.6787'
   position: 5
+  fixed_position: 
 results_template_category_22:
   id: 22
   results_template_id: 2
@@ -157,6 +174,7 @@ results_template_category_22:
   created_at: '2019-02-14 05:23:14.680174'
   updated_at: '2019-02-14 05:23:14.680174'
   position: 6
+  fixed_position: 
 results_template_category_23:
   id: 23
   results_template_id: 2
@@ -164,6 +182,7 @@ results_template_category_23:
   created_at: '2019-02-14 05:23:14.6816'
   updated_at: '2019-02-14 05:23:14.6816'
   position: 7
+  fixed_position: 
 results_template_category_24:
   id: 24
   results_template_id: 2
@@ -171,6 +190,7 @@ results_template_category_24:
   created_at: '2019-02-14 05:23:14.683025'
   updated_at: '2019-02-14 05:23:14.683025'
   position: 8
+  fixed_position: 
 results_template_category_25:
   id: 25
   results_template_id: 2
@@ -178,6 +198,7 @@ results_template_category_25:
   created_at: '2019-02-14 05:23:14.684548'
   updated_at: '2019-02-14 05:23:14.684548'
   position: 9
+  fixed_position: 
 results_template_category_26:
   id: 26
   results_template_id: 2
@@ -185,6 +206,7 @@ results_template_category_26:
   created_at: '2019-02-14 05:23:14.685979'
   updated_at: '2019-02-14 05:23:14.685979'
   position: 10
+  fixed_position: 
 results_template_category_27:
   id: 27
   results_template_id: 2
@@ -192,6 +214,7 @@ results_template_category_27:
   created_at: '2019-02-14 05:23:14.687401'
   updated_at: '2019-02-14 05:23:14.687401'
   position: 11
+  fixed_position: 
 results_template_category_28:
   id: 28
   results_template_id: 2
@@ -199,6 +222,7 @@ results_template_category_28:
   created_at: '2019-02-14 05:23:14.688828'
   updated_at: '2019-02-14 05:23:14.688828'
   position: 12
+  fixed_position: 
 results_template_category_29:
   id: 29
   results_template_id: 3
@@ -206,6 +230,7 @@ results_template_category_29:
   created_at: '2019-02-14 05:23:14.695887'
   updated_at: '2019-02-14 05:23:14.695887'
   position: 1
+  fixed_position: 
 results_template_category_30:
   id: 30
   results_template_id: 3
@@ -213,6 +238,7 @@ results_template_category_30:
   created_at: '2019-02-14 05:23:14.697353'
   updated_at: '2019-02-14 05:23:14.697353'
   position: 2
+  fixed_position: 
 results_template_category_31:
   id: 31
   results_template_id: 3
@@ -220,6 +246,7 @@ results_template_category_31:
   created_at: '2019-02-14 05:23:14.698787'
   updated_at: '2019-02-14 05:23:14.698787'
   position: 3
+  fixed_position: 
 results_template_category_32:
   id: 32
   results_template_id: 3
@@ -227,6 +254,7 @@ results_template_category_32:
   created_at: '2019-02-14 05:23:14.701303'
   updated_at: '2019-02-14 05:23:14.701303'
   position: 4
+  fixed_position: 
 results_template_category_33:
   id: 33
   results_template_id: 3
@@ -234,6 +262,7 @@ results_template_category_33:
   created_at: '2019-02-14 05:23:14.703485'
   updated_at: '2019-02-14 05:23:14.703485'
   position: 5
+  fixed_position: 
 results_template_category_34:
   id: 34
   results_template_id: 3
@@ -241,6 +270,7 @@ results_template_category_34:
   created_at: '2019-02-14 05:23:14.705275'
   updated_at: '2019-02-14 05:23:14.705275'
   position: 6
+  fixed_position: 
 results_template_category_35:
   id: 35
   results_template_id: 3
@@ -248,6 +278,7 @@ results_template_category_35:
   created_at: '2019-02-14 05:23:14.70693'
   updated_at: '2019-02-14 05:23:14.70693'
   position: 7
+  fixed_position: 
 results_template_category_36:
   id: 36
   results_template_id: 3
@@ -255,6 +286,7 @@ results_template_category_36:
   created_at: '2019-02-14 05:23:14.708544'
   updated_at: '2019-02-14 05:23:14.708544'
   position: 8
+  fixed_position: 
 results_template_category_37:
   id: 37
   results_template_id: 4
@@ -262,6 +294,7 @@ results_template_category_37:
   created_at: '2019-02-14 05:23:14.715758'
   updated_at: '2019-02-14 05:23:14.715758'
   position: 1
+  fixed_position: 
 results_template_category_38:
   id: 38
   results_template_id: 4
@@ -269,6 +302,7 @@ results_template_category_38:
   created_at: '2019-02-14 05:23:14.717225'
   updated_at: '2019-02-14 05:23:14.717225'
   position: 2
+  fixed_position: 
 results_template_category_39:
   id: 39
   results_template_id: 4
@@ -276,6 +310,7 @@ results_template_category_39:
   created_at: '2019-02-14 05:23:14.718644'
   updated_at: '2019-02-14 05:23:14.718644'
   position: 3
+  fixed_position: 
 results_template_category_40:
   id: 40
   results_template_id: 4
@@ -283,6 +318,7 @@ results_template_category_40:
   created_at: '2019-02-14 05:23:14.720056'
   updated_at: '2019-02-14 05:23:14.720056'
   position: 4
+  fixed_position: 
 results_template_category_41:
   id: 41
   results_template_id: 4
@@ -290,6 +326,7 @@ results_template_category_41:
   created_at: '2019-02-14 05:23:14.721467'
   updated_at: '2019-02-14 05:23:14.721467'
   position: 5
+  fixed_position: 
 results_template_category_42:
   id: 42
   results_template_id: 4
@@ -297,6 +334,7 @@ results_template_category_42:
   created_at: '2019-02-14 05:23:14.722884'
   updated_at: '2019-02-14 05:23:14.722884'
   position: 6
+  fixed_position: 
 results_template_category_61:
   id: 61
   results_template_id: 7
@@ -304,6 +342,7 @@ results_template_category_61:
   created_at: '2019-02-14 05:23:14.79598'
   updated_at: '2019-02-14 05:23:14.79598'
   position: 1
+  fixed_position: 
 results_template_category_62:
   id: 62
   results_template_id: 7
@@ -311,3 +350,4 @@ results_template_category_62:
   created_at: '2019-02-14 05:23:14.797984'
   updated_at: '2019-02-14 05:23:14.797984'
   position: 2
+  fixed_position: 

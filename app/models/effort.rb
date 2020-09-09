@@ -8,7 +8,7 @@ class Effort < ApplicationRecord
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
   include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, LapsRequiredMethods,
-          PersonalInfo, Searchable, Subscribable, TimeZonable, Matchable, UrlAccessible
+          PersonalInfo, Searchable, StateCountrySyncable, Subscribable, TimeZonable, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -61,10 +61,8 @@ class Effort < ApplicationRecord
   end
 
   def self.search(param)
-    return all unless param.present?
     parser = SearchStringParser.new(param)
-    country_state_name_search(parser)
-        .bib_number_among(parser.number_component)
+    names_locations_default_all(parser.word_component).bib_number_among(parser.number_component)
   end
 
   def self.ranked_with_status(args = {})

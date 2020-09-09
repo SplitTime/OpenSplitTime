@@ -33,9 +33,8 @@ class Person < ApplicationRecord
   # with the scope `.with_age_and_effort_count`.
   def self.search(param)
     return none unless param && param.size > 2
-    parser = SearchStringParser.new(param)
-    ids = country_state_name_search(parser).ids
-    where(id: ids)
+
+    search_names_and_locations(param)
   end
 
   def self.age_matches(age_param, threshold = 2)

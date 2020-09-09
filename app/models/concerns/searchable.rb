@@ -5,11 +5,14 @@ module Searchable
   include PgSearch::Model
 
   included do
-    pg_search_scope :search_names,
-                    against: [:first_name, :last_name],
-                    using: {tsearch: { prefix: true }}
+    pg_search_scope :search_names_and_locations,
+                    against: [:first_name, :last_name, :city, :state_name, :country_name],
+                    using: {
+                      tsearch: { prefix: true },
+                      dmetaphone: {}
+                    }
 
-    scope :names_include_all, -> (param) { param.present? ? search_names(param) : all }
+    scope :names_locations_default_all, -> (param) { param.present? ? search_names_and_locations(param) : all }
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table['country_code'].matches("#{country_code_for(param)}")) }
     scope :state_matches, -> (param) { where(arel_table['state_code'].matches("#{state_code_for(param)}")) }
@@ -22,17 +25,6 @@ module Searchable
   end
 
   module ClassMethods
-
-    def country_state_name_search(parser)
-      country_or_state_among(parser.country_component, parser.state_component)
-          .names_include_all(parser.remainder_component)
-    end
-
-    def country_or_state_among(country_param, state_param)
-      (country_param.blank? && state_param.blank?) ? all :
-          where([union_sql(country_param, 'country_code'), union_sql(state_param, 'state_code')].compact.join(' OR '))
-    end
-
     def state_code_for(param)
       param_state = Carmen::Country.coded("US").subregions.named(param) || Carmen::Country.coded("CA").subregions.named(param)
       param_state ? param_state.code : param

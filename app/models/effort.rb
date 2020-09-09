@@ -8,7 +8,7 @@ class Effort < ApplicationRecord
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
   include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, LapsRequiredMethods,
-          PersonalInfo, Searchable, Subscribable, TimeZonable, Matchable, UrlAccessible
+          PersonalInfo, Searchable, StateCountrySyncable, Subscribable, TimeZonable, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

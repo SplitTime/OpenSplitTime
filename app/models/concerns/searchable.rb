@@ -7,9 +7,7 @@ module Searchable
   included do
     pg_search_scope :search_names,
                     against: [:first_name, :last_name],
-                    using: {tsearch: { prefix: true },
-                            dmetaphone: {}},
-                    ranked_by: ":tsearch + (0.5 * :dmetaphone)"
+                    using: {tsearch: { prefix: true }}
 
     scope :names_include_all, -> (param) { param.present? ? search_names(param) : all }
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }

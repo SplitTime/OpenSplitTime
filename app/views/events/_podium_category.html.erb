@@ -1,6 +1,9 @@
 <thead>
 <tr>
-  <th><%= "#{'*' if category.fixed_position} #{category.name}" %></th>
+  <th>
+    <span class="collapse-rotate pr-2"><%= link_to fa_icon("caret-right", size: "lg"), "#collapse_#{category.position}", data: {toggle: "collapse"} %></span>
+    <span><%= "#{'*' if category.fixed_position} #{category.name}" %></span>
+  </th>
   <% if @presenter.multiple_laps? %>
     <th>Laps</th>
   <% end %>
@@ -14,7 +17,7 @@
 </tr>
 </thead>
 
-<tbody>
+<tbody class="collapse show" id="collapse_<%= category.position %>">
 <% if category.efforts.present? %>
   <% category.efforts.each.with_index(1) do |effort, i| %>
     <tr>

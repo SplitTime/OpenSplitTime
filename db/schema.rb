@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_09_144521) do
+ActiveRecord::Schema.define(version: 2020_09_10_134815) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "btree_gin"
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -262,7 +263,12 @@ ActiveRecord::Schema.define(version: 2020_09_09_144521) do
     t.string "topic_resource_key"
     t.string "state_name"
     t.string "country_name"
+    t.index ["city"], name: "index_people_on_city", using: :gin
+    t.index ["country_name"], name: "index_people_on_country_name", using: :gin
+    t.index ["first_name"], name: "index_people_on_first_name", using: :gin
+    t.index ["last_name"], name: "index_people_on_last_name", using: :gin
     t.index ["slug"], name: "index_people_on_slug", unique: true
+    t.index ["state_name"], name: "index_people_on_state_name", using: :gin
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true
     t.index ["user_id"], name: "index_people_on_user_id"
   end

@@ -18,7 +18,6 @@
 //= require turbolinks
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
-//= require switchery
 //= require moment
 //= require tempusdominus-bootstrap-4.js
 //= require vue

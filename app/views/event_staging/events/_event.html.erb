@@ -133,15 +133,19 @@
           <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Enable this feature only if your Event consists of multiple <strong>identical</strong> laps and you are keeping track of laps as such."><i class="fas fa-question-circle"></i></span>
 
           <div class="form-inline">
-            <label class="switchery-label">
-              <span>No</span>
-              <input type="checkbox" data-toggle="switchery" data-size="small" value="true" v-model="eventModel.laps" v-on:change="eventModel.lapsRequired = 1"/>
-              <span>Yes</span>
+            <label class="custom-radio pr-3">
+              <input id="event-multiple-laps-no-radio" type="radio" name="multipleLaps" value="false" v-model="eventModel.laps" v-on:click="eventModel.lapsRequired = 1" >
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">No</span>
             </label>
-
+            <label class="custom-radio">
+              <input id="event-multiple-laps-yes-radio" type="radio" name="multipleLaps" value="true" v-model="eventModel.laps" v-on:click="eventModel.lapsRequired = 0">
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">Yes</span>
+            </label>&nbsp;&nbsp;
           </div>
         </div>
-        <div v-show="eventModel.laps" class="form-group col-8">
+        <div v-show="eventModel.laps === 'true'" class="form-group col-8">
           <label class="required">How many laps?</label>
           <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Use 0 for a time-based event having unlimited laps."><i class="fas fa-question-circle"></i></span>
           <input type="text" class="form-control" v-model.number="eventModel.lapsRequired" v-mask="{ alias: 'integer' }">

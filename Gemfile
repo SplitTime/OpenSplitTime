@@ -53,7 +53,6 @@ gem 'sitemap_generator'
 gem 'smarter_csv', require: false
 gem 'strip_attributes'
 gem 'structpluck'
-gem 'switchery-rails', '>= 0.8.1.1'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'

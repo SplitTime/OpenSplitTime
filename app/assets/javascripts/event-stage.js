@@ -280,7 +280,7 @@
         attributes: {
             shortName: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
-            laps: { type: Boolean, default: false },
+            multiLap: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             virtualStartTime: { type: Date, default: null, local: true },
             scheduledStartTimeLocal: {

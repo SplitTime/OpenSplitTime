@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.6.6'
+ruby '2.7.1'
 source 'https://rubygems.org'
 gem 'active_storage_validations', '>= 0.6.1'
 gem 'activerecord-import'

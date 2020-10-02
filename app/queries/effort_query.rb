@@ -15,6 +15,15 @@ class EffortQuery < BaseQuery
                 from efforts
                          inner join existing_scope on existing_scope.id = efforts.id),
 
+           start_split_times as		
+                (select effort_id, absolute_time		
+                 from split_times		
+                          inner join splits on splits.id = split_times.split_id		
+                 where lap = 1		
+                   and kind = 0		
+                   and effort_id in (select id from efforts_scoped)		
+                 order by effort_id),		
+
            stopped_split_times as
                (select split_times.id               as stopped_split_time_id,
                        split_times.lap              as stopped_lap,
@@ -47,6 +56,7 @@ class EffortQuery < BaseQuery
                            split_times.split_id                                        as final_split_id,
                            split_times.sub_split_bitkey                                as final_bitkey,
                            split_times.absolute_time                                   as final_absolute_time,
+                           sst.absolute_time                                           as actual_start_time,
                            split_times.elapsed_seconds                                 as final_elapsed_seconds,
                            split_times.id                                              as final_split_time_id,
                            stopped_split_time_id,
@@ -64,6 +74,7 @@ class EffortQuery < BaseQuery
                          inner join event_groups on event_groups.id = events.event_group_id
                          left join course_subquery on events.course_id = course_subquery.course_id
                          left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
+                         left join start_split_times sst on split_times.effort_id = sst.effort_id
                 order by efforts_scoped.id,
                          final_lap desc,
                          final_lap_distance desc,

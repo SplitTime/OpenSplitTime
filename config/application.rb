@@ -21,5 +21,7 @@ module OpenSplitTime
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "**/*.rb")].each { |l| require l }
 
     config.exceptions_app = self.routes
+
+    config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
   end
 end

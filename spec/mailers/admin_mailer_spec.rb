@@ -14,7 +14,6 @@ RSpec.describe AdminMailer, type: :mailer do
 
   # Because we have config.action_mailer.delivery_method set to :test in our :test.rb,
   # all 'sent' emails are gathered into the ActionMailer::Base.deliveries array.
-
   it 'sends an email' do
     expect {
       perform_enqueued_jobs { subject.deliver_later }

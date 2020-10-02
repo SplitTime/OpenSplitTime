@@ -37,7 +37,7 @@ module Results
       when :rank
         filtered_series_efforts.sort_by(&:total_rank)
       when :time
-        filtered_series_efforts.sort_by(&:total_time)
+        filtered_series_efforts.sort_by(&:total_time_from_start)
       else
         raise RuntimeError, "Unknown scoring method #{scoring_method} "
       end

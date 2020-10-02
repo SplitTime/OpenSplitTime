@@ -87,7 +87,3 @@ group :development, :test do
   gem 'rubocop', '~> 0.49'
   gem 'spring-commands-rspec'
 end
-
-group :production do
-  gem 'rails_12factor'
-end

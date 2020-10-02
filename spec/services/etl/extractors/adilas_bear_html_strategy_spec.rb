@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe ETL::Extractors::AdilasBearHTMLStrategy do
-  subject { ETL::Extractors::AdilasBearHTMLStrategy.new(source_data, options) }
+RSpec.describe ::ETL::Extractors::AdilasBearHTMLStrategy do
+  subject { described_class.new(source_data, options) }
   let(:source_data) do
-    VCR.use_cassette("adilas/#{url.split('?').last}") do
-      open(url)
+    ::VCR.use_cassette("adilas/#{url.split('?').last}") do
+      ::URI.open(url)
     end
   end
   let(:options) { {} }

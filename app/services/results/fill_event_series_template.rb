@@ -50,7 +50,7 @@ module Results
     end
 
     def indexed_people
-      @indexed_people ||= Person.find(event_series.efforts.pluck(:person_id)).index_by(&:id)
+      @indexed_people ||= Person.where(id: event_series.efforts.select(:person_id)).index_by(&:id)
     end
 
     def ranked_efforts

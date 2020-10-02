@@ -24,7 +24,7 @@ class User < ApplicationRecord
   alias_attribute :https, :https_endpoint
 
   scope :with_avatar_names, -> do
-    User.from(select('users.*, people.first_name as avatar_first_name, people.last_name as avatar_last_name')
+    self.from(select('users.*, people.first_name as avatar_first_name, people.last_name as avatar_last_name')
                   .left_joins(:avatar), :users)
   end
 

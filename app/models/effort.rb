@@ -27,6 +27,7 @@ class Effort < ApplicationRecord
 
   attr_accessor :over_under_due, :next_expected_split_time, :suggested_match, :points
   attr_writer :last_reported_split_time, :event_start_time, :template_age
+  attribute :purported_complete, :boolean
 
   alias_attribute :participant_id, :person_id
   delegate :event_group, :events_within_group, to: :event
@@ -42,7 +43,7 @@ class Effort < ApplicationRecord
             content_type: %w(image/png image/jpeg),
             size: {less_than: 5000.kilobytes}
 
-  before_save :reset_age_from_birthdate
+  before_validation :reset_age_from_birthdate
 
   pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
@@ -94,7 +95,9 @@ class Effort < ApplicationRecord
   end
 
   def reset_age_from_birthdate
+    return unless will_save_change_to_birthdate?
     return unless birthdate.present? && calculated_start_time.present?
+
     assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
   end
 

@@ -1,173 +1,122 @@
 <%= render 'shared/errors', obj: @effort %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@effort, html: {class: "form-horizontal", role: "form"}) do |f| %>
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_for(@effort, html: {class: "form-horizontal", role: "form"}) do |f| %>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
             <%= f.label :event %>
-          </div>
-          <div class="col-sm-8">
             <%= f.select :event_id, @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
                          {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
             <%= f.label :first_name %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_field :first_name, class: "form-control", placeholder: "First name", autofocus: true %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-4 mb-3">
             <%= f.label :last_name %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-2 mb-3">
             <%= f.label :gender %>
-          </div>
-          <div class="col-sm-8">
             <%= f.select :gender, Effort.genders.keys.map { |gender| [gender.titleize, gender] },
-                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
+                         {prompt: true}, {class: "form-control"} %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
             <%= f.label :birthdate %>
-          </div>
-          <div class="col-sm-8">
             <%= f.datepicker_field :birthdate %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-2 mb-3">
             <%= f.label :age %>
-          </div>
-          <div class="col-sm-8">
             <%= f.number_field :age, class: "form-control", placeholder: "Age" %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
             <%= f.label :country_code, 'Country' %>
-          </div>
-          <div class="col-sm-8 dropdown-select-field-carmen">
             <%= carmen_country_select :effort, :country_code, priority: %w(US CA),
                                       prompt: 'Please select a country' %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-3 mb-3">
             <%= f.label :state_code, 'State' %><br/>
-          </div>
-          <div class="col-sm-8 dropdown-select-field-carmen">
             <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-3 mb-3">
             <%= f.label :city %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_field :city, class: "form-control", placeholder: "City" %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-2 mb-3">
             <%= f.label :bib_number %>
-          </div>
-          <div class="col-sm-8">
             <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :phone %>
+        <div class="form-row">
+          <div class="col-md-5 mb-3">
+            <%= f.label :email %>
+            <%= f.text_field :email, class: "form-control", placeholder: "example@gmail.com" %>
           </div>
-          <div class="col-sm-8">
+          <div class="col-md-3 mb-3">
+            <%= f.label :phone %>
             <%= f.text_field :phone, class: "form-control", placeholder: "Phone number" %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
-            <%= f.label :email %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.text_field :email, class: "form-control", placeholder: "example@gmail.com" %>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-8 mb-3">
             <%= f.label :photo %>
-          </div>
-          <div class="col-sm-8">
             <%= f.file_field :photo, class: 'form-control' %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-8 mb-3">
             <%= f.label :comments %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_area :comments, class: 'form-control' %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-5 mb-3">
             <%= f.label :emergency_contact %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_field :emergency_contact, class: "form-control", placeholder: "Contact Name" %>
           </div>
-        </div>
-
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+          <div class="col-md-3 mb-3">
             <%= f.label :emergency_phone %>
-          </div>
-          <div class="col-sm-8">
             <%= f.text_field :emergency_phone, class: "form-control", placeholder: "Phone number" %>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="control-label col-sm-2">
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
             <%= f.label :scheduled_start_time %>
-          </div>
-          <div class="col-sm-3">
             <div class="input-group date" id="datetimepicker">
               <%= f.datetimepicker_field :scheduled_start_time_local %>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
+
+        <br/>
+        <div class="form-row">
+          <div class="col-md-2 mb-3">
             <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: 'btn btn-primary btn-large') %>
           </div>
+          <div class="col-md-2 mb-3">
+            <%= link_to 'Cancel', request.referrer, class: "btn btn-outline-secondary" %>
+          </div>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
-          [ <%= link_to 'Cancel', request.referrer %> ]
-        </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

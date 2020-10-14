@@ -3,10 +3,10 @@
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>
-      <small>[Select a country first]</small>
+    <%= carmen_subregion_select(:effort, :state_code, country, prompt: "Choose a country first") %>
   <% elsif country.subregions? %>
-      <%= carmen_subregion_select(:effort, :state_code, country) %>
+    <%= carmen_subregion_select(:effort, :state_code, country, prompt: "Choose a state or region") %>
   <% else %>
-      <%= text_field(:effort, :state_code) %>
+    <%= text_field(:effort, :state_code) %>
   <% end %>
 </div>

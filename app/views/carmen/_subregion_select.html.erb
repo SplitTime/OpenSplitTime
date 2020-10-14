@@ -1,0 +1,12 @@
+<div id="<%= model %>_state_code_wrapper">
+  <% parent_region ||= params[:parent_region] %>
+  <% country = Carmen::Country.coded(parent_region) %>
+
+  <% if country.nil? %>
+    <%= carmen_subregion_select(model, :state_code, country, prompt: "Choose a country first") %>
+  <% elsif country.subregions? %>
+    <%= carmen_subregion_select(model, :state_code, country, prompt: "Choose a state or region") %>
+  <% else %>
+    <%= text_field(model, :state_code) %>
+  <% end %>
+</div>

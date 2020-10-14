@@ -205,7 +205,7 @@ class EffortsController < ApplicationController
   end
 
   def subregion_options
-    render partial: 'subregion_select'
+    render partial: 'carmen/subregion_select', locals: {model: :effort}
   end
 
   private

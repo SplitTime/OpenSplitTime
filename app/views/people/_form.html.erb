@@ -35,7 +35,7 @@
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :state_code, 'State' %><br/>
-            <%= render partial: 'subregion_select', locals: {parent_region: f.object.country_code} %>
+            <%= render partial: 'carmen/subregion_select', locals: {model: :person, parent_region: f.object.country_code} %>
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :city %>

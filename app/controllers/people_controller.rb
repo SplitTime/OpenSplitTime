@@ -3,15 +3,6 @@ class PeopleController < ApplicationController
   before_action :set_person, except: [:index, :new, :create, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :subregion_options]
 
-  before_action do
-    locale = params[:locale]
-    Carmen.i18n_backend.locale = locale if locale
-  end
-
-  def subregion_options
-    render partial: 'carmen/subregion_select', locals: {model: :person, parent_region: params[:parent_region]}
-  end
-
   def index
     # Sort will destroy fuzzy match ranking, so don't automatically
     # set it if a search param exists

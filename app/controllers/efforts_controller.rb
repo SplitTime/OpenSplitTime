@@ -3,11 +3,6 @@ class EffortsController < ApplicationController
   before_action :set_effort, except: [:index, :new, :create, :associate_people, :mini_table, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
 
-  before_action do
-    locale = params[:locale]
-    Carmen.i18n_backend.locale = locale if locale
-  end
-
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
                    .where(prepared_params[:filter])
@@ -202,10 +197,6 @@ class EffortsController < ApplicationController
 
   def show_photo
     render partial: 'show_photo'
-  end
-
-  def subregion_options
-    render partial: 'subregion_select'
   end
 
   private

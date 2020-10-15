@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'getting_started', to: redirect('docs/getting_started')
   get 'management', to: redirect('docs/management')
   get 'ost_remote', to: redirect('docs/ost_remote')
+  get 'carmen/subregion_options'
 
   get '/404', to: "errors#not_found"
   get '/422', to: "errors#unprocessable_entity"

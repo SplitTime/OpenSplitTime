@@ -1,5 +1,4 @@
 <div id="<%= model %>_state_code_wrapper">
-  <% parent_region ||= params[:parent_region] %>
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>

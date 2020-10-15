@@ -9,7 +9,7 @@ class PeopleController < ApplicationController
   end
 
   def subregion_options
-    render partial: 'carmen/subregion_select', locals: {model: :person}
+    render partial: 'carmen/subregion_select', locals: {model: :person, parent_region: params[:parent_region]}
   end
 
   def index

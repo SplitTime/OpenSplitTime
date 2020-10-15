@@ -1,4 +1,4 @@
-<div id="<%= model %>_state_code_wrapper">
+<div data-target="carmen.stateSelectWrapper">
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>

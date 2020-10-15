@@ -7,7 +7,9 @@ module CarmenHelper
     country_table = Geodata.sorted_countries(priority).map { |country| [country.name, country.code] }
     country_table.unshift([prompt, nil])
 
-    select(model, field, country_table, {}, {class: "form-control"})
+    select(model, field, country_table, {}, {class: "form-control",
+                                             data: {target: "carmen.countrySelect",
+                                                    action: "change->carmen#getSubregions"}})
   end
 
   def carmen_subregion_select(model, field, country, args = {})

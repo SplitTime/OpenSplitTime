@@ -5,12 +5,13 @@ export default class extends Controller {
     static targets = ["countrySelect", "stateSelectWrapper"]
 
     getSubregions() {
-        const selectWrapper = this.stateSelectWrapperTarget
         const countryCode = this.countrySelectTarget.value
+        const model = this.data.get("model")
+        const selectWrapper = this.stateSelectWrapperTarget
 
         Rails.ajax({
             type: "GET",
-            url: "/carmen/subregion_options?parent_region=" + countryCode,
+            url: "/carmen/subregion_options?model=" + model + "&parent_region=" + countryCode,
             success: function (data, status, xml) {
                 selectWrapper.outerHTML = xml.response
             }

@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div class="form-row" data-controller="carmen">
+        <div class="form-row" data-controller="carmen" data-carmen-model="effort">
           <div class="col-md-4 mb-3">
             <%= f.label :country_code, 'Country' %>
             <%= carmen_country_select :effort, :country_code, priority: %w(US CA),

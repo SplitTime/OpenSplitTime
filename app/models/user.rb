@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   include PgSearch::Model
+  include ::Titleizable
   extend FriendlyId
 
   devise :database_authenticatable, :registerable, :confirmable,
@@ -10,6 +11,7 @@ class User < ApplicationRecord
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
   strip_attributes collapse_spaces: true
+  titleize_attributes :first_name, :last_name
   friendly_id :slug_candidates, use: [:slugged, :history]
   has_paper_trail
 

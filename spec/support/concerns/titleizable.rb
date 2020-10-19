@@ -27,6 +27,20 @@ RSpec.shared_examples_for "titleizable" do |*titleizable_attribute_names|
 
           expect(subject.send(attribute_name)).to eq("Shouting Name")
         end
+
+        it "does not modify mixed-case fields" do
+          subject.send(setter_method, "McMixed Case Name")
+          subject.validate
+
+          expect(subject.send(attribute_name)).to eq("McMixed Case Name")
+        end
+
+        it "does not modify nil fields" do
+          subject.send(setter_method, nil)
+          subject.validate
+
+          expect(subject.send(attribute_name)).to eq(nil)
+        end
       end
     end
   end

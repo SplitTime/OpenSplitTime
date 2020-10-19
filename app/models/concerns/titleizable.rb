@@ -19,27 +19,21 @@ module Titleizable
     def titleize_attribute(attribute)
       self.titleizable_attribute_names << attribute.to_s
     end
-
-    def titleize_value(value)
-      return unless value.present?
-      # Only titleize the value if it is all lowercase or all uppercase.
-      # This avoids inadvertently titleizing names intended to have mixed
-      # case, like "McDonald"
-      return unless value.downcase == value || value.upcase == value
-
-      value.titleize
-    end
   end
 
   def titleize_record
     titleizable_attributes = attributes.slice(*self.titleizable_attribute_names)
 
     titleizable_attributes.each do |attr, value|
-      original_value = value
-      value = self.class.titleize_value(value)
-      self.write_attribute(attr, value) if original_value != value
+      # Only titleize the value if it is all lowercase or all uppercase.
+      # This avoids inadvertently titleizing names intended to have mixed
+      # case, like "McDonald"
+      if value.present? && (value.downcase == value || value.upcase == value)
+        self.write_attribute(attr, value.titleize)
+      end
     end
 
-    self
+    # Don't cancel later callbacks
+    true
   end
 end

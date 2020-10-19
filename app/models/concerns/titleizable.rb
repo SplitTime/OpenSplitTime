@@ -21,6 +21,8 @@ module Titleizable
     end
   end
 
+  private
+
   def titleize_record
     titleizable_attributes = attributes.slice(*self.titleizable_attribute_names)
 

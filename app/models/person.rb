@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Person < ApplicationRecord
-  include Auditable, Concealable, PersonalInfo, Searchable, StateCountrySyncable, Subscribable, Matchable, UrlAccessible
+  include Auditable, Concealable, PersonalInfo, Searchable, StateCountrySyncable, Subscribable,
+          Matchable, Titleizable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone], :regex => /[^0-9|+]/
+  titleize_attributes :first_name, :last_name, :city
   friendly_id :slug_candidates, use: [:slugged, :history]
   has_paper_trail
 

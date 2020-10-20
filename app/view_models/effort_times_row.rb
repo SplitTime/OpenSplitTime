@@ -7,7 +7,7 @@ class EffortTimesRow
 
   attr_reader :effort, :display_style
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset,
            :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
 
   def initialize(args)

@@ -66,7 +66,7 @@ module SpreadHelper
 
   def time_row_individual_times(effort_times_row)
     times = effort_times_row.time_clusters.flat_map { |tc| time_cluster_export_data(tc, @presenter.display_style) }
-    times[0] = time_format_hhmmss(effort_times_row.start_offset) if @presenter.display_style == 'elapsed'
+    times[0] = time_format_hhmmss(effort_times_row.scheduled_start_offset) if @presenter.display_style == 'elapsed'
     times
   end
 end

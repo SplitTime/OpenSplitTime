@@ -7,14 +7,14 @@ class Effort < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
-  include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, LapsRequiredMethods,
-          PersonalInfo, Searchable, StateCountrySyncable, Subscribable, TimeZonable, Matchable, Titleizable,
-          UrlAccessible
+  include Auditable, CapitalizeAttributes, DataStatusMethods, Delegable, DelegatedConcealable,
+          GuaranteedFindable, LapsRequiredMethods, PersonalInfo, Searchable, StateCountrySyncable,
+          Subscribable, TimeZonable, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
-  titleize_attributes :first_name, :last_name, :city, :emergency_contact
+  capitalize_attributes :first_name, :last_name, :city, :emergency_contact
   friendly_id :slug_candidates, use: [:slugged, :history]
   zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
   has_paper_trail

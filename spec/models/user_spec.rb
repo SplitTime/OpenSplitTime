@@ -3,7 +3,8 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  it_behaves_like "titleizable", :first_name, :last_name
+  it { is_expected.to capitalize_attribute(:first_name) }
+  it { is_expected.to capitalize_attribute(:last_name) }
 
   it "creates a valid user with name and email and password" do
     user_attr = FactoryBot.attributes_for(:user)

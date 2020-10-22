@@ -21,7 +21,7 @@ namespace :temp do
 
       records.find_each do |record|
         progress_bar.increment!
-        record.send(:titleize_record)
+        record.send(:capitalize_record)
         record.save!(validate: false)
       rescue ActiveRecordError => e
         puts "Could not save record #{model_name} #{record.id}:"

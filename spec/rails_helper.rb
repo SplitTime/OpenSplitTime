@@ -13,6 +13,7 @@ require 'pundit/rspec'
 require 'factory_bot_rails'
 require 'capybara/rspec'
 require 'strip_attributes/matchers'
+require 'capitalize_attributes/matchers'
 require 'json'
 require 'active_support/core_ext/hash/keys'
 require 'active_support/inflector'
@@ -99,6 +100,7 @@ RSpec.configure do |config|
   config.include CapybaraLinkHelpers, type: :system
 
   config.include StripAttributes::Matchers
+  config.include CapitalizeAttributes::Matchers
 
   config.run_all_when_everything_filtered = true
 

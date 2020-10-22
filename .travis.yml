@@ -5,7 +5,7 @@ cache:
   directories:
     - node_modules
 rvm:
-  - 2.6.1
+  - 2.7.2
 services:
   - postgresql
 sudo: required

@@ -2,6 +2,18 @@
     pointer-events: none;
 }
 
+.btn-facebook {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: #3b5998;
+    filter: brightness(1.2);
+}
+
+.btn-facebook:hover {
+    color: #fff;
+    filter: brightness(1.0);
+}
+
 .btn-outline-subtle {
     @include button-outline-variant($gray-300);
 }

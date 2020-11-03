@@ -15,6 +15,11 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
+      <%= link_to(fab_icon("facebook-square", text: " Sign up with Facebook"),
+                  user_facebook_omniauth_authorize_path,
+                  class: "btn btn-facebook btn-block") %>
+      <hr class="hr-text", data-content="or">
+      <p class="text-center">Sign up with your Email</p>
       <%= render 'devise/registrations/form' %>
       <%= render 'devise/shared/links' %>
     </div>

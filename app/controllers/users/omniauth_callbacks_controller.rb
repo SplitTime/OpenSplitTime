@@ -13,5 +13,19 @@ module Users
         redirect_to new_user_registration_url
       end
     end
+
+    def failure
+      case
+      when params[:strategy] == "facebook" || request.referrer.include?("facebook")
+        kind = "Facebook"
+        reason = params[:error_description]
+      else
+        kind = "Unknown"
+        reason = params[:error_description] || "Unknown Error"
+      end
+
+      set_flash_message(:danger, :failure, kind: kind, reason: reason) if is_navigational_format?
+      redirect_to new_user_registration_url
+    end
   end
 end

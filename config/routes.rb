@@ -44,6 +44,10 @@ Rails.application.routes.draw do
     omniauth_callbacks: "users/omniauth_callbacks",
   }
 
+  devise_scope :user do
+    get '/users/auth/failure' => 'users/omniauth_callbacks#failure'
+  end
+
   resources :users do
     member do
       get :people

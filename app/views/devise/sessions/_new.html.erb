@@ -20,6 +20,7 @@
             <%= link_to(fab_icon("facebook-square", text: " Log in with Facebook"),
                         user_facebook_omniauth_authorize_path,
                         method: :post,
+                        id: "facebook-log-in-button",
                         class: "btn btn-facebook btn-block") %>
             <hr class="hr-text", data-content="or">
             <p class="text-center">Log in with Email</p>

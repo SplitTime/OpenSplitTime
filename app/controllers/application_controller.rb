@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :store_user_location!, if: :storable_location?
   before_action :set_current_user
   before_action :set_paper_trail_whodunnit
   before_action :set_raven_context
+  after_action :store_user_location!, if: :storable_location?
   helper_method :prepared_params
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     request.env['omniauth.origin'] ||
       stored_location_for(resource) ||
-      devise_controller? ? root_path : request.referrer ||
+      (devise_controller? ? root_path : request.referrer) ||
       root_path
   end
 

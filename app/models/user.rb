@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
+  devise :omniauthable, :omniauth_providers => [:facebook]
+
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
@@ -47,6 +49,24 @@ class User < ApplicationRecord
 
   def self.current=(user)
     Thread.current[:current_user] = user
+  end
+
+  def self.from_omniauth(auth)
+    existing_user = find_by(email: auth.info.email)
+
+    if existing_user
+      existing_user.update(provider: auth.provider, uid: auth.uid)
+      existing_user.skip_confirmation!
+      return existing_user
+    end
+
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.first_name = auth.info.first_name
+      user.last_name = auth.info.last_name
+      user.email = auth.info.email
+      user.password = ::Devise.friendly_token[0,20]
+      user.skip_confirmation!
+    end
   end
 
   def self.search(search_param)

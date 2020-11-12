@@ -8,7 +8,7 @@ module Users
 
     def create
       resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#log_in_failure")
-      sign_in_and_redirect(resource_name, resource)
+      sign_in_and_render_json(resource_name, resource)
     end
 
     # If status is 401, Devise will redirect to the login screen, so use 403 (Forbidden) instead,
@@ -19,7 +19,7 @@ module Users
 
     private
 
-    def sign_in_and_redirect(resource_or_scope, resource = nil)
+    def sign_in_and_render_json(resource_or_scope, resource = nil)
       scope = Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
       sign_in(scope, resource) unless warden.user(scope) == resource

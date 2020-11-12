@@ -4,10 +4,10 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :store_user_location!, if: :storable_location?
   before_action :set_current_user
   before_action :set_paper_trail_whodunnit
   before_action :set_raven_context
+  after_action :store_user_location!, if: :storable_location?
   helper_method :prepared_params
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -18,9 +18,10 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) ||
-        devise_controller? ? root_path : request.referrer ||
-        root_path
+    request.env['omniauth.origin'] ||
+      stored_location_for(resource) ||
+      (devise_controller? ? root_path : request.referrer) ||
+      root_path
   end
 
   def after_sign_out_path_for(resource)
@@ -116,8 +117,8 @@ class ApplicationController < ActionController::Base
     human_child_model_name = child_record_model.to_s.humanize(capitalize: false)
     {title: "#{klass} could not be #{past_tense[action_name]}",
      detail: {messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " +
-                             "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
-                             "#{child_records.first(20).map(&:to_s).join(', ')}"]}}
+                           "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
+                           "#{child_records.first(20).map(&:to_s).join(', ')}"]}}
   end
 
   def redirect_numeric_to_friendly(resource, id_param)
@@ -129,9 +130,9 @@ class ApplicationController < ActionController::Base
   # This should really be a helper method
   def past_tense
     result = {
-        create: :created,
-        update: :updated,
-        destroy: :destroyed
+      create: :created,
+      update: :updated,
+      destroy: :destroyed
     }.with_indifferent_access
     result.default = :saved
     result

@@ -7,8 +7,8 @@
         <span class="caret"></span>
       </a>
       <div class="dropdown-menu" aria-labelledby="nav-dropdown-auth">
-        <%= link_to 'Edit Your Profile', edit_user_registration_path, class: 'dropdown-item' %>
-        <%= link_to 'View Your Profile', user_path(current_user), class: 'dropdown-item' %>
+        <%= link_to 'Edit My Profile', edit_user_registration_path, class: 'dropdown-item' %>
+        <%= link_to 'View My Profile', user_path(current_user), class: 'dropdown-item' %>
         <%= link_to 'Change Preferences', edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: 'dropdown-item' %>
         <% if current_user&.admin? %>
           <div class="dropdown-divider"></div>

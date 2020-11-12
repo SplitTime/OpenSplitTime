@@ -52,6 +52,14 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(auth)
+    existing_user = find_by(email: auth.info.email)
+
+    if existing_user
+      existing_user.update(provider: auth.provider, uid: auth.uid)
+      existing_user.skip_confirmation!
+      return existing_user
+    end
+
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name

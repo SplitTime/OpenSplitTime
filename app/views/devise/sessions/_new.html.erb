@@ -22,6 +22,11 @@
                         method: :post,
                         id: "facebook-log-in-button",
                         class: "btn btn-facebook btn-block") %>
+            <%= link_to(fab_icon("google", text: " Log in with Google"),
+                        user_google_oauth2_omniauth_authorize_path,
+                        method: :post,
+                        id: "google-log-in-button",
+                        class: "btn btn-google btn-block") %>
             <hr class="hr-text", data-content="or">
             <p class="text-center">Log in with Email</p>
             <%= render 'devise/sessions/form', modal: true %>

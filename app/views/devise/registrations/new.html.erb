@@ -19,6 +19,10 @@
                   user_facebook_omniauth_authorize_path,
                   method: :post,
                   class: "btn btn-facebook btn-block") %>
+      <%= link_to(fab_icon("google", text: " Sign up with Google"),
+                  user_google_oauth2_omniauth_authorize_path,
+                  method: :post,
+                  class: "btn btn-google btn-block") %>
       <hr class="hr-text", data-content="or">
       <p class="text-center">Sign up with your Email</p>
       <%= render 'devise/registrations/form' %>

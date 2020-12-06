@@ -14,6 +14,14 @@
     filter: brightness(1.0);
 }
 
+.btn-google {
+    border-color: #47494E;
+}
+
+.btn-google:hover {
+    background-color: #eeeeee;
+}
+
 .btn-outline-subtle {
     @include button-outline-variant($gray-300);
 }

@@ -7,45 +7,13 @@
     <div class="over-text">
       <h2><br/>Endurance Event Data Lives Here</h2>
       <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
-        easy to collect, store, and play with endurance event data.<br/>
-        <% if current_user %>
-          <br/>You are signed in. <strong>Scroll down to start exploring.</strong>
-        <% else %>
-          <strong>Join the community now.</strong>
-        <% end %>
-        <p/>
-
-        <% if current_user %>
-          <% if @presenter.recent_user_efforts.present? %>
-            <h2>Your Recent Races</h2>
-            <% @presenter.recent_user_efforts.first(2).each do |effort| %>
-              <%= link_to effort.event_name, effort_path(effort), class: 'btn btn-info cta' %>
-            <% end %>
-            <br/>
-          <% end %>
-
-        <% else %>
-          <form class="homepage-signup" name="homepage-signup" action="<%= new_user_registration_path %>">
-            <div class="form-fields row clearfix">
-              <div class="form-group col-xs-12 col-md-6">
-                <input id="user_email" type="text" name="user[email]" placeholder="Email Address"/>
-              </div>
-              <div class="form-group col-xs-12 col-md-6">
-                <input class="btn btn-info" type="submit" name="submit" value="Join the Community"/>
-              </div>
-            </div>
-            <p>Already using
-              OpenSplitTime? <%= link_to t('devise.sessions.new.sign_in'), '#', class: 'sign-in', data: {toggle: 'modal', target: '#log-in-modal'} %>
-              <a href="<%= about_path %>" class="learn-more">Learn More</a></p>
-          </form>
-        <% end %>
-        <br/>
-
-        <h2>Recent Results</h2>
-        <% @presenter.recent_event_groups(4).each do |event_group| %>
-          <%= link_to event_group.name, event_group_path(event_group), class: 'btn btn-info cta' %>
-        <% end %>
-        </div>
+        easy to collect, store, and play with endurance event data.</p>
+      <br/>
+      <h2>Recent Results</h2>
+      <% @presenter.recent_event_groups(4).each do |event_group| %>
+        <%= link_to event_group.name, event_group_path(event_group), class: 'btn btn-info cta' %>
+      <% end %>
+    </div>
     <div class="gradient"></div>
     <a data-controller="popover" data-theme="dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
       Credit</a>

@@ -49,6 +49,8 @@
           <div class="col-md-12 mb-3">
             <%= f.label :new_password_confirmation %>
             <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+
+            <small class="form-text text-muted"><%= t(".leave_blank_if_you_don_t_want_to_change_it") %></small>
           </div>
         </div>
 

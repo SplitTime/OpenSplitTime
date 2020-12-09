@@ -133,6 +133,10 @@ class User < ApplicationRecord
     avatar.present?
   end
 
+  def from_omniauth?
+    provider? && uid?
+  end
+
   private
 
   def normalize_phone

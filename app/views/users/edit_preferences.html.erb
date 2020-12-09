@@ -12,7 +12,7 @@
   </div>
 </header>
 
-<%= render 'shared/errors', obj: @user %>
+<%= render "shared/errors", obj: @user %>
 
 <article class="ost-article container">
   <div class="row justify-content-center">
@@ -20,14 +20,14 @@
       <%= form_for(@user, url: {action: "update_preferences"}, method: :put, html: {class: "form-horizontal", role: "form"}) do |f| %>
         <div class="form-row">
           <div class="col-md-8 mb-3">
-            <%= f.label :phone, 'US or Canada mobile number (for text notifications)' %>
-            <%= f.text_field :phone, class: "form-control" %>
+            <%= f.label :phone, "US or Canada mobile number (for text notifications)" %>
+            <%= f.text_field :phone, type: "tel", class: "form-control" %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-md-4 mb-3">
-            <%= f.label :pref_distance_unit, 'View distances in' %>
+            <%= f.label :pref_distance_unit, "View distances in" %>
             <%= f.select :pref_distance_unit, User.pref_distance_units.keys.map { |unit| [unit.titleize, unit] },
                          {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
@@ -35,7 +35,7 @@
 
         <div class="form-row">
           <div class="col-md-4 mb-3">
-            <%= f.label :pref_elevation_unit, 'View elevations in' %>
+            <%= f.label :pref_elevation_unit, "View elevations in" %>
             <%= f.select :pref_elevation_unit, User.pref_elevation_units.keys.map { |unit| [unit.titleize, unit] },
                          {prompt: true}, {class: "form-control dropdown-select-field"} %>
           </div>
@@ -44,10 +44,10 @@
 
         <div class="form-row">
           <div class="col-md-5 mb-3">
-            <%= f.button("Update Preferences", name: 'referrer_path', value: user_path(@user), class: 'btn btn-primary btn-large') %>
+            <%= f.button("Update Preferences", name: "referrer_path", value: user_path(@user), class: "btn btn-primary btn-large") %>
           </div>
           <div class="col-md-2 mb-3">
-            <%= link_to 'Cancel', user_path(@user), class: "btn btn-outline-secondary" %>
+            <%= link_to "Cancel", user_path(@user), class: "btn btn-outline-secondary" %>
           </div>
         </div>
       <% end %>

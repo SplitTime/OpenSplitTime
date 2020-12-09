@@ -1,4 +1,4 @@
-<li class="nav-item"><%= link_to 'Donate!', donations_path, class: 'donate nav-link' %></li>
+<li class="nav-item"><%= link_to "Donate!", donations_path, class: "donate nav-link" %></li>
 <% if user_signed_in? %>
   <li class="nav-item">
     <div class="dropdown">
@@ -8,26 +8,26 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="nav-dropdown-auth">
         <% unless current_user.from_omniauth? %>
-          <%= link_to 'Edit My Profile', edit_user_registration_path, class: 'dropdown-item' %>
+          <%= link_to "Edit My Profile", edit_user_registration_path, class: "dropdown-item" %>
         <% end %>
-        <%= link_to 'View My Profile', user_path(current_user), class: 'dropdown-item' %>
-        <%= link_to 'Change Preferences', edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: 'dropdown-item' %>
+        <%= link_to "View My Profile", user_path(current_user), class: "dropdown-item" %>
+        <%= link_to "Change Preferences", edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: "dropdown-item" %>
         <% if current_user&.admin? %>
           <div class="dropdown-divider"></div>
-          <%= link_to 'List Users', users_path, class: 'dropdown-item' %>
+          <%= link_to "List Users", users_path, class: "dropdown-item" %>
         <% end %>
         <div class="dropdown-divider"></div>
-        <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
+        <%= link_to "Log Out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
       </div>
     </div>
   </li>
 <% else %>
   <li class="nav-item">
-    <%= link_to t('devise.sessions.new.sign_in').titleize, '#', class: 'nav-link', data: {toggle: 'modal', target: '#log-in-modal'} %>
+    <%= link_to t("devise.sessions.new.sign_in").titleize, "#", class: "nav-link", data: {toggle: "modal", target: "#log-in-modal"} %>
   </li>
   <li class="nav-item">
-    <%= link_to new_registration_path(resource_name), class: 'nav-link' do %>
-      <%= content_tag(:span, t('devise.registrations.new.sign_up').titleize, class: 'sign-up') %>
+    <%= link_to new_registration_path(resource_name), class: "nav-link" do %>
+      <%= content_tag(:span, t("devise.registrations.new.sign_up").titleize, class: "sign-up") %>
     <% end %>
   </li>
 <% end %>

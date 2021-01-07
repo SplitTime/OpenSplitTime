@@ -5,7 +5,7 @@ FactoryBot.define do
 
     trait :with_banner do
       banner_link { 'www.partner-site.com' }
-      banner { fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'banner.png'), 'image/png') }
+      banner { ::Rack::Test::UploadedFile.new('spec/fixtures/files/banner.png', 'image/png') }
     end
   end
 end

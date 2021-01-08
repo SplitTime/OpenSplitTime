@@ -508,7 +508,7 @@ DEPENDENCIES
   bootstrap4-datetime-picker-rails (>= 0.3.1)
   bullet
   capitalize_attributes
-  capybara (~> 3.0)
+  capybara (~> 3.33, >= 3.33.0)
   carmen
   coverband
   dalli
@@ -532,7 +532,7 @@ DEPENDENCIES
   momentjs-rails (>= 2.20.1)
   omniauth-facebook
   omniauth-google-oauth2
-  omniauth-rails_csrf_protection
+  omniauth-rails_csrf_protection (>= 0.1.2)
   paper_trail
   pg
   pg_search
@@ -544,7 +544,7 @@ DEPENDENCIES
   rails (>= 6.0.3.4, < 6.1)
   rails-erd
   rails_real_favicon (>= 0.1.0)
-  record_tag_helper (>= 1.0.0)
+  record_tag_helper (>= 1.0.1)
   rest-client
   rspec (~> 3.8)
   rspec-rails (~> 3.9, >= 3.9.1)

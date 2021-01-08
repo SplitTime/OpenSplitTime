@@ -34,7 +34,7 @@ gem 'mini_magick', '>= 4.9.4'
 gem 'momentjs-rails', '>= 2.20.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-rails_csrf_protection', '>= 0.1.2'
 gem 'paper_trail'
 gem 'pg'
 gem 'pg_search'
@@ -43,7 +43,7 @@ gem 'progress_bar'
 gem 'puma', '>= 3.12.4'
 gem 'pundit'
 gem 'rails', '>= 6.0.3.4', '< 6.1'
-gem 'record_tag_helper', '>= 1.0.0'
+gem 'record_tag_helper', '>= 1.0.1'
 gem 'rest-client'
 gem 'sass-rails', '~> 5.0.8'
 gem 'scenic', '>= 1.5.3'
@@ -74,7 +74,7 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '~> 3.0'
+  gem 'capybara', '~> 3.33', '>= 3.33.0'
   gem 'factory_bot_rails', '~> 5.2', '>= 5.2.0', require: false
   gem 'pry'
   gem 'selenium-webdriver'

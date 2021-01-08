@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_07_052160) do
+ActiveRecord::Schema.define(version: 2021_01_08_041541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -511,6 +511,16 @@ ActiveRecord::Schema.define(version: 2021_01_07_052160) do
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"
+  create_function :pg_search_dmetaphone, sql_definition: <<-SQL
+      CREATE OR REPLACE FUNCTION public.pg_search_dmetaphone(text)
+       RETURNS text
+       LANGUAGE sql
+       IMMUTABLE STRICT
+      AS $function$
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
+      $function$
+  SQL
+
 
   create_view "best_effort_segments", sql_definition: <<-SQL
       WITH completed_lap_subquery AS (

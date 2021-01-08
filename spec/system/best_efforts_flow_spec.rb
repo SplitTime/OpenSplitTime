@@ -2,11 +2,6 @@
 
 require 'rails_helper'
 
-# These tests will fail if the test database is rebuilt using db:schema:load
-# To fix, run the following from the command line:
-
-# rails db:structure:load RAILS_ENV=test
-
 RSpec.describe 'Visit the best efforts page and search for an effort' do
   let(:course) { courses(:hardrock_cw) }
   let(:event) { events(:hardrock_2016) }

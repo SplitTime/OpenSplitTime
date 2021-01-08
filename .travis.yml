@@ -24,7 +24,7 @@ before_install:
 install:
   - bundle install --jobs=3 --retry=3 --deployment
   - yarn install
-  - bundle exec rake db:setup db:structure:load
+  - bundle exec rake db:setup
 before_script:
   - ln -s /usr/lib/chromium-browser/chromedriver ~/bin/chromedriver
 env:

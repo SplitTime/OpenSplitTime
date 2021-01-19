@@ -73,7 +73,7 @@
         <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="If you have already created a course for a prior Event like this one, you can select it here."><i class="fas fa-question-circle"></i></span>
         <div class="row">
           <div class="col-12 col-md-6 col-xl-7 pr-md-0">
-            <resource-select id="course-select" class="form-control" v-model="eventModel.course" source="courses?filter[editable]=true&page[size]=100&sort=name">
+            <resource-select id="course-select" class="form-control" v-model="eventModel.course" source="courses?fields[courses]=id,name&filter[editable]=true&page[size]=100&sort=name">
               <option :value="null" selected disabled>Select One</option>
             </resource-select>
           </div>

@@ -8,6 +8,7 @@ namespace :db do
     TABLES_TO_SKIP = [
       "active_storage_attachments",
       "active_storage_blobs",
+      "active_storage_variant_records",
       "ar_internal_metadata",
       "delayed_jobs",
       "effort_segments",
@@ -71,6 +72,7 @@ namespace :db do
     TABLES_TO_SKIP = [
       "active_storage_attachments",
       "active_storage_blobs",
+      "active_storage_variant_records",
       "ar_internal_metadata",
       "delayed_jobs",
       "effort_segments",

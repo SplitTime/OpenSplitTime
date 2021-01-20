@@ -70,9 +70,12 @@ module Api
         options[:include] = *options[:include] if options[:include].present?
         options[:include] ||= prepared_params[:include]
         options[:fields] ||= prepared_params[:fields]
-        serializer_params = {params: {current_user: current_user}}
+        serializer_params = {params: {current_user: current_user}}.merge(options)
 
-        serializer = serializer_class.new(resource, serializer_params.merge(options))
+        # The BaseSerializer chokes when certain options are passed, so blank them out
+        serializer_params = {} if serializer_class == ::Api::V1::BaseSerializer
+
+        serializer = serializer_class.new(resource, serializer_params)
 
         render json: serializer.serializable_hash.to_json, status: status
       end

@@ -58,6 +58,35 @@ RSpec.describe Api::V1::CoursesController do
           expect(names.last).to eq('SUM 55K Course')
         end
       end
+
+      context "when filtered to a single record" do
+        let(:params) { {filter: {name: "RUFA Course"}} }
+        it "returns just the requested records" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          data = parsed_response["data"]
+          expect(data.count).to eq(1)
+          expect(data.first.dig("attributes", "name")).to eq("RUFA Course")
+        end
+      end
+
+      context "when filtered to no records" do
+        let(:params) { {filter: {id: 0}} }
+        it "returns an empty response" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"]).to be_empty
+        end
+      end
+
+      context "when filtered to no records with include option" do
+        let(:params) { {filter: {id: 0}, include: [:splits]} }
+        it "returns an empty response" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"]).to be_empty
+        end
+      end
     end
 
     context "without logging in" do

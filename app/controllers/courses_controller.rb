@@ -1,12 +1,9 @@
-class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :plan_effort]
-  before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
+# frozen_string_literal: true
 
-  def index
-    @courses = policy_scope(Course).includes(:events, :splits).with_attached_gpx.order(:name).paginate(page: params[:page], per_page: 25)
-    session[:return_to] = courses_path
-  end
+class CoursesController < ApplicationController
+  before_action :authenticate_user!, except: [:show, :best_efforts, :plan_effort]
+  before_action :set_course, except: [:new, :create]
+  after_action :verify_authorized, except: [:show, :best_efforts, :plan_effort]
 
   def show
     course = Course.where(id: @course).includes(:splits).first

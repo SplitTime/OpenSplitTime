@@ -20,13 +20,8 @@ class CoursePolicy < ApplicationPolicy
     @course = course
   end
 
-  # The course index is only for admin convenience
-  def index?
-    user.admin?
-  end
-
   def destroy?
-    user.admin?
+    user.authorized_fully?(course)
   end
 
   def post_event_course_org?

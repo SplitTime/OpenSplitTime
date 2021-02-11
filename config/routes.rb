@@ -60,7 +60,7 @@ Rails.application.routes.draw do
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]
 
-  resources :courses do
+  resources :courses, except: :index do
     member { get :best_efforts }
     member { get :plan_effort }
   end

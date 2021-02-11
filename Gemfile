@@ -79,6 +79,7 @@ group :test do
   gem 'pry'
   gem 'selenium-webdriver'
   gem 'vcr', '~> 4.0'
+  gem "webdrivers"
   gem 'webmock', '~> 3.5'
 end
 

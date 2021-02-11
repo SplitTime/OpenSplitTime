@@ -584,7 +584,6 @@ DEPENDENCIES
   sass-rails (~> 5.0.8)
   scenic (>= 1.5.3)
   scout_apm
-  selenium-webdriver
   sentry-raven
   shortener
   sidekiq

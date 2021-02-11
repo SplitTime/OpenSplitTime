@@ -77,8 +77,8 @@ group :test do
   gem 'capybara', '~> 3.33', '>= 3.33.0'
   gem 'factory_bot_rails', '~> 5.2', '>= 5.2.0', require: false
   gem 'pry'
-  gem 'selenium-webdriver'
   gem 'vcr', '~> 4.0'
+  gem "webdrivers"
   gem 'webmock', '~> 3.5'
 end
 

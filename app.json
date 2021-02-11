@@ -4,9 +4,11 @@
       "addons": ["heroku-postgresql:in-dyno", "heroku-redis:in-dyno"],
       "buildpacks": [
         { "url": "heroku/ruby" },
-        { "url": "https://github.com/heroku/heroku-buildpack-chromedriver" },
         { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
       ],
+      "env": {
+        "WD_CHROME_PATH": "/app/.apt/usr/bin/google-chrome-stable"
+      },
       "formation": {
         "test": {
           "quantity": 1,

@@ -10,7 +10,7 @@ class Split < ApplicationRecord
   friendly_id :course_split_name, use: [:slugged, :history]
   has_paper_trail
 
-  enum kind: [:start, :finish, :intermediate]
+  enum kind: [:start, :finish, :intermediate], _default: :intermediate
   belongs_to :course
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
@@ -30,7 +30,6 @@ class Split < ApplicationRecord
   validates_uniqueness_of :distance_from_start, scope: :course_id,
                           message: 'only one split of a given distance permitted on a course. Use sub_splits if needed.'
   validates_with SplitAttributesValidator
-  attribute :kind, default: :intermediate
 
   scope :ordered, -> { order(:distance_from_start) }
   scope :with_course_name, -> { from(select('splits.*, courses.name as course_name').joins(:course), :splits) }

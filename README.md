@@ -121,10 +121,9 @@ v1.13.0 instead.
 
 1. Start your local DB `$ brew services restart postgres` or run the Postgres App
 2. `$ rails db:setup` to create the database
-3. `$ rails db:structure:load` to add Postgres functions
-4. `$ rails db:from_fixtures` to load seed data from test fixtures files
-5. `$ rails s` to start the server
-6. Type `localhost:3000` in a browser
+3. `$ rails db:from_fixtures` to load seed data from test fixtures files
+4. `$ rails s` to start the server
+5. Type `localhost:3000` in a browser
 
 *Test Users*
 

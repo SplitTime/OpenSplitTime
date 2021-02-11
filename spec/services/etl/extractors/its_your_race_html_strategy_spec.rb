@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'open-uri'
 
 RSpec.describe ::ETL::Extractors::ItsYourRaceHTMLStrategy do
   subject { described_class.new(source_data, options) }

@@ -530,8 +530,8 @@ DEPENDENCIES
   local_time
   mini_magick (>= 4.9.4)
   momentjs-rails (>= 2.20.1)
-  omniauth-facebook
-  omniauth-google-oauth2
+  omniauth-facebook (>= 8.0.0)
+  omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 0.1.2)
   paper_trail
   pg

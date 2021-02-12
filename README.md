@@ -15,7 +15,7 @@ Ruby on Rails
 This application requires:
 
 - Ruby 2.7
-- Rails 6.0
+- Rails 6.1
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 

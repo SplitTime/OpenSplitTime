@@ -14,11 +14,7 @@ module Users
     def create
       build_resource(sign_up_params)
 
-      NewGoogleRecaptcha.human?(
-        params[:new_google_recaptcha_token],
-        "user",
-        NewGoogleRecaptcha.minimum_score,
-        resource) && resource.save
+      google_captcha? && resource.save
 
       yield resource if block_given?
       if resource.persisted?
@@ -49,6 +45,17 @@ module Users
     end
 
     private
+
+    def google_captcha?
+      return true unless ::OstConfig.google_recaptcha_enabled?
+
+      ::NewGoogleRecaptcha.human?(
+        params[:new_google_recaptcha_token],
+        "user",
+        ::NewGoogleRecaptcha.minimum_score,
+        resource
+      )
+    end
 
     def pre_filled_params
       params[:user]&.permit(*UserParameters.permitted) || {}

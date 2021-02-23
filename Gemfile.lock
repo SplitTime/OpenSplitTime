@@ -261,6 +261,8 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     netrc (0.11.0)
+    new_google_recaptcha (1.2.0)
+      rails (>= 4.2.0)
     nio4r (2.5.5)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
@@ -562,6 +564,7 @@ DEPENDENCIES
   jwt
   local_time
   momentjs-rails (>= 2.20.1)
+  new_google_recaptcha
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 0.1.2)

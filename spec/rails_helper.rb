@@ -108,3 +108,9 @@ RSpec.configure do |config|
 
   Aws.config.update(stub_responses: true)
 end
+
+module NewGoogleRecaptcha
+  def self.human?(*attrs)
+    true
+  end
+end

@@ -1,3 +1,9 @@
+<% if ::OstConfig.google_recaptcha_enabled? %>
+  <%= content_for :recaptcha_js do %>
+    <%= include_recaptcha_js %>
+  <% end %>
+<% end %>
+
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= bootstrap_devise_error_messages! %>
 
@@ -31,6 +37,10 @@
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, autocomplete: 'current-password', class: 'form-control' %>
   </div>
+
+  <% if ::OstConfig.google_recaptcha_enabled? %>
+    <%= recaptcha_action("user") %>
+  <% end %>
 
   <div class="form-group">
     <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>

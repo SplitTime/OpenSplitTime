@@ -45,7 +45,13 @@ RSpec.describe 'Visitor signs up' do
     expect(page).to have_content(:all, "Password is too short")
   end
 
-  def sign_up_with(first_name, last_name, email, password, phone = nil)
+  scenario 'if honeypot is filled in' do
+    sign_up_with 'Joe', 'Example', 'valid@example.com', 'password', '', 'userbot'
+
+    expect(page).not_to have_content(:all, 'A message with a confirmation link has been sent to your email address.')
+  end
+
+  def sign_up_with(first_name, last_name, email, password, phone = nil, username = nil)
     visit new_user_registration_path
 
     within('.ost-article') do
@@ -55,6 +61,7 @@ RSpec.describe 'Visitor signs up' do
       fill_in 'US or Canada mobile number', with: phone
       fill_in 'Password', with: password
       fill_in 'Password confirmation', with: password
+      fill_in 'username', with: username
       click_button 'Sign up'
     end
   end

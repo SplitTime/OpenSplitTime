@@ -25,7 +25,7 @@ module Users
 
     def protect_from_spam
       # username is a honeypot field
-      head :ok if params[:username].present?
+      redirect_to root_path if params[:username].present?
     end
 
     def pre_filled_params

@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Sign Up" %>
+  <% "OpenSplitTime: Sign Up" %>
 <% end %>
 
 <header class="ost-header">
@@ -23,7 +23,7 @@
                   user_google_oauth2_omniauth_authorize_path,
                   method: :post,
                   class: "btn btn-google btn-block") %>
-      <hr class="hr-text", data-content="or">
+      <hr class="hr-text" data-content="or">
       <p class="text-center">Sign up with your Email</p>
       <%= render 'devise/registrations/form' %>
       <%= render 'devise/shared/links' %>

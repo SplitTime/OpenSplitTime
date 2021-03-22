@@ -2,6 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    before_action :protect_from_spam, only: [:create, :update]
 
     # GET /resource/sign_up
     def new
@@ -21,6 +22,11 @@ module Users
     end
 
     private
+
+    def protect_from_spam
+      # username is a honeypot field
+      redirect_to root_path if params[:username].present?
+    end
 
     def pre_filled_params
       params[:user]&.permit(*UserParameters.permitted) || {}

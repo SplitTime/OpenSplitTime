@@ -32,6 +32,8 @@
     <%= f.password_field :password_confirmation, autocomplete: 'current-password', class: 'form-control' %>
   </div>
 
+  <%= captcha_div %>
+
   <div class="form-group">
     <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>
   </div>

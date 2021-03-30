@@ -7,7 +7,7 @@ task :remove_bot_users, [:model] => :environment do
                             .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
 
   puts "Preparing to remove #{suspected_bot_users.count} users:\n"
-  suspected_bot_users.pluck(:first_name, :last_name).map(&:join).each do |full_name|
+  suspected_bot_users.pluck(:first_name, :last_name).map { |names| names.join(" ") }.each do |full_name|
     puts full_name
   end
   puts "\nProceed? (y/N)"

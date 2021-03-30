@@ -3,8 +3,8 @@ task :remove_bot_users, [:model] => :environment do
   start_time = Time.current
 
   suspected_bot_users = User.where("created_at > ?", 2.months.ago)
-                  .where("length(first_name) > ? and length(last_name) > ?", 8, 8)
-                  .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
+                            .where("length(first_name) > ? and length(last_name) > ?", 8, 8)
+                            .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
 
   puts "Preparing to remove #{suspected_bot_users.count} users:"
   suspected_bot_users.pluck(:first_name, :last_name).map(&:join).each do |full_name|

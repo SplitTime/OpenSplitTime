@@ -5,7 +5,7 @@ task :remove_bot_users, [:model] => :environment do
   puts "Searching for suspected bot users"
 
   suspected_bot_users = User.where("created_at > ?", 2.months.ago)
-                            .where("length(first_name) > ? and length(last_name) > ?", 8, 8)
+                            .where("length(first_name) > ? and length(last_name) > ?", 7, 7)
                             .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
 
   puts "Preparing to remove #{suspected_bot_users.count} users:\n"

@@ -25,7 +25,25 @@ module Users
 
     def protect_from_spam
       # username is a honeypot field
-      redirect_to root_path if params[:username].present?
+      # timestamp contains seconds from epoch at the time the form was loaded
+      redirect_to root_path if params[:username].present? || random_generated_names?
+
+      return unless ::OstConfig.timestamp_bot_detection?
+
+      redirect_to root_path if params[:timestamp].blank?
+
+      form_fill_duration = Time.current.to_i - params[:timestamp].to_i
+      redirect_to root_path if form_fill_duration < 10.seconds
+    end
+
+    def random_generated_names?
+      first_name = params.dig(:user, :first_name) || ""
+      last_name = params.dig(:user, :last_name) || ""
+
+      first_name.length > 7 &&
+        last_name.length > 7 &&
+        [first_name.downcase, first_name.upcase, first_name.titleize].exclude?(first_name) &&
+        [last_name.downcase, last_name.upcase, last_name.titleize].exclude?(last_name)
     end
 
     def pre_filled_params

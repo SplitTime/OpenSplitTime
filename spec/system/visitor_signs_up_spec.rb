@@ -54,7 +54,7 @@ RSpec.describe "Visitor signs up" do
   end
 
   scenario "if names are randomly generated" do
-    sign_up_with "swdeSDFjd", "WERlkjJdq", "realemail@example.com", "password"
+    sign_up_with "swdeSDFjd", "WERlkjJdq", "valid@example.com", "password"
 
     expect(page).not_to have_content(:all, "A message with a confirmation link has been sent to your email address.")
   end

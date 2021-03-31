@@ -4,6 +4,8 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     before_action :protect_from_spam, only: [:create, :update]
 
+    BOT_FORM_FILL_DURATION_LIMIT = 10.seconds
+
     # GET /resource/sign_up
     def new
       build_resource(pre_filled_params)
@@ -24,16 +26,18 @@ module Users
     private
 
     def protect_from_spam
-      # username is a honeypot field
-      # timestamp contains seconds from epoch at the time the form was loaded
-      redirect_to root_path if params[:username].present? || random_generated_names?
-
-      return unless ::OstConfig.timestamp_bot_detection?
-
-      redirect_to root_path if params[:timestamp].blank?
-
-      form_fill_duration = Time.current.to_i - params[:timestamp].to_i
-      redirect_to root_path if form_fill_duration < 10.seconds
+      # params[:username] is a honeypot field
+      # params[:timestamp] contains seconds from epoch at the time the form was loaded
+      if params[:username].present?
+        redirect_to root_path
+      elsif random_generated_names?
+        redirect_to root_path
+      elsif ::OstConfig.timestamp_bot_detection? && params[:timestamp].blank?
+        redirect_to root_path
+      elsif ::OstConfig.timestamp_bot_detection?
+        form_fill_duration = Time.current.to_i - params[:timestamp].to_i
+        redirect_to root_path if form_fill_duration < BOT_FORM_FILL_DURATION_LIMIT
+      end
     end
 
     def random_generated_names?

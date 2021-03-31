@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe "Visitor signs up" do
+  before { allow(::OstConfig).to receive(:timestamp_bot_detection?).and_return(false) }
+
   scenario "with valid first_name, last_name, email, and password" do
     sign_up_with "Joe", "Example", "valid@example.com", "password"
 
@@ -47,6 +49,12 @@ RSpec.describe "Visitor signs up" do
 
   scenario "if fields are valid but the honeypot is filled in" do
     sign_up_with "Joe", "Example", "valid@example.com", "password", "", "userbot"
+
+    expect(page).not_to have_content(:all, "A message with a confirmation link has been sent to your email address.")
+  end
+
+  scenario "if names are randomly generated" do
+    sign_up_with "swdeSDFjd", "WERlkjJdq", "realemail@example.com", "password"
 
     expect(page).not_to have_content(:all, "A message with a confirmation link has been sent to your email address.")
   end

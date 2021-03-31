@@ -8,4 +8,8 @@ module SpamProtectionHelper
         text_field_tag(:username, nil, id: "user_username")
     end.html_safe
   end
+
+  def timestamp_element
+    hidden_field_tag(:timestamp, Time.current.to_i)
+  end
 end

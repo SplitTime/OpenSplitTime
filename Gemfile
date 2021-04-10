@@ -67,7 +67,7 @@ group :development do
   gem 'better_errors', '>= 2.3'
   gem 'derailed'
   gem 'derailed_benchmarks'
-  gem 'rails-erd'
+  gem 'rails-erd', '>= 1.6.0'
   gem 'rails_real_favicon', '>= 0.1.0'
   gem 'spring'
   gem 'web-console', '~> 3.7', '>= 3.7.0'
@@ -79,7 +79,7 @@ group :test do
   gem 'pry'
   gem 'vcr', '~> 4.0'
   gem "webdrivers"
-  gem 'webmock', '~> 3.5'
+  gem 'webmock', '~> 3.11', '>= 3.11.2'
 end
 
 group :development, :test do
@@ -87,6 +87,6 @@ group :development, :test do
   gem 'dotenv-rails', '>= 2.7.6'
   gem 'rspec'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.49'
+  gem 'rubocop', '~> 0.93', '>= 0.93.1'
   gem 'spring-commands-rspec'
 end

@@ -4,6 +4,7 @@ require_relative "errors"
 require_relative "extractor"
 require_relative "transformer"
 require_relative "loader"
+require_relative "transformable"
 
 # Importers
 

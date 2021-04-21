@@ -10,6 +10,14 @@ GIT
       responders
       warden (~> 1.2.3)
 
+GIT
+  remote: https://github.com/tomkra/font_awesome5_rails
+  revision: b9cdff02e00b9bad7921db2ec977f116c5615c6b
+  branch: zeitwerk
+  specs:
+    font_awesome5_rails (1.3.0)
+      railties (>= 4.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -188,8 +196,6 @@ GEM
     faraday-net_http (1.0.1)
     ffaker (2.17.0)
     ffi (1.14.2)
-    font_awesome5_rails (1.3.0)
-      railties (>= 4.2)
     friendly_id (5.4.2)
       activerecord (>= 4.0.0)
     fugit (1.4.2)
@@ -548,7 +554,7 @@ DEPENDENCIES
   dotenv-rails (>= 2.7.6)
   factory_bot_rails (~> 5.2, >= 5.2.0)
   ffaker
-  font_awesome5_rails (>= 1.2.0)
+  font_awesome5_rails!
   friendly_id
   fx
   gpx (>= 1.0.0)

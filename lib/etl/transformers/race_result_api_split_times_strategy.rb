@@ -39,13 +39,13 @@ module ETL
       def transform_time_data!(proto_record)
         extract_times!(proto_record)
         transform_times!(proto_record)
-        proto_record.create_split_time_children!(time_points, time_attribute: :absolute_time, preserve_nils: preserve_nils?)
+        proto_record.create_split_time_children!(relevant_time_points, time_attribute: :absolute_time, preserve_nils: preserve_nils?)
         mark_for_destruction!(proto_record)
         set_stop!(proto_record)
       end
 
       def extract_times!(proto_record)
-        proto_record[:times_of_day] = time_keys.map { |key| proto_record.delete_field(key) }
+        proto_record[:times_of_day] = relevant_time_keys.map { |key| proto_record.delete_field(key) }
       end
 
       def transform_times!(proto_record)
@@ -70,6 +70,10 @@ module ETL
         end
       end
 
+      def relevant_time_keys
+        time_keys.reject.with_index { |_, index| index.in?(ignored_time_indicies) }
+      end
+
       # Because of the way they are built, keys for all structs are identical,
       # so use the first as a template for all.
       def time_keys
@@ -78,8 +82,16 @@ module ETL
                                     .sort_by { |key| key[/\d+/].to_i }
       end
 
+      def ignored_time_indicies
+        options[:ignore_time_indicies].presence || []
+      end
+
       def global_attributes
         {event_id: event.id}
+      end
+
+      def relevant_time_points
+        time_points.reject.with_index { |_, index| index.in?(ignored_time_indicies) }
       end
 
       def time_points

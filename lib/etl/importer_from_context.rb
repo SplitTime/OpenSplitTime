@@ -37,10 +37,11 @@ module ETL
     end
 
     def options
-      result = {parent: parent, current_user_id: current_user.id, strict: strict}
-      result[:unique_key] = unique_key if unique_key
-      result[:split_name] = params[:split_name] if params[:split_name]
-      result
+      options_hash = {parent: parent, current_user_id: current_user.id, strict: strict}
+      options_hash[:unique_key] = unique_key if unique_key
+      options_hash[:split_name] = params[:split_name] if params[:split_name]
+      options_hash[:ignore_time_indicies] = params[:ignore_time_indicies] if params[:ignore_time_indicies]
+      options_hash
     end
 
     def strict

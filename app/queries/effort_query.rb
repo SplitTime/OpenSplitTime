@@ -220,7 +220,7 @@ class EffortQuery < BaseQuery
           bsst.effort_id is not null                                                            as beyond_start,
           coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
           extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
-          (checked_in and 
+          ((checked_in or (bsst.effort_id is not null)) and 
               sst.absolute_time is null and 
               (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
       from efforts ef

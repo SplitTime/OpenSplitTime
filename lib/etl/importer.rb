@@ -25,7 +25,7 @@ module ETL
       when :race_result_entrants
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultEntrantsStrategy, Loaders::UpsertStrategy, {delete_blank_times: false, unique_key: [:event_id, :bib_number]}.merge(options))
       when :race_result_api_times
-        import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, {delete_blank_times: false}.merge(options))
+        import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, {delete_blank_times: true}.merge(options))
       when :adilas_bear_times
         import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
       when :its_your_race_times

@@ -400,8 +400,8 @@ RSpec.describe Api::V1::EventsController do
         end
 
         context 'when existing efforts have existing split times' do
-          it 'overwrites existing times and adds new times but does not erase existing times when blanks appear' do
-            expect { make_request }.to change { event.efforts.count }.by(0).and change { SplitTime.count }.by(2)
+          it 'overwrites existing times, adds new times, and erases existing times when blanks appear' do
+            expect { make_request }.to change { event.efforts.count }.by(0).and change { SplitTime.count }.by(-1)
             expect(response.status).to eq(201)
             event.reload
 
@@ -419,9 +419,8 @@ RSpec.describe Api::V1::EventsController do
 
             effort = event.efforts.find_by(bib_number: 1117)
             split_times = effort.ordered_split_times
-            expect(split_times.size).to eq(7)
+            expect(split_times.size).to eq(6)
             expected_absolute_times = ['2017-06-03 08:01:48 -0600',
-                                       '2017-06-03 07:52:00 -0600',
                                        '2017-06-03 09:41:07 -0600',
                                        '2017-06-03 10:31:45 -0600',
                                        '2017-06-03 11:40:33 -0600',
@@ -436,7 +435,7 @@ RSpec.describe Api::V1::EventsController do
             it 'sends notifications to followers for only the new split times' do
               expect(event.permit_notifications?).to eq(true)
               allow(BulkProgressNotifier).to receive(:notify)
-              expect { make_request }.to change { SplitTime.count }.by(2)
+              expect { make_request }.to change { SplitTime.count }.by(-1)
               split_times = SplitTime.last(2)
               expect(BulkProgressNotifier).to have_received(:notify).with(split_times)
             end

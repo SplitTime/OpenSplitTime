@@ -2,8 +2,6 @@
 
 module ETL
   class EventImportProcess
-    include BackgroundNotifiable
-
     def self.perform!(event, importer)
       new(event, importer).perform!
     end

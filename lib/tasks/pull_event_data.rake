@@ -1,3 +1,5 @@
+require "etl/etl"
+
 namespace :pull_event do
   desc 'Pulls and imports full event data including effort information from my.raceresult.com into an event'
   task :race_result_full, [:event_id, :rr_event_id, :rr_contest_id, :rr_format] => :environment do |_, args|

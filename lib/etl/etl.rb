@@ -40,3 +40,8 @@ require_relative "loaders/base_loader"
 require_relative "loaders/insert_strategy"
 require_relative "loaders/split_time_upsert_strategy"
 require_relative "loaders/upsert_strategy"
+
+# Helpers
+
+require_relative "helpers/race_result_api_uri_builder"
+require_relative "helpers/race_result_uri_builder"

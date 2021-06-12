@@ -71,7 +71,7 @@ module ETL
       end
 
       def relevant_time_keys
-        time_keys.reject.with_index { |_, index| index.in?(ignored_time_indicies) }
+        time_keys.reject.with_index { |_, index| index.in?(ignored_time_indices) }
       end
 
       # Because of the way they are built, keys for all structs are identical,
@@ -82,8 +82,8 @@ module ETL
                                     .sort_by { |key| key[/\d+/].to_i }
       end
 
-      def ignored_time_indicies
-        options[:ignore_time_indicies].presence || []
+      def ignored_time_indices
+        options[:ignore_time_indices].presence || []
       end
 
       def global_attributes
@@ -91,7 +91,7 @@ module ETL
       end
 
       def relevant_time_points
-        time_points.reject.with_index { |_, index| index.in?(ignored_time_indicies) }
+        time_points.reject.with_index { |_, index| index.in?(ignored_time_indices) }
       end
 
       def time_points

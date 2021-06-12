@@ -26,7 +26,7 @@ module ETL
       end
 
       def attribute_pairs(data_row)
-        time_pairs = time_indicies.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub('Time: ', '')] }.to_h
+        time_pairs = time_indices.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub('Time: ', '')] }.to_h
         bib, name = data_row[1].split('. ')
         bib = bib.gsub('#', '')
         name = name.titleize
@@ -34,8 +34,8 @@ module ETL
         time_pairs.merge(bib: bib, name: name, status: status, rr_id: data_row[0])
       end
 
-      def time_indicies
-        @time_indicies ||= data_fields.map.with_index(1) { |header, i| time_index(header, i) }.compact
+      def time_indices
+        @time_indices ||= data_fields.map.with_index(1) { |header, i| time_index(header, i) }.compact
       end
 
       def time_index(header, i)

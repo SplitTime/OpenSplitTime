@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
   subject { described_class.new(parsed_structs, options) }
-  let(:options) { {parent: event}.merge(delete_blank_times_option).merge(ignore_time_indicies_option) }
+  let(:options) { {parent: event}.merge(delete_blank_times_option).merge(ignore_time_indices_option) }
   let(:delete_blank_times_option) { {} }
-  let(:ignore_time_indicies_option) { {} }
+  let(:ignore_time_indices_option) { {} }
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
   let(:second_proto_record) { proto_records.second }
@@ -172,8 +172,8 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
           end
         end
 
-        context "when time indicies are to be ignored" do
-          let(:ignore_time_indicies_option) { {ignore_time_indicies: [4]} }
+        context "when time indices are to be ignored" do
+          let(:ignore_time_indices_option) { {ignore_time_indices: [4]} }
           let(:expected_split_ids) { (time_points[0..3] + time_points[5..6]).map(&:split_id) }
 
           context "when all times are present" do
@@ -284,8 +284,8 @@ RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
           end
         end
 
-        context "when time indicies are to be ignored" do
-          let(:ignore_time_indicies_option) { {ignore_time_indicies: [4]} }
+        context "when time indices are to be ignored" do
+          let(:ignore_time_indices_option) { {ignore_time_indices: [4]} }
           let(:expected_split_ids) { (time_points[0..3] + time_points[5..6]).map(&:split_id) }
 
           context "when all times are present" do

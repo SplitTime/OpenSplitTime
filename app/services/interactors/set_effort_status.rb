@@ -44,7 +44,9 @@ module Interactors
     end
 
     def set_effort_status
-      effort.data_status = ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses[:good]).compact.min
+      worst_split_time_status = ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses[:good]).compact.min
+      effort_status = times_without_start_time? ? ::Effort.data_statuses[:bad] : ::Effort.data_statuses[:good]
+      effort.data_status = [worst_split_time_status, effort_status].min
     end
 
     def set_subject_attributes(split_time)
@@ -62,6 +64,10 @@ module Interactors
 
     def beyond_drop?
       ordered_split_times.included_after?(first_dropped_split_time, subject_split_time)
+    end
+
+    def times_without_start_time?
+      ordered_split_times.present? && ordered_split_times.first.time_point != start_time_point
     end
 
     def time_predictor

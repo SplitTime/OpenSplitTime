@@ -51,6 +51,24 @@ RSpec.describe Interactors::SetEffortStatus do
       end
     end
 
+    context "when split_times are good but start time does not exist" do
+      let(:effort) { efforts(:hardrock_2014_finished_first) }
+      before do
+        effort.ordered_split_times.first.destroy
+        effort.reload
+      end
+
+      it "does not set data_status of the split times" do
+        subject.perform
+        expect(subject_split_times.map(&:data_status)).to all be_nil
+      end
+
+      it "sets data_status of the effort to 'bad'" do
+        subject.perform
+        expect(effort.data_status).to eq('bad')
+      end
+    end
+
     context 'when one split_time is questionable' do
       let(:split_time) { subject_split_times.second }
       before { split_time.update(absolute_time: split_time.absolute_time - 3.hours) }

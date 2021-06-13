@@ -167,7 +167,7 @@ class EventGroupsController < ApplicationController
     start_time = params[:actual_start_time]
 
     start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
-    set_response = ::Interactors::UpdateEffortsStatus.perform!(efforts)
+    set_response = ::Interactors::UpdateEffortsStatus.perform!(filtered_efforts)
     response = start_response.merge(set_response)
 
     respond_to do |format|

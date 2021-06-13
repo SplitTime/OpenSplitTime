@@ -40,10 +40,11 @@ module Interactors
       return if effort.split_times.any?(&:starting_split_time?)
 
       time_point = TimePoint.new(1, effort.start_split_id, SubSplit::IN_BITKEY)
-      split_time = effort.split_times.new(time_point: time_point,
-                                          absolute_time: effort_start_time(effort),
-                                          created_by: current_user_id)
-      if effort.save
+      split_time = SplitTime.new(effort_id: effort.id,
+                                 time_point: time_point,
+                                 absolute_time: effort_start_time(effort),
+                                 created_by: current_user_id)
+      if split_time.save
         saved_split_times << split_time
       else
         errors << resource_error_object(split_time)

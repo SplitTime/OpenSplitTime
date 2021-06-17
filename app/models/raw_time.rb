@@ -39,7 +39,7 @@ class RawTime < ApplicationRecord
   def self.search(search_text)
     return all unless search_text.present?
     bib_numbers = search_text.split(/[\s,]+/)
-    where(bib_number: bib_numbers)
+    where(matchable_bib_number: bib_numbers)
   end
 
   def clean?

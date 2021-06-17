@@ -7,6 +7,7 @@ class SplitTimeFromRawTime
     split_time = SplitTime.new(identical_attributes.map { |attr| [attr, raw_time.send(attr)] }.to_h)
     effort.event = event
     split_time.effort = effort
+    split_time.lap ||= 1
 
     if raw_time.absolute_time?
       split_time.absolute_time = raw_time.absolute_time

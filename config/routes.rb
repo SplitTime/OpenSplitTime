@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       get :place
       get :show_photo
       get :edit_split_times
+      post :create_split_time_from_raw_time
       patch :update_split_times
       patch :set_data_status
       patch :rebuild

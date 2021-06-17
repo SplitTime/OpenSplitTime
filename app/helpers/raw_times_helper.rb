@@ -49,7 +49,7 @@ module RawTimesHelper
     link_to fa_icon('trash'), url, options
   end
 
-  def link_to_raw_time_match(split_time, raw_time_id, icon = :link)
+  def link_to_raw_time_match(split_time, raw_time_id, icon)
     return unless split_time.persisted?
 
     url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
@@ -62,6 +62,19 @@ module RawTimesHelper
                class: 'btn btn-sm btn-success has-tooltip'}
 
     link_to fa_icon(icon), url, options
+  end
+
+  def link_to_raw_time_create_split_time(raw_time_id, effort)
+    url = create_split_time_from_raw_time_effort_path(effort, raw_time_id: raw_time_id)
+    tooltip = "Create a split time from this raw time"
+    options = {method: :post,
+               data: {toggle: :tooltip,
+                      placement: :bottom,
+                      'original-title' => tooltip},
+               id: "match-raw-time-#{raw_time_id}",
+               class: 'btn btn-sm btn-success has-tooltip'}
+
+    link_to fa_icon(:link), url, options
   end
 
   def link_to_raw_time_unmatch(raw_time_id)

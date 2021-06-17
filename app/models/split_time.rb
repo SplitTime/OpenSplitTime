@@ -7,10 +7,12 @@ class SplitTime < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]]
 
-  include Auditable, DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, TimePointMethods, TimeZonable, UrlAccessible
+  include DataStatusMethods, Delegable, DelegatedConcealable, GuaranteedFindable, TimePointMethods, TimeZonable, UrlAccessible
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   has_paper_trail
+
+  self.ignored_columns = [:created_by, :updated_by]
 
   belongs_to :effort, touch: true
   belongs_to :split

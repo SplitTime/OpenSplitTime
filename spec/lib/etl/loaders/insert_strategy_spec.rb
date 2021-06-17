@@ -103,10 +103,9 @@ RSpec.describe ETL::Loaders::InsertStrategy do
         expect(subject_split_times.map(&:effort_id)).to match_array([subject_efforts.first.id] * 7 + [subject_efforts.second.id] * 3)
       end
 
-      it 'returns saved parent records in the saved_records array and assigns a current user id to created_by' do
+      it 'returns saved parent records in the saved_records array' do
         subject.load_records
         expect(subject.saved_records.size).to eq(3)
-        expect(subject.saved_records.map(&:created_by)).to all eq(options[:current_user_id])
       end
     end
 

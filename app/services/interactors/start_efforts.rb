@@ -42,8 +42,7 @@ module Interactors
       time_point = TimePoint.new(1, effort.start_split_id, SubSplit::IN_BITKEY)
       split_time = SplitTime.new(effort_id: effort.id,
                                  time_point: time_point,
-                                 absolute_time: effort_start_time(effort),
-                                 created_by: current_user_id)
+                                 absolute_time: effort_start_time(effort))
       if split_time.save
         saved_split_times << split_time
       else

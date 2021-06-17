@@ -63,7 +63,6 @@ module ETL
       end
 
       def upsert(record)
-        add_audit_attributes(record)
         if record.save
           saved_records << record
         else

@@ -26,7 +26,6 @@ module ETL
         attributes = proto_record.to_h
         record = model_class.new(attributes)
         assign_child_records(proto_record, record)
-        add_audit_attributes(record)
         record
       end
 

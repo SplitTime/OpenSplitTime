@@ -54,8 +54,7 @@ module Interactors
     def build_split_times
       time_points = event.cycled_time_points
       effort.split_times.new(time_point: time_points.next,
-                             absolute_time: existing_start_time,
-                             created_by: current_user_id)
+                             absolute_time: existing_start_time)
 
       duplicate_raw_time_chunks.each do |chunk|
         rt = chunk.max_by(&:created_at)
@@ -66,8 +65,7 @@ module Interactors
         end
 
         effort.split_times.new(time_point: time_point, absolute_time: rt.absolute_time, pacer: rt.with_pacer,
-                               stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: chunk,
-                               created_by: current_user_id)
+                               stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: chunk)
       end
     end
 

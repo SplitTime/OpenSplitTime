@@ -1,6 +1,6 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
-  before_action :set_effort, except: [:index, :new, :create, :associate_people, :mini_table, :subregion_options]
+  before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :associate_people, :mini_table, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
 
   def index
@@ -149,6 +149,24 @@ class EffortsController < ApplicationController
     update_response = Interactors::UpdateEffortsStatus.perform!(effort)
     set_flash_message(stop_response.merge(update_response))
     redirect_to effort_path(effort)
+  end
+
+  def create_split_time_from_raw_time
+    @effort = policy_scope(Effort).friendly.find(params[:id])
+    authorize @effort
+
+    raw_time = RawTime.find(params[:raw_time_id])
+    split_time = ::SplitTimeFromRawTime.build(raw_time, effort: @effort, event: @effort.event, lap: params[:lap])
+
+    if split_time.save
+      raw_time.update(split_time: split_time)
+      Interactors::UpdateEffortsStatus.perform!(@effort.reload)
+      redirect_to audit_effort_path(@effort)
+    else
+      flash[:danger] = "Raw time could not be matched:\n#{split_time.errors.full_messages.join("\n")}"
+      @presenter = EffortAuditView.new(@effort)
+      render 'efforts/audit'
+    end
   end
 
   def edit_split_times

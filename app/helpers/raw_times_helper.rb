@@ -49,17 +49,26 @@ module RawTimesHelper
     link_to fa_icon('trash'), url, options
   end
 
-  def link_to_raw_time_match(split_time, raw_time_id, icon = :link)
-    return unless split_time.persisted?
-
-    url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
-    tooltip = icon == :link ? 'Match this raw time' : 'Set this as the governing time'
-    options = {method: :patch,
-               data: {toggle: :tooltip,
-                      placement: :bottom,
-                      'original-title' => tooltip},
-               id: "match-raw-time-#{raw_time_id}",
-               class: 'btn btn-sm btn-success has-tooltip'}
+  def link_to_raw_time_match(split_time, raw_time_id, icon)
+    if split_time.persisted?
+      url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
+      tooltip = icon == :link ? 'Match this raw time' : 'Set this as the governing time'
+      options = {method: :patch,
+                 data: {toggle: :tooltip,
+                        placement: :bottom,
+                        'original-title' => tooltip},
+                 id: "match-raw-time-#{raw_time_id}",
+                 class: 'btn btn-sm btn-success has-tooltip'}
+    else
+      url = create_split_time_from_raw_time_effort_path(split_time.effort_id, raw_time_id: raw_time_id, lap: split_time.lap)
+      tooltip = "Create a split time from this raw time"
+      options = {method: :post,
+                 data: {toggle: :tooltip,
+                        placement: :bottom,
+                        'original-title' => tooltip},
+                 id: "match-raw-time-#{raw_time_id}",
+                 class: 'btn btn-sm btn-success has-tooltip'}
+    end
 
     link_to fa_icon(icon), url, options
   end

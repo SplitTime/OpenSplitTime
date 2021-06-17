@@ -36,6 +36,10 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
+  def create_split_time_from_raw_time?
+    user.authorized_to_edit?(effort)
+  end
+
   def edit_split_times?
     user.authorized_to_edit?(effort)
   end

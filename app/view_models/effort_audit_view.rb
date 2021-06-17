@@ -31,6 +31,8 @@ class EffortAuditView < EffortWithLapSplitRows
   private
 
   def raw_times
+    return [] unless effort.bib_number.present?
+
     @raw_times ||=
       begin
         result = event_group.raw_times.where(matchable_bib_number: effort.bib_number).with_relation_ids

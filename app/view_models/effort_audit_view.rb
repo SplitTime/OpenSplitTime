@@ -33,7 +33,7 @@ class EffortAuditView < EffortWithLapSplitRows
   def raw_times
     @raw_times ||=
       begin
-        result = event_group.raw_times.where(bib_number: effort.bib_number).with_relation_ids
+        result = event_group.raw_times.where(matchable_bib_number: effort.bib_number).with_relation_ids
         result.each { |rt| rt.lap ||= 1 }
         result
       end

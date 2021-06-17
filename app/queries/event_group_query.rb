@@ -70,7 +70,7 @@ class EventGroupQuery < BaseQuery
                                                     'created_by', rt.created_by)
                                   order by case when rt.absolute_time is null then rt.entered_time else to_char((rt.absolute_time at time zone 'UTC'), 'HH24:MI:SS') end) as raw_times_attributes
         from raw_times rt
-        left join efforts ef on ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and ef.bib_number::text = rt.bib_number
+        left join efforts ef on ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and ef.bib_number = rt.matchable_bib_number
         where rt.event_group_id = #{event_group.id} and rt.parameterized_split_name = '#{parameterized_split_name}' and rt.bitkey = #{bitkey}
         group by ef.id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number),
   

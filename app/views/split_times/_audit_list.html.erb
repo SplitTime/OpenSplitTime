@@ -30,7 +30,7 @@
 
       <td class="text-center">
         <% row.unmatched_raw_times.each do |rt| %>
-          <div><%= row.split_time.persisted? ? link_to_raw_time_match(row.split_time, rt.id, :link) : link_to_raw_time_create_split_time(rt.id, presenter.effort) %> <%= link_to_raw_time_disassociate(rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+          <div><%= link_to_raw_time_match(row.split_time, rt.id, :link) %> <%= link_to_raw_time_disassociate(rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
         <% end %>
       </td>
 

@@ -156,7 +156,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     raw_time = RawTime.find(params[:raw_time_id])
-    split_time = ::SplitTimeFromRawTime.build(raw_time, effort: @effort, event: @effort.event)
+    split_time = ::SplitTimeFromRawTime.build(raw_time, effort: @effort, event: @effort.event, lap: params[:lap])
 
     if split_time.save
       raw_time.update(split_time: split_time)

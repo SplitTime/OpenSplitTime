@@ -19,6 +19,11 @@
         "test-setup": "bin/rails assets:precompile",
         "test": "bin/rspec"
       }
+    },
+    "production": {
+      "env": {
+        "YARN_PRODUCTION": false
+      }
     }
   }
 }

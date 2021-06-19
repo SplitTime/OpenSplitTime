@@ -19,6 +19,6 @@
         "test-setup": "bin/rails assets:precompile",
         "test": "bin/rspec"
       }
-    },
+    }
   }
 }

@@ -20,10 +20,5 @@
         "test": "bin/rspec"
       }
     },
-    "production": {
-      "env": {
-        "YARN_PRODUCTION": false
-      }
-    }
   }
 }

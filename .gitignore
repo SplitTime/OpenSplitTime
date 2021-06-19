@@ -109,3 +109,10 @@ storage/
 
 # Snyk working file
 .snyk
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity

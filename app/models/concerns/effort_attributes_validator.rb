@@ -10,14 +10,15 @@ class EffortAttributesValidator < ActiveModel::Validator
   private
 
   def validate_split_times(effort)
-    record_event_course = effort.event&.course
-    if record_event_course && effort.split_times.eager_load(split: :course).any? { |st| st.split.course != record_event_course }
+    event_course_id = effort.event&.course_id
+    if event_course_id && effort.split_times.joins(:split).pluck(:course_id).any? { |course_id| course_id != event_course_id }
       effort.errors.add(:event, "course doesn't reconcile with split_times => split => course")
     end
   end
 
   def validate_bib_number(effort)
-    return unless effort.bib_number
+    return unless effort.bib_number && effort.will_save_change_to_bib_number?
+
     conflicting_effort = Effort.where(event: effort.events_within_group, bib_number: effort.bib_number)
                              .where.not(id: effort.id).first
     if conflicting_effort
@@ -26,7 +27,8 @@ class EffortAttributesValidator < ActiveModel::Validator
   end
 
   def validate_person(effort)
-    return unless effort.person_id
+    return unless effort.person_id && effort.will_save_change_to_person_id?
+
     conflicting_person = Effort.where(event: effort.events_within_group, person_id: effort.person)
                              .where.not(id: effort.id).first&.person
     if conflicting_person

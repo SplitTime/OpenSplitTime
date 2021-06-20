@@ -26,7 +26,7 @@
 			window.requestAnimationFrame( homepage.parallax );
 		}
 	}
-    document.addEventListener("turbolinks:load", function() {
+    document.addEventListener("turbo:load", function() {
 		homepage.init();
 	});
 })(jQuery);

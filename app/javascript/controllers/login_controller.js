@@ -9,7 +9,7 @@ export default class extends Controller {
     }
 
     onPostSuccess() {
-        reloadWithTurbolinks()
+        reloadWithTurbo()
     }
 
     onPostError() {

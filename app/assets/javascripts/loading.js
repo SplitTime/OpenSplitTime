@@ -1,5 +1,5 @@
 // This isn't necessarily specific to toggle buttons
-document.addEventListener("turbolinks:load", function () {
+document.addEventListener("turbo:load", function () {
 
     var timeout = null;
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_041541) do
+ActiveRecord::Schema.define(version: 2021_06_20_161107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -197,6 +197,21 @@ ActiveRecord::Schema.define(version: 2021_01_08_041541) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "import_jobs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "parent_type", null: false
+    t.bigint "parent_id", null: false
+    t.string "format", null: false
+    t.integer "status"
+    t.string "error_message"
+    t.integer "row_count"
+    t.integer "elapsed_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_type", "parent_id"], name: "index_import_jobs_on_parent"
+    t.index ["user_id"], name: "index_import_jobs_on_user_id"
   end
 
   create_table "locations", id: :serial, force: :cascade do |t|
@@ -496,6 +511,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_041541) do
   add_foreign_key "event_series_events", "events"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
+  add_foreign_key "import_jobs", "users"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
@@ -517,7 +533,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_041541) do
        LANGUAGE sql
        IMMUTABLE STRICT
       AS $function$
-      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\s+')))), ' ')
       $function$
   SQL
 

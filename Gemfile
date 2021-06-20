@@ -57,7 +57,7 @@ gem 'sitemap_generator'
 gem 'smarter_csv', require: false
 gem 'strip_attributes'
 gem 'structpluck'
-gem 'turbolinks'
+gem 'turbo-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'
 gem 'webpacker', '~> 4.3', '>= 4.3.0'

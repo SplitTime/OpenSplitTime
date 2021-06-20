@@ -843,6 +843,19 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
+"@hotwired/turbo-rails@^7.0.0-beta.7":
+  version "7.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.0-beta.7.tgz#ca347999d4a62af447554bebe0ab46dd7c241661"
+  integrity sha512-aoX91p2pIApEywhWNHqbaQ+gtNBr3+u38X0jSEHPdqVAK8lLRtHJomP3s1psSuYTiRaOuIeh6IhHDRYyAmZxKg==
+  dependencies:
+    "@hotwired/turbo" "^7.0.0-beta.7"
+    "@rails/actioncable" "^6.0.0"
+
+"@hotwired/turbo@^7.0.0-beta.7":
+  version "7.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.0-beta.7.tgz#0f519af4e63698a9fb44d2db9019cdb5ddd048db"
+  integrity sha512-w4Oajhnqnz+b2rM325FjPnENVij1yWJy+q6bwSgmCvRG4715T7PoC6YwTPd4h6PVUGgy5WpqgDadzKdEV+qtLw==
+
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@npmcli/move-file/-/move-file-1.0.1.tgz#de103070dac0f48ce49cf6693c23af59c0f70464"
@@ -7400,17 +7413,10 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-turbolinks@^2.0.3:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/vue-turbolinks/-/vue-turbolinks-2.1.0.tgz#fc7372d06d624aa3fb68231dc0b509719edc778f"
-  integrity sha512-Rgq9eUS2LgHVoSR58S0utW7g/aqLlVZ6uM7S1e02+xEUGKW1fqhUHQXea3p+cE59ldf+f3nz3Cc3HVO4MlrTFA==
-  dependencies:
-    vue "^2.2.4"
-
-vue@^2.2.4:
-  version "2.6.12"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
-  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
+vue-turbolinks@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/vue-turbolinks/-/vue-turbolinks-2.2.2.tgz#6b7b5c4120f5586907ef977be4b63a734bf8cd36"
+  integrity sha512-pPO2Fr+1UgdhUK9dc5OhjLSeYi5LZAm/VZBXOVQgLHCO31bRjAof/+W/e/6SHCbnb1xdZb1gW5T9MX0k9ejSAQ==
 
 watchpack-chokidar2@^2.0.0:
   version "2.0.0"

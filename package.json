@@ -6,7 +6,7 @@
     "coffeescript": "1.12.7",
     "datatables.net-bs4": "^1.10.23",
     "lodash": "^4.17.21",
-    "stimulus": "^1.1.1",
+    "stimulus": "^2.0",
     "vue-turbolinks": "^2.0.3"
   },
   "devDependencies": {

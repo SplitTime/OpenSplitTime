@@ -17,13 +17,13 @@
       <th class="text-right"><%= @presenter.time_header_text %></th>
     </tr>
     </thead>
-    <tbody data-target="infinite-scroll.result">
+    <tbody data-infinite-scroll-target="result">
     <%= render "best_effort_segments/rows", segments: @presenter.filtered_segments %>
     </tbody>
   </table>
 
   <div class="row">
-    <div class="col text-center" data-target="infinite-scroll.link">
+    <div class="col text-center" data-infinite-scroll-target="link">
       <% if @presenter.filtered_segments_count == @presenter.per_page %>
         <%= link_to "Show More", "#", data: {action: "infinite-scroll#loadFromClick"} %>
       <% else %>

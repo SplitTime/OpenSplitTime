@@ -10,7 +10,7 @@ module EventsHelper
     grouped_collection_select(resource_type, :results_template_id, organizations, :results_templates, :name, :id, :name,
                               {prompt: false},
                               {class: "form-control dropdown-select-field",
-                       data: {target: 'results-template.dropdown', action: 'results-template#replaceCategories'}})
+                               data: {"results-template-target" => "dropdown", action: "results-template#replaceCategories"}})
   end
 
   def link_to_beacon_button(view_object)

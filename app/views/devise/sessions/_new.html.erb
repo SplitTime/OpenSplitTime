@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row justify-content-center" style="display:none" data-target="login.error">
+        <div class="row justify-content-center" style="display:none" data-login-target="error">
           <div class="alert alert-info d-block" role="alert">
             <div class="col col-login">
               <strong>Invalid email or password.</strong>
@@ -27,7 +27,7 @@
                         method: :post,
                         id: "google-log-in-button",
                         class: "btn btn-google btn-block") %>
-            <hr class="hr-text", data-content="or">
+            <hr class="hr-text" data-content="or">
             <p class="text-center">Log in with Email</p>
             <%= render 'devise/sessions/form', modal: true %>
             <%= render 'devise/shared/modal_links' %>

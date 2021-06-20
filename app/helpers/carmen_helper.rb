@@ -8,7 +8,7 @@ module CarmenHelper
     country_table.unshift([prompt, nil])
 
     select(model, field, country_table, {}, {class: "form-control",
-                                             data: {target: "carmen.countrySelect",
+                                             data: {"carmen-target" => "countrySelect",
                                                     action: "change->carmen#getSubregions"}})
   end
 

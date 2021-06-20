@@ -76,7 +76,10 @@ RSpec.describe 'visit the edit event group page and make changes', type: :system
     fill_in 'Name', with: 'Silverton Ultra Marathon'
     click_button 'Update Event Group'
 
+    expect(page).not_to have_current_path(edit_event_group_path(event_group))
+
     event_group.reload
+    expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
     expect(event_group.name).to eq('Silverton Ultra Marathon')
   end
 
@@ -93,8 +96,10 @@ RSpec.describe 'visit the edit event group page and make changes', type: :system
     split_time_count = event_group.split_times.count
     raw_time_count = event_group.raw_times.count
 
-    expect { click_link 'Permanently Delete' }.to change { SplitTime.count }.by(-split_time_count)
-                                                      .and change { RawTime.count }.by (-raw_time_count)
+    expect do
+      click_link 'Permanently Delete'
+      expect(page).not_to have_current_path(edit_event_group_path(event_group))
+    end.to change { SplitTime.count }.by(-split_time_count).and change { RawTime.count }.by (-raw_time_count)
 
     expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
   end
@@ -109,7 +114,10 @@ RSpec.describe 'visit the edit event group page and make changes', type: :system
     expect(modal).not_to have_link('Permanently Delete', class: 'disabled')
     expect(modal).to have_link('Permanently Delete')
 
-    expect { click_link 'Permanently Delete' }.to change { EventGroup.count }.by(-1)
+    expect do
+      click_link 'Permanently Delete'
+      expect(page).not_to have_current_path(edit_event_group_path(event_group))
+    end.to change { EventGroup.count }.by(-1)
     expect(page).to have_current_path(event_groups_path)
   end
 end

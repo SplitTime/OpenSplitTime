@@ -14,6 +14,7 @@ RSpec.describe 'visit the edit event page and make changes', type: :system, js: 
   end
 
   let(:event) { events(:hardrock_2014) }
+  let(:event_group) { event.event_group }
   let(:organization) { event.organization }
 
   scenario 'The user is a visitor' do
@@ -69,6 +70,8 @@ RSpec.describe 'visit the edit event page and make changes', type: :system, js: 
     fill_in 'Short name', with: 'Silverton'
     click_button 'Update Event'
 
+    expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
+
     event.reload
     expect(event.short_name).to eq('Silverton')
   end
@@ -83,7 +86,9 @@ RSpec.describe 'visit the edit event page and make changes', type: :system, js: 
     expect(modal).not_to have_link('Permanently Delete', class: 'disabled')
     expect(modal).to have_link('Permanently Delete')
 
-    expect { click_link 'Permanently Delete' }.to change { Event.count }.by(-1)
-    expect(page).to have_current_path(event_groups_path)
+    expect do
+      click_link 'Permanently Delete'
+      expect(page).to have_current_path(event_groups_path)
+    end.to change { Event.count }.by(-1)
   end
 end

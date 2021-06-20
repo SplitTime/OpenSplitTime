@@ -39,7 +39,7 @@
         datetimepicker.init();
     };
 
-    document.addEventListener("turbolinks:load", init );
+    document.addEventListener("turbo:load", init );
     $(document).bind( 'vue-ready', init );
 
 })(jQuery);

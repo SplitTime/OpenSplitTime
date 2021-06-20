@@ -28,6 +28,6 @@ export default class extends Controller {
     }
 
     reloadPage() {
-        reloadWithTurbolinks()
+        reloadWithTurbo()
     }
 }

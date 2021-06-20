@@ -13,6 +13,7 @@ global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
+import "@hotwired/turbo"
 import 'utils/growl';
 
 import TurboLinksAdapter from 'vue-turbolinks';

@@ -1052,7 +1052,7 @@
                 var callback = function () {
                     liveEntry.timeRowsTable.toggleDiscardAll(false);
                 };
-                document.addEventListener("turbolinks:load", function () {
+                document.addEventListener("turbo:load", function () {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
                 return function (canDelete) {
@@ -1247,7 +1247,7 @@
         } // END populateRows
     }; // END liveEntry
 
-    document.addEventListener("turbolinks:load", function () {
+    document.addEventListener("turbo:load", function () {
         if (Rails.$('.event_groups.live_entry')[0] === document.body) {
             liveEntry.init();
         }

@@ -21,12 +21,14 @@
                         user_facebook_omniauth_authorize_path,
                         method: :post,
                         id: "facebook-log-in-button",
-                        class: "btn btn-facebook btn-block") %>
+                        class: "btn btn-facebook btn-block",
+                        data: {turbo: false}) %>
             <%= link_to(fab_icon("google", text: " Log in with Google"),
                         user_google_oauth2_omniauth_authorize_path,
                         method: :post,
                         id: "google-log-in-button",
-                        class: "btn btn-google btn-block") %>
+                        class: "btn btn-google btn-block",
+                        data: {turbo: false}) %>
             <hr class="hr-text" data-content="or">
             <p class="text-center">Log in with Email</p>
             <%= render 'devise/sessions/form', modal: true %>

@@ -15,7 +15,6 @@
 //= require rails-ujs
 //= require popper
 //= require bootstrap-sprockets
-//= require turbolinks
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require moment

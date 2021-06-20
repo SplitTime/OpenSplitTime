@@ -26,7 +26,7 @@ $.notifyDefaults({
     z_index: 1071 // Bootstrap uses up to 1070
 });
 
-$(document).on("turbolinks:load", () => {
+$(document).on("turbo:load", () => {
     $(document).on('ajax:error', (e) => {
         let errors = e.detail[0].errors;
         if ($.isArray(errors)) {

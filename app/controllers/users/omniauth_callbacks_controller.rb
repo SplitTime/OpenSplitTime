@@ -39,7 +39,7 @@ module Users
         reason = params[:error_description] || "Unknown Error"
       end
 
-      set_flash_message(:danger, :failure, kind: kind, reason: reason) if is_navigational_format?
+      set_flash_message(:danger, :failure, kind: kind, reason: reason)
       redirect_to new_user_registration_url
     end
   end

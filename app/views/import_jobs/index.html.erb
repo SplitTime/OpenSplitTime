@@ -1,0 +1,27 @@
+<h1><%= @user.full_name %></h1>
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>
+      Parent Type
+    </th>
+    <th>Parent ID</th>
+    <th>Format</th>
+    <th>Row Count</th>
+    <th>Elapsed Time</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @user.import_jobs.each do |job| %>
+  <tr>
+    <td><%= job.parent_type %></td>
+    <td><%= job.parent_id %></td>
+    <td><%= job.format %></td>
+    <td><%= job.row_count %></td>
+    <td><%= job.elapsed_time %></td>
+    <td><%= job.status %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>

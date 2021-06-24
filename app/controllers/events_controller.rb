@@ -154,8 +154,11 @@ class EventsController < ApplicationController
         records = records.select(&:finished?) if export_format.in?(FINISHERS_ONLY_EXPORT_FORMATS)
         filename = "#{@presenter.name}-#{export_format}-#{current_time.iso8601}.csv"
 
+        requested_export_template = "#{export_format}.csv.ruby"
+        requested_partial_name = Rails.root.join("app/views/events/_#{requested_export_template}")
+        partial = File.exists?(requested_partial_name) ? requested_export_template : "not_found.csv.ruby"
         csv_stream = render_to_string(
-          partial: "#{export_format}.csv.ruby",
+          partial: partial,
           locals: {current_time: current_time, records: records, options: options}
         )
 

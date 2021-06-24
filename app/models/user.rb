@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :watch_efforts, through: :subscriptions, source: :subscribable, source_type: 'Effort'
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
+  has_many :import_jobs, dependent: :destroy
   has_one :avatar, class_name: 'Person', dependent: :nullify
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint

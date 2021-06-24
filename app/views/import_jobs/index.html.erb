@@ -1,0 +1,50 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: My stuff - #{@user.full_name}" %>
+<% end %>
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @user.full_name %></strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= current_user&.admin? ? (link_to 'Users', users_path) : 'Users' %></li>
+            <li class="breadcrumb-item"><%= link_to @user.full_name, user_path(@user) %></li>
+            <li class="breadcrumb-item active">Import Jobs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Parent Type</th>
+      <th>Parent ID</th>
+      <th>Format</th>
+      <th>Row Count</th>
+      <th>Elapsed Time</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @user.import_jobs.each do |job| %>
+      <tr>
+        <td><%= job.parent_type %></td>
+        <td><%= job.parent_id %></td>
+        <td><%= job.format %></td>
+        <td><%= job.row_count %></td>
+        <td><%= job.elapsed_time %></td>
+        <td><%= job.status %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</article>

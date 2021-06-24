@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
-  FINISHERS_ONLY_EXPORT_FORMATS = [:finishers].freeze
+  FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
 
   def show
     redirect_to :spread_event

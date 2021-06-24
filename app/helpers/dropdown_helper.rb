@@ -284,6 +284,8 @@ module DropdownHelper
         {role: :separator},
         {name: 'Export Finishers List',
          link: export_event_path(event, format: :csv, export_format: :finishers)},
+        {name: 'Export to ITRA',
+         link: export_event_path(event, format: :csv, export_format: :itra)},
         {name: 'Export to Ultrasignup',
          link: export_event_path(event, format: :csv, export_format: :ultrasignup)}
     ]

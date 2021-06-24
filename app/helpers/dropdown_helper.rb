@@ -283,9 +283,9 @@ module DropdownHelper
          visible: current_user.admin?},
         {role: :separator},
         {name: 'Export Finishers List',
-         link: export_finishers_event_path(event, format: :csv)},
+         link: export_event_path(event, format: :csv, export_format: :finishers)},
         {name: 'Export to Ultrasignup',
-         link: export_to_ultrasignup_event_path(event, format: :csv)}
+         link: export_event_path(event, format: :csv, export_format: :ultrasignup)}
     ]
     build_dropdown_menu('Actions', dropdown_items, button: true)
   end

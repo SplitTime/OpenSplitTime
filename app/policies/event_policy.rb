@@ -52,11 +52,7 @@ class EventPolicy < ApplicationPolicy
     user.authorized_fully?(event)
   end
 
-  def export_finishers?
-    user.authorized_to_edit?(event)
-  end
-
-  def export_to_ultrasignup?
+  def export?
     user.authorized_to_edit?(event)
   end
 

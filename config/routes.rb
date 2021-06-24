@@ -120,8 +120,7 @@ Rails.application.routes.draw do
     member do
       get :admin
       get :edit_start_time
-      get :export_finishers
-      get :export_to_ultrasignup
+      get :export
       get :podium
       get :spread
       get :summary

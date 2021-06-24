@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
 
   MAX_SUMMARY_EFFORTS = 1000
+  FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
 
   def show
     redirect_to :spread_event
@@ -138,37 +139,30 @@ class EventsController < ApplicationController
     end
   end
 
-  def export_finishers
+  def export
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
+    @presenter = ::EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.csv do
         options = {}
-        export_format = :finishers
-        current_time = Time.current.in_time_zone(@event.home_time_zone)
-        records = @presenter.ranked_effort_rows.select(&:finished?)
-        csv_stream = render_to_string(partial: 'finishers.csv.ruby', locals: {current_time: current_time, records: records, options: options})
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
-      end
-    end
-  end
+        options[:event_finished] = @presenter.event_finished?
 
-  def export_to_ultrasignup
-    authorize @event
-    params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
-    respond_to do |format|
-      format.csv do
-        options = {}
-        export_format = :ultrasignup
+        export_format = params[:export_format].to_sym
         current_time = Time.current.in_time_zone(@event.home_time_zone)
         records = @presenter.ranked_effort_rows
-        options[:event_finished] = @presenter.event_finished?
-        csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby', locals: {current_time: current_time, records: records, options: options})
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+        records = records.select(&:finished?) if export_format.in?(FINISHERS_ONLY_EXPORT_FORMATS)
+        filename = "#{@presenter.name}-#{export_format}-#{current_time.iso8601}.csv"
+
+        requested_export_template = "#{export_format}.csv.ruby"
+        requested_partial_name = Rails.root.join("app/views/events/_#{requested_export_template}")
+        partial = File.exists?(requested_partial_name) ? requested_export_template : "not_found.csv.ruby"
+        csv_stream = render_to_string(
+          partial: partial,
+          locals: {current_time: current_time, records: records, options: options}
+        )
+
+        send_data(csv_stream, type: 'text/csv', filename: filename)
       end
     end
   end

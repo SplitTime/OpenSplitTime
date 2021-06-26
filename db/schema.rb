@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_161107) do
+ActiveRecord::Schema.define(version: 2021_06_26_220548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_161107) do
     t.integer "updated_by"
     t.datetime "next_start_time"
     t.string "slug", null: false
-    t.bigint "organization_id"
+    t.bigint "organization_id", null: false
     t.boolean "concealed"
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
@@ -533,7 +533,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_161107) do
        LANGUAGE sql
        IMMUTABLE STRICT
       AS $function$
-      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\s+')))), ' ')
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E' +')))), ' ')
       $function$
   SQL
 

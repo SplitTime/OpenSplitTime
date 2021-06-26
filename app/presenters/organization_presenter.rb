@@ -19,6 +19,10 @@ class OrganizationPresenter < BasePresenter
         .sort_by { |event_group| -event_group.scheduled_start_time.to_i }
   end
 
+  def orphaned_event_groups
+    organization.event_groups.left_joins(:events).where(events: {id: nil})
+  end
+
   def event_series
     organization.event_series.includes(events: :event_group).sort_by(&:scheduled_start_time).reverse
   end

@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Build Event Group - #{@event_group.name}" %>
+  <% "OpenSplitTime: Setup Event Group - #{@presenter.event_group.name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,19 +7,48 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @event_group.name %></strong></h1>
+          <h1><strong><%= @presenter.event_group.name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
-            <li class="breadcrumb-item active"><%= @event_group.name %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event_group.name %></li>
             <li class="breadcrumb-item active">Setup</li>
           </ul>
         </div>
       </div>
     </div>
+    <%= setup_view_tabs(@presenter) %>
   </div>
 </header>
 
-<article>
+<% case @presenter.display_style %>
+<% when "events" %>
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <% if @presenter.available_courses.present? %>
+            <%= link_to fa_icon("plus", text: "Create an event on an existing course"), new_event_path(event_group: @presenter.event_group), id: "add-event", class: "btn btn-success" %>
+          <% end %>
+          <%= link_to fa_icon("plus", text: "Create a new course"), new_event_path(event_group: @presenter.event_group), id: "add-event", class: "btn btn-success" %>
+        </div>
+      </div>
+    </div>
+  </aside>
 
-</article>
+  <article class="ost-article container">
+    <% if @presenter.events.present? %>
+      <%= render "events/events", events: @presenter.events, presenter: @presenter %>
+    <% else %>
+      <h4>No events have been created yet.</h4>
+    <% end %>
+  </article>
+<% when "partners" %>
+  <article class="ost-article container">
+    <% if @presenter.partners.present? %>
+      <%= render "partner_list", partners: @presenter.partners, view_model: @presenter %>
+    <% else %>
+      <h4>This event group has no sponsorship partners yet.</h4>
+    <% end %>
+  </article>
+<% end %>

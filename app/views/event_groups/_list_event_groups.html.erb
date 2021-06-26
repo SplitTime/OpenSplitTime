@@ -20,7 +20,7 @@
         <% if event_group.events.present? %>
           <%= link_to event_group.name, event_group_path(event_group) %>
         <% else %>
-          <%= link_to event_group.name, build_event_group_path(event_group) %>
+          <%= link_to event_group.name, setup_event_group_path(event_group) %>
         <% end %>
       </strong></td>
       <td>

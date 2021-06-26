@@ -91,15 +91,15 @@ Rails.application.routes.draw do
 
   resources :event_groups do
     member do
-      get :build
       get :drop_list
       get :efforts
+      get :export_raw_times
       get :finish_line
       get :follow
       get :raw_times
       get :reconcile
       get :roster
-      get :export_raw_times
+      get :setup
       get :split_raw_times
       get :stats
       get :traffic

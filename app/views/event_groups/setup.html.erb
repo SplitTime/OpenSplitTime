@@ -1,0 +1,25 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Build Event Group - #{@event_group.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @event_group.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
+            <li class="breadcrumb-item active"><%= @event_group.name %></li>
+            <li class="breadcrumb-item active">Setup</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+
+</article>

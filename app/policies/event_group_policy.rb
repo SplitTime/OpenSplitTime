@@ -20,7 +20,7 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
-  def build?
+  def setup?
     user.authorized_to_edit?(event_group)
   end
 

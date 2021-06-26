@@ -36,7 +36,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     if @event_group.save
-      redirect_to build_event_group_path(@event_group)
+      redirect_to setup_event_group_path(@event_group)
     else
       render "new"
     end
@@ -64,7 +64,7 @@ class EventGroupsController < ApplicationController
     redirect_to event_groups_path
   end
 
-  def build
+  def setup
     authorize @event_group
   end
 

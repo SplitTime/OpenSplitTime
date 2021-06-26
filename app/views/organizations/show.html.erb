@@ -152,17 +152,19 @@
   <% end %>
 
   <article class="ost-article container">
+    <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+      <% if @presenter.orphaned_event_groups.present? %>
+        <div class="p-3 border border-primary">
+          <h3>Under Construction</h3>
+          <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.orphaned_event_groups %>
+        </div>
+      <% end %>
+    <% end %>
+
     <% if @presenter.event_groups.present? %>
       <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.event_groups %>
     <% else %>
       <h4>No events exist yet</h4>
-    <% end %>
-    <% if current_user&.authorized_to_edit?(@presenter.organization) %>
-      <% if @presenter.orphaned_event_groups.present? %>
-        <hr/>
-        <h3>Under Construction Event Groups</h3>
-        <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.orphaned_event_groups %>
-      <% end %>
     <% end %>
   </article>
 <% end %>

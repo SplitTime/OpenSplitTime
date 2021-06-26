@@ -89,8 +89,9 @@ Rails.application.routes.draw do
 
   resources :duplicate_event_groups, only: [:new, :create]
 
-  resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
+  resources :event_groups do
     member do
+      get :build
       get :drop_list
       get :efforts
       get :finish_line

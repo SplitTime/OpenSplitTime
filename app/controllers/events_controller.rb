@@ -11,13 +11,11 @@ class EventsController < ApplicationController
   end
 
   def new
-    if params[:course_id]
-      @event = Event.new(course_id: params[:course_id], laps_required: 1)
-      @course = Course.friendly.find(params[:course_id])
-    else
-      @event = Event.new(laps_required: 1)
-    end
-    authorize @event
+    event_group = EventGroup.friendly.find(params[:event_group])
+
+    event = Event.new(event_group: event_group, laps_required: 1, results_template: ResultsTemplate.default)
+    @presenter = ::EventSetupPresenter.new(event, params, current_user)
+    authorize event
   end
 
   def edit

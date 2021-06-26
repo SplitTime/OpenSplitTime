@@ -27,10 +27,7 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <% if @presenter.available_courses.present? %>
-            <%= link_to fa_icon("plus", text: "Create an event on an existing course"), new_event_path(event_group: @presenter.event_group), id: "add-event", class: "btn btn-success" %>
-          <% end %>
-          <%= link_to fa_icon("plus", text: "Create a new course"), new_event_path(event_group: @presenter.event_group), id: "add-event", class: "btn btn-success" %>
+          <%= link_to fa_icon("plus", text: "Create an event"), new_event_path(event_group: @presenter.event_group), id: "add-event", class: "btn btn-success" %>
         </div>
       </div>
     </div>

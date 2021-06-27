@@ -29,6 +29,12 @@ class Course < ApplicationRecord
     slug
   end
 
+  def add_basic_splits!
+    splits << Split.new(base_name: "Start", kind: :start, sub_split_bitmap: 1, distance_from_start: 0)
+    splits << Split.new(base_name: "Finish", kind: :finish, sub_split_bitmap: 1)
+    self
+  end
+
   def earliest_event_date
     events.earliest&.scheduled_start_time
   end

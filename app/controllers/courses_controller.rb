@@ -32,7 +32,11 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      redirect_to courses_path
+      if params[:event_group].present?
+        redirect_to new_event_path(event_group: params[:event_group], course: @course.slug)
+      else
+        redirect_to course_path(@course)
+      end
     else
       render "new"
     end

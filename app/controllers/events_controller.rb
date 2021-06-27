@@ -12,8 +12,9 @@ class EventsController < ApplicationController
 
   def new
     event_group = EventGroup.friendly.find(params[:event_group])
+    course = params[:course].present? ? event_group.organization.courses.friendly.find(params[:course]) : nil
 
-    event = Event.new(event_group: event_group, laps_required: 1, results_template: ResultsTemplate.default)
+    event = Event.new(event_group: event_group, course: course, laps_required: 1, results_template: ResultsTemplate.default)
     @presenter = ::EventSetupPresenter.new(event, params, current_user)
     authorize event
   end
@@ -27,7 +28,7 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      redirect_to event_group_path(@event.event_group)
+      redirect_to setup_event_group_path(@event.event_group)
     else
       render "new"
     end

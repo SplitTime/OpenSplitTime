@@ -1,19 +1,84 @@
 <%= render 'shared/errors', obj: event %>
 
-<article class="ost-article container">
-  <aside class="col-12">
-    <h3>
-      <strong>Provide Your Event Details</strong>
-    </h3>
-    <p>Your event will be run on a course. You can use an existing course or create a new one. If you have more than one
-      event running in parallel, you must add a short name to distinguish between them.</p>
-  </aside>
+<aside class="col-12">
+  <h3>
+    <strong>Provide Your Event Details</strong>
+  </h3>
+  <p>Your event will be run on a course. You can use an existing course or create a new one. If you have more than one
+    event running in parallel, you must add a short name to distinguish between them.</p>
+</aside>
+
+<div data-controller="event-setup">
+  <div data-event-setup-target="formData"
+       data-event-group-name="<%= presenter.event_group.name %>"
+       data-pref-distance-unit="<%= presenter.pref_distance_unit %>"></div>
+  <%= turbo_frame_tag :course_info, data: {"event-setup-target" => "courseInfoFrame"} do %>
+    <div class="row">
+      <div class="col-12">
+        <%= form_with(model: presenter.course, html: {class: "form-horizontal", role: "form"}) do |form| %>
+          <div class="card card-body bg-light border-0">
+            <div class="row">
+              <div class="form-group col">
+                <label class="required">Choose an existing course or create a new course</label>
+                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
+                <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id), {},
+                                {autofocus: true,
+                                 class: "form-control dropdown-select-field",
+                                 data: {"event-setup-target" => "courseSelector",
+                                        action: "event-setup#fillDistance event-setup#toggleCourseForm event-setup#setCourseId"}} %>
+              </div>
+            </div>
+
+            <div class="<%= presenter.course.persisted? ? 'd-none' : '' %>" data-event-setup-target="courseForm">
+              <div class="row">
+                <div class="form-group col">
+                  <div class="row">
+                    <div class="col">
+                      <%= form.label :course_name, class: "required" %>
+                      <%= form.text_field :name, class: "form-control", placeholder: "My Sweet Course" %>
+                    </div>
+
+                    <%= form.fields_for(:splits, presenter.start_split) do |start_split_form| %>
+                      <%= start_split_form.hidden_field :base_name %>
+                      <%= start_split_form.hidden_field :distance_in_preferred_units %>
+                      <%= start_split_form.hidden_field :kind %>
+                      <%= start_split_form.hidden_field :sub_split_bitmap %>
+                    <% end %>
+
+                    <%= form.fields_for(:splits, presenter.finish_split) do |finish_split_form| %>
+                      <div class="col">
+                        <%= finish_split_form.label "Course distance (#{presenter.pref_distance_unit})", class: "required" %>
+                        <%= finish_split_form.text_field :distance_in_preferred_units, class: "form-control", placeholder: "34.5" %>
+                      </div>
+                      <%= finish_split_form.hidden_field :base_name %>
+                      <%= finish_split_form.hidden_field :kind %>
+                      <%= finish_split_form.hidden_field :sub_split_bitmap %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+              <%= form.hidden_field :organization_id %>
+              <%= hidden_field_tag :event_group, presenter.event_group.slug %>
+
+              <br/>
+
+              <div class="row">
+                <div class="col">
+                  <%= form.submit "Create course", class: "btn btn-primary btn-large" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <br/>
 
   <div class="row">
-    <div class="col-12" data-controller="staging event-form">
-      <div data-target="event-form.formData"
-           data-event-group-name="<%= presenter.event_group.name %>"
-           data-pref-distance-unit="<%= presenter.pref_distance_unit %>"></div>
+    <div class="col-12">
       <%= form_with(model: presenter.event, html: {class: "form-horizontal", role: "form"}) do |form| %>
         <%= form.hidden_field :id %>
 
@@ -21,22 +86,21 @@
           <div class="row">
             <div class="form-group col">
               <div class="row">
+                <%= form.hidden_field :course_id, data: {"event-setup-target" => "courseIdField"} %>
                 <div class="col">
-                  <%= form.label :short_name %>
-                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
-                  <%= form.text_field :short_name, class: "form-control", autofocus: true, placeholder: "Short name", data: {target: 'event-form.eventShortName', action: 'keyup->event-form#fillEventName'} %>
+                  <%= form.label :laps_required, class: 'required' %>
+                  <%= form.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
+                                  class: "form-control dropdown-select-field", data: {'event-setup-target' => 'lapDropdown', action: 'event-setup#fillDistance'} %>
                 </div>
                 <div class="col">
-                  <%= form.label :full_name %>
-                  <div class="form-auto-text" data-target="event-form.eventName"><%= presenter.event.name %></div>
+                  <%= form.label :course_distance %>
+                  <div class="form-auto-text" data-event-setup-target="courseDistance"></div>
+                </div>
+                <div class="col">
+                  <%= form.label :total_distance %>
+                  <div class="form-auto-text" data-event-setup-target="totalDistance"></div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="form-group col-6">
-              <%= form.label :start_time, class: 'required' %>
-              <%= form.datetimepicker_field(:scheduled_start_time_local) %>
             </div>
           </div>
         </div>
@@ -46,34 +110,23 @@
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
-              <label class="required">Choose an existing course or create a new course</label>
-              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
               <div class="row">
                 <div class="col">
-                  <%= form.select :course_id, options_for_select(presenter.courses_for_select, presenter.event.course_id),
-                                  {prompt: true},
-                                  {class: "form-control dropdown-select-field", data: {target: 'event-form.courseDropdown', action: 'event-form#fillDistance'}} %>
+                  <%= form.label :short_name %>
+                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
+                  <%= form.text_field :short_name, class: "form-control", placeholder: "Short name", data: {"event-setup-target" => "eventShortName", action: 'keyup->event-setup#fillEventName'} %>
                 </div>
                 <div class="col">
-                  <%= link_to 'Create a New Course', '#', class: 'btn btn-outline-secondary form-control dropdown-select-field', data: {toggle: 'modal', target: '#new-course-modal'} %>
+                  <%= form.label :full_name %>
+                  <div class="form-auto-text" data-event-setup-target="eventName"><%= presenter.event.name %></div>
                 </div>
               </div>
-              <hr/>
-              <div class="row">
-                <div class="col">
-                  <%= form.label :laps_required, class: 'required' %>
-                  <%= form.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
-                                  class: "form-control dropdown-select-field", data: {target: 'event-form.lapDropdown', action: 'event-form#fillDistance'} %>
-                </div>
-                <div class="col">
-                  <%= form.label :course_distance %>
-                  <div class="form-auto-text" data-target="event-form.courseDistance"></div>
-                </div>
-                <div class="col">
-                  <%= form.label :total_distance %>
-                  <div class="form-auto-text" data-target="event-form.totalDistance"></div>
-                </div>
-              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <%= form.label :start_time, class: 'required' %>
+              <%= form.datetimepicker_field(:scheduled_start_time_local) %>
             </div>
           </div>
         </div>
@@ -104,18 +157,25 @@
                   <%= results_template_selector(presenter.event) %>
                 </h5>
               </div>
-              <div class="card-body" data-target="results-template.categories">
+              <div class="card-body" data-results-template-target="categories">
                 <%= render 'results_templates/categories_card', template: presenter.event.results_template %>
               </div>
             </div>
           </div>
         </div>
 
+        <%= form.hidden_field :event_group_id %>
+
+        <div class="form-group">
+          <div class="col">
+            <%= form.submit "Create event", class: "btn btn-primary btn-large" %>
+          </div>
+        </div>
+
         <div class="col">
           <span class="brackets"><%= link_to 'Cancel', setup_event_group_path(presenter.event_group) %></span>
         </div>
-
       <% end %>
     </div>
   </div>
-</article>
+</div>

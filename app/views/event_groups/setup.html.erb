@@ -35,7 +35,7 @@
 
   <article class="ost-article container">
     <% if @presenter.events.present? %>
-      <%= render "events/events", events: @presenter.events, presenter: @presenter %>
+      <%= render "events/events", events: @presenter.events, presenter: @presenter, show_grouping_button: "" %>
     <% else %>
       <h4>No events have been created yet.</h4>
     <% end %>

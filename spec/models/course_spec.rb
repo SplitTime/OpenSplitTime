@@ -38,6 +38,20 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe "add_basic_splits" do
+    let(:course) { build(:course) }
+    it "adds a start and finish split to the course" do
+      expect(course.splits.size).to eq(0)
+      course.add_basic_splits!
+      expect(course.splits.size).to eq(2)
+      expect(course.splits.map(&:kind)).to eq(["start", "finish"])
+    end
+
+    it "returns the course" do
+      expect(course.add_basic_splits!).to be_a(::Course)
+    end
+  end
+
   describe "methods that produce lap_splits" do
     let(:course) { courses(:rufa_course) }
     let(:splits) { course.ordered_splits }

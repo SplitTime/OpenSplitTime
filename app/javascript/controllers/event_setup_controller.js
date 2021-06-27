@@ -2,8 +2,18 @@ import {Controller} from "stimulus"
 
 export default class extends Controller {
 
-    static targets = ["eventName", "eventShortName", "formData", "courseDropdown", "lapDropdown",
-        "courseDistance", "totalDistance"];
+    static targets = [
+        "courseDistance",
+        "courseForm",
+        "courseIdField",
+        "courseInfoFrame",
+        "courseSelector",
+        "eventName",
+        "eventShortName",
+        "formData",
+        "lapDropdown",
+        "totalDistance",
+    ];
 
     connect() {
         this.fillEventName();
@@ -22,7 +32,7 @@ export default class extends Controller {
     }
 
     fillDistance() {
-        const select = this.courseDropdownTarget;
+        const select = this.courseSelectorTarget;
         const courseDistance = parseFloat(select.options[select.selectedIndex].dataset.distance);
         const distanceUnit = this.formDataTarget.dataset.prefDistanceUnit;
         const laps = parseInt(this.lapDropdownTarget.value);
@@ -30,13 +40,27 @@ export default class extends Controller {
 
         if (isNaN(courseDistance)) {
             this.courseDistanceTarget.innerHTML = 'No course selected';
-            this.totalDistanceTarget.innerHTML = 'No course selected'
+            this.totalDistanceTarget.innerHTML = 'No course selected';
         } else if (laps === 0) {
             this.courseDistanceTarget.innerHTML = courseDistance + ' ' + distanceUnit;
             this.totalDistanceTarget.innerHTML = 'Unlimited (time-based)'
         } else {
             this.courseDistanceTarget.innerHTML = courseDistance + ' ' + distanceUnit;
             this.totalDistanceTarget.innerHTML = totalDistance + ' ' + distanceUnit
+        }
+    }
+
+    setCourseId() {
+        this.courseIdFieldTarget.value = this.courseSelectorTarget.value
+    }
+
+    toggleCourseForm() {
+        const courseId = this.courseSelectorTarget.value
+
+        if (courseId === "") {
+            this.courseFormTarget.classList.remove("d-none")
+        } else {
+            this.courseFormTarget.classList.add("d-none")
         }
     }
 }

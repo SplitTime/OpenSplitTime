@@ -11,7 +11,7 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post, data: {turbo: false}}) do |f| %>
         <%= bootstrap_devise_error_messages! %>
 
         <div class="form-group">

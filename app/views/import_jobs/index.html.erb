@@ -38,7 +38,7 @@
     <% @user.import_jobs.each do |job| %>
       <tr>
         <td><%= job.parent_type %></td>
-        <td><%= job.parent_id %></td>
+        <td><%= job.parent_slug %></td>
         <td><%= job.format %></td>
         <td><%= job.row_count %></td>
         <td><%= job.elapsed_time %></td>

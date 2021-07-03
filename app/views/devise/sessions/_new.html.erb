@@ -17,18 +17,21 @@
         </div>
         <div class="row justify-content-center">
           <div class="col col-login">
-            <%= link_to(fab_icon("facebook-square", text: " Log in with Facebook"),
-                        user_facebook_omniauth_authorize_path,
-                        method: :post,
-                        id: "facebook-log-in-button",
-                        class: "btn btn-facebook btn-block",
-                        data: {turbo: false}) %>
-            <%= link_to(fab_icon("google", text: " Log in with Google"),
-                        user_google_oauth2_omniauth_authorize_path,
-                        method: :post,
-                        id: "google-log-in-button",
-                        class: "btn btn-google btn-block",
-                        data: {turbo: false}) %>
+            <%= button_to(user_facebook_omniauth_authorize_path,
+                          method: :post,
+                          id: "facebook-log-in-button",
+                          form: {data: {turbo: false}},
+                          class: "btn btn-facebook btn-block") do %>
+              <%= fab_icon("facebook-square", text: " Log in with Facebook") %>
+            <% end %>
+            <br/>
+            <%= button_to(user_google_oauth2_omniauth_authorize_path,
+                          method: :post,
+                          id: "google-log-in-button",
+                          form: {data: {turbo: false}},
+                          class: "btn btn-google btn-block") do %>
+              <%= fab_icon("google", text: " Log in with Google") %>
+            <% end %>
             <hr class="hr-text" data-content="or">
             <p class="text-center">Log in with Email</p>
             <%= render 'devise/sessions/form', modal: true %>

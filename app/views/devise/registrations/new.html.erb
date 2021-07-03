@@ -15,14 +15,19 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= link_to(fab_icon("facebook-square", text: " Sign up with Facebook"),
-                  user_facebook_omniauth_authorize_path,
-                  method: :post,
-                  class: "btn btn-facebook btn-block") %>
-      <%= link_to(fab_icon("google", text: " Sign up with Google"),
-                  user_google_oauth2_omniauth_authorize_path,
-                  method: :post,
-                  class: "btn btn-google btn-block") %>
+      <%= button_to(user_facebook_omniauth_authorize_path,
+                    method: :post,
+                    form: {data: {turbo: false}},
+                    class: "btn btn-facebook btn-block") do %>
+        <%= fab_icon("facebook-square", text: " Sign up with Facebook") %>
+      <% end %>
+      <br/>
+      <%= button_to(user_google_oauth2_omniauth_authorize_path,
+                    method: :post,
+                    form: {data: {turbo: false}},
+                    class: "btn btn-google btn-block") do %>
+        <%= fab_icon("google", text: " Sign up with Google") %>
+      <% end %>
       <hr class="hr-text" data-content="or">
       <p class="text-center">Sign up with your Email</p>
       <%= render "devise/registrations/form" %>

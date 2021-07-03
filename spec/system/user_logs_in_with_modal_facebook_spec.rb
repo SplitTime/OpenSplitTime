@@ -63,7 +63,7 @@ RSpec.describe "User logs in with modal facebook", js: true do
     end
 
     within("#log-in-modal") do
-      click_link "facebook-log-in-button"
+      click_button "facebook-log-in-button"
     end
   end
 

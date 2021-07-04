@@ -17,18 +17,21 @@ class EventGroupsController < ApplicationController
 
   def show
     events = @event_group.events
-    if events.one? && !params[:force_settings]
+
+    if events.present?
       redirect_to spread_event_path(events.first)
+    else
+      redirect_to setup_event_group_path(@event_group)
     end
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    session[:return_to] = event_group_path(@event_group, force_settings: true)
   end
 
   def new
-    organization = Organization.friendly.find(params[:organization])
+    organization = Organization.friendly.find(params[:organization_id])
 
-    @event_group = EventGroup.new(organization: organization)
-    authorize @event_group
+    event_group = organization.event_groups.new
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
   end
 
   def create
@@ -43,17 +46,19 @@ class EventGroupsController < ApplicationController
   end
 
   def edit
-    authorize @event_group
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.friendly.find(params[:id])
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
   end
 
   def update
     authorize @event_group
 
-    if @event_group.update(permitted_params)
-      redirect_to event_group_path(@event_group, force_settings: true)
-    else
-      render "edit"
-    end
+    @event_group.update(permitted_params)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def destroy
@@ -152,7 +157,7 @@ class EventGroupsController < ApplicationController
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
     flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
-    redirect_to event_group_path(@event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def associate_people
@@ -224,7 +229,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)
     set_flash_message(response)
-    redirect_to event_group_path(@event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def export_raw_times
@@ -255,5 +260,7 @@ class EventGroupsController < ApplicationController
   def set_event_group
     @event_group = policy_scope(EventGroup).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
+  rescue ::ActiveRecord::RecordNotFound
+    redirect_to "/404"
   end
 end

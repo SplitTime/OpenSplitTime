@@ -1,21 +1,24 @@
-<%= render 'shared/errors', obj: @event_group %>
+<%= render 'shared/errors', obj: presenter.event_group %>
 
-<%= form_with(model: @event_group, data: {remote: false, turbo: false}, html: {class: "form-horizontal", role: "form"}) do |form| %>
+<%= form_with(model: [presenter.organization, presenter.event_group],
+              data: {remote: false, turbo: false},
+              html: {class: "form-horizontal", role: "form"}) do |form| %>
   <div class="card card-body bg-light border-0">
     <div class="row">
       <%= form.hidden_field :organization_id %>
 
       <div class="form-group col-12" data-target="eg-form.eventGroupName">
         <label class="required">What will you call your event?</label>
-        <span class="help-tooltip" tabindex="-1" data-toggle="tooltop" data-placement="bottom" data-content=""><i class="fas fa-question-circle"></i></span>
-        <%= form.text_field :name, class: "form-control", placeholder: "Example: #{Date.today.year} #{@event_group.organization.name}", data: {action: 'blur->eg-form#freezeEventGroupName'} %>
+        <span class="help-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-content=""><i class="fas fa-question-circle"></i></span>
+        <%= form.text_field :name, class: "form-control", placeholder: "Example: #{Date.today.year} #{presenter.organization_name}", autofocus: true,
+                            data: {action: 'blur->eg-form#freezeEventGroupName'} %>
       </div>
 
       <div class="form-group col-12">
         <label class="required">In what time zone will your event occur?</label>
         <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
         <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                   {selected: @event_group.home_time_zone || "Mountain Time (US & Canada)"},
+                                   {selected: presenter.event_group.home_time_zone || "Mountain Time (US & Canada)"},
                                    {class: "form-control dropdown-select-field"}) %>
       </div>
 
@@ -52,6 +55,6 @@
   </div>
 
   <div class="col-12">
-    <span class="brackets"><%= link_to 'Cancel', organization_path(@event_group.organization) %></span>
+    <span class="brackets"><%= link_to 'Cancel', organization_path(presenter.organization) %></span>
   </div>
 <% end %>

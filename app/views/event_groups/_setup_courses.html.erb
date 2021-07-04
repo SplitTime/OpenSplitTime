@@ -1,0 +1,21 @@
+<%# Requires local parameters presenter, events %>
+
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th class="text-center"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% courses.each do |course| %>
+    <tr>
+      <td><strong><%= link_to course.name, edit_course_path(course), data: {"turbo-frame" => "_top"} %></strong></td>
+      <td><%= "#{pluralize(course.splits.count, 'splits')}" %></td>
+      <td class="text-center"></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

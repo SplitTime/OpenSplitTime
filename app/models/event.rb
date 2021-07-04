@@ -30,7 +30,6 @@ class Event < ApplicationRecord
   before_validation :conform_changed_course
   before_save :add_all_course_splits
   after_save :validate_event_group
-  after_destroy :destroy_orphaned_event_group
 
   scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
   scope :select_with_params, -> (search_param) do
@@ -157,14 +156,6 @@ class Event < ApplicationRecord
       response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
       response.errors.each { |error| errors.add(:base, error[:title]) }
       response.successful?
-    end
-  end
-
-  def destroy_orphaned_event_group
-    event_group.reload
-
-    if events_within_group.empty?
-      event_group.destroy
     end
   end
 

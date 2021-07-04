@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
-  before_action :set_event, except: [:new, :create, :series]
-  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium]
+  before_action :set_event, except: [:new, :edit, :create, :update, :destroy]
+  before_action :set_event_group, only: [:new, :create]
+  before_action :set_event_group_and_event, only: [:edit, :update, :destroy]
+  before_action :redirect_to_friendly, only: [:podium, :spread, :summary]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium]
 
   MAX_SUMMARY_EFFORTS = 1000
   FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
@@ -11,25 +16,27 @@ class EventsController < ApplicationController
   end
 
   def new
-    event_group = EventGroup.friendly.find(params[:event_group])
-    course = params[:course].present? ? event_group.organization.courses.friendly.find(params[:course]) : nil
-
-    event = Event.new(event_group: event_group, course: course, laps_required: 1, results_template: ResultsTemplate.default)
-    @presenter = ::EventSetupPresenter.new(event, params, current_user)
+    course = params[:course_id].present? ? @event_group.organization.courses.friendly.find(params[:course_id]) : nil
+    event = @event_group.events.new(course: course, laps_required: 1, results_template: ResultsTemplate.default)
     authorize event
+
+    @presenter = ::EventSetupPresenter.new(event, params, current_user)
   end
 
   def edit
     authorize @event
+    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
   end
 
   def create
-    @event = Event.new(permitted_params)
-    authorize @event
+    event = @event_group.events.new
+    event.assign_attributes(permitted_params)
+    authorize event
 
-    if @event.save
-      redirect_to setup_event_group_path(@event.event_group)
+    if event.save
+      redirect_to setup_event_group_path(@event_group)
     else
+      @presenter = ::EventSetupPresenter.new(event, params, current_user)
       render 'new'
     end
   end
@@ -38,26 +45,30 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(permitted_params)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
+      redirect_to setup_event_group_path(@event_group)
     else
+      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
       render 'edit'
     end
   end
 
   def destroy
     authorize @event
+
     @event.destroy
 
-    redirect_to event_groups_path
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def reassign
     authorize @event
     @event.assign_attributes(params.require(:event).permit(:event_group_id))
+    redirect_id = @event.event_group_id || @event.changed_attributes["event_group_id"]
 
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
     set_flash_message(response) unless response.successful?
-    redirect_to session.delete(:return_to) || event_group_path(@event.event_group)
+
+    redirect_to setup_event_group_path(redirect_id)
   end
 
   # Special views with results
@@ -112,12 +123,11 @@ class EventsController < ApplicationController
     stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
-    redirect_to event_group_path(@event.event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event.event_group)
   end
 
   # This action updates the event scheduled start time and adjusts absolute time on all
   # existing split_times to keep elapsed times consistent.
-
   def edit_start_time
     authorize @event
   end
@@ -132,7 +142,7 @@ class EventsController < ApplicationController
       @event.reload
       response = EventUpdateStartTimeJob.perform_now(@event, new_start_time: new_start_time, current_user: current_user)
       set_flash_message(response)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
+      redirect_to setup_event_group_path(@event.event_group)
     else
       render :edit_start_time
     end
@@ -174,6 +184,18 @@ class EventsController < ApplicationController
 
   def set_event
     @event = policy_scope(Event).friendly.find(params[:id])
+  end
+
+  def set_event_group
+    @event_group = EventGroup.friendly.find(params[:event_group_id])
+  end
+
+  def set_event_group_and_event
+    @event_group = ::EventGroup.friendly.find(params[:event_group_id])
+    @event = @event_group.events.friendly.find(params[:id])
+  end
+
+  def redirect_to_friendly
     redirect_numeric_to_friendly(@event, params[:id])
   end
 end

@@ -20,7 +20,7 @@
             <div class="row">
               <div class="form-group col">
                 <label class="required">Choose an existing course or create a new course</label>
-                <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
+                <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-content="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
                 <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id), {},
                                 {autofocus: true,
                                  class: "form-control dropdown-select-field",
@@ -79,9 +79,9 @@
 
   <div class="row">
     <div class="col-12">
-      <%= form_with(model: presenter.event, html: {class: "form-horizontal", role: "form"}) do |form| %>
-        <%= form.hidden_field :id %>
-
+      <%= form_with(model: [presenter.event_group, presenter.event],
+                    data: {remote: false, turbo: false},
+                    html: {class: "form-horizontal", role: "form"}) do |form| %>
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="form-group col">
@@ -113,7 +113,7 @@
               <div class="row">
                 <div class="col">
                   <%= form.label :short_name %>
-                  <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
+                  <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-content="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
                   <%= form.text_field :short_name, class: "form-control", placeholder: "Short name", data: {"event-setup-target" => "eventShortName", action: 'keyup->event-setup#fillEventName'} %>
                 </div>
                 <div class="col">
@@ -137,7 +137,7 @@
           <div class="row">
             <div class="form-group col">
               <%= form.label :beacon_url %>
-              <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
+              <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-content="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
               <%= form.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
             </div>
           </div>
@@ -148,7 +148,7 @@
         <div class="form-group">
           <div class="control-label col">
             <%= form.label :podium_template, class: 'required' %>
-            <span class="help-tooltip" tabindex="-1" data-toggle="static-popover" data-placement="bottom" data-content="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
+            <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-content="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
           </div>
           <div class="col-sm-8">
             <div class="card" data-controller="results-template">
@@ -164,11 +164,9 @@
           </div>
         </div>
 
-        <%= form.hidden_field :event_group_id %>
-
         <div class="form-group">
           <div class="col">
-            <%= form.submit "Create event", class: "btn btn-primary btn-large" %>
+            <%= form.submit presenter.new_record? ? "Create event" : "Save changes", class: "btn btn-primary btn-large" %>
           </div>
         </div>
 

@@ -17,7 +17,7 @@
   <% event_groups.each do |event_group| %>
     <tr>
       <td><strong>
-        <% if event_group.events.present? %>
+        <% if event_group.visible? %>
           <%= link_to event_group.name, event_group_path(event_group) %>
         <% else %>
           <%= link_to event_group.name, setup_event_group_path(event_group) %>
@@ -43,7 +43,11 @@
     <% if event_group.events.many? %>
       <% event_group.ordered_events.each do |event| %>
         <tr class="sub-row">
-          <td><%= link_to event.guaranteed_short_name, event_path(event) %></td>
+          <% if event_group.visible? %>
+            <td><%= link_to event.guaranteed_short_name, event_path(event) %></td>
+          <% else %>
+            <td><%= link_to event.guaranteed_short_name, edit_event_group_event_path(event_group, event) %></td>
+          <% end %>
           <td><%= l(event.scheduled_start_time_local, format: "%a | %B %d, %Y | %I:%M%p(%Z)") %></td>
           <td><%= "#{pluralize(event.efforts_count, 'entrant')}" %></td>
           <% if presenter.show_visibility_columns? %>

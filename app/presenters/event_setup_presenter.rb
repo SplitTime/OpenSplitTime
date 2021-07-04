@@ -4,7 +4,8 @@ class EventSetupPresenter < BasePresenter
   include ::UnitConversions
 
   attr_reader :event
-  delegate :event_group, :organization, :to_param, to: :event
+  delegate :event_group, :new_record?, :organization, :to_param, to: :event
+  delegate :id, to: :event, prefix: true
   delegate :pref_distance_unit, to: :current_user
 
   def initialize(event, params, current_user)
@@ -39,6 +40,14 @@ class EventSetupPresenter < BasePresenter
 
   def event_group_name
     event_group.name
+  end
+
+  def event_name
+    event.name
+  end
+
+  def event_short_name_for_display
+    event.short_name || "Single Event"
   end
 
   def organization_name

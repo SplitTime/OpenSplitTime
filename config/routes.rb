@@ -90,7 +90,9 @@ Rails.application.routes.draw do
 
   resources :duplicate_event_groups, only: [:new, :create]
 
-  resources :event_groups do
+  resources :event_groups, only: [:index, :show] do
+    resources :events, except: [:index, :show]
+
     member do
       get :drop_list
       get :efforts
@@ -117,7 +119,7 @@ Rails.application.routes.draw do
 
   resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
 
-  resources :events, except: :index do
+  resources :events, only: [:show] do
     member do
       get :admin
       get :edit_start_time
@@ -134,7 +136,9 @@ Rails.application.routes.draw do
 
   get '/events', to: redirect('event_groups')
 
-  resources :organizations
+  resources :organizations do
+    resources :event_groups, except: [:index, :show]
+  end
 
   resources :people do
     collection { get :subregion_options }

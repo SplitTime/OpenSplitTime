@@ -46,7 +46,7 @@ class PartnersController < ApplicationController
   private
 
   def partner_event_group_path
-    event_group_path(@partner.event_group, display_style: 'partners', force_settings: true)
+    setup_event_group_path(@partner.event_group, display_style: "partners")
   end
 
   def set_partner

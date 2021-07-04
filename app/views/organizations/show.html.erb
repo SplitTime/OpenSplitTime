@@ -118,7 +118,7 @@
       <div class="container">
         <div class="row">
           <div class="col">
-            <%= link_to fa_icon("plus", text: "New event group"), new_event_group_path(organization: @presenter.organization), id: "add-event-group", class: "btn btn-success" %>
+            <%= link_to fa_icon("plus", text: "New event group"), new_organization_event_group_path(@presenter.organization), id: "add-event-group", class: "btn btn-success" %>
           </div>
         </div>
       </div>
@@ -127,16 +127,16 @@
 
   <article class="ost-article container">
     <% if current_user&.authorized_to_edit?(@presenter.organization) %>
-      <% if @presenter.orphaned_event_groups.present? %>
+      <% if @presenter.concealed_event_groups.present? %>
         <div class="p-3 border border-primary">
           <h3>Under Construction</h3>
-          <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.orphaned_event_groups %>
+          <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
         </div>
       <% end %>
     <% end %>
 
-    <% if @presenter.event_groups.present? %>
-      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.event_groups %>
+    <% if @presenter.visible_event_groups.present? %>
+      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.visible_event_groups %>
     <% else %>
       <h4>No events exist yet</h4>
     <% end %>

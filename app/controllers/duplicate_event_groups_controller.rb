@@ -15,7 +15,7 @@ class DuplicateEventGroupsController < ApplicationController
     @duplicate_event_group = DuplicateEventGroup.create(permitted_params)
 
     if @duplicate_event_group.valid?
-      redirect_to event_group_path(@duplicate_event_group.new_event_group, force_settings: true)
+      redirect_to setup_event_group_path(@duplicate_event_group.new_event_group)
     else
       render 'new'
     end

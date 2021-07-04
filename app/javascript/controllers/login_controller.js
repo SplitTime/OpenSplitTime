@@ -1,18 +1,18 @@
-import {Controller} from "stimulus"
+import ApplicationController from "./application_controller";
 
-export default class extends Controller {
+export default class extends ApplicationController {
 
     static targets = ["error"]
 
-    onClickSubmit() {
+    hideErrors() {
         $(this.errorTarget).fadeOut()
     }
 
-    onPostSuccess() {
-        reloadWithTurbo()
+    reloadPage() {
+        super.reloadWithTurbo();
     }
 
-    onPostError() {
+    showErrors() {
         $(this.errorTarget).fadeIn()
     }
 }

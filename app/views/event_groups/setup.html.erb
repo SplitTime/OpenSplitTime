@@ -7,6 +7,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
+          <div>
+            <%= render "shared/mode_widget", presenter: @presenter %>
+          </div>
           <h1><strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
@@ -58,15 +61,6 @@
       <% end %>
     </article>
   <% end %>
-
-<% when "courses" %>
-  <article class="ost-article container">
-    <% if @presenter.courses.present? %>
-      <%= render "setup_courses", courses: @presenter.courses, view_model: @presenter %>
-    <% else %>
-      <h4>This event group has no courses yet. Create an event first.</h4>
-    <% end %>
-  </article>
 
 <% when "partners" %>
   <article class="ost-article container">

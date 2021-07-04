@@ -67,7 +67,7 @@ GEM
       zeitwerk (~> 2.3)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     allowable (1.1.0)
     american_date (1.1.1)
@@ -360,7 +360,7 @@ GEM
     record_tag_helper (1.0.1)
       actionview (>= 5)
     redis (4.2.5)
-    regexp_parser (2.0.3)
+    regexp_parser (2.1.1)
     request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.1)
@@ -469,7 +469,7 @@ GEM
       activerecord
     thor (1.1.0)
     tilt (2.0.10)
-    turbo-rails (0.5.7)
+    turbo-rails (0.5.12)
       rails (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -530,7 +530,7 @@ DEPENDENCIES
   bootstrap-will_paginate
   bootstrap4-datetime-picker-rails (>= 0.3.1)
   capitalize_attributes
-  capybara (~> 3.35, >= 3.35.3)
+  capybara
   carmen
   coverband
   dalli

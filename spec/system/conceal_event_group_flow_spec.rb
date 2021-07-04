@@ -4,7 +4,6 @@ require 'rails_helper'
 
 # Skipped pending resolution of transactional fixtures issue. The changes to the database are rolled back
 # after the redirect, so there seems to be no way to test that they are being made.
-
 RSpec.xdescribe 'conceal and unconceal an event group using the settings page', type: :system, js: true do
   let(:admin) { users(:admin_user) }
 
@@ -15,7 +14,7 @@ RSpec.xdescribe 'conceal and unconceal an event group using the settings page', 
     scenario 'The user is a steward of the organization' do
       login_as admin, scope: :user
 
-      visit event_group_path(event_group, force_settings: true)
+      visit setup_event_group_path(event_group)
 
       expect(event_group).not_to be_concealed
       expect(organization).not_to be_concealed
@@ -29,6 +28,7 @@ RSpec.xdescribe 'conceal and unconceal an event group using the settings page', 
 
       expect(event_group).to be_concealed
       expect(organization).to be_concealed
+
       people.each do |person|
         if person.efforts.size > 1
           expect(person).not_to be_concealed

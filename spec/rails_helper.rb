@@ -105,6 +105,7 @@ RSpec.configure do |config|
 
   config.include StripAttributes::Matchers
   config.include CapitalizeAttributes::Matchers
+  config.include ::Turbo::FramesHelper
 
   config.run_all_when_everything_filtered = true
 

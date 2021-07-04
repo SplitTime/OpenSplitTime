@@ -96,14 +96,14 @@ RSpec.describe 'create a duplicate event group using the duplicate event group p
     end.to change { EventGroup.count }.by(1).and change { Event.count }.by(2)
 
     new_event_group = EventGroup.last
-    expect(page).to have_current_path(event_group_path(new_event_group, force_settings: true))
+    expect(page).to have_current_path(setup_event_group_path(new_event_group))
 
     expect(new_event_group.name).to eq('SUM New')
     expect(new_event_group.events.map(&:short_name)).to match_array(event_group.events.map(&:short_name))
 
     new_events = Event.last(2)
     new_events.each do |event|
-      verify_link_present(event)
+      expect(page).to have_text(event.name)
       expect(event.scheduled_start_time_local.to_date).to eq(new_date.to_date)
     end
   end

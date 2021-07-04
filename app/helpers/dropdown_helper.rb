@@ -343,27 +343,6 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
-  def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
-    icon_name = prior_or_next == :prior ? 'caret-left' : 'caret-right'
-    target = view_object.send("#{prior_or_next}_#{param}")
-    merge_param = target.present? ? {param => target} : {}
-    titleized_prior_or_next = prior_or_next.to_s.titleize
-    tooltip_title = "#{titleized_prior_or_next} [Ctrl-#{titleized_prior_or_next.first}]"
-
-    content_tag :span, data: {controller: :navigation} do
-      link_to fa_icon(icon_name, class: 'fa-lg'),
-              request.params.merge(merge_param),
-              id: "#{prior_or_next}-button",
-              class: 'btn btn-outline-secondary has-tooltip',
-              data: {action: 'keyup@document->navigation#evaluateKeyup',
-                     target: "navigation.#{prior_or_next}Button",
-                     toggle: 'tooltip',
-                     placement: :bottom,
-                     'original-title' => tooltip_title},
-              disabled: target.blank?
-    end
-  end
-
   def sub_split_kind_dropdown(view_object)
     dropdown_items = view_object.sub_split_kinds.map do |kind|
       {name: kind.titleize,

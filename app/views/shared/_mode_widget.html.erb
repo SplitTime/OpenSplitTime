@@ -1,0 +1,22 @@
+<!-- Mode Selector Widget: Requires local :presenter -->
+
+<div class="btn-group btn-group-ost" data-controller="navigation">
+  <%= link_to fa_icon("hammer"),
+              setup_event_group_path(presenter.event_group),
+              class: "btn has-tooltip #{ presenter.mode == "setup" ? 'btn-primary' : 'btn-outline-secondary' }",
+              data: {toggle: "tooltip",
+                     placement: "bottom",
+                     "original-title" => "Setup Mode [Ctrl-S]",
+                     "navigation-target" => "setupButton",
+                     action: "keyup@document->navigation#evaluateKeyup",
+              } %>
+  <%= link_to fa_icon("binoculars"),
+              roster_event_group_path(presenter.event_group),
+              class: "btn has-tooltip #{ presenter.mode == "monitor" ? 'btn-primary' : 'btn-outline-secondary' }",
+              data: {toggle: "tooltip",
+                     placement: "bottom",
+                     "original-title" => "Monitor Mode [Ctrl-M]",
+                     "navigation-target" => "monitorButton",
+                     action: "keyup@document->navigation#evaluateKeyup",
+              } %>
+</div>

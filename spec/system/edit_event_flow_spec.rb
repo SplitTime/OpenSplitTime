@@ -18,7 +18,7 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
   let(:organization) { event.organization }
 
   scenario "The user is a visitor" do
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
 
     expect(page).to have_current_path(root_path)
     verify_alert("You need to sign in or sign up before continuing")
@@ -27,7 +27,7 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
   scenario "The user is a user that is not authorized to edit the event" do
     login_as user, scope: :user
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
 
     expect(page).to have_current_path(root_path)
     verify_alert("Access denied")
@@ -36,41 +36,40 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
   scenario "The user is a steward of the organization" do
     login_as steward, scope: :user
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
     verify_visit_and_update
 
-    visit edit_event_path(event)
     expect(page).not_to have_link("Delete this event")
   end
 
   scenario "The user is the owner of the organization" do
     login_as owner, scope: :user
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
     verify_visit_and_update
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
     verify_confirm_and_delete
   end
 
   scenario "The user is an admin" do
     login_as admin, scope: :user
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
     verify_visit_and_update
 
-    visit edit_event_path(event)
+    visit edit_event_group_event_path(event_group, event)
     verify_confirm_and_delete
   end
 
   def verify_visit_and_update
-    expect(page).to have_current_path(edit_event_path(event))
+    expect(page).to have_current_path(edit_event_group_event_path(event_group, event))
     expect(event.short_name).to eq(nil)
 
     fill_in "Short name", with: "Silverton"
-    click_button "Update Event"
+    click_button "Save changes"
 
-    expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
+    expect(page).to have_current_path(setup_event_group_path(event_group))
 
     event.reload
     expect(event.short_name).to eq("Silverton")
@@ -88,7 +87,7 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
 
     expect do
       click_link "Permanently Delete"
-      expect(page).to have_current_path(event_groups_path)
+      expect(page).to have_current_path(setup_event_group_path(event_group))
     end.to change { Event.count }.by(-1)
   end
 end

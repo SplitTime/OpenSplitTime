@@ -43,9 +43,10 @@ RSpec.describe "visit the follow page" do
 
     context "The event group has multiple events" do
       let(:event_group) { event_groups(:sum) }
-      scenario "A visitor views the follow page and is redirected to the event group page" do
+      let(:event) { event_group.ordered_events.first }
+      scenario "A visitor views the follow page and is redirected to the spread" do
         visit follow_event_group_path(event_group)
-        expect(current_path).to eq event_group_path(event_group)
+        expect(current_path).to eq spread_event_path(event)
       end
     end
   end

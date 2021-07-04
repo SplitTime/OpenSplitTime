@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "User logs in with modal", js: true do
+RSpec.describe "User logs in with modal", type: :system, js: true do
   let(:user) { users(:admin_user) }
   let(:email) { user.email }
   let(:password) { "password" }

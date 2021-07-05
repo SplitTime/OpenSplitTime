@@ -1,0 +1,8 @@
+<tr id=<%= dom_id import_job %>>
+  <td><%= import_job.parent_type %></td>
+  <td><%= import_job.parent_slug %></td>
+  <td><%= import_job.format %></td>
+  <td><%= import_job.row_count %></td>
+  <td><%= import_job.elapsed_time %></td>
+  <td><%= fa_icon("circle", text: import_job.status.titleize, class: import_job.status_class, size: "sm") if import_job.status.present? %></td>
+</tr>

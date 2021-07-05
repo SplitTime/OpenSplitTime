@@ -5,6 +5,8 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 
+<%= turbo_stream_from @user %>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -34,16 +36,9 @@
       <th>Status</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id="import_jobs">
     <% @user.import_jobs.each do |job| %>
-      <tr>
-        <td><%= job.parent_type %></td>
-        <td><%= job.parent_slug %></td>
-        <td><%= job.format %></td>
-        <td><%= job.row_count %></td>
-        <td><%= job.elapsed_time %></td>
-        <td><%= job.status %></td>
-      </tr>
+      <%= render "import_job", :import_job => job %>
     <% end %>
     </tbody>
   </table>

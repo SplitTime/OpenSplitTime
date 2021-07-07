@@ -2,7 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    before_action :protect_from_spam, only: [:create, :update]
+    before_action :protect_from_spam, only: [:create]
 
     BOT_FORM_FILL_DURATION_LIMIT = 10.seconds
 

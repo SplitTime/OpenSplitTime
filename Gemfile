@@ -79,7 +79,7 @@ group :test do
   gem 'pry'
   gem 'vcr', '~> 4.0'
   gem "webdrivers", ">= 4.5.0"
-  gem 'webmock', '~> 3.5'
+  gem 'webmock', '~> 3.11', '>= 3.11.2'
 end
 
 group :development, :test do

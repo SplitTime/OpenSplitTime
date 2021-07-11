@@ -125,7 +125,7 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def validate_setup
-    error_messages << "No events have yet been held on this course." if course.visible_events.empty?
+    error_messages << "No events have been held on this course." if course.visible_events.empty?
     AssignSegmentTimes.perform(ordered_split_times) if error_messages.empty?
   rescue ArgumentError => error
     error_messages << error.message

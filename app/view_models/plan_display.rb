@@ -3,18 +3,24 @@
 class PlanDisplay < EffortWithLapSplitRows
   include TimeFormats
   attr_reader :course
-  delegate :simple?, :name, to: :course
-  delegate :multiple_laps?, :organization, to: :event
+  delegate :name, :organization, :simple?, to: :course
+  delegate :multiple_laps?, to: :event, allow_nil: true
 
   def initialize(args)
     @course = args[:course]
     @params = args[:params]
-    @effort = event.efforts.new
-    AssignSegmentTimes.perform(ordered_split_times)
+    @error_messages = []
+    validate_setup
+  end
+
+  attr_reader :error_messages
+
+  def effort
+    @effort ||= event.efforts.new
   end
 
   def event
-    @event ||= course.events.visible.latest
+    @event ||= course.visible_events.latest
   end
 
   def ordered_split_times
@@ -116,5 +122,12 @@ class PlanDisplay < EffortWithLapSplitRows
 
   def default_time_zone
     event.home_time_zone
+  end
+
+  def validate_setup
+    error_messages << "No events have been held on this course." if course.visible_events.empty?
+    AssignSegmentTimes.perform(ordered_split_times) if error_messages.empty?
+  rescue ArgumentError => error
+    error_messages << error.message
   end
 end

@@ -4,6 +4,10 @@ class ImportJob < ApplicationRecord
   belongs_to :user
   broadcasts_to :user
 
+  has_one_attached :file
+
+  attribute :row_count, :default => 0
+
   enum :status => {
     :waiting => 0,
     :processing => 1,

@@ -2,9 +2,6 @@
   <% "OpenSplitTime: Best efforts - #{@presenter.name} - #{@presenter.segment_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
-
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -13,9 +10,7 @@
           <h1><strong><%= [@presenter.name, "All-time Best"].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <% if @presenter.organization %>
-              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
             <li class="breadcrumb-item active">All-Time best</li>
           </ul>

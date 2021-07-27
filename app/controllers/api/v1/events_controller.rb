@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "etl/etl"
+
 module Api
   module V1
     class EventsController < ::Api::V1::BaseController
@@ -46,19 +48,19 @@ module Api
       # GET /api/v1/events/:id/spread
       def spread
         params[:display_style] ||= 'absolute'
-        presenter = EventSpreadDisplay.new(event: @event, params: prepared_params)
+        presenter = ::EventSpreadDisplay.new(event: @event, params: prepared_params)
         serialize_and_render(presenter, include: :effort_times_rows, serializer: ::Api::V1::EventSpreadSerializer)
       end
 
       def import
-        importer = ETL::ImporterFromContext.build(@event, params, current_user)
+        importer = ::ETL::ImporterFromContext.build(@event, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
           render json: {errors: errors}, status: :unprocessable_entity
         else
-          ETL::EventImportProcess.perform!(@event, importer)
+          ::ETL::EventImportProcess.perform!(@event, importer)
           render json: {}, status: :created
         end
       end

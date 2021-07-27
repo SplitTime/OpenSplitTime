@@ -18,14 +18,14 @@ module Api
         authorize @resource
 
         limited_response = params[:limited_response]&.to_boolean
-        importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+        importer = ::ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
           render json: {errors: errors}, status: :unprocessable_entity
         else
-          ETL::EventGroupImportProcess.perform!(@resource, importer)
+          ::ETL::EventGroupImportProcess.perform!(@resource, importer)
           if limited_response
             render json: {}, status: :created
           else
@@ -39,7 +39,7 @@ module Api
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
         params[:data_format] = :csv_raw_times
-        importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+        importer = ::ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
         raw_times = RawTime.where(id: importer.saved_records)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportJob < ApplicationRecord
   belongs_to :user
   broadcasts_to :user
@@ -9,18 +11,8 @@ class ImportJob < ApplicationRecord
     :failed => 3
   }
 
-  STATUS_CLASSES = {
-    :waiting => "text-secondary",
-    :processing => "text-warning",
-    :finished => "text-success",
-    :failed => "text-danger",
-  }
-
-  def status_class
-    return if status.nil?
-
-    STATUS_CLASSES[status.to_sym]
-  end
+  validates :file,
+            size: {less_than: 10.megabytes}
 
   def parent_slug
     parent_type.constantize.find(parent_id).slug

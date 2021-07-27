@@ -2,9 +2,6 @@
   <% "OpenSplitTime: My stuff - #{@user.full_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
-
 <%= turbo_stream_from @user %>
 
 <header class="ost-header">

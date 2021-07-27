@@ -3,6 +3,6 @@
   <td><%= import_job.parent_slug %></td>
   <td><%= import_job.format %></td>
   <td><%= import_job.row_count %></td>
-  <td><%= import_job.elapsed_time %></td>
-  <td><%= fa_icon("circle", text: import_job.status.titleize, class: import_job.status_class, size: "sm") if import_job.status.present? %></td>
+  <td><%= pretty_duration(import_job.elapsed_time) %></td>
+  <td><%= import_job_status_component(import_job) %></td>
 </tr>

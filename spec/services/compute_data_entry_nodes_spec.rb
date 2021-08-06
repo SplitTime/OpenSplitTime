@@ -79,7 +79,7 @@ RSpec.describe ComputeDataEntryNodes do
 
     context 'when splits with matching names have matching sub_splits and locations within tolerance' do
       let(:event_1_split_3) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 3000, latitude: 40, longitude: -105) }
-      let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 2000, latitude: 40.0001, longitude: -105.0001) }
+      let(:event_2_split_2) { build_stubbed(:split, base_name: 'Aid 2', distance_from_start: 2000, latitude: 40.000001, longitude: -105.000001) }
 
       it 'returns an Array of data_entry_nodes with average latitudes and longitudes' do
         data_entry_nodes = subject.perform
@@ -87,8 +87,8 @@ RSpec.describe ComputeDataEntryNodes do
         expect(data_entry_nodes.map(&:split_name)).to eq(['Start', 'Aid 1', 'Aid 1', 'Aid 2', 'Aid 2', 'Finish'])
         expect(data_entry_nodes.map(&:sub_split_kind)).to eq(%w(in in out in out in))
         expect(data_entry_nodes.map(&:label)).to eq(['Start', 'Aid 1 In', 'Aid 1 Out', 'Aid 2 In', 'Aid 2 Out', 'Finish'])
-        expect(data_entry_nodes.map(&:latitude)).to eq([nil, nil, nil, 40.00005, 40.00005, nil])
-        expect(data_entry_nodes.map(&:longitude)).to eq([nil, nil, nil, -105.00005, -105.00005, nil])
+        expect(data_entry_nodes.map(&:latitude)).to eq([nil, nil, nil, 40.0000005, 40.0000005, nil])
+        expect(data_entry_nodes.map(&:longitude)).to eq([nil, nil, nil, -105.0000005, -105.0000005, nil])
       end
     end
 

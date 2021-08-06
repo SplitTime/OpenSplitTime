@@ -18,6 +18,7 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
   it { is_expected.to localize_time_attribute(:scheduled_start_time) }
+  it { is_expected.to trim_time_attribute(:scheduled_start_time) }
 
   describe 'validations' do
     context 'for validations independent of existing database records' do
@@ -617,6 +618,36 @@ RSpec.describe Effort, type: :model do
 
       it 'returns false' do
         expect(effort.send(:generate_new_topic_resource?)).to eq(false)
+      end
+    end
+  end
+
+  describe "#trim_scheduled_start_time" do
+    subject(:effort) { efforts(:sum_100k_un_started) }
+    let(:scheduled_start_time) { nil }
+
+    before do
+      effort.scheduled_start_time = scheduled_start_time
+      effort.validate
+    end
+
+    context "when scheduled_start_time is nil" do
+      it "does not change scheduled start time" do
+        expect(effort.scheduled_start_time).to be_nil
+      end
+    end
+
+    context "when scheduled_start_time has no partial seconds" do
+      let(:scheduled_start_time) { "2020-08-01 13:30:30" }
+      it "does not change scheduled start time" do
+        expect(effort.scheduled_start_time).to eq(scheduled_start_time)
+      end
+    end
+
+    context "when scheduled_start_time has partial seconds" do
+      let(:scheduled_start_time) { "2020-08-01 13:30:30.5" }
+      it "does not change scheduled start time" do
+        expect(effort.scheduled_start_time).to eq("2020-08-01 13:30:30")
       end
     end
   end

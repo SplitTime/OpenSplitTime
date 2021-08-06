@@ -34,7 +34,7 @@ RSpec.shared_examples_for 'locatable' do
     end
 
     context 'when subject and other have latitude and longitude and distance is below the threshold' do
-      let(:other) { described_class.new(latitude: 40.0001, longitude: -105.0001) }
+      let(:other) { described_class.new(latitude: 40.000001, longitude: -105.000001) }
 
       it 'returns false' do
         expect(subject.different_location?(other)).to eq(false)
@@ -62,7 +62,7 @@ RSpec.shared_examples_for 'locatable' do
     end
 
     context 'when subject and other have latitude and longitude and distance is below the threshold' do
-      let(:other) { described_class.new(latitude: 40.0001, longitude: -105.0001) }
+      let(:other) { described_class.new(latitude: 40.000001, longitude: -105.000001) }
 
       it 'returns true' do
         expect(subject.same_location?(other)).to eq(true)

@@ -23,7 +23,8 @@
                           method: :patch,
                           format: :json,
                           local: false,
-                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors'} do |f| %>
+                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors',
+                                 turbo: false} do |f| %>
 
               <% if resource == :event_group %>
                 <%= f.hidden_field 'filter[ready_to_start]', value: true %>

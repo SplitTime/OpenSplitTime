@@ -20,7 +20,7 @@ if records.present?
                      record.first_name,
                      record.birthdate&.strftime("%F"),
                      record.gender,
-                     record.country_code,
+                     record.country_code_alpha_3,
                      record.city,
                      record.bib_number
                    ]

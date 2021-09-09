@@ -5,6 +5,12 @@ class EffortRow < SimpleDelegator
 
   ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
 
+  def country_code_alpha_3
+    return nil unless country_code.present?
+
+    Carmen::Country.coded(country_code).alpha_3_code
+  end
+
   def final_lap_split_name
     multiple_laps? ? "#{final_split_name} Lap #{final_lap}" : final_split_name
   end

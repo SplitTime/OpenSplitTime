@@ -8,7 +8,7 @@ class EffortRow < SimpleDelegator
   def country_code_alpha_3
     return nil unless country_code.present?
 
-    Carmen::Country.coded(country_code).alpha_3_code
+    Carmen::Country.coded(country_code)&.alpha_3_code
   end
 
   def final_lap_split_name

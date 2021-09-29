@@ -13,4 +13,8 @@ class Lottery < ApplicationRecord
 
   validates_presence_of :name, :scheduled_start_date
   validates_uniqueness_of :name, case_sensitive: false, scope: :organization
+
+  scope :with_policy_scope_attributes, -> do
+    from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
+  end
 end

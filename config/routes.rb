@@ -133,7 +133,9 @@ Rails.application.routes.draw do
 
   get '/events', to: redirect('event_groups')
 
-  resources :organizations
+  resources :organizations do
+    resources :lotteries
+  end
 
   resources :people do
     collection { get :subregion_options }

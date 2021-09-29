@@ -35,7 +35,7 @@
       <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'event_series'}" do
         link_to "Event Series", organization_path(@presenter.organization, display_style: :event_series)
       end %>
-      <% if @presenter.lotteries.present? || current_user.authorized_for_lotteries?(@presenter.organization) %>
+      <% if @presenter.lotteries.present? || current_user&.authorized_for_lotteries?(@presenter.organization) %>
         <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'lotteries'}" do
           link_to "Lotteries", organization_lotteries_path(@presenter.organization)
         end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_162755) do
+ActiveRecord::Schema.define(version: 2021_09_29_211111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -234,6 +234,14 @@ ActiveRecord::Schema.define(version: 2021_09_29_162755) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["organization_id"], name: "index_lotteries_on_organization_id"
+  end
+
+  create_table "lottery_divisions", force: :cascade do |t|
+    t.bigint "lottery_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lottery_id"], name: "index_lottery_divisions_on_lottery_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -523,6 +531,7 @@ ActiveRecord::Schema.define(version: 2021_09_29_162755) do
   add_foreign_key "events", "event_groups"
   add_foreign_key "import_jobs", "users"
   add_foreign_key "lotteries", "organizations"
+  add_foreign_key "lottery_divisions", "lotteries"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"

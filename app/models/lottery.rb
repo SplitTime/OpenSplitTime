@@ -5,6 +5,7 @@ class Lottery < ApplicationRecord
   include CapitalizeAttributes, Delegable
 
   belongs_to :organization
+  has_many :lottery_divisions, dependent: :destroy
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :name

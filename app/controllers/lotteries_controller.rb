@@ -27,7 +27,7 @@ class LotteriesController < ApplicationController
   end
 
   def create
-    @lottery = Lottery.new(permitted_params)
+    @lottery = @organization.lotteries.new(permitted_params)
     authorize @lottery
 
     if @lottery.save

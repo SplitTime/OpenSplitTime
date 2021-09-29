@@ -4,12 +4,17 @@ class OrganizationPresenter < BasePresenter
   PERMITTED_DISPLAY_STYLES = %w[courses stewards events event_series lotteries]
 
   attr_reader :organization
-  delegate :id, :name, :description, :stewards, :event_series, :lotteries, :to_param, to: :organization
+  delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
 
   def initialize(organization, params, current_user)
     @organization = organization
     @params = params
     @current_user = current_user
+  end
+
+  def lotteries
+    scoped_lotteries = LotteryPolicy::Scope.new(current_user, Lottery).viewable
+    scoped_lotteries.where(organization: organization).order(scheduled_start_date: :desc)
   end
 
   def event_groups

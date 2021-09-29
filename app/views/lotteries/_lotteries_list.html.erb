@@ -10,7 +10,7 @@
   <% @presenter.lotteries.each do |lottery| %>
       <tr>
         <td><%= link_to lottery.name, organization_lottery_path(@presenter.organization, lottery) %></td>
-        <td><%= l(lottery.scheduled_start_date, format: :long) %></td>
+        <td><%= l(lottery.scheduled_start_date, format: :full_with_weekday) %></td>
       </tr>
   <% end %>
   </tbody>

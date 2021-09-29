@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_161107) do
+ActiveRecord::Schema.define(version: 2021_09_29_162755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -224,6 +224,16 @@ ActiveRecord::Schema.define(version: 2021_06_20_161107) do
     t.datetime "updated_at", null: false
     t.integer "created_by"
     t.integer "updated_by"
+  end
+
+  create_table "lotteries", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.string "name"
+    t.date "scheduled_start_date"
+    t.string "slug", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_lotteries_on_organization_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -512,6 +522,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_161107) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "import_jobs", "users"
+  add_foreign_key "lotteries", "organizations"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"
@@ -533,7 +544,7 @@ ActiveRecord::Schema.define(version: 2021_06_20_161107) do
        LANGUAGE sql
        IMMUTABLE STRICT
       AS $function$
-      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\s+')))), ' ')
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E' +')))), ' ')
       $function$
   SQL
 

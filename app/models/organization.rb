@@ -12,6 +12,7 @@ class Organization < ApplicationRecord
 
   has_many :courses, dependent: :destroy
   has_many :event_groups, dependent: :destroy
+  has_many :lotteries, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
   has_many :event_series, dependent: :destroy

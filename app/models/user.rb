@@ -93,6 +93,10 @@ class User < ApplicationRecord
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  def authorized_for_lotteries?(resource)
+    authorized_fully?(resource)
+  end
+
   def authorized_fully?(resource)
     admin? || resource.new_record? || owner_of?(resource)
   end

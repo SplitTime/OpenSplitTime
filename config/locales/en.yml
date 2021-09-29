@@ -38,6 +38,7 @@ en:
 
   date:
     formats:
+      full_with_weekday: "%A, %B %-d, %Y"
       default: "%m/%d/%y"
       short: "%m/%d"
 

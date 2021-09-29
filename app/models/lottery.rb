@@ -2,7 +2,7 @@
 
 class Lottery < ApplicationRecord
   extend FriendlyId
-  include CapitalizeAttributes
+  include CapitalizeAttributes, Delegable
 
   belongs_to :organization
 

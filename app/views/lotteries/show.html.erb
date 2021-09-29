@@ -1,0 +1,41 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Show lottery - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= @presenter.name %></li>
+          </ul>
+        </div>
+        <div class="ost-subtitle">
+          <p><%= l(@presenter.scheduled_start_date, format: :full_with_weekday) %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div>
+            <%= link_to "Edit", edit_organization_lottery_path(@presenter.lottery), class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+<% end %>
+
+<article class="ost-article container">
+</article>

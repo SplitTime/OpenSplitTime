@@ -6,6 +6,7 @@ class LotteryEntrantParameters < BaseParameters
       :birthdate,
       :city,
       :country_code,
+      :division_name,
       :first_name,
       :gender,
       :id,

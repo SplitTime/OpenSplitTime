@@ -14,7 +14,7 @@ class LotteryPresenter < BasePresenter
   end
 
   def lottery_entrants
-    lottery.lottery_entrants
+    lottery.entrants
            .with_division_name
            .search(search_text)
            .order(order_param)

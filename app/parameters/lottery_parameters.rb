@@ -2,6 +2,15 @@
 
 class LotteryParameters < BaseParameters
   def self.permitted
-    [:id, :slug, :name, :scheduled_start_date]
+    [
+      :id,
+      :name,
+      :scheduled_start_date,
+      :slug,
+    ]
+  end
+
+  def self.permitted_query
+    permitted + LotteryEntrantParameters.permitted
   end
 end

@@ -53,8 +53,8 @@
       <tbody>
       <% @presenter.lottery_entrants.each do |lottery_entrant| %>
         <tr>
-          <td><%= lottery_entrant.full_name %></td>
-          <td><%= lottery_entrant.bio %></td>
+          <td><%= lottery_entrant.name %></td>
+          <td><%= lottery_entrant.gender.titleize %></td>
           <td><%= lottery_entrant.flexible_geolocation %></td>
           <td><%= lottery_entrant.division_name %></td>
           <td><%= lottery_entrant.number_of_tickets %></td>

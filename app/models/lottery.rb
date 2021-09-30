@@ -6,6 +6,7 @@ class Lottery < ApplicationRecord
 
   belongs_to :organization
   has_many :lottery_divisions, dependent: :destroy
+  has_many :lottery_entrants, through: :lottery_divisions
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :name

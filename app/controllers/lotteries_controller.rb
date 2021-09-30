@@ -14,7 +14,7 @@ class LotteriesController < ApplicationController
   end
 
   def show
-    @presenter = LotteryPresenter.new(@lottery, prepared_params, current_user)
+    @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
   def new

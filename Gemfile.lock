@@ -267,6 +267,8 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    name_of_person (1.1.1)
+      activesupport (>= 5.2.0)
     netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.12.5)
@@ -568,6 +570,7 @@ DEPENDENCIES
   jwt
   local_time
   momentjs-rails (>= 2.20.1)
+  name_of_person
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 1.0.0)

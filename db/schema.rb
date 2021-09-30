@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_211111) do
+ActiveRecord::Schema.define(version: 2021_09_30_025055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -241,7 +241,26 @@ ActiveRecord::Schema.define(version: 2021_09_29_211111) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "maximum_entries"
+    t.integer "maximum_wait_list"
     t.index ["lottery_id"], name: "index_lottery_divisions_on_lottery_id"
+  end
+
+  create_table "lottery_entrants", force: :cascade do |t|
+    t.bigint "lottery_division_id", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.integer "gender", null: false
+    t.integer "number_of_tickets", null: false
+    t.string "birthdate"
+    t.string "city"
+    t.string "state_code"
+    t.string "country_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "state_name"
+    t.string "country_name"
+    t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -532,6 +551,7 @@ ActiveRecord::Schema.define(version: 2021_09_29_211111) do
   add_foreign_key "import_jobs", "users"
   add_foreign_key "lotteries", "organizations"
   add_foreign_key "lottery_divisions", "lotteries"
+  add_foreign_key "lottery_entrants", "lottery_divisions"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "raw_times", "event_groups"

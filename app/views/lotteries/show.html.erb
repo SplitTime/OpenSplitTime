@@ -19,23 +19,57 @@
           <p><%= l(@presenter.scheduled_start_date, format: :full_with_weekday) %></p>
         </div>
       </div>
+      <aside class="col-auto">
+        <% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
+          <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
+        <% end %>
+      </aside>
     </div>
   </div>
 </header>
 
-<% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
-  <aside class="ost-toolbar">
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div>
-            <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
-          </div>
-        </div>
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 form-inline">
+        <%= render "entrant_lookup" %>
       </div>
     </div>
-  </aside>
-<% end %>
+  </div>
+</aside>
 
 <article class="ost-article container">
+  <% if @presenter.lottery_entrants.present? %>
+    <table class="table table-condensed table-striped">
+      <thead>
+      <tr>
+        <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', params[:sort]) %></th>
+        <th><%= link_to_reversing_sort_heading('Gender', 'gender,last_name,first_name', params[:sort]) %></th>
+        <th><%= link_to_reversing_sort_heading('From', 'state_code', params[:sort]) %></th>
+        <th><%= link_to_reversing_sort_heading('Division', 'division_name,-number_of_tickets', params[:sort]) %></th>
+        <th><%= link_to_reversing_sort_heading('Tickets', 'number_of_tickets', params[:sort]) %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @presenter.lottery_entrants.each do |lottery_entrant| %>
+        <tr>
+          <td><%= lottery_entrant.name %></td>
+          <td><%= lottery_entrant.gender.titleize %></td>
+          <td><%= lottery_entrant.flexible_geolocation %></td>
+          <td><%= lottery_entrant.division_name %></td>
+          <td><%= lottery_entrant.number_of_tickets %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <br/>
+    <% if @presenter.params[:search].blank? %>
+      <p><strong>No entrants have been added yet</strong></p>
+    <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
+      <p><strong>Search parameter is too short</strong></p>
+    <% else %>
+      <p><strong>No lottery entrants match this search</strong></p>
+    <% end %>
+  <% end %>
 </article>

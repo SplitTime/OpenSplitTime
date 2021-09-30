@@ -1,0 +1,17 @@
+---
+another_new_lottery:
+  id: 3
+  organization_id: 4
+  name: Another New Lottery
+  scheduled_start_date: '2022-12-06'
+  slug: another-new-lottery
+  created_at: 2021-09-29 20:39:20.622755000 Z
+  updated_at: 2021-09-30 04:11:11.364907000 Z
+my_exciting_lottery_2020:
+  id: 4
+  organization_id: 4
+  name: My Exciting Lottery 2020
+  scheduled_start_date: '2020-11-11'
+  slug: my-exciting-lottery-2020
+  created_at: 2021-09-29 20:44:48.724219000 Z
+  updated_at: 2021-09-30 04:16:45.560684000 Z

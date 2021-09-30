@@ -1,0 +1,41 @@
+---
+lottery_division_1:
+  id: 1
+  lottery_id: 4
+  name: Never Ever Evers
+  created_at: 2021-09-30 00:13:09.163118000 Z
+  updated_at: 2021-09-30 00:13:09.163118000 Z
+  maximum_entries:
+  maximum_wait_list:
+lottery_division_2:
+  id: 2
+  lottery_id: 4
+  name: Veterans
+  created_at: 2021-09-30 00:13:21.443479000 Z
+  updated_at: 2021-09-30 00:13:21.443479000 Z
+  maximum_entries:
+  maximum_wait_list:
+lottery_division_6:
+  id: 6
+  lottery_id: 3
+  name: Fast People
+  created_at: 2021-09-30 04:10:57.190754000 Z
+  updated_at: 2021-09-30 04:10:57.190754000 Z
+  maximum_entries: 30
+  maximum_wait_list: 10
+lottery_division_7:
+  id: 7
+  lottery_id: 3
+  name: Slow People
+  created_at: 2021-09-30 04:11:11.363462000 Z
+  updated_at: 2021-09-30 04:11:11.363462000 Z
+  maximum_entries: 130
+  maximum_wait_list: 30
+lottery_division_8:
+  id: 8
+  lottery_id: 4
+  name: Elses
+  created_at: 2021-09-30 04:16:45.559181000 Z
+  updated_at: 2021-09-30 04:16:45.559181000 Z
+  maximum_entries: 50
+  maximum_wait_list: 20

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_01_070714) do
+ActiveRecord::Schema.define(version: 2021_10_01_083653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -244,6 +244,15 @@ ActiveRecord::Schema.define(version: 2021_10_01_070714) do
     t.integer "maximum_entries"
     t.integer "maximum_wait_list"
     t.index ["lottery_id"], name: "index_lottery_divisions_on_lottery_id"
+  end
+
+  create_table "lottery_draws", force: :cascade do |t|
+    t.bigint "lottery_id", null: false
+    t.bigint "lottery_ticket_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lottery_id"], name: "index_lottery_draws_on_lottery_id"
+    t.index ["lottery_ticket_id"], name: "index_lottery_draws_on_lottery_ticket_id"
   end
 
   create_table "lottery_entrants", force: :cascade do |t|
@@ -563,6 +572,8 @@ ActiveRecord::Schema.define(version: 2021_10_01_070714) do
   add_foreign_key "import_jobs", "users"
   add_foreign_key "lotteries", "organizations"
   add_foreign_key "lottery_divisions", "lotteries"
+  add_foreign_key "lottery_draws", "lotteries"
+  add_foreign_key "lottery_draws", "lottery_tickets"
   add_foreign_key "lottery_entrants", "lottery_divisions"
   add_foreign_key "lottery_tickets", "lotteries"
   add_foreign_key "lottery_tickets", "lottery_entrants"

@@ -6,12 +6,13 @@ class LotteryEntrant < ApplicationRecord
   has_person_name
   enum gender: [:male, :female]
 
-  belongs_to :lottery_division
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id"
+  has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
-  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:lottery_division), :lottery_entrants) }
+  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
 

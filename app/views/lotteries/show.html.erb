@@ -25,6 +25,15 @@
         <% end %>
       </aside>
     </div>
+    <!-- Navigation -->
+    <ul class="nav nav-tabs nav-tabs-ost">
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do
+        link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants)
+      end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
+        link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
+      end %>
+    </ul>
   </div>
 </header>
 
@@ -39,6 +48,8 @@
 </aside>
 
 <article class="ost-article container">
+  <% case @presenter.display_style %>
+  <% when "entrants" %>
   <% if @presenter.lottery_entrants.present? %>
     <table class="table table-condensed table-striped">
       <thead>
@@ -70,6 +81,41 @@
       <p><strong>Search parameter is too short</strong></p>
     <% else %>
       <p><strong>No lottery entrants match this search</strong></p>
+    <% end %>
+  <% end %>
+    <% when "tickets" %>
+    <% if @presenter.lottery_tickets.present? %>
+      <table class="table table-condensed table-striped">
+        <thead>
+        <tr>
+          <th><%= link_to_reversing_sort_heading('Ticket', 'reference_number', params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading('Gender', 'gender,last_name,first_name', params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading('From', 'state_code', params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading('Division', 'division_name,-number_of_tickets', params[:sort]) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @presenter.lottery_tickets.each do |lottery_ticket| %>
+          <tr>
+            <td><%= lottery_ticket.reference_number %></td>
+            <td><%= lottery_ticket.name %></td>
+            <td><%= lottery_ticket.gender.titleize %></td>
+            <td><%= lottery_ticket.flexible_geolocation %></td>
+            <td><%= lottery_ticket.division_name %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <br/>
+      <% if @presenter.params[:search].blank? %>
+        <p><strong>No tickets have been generated yet</strong></p>
+      <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
+        <p><strong>Search parameter is too short</strong></p>
+      <% else %>
+        <p><strong>No tickets match this search</strong></p>
+      <% end %>
     <% end %>
   <% end %>
 </article>

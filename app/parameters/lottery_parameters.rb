@@ -11,6 +11,6 @@ class LotteryParameters < BaseParameters
   end
 
   def self.permitted_query
-    permitted + LotteryEntrantParameters.permitted
+    permitted + LotteryEntrantParameters.permitted + LotteryTicketParameters.permitted
   end
 end

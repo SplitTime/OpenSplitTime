@@ -134,10 +134,10 @@
     <% if @presenter.lottery_draws.present? %>
       <% @presenter.lottery_draws.each do |lottery_draw| %>
         <div class="card">
-          <h4 class="card-header display-5 font-weight-bold"><%= "#{lottery_draw.name} (#{lottery_draw.division_name})" %></h4>
+          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.name} (#{lottery_draw.division_name})" %></h4>
           <div class="card-body">
-            <h6><%= lottery_draw.flexible_geolocation %></h6>
             <h6><%= lottery_draw.bio %></h6>
+            <h6><%= lottery_draw.flexible_geolocation %></h6>
           </div>
           <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
         </div>

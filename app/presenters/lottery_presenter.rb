@@ -15,17 +15,25 @@ class LotteryPresenter < BasePresenter
   end
 
   def lottery_entrants
-    lottery.entrants
-           .with_division_name
-           .search(search_text)
-           .order(order_param)
+    entrants = lottery.entrants
+                      .with_division_name
+                      .search(search_text)
+
+    reordering_needed = sort_hash.present? || search_text.blank?
+    entrants = entrants.reorder(order_param) if reordering_needed
+
+    entrants
   end
 
   def lottery_tickets
-    lottery.tickets
-           .with_entrant_attributes
-           .search(search_text)
-           .order(order_param)
+    tickets = lottery.tickets
+                     .with_entrant_attributes
+                     .search(search_text)
+
+    reordering_needed = sort_hash.present? || search_text.blank?
+    tickets = tickets.reorder(order_param) if reordering_needed
+
+    tickets
   end
 
   def display_style

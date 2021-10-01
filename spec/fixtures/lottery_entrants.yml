@@ -149,124 +149,19 @@ lottery_entrant_13:
   updated_at: 2021-09-30 03:54:51.878887000 Z
   state_name: Pennsylvania
   country_name: United States
-lottery_entrant_14:
-  id: 14
-  lottery_division_id: 7
-  first_name: Tisa
-  last_name: Greenholt
-  gender: 1
-  number_of_tickets: 64
-  birthdate: '2000-01-18'
-  city: New Setsukobury
-  state_code: KY
-  country_code: US
-  created_at: 2021-09-30 04:11:51.964946000 Z
-  updated_at: 2021-09-30 04:11:51.964946000 Z
-  state_name: Kentucky
-  country_name: United States
-lottery_entrant_15:
-  id: 15
-  lottery_division_id: 7
-  first_name: Alida
-  last_name: Dibbert
-  gender: 1
-  number_of_tickets: 5
-  birthdate: '1985-07-27'
-  city: Dorathymouth
-  state_code: AR
-  country_code: US
-  created_at: 2021-09-30 04:11:51.975347000 Z
-  updated_at: 2021-09-30 04:11:51.975347000 Z
-  state_name: Arkansas
-  country_name: United States
-lottery_entrant_16:
-  id: 16
-  lottery_division_id: 7
-  first_name: Bernice
-  last_name: Witting
-  gender: 1
-  number_of_tickets: 6
-  birthdate: '1991-07-20'
-  city: Swiftport
-  state_code: CA
-  country_code: US
-  created_at: 2021-09-30 04:11:51.978145000 Z
-  updated_at: 2021-09-30 04:11:51.978145000 Z
-  state_name: California
-  country_name: United States
-lottery_entrant_17:
-  id: 17
-  lottery_division_id: 7
-  first_name: Janis
-  last_name: Gaylord
-  gender: 1
-  number_of_tickets: 69
-  birthdate: '1997-07-01'
-  city: South Rhodashire
-  state_code: WY
-  country_code: US
-  created_at: 2021-09-30 04:11:51.981051000 Z
-  updated_at: 2021-09-30 04:11:51.981051000 Z
-  state_name: Wyoming
-  country_name: United States
-lottery_entrant_18:
-  id: 18
-  lottery_division_id: 6
-  first_name: Lacie
-  last_name: Crona
-  gender: 0
-  number_of_tickets: 24
-  birthdate: '1997-07-08'
-  city: East Margareta
-  state_code: OR
-  country_code: US
-  created_at: 2021-09-30 04:11:51.984171000 Z
-  updated_at: 2021-09-30 04:11:51.984171000 Z
-  state_name: Oregon
-  country_name: United States
-lottery_entrant_19:
-  id: 19
-  lottery_division_id: 6
-  first_name: Dulce
-  last_name: Huel
-  gender: 1
-  number_of_tickets: 23
-  birthdate: '1994-12-01'
-  city: Weberville
-  state_code: KS
-  country_code: US
-  created_at: 2021-09-30 04:11:51.987385000 Z
-  updated_at: 2021-09-30 04:11:51.987385000 Z
-  state_name: Kansas
-  country_name: United States
-lottery_entrant_20:
-  id: 20
-  lottery_division_id: 6
-  first_name: Devorah
-  last_name: Greenholt
-  gender: 1
-  number_of_tickets: 19
-  birthdate: '1982-12-05'
-  city: South Margurite
-  state_code: TX
-  country_code: US
-  created_at: 2021-09-30 04:11:51.990398000 Z
-  updated_at: 2021-09-30 04:11:51.990398000 Z
-  state_name: Texas
-  country_name: United States
 lottery_entrant_21:
   id: 21
   lottery_division_id: 6
   first_name: Gricelda
   last_name: Crona
   gender: 1
-  number_of_tickets: 18
+  number_of_tickets: 2
   birthdate: '1994-05-31'
   city: Port Glennis
   state_code: VA
   country_code: US
   created_at: 2021-09-30 04:11:51.993457000 Z
-  updated_at: 2021-09-30 04:11:51.993457000 Z
+  updated_at: 2021-10-01 05:05:24.169087000 Z
   state_name: Virginia
   country_name: United States
 lottery_entrant_22:
@@ -275,13 +170,13 @@ lottery_entrant_22:
   first_name: Deb
   last_name: Swaniawski
   gender: 1
-  number_of_tickets: 15
+  number_of_tickets: 1
   birthdate: '1997-10-15'
   city: West Rebecka
   state_code: AZ
   country_code: US
   created_at: 2021-09-30 04:11:51.996405000 Z
-  updated_at: 2021-09-30 04:11:51.996405000 Z
+  updated_at: 2021-10-01 05:05:24.173417000 Z
   state_name: Arizona
   country_name: United States
 lottery_entrant_23:
@@ -290,13 +185,13 @@ lottery_entrant_23:
   first_name: Bernetta
   last_name: Gerlach
   gender: 1
-  number_of_tickets: 47
+  number_of_tickets: 1
   birthdate: '1997-11-08'
   city: Prohaskaside
   state_code: RI
   country_code: US
   created_at: 2021-09-30 04:11:51.999359000 Z
-  updated_at: 2021-09-30 04:11:51.999359000 Z
+  updated_at: 2021-10-01 05:05:08.196992000 Z
   state_name: Rhode Island
   country_name: United States
 lottery_entrant_24:

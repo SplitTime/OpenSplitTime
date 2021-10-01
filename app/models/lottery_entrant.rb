@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LotteryEntrant < ApplicationRecord
-  include CapitalizeAttributes, PersonalInfo, Searchable, StateCountrySyncable
+  include CapitalizeAttributes, PersonalInfo, Searchable, StateCountrySyncable, Structpluck
 
   has_person_name
   enum gender: [:male, :female]

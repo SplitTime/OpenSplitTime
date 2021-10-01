@@ -4,6 +4,7 @@ class LotteryTicket < ApplicationRecord
 
   belongs_to :lottery
   belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id"
+  has_one :draw, class_name: "LotteryDraw", dependent: :destroy
 
   scope :with_entrant_attributes, -> { from(select("lottery_tickets.*, lottery_divisions.name as division_name, first_name, last_name, gender, city, state_code, state_name, country_code, country_name").joins(entrant: :division), :lottery_tickets) }
 

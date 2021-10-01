@@ -8,6 +8,7 @@ class Lottery < ApplicationRecord
   has_many :divisions, class_name: "LotteryDivision", dependent: :destroy
   has_many :entrants, through: :divisions
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
+  has_many :draws, class_name: "LotteryDraw", dependent: :destroy
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :name

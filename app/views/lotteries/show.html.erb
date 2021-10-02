@@ -156,17 +156,23 @@
           <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
           <div class="card-body">
             <h5>Entrants</h5>
-            <ol>
-              <% division.winning_entrants.each do |entrant| %>
-                <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
-              <% end %>
-            </ol>
-            <h5>Wait List</h5>
-            <ol>
-              <% division.wait_list_entrants.each do |entrant| %>
-                <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
-              <% end %>
-            </ol>
+            <% if division.winning_entrants.present? %>
+              <ol>
+                <% division.winning_entrants.each do |entrant| %>
+                  <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                <% end %>
+              </ol>
+            <% else %>
+              <p>No entrants have been drawn yet</p>
+            <% end %>
+            <% if division.wait_list_entrants.present? %>
+              <h5>Wait List</h5>
+              <ol>
+                <% division.wait_list_entrants.each do |entrant| %>
+                  <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                <% end %>
+              </ol>
+            <% end %>
           </div>
         </div>
         <br/>

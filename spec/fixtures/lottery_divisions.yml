@@ -4,9 +4,9 @@ lottery_division_1:
   lottery_id: 4
   name: Never Ever Evers
   created_at: 2021-09-30 00:13:09.163118000 Z
-  updated_at: 2021-10-02 16:45:53.221099000 Z
-  maximum_entries: 4
-  maximum_wait_list: 5
+  updated_at: 2021-10-02 17:51:39.936643000 Z
+  maximum_entries: 3
+  maximum_wait_list: 2
 lottery_division_2:
   id: 2
   lottery_id: 4

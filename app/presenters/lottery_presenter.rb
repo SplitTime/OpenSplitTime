@@ -36,6 +36,12 @@ class LotteryPresenter < BasePresenter
     tickets
   end
 
+  def lottery_draws
+    lottery.draws
+           .with_entrant_attributes
+           .order(created_at: :desc)
+  end
+
   def display_style
     params[:display_style].presence || DEFAULT_DISPLAY_STYLE
   end

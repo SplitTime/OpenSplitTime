@@ -12,4 +12,13 @@ class LotteryDivision < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
+
+  def draw_ticket!
+    drawn_entrants = entrants.joins(tickets: :draw)
+    eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)
+    drawn_ticket_index = rand(eligible_tickets.count)
+    drawn_ticket = eligible_tickets.offset(drawn_ticket_index).first
+
+    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+  end
 end

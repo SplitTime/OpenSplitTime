@@ -33,58 +33,71 @@
       <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
         link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
       end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'draws'}" do
+        link_to "Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws)
+      end %>
     </ul>
   </div>
 </header>
 
-<aside class="ost-toolbar">
-  <div class="container">
-    <div class="row">
-      <div class="col-12 col-md-6 form-inline">
-        <%= render "entrant_lookup" %>
-      </div>
-    </div>
-  </div>
-</aside>
-
 <article class="ost-article container">
   <% case @presenter.display_style %>
   <% when "entrants" %>
-  <% if @presenter.lottery_entrants.present? %>
-    <table class="table table-condensed table-striped">
-      <thead>
-      <tr>
-        <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
-        <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
-        <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
-        <th><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
-        <th><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @presenter.lottery_entrants.each do |lottery_entrant| %>
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-6 form-inline">
+            <%= render "entrant_lookup" %>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <% if @presenter.lottery_entrants.present? %>
+      <table class="table table-condensed table-striped">
+        <thead>
         <tr>
-          <td><%= lottery_entrant.name %></td>
-          <td><%= lottery_entrant.gender.titleize %></td>
-          <td><%= lottery_entrant.flexible_geolocation %></td>
-          <td><%= lottery_entrant.division_name %></td>
-          <td><%= lottery_entrant.number_of_tickets %></td>
+          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
+          <th><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
         </tr>
-      <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <br/>
-    <% if @presenter.params[:search].blank? %>
-      <p><strong>No entrants have been added yet</strong></p>
-    <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
-      <p><strong>Search parameter is too short</strong></p>
+        </thead>
+        <tbody>
+        <% @presenter.lottery_entrants.each do |lottery_entrant| %>
+          <tr>
+            <td><%= lottery_entrant.name %></td>
+            <td><%= lottery_entrant.gender.titleize %></td>
+            <td><%= lottery_entrant.flexible_geolocation %></td>
+            <td><%= lottery_entrant.division_name %></td>
+            <td><%= lottery_entrant.number_of_tickets %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
     <% else %>
-      <p><strong>No lottery entrants match this search</strong></p>
+      <br/>
+      <% if @presenter.params[:search].blank? %>
+        <p><strong>No entrants have been added yet</strong></p>
+      <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
+        <p><strong>Search parameter is too short</strong></p>
+      <% else %>
+        <p><strong>No lottery entrants match this search</strong></p>
+      <% end %>
     <% end %>
-  <% end %>
-    <% when "tickets" %>
+  <% when "tickets" %>
     <% if @presenter.lottery_tickets.present? %>
+      <aside class="ost-toolbar">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-6 form-inline">
+              <%= render "entrant_lookup" %>
+            </div>
+          </div>
+        </div>
+      </aside>
+
       <table class="table table-condensed table-striped">
         <thead>
         <tr>
@@ -116,6 +129,22 @@
       <% else %>
         <p><strong>No tickets match this search</strong></p>
       <% end %>
+    <% end %>
+  <% when "draws" %>
+    <% if @presenter.lottery_draws.present? %>
+      <% @presenter.lottery_draws.each do |lottery_draw| %>
+        <div class="card">
+          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.name} (#{lottery_draw.division_name})" %></h4>
+          <div class="card-body">
+            <h6><%= lottery_draw.bio %></h6>
+            <h6><%= lottery_draw.flexible_geolocation %></h6>
+          </div>
+          <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
+        </div>
+        <br/>
+      <% end %>
+    <% else %>
+      <p><strong>No draws have been generated yet</strong></p>
     <% end %>
   <% end %>
 </article>

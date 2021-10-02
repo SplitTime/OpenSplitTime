@@ -31,6 +31,6 @@ class LotteryDivision < ApplicationRecord
   end
 
   def wait_list_entrants
-    ordered_drawn_entrants.offset(maximum_entries - 1).limit(maximum_wait_list)
+    ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
   end
 end

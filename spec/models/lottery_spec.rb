@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Lottery, type: :model do
-  subject { lotteries(:another_new_lottery) }
+  subject { lotteries(:lottery_without_tickets) }
 
   it { is_expected.to strip_attribute(:name) }
   it { is_expected.to capitalize_attribute(:name) }

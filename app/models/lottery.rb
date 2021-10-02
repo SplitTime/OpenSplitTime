@@ -21,7 +21,7 @@ class Lottery < ApplicationRecord
     from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
   end
 
-  def generate_ticket_hashes(beginning_reference_number: 100000)
+  def generate_ticket_hashes(beginning_reference_number: 10_000)
     entrant_structs = entrants.struct_pluck(:id, :number_of_tickets)
 
     ticket_hashes = entrant_structs.flat_map do |struct|
@@ -43,7 +43,8 @@ class Lottery < ApplicationRecord
     ticket_hashes
   end
 
-  def delete_and_insert_tickets(beginning_reference_number: 100000)
+  def delete_and_insert_tickets!(beginning_reference_number: 10_000)
+    draws.delete_all
     tickets.delete_all
 
     ticket_hashes = generate_ticket_hashes(beginning_reference_number: beginning_reference_number)

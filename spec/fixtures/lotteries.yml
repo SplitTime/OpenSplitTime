@@ -1,17 +1,17 @@
 ---
-another_new_lottery:
+lottery_without_tickets:
   id: 3
   organization_id: 4
-  name: Another New Lottery
+  name: Lottery Without Tickets
   scheduled_start_date: '2022-12-06'
-  slug: another-new-lottery
+  slug: lottery-without-tickets
   created_at: 2021-09-29 20:39:20.622755000 Z
-  updated_at: 2021-09-30 04:11:11.364907000 Z
-my_exciting_lottery_2020:
+  updated_at: 2021-10-02 19:30:32.255267000 Z
+lottery_with_tickets_and_draws:
   id: 4
   organization_id: 4
-  name: My Exciting Lottery 2020
+  name: Lottery With Tickets And Draws
   scheduled_start_date: '2020-11-11'
-  slug: my-exciting-lottery-2020
+  slug: lottery-with-tickets-and-draws
   created_at: 2021-09-29 20:44:48.724219000 Z
-  updated_at: 2021-09-30 04:16:45.560684000 Z
+  updated_at: 2021-10-02 19:33:57.419309000 Z

@@ -10,7 +10,7 @@ class LotteryDivision < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :name
 
-  validates_presence_of :name
+  validates_presence_of :maximum_entries, :name
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
 
   def draw_ticket!
@@ -20,5 +20,19 @@ class LotteryDivision < ApplicationRecord
     drawn_ticket = eligible_tickets.offset(drawn_ticket_index).first
 
     lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+  end
+
+  def wait_list_entrants
+    ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
+  end
+
+  def winning_entrants
+    ordered_drawn_entrants.limit(maximum_entries)
+  end
+
+  private
+
+  def ordered_drawn_entrants
+    entrants.drawn_and_ordered
   end
 end

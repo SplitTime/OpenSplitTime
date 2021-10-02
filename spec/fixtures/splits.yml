@@ -7,855 +7,855 @@ hardrock_ccw_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2016-04-18 09:09:56.005933'
-  updated_at: '2018-03-16 14:58:28.105359'
+  created_at: 2016-04-18 09:09:56.005933000 Z
+  updated_at: 2018-03-16 14:58:28.105359000 Z
   created_by: 3
   updated_by: 1
   description: Silverton High School
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '37.811954'
-  longitude: "-107.664814"
+  latitude: !ruby/object:BigDecimal 18:0.37811954e2
+  longitude: !ruby/object:BigDecimal 18:-0.107664814e3
   elevation: 2837.84594726562
   slug: hardrock-ccw-start
   parameterized_base_name: start
 hardrock_ccw_cunningham:
   id: 6
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 14966
   vert_gain_from_start: 1170.432
   vert_loss_from_start: 844.296
   kind: 2
-  created_at: '2016-04-18 09:09:56.017581'
-  updated_at: '2019-01-31 08:35:14.07341'
+  created_at: 2016-04-18 09:09:56.017581000 Z
+  updated_at: 2019-01-31 08:35:14.073410000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Cunningham
   sub_split_bitmap: 65
-  latitude: '37.793287'
-  longitude: "-107.577864"
+  latitude: !ruby/object:BigDecimal 18:0.37793287e2
+  longitude: !ruby/object:BigDecimal 18:-0.107577864e3
   elevation: 3164.79809570312
   slug: hardrock-ccw-cunningham
   parameterized_base_name: cunningham
 hardrock_ccw_sherman:
   id: 12
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 46349
   vert_gain_from_start: 3084.576
   vert_loss_from_start: 2749.296
   kind: 2
-  created_at: '2016-04-18 09:09:56.048422'
-  updated_at: '2019-01-31 08:35:32.868078'
+  created_at: 2016-04-18 09:09:56.048422000 Z
+  updated_at: 2019-01-31 08:35:32.868078000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Sherman
   sub_split_bitmap: 65
-  latitude: '37.901170'
-  longitude: "-107.430661"
+  latitude: !ruby/object:BigDecimal 18:0.3790117e2
+  longitude: !ruby/object:BigDecimal 18:-0.107430661e3
   elevation: 2925.47534179688
   slug: hardrock-ccw-sherman
   parameterized_base_name: sherman
 hardrock_ccw_grouse:
   id: 16
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 67914
   vert_gain_from_start: 4452.5184
   vert_loss_from_start: 4025.7984
   kind: 2
-  created_at: '2016-04-18 09:09:56.067613'
-  updated_at: '2019-01-31 08:36:52.637995'
+  created_at: 2016-04-18 09:09:56.067613000 Z
+  updated_at: 2019-01-31 08:36:52.637995000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Grouse
   sub_split_bitmap: 65
-  latitude: '37.917532'
-  longitude: "-107.558352"
+  latitude: !ruby/object:BigDecimal 18:0.37917532e2
+  longitude: !ruby/object:BigDecimal 18:-0.107558352e3
   elevation: 3282.86303710938
   slug: hardrock-ccw-grouse
   parameterized_base_name: grouse
 hardrock_ccw_ouray:
   id: 20
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 91088
   vert_gain_from_start: 5295.2904
   vert_loss_from_start: 5792.1144
   kind: 2
-  created_at: '2016-04-18 09:09:56.086046'
-  updated_at: '2018-03-16 14:58:28.26417'
+  created_at: 2016-04-18 09:09:56.086046000 Z
+  updated_at: 2018-03-16 14:58:28.264170000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Ouray
   sub_split_bitmap: 65
-  latitude: '38.024295'
-  longitude: "-107.670822"
+  latitude: !ruby/object:BigDecimal 18:0.38024295e2
+  longitude: !ruby/object:BigDecimal 18:-0.107670822e3
   elevation: 2371.22412109375
   slug: hardrock-ccw-ouray
   parameterized_base_name: ouray
 hardrock_ccw_telluride:
   id: 26
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 117160
   vert_gain_from_start: 6961.9368
   vert_loss_from_start: 7144.8168
   kind: 2
-  created_at: '2016-04-18 09:09:56.11459'
-  updated_at: '2018-03-16 14:58:28.32161'
+  created_at: 2016-04-18 09:09:56.114590000 Z
+  updated_at: 2018-03-16 14:58:28.321610000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Telluride
   sub_split_bitmap: 65
-  latitude: '37.938782'
-  longitude: "-107.808838"
+  latitude: !ruby/object:BigDecimal 18:0.37938782e2
+  longitude: !ruby/object:BigDecimal 18:-0.107808838e3
   elevation: 2690.43334960938
   slug: hardrock-ccw-telluride
   parameterized_base_name: telluride
 hardrock_ccw_putnam:
   id: 32
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 152404
   vert_gain_from_start: 9974.8848
   vert_loss_from_start: 9276.8928
   kind: 2
-  created_at: '2016-04-18 09:09:56.148374'
-  updated_at: '2018-03-16 14:58:28.379562'
+  created_at: 2016-04-18 09:09:56.148374000 Z
+  updated_at: 2018-03-16 14:58:28.379562000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Putnam
   sub_split_bitmap: 65
-  latitude: '37.780145'
-  longitude: "-107.731762"
+  latitude: !ruby/object:BigDecimal 18:0.37780145e2
+  longitude: !ruby/object:BigDecimal 18:-0.107731762e3
   elevation: 3482.12158203125
   slug: hardrock-ccw-putnam
   parameterized_base_name: putnam
 hardrock_ccw_finish:
   id: 34
   course_id: 4
-  location_id: 
+  location_id:
   distance_from_start: 161739
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
   kind: 1
-  created_at: '2016-04-18 09:09:56.159252'
-  updated_at: '2019-01-30 21:33:24.052358'
+  created_at: 2016-04-18 09:09:56.159252000 Z
+  updated_at: 2019-01-30 21:33:24.052358000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '37.811971'
-  longitude: "-107.664771"
+  latitude: !ruby/object:BigDecimal 18:0.37811971e2
+  longitude: !ruby/object:BigDecimal 18:-0.107664771e3
   elevation: 2837.96826171875
   slug: hardrock-ccw-finish
   parameterized_base_name: finish
 ramble_even_course_start:
   id: 46
   course_id: 9
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2016-05-08 07:10:07.193995'
-  updated_at: '2019-01-30 21:33:43.974804'
+  created_at: 2016-05-08 07:10:07.193995000 Z
+  updated_at: 2019-01-30 21:33:43.974804000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the Ramble Even-Year Course course.
   base_name: Start
   sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
+  latitude:
+  longitude:
+  elevation:
   slug: ramble-even-course-start
   parameterized_base_name: start
 ramble_even_course_finish:
   id: 47
   course_id: 9
-  location_id: 
+  location_id:
   distance_from_start: 6759
   vert_gain_from_start: 249.935992002048
   vert_loss_from_start: 249.935992002048
   kind: 1
-  created_at: '2016-05-08 07:10:07.195406'
-  updated_at: '2019-01-30 21:34:01.576579'
+  created_at: 2016-05-08 07:10:07.195406000 Z
+  updated_at: 2019-01-30 21:34:01.576579000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the Ramble Even-Year Course course.
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: 
-  longitude: 
-  elevation: 
+  latitude:
+  longitude:
+  elevation:
   slug: ramble-even-course-finish
   parameterized_base_name: finish
 hardrock_cw_start:
   id: 81
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2016-05-23 01:04:57.226299'
-  updated_at: '2019-01-31 08:29:08.562736'
+  created_at: 2016-05-23 01:04:57.226299000 Z
+  updated_at: 2019-01-31 08:29:08.562736000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the Hardrock CW course.
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
+  latitude: !ruby/object:BigDecimal 18:0.37812496e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665898e3
   elevation: 2839.82150912571
   slug: hardrock-cw-start
   parameterized_base_name: start
 hardrock_cw_finish:
   id: 82
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 161739
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
   kind: 1
-  created_at: '2016-05-23 01:04:57.227554'
-  updated_at: '2019-01-31 08:33:29.136331'
+  created_at: 2016-05-23 01:04:57.227554000 Z
+  updated_at: 2019-01-31 08:33:29.136331000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the Hardrock CW course.
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
+  latitude: !ruby/object:BigDecimal 18:0.37812496e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665898e3
   elevation: 2839.82150912571
   slug: hardrock-cw-finish
   parameterized_base_name: finish
 hardrock_cw_telluride:
   id: 87
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 44578
   vert_gain_from_start: 2928.82310627766
   vert_loss_from_start: 3099.51110081564
   kind: 2
-  created_at: '2016-05-23 01:09:02.026784'
-  updated_at: '2019-01-31 08:28:21.230857'
+  created_at: 2016-05-23 01:09:02.026784000 Z
+  updated_at: 2019-01-31 08:28:21.230857000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Telluride
   sub_split_bitmap: 65
-  latitude: '37.935055'
-  longitude: "-107.807532"
+  latitude: !ruby/object:BigDecimal 18:0.37935055e2
+  longitude: !ruby/object:BigDecimal 18:-0.107807532e3
   elevation: 2678.88711427561
   slug: hardrock-cw-telluride
   parameterized_base_name: telluride
 hardrock_cw_ouray:
   id: 93
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 70650
   vert_gain_from_start: 4281.52546299119
   vert_loss_from_start: 4778.34944709282
   kind: 2
-  created_at: '2016-05-23 01:09:02.078134'
-  updated_at: '2019-01-31 08:29:48.792823'
+  created_at: 2016-05-23 01:09:02.078134000 Z
+  updated_at: 2019-01-31 08:29:48.792823000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Ouray
   sub_split_bitmap: 65
-  latitude: '38.027895'
-  longitude: "-107.672853"
+  latitude: !ruby/object:BigDecimal 18:0.38027895e2
+  longitude: !ruby/object:BigDecimal 18:-0.107672853e3
   elevation: 7739.78615232684
   slug: hardrock-cw-ouray
   parameterized_base_name: ouray
 hardrock_cw_grouse:
   id: 97
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 93824
   vert_gain_from_start: 6047.84140646908
   vert_loss_from_start: 5621.12142012411
   kind: 2
-  created_at: '2016-05-23 01:09:02.100361'
-  updated_at: '2019-01-31 08:30:38.830627'
+  created_at: 2016-05-23 01:09:02.100361000 Z
+  updated_at: 2019-01-31 08:30:38.830627000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Grouse
   sub_split_bitmap: 65
-  latitude: '37.917532'
-  longitude: "-107.558352"
+  latitude: !ruby/object:BigDecimal 18:0.37917532e2
+  longitude: !ruby/object:BigDecimal 18:-0.107558352e3
   elevation: 3291.83989466112
   slug: hardrock-cw-grouse
   parameterized_base_name: grouse
 hardrock_cw_sherman:
   id: 101
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 115389
   vert_gain_from_start: 7324.343765621
   vert_loss_from_start: 7223.75976883969
   kind: 2
-  created_at: '2016-05-23 01:09:02.122487'
-  updated_at: '2019-01-31 08:31:27.036218'
+  created_at: 2016-05-23 01:09:02.122487000 Z
+  updated_at: 2019-01-31 08:31:27.036218000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Sherman
   sub_split_bitmap: 65
-  latitude: '37.901170'
-  longitude: "-107.430661"
+  latitude: !ruby/object:BigDecimal 18:0.3790117e2
+  longitude: !ruby/object:BigDecimal 18:-0.107430661e3
   elevation: 2925.7751063752
   slug: hardrock-cw-sherman
   parameterized_base_name: sherman
 hardrock_cw_cunningham:
   id: 107
   course_id: 12
-  location_id: 
+  location_id:
   distance_from_start: 146772
   vert_gain_from_start: 9229.343704661
   vert_loss_from_start: 8903.20771509735
   kind: 2
-  created_at: '2016-05-23 01:09:02.155415'
-  updated_at: '2019-01-31 08:32:27.561806'
+  created_at: 2016-05-23 01:09:02.155415000 Z
+  updated_at: 2019-01-31 08:32:27.561806000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Cunningham
   sub_split_bitmap: 65
-  latitude: '37.793287'
-  longitude: "-107.577864"
+  latitude: !ruby/object:BigDecimal 18:0.37793287e2
+  longitude: !ruby/object:BigDecimal 18:-0.107577864e3
   elevation: 3162.9094987869
   slug: hardrock-cw-cunningham
   parameterized_base_name: cunningham
 rufa_course_start:
   id: 135
   course_id: 20
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2017-01-28 13:21:38.627377'
-  updated_at: '2018-03-16 14:58:29.096437'
+  created_at: 2017-01-28 13:21:38.627377000 Z
+  updated_at: 2018-03-16 14:58:29.096437000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the RUFA Course course.
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '40.698096'
-  longitude: "-111.742930"
+  latitude: !ruby/object:BigDecimal 18:0.40698096e2
+  longitude: !ruby/object:BigDecimal 18:-0.11174293e3
   elevation: 1738.73815917969
   slug: rufa-course-start
   parameterized_base_name: start
 rufa_course_finish:
   id: 136
   course_id: 20
-  location_id: 
+  location_id:
   distance_from_start: 8690
   vert_gain_from_start: 780.288
   vert_loss_from_start: 780.288
   kind: 1
-  created_at: '2017-01-28 13:21:38.656813'
-  updated_at: '2018-03-16 14:58:29.106766'
+  created_at: 2017-01-28 13:21:38.656813000 Z
+  updated_at: 2018-03-16 14:58:29.106766000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the RUFA Course course.
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '40.698080'
-  longitude: "-111.742930"
+  latitude: !ruby/object:BigDecimal 18:0.4069808e2
+  longitude: !ruby/object:BigDecimal 18:-0.11174293e3
   elevation: 1738.33129882812
   slug: rufa-course-finish
   parameterized_base_name: finish
 rufa_course_grandeur_peak:
   id: 137
   course_id: 20
-  location_id: 
+  location_id:
   distance_from_start: 4345
   vert_gain_from_start: 780.288
   vert_loss_from_start: 0.0
   kind: 2
-  created_at: '2017-01-28 13:23:10.270043'
-  updated_at: '2018-11-21 00:01:19.151959'
+  created_at: 2017-01-28 13:23:10.270043000 Z
+  updated_at: 2018-11-21 00:01:19.151959000 Z
   created_by: 1
   updated_by: 1
   description: Top of Grander Peak
   base_name: Grandeur Peak
   sub_split_bitmap: 1
-  latitude: '40.707189'
-  longitude: "-111.759710"
+  latitude: !ruby/object:BigDecimal 18:0.40707189e2
+  longitude: !ruby/object:BigDecimal 18:-0.11175971e3
   elevation: 2522.94921875
   slug: rufa-course-grandeur-peak
   parameterized_base_name: grandeur-peak
 d30_50k_course_start:
   id: 164
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2017-05-23 06:06:29.670579'
-  updated_at: '2019-01-30 21:33:24.072287'
+  created_at: 2017-05-23 06:06:29.670579000 Z
+  updated_at: 2019-01-30 21:33:24.072287000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '39.850194'
-  longitude: "-105.359809"
+  latitude: !ruby/object:BigDecimal 18:0.39850194e2
+  longitude: !ruby/object:BigDecimal 18:-0.105359809e3
   elevation: 2356.51098632812
   slug: d30-50k-course-start
   parameterized_base_name: start
 d30_50k_course_finish:
   id: 165
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 49889
   vert_gain_from_start: 2286.0
   vert_loss_from_start: 2286.0
   kind: 1
-  created_at: '2017-05-23 06:06:29.673112'
-  updated_at: '2019-01-30 21:33:24.089928'
+  created_at: 2017-05-23 06:06:29.673112000 Z
+  updated_at: 2019-01-30 21:33:24.089928000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '39.850210'
-  longitude: "-105.359841"
+  latitude: !ruby/object:BigDecimal 18:0.3985021e2
+  longitude: !ruby/object:BigDecimal 18:-0.105359841e3
   elevation: 2356.2763671875
   slug: d30-50k-course-finish
   parameterized_base_name: finish
 d30_50k_course_aid_5:
   id: 166
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 47475
   vert_gain_from_start: 2164.08
   vert_loss_from_start: 2072.64
   kind: 2
-  created_at: '2017-05-23 06:17:22.480349'
-  updated_at: '2019-01-30 21:33:24.144024'
+  created_at: 2017-05-23 06:17:22.480349000 Z
+  updated_at: 2019-01-30 21:33:24.144024000 Z
   created_by: 1
   updated_by: 1
   description: On the Burro Trail on the slopes of Windy Peak
   base_name: 'Aid #5'
   sub_split_bitmap: 1
-  latitude: '39.855004'
-  longitude: "-105.363479"
+  latitude: !ruby/object:BigDecimal 18:0.39855004e2
+  longitude: !ruby/object:BigDecimal 18:-0.105363479e3
   elevation: 2434.32568359375
   slug: d30-50k-course-aid-5
   parameterized_base_name: aid-5
 d30_50k_course_aid_1:
   id: 167
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 8046
   vert_gain_from_start: 487.68
   vert_loss_from_start: 243.84
   kind: 2
-  created_at: '2017-05-23 06:19:26.04907'
-  updated_at: '2019-01-30 21:33:24.182548'
+  created_at: 2017-05-23 06:19:26.049070000 Z
+  updated_at: 2019-01-30 21:33:24.182548000 Z
   created_by: 1
   updated_by: 1
   description: In Forgotten Valley
   base_name: 'Aid #1'
   sub_split_bitmap: 1
-  latitude: '39.859303'
-  longitude: "-105.385709"
+  latitude: !ruby/object:BigDecimal 18:0.39859303e2
+  longitude: !ruby/object:BigDecimal 18:-0.105385709e3
   elevation: 2540.84106445312
   slug: d30-50k-course-aid-1
   parameterized_base_name: aid-1
 d30_50k_course_aid_4:
   id: 168
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 39428
   vert_gain_from_start: 1798.32
   vert_loss_from_start: 1615.44
   kind: 2
-  created_at: '2017-05-23 06:20:05.636886'
-  updated_at: '2019-01-30 21:33:24.201557'
+  created_at: 2017-05-23 06:20:05.636886000 Z
+  updated_at: 2019-01-30 21:33:24.201557000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: 'Aid #4'
   sub_split_bitmap: 1
-  latitude: '39.859352'
-  longitude: "-105.385687"
+  latitude: !ruby/object:BigDecimal 18:0.39859352e2
+  longitude: !ruby/object:BigDecimal 18:-0.105385687e3
   elevation: 2541.6455078125
   slug: d30-50k-course-aid-4
   parameterized_base_name: aid-4
 d30_50k_course_aid_3:
   id: 170
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 27680
   vert_gain_from_start: 1310.64
   vert_loss_from_start: 1158.24
   kind: 2
-  created_at: '2017-05-23 06:23:13.751342'
-  updated_at: '2019-01-30 21:33:24.220248'
+  created_at: 2017-05-23 06:23:13.751342000 Z
+  updated_at: 2019-01-30 21:33:24.220248000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: 'Aid #3'
   sub_split_bitmap: 1
-  latitude: '39.835893'
-  longitude: "-105.404978"
+  latitude: !ruby/object:BigDecimal 18:0.39835893e2
+  longitude: !ruby/object:BigDecimal 18:-0.105404978e3
   elevation: 2488.14086914062
   slug: d30-50k-course-aid-3
   parameterized_base_name: aid-3
 d30_50k_course_aid_2:
   id: 171
   course_id: 26
-  location_id: 
+  location_id:
   distance_from_start: 19473
   vert_gain_from_start: 1036.32
   vert_loss_from_start: 701.04
   kind: 2
-  created_at: '2017-05-31 15:06:56.010141'
-  updated_at: '2019-01-30 21:33:24.238842'
+  created_at: 2017-05-31 15:06:56.010141000 Z
+  updated_at: 2019-01-30 21:33:24.238842000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: 'Aid #2'
   sub_split_bitmap: 1
-  latitude: '39.850210'
-  longitude: "-105.445211"
+  latitude: !ruby/object:BigDecimal 18:0.3985021e2
+  longitude: !ruby/object:BigDecimal 18:-0.105445211e3
   elevation: 2637.22631835938
   slug: d30-50k-course-aid-2
   parameterized_base_name: aid-2
 d30_12m_course_start:
   id: 172
   course_id: 27
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2017-06-09 09:51:15.477285'
-  updated_at: '2019-01-30 21:33:24.25564'
+  created_at: 2017-06-09 09:51:15.477285000 Z
+  updated_at: 2019-01-30 21:33:24.255640000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '39.850194'
-  longitude: "-105.359809"
+  latitude: !ruby/object:BigDecimal 18:0.39850194e2
+  longitude: !ruby/object:BigDecimal 18:-0.105359809e3
   elevation: 2356.51098632812
   slug: d30-12m-course-start
   parameterized_base_name: start
 d30_12m_course_finish:
   id: 173
   course_id: 27
-  location_id: 
+  location_id:
   distance_from_start: 19473
   vert_gain_from_start: 1066.7999658624
   vert_loss_from_start: 1066.7999658624
   kind: 1
-  created_at: '2017-06-09 09:51:15.480173'
-  updated_at: '2019-01-30 21:33:24.274251'
+  created_at: 2017-06-09 09:51:15.480173000 Z
+  updated_at: 2019-01-30 21:33:24.274251000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '39.850210'
-  longitude: "-105.359841"
+  latitude: !ruby/object:BigDecimal 18:0.3985021e2
+  longitude: !ruby/object:BigDecimal 18:-0.105359841e3
   elevation: 2356.2763671875
   slug: d30-12m-course-finish
   parameterized_base_name: finish
 sum_100k_course_start:
   id: 204
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2018-01-18 05:09:16.742408'
-  updated_at: '2019-01-30 21:33:24.327917'
+  created_at: 2018-01-18 05:09:16.742408000 Z
+  updated_at: 2019-01-30 21:33:24.327917000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
+  latitude: !ruby/object:BigDecimal 18:0.37812496e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665898e3
   elevation: 2840.0
   slug: sum-100k-course-start
   parameterized_base_name: start
 sum_100k_course_finish:
   id: 205
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 99779
   vert_gain_from_start: 2676.144
   vert_loss_from_start: 2529.84
   kind: 1
-  created_at: '2018-01-18 05:09:16.744523'
-  updated_at: '2019-01-30 21:33:24.343889'
+  created_at: 2018-01-18 05:09:16.744523000 Z
+  updated_at: 2019-01-30 21:33:24.343889000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
+  latitude: !ruby/object:BigDecimal 18:0.37812496e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665898e3
   elevation: 2840.0
   slug: sum-100k-course-finish
   parameterized_base_name: finish
 sum_100k_course_molas_pass_aid1:
   id: 206
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 18347
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
   kind: 2
-  created_at: '2018-01-18 05:09:24.887373'
-  updated_at: '2019-01-30 21:33:24.308328'
+  created_at: 2018-01-18 05:09:24.887373000 Z
+  updated_at: 2019-01-30 21:33:24.308328000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Molas Pass (Aid1)
   sub_split_bitmap: 65
-  latitude: '37.739536'
-  longitude: "-107.698161"
+  latitude: !ruby/object:BigDecimal 18:0.37739536e2
+  longitude: !ruby/object:BigDecimal 18:-0.107698161e3
   elevation: 3328.416
   slug: sum-100k-course-molas-pass-aid1
   parameterized_base_name: molas-pass-aid1
 sum_100k_course_rolling_pass_aid2:
   id: 207
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 35293
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
   kind: 2
-  created_at: '2018-01-18 05:09:24.901188'
-  updated_at: '2019-01-30 21:33:24.401037'
+  created_at: 2018-01-18 05:09:24.901188000 Z
+  updated_at: 2019-01-30 21:33:24.401037000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Rolling Pass (Aid2)
   sub_split_bitmap: 65
-  latitude: '37.747167'
-  longitude: "-107.805658"
+  latitude: !ruby/object:BigDecimal 18:0.37747167e2
+  longitude: !ruby/object:BigDecimal 18:-0.107805658e3
   elevation: 3749.04
   slug: sum-100k-course-rolling-pass-aid2
   parameterized_base_name: rolling-pass-aid2
 sum_100k_course_cascade_creek_rd_aid3:
   id: 208
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 46317
   vert_gain_from_start: 1112.52
   vert_loss_from_start: 365.76
   kind: 2
-  created_at: '2018-01-18 05:09:24.912892'
-  updated_at: '2019-01-30 21:33:24.4181'
+  created_at: 2018-01-18 05:09:24.912892000 Z
+  updated_at: 2019-01-30 21:33:24.418100000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Cascade Creek Rd (Aid3)
   sub_split_bitmap: 65
-  latitude: '37.725694'
-  longitude: "-107.862253"
+  latitude: !ruby/object:BigDecimal 18:0.37725694e2
+  longitude: !ruby/object:BigDecimal 18:-0.107862253e3
   elevation: 3474.72
   slug: sum-100k-course-cascade-creek-rd-aid3
   parameterized_base_name: cascade-creek-rd-aid3
 sum_100k_course_engineer_mtn_th_aid4:
   id: 209
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 59642
   vert_gain_from_start: 1271.016
   vert_loss_from_start: 1203.96
   kind: 2
-  created_at: '2018-01-18 05:09:24.923832'
-  updated_at: '2019-01-30 21:33:24.434565'
+  created_at: 2018-01-18 05:09:24.923832000 Z
+  updated_at: 2019-01-30 21:33:24.434565000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Engineer Mtn TH (Aid4)
   sub_split_bitmap: 65
-  latitude: '37.660092'
-  longitude: "-107.800361"
+  latitude: !ruby/object:BigDecimal 18:0.37660092e2
+  longitude: !ruby/object:BigDecimal 18:-0.107800361e3
   elevation: 2769.7176
   slug: sum-100k-course-engineer-mtn-th-aid4
   parameterized_base_name: engineer-mtn-th-aid4
 sum_100k_course_bandera_mine_aid5:
   id: 210
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 80741
   vert_gain_from_start: 2496.312
   vert_loss_from_start: 1938.528
   kind: 2
-  created_at: '2018-01-18 05:09:24.93679'
-  updated_at: '2019-01-30 21:33:24.449463'
+  created_at: 2018-01-18 05:09:24.936790000 Z
+  updated_at: 2019-01-30 21:33:24.449463000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Bandera Mine (Aid5)
   sub_split_bitmap: 65
-  latitude: '37.780772'
-  longitude: "-107.803181"
+  latitude: !ruby/object:BigDecimal 18:0.37780772e2
+  longitude: !ruby/object:BigDecimal 18:-0.107803181e3
   elevation: 3243.9864
   slug: sum-100k-course-bandera-mine-aid5
   parameterized_base_name: bandera-mine-aid5
 sum_100k_course_anvil_cg_aid6:
   id: 211
   course_id: 31
-  location_id: 
+  location_id:
   distance_from_start: 90268
   vert_gain_from_start: 2542.032
   vert_loss_from_start: 2328.672
   kind: 2
-  created_at: '2018-01-18 05:09:24.96117'
-  updated_at: '2019-01-30 21:33:24.58547'
+  created_at: 2018-01-18 05:09:24.961170000 Z
+  updated_at: 2019-01-30 21:33:24.585470000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Anvil CG (Aid6)
   sub_split_bitmap: 65
-  latitude: '37.820664'
-  longitude: "-107.719200"
+  latitude: !ruby/object:BigDecimal 18:0.37820664e2
+  longitude: !ruby/object:BigDecimal 18:-0.1077192e3
   elevation: 2886.456
   slug: sum-100k-course-anvil-cg-aid6
   parameterized_base_name: anvil-cg-aid6
 sum_55k_course_start:
   id: 212
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: '2018-01-18 05:15:20.743652'
-  updated_at: '2019-01-30 21:45:11.794264'
+  created_at: 2018-01-18 05:15:20.743652000 Z
+  updated_at: 2019-01-30 21:45:11.794264000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Start
   sub_split_bitmap: 1
-  latitude: '37.812496'
-  longitude: "-107.665898"
+  latitude: !ruby/object:BigDecimal 18:0.37812496e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665898e3
   elevation: 2838.857421875
   slug: sum-55k-course-start
   parameterized_base_name: start
 sum_55k_course_finish:
   id: 213
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 57277
   vert_gain_from_start: 1097.28
   vert_loss_from_start: 1097.28
   kind: 1
-  created_at: '2018-01-18 05:15:20.745798'
-  updated_at: '2019-01-30 21:45:11.812282'
+  created_at: 2018-01-18 05:15:20.745798000 Z
+  updated_at: 2019-01-30 21:45:11.812282000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Finish
   sub_split_bitmap: 1
-  latitude: '37.812513'
-  longitude: "-107.665919"
+  latitude: !ruby/object:BigDecimal 18:0.37812513e2
+  longitude: !ruby/object:BigDecimal 18:-0.107665919e3
   elevation: 2838.86376953125
   slug: sum-55k-course-finish
   parameterized_base_name: finish
 sum_55k_course_molas_pass_aid1:
   id: 218
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 18347
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
   kind: 2
-  created_at: '2018-01-18 05:20:09.848746'
-  updated_at: '2019-01-30 21:45:11.828308'
+  created_at: 2018-01-18 05:20:09.848746000 Z
+  updated_at: 2019-01-30 21:45:11.828308000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Molas Pass (Aid1)
   sub_split_bitmap: 65
-  latitude: '37.739536'
-  longitude: "-107.698161"
+  latitude: !ruby/object:BigDecimal 18:0.37739536e2
+  longitude: !ruby/object:BigDecimal 18:-0.107698161e3
   elevation: 3319.3212890625
   slug: sum-55k-course-molas-pass-aid1
   parameterized_base_name: molas-pass-aid1
 sum_55k_course_rolling_pass_aid2:
   id: 219
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 35293
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
   kind: 2
-  created_at: '2018-01-18 05:20:09.859521'
-  updated_at: '2019-01-30 21:45:11.844'
+  created_at: 2018-01-18 05:20:09.859521000 Z
+  updated_at: 2019-01-30 21:45:11.844000000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Rolling Pass (Aid2)
   sub_split_bitmap: 65
-  latitude: '37.747167'
-  longitude: "-107.805658"
+  latitude: !ruby/object:BigDecimal 18:0.37747167e2
+  longitude: !ruby/object:BigDecimal 18:-0.107805658e3
   elevation: 3698.63208007812
   slug: sum-55k-course-rolling-pass-aid2
   parameterized_base_name: rolling-pass-aid2
 sum_55k_course_bandera_mine_aid5:
   id: 220
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 40765
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 670.56
   kind: 2
-  created_at: '2018-01-18 05:20:09.869372'
-  updated_at: '2019-01-30 21:45:11.858884'
+  created_at: 2018-01-18 05:20:09.869372000 Z
+  updated_at: 2019-01-30 21:45:11.858884000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Bandera Mine (Aid5)
   sub_split_bitmap: 65
-  latitude: '37.780772'
-  longitude: "-107.803181"
+  latitude: !ruby/object:BigDecimal 18:0.37780772e2
+  longitude: !ruby/object:BigDecimal 18:-0.107803181e3
   elevation: 3252.72241210938
   slug: sum-55k-course-bandera-mine-aid5
   parameterized_base_name: bandera-mine-aid5
 sum_55k_course_anvil_cg_aid6:
   id: 221
   course_id: 32
-  location_id: 
+  location_id:
   distance_from_start: 50292
   vert_gain_from_start: 1051.56
   vert_loss_from_start: 1021.08
   kind: 2
-  created_at: '2018-01-18 05:20:09.879917'
-  updated_at: '2019-01-30 21:45:11.873936'
+  created_at: 2018-01-18 05:20:09.879917000 Z
+  updated_at: 2019-01-30 21:45:11.873936000 Z
   created_by: 1
   updated_by: 1
-  description: 
+  description:
   base_name: Anvil CG (Aid6)
   sub_split_bitmap: 65
-  latitude: '37.820664'
-  longitude: "-107.719200"
+  latitude: !ruby/object:BigDecimal 18:0.37820664e2
+  longitude: !ruby/object:BigDecimal 18:-0.1077192e3
   elevation: 2904.18798828125
   slug: sum-55k-course-anvil-cg-aid6
   parameterized_base_name: anvil-cg-aid6

@@ -44,6 +44,7 @@ class Lottery < ApplicationRecord
   end
 
   def delete_and_insert_tickets!(beginning_reference_number: 10_000)
+    draws.delete_all
     tickets.delete_all
 
     ticket_hashes = generate_ticket_hashes(beginning_reference_number: beginning_reference_number)

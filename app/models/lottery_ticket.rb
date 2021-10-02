@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LotteryTicket < ApplicationRecord
   include PgSearch::Model
   include PersonalInfo
@@ -7,6 +9,7 @@ class LotteryTicket < ApplicationRecord
   has_one :draw, class_name: "LotteryDraw", dependent: :destroy
 
   scope :with_entrant_attributes, -> { from(select("lottery_tickets.*, lottery_divisions.name as division_name, first_name, last_name, gender, city, state_code, state_name, country_code, country_name").joins(entrant: :division), :lottery_tickets) }
+  scope :drawn, -> { from(select("lottery_tickets.*, lottery_draws.created_at as drawn_at").joins(:draw), :lottery_tickets) }
 
   pg_search_scope :search_against_entrants,
                   against: :reference_number,

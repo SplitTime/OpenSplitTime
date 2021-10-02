@@ -13,6 +13,7 @@ class LotteryEntrant < ApplicationRecord
   capitalize_attributes :first_name, :last_name, :city
 
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
+  scope :drawn_and_ordered, -> { from(select("lottery_entrants.*, lottery_draws.created_at as drawn_at").joins(tickets: :draw).order(:drawn_at), :lottery_entrants) }
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
 

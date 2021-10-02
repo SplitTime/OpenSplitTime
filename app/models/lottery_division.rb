@@ -21,4 +21,16 @@ class LotteryDivision < ApplicationRecord
 
     lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
   end
+
+  def ordered_drawn_entrants
+    entrants.drawn_and_ordered
+  end
+
+  def winning_entrants
+    ordered_drawn_entrants.limit(maximum_entries)
+  end
+
+  def wait_list_entrants
+    ordered_drawn_entrants.offset(maximum_entries - 1).limit(maximum_wait_list)
+  end
 end

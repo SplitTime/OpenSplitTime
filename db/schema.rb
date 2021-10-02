@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_01_083653) do
+ActiveRecord::Schema.define(version: 2021_10_02_174533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -241,7 +241,7 @@ ActiveRecord::Schema.define(version: 2021_10_01_083653) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "maximum_entries"
+    t.integer "maximum_entries", null: false
     t.integer "maximum_wait_list"
     t.index ["lottery_id"], name: "index_lottery_divisions_on_lottery_id"
   end

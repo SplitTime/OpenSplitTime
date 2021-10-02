@@ -3,12 +3,14 @@
 require "rails_helper"
 
 RSpec.describe LotteryDivision, type: :model do
+  subject { described_class.find_by(name: division_name) }
+  let(:division_name) { "Slow People" }
+  let(:lottery) { subject.lottery }
+
   it { is_expected.to strip_attribute(:name) }
   it { is_expected.to capitalize_attribute(:name) }
 
   describe "#draw_ticket!" do
-    subject { lottery.divisions.find_by(name: "Slow People") }
-    let(:lottery) { lotteries(:another_new_lottery) }
     let(:result) { subject.draw_ticket! }
 
     context "when no tickets have been created" do
@@ -48,6 +50,19 @@ RSpec.describe LotteryDivision, type: :model do
 
       it "returns nil" do
         expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#winning_entrants" do
+    subject { LotteryDivision.find_by(name: division_name) }
+    let(:result) { subject.winning_entrants }
+
+    context "when the winning entrants list is full" do
+      let(:division_name) { "Never Ever Evers" }
+      it "returns winning entries equal in number to the maximum entries for the division" do
+        expect(result.count).to eq(subject.maximum_entries)
+        expect(result).to all be_a(LotteryEntrant)
       end
     end
   end

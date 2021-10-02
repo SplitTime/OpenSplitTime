@@ -14,6 +14,7 @@ RSpec.describe LotteryDivision, type: :model do
     let(:result) { subject.draw_ticket! }
 
     context "when no tickets have been created" do
+      before { expect(lottery.tickets.count).to eq(0) }
       it "does not create a draw" do
         expect { result }.not_to change { LotteryDraw.count }
       end
@@ -55,14 +56,54 @@ RSpec.describe LotteryDivision, type: :model do
   end
 
   describe "#winning_entrants" do
-    subject { LotteryDivision.find_by(name: division_name) }
     let(:result) { subject.winning_entrants }
 
-    context "when the winning entrants list is full" do
+    context "when the winning entrants have all been drawn" do
       let(:division_name) { "Never Ever Evers" }
       it "returns winning entries equal in number to the maximum entries for the division" do
         expect(result.count).to eq(subject.maximum_entries)
         expect(result).to all be_a(LotteryEntrant)
+      end
+    end
+
+    context "when some winning entrants have been drawn" do
+      let(:division_name) { "Elses" }
+      it "returns winning entries equal in number to the total draws for the division" do
+        expect(result.count).to eq(2)
+        expect(result).to all be_a(LotteryEntrant)
+      end
+    end
+
+    context "when no entrants have been drawn" do
+      let(:division_name) { "Veterans" }
+      it "returns an empty collection" do
+        expect(result).to be_empty
+      end
+    end
+  end
+
+  describe "#wait_list_entrants" do
+    let(:result) { subject.wait_list_entrants }
+
+    context "when draws have spilled over into the wait list" do
+      let(:division_name) { "Never Ever Evers" }
+      it "returns wait listed entrants" do
+        expect(result.count).to eq(2)
+        expect(result).to all be_a(LotteryEntrant)
+      end
+    end
+
+    context "when draws have not spilled over into the wait list" do
+      let(:division_name) { "Elses" }
+      it "returns an empty collection" do
+        expect(result).to be_empty
+      end
+    end
+
+    context "when no entrants have been drawn" do
+      let(:division_name) { "Veterans" }
+      it "returns an empty collection" do
+        expect(result).to be_empty
       end
     end
   end

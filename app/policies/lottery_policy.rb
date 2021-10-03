@@ -39,4 +39,12 @@ class LotteryPolicy < ApplicationPolicy
   def destroy?
     user.authorized_for_lotteries?(lottery)
   end
+
+  def admin?
+    user.authorized_for_lotteries?(lottery)
+  end
+
+  def draw?
+    user.authorized_for_lotteries?(lottery)
+  end
 end

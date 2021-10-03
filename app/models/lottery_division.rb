@@ -22,6 +22,10 @@ class LotteryDivision < ApplicationRecord
     lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
   end
 
+  def reverse_drawn_entrants
+    ordered_drawn_entrants.reorder(drawn_at: :desc)
+  end
+
   def wait_list_entrants
     ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
   end

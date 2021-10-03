@@ -21,7 +21,7 @@
       </div>
       <aside class="col-auto">
         <% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
-          <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
+          <%= link_to "Admin", admin_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
         <% end %>
       </aside>
     </div>
@@ -134,18 +134,11 @@
       <% end %>
     <% end %>
   <% when "draws" %>
+    <%= turbo_stream_from @presenter.lottery, :draws %>
     <% if @presenter.lottery_draws.present? %>
-      <% @presenter.lottery_draws.each do |lottery_draw| %>
-        <div class="card">
-          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.name} (#{lottery_draw.division_name})" %></h4>
-          <div class="card-body">
-            <h6><%= lottery_draw.bio %></h6>
-            <h6><%= lottery_draw.flexible_geolocation %></h6>
-          </div>
-          <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
-        </div>
-        <br/>
-      <% end %>
+      <div id="draws">
+        <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
+      </div>
     <% else %>
       <p><strong>No draws have been generated yet</strong></p>
     <% end %>

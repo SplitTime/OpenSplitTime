@@ -843,18 +843,18 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@hotwired/turbo-rails@^7.0.0-beta.7":
-  version "7.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.0-beta.7.tgz#ca347999d4a62af447554bebe0ab46dd7c241661"
-  integrity sha512-aoX91p2pIApEywhWNHqbaQ+gtNBr3+u38X0jSEHPdqVAK8lLRtHJomP3s1psSuYTiRaOuIeh6IhHDRYyAmZxKg==
+"@hotwired/turbo-rails@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.0.1.tgz#d39816eef215e83468fa306a963e7c874ffe70f7"
+  integrity sha512-0cV7zG9aCzF/foidgfx6WvqKDcRKXJt2aT1fenNFywO7armGTD8S86V8U1IyUAHq+ZkIL26moc+AB40uTZt0oA==
   dependencies:
-    "@hotwired/turbo" "^7.0.0-beta.7"
+    "@hotwired/turbo" "^7.0.1"
     "@rails/actioncable" "^6.0.0"
 
-"@hotwired/turbo@^7.0.0-beta.7":
-  version "7.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.0-beta.7.tgz#0f519af4e63698a9fb44d2db9019cdb5ddd048db"
-  integrity sha512-w4Oajhnqnz+b2rM325FjPnENVij1yWJy+q6bwSgmCvRG4715T7PoC6YwTPd4h6PVUGgy5WpqgDadzKdEV+qtLw==
+"@hotwired/turbo@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.0.1.tgz#2a8c6ab2f24914d1d47f3a7a7779e2881e8c61a0"
+  integrity sha512-awqraytYXbHV2NT0WAOnDDDGJeHHnFtnztdXvRuIqgsStUtPKM8B9H7ISm77SwbHemEjxEOB8Ku4RfNbEEXsPQ==
 
 "@npmcli/move-file@^1.0.1":
   version "1.0.1"

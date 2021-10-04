@@ -7,13 +7,14 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+require("@hotwired/turbo-rails")
+
 import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from 'utils/units';
 global.preferredDistanceUnit = preferredDistanceUnit;
 global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
-import "@hotwired/turbo"
 import 'utils/growl';
 
 import TurboLinksAdapter from 'vue-turbolinks';

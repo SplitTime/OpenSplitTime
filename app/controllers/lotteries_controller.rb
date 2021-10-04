@@ -31,7 +31,7 @@ class LotteriesController < ApplicationController
     authorize @lottery
 
     if @lottery.save
-      redirect_to organization_lotteries_path(@organization)
+      redirect_to admin_organization_lottery_path(@organization, @lottery)
     else
       render "new"
     end
@@ -41,7 +41,7 @@ class LotteriesController < ApplicationController
     authorize @lottery
 
     if @lottery.update(permitted_params)
-      redirect_to organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
+      redirect_to admin_organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
     else
       render "edit"
     end
@@ -59,10 +59,28 @@ class LotteriesController < ApplicationController
     end
   end
 
+  def admin
+    authorize @lottery
+    @presenter = LotteryPresenter.new(@lottery, view_context)
+  end
+
+  def draw
+    authorize @lottery
+
+    division = @lottery.divisions.find(params[:division_id])
+    ticket = division.draw_ticket!
+
+    if ticket.present?
+      head :created
+    else
+      head :no_content
+    end
+  end
+
   private
 
   def set_lottery
-    @lottery = policy_scope(Lottery).friendly.find(params[:id])
+    @lottery = policy_scope(Lottery).friendly.find(params[:lottery_id])
   end
 
   def set_organization

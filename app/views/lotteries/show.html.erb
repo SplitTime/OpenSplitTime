@@ -21,7 +21,7 @@
       </div>
       <aside class="col-auto">
         <% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
-          <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
+          <%= link_to "Admin", admin_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
         <% end %>
       </aside>
     </div>
@@ -89,6 +89,7 @@
         <p><strong>No lottery entrants match this search</strong></p>
       <% end %>
     <% end %>
+
   <% when "tickets" %>
     <% if @presenter.lottery_tickets.present? %>
       <aside class="ost-toolbar">
@@ -112,15 +113,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @presenter.lottery_tickets.each do |lottery_ticket| %>
-          <tr>
-            <td><%= lottery_ticket.reference_number %></td>
-            <td><%= lottery_ticket.name %></td>
-            <td><%= lottery_ticket.gender.titleize %></td>
-            <td><%= lottery_ticket.flexible_geolocation %></td>
-            <td><%= lottery_ticket.division_name %></td>
-          </tr>
-        <% end %>
+        <%= render partial: "lottery_tickets/lottery_ticket", collection: @presenter.lottery_tickets %>
         </tbody>
       </table>
     <% else %>
@@ -133,22 +126,13 @@
         <p><strong>No tickets match this search</strong></p>
       <% end %>
     <% end %>
+
   <% when "draws" %>
-    <% if @presenter.lottery_draws.present? %>
-      <% @presenter.lottery_draws.each do |lottery_draw| %>
-        <div class="card">
-          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.name} (#{lottery_draw.division_name})" %></h4>
-          <div class="card-body">
-            <h6><%= lottery_draw.bio %></h6>
-            <h6><%= lottery_draw.flexible_geolocation %></h6>
-          </div>
-          <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
-        </div>
-        <br/>
-      <% end %>
-    <% else %>
-      <p><strong>No draws have been generated yet</strong></p>
-    <% end %>
+    <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
+    <div id="lottery_draws">
+      <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
+    </div>
+
   <% when "results" %>
     <% if @presenter.lottery_draws.present? %>
       <% @presenter.divisions.each do |division| %>

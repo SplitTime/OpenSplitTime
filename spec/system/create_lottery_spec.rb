@@ -65,6 +65,7 @@ RSpec.describe "Create and update a lottery" do
 
     verify_link_present([organization, new_lottery])
     click_link new_lottery.name
+    click_link "Admin"
     click_link "Edit"
 
     expect(page).to have_content("Edit Lottery")

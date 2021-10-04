@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@hotwired/turbo-rails": "^7.0.0-beta.7",
+    "@hotwired/turbo-rails": "^7.0.1",
     "@rails/actioncable": "^6.0.0",
     "@rails/webpacker": "^4.3.0",
     "bootstrap-notify": "^3.1.3",

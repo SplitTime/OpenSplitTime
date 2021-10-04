@@ -134,7 +134,10 @@ Rails.application.routes.draw do
   get '/events', to: redirect('event_groups')
 
   resources :organizations do
-    resources :lotteries
+    resources :lotteries, param: :lottery_id do
+      member { get :admin }
+      member { post :draw }
+    end
   end
 
   resources :people do

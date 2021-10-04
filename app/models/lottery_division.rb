@@ -22,6 +22,14 @@ class LotteryDivision < ApplicationRecord
     lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
   end
 
+  def draws
+    lottery.draws.for_division(self)
+  end
+
+  def reverse_loaded_draws
+    ordered_loaded_draws.reorder(created_at: :desc)
+  end
+
   def wait_list_entrants
     ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
   end
@@ -31,6 +39,11 @@ class LotteryDivision < ApplicationRecord
   end
 
   private
+
+  def ordered_loaded_draws
+    draws.includes(ticket: :entrant)
+         .order(:created_at)
+  end
 
   def ordered_drawn_entrants
     entrants.drawn_and_ordered

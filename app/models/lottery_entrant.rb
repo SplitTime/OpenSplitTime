@@ -23,4 +23,8 @@ class LotteryEntrant < ApplicationRecord
 
     search_names_and_locations(param)
   end
+
+  def delegated_division_name
+    division.name
+  end
 end

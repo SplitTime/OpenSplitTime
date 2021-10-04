@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class LotteryDraw < ApplicationRecord
-  after_create_commit :broadcast_lottery_draw
-
   belongs_to :lottery
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
 
@@ -11,6 +9,9 @@ class LotteryDraw < ApplicationRecord
     from(select("lottery_draws.*, lottery_divisions.name as division_name, first_name, last_name, gender, birthdate, city, state_code, state_name, country_code, country_name")
            .joins(ticket: {entrant: :division}), :lottery_draws)
   end
+
+  after_create_commit :broadcast_lottery_draw_create
+  after_destroy_commit :broadcast_lottery_draw_destroy
 
   delegate :entrant, to: :ticket
   delegate :first_name, :last_name, :gender, :birthdate, :city, :state_code, :state_name, :country_code, :country_name,
@@ -23,8 +24,13 @@ class LotteryDraw < ApplicationRecord
 
   private
 
-  def broadcast_lottery_draw
+  def broadcast_lottery_draw_create
     broadcast_prepend_to lottery, :lottery_draws, target: "lottery_draws"
     broadcast_prepend_to division, :lottery_draws, target: "lottery_draws_lottery_division_#{division.id}", partial: "lottery_draws/lottery_draw_admin"
+  end
+
+  def broadcast_lottery_draw_destroy
+    broadcast_remove_to lottery, :lottery_draws
+    broadcast_remove_to division, :lottery_draws
   end
 end

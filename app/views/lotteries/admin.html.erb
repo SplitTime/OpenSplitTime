@@ -31,23 +31,16 @@
 <article class="ost-article container">
   <div class="row">
     <% @presenter.divisions.each do |division| %>
-    <div class="col">
-      <%= link_to division.name, draw_organization_lottery_path(@presenter.organization, @presenter.lottery, division_id: division.id),
-                  method: :post,
-                  class: "btn btn-lg btn-danger btn-block" %>
-      <hr/>
-      <% division.reverse_drawn_entrants.each do |entrant| %>
-        <div class="card">
-          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{entrant.name}" %></h4>
-          <div class="card-body">
-            <h6><%= entrant.bio %></h6>
-            <h6><%= entrant.flexible_geolocation %></h6>
-          </div>
-          <div class="card-footer font-italic small"><%= "#{time_ago_in_words(entrant.drawn_at)} ago" %></div>
+      <%= turbo_stream_from division, :lottery_draws %>
+      <div class="col">
+        <%= link_to division.name, draw_organization_lottery_path(@presenter.organization, @presenter.lottery, division_id: division.id),
+                    method: :post,
+                    class: "btn btn-lg btn-danger btn-block" %>
+        <hr/>
+        <div id="<%= dom_id(division, :lottery_draws) %>">
+          <%= render partial: "lottery_draws/lottery_draw_admin", collection: division.reverse_loaded_draws, as: :lottery_draw %>
         </div>
-        <br/>
-      <% end %>
-    </div>
+      </div>
     <% end %>
   </div>
 </article>

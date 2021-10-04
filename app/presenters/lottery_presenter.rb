@@ -27,7 +27,7 @@ class LotteryPresenter < BasePresenter
 
   def lottery_tickets
     tickets = lottery.tickets
-                     .with_entrant_attributes
+                     .with_sortable_entrant_attributes
                      .search(search_text)
 
     reordering_needed = sort_hash.present? || search_text.blank?
@@ -38,7 +38,7 @@ class LotteryPresenter < BasePresenter
 
   def lottery_draws
     lottery.draws
-           .with_entrant_attributes
+           .with_sortable_entrant_attributes
            .order(created_at: :desc)
   end
 

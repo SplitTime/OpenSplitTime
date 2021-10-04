@@ -115,10 +115,10 @@
         <% @presenter.lottery_tickets.each do |lottery_ticket| %>
           <tr>
             <td><%= lottery_ticket.reference_number %></td>
-            <td><%= lottery_ticket.name %></td>
-            <td><%= lottery_ticket.gender.titleize %></td>
-            <td><%= lottery_ticket.flexible_geolocation %></td>
-            <td><%= lottery_ticket.division_name %></td>
+            <td><%= lottery_ticket.entrant_full_name %></td>
+            <td><%= lottery_ticket.entrant_gender.titleize %></td>
+            <td><%= lottery_ticket.entrant_flexible_geolocation %></td>
+            <td><%= lottery_ticket.entrant_division_name %></td>
           </tr>
         <% end %>
         </tbody>
@@ -134,14 +134,10 @@
       <% end %>
     <% end %>
   <% when "draws" %>
-    <%= turbo_stream_from @presenter.lottery, :draws %>
-    <% if @presenter.lottery_draws.present? %>
-      <div id="draws">
+    <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
+      <div id="lottery_draws">
         <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
       </div>
-    <% else %>
-      <p><strong>No draws have been generated yet</strong></p>
-    <% end %>
   <% when "results" %>
     <% if @presenter.lottery_draws.present? %>
       <% @presenter.divisions.each do |division| %>

@@ -1,4 +1,4 @@
-<div id="<%= dom_id lottery_draw %>" class="card">
+<div id="<%= dom_id lottery_draw %>" class="card mt-3">
   <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.entrant_full_name} (#{lottery_draw.entrant_division_name})" %></h4>
   <div class="card-body">
     <h6><%= lottery_draw.entrant_bio %></h6>
@@ -6,4 +6,3 @@
   </div>
   <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
 </div>
-<br/>

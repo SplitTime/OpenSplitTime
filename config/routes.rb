@@ -157,7 +157,7 @@ Rails.application.routes.draw do
 
   resources :split_times, only: [:update]
   resources :splits
-  resources :stewardships, only: [:create, :destroy]
+  resources :stewardships, only: [:create, :update, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap

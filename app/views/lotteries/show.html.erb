@@ -89,6 +89,7 @@
         <p><strong>No lottery entrants match this search</strong></p>
       <% end %>
     <% end %>
+
   <% when "tickets" %>
     <% if @presenter.lottery_tickets.present? %>
       <aside class="ost-toolbar">
@@ -112,15 +113,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @presenter.lottery_tickets.each do |lottery_ticket| %>
-          <tr>
-            <td><%= lottery_ticket.reference_number %></td>
-            <td><%= lottery_ticket.entrant_full_name %></td>
-            <td><%= lottery_ticket.entrant_gender.titleize %></td>
-            <td><%= lottery_ticket.entrant_flexible_geolocation %></td>
-            <td><%= lottery_ticket.entrant_division_name %></td>
-          </tr>
-        <% end %>
+        <%= render partial: "lottery_tickets/lottery_ticket", collection: @presenter.lottery_tickets %>
         </tbody>
       </table>
     <% else %>
@@ -133,11 +126,13 @@
         <p><strong>No tickets match this search</strong></p>
       <% end %>
     <% end %>
+
   <% when "draws" %>
     <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
-      <div id="lottery_draws">
-        <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
-      </div>
+    <div id="lottery_draws">
+      <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
+    </div>
+
   <% when "results" %>
     <% if @presenter.lottery_draws.present? %>
       <% @presenter.divisions.each do |division| %>

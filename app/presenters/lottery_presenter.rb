@@ -4,7 +4,7 @@ class LotteryPresenter < BasePresenter
   DEFAULT_DISPLAY_STYLE = "entrants"
   DEFAULT_SORT_HASH = {division_name: :asc, last_name: :asc}
 
-  attr_reader :lottery, :params
+  attr_reader :lottery, :params, :action_name
   delegate :divisions, :name, :organization, :scheduled_start_date, :to_param, to: :lottery
 
   def initialize(lottery, view_context)
@@ -12,6 +12,7 @@ class LotteryPresenter < BasePresenter
     @view_context = view_context
     @params = view_context.prepared_params
     @current_user = view_context.current_user
+    @action_name = view_context.action_name
   end
 
   def lottery_entrants

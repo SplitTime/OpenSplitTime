@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Setup lottery - #{@presenter.name}" %>
+  <% "OpenSplitTime: Draw Tickets for Lottery - #{@presenter.name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,13 +7,13 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= "#{@presenter.name}: Admin" %></strong></h1>
+          <h1><strong><%= "#{@presenter.name}" %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.name, organization_lottery_path(@presenter.organization, @presenter.lottery) %></li>
-            <li class="breadcrumb-item">Admin</li>
+            <li class="breadcrumb-item">Draw Tickets</li>
           </ul>
         </div>
         <div class="ost-subtitle">
@@ -21,19 +21,35 @@
         </div>
       </div>
       <aside class="col-auto">
-        <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
         <%= link_to "Public", organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
       </aside>
     </div>
+    <!-- Navigation -->
+    <ul class="nav nav-tabs nav-tabs-ost">
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.action_name == 'setup'}" do
+        link_to "Setup", setup_organization_lottery_path(@presenter.organization, @presenter.lottery)
+      end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.action_name == 'draw_tickets'}" do
+        link_to "Draw Tickets", draw_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery)
+      end %>
+    </ul>
   </div>
 </header>
 
 <article class="ost-article container">
   <div class="row">
+    <div class="col text-center">
+      <h1><strong>Draw Lottery Tickets</strong></h1>
+      <hr/>
+    </div>
+  </div>
+  <div class="row">
     <% @presenter.divisions.each do |division| %>
       <%= turbo_stream_from division, :lottery_draws %>
       <div class="col">
-        <%= link_to division.name, draw_organization_lottery_path(@presenter.organization, @presenter.lottery, division_id: division.id),
+        <h2 class="text-center"><strong><%= division.name %></strong></h2>
+        <hr/>
+        <%= link_to "Draw a Ticket", draw_organization_lottery_path(@presenter.organization, @presenter.lottery, division_id: division.id),
                     method: :post,
                     class: "btn btn-lg btn-danger btn-block font-weight-bold" %>
         <hr/>

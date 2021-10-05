@@ -135,8 +135,11 @@ Rails.application.routes.draw do
 
   resources :organizations do
     resources :lotteries, param: :lottery_id do
-      member { get :admin }
+      member { get :draw_tickets }
+      member { get :setup }
       member { post :draw }
+      member { post :generate_tickets }
+      member { delete :delete_tickets }
     end
   end
 

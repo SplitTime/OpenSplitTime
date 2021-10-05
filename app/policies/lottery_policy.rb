@@ -40,11 +40,23 @@ class LotteryPolicy < ApplicationPolicy
     user.authorized_for_lotteries?(lottery)
   end
 
-  def admin?
+  def draw_tickets?
+    user.authorized_for_lotteries?(lottery)
+  end
+
+  def setup?
     user.authorized_for_lotteries?(lottery)
   end
 
   def draw?
+    user.authorized_for_lotteries?(lottery)
+  end
+
+  def delete_tickets?
+    user.authorized_for_lotteries?(lottery)
+  end
+
+  def generate_tickets?
     user.authorized_for_lotteries?(lottery)
   end
 end

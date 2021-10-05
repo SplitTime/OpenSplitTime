@@ -31,7 +31,7 @@ class LotteriesController < ApplicationController
     authorize @lottery
 
     if @lottery.save
-      redirect_to admin_organization_lottery_path(@organization, @lottery)
+      redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
       render "new"
     end
@@ -41,7 +41,7 @@ class LotteriesController < ApplicationController
     authorize @lottery
 
     if @lottery.update(permitted_params)
-      redirect_to admin_organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
+      redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
     else
       render "edit"
     end
@@ -59,7 +59,12 @@ class LotteriesController < ApplicationController
     end
   end
 
-  def admin
+  def draw_tickets
+    authorize @lottery
+    @presenter = LotteryPresenter.new(@lottery, view_context)
+  end
+
+  def setup
     authorize @lottery
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
@@ -75,6 +80,30 @@ class LotteriesController < ApplicationController
     else
       head :no_content
     end
+  end
+
+  def delete_tickets
+    authorize @lottery
+
+    if @lottery.draws.delete_all && @lottery.tickets.delete_all
+      flash[:success] = "Deleted all lottery tickets and draws"
+    else
+      flash[:danger] = "Unable to delete all lottery tickets and draws"
+    end
+
+    redirect_to setup_organization_lottery_path(@organization, @lottery)
+  end
+
+  def generate_tickets
+    authorize @lottery
+
+    if @lottery.delete_and_insert_tickets!
+      flash[:success] = "Generated lottery tickets"
+    else
+      flash[:danger] = "Unable to generate lottery tickets"
+    end
+
+    redirect_to setup_organization_lottery_path(@organization, @lottery)
   end
 
   private

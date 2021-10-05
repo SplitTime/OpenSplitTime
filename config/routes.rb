@@ -134,12 +134,13 @@ Rails.application.routes.draw do
   get '/events', to: redirect('event_groups')
 
   resources :organizations do
-    resources :lotteries, param: :lottery_id do
+    resources :lotteries do
       member { get :draw_tickets }
       member { get :setup }
       member { post :draw }
       member { post :generate_tickets }
       member { delete :delete_tickets }
+      resources :lottery_divisions, except: [:index, :show]
     end
   end
 

@@ -109,7 +109,7 @@ class LotteriesController < ApplicationController
   private
 
   def set_lottery
-    @lottery = policy_scope(Lottery).friendly.find(params[:id])
+    @lottery = policy_scope(@organization.lotteries).friendly.find(params[:id])
   end
 
   def set_organization

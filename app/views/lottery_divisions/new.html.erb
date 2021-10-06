@@ -1,0 +1,26 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: New lottery division" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>New Lottery Division</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery_division.organization.name, organization_lotteries_path(@lottery_division.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@lottery_division.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery_division.lottery.name, organization_lottery_path(@lottery_division.organization, @lottery_division.lottery) %></li>
+            <li class="breadcrumb-item active">New Division</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render "form" %>
+</article>

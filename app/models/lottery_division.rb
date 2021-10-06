@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LotteryDivision < ApplicationRecord
-  include CapitalizeAttributes
+  include CapitalizeAttributes, Delegable
 
   belongs_to :lottery, touch: true
   has_many :entrants, class_name: "LotteryEntrant", dependent: :destroy
@@ -12,6 +12,12 @@ class LotteryDivision < ApplicationRecord
 
   validates_presence_of :maximum_entries, :name
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
+
+  scope :with_policy_scope_attributes, -> do
+    from(select("lottery_divisions.*, organizations.concealed").joins(lottery: :organization), :lottery_divisions)
+  end
+
+  delegate :organization, to: :lottery
 
   def draw_ticket!
     drawn_entrants = entrants.joins(tickets: :draw)

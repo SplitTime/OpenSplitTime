@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LotteryPolicy < ApplicationPolicy
+class LotteryDivisionPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
@@ -16,8 +16,8 @@ class LotteryPolicy < ApplicationPolicy
 
   attr_reader :organization
 
-  def post_initialize(lottery)
-    @organization = lottery.organization
+  def post_initialize(lottery_division)
+    @organization = lottery_division.lottery.organization
   end
 
   def new?
@@ -37,30 +37,6 @@ class LotteryPolicy < ApplicationPolicy
   end
 
   def destroy?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def draw_tickets?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def setup?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def draw?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def delete_tickets?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def generate_entrants?
-    user.authorized_for_lotteries?(organization)
-  end
-
-  def generate_tickets?
     user.authorized_for_lotteries?(organization)
   end
 end

@@ -40,10 +40,13 @@ class LotteryDivisionsController < ApplicationController
   def destroy
     authorize @lottery_division
 
-    if @lottery_division.destroy
+    if @lottery_division.tickets.present?
+      flash[:warning] = "A lottery division cannot be deleted unless all tickets and draws have been deleted first."
+      redirect_to setup_organization_lottery_path(@organization, @lottery)
+    elsif @lottery_division.destroy
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      flash[:danger] = @lottery.errors.full_messages.join("\n")
+      flash[:danger] = @lottery_division.errors.full_messages.join("\n")
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     end
   end

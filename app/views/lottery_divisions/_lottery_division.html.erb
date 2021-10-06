@@ -5,4 +5,8 @@
   <td class="text-center"><%= division.entrants.count %></td>
   <td class="text-center"><%= division.tickets.count %></td>
   <td class="text-center"><%= division.draws.count %></td>
+  <td class="text-center">
+    <%= link_to_division_edit(division) %>
+    <%= link_to_division_delete(division) %>
+  </td>
 </tr>

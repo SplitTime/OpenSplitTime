@@ -27,7 +27,7 @@ class LotteryDivision < ApplicationRecord
   end
 
   def reverse_loaded_draws
-    ordered_loaded_draws.reorder(created_at: :desc)
+    loaded_draws.reorder(created_at: :desc)
   end
 
   def wait_list_entrants
@@ -40,9 +40,8 @@ class LotteryDivision < ApplicationRecord
 
   private
 
-  def ordered_loaded_draws
+  def loaded_draws
     draws.includes(ticket: :entrant)
-         .order(:created_at)
   end
 
   def ordered_drawn_entrants

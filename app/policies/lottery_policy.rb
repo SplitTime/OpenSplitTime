@@ -56,6 +56,10 @@ class LotteryPolicy < ApplicationPolicy
     user.authorized_for_lotteries?(organization)
   end
 
+  def generate_entrants?
+    user.authorized_for_lotteries?(organization)
+  end
+
   def generate_tickets?
     user.authorized_for_lotteries?(organization)
   end

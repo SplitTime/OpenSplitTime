@@ -21,6 +21,27 @@ class Lottery < ApplicationRecord
     from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
   end
 
+  def generate_entrants!
+    divisions.each do |division|
+      entrant_count = rand(10) + 5
+
+      entrant_count.times do
+        attributes = {
+          first_name: FFaker::Name.first_name,
+          last_name: FFaker::Name.last_name,
+          gender: [:male, :female].sample,
+          birthdate: 65.years.ago.to_date + rand(45 * 365),
+          city: FFaker::AddressUS.city,
+          state_code: FFaker::AddressUS.state_abbr,
+          country_code: "US",
+          number_of_tickets: rand(10) + 1,
+        }
+
+        division.entrants.create!(attributes)
+      end
+    end
+  end
+
   def generate_ticket_hashes(beginning_reference_number: 10_000)
     entrant_structs = entrants.struct_pluck(:id, :number_of_tickets)
 

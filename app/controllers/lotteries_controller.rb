@@ -94,13 +94,33 @@ class LotteriesController < ApplicationController
     redirect_to setup_organization_lottery_path(@organization, @lottery)
   end
 
+  def generate_entrants
+    authorize @lottery
+
+    if @lottery.divisions.present?
+      if @lottery.generate_entrants!
+        flash[:success] = "Generated lottery entrants"
+      else
+        flash[:danger] = "Unable to generate lottery entrants"
+      end
+    else
+      flash[:danger] = "Add at least one division first"
+    end
+
+    redirect_to setup_organization_lottery_path(@organization, @lottery)
+  end
+
   def generate_tickets
     authorize @lottery
 
-    if @lottery.delete_and_insert_tickets!
-      flash[:success] = "Generated lottery tickets"
+    if @lottery.entrants.present?
+      if @lottery.delete_and_insert_tickets!
+        flash[:success] = "Generated lottery tickets"
+      else
+        flash[:danger] = "Unable to generate lottery tickets"
+      end
     else
-      flash[:danger] = "Unable to generate lottery tickets"
+      flash[:danger] = "You need to add entrants first"
     end
 
     redirect_to setup_organization_lottery_path(@organization, @lottery)

@@ -138,6 +138,7 @@ Rails.application.routes.draw do
       member { get :draw_tickets }
       member { get :setup }
       member { post :draw }
+      member { post :generate_entrants }
       member { post :generate_tickets }
       member { delete :delete_tickets }
       resources :lottery_divisions, except: [:index, :show]

@@ -19,6 +19,7 @@ class LotteryPresenter < BasePresenter
   def lottery_draws
     lottery.draws
            .with_sortable_entrant_attributes
+           .include_entrant_and_division
            .order(created_at: :desc)
   end
 

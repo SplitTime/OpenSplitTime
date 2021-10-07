@@ -5,6 +5,7 @@ class LotteryDraw < ApplicationRecord
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
 
   scope :for_division, ->(division) { joins(ticket: :entrant).where(lottery_entrants: {division: division}) }
+  scope :include_entrant_and_division, -> { includes(ticket: {entrant: :division}) }
   scope :with_sortable_entrant_attributes, -> do
     from(select("lottery_draws.*, lottery_divisions.name as division_name, first_name, last_name, gender, birthdate, city, state_code, state_name, country_code, country_name")
            .joins(ticket: {entrant: :division}), :lottery_draws)

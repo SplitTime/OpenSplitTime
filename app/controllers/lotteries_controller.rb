@@ -15,6 +15,15 @@ class LotteriesController < ApplicationController
 
   def show
     @presenter = LotteryPresenter.new(@lottery, view_context)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        records = @presenter.records_from_context
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], collection: records, as: :record, formats: [:html]) : ""
+        render json: {records: records, html: html, links: {next: @presenter.next_page_url}}
+      end
+    end
   end
 
   def new

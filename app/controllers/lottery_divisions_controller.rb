@@ -7,15 +7,18 @@ class LotteryDivisionsController < ApplicationController
   before_action :set_lottery_division, except: [:new, :create]
   after_action :verify_authorized
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/new
   def new
     @lottery_division = @lottery.divisions.new
     authorize @lottery_division
   end
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id/edit
   def edit
     authorize @lottery
   end
 
+  # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions
   def create
     @lottery_division = @lottery.divisions.new(permitted_params)
     authorize @lottery_division
@@ -27,6 +30,8 @@ class LotteryDivisionsController < ApplicationController
     end
   end
 
+  # PUT   /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
+  # PATCH /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   def update
     authorize @lottery_division
 
@@ -37,6 +42,7 @@ class LotteryDivisionsController < ApplicationController
     end
   end
 
+  # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   def destroy
     authorize @lottery_division
 

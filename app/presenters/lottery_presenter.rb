@@ -25,12 +25,29 @@ class LotteryPresenter < BasePresenter
   def lottery_entrants
     entrants = lottery.entrants
                       .with_division_name
+                      .includes(:division)
                       .search(search_text)
 
     reordering_needed = sort_hash.present? || search_text.blank?
     entrants = entrants.reorder(order_param) if reordering_needed
 
     entrants
+  end
+
+  def lottery_entrants_paginated
+    @lottery_entrants_paginated ||= lottery_entrants.paginate(page: page, per_page: per_page).to_a
+  end
+
+  def lottery_tickets
+    tickets = lottery.tickets
+                     .with_sortable_entrant_attributes
+                     .includes(entrant: :division)
+                     .search(search_text)
+
+    reordering_needed = sort_hash.present? || search_text.blank?
+    tickets = tickets.reorder(order_param) if reordering_needed
+
+    tickets
   end
 
   def lottery_tickets_paginated
@@ -44,7 +61,7 @@ class LotteryPresenter < BasePresenter
   def records_from_context
     case display_style
     when "entrants"
-      lottery_entrants
+      lottery_entrants_paginated
     when "tickets"
       lottery_tickets_paginated
     when "draws"
@@ -71,18 +88,6 @@ class LotteryPresenter < BasePresenter
   private
 
   attr_reader :view_context, :current_user, :request
-
-  def lottery_tickets
-    tickets = lottery.tickets
-                     .with_sortable_entrant_attributes
-                     .includes(entrant: :division)
-                     .search(search_text)
-
-    reordering_needed = sort_hash.present? || search_text.blank?
-    tickets = tickets.reorder(order_param) if reordering_needed
-
-    tickets
-  end
 
   def order_param
     sort_hash.presence || DEFAULT_SORT_HASH

@@ -57,29 +57,35 @@
       </div>
     </aside>
 
-    <% if @presenter.lottery_entrants.present? %>
-      <table class="table table-condensed table-striped">
-        <thead>
-        <tr>
-          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @presenter.lottery_entrants.each do |lottery_entrant| %>
+    <% if @presenter.lottery_entrants_paginated.present? %>
+      <div data-controller="infinite-scroll"
+           data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
+           data-infinite-scroll-html-template="lottery_entrants/lottery_entrant">
+        <table class="table table-condensed table-striped">
+          <thead>
           <tr>
-            <td><%= lottery_entrant.name %></td>
-            <td><%= lottery_entrant.gender.titleize %></td>
-            <td><%= lottery_entrant.flexible_geolocation %></td>
-            <td><%= lottery_entrant.division_name %></td>
-            <td><%= lottery_entrant.number_of_tickets %></td>
+            <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
           </tr>
-        <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody data-infinite-scroll-target="result">
+          <%= render partial: "lottery_entrants/lottery_entrant", collection: @presenter.lottery_entrants_paginated, as: :record %>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col text-center" data-infinite-scroll-target="link">
+            <% if @presenter.next_page_url.present? %>
+              <%= link_to "Show More", @presenter.next_page_url, data: {action: "infinite-scroll#loadFromClick"} %>
+            <% else %>
+              <p>End of List</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% else %>
       <br/>
       <% if @presenter.params[:search].blank? %>
@@ -92,7 +98,7 @@
     <% end %>
 
   <% when "tickets" %>
-    <% if @presenter.lottery_tickets.present? %>
+    <% if @presenter.lottery_tickets_paginated.present? %>
       <aside class="ost-toolbar">
         <div class="container">
           <div class="row">
@@ -103,20 +109,34 @@
         </div>
       </aside>
 
-      <table class="table table-condensed table-striped">
-        <thead>
-        <tr>
-          <th><%= link_to_reversing_sort_heading("Ticket", "reference_number", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
-          <th><%= link_to_reversing_sort_heading("Division", "division_name,last_name,first_name", params[:sort]) %></th>
-        </tr>
-        </thead>
-        <tbody>
-        <%= render partial: "lottery_tickets/lottery_ticket", collection: @presenter.lottery_tickets %>
-        </tbody>
-      </table>
+      <div data-controller="infinite-scroll"
+           data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
+           data-infinite-scroll-html-template="lottery_tickets/lottery_ticket">
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th><%= link_to_reversing_sort_heading("Ticket", "reference_number", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
+            <th><%= link_to_reversing_sort_heading("Division", "division_name,last_name,first_name", params[:sort]) %></th>
+          </tr>
+          </thead>
+          <tbody data-infinite-scroll-target="result">
+          <%= render partial: "lottery_tickets/lottery_ticket", collection: @presenter.lottery_tickets_paginated, as: :record %>
+          </tbody>
+        </table>
+
+        <div class="row">
+          <div class="col text-center" data-infinite-scroll-target="link">
+            <% if @presenter.next_page_url.present? %>
+              <%= link_to "Show More", @presenter.next_page_url, data: {action: "infinite-scroll#loadFromClick"} %>
+            <% else %>
+              <p>End of List</p>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% else %>
       <br/>
       <% if @presenter.params[:search].blank? %>

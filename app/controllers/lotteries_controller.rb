@@ -6,6 +6,7 @@ class LotteriesController < ApplicationController
   before_action :set_lottery, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
 
+  # GET /organizations/:organization_id/lotteries
   def index
     params[:display_style] = "lotteries"
     @presenter = OrganizationPresenter.new(@organization, prepared_params, current_user)
@@ -13,6 +14,7 @@ class LotteriesController < ApplicationController
     render "organizations/show"
   end
 
+  # GET /organizations/:organization_id/lotteries/:id
   def show
     @presenter = LotteryPresenter.new(@lottery, view_context)
 
@@ -26,15 +28,18 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # GET /organizations/:organization_id/lotteries/new
   def new
     @lottery = @organization.lotteries.new
     authorize @lottery
   end
 
+  # GET /organizations/:organization_id/lotteries/:id/edit
   def edit
     authorize @lottery
   end
 
+  # POST /organizations/:organization_id/lotteries
   def create
     @lottery = @organization.lotteries.new(permitted_params)
     authorize @lottery
@@ -46,6 +51,8 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # PUT /organizations/:organization_id/lotteries/:id
+  # PATCH /organizations/:organization_id/lotteries/:id
   def update
     authorize @lottery
 
@@ -56,6 +63,7 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # DELETE /organizations/:organization_id/lotteries/:id
   def destroy
     authorize @lottery
 
@@ -68,16 +76,19 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # GET /organizations/:organization_id/lotteries/:id/draw_tickets
   def draw_tickets
     authorize @lottery
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
+  # GET /organizations/:organization_id/lotteries/:id/setup
   def setup
     authorize @lottery
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
+  # POST /organizations/:organization_id/lotteries/:id/draw
   def draw
     authorize @lottery
 
@@ -91,6 +102,7 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # DELETE /organizations/:organization_id/lotteries/:id/delete_tickets
   def delete_tickets
     authorize @lottery
 
@@ -103,6 +115,7 @@ class LotteriesController < ApplicationController
     redirect_to setup_organization_lottery_path(@organization, @lottery)
   end
 
+  # POST /organizations/:organization_id/lotteries/:id/generate_entrants
   def generate_entrants
     authorize @lottery
 
@@ -119,6 +132,7 @@ class LotteriesController < ApplicationController
     redirect_to setup_organization_lottery_path(@organization, @lottery)
   end
 
+  # POST /organizations/:organization_id/lotteries/:id/generate_tickets
   def generate_tickets
     authorize @lottery
 

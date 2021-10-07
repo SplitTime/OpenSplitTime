@@ -1,8 +1,24 @@
 <div id="<%= dom_id lottery_draw %>" class="card mt-3">
-  <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{lottery_draw.entrant_full_name} (#{lottery_draw.entrant_division_name})" %></h4>
+  <div class="card-header font-weight-bold bg-primary text-white">
+    <div class="row">
+      <div class="col">
+        <h5 class="font-weight-bold mb-0"><%= lottery_draw.entrant_full_name %></h5>
+      </div>
+      <div class="col">
+        <h5 class="font-weight-bold text-right mb-0"><%= "##{lottery_draw.reference_number}" %></h5>
+      </div>
+    </div>
+  </div>
   <div class="card-body">
-    <h6><%= lottery_draw.entrant_bio %></h6>
-    <h6><%= lottery_draw.entrant_flexible_geolocation %></h6>
+    <div class="row">
+      <div class="col">
+        <h6><%= lottery_draw.entrant_bio %></h6>
+        <h6 class="mb-0"><%= lottery_draw.entrant_flexible_geolocation %></h6>
+      </div>
+      <div class="col text-right">
+        <h3><span class="badge badge-secondary"><%= lottery_draw.entrant_division_name %></span></h3>
+      </div>
+    </div>
   </div>
   <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
 </div>

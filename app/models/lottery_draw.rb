@@ -14,7 +14,7 @@ class LotteryDraw < ApplicationRecord
   after_create_commit :broadcast_lottery_draw_create
   after_destroy_commit :broadcast_lottery_draw_destroy
 
-  delegate :entrant, to: :ticket
+  delegate :entrant, :reference_number, to: :ticket
   delegate :first_name, :last_name, :gender, :birthdate, :city, :state_code, :state_name, :country_code, :country_name,
            :bio, :flexible_geolocation, :full_name, to: :entrant, prefix: true
   delegate :division, to: :entrant

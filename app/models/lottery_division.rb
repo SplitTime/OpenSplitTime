@@ -14,7 +14,7 @@ class LotteryDivision < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
 
   scope :with_policy_scope_attributes, -> do
-    from(select("lottery_divisions.*, organizations.concealed").joins(lottery: :organization), :lottery_divisions)
+    from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   end
 
   delegate :organization, to: :lottery

@@ -39,4 +39,17 @@ class LotteryEntrant < ApplicationRecord
   def delegated_division_name
     division.name
   end
+
+  def draw_ticket!
+    return if drawn?
+
+    drawn_ticket_index = rand(tickets.count)
+    drawn_ticket = tickets.offset(drawn_ticket_index).first
+
+    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+  end
+
+  def drawn?
+    tickets.joins(:draw).present?
+  end
 end

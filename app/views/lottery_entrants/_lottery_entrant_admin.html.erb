@@ -5,4 +5,8 @@
   <td class="text-center"><h4 class="mb-0"><span class="badge badge-secondary"><%= record.division_name %></span></h4></td>
   <td class="text-center"><%= record.number_of_tickets %></td>
   <td class="text-center"><h4 class="mb-0"><%= badgeize_boolean(record.pre_selected?) %></h4></td>
+  <td class="text-center">
+    <%= link_to_entrant_edit(record) %>
+    <%= link_to_entrant_delete(record) %>
+  </td>
 </tr>

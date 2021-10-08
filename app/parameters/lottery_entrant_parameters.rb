@@ -12,6 +12,7 @@ class LotteryEntrantParameters < BaseParameters
       :id,
       :last_name,
       :number_of_tickets,
+      :pre_selected,
       :state_code,
     ]
   end

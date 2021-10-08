@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LotteryEntrant < ApplicationRecord
-  include CapitalizeAttributes, PersonalInfo, Searchable, StateCountrySyncable, Structpluck
+  include CapitalizeAttributes, Delegable, PersonalInfo, Searchable, StateCountrySyncable, Structpluck
 
   has_person_name
   enum gender: [:male, :female]
@@ -14,6 +14,9 @@ class LotteryEntrant < ApplicationRecord
 
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :drawn_and_ordered, -> { from(select("lottery_entrants.*, lottery_draws.created_at as drawn_at").joins(tickets: :draw).order(:drawn_at), :lottery_entrants) }
+  scope :with_policy_scope_attributes, -> do
+    from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
+  end
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
 
@@ -29,6 +32,9 @@ class LotteryEntrant < ApplicationRecord
 
     search_names_and_locations(param)
   end
+
+  delegate :lottery, to: :division
+  delegate :organization, to: :lottery
 
   def delegated_division_name
     division.name

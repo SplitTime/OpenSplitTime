@@ -93,9 +93,9 @@ class LotteriesController < ApplicationController
     authorize @lottery
 
     division = @lottery.divisions.find(params[:division_id])
-    ticket = division.draw_ticket!
+    lottery_draw = division.draw_ticket!
 
-    if ticket.present?
+    if lottery_draw.present?
       head :created
     else
       head :no_content

@@ -12,8 +12,9 @@ class LotteryEntrant < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
-  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :drawn_and_ordered, -> { from(select("lottery_entrants.*, lottery_draws.created_at as drawn_at").joins(tickets: :draw).order(:drawn_at), :lottery_entrants) }
+  scope :pre_selected, -> { where(pre_selected: true) }
+  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :with_policy_scope_attributes, -> do
     from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
   end

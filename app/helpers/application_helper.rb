@@ -8,6 +8,14 @@ module ApplicationHelper
     l(Time.current.in_time_zone(zone), format: :full_day_military_and_zone)
   end
 
+  def badgeize_boolean(boolean)
+    return if boolean.nil?
+
+    color = boolean ? "success" : "danger"
+    text = humanize_boolean(boolean)
+    content_tag(:span, text, class: "badge badge-#{color}")
+  end
+
   def humanize_boolean(boolean)
     case boolean
     when false

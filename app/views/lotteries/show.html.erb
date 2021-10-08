@@ -51,7 +51,7 @@
       <div class="container">
         <div class="row">
           <div class="col-12 col-md-6 form-inline">
-            <%= render "entrant_lookup" %>
+            <%= render "lottery_entrants/entrant_lookup" %>
           </div>
         </div>
       </div>
@@ -67,8 +67,8 @@
             <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
             <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
             <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
-            <th><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
-            <th><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Division", "division_name,-number_of_tickets", params[:sort]) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Tickets", "number_of_tickets", params[:sort]) %></th>
           </tr>
           </thead>
           <tbody data-infinite-scroll-target="result">
@@ -103,7 +103,7 @@
         <div class="container">
           <div class="row">
             <div class="col-12 col-md-6 form-inline">
-              <%= render "entrant_lookup" %>
+              <%= render "lottery_entrants/entrant_lookup" %>
             </div>
           </div>
         </div>
@@ -119,7 +119,7 @@
             <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
             <th><%= link_to_reversing_sort_heading("Gender", "gender,last_name,first_name", params[:sort]) %></th>
             <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
-            <th><%= link_to_reversing_sort_heading("Division", "division_name,last_name,first_name", params[:sort]) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("Division", "division_name,last_name,first_name", params[:sort]) %></th>
           </tr>
           </thead>
           <tbody data-infinite-scroll-target="result">
@@ -151,7 +151,7 @@
   <% when "draws" %>
     <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
     <div id="lottery_draws">
-      <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws %>
+      <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws_ordered %>
     </div>
 
   <% when "results" %>

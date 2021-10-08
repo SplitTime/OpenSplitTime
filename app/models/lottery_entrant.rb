@@ -24,6 +24,12 @@ class LotteryEntrant < ApplicationRecord
     search_names_and_locations(param)
   end
 
+  def self.search_default_none(param)
+    return none unless param && param.size > 2
+
+    search_names_and_locations(param)
+  end
+
   def delegated_division_name
     division.name
   end

@@ -2,7 +2,7 @@
   <td><%= record.name %></td>
   <td><%= record.gender.titleize %></td>
   <td><%= record.flexible_geolocation %></td>
-  <td class="text-center"><h4><span class="badge badge-secondary"><%= record.division_name %></span></h4></td>
+  <td class="text-center"><h4 class="mb-0"><span class="badge badge-secondary"><%= record.division_name %></span></h4></td>
   <td class="text-center"><%= record.number_of_tickets %></td>
-  <td class="text-center"><h4><%= badgeize_boolean(record.pre_selected?) %></h4></td>
+  <td class="text-center"><h4 class="mb-0"><%= badgeize_boolean(record.pre_selected?) %></h4></td>
 </tr>

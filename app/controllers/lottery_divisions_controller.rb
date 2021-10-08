@@ -15,7 +15,7 @@ class LotteryDivisionsController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id/edit
   def edit
-    authorize @lottery
+    authorize @lottery_division
   end
 
   # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions

@@ -1,0 +1,27 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Edit lottery entrant" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@lottery_entrant.lottery.name}: Edit Entrant" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery_entrant.organization.name, organization_lotteries_path(@lottery_entrant.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@lottery_entrant.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery_entrant.lottery.name, organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery) %></li>
+            <li class="breadcrumb-item active">Edit Entrant</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render "form" %>
+</article>

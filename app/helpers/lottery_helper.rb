@@ -23,4 +23,27 @@ module LotteryHelper
                class: "btn btn-primary btn-sm has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end
+
+  def link_to_entrant_delete(entrant)
+    url = organization_lottery_lottery_entrant_path(entrant.organization, entrant.lottery, entrant)
+    tooltip = "Delete this entrant"
+    options = {method: :delete,
+               data: {confirm: "This will delete the entrant and cannot be undone. Are you sure you want to proceed?",
+                      turbo: false,
+                      toggle: :tooltip,
+                      placement: :bottom,
+                      "original-title" => tooltip},
+               class: "btn btn-danger btn-sm has-tooltip"}
+    link_to fa_icon("trash"), url, options
+  end
+
+  def link_to_entrant_edit(entrant)
+    url = edit_organization_lottery_lottery_entrant_path(entrant.organization, entrant.lottery, entrant)
+    tooltip = "Edit this entrant"
+    options = {data: {toggle: :tooltip,
+                      placement: :bottom,
+                      "original-title" => tooltip},
+               class: "btn btn-primary btn-sm has-tooltip"}
+    link_to fa_icon("pencil-alt"), url, options
+  end
 end

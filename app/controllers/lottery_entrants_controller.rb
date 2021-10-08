@@ -60,6 +60,19 @@ class LotteryEntrantsController < ApplicationController
     end
   end
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/draw
+  def draw
+    authorize @lottery_entrant
+
+    lottery_draw = @lottery_entrant.draw_ticket!
+
+    if lottery_draw.present?
+      head :created
+    else
+      head :no_content
+    end
+  end
+
   private
 
   def set_lottery

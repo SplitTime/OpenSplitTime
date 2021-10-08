@@ -39,4 +39,8 @@ class LotteryEntrantPolicy < ApplicationPolicy
   def destroy?
     user.authorized_for_lotteries?(organization)
   end
+
+  def draw?
+    user.authorized_for_lotteries?(organization)
+  end
 end

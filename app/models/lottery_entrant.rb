@@ -12,8 +12,9 @@ class LotteryEntrant < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
-  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :drawn_and_ordered, -> { from(select("lottery_entrants.*, lottery_draws.created_at as drawn_at").joins(tickets: :draw).order(:drawn_at), :lottery_entrants) }
+  scope :pre_selected, -> { where(pre_selected: true) }
+  scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :with_policy_scope_attributes, -> do
     from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
   end
@@ -38,5 +39,18 @@ class LotteryEntrant < ApplicationRecord
 
   def delegated_division_name
     division.name
+  end
+
+  def draw_ticket!
+    return if drawn?
+
+    drawn_ticket_index = rand(tickets.count)
+    drawn_ticket = tickets.offset(drawn_ticket_index).first
+
+    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+  end
+
+  def drawn?
+    tickets.joins(:draw).present?
   end
 end

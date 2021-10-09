@@ -1,4 +1,4 @@
-import {Controller} from "stimulus"
+import {Controller} from "@hotwired/stimulus"
 import {isMobileSafari} from "utils";
 
 function safeParse(str) {

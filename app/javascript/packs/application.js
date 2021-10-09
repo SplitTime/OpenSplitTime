@@ -20,8 +20,7 @@ import 'utils/growl';
 import TurboLinksAdapter from 'vue-turbolinks';
 Vue.use(TurboLinksAdapter);
 
-import { Application } from "stimulus"
-import { definitionsFromContext } from "stimulus/webpack-helpers"
+import { Application } from "@hotwired/stimulus"
 
 const application = Application.start()
 const context = require.context("controllers", true, /.js$/)

@@ -55,6 +55,38 @@ RSpec.describe LotteryDivision, type: :model do
     end
   end
 
+  describe "#full?" do
+    let(:result) { subject.full? }
+    context "when the winners list and wait list are full" do
+      let(:division_name) { "Never Ever Evers" }
+      it "returns true" do
+        expect(result).to eq(true)
+      end
+    end
+
+    context "when the winners list is full but the wait list is not full" do
+      let(:division_name) { "Elses" }
+      before { 2.times { subject.draw_ticket! } }
+      it "returns false" do
+        expect(result).to eq(false)
+      end
+    end
+
+    context "when the winners list is not full" do
+      let(:division_name) { "Elses" }
+      it "returns false" do
+        expect(result).to eq(false)
+      end
+    end
+
+    context "when no tickets have been drawn" do
+      let(:division_name) { "Veterans" }
+      it "returns false" do
+        expect(result).to eq(false)
+      end
+    end
+  end
+
   describe "#winning_entrants" do
     let(:result) { subject.winning_entrants }
 

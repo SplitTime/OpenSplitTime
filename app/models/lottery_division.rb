@@ -25,7 +25,7 @@ class LotteryDivision < ApplicationRecord
     drawn_ticket_index = rand(eligible_tickets.count)
     drawn_ticket = eligible_tickets.offset(drawn_ticket_index).first
 
-    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+    lottery.draw_ticket!(drawn_ticket)
   end
 
   def draws

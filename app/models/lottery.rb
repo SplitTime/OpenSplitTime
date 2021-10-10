@@ -21,6 +21,13 @@ class Lottery < ApplicationRecord
     from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
   end
 
+  def draw_ticket!(ticket)
+    return false if ticket.nil?
+
+    draws.create(ticket: ticket)
+    ticket.entrant.division.touch
+  end
+
   def generate_entrants!
     divisions.each do |division|
       entrant_count = rand(10) + 5

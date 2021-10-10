@@ -21,11 +21,11 @@ class Lottery < ApplicationRecord
     from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
   end
 
-  def draw_ticket!(ticket)
-    return false if ticket.nil?
+  def create_draw_for_ticket!(ticket)
+    return if ticket.nil? || ticket.drawn?
 
-    draws.create(ticket: ticket)
     ticket.entrant.division.touch
+    draws.create!(ticket: ticket)
   end
 
   def generate_entrants!

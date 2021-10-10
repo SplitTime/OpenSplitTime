@@ -44,7 +44,7 @@ RSpec.describe LotteryEntrant, type: :model do
       end
 
       it "returns nil" do
-        expect(execute_method).to eq(nil)
+        expect(execute_method).to be_nil
       end
     end
 
@@ -58,6 +58,7 @@ RSpec.describe LotteryEntrant, type: :model do
         expect(execute_method).to be_a(LotteryDraw)
       end
     end
+
     context "when the entrant has already been drawn" do
       before do
         lottery.delete_and_insert_tickets!
@@ -69,7 +70,7 @@ RSpec.describe LotteryEntrant, type: :model do
       end
 
       it "returns nil" do
-        expect(execute_method).to eq(nil)
+        expect(execute_method).to be_nil
       end
     end
   end

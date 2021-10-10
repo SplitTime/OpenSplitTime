@@ -24,10 +24,10 @@ class LotteryDivision < ApplicationRecord
   def draw_ticket!
     drawn_entrants = entrants.joins(tickets: :draw)
     eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)
-    drawn_ticket_index = rand(eligible_tickets.count)
-    drawn_ticket = eligible_tickets.offset(drawn_ticket_index).first
+    selected_ticket_index = rand(eligible_tickets.count)
+    selected_ticket = eligible_tickets.offset(selected_ticket_index).first
 
-    lottery.draw_ticket!(drawn_ticket)
+    lottery.create_draw_for_ticket!(selected_ticket)
   end
 
   def draws

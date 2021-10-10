@@ -44,10 +44,10 @@ class LotteryEntrant < ApplicationRecord
   def draw_ticket!
     return if drawn?
 
-    drawn_ticket_index = rand(tickets.count)
-    drawn_ticket = tickets.offset(drawn_ticket_index).first
+    selected_ticket_index = rand(tickets.count)
+    selected_ticket = tickets.offset(selected_ticket_index).first
 
-    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+    lottery.create_draw_for_ticket!(selected_ticket)
   end
 
   def drawn?

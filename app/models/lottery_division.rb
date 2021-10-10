@@ -17,15 +17,17 @@ class LotteryDivision < ApplicationRecord
     from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   end
 
+  after_touch :broadcast_lottery_draw_header
+
   delegate :organization, to: :lottery
 
   def draw_ticket!
     drawn_entrants = entrants.joins(tickets: :draw)
     eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)
-    drawn_ticket_index = rand(eligible_tickets.count)
-    drawn_ticket = eligible_tickets.offset(drawn_ticket_index).first
+    selected_ticket_index = rand(eligible_tickets.count)
+    selected_ticket = eligible_tickets.offset(selected_ticket_index).first
 
-    lottery.draws.create(ticket: drawn_ticket) if drawn_ticket.present?
+    lottery.create_draw_for_ticket!(selected_ticket)
   end
 
   def draws
@@ -45,6 +47,10 @@ class LotteryDivision < ApplicationRecord
   end
 
   private
+
+  def broadcast_lottery_draw_header
+    broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: {division: self}
+  end
 
   def loaded_draws
     draws.includes(ticket: :entrant)

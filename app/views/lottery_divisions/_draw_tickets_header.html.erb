@@ -5,6 +5,7 @@
   <div class="btn-group btn-lg btn-block p-0">
     <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
                 method: :post,
+                disabled: division.full?,
                 class: "btn btn-lg btn-block btn-success font-weight-bold" %>
     <% if division.entrants.pre_selected.present? %>
       <button class="btn btn-lg btn-success font-weight-bold dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,11 +53,11 @@
           <h6 class="font-weight-bold">Pre-selects</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-right"><%= "(#{division.entrants.pre_selected.count}/#{division.entrants.pre_selected.drawn_and_ordered.count})" %></h6>
+          <h6 class="text-right"><%= "(#{division.entrants.pre_selected.count}/#{division.entrants.pre_selected.drawn.count})" %></h6>
         </div>
       </div>
       <div class="progress">
-        <%= bootstrap_progress_bar(min_value: 0, max_value: division.entrants.pre_selected.count, current_value: division.entrants.pre_selected.drawn_and_ordered.count, color: "secondary") %>
+        <%= bootstrap_progress_bar(min_value: 0, max_value: division.entrants.pre_selected.count, current_value: division.entrants.pre_selected.drawn.count, color: "secondary") %>
       </div>
     </div>
   </div>

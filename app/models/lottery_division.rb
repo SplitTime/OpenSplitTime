@@ -34,8 +34,8 @@ class LotteryDivision < ApplicationRecord
     lottery.draws.for_division(self)
   end
 
-  def reverse_loaded_draws
-    loaded_draws.reorder(created_at: :desc)
+  def full?
+    entrants.drawn.count >= maximum_entries + maximum_wait_list
   end
 
   def wait_list_entrants
@@ -52,11 +52,7 @@ class LotteryDivision < ApplicationRecord
     broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: {division: self}
   end
 
-  def loaded_draws
-    draws.includes(ticket: :entrant)
-  end
-
   def ordered_drawn_entrants
-    entrants.drawn_and_ordered
+    entrants.drawn.ordered
   end
 end

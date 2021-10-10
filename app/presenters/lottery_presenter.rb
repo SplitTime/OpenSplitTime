@@ -17,6 +17,10 @@ class LotteryPresenter < BasePresenter
     @request = view_context.request
   end
 
+  def ordered_divisions
+    divisions.order(:name)
+  end
+
   def lottery_draws_ordered
     lottery_draws
       .with_sortable_entrant_attributes

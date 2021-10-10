@@ -45,7 +45,7 @@
   </div>
   <% if @presenter.lottery_tickets.present? %>
     <div class="row">
-      <% @presenter.divisions.each do |division| %>
+      <% @presenter.ordered_divisions.each do |division| %>
         <%= turbo_stream_from division, :lottery_draws %>
         <%= turbo_stream_from division, :lottery_draw_header %>
         <div class="col">

@@ -17,6 +17,8 @@ class LotteryDivision < ApplicationRecord
     from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   end
 
+  after_touch :broadcast_lottery_draw_header
+
   delegate :organization, to: :lottery
 
   def draw_ticket!
@@ -45,6 +47,10 @@ class LotteryDivision < ApplicationRecord
   end
 
   private
+
+  def broadcast_lottery_draw_header
+    broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: {division: self}
+  end
 
   def loaded_draws
     draws.includes(ticket: :entrant)

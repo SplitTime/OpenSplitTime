@@ -47,6 +47,7 @@
     <div class="row">
       <% @presenter.divisions.each do |division| %>
         <%= turbo_stream_from division, :lottery_draws %>
+        <%= turbo_stream_from division, :lottery_draw_header %>
         <div class="col">
           <%= render "lottery_divisions/draw_tickets_header", division: division %>
           <hr/>

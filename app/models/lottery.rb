@@ -24,8 +24,12 @@ class Lottery < ApplicationRecord
   def create_draw_for_ticket!(ticket)
     return if ticket.nil? || ticket.drawn?
 
+    draw = draws.create!(ticket: ticket)
+
+    # Touch needs to happen after the draw is created, otherwise
+    # the division information will not be up to date when broadcast
     ticket.entrant.division.touch
-    draws.create!(ticket: ticket)
+    draw
   end
 
   def generate_entrants!

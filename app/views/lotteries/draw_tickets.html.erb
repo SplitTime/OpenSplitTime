@@ -52,7 +52,7 @@
           <%= render "lottery_divisions/draw_tickets_header", division: division %>
           <hr/>
           <div id="<%= dom_id(division, :lottery_draws) %>">
-            <%= render partial: "lottery_draws/lottery_draw_admin", collection: division.reverse_loaded_draws, as: :lottery_draw %>
+            <%= render partial: "lottery_draws/lottery_draw_admin", collection: division.draws.with_entrant_and_ticket.most_recent_first, as: :lottery_draw %>
           </div>
         </div>
       <% end %>

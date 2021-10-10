@@ -71,6 +71,41 @@
               </div>
             <% end %>
           </div>
+
+          <div class="card mt-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  <h6>Winners</h6>
+                </div>
+                <div class="col-9">
+                  <div class="progress">
+                    <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_entries, current_value: division.winning_entrants.count) %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                  <h6>Waitlist</h6>
+                </div>
+                <div class="col-9">
+                  <div class="progress">
+                    <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_wait_list, current_value: division.wait_list_entrants.count) %>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                  <h6>Picks</h6>
+                </div>
+                <div class="col-9">
+                  <div class="progress">
+                    <%= bootstrap_progress_bar(min_value: 0, max_value: division.entrants.pre_selected.count, current_value: division.entrants.pre_selected.drawn_and_ordered.count) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <hr/>
 
           <div id="<%= dom_id(division, :lottery_draws) %>">

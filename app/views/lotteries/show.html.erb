@@ -137,6 +137,11 @@
 
   <% when "draws" %>
     <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
+    <h6 class="text-center">Live updating</h6>
+    <div class="back-and-forth-path">
+      <span class="back-and-forth-shape trail"></span>
+    </div>
+
     <div id="lottery_draws">
       <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws_ordered %>
     </div>

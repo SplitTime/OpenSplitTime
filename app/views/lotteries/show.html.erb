@@ -19,7 +19,7 @@
           <p><%= l(@presenter.scheduled_start_date, format: :full_with_weekday) %></p>
         </div>
       </div>
-      <aside class="col-auto">
+      <aside class="col text-right">
         <% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
           <%= link_to "Draw Tickets", draw_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
           <%= link_to "Setup", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
@@ -27,7 +27,7 @@
       </aside>
     </div>
     <% if @presenter.display_style == "draws" %>
-      <div>
+      <div class="mb-4">
         <%= link_to "Browse Entrants and Winners", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block font-weight-bold" %>
       </div>
     <% else %>

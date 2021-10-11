@@ -63,7 +63,7 @@ RSpec.describe "Create and update a lottery" do
     expect(new_lottery.name).to eq(new_lottery_name)
     expect(new_lottery.scheduled_start_date).to eq(new_lottery_date.to_date)
 
-    click_link "Edit"
+    click_link "Edit lottery"
 
     expect(page).to have_content("Edit Lottery")
     expect(page).to have_button("Update Lottery")

@@ -13,6 +13,8 @@ class LotteryDraw < ApplicationRecord
            .joins(ticket: {entrant: :division}), :lottery_draws)
   end
 
+  validates_uniqueness_of :lottery_ticket_id
+
   after_create_commit :broadcast_lottery_draw_create
   after_destroy_commit :broadcast_lottery_draw_destroy
 

@@ -26,21 +26,29 @@
         <% end %>
       </aside>
     </div>
+    <% if @presenter.display_style == "draws" %>
+      <div>
+        <%= link_to "Browse Entrants and Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block font-weight-bold" %>
+      </div>
+    <% else %>
+      <div>
+        <%= link_to "View Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws), class: "btn btn-outline-secondary btn-block text-success font-weight-bold" %>
+      </div>
+    <% end %>
     <!-- Navigation -->
-    <ul class="nav nav-tabs nav-tabs-ost">
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do
-        link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
-        link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'draws'}" do
-        link_to "Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
-        link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
-      end %>
-    </ul>
+    <% unless @presenter.display_style == "draws" %>
+      <ul class="nav nav-tabs nav-tabs-ost">
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do
+          link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants)
+        end %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
+          link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
+        end %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
+          link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
+        end %>
+      </ul>
+    <% end %>
   </div>
 </header>
 

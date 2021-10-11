@@ -43,25 +43,24 @@
       <hr/>
     </div>
   </div>
+  <div class="row">
   <% if @presenter.lottery_tickets.present? %>
-    <div class="row">
       <% @presenter.ordered_divisions.each do |division| %>
         <%= turbo_stream_from division, :lottery_draws %>
         <%= turbo_stream_from division, :lottery_draw_header %>
-        <div class="col">
+        <div class="col-12 col-md">
           <%= render "lottery_divisions/draw_tickets_header", division: division %>
           <hr/>
           <div id="<%= dom_id(division, :lottery_draws) %>">
             <%= render partial: "lottery_draws/lottery_draw_admin", collection: division.draws.with_entrant_and_ticket.most_recent_first, as: :lottery_draw %>
           </div>
+          <hr/>
         </div>
       <% end %>
-    </div>
   <% else %>
-    <div class="row">
       <div class="col">
         <h4 class="text-center">No tickets have been generated yet</h4>
       </div>
-    </div>
   <% end %>
+  </div>
 </article>

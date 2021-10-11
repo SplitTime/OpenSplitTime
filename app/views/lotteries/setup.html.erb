@@ -21,7 +21,6 @@
         </div>
       </div>
       <aside class="col-auto">
-        <%= link_to "Edit", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
         <%= link_to "Public", organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
       </aside>
     </div>
@@ -42,18 +41,19 @@
     <div class="row">
       <div class="col form-inline">
         <div>
-          <%= link_to "Generate Entrants",
+          <%= link_to "Edit lottery", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-primary" %>
+          <%= link_to "Generate entrants",
                       generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
                       method: :post,
                       class: "btn btn-success" %>
           <% if @presenter.lottery_tickets.present? %>
-            <%= link_with_strong_confirm("Delete all tickets", delete_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
+            <%= link_with_strong_confirm("Delete tickets", delete_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
                                          class: "btn btn-outline-secondary text-danger",
                                          message: "This action will permanently delete all tickets and draws from the #{@presenter.name} lottery.",
                                          required_pattern: "DELETE TICKETS",
                                          strong_confirm_id: "strong-confirm-tickets-lottery-#{@presenter.lottery.id}") %>
           <% else %>
-            <%= link_to "Generate Tickets", generate_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
+            <%= link_to "Generate tickets", generate_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
                         method: :post,
                         class: "btn btn-danger" %>
           <% end %>

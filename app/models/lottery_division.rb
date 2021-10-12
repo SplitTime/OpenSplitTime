@@ -21,6 +21,10 @@ class LotteryDivision < ApplicationRecord
 
   delegate :organization, to: :lottery
 
+  def all_entrants_drawn?
+    entrants.undrawn.empty?
+  end
+
   def draw_ticket!
     drawn_entrants = entrants.joins(tickets: :draw)
     eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)

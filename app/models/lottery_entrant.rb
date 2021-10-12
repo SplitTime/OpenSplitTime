@@ -12,7 +12,12 @@ class LotteryEntrant < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
-  scope :drawn, -> { from(select("lottery_entrants.*, lottery_draws.created_at as drawn_at").joins(tickets: :draw), :lottery_entrants) }
+  scope :drawn, -> { with_drawn_at_attribute.where.not(drawn_at: nil) }
+  scope :undrawn, -> { with_drawn_at_attribute.where(drawn_at: nil) }
+  scope :with_drawn_at_attribute, -> do
+    from(select("distinct on (lottery_tickets.lottery_entrant_id) lottery_entrants.*, lottery_draws.created_at as drawn_at")
+           .left_joins(tickets: :draw).order("lottery_tickets.lottery_entrant_id, drawn_at"), :lottery_entrants)
+  end
   scope :ordered, -> { order(:drawn_at) }
   scope :pre_selected, -> { where(pre_selected: true) }
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }

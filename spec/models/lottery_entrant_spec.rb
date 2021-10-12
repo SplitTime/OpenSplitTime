@@ -12,23 +12,45 @@ RSpec.describe LotteryEntrant, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
-  describe ".drawn" do
-    let(:result) { existing_scope.drawn }
+  describe "drawn and undrawn scopes" do
     let(:existing_scope) { division.entrants }
     let(:division) { LotteryDivision.find_by(name: division_name) }
 
-    context "when the existing scope includes entrants who have been drawn" do
-      let(:division_name) { "Never Ever Evers" }
-      it "returns a collection of all relevant entrants" do
-        expect(result.count).to eq(6)
-        expect(result.map(&:first_name)).to match_array(["Mitsuko", "Jospeh", "Nenita", "Emeline", "Modesta", "Norris"])
+    describe ".drawn" do
+      let(:result) { existing_scope.drawn }
+
+      context "when the existing scope includes entrants who have been drawn" do
+        let(:division_name) { "Never Ever Evers" }
+        it "returns a collection of all relevant entrants" do
+          expect(result.count).to eq(6)
+          expect(result.map(&:first_name)).to match_array(["Mitsuko", "Jospeh", "Nenita", "Emeline", "Modesta", "Norris"])
+        end
+      end
+
+      context "when the existing scope does not include entrants who have been drawn" do
+        let(:division_name) { "Veterans" }
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
       end
     end
 
-    context "when the existing scope does not include entrants who have been drawn" do
-      let(:division_name) { "Veterans" }
-      it "returns an empty collection" do
-        expect(result).to be_empty
+    describe ".undrawn" do
+      let(:result) { existing_scope.undrawn }
+
+      context "when the existing scope includes entrants who have not been drawn" do
+        let(:division_name) { "Elses" }
+        it "returns a collection of all undrawn entrants" do
+          expect(result.count).to eq(3)
+          expect(result.map(&:first_name)).to match_array(["Shenika", "Abraham", "Maud"])
+        end
+      end
+
+      context "when the existing scope entrants have all been drawn" do
+        let(:division_name) { "Never Ever Evers" }
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
       end
     end
   end

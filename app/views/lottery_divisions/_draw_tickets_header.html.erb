@@ -5,7 +5,7 @@
   <div class="btn-group btn-lg btn-block p-0">
     <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
                 method: :post,
-                disabled: division.full?,
+                disabled: division.full? || division.all_entrants_drawn?,
                 class: "btn btn-lg btn-block btn-success font-weight-bold" %>
     <% if division.entrants.pre_selected.present? %>
       <button class="btn btn-lg btn-success font-weight-bold dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

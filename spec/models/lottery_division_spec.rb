@@ -10,6 +10,27 @@ RSpec.describe LotteryDivision, type: :model do
   it { is_expected.to strip_attribute(:name) }
   it { is_expected.to capitalize_attribute(:name) }
 
+  describe "#all_entrants_drawn?" do
+    let(:result) { subject.all_entrants_drawn? }
+    let(:division_name) { "Elses" }
+    context "when all entrants have had a ticket drawn" do
+      before do
+        3.times { subject.draw_ticket! }
+        expect(subject.entrants.count).to eq(subject.draws.count)
+      end
+
+      it "returns true" do
+        expect(result).to eq(true)
+      end
+    end
+
+    context "when some entrants have not had a ticket drawn" do
+      it "returns false" do
+        expect(result).to eq(false)
+      end
+    end
+  end
+
   describe "#draw_ticket!" do
     let(:result) { subject.draw_ticket! }
 

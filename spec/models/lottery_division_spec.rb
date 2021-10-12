@@ -108,6 +108,32 @@ RSpec.describe LotteryDivision, type: :model do
     end
   end
 
+  describe "#wait_list_entrants" do
+    let(:result) { subject.wait_list_entrants }
+
+    context "when draws have spilled over into the wait list" do
+      let(:division_name) { "Never Ever Evers" }
+      it "returns wait listed entrants" do
+        expect(result.count).to eq(2)
+        expect(result).to all be_a(LotteryEntrant)
+      end
+    end
+
+    context "when draws have not spilled over into the wait list" do
+      let(:division_name) { "Elses" }
+      it "returns an empty collection" do
+        expect(result).to be_empty
+      end
+    end
+
+    context "when no entrants have been drawn" do
+      let(:division_name) { "Veterans" }
+      it "returns an empty collection" do
+        expect(result).to be_empty
+      end
+    end
+  end
+
   describe "#winning_entrants" do
     let(:result) { subject.winning_entrants }
 
@@ -124,32 +150,6 @@ RSpec.describe LotteryDivision, type: :model do
       it "returns winning entries equal in number to the total draws for the division" do
         expect(result.count).to eq(2)
         expect(result).to all be_a(LotteryEntrant)
-      end
-    end
-
-    context "when no entrants have been drawn" do
-      let(:division_name) { "Veterans" }
-      it "returns an empty collection" do
-        expect(result).to be_empty
-      end
-    end
-  end
-
-  describe "#wait_list_entrants" do
-    let(:result) { subject.wait_list_entrants }
-
-    context "when draws have spilled over into the wait list" do
-      let(:division_name) { "Never Ever Evers" }
-      it "returns wait listed entrants" do
-        expect(result.count).to eq(2)
-        expect(result).to all be_a(LotteryEntrant)
-      end
-    end
-
-    context "when draws have not spilled over into the wait list" do
-      let(:division_name) { "Elses" }
-      it "returns an empty collection" do
-        expect(result).to be_empty
       end
     end
 

@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@hotwired/turbo-rails": "^7.0.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
+    "@hotwired/turbo-rails": "^7.0.1",
     "@rails/actioncable": "^6.0.0",
     "@rails/webpacker": "^4.3.0",
     "bootstrap-notify": "^3.1.3",

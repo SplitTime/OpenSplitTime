@@ -23,5 +23,7 @@
 </header>
 
 <article class="ost-article container">
-  <%= render "form" %>
+  <%= turbo_frame_tag :lottery_entrants_new do %>
+    <%= render "form" %>
+  <% end %>
 </article>

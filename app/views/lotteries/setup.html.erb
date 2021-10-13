@@ -118,43 +118,27 @@
         </div>
       </aside>
 
-      <table class="table table-condensed">
-        <thead>
-        <% if @presenter.lottery_entrants_default_none.present? %>
-          <tr>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>From</th>
-            <th class="text-center">Division</th>
-            <th class="text-center">Tickets</th>
-            <th class="text-center">Pre-Selected?</th>
-            <th></th>
-          </tr>
-        <% else %>
-          <tr>
-            <% if @presenter.params[:search].blank? %>
-              <th>Find someone by entering a name, state, or country</th>
-            <% elsif @presenter.params[:search].length < 3 %>
-              <th>Search parameter is too short</th>
-            <% else %>
-              <th>No entrants match this search</th>
-            <% end %>
-          </tr>
+      <% if @presenter.lottery_entrants_default_none.present? %>
+        <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
+      <% else %>
+        <div class="mt-3">
+          <% if @presenter.params[:search].blank? %>
+            <h5>Find someone by entering a name, state, or country</h5>
+          <% elsif @presenter.params[:search].length < 3 %>
+            <h5>Search parameter is too short</h5>
+          <% else %>
+            <h5>No entrants match this search</h5>
+          <% end %>
+        </div>
+      <% end %>
+      <hr/>
+      <div>
+        <%= turbo_frame_tag :lottery_entrants_new do %>
+          <%= link_to fa_icon("plus", text: "Add"),
+                      new_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery),
+                      id: "add-lottery-entrant", class: "btn btn-success" %>
         <% end %>
-        </thead>
-        <tbody>
-        <% if @presenter.lottery_entrants_default_none.present? %>
-          <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
-        <% end %>
-        <tr>
-          <td colspan="6">
-            <%= link_to fa_icon("plus", text: "Add"),
-                        new_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery),
-                        id: "add-lottery-entrant", class: "btn btn-success" %>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </article>

@@ -59,4 +59,11 @@ class LotteryEntrant < ApplicationRecord
   def drawn?
     tickets.joins(:draw).present?
   end
+
+  private
+
+  # Needed to keep PersonalInfo#bio from breaking
+  def current_age_approximate
+    nil
+  end
 end

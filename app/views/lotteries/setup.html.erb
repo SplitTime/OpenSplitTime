@@ -118,43 +118,29 @@
         </div>
       </aside>
 
-      <table class="table table-condensed">
-        <thead>
-        <% if @presenter.lottery_entrants_default_none.present? %>
-          <tr>
-            <th>Name</th>
-            <th>Gender</th>
-            <th>From</th>
-            <th class="text-center">Division</th>
-            <th class="text-center">Tickets</th>
-            <th class="text-center">Pre-Selected?</th>
-            <th></th>
-          </tr>
-        <% else %>
-          <tr>
-            <% if @presenter.params[:search].blank? %>
-              <th>Find someone by entering a name, state, or country</th>
-            <% elsif @presenter.params[:search].length < 3 %>
-              <th>Search parameter is too short</th>
-            <% else %>
-              <th>No entrants match this search</th>
-            <% end %>
-          </tr>
-        <% end %>
-        </thead>
-        <tbody>
-        <% if @presenter.lottery_entrants_default_none.present? %>
-          <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
-        <% end %>
-        <tr>
-          <td colspan="6">
-            <%= link_to fa_icon("plus", text: "Add"),
-                        new_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery),
-                        id: "add-lottery-entrant", class: "btn btn-success" %>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <% if @presenter.lottery_entrants_default_none.present? %>
+        <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
+      <% else %>
+        <div class="card bg-light mt-2">
+          <div class="card-body">
+            <h6 class="font-weight-bold">
+              <% if @presenter.params[:search].blank? %>
+                Find someone by entering a name, state, or country
+              <% elsif @presenter.params[:search].length < 3 %>
+                Search parameter is too short
+              <% else %>
+                No entrants match this search
+              <% end %>
+            </h6>
+          </div>
+        </div>
+      <% end %>
+      <hr/>
+      <div>
+        <%= link_to fa_icon("plus", text: "Add"),
+                    new_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery),
+                    id: "add-lottery-entrant", class: "btn btn-success" %>
+      </div>
     </div>
   </div>
 </article>

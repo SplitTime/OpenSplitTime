@@ -46,4 +46,11 @@ module LotteryHelper
                class: "btn btn-primary btn-sm has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end
+
+  def pre_selected_badge_with_label(entrant, tag: :h5)
+    content_tag(tag) do
+      concat "Pre-selected: "
+      concat badgeize_boolean(entrant.pre_selected)
+    end
+  end
 end

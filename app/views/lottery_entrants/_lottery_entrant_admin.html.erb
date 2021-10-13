@@ -1,12 +1,20 @@
-<tr>
-  <td><%= record.name %></td>
-  <td><%= record.gender.titleize %></td>
-  <td><%= record.flexible_geolocation %></td>
-  <td class="text-center"><h4 class="mb-0"><span class="badge badge-secondary"><%= record.division_name %></span></h4></td>
-  <td class="text-center"><%= record.number_of_tickets %></td>
-  <td class="text-center"><h4 class="mb-0"><%= badgeize_boolean(record.pre_selected?) %></h4></td>
-  <td class="text-center">
-    <%= link_to_entrant_edit(record) %>
-    <%= link_to_entrant_delete(record) %>
-  </td>
-</tr>
+<%= turbo_frame_tag dom_id(record) do %>
+  <div class="card bg-light mt-2">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <h5 class="font-weight-bold"><%= record.name %></h5>
+          <h5><%= pre_selected_badge_with_label(record) %></h5>
+          <h6><%= record.flexible_geolocation %></h6>
+          <h6><%= record.bio %></h6>
+        </div>
+        <div class="col text-right">
+          <h4><span class="badge badge-secondary"><%= record.division_name %></span></h4>
+          <h6 class="font-weight-bold mb-4"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
+          <%= link_to_entrant_edit(record) %>
+          <%= link_to_entrant_delete(record) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

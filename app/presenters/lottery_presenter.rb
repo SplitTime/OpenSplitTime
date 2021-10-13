@@ -29,10 +29,16 @@ class LotteryPresenter < BasePresenter
   end
 
   def lottery_entrants_default_none
-    lottery.entrants
-           .with_division_name
-           .includes(:division)
-           .search_default_none(search_text)
+    unfiltered_entrants = lottery.entrants
+                                 .with_division_name
+                                 .includes(:division)
+    entrant_id = params[:entrant_id]
+
+    if entrant_id.present?
+      unfiltered_entrants.where(id: entrant_id)
+    else
+      unfiltered_entrants.search_default_none(search_text)
+    end
   end
 
   def lottery_entrants_paginated

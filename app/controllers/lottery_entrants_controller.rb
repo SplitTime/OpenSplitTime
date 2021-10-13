@@ -7,12 +7,6 @@ class LotteryEntrantsController < ApplicationController
   before_action :set_lottery_entrant, except: [:new, :create]
   after_action :verify_authorized
 
-  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
-  def show
-    @lottery_entrant = LotteryEntrant.where(id: @lottery_entrant.id).with_division_name.first
-    authorize @lottery_entrant
-  end
-
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/new
   def new
     division = @lottery.divisions.first
@@ -43,7 +37,8 @@ class LotteryEntrantsController < ApplicationController
     authorize @lottery_entrant
 
     if @lottery_entrant.update(permitted_params)
-      redirect_to organization_lottery_lottery_entrant_path(@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant)
+      @lottery_entrant = LotteryEntrant.where(id: @lottery_entrant.id).with_division_name.first
+      render partial: "lottery_entrant_admin", locals: {record: @lottery_entrant}
     else
       render "edit"
     end

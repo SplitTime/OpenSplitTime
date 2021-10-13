@@ -121,14 +121,18 @@
       <% if @presenter.lottery_entrants_default_none.present? %>
         <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
       <% else %>
-        <div class="mt-3">
-          <% if @presenter.params[:search].blank? %>
-            <h5>Find someone by entering a name, state, or country</h5>
-          <% elsif @presenter.params[:search].length < 3 %>
-            <h5>Search parameter is too short</h5>
-          <% else %>
-            <h5>No entrants match this search</h5>
-          <% end %>
+        <div class="card bg-light mt-2">
+          <div class="card-body">
+            <h6 class="font-weight-bold">
+              <% if @presenter.params[:search].blank? %>
+                Find someone by entering a name, state, or country
+              <% elsif @presenter.params[:search].length < 3 %>
+                Search parameter is too short
+              <% else %>
+                No entrants match this search
+              <% end %>
+            </h6>
+          </div>
         </div>
       <% end %>
       <hr/>

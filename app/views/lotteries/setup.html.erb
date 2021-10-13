@@ -25,7 +25,7 @@
       </aside>
     </div>
     <!-- Navigation -->
-    <ul class="nav nav-tabs nav-tabs-ost">
+    <ul class="nav nav-tabs nav-tabs-ost" data-turbo="false">
       <%= content_tag :li, class: "nav-item #{'active' if @presenter.action_name == 'setup'}" do
         link_to "Setup", setup_organization_lottery_path(@presenter.organization, @presenter.lottery)
       end %>

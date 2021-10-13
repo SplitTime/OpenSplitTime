@@ -21,7 +21,7 @@ class LotteryEntrantsController < ApplicationController
 
   # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants
   def create
-    division_id = params.dig(:lottery_entrant, :division_id)
+    division_id = params.dig(:lottery_entrant, :lottery_division_id)
     division = LotteryDivision.find(division_id)
     @lottery_entrant = division.entrants.new(permitted_params)
     authorize @lottery_entrant

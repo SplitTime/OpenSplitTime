@@ -49,7 +49,7 @@
       <div class="form-row">
         <div class="form-group col-md-2">
           <%= f.label :division %>
-          <%= f.select :division_id, @lottery_entrant.lottery.divisions.map { |division| [division.name, division.id] },
+          <%= f.select :lottery_division_id, @lottery_entrant.lottery.divisions.map { |division| [division.name, division.id] },
                        {}, {class: "form-control"} %>
         </div>
 

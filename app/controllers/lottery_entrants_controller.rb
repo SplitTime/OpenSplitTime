@@ -7,6 +7,12 @@ class LotteryEntrantsController < ApplicationController
   before_action :set_lottery_entrant, except: [:new, :create]
   after_action :verify_authorized
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
+  def show
+    @lottery_entrant = LotteryEntrant.where(id: @lottery_entrant.id).with_division_name.first
+    authorize @lottery_entrant
+  end
+
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/new
   def new
     division = @lottery.divisions.first
@@ -21,13 +27,11 @@ class LotteryEntrantsController < ApplicationController
 
   # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants
   def create
-    division_id = params.dig(:lottery_entrant, :lottery_division_id)
-    division = LotteryDivision.find(division_id)
-    @lottery_entrant = division.entrants.new(permitted_params)
+    @lottery_entrant = LotteryEntrant.new(permitted_params)
     authorize @lottery_entrant
 
     if @lottery_entrant.save
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
+      redirect_to setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery, entrant_id: @lottery_entrant.id)
     else
       render "new"
     end
@@ -39,7 +43,7 @@ class LotteryEntrantsController < ApplicationController
     authorize @lottery_entrant
 
     if @lottery_entrant.update(permitted_params)
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
+      redirect_to organization_lottery_lottery_entrant_path(@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant)
     else
       render "edit"
     end

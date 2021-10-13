@@ -10,7 +10,7 @@
         </div>
         <div class="col text-right">
           <h4><span class="badge badge-secondary"><%= record.division_name %></span></h4>
-          <h6 class="font-weight-bold"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
+          <h6 class="font-weight-bold mb-4"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
           <%= link_to_entrant_edit(record) %>
           <%= link_to_entrant_delete(record) %>
         </div>

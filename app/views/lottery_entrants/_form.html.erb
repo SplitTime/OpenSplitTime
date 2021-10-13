@@ -79,7 +79,7 @@
               <% if @lottery_entrant.new_record? %>
                 <%= link_to "Cancel", setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery) %>
               <% else %>
-                <%= link_to "Cancel", organization_lottery_lottery_entrant_path(@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant) %>
+                <%= link_to "Cancel", setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery, entrant_id: @lottery_entrant.id) %>
               <% end %>
             </span>
           </div>

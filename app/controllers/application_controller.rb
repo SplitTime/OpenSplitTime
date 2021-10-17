@@ -16,6 +16,12 @@ class ApplicationController < ActionController::Base
 
   impersonates :user
 
+  def process_action(*args)
+    super
+  rescue ActionDispatch::Http::MimeNegotiation::InvalidType => exception
+    head :not_acceptable
+  end
+
   protected
 
   def after_sign_in_path_for(resource)

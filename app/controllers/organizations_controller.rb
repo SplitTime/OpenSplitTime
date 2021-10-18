@@ -4,10 +4,19 @@ class OrganizationsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @organizations = OrganizationPolicy::Scope.new(current_user, Organization).viewable.order(:name)
-                         .paginate(page: params[:page], per_page: 25)
-    @presenter = OrganizationsPresenter.new(@organizations, params, current_user)
-    session[:return_to] = organizations_path
+    @presenter = OrganizationsPresenter.new(view_context)
+
+    respond_to do |format|
+      format.html do
+        session[:return_to] = organizations_path
+      end
+
+      format.json do
+        records = @presenter.records_from_context
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], collection: records, as: :record, formats: [:html]) : ""
+        render json: {records: records, html: html, links: {next: @presenter.next_page_url}}
+      end
+    end
   end
 
   def show

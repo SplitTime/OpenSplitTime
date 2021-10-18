@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'Visit the organizations index' do
+RSpec.describe "Visit the organizations index" do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -22,14 +22,14 @@ RSpec.describe 'Visit the organizations index' do
     concealed_organizations.each { |org| org.update(concealed: true) }
   end
 
-  scenario 'The user is a visitor' do
+  scenario "The user is a visitor" do
     visit organizations_path
 
     verify_public_links_present
     verify_concealed_links_absent
   end
 
-  scenario 'The user is a non-admin user is neither owner nor steward of any concealed organization' do
+  scenario "The user is a non-admin user is neither owner nor steward of any concealed organization" do
     login_as user, scope: :user
     visit organizations_path
 
@@ -37,7 +37,7 @@ RSpec.describe 'Visit the organizations index' do
     verify_concealed_links_absent
   end
 
-  scenario 'The user is a non-admin user that created a concealed organization' do
+  scenario "The user is a non-admin user that created a concealed organization" do
     login_as owner, scope: :user
     visit organizations_path
 
@@ -46,7 +46,7 @@ RSpec.describe 'Visit the organizations index' do
     verify_content_absent(concealed_organization_2)
   end
 
-  scenario 'The user is a non-admin user that is a steward of a concealed organization' do
+  scenario "The user is a non-admin user that is a steward of a concealed organization" do
     login_as steward, scope: :user
     visit organizations_path
 
@@ -55,7 +55,7 @@ RSpec.describe 'Visit the organizations index' do
     verify_content_absent(concealed_organization_1)
   end
 
-  scenario 'The user is an admin user' do
+  scenario "The user is an admin user" do
     login_as admin, scope: :user
     visit organizations_path
 
@@ -64,7 +64,7 @@ RSpec.describe 'Visit the organizations index' do
   end
 
   def verify_public_links_present
-    expect(page).to have_content('Organizations')
+    expect(page).to have_content("Organizations")
     visible_organizations.each(&method(:verify_link_present))
   end
 

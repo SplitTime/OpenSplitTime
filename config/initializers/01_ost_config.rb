@@ -11,6 +11,10 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.scout_apm_sample_rate
+    ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
+  end
+
   def self.timestamp_bot_detection?
     cast_to_boolean ::ENV["TIMESTAMP_BOT_DETECTION"]
   end

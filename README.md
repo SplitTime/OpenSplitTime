@@ -208,4 +208,4 @@ License
 Copyright
 ---------
 
-Copyright (c) 2015-2020 OpenSplitTime Company. See license for details.
+Copyright (c) 2015-2021 OpenSplitTime Company. See license for details.

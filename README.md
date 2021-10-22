@@ -170,9 +170,7 @@ Some integration tests rely on Google ChromeDriver. You can install it in Mac OS
 
 **Continuous Integration**
 
-Heroku CI is used when deploying to staging and production, [Travis CI](https://travis-ci.com/SplitTime/OpenSplitTime) is configured for open source contributions, if you are having a hard time setting up your local environment but still want to make contributions you can count on Travis to run the entire suite and confirm your changes are good.
-
-[![Build Status](https://travis-ci.com/SplitTime/OpenSplitTime.svg?branch=master)](https://travis-ci.com/cabello/OpenSplitTime)
+Heroku CI is used to ensure tests are passing. The status of your branch will be indicated in github. Please ensure your branch is passing before making a pull request.
 
 Support
 -------------------------

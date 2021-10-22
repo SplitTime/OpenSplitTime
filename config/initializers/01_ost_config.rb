@@ -12,7 +12,7 @@ module OstConfig
   end
 
   def self.scout_apm_sample_rate
-    ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f
+    ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end
 
   def self.timestamp_bot_detection?

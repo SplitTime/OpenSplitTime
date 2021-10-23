@@ -35,7 +35,7 @@
     </tr>
     </thead>
     <tbody id="import_jobs">
-    <%= render partial: "import_job", collection: @user.import_jobs %>
+    <%= render partial: "import_job", collection: @user.import_jobs.with_attached_file %>
     </tbody>
   </table>
 </article>

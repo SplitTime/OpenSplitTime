@@ -1,0 +1,9 @@
+<tr id=<%= dom_id import_job %>>
+  <td><%= import_job.parent_type %></td>
+  <td><%= import_job.parent_slug %></td>
+  <td><%= import_job.format %></td>
+  <td><%= import_job.file.filename %></td>
+  <td><%= import_job.row_count %></td>
+  <td><%= pretty_duration(import_job.elapsed_time) %></td>
+  <td><%= import_job_status_component(import_job) %></td>
+</tr>

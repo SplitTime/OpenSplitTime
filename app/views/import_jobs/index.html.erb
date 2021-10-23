@@ -28,15 +28,14 @@
       <th>Parent Type</th>
       <th>Parent ID</th>
       <th>Format</th>
+      <th>File</th>
       <th>Row Count</th>
       <th>Elapsed Time</th>
       <th>Status</th>
     </tr>
     </thead>
     <tbody id="import_jobs">
-    <% @user.import_jobs.each do |job| %>
-      <%= render "import_job", :import_job => job %>
-    <% end %>
+    <%= render partial: "import_job", collection: @user.import_jobs %>
     </tbody>
   </table>
 </article>

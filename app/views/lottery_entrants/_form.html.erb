@@ -1,0 +1,90 @@
+<%= render 'shared/errors', obj: @lottery_entrant %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_with(model: [@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant], html: {class: "form-horizontal"}) do |f| %>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <%= f.label :first_name %>
+          <%= f.text_field :first_name, class: "form-control", placeholder: "Beni", autofocus: true %>
+        </div>
+
+        <div class="form-group col-md-4">
+          <%= f.label :last_name %>
+          <%= f.text_field :last_name, class: "form-control", placeholder: "Hana" %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label :gender %>
+          <%= f.select :gender, LotteryEntrant.genders.keys.map { |gender| [gender.titleize, gender] },
+                       {prompt: true}, {class: "form-control"} %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label "Birthdate" %>
+          <%= f.text_field :birthdate, class: "form-control", placeholder: "mm/dd/yyyy" %>
+        </div>
+      </div>
+
+      <div class="form-row" data-controller="carmen" data-carmen-model="lottery_entrant">
+        <div class="form-group col-md-3">
+          <%= f.label :city %>
+          <%= f.text_field :city, class: "form-control", placeholder: "City" %>
+        </div>
+
+        <div class="form-group col-md-4">
+          <%= f.label :country_code, "Country" %>
+          <%= carmen_country_select :lottery_entrant, :country_code,
+                                    priority: %w(US CA),
+                                    selected: @lottery_entrant.country_code,
+                                    prompt: "Please select a country" %>
+        </div>
+
+        <div class="form-group col-md-3">
+          <%= f.label :state_code, "State" %><br/>
+          <%= render partial: "carmen/subregion_select", locals: {model: :lottery_entrant, parent_region: f.object.country_code} %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <%= f.label :division %>
+          <%= f.select :lottery_division_id, @lottery_entrant.lottery.divisions.map { |division| [division.name, division.id] },
+                       {}, {class: "form-control"} %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label "Number of tickets" %>
+          <%= f.text_field :number_of_tickets, class: "form-control", placeholder: "# of tickets" %>
+        </div>
+
+        <div class="form-group col-md-2">
+          <%= f.label :pre_selected %>
+          <%= f.select :pre_selected, [["No", false], ["Yes", true]], {}, {class: "form-control"} %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.submit(@lottery_entrant.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary") %>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <div class="col">
+            <span class="brackets">
+              <% if @lottery_entrant.new_record? %>
+                <%= link_to "Cancel", setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery) %>
+              <% else %>
+                <%= link_to "Cancel", setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery, entrant_id: @lottery_entrant.id) %>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

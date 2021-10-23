@@ -1,0 +1,33 @@
+.back-and-forth-path {
+    position: relative;
+    overflow: hidden;
+    width: 200px;
+    height: 2px;
+    background-color: #c1c1c1;
+    margin: auto;
+}
+.back-and-forth-shape {
+    position: absolute;
+    left: 0;
+    background-color: red;
+    width: 30px;
+    height: 2px;
+    display: block;
+    top: 0;
+
+    x-transition: all 1s ease-in-out;
+    animation: back-and-forth-animation 1.5s infinite;
+}
+
+
+@keyframes back-and-forth-animation {
+    0% {
+        left: -20px;
+    }
+    50% {
+        left: 190px;
+    }
+    100% {
+        left: -20px;
+    }
+}

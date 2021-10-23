@@ -53,9 +53,32 @@ end
 
 RSpec.configure do |config|
 
-  config.global_fixtures = :organizations, :courses, :event_groups, :event_series, :events, :efforts, :split_times, :splits,
-      :aid_stations, :people, :notifications, :partners, :raw_times, :stewardships, :subscriptions, :users,
-      :results_categories, :results_templates, :results_template_categories
+  config.global_fixtures = [
+    :aid_stations,
+    :courses,
+    :efforts,
+    :event_groups,
+    :event_series,
+    :events,
+    :lotteries,
+    :lottery_divisions,
+    :lottery_draws,
+    :lottery_entrants,
+    :lottery_tickets,
+    :notifications,
+    :organizations,
+    :partners,
+    :people,
+    :raw_times,
+    :results_categories,
+    :results_template_categories,
+    :results_templates,
+    :split_times,
+    :splits,
+    :stewardships,
+    :subscriptions,
+    :users,
+  ]
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -69,7 +92,6 @@ RSpec.configure do |config|
   config.after do
     Warden.test_reset!
   end
-
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and

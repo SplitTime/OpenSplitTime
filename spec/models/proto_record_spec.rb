@@ -194,15 +194,17 @@ RSpec.describe ProtoRecord, type: :model do
 
     context 'for a split' do
       let(:model) { :split }
-      let(:attributes) { {distance: distance} }
+      let(:attributes) { {distance: distance, kind: kind} }
       let(:baseline_split) { Split.new(distance: distance) }
       let(:distance) { 10.5 } # miles
+      let(:kind) { "Int" }
       let(:options) { {event: event} }
       let(:event) { Event.new }
 
       it 'sets the record type and normalizes data' do
         expect(pr.record_type).to eq(:split)
         expect(pr.to_h[:distance_from_start]).to eq(baseline_split.distance_from_start)
+        expect(pr.to_h[:kind]).to eq("intermediate")
       end
     end
   end

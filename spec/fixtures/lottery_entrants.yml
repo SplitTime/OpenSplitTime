@@ -1,0 +1,271 @@
+---
+lottery_entrant_4:
+  id: 4
+  lottery_division_id: 1
+  first_name: Emeline
+  last_name: Runolfsson
+  gender: 0
+  number_of_tickets: 1
+  birthdate: '2000-01-09'
+  city: Amadashire
+  state_code: SC
+  country_code: US
+  created_at: 2021-09-30 03:54:51.607806000 Z
+  updated_at: 2021-10-02 16:39:40.754593000 Z
+  state_name: South Carolina
+  country_name: United States
+lottery_entrant_5:
+  id: 5
+  lottery_division_id: 1
+  first_name: Norris
+  last_name: Wilkinson
+  gender: 0
+  number_of_tickets: 5
+  birthdate: '1976-05-14'
+  city: O'Connertown
+  state_code: KY
+  country_code: US
+  created_at: 2021-09-30 03:54:51.711874000 Z
+  updated_at: 2021-10-02 16:41:19.088935000 Z
+  state_name: Kentucky
+  country_name: United States
+lottery_entrant_6:
+  id: 6
+  lottery_division_id: 2
+  first_name: Jerrold
+  last_name: Treutel
+  gender: 0
+  number_of_tickets: 3
+  birthdate: '1983-01-09'
+  city: Port Brandaburgh
+  state_code: WI
+  country_code: US
+  created_at: 2021-09-30 03:54:51.747905000 Z
+  updated_at: 2021-10-02 16:39:40.762589000 Z
+  state_name: Wisconsin
+  country_name: United States
+lottery_entrant_7:
+  id: 7
+  lottery_division_id: 1
+  first_name: Jospeh
+  last_name: Barrows
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1993-06-06'
+  city: West Vicentafurt
+  state_code: MS
+  country_code: US
+  created_at: 2021-09-30 03:54:51.782475000 Z
+  updated_at: 2021-10-02 16:39:40.765960000 Z
+  state_name: Mississippi
+  country_name: United States
+lottery_entrant_8:
+  id: 8
+  lottery_division_id: 2
+  first_name: Ivette
+  last_name: Kuhn
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1981-05-12'
+  city: Caroleeville
+  state_code: NM
+  country_code: US
+  created_at: 2021-09-30 03:54:51.817823000 Z
+  updated_at: 2021-10-02 16:39:40.771099000 Z
+  state_name: New Mexico
+  country_name: United States
+lottery_entrant_9:
+  id: 9
+  lottery_division_id: 1
+  first_name: Nenita
+  last_name: Heaney
+  gender: 0
+  number_of_tickets: 1
+  birthdate: '1971-11-07'
+  city: Hungborough
+  state_code: NE
+  country_code: US
+  created_at: 2021-09-30 03:54:51.851597000 Z
+  updated_at: 2021-10-02 16:39:40.774279000 Z
+  state_name: Nebraska
+  country_name: United States
+lottery_entrant_10:
+  id: 10
+  lottery_division_id: 2
+  first_name: Veola
+  last_name: Cassin
+  gender: 0
+  number_of_tickets: 2
+  birthdate: '1976-08-30'
+  city: East Lauraport
+  state_code: MI
+  country_code: US
+  created_at: 2021-09-30 03:54:51.857232000 Z
+  updated_at: 2021-10-02 16:39:40.777393000 Z
+  state_name: Michigan
+  country_name: United States
+lottery_entrant_11:
+  id: 11
+  lottery_division_id: 1
+  first_name: Modesta
+  last_name: Raynor
+  gender: 1
+  number_of_tickets: 2
+  birthdate: '1986-08-22'
+  city: Lebsackville
+  state_code: IN
+  country_code: US
+  created_at: 2021-09-30 03:54:51.872673000 Z
+  updated_at: 2021-10-02 16:39:40.780810000 Z
+  state_name: Indiana
+  country_name: United States
+lottery_entrant_12:
+  id: 12
+  lottery_division_id: 2
+  first_name: Blythe
+  last_name: Hintz
+  gender: 0
+  number_of_tickets: 1
+  birthdate: '1994-03-08'
+  city: Lake Nickyberg
+  state_code: AL
+  country_code: US
+  created_at: 2021-09-30 03:54:51.875905000 Z
+  updated_at: 2021-10-02 16:39:40.783891000 Z
+  state_name: Alabama
+  country_name: United States
+lottery_entrant_13:
+  id: 13
+  lottery_division_id: 1
+  first_name: Mitsuko
+  last_name: Wilkinson
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1986-10-23'
+  city: Beerbury
+  state_code: PA
+  country_code: US
+  created_at: 2021-09-30 03:54:51.878887000 Z
+  updated_at: 2021-10-02 16:39:40.786956000 Z
+  state_name: Pennsylvania
+  country_name: United States
+lottery_entrant_21:
+  id: 21
+  lottery_division_id: 6
+  first_name: Gricelda
+  last_name: Crona
+  gender: 1
+  number_of_tickets: 2
+  birthdate: '1994-05-31'
+  city: Port Glennis
+  state_code: VA
+  country_code: US
+  created_at: 2021-09-30 04:11:51.993457000 Z
+  updated_at: 2021-10-01 05:05:24.169087000 Z
+  state_name: Virginia
+  country_name: United States
+lottery_entrant_22:
+  id: 22
+  lottery_division_id: 7
+  first_name: Deb
+  last_name: Swaniawski
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1997-10-15'
+  city: West Rebecka
+  state_code: AZ
+  country_code: US
+  created_at: 2021-09-30 04:11:51.996405000 Z
+  updated_at: 2021-10-01 05:05:24.173417000 Z
+  state_name: Arizona
+  country_name: United States
+lottery_entrant_23:
+  id: 23
+  lottery_division_id: 7
+  first_name: Bernetta
+  last_name: Gerlach
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1997-11-08'
+  city: Prohaskaside
+  state_code: RI
+  country_code: US
+  created_at: 2021-09-30 04:11:51.999359000 Z
+  updated_at: 2021-10-01 05:05:08.196992000 Z
+  state_name: Rhode Island
+  country_name: United States
+lottery_entrant_24:
+  id: 24
+  lottery_division_id: 8
+  first_name: Denisha
+  last_name: Carter
+  gender: 1
+  number_of_tickets: 2
+  birthdate: '1991-07-22'
+  city: Piamouth
+  state_code: ND
+  country_code: US
+  created_at: 2021-09-30 04:17:29.287393000 Z
+  updated_at: 2021-10-02 16:39:40.790075000 Z
+  state_name: North Dakota
+  country_name: United States
+lottery_entrant_25:
+  id: 25
+  lottery_division_id: 8
+  first_name: Shenika
+  last_name: O'Kon
+  gender: 0
+  number_of_tickets: 1
+  birthdate: '1978-08-19'
+  city: Lake Antonialand
+  state_code: TX
+  country_code: US
+  created_at: 2021-09-30 04:17:29.291779000 Z
+  updated_at: 2021-10-02 16:39:40.792948000 Z
+  state_name: Texas
+  country_name: United States
+lottery_entrant_26:
+  id: 26
+  lottery_division_id: 8
+  first_name: Maud
+  last_name: Boyer
+  gender: 0
+  number_of_tickets: 1
+  birthdate: '1977-05-09'
+  city: West Virgenborough
+  state_code: CT
+  country_code: US
+  created_at: 2021-09-30 04:17:29.295672000 Z
+  updated_at: 2021-10-02 16:39:40.796007000 Z
+  state_name: Connecticut
+  country_name: United States
+lottery_entrant_27:
+  id: 27
+  lottery_division_id: 8
+  first_name: Melina
+  last_name: Conroy
+  gender: 1
+  number_of_tickets: 3
+  birthdate: '1972-12-18'
+  city: North Jessia
+  state_code: OR
+  country_code: US
+  created_at: 2021-09-30 04:17:29.299192000 Z
+  updated_at: 2021-10-02 16:39:40.798982000 Z
+  state_name: Oregon
+  country_name: United States
+lottery_entrant_28:
+  id: 28
+  lottery_division_id: 8
+  first_name: Abraham
+  last_name: Balistreri
+  gender: 1
+  number_of_tickets: 1
+  birthdate: '1992-08-29'
+  city: Refugialand
+  state_code: AL
+  country_code: US
+  created_at: 2021-09-30 04:17:29.302712000 Z
+  updated_at: 2021-10-02 16:39:40.801943000 Z
+  state_name: Alabama
+  country_name: United States

@@ -6,7 +6,7 @@ class PreparedParams
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
-    @permitted = (permitted || []).map(&:to_s)
+    @permitted = (permitted || []).map { |attr| attr.is_a?(Symbol) ? attr.to_s : attr }
     @permitted_query = (permitted_query || @permitted).map(&:to_s)
   end
 

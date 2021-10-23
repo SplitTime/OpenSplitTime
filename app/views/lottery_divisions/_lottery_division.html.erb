@@ -1,0 +1,12 @@
+<tr class="font-weight-bold">
+  <td><%= division.name %></td>
+  <td class="text-center"><%= division.maximum_entries %></td>
+  <td class="text-center"><%= division.maximum_wait_list %></td>
+  <td class="text-center"><%= division.entrants.count %></td>
+  <td class="text-center"><%= division.tickets.count %></td>
+  <td class="text-center"><%= division.draws.count %></td>
+  <td class="text-center">
+    <%= link_to_division_edit(division) %>
+    <%= link_to_division_delete(division) %>
+  </td>
+</tr>

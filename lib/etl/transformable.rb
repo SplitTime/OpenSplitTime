@@ -142,6 +142,25 @@ module ETL
       end
     end
 
+    def normalize_split_kind!
+      return unless self.has_key?(:kind)
+
+      if self[:kind].presence.respond_to?(:downcase)
+        self[:kind] = case self[:kind].downcase.first
+                      when "s" then
+                        "start"
+                      when "i" then
+                        "intermediate"
+                      when "f" then
+                        "finish"
+                      else
+                        nil
+                      end
+      else
+        self[:kind] = nil
+      end
+    end
+
     def normalize_state_code!
       return unless self[:state_code].present?
       state_data = self[:state_code].to_s.strip

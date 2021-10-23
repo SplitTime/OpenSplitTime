@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Split < ApplicationRecord
-  DISTANCE_THRESHOLD = 50 # Distance (in meters) below which split locations are deemed equivalent
+  DISTANCE_THRESHOLD = 10 # Distance (in meters) below which split locations are deemed equivalent
 
   include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions, UrlAccessible
   extend FriendlyId
@@ -18,6 +18,7 @@ class Split < ApplicationRecord
   delegate :organization, :stewards, to: :course
 
   before_validation :parameterize_base_name
+  after_commit :touch_all_events
 
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
@@ -168,5 +169,9 @@ class Split < ApplicationRecord
 
   def parameterize_base_name
     self.parameterized_base_name = base_name&.parameterize
+  end
+
+  def touch_all_events
+    events.touch_all
   end
 end

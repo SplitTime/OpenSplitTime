@@ -14,7 +14,7 @@ module ApplicationCable
       if (verified_user = env["warden"].user)
         verified_user
       else
-        reject_unauthorized_connection
+        # reject_unauthorized_connection
       end
     end
   end

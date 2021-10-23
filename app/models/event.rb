@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable, UrlAccessible
+  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable,
+          TimeZonable, TrimTimeAttributes, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
+  trim_time_attributes :scheduled_start_time
   zonable_attributes :scheduled_start_time
   has_paper_trail
 

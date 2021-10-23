@@ -3,29 +3,36 @@
 class OrganizationsPresenter < BasePresenter
   attr_reader :organizations
 
-  def initialize(organizations, params, current_user)
-    @organizations = organizations
-    @params = params
-    @current_user = current_user
+  def initialize(view_context)
+    @view_context = view_context
   end
 
-  def events_count(organization)
-    events(organization).size
+  def next_page_url
+    view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
+  end
+
+  def page
+    params[:page]&.to_i || 1
+  end
+
+  def per_page
+    params[:per_page]&.to_i || 25
+  end
+
+  def records_from_context
+    @records_from_context ||= OrganizationPolicy::Scope.new(current_user, Organization)
+                                                       .viewable
+                                                       .order(:name)
+                                                       .with_visible_event_count
+                                                       .paginate(page: page, per_page: per_page)
   end
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :view_context
+  delegate :current_user, :params, :request, to: :view_context
 
-  def events(organization)
-    grouped_event_groups[organization.id]&.flat_map(&:events) || []
-  end
-
-  def grouped_event_groups
-    event_groups.group_by(&:organization_id)
-  end
-
-  def event_groups
-    @event_groups ||= EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.includes(:events)
+  def records_from_context_count
+    @records_from_context_count ||= records_from_context.size
   end
 end

@@ -133,7 +133,20 @@ Rails.application.routes.draw do
 
   get '/events', to: redirect('event_groups')
 
-  resources :organizations
+  resources :organizations do
+    resources :lotteries do
+      member { get :draw_tickets }
+      member { get :setup }
+      member { post :draw }
+      member { post :generate_entrants }
+      member { post :generate_tickets }
+      member { delete :delete_tickets }
+      resources :lottery_divisions, except: [:index, :show]
+      resources :lottery_entrants, except: [:index, :show] do
+        member { post :draw }
+      end
+    end
+  end
 
   resources :people do
     collection { get :subregion_options }
@@ -152,7 +165,7 @@ Rails.application.routes.draw do
 
   resources :split_times, only: [:update]
   resources :splits
-  resources :stewardships, only: [:create, :destroy]
+  resources :stewardships, only: [:create, :update, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
   get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap

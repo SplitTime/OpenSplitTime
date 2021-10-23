@@ -67,6 +67,7 @@ class ProtoRecord
 
     when :split
       event = options[:event]
+      normalize_split_kind!
       convert_split_distance!
       align_split_distance!(event.ordered_splits.map(&:distance_from_start))
       self[:course_id] = event.course_id

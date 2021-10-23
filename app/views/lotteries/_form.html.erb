@@ -1,0 +1,35 @@
+<%= render 'shared/errors', obj: @lottery %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_with(model: [@lottery.organization, @lottery], local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
+      <div class="form-group">
+        <div class="control-label col">
+          <%= f.label :name %>
+        </div>
+        <div class="col">
+          <%= f.text_field :name, class: "form-control", placeholder: "My Exciting Lottery", autofocus: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col">
+          <%= f.label :scheduled_start_date %>
+        </div>
+        <div class="col">
+          <%= f.datepicker_field :scheduled_start_date %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit(@lottery.new_record? ? "Create Lottery" : "Update Lottery", class: 'btn btn-primary btn-large') %>
+        </div>
+      </div>
+
+      <div class="col">
+        <span class="brackets"><%= link_to 'Cancel', @lottery.new_record? ? organization_lotteries_path(@lottery.organization) : setup_organization_lottery_path(@lottery.organization, @lottery) %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -93,6 +93,10 @@ class User < ApplicationRecord
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  def authorized_for_lotteries?(resource)
+    admin? || owner_of?(resource) || lottery_steward_of?(resource)
+  end
+
   def authorized_fully?(resource)
     admin? || resource.new_record? || owner_of?(resource)
   end
@@ -108,6 +112,12 @@ class User < ApplicationRecord
 
   def authorized_to_edit_personal?(effort)
     admin? || (effort.person ? (avatar == effort.person) : authorized_to_edit?(effort))
+  end
+
+  def lottery_steward_of?(resource)
+    return false unless resource.respond_to?(:stewards)
+
+    resource.stewards.where(stewardships: {level: :lottery_manager}).include?(self)
   end
 
   def owner_of?(resource)

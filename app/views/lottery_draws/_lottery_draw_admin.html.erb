@@ -1,0 +1,21 @@
+<div id="<%= dom_id lottery_draw %>" class="card mt-3" data-controller="highlight" data-highlight-target="element" data-highlight-created-value="<%= lottery_draw.created_at.to_i %>">
+  <div class="card-header font-weight-bold bg-primary text-white">
+    <div class="row">
+      <div class="col col-8">
+        <h5 class="font-weight-bold mb-0"><%= lottery_draw.entrant_full_name %></h5>
+      </div>
+      <div class="col col-4">
+        <h5 class="font-weight-bold text-right mb-0"><%= "##{lottery_draw.reference_number}" %></h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <h6><%= lottery_draw.entrant_flexible_geolocation %></h6>
+        <h6 class="mb-0"><%= lottery_draw.entrant_bio %></h6>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>
+</div>

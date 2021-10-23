@@ -9,13 +9,14 @@ class Effort < ApplicationRecord
 
   include Auditable, CapitalizeAttributes, DataStatusMethods, Delegable, DelegatedConcealable,
           GuaranteedFindable, LapsRequiredMethods, PersonalInfo, Searchable, StateCountrySyncable,
-          Subscribable, TimeZonable, Matchable, UrlAccessible
+          Subscribable, TimeZonable, TrimTimeAttributes, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   capitalize_attributes :first_name, :last_name, :city, :emergency_contact
   friendly_id :slug_candidates, use: [:slugged, :history]
+  trim_time_attributes :scheduled_start_time
   zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
   has_paper_trail
 

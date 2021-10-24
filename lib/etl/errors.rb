@@ -10,6 +10,10 @@ module ETL
       {title: 'Data not present', detail: {messages: ['No data was provided']}}
     end
 
+    def division_not_found_error(division_name)
+      {title: "Division not found", detail: {messages: ["Division #{division_name} could not be found"]}}
+    end
+
     def file_not_found_error(file_path)
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end

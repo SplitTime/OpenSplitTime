@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 class LotteryEntrantParameters < BaseParameters
+  def self.mapping
+    ::EffortParameters.mapping
+  end
+
   def self.permitted
     [
       :birthdate,
       :city,
       :country_code,
-      :division_name,
+      :division,
       :first_name,
       :gender,
       :id,

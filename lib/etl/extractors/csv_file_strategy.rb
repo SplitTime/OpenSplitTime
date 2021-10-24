@@ -34,19 +34,17 @@ module ETL
 
       def file
         case
-        when uploaded_file
+        when source_data.is_a?(::ActionDispatch::Http::UploadedFile)
           File.open(source_data.tempfile.path)
-        when source_data.is_a?(Pathname)
+        when source_data.is_a?(::Pathname)
           File.open(source_data)
-        when source_data.is_a?(File)
+        when source_data.is_a?(::File)
           source_data
+        when source_data.is_a?(::ActiveStorage::Attached)
+          source_data.download
         else
           errors << invalid_file_error(file)
         end
-      end
-
-      def uploaded_file
-        source_data.is_a?(ActionDispatch::Http::UploadedFile)
       end
 
       def validate_setup

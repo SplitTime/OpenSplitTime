@@ -10,9 +10,11 @@ class ImportJob < ApplicationRecord
 
   enum :status => {
     :waiting => 0,
-    :processing => 1,
-    :finished => 2,
-    :failed => 3
+    :extracting => 1,
+    :transforming => 2,
+    :loading => 3,
+    :finished => 4,
+    :failed => 5
   }
 
   validates :file,

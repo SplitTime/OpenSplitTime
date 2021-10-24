@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       get :my_stuff
       put :update_preferences
     end
-    resources :import_jobs, only: [:index, :destroy]
+    resources :import_jobs, only: [:index, :create, :destroy]
   end
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]

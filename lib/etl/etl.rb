@@ -12,6 +12,7 @@ require_relative "event_group_import_process"
 require_relative "event_import_process"
 require_relative "importer"
 require_relative "importer_from_context"
+require_relative "async_importer"
 
 # Extractors
 Dir.glob("lib/etl/extractors/**/*.rb") { |file| require Rails.root.join(file) }

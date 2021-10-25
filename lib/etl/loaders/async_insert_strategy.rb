@@ -9,14 +9,14 @@ module ETL
 
       attr_reader :errors
 
-      def self.load_records(proto_records, import_job, options)
-        new(proto_records, import_job, options).load_records
+      def self.load_records(proto_records, options)
+        new(proto_records, options).load_records
       end
 
-      def initialize(proto_records, import_job, options)
+      def initialize(proto_records, options)
         @proto_records = proto_records
-        @import_job = import_job
         @options = options
+        @import_job = options[:import_job]
         @errors = []
       end
 
@@ -29,7 +29,7 @@ module ETL
 
       private
 
-      attr_reader :proto_records, :import_job, :options
+      attr_reader :proto_records, :options, :import_job
 
       def custom_load
         proto_records.each.with_index(1) do |proto_record, row_index|

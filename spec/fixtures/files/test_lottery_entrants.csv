@@ -1,0 +1,4 @@
+﻿first_name,last_name,gender,birthdate,city,state_code,country_code,tickets,division
+Bjorn,Borg,male,1990-02-02,Svendborg,,,4,Fast People
+Charlie,Brown,male,13,Peanuts,OH,US,1,Slow People
+Lucy,Pendergrast,female,13,Psych,OH,US,3,Slow People

@@ -11,18 +11,22 @@ module ETL
       end
 
       def transform
-        return if errors.present?
+        return proto_records if errors.present?
 
-        proto_records.each do |proto_record|
+        proto_records.each.with_index(1) do |proto_record, row_index|
           proto_record.underscore_keys!
           parameterized_division_name = proto_record.delete_field(:division).parameterize
           division = divisions_by_name[parameterized_division_name]
 
           if division.present?
-            proto_record.transform_as(:lottery_entrant, division: division)
-            proto_record.slice_permitted!
+            begin
+              proto_record.transform_as(:lottery_entrant, division: division)
+              proto_record.slice_permitted!
+            rescue => error
+              errors << transform_failed_error(error, row_index)
+            end
           else
-            errors << division_not_found_error(parameterized_division_name)
+            errors << division_not_found_error(parameterized_division_name, row_index)
           end
         end
 

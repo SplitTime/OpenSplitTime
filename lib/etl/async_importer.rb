@@ -17,7 +17,7 @@ module ETL
       set_etl_strategies
       extract_data if errors.empty?
       transform_data if errors.empty?
-      load_records
+      load_records if errors.empty?
       set_status_and_error_message
     end
 
@@ -57,7 +57,7 @@ module ETL
       case format
       when :lottery_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
-        # self.transform_strategy = Transformers::LotteryEntrantsStrategy
+        self.transform_strategy = Transformers::LotteryEntrantsStrategy
         # self.load_strategy = Loaders::AsyncUpsertStrategy
       else
         errors << ETL::Errors.format_not_recognized_error(format)

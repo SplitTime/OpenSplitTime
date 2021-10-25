@@ -10,8 +10,8 @@ module ETL
       {title: 'Data not present', detail: {messages: ['No data was provided']}}
     end
 
-    def division_not_found_error(division_name)
-      {title: "Division not found", detail: {messages: ["Division #{division_name} could not be found"]}}
+    def division_not_found_error(division_name, row_index)
+      {title: "Division not found", detail: {messages: ["Division could not be found for row #{row_index}: #{division_name}"]}}
     end
 
     def file_not_found_error(file_path)
@@ -102,6 +102,11 @@ module ETL
       {title: 'Split mismatch error',
        detail: {messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
                                "but the provided data contemplates #{time_keys_size} time points."]}}
+    end
+
+    def transform_failed_error(error_text, row_index)
+      {title: "Transform failed error",
+       detail: {messages: ["Transform failed for row #{row_index}: #{error_text}"]}}
     end
 
     def value_not_permitted_error(option, permitted_values, provided_value)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_25_051148) do
+ActiveRecord::Schema.define(version: 2021_10_25_064223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -207,11 +207,11 @@ ActiveRecord::Schema.define(version: 2021_10_25_051148) do
     t.integer "status"
     t.string "error_message"
     t.integer "row_count"
-    t.integer "elapsed_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "success_count"
     t.integer "failure_count"
+    t.datetime "started_at"
     t.index ["parent_type", "parent_id"], name: "index_import_jobs_on_parent"
     t.index ["user_id"], name: "index_import_jobs_on_user_id"
   end

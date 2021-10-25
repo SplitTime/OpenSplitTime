@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe ETL::Loaders::AsyncInsertStrategy do
-  subject { described_class.new(proto_records, import_job, options) }
+  subject { described_class.new(proto_records, options) }
   let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.scheduled_start_time }
   let(:subject_splits) { event.ordered_splits }
@@ -76,8 +76,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
   ] }
 
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
+  let(:options) { {event: event, import_job: import_job} }
   let!(:import_job) { ::ImportJob.create!(user_id: 1, parent_type: "Event", parent_id: event.id, format: :test_format) }
-  let(:options) { {event: event, current_user_id: 111} }
 
   describe "#load_records" do
     context "when all provided records are valid and none previously exists" do

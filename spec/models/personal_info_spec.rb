@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe PersonalInfo, type: :module do
-  include ::ActiveSupport::Testing::TimeHelpers
-
   describe "birthday methods" do
     subject { build_stubbed(:effort, birthdate: birthdate) }
 

@@ -2,7 +2,7 @@
 
 module ETL
   class Extractor
-    def initialize(source_data, extract_strategy_class, options)
+    def initialize(source_data, extract_strategy_class, options = {})
       @source_data = source_data
       @extract_strategy_class = extract_strategy_class
       @options = options || {}

@@ -38,6 +38,10 @@ class ProtoRecord
     to_h.merge(child_attributes)
   end
 
+  def marked_for_destruction?
+    record_action == :destroy
+  end
+
   def transform_as(model, options = {})
     self.record_type = model
     underscore_keys!
@@ -64,6 +68,15 @@ class ProtoRecord
 
       # If no scheduled_start_time can be determined, set it to the event scheduled start time
       self[:scheduled_start_time] ||= event.scheduled_start_time
+
+    when :lottery_entrant
+      division = options[:division]
+      normalize_gender!
+      normalize_country_code!
+      normalize_state_code!
+      create_country_from_state!
+      normalize_date!(:birthdate)
+      self[:lottery_division_id] = division.id
 
     when :split
       event = options[:event]

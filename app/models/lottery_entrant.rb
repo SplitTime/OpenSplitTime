@@ -60,6 +60,10 @@ class LotteryEntrant < ApplicationRecord
     tickets.joins(:draw).present?
   end
 
+  def to_s
+    full_name
+  end
+
   private
 
   # Needed to keep PersonalInfo#bio from breaking

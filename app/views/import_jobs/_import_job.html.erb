@@ -1,9 +1,9 @@
 <tr id=<%= dom_id import_job %>>
-  <td><%= import_job.parent_type %></td>
-  <td><%= import_job.parent_slug %></td>
-  <td><%= import_job.format %></td>
+  <td><%= "#{time_ago_in_words(import_job.created_at)} ago" %></td>
+  <td><%= import_job.parent_name %></td>
   <td><%= import_job.file.filename %></td>
-  <td><%= import_job.row_count %></td>
-  <td><%= pretty_duration(import_job.elapsed_time) %></td>
+  <td class="text-center"><%= import_job.row_count %></td>
+  <td class="text-center"><%= "#{import_job.success_count || 0}/#{import_job.failure_count || 0}" %></td>
+  <td class="text-center"><%= pretty_duration(import_job.elapsed_time) %></td>
   <td><%= import_job_status_component(import_job) %></td>
 </tr>

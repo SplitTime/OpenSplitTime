@@ -2,7 +2,7 @@
 
 module ETL
   class Transformer
-    def initialize(parsed_structs, transform_strategy_class, options)
+    def initialize(parsed_structs, transform_strategy_class, options = {})
       @parsed_structs = parsed_structs
       @transform_strategy_class = transform_strategy_class
       @options = options || {}

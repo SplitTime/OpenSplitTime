@@ -5,8 +5,10 @@ module ImportJobsHelper
     return unless import_job.status?
 
     status_colors = {
-      waiting: "blue",
-      processing: "orange",
+      waiting: "black",
+      :extracting => "pink",
+      :transforming => "yellow",
+      :loading => "cyan",
       finished: "green",
       failed: "red"
     }.with_indifferent_access

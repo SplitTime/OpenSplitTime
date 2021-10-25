@@ -10,6 +10,10 @@ module ETL
       {title: 'Data not present', detail: {messages: ['No data was provided']}}
     end
 
+    def division_not_found_error(division_name, row_index)
+      {title: "Division not found", detail: {messages: ["Division could not be found for row #{row_index}: #{division_name}"]}}
+    end
+
     def file_not_found_error(file_path)
       {title: 'File not found', detail: {messages: ["File #{file_path} could not be read"]}}
     end
@@ -34,8 +38,8 @@ module ETL
       {title: 'Invalid JSON', detail: {messages: ["#{string} is not valid JSON"]}}
     end
 
-    def invalid_proto_record_error(proto_record)
-      {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
+    def invalid_proto_record_error(proto_record, row_index)
+      {title: 'Invalid proto record', detail: {messages: ["Invalid proto record at row #{row_index}: #{proto_record}"]}}
     end
 
     def jsonapi_error_object(record)
@@ -85,6 +89,11 @@ module ETL
        detail: {messages: ['A required table was not found in the provided source data']}}
     end
 
+    def resource_error_object(record, row_index)
+      {title: "#{record.class} #{record} could not be saved",
+       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages, row_index: row_index}}
+    end
+
     def smarter_csv_error(exception)
       {title: 'CSV error',
       detail: {messages: [exception.message]}}
@@ -98,6 +107,11 @@ module ETL
       {title: 'Split mismatch error',
        detail: {messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
                                "but the provided data contemplates #{time_keys_size} time points."]}}
+    end
+
+    def transform_failed_error(error_text, row_index)
+      {title: "Transform failed error",
+       detail: {messages: ["Transform failed for row #{row_index}: #{error_text}"]}}
     end
 
     def value_not_permitted_error(option, permitted_values, provided_value)

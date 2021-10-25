@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe NotifyProgressJob do
   include BitkeyDefinitions
-  include ActiveSupport::Testing::TimeHelpers
 
   subject { NotifyProgressJob.new }
   let(:perform_notification) { subject.perform(effort_id, split_time_ids) }

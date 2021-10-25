@@ -6,6 +6,7 @@ module ETL
       def initialize(parsed_structs, options)
         @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
         @options = options
+        @import_job = options[:import_job]
         @errors = []
         validate_setup
       end
@@ -23,9 +24,11 @@ module ETL
               proto_record.transform_as(:lottery_entrant, division: division)
               proto_record.slice_permitted!
             rescue => error
+              import_job.increment!(:failure_count)
               errors << transform_failed_error(error, row_index)
             end
           else
+            import_job.increment!(:failure_count)
             errors << division_not_found_error(parameterized_division_name, row_index)
           end
         end
@@ -35,7 +38,7 @@ module ETL
 
       private
 
-      attr_reader :proto_records
+      attr_reader :proto_records, :import_job
       alias_method :lottery, :parent
 
       def divisions_by_name

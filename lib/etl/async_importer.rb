@@ -13,6 +13,7 @@ module ETL
     def initialize(import_job)
       @import_job = import_job
       @errors = []
+      validate_setup
     end
 
     def import!
@@ -52,7 +53,7 @@ module ETL
 
     def transform_data
       import_job.transforming!
-      transformer = ::ETL::Transformer.new(extracted_structs, transform_strategy, parent: parent)
+      transformer = ::ETL::Transformer.new(extracted_structs, transform_strategy, parent: parent, import_job: import_job)
       self.transformed_protos = transformer.transform
       self.errors += transformer.errors
     end
@@ -75,11 +76,15 @@ module ETL
     end
 
     def parent
-      parent_class.find_by(id: parent_id)
+      @parent ||= parent_class.find_by(id: parent_id)
     end
 
     def parent_class
       @parent_class ||= parent_type.constantize
+    end
+
+    def validate_setup
+      errors << missing_parent_error unless parent.present?
     end
   end
 end

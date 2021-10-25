@@ -26,8 +26,9 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
   let(:division_name_1) { "Fast People" }
   let(:division_name_2) { "slow people" }
 
-  let(:options) { {parent: parent} }
+  let(:options) { {parent: parent, import_job: import_job} }
   let(:parent) { lottery }
+  let(:import_job) { ::ImportJob.create!(user_id: 1, parent_type: "Lottery", parent_id: lottery.id, format: :lottery_entrants) }
 
   describe "#transform" do
     it "returns the same number of ProtoRecords as it is given OpenStructs" do
@@ -76,6 +77,11 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
         expect(subject.errors).to be_present
         expect(subject.errors.first.dig(:detail, :messages).first).to match /Transform failed for row 1:/
         expect(subject.errors.second.dig(:detail, :messages).first).to match /Transform failed for row 2:/
+      end
+
+      it "sets failure count on the import job" do
+        subject.transform
+        expect(import_job.failure_count).to eq(2)
       end
     end
 

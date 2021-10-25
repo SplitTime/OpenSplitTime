@@ -10,11 +10,11 @@ class ImportJobsController < ApplicationController
 
   # POST /users/:user_id/import_jobs
   def create
-    @import_job = ::ImportJob.new(:user_id => current_user.id, :status => :waiting)
-    file = params.dig(:import_job, :file)
-    @import_job.file.attach(file)
+    @import_job = ::ImportJob.new(permitted_params)
+    @import_job.status = :waiting
+    @import_job.user = current_user
 
-    if file.present? && @import_job.save
+    if @import_job.save
       ::ImportAsyncJob.perform_later(@import_job)
       flash[:success] = "Import in progress."
     else

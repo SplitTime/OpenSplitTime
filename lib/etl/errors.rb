@@ -38,8 +38,8 @@ module ETL
       {title: 'Invalid JSON', detail: {messages: ["#{string} is not valid JSON"]}}
     end
 
-    def invalid_proto_record_error(proto_record)
-      {title: 'Invalid proto record', detail: {messages: ["#{proto_record} is invalid"]}}
+    def invalid_proto_record_error(proto_record, row_index)
+      {title: 'Invalid proto record', detail: {messages: ["Invalid proto record at row #{row_index}: #{proto_record}"]}}
     end
 
     def jsonapi_error_object(record)
@@ -87,6 +87,11 @@ module ETL
     def missing_table_error
       {title: 'Table is missing',
        detail: {messages: ['A required table was not found in the provided source data']}}
+    end
+
+    def resource_error_object(record, row_index)
+      {title: "#{record.class} #{record} could not be saved",
+       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages, row_index: row_index}}
     end
 
     def smarter_csv_error(exception)

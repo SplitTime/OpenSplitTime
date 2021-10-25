@@ -43,8 +43,8 @@ module ETL
 
       def validate_setup
         errors << missing_current_user_error unless current_user_id
-        proto_records.each do |proto_record|
-          errors << invalid_proto_record_error(proto_record) unless proto_record.record_class
+        proto_records.each.with_index do |proto_record, row_index|
+          errors << invalid_proto_record_error(proto_record, row_index) unless proto_record.record_class.present?
         end
       end
     end

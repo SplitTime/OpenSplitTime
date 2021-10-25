@@ -9,11 +9,10 @@ module ETL
     def initialize(import_job)
       @import_job = import_job
       @errors = []
-      @start_time = ::Time.current
     end
 
     def import
-      import_job.processing!
+      import_job.start!
       set_etl_strategies
       extract_data if errors.empty?
       transform_data if errors.empty?

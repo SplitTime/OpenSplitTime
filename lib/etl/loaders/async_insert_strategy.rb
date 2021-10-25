@@ -18,7 +18,6 @@ module ETL
         @import_job = import_job
         @options = options
         @errors = []
-        @start_time = ::Time.current
       end
 
       def load_records
@@ -30,7 +29,7 @@ module ETL
 
       private
 
-      attr_reader :proto_records, :import_job, :options, :start_time
+      attr_reader :proto_records, :import_job, :options
 
       def custom_load
         proto_records.each.with_index(1) do |proto_record, row_index|
@@ -48,7 +47,6 @@ module ETL
             errors << resource_error_object(record, row_index)
           end
 
-          update_elapsed_time
           import_job.touch if row_index % CHUNK_SIZE == 0
         end
       end
@@ -71,11 +69,6 @@ module ETL
           child_record = record.send(child_relationship).new
           child_record.assign_attributes(child_proto.to_h)
         end
-      end
-
-      def update_elapsed_time
-        elapsed_time = ::Time.current - start_time
-        import_job.update_column(:elapsed_time, elapsed_time)
       end
     end
   end

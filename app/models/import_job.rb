@@ -24,7 +24,8 @@ class ImportJob < ApplicationRecord
   def elapsed_time
     return unless started_at.present?
 
-    (::Time.current - started_at).to_i
+    end_time = finished_at || ::Time.current
+    (end_time - started_at).to_i
   end
 
   def parent_slug
@@ -33,5 +34,9 @@ class ImportJob < ApplicationRecord
 
   def start!
     update(started_at: ::Time.current)
+  end
+
+  def finish!
+    update(finished_at: ::Time.current)
   end
 end

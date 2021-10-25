@@ -6,9 +6,9 @@ module ImportJobsHelper
 
     status_colors = {
       waiting: "black",
-      :extracting => "pink",
-      :transforming => "yellow",
-      :loading => "cyan",
+      extracting: "pink",
+      transforming: "yellow",
+      loading: "cyan",
       finished: "green",
       failed: "red"
     }.with_indifferent_access

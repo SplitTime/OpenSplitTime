@@ -6,6 +6,8 @@ class ImportJob < ApplicationRecord
 
   has_one_attached :file
 
+  scope :most_recent_first, -> { reorder(created_at: :desc) }
+
   attribute :row_count, :default => 0
   attribute :success_count, :default => 0
   attribute :failure_count, :default => 0
@@ -28,8 +30,8 @@ class ImportJob < ApplicationRecord
     (end_time - started_at).to_i
   end
 
-  def parent_slug
-    parent_type.constantize.find(parent_id).slug
+  def parent_name
+    parent.name
   end
 
   def start!
@@ -38,5 +40,11 @@ class ImportJob < ApplicationRecord
 
   def finish!
     update(finished_at: ::Time.current)
+  end
+
+  private
+
+  def parent
+    @parent ||= parent_type.constantize.find(parent_id)
   end
 end

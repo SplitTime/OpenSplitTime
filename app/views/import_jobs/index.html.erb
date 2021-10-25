@@ -25,17 +25,17 @@
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>Parent Type</th>
-      <th>Parent ID</th>
-      <th>Format</th>
+      <th>Created</th>
+      <th>Parent</th>
       <th>File</th>
-      <th>Row Count</th>
-      <th>Elapsed Time</th>
+      <th class="text-center">Row Count</th>
+      <th class="text-center">Imported/Failed</th>
+      <th class="text-center">Elapsed Time</th>
       <th>Status</th>
     </tr>
     </thead>
     <tbody id="import_jobs">
-    <%= render partial: "import_job", collection: @user.import_jobs.with_attached_file %>
+    <%= render partial: "import_job", collection: @user.import_jobs.most_recent_first.with_attached_file %>
     </tbody>
   </table>
 </article>

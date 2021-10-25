@@ -7,6 +7,8 @@ class ImportJob < ApplicationRecord
   has_one_attached :file
 
   attribute :row_count, :default => 0
+  attribute :success_count, :default => 0
+  attribute :failure_count, :default => 0
 
   enum :status => {
     :waiting => 0,
@@ -17,8 +19,7 @@ class ImportJob < ApplicationRecord
     :failed => 5
   }
 
-  validates :file,
-            size: {less_than: 10.megabytes}
+  validates :file, size: {less_than: 10.megabytes}
 
   def parent_slug
     parent_type.constantize.find(parent_id).slug

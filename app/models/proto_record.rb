@@ -38,6 +38,10 @@ class ProtoRecord
     to_h.merge(child_attributes)
   end
 
+  def marked_for_destruction?
+    record_action == :destroy
+  end
+
   def transform_as(model, options = {})
     self.record_type = model
     underscore_keys!

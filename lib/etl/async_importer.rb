@@ -58,7 +58,7 @@ module ETL
       when :lottery_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::LotteryEntrantsStrategy
-        # self.load_strategy = Loaders::AsyncUpsertStrategy
+        self.load_strategy = Loaders::AsyncInsertStrategy
       else
         errors << ETL::Errors.format_not_recognized_error(format)
       end

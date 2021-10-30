@@ -23,23 +23,18 @@ class ImportJob < ApplicationRecord
 
   validates :file, size: {less_than: 10.megabytes}
 
-  def elapsed_time
-    return unless started_at.present?
-
-    end_time = finished_at || ::Time.current
-    (end_time - started_at).to_i
-  end
-
   def parent_name
     parent.name
   end
 
-  def start!
-    update(started_at: ::Time.current)
+  def set_elapsed_time!
+    return unless started_at.present?
+
+    update(elapsed_time: Time.current - started_at)
   end
 
-  def finish!
-    update(finished_at: ::Time.current)
+  def start!
+    update(started_at: ::Time.current)
   end
 
   private

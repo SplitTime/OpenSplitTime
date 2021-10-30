@@ -2,7 +2,7 @@
 
 class ImportJob < ApplicationRecord
   belongs_to :user
-  broadcasts_to :user
+  broadcasts_to :user, inserts_by: :prepend
 
   has_one_attached :file
 

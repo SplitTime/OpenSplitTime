@@ -9,10 +9,15 @@ module ETL
 
       attr_reader :errors
 
+      # @param [Array<ProtoRecord>] proto_records
+      # @param [Hash] options
+      # @return [nil]
       def self.load_records(proto_records, options)
         new(proto_records, options).load_records
       end
 
+      # @param [Array<ProtoRecord>] proto_records
+      # @param [Hash] options
       def initialize(proto_records, options)
         @proto_records = proto_records
         @options = options
@@ -20,6 +25,7 @@ module ETL
         @errors = []
       end
 
+      # @return [nil]
       def load_records
         ActiveRecord::Base.transaction do
           custom_load
@@ -31,6 +37,7 @@ module ETL
 
       attr_reader :proto_records, :options, :import_job
 
+      # @return [nil]
       def custom_load
         proto_records.each.with_index(1) do |proto_record, row_index|
           if proto_record.record_class.blank?
@@ -49,8 +56,12 @@ module ETL
 
           import_job.touch if row_index % CHUNK_SIZE == 0
         end
+
+        nil
       end
 
+      # @param [ProtoRecord] proto_record
+      # @return [::ApplicationRecord]
       def build_record(proto_record)
         return nil if proto_record.marked_for_destruction?
 
@@ -61,6 +72,9 @@ module ETL
         record
       end
 
+      # @param [ProtoRecord] proto_record
+      # @param [::ApplicationRecord] record
+      # @return [Array<ProtoRecord>]
       def assign_child_records(proto_record, record)
         proto_record.children.each do |child_proto|
           next if child_proto.marked_for_destruction?

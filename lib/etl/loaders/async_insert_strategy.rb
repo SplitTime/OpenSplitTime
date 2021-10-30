@@ -63,8 +63,6 @@ module ETL
       # @param [ProtoRecord] proto_record
       # @return [::ApplicationRecord]
       def build_record(proto_record)
-        return nil if proto_record.marked_for_destruction?
-
         model_class = proto_record.record_class
         attributes = proto_record.to_h
         record = model_class.new(attributes)
@@ -77,8 +75,6 @@ module ETL
       # @return [Array<ProtoRecord>]
       def assign_child_records(proto_record, record)
         proto_record.children.each do |child_proto|
-          next if child_proto.marked_for_destruction?
-
           child_relationship = child_proto.record_type.to_s.pluralize
           child_record = record.send(child_relationship).new
           child_record.assign_attributes(child_proto.to_h)

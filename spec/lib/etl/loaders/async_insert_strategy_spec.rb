@@ -9,71 +9,77 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
   let(:subject_splits) { event.ordered_splits }
   let(:split_ids) { subject_splits.map(&:id) }
 
-  let(:valid_proto_records) { [
-      ProtoRecord.new(record_type: :effort, age: "39", gender: "male", bib_number: "5",
-                      first_name: "Jatest", last_name: "Schtest", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 2581),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 6308),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: start_time + 9463),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: start_time + 13571),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: start_time + 16655),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 17736)]),
-      ProtoRecord.new(record_type: :effort, age: "31", gender: "female", bib_number: "661",
-                      first_name: "Castest", last_name: "Pertest", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 4916),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 14398),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: nil)]),
-      ProtoRecord.new(record_type: :effort, age: "35", gender: "female", bib_number: "633",
-                      first_name: "Mictest", last_name: "Hintest", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: nil)])
-  ] }
+  let(:valid_proto_records) do
+    [
+      ProtoRecord.new(
+        record_type: :effort, age: "39", gender: "male", bib_number: "5",
+        first_name: "Jatest", last_name: "Schtest", event_id: event.id,
+        children: [
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 2581),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 6308),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: start_time + 9463),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: start_time + 13571),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: start_time + 16655),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 17736)
+        ]),
+      ProtoRecord.new(
+        record_type: :effort, age: "31", gender: "female", bib_number: "661",
+        first_name: "Castest", last_name: "Pertest", event_id: event.id,
+        children: [
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 4916),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 14398),
+        ]),
+      ProtoRecord.new(
+        record_type: :effort, age: "35", gender: "female", bib_number: "633",
+        first_name: "Mictest", last_name: "Hintest", event_id: event.id,
+        children: []
+      )
+    ]
+  end
 
-  let(:invalid_proto_record) { [
-      ProtoRecord.new(record_type: :effort, age: "0", gender: "", bib_number: "62",
-                      first_name: "N.n.", last_name: "62", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: nil)])
-  ] }
+  let(:invalid_proto_record) do
+    [
+      ProtoRecord.new(
+        record_type: :effort, age: "0", gender: "", bib_number: "62",
+        first_name: "N.n.", last_name: "62", event_id: event.id,
+        children: []
+      )
+    ]
+  end
 
-  let(:proto_with_invalid_child) { [
-      ProtoRecord.new(record_type: :effort, age: "40", gender: "male", bib_number: "500",
-                      first_name: "Johtest", last_name: "Apptest", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 1000),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 2000),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, record_action: :destroy, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 5000)])
-  ] }
+  let(:proto_with_invalid_child) do
+    [
+      ProtoRecord.new(
+        record_type: :effort, age: "40", gender: "male", bib_number: "500",
+        first_name: "Johtest", last_name: "Apptest", event_id: event.id,
+        children: [
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 1000),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 2000),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 5000)
+        ])
+    ]
+  end
 
-  let(:proto_with_military_times) { [
-      ProtoRecord.new(record_type: :effort, age: "40", gender: "male", bib_number: "500",
-                      first_name: "Johtest", last_name: "Apptest", event_id: event.id,
-                      children: [ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, military_time: "06:00:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, military_time: "07:20:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, military_time: "08:40:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, military_time: "10:00:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, military_time: "11:20:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, military_time: "12:40:00"),
-                                 ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, military_time: "14:00:00")])
-  ] }
+  let(:proto_with_military_times) do
+    [
+      ProtoRecord.new(
+        record_type: :effort, age: "40", gender: "male", bib_number: "500",
+        first_name: "Johtest", last_name: "Apptest", event_id: event.id,
+        children: [
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, military_time: "06:00:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, military_time: "07:20:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, military_time: "08:40:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, military_time: "10:00:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, military_time: "11:20:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, military_time: "12:40:00"),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, military_time: "14:00:00")
+        ])
+    ]
+  end
 
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
   let(:options) { {event: event, import_job: import_job} }

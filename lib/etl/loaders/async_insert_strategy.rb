@@ -5,7 +5,7 @@ module ETL
     class AsyncInsertStrategy
       include ETL::Errors
 
-      CHUNK_SIZE = 25
+      CHUNK_SIZE = 100
 
       attr_reader :errors
 
@@ -54,6 +54,7 @@ module ETL
             errors << resource_error_object(record, row_index)
           end
 
+          import_job.set_elapsed_time!
           import_job.touch if row_index % CHUNK_SIZE == 0
         end
 

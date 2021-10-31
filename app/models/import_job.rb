@@ -23,23 +23,30 @@ class ImportJob < ApplicationRecord
 
   validates :file, size: {less_than: 10.megabytes}
 
+  def parent
+    @parent ||= parent_type.constantize.find(parent_id)
+  end
+
   def parent_name
     parent.name
+  end
+
+  def resources_for_path
+    case parent_type
+    when "Lottery"
+      [parent.organization, parent]
+    else
+      [parent]
+    end
   end
 
   def set_elapsed_time!
     return unless started_at.present?
 
-    update(elapsed_time: Time.current - started_at)
+    update_column(:elapsed_time, Time.current - started_at)
   end
 
   def start!
     update(started_at: ::Time.current)
-  end
-
-  private
-
-  def parent
-    @parent ||= parent_type.constantize.find(parent_id)
   end
 end

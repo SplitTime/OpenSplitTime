@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
-class ImportAsyncJob
-  def perform(import_job)
+require "etl/etl"
+
+class ImportAsyncJob < ApplicationJob
+  def perform(import_job_id)
+    import_job = ImportJob.find(import_job_id)
     ::ETL::AsyncImporter.import!(import_job)
   end
 end

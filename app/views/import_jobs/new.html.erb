@@ -1,0 +1,24 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: New import job for #{@import_job.parent_name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@import_job.parent_name}" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to @import_job.user.full_name, user_path(@import_job.user) %></li>
+            <li class="breadcrumb-item"><%= link_to "Import Jobs", import_jobs_path %></li>
+            <li class="breadcrumb-item">New</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render "form" %>
+</article>

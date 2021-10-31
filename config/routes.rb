@@ -56,7 +56,6 @@ Rails.application.routes.draw do
       get :my_stuff
       put :update_preferences
     end
-    resources :import_jobs, only: [:index, :create, :destroy]
   end
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]
@@ -132,6 +131,8 @@ Rails.application.routes.draw do
   end
 
   get '/events', to: redirect('event_groups')
+
+  resources :import_jobs, only: [:index, :new, :create, :destroy]
 
   resources :organizations do
     resources :lotteries do

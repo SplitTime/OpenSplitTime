@@ -9,9 +9,8 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @user.full_name %></strong></h1>
+          <h1><strong>Import Jobs</strong></h1>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><%= current_user&.admin? ? (link_to 'Users', users_path) : 'Users' %></li>
             <li class="breadcrumb-item"><%= link_to @user.full_name, user_path(@user) %></li>
             <li class="breadcrumb-item active">Import Jobs</li>
           </ul>

@@ -83,7 +83,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
   let(:options) { {event: event, import_job: import_job} }
-  let!(:import_job) { ::ImportJob.create!(user_id: 1, parent_type: "Event", parent_id: event.id, format: :test_format) }
+  let!(:import_job) { create(:import_job, parent_type: "Event", parent_id: event.id, format: :test_format) }
 
   describe "#load_records" do
     context "when all provided records are valid and none previously exists" do

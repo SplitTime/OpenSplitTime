@@ -21,7 +21,8 @@ class ImportJob < ApplicationRecord
     :failed => 5
   }
 
-  validates :file, size: {less_than: 10.megabytes}
+  validates_presence_of :parent_type, :parent_id, :format
+  validates :file, presence: true, size: {less_than: 10.megabytes}
 
   def parent
     @parent ||= parent_type.constantize.find(parent_id)
@@ -41,7 +42,7 @@ class ImportJob < ApplicationRecord
   end
 
   def set_elapsed_time!
-    return unless started_at.present?
+    return unless persisted? && started_at.present?
 
     update_column(:elapsed_time, Time.current - started_at)
   end

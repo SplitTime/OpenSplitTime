@@ -3,25 +3,45 @@
 require "rails_helper"
 
 RSpec.describe ImportJob, type: :model do
-  subject { described_class.new(started_at: started_at) }
+  subject { build(:import_job, started_at: started_at) }
   let(:started_at) { nil }
 
   before { travel_to test_start_time }
 
   describe "#set_elapsed_time!" do
     let(:test_start_time) { Time.current }
-    context "when started at time has not been set" do
-      it "does not set elapsed time" do
-        subject.set_elapsed_time!
-        expect(subject.elapsed_time).to be_nil
+    context "when the record has not been persisted" do
+      context "when started at time has not been set" do
+        it "does not set elapsed time" do
+          subject.set_elapsed_time!
+          expect(subject.elapsed_time).to be_nil
+        end
+      end
+
+      context "when started at time has been set" do
+        before { subject.assign_attributes(started_at: 30.seconds.ago) }
+        it "does not set elapsed time" do
+          subject.set_elapsed_time!
+          expect(subject.elapsed_time).to be_nil
+        end
       end
     end
 
-    context "when started at time has been set" do
-      before { subject.update(started_at: 30.seconds.ago) }
-      it "sets elapsed time to the amount of time that has passed" do
-        subject.set_elapsed_time!
-        expect(subject.elapsed_time).to eq(30)
+    context "when the record has been persisted" do
+      before { subject.save! }
+      context "when started at time has not been set" do
+        it "does not set elapsed time" do
+          subject.set_elapsed_time!
+          expect(subject.elapsed_time).to be_nil
+        end
+      end
+
+      context "when started at time has been set" do
+        before { subject.update(started_at: 30.seconds.ago) }
+        it "sets elapsed time to the amount of time that has passed" do
+          subject.set_elapsed_time!
+          expect(subject.elapsed_time).to eq(30)
+        end
       end
     end
   end

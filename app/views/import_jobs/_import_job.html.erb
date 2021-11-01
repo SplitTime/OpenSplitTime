@@ -1,6 +1,6 @@
 <tr id=<%= dom_id import_job %>>
   <td><%= "#{time_ago_in_words(import_job.created_at)} ago" %></td>
-  <td><%= import_job.parent_name %></td>
+  <td><%= link_to import_job.parent_name, polymorphic_path(import_job.resources_for_path) %></td>
   <td><%= import_job.file.filename %></td>
   <td class="text-center"><%= import_job.row_count %></td>
   <td class="text-center"><%= "#{import_job.success_count || 0}/#{import_job.failure_count || 0}" %></td>

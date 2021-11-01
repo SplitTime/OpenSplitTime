@@ -45,6 +45,7 @@ module ETL
 
     def extract_data
       import_job.extracting!
+      import_job.set_elapsed_time!
       extractor = ::ETL::Extractor.new(file, extract_strategy)
       self.extracted_structs = extractor.extract
       self.errors += extractor.errors
@@ -53,6 +54,7 @@ module ETL
 
     def transform_data
       import_job.transforming!
+      import_job.set_elapsed_time!
       transformer = ::ETL::Transformer.new(extracted_structs, transform_strategy, parent: parent, import_job: import_job)
       self.transformed_protos = transformer.transform
       self.errors += transformer.errors
@@ -60,14 +62,13 @@ module ETL
 
     def load_records
       import_job.loading!
+      import_job.set_elapsed_time!
       loader = ::ETL::Loader.new(transformed_protos, load_strategy, import_job: import_job)
       loader.load_records
       self.errors += loader.errors
     end
 
     def set_finish_attributes
-      import_job.finish!
-
       if errors.empty?
         import_job.update(:status => :finished)
       else

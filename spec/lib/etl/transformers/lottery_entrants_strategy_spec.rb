@@ -28,7 +28,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
 
   let(:options) { {parent: parent, import_job: import_job} }
   let(:parent) { lottery }
-  let(:import_job) { ::ImportJob.create!(user_id: 1, parent_type: "Lottery", parent_id: lottery.id, format: :lottery_entrants) }
+  let(:import_job) { create(:import_job, parent_type: "Lottery", parent_id: lottery.id, format: :lottery_entrants) }
 
   describe "#transform" do
     it "returns the same number of ProtoRecords as it is given OpenStructs" do

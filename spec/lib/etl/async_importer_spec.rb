@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe ETL::AsyncImporter do
   subject { ETL::AsyncImporter.new(import_job) }
-  let(:import_job) { ::ImportJob.create!(user_id: 1, parent_type: "Lottery", parent_id: lottery_id, format: format) }
+  let(:import_job) { create(:import_job, parent_type: "Lottery", parent_id: lottery_id, format: format) }
   let(:lottery) { lotteries(:lottery_without_tickets) }
   let(:lottery_id) { lottery.id }
   let(:format) { :lottery_entrants }
@@ -41,7 +41,7 @@ RSpec.describe ETL::AsyncImporter do
       expect(import_job.failure_count).to eq(0)
       expect(import_job.status).to eq("finished")
       expect(import_job.started_at).to be_present
-      expect(import_job.finished_at).to be_present
+      expect(import_job.elapsed_time).to be_present
       expect(import_job.error_message).to be_blank
     end
 
@@ -58,7 +58,7 @@ RSpec.describe ETL::AsyncImporter do
         expect(import_job.failure_count).to eq(1)
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
-        expect(import_job.finished_at).to be_present
+        expect(import_job.elapsed_time).to be_present
         expect(import_job.error_message).to include "Division could not be found for row 1"
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe ETL::AsyncImporter do
         expect(import_job.failure_count).to eq(2)
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
-        expect(import_job.finished_at).to be_present
+        expect(import_job.elapsed_time).to be_present
         expect(import_job.error_message).to include "Number of tickets can't be blank"
         expect(import_job.error_message).to include "Gender can't be blank"
       end

@@ -2,7 +2,7 @@
 
 class ImportJob < ApplicationRecord
   belongs_to :user
-  broadcasts_to :user
+  broadcasts_to :user, inserts_by: :prepend
 
   has_one_attached :file
 
@@ -21,30 +21,33 @@ class ImportJob < ApplicationRecord
     :failed => 5
   }
 
-  validates :file, size: {less_than: 10.megabytes}
+  validates_presence_of :parent_type, :parent_id, :format
+  validates :file, presence: true, size: {less_than: 10.megabytes}
 
-  def elapsed_time
-    return unless started_at.present?
-
-    end_time = finished_at || ::Time.current
-    (end_time - started_at).to_i
+  def parent
+    @parent ||= parent_type.constantize.find(parent_id)
   end
 
   def parent_name
     parent.name
   end
 
+  def resources_for_path
+    case parent_type
+    when "Lottery"
+      [parent.organization, parent]
+    else
+      [parent]
+    end
+  end
+
+  def set_elapsed_time!
+    return unless persisted? && started_at.present?
+
+    update_column(:elapsed_time, Time.current - started_at)
+  end
+
   def start!
     update(started_at: ::Time.current)
-  end
-
-  def finish!
-    update(finished_at: ::Time.current)
-  end
-
-  private
-
-  def parent
-    @parent ||= parent_type.constantize.find(parent_id)
   end
 end

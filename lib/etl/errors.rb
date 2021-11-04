@@ -11,7 +11,7 @@ module ETL
     end
 
     def division_not_found_error(division_name, row_index)
-      {title: "Division not found", detail: {messages: ["Division could not be found for row #{row_index}: #{division_name}"]}}
+      {title: "Division not found", detail: {row_index: row_index, messages: ["Division could not be found: #{division_name}"]}}
     end
 
     def file_not_found_error(file_path)
@@ -39,7 +39,7 @@ module ETL
     end
 
     def invalid_proto_record_error(proto_record, row_index)
-      {title: 'Invalid proto record', detail: {messages: ["Invalid proto record at row #{row_index}: #{proto_record}"]}}
+      {title: 'Invalid proto record', detail: {row_index: row_index, messages: ["Invalid proto record: #{proto_record}"]}}
     end
 
     def jsonapi_error_object(record)
@@ -91,7 +91,7 @@ module ETL
 
     def resource_error_object(record, row_index)
       {title: "#{record.class} #{record} could not be saved",
-       detail: {attributes: record.attributes.compact, messages: record.errors.full_messages, row_index: row_index}}
+       detail: {row_index: row_index, attributes: record.attributes.compact, messages: record.errors.full_messages}}
     end
 
     def smarter_csv_error(exception)
@@ -111,7 +111,7 @@ module ETL
 
     def transform_failed_error(error_text, row_index)
       {title: "Transform failed error",
-       detail: {messages: ["Transform failed for row #{row_index}: #{error_text}"]}}
+       detail: {row_index: row_index, messages: ["Transform failed: #{error_text}"]}}
     end
 
     def value_not_permitted_error(option, permitted_values, provided_value)

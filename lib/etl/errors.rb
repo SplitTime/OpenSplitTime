@@ -11,7 +11,8 @@ module ETL
     end
 
     def division_not_found_error(division_name, row_index)
-      {title: "Division not found", detail: {row_index: row_index, messages: ["Division could not be found: #{division_name}"]}}
+      message = division_name.present? ? "Division could not be found: #{division_name}" : "Division was not provided"
+      {title: "Division not found", detail: {row_index: row_index, messages: [message]}}
     end
 
     def file_not_found_error(file_path)

@@ -16,7 +16,7 @@ module ETL
 
         proto_records.each.with_index(1) do |proto_record, row_index|
           proto_record.underscore_keys!
-          parameterized_division_name = proto_record.delete_field(:division).parameterize
+          parameterized_division_name = proto_record.delete_field(:division)&.parameterize
           division = divisions_by_name[parameterized_division_name]
 
           if division.present?

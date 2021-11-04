@@ -36,7 +36,7 @@ class ImportJob < ApplicationRecord
   end
 
   def parsed_errors
-    JSON.parse(error_message || "\"None\"")
+    JSON.parse(error_message || "[\"None\"]")
   end
 
   def resources_for_path

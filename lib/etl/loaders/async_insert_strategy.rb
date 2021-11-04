@@ -31,6 +31,8 @@ module ETL
           custom_load
           raise ActiveRecord::Rollback if errors.present?
         end
+
+        persist_results if errors.present?
       end
 
       private
@@ -56,6 +58,9 @@ module ETL
 
           import_job.set_elapsed_time!
           import_job.touch if row_index % CHUNK_SIZE == 0
+
+        rescue ActiveRecord::ActiveRecordError => error
+          errors << record_not_saved_error(error, row_index)
         end
 
         nil
@@ -80,6 +85,15 @@ module ETL
           child_record = record.send(child_relationship).new
           child_record.assign_attributes(child_proto.to_h)
         end
+      end
+
+      def persist_results
+        import_job.reload
+        import_job.set_elapsed_time!
+
+        failure_count = errors.size
+        success_count = import_job.row_count - failure_count
+        import_job.update(failure_count: failure_count, success_count: success_count)
       end
     end
   end

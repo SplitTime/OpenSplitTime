@@ -25,7 +25,8 @@ class LotteryEntrant < ApplicationRecord
     from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
   end
 
-  validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
+  validates_presence_of :first_name, :last_name, :gender, :birthdate, :number_of_tickets
+  validates_with ::LotteryEntrantUniqueValidator
 
   def self.search(param)
     return all unless param

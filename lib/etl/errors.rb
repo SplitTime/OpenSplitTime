@@ -90,6 +90,11 @@ module ETL
        detail: {messages: ['A required table was not found in the provided source data']}}
     end
 
+    def record_not_saved_error(error, row_index)
+      {title: "Record could not be saved",
+       detail: {row_index: row_index, messages: ["The record could not be saved: #{error}"]}}
+    end
+
     def resource_error_object(record, row_index)
       {title: "#{record.class} #{record} could not be saved",
        detail: {row_index: row_index, attributes: record.attributes.compact, messages: record.errors.full_messages}}

@@ -1,4 +1,5 @@
 <tr id=<%= dom_id import_job %>>
+  <td><%= link_to import_job.id, import_job_path(import_job) %></td>
   <td><%= "#{time_ago_in_words(import_job.created_at)} ago" %></td>
   <td><%= link_to import_job.parent_name, polymorphic_path(import_job.resources_for_path) %></td>
   <td><%= import_job.file.filename %></td>

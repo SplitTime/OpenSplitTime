@@ -1,11 +1,16 @@
 class ImportJobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
-  before_action :set_import_job, :only => [:destroy]
+  before_action :set_import_job, :only => [:show, :destroy]
   after_action :verify_authorized
 
   # GET /import_jobs
   def index
+    authorize @user
+  end
+
+  # GET /import_jobs/:id
+  def show
     authorize @user
   end
 

@@ -22,7 +22,10 @@ class ImportJob < ApplicationRecord
   }
 
   validates_presence_of :parent_type, :parent_id, :format
-  validates :file, presence: true, size: {less_than: 10.megabytes}
+  validates :file,
+            attached: true,
+            size: {less_than: 1.megabyte},
+            content_type: {in: %w(text/csv text/plain), message: "must be a CSV file"}
 
   def parent
     @parent ||= parent_type.constantize.find(parent_id)
@@ -30,6 +33,10 @@ class ImportJob < ApplicationRecord
 
   def parent_name
     parent.name
+  end
+
+  def parsed_errors
+    JSON.parse(error_message || "\"None\"")
   end
 
   def resources_for_path

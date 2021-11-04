@@ -27,12 +27,7 @@ module ETL
 
       # @return [nil]
       def load_records
-        ActiveRecord::Base.transaction do
-          custom_load
-          raise ActiveRecord::Rollback if errors.present?
-        end
-
-        persist_results if errors.present?
+        custom_load
       end
 
       private
@@ -56,11 +51,12 @@ module ETL
             errors << resource_error_object(record, row_index)
           end
 
+        rescue ActiveRecord::ActiveRecordError => error
+          import_job.increment!(:failure_count)
+          errors << record_not_saved_error(error, row_index)
+        ensure
           import_job.set_elapsed_time!
           import_job.touch if row_index % CHUNK_SIZE == 0
-
-        rescue ActiveRecord::ActiveRecordError => error
-          errors << record_not_saved_error(error, row_index)
         end
 
         nil
@@ -85,15 +81,6 @@ module ETL
           child_record = record.send(child_relationship).new
           child_record.assign_attributes(child_proto.to_h)
         end
-      end
-
-      def persist_results
-        import_job.reload
-        import_job.set_elapsed_time!
-
-        failure_count = errors.size
-        success_count = import_job.row_count - failure_count
-        import_job.update(failure_count: failure_count, success_count: success_count)
       end
     end
   end

@@ -28,7 +28,7 @@ module ETL
       end
 
       def validate_setup
-        errors << missing_parent_error unless parent.present?
+        errors << missing_parent_error(model.to_s.classify) unless parent.present?
       end
     end
   end

@@ -64,9 +64,10 @@ module ETL
        detail: {messages: ['This import requires that an event be provided']}}
     end
 
-    def missing_parent_error
-      {title: 'Parent is missing',
-       detail: {messages: ['This import requires that a parent be provided']}}
+    def missing_parent_error(type = nil)
+      type ||= "record"
+      {title: "Parent is missing",
+       detail: {messages: ["This import requires that a parent #{type} be provided"]}}
     end
 
     def missing_fields_error(raw_data)

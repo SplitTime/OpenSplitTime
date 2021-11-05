@@ -46,7 +46,7 @@ module ETL
       end
 
       def validate_setup
-        errors << missing_parent_error unless lottery.present?
+        errors << missing_parent_error("Lottery") unless lottery.present?
       end
     end
   end

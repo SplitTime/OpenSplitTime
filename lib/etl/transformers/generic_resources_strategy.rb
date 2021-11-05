@@ -24,7 +24,7 @@ module ETL
       attr_reader :proto_records
 
       def model
-        options[:model].to_sym
+        options[:model]&.to_sym
       end
 
       def validate_setup

@@ -72,9 +72,9 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
     context 'when the file causes a CSV parsing error' do
       let(:file) { file_fixture('test_efforts_duplicate_headers.csv') }
 
-      it 'returns nil and reports the error' do
+      it 'returns an empty array and reports the error' do
         raw_data = subject.extract
-        expect(raw_data).to be_nil
+        expect(raw_data).to eq([])
 
         error = subject.errors.first
         expect(error[:title]).to eq('CSV error')

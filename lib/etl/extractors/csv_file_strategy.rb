@@ -9,6 +9,15 @@ module ETL
 
       MAX_FILE_SIZE = 1.megabyte
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding('UTF-8').freeze
+      IMPORT_OPTIONS = {
+        downcase_header: false,
+        force_utf8: true,
+        remove_empty_values: false,
+        row_sep: :auto,
+        strip_chars_from_headers: BYTE_ORDER_MARK,
+        strings_as_keys: true,
+      }.freeze
+
       attr_reader :errors
 
       def initialize(source_data, options)
@@ -20,8 +29,7 @@ module ETL
 
       def extract
         return if errors.present?
-        rows = SmarterCSV.process(file, remove_empty_values: false, row_sep: :auto, force_utf8: true,
-                                  strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
+        rows = SmarterCSV.process(file, IMPORT_OPTIONS)
         rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
       rescue SmarterCSV::SmarterCSVException, CSV::MalformedCSVError => exception
         errors << smarter_csv_error(exception)
@@ -43,7 +51,7 @@ module ETL
             when source_data.is_a?(::File)
               source_data
             when source_data.is_a?(::ActiveStorage::Attached)
-              StringIO.new(source_data.download)
+              StringIO.new(source_data.download, "r:utf-8")
             else
               errors << invalid_file_error(file)
             end

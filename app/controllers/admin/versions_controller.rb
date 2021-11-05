@@ -9,8 +9,8 @@ module Admin
     end
 
     def show
+      authorize Version, policy_class: Admin::VersionPolicy
       @version = Version.find_by(id: params[:id])
-      authorize @version
     end
   end
 end

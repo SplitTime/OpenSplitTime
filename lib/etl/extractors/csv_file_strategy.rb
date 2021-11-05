@@ -51,7 +51,7 @@ module ETL
             when source_data.is_a?(::File)
               source_data
             when source_data.is_a?(::ActiveStorage::Attached)
-              StringIO.new(source_data.download)
+              StringIO.new(source_data.download, "r:utf-8")
             else
               errors << invalid_file_error(file)
             end

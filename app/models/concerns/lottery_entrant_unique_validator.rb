@@ -2,7 +2,10 @@
 
 class LotteryEntrantUniqueValidator < ActiveModel::Validator
   def validate(entrant)
-    existing_entrant = LotteryEntrant.where(division: entrant.division, first_name: entrant.first_name, last_name: entrant.last_name, birthdate: entrant.birthdate)
+    return unless entrant.division.present? && entrant.lottery.present?
+
+    divisions = entrant.lottery.divisions
+    existing_entrant = LotteryEntrant.where(division: divisions, first_name: entrant.first_name, last_name: entrant.last_name, birthdate: entrant.birthdate)
     return unless existing_entrant.present?
 
     conflicting_entrant = if entrant.persisted?

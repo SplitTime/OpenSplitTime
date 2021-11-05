@@ -55,6 +55,50 @@ RSpec.describe LotteryEntrant, type: :model do
     end
   end
 
+  describe "validations" do
+    let(:new_entrant) do
+      ::LotteryEntrant.new(division: division, first_name: first_name, last_name: last_name, birthdate: birthdate, gender: :male, number_of_tickets: 1)
+    end
+    let(:existing_entrant_lottery) { lotteries(:lottery_without_tickets) }
+    let(:existing_entrant_division) { existing_entrant_lottery.divisions.find_by(name: "Slow People") }
+    let(:same_lottery_other_division) { existing_entrant_lottery.divisions.find_by(name: "Fast People") }
+    let(:existing_entrant) { existing_entrant_division.entrants.find_by(first_name: "Deb") }
+    let(:different_lottery) { lotteries(:lottery_with_tickets_and_draws) }
+    let(:different_lottery_division) { different_lottery.divisions.find_by(name: "Elses") }
+
+    context "when the entrant key matches a key in the same division" do
+      let(:division) { existing_entrant.division }
+      let(:first_name) { existing_entrant.first_name }
+      let(:last_name) { existing_entrant.last_name }
+      let(:birthdate) { existing_entrant.birthdate }
+      it "is not valid" do
+        expect(new_entrant).not_to be_valid
+        expect(new_entrant.errors.full_messages).to include /has already been entered/
+      end
+    end
+
+    context "when the entrant key matches a key in the same lottery but a different division" do
+      let(:division) { same_lottery_other_division }
+      let(:first_name) { existing_entrant.first_name }
+      let(:last_name) { existing_entrant.last_name }
+      let(:birthdate) { existing_entrant.birthdate }
+      it "is not valid" do
+        expect(new_entrant).not_to be_valid
+        expect(new_entrant.errors.full_messages).to include /has already been entered/
+      end
+    end
+
+    context "when the entrant key matches a key in a different lottery" do
+      let(:division) { different_lottery_division }
+      let(:first_name) { existing_entrant.first_name }
+      let(:last_name) { existing_entrant.last_name }
+      let(:birthdate) { existing_entrant.birthdate }
+      it "is valid" do
+        expect(new_entrant).to be_valid
+      end
+    end
+  end
+
   describe "#draw_ticket!" do
     subject { lottery.entrants.find_by(last_name: "Crona") }
     let(:lottery) { lotteries(:lottery_without_tickets) }

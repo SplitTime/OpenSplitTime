@@ -7,7 +7,7 @@ module ETL
     class CsvFileStrategy
       include ETL::Errors
 
-      MAX_FILE_SIZE = 500.kilobytes
+      MAX_FILE_SIZE = 1.megabyte
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding('UTF-8').freeze
       attr_reader :errors
 
@@ -23,9 +23,9 @@ module ETL
         rows = SmarterCSV.process(file, remove_empty_values: false, row_sep: :auto, force_utf8: true,
                                   strip_chars_from_headers: BYTE_ORDER_MARK, downcase_header: false, strings_as_keys: true)
         rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
-      rescue SmarterCSV::SmarterCSVException => exception
+      rescue SmarterCSV::SmarterCSVException, CSV::MalformedCSVError => exception
         errors << smarter_csv_error(exception)
-        nil
+        []
       end
 
       private

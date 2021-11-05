@@ -27,10 +27,7 @@ module ETL
 
       # @return [nil]
       def load_records
-        ActiveRecord::Base.transaction do
-          custom_load
-          raise ActiveRecord::Rollback if errors.present?
-        end
+        custom_load
       end
 
       private
@@ -54,6 +51,10 @@ module ETL
             errors << resource_error_object(record, row_index)
           end
 
+        rescue ActiveRecord::ActiveRecordError => error
+          import_job.increment!(:failure_count)
+          errors << record_not_saved_error(error, row_index)
+        ensure
           import_job.set_elapsed_time!
           import_job.touch if row_index % CHUNK_SIZE == 0
         end

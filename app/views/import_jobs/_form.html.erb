@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: @import_job, local: true, html: {class: "form-horizontal"}) do |f| %>
+    <%= form_with(model: @import_job, local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
       <div class="form-row">
         <div class="form-group col-md-4">
           <%= f.label :file_name %>
@@ -25,7 +25,7 @@
         <div class="form-group">
           <div class="col">
             <span class="brackets">
-                <%= link_to "Cancel", import_jobs_path %>
+                <%= link_to "Cancel", request.referrer || import_jobs_path %>
             </span>
           </div>
         </div>

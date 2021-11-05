@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   authenticate :user, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
-  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
 
   authenticate :user, lambda { |u| u.admin? } do
     mount Coverband::Reporters::Web.new, at: '/coverage', as: :coverage

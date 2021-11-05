@@ -59,14 +59,15 @@ RSpec.describe ETL::AsyncImporter do
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
         expect(import_job.elapsed_time).to be_present
-        expect(import_job.error_message).to include "Division could not be found for row 1"
+        expect(import_job.parsed_errors.first.dig("detail", "messages")).to include /Division could not be found/
+        expect(import_job.parsed_errors.first.dig("detail", "row_index")).to eq(1)
       end
     end
 
     context "when all rows transform but some will not load" do
       let(:source_data) { file_fixture("test_lottery_entrants_load_problems.csv") }
       it "does not create new lottery entrants" do
-        expect { subject.import! }.not_to change { ::LotteryEntrant.count }
+        expect { subject.import! }.to change { ::LotteryEntrant.count }.by(1)
       end
 
       it "sets import job attributes properly" do

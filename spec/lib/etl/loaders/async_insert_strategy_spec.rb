@@ -141,7 +141,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       end
     end
 
-    context "when one or more records exists" do
+    context "when one or more records previously exists" do
       let(:proto_records) { valid_proto_records }
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
@@ -154,8 +154,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
                bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
       end
 
-      it "rolls back the transaction" do
-        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
+      it "inserts only those records that do not previously exist" do
+        expect { subject.load_records }.to change { Effort.count }.by(2).and change { SplitTime.count }.by(3)
       end
 
       it "sets success count and failure count on the import job" do
@@ -173,8 +173,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
     context "when any provided record is invalid" do
       let(:proto_records) { all_proto_records }
 
-      it "rolls back the transaction" do
-        expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
+      it "inserts only those records that are valid" do
+        expect { subject.load_records }.to change { Effort.count }.by(3).and change { SplitTime.count }.by(10)
       end
 
       it "sets success count and failure count on the import job" do

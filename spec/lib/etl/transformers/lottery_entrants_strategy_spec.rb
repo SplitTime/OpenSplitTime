@@ -75,8 +75,10 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns descriptive errors" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to match /Transform failed for row 1:/
-        expect(subject.errors.second.dig(:detail, :messages).first).to match /Transform failed for row 2:/
+        expect(subject.errors.first.dig(:detail, :messages).first).to match /Transform failed:/
+        expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
+        expect(subject.errors.second.dig(:detail, :messages).first).to match /Transform failed:/
+        expect(subject.errors.second.dig(:detail, :row_index)).to eq(2)
       end
 
       it "sets failure count on the import job" do
@@ -98,7 +100,8 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns a descriptive error" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to match /Division could not be found for row 1:/
+        expect(subject.errors.first.dig(:detail, :messages).first).to match /Division could not be found:/
+        expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
       end
     end
 

@@ -47,7 +47,7 @@ RSpec.describe ETL::AsyncImporter do
 
     context "when the import file has rows that will not transform" do
       let(:source_data) { file_fixture("test_lottery_entrants_transform_problems.csv") }
-      it "does not create new lottery entrants" do
+      it "does not create new lottery entrants for those rows" do
         expect { subject.import! }.not_to change { ::LotteryEntrant.count }
       end
 

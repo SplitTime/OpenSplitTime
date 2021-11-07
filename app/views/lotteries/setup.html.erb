@@ -81,7 +81,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col">
-          <h2><strong>Divisions</strong></h2>
+          <h2><strong>Divisions</strong><small class="text-muted"><%= " #{pluralize(@presenter.divisions.size, 'division')}" %></small></h2>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col">
-          <h2><strong>Entrant Lookup</strong></h2>
+          <h2><strong>Entrant Lookup</strong><small class="text-muted"><%= " #{pluralize(@presenter.lottery.entrants.count, 'entrant')}" %></small></h2>
         </div>
       </div>
     </div>

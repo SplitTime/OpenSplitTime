@@ -1,5 +1,6 @@
-<%= form_tag setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "w-100", method: :get do %>
-  <div class="input-group">
+<%= form_tag setup_organization_lottery_path(@presenter.organization, @presenter.lottery, anchor: "entrant_lookup_input"),
+             class: "w-100", method: :get do %>
+  <div id="entrant_lookup_input" class="input-group">
     <%= text_field_tag "filter[search]",
                        prepared_params[:search],
                        placeholder: "Find an entrant",

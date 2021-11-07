@@ -16,8 +16,9 @@ class LotteryDivisionPolicy < ApplicationPolicy
 
   attr_reader :organization
 
-  def post_initialize(lottery_division)
-    @organization = lottery_division.lottery.organization
+  def post_initialize(organization)
+    verify_authorization_was_delegated(organization, ::LotteryDivision)
+    @organization = organization
   end
 
   def new?

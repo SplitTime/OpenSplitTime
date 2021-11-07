@@ -3,6 +3,7 @@
 class LotteryDivisionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
+  before_action :authorize_organization
   before_action :set_lottery
   before_action :set_lottery_division, except: [:new, :create]
   after_action :verify_authorized
@@ -10,18 +11,15 @@ class LotteryDivisionsController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/new
   def new
     @lottery_division = @lottery.divisions.new
-    authorize @lottery_division
   end
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id/edit
   def edit
-    authorize @lottery_division
   end
 
   # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions
   def create
     @lottery_division = @lottery.divisions.new(permitted_params)
-    authorize @lottery_division
 
     if @lottery_division.save
       redirect_to setup_organization_lottery_path(@organization, @lottery)
@@ -33,8 +31,6 @@ class LotteryDivisionsController < ApplicationController
   # PUT   /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   # PATCH /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   def update
-    authorize @lottery_division
-
     if @lottery_division.update(permitted_params)
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
@@ -44,8 +40,6 @@ class LotteryDivisionsController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   def destroy
-    authorize @lottery_division
-
     if @lottery_division.tickets.present?
       flash[:warning] = "A lottery division cannot be deleted unless all tickets and draws have been deleted first."
       redirect_to setup_organization_lottery_path(@organization, @lottery)
@@ -58,6 +52,10 @@ class LotteryDivisionsController < ApplicationController
   end
 
   private
+
+  def authorize_organization
+    authorize @organization, policy_class: ::LotteryDivisionPolicy
+  end
 
   def set_lottery
     @lottery = policy_scope(@organization.lotteries).friendly.find(params[:lottery_id])

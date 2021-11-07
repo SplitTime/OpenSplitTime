@@ -83,4 +83,15 @@ class ApplicationPolicy
   def destroy?
     user.authorized_fully?(record)
   end
+
+  private
+
+  def verify_authorization_was_delegated(organization, delegating_class)
+    unless organization.is_a?(::Organization)
+      raise AuthorizationNotDelegatedError, "A #{delegating_class} must be authorized using the parent Organization"
+    end
+  end
+
+  class AuthorizationNotDelegatedError < Pundit::Error
+  end
 end

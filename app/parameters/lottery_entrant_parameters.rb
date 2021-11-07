@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 class LotteryEntrantParameters < BaseParameters
+  def self.csv_export_attributes
+    [
+      "division_name",
+      "first_name",
+      "last_name",
+      "gender",
+      "birthdate",
+      "city",
+      "state",
+      "country",
+      "number_of_tickets",
+    ]
+  end
+
   def self.mapping
     lottery_entrant_mapping = {
       tickets: :number_of_tickets,

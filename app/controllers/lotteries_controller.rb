@@ -17,7 +17,7 @@ class LotteriesController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:id
   def show
-    @presenter = LotteryPresenter.new(@lottery, view_context)
+    @presenter = ::LotteryPresenter.new(@lottery, view_context)
 
     respond_to do |format|
       format.html
@@ -78,6 +78,22 @@ class LotteriesController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:id/setup
   def setup
     @presenter = LotteryPresenter.new(@lottery, view_context)
+  end
+
+  # GET /organizations/:organization_id/lotteries/:id/export_entrants
+  def export_entrants
+    respond_to do |format|
+      format.csv do
+        entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
+        builder = ::CsvBuilder.new(::LotteryEntrant, entrants)
+        filename = if prepared_params[:filter] == {"id" => "0"}
+                     "lottery-entrants-template.csv"
+                   else
+                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                   end
+        send_data(builder.full_string, type: "text/csv", filename: filename)
+      end
+    end
   end
 
   # POST /organizations/:organization_id/lotteries/:id/draw

@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class LotteriesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :plan_effort]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_organization
+  before_action :authorize_organization, except: [:index, :show]
   before_action :set_lottery, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts, :plan_effort]
+  after_action :verify_authorized, except: [:index, :show]
 
   # GET /organizations/:organization_id/lotteries
   def index
@@ -31,18 +32,15 @@ class LotteriesController < ApplicationController
   # GET /organizations/:organization_id/lotteries/new
   def new
     @lottery = @organization.lotteries.new
-    authorize @lottery
   end
 
   # GET /organizations/:organization_id/lotteries/:id/edit
   def edit
-    authorize @lottery
   end
 
   # POST /organizations/:organization_id/lotteries
   def create
     @lottery = @organization.lotteries.new(permitted_params)
-    authorize @lottery
 
     if @lottery.save
       redirect_to setup_organization_lottery_path(@organization, @lottery)
@@ -54,8 +52,6 @@ class LotteriesController < ApplicationController
   # PUT /organizations/:organization_id/lotteries/:id
   # PATCH /organizations/:organization_id/lotteries/:id
   def update
-    authorize @lottery
-
     if @lottery.update(permitted_params)
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
     else
@@ -65,8 +61,6 @@ class LotteriesController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:id
   def destroy
-    authorize @lottery
-
     if @lottery.destroy
       flash[:success] = "Lottery deleted."
       redirect_to organization_lotteries_path
@@ -78,20 +72,16 @@ class LotteriesController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:id/draw_tickets
   def draw_tickets
-    authorize @lottery
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
   # GET /organizations/:organization_id/lotteries/:id/setup
   def setup
-    authorize @lottery
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
   # POST /organizations/:organization_id/lotteries/:id/draw
   def draw
-    authorize @lottery
-
     division = @lottery.divisions.find(params[:division_id])
     lottery_draw = division.draw_ticket!
 
@@ -104,8 +94,6 @@ class LotteriesController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:id/delete_tickets
   def delete_tickets
-    authorize @lottery
-
     if @lottery.draws.delete_all && @lottery.tickets.delete_all
       flash[:success] = "Deleted all lottery tickets and draws"
     else
@@ -117,8 +105,6 @@ class LotteriesController < ApplicationController
 
   # POST /organizations/:organization_id/lotteries/:id/generate_entrants
   def generate_entrants
-    authorize @lottery
-
     if @lottery.divisions.present?
       if @lottery.generate_entrants!
         flash[:success] = "Generated lottery entrants"
@@ -134,8 +120,6 @@ class LotteriesController < ApplicationController
 
   # POST /organizations/:organization_id/lotteries/:id/generate_tickets
   def generate_tickets
-    authorize @lottery
-
     if @lottery.entrants.present?
       if @lottery.delete_and_insert_tickets!
         flash[:success] = "Generated lottery tickets"
@@ -151,11 +135,15 @@ class LotteriesController < ApplicationController
 
   private
 
+  def authorize_organization
+    authorize @organization, policy_class: ::LotteryPolicy
+  end
+
   def set_lottery
     @lottery = policy_scope(@organization.lotteries).friendly.find(params[:id])
   end
 
   def set_organization
-    @organization = policy_scope(Organization).friendly.find(params[:organization_id])
+    @organization = policy_scope(::Organization).friendly.find(params[:organization_id])
   end
 end

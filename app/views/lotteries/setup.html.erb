@@ -44,10 +44,10 @@
           <%= link_to "Edit lottery", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-primary" %>
           <div class="btn-group" data-controller="">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-toggle="dropdown" aria-expanded="false">
-              Import
+              Entrants
             </button>
             <div class="dropdown-menu">
-              <%= link_to "Lottery entrants",
+              <%= link_to "Import entrants",
                           new_import_job_path(import_job: {parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants}),
                           class: "dropdown-item" %>
               <%= link_to "Generate entrants",

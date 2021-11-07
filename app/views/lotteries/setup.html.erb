@@ -42,16 +42,19 @@
       <div class="col form-inline">
         <div>
           <%= link_to "Edit lottery", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-primary" %>
-          <%= link_to "Generate entrants",
-                      generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                      method: :post,
-                      class: "btn btn-success" %>
           <div class="btn-group" data-controller="">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-toggle="dropdown" aria-expanded="false">
-              Import
+              Entrants
             </button>
             <div class="dropdown-menu">
-              <%= link_to "Lottery entrants", new_import_job_path(import_job: {parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants}), class: "dropdown-item" %>
+              <%= link_to "Import entrants",
+                          new_import_job_path(import_job: {parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants}),
+                          class: "dropdown-item" %>
+              <%= link_to "Generate entrants",
+                          generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                          method: :post,
+                          data: {confirm: "This will generate 25 random lottery entrants distributed across all divisions. Proceed?"},
+                          class: "dropdown-item" %>
               <div class="dropdown-divider"></div>
               <%= link_to "Download template", export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, params: {filter: {id: 0}}), format: :csv, class: "dropdown-item" %>
             </div>
@@ -78,7 +81,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col">
-          <h2><strong>Divisions</strong></h2>
+          <h2><strong>Divisions</strong><small class="text-muted"><%= " #{pluralize(@presenter.divisions.size, 'division')}" %></small></h2>
         </div>
       </div>
     </div>
@@ -113,7 +116,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col">
-          <h2><strong>Entrant Lookup</strong></h2>
+          <h2><strong>Entrant Lookup</strong><small class="text-muted"><%= " #{pluralize(@presenter.lottery.entrants.count, 'entrant')}" %></small></h2>
         </div>
       </div>
     </div>

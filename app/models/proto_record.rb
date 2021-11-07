@@ -26,6 +26,10 @@ class ProtoRecord
     attributes.to_h.has_key?(key)
   end
 
+  def keys
+    attributes.to_h.keys
+  end
+
   def record_class
     record_type&.to_s&.classify&.constantize
   end

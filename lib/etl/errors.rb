@@ -64,16 +64,26 @@ module ETL
        detail: {messages: ['This import requires that an event be provided']}}
     end
 
+    def missing_fields_error(raw_data)
+      {title: 'Invalid fields',
+       detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
+                               "or the ['list']['fields'] key or its values"]}}
+    end
+
+    def missing_key_error(*keys)
+      {title: "Key is missing",
+       detail: {messages: ["This import requires a column titled '#{keys.join(" or ")}' in order to proceed"]}}
+    end
+
     def missing_parent_error(type = nil)
       type ||= "record"
       {title: "Parent is missing",
        detail: {messages: ["This import requires that a parent #{type} be provided"]}}
     end
 
-    def missing_fields_error(raw_data)
-      {title: 'Invalid fields',
-       detail: {messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
-                               "or the ['list']['fields'] key or its values"]}}
+    def missing_records_error
+      {title: "No records were provided",
+       detail: {messages: ["No records were provided for this import"]}}
     end
 
     def missing_split_error

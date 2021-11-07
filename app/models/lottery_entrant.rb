@@ -19,6 +19,7 @@ class LotteryEntrant < ApplicationRecord
            .left_joins(tickets: :draw).order("lottery_tickets.lottery_entrant_id, drawn_at"), :lottery_entrants)
   end
   scope :ordered, -> { order(:drawn_at) }
+  scope :ordered_for_export, -> { with_division_name.order("division_name, last_name") }
   scope :pre_selected, -> { where(pre_selected: true) }
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :with_policy_scope_attributes, -> do

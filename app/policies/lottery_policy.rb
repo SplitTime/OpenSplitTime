@@ -16,8 +16,12 @@ class LotteryPolicy < ApplicationPolicy
 
   attr_reader :organization
 
-  def post_initialize(lottery)
-    @organization = lottery.organization
+  def post_initialize(organization)
+    @organization = organization
+
+    unless organization.is_a?(::Organization)
+      raise ArgumentError, "Lotteries must be authorized using the parent Organization"
+    end
   end
 
   def new?

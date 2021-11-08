@@ -16,7 +16,7 @@ module ETL
 
         proto_records.each.with_index(1) do |proto_record, row_index|
           proto_record.underscore_keys!
-          parameterized_division_name = proto_record.delete_field(:division)&.parameterize
+          parameterized_division_name = proto_record.delete_field(:division_name)&.parameterize
           division = divisions_by_name[parameterized_division_name]
 
           if division.present?
@@ -47,6 +47,13 @@ module ETL
 
       def validate_setup
         errors << missing_parent_error("Lottery") unless lottery.present?
+        errors << missing_records_error unless proto_records.present?
+
+        if proto_records.present?
+          unless proto_records.first.keys.map { |key| key.to_s.underscore}.include?("division_name")
+            errors << missing_key_error("Division name")
+          end
+        end
       end
     end
   end

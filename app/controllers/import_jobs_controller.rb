@@ -30,12 +30,18 @@ class ImportJobsController < ApplicationController
     @import_job.status = :waiting
     @import_job.user = current_user
 
-    if @import_job.save
-      ::ImportAsyncJob.perform_later(@import_job.id)
-      flash[:success] = "Import in progress."
-      redirect_to import_jobs_path
-    else
-      flash[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
+    begin
+      if @import_job.save
+        ::ImportAsyncJob.perform_later(@import_job.id)
+        flash[:success] = "Import in progress."
+        redirect_to import_jobs_path
+      else
+        flash[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
+        render "new"
+      end
+    rescue Aws::Errors::NoSuchEndpointError => error
+      flash[:danger] = "Unable to create import job: #{error}"
+      @import_job.failed!
       render "new"
     end
   end

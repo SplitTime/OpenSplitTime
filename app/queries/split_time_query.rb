@@ -209,66 +209,6 @@ class SplitTimeQuery < BaseQuery
     query.squish
   end
 
-  def self.split_traffic(args)
-    event_group = args[:event_group]
-    parameterized_split_name = args[:split_name].parameterize
-    band_width = args[:band_width] / 1.second
-    home_time_zone = event_group.home_time_zone
-    time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
-
-    # It is critical to reset_database_timezone after running this query.
-    # Failure to do so will lead to elusive bugs.
-    query = <<~SQL
-      set timezone='#{time_zone}';
-
-      with 
-        scoped_split_times as
-          (select st.effort_id, st.sub_split_bitkey, st.lap, st.absolute_time at time zone 'UTC' as absolute_time_local
-           from split_times st
-             inner join efforts ef on ef.id = st.effort_id
-             inner join events ev on ev.id = ef.event_id
-             inner join splits s on s.id = st.split_id
-           where event_group_id = #{event_group.id} and s.parameterized_base_name = '#{parameterized_split_name}'
-           order by absolute_time),
-
-        finish_split_times as
-          (select effort_id, lap
-           from efforts ef
-             inner join split_times st on st.effort_id = ef.id
-             inner join splits s on s.id = st.split_id
-           where ef.id in (select effort_id from scoped_split_times) and s.kind = 1
-           order by ef.id),
-           
-        interval_starts as
-          (select *
-           from generate_series((select min(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) from scoped_split_times), 
-                                (select max(to_timestamp(floor((extract(epoch from absolute_time_local)) / #{band_width}) * #{band_width})) + interval '#{band_width} seconds' from scoped_split_times), 
-                                 interval '#{band_width} seconds') time),
-           
-        intervals as
-          (select time as start_time, lead(time) over(order by time) as end_time 
-           from interval_starts)
-           
-      select to_char(i.start_time, 'Dy HH24:MI') as start_time, 
-             to_char(i.end_time, 'Dy HH24:MI') as end_time, 
-             count(case when st.sub_split_bitkey = 1 then 1 else null end) as in_count, 
-             count(case when st.sub_split_bitkey = 64 then 1 else null end) as out_count,
-             count(case when st.sub_split_bitkey = 1 and fst.effort_id is not null then 1 else null end) as finished_in_count,
-             count(case when st.sub_split_bitkey = 64 and fst.effort_id is not null then 1 else null end) as finished_out_count
-      from scoped_split_times st
-        left join finish_split_times fst
-          on fst.effort_id = st.effort_id and fst.lap = st.lap
-        right join intervals i
-          on st.absolute_time_local >= i.start_time and st.absolute_time_local < i.end_time
-      where i.end_time is not null
-      group by i.start_time, i.end_time
-      order by i.start_time
-    SQL
-    result = ActiveRecord::Base.connection.execute(query.squish).to_a
-    reset_database_timezone
-    result
-  end
-
   def self.starting_split_times(args)
     scope = where_string_from_hash(args[:scope])
 

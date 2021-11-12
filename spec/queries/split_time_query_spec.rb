@@ -42,37 +42,4 @@ RSpec.describe SplitTimeQuery do
       end
     end
   end
-
-  describe '.split_traffic' do
-    subject { SplitTimeQuery.split_traffic(event_group: event_group, split_name: split_name, band_width: band_width) }
-    let(:event_group) { event_groups(:hardrock_2015) }
-
-    context 'for a split close to the start' do
-      let(:split_name) { 'Cunningham' }
-      let(:band_width) { 1.hour }
-
-      it 'returns a hash with time intervals and effort counts in and out' do
-        expect(subject.size).to eq(3)
-        expect(subject.map { |row| row['start_time'] }).to eq(['Fri 07:00', 'Fri 08:00', 'Fri 09:00'])
-        expect(subject.map { |row| row['end_time'] }).to eq(['Fri 08:00', 'Fri 09:00', 'Fri 10:00'])
-        expect(subject.map { |row| row['in_count'] }).to eq([2, 20, 8])
-        expect(subject.map { |row| row['out_count'] }).to eq([2, 20, 8])
-      end
-    end
-
-    context 'for a split extending over multiple days' do
-      let(:split_name) { 'Telluride' }
-      let(:band_width) { 1.hour }
-
-      it 'returns a hash with time intervals reflecting multiple days' do
-        expect(subject.size).to eq(19)
-        expect(subject[10]).to eq({'start_time' => 'Sat 07:00',
-                                  'end_time' => 'Sat 08:00',
-                                  'in_count' => 5,
-                                  'out_count' => 4,
-                                  'finished_in_count' => 5,
-                                  'finished_out_count' => 4})
-      end
-    end
-  end
 end

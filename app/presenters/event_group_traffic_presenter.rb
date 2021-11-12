@@ -3,8 +3,6 @@
 class EventGroupTrafficPresenter < BasePresenter
   include SplitAnalyzable, TimeFormats
 
-  ROW_LIMIT = 500
-
   attr_reader :event_group, :band_width
   delegate :name, :organization, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :multiple_events?, to: :event_group
@@ -15,18 +13,18 @@ class EventGroupTrafficPresenter < BasePresenter
     @band_width = band_width || 30.minutes
   end
 
-  def table
-    @table ||= row_limit_exceeded? ? [] : interval_split_traffics
+  def interval_split_traffics
+    @interval_split_traffics ||= ::IntervalSplitTraffic.execute_query(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
   end
 
   def table_title
     case
     when split.nil?
       "Unknown split."
+    when interval_split_traffics.nil?
+      "Too many rows to analyze. Use a lower frequency."
     when interval_split_traffics.empty?
       "No entrants have arrived at this aid station."
-    when row_limit_exceeded?
-      "Too many rows to analyze. Use a lower frequency."
     else
       "Traffic at #{split_name} in increments of #{band_width / 1.minute} minutes"
     end
@@ -55,7 +53,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def sub_split_counts_for_event(row, event_id)
-    sub_split_kinds.map { |kind| row.counts_by_event[event_id].send(kind) }.join(" / ")
+    sub_split_kinds.map { |kind| row_counts(row, event_id, kind) }.join(" / ")
   end
 
   def sub_split_kinds
@@ -67,7 +65,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def overall_totals(event_id)
-    sub_split_kinds.map { |kind| table.sum { |row| row.counts_by_event[event_id].send(kind) } }.join(" / ")
+    sub_split_kinds.map { |kind| interval_split_traffics.sum { |row| row_counts(row, event_id, kind) } }.join(" / ")
   end
 
   def suggested_band_widths
@@ -78,16 +76,12 @@ class EventGroupTrafficPresenter < BasePresenter
 
   attr_reader :parameterized_split_name
 
-  def interval_split_traffics
-    @interval_split_traffics ||= ::IntervalSplitTraffic.execute_query(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
+  def row_counts(row, event_id, kind)
+    row.counts_by_event[event_id].send(kind)
   end
 
   def split
     @split ||= Split.where(course_id: events.map(&:course_id)).find_by(parameterized_base_name: parameterized_split_name)
-  end
-
-  def row_limit_exceeded?
-    interval_split_traffics.size > ROW_LIMIT
   end
 
   def indexed_events

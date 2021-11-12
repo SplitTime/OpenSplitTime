@@ -15,6 +15,17 @@ class IntervalSplitTraffic < ::ApplicationQuery
   attribute :finished_out_counts, :integer_array_from_string
 
   Counts = Struct.new(:event_id, :name, :in, :out, :finished_in, :finished_out)
+  ROW_LIMIT = 300
+
+  def self.execute_query(event_group:, split_name:, band_width:)
+    parameterized_split_name = split_name.parameterize
+    band_width = band_width / 1.second
+    split_times = ::SplitTime.joins(effort: :event).joins(:split).where(splits: {parameterized_base_name: parameterized_split_name}, events: {event_group: event_group})
+    time_span = split_times.maximum(:absolute_time) - split_times.minimum(:absolute_time)
+    return if time_span / band_width > ROW_LIMIT
+
+    super
+  end
 
   # @param [EventGroup] event_group
   # @param [String] split_name

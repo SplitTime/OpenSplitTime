@@ -48,40 +48,42 @@
 <article class="ost-article container">
   <h4><%= @presenter.table_title %></h4>
   <div>
-    <table class="table table-condensed table-striped" style="width:80%">
-      <thead>
-      <% if @presenter.events.many? %>
+    <% if @presenter.interval_split_traffics.present? %>
+      <table class="table table-condensed table-striped" style="width:80%">
+        <thead>
+        <% if @presenter.events.many? %>
+          <tr>
+            <th></th>
+            <% @presenter.events_to_show.each do |event| %>
+              <th class="text-center"><%= event.short_name || "Overall" %></th>
+            <% end %>
+          </tr>
+        <% end %>
         <tr>
-          <th></th>
-          <% @presenter.events_to_show.each do |event| %>
-            <th class="text-center"><%= event.short_name || "Overall" %></th>
+          <th>Time Range</th>
+          <% @presenter.events_to_show.each do |_| %>
+            <th class="text-center"><%= @presenter.counts_header_string %></th>
           <% end %>
         </tr>
-      <% end %>
-      <tr>
-        <th>Time Range</th>
-        <% @presenter.events_to_show.each do |_| %>
-          <th class="text-center"><%= @presenter.counts_header_string %></th>
-        <% end %>
-      </tr>
-      </thead>
+        </thead>
 
-      <tbody>
-      <% @presenter.table.each do |row| %>
+        <tbody>
+        <% @presenter.interval_split_traffics.each do |ist| %>
+          <tr>
+            <td><%= @presenter.range_string(ist) %></td>
+            <% @presenter.events_to_show.each do |event| %>
+              <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= @presenter.sub_split_counts_for_event(ist, event.id) %></td>
+            <% end %>
+          </tr>
+        <% end %>
         <tr>
-          <td><%= @presenter.range_string(row) %></td>
+          <th>Totals</th>
           <% @presenter.events_to_show.each do |event| %>
-            <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= @presenter.sub_split_counts_for_event(row, event.id) %></td>
+            <th class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= @presenter.overall_totals(event.id) %></th>
           <% end %>
         </tr>
-      <% end %>
-      <tr>
-        <th>Totals</th>
-        <% @presenter.events_to_show.each do |event| %>
-          <th class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= @presenter.overall_totals(event.id) %></th>
-        <% end %>
-      </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </article>

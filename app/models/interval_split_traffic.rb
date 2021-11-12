@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 class IntervalSplitTraffic < ::ApplicationQuery
-  attribute :start_time, :datetime
   attribute :end_time, :datetime
-  attribute :total_in_count, :integer
-  attribute :total_out_count, :integer
-  attribute :total_finished_in_count, :integer
-  attribute :total_finished_out_count, :integer
   attribute :event_ids, :integer_array_from_string
-  attribute :short_names, :string_array_from_string
-  attribute :in_counts, :integer_array_from_string
-  attribute :out_counts, :integer_array_from_string
   attribute :finished_in_counts, :integer_array_from_string
   attribute :finished_out_counts, :integer_array_from_string
+  attribute :in_counts, :integer_array_from_string
+  attribute :out_counts, :integer_array_from_string
+  attribute :short_names, :string_array_from_string
+  attribute :start_time, :datetime
+  attribute :total_finished_in_count, :integer
+  attribute :total_finished_out_count, :integer
+  attribute :total_in_count, :integer
+  attribute :total_out_count, :integer
 
   Counts = Struct.new(:event_id, :name, :in, :out, :finished_in, :finished_out)
   ROW_LIMIT = 300

@@ -16,26 +16,46 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def table
-    @table ||= row_limit_exceeded? ? [] : query_result.map do |row|
-      OpenStruct.new(range: "#{row['start_time']} to #{row['end_time']}",
-                     count: OpenStruct.new(in: row['in_count'],
-                                           out: row['out_count'],
-                                           finished_in: row['finished_in_count'],
-                                           finished_out: row['finished_out_count']))
-    end
+    @table ||= row_limit_exceeded? ? [] : interval_split_traffics
   end
 
   def table_title
     case
     when split.nil?
       "Unknown split."
-    when query_result.empty?
+    when interval_split_traffics.empty?
       "No entrants have arrived at this aid station."
     when row_limit_exceeded?
       "Too many rows to analyze. Use a lower frequency."
     else
       "Traffic at #{split_name} in increments of #{band_width / 1.minute} minutes"
     end
+  end
+
+  def events_to_show
+    @events_to_show ||=
+      begin
+        result = [overall_dummy_event]
+        result += events if events.many?
+        result
+      end
+  end
+
+  # Represents the overall counts for the event group
+  def overall_dummy_event
+    ::Event.new(id: nil, short_name: "Overall")
+  end
+
+  def counts_header_string
+    sub_split_kinds.many? ? sub_split_kinds.map { |kind| kind.to_s.titleize }.join(" / ") : 'Count'
+  end
+
+  def range_string(ist)
+    "#{localized_time(ist.start_time)} to #{localized_time(ist.end_time)}"
+  end
+
+  def sub_split_counts_for_event(row, event_id)
+    sub_split_kinds.map { |kind| row.counts_by_event[event_id].send(kind) }.join(" / ")
   end
 
   def sub_split_kinds
@@ -46,8 +66,8 @@ class EventGroupTrafficPresenter < BasePresenter
     event_group.first_event
   end
 
-  def totals(kind)
-    table.sum { |row| row.count[kind] }
+  def overall_totals(event_id)
+    sub_split_kinds.map { |kind| table.sum { |row| row.counts_by_event[event_id].send(kind) } }.join(" / ")
   end
 
   def suggested_band_widths
@@ -58,8 +78,8 @@ class EventGroupTrafficPresenter < BasePresenter
 
   attr_reader :parameterized_split_name
 
-  def query_result
-    @query_result ||= SplitTimeQuery.split_traffic(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
+  def interval_split_traffics
+    @interval_split_traffics ||= ::IntervalSplitTraffic.execute_query(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
   end
 
   def split
@@ -67,6 +87,14 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def row_limit_exceeded?
-    query_result.size > ROW_LIMIT
+    interval_split_traffics.size > ROW_LIMIT
+  end
+
+  def indexed_events
+    @indexed_events ||= events.index_by(&:id)
+  end
+
+  def localized_time(datetime)
+    I18n.localize(datetime.in_time_zone(event_group.home_time_zone), format: :day_and_military)
   end
 end

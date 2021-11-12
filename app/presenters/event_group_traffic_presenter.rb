@@ -39,11 +39,6 @@ class EventGroupTrafficPresenter < BasePresenter
       end
   end
 
-  # Represents the overall counts for the event group
-  def overall_dummy_event
-    ::Event.new(id: nil, short_name: "Overall")
-  end
-
   def counts_header_string
     sub_split_kinds.many? ? sub_split_kinds.map { |kind| kind.to_s.titleize }.join(" / ") : 'Count'
   end
@@ -54,10 +49,6 @@ class EventGroupTrafficPresenter < BasePresenter
 
   def sub_split_counts_for_event(row, event_id)
     sub_split_kinds.map { |kind| row_counts(row, event_id, kind) }.join(" / ")
-  end
-
-  def sub_split_kinds
-    @sub_split_kinds ||= split ? split.sub_split_kinds.map { |kind| kind.downcase.to_sym } : []
   end
 
   def event
@@ -76,6 +67,11 @@ class EventGroupTrafficPresenter < BasePresenter
 
   attr_reader :parameterized_split_name
 
+  # Represents the overall counts for the event group
+  def overall_dummy_event
+    ::Event.new(id: nil, short_name: "Overall")
+  end
+
   def row_counts(row, event_id, kind)
     row.counts_by_event[event_id].send(kind)
   end
@@ -84,8 +80,8 @@ class EventGroupTrafficPresenter < BasePresenter
     @split ||= Split.where(course_id: events.map(&:course_id)).find_by(parameterized_base_name: parameterized_split_name)
   end
 
-  def indexed_events
-    @indexed_events ||= events.index_by(&:id)
+  def sub_split_kinds
+    @sub_split_kinds ||= split ? split.sub_split_kinds.map { |kind| kind.downcase.to_sym } : []
   end
 
   def localized_time(datetime)

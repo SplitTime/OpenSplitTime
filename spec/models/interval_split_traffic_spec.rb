@@ -6,10 +6,10 @@ RSpec.describe IntervalSplitTraffic, type: :model do
   describe ".execute_query" do
     subject { described_class.execute_query(event_group: event_group, split_name: split_name, band_width: band_width) }
     let(:event_group) { event_groups(:hardrock_2015) }
+    let(:band_width) { 1.hour }
 
     context "for a split close to the start" do
       let(:split_name) { "Cunningham" }
-      let(:band_width) { 1.hour }
 
       it "returns an array of IntervalSplitTraffic objects" do
         expect(subject.size).to eq(3)
@@ -22,7 +22,6 @@ RSpec.describe IntervalSplitTraffic, type: :model do
 
     context "for a split extending over multiple days" do
       let(:split_name) { "Telluride" }
-      let(:band_width) { 1.hour }
 
       it "returns an array of IntervalSplitTraffic objects reflecting multiple days" do
         expect(subject.size).to eq(19)
@@ -54,6 +53,26 @@ RSpec.describe IntervalSplitTraffic, type: :model do
         expect(subject_ist.out_counts).to eq([0, 0])
         expect(subject_ist.finished_in_counts).to eq([0, 2])
         expect(subject_ist.finished_out_counts).to eq([0, 0])
+      end
+    end
+
+    context "when the query would return too many rows" do
+      let(:split_name) { "Telluride" }
+      let(:band_width) { 1.minute }
+
+      it "returns nil" do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "for a split that has not yet seen any traffic" do
+      let(:event_group) { event_groups(:hardrock_2016) }
+      let(:split_name) { "Finish" }
+      let(:split) { event_group.events.first.course.finish_split }
+      before { event_group.split_times.where(split: split).each(&:destroy) }
+
+      it "returns an empty array" do
+        expect(subject).to eq([])
       end
     end
   end

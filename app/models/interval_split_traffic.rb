@@ -21,7 +21,11 @@ class IntervalSplitTraffic < ::ApplicationQuery
     parameterized_split_name = split_name.parameterize
     band_width = band_width / 1.second
     split_times = ::SplitTime.joins(effort: :event).joins(:split).where(splits: {parameterized_base_name: parameterized_split_name}, events: {event_group: event_group})
-    time_span = split_times.maximum(:absolute_time) - split_times.minimum(:absolute_time)
+    max = split_times.maximum(:absolute_time)
+    min = split_times.minimum(:absolute_time)
+    return [] unless max.present? && min.present?
+
+    time_span = max - min
     return if time_span / band_width > ROW_LIMIT
 
     super

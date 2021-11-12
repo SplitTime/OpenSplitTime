@@ -117,9 +117,17 @@ class IntervalSplitTraffic < ::ApplicationQuery
   end
 
   # Includes the overall event group counts under the 'nil' key
+  # @param [Integer, nil] event_id
+  # @return [Counts]
+  def counts_for_event(event_id)
+    all_counts_by_event[event_id]
+  end
+
+  private
+
   # @return [Hash{Integer, nil => Counts}]
-  def counts_by_event
-    @counts_by_event ||=
+  def all_counts_by_event
+    @all_counts_by_event ||=
       begin
         raw_data = event_ids.zip(short_names, in_counts, out_counts, finished_in_counts, finished_out_counts)
         counts_array = raw_data.map { |array| Counts.new(*array) }
@@ -128,8 +136,6 @@ class IntervalSplitTraffic < ::ApplicationQuery
         counts_array.index_by(&:event_id)
       end
   end
-
-  private
 
   # @return [Counts]
   def overall_counts

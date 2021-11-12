@@ -77,7 +77,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
     end
   end
 
-  describe "#counts_by_event" do
+  describe "#counts_for_event" do
     subject do
       described_class.new(
         short_names: ["First Event", "Second Event"],
@@ -93,17 +93,21 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       )
     end
 
-    let(:result) { subject.counts_by_event }
-    let(:expected_result) do
-      {
-        1 => described_class::Counts.new(1, "First Event", 3, 3, 2, 2),
-        2 => described_class::Counts.new(2, "Second Event", 4, 3, 3, 2),
-        nil => described_class::Counts.new(nil, nil, 7, 6, 5, 4),
-      }
+    let(:result) { subject.counts_for_event(event_id) }
+
+    context "for the first event" do
+      let(:event_id) { 1 }
+      it { expect(result).to eq(described_class::Counts.new(1, "First Event", 3, 3, 2, 2)) }
     end
 
-    it "returns a hash with organized information" do
-      expect(result).to eq(expected_result)
+    context "for the second event" do
+      let(:event_id) { 2 }
+      it { expect(result).to eq(described_class::Counts.new(2, "Second Event", 4, 3, 3, 2)) }
+    end
+
+    context "for the overall event group" do
+      let(:event_id) { nil }
+      it { expect(result).to eq(described_class::Counts.new(nil, nil, 7, 6, 5, 4)) }
     end
   end
 end

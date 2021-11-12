@@ -73,7 +73,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def row_counts(row, event_id, kind)
-    row.counts_by_event[event_id].send(kind)
+    row.counts_for_event(event_id).send(kind)
   end
 
   def split

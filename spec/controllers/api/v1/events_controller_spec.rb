@@ -220,7 +220,7 @@ RSpec.describe Api::V1::EventsController do
         context 'when display_style is elapsed' do
           let(:display_style) { 'elapsed' }
 
-          it 'returns time data in absolute time format' do
+          it 'returns time data in elapsed time format' do
             make_request
             parsed_response = JSON.parse(response.body)
             subject_row = parsed_response['included'].first

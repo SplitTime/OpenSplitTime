@@ -212,8 +212,8 @@ RSpec.describe Api::V1::EventsController do
             expect(subject_row.dig('attributes', 'displayStyle')).to eq('absolute')
 
             response_times = subject_row.dig('attributes', 'absoluteTimes').flatten.map(&:in_time_zone)
-            expected_times = subject_effort.split_times.map(&:absolute_time)
-            expect(response_times).to match_array(expected_times)
+            expected_times = subject_effort.ordered_split_times.map(&:absolute_time)
+            expect(response_times).to eq(expected_times)
           end
         end
 
@@ -228,8 +228,8 @@ RSpec.describe Api::V1::EventsController do
             expect(subject_row.dig('attributes', 'displayStyle')).to eq('elapsed')
 
             response_times = subject_row.dig('attributes', 'elapsedTimes').flatten
-            expected_times = subject_effort.split_times.map(&:time_from_start)
-            expect(response_times).to match_array(expected_times)
+            expected_times = subject_effort.ordered_split_times.map(&:time_from_start)
+            expect(response_times).to eq(expected_times)
           end
         end
 

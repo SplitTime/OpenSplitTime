@@ -11,7 +11,7 @@ module Api
       attribute :elapsed_times, if: Proc.new { |row|
         row.show_elapsed_times?
       } do |object|
-        object.elapsed_times.map { |e| e.map(&:to_f) }
+        object.elapsed_times.map { |e| e.map { |time| time&.to_f } }
       end
 
       attribute :segment_times, if: Proc.new { |row|

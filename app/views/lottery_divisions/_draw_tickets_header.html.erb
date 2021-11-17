@@ -28,7 +28,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-8">
-          <h6 class="font-weight-bold">Winners</h6>
+          <h6 class="font-weight-bold">Accepted</h6>
         </div>
         <div class="col-4">
           <h6 class="text-right"><%= "(#{division.winning_entrants.count}/#{division.maximum_entries})" %></h6>
@@ -39,7 +39,7 @@
       </div>
       <div class="row mt-2">
         <div class="col-8">
-          <h6 class="font-weight-bold">Waitlist</h6>
+          <h6 class="font-weight-bold">Wait List</h6>
         </div>
         <div class="col-4">
           <h6 class="text-right"><%= "(#{division.wait_list_entrants.count}/#{division.maximum_wait_list})" %></h6>
@@ -50,7 +50,7 @@
       </div>
       <div class="row mt-2">
         <div class="col-8">
-          <h6 class="font-weight-bold">Pre-selects</h6>
+          <h6 class="font-weight-bold">Pre-selected</h6>
         </div>
         <div class="col-4">
           <h6 class="text-right"><%= "(#{division.entrants.pre_selected.drawn.count}/#{division.entrants.pre_selected.count})" %></h6>

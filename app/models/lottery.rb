@@ -2,7 +2,7 @@
 
 class Lottery < ApplicationRecord
   extend FriendlyId
-  include CapitalizeAttributes, Delegable
+  include CapitalizeAttributes, Concealable, Delegable
 
   belongs_to :organization
   has_many :divisions, class_name: "LotteryDivision", dependent: :destroy
@@ -13,6 +13,9 @@ class Lottery < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :name
   friendly_id :name, use: [:slugged, :history]
+
+  attribute :concealed, default: -> { true }
+  enum status: [:preview, :live, :finished], _default: :preview
 
   validates_presence_of :name, :scheduled_start_date
   validates_uniqueness_of :name, case_sensitive: false, scope: :organization

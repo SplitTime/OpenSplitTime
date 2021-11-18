@@ -22,6 +22,15 @@
       </div>
 
       <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :concealed, "Concealed (invisible to the public)?" %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.check_box :concealed, default: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <%= f.submit(@lottery.new_record? ? "Create Lottery" : "Update Lottery", class: 'btn btn-primary btn-large') %>
         </div>

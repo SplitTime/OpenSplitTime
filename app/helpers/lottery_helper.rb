@@ -71,4 +71,19 @@ module LotteryHelper
       concat badgeize_boolean(entrant.pre_selected)
     end
   end
+
+  def lottery_status_badge(status)
+    color = case status
+            when "preview"
+              :primary
+            when "live"
+              :danger
+            when "finished"
+              :success
+            else
+              :warning
+            end
+
+    content_tag(:span, status.titleize, class: "badge badge-#{color} align-top", style: "font-size:0.8rem;")
+  end
 end

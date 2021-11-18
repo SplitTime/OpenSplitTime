@@ -23,6 +23,18 @@
 
       <div class="form-group">
         <div class="control-label col-sm-2">
+          <%= f.label :status %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.select :status,
+                       options_for_select(::Lottery.statuses.map { |key, value| [key.titleize, ::Lottery.statuses.key(value)] }, selected: @lottery.status),
+                       {},
+                       {class: "form-control dropdown-select-field"} %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
           <%= f.label :concealed, "Concealed (invisible to the public)?" %>
         </div>
         <div class="col-sm-8">

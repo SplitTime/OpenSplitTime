@@ -68,6 +68,10 @@ class LotteryPresenter < BasePresenter
     @records_from_context_count ||= records_from_context.size
   end
 
+  def viewable_results?
+    lottery.live? || lottery.finished? || current_user&.authorized_for_lotteries?(lottery)
+  end
+
   def display_style
     params[:display_style].presence || DEFAULT_DISPLAY_STYLE
   end

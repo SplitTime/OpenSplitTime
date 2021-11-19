@@ -22,8 +22,8 @@ RSpec.describe LotteryEntrant, type: :model do
       context "when the existing scope includes entrants who have been drawn" do
         let(:division_name) { "Never Ever Evers" }
         it "returns a collection of all relevant entrants" do
-          expect(result.count).to eq(6)
-          expect(result.map(&:first_name)).to match_array(["Mitsuko", "Jospeh", "Nenita", "Emeline", "Modesta", "Norris"])
+          expect(result.count).to eq(5)
+          expect(result.map(&:first_name)).to match_array(["Mitsuko", "Jospeh", "Nenita", "Emeline", "Modesta"])
         end
       end
 
@@ -47,7 +47,9 @@ RSpec.describe LotteryEntrant, type: :model do
       end
 
       context "when the existing scope entrants have all been drawn" do
+        before { division.draw_ticket! }
         let(:division_name) { "Never Ever Evers" }
+
         it "returns an empty collection" do
           expect(result).to be_empty
         end

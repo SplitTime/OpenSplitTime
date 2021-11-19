@@ -25,14 +25,16 @@
         <% end %>
       </aside>
     </div>
-    <% if @presenter.display_style == "draws" %>
-      <div class="mb-4">
-        <%= link_to "Browse Entrants and Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block font-weight-bold" %>
-      </div>
-    <% else %>
-      <div>
-        <%= link_to "View Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws), class: "btn btn-outline-secondary btn-block text-success font-weight-bold" %>
-      </div>
+    <% if @presenter.viewable_results? %>
+      <% if @presenter.display_style == "draws" %>
+        <div class="mb-4">
+          <%= link_to "Browse Entrants and Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block font-weight-bold" %>
+        </div>
+      <% else %>
+        <div>
+          <%= link_to "View Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws), class: "btn btn-outline-secondary btn-block text-success font-weight-bold" %>
+        </div>
+      <% end %>
     <% end %>
     <!-- Navigation -->
     <% unless @presenter.display_style == "draws" %>
@@ -43,9 +45,11 @@
         <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
           link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
         end %>
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
-          link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
-        end %>
+        <% if @presenter.viewable_results? %>
+          <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
+            link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
+          end %>
+        <% end %>
       </ul>
     <% end %>
   </div>
@@ -136,46 +140,56 @@
     <% end %>
 
   <% when "draws" %>
-    <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
-    <h6 class="text-center">Live updating</h6>
-    <div class="back-and-forth-path">
-      <span class="back-and-forth-shape trail"></span>
-    </div>
+    <% if @presenter.viewable_results? %>
+      <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
+      <% if @presenter.lottery.live? %>
+        <h6 class="text-center">Live updating</h6>
+        <div class="back-and-forth-path">
+          <span class="back-and-forth-shape trail"></span>
+        </div>
+      <% end %>
 
-    <div id="lottery_draws">
-      <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws_ordered %>
-    </div>
+      <div id="lottery_draws">
+        <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws_ordered %>
+      </div>
+    <% else %>
+      <h6 class="text-center">This lottery is not yet live</h6>
+    <% end %>
 
   <% when "results" %>
-    <% if @presenter.lottery_draws.present? %>
-      <% @presenter.divisions.each do |division| %>
-        <div class="card">
-          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
-          <div class="card-body">
-            <h5>Accepted</h5>
-            <% if division.winning_entrants.present? %>
-              <ol>
-                <% division.winning_entrants.each do |entrant| %>
-                  <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
-                <% end %>
-              </ol>
-            <% else %>
-              <p>No entrants have been drawn yet</p>
-            <% end %>
-            <% if division.wait_list_entrants.present? %>
-              <h5>Wait List</h5>
-              <ol>
-                <% division.wait_list_entrants.each do |entrant| %>
-                  <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
-                <% end %>
-              </ol>
-            <% end %>
+    <% if @presenter.viewable_results? %>
+      <% if @presenter.lottery_draws.present? %>
+        <% @presenter.divisions.each do |division| %>
+          <div class="card">
+            <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
+            <div class="card-body">
+              <h5>Accepted</h5>
+              <% if division.winning_entrants.present? %>
+                <ol>
+                  <% division.winning_entrants.each do |entrant| %>
+                    <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                  <% end %>
+                </ol>
+              <% else %>
+                <p>No entrants have been drawn yet</p>
+              <% end %>
+              <% if division.wait_list_entrants.present? %>
+                <h5>Wait List</h5>
+                <ol>
+                  <% division.wait_list_entrants.each do |entrant| %>
+                    <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                  <% end %>
+                </ol>
+              <% end %>
+            </div>
           </div>
-        </div>
-        <br/>
+          <br/>
+        <% end %>
+      <% else %>
+        <p><strong>No results are available yet</strong></p>
       <% end %>
     <% else %>
-      <p><strong>No results are available yet</strong></p>
+      <h6 class="text-center">This lottery is not yet live</h6>
     <% end %>
   <% end %>
 </article>

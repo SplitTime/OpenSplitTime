@@ -7,7 +7,10 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= "#{@presenter.name}" %></strong></h1>
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= lottery_status_badge(@presenter.status) %>
+          </h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
@@ -77,6 +80,7 @@
                         method: :post,
                         class: "btn btn-danger" %>
           <% end %>
+         <%= link_to_toggle_lottery_public_private(@presenter) %>
         </div>
       </div>
     </div>

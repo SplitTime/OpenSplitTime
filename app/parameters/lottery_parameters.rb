@@ -3,10 +3,12 @@
 class LotteryParameters < BaseParameters
   def self.permitted
     [
+      :concealed,
       :id,
       :name,
       :scheduled_start_date,
       :slug,
+      :status,
     ]
   end
 

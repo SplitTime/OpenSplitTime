@@ -5,7 +5,7 @@ class LotteryPresenter < BasePresenter
   DEFAULT_SORT_HASH = {division_name: :asc, last_name: :asc}
 
   attr_reader :lottery, :params, :action_name
-  delegate :divisions, :name, :organization, :scheduled_start_date, :to_param, to: :lottery
+  delegate :concealed?, :divisions, :name, :organization, :scheduled_start_date, :status, :to_param, to: :lottery
   delegate :draws, :entrants, :tickets, to: :lottery, prefix: true
 
   def initialize(lottery, view_context)
@@ -66,6 +66,10 @@ class LotteryPresenter < BasePresenter
 
   def records_from_context_count
     @records_from_context_count ||= records_from_context.size
+  end
+
+  def viewable_results?
+    lottery.live? || lottery.finished? || current_user&.authorized_for_lotteries?(lottery)
   end
 
   def display_style

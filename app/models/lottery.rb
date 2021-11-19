@@ -2,7 +2,7 @@
 
 class Lottery < ApplicationRecord
   extend FriendlyId
-  include CapitalizeAttributes, Delegable
+  include CapitalizeAttributes, Concealable, Delegable
 
   belongs_to :organization
   has_many :divisions, class_name: "LotteryDivision", dependent: :destroy
@@ -14,12 +14,13 @@ class Lottery < ApplicationRecord
   capitalize_attributes :name
   friendly_id :name, use: [:slugged, :history]
 
+  attribute :concealed, default: -> { true }
+  enum status: [:preview, :live, :finished], _default: :preview
+
   validates_presence_of :name, :scheduled_start_date
   validates_uniqueness_of :name, case_sensitive: false, scope: :organization
 
-  scope :with_policy_scope_attributes, -> do
-    from(select("lotteries.*, organizations.concealed").joins(:organization), :lotteries)
-  end
+  scope :with_policy_scope_attributes, -> { all }
 
   def create_draw_for_ticket!(ticket)
     return if ticket.nil? || ticket.drawn?

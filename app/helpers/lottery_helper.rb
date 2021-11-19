@@ -47,10 +47,50 @@ module LotteryHelper
     link_to fa_icon("pencil-alt"), url, options
   end
 
+  def link_to_toggle_lottery_public_private(presenter)
+    if presenter.concealed?
+      set_to_value = false
+      button_text = "Make public"
+      confirm_text = "NOTE: This will make #{presenter.name} visible to the public. Are you sure you want to proceed?"
+    else
+      set_to_value = true
+      button_text = "Make private"
+      confirm_text = "NOTE: This will conceal #{presenter.name} from the public. Are you sure you want to proceed?"
+    end
+
+    link_to button_text,
+            organization_lottery_path(presenter.organization, presenter.lottery, lottery: {concealed: set_to_value}),
+            data: {confirm: confirm_text},
+            method: :put,
+            class: "btn btn-md btn-warning"
+  end
+
   def pre_selected_badge_with_label(entrant, tag: :h5)
     content_tag(tag) do
       concat "Pre-selected: "
       concat badgeize_boolean(entrant.pre_selected)
     end
+  end
+
+  def lottery_status_badge(status)
+    case status
+    when "preview"
+      color = :primary
+      tooltip_text = "Draws and results are not available to the public"
+    when "live"
+      color = :danger
+      tooltip_text = "Draws and results are available to the public; live updating animation is enabled"
+    when "finished"
+      color = :success
+      tooltip_text = "Draws and results are available to the public; live updating animation is disabled"
+    else
+      raise ArgumentError, "Can't build a badge; unknown status: #{status}"
+    end
+
+    content_tag(:span,
+                status.titleize,
+                style: "font-size:0.8rem;",
+                class: "badge badge-#{color} align-top has-tooltip",
+                data: {toggle: "tooltip", "original-title" => tooltip_text})
   end
 end

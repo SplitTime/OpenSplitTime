@@ -129,7 +129,7 @@
 
   <article class="ost-article container">
     <% if @presenter.lotteries.present? %>
-      <%= render "lotteries_list", lotteries: @presenter.lotteries %>
+      <%= render "lotteries/lotteries_list", lotteries: @presenter.lotteries %>
     <% else %>
       <h4>No lotteries are associated with this organization.</h4>
     <% end %>

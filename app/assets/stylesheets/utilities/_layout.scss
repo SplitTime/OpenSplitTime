@@ -12,3 +12,9 @@
 .ost-article {
     margin-top: 20px;
 }
+
+.horizontal-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+}

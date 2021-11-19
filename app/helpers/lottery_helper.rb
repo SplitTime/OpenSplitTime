@@ -47,24 +47,6 @@ module LotteryHelper
     link_to fa_icon("pencil-alt"), url, options
   end
 
-  def link_to_toggle_lottery_public_private(presenter)
-    if presenter.concealed?
-      set_to_value = false
-      button_text = "Make public"
-      confirm_text = "NOTE: This will make #{presenter.name} visible to the public. Are you sure you want to proceed?"
-    else
-      set_to_value = true
-      button_text = "Make private"
-      confirm_text = "NOTE: This will conceal #{presenter.name} from the public. Are you sure you want to proceed?"
-    end
-
-    link_to button_text,
-            organization_lottery_path(presenter.organization, presenter.lottery, lottery: {concealed: set_to_value}),
-            data: {confirm: confirm_text},
-            method: :put,
-            class: "btn btn-md btn-warning"
-  end
-
   def pre_selected_badge_with_label(entrant, tag: :h5)
     content_tag(tag) do
       concat "Pre-selected: "

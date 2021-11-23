@@ -170,7 +170,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to(match /Bib number \d already exists/))
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Bib number \d already exists/)
       end
     end
 
@@ -189,7 +189,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to(match /Gender can't be blank/))
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Gender can't be blank/)
       end
     end
 
@@ -208,7 +208,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to(match /Split times absolute time can't be blank/))
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Split times absolute time can't be blank/)
       end
     end
   end

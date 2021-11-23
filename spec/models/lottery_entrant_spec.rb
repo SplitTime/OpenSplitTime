@@ -75,7 +75,7 @@ RSpec.describe LotteryEntrant, type: :model do
       let(:birthdate) { existing_entrant.birthdate }
       it "is not valid" do
         expect(new_entrant).not_to be_valid
-        expect(new_entrant.errors.full_messages).to(include /has already been entered/))
+        expect(new_entrant.errors.full_messages).to include(/has already been entered/)
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe LotteryEntrant, type: :model do
       let(:birthdate) { existing_entrant.birthdate }
       it "is not valid" do
         expect(new_entrant).not_to be_valid
-        expect(new_entrant.errors.full_messages).to(include /has already been entered/))
+        expect(new_entrant.errors.full_messages).to include(/has already been entered/)
       end
     end
 

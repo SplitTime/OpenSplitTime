@@ -77,9 +77,9 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns descriptive errors" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to(match /Transform failed:/))
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Transform failed:/)
         expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
-        expect(subject.errors.second.dig(:detail, :messages).first).to(match /Transform failed:/))
+        expect(subject.errors.second.dig(:detail, :messages).first).to match(/Transform failed:/)
         expect(subject.errors.second.dig(:detail, :row_index)).to eq(2)
       end
 
@@ -102,7 +102,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns a descriptive error" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to(match /Division could not be found:/))
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Division could not be found:/)
         expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
       end
     end
@@ -116,7 +116,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
 
       it "adds a descriptive error" do
         expect(subject.errors.size).to eq(1)
-        expect(subject.errors.first[:title]).to(match /Parent is missing/))
+        expect(subject.errors.first[:title]).to match(/Parent is missing/)
       end
     end
   end

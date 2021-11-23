@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Api::V1::EventGroupsController do
+  include BitkeyDefinitions
+
   let(:event_group) { event_groups(:dirty_30) }
   let(:type) { "event_groups" }
 

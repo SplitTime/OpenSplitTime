@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::RebuildEffortTimes do
+  include BitkeyDefinitions
+
   subject { described_class.new(effort: effort, current_user_id: current_user_id) }
   let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
   let(:current_user_id) { 1 }

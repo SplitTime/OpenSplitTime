@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require "support/bitkey_definitions"
+
 RSpec.describe TimePoint, type: :model do
-  require "support/bitkey_definitions"
   include BitkeyDefinitions
 
   subject { TimePoint.new(lap, split_id, bitkey) }

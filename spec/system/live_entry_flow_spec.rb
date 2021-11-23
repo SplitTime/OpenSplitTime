@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe "Live entry app flow", type: :system, js: true do
+  include BitkeyDefinitions
+
   let(:user) { users(:admin_user) }
   let(:event_1) { events(:sum_100k) }
   let(:event_2) { events(:sum_55k) }

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe FindExpectedLap do
+  include BitkeyDefinitions
+
   subject { FindExpectedLap.new(effort: effort, subject_attribute: subject_attribute, subject_value: subject_value, split_id: split_id, bitkey: bitkey) }
   let(:subject_attribute) { :military_time }
 

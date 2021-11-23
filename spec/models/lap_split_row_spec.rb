@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require "support/bitkey_definitions"
+
 RSpec.describe LapSplitRow, type: :model do
-  require "support/bitkey_definitions"
   include BitkeyDefinitions
 
   subject(:lap_split_row) { LapSplitRow.new(lap_split: lap_split, split_times: split_times, show_laps: show_laps) }

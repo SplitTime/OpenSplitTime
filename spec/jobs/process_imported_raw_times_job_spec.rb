@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe ProcessImportedRawTimesJob do
+  include BitkeyDefinitions
+
   subject { ProcessImportedRawTimesJob.new }
   let(:perform_process) { subject.perform(event_group, raw_times) }
 

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe LapSplit, type: :model do
+  include BitkeyDefinitions
+
   subject(:lap_split) { LapSplit.new(lap, split) }
   let(:lap) { 1 }
   let(:split) { Split.new }

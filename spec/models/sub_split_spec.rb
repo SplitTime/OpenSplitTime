@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require "support/bitkey_definitions"
+
 RSpec.describe SubSplit, type: :model do
-  require "support/bitkey_definitions"
   include BitkeyDefinitions
 
   describe "#initialize" do

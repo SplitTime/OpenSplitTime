@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::DestroyEffortSplitTimes do
+  include BitkeyDefinitions
+
   subject { Interactors::DestroyEffortSplitTimes.new(effort, split_time_ids) }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10_000, stopped_here: false) }

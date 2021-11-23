@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::SetEffortStop do
+  include BitkeyDefinitions
+
   subject { Interactors::SetEffortStop.new(effort, stop_status: stop_status, split_time_id: split_time_id) }
   let(:stop_status) { nil }
   let(:split_time_id) { nil }

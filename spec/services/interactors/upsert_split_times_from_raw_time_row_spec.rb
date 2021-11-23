@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
+  include BitkeyDefinitions
+
   subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container) }
   let(:response) { subject.perform! }
 

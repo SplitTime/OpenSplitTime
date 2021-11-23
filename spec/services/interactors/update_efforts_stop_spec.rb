@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::UpdateEffortsStop do
+  include BitkeyDefinitions
+
   subject { Interactors::UpdateEffortsStop.new(subject_efforts, stop_status: stop_status) }
   let(:subject_efforts) { [effort_1, effort_2] }
   let(:stop_status) { nil }

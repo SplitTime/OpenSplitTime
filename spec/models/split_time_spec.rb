@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe SplitTime, kind: :model do
+  include BitkeyDefinitions
+
   it_behaves_like "data_status_methods"
   it_behaves_like "auditable"
   it { is_expected.to localize_time_attribute(:absolute_time) }

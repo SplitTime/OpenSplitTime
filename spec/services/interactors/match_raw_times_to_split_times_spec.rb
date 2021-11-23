@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe Interactors::MatchRawTimesToSplitTimes do
+  include BitkeyDefinitions
+
   subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group, raw_times: raw_times, tolerance: tolerance) }
   let(:tolerance) { nil }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0) }

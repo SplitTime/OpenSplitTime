@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include BitkeyDefinitions
 
 RSpec.describe SplitTimeQuery do
+  include BitkeyDefinitions
+
   let(:lap_1) { 1 }
 
   describe ".typical_segment_time" do

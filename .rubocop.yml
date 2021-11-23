@@ -68,6 +68,9 @@ Style/FrozenStringLiteralComment:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/SlicingWithRange:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 

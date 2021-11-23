@@ -20,6 +20,7 @@ module ETL
 
       def load_records
         return if errors.present?
+
         ActiveRecord::Base.transaction do
           custom_load
           raise ActiveRecord::Rollback if invalid_records.present?

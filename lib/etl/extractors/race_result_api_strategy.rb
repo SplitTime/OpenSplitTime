@@ -26,11 +26,11 @@ module ETL
       end
 
       def attribute_pairs(data_row)
-        time_pairs = time_indices.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub('Time: ', '')] }.to_h
-        bib, name = data_row[1].split('. ')
-        bib = bib.gsub('#', '')
+        time_pairs = time_indices.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub("Time: ", "")] }.to_h
+        bib, name = data_row[1].split(". ")
+        bib = bib.gsub("#", "")
         name = name.titleize
-        status = data_row[2].gsub('STATUS: ', '')
+        status = data_row[2].gsub("STATUS: ", "")
         time_pairs.merge(bib: bib, name: name, status: status, rr_id: data_row[0])
       end
 
@@ -39,15 +39,15 @@ module ETL
       end
 
       def time_index(header, i)
-        i if header['expression'].include?('"Time: "')
+        i if header["expression"].include?('"Time: "')
       end
 
       def data_rows
-        @data_rows ||= raw_data['data']&.values&.first
+        @data_rows ||= raw_data["data"]&.values&.first
       end
 
       def data_fields
-        @data_fields ||= raw_data.dig('list', 'fields')
+        @data_fields ||= raw_data.dig("list", "fields")
       end
 
       def validate_raw_data

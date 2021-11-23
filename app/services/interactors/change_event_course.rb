@@ -60,13 +60,21 @@ module Interactors
     end
 
     def response_message
-      errors.present? ? "The course for #{event.name} could not be changed from #{old_course.name} to #{new_course.name}. " :
-          "The course for #{event.name} was changed from #{old_course.name} to #{new_course.name}. "
+      if errors.present?
+        "The course for #{event.name} could not be changed from #{old_course.name} to #{new_course.name}. "
+      else
+        "The course for #{event.name} was changed from #{old_course.name} to #{new_course.name}. "
+      end
     end
 
     def verify_compatibility
-      errors << split_name_mismatch_error(event, new_course) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
-      errors << sub_split_mismatch_error(event, new_course) unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
+      unless split_times.all? { |st| old_new_split_map[st.split_id] }
+        errors << split_name_mismatch_error(event, new_course) and return
+      end
+
+      unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
+        errors << sub_split_mismatch_error(event, new_course)
+      end
     end
   end
 end

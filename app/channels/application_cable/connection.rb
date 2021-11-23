@@ -8,7 +8,7 @@ module ApplicationCable
       self.current_user = find_verified_user
     end
 
-  private
+    private
 
     def find_verified_user
       if (verified_user = env["warden"].user)

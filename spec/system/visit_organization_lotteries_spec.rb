@@ -21,7 +21,7 @@ RSpec.describe "Visit an organization lotteries page" do
   let(:outside_lottery) { create(:lottery, organization: outside_organization) }
 
   before { concealed_lottery.update(concealed: true) }
-  
+
   scenario "The user is a visitor" do
     visit_page
 

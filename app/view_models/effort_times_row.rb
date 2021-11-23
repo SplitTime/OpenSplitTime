@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class EffortTimesRow
-  include PersonalInfo, Rankable, TimeFormats
+  include TimeFormats
+  include Rankable
+  include PersonalInfo
 
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation].freeze
 
   attr_reader :effort, :display_style
+
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset,
            :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
@@ -36,29 +39,29 @@ class EffortTimesRow
                       show_indicator_for_stop: show_indicator_for_stop?(lap_split))
     end
   end
-  
+
   def show_elapsed_times?
-    display_style.in? %w(elapsed all)
+    display_style.in? %w[elapsed all]
   end
 
   def show_absolute_times?
-    display_style.in? %w(ampm military absolute all)
+    display_style.in? %w[ampm military absolute all]
   end
 
   def show_segment_times?
-    display_style.in? %w(segment all)
+    display_style.in? %w[segment all]
   end
 
   def show_pacer_flags?
-    display_style == 'all'
+    display_style == "all"
   end
 
   def show_stopped_here_flags?
-    display_style == 'all'
+    display_style == "all"
   end
 
   def show_time_data_statuses?
-    display_style == 'all'
+    display_style == "all"
   end
 
   def elapsed_times
@@ -85,9 +88,9 @@ class EffortTimesRow
     time_clusters.map(&:stopped_here_flags)
   end
 
-  alias_method :stopped, :stopped?
-  alias_method :dropped, :dropped?
-  alias_method :finished, :finished?
+  alias stopped stopped?
+  alias dropped dropped?
+  alias finished finished?
 
   private
 
@@ -119,7 +122,7 @@ class EffortTimesRow
 
   def last_split_time
     @last_split_time ||=
-        lap_splits.flat_map(&:time_points).map { |time_point| indexed_split_times[time_point] }.compact.last
+      lap_splits.flat_map(&:time_points).map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
   def lap_split_keys

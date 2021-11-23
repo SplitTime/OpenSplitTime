@@ -2,8 +2,7 @@
 
 class EventSeriesPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def post_initialize
-    end
+    def post_initialize; end
 
     def authorized_to_edit_records
       scope.delegated_to(user)

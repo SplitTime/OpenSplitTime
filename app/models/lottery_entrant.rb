@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 class LotteryEntrant < ApplicationRecord
-  include CapitalizeAttributes, Delegable, PersonalInfo, Searchable, StateCountrySyncable, Structpluck
+  include Structpluck
+  include StateCountrySyncable
+  include Searchable
+  include PersonalInfo
+  include Delegable
+  include CapitalizeAttributes
 
   has_person_name
   enum gender: [:male, :female]
@@ -14,17 +19,17 @@ class LotteryEntrant < ApplicationRecord
 
   scope :drawn, -> { with_drawn_at_attribute.where.not(drawn_at: nil) }
   scope :undrawn, -> { with_drawn_at_attribute.where(drawn_at: nil) }
-  scope :with_drawn_at_attribute, -> do
+  scope :with_drawn_at_attribute, lambda {
     from(select("distinct on (lottery_tickets.lottery_entrant_id) lottery_entrants.*, lottery_draws.created_at as drawn_at")
            .left_joins(tickets: :draw).order("lottery_tickets.lottery_entrant_id, drawn_at"), :lottery_entrants)
-  end
+  }
   scope :ordered, -> { order(:drawn_at) }
   scope :ordered_for_export, -> { with_division_name.order("division_name, last_name") }
   scope :pre_selected, -> { where(pre_selected: true) }
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
-  scope :with_policy_scope_attributes, -> do
+  scope :with_policy_scope_attributes, lambda {
     from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
-  end
+  }
 
   validates_presence_of :first_name, :last_name, :gender, :birthdate, :number_of_tickets
   validates_with ::LotteryEntrantUniqueValidator

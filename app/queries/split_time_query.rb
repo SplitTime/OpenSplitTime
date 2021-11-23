@@ -11,7 +11,7 @@ class SplitTimeQuery < BaseQuery
     end_lap = segment.end_lap.to_i
     end_id = segment.end_id.to_i
     end_bitkey = segment.end_bitkey.to_i
-    focus_clause = effort_ids.present? ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : 'true'
+    focus_clause = effort_ids.present? ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : "true"
 
     query = <<-SQL
       with segment_times as
@@ -159,7 +159,8 @@ class SplitTimeQuery < BaseQuery
 
   def self.effort_times(args)
     lap, split_id, bitkey = args[:time_point].values
-    lowest_time, highest_time = args[:time_range].begin, args[:time_range].end
+    lowest_time = args[:time_range].begin
+    highest_time = args[:time_range].end
     finished_only = !!args[:finished_only]
     limit = args[:limit]
 
@@ -267,7 +268,7 @@ class SplitTimeQuery < BaseQuery
   end
 
   def self.sql_for_existing_scope(scope)
-    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
+    scope.connection.unprepared_statement { scope.reorder(nil).select("id").to_sql }
   end
 
   def self.valid_statuses_list

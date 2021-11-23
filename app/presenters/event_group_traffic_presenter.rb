@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class EventGroupTrafficPresenter < BasePresenter
-  include SplitAnalyzable, TimeFormats
+  include TimeFormats
+  include SplitAnalyzable
 
   attr_reader :event_group, :band_width
+
   delegate :name, :organization, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :multiple_events?, to: :event_group
 
@@ -18,12 +20,11 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def table_title
-    case
-    when split.nil?
+    if split.nil?
       "Unknown split."
-    when interval_split_traffics.nil?
+    elsif interval_split_traffics.nil?
       "Too many rows to analyze. Use a lower frequency."
-    when interval_split_traffics.empty?
+    elsif interval_split_traffics.empty?
       "No entrants have arrived at this aid station."
     else
       "Traffic at #{split_name} in increments of #{band_width / 1.minute} minutes"
@@ -40,7 +41,7 @@ class EventGroupTrafficPresenter < BasePresenter
   end
 
   def counts_header_string
-    sub_split_kinds.many? ? sub_split_kinds.map { |kind| kind.to_s.titleize }.join(" / ") : 'Count'
+    sub_split_kinds.many? ? sub_split_kinds.map { |kind| kind.to_s.titleize }.join(" / ") : "Count"
   end
 
   def range_string(ist)

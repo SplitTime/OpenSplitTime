@@ -1,5 +1,5 @@
 namespace :friendly_id do
-  desc 'For a given model, adds all friendly_id slugs to the friendly_id_slugs table'
+  desc "For a given model, adds all friendly_id slugs to the friendly_id_slugs table"
   task :update_slugs, [:model] => :environment do |_, args|
     start_time = Time.current
     abort "No model specified" unless args.model
@@ -20,8 +20,8 @@ namespace :friendly_id do
     puts "\nFinished friendly_id:update_slugs for model #{model} in #{elapsed_time} seconds"
   end
 
-  desc 'For all friendly_id models, adds friendly_id slugs to the friendly_id_slugs table'
-  task :update_all_slugs => :environment do
+  desc "For all friendly_id models, adds friendly_id slugs to the friendly_id_slugs table"
+  task update_all_slugs: :environment do
     start_time = Time.current
 
     [:event, :event_group, :course, :split, :person, :effort, :organization, :user].each do |model_name|

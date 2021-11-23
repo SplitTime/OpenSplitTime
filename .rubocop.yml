@@ -1,9 +1,6 @@
 AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
-  Include:
-    - '**/Gemfile'
-    - '**/Rakefile'
   Exclude:
    - 'bin/*'
    - 'db/schema.rb'

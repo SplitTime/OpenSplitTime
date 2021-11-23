@@ -6,7 +6,7 @@ class PeopleController < ApplicationController
   def index
     # Sort will destroy fuzzy match ranking, so don't automatically
     # set it if a search param exists
-    params[:sort] ||= 'last_name,first_name' unless prepared_params[:search].present?
+    params[:sort] ||= "last_name,first_name" unless prepared_params[:search].present?
 
     @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
     @people = @people.search(prepared_params[:search])
@@ -36,7 +36,7 @@ class PeopleController < ApplicationController
     if @person.save
       redirect_to session.delete(:return_to) || @person
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -46,7 +46,7 @@ class PeopleController < ApplicationController
     if @person.update(permitted_params)
       redirect_to @person
     else
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -73,7 +73,7 @@ class PeopleController < ApplicationController
     authorize @person
     @person_merge = PersonMergeView.new(@person, params[:proposed_match])
     if @person_merge.proposed_match.nil?
-      flash[:success] = 'No potential matches detected.'
+      flash[:success] = "No potential matches detected."
       redirect_to person_path(@person)
     end
   end

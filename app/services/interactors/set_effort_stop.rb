@@ -2,7 +2,6 @@
 
 module Interactors
   class SetEffortStop
-
     def self.perform(effort, options = {})
       new(effort, options).perform
     end
@@ -18,7 +17,7 @@ module Interactors
     def perform
       ordered_split_times.each { |st| st.stopped_here = false }
       split_time.stopped_here = stop_status if split_time
-      Interactors::Response.new([], '', resources)
+      Interactors::Response.new([], "", resources)
     end
 
     private
@@ -42,7 +41,9 @@ module Interactors
     end
 
     def validate_setup
-      raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}" if split_time_id && !found_split_time
+      if split_time_id && !found_split_time
+        raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}"
+      end
     end
   end
 end

@@ -30,6 +30,7 @@ module ETL
     attr_reader :import_job
     attr_writer :errors
     attr_accessor :extract_strategy, :transform_strategy, :load_strategy, :extracted_structs, :transformed_protos
+
     delegate :file, :format, :parent_type, :parent_id, to: :import_job
 
     def set_etl_strategies
@@ -70,9 +71,9 @@ module ETL
 
     def set_finish_attributes
       if errors.empty?
-        import_job.update(:status => :finished)
+        import_job.update(status: :finished)
       else
-        import_job.update(:status => :failed, :error_message => errors.to_json)
+        import_job.update(status: :failed, error_message: errors.to_json)
       end
     end
 

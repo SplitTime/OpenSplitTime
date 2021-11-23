@@ -34,7 +34,7 @@ module ETL
 
       # Remove commentary like " - LOWLANDER" and " - COURSE RECORD"
       def remove_name_classifications(proto_record)
-        proto_record[:full_name] = proto_record[:full_name].sub(/\s-\s[A-Z\s]*/, '')
+        proto_record[:full_name] = proto_record[:full_name].sub(/\s-\s[A-Z\s]*/, "")
       end
 
       def global_attributes

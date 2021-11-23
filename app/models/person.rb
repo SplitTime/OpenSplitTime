@@ -1,33 +1,40 @@
 # frozen_string_literal: true
 
 class Person < ApplicationRecord
-  include Auditable, CapitalizeAttributes, Concealable, PersonalInfo, Searchable,
-          StateCountrySyncable, Subscribable, Matchable, UrlAccessible
+  include UrlAccessible
+  include Matchable
+  include Subscribable
+  include StateCountrySyncable
+  include Searchable
+  include PersonalInfo
+  include Concealable
+  include CapitalizeAttributes
+  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
-  strip_attributes only: [:phone], :regex => /[^0-9|+]/
+  strip_attributes only: [:phone], regex: /[^0-9|+]/
   capitalize_attributes :first_name, :last_name, :city
   friendly_id :slug_candidates, use: [:slugged, :history]
   has_paper_trail
 
   enum gender: [:male, :female]
   has_many :efforts, dependent: :nullify
-  belongs_to :claimant, class_name: 'User', foreign_key: 'user_id', optional: true
+  belongs_to :claimant, class_name: "User", foreign_key: "user_id", optional: true
   has_one_attached :photo
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group('people.id'), :people) }
+  scope :with_age_and_effort_count, -> { from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group("people.id"), :people) }
   scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
 
-  SQL = {age_and_effort_count: 'people.*, COUNT(efforts.id) as effort_count, ' +
-      'ROUND(AVG((extract(epoch from(current_date - events.scheduled_start_time))/60/60/24/365.25) + efforts.age)) ' +
-      'as current_age_from_efforts'}
+  SQL = {age_and_effort_count: "people.*, COUNT(efforts.id) as effort_count, " +
+                               "ROUND(AVG((extract(epoch from(current_date - events.scheduled_start_time))/60/60/24/365.25) + efforts.age)) " +
+                               "as current_age_from_efforts"}.freeze
 
   validates_presence_of :first_name, :last_name, :gender
   validates :email, allow_blank: true, length: {maximum: 105},
-            format: {with: VALID_EMAIL_REGEX}
+                    format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
   validates_with BirthdateValidator
 
@@ -41,9 +48,10 @@ class Person < ApplicationRecord
 
   def self.age_matches(age_param, threshold = 2)
     return none unless age_param
+
     ids = with_age_and_effort_count
-              .select { |person| person.current_age && ((person.current_age - age_param).abs < threshold) }
-              .map(&:id)
+        .select { |person| person.current_age && ((person.current_age - age_param).abs < threshold) }
+        .map(&:id)
     where(id: ids)
   end
 
@@ -57,7 +65,7 @@ class Person < ApplicationRecord
 
   def slug_candidates
     [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
-     [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
+     [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime("%H:%M:%S")]]
   end
 
   def should_generate_new_friendly_id?

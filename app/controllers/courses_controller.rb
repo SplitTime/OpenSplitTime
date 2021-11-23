@@ -34,7 +34,7 @@ class CoursesController < ApplicationController
     if @course.save
       redirect_to courses_path
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -42,9 +42,9 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to @course, notice: 'Course updated'
+      redirect_to @course, notice: "Course updated"
     else
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -52,7 +52,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.destroy
-      flash[:success] = 'Course deleted.'
+      flash[:success] = "Course deleted."
       redirect_to organizations_path
     else
       flash[:danger] = @course.errors.full_messages.join("\n")
@@ -87,9 +87,9 @@ class CoursesController < ApplicationController
         session[:return_to] = plan_effort_course_path(@course)
       end
       format.csv do
-        csv_stream = render_to_string(partial: 'plan.csv.ruby')
+        csv_stream = render_to_string(partial: "plan.csv.ruby")
         filename = "#{@course.name}-pacing-plan-#{@presenter.cleaned_time}-#{Date.today}.csv"
-        send_data(csv_stream, type: 'text/csv', filename: filename)
+        send_data(csv_stream, type: "text/csv", filename: filename)
       end
     end
   end

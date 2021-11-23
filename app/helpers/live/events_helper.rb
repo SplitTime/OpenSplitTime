@@ -5,14 +5,14 @@ module Live::EventsHelper
     split_name = args[:split_name]
     absolute_times_local = args[:absolute_times_local]
 
-    split_name ? "#{split_name} at #{join_absolute_times(absolute_times_local)}" : '[not recorded]'
+    split_name ? "#{split_name} at #{join_absolute_times(absolute_times_local)}" : "[not recorded]"
   end
 
   def display_progress_lap_and_times(args)
     lap_name = args[:lap_name]
     absolute_times_local = args[:absolute_times_local]
 
-    [lap_name.presence, join_absolute_times(absolute_times_local)].compact.join(': ')
+    [lap_name.presence, join_absolute_times(absolute_times_local)].compact.join(": ")
   end
 
   def display_progress_times_only(args)
@@ -24,7 +24,10 @@ module Live::EventsHelper
   end
 
   def join_absolute_times(absolute_times_local)
-    absolute_times_local.present? ?
-        absolute_times_local.map(&method(:day_time_military_format)).join(' / ') : '[not recorded]'
+    if absolute_times_local.present?
+      absolute_times_local.map(&method(:day_time_military_format)).join(" / ")
+    else
+      "[not recorded]"
+    end
   end
 end

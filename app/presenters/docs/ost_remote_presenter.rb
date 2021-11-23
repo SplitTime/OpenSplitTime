@@ -7,15 +7,15 @@ module Docs
     end
 
     def display_category
-      'OST Remote'
+      "OST Remote"
     end
 
     def items
       {
-          setup: {display_topic: 'Setup', pages: ['Welcome', 'Your Event and Aid Station']},
-          menu: {display_topic: 'Menu', pages: ['Overview', 'Live Entry', 'Review/Sync', 'Cross Check', 'Change Station', 'Logout']},
-          usage: {display_topic: 'Usage', pages: ['The Timing Station', 'Recording Tips']},
-          support: {display_topic: 'Support', pages: ['Getting Help']}
+        setup: {display_topic: "Setup", pages: ["Welcome", "Your Event and Aid Station"]},
+        menu: {display_topic: "Menu", pages: ["Overview", "Live Entry", "Review/Sync", "Cross Check", "Change Station", "Logout"]},
+        usage: {display_topic: "Usage", pages: ["The Timing Station", "Recording Tips"]},
+        support: {display_topic: "Support", pages: ["Getting Help"]}
       }
     end
   end

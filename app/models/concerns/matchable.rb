@@ -2,22 +2,24 @@
 
 module Matchable
   def possible_matching_people
-    self.people_with_same_name
-        .or(self.people_changed_last_name)
-        .or(self.people_changed_first_name)
-        .or(self.people_same_full_name)
-        .where.not(id: self.id)
+    people_with_same_name
+        .or(people_changed_last_name)
+        .or(people_changed_first_name)
+        .or(people_same_full_name)
+        .where.not(id: id)
   end
 
   def exact_matching_person # Suitable for automated matcher
     potential_matches = Person.last_name_matches_exact(last_name)
-                                         .first_name_matches_exact(first_name)
-                                         .gender_matches(gender)
-                                         .where.not(id: self.id)
+        .first_name_matches_exact(first_name)
+        .gender_matches(gender)
+        .where.not(id: id)
     name_gender_age_match = potential_matches.age_matches(current_age)
-    exact_match = name_gender_age_match.present? ?
-        name_gender_age_match :
-        potential_matches.state_matches(state_code)
+    exact_match = if name_gender_age_match.present?
+                    name_gender_age_match
+                  else
+                    potential_matches.state_matches(state_code)
+                  end
     exact_match.one? ? exact_match.first : nil # Convert single match to object; return nil if more than one match
   end
 
@@ -35,6 +37,7 @@ module Matchable
 
   def people_changed_last_name # To find women who may have changed their last names
     return Person.none if male?
+
     Person.female.first_name_matches_exact(first_name).state_matches(state_code).age_matches(current_age)
   end
 

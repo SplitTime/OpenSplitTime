@@ -19,7 +19,7 @@ class ApplicationPolicy
         authorized_to_edit_records
       end
     end
-    alias_method :editable, :resolve_editable
+    alias editable resolve_editable
 
     def resolve_viewable
       if user&.admin?
@@ -30,8 +30,8 @@ class ApplicationPolicy
         authorized_to_view_records
       end
     end
-    alias_method :viewable, :resolve_viewable
-    alias_method :resolve, :resolve_viewable
+    alias viewable resolve_viewable
+    alias resolve resolve_viewable
 
     def visible_records
       scope.respond_to?(:visible) ? scope.visible : scope.all

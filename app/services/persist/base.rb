@@ -45,9 +45,12 @@ module Persist
     end
 
     def validate_setup
-      raise ArgumentError, 'model must be provided' unless model && model.is_a?(Class)
-      raise ArgumentError, 'resources must be provided' unless resources && resources.is_a?(Enumerable)
-      raise ArgumentError, 'all resources must be members of the model class' unless resources.all? { |resource| resource.class == model }
+      raise ArgumentError, "model must be provided" unless model && model.is_a?(Class)
+      raise ArgumentError, "resources must be provided" unless resources && resources.is_a?(Enumerable)
+      unless resources.all? { |resource| resource.instance_of?(model) }
+        raise ArgumentError, "all resources must be members of the model class"
+      end
+
       validate_additional_setup
     end
 

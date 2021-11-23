@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class IntendedTimeCalculator
-
   def self.absolute_time_local(args)
     new(args).absolute_time_local
   end
@@ -12,27 +11,31 @@ class IntendedTimeCalculator
                            exclusive: [:military_time, :effort, :time_point, :prior_valid_split_time,
                                        :expected_time_from_prior, :lap_splits, :split_times],
                            class: self.class)
-    @military_time = args[:military_time].gsub(/[^\d:]/, '')
+    @military_time = args[:military_time].gsub(/[^\d:]/, "")
     @effort = args[:effort]
     @time_point = args[:time_point]
     @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
     @prior_valid_split_time = args[:prior_valid_split_time] ||
-        SplitTimeFinder.guaranteed_prior(effort: effort,
-                                         time_point: time_point,
-                                         lap_splits: lap_splits,
-                                         split_times: args[:split_times])
+                              SplitTimeFinder.guaranteed_prior(effort: effort,
+                                                               time_point: time_point,
+                                                               lap_splits: lap_splits,
+                                                               split_times: args[:split_times])
     @expected_time_from_prior = args[:expected_time_from_prior] ||
-        TimePredictor.segment_time(segment: subject_segment,
-                                   effort: effort,
-                                   lap_splits: lap_splits,
-                                   completed_split_time: prior_valid_split_time)
+                                TimePredictor.segment_time(segment: subject_segment,
+                                                           effort: effort,
+                                                           lap_splits: lap_splits,
+                                                           completed_split_time: prior_valid_split_time)
     validate_setup
   end
 
   def absolute_time_local
     return nil unless military_time.present?
-    preliminary_day_and_time && (preliminary_day_and_time < threshold_day_and_time) ?
-        preliminary_day_and_time + 1.day : preliminary_day_and_time
+
+    if preliminary_day_and_time && (preliminary_day_and_time < threshold_day_and_time)
+      preliminary_day_and_time + 1.day
+    else
+      preliminary_day_and_time
+    end
   end
 
   private
@@ -57,7 +60,7 @@ class IntendedTimeCalculator
 
   def earliest_day_and_time
     # Use ActiveSupport datetime parsing logic to avoid problems with DST conversion
-    [prior_day_and_time.to_date.to_s, military_time].join(' ').in_time_zone(time_zone)
+    [prior_day_and_time.to_date.to_s, military_time].join(" ").in_time_zone(time_zone)
   end
 
   def days_from_earliest
@@ -92,7 +95,11 @@ class IntendedTimeCalculator
   end
 
   def validate_setup
-    raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})" unless military_time.is_a?(String)
-    raise ArgumentError, "#{military_time} is improperly formatted for #{self.class}" if military_time.present? && !TimeConversion.valid_military?(military_time)
+    unless military_time.is_a?(String)
+      raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})"
+    end
+    if military_time.present? && !TimeConversion.valid_military?(military_time)
+      raise ArgumentError, "#{military_time} is improperly formatted for #{self.class}"
+    end
   end
 end

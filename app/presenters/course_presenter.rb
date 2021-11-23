@@ -2,6 +2,7 @@
 
 class CoursePresenter < BasePresenter
   attr_reader :course
+
   delegate :id, :name, :description, :ordered_splits, :simple?, to: :course
 
   def initialize(course, params, current_user)
@@ -15,7 +16,7 @@ class CoursePresenter < BasePresenter
   end
 
   def display_style
-    params[:display_style] == 'splits' ? 'splits' : 'events'
+    params[:display_style] == "splits" ? "splits" : "events"
   end
 
   def events
@@ -33,5 +34,6 @@ class CoursePresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
   delegate :gpx, to: :course
 end

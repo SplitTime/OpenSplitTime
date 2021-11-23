@@ -2,8 +2,7 @@
 
 module Admin
   class DashboardPolicy < ApplicationPolicy
-    def post_initialize(_record)
-    end
+    def post_initialize(_record); end
 
     def show?
       user.admin?

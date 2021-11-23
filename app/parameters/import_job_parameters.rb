@@ -6,7 +6,7 @@ class ImportJobParameters < BaseParameters
       :file,
       :format,
       :parent_id,
-      :parent_type,
+      :parent_type
     ]
   end
 end

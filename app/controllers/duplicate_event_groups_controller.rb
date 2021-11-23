@@ -17,7 +17,7 @@ class DuplicateEventGroupsController < ApplicationController
     if @duplicate_event_group.valid?
       redirect_to event_group_path(@duplicate_event_group.new_event_group, force_settings: true)
     else
-      render 'new'
+      render "new"
     end
   end
 

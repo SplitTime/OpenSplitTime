@@ -7,12 +7,12 @@ module Docs
     end
 
     def display_category
-      'Documentation Index'
+      "Documentation Index"
     end
 
     def items
       {
-          contents: {display_topic: 'Contents', pages: ['Categories']},
+        contents: {display_topic: "Contents", pages: ["Categories"]}
       }
     end
   end

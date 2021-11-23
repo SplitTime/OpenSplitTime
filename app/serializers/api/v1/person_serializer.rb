@@ -7,7 +7,7 @@ module Api
 
       PRIVATE_ATTRIBUTES = [:phone,
                             :email,
-                            :birthdate]
+                            :birthdate].freeze
 
       attributes :id,
                  :first_name,
@@ -20,7 +20,7 @@ module Api
                  :country_code
 
       PRIVATE_ATTRIBUTES.each do |att|
-        attribute att, if: Proc.new { |effort, params|
+        attribute att, if: proc { |effort, params|
           current_user = params[:current_user]
           current_user&.authorized_to_edit?(effort)
         }

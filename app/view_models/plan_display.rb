@@ -2,7 +2,8 @@
 
 class PlanDisplay < EffortWithLapSplitRows
   include TimeFormats
-  attr_reader :course
+  attr_reader :course, :error_messages
+
   delegate :name, :organization, :simple?, to: :course
   delegate :multiple_laps?, to: :event, allow_nil: true
 
@@ -12,8 +13,6 @@ class PlanDisplay < EffortWithLapSplitRows
     @error_messages = []
     validate_setup
   end
-
-  attr_reader :error_messages
 
   def effort
     @effort ||= event.efforts.new
@@ -32,7 +31,7 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def cleaned_time
-    time = (params[:expected_time] || '').gsub(/[^\d:]/, '').split(':').first(2).join(':')
+    time = (params[:expected_time] || "").gsub(/[^\d:]/, "").split(":").first(2).join(":")
     time.length.between?(1, 2) ? "#{time}:00" : time
   end
 
@@ -41,12 +40,11 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def start_time
-    case
-    when params[:start_time].blank?
+    if params[:start_time].blank?
       default_start_time
-    when params[:start_time].is_a?(String)
+    elsif params[:start_time].is_a?(String)
       ActiveSupport::TimeZone[default_time_zone].parse(params[:start_time])
-    when params[:start_time].is_a?(ActionController::Parameters)
+    elsif params[:start_time].is_a?(ActionController::Parameters)
       TimeConversion.components_to_absolute(params[:start_time]).in_time_zone(default_time_zone)
     else
       default_start_time
@@ -88,7 +86,7 @@ class PlanDisplay < EffortWithLapSplitRows
   def plan_description
     formatted_time = time_format_hhmm(expected_time)
     lap_text = multiple_laps? ? "over #{expected_laps} laps" : nil
-    ["Pacing plan for a #{formatted_time} effort", lap_text].compact.join(' ')
+    ["Pacing plan for a #{formatted_time} effort", lap_text].compact.join(" ")
   end
 
   private
@@ -96,10 +94,12 @@ class PlanDisplay < EffortWithLapSplitRows
   attr_reader :params
 
   def typical_effort
-    @typical_effort ||= TypicalEffort.new(event: event,
-                                          expected_time_from_start: expected_time,
-                                          start_time: start_time,
-                                          time_points: time_points) if expected_time && start_time
+    if expected_time && start_time
+      @typical_effort ||= TypicalEffort.new(event: event,
+                                            expected_time_from_start: expected_time,
+                                            start_time: start_time,
+                                            time_points: time_points)
+    end
   end
 
   def lap_splits
@@ -116,8 +116,9 @@ class PlanDisplay < EffortWithLapSplitRows
 
   def default_start_time
     return course.next_start_time.in_time_zone(default_time_zone) if course.next_start_time
+
     years_prior = Time.now.year - event.scheduled_start_time.year
-    event.scheduled_start_time_local + ((years_prior * 52.17).round(0)).weeks
+    event.scheduled_start_time_local + (years_prior * 52.17).round(0).weeks
   end
 
   def default_time_zone
@@ -127,7 +128,7 @@ class PlanDisplay < EffortWithLapSplitRows
   def validate_setup
     error_messages << "No events have been held on this course." if course.visible_events.empty?
     AssignSegmentTimes.perform(ordered_split_times) if error_messages.empty?
-  rescue ArgumentError => error
-    error_messages << error.message
+  rescue ArgumentError => e
+    error_messages << e.message
   end
 end

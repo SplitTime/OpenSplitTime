@@ -167,7 +167,6 @@ RSpec.describe User, type: :model do
     end
 
     context "when adding a single watch_effort that has a topic_resource_key" do
-
       it "adds the watch_effort" do
         expect(user_1.watch_efforts.size).to eq(0)
         user_1.watch_efforts << effort
@@ -187,7 +186,6 @@ RSpec.describe User, type: :model do
     end
 
     context "when adding multiple watch_efforts with topic_resource_keys" do
-
       it "works as expected" do
         expect(user_1.watch_efforts.size).to eq(0)
         user_1.watch_efforts << subject_efforts

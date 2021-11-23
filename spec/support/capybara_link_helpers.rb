@@ -14,6 +14,6 @@ module CapybaraLinkHelpers
   end
 
   def verify_alert(text)
-    expect(page.find('.alert')).to have_content(text)
+    expect(page.find(".alert")).to have_content(text)
   end
 end

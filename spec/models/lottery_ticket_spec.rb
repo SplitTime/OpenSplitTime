@@ -14,8 +14,8 @@ RSpec.describe LotteryTicket, type: :model do
       it "returns a collection of drawn and undrawn tickets respectively" do
         expect(drawn_result.count).to eq(2)
         expect(undrawn_result.count).to eq(6)
-        expect(drawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(["Denisha", "Melina"])
-        expect(undrawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(["Denisha", "Melina", "Melina", "Shenika", "Abraham", "Maud"])
+        expect(drawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(%w[Denisha Melina])
+        expect(undrawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(%w[Denisha Melina Melina Shenika Abraham Maud])
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe LotteryTicket, type: :model do
       it "returns a collection of drawn and undrawn tickets respectively" do
         expect(drawn_result).to be_empty
         expect(undrawn_result.count).to eq(7)
-        expect(undrawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(["Veola", "Veola", "Blythe", "Ivette", "Jerrold", "Jerrold", "Jerrold"])
+        expect(undrawn_result.map { |ticket| ticket.entrant.first_name }).to match_array(%w[Veola Veola Blythe Ivette Jerrold Jerrold Jerrold])
       end
     end
   end

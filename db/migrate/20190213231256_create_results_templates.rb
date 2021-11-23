@@ -5,7 +5,7 @@ class CreateResultsTemplates < ActiveRecord::Migration[5.2]
       t.string :name, unique: true
       t.integer :aggregation_method
       t.integer :podium_size
-      t.integer :point_system, array: true, default: '{}'
+      t.integer :point_system, array: true, default: "{}"
       t.string :temp_key
       t.string :slug, null: false
       t.integer :created_by

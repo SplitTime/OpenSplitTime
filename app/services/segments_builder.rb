@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SegmentsBuilder
-
   def self.segments(args)
     new(args).segments
   end

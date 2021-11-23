@@ -27,15 +27,15 @@ module ETL
       end
 
       def full_name
-        bib_and_name.split(' - ').last
+        bib_and_name.split(" - ").last
       end
 
       def bib_number
-        bib_and_name.split(' - ').first.gsub(/\D/, '')
+        bib_and_name.split(" - ").first.gsub(/\D/, "")
       end
 
       def bib_and_name
-        runner_info.xpath('tr[2]/td[2]').text.squish
+        runner_info.xpath("tr[2]/td[2]").text.squish
       end
 
       def gender
@@ -47,15 +47,15 @@ module ETL
       end
 
       def city
-        bio.split(':').last.split(', ').first
+        bio.split(":").last.split(", ").first
       end
 
       def state_code
-        bio.split(':').last.split(', ').last
+        bio.split(":").last.split(", ").last
       end
 
       def bio
-        runner_info.xpath('tr[4]/td[2]').text.squish
+        runner_info.xpath("tr[4]/td[2]").text.squish
       end
 
       def runner_info
@@ -63,11 +63,11 @@ module ETL
       end
 
       def times
-        times_table.xpath('tr')[2..-1].map { |tr| times_from_tr(tr) }.to_h
+        times_table.xpath("tr")[2..-1].map { |tr| times_from_tr(tr) }.to_h
       end
 
       def dnf?
-        records_table.text.include?('DNF')
+        records_table.text.include?("DNF")
       end
 
       def times_table
@@ -79,8 +79,8 @@ module ETL
       end
 
       def times_from_tr(tr)
-        cells = tr.xpath('td').map { |td| td.text.squish }
-        [cells[0].split(':').first.gsub(/\D/, '').to_i, [cells[1..2].join(' '), cells[3..4].join(' ')]]
+        cells = tr.xpath("td").map { |td| td.text.squish }
+        [cells[0].split(":").first.gsub(/\D/, "").to_i, [cells[1..2].join(" "), cells[3..4].join(" ")]]
       end
 
       def validate_setup

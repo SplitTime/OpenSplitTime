@@ -1,12 +1,12 @@
 # This is a temporary rake task that should be deleted
 # once it has been run in all environments.
 
-require 'active_record'
-require 'active_record/errors'
+require "active_record"
+require "active_record/errors"
 
 namespace :temp do
   desc "titleizes fields that are all-lowercase or all-uppercase"
-  task :fix_capitalization => :environment do
+  task fix_capitalization: :environment do
     Rails.application.eager_load!
 
     models = [::Effort, ::Person, ::User]

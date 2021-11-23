@@ -5,7 +5,7 @@ class LotteryDivisionParameters < BaseParameters
     [
       :maximum_entries,
       :maximum_wait_list,
-      :name,
+      :name
     ]
   end
 end

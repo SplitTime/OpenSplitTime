@@ -9,7 +9,7 @@
 module Interactors
   class UpsertSplitTimesFromRawTimeRow
     include Interactors::Errors
-    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer remarks]
+    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer remarks].freeze
 
     def self.perform!(args)
       new(args).perform!
@@ -42,12 +42,13 @@ module Interactors
 
       raw_time_row.errors ||= []
       raw_time_row.errors += errors
-      Interactors::Response.new(errors, '', {upserted_split_times: upserted_split_times})
+      Interactors::Response.new(errors, "", {upserted_split_times: upserted_split_times})
     end
 
     private
 
     attr_reader :event_group, :raw_time_row, :times_container, :upserted_split_times, :errors
+
     delegate :events, to: :event_group
     delegate :raw_times, :effort, to: :raw_time_row
 
@@ -75,9 +76,7 @@ module Interactors
       status_response = Interactors::SetEffortStatus.perform(effort, times_container: times_container)
       combined_response = status_response.merge(stop_response)
       if combined_response.successful?
-        unless effort.save
-          errors << resource_error_object(effort)
-        end
+        errors << resource_error_object(effort) unless effort.save
       else
         errors << combined_response.errors
       end
@@ -86,7 +85,9 @@ module Interactors
     def validate_setup
       errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
       errors << missing_effort_error unless raw_time_row.effort
-      errors << missing_new_split_time_error(raw_times.reject(&:new_split_time).first) unless raw_times.all?(&:new_split_time)
+      unless raw_times.all?(&:new_split_time)
+        errors << missing_new_split_time_error(raw_times.reject(&:new_split_time).first)
+      end
     end
   end
 end

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-  PERMITTED_DISPLAY_STYLES = %w[courses stewards events event_series lotteries]
+  PERMITTED_DISPLAY_STYLES = %w[courses stewards events event_series lotteries].freeze
 
   attr_reader :organization
+
   delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
 
   def initialize(organization, params, current_user)
@@ -32,7 +33,7 @@ class OrganizationPresenter < BasePresenter
 
   def event_date_range(series)
     dates = event_dates(series)
-    [dates.first, dates.last].uniq.join(' to ')
+    [dates.first, dates.last].uniq.join(" to ")
   end
 
   def courses
@@ -45,7 +46,7 @@ class OrganizationPresenter < BasePresenter
   end
 
   def default_display_style
-    'events'
+    "events"
   end
 
   def show_visibility_columns?

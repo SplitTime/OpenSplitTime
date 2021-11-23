@@ -3,7 +3,6 @@
 module ETL
   module Loaders
     class InsertStrategy < BaseLoader
-
       def post_initialize(options) end
 
       def custom_load
@@ -22,6 +21,7 @@ module ETL
 
       def build_record(proto_record)
         return nil if proto_record.record_action == :destroy
+
         model_class = proto_record.record_class
         attributes = proto_record.to_h
         record = model_class.new(attributes)

@@ -1,4 +1,4 @@
-#frozen_string_literal: true
+# frozen_string_literal: true
 
 class AssignSegmentTimes
   def self.perform(ordered_split_times, source_attribute = :absolute_time)

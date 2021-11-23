@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe EffortRow, type: :model do
   subject { described_class.new(test_effort) }

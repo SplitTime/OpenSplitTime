@@ -27,7 +27,7 @@ module ETL
       end
 
       def full_name
-        runner_info.xpath('h3').text.squish
+        runner_info.xpath("h3").text.squish
       end
 
       def gender
@@ -39,7 +39,7 @@ module ETL
       end
 
       def city
-        bio.split(',').first.split[5..-1].join(' ')
+        bio.split(",").first.split[5..-1].join(" ")
       end
 
       def state_code
@@ -47,7 +47,7 @@ module ETL
       end
 
       def bio
-        runner_info.xpath('p').text.squish
+        runner_info.xpath("p").text.squish
       end
 
       def runner_info
@@ -55,7 +55,7 @@ module ETL
       end
 
       def times
-        times_table.xpath('div').map { |div| times_from_div(div) }.push(['Finish', finish_time]).to_h
+        times_table.xpath("div").map { |div| times_from_div(div) }.push(["Finish", finish_time]).to_h
       end
 
       def times_table
@@ -69,7 +69,7 @@ module ETL
       end
 
       def finish_time
-        html.search('[@id="pnlGunTime"]').text.squish.split.last || '--'
+        html.search('[@id="pnlGunTime"]').text.squish.split.last || "--"
       end
 
       def validate_setup

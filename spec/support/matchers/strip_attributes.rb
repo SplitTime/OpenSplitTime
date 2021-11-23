@@ -16,7 +16,7 @@ module StripAttributes
       private
 
       def collapse_spaces?(subject)
-        return true if !@options[:collapse_spaces]
+        return true unless @options[:collapse_spaces]
 
         subject.send("#{@attribute}=", " string    string ")
         subject.valid?

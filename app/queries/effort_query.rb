@@ -2,9 +2,9 @@
 
 class EffortQuery < BaseQuery
   def self.rank_and_status(args = {})
-    select_sql = sql_select_from_string(args[:fields], permitted_column_names, '*')
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'event_id,overall_rank')
-    where_clause = args[:effort_id].present? ? "where id = #{args[:effort_id]}" : ''
+    select_sql = sql_select_from_string(args[:fields], permitted_column_names, "*")
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "event_id,overall_rank")
+    where_clause = args[:effort_id].present? ? "where id = #{args[:effort_id]}" : ""
 
     <<-SQL.squish
       with existing_scope as
@@ -252,11 +252,11 @@ class EffortQuery < BaseQuery
 
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    Effort.connection.unprepared_statement { Effort.reorder(nil).select('id').to_sql }
+    Effort.connection.unprepared_statement { Effort.reorder(nil).select("id").to_sql }
   end
 
   def self.sql_for_existing_scope(scope)
-    scope.connection.unprepared_statement { scope.reorder(nil).select('id').to_sql }
+    scope.connection.unprepared_statement { scope.reorder(nil).select("id").to_sql }
   end
 
   def self.permitted_column_names

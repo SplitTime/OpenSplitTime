@@ -13,7 +13,8 @@ class EventStaging::EventsController < EventStaging::BaseController
   private
 
   def set_event
-    return if params[:id] == 'new'
+    return if params[:id] == "new"
+
     @event = Event.friendly.find(params[:id])
     redirect_numeric_to_friendly(@event, params[:id])
   end

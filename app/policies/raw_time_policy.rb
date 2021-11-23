@@ -2,8 +2,7 @@
 
 class RawTimePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def post_initialize
-    end
+    def post_initialize; end
   end
 
   attr_reader :raw_time

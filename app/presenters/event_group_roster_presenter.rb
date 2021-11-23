@@ -2,6 +2,7 @@
 
 class EventGroupRosterPresenter < BasePresenter
   attr_reader :event_group
+
   delegate :to_param, to: :event_group
 
   def initialize(event_group, params, current_user)
@@ -36,12 +37,12 @@ class EventGroupRosterPresenter < BasePresenter
 
   def filtered_roster_efforts
     @filtered_roster_efforts ||= event_group_efforts
-                                   .from(roster_efforts, "efforts")
-                                   .where(filter_hash)
-                                   .search(search_text)
-                                   .order(sort_hash.presence || {bib_number: :asc})
-                                   .select { |effort| matches_criteria?(effort) }
-                                   .paginate(page: page, per_page: per_page)
+        .from(roster_efforts, "efforts")
+        .where(filter_hash)
+        .search(search_text)
+        .order(sort_hash.presence || {bib_number: :asc})
+        .select { |effort| matches_criteria?(effort) }
+        .paginate(page: page, per_page: per_page)
   end
 
   def filtered_roster_efforts_count
@@ -49,7 +50,7 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def events
-    @events ||= event_group.events.select_with_params('').order(:scheduled_start_time).to_a
+    @events ||= event_group.events.select_with_params("").order(:scheduled_start_time).to_a
   end
 
   def event

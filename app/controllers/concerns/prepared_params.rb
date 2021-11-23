@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PreparedParams
-  SPECIAL_FILTER_FIELDS = %i(editable search)
-  BOOLEAN_FILTER_ATTRIBUTES = %i(ready_to_start)
+  SPECIAL_FILTER_FIELDS = %i[editable search].freeze
+  BOOLEAN_FILTER_ATTRIBUTES = %i[ready_to_start].freeze
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
@@ -26,15 +26,18 @@ class PreparedParams
 
   def fields
     @fields ||= (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
-                  .transform_values { |fields| fields.split(',').map { |field| field.camelize(:lower).to_sym } }
-                  .with_indifferent_access
+        .transform_values { |fields| fields.split(",").map { |field| field.camelize(:lower).to_sym } }
+        .with_indifferent_access
   end
 
   def filter
     return @filter if defined?(@filter)
+
     filter_params = transformed_filter_values.except(*SPECIAL_FILTER_FIELDS)
-    filter_params['gender'] = prepare_gender(filter_params['gender']) if filter_params.has_key?('gender')
-    BOOLEAN_FILTER_ATTRIBUTES.each { |attr| filter_params[attr] = filter_params[attr].to_boolean if filter_params[attr] }
+    filter_params["gender"] = prepare_gender(filter_params["gender"]) if filter_params.has_key?("gender")
+    BOOLEAN_FILTER_ATTRIBUTES.each do |attr|
+      filter_params[attr] = filter_params[attr].to_boolean if filter_params[attr]
+    end
     @filter = filter_params.to_h.with_indifferent_access
   end
 
@@ -51,11 +54,11 @@ class PreparedParams
   end
 
   def sort
-    @sort ||= sort_hash.reject {|field, _| permitted_query.exclude?(field)}.with_indifferent_access
+    @sort ||= sort_hash.reject { |field, _| permitted_query.exclude?(field) }.with_indifferent_access
   end
 
   def sort_text
-    sort.map { |field, direction| "#{field} #{direction}" }.join(',')
+    sort.map { |field, direction| "#{field} #{direction}" }.join(",")
   end
 
   def method_missing(method)
@@ -68,7 +71,7 @@ class PreparedParams
 
   def transformed_filter_values
     permitted_filter_params.transform_values do |list|
-      items = list.to_s.split(',')
+      items = list.to_s.split(",")
       items.size > 1 ? items : items.first.presence
     end
   end
@@ -80,7 +83,7 @@ class PreparedParams
 
   def sort_hash
     sort_fields.each_with_object({}) do |field, hash|
-      if field.start_with?('-')
+      if field.start_with?("-")
         hash[field[1..-1].underscore] = :desc
       else
         hash[field.underscore] = :asc
@@ -91,12 +94,12 @@ class PreparedParams
   def permitted_filter_params
     # ActionController::Parameters#permit will strip out any key whose value is an Array,
     # so first convert any Arrays to comma-separated lists
-    params[:filter]&.each { |k,v| params[:filter][k] = v.join(',') if v.is_a?(Array) }
+    params[:filter]&.each { |k, v| params[:filter][k] = v.join(",") if v.is_a?(Array) }
     permitted_keys = permitted_query << :editable
     params[:filter]&.permit(*permitted_keys) || {}
   end
 
   def sort_fields
-    params[:sort].to_s.split(',')
+    params[:sort].to_s.split(",")
   end
 end

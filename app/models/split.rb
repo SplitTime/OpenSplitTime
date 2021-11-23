@@ -3,7 +3,13 @@
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 10 # Distance (in meters) below which split locations are deemed equivalent
 
-  include Auditable, Delegable, DelegatedConcealable, Locatable, GuaranteedFindable, UnitConversions, UrlAccessible
+  include UrlAccessible
+  include UnitConversions
+  include GuaranteedFindable
+  include Locatable
+  include DelegatedConcealable
+  include Delegable
+  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -23,27 +29,31 @@ class Split < ApplicationRecord
   validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
   validates :kind, inclusion: {in: Split.kinds.keys}
   validates_uniqueness_of [:base_name, :parameterized_base_name], scope: :course_id, case_sensitive: false,
-                          message: 'must be unique for a course'
+                                                                  message: "must be unique for a course"
   validates_uniqueness_of :kind, scope: :course_id, if: :start?,
-                          message: 'only one start split permitted on a course'
+                                 message: "only one start split permitted on a course"
   validates_uniqueness_of :kind, scope: :course_id, if: :finish?,
-                          message: 'only one finish split permitted on a course'
+                                 message: "only one finish split permitted on a course"
   validates_uniqueness_of :distance_from_start, scope: :course_id,
-                          message: 'only one split of a given distance permitted on a course. Use sub_splits if needed.'
+                                                message: "only one split of a given distance permitted on a course. Use sub_splits if needed."
   validates_with SplitAttributesValidator
 
   scope :ordered, -> { order(:distance_from_start) }
-  scope :with_course_name, -> { from(select('splits.*, courses.name as course_name').joins(:course), :splits) }
-  scope :with_policy_scope_attributes, -> do
-    from(select('splits.*, courses.organization_id, courses.concealed').joins(:course), :splits)
-  end
-  scope :location_bounded_by, -> (params) { where(latitude: params[:south]..params[:north],
-                                                  longitude: params[:west]..params[:east]) }
-  scope :location_bounded_across_dateline, -> (params) { where(latitude: params[:south]..params[:north])
-                                                             .where.not(longitude: params[:east]..params[:west]) }
+  scope :with_course_name, -> { from(select("splits.*, courses.name as course_name").joins(:course), :splits) }
+  scope :with_policy_scope_attributes, lambda {
+    from(select("splits.*, courses.organization_id, courses.concealed").joins(:course), :splits)
+  }
+  scope :location_bounded_by, lambda { |params|
+                                where(latitude: params[:south]..params[:north],
+                                      longitude: params[:west]..params[:east])
+                              }
+  scope :location_bounded_across_dateline, lambda { |params|
+                                             where(latitude: params[:south]..params[:north])
+                                                 .where.not(longitude: params[:east]..params[:west])
+                                           }
 
   def self.null_record
-    @null_record ||= Split.new(base_name: '[not found]', description: '', sub_split_bitmap: 0)
+    @null_record ||= Split.new(base_name: "[not found]", description: "", sub_split_bitmap: 0)
   end
 
   def to_s
@@ -53,43 +63,39 @@ class Split < ApplicationRecord
   def distance_in_preferred_units
     Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end
-  alias_method :distance, :distance_in_preferred_units
+  alias distance distance_in_preferred_units
 
   def distance_in_preferred_units=(number_string)
     self.distance_from_start = Split.entered_distance_to_meters(number_string) if number_string.present?
   end
-  alias_method :distance=, :distance_in_preferred_units=
+  alias distance= distance_in_preferred_units=
 
   def vert_gain_in_preferred_units
     Split.meters_to_preferred_elevation(vert_gain_from_start).round(0) if vert_gain_from_start
   end
-  alias_method :vert_gain, :vert_gain_in_preferred_units
+  alias vert_gain vert_gain_in_preferred_units
 
   def vert_gain_in_preferred_units=(number_string)
     self.vert_gain_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
-  alias_method :vert_gain=, :vert_gain_in_preferred_units=
+  alias vert_gain= vert_gain_in_preferred_units=
 
   def vert_loss_in_preferred_units
     Split.meters_to_preferred_elevation(vert_loss_from_start).round(0) if vert_loss_from_start
   end
-  alias_method :vert_loss, :vert_loss_in_preferred_units
+  alias vert_loss vert_loss_in_preferred_units
 
   def vert_loss_in_preferred_units=(number_string)
     self.vert_loss_from_start = Split.entered_elevation_to_meters(number_string) if number_string.present?
   end
-  alias_method :vert_loss=, :vert_loss_in_preferred_units=
+  alias vert_loss= vert_loss_in_preferred_units=
 
   def elevation_in_preferred_units
     Split.meters_to_preferred_elevation(elevation) if elevation
   end
 
   def elevation_in_preferred_units=(entered_elevation)
-    if entered_elevation.present?
-      self.elevation = Split.entered_elevation_to_meters(entered_elevation)
-    else
-      self.elevation = nil
-    end
+    self.elevation = (Split.entered_elevation_to_meters(entered_elevation) if entered_elevation.present?)
   end
 
   def course_split_name
@@ -102,10 +108,10 @@ class Split < ApplicationRecord
 
   def name(bitkey = nil)
     if bitkey
-      name_extensions.size > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(' ') : base_name
+      name_extensions.size > 1 ? [base_name, SubSplit.kind(bitkey)].compact.join(" ") : base_name
     else
-      extensions = name_extensions.size > 1 ? name_extensions.join(' / ') : nil
-      [base_name, extensions].compact.join(' ')
+      extensions = name_extensions.size > 1 ? name_extensions.join(" / ") : nil
+      [base_name, extensions].compact.join(" ")
     end
   end
 
@@ -113,19 +119,19 @@ class Split < ApplicationRecord
     sub_split_bitkeys.map { |bitkey| SubSplit.kind(bitkey) }
   end
 
-  alias_method :sub_split_kinds, :name_extensions
+  alias sub_split_kinds name_extensions
 
   def name_extensions=(extensions)
     name_extension_array = extensions.respond_to?(:map) ? extensions : extensions.to_s.split
     bitkeys = name_extension_array.map { |name_extension| SubSplit.bitkey(name_extension) }.compact
-    if bitkeys.present?
-      self.sub_split_bitmap = bitkeys.inject(:|)
-    else
-      self.sub_split_bitmap = SubSplit::IN_BITKEY
-    end
+    self.sub_split_bitmap = if bitkeys.present?
+                              bitkeys.inject(:|)
+                            else
+                              SubSplit::IN_BITKEY
+                            end
   end
 
-  alias_method :sub_split_kinds=, :name_extensions=
+  alias sub_split_kinds= name_extensions=
 
   def sub_splits
     sub_split_bitkeys.map { |bitkey| SubSplit.new(id, bitkey) }
@@ -135,7 +141,7 @@ class Split < ApplicationRecord
     SubSplit.reveal_valid_bitkeys(sub_split_bitmap)
   end
 
-  alias_method :bitkeys, :sub_split_bitkeys
+  alias bitkeys sub_split_bitkeys
 
   def sub_split_in
     SubSplit.new(id, in_bitkey) if in_bitkey
@@ -154,7 +160,7 @@ class Split < ApplicationRecord
   end
 
   def course_name
-    @course_name ||= attributes['course_name'] || course&.name
+    @course_name ||= attributes["course_name"] || course&.name
   end
 
   def earliest_event_date

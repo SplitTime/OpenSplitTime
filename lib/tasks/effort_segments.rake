@@ -1,8 +1,8 @@
-require 'active_record'
+require "active_record"
 
 namespace :effort_segments do
   desc "sets effort segments for all efforts"
-  task :set => :environment do
+  task set: :environment do
     puts "Setting effort segments for all efforts"
 
     efforts = Effort.all
@@ -22,7 +22,7 @@ namespace :effort_segments do
   end
 
   desc "deletes effort segments for all efforts"
-  task :delete => :environment do
+  task delete: :environment do
     puts "Deleting effort segments for all efforts"
 
     EffortSegment.delete_all

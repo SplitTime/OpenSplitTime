@@ -16,5 +16,5 @@ module Concealable
     !concealed?
   end
 
-  alias_method :visible, :visible?
+  alias visible visible?
 end

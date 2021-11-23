@@ -5,15 +5,15 @@ class EffortsController < ApplicationController
 
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                   .where(prepared_params[:filter])
+        .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
         @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
-        send_data(builder.full_string, type: 'text/csv',
-                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+        send_data(builder.full_string, type: "text/csv",
+                                       filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
       end
     end
   end
@@ -41,7 +41,7 @@ class EffortsController < ApplicationController
     if @effort.save
       redirect_to effort_path(@effort)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -73,7 +73,7 @@ class EffortsController < ApplicationController
       end
     else
       @effort = effort
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -165,7 +165,7 @@ class EffortsController < ApplicationController
     else
       flash[:danger] = "Raw time could not be matched:\n#{split_time.errors.full_messages.join("\n")}"
       @presenter = EffortAuditView.new(@effort)
-      render 'efforts/audit'
+      render "efforts/audit"
     end
   end
 
@@ -188,7 +188,7 @@ class EffortsController < ApplicationController
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
       @presenter = EffortWithTimesPresenter.new(effort, params: params)
-      render 'edit_split_times', display_style: params[:display_style]
+      render "edit_split_times", display_style: params[:display_style]
     end
   end
 
@@ -210,11 +210,11 @@ class EffortsController < ApplicationController
 
   def mini_table
     @mini_table = EffortsMiniTable.new(params[:effort_ids])
-    render partial: 'efforts_mini_table'
+    render partial: "efforts_mini_table"
   end
 
   def show_photo
-    render partial: 'show_photo'
+    render partial: "show_photo"
   end
 
   private

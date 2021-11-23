@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'smarter_csv'
+require "smarter_csv"
 
 module ETL
   module Extractors
@@ -8,14 +8,14 @@ module ETL
       include ETL::Errors
 
       MAX_FILE_SIZE = 1.megabyte
-      BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding('UTF-8').freeze
+      BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding("UTF-8").freeze
       IMPORT_OPTIONS = {
         downcase_header: false,
         force_utf8: true,
         remove_empty_values: false,
         row_sep: :auto,
         strip_chars_from_headers: BYTE_ORDER_MARK,
-        strings_as_keys: true,
+        strings_as_keys: true
       }.freeze
 
       attr_reader :errors
@@ -29,10 +29,11 @@ module ETL
 
       def extract
         return if errors.present?
+
         rows = SmarterCSV.process(file, IMPORT_OPTIONS)
         rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
-      rescue SmarterCSV::SmarterCSVException, CSV::MalformedCSVError => exception
-        errors << smarter_csv_error(exception)
+      rescue SmarterCSV::SmarterCSVException, CSV::MalformedCSVError => e
+        errors << smarter_csv_error(e)
         []
       end
 
@@ -43,14 +44,13 @@ module ETL
       def file
         @file ||=
           begin
-            case
-            when source_data.is_a?(::ActionDispatch::Http::UploadedFile)
+            if source_data.is_a?(::ActionDispatch::Http::UploadedFile)
               File.open(source_data.tempfile.path)
-            when source_data.is_a?(::Pathname)
+            elsif source_data.is_a?(::Pathname)
               File.open(source_data)
-            when source_data.is_a?(::File)
+            elsif source_data.is_a?(::File)
               source_data
-            when source_data.is_a?(::ActiveStorage::Attached)
+            elsif source_data.is_a?(::ActiveStorage::Attached)
               StringIO.new(source_data.download, "r:utf-8")
             else
               errors << invalid_file_error(file)
@@ -71,7 +71,7 @@ module ETL
       def file_type_incorrect?
         return false unless file.respond_to?(:path)
 
-        file.path.split('.').last&.downcase != 'csv'
+        file.path.split(".").last&.downcase != "csv"
       end
     end
   end

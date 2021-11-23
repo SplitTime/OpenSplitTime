@@ -1,51 +1,51 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe VerifyRawTimeRow do
   subject { VerifyRawTimeRow.new(raw_time_row, times_container: times_container) }
   let(:raw_time_row) { RawTimeRow.new(raw_times, effort, event) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
-  let(:event) { build_stubbed(:event, splits: splits, course: course, scheduled_start_time_local: '2018-06-23 06:00:00', laps_required: 1) }
-  let(:start_time) { event&.scheduled_start_time || DateTime.parse('2018-10-31 08:00:00') }
+  let(:event) { build_stubbed(:event, splits: splits, course: course, scheduled_start_time_local: "2018-06-23 06:00:00", laps_required: 1) }
+  let(:start_time) { event&.scheduled_start_time || DateTime.parse("2018-10-31 08:00:00") }
   let(:course) { build_stubbed(:course) }
   let(:effort) { build_stubbed(:effort, event: event, split_times: split_times, bib_number: 10) }
-  let(:start_split) { build_stubbed(:split, :start, course: course, base_name: 'Start') }
-  let(:cunningham_split) { build_stubbed(:split, course: course, base_name: 'Cunningham', distance_from_start: 10000) }
-  let(:maggie_split) { build_stubbed(:split, course: course, base_name: 'Maggie', distance_from_start: 20000) }
+  let(:start_split) { build_stubbed(:split, :start, course: course, base_name: "Start") }
+  let(:cunningham_split) { build_stubbed(:split, course: course, base_name: "Cunningham", distance_from_start: 10_000) }
+  let(:maggie_split) { build_stubbed(:split, course: course, base_name: "Maggie", distance_from_start: 20_000) }
   let(:splits) { [start_split, cunningham_split, maggie_split] }
   let(:expected_lap_splits) { event.required_lap_splits }
 
   let(:split_time_1) { build_stubbed(:split_time, split: start_split, bitkey: 1, absolute_time: start_time + 0) }
   let(:split_time_2) { build_stubbed(:split_time, split: cunningham_split, bitkey: 1, absolute_time: start_time + 7200) }
   let(:split_time_3) { build_stubbed(:split_time, split: cunningham_split, bitkey: 64, absolute_time: start_time + 7300) }
-  let(:split_time_4) { build_stubbed(:split_time, split: maggie_split, bitkey: 1, absolute_time: start_time + 15000) }
-  let(:split_time_5) { build_stubbed(:split_time, split: maggie_split, bitkey: 64, absolute_time: start_time + 15100) }
+  let(:split_time_4) { build_stubbed(:split_time, split: maggie_split, bitkey: 1, absolute_time: start_time + 15_000) }
+  let(:split_time_5) { build_stubbed(:split_time, split: maggie_split, bitkey: 64, absolute_time: start_time + 15_100) }
 
   let(:raw_times) { [raw_time_1, raw_time_2].compact }
 
-  let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 06:00:00'), effort: effort, lap: 1, bib_number: '10', split: start_split, split_name: 'Start', bitkey: 1, stopped_here: false) }
-  let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:00:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
-  let(:raw_time_3) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:01:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
-  let(:raw_time_4) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:30:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 1, stopped_here: false) }
-  let(:raw_time_5) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
-  let(:raw_time_6) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '11', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
-  let(:raw_time_7) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
-  let(:raw_time_8) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:mm:ss', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
+  let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 06:00:00"), effort: effort, lap: 1, bib_number: "10", split: start_split, split_name: "Start", bitkey: 1, stopped_here: false) }
+  let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 07:00:00"), effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
+  let(:raw_time_3) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 07:01:00"), effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 64, stopped_here: false) }
+  let(:raw_time_4) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:30:00", effort: effort, lap: 1, bib_number: "10", split: maggie_split, split_name: "Maggie", bitkey: 1, stopped_here: false) }
+  let(:raw_time_5) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:31:00", effort: effort, lap: 1, bib_number: "10", split: maggie_split, split_name: "Maggie", bitkey: 64, stopped_here: true) }
+  let(:raw_time_6) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:31:00", effort: effort, lap: 1, bib_number: "11", split: maggie_split, split_name: "Maggie", bitkey: 64, stopped_here: true) }
+  let(:raw_time_7) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:mm:ss", effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
+  let(:raw_time_8) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:mm:ss", effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
 
-  let(:time_zone) { event&.home_time_zone || 'Arizona' }
+  let(:time_zone) { event&.home_time_zone || "Arizona" }
   let(:event_time_zone) { ActiveSupport::TimeZone[time_zone] }
 
   before { split_times.each { |st| st.effort = effort } }
 
-  describe '#perform' do
-    context 'when all times exist on the effort' do
+  describe "#perform" do
+    context "when all times exist on the effort" do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:00:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
-      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:01:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 07:00:00"), effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
+      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 07:01:00"), effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 64, stopped_here: false) }
 
-      it 'returns a raw_time_row with split_time_exists attribute equal to true and adds new_split_time to each raw_time' do
+      it "returns a raw_time_row with split_time_exists attribute equal to true and adds new_split_time to each raw_time" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -69,19 +69,19 @@ RSpec.describe VerifyRawTimeRow do
         expect(Interactors::SetEffortStatus).to have_received(:perform).once
       end
 
-      it 'does not change the data_status of the split_times on the effort' do
+      it "does not change the data_status of the split_times on the effort" do
         expect(effort.split_times.map(&:data_status)).to all be_nil
         subject.perform
         expect(effort.split_times.map(&:data_status)).to all be_nil
       end
     end
 
-    context 'when only an out time is provided' do
+    context "when only an out time is provided" do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse('2018-06-23 07:01:00'), effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: event_time_zone.parse("2018-06-23 07:01:00"), effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 64, stopped_here: false) }
       let(:raw_time_2) { nil }
 
-      it 'returns a raw_time_row with split_time_exists attribute equal to 1 and adds new_split_time to each raw_time' do
+      it "returns a raw_time_row with split_time_exists attribute equal to 1 and adds new_split_time to each raw_time" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -104,12 +104,12 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when raw_times are provided with entered_time' do
+    context "when raw_times are provided with entered_time" do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:30:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 1, stopped_here: false) }
-      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:31:00', effort: effort, lap: 1, bib_number: '10', split: maggie_split, split_name: 'Maggie', bitkey: 64, stopped_here: true) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:30:00", effort: effort, lap: 1, bib_number: "10", split: maggie_split, split_name: "Maggie", bitkey: 1, stopped_here: false) }
+      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:31:00", effort: effort, lap: 1, bib_number: "10", split: maggie_split, split_name: "Maggie", bitkey: 64, stopped_here: true) }
 
-      it 'returns a raw_time_row with attributes set and calculates absolute_time correctly' do
+      it "returns a raw_time_row with attributes set and calculates absolute_time correctly" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -132,12 +132,12 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when a raw_time is provided with an invalid entered_time' do
+    context "when a raw_time is provided with an invalid entered_time" do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '99:99:99', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "99:99:99", effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
       let(:raw_time_2) { nil }
 
-      it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do
+      it "returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -158,12 +158,12 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when raw_times are provided with one valid and one invalid entered_time' do
+    context "when raw_times are provided with one valid and one invalid entered_time" do
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5] }
-      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '99:99:99', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 1, stopped_here: false) }
-      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: '08:00:00', effort: effort, lap: 1, bib_number: '10', split: cunningham_split, split_name: 'Cunningham', bitkey: 64, stopped_here: false) }
+      let(:raw_time_1) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "99:99:99", effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 1, stopped_here: false) }
+      let(:raw_time_2) { build_stubbed(:raw_time, event_group_id: 100, absolute_time: nil, entered_time: "08:00:00", effort: effort, lap: 1, bib_number: "10", split: cunningham_split, split_name: "Cunningham", bitkey: 64, stopped_here: false) }
 
-      it 'returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status' do
+      it "returns a raw_time_row with attributes set, attaches a split_time with absolute_time: nil, and does not set effort status" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -183,11 +183,11 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when no times exist on the effort' do
+    context "when no times exist on the effort" do
       let(:split_times) { [split_time_1] }
       let(:raw_times) { [raw_time_2, raw_time_3] }
 
-      it 'returns a raw_time_row with split_time_exists attribute equal to 0' do
+      it "returns a raw_time_row with split_time_exists attribute equal to 0" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -210,11 +210,11 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when one time exists on the effort and one does not' do
+    context "when one time exists on the effort and one does not" do
       let(:split_times) { [split_time_1, split_time_3] }
       let(:raw_times) { [raw_time_2, raw_time_3] }
 
-      it 'returns a raw_time_row with split_time_exists attribute equal to expected values' do
+      it "returns a raw_time_row with split_time_exists attribute equal to expected values" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(2)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -237,11 +237,11 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when a single raw_time is present' do
+    context "when a single raw_time is present" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1] }
 
-      it 'returns a a raw_time_row with expected split_time_exists and new_split_time' do
+      it "returns a a raw_time_row with expected split_time_exists and new_split_time" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -264,12 +264,12 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when an event has unlimited laps' do
-      let(:event) { build_stubbed(:event, splits: splits, course: course, scheduled_start_time_local: '2018-06-23 06:00:00', laps_required: 0) }
+    context "when an event has unlimited laps" do
+      let(:event) { build_stubbed(:event, splits: splits, course: course, scheduled_start_time_local: "2018-06-23 06:00:00", laps_required: 0) }
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1] }
 
-      it 'returns a a raw_time_row with expected split_time_exists and new_split_time' do
+      it "returns a a raw_time_row with expected split_time_exists and new_split_time" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
         expect(raw_times.size).to eq(1)
         expect(raw_times.map(&:split_time_exists)).to all be_nil
@@ -292,15 +292,15 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when raw_times are not from the same split' do
+    context "when raw_times are not from the same split" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1, raw_time_2] }
 
-      it 'returns a raw_time_row with a descriptive error' do
+      it "returns a raw_time_row with a descriptive error" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
 
         result_row = subject.perform
-        expect(result_row.errors).to include('mismatched split names')
+        expect(result_row.errors).to include("mismatched split names")
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
@@ -314,15 +314,15 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when raw_times do not have the same bib number' do
+    context "when raw_times do not have the same bib number" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_4, raw_time_6] }
 
-      it 'returns a raw_time_row with a descriptive error' do
+      it "returns a raw_time_row with a descriptive error" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
 
         result_row = subject.perform
-        expect(result_row.errors).to include('mismatched bib numbers')
+        expect(result_row.errors).to include("mismatched bib numbers")
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
@@ -336,15 +336,15 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when raw_times are not present' do
+    context "when raw_times are not present" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [] }
 
-      it 'returns a raw_time_row with a descriptive error' do
+      it "returns a raw_time_row with a descriptive error" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
 
         result_row = subject.perform
-        expect(result_row.errors).to include('missing raw times')
+        expect(result_row.errors).to include("missing raw times")
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(0)
@@ -353,16 +353,16 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when effort is not present' do
+    context "when effort is not present" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1, raw_time_2] }
       let(:effort) { nil }
 
-      it 'returns a raw_time_row with a descriptive error' do
+      it "returns a raw_time_row with a descriptive error" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
 
         result_row = subject.perform
-        expect(result_row.errors).to include('missing effort')
+        expect(result_row.errors).to include("missing effort")
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)
@@ -376,16 +376,16 @@ RSpec.describe VerifyRawTimeRow do
       end
     end
 
-    context 'when event is not present' do
+    context "when event is not present" do
       let(:split_times) { [split_time_1, split_time_2] }
       let(:raw_times) { [raw_time_1, raw_time_2] }
       let(:event) { nil }
 
-      it 'returns a raw_time_row with a descriptive error' do
+      it "returns a raw_time_row with a descriptive error" do
         allow(Interactors::SetEffortStatus).to receive(:perform)
 
         result_row = subject.perform
-        expect(result_row.errors).to include('missing event')
+        expect(result_row.errors).to include("missing event")
 
         result_raw_times = result_row.raw_times
         expect(result_raw_times.size).to eq(2)

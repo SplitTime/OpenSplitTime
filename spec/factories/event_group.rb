@@ -4,6 +4,6 @@ FactoryBot.define do
     organization
 
     # Samoa causes Capybara to throw ambiguous match errors, so remove it before picking
-    home_time_zone { ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == 'Samoa' }.shuffle.first.name }
+    home_time_zone { ActiveSupport::TimeZone.all.reject { |timezone| timezone.name == "Samoa" }.sample.name }
   end
 end

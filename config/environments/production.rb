@@ -63,20 +63,20 @@ Rails.application.configure do
   config.log_level = :info
 
   # Suppress ActionView render information from the logger
-  ActiveSupport::on_load :action_view do
+  ActiveSupport.on_load :action_view do
     %w[render_template render_partial render_collection].each do |event|
       ActiveSupport::Notifications.unsubscribe "#{event}.action_view"
     end
   end
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  config.active_job.queue_adapter     = :sidekiq
+  config.active_job.queue_adapter = :sidekiq
 
   config.action_mailer.perform_caching = false
 

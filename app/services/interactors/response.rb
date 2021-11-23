@@ -23,6 +23,7 @@ module Interactors
 
     def merge(other)
       return self unless other
+
       combined_errors = errors + other.errors
       combined_message = [message, other.message].join("\n")
       combined_resources = if resources.is_a?(Hash) && other.resources.is_a?(Hash)

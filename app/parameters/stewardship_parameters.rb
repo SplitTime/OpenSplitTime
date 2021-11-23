@@ -3,7 +3,7 @@
 class StewardshipParameters < BaseParameters
   def self.permitted
     [
-      :level,
+      :level
     ]
   end
 end

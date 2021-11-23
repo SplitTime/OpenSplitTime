@@ -2,7 +2,8 @@
 
 class SplitPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def post_initialize; end
+    def post_initialize
+    end
 
     def authorized_to_view_records
       scope.visible_or_delegated_to(user)

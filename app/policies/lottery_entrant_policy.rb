@@ -2,7 +2,8 @@
 
 class LotteryEntrantPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def post_initialize; end
+    def post_initialize
+    end
 
     def authorized_to_edit_records
       scope.owned_by(user)

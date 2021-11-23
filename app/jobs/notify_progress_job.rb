@@ -26,6 +26,7 @@ class NotifyProgressJob < ApplicationJob
   private
 
   attr_reader :effort_id, :split_time_ids
+
   delegate :topic_resource_key, to: :effort
 
   def effort

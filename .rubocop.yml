@@ -59,8 +59,14 @@ Naming/VariableNumber:
 Style/Documentation:
   Enabled: false
 
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
+
+Style/IfUnlessModifier:
+  Enabled: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

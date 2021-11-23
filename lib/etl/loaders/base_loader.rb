@@ -31,7 +31,8 @@ module ETL
 
       attr_reader :proto_records, :options
 
-      def post_initialize(options) end
+      def post_initialize(options)
+      end
 
       def add_audit_attributes(record)
         record.created_by = current_user_id if record.new_record?

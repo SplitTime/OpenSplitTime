@@ -18,7 +18,8 @@ module Persist
       validate_setup
     end
 
-    def post_initialize(options); end
+    def post_initialize(options)
+    end
 
     def perform!
       ActiveRecord::Base.transaction do
@@ -54,6 +55,7 @@ module Persist
       validate_additional_setup
     end
 
-    def validate_additional_setup; end
+    def validate_additional_setup
+    end
   end
 end

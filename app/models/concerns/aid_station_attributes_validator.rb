@@ -10,6 +10,7 @@ class AidStationAttributesValidator < ActiveModel::Validator
   private
 
   attr_reader :aid_station
+
   delegate :event, :split, :errors, to: :aid_station
 
   def validate_course_consistency

@@ -35,7 +35,8 @@ module ETL
 
       attr_reader :proto_records
 
-      def validate_setup; end
+      def validate_setup
+      end
     end
   end
 end

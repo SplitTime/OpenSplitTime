@@ -3,7 +3,8 @@
 module ETL
   module Loaders
     class InsertStrategy < BaseLoader
-      def post_initialize(options) end
+      def post_initialize(options)
+      end
 
       def custom_load
         proto_records.each do |proto_record|

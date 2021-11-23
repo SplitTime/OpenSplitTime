@@ -11,6 +11,7 @@ class GroupedEventsValidator < ActiveModel::Validator
   private
 
   attr_reader :event_group, :analyzer
+
   delegate :events, to: :event_group
   delegate :incompatible_locations, to: :analyzer
 

@@ -64,7 +64,7 @@ gem 'structpluck'
 gem 'turbo-rails'
 gem 'uglifier', '>= 1.3.0'
 gem 'vuejs-rails'
-gem 'webpacker', '~> 4.3', '>= 4.3.0'
+gem 'webpacker', '< 6.0'
 gem 'will_paginate', '~> 3.3'
 
 group :development do

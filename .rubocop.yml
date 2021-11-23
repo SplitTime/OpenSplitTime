@@ -6,14 +6,14 @@ AllCops:
    - 'db/schema.rb'
    - 'vendor/bundle/**/*'
 
-Documentation:
-  Enabled: false
-
 Layout/EndOfLine:
   EnforcedStyle: lf
 
 Layout/HeredocIndentation:
   Enabled: true
+
+Layout/LineLength:
+  Max: 120
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -21,6 +21,9 @@ Layout/MultilineMethodCallIndentation:
 
 Layout/SpaceInLambdaLiteral:
   Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -32,15 +35,12 @@ Metrics/BlockLength:
     - '**/*.rake'
     - 'spec/**/*.rb'
 
-Metrics/LineLength:
-  Max: 120
-
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
 
-SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
+Style/Documentation:
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always

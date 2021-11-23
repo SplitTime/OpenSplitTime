@@ -1,7 +1,6 @@
 AllCops:
-  Rails:
-    Enabled: true
-  TargetRubyVersion: 2.3
+  NewCops: enable
+  TargetRubyVersion: 2.7
   Include:
     - '**/Gemfile'
     - '**/Rakefile'
@@ -16,8 +15,8 @@ Documentation:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-Layout/IndentHeredoc:
-  EnforcedStyle: powerpack
+Layout/HeredocIndentation:
+  Enabled: true
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -48,6 +47,9 @@ SpaceInsideHashLiteralBraces:
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
 
 Style/SymbolArray:
   Enabled: false

@@ -2,9 +2,9 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.7
   Exclude:
-   - 'bin/*'
-   - 'db/schema.rb'
-   - 'vendor/bundle/**/*'
+   - "bin/*"
+   - "db/schema.rb"
+   - "vendor/bundle/**/*"
 
 Layout/EndOfLine:
   EnforcedStyle: lf
@@ -14,6 +14,8 @@ Layout/HeredocIndentation:
 
 Layout/LineLength:
   Max: 120
+  Exclude:
+    - "spec/**/*.rb"
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -27,17 +29,32 @@ Layout/SpaceInsideHashLiteralBraces:
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
+
+Metrics/AbcSize:
+  Exclude:
+    - "spec/**/*.rb"
 
 Metrics/BlockLength:
   Exclude:
-    - 'Rakefile'
-    - '**/*.rake'
-    - 'spec/**/*.rb'
+    - "Rakefile"
+    - "**/*.rake"
+    - "spec/**/*.rb"
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*.rb"
 
 Metrics/ModuleLength:
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
+
+Naming/VariableNumber:
+  Enabled: false
 
 Style/Documentation:
   Enabled: false

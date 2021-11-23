@@ -31,7 +31,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to event_group_path(@event.event_group)
     else
-      render 'new'
+      render "new"
     end
   end
 
@@ -41,7 +41,7 @@ class EventsController < ApplicationController
     if @event.update(permitted_params)
       redirect_to event_group_path(@event.event_group, force_settings: true)
     else
-      render 'edit'
+      render "edit"
     end
   end
 
@@ -69,9 +69,9 @@ class EventsController < ApplicationController
       format.html
       format.csv do
         authorize @event
-        csv_stream = render_to_string(partial: 'spread.csv.ruby')
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
+        csv_stream = render_to_string(partial: "spread.csv.ruby")
+        send_data(csv_stream, type: "text/csv",
+                              filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -97,7 +97,7 @@ class EventsController < ApplicationController
                 when nil
                   event_staging_app_path(@event)
                 when event_staging_app_url(@event)
-                  request.referrer + '#/entrants'
+                  request.referrer + "#/entrants"
                 when edit_event_url(@event)
                   event_group_path(@event.event_group_id)
                 else
@@ -156,13 +156,13 @@ class EventsController < ApplicationController
 
         requested_export_template = "#{export_format}.csv.ruby"
         requested_partial_name = Rails.root.join("app/views/events/_#{requested_export_template}")
-        partial = File.exists?(requested_partial_name) ? requested_export_template : "not_found.csv.ruby"
+        partial = File.exist?(requested_partial_name) ? requested_export_template : "not_found.csv.ruby"
         csv_stream = render_to_string(
           partial: partial,
           locals: {current_time: current_time, records: records, options: options}
         )
 
-        send_data(csv_stream, type: 'text/csv', filename: filename)
+        send_data(csv_stream, type: "text/csv", filename: filename)
       end
     end
   end

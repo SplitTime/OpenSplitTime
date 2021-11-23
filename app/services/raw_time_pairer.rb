@@ -23,6 +23,8 @@ class RawTimePairer
   attr_reader :event_group, :raw_times, :pairer
 
   def validate_setup
-    raise ArgumentError, 'All raw_times must match the provided event_group' unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
+    unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
+      raise ArgumentError, "All raw_times must match the provided event_group"
+    end
   end
 end

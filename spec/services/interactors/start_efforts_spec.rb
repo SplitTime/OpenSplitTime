@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Interactors::StartEfforts do
   include BitkeyDefinitions
 
-  describe '.perform!' do
+  describe ".perform!" do
     subject { Interactors::StartEfforts.new(efforts: subject_efforts, start_time: start_time, current_user_id: current_user_id) }
     let(:current_user_id) { rand(1..100) }
     let(:home_time_zone) { subject_efforts.first.home_time_zone }
 
-    context 'when all provided efforts are valid' do
-      context 'when no efforts have a starting split time' do
+    context "when all provided efforts are valid" do
+      context "when no efforts have a starting split time" do
         let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_un_started)] }
 
-        context 'when start_time is provided as a string with no time zone' do
-          let(:start_time) { '2017-09-23 08:00:00' }
+        context "when start_time is provided as a string with no time zone" do
+          let(:start_time) { "2017-09-23 08:00:00" }
 
-          it 'creates start split_times for each effort, assigns user_id to created_by, and returns a successful response' do
+          it "creates start split_times for each effort, assigns user_id to created_by, and returns a successful response" do
             expect(subject_efforts.map(&:starting_split_time)).to all be_nil
             response = subject.perform!
 
             expect(response).to be_successful
-            expect(response.message).to eq('Started 2 efforts at 09/23/2017 08:00:00')
+            expect(response.message).to eq("Started 2 efforts at 09/23/2017 08:00:00")
 
             subject_efforts.each(&:reload)
             split_times = subject_efforts.map(&:starting_split_time)
@@ -32,22 +32,22 @@ RSpec.describe Interactors::StartEfforts do
           end
         end
 
-        context 'when start_time is a valid date string with time zone information' do
-          let(:start_time) { '2017-09-23 08:00:00 EDT' }
+        context "when start_time is a valid date string with time zone information" do
+          let(:start_time) { "2017-09-23 08:00:00 EDT" }
 
-          it 'creates start split_times for each effort' do
+          it "creates start split_times for each effort" do
             subject.perform!
 
             subject_efforts.each(&:reload)
             split_times = subject_efforts.map(&:starting_split_time)
-            expect(split_times.map(&:absolute_time)).to all eq('2017-09-23 08:00:00'.in_time_zone('Eastern Time (US & Canada)'))
+            expect(split_times.map(&:absolute_time)).to all eq("2017-09-23 08:00:00".in_time_zone("Eastern Time (US & Canada)"))
           end
         end
 
-        context 'when start_time is provided as a datetime object' do
-          let(:start_time) { '2017-09-23 08:00:00'.in_time_zone(home_time_zone) }
+        context "when start_time is provided as a datetime object" do
+          let(:start_time) { "2017-09-23 08:00:00".in_time_zone(home_time_zone) }
 
-          it 'creates start split_times for each effort' do
+          it "creates start split_times for each effort" do
             subject.perform!
 
             subject_efforts.each(&:reload)
@@ -56,15 +56,15 @@ RSpec.describe Interactors::StartEfforts do
           end
         end
 
-        context 'when start_time is not provided' do
+        context "when start_time is not provided" do
           let(:start_time) { nil }
 
           before do
-            subject_efforts.first.update(scheduled_start_time: '2017-09-23 11:00:00'.in_time_zone(home_time_zone))
+            subject_efforts.first.update(scheduled_start_time: "2017-09-23 11:00:00".in_time_zone(home_time_zone))
             subject_efforts.second.update(scheduled_start_time: nil)
           end
 
-          it 'creates start split_times using scheduled_start_time when available or event_start_time otherwise' do
+          it "creates start split_times using scheduled_start_time when available or event_start_time otherwise" do
             subject.perform!
 
             subject_efforts.each(&:reload)
@@ -74,15 +74,15 @@ RSpec.describe Interactors::StartEfforts do
           end
         end
 
-        context 'when start_time is an empty string' do
-          let(:start_time) { '' }
+        context "when start_time is an empty string" do
+          let(:start_time) { "" }
 
           before do
-            subject_efforts.first.update(scheduled_start_time: '2017-09-23 11:00:00'.in_time_zone(home_time_zone))
+            subject_efforts.first.update(scheduled_start_time: "2017-09-23 11:00:00".in_time_zone(home_time_zone))
             subject_efforts.second.update(scheduled_start_time: nil)
           end
 
-          it 'creates start split_times using scheduled_start_time when available or event_start_time otherwise' do
+          it "creates start split_times using scheduled_start_time when available or event_start_time otherwise" do
             response = subject.perform!
 
             expect(response).to be_successful
@@ -94,10 +94,10 @@ RSpec.describe Interactors::StartEfforts do
           end
         end
 
-        context 'when start_time is provided but is not a parsable datetime' do
-          let(:start_time) { 'hello' }
+        context "when start_time is provided but is not a parsable datetime" do
+          let(:start_time) { "hello" }
 
-          it 'creates start split_times using scheduled_start_time when available or event_start_time otherwise' do
+          it "creates start split_times using scheduled_start_time when available or event_start_time otherwise" do
             response = subject.perform!
 
             expect(response).not_to be_successful
@@ -108,11 +108,11 @@ RSpec.describe Interactors::StartEfforts do
         end
       end
 
-      context 'when one effort has an existing starting split time' do
+      context "when one effort has an existing starting split time" do
         let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_progress_cascade)] }
-        let(:start_time) { '2017-09-23 08:00:00' }
+        let(:start_time) { "2017-09-23 08:00:00" }
 
-        it 'creates starting split_times only for the effort that needs one, and returns a successful response' do
+        it "creates starting split_times only for the effort that needs one, and returns a successful response" do
           effort_2_start_time = subject_efforts.second.starting_split_time.absolute_time
           expect { subject.perform! }.to change { SplitTime.count }.by(1)
 

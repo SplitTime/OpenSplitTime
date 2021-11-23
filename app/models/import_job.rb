@@ -8,24 +8,24 @@ class ImportJob < ApplicationRecord
 
   scope :most_recent_first, -> { reorder(created_at: :desc) }
 
-  attribute :row_count, :default => 0
-  attribute :success_count, :default => 0
-  attribute :failure_count, :default => 0
+  attribute :row_count, default: 0
+  attribute :success_count, default: 0
+  attribute :failure_count, default: 0
 
-  enum :status => {
-    :waiting => 0,
-    :extracting => 1,
-    :transforming => 2,
-    :loading => 3,
-    :finished => 4,
-    :failed => 5
+  enum status: {
+    waiting: 0,
+    extracting: 1,
+    transforming: 2,
+    loading: 3,
+    finished: 4,
+    failed: 5
   }
 
   validates_presence_of :parent_type, :parent_id, :format
   validates :file,
             attached: true,
             size: {less_than: 1.megabyte},
-            content_type: {in: %w(text/csv text/plain), message: "must be a CSV file"}
+            content_type: {in: %w[text/csv text/plain], message: "must be a CSV file"}
 
   def parent
     @parent ||= parent_type.constantize.find(parent_id)

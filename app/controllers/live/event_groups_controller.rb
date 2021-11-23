@@ -1,5 +1,4 @@
 class Live::EventGroupsController < Live::BaseController
-
   before_action :set_event_group
 
   def live_entry

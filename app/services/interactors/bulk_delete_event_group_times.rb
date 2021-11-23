@@ -29,15 +29,15 @@ module Interactors
 
     def delete_raw_times
       @raw_time_count = RawTime.where(event_group_id: event_group).delete_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << active_record_error(exception)
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << active_record_error(e)
     end
 
     def delete_split_times
       efforts = Effort.where(event_id: event_group.events)
       @split_time_count = SplitTime.where(effort_id: efforts).delete_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << active_record_error(exception)
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << active_record_error(e)
     end
 
     def message

@@ -35,15 +35,15 @@ module Interactors
 
     def delete_split_times
       split_times.delete_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << Interactors::Errors.active_record_error(e)
     end
 
     # To ensure dependents are properly handled, use destroy_all instead of delete_all
     def destroy_efforts
       efforts.destroy_all
-    rescue ActiveRecord::ActiveRecordError => exception
-      errors << Interactors::Errors.active_record_error(exception)
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << Interactors::Errors.active_record_error(e)
     end
 
     def split_times

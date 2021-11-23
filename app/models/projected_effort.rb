@@ -32,6 +32,7 @@ class ProjectedEffort
   private
 
   attr_reader :event, :start_time, :baseline_split_time, :projected_time_points
+
   delegate :starting_time_point, to: :event
 
   def effort

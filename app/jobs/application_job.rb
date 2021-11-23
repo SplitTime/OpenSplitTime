@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
-
   private
 
   def set_current_user(options)

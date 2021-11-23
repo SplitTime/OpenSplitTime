@@ -19,18 +19,20 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 2581),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 6308),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[3], sub_split_bitkey: 1, absolute_time: start_time + 9463),
-          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: start_time + 13571),
-          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: start_time + 16655),
-          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 17736)
-        ]),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, absolute_time: start_time + 13_571),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: start_time + 16_655),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 17_736)
+        ]
+      ),
       ProtoRecord.new(
         record_type: :effort, age: "31", gender: "female", bib_number: "661",
         first_name: "Castest", last_name: "Pertest", event_id: event.id,
         children: [
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[0], sub_split_bitkey: 1, absolute_time: start_time + 0),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[1], sub_split_bitkey: 1, absolute_time: start_time + 4916),
-          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 14398),
-        ]),
+          ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 14_398)
+        ]
+      ),
       ProtoRecord.new(
         record_type: :effort, age: "35", gender: "female", bib_number: "633",
         first_name: "Mictest", last_name: "Hintest", event_id: event.id,
@@ -60,7 +62,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[2], sub_split_bitkey: 1, absolute_time: start_time + 2000),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, absolute_time: nil),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, absolute_time: start_time + 5000)
-        ])
+        ]
+      )
     ]
   end
 
@@ -77,7 +80,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[4], sub_split_bitkey: 1, military_time: "11:20:00"),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[5], sub_split_bitkey: 1, military_time: "12:40:00"),
           ProtoRecord.new(record_type: :split_time, lap: 1, split_id: split_ids[6], sub_split_bitkey: 1, military_time: "14:00:00")
-        ])
+        ]
+      )
     ]
   end
 
@@ -93,9 +97,9 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         expect { subject.load_records }.to change { Effort.count }.by(3)
         subject_efforts = Effort.last(3)
 
-        expect(subject_efforts.map(&:first_name)).to match_array(%w(Jatest Castest Mictest))
+        expect(subject_efforts.map(&:first_name)).to match_array(%w[Jatest Castest Mictest])
         expect(subject_efforts.map(&:bib_number)).to match_array([5, 661, 633])
-        expect(subject_efforts.map(&:gender)).to match_array(%w(male female female))
+        expect(subject_efforts.map(&:gender)).to match_array(%w[male female female])
         expect(subject_efforts.map(&:event_id)).to all eq(event.id)
       end
 
@@ -105,7 +109,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         subject_split_times = SplitTime.last(10)
 
         expect(subject_split_times.map(&:split_id)).to match_array(split_ids.cycle.first(subject_split_times.size))
-        expected_absolute_times = [0, 2581, 6308, 9463, 13571, 16655, 17736, 0, 4916, 14398].map { |e| start_time + e }
+        expected_absolute_times = [0, 2581, 6308, 9463, 13_571, 16_655, 17_736, 0, 4916, 14_398].map { |e| start_time + e }
         expect(subject_split_times.map(&:absolute_time)).to match_array(expected_absolute_times)
         expect(subject_split_times.map(&:effort_id)).to match_array([subject_efforts.first.id] * 7 + [subject_efforts.second.id] * 3)
       end
@@ -121,7 +125,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       let(:proto_records) { proto_with_military_times }
 
       it "assigns attributes and creates new records of the parent class" do
-        expect { subject.load_records }.to change { Effort.count }.by (1)
+        expect { subject.load_records }.to change { Effort.count }.by(1)
         effort = Effort.last
 
         expect(effort.first_name).to eq("Johtest")
@@ -131,7 +135,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       end
 
       it "assigns attributes and saves new child records" do
-        expect { subject.load_records }.to change { SplitTime.count }.by (7)
+        expect { subject.load_records }.to change { SplitTime.count }.by(7)
         effort = Effort.last
         subject_split_times = SplitTime.last(7)
 
@@ -149,9 +153,9 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       before do
         existing_effort = create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number])
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
-               bitkey: first_child[:sub_split_bitkey], time_from_start: 0)
+                            bitkey: first_child[:sub_split_bitkey], time_from_start: 0)
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
-               bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
+                            bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
       end
 
       it "inserts only those records that do not previously exist" do
@@ -166,7 +170,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to match /Bib number [\d] already exists/
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Bib number \d already exists/)
       end
     end
 
@@ -185,7 +189,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to match /Gender can't be blank/
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Gender can't be blank/)
       end
     end
 
@@ -204,7 +208,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "returns a descriptive error message" do
         subject.load_records
-        expect(subject.errors.first.dig(:detail, :messages).first).to match /Split times absolute time can't be blank/
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Split times absolute time can't be blank/)
       end
     end
   end

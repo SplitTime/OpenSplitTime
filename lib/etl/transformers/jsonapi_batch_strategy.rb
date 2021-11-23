@@ -12,12 +12,15 @@ module ETL
 
       def transform
         return if errors.present?
+
         proto_records.each do |proto_record|
           proto_record.record_type = proto_record.delete_field(:type).to_sym
           proto_record.attributes_to_keys!
           transform_name_extensions!(proto_record)
           proto_record.slice_permitted!
-          proto_record[parent_id_attribute] = parent.id if proto_record.record_class.attribute_names.include?(parent_id_attribute)
+          if proto_record.record_class.attribute_names.include?(parent_id_attribute)
+            proto_record[parent_id_attribute] = parent.id
+          end
         end
         proto_records
       end

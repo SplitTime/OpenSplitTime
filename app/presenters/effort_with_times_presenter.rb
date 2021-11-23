@@ -13,6 +13,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   def disable_for_time_point?(time_point)
     return false unless elapsed_times?
+
     time_point == time_points.first
   end
 
@@ -29,14 +30,13 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def placeholder
-    date_included? ? 'mm/dd/yyyy hh:mm:ss' : 'hh:mm:ss'
+    date_included? ? "mm/dd/yyyy hh:mm:ss" : "hh:mm:ss"
   end
 
   def subtext
-    case
-    when suppress_form?
+    if suppress_form?
       "Elapsed times cannot be calculated. No start time is present."
-    when elapsed_times?
+    elsif elapsed_times?
       "All times are elapsed since #{I18n.localize(actual_start_time_local, format: :full_day_military_and_zone)}"
     else
       "All times are in #{home_time_zone}"
@@ -48,7 +48,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def table_header
-    display_style.sub('time', 'times').titleize
+    display_style.sub("time", "times").titleize
   end
 
   def working_field
@@ -60,12 +60,13 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   attr_reader :params
 
   def default_display_style
-    'military_time'
+    "military_time"
   end
 
   def datetime_html_value(time_point)
     field_value = field_value(time_point)
     return nil unless field_value
+
     I18n.localize(field_value, format: :datetime_input)
   end
 

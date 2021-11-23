@@ -10,7 +10,7 @@ class Partner < ApplicationRecord
   has_one_attached :banner
 
   validates :banner,
-            content_type: %w(image/png image/jpeg),
+            content_type: %w[image/png image/jpeg],
             size: {less_than: 500.kilobytes}
 
   validates_presence_of :event_group, :name, :weight

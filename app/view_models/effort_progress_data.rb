@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EffortProgressData
-
   attr_reader :effort, :split_times
+
   delegate :topic_resource_key, to: :effort
 
   def initialize(args)

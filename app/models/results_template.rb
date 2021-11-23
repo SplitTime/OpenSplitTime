@@ -11,13 +11,15 @@ class ResultsTemplate < ApplicationRecord
 
   alias_attribute :categories, :results_categories
 
-  scope :standard, -> { select('results_templates.*, count(results_categories.id) as category_count')
-                          .joins(:results_categories).where(organization: nil).group(:id).order('category_count') }
+  scope :standard, lambda {
+                     select("results_templates.*, count(results_categories.id) as category_count")
+                         .joins(:results_categories).where(organization: nil).group(:id).order("category_count")
+                   }
 
   validates_presence_of :name, :aggregation_method
 
   def self.default
-    find_by(slug: 'simple')
+    find_by(slug: "simple")
   end
 
   def dup_with_categories

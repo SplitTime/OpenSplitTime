@@ -8,7 +8,7 @@ class LotteryParameters < BaseParameters
       :name,
       :scheduled_start_date,
       :slug,
-      :status,
+      :status
     ]
   end
 

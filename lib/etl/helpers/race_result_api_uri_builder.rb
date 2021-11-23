@@ -3,7 +3,6 @@
 module ETL
   module Helpers
     class RaceResultApiUriBuilder
-
       def initialize(rr_event_id, rr_api_key)
         @rr_event_id = rr_event_id
         @rr_api_key = rr_api_key

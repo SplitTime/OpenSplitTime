@@ -2,6 +2,7 @@
 
 class BestEffortsDisplay < BasePresenter
   attr_reader :course, :view_context, :request
+
   delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
            :to_param, to: :course
   delegate :distance, :vert_gain, :vert_loss, :begin_lap, :end_lap,
@@ -17,10 +18,10 @@ class BestEffortsDisplay < BasePresenter
 
   def filtered_segments
     @filtered_segments ||= BestEffortSegment.from(ranked_segments, :best_effort_segments)
-                             .where(effort_id: filtered_efforts)
-                             .order(:overall_rank)
-                             .paginate(page: page, per_page: per_page, total_entries: 0)
-                             .to_a
+        .where(effort_id: filtered_efforts)
+        .order(:overall_rank)
+        .paginate(page: page, per_page: per_page, total_entries: 0)
+        .to_a
   end
 
   def filtered_segments_count
@@ -32,7 +33,7 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def segment_name
-    segment_is_full_course? ? 'Full Course' : segment.name
+    segment_is_full_course? ? "Full Course" : segment.name
   end
 
   def events_count
@@ -48,11 +49,11 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def most_recent_event
-    events.select { |event| event.scheduled_start_time < Time.now }.sort_by(&:scheduled_start_time).last
+    events.select { |event| event.scheduled_start_time < Time.now }.max_by(&:scheduled_start_time)
   end
 
   def time_header_text
-    segment_is_full_course? ? 'Course Time' : 'Segment Time'
+    segment_is_full_course? ? "Course Time" : "Segment Time"
   end
 
   def segment_is_full_course?
@@ -94,7 +95,7 @@ class BestEffortsDisplay < BasePresenter
   def events
     @events ||=
       begin
-        subquery = course.events.select('distinct on (events.id) events.id, event_group_id, course_id, events.scheduled_start_time').joins(:efforts)
+        subquery = course.events.select("distinct on (events.id) events.id, event_group_id, course_id, events.scheduled_start_time").joins(:efforts)
         EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(scheduled_start_time: :desc).to_a
       end
   end
@@ -133,6 +134,6 @@ class BestEffortsDisplay < BasePresenter
 
   def ranked_segments
     BestEffortSegment.from(all_segments, :best_effort_segments)
-      .with_overall_and_gender_rank(:elapsed_seconds)
+        .with_overall_and_gender_rank(:elapsed_seconds)
   end
 end

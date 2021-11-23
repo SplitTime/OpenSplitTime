@@ -3,7 +3,6 @@
 module ETL
   module Helpers
     class RaceResultUriBuilder
-
       def initialize(rr_event_id, rr_contest_id, rr_format)
         @rr_event_id = rr_event_id
         @rr_contest_id = rr_contest_id
@@ -29,11 +28,11 @@ module ETL
       def rr_report_name
         case rr_format.to_sym
         when :tracking
-          'Result%20Lists%7CTracking'
+          "Result%20Lists%7CTracking"
         when :overall
-          'Result%20Lists%7COverall%20Results%20-%20TO%20PRINT'
+          "Result%20Lists%7COverall%20Results%20-%20TO%20PRINT"
         else
-          ''
+          ""
         end
       end
     end

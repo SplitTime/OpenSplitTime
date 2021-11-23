@@ -2,6 +2,7 @@
 
 class EventGroupFollowPresenter < BasePresenter
   attr_reader :event_group, :current_user
+
   delegate :name, :organization, :organization_name, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :multiple_events?, to: :event_group
 
@@ -36,7 +37,7 @@ class EventGroupFollowPresenter < BasePresenter
   end
 
   private
-  
+
   def complex_events_included?
     events.any? { |event| !event.simple? }
   end

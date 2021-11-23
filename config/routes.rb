@@ -1,51 +1,51 @@
 Rails.application.routes.draw do
-  root to: 'visitors#index'
-  get 'photo_credits', to: 'visitors#photo_credits'
-  get 'about', to: 'visitors#about'
-  get 'privacy_policy', to: 'visitors#privacy_policy'
-  get 'terms', to: 'visitors#terms'
-  get 'donations', to: 'visitors#donations'
-  get 'bitcoin_donations', to: 'visitors#bitcoin_donations'
-  get 'donation_cancel', to: 'visitors#donation_cancel'
-  get 'donation_thank_you', to: 'visitors#donation_thank_you'
-  get 'documentation', to: redirect('docs/contents')
-  get 'getting_started', to: redirect('docs/getting_started')
-  get 'management', to: redirect('docs/management')
-  get 'ost_remote', to: redirect('docs/ost_remote')
-  get 'carmen/subregion_options'
+  root to: "visitors#index"
+  get "photo_credits", to: "visitors#photo_credits"
+  get "about", to: "visitors#about"
+  get "privacy_policy", to: "visitors#privacy_policy"
+  get "terms", to: "visitors#terms"
+  get "donations", to: "visitors#donations"
+  get "bitcoin_donations", to: "visitors#bitcoin_donations"
+  get "donation_cancel", to: "visitors#donation_cancel"
+  get "donation_thank_you", to: "visitors#donation_thank_you"
+  get "documentation", to: redirect("docs/contents")
+  get "getting_started", to: redirect("docs/getting_started")
+  get "management", to: redirect("docs/management")
+  get "ost_remote", to: redirect("docs/ost_remote")
+  get "carmen/subregion_options"
 
-  get '/404', to: "errors#not_found"
-  get '/422', to: "errors#unprocessable_entity"
-  get '/500', to: "errors#internal_server_error"
+  get "/404", to: "errors#not_found"
+  get "/422", to: "errors#unprocessable_entity"
+  get "/500", to: "errors#internal_server_error"
 
-  require 'sidekiq/web'
-  require 'sidekiq/cron/web'
-  authenticate :user, lambda { |u| u.admin? } do
-    mount Sidekiq::Web => '/sidekiq'
+  require "sidekiq/web"
+  require "sidekiq/cron/web"
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
   end
 
-  authenticate :user, lambda { |u| u.admin? } do
-    mount Coverband::Reporters::Web.new, at: '/coverage', as: :coverage
+  authenticate :user, ->(u) { u.admin? } do
+    mount Coverband::Reporters::Web.new, at: "/coverage", as: :coverage
   end
 
   namespace :docs do
-    root to: 'visitors#contents'
-    get 'contents', to: 'visitors#contents'
-    get 'getting_started', to: 'visitors#getting_started'
-    get 'management', to: 'visitors#management'
-    get 'ost_remote', to: 'visitors#ost_remote'
-    get 'api', to: 'visitors#api'
+    root to: "visitors#contents"
+    get "contents", to: "visitors#contents"
+    get "getting_started", to: "visitors#getting_started"
+    get "management", to: "visitors#management"
+    get "ost_remote", to: "visitors#ost_remote"
+    get "api", to: "visitors#api"
   end
 
   devise_for :users, controllers: {
-    passwords: "users/passwords", 
-    registrations: "users/registrations", 
+    passwords: "users/passwords",
+    registrations: "users/registrations",
     sessions: "users/sessions",
-    omniauth_callbacks: "users/omniauth_callbacks",
+    omniauth_callbacks: "users/omniauth_callbacks"
   }
 
   devise_scope :user do
-    get '/users/auth/failure' => 'users/omniauth_callbacks#failure'
+    get "/users/auth/failure" => "users/omniauth_callbacks#failure"
   end
 
   resources :users do
@@ -129,7 +129,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/events', to: redirect('event_groups')
+  get "/events", to: redirect("event_groups")
 
   resources :import_jobs, only: [:index, :show, :new, :create, :destroy]
 
@@ -170,13 +170,13 @@ Rails.application.routes.draw do
   resources :stewardships, only: [:create, :update, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
-  get '/sitemap.xml.gz', to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
+  get "/sitemap.xml.gz", to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
   namespace :admin do
-    get 'dashboard', to: 'dashboard#show'
-    get 'dashboard/timeout', to: 'dashboard#timeout'
-    post 'impersonate/start/:id', to: 'impersonate#start', as: 'impersonate_start'
-    post 'impersonate/stop', to: 'impersonate#stop', as: 'impersonate_stop'
+    get "dashboard", to: "dashboard#show"
+    get "dashboard/timeout", to: "dashboard#timeout"
+    post "impersonate/start/:id", to: "impersonate#start", as: "impersonate_start"
+    post "impersonate/stop", to: "impersonate#stop", as: "impersonate_stop"
     resources :versions, only: [:index, :show]
   end
 
@@ -229,18 +229,18 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :create, :update, :destroy] do
         collection { get :current }
       end
-      post 'auth', to: 'authentication#create'
-      get 'staging/get_countries', to: 'staging#get_countries', as: :staging_get_countries
-      get 'staging/get_time_zones', to: 'staging#get_time_zones', as: :staging_get_time_zones
-      get 'staging/:id/get_locations', to: 'staging#get_locations', as: :staging_get_locations
-      post 'staging/:id/post_event_course_org', to: 'staging#post_event_course_org', as: :staging_post_event_course_org
-      patch 'staging/:id/update_event_visibility', to: 'staging#update_event_visibility', as: :staging_update_event_visibility
+      post "auth", to: "authentication#create"
+      get "staging/get_countries", to: "staging#get_countries", as: :staging_get_countries
+      get "staging/get_time_zones", to: "staging#get_time_zones", as: :staging_get_time_zones
+      get "staging/:id/get_locations", to: "staging#get_locations", as: :staging_get_locations
+      post "staging/:id/post_event_course_org", to: "staging#post_event_course_org", as: :staging_post_event_course_org
+      patch "staging/:id/update_event_visibility", to: "staging#update_event_visibility", as: :staging_update_event_visibility
     end
   end
 
   namespace :event_staging do
-    get '/:id/app', to: 'events#app', as: 'app'
+    get "/:id/app", to: "events#app", as: "app"
   end
 
-  get '/:id' => "shortener/shortened_urls#show"
+  get "/:id" => "shortener/shortened_urls#show"
 end

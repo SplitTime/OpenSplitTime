@@ -28,6 +28,7 @@ module Results
     private
 
     attr_reader :event_series, :series_template, :series_efforts
+
     delegate :scoring_method, :results_template, to: :event_series
 
     def blank_template

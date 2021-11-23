@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class RawTimeParameters < BaseParameters
-
   def self.permitted
     [:absolute_time,
      :bib_number,

@@ -2,19 +2,19 @@
 
 class BaseQuery
   def self.sql_safe_integer_list(array)
-    array.flatten.compact.map(&:to_i).join(',')
+    array.flatten.compact.map(&:to_i).join(",")
   end
 
   def self.sql_select_from_string(column_names_string, allowed, default)
-    column_names_array = (column_names_string || '').split(',').map { |e| e.strip.to_sym }
-    (column_names_array & allowed).join(', ').presence || default
+    column_names_array = (column_names_string || "").split(",").map { |e| e.strip.to_sym }
+    (column_names_array & allowed).join(", ").presence || default
   end
 
   def self.sql_order_from_hash(sort, allowed, default)
     sort_fields = (sort || {}).symbolize_keys
     allowed_fields = allowed.map(&:to_sym).to_set
     filtered_fields = sort_fields.select { |field, _| allowed_fields.include?(field) } # Don't use #slice here as it may reorder the sort_fields
-    filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}"}.join(', ')
+    filtered_string = filtered_fields.map { |field, direction| "#{field} #{direction}" }.join(", ")
     filtered_string.presence || default.to_s
   end
 
@@ -25,17 +25,16 @@ class BaseQuery
   def self.where_string_from_hash(hash)
     hash.map do |table, criteria|
       criteria.map do |field, value|
-        new_value, operator = case
-                              when value.is_a?(String)
-                                [sql_quotify(value), '=']
-                              when value.is_a?(Array)
-                                ["(#{value.map { |e| sql_quotify(e) }.join(', ')})", 'in']
+        new_value, operator = if value.is_a?(String)
+                                [sql_quotify(value), "="]
+                              elsif value.is_a?(Array)
+                                ["(#{value.map { |e| sql_quotify(e) }.join(', ')})", "in"]
                               else
-                                [value, '=']
+                                [value, "="]
                               end
         "#{table}.#{field} #{operator} #{new_value}"
-      end.join(' and ')
-    end.join(' and ')
+      end.join(" and ")
+    end.join(" and ")
   end
 
   def self.sql_quotify(value)

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class AnalyticsReporter
-
   def self.report_to_ga(args)
     new(args).report_to_ga
   end
@@ -12,7 +11,7 @@ class AnalyticsReporter
   end
 
   def report_to_ga
-    response = http_client.post('https://google-analytics.com/collect', ga_params)
+    response = http_client.post("https://google-analytics.com/collect", ga_params)
     Rails.logger.info "GA responded to #{ga_params} with #{response.code} #{response.body}"
   end
 

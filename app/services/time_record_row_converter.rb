@@ -36,6 +36,7 @@ class TimeRecordRowConverter
   private
 
   attr_reader :event, :time_records, :times_container
+
   delegate :home_time_zone, to: :event
 
   def time_rows
@@ -49,7 +50,7 @@ class TimeRecordRowConverter
        pacer_in: left_time_record&.with_pacer,
        pacer_out: right_time_record&.with_pacer,
        dropped_here: left_time_record&.stopped_here || right_time_record&.stopped_here,
-       remarks: [left_time_record&.remarks, right_time_record&.remarks].compact.join(' / ')}
+       remarks: [left_time_record&.remarks, right_time_record&.remarks].compact.join(" / ")}
     end
   end
 
@@ -62,7 +63,7 @@ class TimeRecordRowConverter
   end
 
   def validate_setup
-    raise ArgumentError, 'All time_records must match the provided event' unless
+    raise ArgumentError, "All time_records must match the provided event" unless
         time_records.all? { |tr| tr.event_id.nil? || tr.event_id == event.id }
   end
 end

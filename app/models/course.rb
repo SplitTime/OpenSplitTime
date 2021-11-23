@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 class Course < ApplicationRecord
-  include Auditable, Concealable, Delegable, SplitMethods, TimeZonable, UrlAccessible
+  include UrlAccessible
+  include TimeZonable
+  include SplitMethods
+  include Delegable
+  include Concealable
+  include Auditable
   extend FriendlyId
 
   zonable_attribute :next_start_time
@@ -14,7 +19,7 @@ class Course < ApplicationRecord
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
 
-  accepts_nested_attributes_for :splits, reject_if: lambda { |s| s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
+  accepts_nested_attributes_for :splits, reject_if: ->(s) { s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
 
   scope :standard_includes, -> { includes(:splits) }
   scope :with_policy_scope_attributes, -> { all }
@@ -57,8 +62,8 @@ class Course < ApplicationRecord
         file = gpx.download
         gpx_file = GPX::GPXFile.new(gpx_data: file)
         points = gpx_file.tracks.flat_map(&:points).presence ||
-          gpx_file.routes.flat_map(&:points).presence ||
-          gpx_file.waypoints
+                 gpx_file.routes.flat_map(&:points).presence ||
+                 gpx_file.waypoints
 
         points.map { |point| {lat: point.lat, lon: point.lon} }
       end

@@ -3,8 +3,8 @@
 module ETL
   module Transformers
     class EffortsWithTimesStrategy < BaseTransformer
-      DEFAULT_START_KEY = 'start'
-      TIME_ATTRIBUTE_MAP = {elapsed: :absolute_time, military: :military_time}
+      DEFAULT_START_KEY = "start"
+      TIME_ATTRIBUTE_MAP = {elapsed: :absolute_time, military: :military_time}.freeze
 
       def initialize(parsed_structs, options)
         @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
@@ -15,6 +15,7 @@ module ETL
 
       def transform
         return if errors.present?
+
         proto_records.each do |proto_record|
           proto_record.transform_as(:effort, event: event)
           transform_time_data!(proto_record)
@@ -37,15 +38,11 @@ module ETL
       end
 
       def add_missing_start_keys(proto_record)
-        unless proto_record.has_key?(guaranteed_start_key)
-          proto_record[guaranteed_start_key] = nil
-        end
+        proto_record[guaranteed_start_key] = nil unless proto_record.has_key?(guaranteed_start_key)
       end
 
       def fill_missing_start_times(proto_record)
-        if missing_start_time?(proto_record)
-          proto_record[guaranteed_start_key] = default_start_value
-        end
+        proto_record[guaranteed_start_key] = default_start_value if missing_start_time?(proto_record)
       end
 
       def extract_times(proto_record)
@@ -93,17 +90,17 @@ module ETL
       end
 
       def start_key
-        @start_key ||= attribute_keys.find { |key| key.to_s.start_with?('start') }
+        @start_key ||= attribute_keys.find { |key| key.to_s.start_with?("start") }
       end
 
       def finish_key
-        @finish_key ||= attribute_keys.find { |key| key.to_s.start_with?('finish') || key.to_s.start_with?('time') }
+        @finish_key ||= attribute_keys.find { |key| key.to_s.start_with?("finish") || key.to_s.start_with?("time") }
       end
 
       def default_start_value
         case time_format
         when :elapsed
-          '00:00:00'
+          "00:00:00"
         else
           TimeConversion.absolute_to_hms(event.scheduled_start_time_local)
         end
@@ -116,12 +113,15 @@ module ETL
       def validate_setup
         errors << missing_event_error unless event.present?
         return unless proto_records.present?
-        errors << value_not_permitted_error(:time_format, TIME_ATTRIBUTE_MAP.keys, time_format) unless TIME_ATTRIBUTE_MAP.keys.include?(time_format)
+
+        unless TIME_ATTRIBUTE_MAP.keys.include?(time_format)
+          errors << value_not_permitted_error(:time_format, TIME_ATTRIBUTE_MAP.keys, time_format)
+        end
         return if finish_times_only?
 
         errors << missing_start_key_error unless start_key
         (errors << split_mismatch_error(event, time_points.size, time_keys.size)) if event.present? && !event.laps_unlimited? &&
-          (time_keys.size != time_points.size)
+                                                                                     (time_keys.size != time_points.size)
       end
     end
   end

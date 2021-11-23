@@ -17,7 +17,7 @@ RSpec.describe ::Type::StringArrayFromString do
     context "when given a Postgres-style array" do
       let(:names) { "{hello,there,world}" }
       it "casts names as an array" do
-        expect(subject.names).to eq(["hello", "there", "world"])
+        expect(subject.names).to eq(%w[hello there world])
       end
     end
 
@@ -43,9 +43,9 @@ RSpec.describe ::Type::StringArrayFromString do
     end
 
     context "when given an array" do
-      let(:names) { ["hello", "there", "world"] }
+      let(:names) { %w[hello there world] }
       it "returns the array" do
-        expect(subject.names).to eq(["hello", "there", "world"])
+        expect(subject.names).to eq(%w[hello there world])
       end
     end
 

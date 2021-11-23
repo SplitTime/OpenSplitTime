@@ -45,7 +45,7 @@ module Interactors
     end
 
     def validate_setup
-      raise ArgumentError, 'efforts argument was not provided' unless efforts
+      raise ArgumentError, "efforts argument was not provided" unless efforts
     end
   end
 end

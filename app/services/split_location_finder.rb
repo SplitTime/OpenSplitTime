@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SplitLocationFinder
-
   def self.splits(params)
     new(params).splits
   end
@@ -24,9 +23,11 @@ class SplitLocationFinder
   end
 
   def splits_within_bounds
-    location_bounds[:west] > location_bounds[:east] ?
-        Split.location_bounded_across_dateline(location_bounds) :
-        Split.location_bounded_by(location_bounds)
+    if location_bounds[:west] > location_bounds[:east]
+      Split.location_bounded_across_dateline(location_bounds)
+    else
+      Split.location_bounded_by(location_bounds)
+    end
   end
 
   def location_bounds

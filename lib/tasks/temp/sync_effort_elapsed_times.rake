@@ -1,11 +1,11 @@
 # This is a temporary rake task that should be deleted
 # once it has been run in all environments.
 
-require 'active_record'
+require "active_record"
 
 namespace :temp do
   desc "calculates elapsed_seconds for all split times"
-  task :initialize_elapsed_seconds => :environment do
+  task initialize_elapsed_seconds: :environment do
     puts "Initializing the elapsed_seconds column"
 
     efforts = Effort.all

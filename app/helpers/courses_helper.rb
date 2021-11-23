@@ -32,11 +32,11 @@ module CoursesHelper
   end
 
   def plan_export_headers
-    time_of_day_headers = @presenter.out_sub_splits? ? ['Time of Day In', 'Time of Day Out'] : ['Time of Day']
-    elapsed_time_headers = @presenter.out_sub_splits? ? ['Elapsed Time In', 'Elapsed Time Out'] : ['Elapsed Time']
-    in_aid = @presenter.out_sub_splits? ? ['In Aid'] : []
-    lap = @presenter.multiple_laps? ? ['Lap Time'] : []
-    ['Split', pdu('singular').titlecase] + time_of_day_headers + elapsed_time_headers + ['Segment'] + in_aid + lap
+    time_of_day_headers = @presenter.out_sub_splits? ? ["Time of Day In", "Time of Day Out"] : ["Time of Day"]
+    elapsed_time_headers = @presenter.out_sub_splits? ? ["Elapsed Time In", "Elapsed Time Out"] : ["Elapsed Time"]
+    in_aid = @presenter.out_sub_splits? ? ["In Aid"] : []
+    lap = @presenter.multiple_laps? ? ["Lap Time"] : []
+    ["Split", pdu("singular").titlecase] + time_of_day_headers + elapsed_time_headers + ["Segment"] + in_aid + lap
   end
 
   def lap_split_export_row(row)
@@ -44,18 +44,16 @@ module CoursesHelper
     absolute_times_local = Array.new(number_of_times) { |i| row.absolute_times_local.map(&method(:day_time_full_format))[i] }
     elapsed_times = Array.new(number_of_times) { |i| row.times_from_start.map(&method(:time_format_hhmm))[i] }
     segment_time = [time_format_hhmm(row.segment_time)]
-    in_aid_time = case
-                  when !@presenter.out_sub_splits?
+    in_aid_time = if !@presenter.out_sub_splits?
                     []
-                  when row.finish?
+                  elsif row.finish?
                     [time_format_hhmm(@presenter.total_time_in_aid)]
                   else
                     [time_format_hhmm(row.time_in_aid)]
                   end
-    lap_time = case
-               when !@presenter.multiple_laps?
+    lap_time = if !@presenter.multiple_laps?
                  []
-               when row.finish?
+               elsif row.finish?
                  [lap_time_text(@presenter, row)]
                else
                  []

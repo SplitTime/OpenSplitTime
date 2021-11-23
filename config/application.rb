@@ -17,10 +17,10 @@ module OpenSplitTime
     # the framework and any gems in your application.
     config.time_zone = "UTC"
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W[#{config.root}/lib]
     config.autoload_paths += Dir[File.join(Rails.root, "lib", "core_ext", "**/*.rb")].each { |l| require l }
 
-    config.exceptions_app = self.routes
+    config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
   end

@@ -2,6 +2,7 @@
 
 class EventGroupStatsPresenter < BasePresenter
   attr_reader :event_group
+
   delegate :efforts, :name, :organization, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :concealed?, :multiple_events?, to: :event_group
   delegate :multiple_laps?, :laps_unlimited?, to: :event
@@ -37,10 +38,10 @@ class EventGroupStatsPresenter < BasePresenter
   def noticed_efforts_with_count
     @noticed_efforts_with_count ||=
       efforts.joins(:notifications)
-        .select("efforts.*, sum(array_length(notifications.follower_ids, 1)) as notifications_count")
-        .where.not(notifications: {follower_ids: []})
-        .group("efforts.id")
-        .order(notifications_count: :desc).to_a
+          .select("efforts.*, sum(array_length(notifications.follower_ids, 1)) as notifications_count")
+          .where.not(notifications: {follower_ids: []})
+          .group("efforts.id")
+          .order(notifications_count: :desc).to_a
   end
 
   def ranked_efforts
@@ -53,7 +54,7 @@ class EventGroupStatsPresenter < BasePresenter
 
   def subs_count_by_protocol
     @subs_count_by_protocol ||=
-      Subscription.where(subscribable_type: 'Effort', subscribable_id: efforts).group(:protocol).count
+      Subscription.where(subscribable_type: "Effort", subscribable_id: efforts).group(:protocol).count
   end
 
   def total_distance

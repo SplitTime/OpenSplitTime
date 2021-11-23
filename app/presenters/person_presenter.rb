@@ -2,6 +2,7 @@
 
 class PersonPresenter < BasePresenter
   attr_reader :person
+
   delegate :to_param, to: :person
 
   def initialize(person, params, current_user)
@@ -12,7 +13,7 @@ class PersonPresenter < BasePresenter
 
   def efforts
     @efforts ||= EffortPolicy::Scope.new(current_user, Effort).viewable.includes(event: :event_group, split_times: :split)
-                     .where(person: person).sort_by { |effort| -effort.actual_start_time.to_i }
+        .where(person: person).sort_by { |effort| -effort.actual_start_time.to_i }
   end
 
   def participation_notifiable?

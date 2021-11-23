@@ -48,9 +48,11 @@ module Interactors
     end
 
     def validate_setup
-      raise ArgumentError, 'effort argument was not provided' unless effort
-      raise ArgumentError, 'split_time_ids argument was not provided' unless split_time_ids
-      raise ArgumentError, "split_time ids #{mismatched_split_time_ids.join(', ')} do not correspond to effort #{effort}" if mismatched_split_time_ids.present?
+      raise ArgumentError, "effort argument was not provided" unless effort
+      raise ArgumentError, "split_time_ids argument was not provided" unless split_time_ids
+      if mismatched_split_time_ids.present?
+        raise ArgumentError, "split_time ids #{mismatched_split_time_ids.join(', ')} do not correspond to effort #{effort}"
+      end
     end
 
     def mismatched_split_time_ids

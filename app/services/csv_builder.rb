@@ -26,7 +26,7 @@ class CsvBuilder
   def serialize_resource(resource)
     export_attributes.map do |attribute|
       value = resource.send(attribute)
-      value.is_a?(Array) ? value.join(' ') : value
+      value.is_a?(Array) ? value.join(" ") : value
     end
   end
 
@@ -43,7 +43,8 @@ class CsvBuilder
   end
 
   def error_message
-    return 'No model class was provided' unless model_class.present?
+    return "No model class was provided" unless model_class.present?
+
     "No csv attributes defined for #{model_class}" unless export_attributes.present?
   end
 end

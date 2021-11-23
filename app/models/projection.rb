@@ -17,7 +17,7 @@ class Projection < ::ApplicationQuery
 
   def self.sql(split_time, starting_time_point, subject_time_points)
     unless split_time && starting_time_point && subject_time_points
-      raise ArgumentError, 'Projection.sql requires a split_time, starting_time_point, and subject_time_points'
+      raise ArgumentError, "Projection.sql requires a split_time, starting_time_point, and subject_time_points"
     end
 
     completed_lap, completed_split_id, completed_bitkey = split_time.time_point.values
@@ -29,7 +29,7 @@ class Projection < ::ApplicationQuery
     projected_where_array = subject_time_points.map do |tp|
       "(lap = #{tp.lap} and split_id = #{tp.split_id} and sub_split_bitkey = #{tp.bitkey})"
     end
-    projected_where_clause = projected_where_array.join(' or ').presence || 'true'
+    projected_where_clause = projected_where_array.join(" or ").presence || "true"
 
     overall_limit = 100
     similarity_threshold = 0.3

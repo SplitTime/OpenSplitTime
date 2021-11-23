@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ParticipationNotifier < BaseNotifier
-  VERBS = {unstarted: 'will be participating', in_progress: 'is in progress', stopped: 'recently participated'}
-  RESULTS_DESCRIPTORS = {unstarted: 'Watch for results', in_progress: 'Follow along', stopped: 'See full results'}
+  VERBS = {unstarted: "will be participating", in_progress: "is in progress", stopped: "recently participated"}.freeze
+  RESULTS_DESCRIPTORS = {unstarted: "Watch for results", in_progress: "Follow along", stopped: "See full results"}.freeze
 
   def post_initialize(args)
     @effort = args[:effort]
@@ -11,6 +11,7 @@ class ParticipationNotifier < BaseNotifier
   private
 
   attr_reader :effort
+
   delegate :event, :person, to: :effort
 
   def subject
@@ -41,10 +42,9 @@ class ParticipationNotifier < BaseNotifier
   end
 
   def effort_status
-    case
-    when effort.stopped?
+    if effort.stopped?
       :stopped
-    when effort.in_progress?
+    elsif effort.in_progress?
       :in_progress
     else
       :unstarted

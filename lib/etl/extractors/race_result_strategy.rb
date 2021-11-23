@@ -31,21 +31,21 @@ module ETL
 
       def extract_headers
         array = data_fields.map { |header| expression_or_section(header) }
-        array.unshift('rr_id')
+        array.unshift("rr_id")
         array
       end
 
       def expression_or_section(header)
-        expression, label = [header['expression'], header['label']].map(&:underscore)
-        expression.start_with?('section') ? expression : label
+        expression, label = [header["expression"], header["label"]].map(&:underscore)
+        expression.start_with?("section") ? expression : label
       end
 
       def data_rows
-        @data_rows ||= raw_data['data']&.values&.first
+        @data_rows ||= raw_data["data"]&.values&.first
       end
 
       def data_fields
-        @data_fields ||= raw_data.dig('list', 'fields')
+        @data_fields ||= raw_data.dig("list", "fields")
       end
 
       def validate_raw_data

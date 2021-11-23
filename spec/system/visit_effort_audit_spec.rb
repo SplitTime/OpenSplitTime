@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe 'visit an effort audit page' do
+RSpec.describe "visit an effort audit page" do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -27,15 +27,15 @@ RSpec.describe 'visit an effort audit page' do
 
   let(:matched_raw_time) { split_time.raw_times.first }
   let(:unmatched_raw_time) { raw_times(:raw_time_87) }
-  let(:disassociated_raw_time) { raw_times(:raw_time_86)}
+  let(:disassociated_raw_time) { raw_times(:raw_time_86) }
 
-  shared_examples 'authorized user visits and clicks links' do
-    scenario 'The user visits the page' do
+  shared_examples "authorized user visits and clicks links" do
+    scenario "The user visits the page" do
       visit audit_effort_path(effort)
       verify_links_present
     end
 
-    scenario 'The user matches a raw time' do
+    scenario "The user matches a raw time" do
       visit audit_effort_path(effort)
 
       expect(page).not_to have_link(id: "unmatch-raw-time-#{unmatched_raw_time.id}")
@@ -52,7 +52,7 @@ RSpec.describe 'visit an effort audit page' do
       expect(split_time.raw_times).to include(matched_raw_time)
     end
 
-    scenario 'The user unmatches a raw time' do
+    scenario "The user unmatches a raw time" do
       visit audit_effort_path(effort)
 
       expect(page).not_to have_link(id: "unmatch-raw-time-#{unmatched_raw_time.id}")
@@ -69,7 +69,7 @@ RSpec.describe 'visit an effort audit page' do
       expect(split_time.raw_times).not_to include(matched_raw_time)
     end
 
-    scenario 'The user disassociates and associates a raw time' do
+    scenario "The user disassociates and associates a raw time" do
       visit audit_effort_path(effort)
 
       expect(page).not_to have_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
@@ -92,31 +92,31 @@ RSpec.describe 'visit an effort audit page' do
     end
   end
 
-  context 'The user is an admin' do
+  context "The user is an admin" do
     before { login_as admin, scope: :user }
-    include_examples 'authorized user visits and clicks links'
+    include_examples "authorized user visits and clicks links"
   end
 
-  context 'The user is an owner' do
+  context "The user is an owner" do
     before { login_as owner, scope: :user }
-    include_examples 'authorized user visits and clicks links'
+    include_examples "authorized user visits and clicks links"
   end
 
-  context 'The user is a steward' do
+  context "The user is a steward" do
     before { login_as steward, scope: :user }
-    include_examples 'authorized user visits and clicks links'
+    include_examples "authorized user visits and clicks links"
   end
 
-  context 'The user is not an owner or steward' do
+  context "The user is not an owner or steward" do
     before { login_as user, scope: :user }
-    scenario 'The user visits the page' do
+    scenario "The user visits the page" do
       visit audit_effort_path(effort)
       verify_redirect_to_root
     end
   end
 
-  context 'The user is a visitor' do
-    scenario 'The user visits the page' do
+  context "The user is a visitor" do
+    scenario "The user visits the page" do
       visit audit_effort_path(effort)
       verify_redirect_to_root
     end

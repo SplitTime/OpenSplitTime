@@ -2,7 +2,7 @@
 
 namespace :maintenance do
   desc "Deletes people who have no efforts"
-  task :delete_orphaned_people => :environment do
+  task delete_orphaned_people: :environment do
     puts "Attempting to delete all orphaned person records from the database"
 
     orphaned_people = ::Person.left_joins(:efforts).where(efforts: {person_id: nil})

@@ -1,5 +1,4 @@
 class Live::EventsController < Live::BaseController
-
   before_action :set_event
 
   def aid_station_report

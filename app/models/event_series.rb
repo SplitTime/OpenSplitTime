@@ -1,5 +1,7 @@
 class EventSeries < ApplicationRecord
-  include Delegable, DelegatedConcealable, MultiEventable
+  include MultiEventable
+  include DelegatedConcealable
+  include Delegable
   extend FriendlyId
 
   enum scoring_method: [:time, :rank, :points]
@@ -17,13 +19,13 @@ class EventSeries < ApplicationRecord
   validates_presence_of :name, :organization, :results_template, :scoring_method
   validate :point_system_present, if: :points?
 
-  scope :with_policy_scope_attributes, -> { from(select('event_series.*, false as concealed'), :event_series) }
+  scope :with_policy_scope_attributes, -> { from(select("event_series.*, false as concealed"), :event_series) }
 
   private
 
   def point_system_present
     if results_template.point_system.blank?
-      errors.add(:base, 'Points scoring method is permitted only if the template has a point system')
+      errors.add(:base, "Points scoring method is permitted only if the template has a point system")
     end
   end
 end

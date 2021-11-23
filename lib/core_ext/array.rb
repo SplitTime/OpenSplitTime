@@ -6,6 +6,7 @@ class Array
   def elements_before(index_element, inclusive: false)
     i = index(index_element)
     return [] unless i
+
     i += 1 if inclusive
     self[0, i]
   end
@@ -13,6 +14,7 @@ class Array
   def elements_after(index_element, inclusive: false)
     i = index(index_element)
     return [] unless i
+
     i -= 1 if inclusive
     self[(i + 1)..-1]
   end

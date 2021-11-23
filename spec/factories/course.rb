@@ -8,7 +8,6 @@ FactoryBot.define do
     end
 
     trait :with_splits do
-
       transient { splits_count { 4 } }
       transient { in_sub_splits_only { false } }
     end

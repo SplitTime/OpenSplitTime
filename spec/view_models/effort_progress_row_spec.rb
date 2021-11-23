@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe EffortProgressRow do
   let(:event) { events(:rufa_2017_24h) }
   let(:splits) { event.splits }
   let(:efforts) { event.efforts }
 
-  describe '#extract_attributes' do
-    it 'returns a hash with keys being the provided attributes and values being values of corresponding methods' do
+  describe "#extract_attributes" do
+    it "returns a hash with keys being the provided attributes and values being values of corresponding methods" do
       split = event.splits.first
       effort = event.efforts.first
       aid_station_detail = AidStationDetail.new(event: event, parameterized_split_name: split.parameterized_base_name)

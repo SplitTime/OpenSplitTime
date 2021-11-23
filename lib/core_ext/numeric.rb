@@ -1,8 +1,10 @@
 class Numeric
   def round_to_nearest(rounding_quotient = 0)
-    rounding_quotient.zero? ?
-        self.round :
-        (self / rounding_quotient.to_f).round * rounding_quotient
+    if rounding_quotient.zero?
+      round
+    else
+      (self / rounding_quotient.to_f).round * rounding_quotient
+    end
   end
 
   def numericize # Parallel to String#numericize

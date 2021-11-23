@@ -20,12 +20,14 @@ class FindExpectedLap
 
   def perform
     return 1 if maximum_lap == 1
+
     identical_time_lap || missing_lap || (location_highest_lap + 1).clamp(1, maximum_lap)
   end
 
   private
 
   attr_reader :effort, :subject_attribute, :subject_value, :split_id, :bitkey
+
   delegate :event, to: :effort
 
   def identical_time_lap
@@ -38,6 +40,7 @@ class FindExpectedLap
 
   def time_fits_missing?(lap)
     return if indexed_location_times[lap]
+
     previous_time = previous_value(lap)
     next_time = next_value(lap)
     previous_time.present? && next_time.present? && subject_value.between?(previous_time, next_time)

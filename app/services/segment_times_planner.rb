@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SegmentTimesPlanner
-
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:expected_time, :event, :time_points, :similar_effort_ids],
@@ -13,9 +12,9 @@ class SegmentTimesPlanner
     @similar_effort_ids = args[:similar_effort_ids]
     @start_time = args[:start_time] || event.scheduled_start_time
     @times_container = args[:times_container] ||
-        SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids)
+                       SegmentTimesContainer.new(calc_model: :focused, effort_ids: similar_effort_ids)
     @serial_segments = args[:serial_segments] ||
-        SmartSegmentsBuilder.segments(event: event, time_points: time_points, times_container: times_container)
+                       SmartSegmentsBuilder.segments(event: event, time_points: time_points, times_container: times_container)
   end
 
   def absolute_times(round_to: 0)
@@ -24,6 +23,7 @@ class SegmentTimesPlanner
 
   def times_from_start(round_to: 0)
     return {} if final_segment_missing?
+
     @times_from_start ||= serial_segments.map.with_index do |segment, i|
       [segment.end_point, (serial_times[0..i].sum * pace_factor).round_to_nearest(round_to)]
     end.to_h

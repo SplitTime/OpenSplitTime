@@ -3,7 +3,7 @@
 class EffortRow < SimpleDelegator
   include Rankable
 
-  ULTRASIGNUP_STATUS_TABLE = {'Finished' => 1, 'Dropped' => 2, 'Not Started' => 3}
+  ULTRASIGNUP_STATUS_TABLE = {"Finished" => 1, "Dropped" => 2, "Not Started" => 3}.freeze
 
   def country_code_alpha_3
     return nil unless country_code.present?
@@ -19,7 +19,7 @@ class EffortRow < SimpleDelegator
     final_absolute_time&.in_time_zone(home_time_zone)
   end
 
-  alias_method :final_absolute_time_local, :final_day_and_time
+  alias final_absolute_time_local final_day_and_time
 
   def ultrasignup_finish_status
     ULTRASIGNUP_STATUS_TABLE[effort_status] || "#{name} (id: #{id}, bib: #{bib_number}) is in progress"

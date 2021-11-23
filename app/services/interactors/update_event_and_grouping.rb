@@ -25,8 +25,8 @@ module Interactors
         if event_group_orphaned?
           begin
             old_event_group.destroy
-          rescue ActiveRecord::ActiveRecordError => exception
-            errors << active_record_error(exception)
+          rescue ActiveRecord::ActiveRecordError => e
+            errors << active_record_error(e)
           end
         end
 
@@ -50,11 +50,11 @@ module Interactors
 
     def new_event_group
       @new_event_group ||= EventGroup.find_by(id: new_event_group_id) ||
-          EventGroup.create!(name: unique_name,
-                             organization_id: old_event_group.organization_id,
-                             concealed: old_event_group.concealed,
-                             available_live: old_event_group.available_live,
-                             home_time_zone: old_event_group.home_time_zone)
+                           EventGroup.create!(name: unique_name,
+                                              organization_id: old_event_group.organization_id,
+                                              concealed: old_event_group.concealed,
+                                              available_live: old_event_group.available_live,
+                                              home_time_zone: old_event_group.home_time_zone)
     end
 
     def unique_name
@@ -67,7 +67,7 @@ module Interactors
 
     def message
       if errors.present?
-        'Event or event group could not be updated. '
+        "Event or event group could not be updated. "
       else
         "Event #{event} was updated. "
       end
@@ -75,7 +75,7 @@ module Interactors
 
     def validate_setup
       errors << mismatched_organization_error(old_event_group, new_event_group) if event_group_updated && old_event_group_id &&
-          new_event_group_id && (old_event_group.organization != new_event_group.organization)
+                                                                                   new_event_group_id && (old_event_group.organization != new_event_group.organization)
     end
   end
 end

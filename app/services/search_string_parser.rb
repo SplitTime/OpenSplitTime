@@ -22,14 +22,14 @@ class SearchStringParser
   attr_reader :search_string
 
   def clean_words
-    @clean_words ||= search_string.gsub(/[^[a-zA-Z ]]/, '').split
+    @clean_words ||= search_string.gsub(/[^[a-zA-Z ]]/, "").split
   end
 
   def clean_word_string
-    @clean_word_string ||= clean_words.join(' ')
+    @clean_word_string ||= clean_words.join(" ")
   end
 
   def clean_number_string
-    @clean_number_string ||= search_string.gsub(/[^[0-9 ]]/, '').split.join(' ')
+    @clean_number_string ||= search_string.gsub(/[^[0-9 ]]/, "").split.join(" ")
   end
 end

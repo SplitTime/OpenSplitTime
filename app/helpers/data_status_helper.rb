@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 STATUS_INDICATOR_ATTRIBUTES = {
-  bad: {icon: 'times-circle', class: 'text-danger'},
-  questionable: {icon: 'question-circle', class: 'text-warning'},
+  bad: {icon: "times-circle", class: "text-danger"},
+  questionable: {icon: "question-circle", class: "text-warning"}
 }.with_indifferent_access
 
 module DataStatusHelper
@@ -14,8 +14,8 @@ module DataStatusHelper
     tooltip_title = "#{data_type} appears #{status}".titleize
 
     fa_icon(attributes[:icon],
-            class: ['has-tooltip', attributes[:class]].join(' '),
+            class: ["has-tooltip", attributes[:class]].join(" "),
             text: time,
-            data: {toggle: 'tooltip', 'original-title' => tooltip_title})
+            data: {toggle: "tooltip", "original-title" => tooltip_title})
   end
 end

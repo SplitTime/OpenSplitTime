@@ -37,12 +37,14 @@ module SplitMethods
 
   def next_split(split)
     return nil if split.finish?
+
     splits = ordered_splits
     splits[splits.index(split) + 1]
   end
 
   def previous_split(split)
     return nil if split.start?
+
     splits = ordered_splits
     splits[splits.index(split) - 1]
   end

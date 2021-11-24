@@ -7,6 +7,7 @@ class ImportJob < ApplicationRecord
   has_one_attached :file
 
   scope :most_recent_first, -> { reorder(created_at: :desc) }
+  scope :owned_by, ->(user) { where(user: user) }
 
   attribute :row_count, default: 0
   attribute :success_count, default: 0
@@ -26,6 +27,8 @@ class ImportJob < ApplicationRecord
             attached: true,
             size: {less_than: 1.megabyte},
             content_type: {in: %w[text/csv text/plain], message: "must be a CSV file"}
+
+  alias_attribute :owner_id, :user_id
 
   def parent
     @parent ||= parent_type.constantize.find(parent_id)

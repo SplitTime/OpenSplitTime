@@ -6,29 +6,25 @@ class ImportJobsController < ApplicationController
 
   # GET /import_jobs
   def index
-    authorize @user
+    authorize ::ImportJob
   end
 
   # GET /import_jobs/:id
   def show
-    authorize @user
+    authorize @import_job
   end
 
   # GET /import_jobs/new
   def new
-    authorize @user
-
-    @import_job = ::ImportJob.new(permitted_params)
-    @import_job.user = @user
+    @import_job = current_user.import_jobs.new(permitted_params)
+    authorize @import_job
   end
 
   # POST /import_jobs
   def create
-    authorize @user
-
-    @import_job = ::ImportJob.new(permitted_params)
+    @import_job = current_user.import_jobs.new(permitted_params)
     @import_job.status = :waiting
-    @import_job.user = current_user
+    authorize @import_job
 
     begin
       if @import_job.save
@@ -48,7 +44,7 @@ class ImportJobsController < ApplicationController
 
   # DELETE /import_jobs/:id
   def destroy
-    authorize @user
+    authorize @import_job
 
     unless @import_job.destroy
       flash[:danger] = "Unable to delete import job: #{@import_job.errors.full_messages.join(', ')}"
@@ -60,12 +56,12 @@ class ImportJobsController < ApplicationController
   private
 
   def set_import_job
-    @import_job = @user.import_jobs.find(params[:id])
+    @import_job = policy_scope(::ImportJob).find(params[:id])
   end
 
   def set_user
     @user = if current_user.admin?
-              User.find_by(id: params[:user_id]) || current_user
+              params[:user_id].present? ? ::User.find_by(id: params[:user_id]) : current_user
             else
               current_user
             end

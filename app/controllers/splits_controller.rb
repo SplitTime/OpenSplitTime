@@ -13,8 +13,8 @@ class SplitsController < ApplicationController
       end
       format.csv do
         builder = CsvBuilder.new(Split, @splits)
-        send_data(builder.full_string, type: "text/csv",
-                                       filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+        send_data(builder.full_string, type: 'text/csv',
+                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
       end
     end
   end
@@ -40,11 +40,11 @@ class SplitsController < ApplicationController
       redirect_to split_path(@split)
     else
       if @event
-        render "new", event_id: @event.id
+        render 'new', event_id: @event.id
       elsif @course
-        render "new", course_id: @course.id
+        render 'new', course_id: @course.id
       else
-        render "new"
+        render 'new'
       end
     end
   end
@@ -56,7 +56,7 @@ class SplitsController < ApplicationController
       redirect_to split_path(@split)
     else
       @course = Course.friendly.find(@split.course_id) if @split.course_id
-      render "edit"
+      render 'edit'
     end
   end
 

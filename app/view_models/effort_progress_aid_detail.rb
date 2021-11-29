@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class EffortProgressAidDetail < EffortProgressRow
+
   def post_initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:effort, :event_framework, :lap, :effort_split_times, :times_container],

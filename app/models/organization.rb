@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
-  include UrlAccessible
-  include Concealable
-  include Auditable
+  include Auditable, Concealable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -21,20 +19,20 @@ class Organization < ApplicationRecord
   has_many :results_templates, dependent: :destroy
 
   scope :owned_by, ->(user) { where(created_by: user.id) }
-  scope :authorized_for, lambda { |user|
+  scope :authorized_for, ->(user) do
     left_joins(:stewardships)
-        .where("organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
-        .distinct
-  }
-  scope :visible_or_authorized_for, lambda { |user|
+      .where('organizations.created_by = ? or stewardships.user_id = ?', user.id, user.id)
+      .distinct
+  end
+  scope :visible_or_authorized_for, ->(user) do
     left_joins(:stewardships)
-        .where("organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
-        .distinct
-  }
-  scope :with_visible_event_count, lambda {
-    left_joins(event_groups: :events).select("organizations.*, COUNT(DISTINCT events) AS event_count")
-        .where(event_groups: {concealed: false}).group("organizations.id, event_groups.organization_id")
-  }
+      .where('organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?', user.id, user.id)
+      .distinct
+  end
+  scope :with_visible_event_count, -> do
+    left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
+      .where(event_groups: {concealed: false}).group('organizations.id, event_groups.organization_id')
+  end
 
   alias_attribute :owner_id, :created_by
 

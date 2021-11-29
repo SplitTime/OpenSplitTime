@@ -23,9 +23,9 @@ module ETL
             begin
               proto_record.transform_as(:lottery_entrant, division: division)
               proto_record.slice_permitted!
-            rescue StandardError => e
+            rescue => error
               import_job.increment!(:failure_count)
-              errors << transform_failed_error(e, row_index)
+              errors << transform_failed_error(error, row_index)
             end
           else
             import_job.increment!(:failure_count)
@@ -39,7 +39,7 @@ module ETL
       private
 
       attr_reader :proto_records, :import_job
-      alias lottery parent
+      alias_method :lottery, :parent
 
       def divisions_by_name
         lottery.divisions.index_by { |division| division.name.parameterize }
@@ -50,7 +50,7 @@ module ETL
         errors << missing_records_error unless proto_records.present?
 
         if proto_records.present?
-          unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("division_name")
+          unless proto_records.first.keys.map { |key| key.to_s.underscore}.include?("division_name")
             errors << missing_key_error("Division name")
           end
         end

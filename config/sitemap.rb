@@ -1,8 +1,9 @@
-SitemapGenerator::Sitemap.default_host = "https://www.opensplittime.org"
+SitemapGenerator::Sitemap.default_host = 'https://www.opensplittime.org'
 
-SitemapGenerator::Sitemap.public_path = "tmp/sitemaps/"
+SitemapGenerator::Sitemap.public_path = 'tmp/sitemaps/'
 
 SitemapGenerator::Sitemap.create do
+
   add organizations_path
   add event_groups_path
   add people_path

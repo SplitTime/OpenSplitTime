@@ -112,14 +112,14 @@ class LotteriesController < ApplicationController
   def delete_entrants
     begin
       if @lottery.draws.delete_all &&
-         @lottery.tickets.delete_all &&
-         @lottery.divisions.each { |division| division.entrants.delete_all }
+        @lottery.tickets.delete_all &&
+        @lottery.divisions.each { |division| division.entrants.delete_all }
         flash[:success] = "Deleted all lottery entrants, tickets, and draws"
       else
         flash[:danger] = "Unable to delete all lottery entrants, tickets, and draws"
       end
-    rescue ::ActiveRecord::ActiveRecordError => e
-      flash[:danger] = "Unable to delete entrants, tickets, and draws: #{e}"
+    rescue ::ActiveRecord::ActiveRecordError => error
+      flash[:danger] = "Unable to delete entrants, tickets, and draws: #{error}"
     end
 
     redirect_to setup_organization_lottery_path(@organization, @lottery)

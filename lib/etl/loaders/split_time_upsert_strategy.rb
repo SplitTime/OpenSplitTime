@@ -6,7 +6,8 @@
 module ETL
   module Loaders
     class SplitTimeUpsertStrategy < BaseLoader
-      def post_initialize(_options)
+
+      def post_initialize(options)
         @parent_model = Effort
         @child_model = SplitTime
         @parent_key = [:event_id, :bib_number]

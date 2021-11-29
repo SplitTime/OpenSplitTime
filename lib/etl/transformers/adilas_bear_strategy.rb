@@ -12,7 +12,6 @@ module ETL
 
       def transform
         return if errors.present?
-
         transform_time_data
         proto_record.record_type = :effort
         proto_record.normalize_gender!
@@ -36,7 +35,7 @@ module ETL
       end
 
       def sort_and_fill_times
-        proto_record[:times_of_day] = (0..13).flat_map { |i| proto_record[:times][i] || %w[... ...] }
+        proto_record[:times_of_day] = (0..13).flat_map { |i| proto_record[:times][i] || %w(... ...) }
       end
 
       def parse_times
@@ -47,7 +46,6 @@ module ETL
       def fix_negative_times
         proto_record[:absolute_times] = proto_record[:times_of_day].map do |datetime|
           next unless datetime
-
           seconds = datetime - effort_start_time
           seconds_in_day = (1.day / 1.second)
           adjustment = seconds&.negative? ? (seconds.to_i / seconds_in_day).abs * seconds_in_day : 0

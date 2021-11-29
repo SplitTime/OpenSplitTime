@@ -22,7 +22,7 @@ class PartnersController < ApplicationController
     if @partner.save
       redirect_to partner_event_group_path
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -32,21 +32,21 @@ class PartnersController < ApplicationController
     if @partner.update(permitted_params)
       redirect_to partner_event_group_path
     else
-      render "edit"
+      render 'edit'
     end
   end
 
   def destroy
     authorize @partner
     @partner.destroy
-    flash[:success] = "Partner deleted."
+    flash[:success] = 'Partner deleted.'
     redirect_to partner_event_group_path
   end
 
   private
 
   def partner_event_group_path
-    event_group_path(@partner.event_group, display_style: "partners", force_settings: true)
+    event_group_path(@partner.event_group, display_style: 'partners', force_settings: true)
   end
 
   def set_partner

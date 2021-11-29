@@ -28,6 +28,8 @@ module CoreExt
             Date.new(compare_date.year + offset, 2, 28)
           when :march
             Date.new(compare_date.year + offset, 3, 1)
+          else
+            nil
           end
         end
 

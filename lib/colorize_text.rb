@@ -1,4 +1,5 @@
 class ColorizeText
+
   # Use with puts, for example, puts ColorizeText.red('Warning!')
   # or puts ColorizeText.bold_cyan('Attention:')
   # or print (These methods do not work with p)
@@ -22,11 +23,11 @@ class ColorizeText
               green: "32",
               bold_green: "1;32",
               tan: "33",
-              bold_tan: "1;33"}.freeze
+              bold_tan: "1;33"}
 
   class << self
     COLORS.each_key do |color|
-      define_method(color.to_s) do |text|
+      define_method("#{color}") do |text|
         colorize(text, COLORS[color])
       end
     end

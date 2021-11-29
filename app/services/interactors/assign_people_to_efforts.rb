@@ -3,7 +3,7 @@
 module Interactors
   class AssignPeopleToEfforts
     include Interactors::Errors
-    PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo].freeze
+    PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo]
 
     def self.perform!(id_hash)
       new(id_hash).perform!
@@ -66,7 +66,7 @@ module Interactors
     end
 
     def attempted_message
-      id_hash.size > 2 ? "Attempted to reconcile #{id_hash.size} efforts. " : ""
+      id_hash.size > 2 ? "Attempted to reconcile #{id_hash.size} efforts. " : ''
     end
 
     def succeeded_message

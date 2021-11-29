@@ -6,8 +6,8 @@ class ActiveRecord::Base
   def self.all_polymorphic_types(name)
     @poly_hash ||= {}.tap do |hash|
       Dir.glob(File.join(Rails.root, "app", "models", "**", "*.rb")).each do |file|
-        file.sub!(File.join(Rails.root, "app", "models"), "")
-        file.sub!(".rb", "")
+        file.sub!(File.join(Rails.root, "app", "models"), '')
+        file.sub!('.rb', '')
         klass = file.classify.safe_constantize
 
         if klass.nil?

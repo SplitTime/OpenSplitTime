@@ -4,7 +4,7 @@ class BulkProgressNotifier
   def self.notify(split_times)
     new(split_times).notify
   end
-
+  
   def initialize(split_times)
     @split_times = split_times
   end

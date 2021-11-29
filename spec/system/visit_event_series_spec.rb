@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "visit an event series page" do
+RSpec.describe 'visit an event series page' do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -19,11 +19,11 @@ RSpec.describe "visit an event series page" do
   let(:organization) { subject_series.organization }
   let(:events) { subject_series.events }
 
-  context "when the user is a visitor" do
-    context "when all categories are populated" do
+  context 'when the user is a visitor' do
+    context 'when all categories are populated' do
       let(:subject_series) { event_series(:d30_short_series) }
 
-      scenario "Visit the page" do
+      scenario 'Visit the page' do
         visit event_series_path(subject_series)
         verify_page_header
         verify_event_links

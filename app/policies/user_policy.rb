@@ -5,7 +5,7 @@ class UserPolicy < ApplicationPolicy
     attr_reader :current_user
 
     def post_initialize
-      @current_user = user
+      @current_user = self.user
     end
 
     def resolve_editable
@@ -24,7 +24,7 @@ class UserPolicy < ApplicationPolicy
   attr_reader :current_user, :user_record
 
   def post_initialize(user_record)
-    @current_user = user
+    @current_user = self.user
     @user_record = user_record
   end
 

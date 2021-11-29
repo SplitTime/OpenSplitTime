@@ -22,7 +22,9 @@ module ETL
     def process_raw_times
       raw_times = grouped_records[RawTime]
 
-      ProcessImportedRawTimesJob.perform_later(event_group, raw_times) if raw_times.present?
+      if raw_times.present?
+        ProcessImportedRawTimesJob.perform_later(event_group, raw_times)
+      end
     end
 
     def grouped_records

@@ -44,9 +44,7 @@ class ArgsValidator
 
   def validate_subject
     raise ArgumentError, "arguments #{for_klass}must include a subject" if args.keys.include?(:subject) && subject.nil?
-    if subject_class && subject && !subject.is_a?(subject_class)
-      raise ArgumentError, "subject #{for_klass}must be a #{subject_class}"
-    end
+    raise ArgumentError, "subject #{for_klass}must be a #{subject_class}" if subject_class && subject && !subject.is_a?(subject_class)
   end
 
   def validate_hash
@@ -79,8 +77,8 @@ class ArgsValidator
       unless required_groups.any? { |group| group.none? { |arg| params[arg].nil? } }
         notify_console(args)
         raise ArgumentError, "arguments #{for_klass}must include one of " +
-                             required_groups.map(&:to_sentence)
-            .to_sentence(two_words_connector: " or ", last_word_connector: ", or ").to_s
+            "#{required_groups.map(&:to_sentence)
+                   .to_sentence(two_words_connector: ' or ', last_word_connector: ', or ')}"
       end
     end
   end
@@ -101,31 +99,21 @@ class ArgsValidator
   end
 
   def validate_setup(args)
-    raise ArgumentError, "no arguments provided for validation" unless params
-
+    raise ArgumentError, 'no arguments provided for validation' unless params
     args.each_key do |arg_name|
-      unless ArgsValidator.exclusive.include?(arg_name)
-        raise ArgumentError, "arguments for ArgsValidator may not include #{arg_name}"
-      end
+      raise ArgumentError, "arguments for ArgsValidator may not include #{arg_name}" unless ArgsValidator.exclusive.include?(arg_name)
     end
   end
 
   def notify_console(args)
     return unless self.class.console_notifications
-
     puts ColorizeText.green("ArgsValidator validated arguments for #{klass || 'an unspecified class'}")
-    puts args[:params].transform_values { |value|
-           if value.respond_to?(:map)
-             value.map { |object| display_as_string(object) }
-           else
-             display_as_string(value)
-           end
-         }
+    puts args[:params].transform_values { |value| value.respond_to?(:map) ?
+        value.map { |object| display_as_string(object) } : display_as_string(value) }
   end
 
   def display_as_string(object)
     return nil if object.nil?
-
     object.try(:name) || object.try(:id) || object.to_s
   end
 end

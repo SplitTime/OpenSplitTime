@@ -3,7 +3,6 @@
 class LapSplit
   include Comparable
   attr_accessor :lap, :split
-
   delegate :course, :course_id, :name_extensions, :bitkeys, to: :split
 
   def initialize(lap, split)
@@ -13,8 +12,7 @@ class LapSplit
 
   def <=>(other)
     return nil unless other && other.respond_to?(:lap) && other.respond_to?(:split)
-
-    [lap, split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
+    [self.lap, self.split.distance_from_start] <=> [other.lap, other.split.distance_from_start]
   end
 
   def key
@@ -38,23 +36,23 @@ class LapSplit
   end
 
   def base_name
-    [base_name_without_lap, lap_name].join(" ")
+    [base_name_without_lap, lap_name].join(' ')
   end
 
   def base_name_without_lap
-    split&.base_name || "[unknown split]"
+    split&.base_name || '[unknown split]'
   end
 
   def name(bitkey = nil)
-    [name_without_lap(bitkey), lap_name].join(" ")
+    [name_without_lap(bitkey), lap_name].join(' ')
   end
 
   def name_without_lap(bitkey = nil)
-    (split && split.name(bitkey)) || "[unknown split]"
+    (split && split.name(bitkey)) || '[unknown split]'
   end
 
   def lap_name
-    lap ? "Lap #{lap}" : "[unknown lap]"
+    lap ? "Lap #{lap}" : '[unknown lap]'
   end
 
   def time_points
@@ -76,7 +74,7 @@ class LapSplit
   def distance_from_start
     lap == 1 ? split.distance_from_start : (lap - 1) * course.distance + split.distance_from_start
   end
-
+  
   def vert_gain_from_start
     lap == 1 ? split.vert_gain_from_start : (lap - 1) * course.vert_gain + split.vert_gain_from_start
   end

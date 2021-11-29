@@ -4,9 +4,9 @@ module DataStatusMethods
   extend ActiveSupport::Concern
 
   included do
-    scope :valid_status, -> { where(data_status: valid_statuses) }
-    scope :invalid_status, -> { where(data_status: invalid_statuses) }
-    validates :data_status, inclusion: {in: data_statuses.keys}, allow_nil: true
+    scope :valid_status, -> { where(data_status: self.valid_statuses) }
+    scope :invalid_status, -> { where(data_status: self.invalid_statuses) }
+    validates :data_status, inclusion: {in: self.data_statuses.keys}, allow_nil: true
   end
 
   def data_status_numeric
@@ -27,7 +27,7 @@ module DataStatusMethods
     end
 
     def invalid_statuses
-      data_statuses.values - self::VALID_STATUSES
+      self.data_statuses.values - self::VALID_STATUSES
     end
 
     def good!

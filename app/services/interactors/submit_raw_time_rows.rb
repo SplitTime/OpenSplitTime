@@ -39,7 +39,7 @@ module Interactors
       end
       send_notifications if event_group.permit_notifications?
 
-      Interactors::Response.new(errors, "", resources)
+      Interactors::Response.new(errors, '', resources)
     end
 
     private
@@ -50,7 +50,6 @@ module Interactors
     def append_effort(rtr)
       raw_time = rtr.raw_times.first
       return unless raw_time
-
       raw_bib = raw_time.bib_number
       integer_bib = raw_bib =~ /\D/ ? nil : raw_bib.to_i
       rtr.effort ||= indexed_efforts[integer_bib]
@@ -59,7 +58,7 @@ module Interactors
     def enrich_raw_time_row(rtr)
       if rtr.effort
         EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: rtr, times_container: times_container)
-        rtr.errors << "bad or duplicate time" unless rtr.clean? || force_submit
+        rtr.errors << 'bad or duplicate time' unless (rtr.clean? || force_submit)
       else
         VerifyRawTimeRow.perform(rtr, times_container: times_container) # Adds relevant errors to the raw_time_row
       end
@@ -70,7 +69,9 @@ module Interactors
       rtr.raw_times.each do |raw_time|
         raw_time.event_group_id = event_group.id
         raw_time.assign_attributes(reviewed_by: current_user_id, reviewed_at: Time.current) if mark_as_reviewed
-        rtr.errors << resource_error_object(raw_time) unless raw_time.save
+        unless raw_time.save
+          rtr.errors << resource_error_object(raw_time)
+        end
       end
     end
 
@@ -85,7 +86,7 @@ module Interactors
 
     def indexed_efforts
       @indexed_efforts ||= Effort.where(event: event_group.events, bib_number: bib_numbers)
-          .includes(event: :splits, split_times: :split).index_by(&:bib_number)
+                               .includes(event: :splits, split_times: :split).index_by(&:bib_number)
     end
 
     def bib_numbers

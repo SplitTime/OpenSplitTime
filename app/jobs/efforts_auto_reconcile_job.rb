@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class EffortsAutoReconcileJob < ApplicationJob
+
   queue_as :default
 
   def perform(parent, options = {})

@@ -51,9 +51,9 @@ module ETL
             errors << resource_error_object(record, row_index)
           end
 
-        rescue ActiveRecord::ActiveRecordError => e
+        rescue ActiveRecord::ActiveRecordError => error
           import_job.increment!(:failure_count)
-          errors << record_not_saved_error(e, row_index)
+          errors << record_not_saved_error(error, row_index)
         ensure
           import_job.set_elapsed_time!
           import_job.touch if row_index % CHUNK_SIZE == 0

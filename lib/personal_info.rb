@@ -2,11 +2,11 @@ module PersonalInfo
   extend ActiveSupport::Concern
 
   def bio
-    [gender&.titlecase, current_age&.to_i].compact.join(", ")
+    [gender&.titlecase, current_age&.to_i].compact.join(', ')
   end
 
   def bio_historic
-    [gender&.titlecase, age&.to_i].compact.join(", ")
+    [gender&.titlecase, age&.to_i].compact.join(', ')
   end
 
   def birthday_notice
@@ -32,11 +32,8 @@ module PersonalInfo
   end
 
   def current_age
-    current_age_from_birthdate || (if has_attribute?("current_age_from_efforts")
-                                     attributes["current_age_from_efforts"]&.round
-                                   else
-                                     current_age_approximate
-                                   end)
+    current_age_from_birthdate || (has_attribute?('current_age_from_efforts') ?
+                                       attributes['current_age_from_efforts']&.round : current_age_approximate)
   end
 
   def current_age_from_birthdate
@@ -52,20 +49,20 @@ module PersonalInfo
   end
 
   def flexible_geolocation
-    [city, flexible_state, flexible_country].select(&:present?).join(", ")
+    [city, flexible_state, flexible_country].select(&:present?).join(', ')
   end
 
   def full_bio
-    [bio, flexible_geolocation].select(&:present?).join(" • ")
+    [bio, flexible_geolocation].select(&:present?).join(' • ')
   end
 
   def full_name
-    [first_name, last_name].select(&:present?).join(" ")
+    [first_name, last_name].select(&:present?).join(' ')
   end
-  alias name full_name
+  alias_method :name, :full_name
 
   def personal_info
-    [full_name, bio, flexible_geolocation].select(&:present?).join(" – ")
+    [full_name, bio, flexible_geolocation].select(&:present?).join(' – ')
   end
 
   def state
@@ -73,13 +70,13 @@ module PersonalInfo
   end
 
   def state_and_country
-    [state_name, country_name].select(&:present?).join(", ")
+    [state_name, country_name].select(&:present?).join(', ')
   end
 
   private
 
   def country_abbreviations
-    {"United States" => "US"}
+    {'United States' => 'US'}
   end
 
   def country_name
@@ -87,13 +84,14 @@ module PersonalInfo
   end
 
   def flexible_state
-    city || state.nil? ? state_code : state
+    (city || state.nil?) ? state_code : state
   end
 
   def flexible_country
-    if city.nil? && state_code.nil?
+    case
+    when city.nil? && state_code.nil?
       country&.name
-    elsif state_code && %w[US CA].include?(country_code)
+    when state_code && %w[US CA].include?(country_code)
       nil
     else
       country&.name

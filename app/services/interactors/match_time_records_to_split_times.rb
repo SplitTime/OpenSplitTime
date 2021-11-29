@@ -21,7 +21,9 @@ module Interactors
     end
 
     def perform!
-      time_records.each { |time_record| match_time_record_to_split_time(time_record) } unless errors.present?
+      unless errors.present?
+        time_records.each { |time_record| match_time_record_to_split_time(time_record) }
+      end
       Interactors::Response.new(errors, message, resources)
     end
 

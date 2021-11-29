@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SplitParameters < BaseParameters
+
   def self.permitted
     [
       :id,
@@ -23,13 +24,13 @@ class SplitParameters < BaseParameters
       :longitude,
       :elevation,
       :elevation_in_preferred_units,
-      {name_extensions: []},
-      {sub_split_kinds: []}
+      {:name_extensions => []},
+      {:sub_split_kinds => []},
     ]
   end
 
   def self.csv_export_attributes
-    %w[base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_kinds]
+    %w(base_name distance kind vert_gain vert_loss latitude longitude elevation sub_split_kinds)
   end
 
   def self.mapping

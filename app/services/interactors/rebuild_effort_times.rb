@@ -34,18 +34,19 @@ module Interactors
           raise ActiveRecord::Rollback if errors.present?
         end
       end
-      Interactors::Response.new(errors, "", effort: effort)
+      Interactors::Response.new(errors, '', effort: effort)
     end
 
     private
 
     attr_reader :effort, :current_user_id, :existing_start_time, :errors
-
     delegate :event_group, :event, to: :effort
 
     def destroy_split_times
       effort.split_times.each do |st|
-        errors << resource_error_object(st) unless st.destroy
+        unless st.destroy
+          errors << resource_error_object(st)
+        end
       end
       effort.reload
     end
@@ -60,7 +61,9 @@ module Interactors
         rt = chunk.max_by(&:created_at)
         time_point = time_points.next
 
-        time_point = time_points.next until time_point.sub_split == rt.sub_split
+        until time_point.sub_split == rt.sub_split
+          time_point = time_points.next
+        end
 
         effort.split_times.new(time_point: time_point, absolute_time: rt.absolute_time, pacer: rt.with_pacer,
                                stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: chunk,
@@ -86,15 +89,13 @@ module Interactors
 
     def ordered_raw_times
       @raw_times = RawTime.where(event_group_id: event_group.id, bib_number: effort.bib_number).with_relation_ids
-          .select(&:absolute_time).sort_by(&:absolute_time)
+                       .select(&:absolute_time).sort_by(&:absolute_time)
     end
 
     def validate_setup
       errors << single_lap_event_error(self.class) unless event.multiple_laps?
       ordered_raw_times.each do |rt|
-        unless valid_sub_splits.any? { |sub_split| sub_split == rt.sub_split }
-          errors << invalid_raw_time_error(rt, valid_sub_splits)
-        end
+        errors << invalid_raw_time_error(rt, valid_sub_splits) unless valid_sub_splits.any? { |sub_split| sub_split == rt.sub_split }
         errors << missing_absolute_time_error(rt) unless rt.absolute_time
       end
     end

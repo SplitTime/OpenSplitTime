@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe RowifyRawTimes do
   subject { RowifyRawTimes.new(event_group: event_group, raw_times: subject_raw_times) }
@@ -21,7 +21,7 @@ RSpec.describe RowifyRawTimes do
   let!(:raw_time_5) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 1) }
   let!(:raw_time_6) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_2, bitkey: 64) }
   let!(:raw_time_7) { create(:raw_time, event_group: event_group, bib_number: bib_number_1, split_name: split_name_1, bitkey: 64) }
-  let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: "55", split_name: split_name_1, bitkey: 64) }
+  let!(:raw_time_8) { create(:raw_time, event_group: event_group, bib_number: '55', split_name: split_name_1, bitkey: 64) }
 
   let(:raw_time_rows) { subject.build }
   let(:raw_time_pairs) { raw_time_rows.map(&:raw_times) }
@@ -30,15 +30,15 @@ RSpec.describe RowifyRawTimes do
     allow(FindExpectedLap).to receive(:perform)
   end
 
-  describe "#build" do
-    context "for a single-lap event group" do
+  describe '#build' do
+    context 'for a single-lap event group' do
       let!(:event_1) { events(:sum_100k) }
       let!(:event_2) { events(:sum_55k) }
 
-      context "when all bib_numbers match" do
+      context 'when all bib_numbers match' do
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7]).with_relation_ids }
 
-        it "groups raw_times by split name and adds lap to them" do
+        it 'groups raw_times by split name and adds lap to them' do
           raw_time_rows = subject.build
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
@@ -53,10 +53,10 @@ RSpec.describe RowifyRawTimes do
         end
       end
 
-      context "when some bib_numbers do not match" do
+      context 'when some bib_numbers do not match' do
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7, raw_time_8]).with_relation_ids }
 
-        it "groups raw_times by split name and adds lap to them" do
+        it 'groups raw_times by split name and adds lap to them' do
           expect(raw_time_rows.size).to eq(5)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1, nil])
@@ -70,15 +70,15 @@ RSpec.describe RowifyRawTimes do
       end
     end
 
-    context "for a multi-lap event group" do
+    context 'for a multi-lap event group' do
       let(:event_1) { events(:rufa_2017_12h) }
       let(:event_2) { events(:rufa_2017_24h) }
 
-      context "when some bib_numbers are in a single-lap event" do
+      context 'when some bib_numbers are in a single-lap event' do
         before { event_1.update(laps_required: 1) }
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7]).with_relation_ids }
 
-        it "groups raw_times by split name and calls FindExpectedLap only when necessary" do
+        it 'groups raw_times by split name and calls FindExpectedLap only when necessary' do
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1])
@@ -91,11 +91,11 @@ RSpec.describe RowifyRawTimes do
         end
       end
 
-      context "when bib_numbers have a lap already attached" do
+      context 'when bib_numbers have a lap already attached' do
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_3, raw_time_4]).with_relation_ids }
         before { subject_raw_times.each { |rt| rt.assign_attributes(lap: 2) } }
 
-        it "groups raw_times by split name but does not call FindExpectedLap" do
+        it 'groups raw_times by split name but does not call FindExpectedLap' do
           expect(raw_time_rows.size).to eq(1)
           raw_time_row = raw_time_rows.first
           expect(raw_time_row).to be_a(RawTimeRow)

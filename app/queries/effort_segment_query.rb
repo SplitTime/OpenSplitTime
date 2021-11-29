@@ -88,4 +88,5 @@ class EffortSegmentQuery < BaseQuery
          or (end_split_id = #{split_id} and end_bitkey = #{bitkey}));
     SQL
   end
+
 end

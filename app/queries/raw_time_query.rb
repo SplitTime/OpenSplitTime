@@ -1,6 +1,7 @@
 class RawTimeQuery < BaseQuery
+
   def self.with_relations(args = {})
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "sortable_bib_number")
+    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, 'sortable_bib_number')
 
     query = <<-SQL
 
@@ -64,7 +65,7 @@ class RawTimeQuery < BaseQuery
 
   def self.existing_scope_sql
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    RawTime.connection.unprepared_statement { RawTime.reorder(nil).select("id").to_sql }
+    RawTime.connection.unprepared_statement { RawTime.reorder(nil).select('id').to_sql }
   end
 
   def self.permitted_column_names

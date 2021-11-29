@@ -56,6 +56,7 @@ module Api
       end
 
       def pull_raw_times
+
         # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
         # selects a batch, marks them as reviewed, combines them into time_rows, and returns them
         # to the live entry page.
@@ -89,6 +90,7 @@ module Api
       end
 
       def enrich_raw_time_row
+
         # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
         # with data_status, split_time_exists, lap, and other attributes set
 
@@ -102,11 +104,12 @@ module Api
 
           render json: {data: {rawTimeRow: enriched_row.serialize}}, status: :ok
         else
-          render json: {errors: [{title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}"}]}, status: :unprocessable_entity
+          render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}'}]}, status: :unprocessable_entity
         end
       end
 
       def submit_raw_time_rows
+
         # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
         # related split_time data where appropriate, and returns the others.
 
@@ -125,7 +128,7 @@ module Api
           if raw_times_data[:raw_time_row]
             raw_time_rows << parse_raw_times_data(ActionController::Parameters.new(raw_times_data))
           else
-            errors << {title: "Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}",
+            errors << {title: 'Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}',
                        detail: {attributes: raw_times_data}}
           end
         end

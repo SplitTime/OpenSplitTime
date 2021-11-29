@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EffortProgressRow
-  attr_reader :effort
 
+  attr_reader :effort
   delegate :bib_number, :full_name, :bio_historic, to: :effort
 
   def initialize(args)
@@ -11,7 +11,7 @@ class EffortProgressRow
     post_initialize(args)
   end
 
-  def post_initialize(_args)
+  def post_initialize(args)
     nil
   end
 
@@ -34,7 +34,6 @@ class EffortProgressRow
   private
 
   attr_reader :event_framework
-
   delegate :lap_splits, :indexed_lap_splits, :multiple_laps?, :time_points,
            :times_container, to: :event_framework
 
@@ -55,15 +54,11 @@ class EffortProgressRow
   end
 
   def predicted_segment_time(segment)
-    if segment.end_point.out_sub_split?
-      nil
-    else
-      TimePredictor.segment_time(segment: segment,
-                                 effort: effort,
-                                 lap_splits: lap_splits,
-                                 completed_split_time: last_reported_split_time,
-                                 times_container: times_container)
-    end
+    segment.end_point.out_sub_split? ? nil : TimePredictor.segment_time(segment: segment,
+                                                                        effort: effort,
+                                                                        lap_splits: lap_splits,
+                                                                        completed_split_time: last_reported_split_time,
+                                                                        times_container: times_container)
   end
 
   def upcoming_segment
@@ -88,12 +83,11 @@ class EffortProgressRow
   end
 
   def lap_name(lap)
-    lap && multiple_laps? ? "Lap #{lap}" : ""
+    (lap && multiple_laps?) ? "Lap #{lap}" : ''
   end
 
   def lap_split_name(time_point)
-    return "" unless time_point
-
+    return '' unless time_point
     lap_split = indexed_lap_splits[time_point.lap_split_key]
     bitkey = time_point.bitkey
     multiple_laps? ? lap_split.name(bitkey) : lap_split.name_without_lap(bitkey)

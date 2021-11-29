@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "Visit the best efforts page and search for an effort" do
+RSpec.describe 'Visit the best efforts page and search for an effort' do
   let(:course) { courses(:hardrock_cw) }
   let(:event) { events(:hardrock_2016) }
   let(:event_group) { event.event_group }
@@ -14,7 +14,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   before(:all) { EffortSegment.set_all }
   after(:all) { EffortSegment.delete_all }
 
-  scenario "Visitor visits the page and searches for a name" do
+  scenario 'Visitor visits the page and searches for a name' do
     visit best_efforts_course_path(course)
 
     expect(page).to have_content(course.name)
@@ -22,15 +22,15 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
 
     finished_efforts.each { |effort| verify_link_present(effort, :full_name) }
 
-    fill_in "First name, last name, state, or country", with: effort_1.name
-    click_button "search-submit"
+    fill_in 'First name, last name, state, or country', with: effort_1.name
+    click_button 'search-submit'
     wait_for_css
 
     verify_link_present(effort_1)
     other_efforts.each { |effort| verify_content_absent(effort) }
   end
 
-  context "when hidden efforts exist for the course" do
+  context 'when hidden efforts exist for the course' do
     let(:hidden_event) { events(:hardrock_2014) }
     let(:hidden_event_group) { hidden_event.event_group }
     let(:hidden_effort_1) { hidden_event.efforts.ranked_with_status.first }
@@ -47,13 +47,13 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
       organization.stewards << steward
     end
 
-    scenario "The user is a visitor" do
+    scenario 'The user is a visitor' do
       visit best_efforts_course_path(course)
       verify_link_present(effort_1)
       verify_content_absent(hidden_effort_1)
     end
 
-    scenario "The user is not the owner and not a steward" do
+    scenario 'The user is not the owner and not a steward' do
       login_as user, scope: :user
 
       visit best_efforts_course_path(course)
@@ -61,7 +61,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
       verify_content_absent(hidden_effort_1)
     end
 
-    scenario "The user owns the organization" do
+    scenario 'The user owns the organization' do
       login_as owner, scope: :user
 
       visit best_efforts_course_path(course)
@@ -69,7 +69,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
       verify_link_present(hidden_effort_1)
     end
 
-    scenario "The user is a steward of the organization" do
+    scenario 'The user is a steward of the organization' do
       login_as steward, scope: :user
 
       visit best_efforts_course_path(course)
@@ -77,7 +77,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
       verify_link_present(hidden_effort_1)
     end
 
-    scenario "The user is an admin" do
+    scenario 'The user is an admin' do
       login_as admin, scope: :user
 
       visit best_efforts_course_path(course)

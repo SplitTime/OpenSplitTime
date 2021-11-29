@@ -2,7 +2,6 @@
 
 class EventGroupRawTimesPresenter < BasePresenter
   attr_reader :event_group
-
   delegate :to_param, to: :event_group
 
   def initialize(event_group, params, current_user)
@@ -16,7 +15,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def event_group_names
-    events.map(&:name).to_sentence(two_words_connector: " and ", last_word_connector: ", and ")
+    events.map(&:name).to_sentence(two_words_connector: ' and ', last_word_connector: ', and ')
   end
 
   def event
@@ -33,11 +32,10 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   def filtered_raw_times
     return @filtered_raw_times if defined?(@filtered_raw_times)
-
     @filtered_raw_times = raw_times.where(filter_hash).search(search_text)
-        .with_relation_ids(sort: sort_hash)
-        .select { |raw_time| matches_criteria?(raw_time) }
-        .paginate(page: page, per_page: per_page)
+                              .with_relation_ids(sort: sort_hash)
+                              .select { |raw_time| matches_criteria?(raw_time) }
+                              .paginate(page: page, per_page: per_page)
     @filtered_raw_times.each do |raw_time|
       raw_time.effort = raw_time.has_effort_id? ? indexed_efforts[raw_time.effort_id] : nil
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
@@ -52,7 +50,7 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def split_name
-    params.filter[:parameterized_split_name] || "All Splits"
+    params.filter[:parameterized_split_name] || 'All Splits'
   end
 
   def method_missing(method)

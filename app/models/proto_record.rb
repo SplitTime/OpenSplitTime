@@ -92,9 +92,11 @@ class ProtoRecord
     when :raw_time
       event_group = options[:event_group]
       self[:split_name] ||= options[:split_name]
-      self[:source] = "File import"
+      self[:source] = 'File import'
       self[:event_group_id] = event_group.id
 
+    else
+      return
     end
   end
 
@@ -103,8 +105,6 @@ class ProtoRecord
   end
 
   def validate_setup
-    unless children.all? { |child| child.is_a?(ProtoRecord) }
-      raise ArgumentError, "children of a ProtoRecord must be ProtoRecords"
-    end
+    raise ArgumentError, 'children of a ProtoRecord must be ProtoRecords' unless children.all? { |child| child.is_a?(ProtoRecord) }
   end
 end

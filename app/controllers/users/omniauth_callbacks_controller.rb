@@ -27,10 +27,11 @@ module Users
     end
 
     def failure
-      if params[:strategy] == "facebook" || request.referrer&.include?("facebook")
+      case
+      when params[:strategy] == "facebook" || request.referrer&.include?("facebook")
         kind = "Facebook"
         reason = params[:error_description]
-      elsif params[:strategy] == "google_oauth2" || request.referrer&.include?("google_oauth2")
+      when params[:strategy] == "google_oauth2" || request.referrer&.include?("google_oauth2")
         kind = "Google"
         reason = params[:error_description]
       else

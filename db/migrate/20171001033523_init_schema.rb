@@ -204,7 +204,7 @@ class InitSchema < ActiveRecord::Migration[5.1]
       t.string "remarks"
       t.integer "lap"
       t.boolean "stopped_here", default: false
-      t.index %w[effort_id lap split_id sub_split_bitkey], name: "index_split_times_on_effort_id_and_time_point", unique: true
+      t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
       t.index ["effort_id"], name: "index_split_times_on_effort_id"
       t.index ["split_id"], name: "index_split_times_on_split_id"
       t.index ["sub_split_bitkey"], name: "index_split_times_on_sub_split_bitkey"
@@ -238,7 +238,7 @@ class InitSchema < ActiveRecord::Migration[5.1]
       t.datetime "updated_at", null: false
       t.integer "level", default: 0
       t.index ["organization_id"], name: "index_stewardships_on_organization_id"
-      t.index %w[user_id organization_id], name: "index_stewardships_on_user_id_and_organization_id", unique: true
+      t.index ["user_id", "organization_id"], name: "index_stewardships_on_user_id_and_organization_id", unique: true
       t.index ["user_id"], name: "index_stewardships_on_user_id"
     end
     create_table "subscriptions", id: :serial, force: :cascade do |t|
@@ -250,7 +250,7 @@ class InitSchema < ActiveRecord::Migration[5.1]
       t.string "resource_key"
       t.index ["person_id"], name: "index_subscriptions_on_person_id"
       t.index ["resource_key"], name: "index_subscriptions_on_resource_key", unique: true
-      t.index %w[user_id person_id protocol], name: "index_subscriptions_on_user_id_and_person_id_and_protocol", unique: true
+      t.index ["user_id", "person_id", "protocol"], name: "index_subscriptions_on_user_id_and_person_id_and_protocol", unique: true
       t.index ["user_id"], name: "index_subscriptions_on_user_id"
     end
     create_table "users", id: :serial, force: :cascade do |t|

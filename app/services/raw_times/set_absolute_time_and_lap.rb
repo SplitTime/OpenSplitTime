@@ -2,7 +2,7 @@
 
 module RawTimes
   class SetAbsoluteTimeAndLap
-    MILITARY_TIME_REGEX = /\A\d{1,2}:\d{2}(:\d{2})?\z/.freeze
+    MILITARY_TIME_REGEX = /\A\d{1,2}:\d{2}(:\d{2})?\z/
 
     def self.perform(event_group, raw_times)
       new(event_group, raw_times).perform
@@ -52,19 +52,21 @@ module RawTimes
     end
 
     def set_absolute_from_entered_time(raw_time)
-      raw_time.absolute_time = if raw_time.entered_time =~ MILITARY_TIME_REGEX
-                                 calculated_absolute_time(raw_time)
-                               else
-                                 raw_time.entered_time.in_time_zone(event_group.home_time_zone)
-                               end
+      if raw_time.entered_time =~ MILITARY_TIME_REGEX
+        raw_time.absolute_time = calculated_absolute_time(raw_time)
+      else
+        raw_time.absolute_time = raw_time.entered_time.in_time_zone(event_group.home_time_zone)
+      end
     end
 
     def set_lap_using_time(raw_time)
-      raw_time.lap = if raw_time.absolute_time
-                       expected_lap(raw_time, :absolute_time_local, raw_time.absolute_time)
-                     elsif raw_time.military_time
-                       expected_lap(raw_time, :military_time, raw_time.military_time)
-                     end
+      if raw_time.absolute_time
+        raw_time.lap = expected_lap(raw_time, :absolute_time_local, raw_time.absolute_time)
+      elsif raw_time.military_time
+        raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
+      else
+        raw_time.lap = nil
+      end
     end
 
     def expected_lap(raw_time, subject_attribute, subject_value)
@@ -100,9 +102,7 @@ module RawTimes
     end
 
     def validate_setup
-      unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
-        raise ArgumentError, "All raw_times must match the provided event_group"
-      end
+      raise ArgumentError, 'All raw_times must match the provided event_group' unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
     end
   end
 end

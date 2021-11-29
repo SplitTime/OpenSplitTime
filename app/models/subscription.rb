@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "aws-sdk-sns"
+require 'aws-sdk-sns'
 
 class Subscription < ApplicationRecord
   has_paper_trail
@@ -37,11 +37,11 @@ class Subscription < ApplicationRecord
   end
 
   def pending?
-    resource_key && resource_key.include?("pending")
+    resource_key && resource_key.include?('pending')
   end
 
   def confirmed?
-    resource_key && resource_key.include?("arn:aws:sns")
+    resource_key && resource_key.include?('arn:aws:sns')
   end
 
   def to_s
@@ -69,25 +69,25 @@ class Subscription < ApplicationRecord
   def attempt_person_subscription
     person = subscribable.person
     Subscription.find_or_create_by(subscribable: person, user: user, protocol: protocol)
-  rescue Aws::SNS::Errors::ServiceError => e
-    logger.warn "  Subscription for #{person.name} could not be created: #{e.message}"
+  rescue Aws::SNS::Errors::ServiceError => exception
+    logger.warn "  Subscription for #{person.name} could not be created: #{exception.message}"
     true
   end
 
   def effort_has_person?
-    subscribable_type == "Effort" && subscribable.person&.topic_resource_key.present?
+    subscribable_type == 'Effort' && subscribable.person&.topic_resource_key.present?
   end
 
   def attempt_effort_subscriptions
     subscribable.efforts.select(&:topic_resource_key).each do |effort|
       Subscription.find_or_create_by(subscribable: effort, user: user, protocol: protocol)
-    rescue Aws::SNS::Errors::ServiceError => e
-      logger.warn "  Subscription for #{effort.name} could not be created: #{e.message}"
+    rescue Aws::SNS::Errors::ServiceError => exception
+      logger.warn "  Subscription for #{effort.name} could not be created: #{exception.message}"
       true
     end
   end
 
   def type_is_person?
-    subscribable_type == "Person"
+    subscribable_type == 'Person'
   end
 end

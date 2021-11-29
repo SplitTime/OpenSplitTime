@@ -56,12 +56,15 @@ module Interactors
     end
 
     def converted_start_time
-      if start_time.presence.nil?
+      case
+      when start_time.presence.nil?
         nil
-      elsif start_time.acts_like?(:time)
+      when start_time.acts_like?(:time)
         start_time
-      elsif start_time.is_a?(String)
+      when start_time.is_a?(String)
         start_time.in_time_zone(time_zone)
+      else
+        nil
       end
     end
 
@@ -81,9 +84,9 @@ module Interactors
       end
       errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
       errors << invalid_start_time_error(start_time) if invalid_start_time?
-      errors << invalid_start_time_error(start_time || "nil") unless converted_start_time ||
-                                                                     efforts.all?(&:scheduled_start_time?) ||
-                                                                     efforts.all?(&:event)
+      errors << invalid_start_time_error(start_time || 'nil') unless converted_start_time ||
+          efforts.all?(&:scheduled_start_time?) ||
+          efforts.all?(&:event)
     end
 
     def event_group_ids

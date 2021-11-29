@@ -36,9 +36,9 @@ module ETL
       def add_section_times!
         proto_records.each do |proto_record|
           proto_record.map_keys!(chip_time: :time)
-          proto_record[:section1_split] = (proto_record[:time] == "DNS" ? "" : proto_record[:time])
+          proto_record[:section1_split] = ((proto_record[:time] == 'DNS') ? '' : proto_record[:time])
         end
-        @time_keys = ["section1_split"]
+        @time_keys = ['section1_split']
       end
 
       def transform_time_data!(proto_record)
@@ -58,7 +58,7 @@ module ETL
         end
         unless proto_record[:section1_split] =~ TimeConversion::HMS_FORMAT
           proto_record[:status_indicator] ||= proto_record[:section1_split]
-          proto_record[:section1_split] = proto_record[:status_indicator].in?(%w[DNF DSQ]) ? "00:00" : nil
+          proto_record[:section1_split] = proto_record[:status_indicator].in?(%w(DNF DSQ)) ? '00:00' : nil
         end
       end
 
@@ -74,9 +74,7 @@ module ETL
         start_calcs = calcs_from_start(segment_seconds, start_seconds)
         finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
         proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
-        proto_record[:absolute_times] = proto_record[:times_from_start].map do |tfs|
-          event.scheduled_start_time + tfs if tfs.present?
-        end
+        proto_record[:absolute_times] = proto_record[:times_from_start].map { |tfs| event.scheduled_start_time + tfs if tfs.present? }
       end
 
       def add_empty_times!(proto_record)
@@ -112,7 +110,7 @@ module ETL
       end
 
       def set_stop!(proto_record)
-        stop_indicators = %w[DNF DSQ]
+        stop_indicators = %w(DNF DSQ)
         if stop_indicators.include?(proto_record[:status_indicator])
           stopped_child_record = proto_record.children.reverse.find { |pr| pr[:absolute_time].present? }
           (stopped_child_record[:stopped_here] = true) if stopped_child_record
@@ -123,8 +121,8 @@ module ETL
       # so use the first as a template for all.
       def time_keys
         @time_keys ||= proto_records.first.to_h.keys
-            .select { |key| key.to_s.start_with?("section") }
-            .sort_by { |key| key[/\d+/].to_i }
+                                    .select { |key| key.to_s.start_with?('section') }
+                                    .sort_by { |key| key[/\d+/].to_i }
       end
 
       def global_attributes

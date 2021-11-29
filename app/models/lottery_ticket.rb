@@ -10,10 +10,10 @@ class LotteryTicket < ApplicationRecord
   scope :drawn, -> { with_drawn_at_attribute.where.not(drawn_at: nil) }
   scope :undrawn, -> { with_drawn_at_attribute.where(drawn_at: nil) }
   scope :with_drawn_at_attribute, -> { from(select("lottery_tickets.*, lottery_draws.created_at as drawn_at").left_joins(:draw), :lottery_tickets) }
-  scope :with_sortable_entrant_attributes, lambda {
+  scope :with_sortable_entrant_attributes, -> do
     from(select("lottery_tickets.*, lottery_divisions.name as division_name, first_name, last_name, gender, city, state_code, state_name, country_code, country_name")
            .joins(entrant: :division), :lottery_tickets)
-  }
+  end
 
   pg_search_scope :search_against_entrants,
                   against: :reference_number,
@@ -21,7 +21,7 @@ class LotteryTicket < ApplicationRecord
                     entrant: [:first_name, :last_name, :city, :state_name, :country_name]
                   },
                   using: {
-                    tsearch: {prefix: true},
+                    tsearch: { prefix: true },
                     dmetaphone: {}
                   }
 

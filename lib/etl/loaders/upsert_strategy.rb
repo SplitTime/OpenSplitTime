@@ -3,6 +3,7 @@
 module ETL
   module Loaders
     class UpsertStrategy < BaseLoader
+
       def post_initialize(options)
         @unique_key = options[:unique_key]&.map { |attribute| attribute.to_s.underscore.to_sym }
         @parent = options[:parent]
@@ -28,7 +29,6 @@ module ETL
       def record_from_proto(proto_record)
         record = fetch_record(proto_record)
         eliminate(record) and return nil if proto_record.record_action == :destroy
-
         record
       end
 
@@ -42,11 +42,9 @@ module ETL
 
         unique_attrs = attributes.slice(*unique_key)
 
-        record = if unique_key_valid?(unique_key, unique_attrs)
-                   parent.send(plural_model_class).find_or_initialize_by(unique_attrs)
-                 else
+        record = unique_key_valid?(unique_key, unique_attrs) ?
+                   parent.send(plural_model_class).find_or_initialize_by(unique_attrs) :
                    parent.send(plural_model_class).new
-                 end
         record.assign_attributes(attributes)
         record
       end
@@ -57,8 +55,8 @@ module ETL
         else
           begin
             destroyed_records << record if record.destroy
-          rescue ActiveRecord::ActiveRecordError => e
-            record.errors.add(e)
+          rescue ActiveRecord::ActiveRecordError => exception
+            record.errors.add(exception)
             invalid_records << record
           end
         end

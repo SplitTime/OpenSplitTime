@@ -10,13 +10,13 @@ class EventSeriesController < ApplicationController
 
   def new
     organization = Organization.where(id: Organization.friendly.find(params[:organization]))
-        .includes(event_groups: {events: :efforts}).first
+                       .includes(event_groups: {events: :efforts}).first
 
     if organization
       @event_series = EventSeries.new(organization: organization, results_template: ResultsTemplate.default)
       authorize @event_series
     else
-      flash[:warning] = "A new event series must be created using an existing organization"
+      flash[:warning] = 'A new event series must be created using an existing organization'
       redirect_to organizations_path
     end
   end
@@ -35,7 +35,7 @@ class EventSeriesController < ApplicationController
     if @event_series.save
       redirect_to @event_series
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -46,7 +46,7 @@ class EventSeriesController < ApplicationController
     if @event_series.update(permitted_params)
       redirect_to @event_series
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -54,7 +54,7 @@ class EventSeriesController < ApplicationController
     authorize @event_series
 
     if @event_series.destroy
-      flash[:success] = "Event series deleted."
+      flash[:success] = 'Event series deleted.'
       redirect_to_organization
     else
       flash[:danger] = @event_series.errors.full_messages.join("\n")
@@ -66,7 +66,7 @@ class EventSeriesController < ApplicationController
 
   def convert_checkbox_event_ids
     if params.dig(:event_series, :event_ids).is_a?(ActionController::Parameters)
-      params[:event_series][:event_ids] = params.dig(:event_series, :event_ids).select { |_, value| value == "1" }.keys
+      params[:event_series][:event_ids] = params.dig(:event_series, :event_ids).select { |_, value| value == '1' }.keys
     end
   end
 

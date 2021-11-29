@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EffortAnalysisRow
-  attr_reader :split_times, :typical_split_times
 
+  attr_reader :split_times, :typical_split_times
   delegate :distance_from_start, :lap, :split, to: :lap_split
   delegate :kind, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, to: :time_cluster

@@ -4,8 +4,8 @@ module ETL
   class Importer
     include ETL::Errors
 
-    REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors].freeze
-    attr_reader(*REPORT_ARRAYS)
+    REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors]
+    attr_reader *REPORT_ARRAYS
 
     def initialize(source_data, format, options = {})
       @source_data = source_data
@@ -43,7 +43,7 @@ module ETL
       when :jsonapi_batch
         import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
       else
-        errors << format_not_recognized_error(format)
+        self.errors << format_not_recognized_error(format)
       end
     end
 
@@ -54,7 +54,7 @@ module ETL
     private
 
     attr_reader :source_data, :format, :options
-    attr_writer(*REPORT_ARRAYS)
+    attr_writer *REPORT_ARRAYS
 
     def import_with(source_data, extract_strategy, transform_strategy, load_strategy, options)
       extractor = ETL::Extractor.new(source_data, extract_strategy, options)

@@ -15,8 +15,9 @@ module TimeZonable
 
     def zonable_attribute(attribute)
       define_method :"#{attribute}_local" do
-        return unless time_zone_valid?(home_time_zone)
-
+        unless time_zone_valid?(home_time_zone)
+          return nil
+        end
         send(attribute)&.in_time_zone(home_time_zone)
       end
 
@@ -25,10 +26,9 @@ module TimeZonable
           unless time_zone_valid?(home_time_zone)
             raise ArgumentError, "#{attribute}_local cannot be set without a valid home_time_zone"
           end
-
-          send("#{attribute}=", time.to_s.in_time_zone(home_time_zone))
+          self.send("#{attribute}=", time.to_s.in_time_zone(home_time_zone))
         else
-          send("#{attribute}=", nil)
+          self.send("#{attribute}=", nil)
         end
       end
     end

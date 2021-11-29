@@ -12,7 +12,6 @@ module ETL
 
       def transform
         return if errors.present?
-
         proto_records.each do |proto_record|
           proto_record.transform_as(model, event: event, event_group: event_group, split_name: options[:split_name])
           proto_record.slice_permitted!

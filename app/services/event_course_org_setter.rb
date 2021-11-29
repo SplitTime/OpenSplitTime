@@ -42,7 +42,7 @@ class EventCourseOrgSetter
       self.status = :unprocessable_entity
     end
 
-    resources << resource
+    self.resources << resource
   end
 
   def relationships

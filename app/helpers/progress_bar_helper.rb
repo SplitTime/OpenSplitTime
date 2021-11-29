@@ -7,11 +7,11 @@ module ProgressBarHelper
     content_tag(
       :div, nil,
       {class: "progress-bar bg-#{color}",
-       role: "progressbar",
-       style: "width: #{percent_complete}%",
-       "aria-valuenow" => current_value,
-       "aria-valuemin" => min_value,
-       "aria-valuemax" => max_value}
+      role: "progressbar",
+      style: "width: #{percent_complete}%",
+      "aria-valuenow" => current_value,
+      "aria-valuemin" => min_value,
+      "aria-valuemax" => max_value,}
     )
   end
 end

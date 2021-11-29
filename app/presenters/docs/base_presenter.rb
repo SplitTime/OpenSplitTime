@@ -38,7 +38,7 @@ module Docs
     end
 
     def valid_params?
-      File.exist?(Rails.root.join("app/views/docs/visitors/_#{partial}.html.erb"))
+      File.exists?(Rails.root.join("app/views/docs/visitors/_#{partial}.html.erb"))
     end
 
     private

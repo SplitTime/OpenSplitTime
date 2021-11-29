@@ -10,13 +10,13 @@ Coverband.configure do |config|
   config.track_views = true
 
   config.ignore += [
-    "config/application.rb",
-    "config/boot.rb",
-    "config/coverband.rb",
-    "config/puma.rb",
-    "config/sitemap.rb",
-    "bin/*",
-    "config/environments/*",
-    "lib/tasks/*"
+    'config/application.rb',
+    'config/boot.rb',
+    'config/coverband.rb',
+    'config/puma.rb',
+    'config/sitemap.rb',
+    'bin/*',
+    'config/environments/*',
+    'lib/tasks/*',
   ]
 end

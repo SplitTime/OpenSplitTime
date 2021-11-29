@@ -11,7 +11,6 @@ class GroupedEventsValidator < ActiveModel::Validator
   private
 
   attr_reader :event_group, :analyzer
-
   delegate :events, to: :event_group
   delegate :incompatible_locations, to: :analyzer
 
@@ -19,7 +18,7 @@ class GroupedEventsValidator < ActiveModel::Validator
     efforts_with_bibs = Effort.where(event: events).where.not(bib_number: nil).select(:bib_number)
     if efforts_with_bibs.size != efforts_with_bibs.distinct.size
       duplicate_bib_numbers = efforts_with_bibs.pluck(:bib_number).count_by(&:itself)
-          .select { |_, count| count > 1 }.keys.uniq.sort
+                                  .select { |_, count| count > 1 }.keys.uniq.sort
       dup_size = duplicate_bib_numbers.size
       event_group.errors.add(:base, "Bib #{'number'.pluralize(dup_size)} #{duplicate_bib_numbers.to_sentence} #{'is'.pluralize(dup_size)} duplicated within the event group")
     end

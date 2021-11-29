@@ -1,21 +1,23 @@
 # frozen_string_literal: true
 
 class SummaryPresenter < EventWithEffortsPresenter
+
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=
-      ranked_efforts
-          .select { |effort| filtered_ids.include?(effort.id) }
-          .select { |effort| finished_filter.include?(effort.finished) }
-          .paginate(page: page, per_page: per_page)
+        ranked_efforts
+            .select { |effort| filtered_ids.include?(effort.id) }
+            .select { |effort| finished_filter.include?(effort.finished) }
+            .paginate(page: page, per_page: per_page)
   end
 
   def summary_title
-    if finished_efforts_only?
-      "Finishers"
-    elsif unfinished_efforts_only?
-      "Unfinished Entrants"
+    case
+    when finished_efforts_only?
+      'Finishers'
+    when unfinished_efforts_only?
+      'Unfinished Entrants'
     else
-      "All Entrants"
+      'All Entrants'
     end
   end
 
@@ -34,9 +36,10 @@ class SummaryPresenter < EventWithEffortsPresenter
   private
 
   def finished_filter
-    if finished_efforts_only?
+    case
+    when finished_efforts_only?
       [true]
-    elsif unfinished_efforts_only?
+    when unfinished_efforts_only?
       [false]
     else
       [true, false]

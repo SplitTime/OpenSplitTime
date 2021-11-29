@@ -47,7 +47,7 @@ class RemoveTimeFromStartFromSplitTimes < ActiveRecord::Migration[5.1]
     SQL
 
     ActiveRecord::Base.transaction do
-      ActiveRecord::Base.connection.execute("LOCK efforts, split_times IN ACCESS EXCLUSIVE MODE")
+      ActiveRecord::Base.connection.execute('LOCK efforts, split_times IN ACCESS EXCLUSIVE MODE')
       ActiveRecord::Base.connection.execute(offset_sql.squish)
       ActiveRecord::Base.connection.execute(tfs_sql.squish)
     end

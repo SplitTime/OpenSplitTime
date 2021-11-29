@@ -1,15 +1,8 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include UrlAccessible
-  include TrimTimeAttributes
-  include TimeZonable
-  include Reconcilable
-  include LapsRequiredMethods
-  include SplitMethods
-  include DelegatedConcealable
-  include Delegable
-  include Auditable
+  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable,
+          TimeZonable, TrimTimeAttributes, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -41,20 +34,19 @@ class Event < ApplicationRecord
   after_save :validate_event_group
   after_destroy :destroy_orphaned_event_group
 
-  scope :name_search, -> (search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
-  scope :select_with_params, lambda { |search_param|
+  scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
+  scope :select_with_params, -> (search_param) do
     search(search_param)
         .left_joins(:efforts).left_joins(:event_group)
-        .group("events.id, event_groups.id")
-  }
+        .group('events.id, event_groups.id')
+  end
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
-  scope :with_policy_scope_attributes, lambda {
-    from(select("events.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :events)
-  }
+  scope :with_policy_scope_attributes, -> do
+    from(select('events.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :events)
+  end
 
   def self.search(search_param)
     return all if search_param.blank?
-
     name_search(search_param)
   end
 
@@ -67,7 +59,7 @@ class Event < ApplicationRecord
   end
 
   def self.most_recent
-    where("scheduled_start_time < ?", Time.now).order(scheduled_start_time: :desc).first
+    where('scheduled_start_time < ?', Time.now).order(scheduled_start_time: :desc).first
   end
 
   def events_within_group
@@ -79,7 +71,7 @@ class Event < ApplicationRecord
   end
 
   def name
-    event_group_name = event_group&.name || "Nonexistent Event Group"
+    event_group_name = event_group&.name || 'Nonexistent Event Group'
     short_name ? "#{event_group_name} (#{short_name})" : event_group_name
   end
 
@@ -110,7 +102,7 @@ class Event < ApplicationRecord
   end
 
   def organization_id
-    attributes.key?("organization_id") ? attributes["organization_id"] : organization&.id
+    attributes.key?('organization_id') ? attributes['organization_id'] : organization&.id
   end
 
   def organization_name
@@ -173,11 +165,15 @@ class Event < ApplicationRecord
   def destroy_orphaned_event_group
     event_group.reload
 
-    event_group.destroy if events_within_group.empty?
+    if events_within_group.empty?
+      event_group.destroy
+    end
   end
 
   def add_all_course_splits
-    splits << course.splits if splits.empty?
+    if splits.empty?
+      splits << course.splits
+    end
   end
 
   def validate_event_group
@@ -185,7 +181,7 @@ class Event < ApplicationRecord
 
     unless event_group.valid?
       errors.merge!(event_group.errors)
-      raise ActiveRecord::RecordInvalid, self # Causes a transaction to rollback
+      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
     end
   end
 end

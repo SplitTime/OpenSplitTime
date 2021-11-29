@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class LapSplitRow
+
   delegate :distance_from_start, :lap, :split, :key, :time_points, to: :lap_split
   delegate :id, :kind, :start?, :intermediate?, :finish?, to: :split
   delegate :segment_time, :time_in_aid, :times_from_start, :absolute_times_local, :time_data_statuses,
@@ -38,7 +39,7 @@ class LapSplitRow
   end
 
   def remarks
-    split_times.compact.map(&:remarks).uniq.join(" / ")
+    split_times.compact.map(&:remarks).uniq.join(' / ')
   end
 
   def done?
@@ -70,8 +71,6 @@ class LapSplitRow
   end
 
   def validate_setup
-    unless split_times.size == split.bitkeys.size
-      raise ArgumentError, "split_time objects must be provided for each sub_split (fill with an empty object if needed)"
-    end
+    raise ArgumentError, 'split_time objects must be provided for each sub_split (fill with an empty object if needed)' unless split_times.size == split.bitkeys.size
   end
 end

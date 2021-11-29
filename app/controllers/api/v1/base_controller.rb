@@ -1,7 +1,7 @@
 module Api
   module V1
     class BaseController < ::ApiController
-      API_NAMESPACE = "::Api::V1::".freeze
+      API_NAMESPACE = "::Api::V1::"
 
       before_action :set_default_format
 
@@ -64,8 +64,8 @@ module Api
 
         first_record = resource.is_a?(::Enumerable) ? resource.first : resource
         serializer_class = options.delete(:serializer) ||
-                           serializer_for_record(first_record) ||
-                           ::Api::V1::BaseSerializer
+          serializer_for_record(first_record) ||
+          ::Api::V1::BaseSerializer
 
         options[:include] = *options[:include] if options[:include].present?
         options[:include] ||= prepared_params[:include]
@@ -86,17 +86,15 @@ module Api
         serializer_class_name = "#{API_NAMESPACE}#{record.model_name}Serializer"
         serializer_class_name.constantize
       rescue NameError
-        raise NameError, "#{name} cannot resolve a serializer class for '#{record.model_name}'.  " \
+        raise NameError, "#{self.name} cannot resolve a serializer class for '#{record.model_name}'.  " \
                            "Attempted to find '#{serializer_class_name}'. " \
                            "Consider specifying the serializer directly through options[:serializer]."
       end
 
       def set_resource
-        @resource = if controller_class.respond_to?(:friendly)
-                      controller_class.friendly.find(params[:id])
-                    else
+        @resource = controller_class.respond_to?(:friendly) ?
+                      controller_class.friendly.find(params[:id]) :
                       controller_class.find(params[:id])
-                    end
       end
 
       def set_default_format

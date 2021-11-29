@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "aws-sdk-sns"
+require 'aws-sdk-sns'
 
 class SnsTopicManager
   def self.generate(args)
@@ -22,18 +22,19 @@ class SnsTopicManager
 
     if response.successful?
       Rails.logger.info "  Created SNS topic for #{resource.slug}"
-      response.topic_arn.include?("arn:aws:sns") ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
+      response.topic_arn.include?('arn:aws:sns') ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
       Rails.logger.error "  Unable to generate SNS topic for #{resource.slug}"
       nil
     end
-  rescue Aws::SNS::Errors::ServiceError => e
-    Rails.logger.error "  Topic could not be generated: #{e.message}"
+
+  rescue Aws::SNS::Errors::ServiceError => exception
+    Rails.logger.error "  Topic could not be generated: #{exception.message}"
     nil
   end
 
   def delete
-    if topic_arn && topic_arn.include?("arn:aws:sns")
+    if topic_arn && topic_arn.include?('arn:aws:sns')
       begin
         response = sns_client.delete_topic(topic_arn: topic_arn)
 
@@ -44,15 +45,14 @@ class SnsTopicManager
           Rails.logger.error "  Unable to delete SNS topic #{topic_arn}"
           nil
         end
-      rescue Aws::SNS::Errors::ServiceError => e
-        Rails.logger.error "  Topic could not be deleted: #{e.message}"
+
+      rescue Aws::SNS::Errors::ServiceError => exception
+        Rails.logger.error "  Topic could not be deleted: #{exception.message}"
         nil
       end
 
     else
-      unless Rails.env.test?
-        Rails.logger.error "  #{resource.slug} has no topic_resource_key or topic_arn does not exist"
-      end
+      Rails.logger.error "  #{resource.slug} has no topic_resource_key or topic_arn does not exist" unless Rails.env.test?
       nil
     end
   end
@@ -66,6 +66,6 @@ class SnsTopicManager
   end
 
   def environment_prefix
-    @environment_prefix ||= Rails.env.production? ? "" : "#{Rails.env.first}-"
+    @environment_prefix ||= Rails.env.production? ? '' : "#{Rails.env.first}-"
   end
 end

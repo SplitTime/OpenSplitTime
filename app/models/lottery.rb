@@ -2,9 +2,7 @@
 
 class Lottery < ApplicationRecord
   extend FriendlyId
-  include Delegable
-  include Concealable
-  include CapitalizeAttributes
+  include CapitalizeAttributes, Concealable, Delegable
 
   belongs_to :organization
   has_many :divisions, class_name: "LotteryDivision", dependent: :destroy
@@ -37,7 +35,7 @@ class Lottery < ApplicationRecord
 
   def generate_entrants!
     divisions.each do |division|
-      entrant_count = rand(5..14)
+      entrant_count = rand(10) + 5
 
       entrant_count.times do
         attributes = {
@@ -48,7 +46,7 @@ class Lottery < ApplicationRecord
           city: FFaker::AddressUS.city,
           state_code: FFaker::AddressUS.state_abbr,
           country_code: "US",
-          number_of_tickets: rand(1..10)
+          number_of_tickets: rand(10) + 1,
         }
 
         division.entrants.create!(attributes)
@@ -65,7 +63,7 @@ class Lottery < ApplicationRecord
           lottery_id: id,
           lottery_entrant_id: struct.id,
           created_at: Time.current,
-          updated_at: Time.current
+          updated_at: Time.current,
         }
       end
     end

@@ -11,6 +11,7 @@
 # bitkey of 1 for the 'in' time and a bitkey of 64 for the 'out' time.
 
 class SubSplit
+
   # To add a new SubSplit kind, define its constant here
   # For example, 'CHANGE_BITKEY = 8'
   # Then add it to the aggregate bitmap
@@ -30,9 +31,11 @@ class SubSplit
   def self.kind(bitkey)
     case bitkey
     when IN_BITKEY
-      "In"
+      'In'
     when OUT_BITKEY
-      "Out"
+      'Out'
+    else
+      nil
     end
   end
 
@@ -42,10 +45,12 @@ class SubSplit
 
   def self.bitkey(kind)
     case kind.to_s.downcase
-    when "in"
+    when 'in'
       IN_BITKEY
-    when "out"
+    when 'out'
       OUT_BITKEY
+    else
+      nil
     end
   end
 
@@ -57,8 +62,9 @@ class SubSplit
     agg = aggregate_bitmap
     bitkey = bitkey << 1
     return nil if (bitkey > agg) || (bitkey < 1)
-
-    bitkey = bitkey << 1 while (bitkey & agg) == 0
+    while (bitkey & agg) == 0 do
+      bitkey = bitkey << 1
+    end
     bitkey
   end
 
@@ -67,7 +73,7 @@ class SubSplit
   end
 
   def self.validate_bitmap(bitmap)
-    bitmap & aggregate_bitmap
+    bitmap & self.aggregate_bitmap
   end
 
   def self.reveal_bitkeys(bitmap)
@@ -82,11 +88,10 @@ class SubSplit
   end
 
   attr_accessor :split_id, :bitkey
-  alias sub_split_bitkey bitkey
+  alias_method :sub_split_bitkey, :bitkey
 
   def ==(other)
     return false unless other && other.respond_to?(:split_id) && other.respond_to?(:bitkey)
-
-    [split_id, bitkey] == [other.split_id, other.bitkey]
+    [self.split_id, self.bitkey] == [other.split_id, other.bitkey]
   end
 end

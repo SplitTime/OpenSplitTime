@@ -25,7 +25,6 @@ class FindNotExpectedBibs
 
   def bib_numbers
     return [] if errors.present?
-
     event_group.not_expected_bibs(split_name)
   end
 

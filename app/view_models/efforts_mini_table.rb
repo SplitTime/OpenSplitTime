@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class EffortsMiniTable
+
   def initialize(effort_ids)
     @efforts = Effort.where(id: effort_ids)
   end

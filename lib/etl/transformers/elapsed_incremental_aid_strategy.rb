@@ -12,7 +12,6 @@ module ETL
 
       def transform
         return if errors.present?
-
         transform_time_data
         proto_record.record_type = :effort
         proto_record.normalize_gender!
@@ -44,12 +43,12 @@ module ETL
       end
 
       def nullify_blanks
-        proto_record[:times].transform_values! { |time_string| time_string.gsub(/\D/, "").blank? ? "" : time_string }
+        proto_record[:times].transform_values! { |time_string| time_string.gsub(/\D/, '').blank? ? '' : time_string }
       end
 
       def add_missing_hours
         proto_record[:times].transform_values! do |time_string|
-          time_string.split(":").size == 2 ? "00:" + time_string : time_string
+          time_string.split(':').size == 2 ? '00:' + time_string : time_string
         end
       end
 
@@ -83,7 +82,7 @@ module ETL
       end
 
       def base_names
-        proto_record[:times].keys.map { |split_name| split_name.gsub(/( In| Out)\z/, "") }.uniq
+        proto_record[:times].keys.map { |split_name| split_name.gsub(/( In| Out)\z/, '') }.uniq
       end
 
       def validate_setup

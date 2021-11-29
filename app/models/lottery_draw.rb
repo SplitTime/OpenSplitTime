@@ -8,10 +8,10 @@ class LotteryDraw < ApplicationRecord
   scope :include_entrant_and_division, -> { includes(ticket: {entrant: :division}) }
   scope :most_recent_first, -> { reorder(created_at: :desc) }
   scope :with_entrant_and_ticket, -> { includes(ticket: :entrant) }
-  scope :with_sortable_entrant_attributes, lambda {
+  scope :with_sortable_entrant_attributes, -> do
     from(select("lottery_draws.*, lottery_divisions.name as division_name, first_name, last_name, gender, birthdate, city, state_code, state_name, country_code, country_name")
            .joins(ticket: {entrant: :division}), :lottery_draws)
-  }
+  end
 
   validates_uniqueness_of :lottery_ticket_id
 

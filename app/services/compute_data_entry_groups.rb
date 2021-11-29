@@ -22,7 +22,6 @@ class ComputeDataEntryGroups
 
   def node_groups
     return sub_split_matched_nodes unless pair_by_location
-
     unpaired_nodes, paired_nodes = sub_split_matched_nodes.partition(&:one?)
     location_eligible_nodes, singleton_nodes = unpaired_nodes.flatten.partition(&:location)
     location_matched_nodes = pairer.pair(objects: location_eligible_nodes, identical_attributes: :location, pairing_criteria: [{}, {}])
@@ -32,7 +31,7 @@ class ComputeDataEntryGroups
   def sub_split_matched_nodes
     pairer.pair(objects: data_entry_nodes,
                 identical_attributes: :split_name,
-                pairing_criteria: [{sub_split_kind: "in"}, {sub_split_kind: "out"}])
+                pairing_criteria: [{sub_split_kind: 'in'}, {sub_split_kind: 'out'}])
         .map(&:compact)
   end
 end

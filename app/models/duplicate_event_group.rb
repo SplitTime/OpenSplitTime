@@ -21,9 +21,10 @@ class DuplicateEventGroup
   def create
     if valid?
       duplicate_event_group
-      conform_splits if new_event_group.save
+      if new_event_group.save
+        conform_splits
+      end
     end
-
     self
   end
 

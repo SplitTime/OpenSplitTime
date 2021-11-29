@@ -14,7 +14,7 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
     @effort_times_row ||= EffortTimesRow.new(effort: effort,
                                              lap_splits: lap_splits,
                                              split_times: split_times,
-                                             display_style: "all")
+                                             display_style: 'all')
   end
 
   def effort_times_row_id
@@ -38,6 +38,6 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
   end
 
   def event_presenter
-    @event_presenter ||= EventSpreadDisplay.new(event: event, params: {display_style: "all"})
+    @event_presenter ||= EventSpreadDisplay.new(event: event, params: {display_style: 'all'})
   end
 end

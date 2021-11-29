@@ -2,7 +2,6 @@
 
 class MyStuffPresenter < BasePresenter
   attr_reader :current_user
-
   delegate :full_name, to: :current_user
 
   def initialize(current_user)
@@ -43,7 +42,6 @@ class MyStuffPresenter < BasePresenter
 
   def user_efforts
     return nil unless avatar
-
     @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
   end
 

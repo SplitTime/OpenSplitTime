@@ -1,7 +1,7 @@
 class ImportJobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user
-  before_action :set_import_job, only: [:show, :destroy]
+  before_action :set_import_job, :only => [:show, :destroy]
   after_action :verify_authorized
 
   # GET /import_jobs
@@ -35,8 +35,8 @@ class ImportJobsController < ApplicationController
         flash[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
         render "new"
       end
-    rescue Aws::Errors::NoSuchEndpointError => e
-      flash[:danger] = "Unable to create import job: #{e}"
+    rescue Aws::Errors::NoSuchEndpointError => error
+      flash[:danger] = "Unable to create import job: #{error}"
       @import_job.failed!
       render "new"
     end

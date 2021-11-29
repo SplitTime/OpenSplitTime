@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PodiumPresenter < BasePresenter
-  attr_reader :event
 
+  attr_reader :event
   delegate :name, :course, :course_name, :organization, :organization_name, :to_param, :multiple_laps?,
            :event_group, :ordered_events_within_group, :scheduled_start_time_local, to: :event
   delegate :available_live, :multiple_events?, to: :event_group
@@ -50,18 +50,18 @@ class PodiumPresenter < BasePresenter
 
   def ordered_fixed_categories
     categories.select(&:fixed_position?)
-        .group_by { |c| [c.low_age, c.high_age] }.values
-        .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
-        .flatten
+      .group_by { |c| [c.low_age, c.high_age] }.values
+      .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
+      .flatten
   end
 
   def ordered_floating_categories
     categories.reject(&:fixed_position?)
-        .partition(&:male?)
-        .map { |gender_group| gender_group.sort_by(&:fastest_seconds) }
-        .transpose
-        .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
-        .flatten
+      .partition(&:male?)
+      .map { |gender_group| gender_group.sort_by(&:fastest_seconds) }
+      .transpose
+      .map { |category_pair| category_pair.sort_by(&:fastest_seconds) }
+      .flatten
   end
 
   attr_reader :template, :params, :current_user

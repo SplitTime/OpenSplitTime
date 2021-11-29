@@ -9,7 +9,6 @@ module Results
 
     attr_reader :person, :efforts
     attr_accessor :points # For duck typing only
-
     delegate :full_name, to: :person, allow_nil: true
     delegate :age, :gender, :bio_historic, :flexible_geolocation, :person_id, :template_age, :to_param, to: :baseline_effort, allow_nil: true
 
@@ -65,7 +64,6 @@ module Results
     private
 
     attr_reader :event_series
-
     delegate :results_template, to: :event_series
 
     def final_points
@@ -85,7 +83,7 @@ module Results
     end
 
     def baseline_effort
-      @baseline_effort ||= efforts.min_by(&:actual_start_time)
+      @baseline_effort ||= efforts.sort_by(&:actual_start_time).first
     end
 
     def verify_effort_consistency
@@ -95,18 +93,10 @@ module Results
         end
         return
       end
-      unless efforts.all?(&:age) || age_not_required?
-        errors.add(:efforts, :age_and_birthdate_blank, message: "must have an age or birthdate")
-      end
-      unless efforts.all?(&:actual_start_time)
-        errors.add(:efforts, :actual_start_time_blank, message: "must have an actual start time")
-      end
-      unless efforts.all? { |e| e.person_id == person&.id }
-        errors.add(:efforts, :mismatched_with_person, message: "must match the provided person")
-      end
-      unless efforts.all? { |e| e.gender == person&.gender }
-        errors.add(:efforts, :mismatched_genders, message: "must match the provided person's gender")
-      end
+      errors.add(:efforts, :age_and_birthdate_blank, message: "must have an age or birthdate") unless efforts.all?(&:age) || age_not_required?
+      errors.add(:efforts, :actual_start_time_blank, message: "must have an actual start time") unless efforts.all?(&:actual_start_time)
+      errors.add(:efforts, :mismatched_with_person, message: "must match the provided person") unless efforts.all? { |e| e.person_id == person&.id }
+      errors.add(:efforts, :mismatched_genders, message: "must match the provided person's gender") unless efforts.all? { |e| e.gender == person&.gender }
 
       if efforts.all? { |effort| effort.age && effort.actual_start_time }
         effort_birth_years = efforts.map { |effort| effort.actual_start_time.year - effort.age }.sort

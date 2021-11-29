@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EventWithEffortsPresenter < BasePresenter
-  attr_reader :event
 
+  attr_reader :event
   delegate :id, :name, :course, :course_id, :simple?, :beacon_url, :home_time_zone, :finish_split,
            :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :event_group,
            :ordered_events_within_group, :scheduled_start_time_local, :efforts_count, :notice_text, :notice_text?, to: :event
@@ -29,9 +29,9 @@ class EventWithEffortsPresenter < BasePresenter
 
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=
-      ranked_efforts
-          .select { |effort| filtered_ids.include?(effort.id) }
-          .paginate(page: page, per_page: per_page)
+        ranked_efforts
+            .select { |effort| filtered_ids.include?(effort.id) }
+            .paginate(page: page, per_page: per_page)
   end
 
   def event_efforts
@@ -71,6 +71,6 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def person_ids
-    @person_ids ||= filtered_ranked_efforts.map(&:person_id).compact
+    @person_ids ||= (filtered_ranked_efforts.map(&:person_id)).compact
   end
 end

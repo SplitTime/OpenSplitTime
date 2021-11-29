@@ -21,7 +21,9 @@ module Interactors
       new_course.organization = organization if organization
       course.splits.each { |split| new_course.splits.new(split.dup.attributes) }
 
-      errors << Interactors::Errors.resource_error_object(course) unless new_course.save
+      unless new_course.save
+        errors << Interactors::Errors.resource_error_object(course)
+      end
 
       Interactors::Response.new(errors, message, {course: new_course})
     end

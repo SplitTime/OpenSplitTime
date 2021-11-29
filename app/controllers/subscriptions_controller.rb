@@ -3,9 +3,9 @@ class SubscriptionsController < ApplicationController
   after_action :verify_authorized
 
   VALID_SUBSCRIBABLES = Subscription.all_polymorphic_types(:subscribable).map(&:to_s)
-  PROTOCOL_WARNINGS = {"sms" => "Please add a mobile phone number to receive sms text notifications.",
-                       "http" => "Please add an http endpoint to receive http notifications.",
-                       "https" => "Please add an https endpoint to receive https notifications."}.freeze
+  PROTOCOL_WARNINGS = {'sms' => 'Please add a mobile phone number to receive sms text notifications.',
+                       'http' => 'Please add an http endpoint to receive http notifications.',
+                       'https' => 'Please add an https endpoint to receive https notifications.'}
 
   def index
   end
@@ -16,7 +16,9 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if current_user.send(permitted_params[:protocol])
-      logger.warn "  Subscription could not be created: #{@subscription.errors.full_messages}" unless @subscription.save
+      unless @subscription.save
+        logger.warn "  Subscription could not be created: #{@subscription.errors.full_messages}"
+      end
       render :toggle_progress_subscription
     else
       flash_protocol_warning
@@ -39,6 +41,6 @@ class SubscriptionsController < ApplicationController
   private
 
   def flash_protocol_warning
-    flash[:warning] = PROTOCOL_WARNINGS[permitted_params[:protocol]] || "Protocol does not exist."
+    flash[:warning] = PROTOCOL_WARNINGS[permitted_params[:protocol]] || 'Protocol does not exist.'
   end
 end

@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "visit the user index page" do
+RSpec.describe 'visit the user index page' do
   let(:admin) { users(:admin_user) }
   let(:user) { users(:third_user) }
   let(:impersonation_text) { "#{admin.full_name} is impersonating #{user.full_name}" }
 
-  scenario "An admin views the users index page" do
+  scenario 'An admin views the users index page' do
     login_as admin, scope: :user
 
     visit users_path
     verify_all_users_listed
   end
 
-  scenario "An admin deletes a user" do
+  scenario 'An admin deletes a user' do
     login_as admin, scope: :user
 
     visit users_path
@@ -25,7 +25,7 @@ RSpec.describe "visit the user index page" do
     verify_content_absent(user, :full_name)
   end
 
-  scenario "An admin impersonates a user and then stops impersonating" do
+  scenario 'An admin impersonates a user and then stops impersonating' do
     login_as admin, scope: :user
 
     visit users_path
@@ -36,7 +36,7 @@ RSpec.describe "visit the user index page" do
     expect(page).to have_content(impersonation_text)
 
     visit organizations_path
-    click_link "Stop impersonating"
+    click_link 'Stop impersonating'
 
     expect(current_path).to eq(organizations_path)
     expect(page).not_to have_content(impersonation_text)

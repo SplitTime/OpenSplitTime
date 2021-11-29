@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   sequence(:distance_from_start) do |d|
-    d * 10_000
+    d * 10000
   end
 
   sequence(:vert_gain_from_start) do |d|
@@ -28,7 +28,7 @@ FactoryBot.define do
     end
 
     trait :start do
-      base_name { "Start Split" }
+      base_name { 'Start Split' }
       distance_from_start { 0 }
       vert_gain_from_start { 0 }
       vert_loss_from_start { 0 }
@@ -37,7 +37,7 @@ FactoryBot.define do
     end
 
     trait :finish do
-      base_name { "Finish Split" }
+      base_name { 'Finish Split' }
       sub_split_bitmap { 1 }
       kind { :finish }
     end

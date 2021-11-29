@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "visit the summary page" do
+RSpec.describe 'visit the summary page' do
   let(:user) { users(:third_user) }
   let(:admin) { users(:admin_user) }
   let(:event) { events(:hardrock_2015) }
   let(:subject_efforts) { event.efforts }
 
-  scenario "A visitor views the summary page" do
+  scenario 'A visitor views the summary page' do
     visit summary_event_path(event)
     expect(page).to have_content(event.name)
     verify_efforts_present(subject_efforts)
   end
 
-  scenario "A user views the summary page" do
+  scenario 'A user views the summary page' do
     login_as user, scope: :user
 
     visit summary_event_path(event)
@@ -22,7 +22,7 @@ RSpec.describe "visit the summary page" do
     verify_efforts_present(subject_efforts)
   end
 
-  scenario "An admin views the summary page" do
+  scenario 'An admin views the summary page' do
     login_as admin, scope: :user
 
     visit summary_event_path(event)

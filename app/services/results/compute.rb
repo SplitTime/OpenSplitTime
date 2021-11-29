@@ -54,7 +54,7 @@ module Results
       # Check for all_ages? is necessary to properly sort overall categories
       # when age is not provided.
       effort.gender.in?(category.genders) &&
-        (category.all_ages? || effort.template_age.in?(category.age_range))
+          (category.all_ages? || effort.template_age.in?(category.age_range))
     end
 
     def available_efforts

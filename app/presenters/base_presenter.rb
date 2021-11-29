@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class BasePresenter
-  def initialize(_args)
+
+  def initialize(args)
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
 
@@ -16,11 +17,11 @@ class BasePresenter
   def gender_text
     case genders
     when [0]
-      "male"
+      'male'
     when [1]
-      "female"
+      'female'
     else
-      "combined"
+      'combined'
     end
   end
 
@@ -49,7 +50,7 @@ class BasePresenter
   end
 
   def sort_string
-    sort_hash.map { |field, direction| "#{(direction == :desc ? '-' : '')}#{field}" }.join(",")
+    sort_hash.map { |field, direction| "#{(direction == :desc ? '-' : '')}#{field}" }.join(',')
   end
 
   private

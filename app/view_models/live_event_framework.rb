@@ -2,7 +2,6 @@
 
 class LiveEventFramework
   attr_reader :event
-
   delegate :multiple_laps?, :multiple_sub_splits?, :laps_unlimited?, :home_time_zone, :ordered_events_within_group, to: :event
 
   def initialize(args)
@@ -11,7 +10,7 @@ class LiveEventFramework
     post_initialize(args)
   end
 
-  def post_initialize(_args)
+  def post_initialize(args)
     nil
   end
 
@@ -38,11 +37,11 @@ class LiveEventFramework
   def efforts_dropped
     @efforts_dropped ||= event_efforts.select(&:dropped?)
   end
-
+  
   def efforts_in_progress
     @efforts_in_progress ||= event_efforts.select(&:in_progress?)
   end
-
+  
   def efforts_started_count
     efforts_started.size
   end

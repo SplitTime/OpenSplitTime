@@ -32,7 +32,7 @@ module Interactors
     def split_times
       SplitTime.where(effort_id: loaded_raw_times.map(&:effort_id)).with_time_record_matchers
     end
-
+    
     def loaded_raw_times
       RawTime.where(id: raw_times).with_relation_ids
     end

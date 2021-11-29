@@ -4,11 +4,11 @@ FactoryBot.define do
   factory :effort do
     first_name { FFaker::Name.first_name }
     last_name { FFaker::Name.last_name }
-    gender { %w[male female].sample }
+    gender { %w(male female).sample }
     event
 
     trait :with_geo_attributes do
-      country_code { "US" }
+      country_code { 'US' }
       state_code { FFaker::AddressUS.state_abbr }
       city { FFaker::AddressUS.city }
     end
@@ -23,7 +23,7 @@ FactoryBot.define do
 
     trait :with_contact_info do
       email { FFaker::Internet.email }
-      phone { FFaker::PhoneNumber.short_phone_number.gsub("-", "") }
+      phone { FFaker::PhoneNumber.short_phone_number.gsub('-', '') }
     end
 
     trait :male do

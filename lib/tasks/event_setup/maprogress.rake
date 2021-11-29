@@ -32,8 +32,7 @@ namespace :event_setup do
 
     efforts.find_each do |effort|
       progress_bar.increment!
-      beacon_url = "#{base_maprogress_url}/?bib=#{effort.bib_number}&justme=yes&showpath=yes&showmarkerhistory=yes"
-      effort.update(beacon_url: beacon_url)
+      effort.update(beacon_url: "#{base_maprogress_url}/?bib=#{effort.bib_number}&justme=yes&showpath=yes&showmarkerhistory=yes")
     rescue ActiveRecordError => e
       puts "Could not set beacon url for effort #{effort.id}:"
       puts e

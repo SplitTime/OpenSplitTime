@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "aws-sdk-sns"
+require 'aws-sdk-sns'
 
 class BaseNotifier
   include Interactors::Errors
@@ -17,9 +17,9 @@ class BaseNotifier
 
   def publish
     sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
-    Interactors::Response.new([], "Published", response: sns_response, subject: subject, notice_text: message)
-  rescue Aws::SNS::Errors::ServiceError => e
-    Interactors::Response.new([aws_sns_error(e)], e.message, {})
+    Interactors::Response.new([], 'Published', response: sns_response, subject: subject, notice_text: message)
+  rescue Aws::SNS::Errors::ServiceError => exception
+    Interactors::Response.new([aws_sns_error(exception)], exception.message, {})
   end
 
   private

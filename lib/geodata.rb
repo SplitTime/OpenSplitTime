@@ -1,6 +1,7 @@
 class Geodata
+
   def self.standard_countries_subregions
-    serialize_countries(sorted_countries(%w[US CA]))
+    serialize_countries(sorted_countries(%w(US CA)))
   end
 
   def self.serialize_countries(countries)
@@ -15,8 +16,8 @@ class Geodata
 
   def self.included_subregions(country)
     case country.code
-    when "US"
-      country.subregions.reject { |subregion| subregion.type == "apo" }
+    when 'US'
+      country.subregions.reject { |subregion| subregion.type == 'apo' }
     else
       country.subregions
     end

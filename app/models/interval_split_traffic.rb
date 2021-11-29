@@ -19,7 +19,7 @@ class IntervalSplitTraffic < ::ApplicationQuery
 
   def self.execute_query(event_group:, split_name:, band_width:)
     parameterized_split_name = split_name.parameterize
-    band_width /= 1.second
+    band_width = band_width / 1.second
     split_times = ::SplitTime.joins(effort: :event).joins(:split).where(splits: {parameterized_base_name: parameterized_split_name}, events: {event_group: event_group})
     max = split_times.maximum(:absolute_time)
     min = split_times.minimum(:absolute_time)
@@ -37,7 +37,7 @@ class IntervalSplitTraffic < ::ApplicationQuery
   # @return [String]
   def self.sql(event_group:, split_name:, band_width:)
     parameterized_split_name = split_name.parameterize
-    band_width /= 1.second
+    band_width = band_width / 1.second
 
     <<~SQL.squish
       with 

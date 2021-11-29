@@ -5,8 +5,7 @@ TimePoint = Struct.new(:lap, :split_id, :bitkey) do
 
   def ==(other)
     return false unless other && [:lap, :split_id, :bitkey].all? { |method| other.respond_to?(method) }
-
-    [lap, split_id, bitkey] == [other.lap, other.split_id, other.bitkey]
+    [self.lap, self.split_id, self.bitkey] == [other.lap, other.split_id, other.bitkey]
   end
 
   def lap_split_key

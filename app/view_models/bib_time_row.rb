@@ -5,7 +5,7 @@ BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sorta
   include Discrepancy
 
   def full_name
-    "#{first_name} #{last_name}".strip.presence || "[Bib not found]"
+    "#{first_name} #{last_name}".strip.presence || '[Bib not found]'
   end
 
   def grouped_raw_times
@@ -27,6 +27,6 @@ BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sorta
   private
 
   def guaranteed_string(string_or_nil)
-    string_or_nil || "[]"
+    string_or_nil || '[]'
   end
 end

@@ -3,14 +3,7 @@
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped]
 
-  include UrlAccessible
-  include TimeZonable
-  include SplitAnalyzable
-  include Reconcilable
-  include MultiEventable
-  include Delegable
-  include Concealable
-  include Auditable
+  include Auditable, Concealable, Delegable, MultiEventable, Reconcilable, SplitAnalyzable, TimeZonable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -38,17 +31,16 @@ class EventGroup < ApplicationRecord
 
   scope :standard_includes, -> { includes(events: :splits) }
   scope :with_policy_scope_attributes, -> { all }
-  scope :by_group_start_time, lambda {
+  scope :by_group_start_time, -> do
     joins(:events)
-        .select("event_groups.*, min(events.scheduled_start_time) as group_start_time")
+        .select('event_groups.*, min(events.scheduled_start_time) as group_start_time')
         .group(:id)
-        .order("group_start_time desc")
-  }
+        .order('group_start_time desc')
+  end
 
   def self.search(search_param)
     return all if search_param.blank?
-
-    joins(:events).where("event_groups.name ILIKE ? OR events.short_name ILIKE ?", "%#{search_param}%", "%#{search_param}%")
+    joins(:events).where('event_groups.name ILIKE ? OR events.short_name ILIKE ?', "%#{search_param}%", "%#{search_param}%")
   end
 
   def efforts_count
@@ -64,7 +56,7 @@ class EventGroup < ApplicationRecord
   end
 
   def pick_partner_with_banner
-    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.sample
+    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.shuffle.first
   end
 
   def split_times
@@ -83,7 +75,7 @@ class EventGroup < ApplicationRecord
   private
 
   def conform_concealed_status
-    if saved_changes.keys.include?("concealed")
+    if saved_changes.keys.include?('concealed')
       query = EventGroupQuery.set_concealed(id, concealed)
       result = ActiveRecord::Base.connection.execute(query)
       result.error_message.blank?

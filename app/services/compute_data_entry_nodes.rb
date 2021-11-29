@@ -11,17 +11,14 @@ class ComputeDataEntryNodes
   end
 
   def perform
-    if incompatible_locations.present?
-      [incompatible_notice_node]
-    else
-      parameterized_split_names.flat_map { |split_name| nodes_for(split_name) }
-    end
+    incompatible_locations.present? ?
+        [incompatible_notice_node] :
+        parameterized_split_names.flat_map { |split_name| nodes_for(split_name) }
   end
 
   private
 
   attr_reader :event_group, :analyzer
-
   delegate :incompatible_locations, :parameterized_split_names, :splits_by_event, :aid_stations_by_event, to: :analyzer
 
   def nodes_for(split_name)
@@ -42,8 +39,8 @@ class ComputeDataEntryNodes
 
   def incompatible_notice_node
     DataEntryNode.new(split_name: "Incompatible: #{incompatible_locations.map(&:titleize).to_sentence}",
-                      parameterized_split_name: "incompatible-locations-present",
-                      sub_split_kind: "in",
+                      parameterized_split_name: 'incompatible-locations-present',
+                      sub_split_kind: 'in',
                       label: "Incompatible: #{incompatible_locations.to_sentence}",
                       latitude: nil,
                       longitude: nil,

@@ -23,7 +23,7 @@ RSpec.describe LotteryEntrant, type: :model do
         let(:division_name) { "Never Ever Evers" }
         it "returns a collection of all relevant entrants" do
           expect(result.count).to eq(5)
-          expect(result.map(&:first_name)).to match_array(%w[Mitsuko Jospeh Nenita Emeline Modesta])
+          expect(result.map(&:first_name)).to match_array(["Mitsuko", "Jospeh", "Nenita", "Emeline", "Modesta"])
         end
       end
 
@@ -42,7 +42,7 @@ RSpec.describe LotteryEntrant, type: :model do
         let(:division_name) { "Elses" }
         it "returns a collection of all undrawn entrants" do
           expect(result.count).to eq(3)
-          expect(result.map(&:first_name)).to match_array(%w[Shenika Abraham Maud])
+          expect(result.map(&:first_name)).to match_array(["Shenika", "Abraham", "Maud"])
         end
       end
 
@@ -75,7 +75,7 @@ RSpec.describe LotteryEntrant, type: :model do
       let(:birthdate) { existing_entrant.birthdate }
       it "is not valid" do
         expect(new_entrant).not_to be_valid
-        expect(new_entrant.errors.full_messages).to include(/has already been entered/)
+        expect(new_entrant.errors.full_messages).to include /has already been entered/
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe LotteryEntrant, type: :model do
       let(:birthdate) { existing_entrant.birthdate }
       it "is not valid" do
         expect(new_entrant).not_to be_valid
-        expect(new_entrant.errors.full_messages).to include(/has already been entered/)
+        expect(new_entrant.errors.full_messages).to include /has already been entered/
       end
     end
 

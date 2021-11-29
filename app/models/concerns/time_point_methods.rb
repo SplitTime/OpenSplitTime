@@ -4,11 +4,11 @@ module TimePointMethods
   extend ActiveSupport::Concern
 
   def in_sub_split?
-    kind == "In"
+    kind == 'In'
   end
 
   def out_sub_split?
-    kind == "Out"
+    kind == 'Out'
   end
 
   def sub_split
@@ -28,8 +28,8 @@ module TimePointMethods
     self.bitkey = SubSplit.bitkey(sub_split_kind)
   end
 
-  alias kind sub_split_kind
-  alias kind= sub_split_kind=
+  alias_method :kind, :sub_split_kind
+  alias_method :kind=, :sub_split_kind=
 
   def time_point
     TimePoint.new(lap, split_id, bitkey)

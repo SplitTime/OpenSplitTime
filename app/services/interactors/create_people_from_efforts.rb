@@ -21,7 +21,6 @@ module Interactors
 
     attr_reader :id_hash
     attr_accessor :response
-
     delegate :errors, :resources, to: :response
 
     def response_message
@@ -35,7 +34,7 @@ module Interactors
     end
 
     def attempted_message
-      id_hash.size > 2 ? "Attempted to create #{id_hash.size} new records. " : ""
+      id_hash.size > 2 ? "Attempted to create #{id_hash.size} new records. " : ''
     end
 
     def succeeded_message

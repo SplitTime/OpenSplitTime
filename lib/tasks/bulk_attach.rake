@@ -1,5 +1,5 @@
 namespace :bulk_attach do
-  desc "For a collection of resources, attach files in bulk"
+  desc 'For a collection of resources, attach files in bulk'
   task :resources, [:model, :resource_ids, :attachment_attribute, :path_prefix, :key_attribute, :path_postfix] => :environment do |_, args|
     start_time = Time.current
     abort "No model specified" unless args.model
@@ -11,12 +11,12 @@ namespace :bulk_attach do
 
     attachment_attribute = args.attachment_attribute
     model = args.model.to_s.classify.constantize
-    resource_ids = args.resource_ids.split(",")
+    resource_ids = args.resource_ids.split(',')
     resources = model.where(id: resource_ids)
     puts "Updating #{resources.size} records"
 
     resources.each do |resource|
-      current_resource = resource.to_param.to_s
+      current_resource = "#{resource.to_param}"
       url = args.path_prefix + resource.send(args.key_attribute).to_s + args.path_postfix
 
       begin
@@ -43,7 +43,7 @@ namespace :bulk_attach do
     puts "\nFinished bulk_attach:filenames in #{elapsed_time} seconds"
   end
 
-  desc "For an event_group, attach photos to efforts"
+  desc 'For an event_group, attach photos to efforts'
   task :photos_to_efforts, [:event_group_id, :path_prefix, :path_postfix] => :environment do |_, args|
     event_group_id = args.event_group_id
 
@@ -52,7 +52,7 @@ namespace :bulk_attach do
       event_group = EventGroup.friendly.find(event_group_id)
       puts "Attaching photos for event group: #{event_group.to_param}"
     rescue ActiveRecord::RecordNotFound
-      abort "Event group was not found"
+      abort 'Event group was not found'
     end
 
     events = Event.where(event_group_id: event_group.id)
@@ -60,13 +60,13 @@ namespace :bulk_attach do
 
     puts "Found #{efforts.size} efforts"
 
-    model = "efforts"
-    resource_ids = efforts.ids.join(",")
-    attachment_attribute = "photo"
+    model = 'efforts'
+    resource_ids = efforts.ids.join(',')
+    attachment_attribute = 'photo'
     path_prefix = args.path_prefix
-    key_attribute = "bib_number"
+    key_attribute = 'bib_number'
     path_postfix = args.path_postfix
 
-    Rake::Task["bulk_attach:resources"].invoke(model, resource_ids, attachment_attribute, path_prefix, key_attribute, path_postfix)
+    Rake::Task['bulk_attach:resources'].invoke(model, resource_ids, attachment_attribute, path_prefix, key_attribute, path_postfix)
   end
 end

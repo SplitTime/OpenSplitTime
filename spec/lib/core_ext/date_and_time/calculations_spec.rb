@@ -15,7 +15,7 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
         {anniversary_date: "1990-12-25", compare_date: "2020-01-01", expected: "2019-12-25"},
         {anniversary_date: "1990-01-05", compare_date: "2020-12-31", expected: "2021-01-05"},
         {anniversary_date: "1990-07-15", compare_date: "0001-01-01", expected: "0000-07-15"},
-        {anniversary_date: "1990-07-15", compare_date: "0001-07-01", expected: "0001-07-15"}
+        {anniversary_date: "1990-07-15", compare_date: "0001-07-01", expected: "0001-07-15"},
       ]
 
     shared_examples "returns the expected result" do |anniversary_date, compare_date, expected|
@@ -60,13 +60,13 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
 
     context "when leap year option is not specified or is specified as :february" do
       examples = non_leap_year_examples +
-                 [
-                   {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2018-02-28"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2018-02-28"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2018-02-28"},
-                   {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1900-02-28"}
-                 ]
+        [
+          {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2018-02-28"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2018-02-28"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2018-02-28"},
+          {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1900-02-28"},
+        ]
 
       context "not specified" do
         let(:options) { {} }
@@ -86,13 +86,13 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
     context "when leap year option is :march" do
       let(:options) { {leap_year: :march} }
       examples = non_leap_year_examples +
-                 [
-                   {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2018-03-01"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2018-03-01"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2018-03-01"},
-                   {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1900-03-01"}
-                 ]
+        [
+          {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2018-03-01"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2018-03-01"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2018-03-01"},
+          {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1900-03-01"},
+        ]
 
       examples.each do |example|
         include_examples "works for all date classes", example
@@ -102,13 +102,13 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
     context "when leap year option is strict" do
       let(:options) { {leap_year: :strict} }
       examples = non_leap_year_examples +
-                 [
-                   {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2016-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2016-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2020-02-29"},
-                   {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1896-02-29"}
-                 ]
+        [
+          {anniversary_date: "2000-02-29", compare_date: "2020-02-01", expected: "2020-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-01", expected: "2016-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-02-28", expected: "2016-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "2018-03-01", expected: "2020-02-29"},
+          {anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1896-02-29"},
+        ]
 
       examples.each do |example|
         include_examples "works for all date classes", example

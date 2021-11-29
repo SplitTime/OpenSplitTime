@@ -25,7 +25,7 @@ module MultiEventable
   def multiple_laps?
     events.any?(&:multiple_laps?)
   end
-  alias multi_lap multiple_laps?
+  alias_method :multi_lap, :multiple_laps?
 
   def multiple_sub_splits?
     events.any?(&:multiple_sub_splits?)

@@ -47,7 +47,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
         subject_ist = subject.first
         expect(subject_ist.start_time).to eq("2017-09-23 00:00:00")
         expect(subject_ist.end_time).to eq("2017-09-24 00:00:00")
-        expect(subject_ist.short_names).to eq(%w[100K 55K])
+        expect(subject_ist.short_names).to eq(["100K", "55K"])
         expect(subject_ist.event_ids).to eq([56, 57])
         expect(subject_ist.in_counts).to eq([2, 2])
         expect(subject_ist.out_counts).to eq([0, 0])
@@ -89,7 +89,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
         total_in_count: 7,
         total_out_count: 6,
         total_finished_in_count: 5,
-        total_finished_out_count: 4
+        total_finished_out_count: 4,
       )
     end
 

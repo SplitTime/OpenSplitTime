@@ -7,10 +7,10 @@ class EventGroupsController < ApplicationController
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
-        .search(params[:search])
-        .by_group_start_time
-        .preload(:events)
-        .paginate(page: params[:page], per_page: 25)
+                            .search(params[:search])
+                            .by_group_start_time
+                            .preload(:events)
+                            .paginate(page: params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end
@@ -34,7 +34,7 @@ class EventGroupsController < ApplicationController
     if @event_group.update(permitted_params)
       redirect_to event_group_path(@event_group, force_settings: true)
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -42,14 +42,14 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     @event_group.destroy
-    flash[:success] = "Event group deleted."
+    flash[:success] = 'Event group deleted.'
     redirect_to event_groups_path
   end
 
   def efforts
     @efforts = policy_scope(@event_group.efforts)
-        .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-        .where(prepared_params[:filter])
+                 .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+                 .where(prepared_params[:filter])
 
     respond_to do |format|
       format.json do
@@ -61,7 +61,7 @@ class EventGroupsController < ApplicationController
 
   def raw_times
     authorize @event_group
-    params[:sort] ||= "-created_at"
+    params[:sort] ||= '-created_at'
 
     event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
@@ -128,7 +128,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
-    flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
+    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
     redirect_to event_group_path(@event_group, force_settings: true)
   end
 
@@ -152,7 +152,7 @@ class EventGroupsController < ApplicationController
   def set_data_status
     authorize @event_group
 
-    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
+    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: { split_times: :split }).first
     response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
     set_flash_message(response)
     redirect_to roster_event_group_path(@event_group)
@@ -180,9 +180,9 @@ class EventGroupsController < ApplicationController
       end
       format.json do
         if response.successful?
-          render json: {success: true}, status: :created
+          render json: { success: true }, status: :created
         else
-          render json: {success: false, errors: response.errors}
+          render json: { success: false, errors: response.errors }
         end
       end
     end
@@ -213,8 +213,8 @@ class EventGroupsController < ApplicationController
     respond_to do |format|
       format.csv do
         csv_stream = render_to_string(partial: "#{csv_template}.csv.ruby")
-        send_data(csv_stream, type: "text/csv",
-                              filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
+        send_data(csv_stream, type: 'text/csv',
+                  filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end
     end
   end

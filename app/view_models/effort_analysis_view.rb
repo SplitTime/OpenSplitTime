@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class EffortAnalysisView < EffortWithLapSplitRows
-  attr_reader :effort
 
+  attr_reader :effort
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 
   def total_segment_time
@@ -47,12 +47,12 @@ class EffortAnalysisView < EffortWithLapSplitRows
 
   def best_segments
     segment_count = [((sorted_analysis_rows.size / 2.0)).round(0), 3].min
-    sorted_analysis_rows.first(segment_count).map(&:segment_name).join(", ")
+    sorted_analysis_rows.first(segment_count).map(&:segment_name).join(', ')
   end
 
   def worst_segments
     segment_count = [(sorted_analysis_rows.size / 2), 3].min
-    sorted_analysis_rows.reverse.first(segment_count).map(&:segment_name).join(", ")
+    sorted_analysis_rows.reverse.first(segment_count).map(&:segment_name).join(', ')
   end
 
   def farthest_recorded_time
@@ -64,30 +64,27 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def analysis_rows
-    @analysis_rows ||= if indexed_split_times.blank?
-                         nil
-                       else
-                         lap_splits.each_cons(2).map do |prior_lap_split, lap_split|
-                           EffortAnalysisRow.new(lap_split: lap_split,
-                                                 split_times: related_split_times(lap_split, indexed_split_times),
-                                                 typical_split_times: related_split_times(lap_split, indexed_typical_split_times),
-                                                 prior_lap_split: prior_lap_split,
-                                                 prior_split_time: prior_split_time(lap_split),
-                                                 start_time: effort_start_time,
-                                                 show_laps: event.multiple_laps?)
-                         end
-                       end
+    @analysis_rows ||= indexed_split_times.blank? ? nil :
+                           lap_splits.each_cons(2).map do |prior_lap_split, lap_split|
+                             EffortAnalysisRow.new(lap_split: lap_split,
+                                                   split_times: related_split_times(lap_split, indexed_split_times),
+                                                   typical_split_times: related_split_times(lap_split, indexed_typical_split_times),
+                                                   prior_lap_split: prior_lap_split,
+                                                   prior_split_time: prior_split_time(lap_split),
+                                                   start_time: effort_start_time,
+                                                   show_laps: event.multiple_laps?)
+                           end
   end
 
   private
 
   def typical_effort
     @typical_effort ||= last_split_time && effort_start_time &&
-                        TypicalEffort.new(event: event,
-                                          expected_time_from_start: last_split_time.time_from_start,
-                                          start_time: effort_start_time,
-                                          time_points: ordered_split_times.map(&:time_point),
-                                          expected_time_point: last_split_time.time_point)
+        TypicalEffort.new(event: event,
+                          expected_time_from_start: last_split_time.time_from_start,
+                          start_time: effort_start_time,
+                          time_points: ordered_split_times.map(&:time_point),
+                          expected_time_point: last_split_time.time_point)
   end
 
   def last_split_time

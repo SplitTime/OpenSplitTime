@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class EffortAutoReconciler
+
   def self.reconcile(parent, options = {})
     reconciler = new(parent, options)
     reconciler.reconcile
@@ -39,14 +40,14 @@ class EffortAutoReconciler
 
   def exact_matches
     @exact_matches ||= unreconciled_efforts
-        .map { |effort| [effort, effort.exact_matching_person] }.to_h.compact
+                           .map { |effort| [effort, effort.exact_matching_person] }.to_h.compact
   end
 
   def close_matches
     @close_matches ||= unreconciled_efforts
-        .map { |effort| [effort, effort.suggest_close_match] }
-        .select { |_, person| person }
-        .reject { |effort, _| exact_matched_efforts.include?(effort) }.to_h
+                           .map { |effort| [effort, effort.suggest_close_match] }
+                           .select { |_, person| person }
+                           .reject { |effort, _| exact_matched_efforts.include?(effort) }.to_h
   end
 
   def exact_matched_efforts
@@ -66,26 +67,20 @@ class EffortAutoReconciler
   end
 
   def matched_report
-    if auto_matched_count > 0
-      "We found #{auto_matched_count} people that matched our database. "
-    else
-      "No people matched our database exactly. "
-    end
+    auto_matched_count > 0 ?
+        "We found #{auto_matched_count} people that matched our database. " :
+        'No people matched our database exactly. '
   end
 
   def created_report
-    if auto_created_count > 0
-      "We created #{auto_created_count} people from efforts that had no close matches. "
-    else
-      ""
-    end
+    auto_created_count > 0 ?
+        "We created #{auto_created_count} people from efforts that had no close matches. " :
+        ''
   end
 
   def unreconciled_report
-    if close_matched_count > 0
-      "We found #{close_matched_count} people that may or may not match our database. Please reconcile them now. "
-    else
-      "All efforts for #{parent.name} have been reconciled. "
-    end
+    close_matched_count > 0 ?
+        "We found #{close_matched_count} people that may or may not match our database. Please reconcile them now. " :
+        "All efforts for #{parent.name} have been reconciled. "
   end
 end

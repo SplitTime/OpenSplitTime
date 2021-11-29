@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class PlaceDetailRow
-  CATEGORIES = [:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid].freeze
+  CATEGORIES = [:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid]
 
   attr_reader :split_times
-
   delegate :distance_from_start, to: :lap_split
 
   # split_times should be an array having size == lap_split.time_points.size,
@@ -62,19 +61,19 @@ class PlaceDetailRow
 
   def table_titles_by_category
     {passed_segment: "#{effort_name} passed #{persons(passed_segment_ids.size)} between" +
-      " #{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
+        " #{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
      passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_ids.size)} in aid at #{split_base_name(lap_split)}",
      passed_by_segment: "#{effort_name} was passed by #{persons(passed_by_segment_ids.size)} between " +
-       "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
+         "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
      passed_by_in_aid: "#{effort_name} was passed by #{persons(passed_by_in_aid_ids.size)} while in aid at " +
-       split_base_name(lap_split).to_s,
+         "#{split_base_name(lap_split)}",
      together_in_aid: "#{effort_name} was in #{split_base_name(lap_split)} with #{persons(together_in_aid_ids.size)}"}
   end
 
   def show_laps?
     @show_laps
   end
-
+  
   def split_base_name(lap_split)
     show_laps? ? lap_split.base_name : lap_split.base_name_without_lap
   end

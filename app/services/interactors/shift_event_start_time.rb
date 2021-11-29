@@ -39,20 +39,20 @@ module Interactors
 
     def update_event
       event.update!(scheduled_start_time: new_start_time)
-    rescue ActiveRecord::ActiveRecordError => e
-      errors << active_record_error(e)
+    rescue ActiveRecord::ActiveRecordError => exception
+      errors << active_record_error(exception)
     end
 
     def update_efforts
       ActiveRecord::Base.connection.execute(effort_query)
-    rescue ActiveRecord::ActiveRecordError => e
-      errors << active_record_error(e)
+    rescue ActiveRecord::ActiveRecordError => exception
+      errors << active_record_error(exception)
     end
 
     def update_split_times
       ActiveRecord::Base.connection.execute(split_time_query)
-    rescue ActiveRecord::ActiveRecordError => e
-      errors << active_record_error(e)
+    rescue ActiveRecord::ActiveRecordError => exception
+      errors << active_record_error(exception)
     end
 
     attr_reader :event, :new_start_time, :old_start_time, :current_user, :errors
@@ -74,14 +74,15 @@ module Interactors
     end
 
     def response_message
-      if errors.present?
+      case
+      when errors.present?
         "The start time for #{event.name} could not be shifted from #{flexible_format(old_start_time, new_start_time)} to #{flexible_format(new_start_time, old_start_time)}. "
-      elsif shift_seconds == 0
+      when shift_seconds == 0
         "The new start time for #{event.name} was #{flexible_format(new_start_time, old_start_time)}, unchanged from the old start time. "
       else
         "The start time for #{event.name} was shifted #{shift_direction} " +
-          "from #{flexible_format(old_start_time, new_start_time)} to #{flexible_format(new_start_time, old_start_time)}. " +
-          "All related scheduled start times and split times were shifted #{shift_direction} by the same amount."
+            "from #{flexible_format(old_start_time, new_start_time)} to #{flexible_format(new_start_time, old_start_time)}. " +
+            "All related scheduled start times and split times were shifted #{shift_direction} by the same amount."
       end
     end
   end

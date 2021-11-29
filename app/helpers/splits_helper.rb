@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module SplitsHelper
+
   def set_course_and_event
     if params[:event_id]
       @event = Event.friendly.find(params[:event_id])

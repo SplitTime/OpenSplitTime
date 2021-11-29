@@ -19,4 +19,6 @@ end
 
 # Set a long timeout in development and test environments
 # to allow for more effective debugging.
-worker_timeout 10.minutes if %w[development test].include?(ENV["RACK_ENV"])
+if %w(development test).include?(ENV["RACK_ENV"])
+  worker_timeout 10.minutes
+end

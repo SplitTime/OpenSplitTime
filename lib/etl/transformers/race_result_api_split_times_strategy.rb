@@ -51,7 +51,6 @@ module ETL
       def transform_times!(proto_record)
         proto_record[:absolute_times] = proto_record[:times_of_day].map do |time|
           next unless time.present?
-
           seconds = ActiveSupport::TimeZone[event.home_time_zone].parse(time).seconds_since_midnight
           event.scheduled_start_time_local.at_midnight + seconds
         end
@@ -64,7 +63,7 @@ module ETL
       end
 
       def set_stop!(proto_record)
-        stop_indicators = %w[DNF DSQ]
+        stop_indicators = %w(DNF DSQ)
         if stop_indicators.include?(proto_record[:status])
           stopped_child_record = proto_record.children.reverse.find { |pr| pr[:absolute_time].present? }
           (stopped_child_record[:stopped_here] = true) if stopped_child_record
@@ -79,8 +78,8 @@ module ETL
       # so use the first as a template for all.
       def time_keys
         @time_keys ||= proto_records.first.to_h.keys
-            .select { |key| key.to_s.start_with?("time_") }
-            .sort_by { |key| key[/\d+/].to_i }
+                                    .select { |key| key.to_s.start_with?('time_') }
+                                    .sort_by { |key| key[/\d+/].to_i }
       end
 
       def ignored_time_indices
@@ -106,7 +105,7 @@ module ETL
       def validate_setup
         errors << missing_event_error unless event.present?
         (errors << split_mismatch_error(event, time_points.size, time_keys.size)) if event.present? && !event.laps_unlimited? &&
-                                                                                     (time_keys.size != time_points.size)
+          (time_keys.size != time_points.size)
       end
     end
   end

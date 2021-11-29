@@ -9,7 +9,7 @@ module Api
                             :email,
                             :birthdate,
                             :emergency_contact,
-                            :emergency_phone].freeze
+                            :emergency_phone]
 
       attributes :age,
                  :beacon_url,
@@ -30,7 +30,7 @@ module Api
                  :state_code
 
       PRIVATE_ATTRIBUTES.each do |att|
-        attribute att, if: proc { |effort, params|
+        attribute att, if: Proc.new { |effort, params|
           current_user = params[:current_user]
           current_user&.authorized_to_edit?(effort)
         }
@@ -38,7 +38,7 @@ module Api
 
       link :self, :api_v1_url
 
-      has_many :split_times, if: proc { |effort| effort.split_times.loaded? }
+      has_many :split_times, if: Proc.new { |effort| effort.split_times.loaded? }
     end
   end
 end

@@ -3,7 +3,7 @@
 module Interactors
   class MergePeople
     include Interactors::Errors
-    PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo].freeze
+    PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo]
 
     def self.perform!(survivor, target)
       new(survivor, target).perform!
@@ -30,7 +30,9 @@ module Interactors
     def save_changes
       ActiveRecord::Base.transaction do
         if survivor.save
-          errors << resource_error_object(target) unless target.destroy
+          unless target.destroy
+            errors << resource_error_object(target)
+          end
         else
           errors << resource_error_object(survivor)
         end

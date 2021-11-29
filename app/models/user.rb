@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
-  devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
+  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
@@ -19,23 +19,23 @@ class User < ApplicationRecord
   has_paper_trail
 
   has_many :subscriptions, dependent: :destroy
-  has_many :interests, through: :subscriptions, source: :subscribable, source_type: "Person"
-  has_many :watch_efforts, through: :subscriptions, source: :subscribable, source_type: "Effort"
+  has_many :interests, through: :subscriptions, source: :subscribable, source_type: 'Person'
+  has_many :watch_efforts, through: :subscriptions, source: :subscribable, source_type: 'Effort'
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
   has_many :import_jobs, dependent: :destroy
-  has_one :avatar, class_name: "Person", dependent: :nullify
+  has_one :avatar, class_name: 'Person', dependent: :nullify
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint
   alias_attribute :https, :https_endpoint
 
-  scope :with_avatar_names, lambda {
-    from(select("users.*, people.first_name as avatar_first_name, people.last_name as avatar_last_name")
+  scope :with_avatar_names, -> do
+    self.from(select('users.*, people.first_name as avatar_first_name, people.last_name as avatar_last_name')
                   .left_joins(:avatar), :users)
-  }
+  end
 
   validates_presence_of :first_name, :last_name
-  validates :phone, format: {with: /\+1\d{9}/, message: "must be a valid US or Canada phone number"}, if: :phone?
+  validates :phone, format: { with: /\+1\d{9}/, message: 'must be a valid US or Canada phone number' }, if: :phone?
 
   before_validation :normalize_phone, if: :phone?
   after_initialize :set_default_role, if: :new_record?
@@ -65,7 +65,7 @@ class User < ApplicationRecord
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
       user.email = auth.info.email
-      user.password = ::Devise.friendly_token[0, 20]
+      user.password = ::Devise.friendly_token[0,20]
       user.skip_confirmation!
     end
   end
@@ -75,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def self.search_name_email(search_param)
-    where("users.first_name ilike ? or users.last_name ilike ? or users.email ilike ?",
+    where('users.first_name ilike ? or users.last_name ilike ? or users.email ilike ?',
           "#{search_param}%", "#{search_param}%", "%#{search_param}%")
   end
 
@@ -86,7 +86,7 @@ class User < ApplicationRecord
   end
 
   def slug_candidates
-    [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime("%H:%M:%S")]]
+    [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime('%H:%M:%S')]]
   end
 
   def should_generate_new_friendly_id?
@@ -106,8 +106,7 @@ class User < ApplicationRecord
   end
 
   def authorized_to_claim?(person)
-    return false if has_avatar?
-
+    return false if self.has_avatar?
     admin? || (last_name == person.last_name) || (first_name == person.first_name)
   end
 
@@ -122,7 +121,7 @@ class User < ApplicationRecord
   end
 
   def owner_of?(resource)
-    resource.respond_to?(:owner_id) ? resource.owner_id == id : false
+    resource.respond_to?(:owner_id) ? resource.owner_id == self.id : false
   end
 
   def steward_of?(resource)
@@ -138,7 +137,7 @@ class User < ApplicationRecord
   end
 
   def full_name
-    [first_name, last_name].join(" ")
+    [first_name, last_name].join(' ')
   end
 
   def has_avatar?
@@ -152,9 +151,9 @@ class User < ApplicationRecord
   private
 
   def normalize_phone
-    phone.gsub!(/[^+\d]/, "")
-    phone.gsub!(/\A\+?1?/, "")
-    self.phone = "+1" + phone if phone.length == 10
+    self.phone.gsub!(/[^+\d]/, '')
+    self.phone.gsub!(/\A\+?1?/, '')
+    self.phone = '+1' + phone if phone.length == 10
     self.phone = phone.presence
   end
 end

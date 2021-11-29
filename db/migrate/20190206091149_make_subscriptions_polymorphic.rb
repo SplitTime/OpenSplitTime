@@ -7,7 +7,7 @@ class MakeSubscriptionsPolymorphic < ActiveRecord::Migration[5.2]
 
     remove_reference :subscriptions, :person
     add_index :subscriptions, [:user_id, :subscribable_type, :subscribable_id, :protocol],
-              name: "index_subscriptions_on_unique_fields", unique: true
+              name: 'index_subscriptions_on_unique_fields', unique: true
   end
 
   def down

@@ -35,14 +35,14 @@ module Interactors
 
     def source_country_mismatch?
       destination.state_code &&
-        source_country.try(:subregions?) &&
-        source_subregion_codes.exclude?(destination.state_code)
+          source_country.try(:subregions?) &&
+          source_subregion_codes.exclude?(destination.state_code)
     end
 
     def source_state_mismatch?
       source.state_code &&
-        destination_country.try(:subregions?) &&
-        destination_subregion_codes.exclude?(source.state_code)
+          destination_country.try(:subregions?) &&
+          destination_subregion_codes.exclude?(source.state_code)
     end
 
     def destination_country
@@ -66,11 +66,8 @@ module Interactors
     end
 
     def response_message
-      if errors.present?
-        "Geo information from #{source} was not resolved with destination #{destination}"
-      else
-        "Geo information from #{source} was resolved and assigned to destination #{destination}"
-      end
+      errors.present? ? "Geo information from #{source} was not resolved with destination #{destination}" :
+          "Geo information from #{source} was resolved and assigned to destination #{destination}"
     end
   end
 end

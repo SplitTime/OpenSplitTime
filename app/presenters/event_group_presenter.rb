@@ -2,11 +2,10 @@
 
 class EventGroupPresenter < BasePresenter
   attr_reader :event_group
-
   delegate :to_param, to: :event_group
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
-  DEFAULT_DISPLAY_STYLE = "events"
+  DEFAULT_DISPLAY_STYLE = 'events'
   RECENT_FINISH_THRESHOLD = 20.minutes
   RECENT_FINISH_COUNT_LIMIT = 6
   EXPECTED_FINISH_COUNT_LIMIT = 10
@@ -27,9 +26,9 @@ class EventGroupPresenter < BasePresenter
 
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=
-      ranked_efforts
-          .select { |effort| filtered_ids.include?(effort.id) && matches_criteria?(effort) }
-          .paginate(page: page, per_page: per_page)
+        ranked_efforts
+            .select { |effort| filtered_ids.include?(effort.id) && matches_criteria?(effort) }
+            .paginate(page: page, per_page: per_page)
   end
 
   def filtered_ranked_efforts_count
@@ -62,16 +61,16 @@ class EventGroupPresenter < BasePresenter
 
   def recent_arrivals_at_finish
     projected_arrivals_at_finish
-        .select { |arrival| arrival.completed? && arrival.projected_time.present? && arrival.projected_time > RECENT_FINISH_THRESHOLD.ago }
-        .first(RECENT_FINISH_COUNT_LIMIT)
+      .select { |arrival| arrival.completed? && arrival.projected_time.present? && arrival.projected_time > RECENT_FINISH_THRESHOLD.ago }
+      .first(RECENT_FINISH_COUNT_LIMIT)
   end
 
   def events
-    @events ||= event_group.events.select_with_params("").order(:scheduled_start_time).to_a
+    @events ||= event_group.events.select_with_params('').order(:scheduled_start_time).to_a
   end
 
   def event_group_names
-    events.map(&:name).to_sentence(two_words_connector: " and ", last_word_connector: ", and ")
+    events.map(&:name).to_sentence(two_words_connector: ' and ', last_word_connector: ', and ')
   end
 
   def event
@@ -79,7 +78,7 @@ class EventGroupPresenter < BasePresenter
   end
 
   def candidate_events
-    (organization.events.select_with_params("").order(scheduled_start_time: :desc) - events)
+    (organization.events.select_with_params('').order(scheduled_start_time: :desc) - events)
         .select { |event| (event.scheduled_start_time - events.first.scheduled_start_time).abs < CANDIDATE_SEPARATION_LIMIT }
   end
 

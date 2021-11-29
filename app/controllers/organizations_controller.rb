@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    params[:view] ||= "events"
+    params[:view] ||= 'events'
     @presenter = OrganizationPresenter.new(@organization, params, current_user)
     session[:return_to] = organization_path(@organization)
   end
@@ -41,7 +41,7 @@ class OrganizationsController < ApplicationController
     if @organization.save
       redirect_to @organization
     else
-      render "new"
+      render 'new'
     end
   end
 
@@ -51,7 +51,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(permitted_params)
       redirect_to @organization
     else
-      render "edit"
+      render 'edit'
     end
   end
 
@@ -59,7 +59,7 @@ class OrganizationsController < ApplicationController
     authorize @organization
 
     if @organization.destroy
-      flash[:success] = "Organization deleted."
+      flash[:success] = 'Organization deleted.'
       redirect_to organizations_path
     else
       flash[:danger] = @organization.errors.full_messages.join("\n")

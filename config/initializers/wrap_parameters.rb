@@ -18,11 +18,10 @@ module ActionController
     end
 
     private
-
     def deep_underscore_params!(val)
       case val
       when Array
-        val.map { |v| deep_underscore_params! v }
+        val.map {|v| deep_underscore_params! v }
       when Hash
         val.keys.each do |k, v = val[k]|
           val.delete k

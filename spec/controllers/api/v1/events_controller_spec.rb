@@ -67,10 +67,8 @@ RSpec.describe Api::V1::EventsController do
 
     via_login_and_jwt do
       context "when provided data is valid" do
-        let(:attributes) do
-          {course_id: course.id, event_group_id: event_group.id, short_name: "50M",
-           scheduled_start_time_local: "2017-03-01 06:00:00", laps_required: 1}
-        end
+        let(:attributes) { {course_id: course.id, event_group_id: event_group.id, short_name: "50M",
+                            scheduled_start_time_local: "2017-03-01 06:00:00", laps_required: 1} }
 
         it "returns a successful json response" do
           make_request
@@ -189,13 +187,13 @@ RSpec.describe Api::V1::EventsController do
           it "returns split data in the expected format" do
             make_request
             expect(parsed_response.dig("data", "attributes", "splitHeaderData").map { |header| header["title"] })
-                .to match_array(event.splits.map(&:base_name))
+              .to match_array(event.splits.map(&:base_name))
           end
 
           it "returns effort data in the expected format" do
             make_request
             expect(parsed_response["included"].map { |effort| effort.dig("attributes", "lastName") })
-                .to match_array(event.efforts.map(&:last_name))
+              .to match_array(event.efforts.map(&:last_name))
           end
 
           it "returns time data in absolute time format" do
@@ -228,7 +226,7 @@ RSpec.describe Api::V1::EventsController do
 
           context "when a time is missing" do
             let(:subject_row) { parsed_response["included"][22] }
-            let(:expected_times) { [0.0, 11_760.0, 11_760.0, 39_000.0, 39_720.0, 62_700.0, 63_480.0, nil, nil, 112_260.0, 112_860.0, 163_560.0, 163_560.0, 171_060.0] }
+            let(:expected_times) { [0.0, 11760.0, 11760.0, 39000.0, 39720.0, 62700.0, 63480.0, nil, nil, 112260.0, 112860.0, 163560.0, 163560.0, 171060.0] }
             it "represents the missing time with nil" do
               make_request
               expect(response_times).to eq(expected_times)
@@ -291,7 +289,7 @@ RSpec.describe Api::V1::EventsController do
       context "when provided with an adilas url and data_format adilas_bear_times" do
         let(:request_params) { {id: event.id, data_format: "adilas_bear_times", data: source_data} }
         let(:source_data) do
-          VCR.use_cassette("adilas/#{url.split('?').last}") do
+          VCR.use_cassette("adilas/#{url.split("?").last}") do
             Net::HTTP.get(URI(url))
           end
         end
@@ -351,7 +349,8 @@ RSpec.describe Api::V1::EventsController do
                                    [1117, "#1117. FINISHED SECOND", "STATUS: OK", "START", "Time: 8:01:48 AM", "AID 1", "", "", "AID 2", "Time: 9:41:07 AM", "Split: 0:59:30.85", "AID 3", "Time: 10:31:45 AM", "Split: 0:50:38.20", "AID 4", "Time: 11:40:33 AM", "Split: 1:08:48.08", "AID 5", "Time: 12:31:31 PM", "Split: 0:18:31.84", "FINISH", "Time: 12:48:04 PM", "Total Time: 4:46:15.7"],
                                    [1118, "#1118. PROGRESS AID4", "STATUS: OK", "START", "Time: 6:08:18 AM", "AID 1", "Time: 7:27:44 AM", "Split: 1:19:26.03", "AID 2", "Time: 9:31:50 AM", "Split: 2:04:05.72", "AID 3", "Time: 11:36:00 AM", "Split: 2:04:09.50", "AID 4", "Time: 14:26:38 PM", "Split: 2:50:37.96", "AID 5", "Time: 16:38:50 PM", "Split: 0:37:50.18", "FINISH", "Time: 17:22:12 PM", "Total Time: 11:13:54.0"],
                                    [219, "#219. PROGRESS AID3", "STATUS: OK", "START", "Time: 6:08:18 AM", "AID 1", "Time: 7:38:18 AM", "Split: 1:30:00.00", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""],
-                                   [433, "#433. START ONLY", "STATUS: OK", "START", "Time: 8:01:49 AM", "AID 1", "", "", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""]]}}.to_json
+                                   [433, "#433. START ONLY", "STATUS: OK", "START", "Time: 8:01:49 AM", "AID 1", "", "", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""]]}
+          }.to_json
         end
 
         context "when existing efforts have no split times" do

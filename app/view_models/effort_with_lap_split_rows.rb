@@ -118,7 +118,6 @@ class EffortWithLapSplitRows
 
   def loaded_effort
     return @loaded_effort if defined?(@loaded_effort)
-
     temp_effort = Effort.where(id: effort).includes(split_times: :split).first
     AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
     @loaded_effort = temp_effort

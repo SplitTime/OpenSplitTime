@@ -18,12 +18,10 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
   let(:person_2) { temp_people.second }
   let(:temp_people) { build_list(:person, 2) }
 
-  let(:parsed_structs) do
-    [
-      OpenStruct.new(first: person_1.first_name, last: person_1.last_name, sex: person_1.gender, State: "Colorado", country: "US", Tickets: 4, Division_name: division_name_1),
-      OpenStruct.new(first: person_2.first_name, last: person_2.last_name, sex: person_2.gender, state: "NY", number_of_tickets: 1, division_name: division_name_2)
-    ]
-  end
+  let(:parsed_structs) { [
+    OpenStruct.new(first: person_1.first_name, last: person_1.last_name, sex: person_1.gender, State: "Colorado", country: "US", Tickets: 4, Division_name: division_name_1),
+    OpenStruct.new(first: person_2.first_name, last: person_2.last_name, sex: person_2.gender, state: "NY", number_of_tickets: 1, division_name: division_name_2),
+  ] }
 
   let(:division_name_1) { "Fast People" }
   let(:division_name_2) { "slow people" }
@@ -40,7 +38,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
 
     it "returns rows with effort headers transformed to match the lottery entrant schema" do
       expect(first_proto_record.to_h.keys)
-          .to match_array(%i[first_name last_name gender state_code country_code number_of_tickets lottery_division_id])
+        .to match_array(%i(first_name last_name gender state_code country_code number_of_tickets lottery_division_id))
     end
 
     it "assigns the expected divisions" do
@@ -77,9 +75,9 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns descriptive errors" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Transform failed:/)
+        expect(subject.errors.first.dig(:detail, :messages).first).to match /Transform failed:/
         expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
-        expect(subject.errors.second.dig(:detail, :messages).first).to match(/Transform failed:/)
+        expect(subject.errors.second.dig(:detail, :messages).first).to match /Transform failed:/
         expect(subject.errors.second.dig(:detail, :row_index)).to eq(2)
       end
 
@@ -102,7 +100,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns a descriptive error" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Division could not be found:/)
+        expect(subject.errors.first.dig(:detail, :messages).first).to match /Division could not be found:/
         expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
       end
     end
@@ -116,7 +114,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
 
       it "adds a descriptive error" do
         expect(subject.errors.size).to eq(1)
-        expect(subject.errors.first[:title]).to match(/Parent is missing/)
+        expect(subject.errors.first[:title]).to match /Parent is missing/
       end
     end
   end

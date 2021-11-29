@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
-RSpec.describe "visit the duplicate event group page", type: :system, js: true do
+RSpec.describe 'visit the duplicate event group page', type: :system, js: true do
   let(:user) { users(:third_user) }
   let(:event_group) { event_groups(:sum) }
 
-  scenario "The user is a visitor" do
+  scenario 'The user is a visitor' do
     visit new_duplicate_event_group_path(existing_id: event_group.id)
 
     expect(page).to have_current_path(root_path)
-    verify_alert("You need to sign in or sign up before continuing")
+    verify_alert('You need to sign in or sign up before continuing')
   end
 
-  scenario "The user is a user that is not authorized to edit the event group" do
+  scenario 'The user is a user that is not authorized to edit the event group' do
     login_as user, scope: :user
 
     visit new_duplicate_event_group_path(existing_id: event_group.id)
 
     expect(page).to have_current_path(root_path)
-    verify_alert("Access denied")
+    verify_alert('Access denied')
   end
 end

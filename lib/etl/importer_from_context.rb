@@ -45,7 +45,7 @@ module ETL
     end
 
     def strict
-      params[:load_records] != "single"
+      params[:load_records] != 'single'
     end
 
     def unique_key

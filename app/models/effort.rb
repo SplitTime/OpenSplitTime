@@ -7,21 +7,9 @@ class Effort < ApplicationRecord
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
 
-  include UrlAccessible
-  include Matchable
-  include TrimTimeAttributes
-  include TimeZonable
-  include Subscribable
-  include StateCountrySyncable
-  include Searchable
-  include PersonalInfo
-  include LapsRequiredMethods
-  include GuaranteedFindable
-  include DelegatedConcealable
-  include Delegable
-  include DataStatusMethods
-  include CapitalizeAttributes
-  include Auditable
+  include Auditable, CapitalizeAttributes, DataStatusMethods, Delegable, DelegatedConcealable,
+          GuaranteedFindable, LapsRequiredMethods, PersonalInfo, Searchable, StateCountrySyncable,
+          Subscribable, TimeZonable, TrimTimeAttributes, Matchable, UrlAccessible
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -54,7 +42,7 @@ class Effort < ApplicationRecord
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
   validates :photo,
-            content_type: %w[image/png image/jpeg],
+            content_type: %w(image/png image/jpeg),
             size: {less_than: 5000.kilobytes}
 
   before_save :reset_age_from_birthdate
@@ -67,12 +55,12 @@ class Effort < ApplicationRecord
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
-  scope :with_policy_scope_attributes, lambda {
-    from(select("efforts.*, event_groups.organization_id, event_groups.concealed").joins(event: :event_group), :efforts)
-  }
+  scope :with_policy_scope_attributes, -> do
+    from(select('efforts.*, event_groups.organization_id, event_groups.concealed').joins(event: :event_group), :efforts)
+  end
 
   def self.null_record
-    @null_record ||= Effort.new(first_name: "", last_name: "")
+    @null_record ||= Effort.new(first_name: '', last_name: '')
   end
 
   def self.search(param)
@@ -82,9 +70,8 @@ class Effort < ApplicationRecord
 
   def self.ranked_with_status(args = {})
     return [] if EffortQuery.existing_scope_sql.blank?
-
     query = EffortQuery.rank_and_status(args)
-    find_by_sql(query)
+    self.find_by_sql(query)
   end
 
   def to_s
@@ -93,15 +80,15 @@ class Effort < ApplicationRecord
 
   def slug_candidates
     [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
-     [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime("%H:%M:%S")]]
+     [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime('%H:%M:%S')]]
   end
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
     time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :absolute_time_local, :absolute_time).values
     without_time = time_values.all?(&:blank?)
-    blank_time = without_time && time_values.any? { |value| value == "" }
-    attributes.merge!(_destroy: true) if persisted && blank_time
+    blank_time = without_time && time_values.any? { |value| value == '' }
+    attributes.merge!(_destroy: true) if persisted and blank_time
     without_time && !persisted # reject new split_time if all time attributes are empty
   end
 
@@ -111,14 +98,12 @@ class Effort < ApplicationRecord
 
   def reset_age_from_birthdate
     return unless birthdate.present? && calculated_start_time.present?
-
     assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
   end
 
   def actual_start_time
     return @actual_start_time if defined?(@actual_start_time)
-
-    @actual_start_time = attributes.has_key?("actual_start_time") ? attributes["actual_start_time"] : starting_split_time&.absolute_time
+    @actual_start_time = attributes.has_key?('actual_start_time') ? attributes['actual_start_time'] : starting_split_time&.absolute_time
   end
 
   def calculated_start_time
@@ -126,29 +111,27 @@ class Effort < ApplicationRecord
   end
 
   def assumed_start_time
-    attributes["assumed_start_time"] || scheduled_start_time || event_start_time
+    attributes['assumed_start_time'] || scheduled_start_time || event_start_time
   end
 
   def event_start_time
-    @event_start_time ||= attributes["event_start_time"] || event&.scheduled_start_time
+    @event_start_time ||= attributes['event_start_time'] || event&.scheduled_start_time
   end
 
   def home_time_zone
-    @home_time_zone ||= attributes["home_time_zone"] || event&.home_time_zone
+    @home_time_zone ||= attributes['home_time_zone'] || event&.home_time_zone
   end
 
   def scheduled_start_offset
     @scheduled_start_offset ||=
       begin
-        return attributes["scheduled_start_offset"] if attributes.has_key?("scheduled_start_offset")
-
+        return attributes['scheduled_start_offset'] if attributes.has_key?('scheduled_start_offset')
         (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
       end
   end
 
   def scheduled_start_offset=(seconds)
     return unless seconds.present? && event_start_time
-
     self.scheduled_start_time = event_start_time + seconds.to_i
   end
 
@@ -161,7 +144,7 @@ class Effort < ApplicationRecord
   end
 
   def laps_required
-    @laps_required ||= attributes["laps_required"] || event.laps_required
+    @laps_required ||= attributes['laps_required'] || event.laps_required
   end
 
   def last_reported_split_time
@@ -177,41 +160,35 @@ class Effort < ApplicationRecord
   end
 
   def start_split_id
-    return attributes["start_split_id"] if attributes.has_key?("start_split_id")
-
+    return attributes['start_split_id'] if attributes.has_key?('start_split_id')
     event.start_split.id
   end
 
   def laps_finished
-    return attributes["laps_finished"] if attributes["laps_finished"].present?
-
+    return attributes['laps_finished'] if attributes['laps_finished'].present?
     last_split_time = last_reported_split_time
     return 0 unless last_split_time
-
     last_split_time.split.finish? ? last_split_time.lap : last_split_time.lap - 1
   end
 
   def laps_started
-    attributes["laps_started"] || last_reported_split_time&.lap || 0
+    attributes['laps_started'] || last_reported_split_time&.lap || 0
   end
 
   # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
   # At that time, the stopped_here split_time is set, and the effort is considered to have finished.
   def finished?
-    return attributes["finished"] if attributes.has_key?("finished")
-
+    return attributes['finished'] if attributes.has_key?('finished')
     (laps_required.zero? ? split_times.any?(&:stopped_here) : (laps_finished >= laps_required))
   end
 
   def stopped?
-    return attributes["stopped"] if attributes.has_key?("stopped")
-
+    return attributes['stopped'] if attributes.has_key?('stopped')
     finished? || split_times.any?(&:stopped_here)
   end
 
   def started?
-    return attributes["started"] if attributes.has_key?("started")
-
+    return attributes['started'] if attributes.has_key?('started')
     split_times.present?
   end
 
@@ -230,33 +207,29 @@ class Effort < ApplicationRecord
   end
 
   def beyond_start?
-    return attributes["beyond_start"] if attributes.has_key?("beyond_start")
-
+    return attributes['beyond_start'] if attributes.has_key?('beyond_start')
     split_times.find { |st| !st.start? || st.lap > 1 }.present?
   end
 
   def finish_status
     case
     when !started?
-      "Not yet started"
+      'Not yet started'
     when dropped?
-      "DNF"
+      'DNF'
     when finished?
-      if attributes.has_key?("final_elapsed_seconds")
-        return TimeConversion.seconds_to_hms(attributes["final_elapsed_seconds"])
-      end
-
+      return TimeConversion.seconds_to_hms(attributes['final_elapsed_seconds']) if attributes.has_key?('final_elapsed_seconds')
       finish_split_time.formatted_time_hhmmss
     else
-      "In progress"
+      'In progress'
     end
   end
 
   def total_time_in_aid
     @total_time_in_aid ||=
-      ordered_split_times.select(&:absolute_time).group_by(&:split_id).inject(0) do |total, (_, group)|
-        total + (group.last.absolute_time - group.first.absolute_time)
-      end
+        ordered_split_times.select(&:absolute_time).group_by(&:split_id).inject(0) do |total, (_, group)|
+          total + (group.last.absolute_time - group.first.absolute_time)
+        end
   end
 
   def split_times_data
@@ -282,17 +255,16 @@ class Effort < ApplicationRecord
   end
 
   def overall_rank
-    attributes["overall_rank"] || enriched.attributes["overall_rank"]
+    attributes['overall_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def gender_rank
-    attributes["gender_rank"] || enriched.attributes["overall_rank"]
+    attributes['gender_rank'] || self.enriched.attributes['overall_rank']
   end
 
   def current_age_approximate
     return @current_age_approximate if defined?(@current_age_approximate)
     return unless age.present? && calculated_start_time.present?
-
     @current_age_approximate ||= age && ((Time.current - calculated_start_time) / 1.year + age).round
   end
 

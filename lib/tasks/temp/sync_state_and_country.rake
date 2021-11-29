@@ -1,12 +1,12 @@
 # This is a temporary rake task that should be deleted
 # once it has been run in all environments.
 
-require "active_record"
-require "active_record/errors"
+require 'active_record'
+require 'active_record/errors'
 
 namespace :temp do
   desc "sets state_name and country_name based on existing state and country codes"
-  task sync_state_and_country: :environment do
+  task :sync_state_and_country => :environment do
     Rails.application.eager_load!
 
     puts "Syncing state_name and country_name columns"
@@ -27,9 +27,9 @@ namespace :temp do
       puts "Could not set state and country for person #{person.id}:"
       puts e
     end
-
+    
     puts "Finished syncing people"
-
+    
     efforts = Effort.where.not(country_code: nil).where(country_name: nil)
     efforts_count = efforts.count
 

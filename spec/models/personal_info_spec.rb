@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe PersonalInfo, type: :module do
   describe "birthday methods" do
@@ -99,117 +99,117 @@ RSpec.describe PersonalInfo, type: :module do
     end
   end
 
-  describe "#current_age_from_birthdate" do
+  describe '#current_age_from_birthdate' do
     subject { build_stubbed(:effort, birthdate: birthdate) }
 
-    context "when birthdate is not present" do
+    context 'when birthdate is not present' do
       let(:birthdate) { nil }
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(subject.current_age_from_birthdate).to be_nil
       end
     end
 
-    context "when birthdate is present" do
+    context 'when birthdate is present' do
       let(:birthdate) { Date.today - 20.years - 6.months }
 
-      it "calculates and returns the age" do
+      it 'calculates and returns the age' do
         expect(subject.current_age_from_birthdate).to eq(20)
       end
     end
   end
 
-  describe "#state_and_country" do
-    it "returns the state and country of the subject resource" do
-      effort = build_stubbed(:effort, country_code: "CA", state_code: "BC")
-      expect(effort.state_and_country).to eq("British Columbia, Canada")
+  describe '#state_and_country' do
+    it 'returns the state and country of the subject resource' do
+      effort = build_stubbed(:effort, country_code: 'CA', state_code: 'BC')
+      expect(effort.state_and_country).to eq('British Columbia, Canada')
     end
 
     it 'abbreviates "United States" to "US"' do
-      effort = build_stubbed(:effort, country_code: "US", state_code: "CO")
-      expect(effort.state_and_country).to eq("Colorado, US")
+      effort = build_stubbed(:effort, country_code: 'US', state_code: 'CO')
+      expect(effort.state_and_country).to eq('Colorado, US')
     end
 
-    it "works even if the state is not recognized in Carmen" do
-      effort = build_stubbed(:effort, country_code: "GB", state_code: "London")
-      expect(effort.state_and_country).to eq("London, United Kingdom")
+    it 'works even if the state is not recognized in Carmen' do
+      effort = build_stubbed(:effort, country_code: 'GB', state_code: 'London')
+      expect(effort.state_and_country).to eq('London, United Kingdom')
     end
 
-    it "returns the state_code if the country is not present" do
-      effort = build_stubbed(:effort, country_code: nil, state_code: "Atlantis")
-      expect(effort.state_and_country).to eq("Atlantis")
+    it 'returns the state_code if the country is not present' do
+      effort = build_stubbed(:effort, country_code: nil, state_code: 'Atlantis')
+      expect(effort.state_and_country).to eq('Atlantis')
     end
 
-    it "works properly when the country has no subregions" do
-      effort = build_stubbed(:effort, country_code: "HK", state_code: "Hong Kong")
-      expect(effort.state_and_country).to eq("Hong Kong, Hong Kong")
+    it 'works properly when the country has no subregions' do
+      effort = build_stubbed(:effort, country_code: 'HK', state_code: 'Hong Kong')
+      expect(effort.state_and_country).to eq('Hong Kong, Hong Kong')
     end
   end
 
-  describe "#flexible_geolocation" do
+  describe '#flexible_geolocation' do
     context 'when the object includes a city, state, and country code of "US" or "CA"' do
-      let(:effort_1) { build_stubbed(:effort, city: "Louisville", state_code: "CO", country_code: "US") }
-      let(:effort_2) { build_stubbed(:effort, city: "Calgary", state_code: "AB", country_code: "CA") }
+      let(:effort_1) { build_stubbed(:effort, city: 'Louisville', state_code: 'CO', country_code: 'US') }
+      let(:effort_2) { build_stubbed(:effort, city: 'Calgary', state_code: 'AB', country_code: 'CA') }
 
-      it "returns the city with the state code" do
-        expect(effort_1.flexible_geolocation).to eq("Louisville, CO")
-        expect(effort_2.flexible_geolocation).to eq("Calgary, AB")
+      it 'returns the city with the state code' do
+        expect(effort_1.flexible_geolocation).to eq('Louisville, CO')
+        expect(effort_2.flexible_geolocation).to eq('Calgary, AB')
       end
     end
 
-    context "when the object includes a city, state, and country code outside of the US or Canada" do
-      let(:effort) { build_stubbed(:effort, city: "Manzanillo", state_code: "Colima", country_code: "MX") }
+    context 'when the object includes a city, state, and country code outside of the US or Canada' do
+      let(:effort) { build_stubbed(:effort, city: 'Manzanillo', state_code: 'Colima', country_code: 'MX') }
 
-      it "returns the city, state code, and country" do
-        expect(effort.flexible_geolocation).to eq("Manzanillo, Colima, Mexico")
+      it 'returns the city, state code, and country' do
+        expect(effort.flexible_geolocation).to eq('Manzanillo, Colima, Mexico')
       end
     end
 
     context 'when the object includes a state and country code of "US" or "CA" but no city' do
-      let(:effort_1) { build_stubbed(:effort, city: nil, state_code: "CO", country_code: "US") }
-      let(:effort_2) { build_stubbed(:effort, city: nil, state_code: "AB", country_code: "CA") }
+      let(:effort_1) { build_stubbed(:effort, city: nil, state_code: 'CO', country_code: 'US') }
+      let(:effort_2) { build_stubbed(:effort, city: nil, state_code: 'AB', country_code: 'CA') }
 
-      it "returns the full state name without country code" do
-        expect(effort_1.flexible_geolocation).to eq("Colorado")
-        expect(effort_2.flexible_geolocation).to eq("Alberta")
+      it 'returns the full state name without country code' do
+        expect(effort_1.flexible_geolocation).to eq('Colorado')
+        expect(effort_2.flexible_geolocation).to eq('Alberta')
       end
     end
 
     context 'when the object includes a state and country code other than "US" or "CA" but no city' do
-      let(:effort) { build_stubbed(:effort, city: nil, state_code: "Colima", country_code: "MX") }
+      let(:effort) { build_stubbed(:effort, city: nil, state_code: 'Colima', country_code: 'MX') }
 
-      it "returns the state code and full country name" do
-        expect(effort.flexible_geolocation).to eq("Colima, Mexico")
+      it 'returns the state code and full country name' do
+        expect(effort.flexible_geolocation).to eq('Colima, Mexico')
       end
     end
 
-    context "when the object includes a city and a country code but no state" do
-      let(:effort_1) { build_stubbed(:effort, city: "New York", state_code: nil, country_code: "US") }
-      let(:effort_2) { build_stubbed(:effort, city: "Manzanillo", state_code: nil, country_code: "MX") }
+    context 'when the object includes a city and a country code but no state' do
+      let(:effort_1) { build_stubbed(:effort, city: 'New York', state_code: nil, country_code: 'US') }
+      let(:effort_2) { build_stubbed(:effort, city: 'Manzanillo', state_code: nil, country_code: 'MX') }
 
-      it "returns the city and full country name" do
-        expect(effort_1.flexible_geolocation).to eq("New York, United States")
-        expect(effort_2.flexible_geolocation).to eq("Manzanillo, Mexico")
+      it 'returns the city and full country name' do
+        expect(effort_1.flexible_geolocation).to eq('New York, United States')
+        expect(effort_2.flexible_geolocation).to eq('Manzanillo, Mexico')
       end
     end
 
-    context "when the object includes a country code but no city or state" do
-      let(:effort_1) { build_stubbed(:effort, city: nil, state_code: nil, country_code: "US") }
-      let(:effort_2) { build_stubbed(:effort, city: nil, state_code: nil, country_code: "MX") }
+    context 'when the object includes a country code but no city or state' do
+      let(:effort_1) { build_stubbed(:effort, city: nil, state_code: nil, country_code: 'US') }
+      let(:effort_2) { build_stubbed(:effort, city: nil, state_code: nil, country_code: 'MX') }
 
-      it "returns the full country name" do
-        expect(effort_1.flexible_geolocation).to eq("United States")
-        expect(effort_2.flexible_geolocation).to eq("Mexico")
+      it 'returns the full country name' do
+        expect(effort_1.flexible_geolocation).to eq('United States')
+        expect(effort_2.flexible_geolocation).to eq('Mexico')
       end
     end
 
-    context "when the object includes a city and state, but no country" do
-      let(:effort_1) { build_stubbed(:effort, city: "Louisville", state_code: "CO", country_code: nil) }
-      let(:effort_2) { build_stubbed(:effort, city: "Calgary", state_code: "AB", country_code: nil) }
+    context 'when the object includes a city and state, but no country' do
+      let(:effort_1) { build_stubbed(:effort, city: 'Louisville', state_code: 'CO', country_code: nil) }
+      let(:effort_2) { build_stubbed(:effort, city: 'Calgary', state_code: 'AB', country_code: nil) }
 
-      it "returns the city with the state code" do
-        expect(effort_1.flexible_geolocation).to eq("Louisville, CO")
-        expect(effort_2.flexible_geolocation).to eq("Calgary, AB")
+      it 'returns the city with the state code' do
+        expect(effort_1.flexible_geolocation).to eq('Louisville, CO')
+        expect(effort_2.flexible_geolocation).to eq('Calgary, AB')
       end
     end
   end

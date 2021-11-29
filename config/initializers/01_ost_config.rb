@@ -11,6 +11,10 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.full_uri
+    ::ENV["FULL_URI"]
+  end
+
   def self.google_analytics_4_measurement_id
     ::ENV["GOOGLE_ANALYTICS_4_MEASUREMENT_ID"]
   end

@@ -242,5 +242,7 @@ Rails.application.routes.draw do
     get "/:id/app", to: "events#app", as: "app"
   end
 
-  get "/:id" => "shortener/shortened_urls#show"
+  get "/s/:id" => "shortener/shortened_urls#show"
+
+  match "*unmatched", to: "application#route_not_found", via: :all
 end

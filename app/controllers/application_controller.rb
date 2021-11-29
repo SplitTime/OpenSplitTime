@@ -23,6 +23,10 @@ class ApplicationController < ActionController::Base
     head :not_acceptable
   end
 
+  def route_not_found
+    raise ::ActionController::RoutingError, "Route does not exist"
+  end
+
   protected
 
   def after_sign_in_path_for(resource)

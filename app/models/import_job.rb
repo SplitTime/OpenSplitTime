@@ -31,7 +31,7 @@ class ImportJob < ApplicationRecord
   alias_attribute :owner_id, :user_id
 
   def parent
-    @parent ||= parent_type.constantize.find(parent_id)
+    @parent ||= parent_type.constantize.find_by(id: parent_id)
   end
 
   def parent_name
@@ -43,6 +43,8 @@ class ImportJob < ApplicationRecord
   end
 
   def resources_for_path
+    return unless parent.present?
+
     case parent_type
     when "Lottery"
       [parent.organization, parent]

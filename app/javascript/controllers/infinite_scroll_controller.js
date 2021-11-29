@@ -38,7 +38,9 @@ export default class extends Controller {
         const htmlTemplate = this.data.get("htmlTemplate")
         const endOfListHtml = "<p>End of List</p>"
 
-        if (nextPageUrl !== "null") {
+        if (!nextPageUrl || nextPageUrl.length === 0 || nextPageUrl === "null") {
+            this.linkTarget.innerHTML = endOfListHtml
+        } else {
             const url = nextPageUrl + "&html_template=" + htmlTemplate
 
             Rails.ajax({
@@ -53,8 +55,6 @@ export default class extends Controller {
                     }
                 }
             })
-        } else {
-            this.linkTarget.innerHTML = endOfListHtml
         }
     }
 }

@@ -11,6 +11,14 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.google_analytics_4_measurement_id
+    ::ENV["GOOGLE_ANALYTICS_4_MEASUREMENT_ID"]
+  end
+
+  def self.google_analytics_4_property_id
+    ::ENV["GOOGLE_ANALYTICS_4_PROPERTY_ID"]
+  end
+
   def self.scout_apm_sample_rate
     ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end

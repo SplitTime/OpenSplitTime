@@ -29,17 +29,18 @@ class ApiController < ::ApplicationController
   end
 
   def report_to_ga
-    if Rails.env.production?
-      ga_params = {v: 1,
-                   t: "event",
-                   tid: Rails.application.secrets.google_analytics_id,
-                   cid: 555,
-                   ec: controller_name,
-                   ea: action_name,
-                   el: params[:id],
-                   uip: request.remote_ip,
-                   ua: request.user_agent}
-      ReportAnalyticsJob.perform_later(ga_params)
-    end
+    return unless Rails.env.production?
+
+    ga_params = {
+      v: 1,
+      t: "event",
+      tid: ::OstConfig.google_analytics_4_property_id,
+      cid: 555,
+      ec: controller_name,
+      ea: action_name,
+      el: params[:id],
+    }
+
+    ::ReportAnalyticsJob.perform_later(ga_params)
   end
 end

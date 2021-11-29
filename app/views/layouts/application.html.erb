@@ -13,7 +13,7 @@
   <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
-  <%= render 'layouts/google_analytics' if Rails.env.production? %>
+  <%= render 'layouts/google_analytics' %>
   <%= render 'layouts/favicon' %>
 </head>
 

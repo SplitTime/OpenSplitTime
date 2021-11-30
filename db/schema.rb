@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_18_024237) do
+ActiveRecord::Schema.define(version: 2021_11_30_043447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -277,6 +277,15 @@ ActiveRecord::Schema.define(version: 2021_11_18_024237) do
     t.boolean "pre_selected", default: false
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
+  end
+
+  create_table "lottery_simulation_runs", force: :cascade do |t|
+    t.bigint "lottery_id", null: false
+    t.string "name"
+    t.jsonb "context"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lottery_id"], name: "index_lottery_simulation_runs_on_lottery_id"
   end
 
   create_table "lottery_tickets", force: :cascade do |t|
@@ -582,6 +591,7 @@ ActiveRecord::Schema.define(version: 2021_11_18_024237) do
   add_foreign_key "lottery_draws", "lotteries"
   add_foreign_key "lottery_draws", "lottery_tickets"
   add_foreign_key "lottery_entrants", "lottery_divisions"
+  add_foreign_key "lottery_simulation_runs", "lotteries"
   add_foreign_key "lottery_tickets", "lotteries"
   add_foreign_key "lottery_tickets", "lottery_entrants"
   add_foreign_key "notifications", "efforts"

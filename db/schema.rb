@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_053717) do
+ActiveRecord::Schema.define(version: 2021_11_30_055409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -285,6 +285,13 @@ ActiveRecord::Schema.define(version: 2021_11_30_053717) do
     t.jsonb "context"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "requested_count"
+    t.integer "status"
+    t.string "error_message"
+    t.integer "success_count"
+    t.integer "failure_count"
+    t.datetime "started_at"
+    t.integer "elapsed_time"
     t.index ["lottery_id"], name: "index_lottery_simulation_runs_on_lottery_id"
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_045212) do
+ActiveRecord::Schema.define(version: 2021_11_30_053717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -291,7 +291,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_045212) do
   create_table "lottery_simulations", force: :cascade do |t|
     t.bigint "lottery_simulation_run_id", null: false
     t.integer "ticket_ids", default: [], array: true
-    t.jsonb "context"
+    t.jsonb "results"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lottery_simulation_run_id"], name: "index_lottery_simulations_on_lottery_simulation_run_id"

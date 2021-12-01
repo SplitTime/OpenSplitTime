@@ -64,7 +64,7 @@ class LotteryEntrant < ApplicationRecord
   end
 
   def drawn?
-    tickets.joins(:draw).present?
+    tickets.joins(:draw).exists?
   end
 
   def to_s

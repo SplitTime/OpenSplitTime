@@ -15,6 +15,9 @@
         <h6><%= lottery_draw.entrant_flexible_geolocation %></h6>
         <h6 class="mb-0"><%= lottery_draw.entrant_bio %></h6>
       </div>
+      <div class="col text-right">
+        <h6 class="text-right font-weight-bold"><%= "#{pluralize(lottery_draw.number_of_tickets, 'ticket')}" %></h6>
+      </div>
     </div>
   </div>
   <div class="card-footer font-italic small"><%= "#{time_ago_in_words(lottery_draw.created_at)} ago" %></div>

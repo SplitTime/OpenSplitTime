@@ -2,7 +2,7 @@
   <div class="card-header font-weight-bold bg-primary text-white">
     <div class="row">
       <div class="col col-8">
-        <h5 class="font-weight-bold mb-0"><%= lottery_draw.entrant_full_name %></h5>
+        <h5 class="font-weight-bold mb-0"><%= lottery_draw.entrant_full_name %> <%= waitlist_badge if lottery_draw.waitlist? %></h5>
       </div>
       <div class="col col-4">
         <h5 class="font-weight-bold text-right mb-0"><%= "##{lottery_draw.reference_number}" %></h5>

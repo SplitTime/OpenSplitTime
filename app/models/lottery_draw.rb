@@ -29,6 +29,10 @@ class LotteryDraw < ApplicationRecord
     entrant.delegated_division_name
   end
 
+  def waitlist?
+    position.present? && position > division.maximum_entries
+  end
+
   private
 
   def add_position

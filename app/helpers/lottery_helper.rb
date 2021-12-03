@@ -75,4 +75,11 @@ module LotteryHelper
                 class: "badge badge-#{color} align-top has-tooltip",
                 data: {toggle: "tooltip", "original-title" => tooltip_text})
   end
+
+  def waitlist_badge
+    content_tag(:span,
+                "Wait List",
+                style: "font-size:0.8rem;",
+                class: "badge badge-warning align-top")
+  end
 end

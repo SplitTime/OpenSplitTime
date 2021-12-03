@@ -141,8 +141,8 @@
 
   <% when "draws" %>
     <% if @presenter.viewable_results? %>
-      <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
       <% if @presenter.lottery.live? %>
+        <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
         <h6 class="text-center">Live updating</h6>
         <div class="back-and-forth-path">
           <span class="back-and-forth-shape trail"></span>

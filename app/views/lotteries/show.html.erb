@@ -58,6 +58,8 @@
 <article class="ost-article container">
   <% case @presenter.display_style %>
   <% when "entrants" %>
+    <h4 class="mt-5"><strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize(@presenter.lottery_entrants.count, 'total entrant')}" %></small></h4>
+    <hr/>
     <aside class="ost-toolbar">
       <div class="container">
         <div class="row">
@@ -99,6 +101,8 @@
     <% end %>
 
   <% when "tickets" %>
+    <h4 class="mt-5"><strong><%= "Lottery Tickets" %></strong><small class="text-muted"><%= " #{pluralize(@presenter.lottery_tickets.count, 'total ticket')}" %></small></h4>
+    <hr/>
     <% if @presenter.lottery_tickets_paginated.present? %>
       <aside class="ost-toolbar">
         <div class="container">
@@ -140,6 +144,8 @@
     <% end %>
 
   <% when "draws" %>
+    <h4 class="mt-5"><strong>Lottery Draws (Most recent at the top)</strong></h4>
+    <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery.live? %>
         <%= turbo_stream_from @presenter.lottery, :lottery_draws %>
@@ -157,6 +163,8 @@
     <% end %>
 
   <% when "results" %>
+    <h4 class="mt-5"><strong>Lottery Results</strong></h4>
+    <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery_draws.present? %>
         <% @presenter.divisions.each do |division| %>

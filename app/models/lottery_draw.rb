@@ -23,7 +23,7 @@ class LotteryDraw < ApplicationRecord
   delegate :entrant, :reference_number, to: :ticket
   delegate :first_name, :last_name, :gender, :birthdate, :city, :state_code, :state_name, :country_code, :country_name,
            :bio, :flexible_geolocation, :full_name, to: :entrant, prefix: true
-  delegate :division, to: :entrant
+  delegate :division, :number_of_tickets, to: :entrant
 
   def entrant_division_name
     entrant.delegated_division_name

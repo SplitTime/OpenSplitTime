@@ -17,6 +17,7 @@
       </div>
       <div class="col text-right">
         <h4><span class="badge badge-secondary"><%= lottery_draw.entrant_division_name %></span></h4>
+        <h6 class="text-right font-weight-bold"><%= "#{pluralize(lottery_draw.number_of_tickets, 'ticket')}" %></h6>
       </div>
     </div>
   </div>

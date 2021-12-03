@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class LotteryPresenter < BasePresenter
-  DEFAULT_DISPLAY_STYLE = "entrants"
-  DEFAULT_SORT_HASH = {division_name: :asc, last_name: :asc}.freeze
+  DEFAULT_SORT_HASH = { division_name: :asc, last_name: :asc }.freeze
 
   attr_reader :lottery, :params, :action_name
 
@@ -24,15 +23,15 @@ class LotteryPresenter < BasePresenter
 
   def lottery_draws_ordered
     lottery_draws
-        .with_sortable_entrant_attributes
-        .include_entrant_and_division
-        .order(created_at: :desc)
+      .with_sortable_entrant_attributes
+      .include_entrant_and_division
+      .order(created_at: :desc)
   end
 
   def lottery_entrants_default_none
     unfiltered_entrants = lottery.entrants
-        .with_division_name
-        .includes(:division)
+                                 .with_division_name
+                                 .includes(:division)
     entrant_id = params[:entrant_id]
 
     if entrant_id.present?
@@ -74,7 +73,20 @@ class LotteryPresenter < BasePresenter
   end
 
   def display_style
-    params[:display_style].presence || DEFAULT_DISPLAY_STYLE
+    params[:display_style].presence || default_display_style
+  end
+
+  def default_display_style
+    case status
+    when "preview"
+      "entrants"
+    when "live"
+      "draws"
+    when "finished"
+      "results"
+    else
+      "entrants"
+    end
   end
 
   def page
@@ -91,9 +103,9 @@ class LotteryPresenter < BasePresenter
 
   def lottery_entrants_filtered
     entrants = lottery_entrants
-        .with_division_name
-        .includes(:division)
-        .search(search_text)
+                 .with_division_name
+                 .includes(:division)
+                 .search(search_text)
 
     reordering_needed = sort_hash.present? || search_text.blank?
     entrants = entrants.reorder(order_param) if reordering_needed
@@ -103,9 +115,9 @@ class LotteryPresenter < BasePresenter
 
   def lottery_tickets_filtered
     tickets = lottery_tickets
-        .with_sortable_entrant_attributes
-        .includes(entrant: :division)
-        .search(search_text)
+                .with_sortable_entrant_attributes
+                .includes(entrant: :division)
+                .search(search_text)
 
     reordering_needed = sort_hash.present? || search_text.blank?
     tickets = tickets.reorder(order_param) if reordering_needed

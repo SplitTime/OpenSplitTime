@@ -125,7 +125,7 @@ RSpec.describe "visit a lottery entrants page" do
   end
 
   def visit_page
-    visit organization_lottery_path(organization, lottery)
+    visit organization_lottery_path(organization, lottery, display_style: :entrants)
   end
 
   def search_button

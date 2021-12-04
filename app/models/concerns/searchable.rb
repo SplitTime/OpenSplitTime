@@ -8,8 +8,7 @@ module Searchable
     pg_search_scope :search_names_and_locations,
                     against: [:first_name, :last_name, :city, :state_name, :country_name],
                     using: {
-                      tsearch: {prefix: true},
-                      dmetaphone: {}
+                      tsearch: {prefix: true}
                     }
 
     scope :names_locations_default_all, -> (param) { param.present? ? search_names_and_locations(param) : all }

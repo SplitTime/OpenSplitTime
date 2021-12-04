@@ -7,7 +7,7 @@ class LotterySimulation < ApplicationRecord
 
   def build
     self.ticket_ids = lottery.draws.in_drawn_order.pluck(:ticket_id)
-    self.results = simulation_run.divisions.map do |division|
+    self.results = simulation_run.divisions.ordered_by_name.map do |division|
       {
         division_name: division.name
       }

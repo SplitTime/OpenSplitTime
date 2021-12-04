@@ -89,6 +89,10 @@ class LotteryPresenter < BasePresenter
     end
   end
 
+  def tickets_not_generated?
+    @tickets_not_generated ||= lottery_tickets.empty?
+  end
+
   def page
     params[:page]&.to_i || 1
   end

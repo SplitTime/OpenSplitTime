@@ -134,8 +134,10 @@
       </div>
     <% else %>
       <br/>
-      <% if @presenter.params[:search].blank? %>
+      <% if @presenter.tickets_not_generated? %>
         <p><strong>No tickets have been generated yet</strong></p>
+      <% elsif @presenter.params[:search].blank? %>
+        <p><strong>Search for an entrant by name</strong></p>
       <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
         <p><strong>Search parameter is too short</strong></p>
       <% else %>

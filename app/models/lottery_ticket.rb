@@ -18,15 +18,11 @@ class LotteryTicket < ApplicationRecord
   pg_search_scope :search_against_entrants,
                   against: :reference_number,
                   associated_against: {
-                    entrant: [:first_name, :last_name, :city, :state_name, :country_name]
-                  },
-                  using: {
-                    tsearch: {prefix: true},
-                    dmetaphone: {}
+                    entrant: [:first_name, :last_name]
                   }
 
   def self.search(param)
-    return all unless param
+    return all unless param.present?
     return none unless param.size > 2
 
     search_against_entrants(param)

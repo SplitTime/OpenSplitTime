@@ -35,7 +35,7 @@ class LotteryEntrant < ApplicationRecord
   validates_with ::LotteryEntrantUniqueValidator
 
   def self.search(param)
-    return all unless param
+    return all unless param.present?
     return none unless param.size > 2
 
     search_names_and_locations(param)

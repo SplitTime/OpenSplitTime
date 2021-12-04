@@ -25,6 +25,10 @@ module ApplicationHelper
     end
   end
 
+  def pluralize_with_delimiter(count, singular, plural = nil)
+    pluralize(number_with_delimiter(count), singular, plural)
+  end
+
   # change the default link renderer for will_paginate
   def will_paginate(collection_or_options = nil, options = {})
     if collection_or_options.is_a? Hash

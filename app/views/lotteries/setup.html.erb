@@ -152,7 +152,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col">
-          <h2><strong>Entrant Lookup</strong><small class="text-muted"><%= " #{pluralize(@presenter.lottery.entrants.count, 'entrant')}" %></small></h2>
+          <h2><strong>Entrant Lookup</strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery.entrants.count, 'entrant')}" %></small></h2>
         </div>
       </div>
     </div>

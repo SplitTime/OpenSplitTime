@@ -58,7 +58,7 @@
 <article class="ost-article container">
   <% case @presenter.display_style %>
   <% when "entrants" %>
-    <h4 class="mt-5"><strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize(number_with_delimiter(@presenter.lottery_entrants.count), 'total entrant')}" %></small></h4>
+    <h4 class="mt-5"><strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></small></h4>
     <hr/>
     <aside class="ost-toolbar">
       <div class="container">
@@ -101,7 +101,7 @@
     <% end %>
 
   <% when "tickets" %>
-    <h4 class="mt-5"><strong><%= "Lottery Tickets" %></strong><small class="text-muted"><%= " #{pluralize(number_with_delimiter(@presenter.lottery_tickets.count), 'total ticket')}" %></small></h4>
+    <h4 class="mt-5"><strong><%= "Lottery Tickets" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_tickets.count, 'total ticket')}" %></small></h4>
     <hr/>
     <% if @presenter.lottery_tickets_paginated.present? %>
       <aside class="ost-toolbar">

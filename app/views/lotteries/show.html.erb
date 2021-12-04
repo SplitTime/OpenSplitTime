@@ -103,7 +103,6 @@
   <% when "tickets" %>
     <h4 class="mt-5"><strong><%= "Lottery Tickets" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_tickets.count, 'total ticket')}" %></small></h4>
     <hr/>
-    <% if @presenter.lottery_tickets_paginated.present? %>
       <aside class="ost-toolbar">
         <div class="container">
           <div class="row">
@@ -114,6 +113,7 @@
         </div>
       </aside>
 
+    <% if @presenter.lottery_tickets_paginated.present? %>
       <div data-controller="infinite-scroll"
            data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
            data-infinite-scroll-html-template="lottery_tickets/lottery_ticket">

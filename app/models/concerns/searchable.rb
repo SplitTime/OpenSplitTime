@@ -6,10 +6,7 @@ module Searchable
 
   included do
     pg_search_scope :search_names_and_locations,
-                    against: [:first_name, :last_name, :city, :state_name, :country_name],
-                    using: {
-                      tsearch: {prefix: true}
-                    }
+                    against: [:first_name, :last_name, :city, :state_name, :country_name]
 
     scope :names_locations_default_all, -> (param) { param.present? ? search_names_and_locations(param) : all }
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }

@@ -25,7 +25,7 @@ class LotteryPresenter < BasePresenter
     lottery_draws
       .with_sortable_entrant_attributes
       .include_entrant_and_division
-      .order(created_at: :desc)
+      .most_recent_first
   end
 
   def lottery_entrants_default_none
@@ -78,14 +78,10 @@ class LotteryPresenter < BasePresenter
 
   def default_display_style
     case status
-    when "preview"
-      "entrants"
-    when "live"
-      "draws"
-    when "finished"
-      "results"
-    else
-      "entrants"
+    when "preview" then "entrants"
+    when "live" then "draws"
+    when "finished" then "results"
+    else "entrants"
     end
   end
 
@@ -106,30 +102,16 @@ class LotteryPresenter < BasePresenter
   attr_reader :view_context, :current_user, :request
 
   def lottery_entrants_filtered
-    entrants = lottery_entrants
-                 .with_division_name
-                 .includes(:division)
-                 .search(search_text)
-
-    reordering_needed = sort_hash.present? || search_text.blank?
-    entrants = entrants.reorder(order_param) if reordering_needed
-
-    entrants
+    lottery_entrants
+      .with_division_name
+      .includes(:division)
+      .search(search_text)
   end
 
   def lottery_tickets_filtered
-    tickets = lottery_tickets
-                .with_sortable_entrant_attributes
-                .includes(entrant: :division)
-                .search(search_text)
-
-    reordering_needed = sort_hash.present? || search_text.blank?
-    tickets = tickets.reorder(order_param) if reordering_needed
-
-    tickets
-  end
-
-  def order_param
-    sort_hash.presence || DEFAULT_SORT_HASH
+    lottery_tickets
+      .with_sortable_entrant_attributes
+      .includes(entrant: :division)
+      .search(search_text)
   end
 end

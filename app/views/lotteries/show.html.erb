@@ -167,7 +167,7 @@
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery_draws.present? %>
-        <% @presenter.divisions.each do |division| %>
+        <% @presenter.ordered_divisions.each do |division| %>
           <div class="card">
             <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
             <div class="card-body">

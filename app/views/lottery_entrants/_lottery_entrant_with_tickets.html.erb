@@ -1,0 +1,21 @@
+<div class="card bg-light mt-2">
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <h5 class="font-weight-bold"><%= entrant.full_name %></h5>
+        <h6><%= entrant.flexible_geolocation %></h6>
+      </div>
+      <div class="col">
+        <h4 class="text-right"><span class="badge badge-secondary"><%= entrant.division_name %></span></h4>
+        <h6 class="text-right font-weight-bold"><%= "#{pluralize(entrant.number_of_tickets, 'ticket')}" %></h6>
+      </div>
+    </div>
+    <div class="row">
+      <% entrant.tickets.each do |ticket| %>
+        <div class="col">
+          <h3><span class="badge badge-primary p-3"><%= "# #{ticket.reference_number}" %></span></h3>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

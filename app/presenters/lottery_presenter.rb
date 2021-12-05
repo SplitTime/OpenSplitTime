@@ -45,8 +45,9 @@ class LotteryPresenter < BasePresenter
     @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page).to_a
   end
 
-  def lottery_tickets_paginated
-    @lottery_tickets_paginated ||= lottery_tickets_filtered.paginate(page: page, per_page: per_page).to_a
+  def lottery_entrants_with_tickets_paginated
+    @lottery_entrants_with_tickets_paginated ||=
+      lottery_entrants_filtered.includes(:tickets).paginate(page: page, per_page: per_page).to_a
   end
 
   def next_page_url
@@ -58,7 +59,7 @@ class LotteryPresenter < BasePresenter
     when "entrants"
       lottery_entrants_paginated
     when "tickets"
-      lottery_tickets_paginated
+      lottery_entrants_with_tickets_paginated
     when "draws"
       lottery_draws
     end
@@ -105,13 +106,6 @@ class LotteryPresenter < BasePresenter
     lottery_entrants
       .with_division_name
       .includes(:division)
-      .search(search_text)
-  end
-
-  def lottery_tickets_filtered
-    lottery_tickets
-      .with_sortable_entrant_attributes
-      .includes(entrant: :division)
       .search(search_text)
   end
 end

@@ -113,12 +113,12 @@
         </div>
       </aside>
 
-    <% if @presenter.lottery_tickets_paginated.present? %>
+    <% if @presenter.lottery_entrants_with_tickets_paginated.present? %>
       <div data-controller="infinite-scroll"
            data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
            data-infinite-scroll-html-template="lottery_tickets/lottery_ticket">
         <div data-infinite-scroll-target="result">
-          <%= render partial: "lottery_tickets/lottery_ticket", collection: @presenter.lottery_tickets_paginated, as: :record %>
+          <%= render partial: "lottery_entrants/lottery_entrant_with_tickets", collection: @presenter.lottery_entrants_with_tickets_paginated, as: :entrant %>
         </div>
         <hr/>
 

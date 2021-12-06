@@ -76,3 +76,6 @@ Style/StringLiterals:
 
 Style/SymbolArray:
   Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false

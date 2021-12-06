@@ -68,6 +68,10 @@
                             class: "dropdown-item" %>
               <% end %>
               <div class="dropdown-divider"></div>
+              <%= link_to "Export to ultrasignup",
+                          export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
+                          class: "dropdown-item" %>
+              <div class="dropdown-divider"></div>
               <%= link_to "Edit lottery details", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "dropdown-item" %>
             </div>
           </div>

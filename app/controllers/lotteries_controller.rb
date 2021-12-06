@@ -84,14 +84,25 @@ class LotteriesController < ApplicationController
   def export_entrants
     respond_to do |format|
       format.csv do
-        entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
-        builder = ::CsvBuilder.new(::LotteryEntrant, entrants)
-        filename = if prepared_params[:filter] == {"id" => "0"}
-                     "lottery-entrants-template.csv"
-                   else
-                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
-                   end
-        send_data(builder.full_string, type: "text/csv", filename: filename)
+        export_format = params[:export_format]&.to_sym
+
+        if export_format == :ultrasignup
+          entrants = @lottery.divisions.flat_map(&:winning_entrants)
+          filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "ultrasignup", locals: {records: entrants})
+
+          send_data(csv_stream, type: "text/csv", filename: filename)
+        else
+          entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
+          builder = ::CsvBuilder.new(::LotteryEntrant, entrants)
+          filename = if prepared_params[:filter] == {"id" => "0"}
+                       "lottery-entrants-template.csv"
+                     else
+                       "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                     end
+
+          send_data(builder.full_string, type: "text/csv", filename: filename)
+        end
       end
     end
   end

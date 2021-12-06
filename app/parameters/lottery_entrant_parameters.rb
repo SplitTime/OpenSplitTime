@@ -12,6 +12,8 @@ class LotteryEntrantParameters < BaseParameters
       state
       country
       number_of_tickets
+      pre_selected
+      external_id
     ]
   end
 
@@ -31,6 +33,7 @@ class LotteryEntrantParameters < BaseParameters
       :city,
       :country_code,
       :division,
+      :external_id,
       :first_name,
       :gender,
       :id,

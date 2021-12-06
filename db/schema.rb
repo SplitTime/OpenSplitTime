@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_03_031721) do
+ActiveRecord::Schema.define(version: 2021_12_06_134832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_031721) do
     t.string "state_name"
     t.string "country_name"
     t.boolean "pre_selected", default: false
+    t.string "external_id"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
   end

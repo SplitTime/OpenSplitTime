@@ -86,10 +86,16 @@ class LotteriesController < ApplicationController
       format.csv do
         export_format = params[:export_format]&.to_sym
 
-        if export_format == :ultrasignup
+        case export_format
+        when :ultrasignup
           entrants = @lottery.divisions.flat_map(&:winning_entrants)
           filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
           csv_stream = render_to_string(partial: "ultrasignup", locals: {records: entrants})
+
+          send_data(csv_stream, type: "text/csv", filename: filename)
+        when :results
+          filename = "#{@lottery.name}-results-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "results", locals: {lottery: @lottery})
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         else

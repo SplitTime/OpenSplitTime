@@ -18,7 +18,7 @@ class LotteryPresenter < BasePresenter
   end
 
   def ordered_divisions
-    divisions.order(:name)
+    divisions.ordered_by_name
   end
 
   def lottery_draws_ordered

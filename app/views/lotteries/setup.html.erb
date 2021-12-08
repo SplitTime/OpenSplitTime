@@ -68,6 +68,9 @@
                             class: "dropdown-item" %>
               <% end %>
               <div class="dropdown-divider"></div>
+              <%= link_to "Export results",
+                          export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :results),
+                          class: "dropdown-item" %>
               <%= link_to "Export to ultrasignup",
                           export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
                           class: "dropdown-item" %>
@@ -139,7 +142,7 @@
         </tr>
         </thead>
         <tbody>
-        <%= render partial: "lottery_divisions/lottery_division", collection: @presenter.divisions, as: :division %>
+        <%= render partial: "lottery_divisions/lottery_division", collection: @presenter.divisions.ordered_by_name, as: :division %>
         <tr>
           <td colspan="6">
             <%= link_to fa_icon("plus", text: "Add"),

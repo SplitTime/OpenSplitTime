@@ -9,8 +9,9 @@ if lottery.entrants.exists?
       csv << [division.name]
       csv << ["Accepted"]
 
-      division.winning_entrants.each do |entrant|
+      division.winning_entrants.each.with_index(1) do |entrant, i|
         csv << [
+          i,
           entrant.first_name,
           entrant.last_name,
           entrant.gender,
@@ -21,8 +22,9 @@ if lottery.entrants.exists?
       end
 
       csv << ["Wait List"]
-      division.wait_list_entrants.each do |entrant|
+      division.wait_list_entrants.each.with_index(1) do |entrant, i|
         csv << [
+          i,
           entrant.first_name,
           entrant.last_name,
           entrant.gender,

@@ -121,12 +121,14 @@ RSpec.describe PersonalInfo, type: :module do
 
   describe "#state_and_country" do
     it "returns the state and country of the subject resource" do
-      effort = build_stubbed(:effort, country_code: "CA", state_code: "BC")
+      effort = efforts(:hardrock_2015_darius_jacobson)
+      effort.update(state_code: "BC", country_code: "CA")
+
       expect(effort.state_and_country).to eq("British Columbia, Canada")
     end
 
     it 'abbreviates "United States" to "US"' do
-      effort = build_stubbed(:effort, country_code: "US", state_code: "CO")
+      effort = efforts(:hardrock_2015_darius_jacobson)
       expect(effort.state_and_country).to eq("Colorado, US")
     end
 

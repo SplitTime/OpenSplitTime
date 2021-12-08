@@ -83,11 +83,11 @@ module PersonalInfo
   end
 
   def country_name_or_code
-    @country_name_or_code ||= country && (country_abbreviations[country.name] || country.name)
+    country && (country_abbreviations[country.name] || country.name)
   end
 
   def state_name_or_code
-    @state_name_or_code ||= state_name.presence || state_code.presence
+    state_name.presence || state_code.presence
   end
 
   def flexible_state

@@ -14,6 +14,7 @@ class LotteryDivision < ApplicationRecord
   validates_presence_of :maximum_entries, :name
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
 
+  scope :ordered_by_name, -> { order(:name) }
   scope :with_policy_scope_attributes, lambda {
     from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   }

@@ -73,7 +73,7 @@ module PersonalInfo
   end
 
   def state_and_country
-    [state_name, country_name].select(&:present?).join(", ")
+    [state_name_or_code, country_name_or_code].compact.join(", ")
   end
 
   private
@@ -82,8 +82,12 @@ module PersonalInfo
     {"United States" => "US"}
   end
 
-  def country_name
-    @country_name ||= country && (country_abbreviations[country.name] || country.name)
+  def country_name_or_code
+    @country_name_or_code ||= country && (country_abbreviations[country.name] || country.name)
+  end
+
+  def state_name_or_code
+    @state_name_or_code ||= state_name.presence || state_code.presence
   end
 
   def flexible_state
@@ -98,9 +102,5 @@ module PersonalInfo
     else
       country&.name
     end
-  end
-
-  def state_name
-    @state_name ||= state&.name || state_code
   end
 end

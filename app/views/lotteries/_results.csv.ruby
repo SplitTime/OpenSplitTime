@@ -4,7 +4,7 @@ if lottery.entrants.exists?
   ::CSV.generate do |csv|
     csv << ["Results for #{lottery.name}"]
 
-    lottery.divisions.each do |division|
+    lottery.divisions.ordered_by_name.each do |division|
       csv << ["\n"]
       csv << [division.name]
       csv << ["Accepted"]

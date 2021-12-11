@@ -146,7 +146,6 @@ RSpec.describe "visit a lottery entrants page" do
 
   def verify_public_links_present
     expect(page).to have_link("Entrants", href: organization_lottery_path(organization, lottery, display_style: :entrants))
-    expect(page).to have_link("Tickets", href: organization_lottery_path(organization, lottery, display_style: :tickets))
   end
 
   def verify_admin_links_present

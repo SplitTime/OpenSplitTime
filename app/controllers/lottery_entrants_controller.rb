@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 class LotteryEntrantsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :set_organization
-  before_action :authorize_organization
+  before_action :authorize_organization, except: [:show]
   before_action :set_lottery
   before_action :set_lottery_entrant, except: [:new, :create]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:show]
+
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
+  def show
+  end
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/new
   def new

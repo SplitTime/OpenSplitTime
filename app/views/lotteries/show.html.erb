@@ -42,9 +42,6 @@
         <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do
           link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants)
         end %>
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'tickets'}" do
-          link_to "Tickets", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :tickets)
-        end %>
         <% if @presenter.viewable_results? %>
           <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
             link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
@@ -97,51 +94,6 @@
         <p><strong>Search parameter is too short</strong></p>
       <% else %>
         <p><strong>No lottery entrants match this search</strong></p>
-      <% end %>
-    <% end %>
-
-  <% when "tickets" %>
-    <h4 class="mt-5"><strong><%= "Lottery Tickets" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_tickets.count, 'total ticket')}" %></small></h4>
-    <hr/>
-      <aside class="ost-toolbar">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-6 form-inline">
-              <%= render "lottery_entrants/entrant_lookup" %>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-    <% if @presenter.lottery_entrants_with_tickets_paginated.present? %>
-      <div data-controller="infinite-scroll"
-           data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
-           data-infinite-scroll-html-template="lottery_tickets/lottery_ticket">
-        <div data-infinite-scroll-target="result">
-          <%= render partial: "lottery_entrants/lottery_entrant_with_tickets", collection: @presenter.lottery_entrants_with_tickets_paginated, as: :entrant %>
-        </div>
-        <hr/>
-
-        <div class="row">
-          <div class="col text-center" data-infinite-scroll-target="link">
-            <% if @presenter.next_page_url.present? %>
-              <%= link_to "Show More", @presenter.next_page_url, data: {action: "infinite-scroll#loadFromClick"} %>
-            <% else %>
-              <p>End of List</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    <% else %>
-      <br/>
-      <% if @presenter.tickets_not_generated? %>
-        <p><strong>No tickets have been generated yet</strong></p>
-      <% elsif @presenter.params[:search].blank? %>
-        <p><strong>Search for an entrant by name</strong></p>
-      <% elsif @presenter.params[:search].present? && @presenter.params[:search].length < 3 %>
-        <p><strong>Search parameter is too short</strong></p>
-      <% else %>
-        <p><strong>No tickets match this search</strong></p>
       <% end %>
     <% end %>
 

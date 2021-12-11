@@ -27,6 +27,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
+      verify_ticket_link_works
     end
 
     scenario "The user is the owner of the organization" do
@@ -34,6 +35,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
+      verify_ticket_link_works
     end
 
     scenario "The user is a lottery manager of the organization" do
@@ -44,6 +46,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
+      verify_ticket_link_works
     end
 
     scenario "The user is a steward who is not a lottery manager of the organization" do
@@ -54,6 +57,7 @@ RSpec.describe "visit a lottery entrants page" do
       verify_public_links_present
       verify_live_links_absent
       verify_admin_links_absent
+      verify_ticket_link_works
     end
 
     scenario "The user is a visitor" do
@@ -62,6 +66,7 @@ RSpec.describe "visit a lottery entrants page" do
       verify_public_links_present
       verify_live_links_absent
       verify_admin_links_absent
+      verify_ticket_link_works
     end
   end
 
@@ -74,6 +79,7 @@ RSpec.describe "visit a lottery entrants page" do
 
         visit_page
         verify_all_links_present
+        verify_ticket_link_works
       end
 
       scenario "The user is the owner of the organization" do
@@ -81,6 +87,7 @@ RSpec.describe "visit a lottery entrants page" do
 
         visit_page
         verify_all_links_present
+        verify_ticket_link_works
       end
 
       scenario "The user is a lottery manager of the organization" do
@@ -91,6 +98,7 @@ RSpec.describe "visit a lottery entrants page" do
 
         visit_page
         verify_all_links_present
+        verify_ticket_link_works
       end
 
       scenario "The user is a steward who is not a lottery manager of the organization" do
@@ -101,6 +109,7 @@ RSpec.describe "visit a lottery entrants page" do
         verify_public_links_present
         verify_live_links_present
         verify_admin_links_absent
+        verify_ticket_link_works
       end
 
       scenario "The user is a visitor" do
@@ -109,6 +118,7 @@ RSpec.describe "visit a lottery entrants page" do
         verify_public_links_present
         verify_live_links_present
         verify_admin_links_absent
+        verify_ticket_link_works
       end
     end
   end
@@ -146,7 +156,6 @@ RSpec.describe "visit a lottery entrants page" do
 
   def verify_public_links_present
     expect(page).to have_link("Entrants", href: organization_lottery_path(organization, lottery, display_style: :entrants))
-    expect(page).to have_link("Tickets", href: organization_lottery_path(organization, lottery, display_style: :tickets))
   end
 
   def verify_admin_links_present
@@ -170,5 +179,18 @@ RSpec.describe "visit a lottery entrants page" do
   def verify_single_name_present
     verify_content_present(entrant_1, :full_name)
     other_entrants.each { |entrant| verify_content_absent(entrant, :full_name) }
+  end
+
+  def verify_ticket_link_works
+    entrant_id = 6
+    entrant = ::LotteryEntrant.find(entrant_id)
+    entrant_card = find("#lottery_entrant_#{entrant_id}")
+    expect(entrant_card).to have_link("3 tickets")
+    ticket_numbers = entrant.tickets.pluck(:reference_number)
+    ticket_numbers.each { |ticket_number| expect(entrant_card).not_to have_content(ticket_number) }
+
+    entrant_card.click_link("3 tickets")
+
+    ticket_numbers.each { |ticket_number| expect(entrant_card).to have_content(ticket_number) }
   end
 end

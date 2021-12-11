@@ -22,8 +22,7 @@ class LotteryTicket < ApplicationRecord
                   }
 
   def self.search(param)
-    return all unless param.present?
-    return none unless param.size > 2
+    return none unless param.present? && param.size > 2
 
     search_against_entrants(param)
   end

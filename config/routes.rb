@@ -144,7 +144,7 @@ Rails.application.routes.draw do
       member { delete :delete_entrants }
       member { delete :delete_tickets }
       resources :lottery_divisions, except: [:index, :show]
-      resources :lottery_entrants, except: [:index, :show] do
+      resources :lottery_entrants, except: [:index] do
         member { post :draw }
       end
     end

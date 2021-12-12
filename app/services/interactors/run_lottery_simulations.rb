@@ -18,7 +18,7 @@ module Interactors
 
       requested_count.times do
         simulate_lottery
-        update_simulation_run_status!
+        save_simulation!
       end
     end
 
@@ -28,6 +28,7 @@ module Interactors
     attr_accessor :simulation
 
     delegate :lottery, :requested_count, to: :simulation_run
+    delegate :divisions, to: :lottery
 
     def simulate_lottery
       ActiveRecord::Base.transaction do
@@ -38,7 +39,7 @@ module Interactors
       end
     end
 
-    def update_simulation_run_status!
+    def save_simulation!
       if simulation.save
         simulation_run.increment(:success_count)
       else
@@ -70,22 +71,6 @@ module Interactors
         ticket_count_needed = [slots_available, undrawn_entrant_count].min
 
         ticket_count_needed.times { division.draw_ticket! }
-      end
-    end
-
-    def results_from_lottery
-      divisions.map do |division|
-        {
-          division_name: division.name,
-          accepted: {
-            male: division.winning_entrants.male.count,
-            female: division.winning_entrants.female.count
-          },
-          wait_list: {
-            male: division.wait_list_entrants.male.count,
-            female: division.wait_list_entrants.female.count
-          }
-        }
       end
     end
   end

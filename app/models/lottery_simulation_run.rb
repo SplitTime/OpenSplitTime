@@ -11,6 +11,30 @@ class LotterySimulationRun < ApplicationRecord
     failed: 3
   }
 
+  delegate :divisions, to: :lottery
+
+  def set_context!
+    context = divisions.map do |division|
+      {
+        division_name: division.name,
+        entered: {
+          male: division.entrants.male.count,
+          female: division.entrants.female.count
+        },
+        pre_selected: {
+          male: division.entrants.pre_selected.male.count,
+          female: division.entrants.pre_selected.female.count
+        },
+        already_drawn: {
+          male: division.entrants.drawn.male.count,
+          female: division.entrants.drawn.female.count
+        }
+      }
+    end
+
+    update_column(:context, context)
+  end
+
   def set_elapsed_time!
     return unless persisted? && started_at.present?
 

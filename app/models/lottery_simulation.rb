@@ -9,7 +9,15 @@ class LotterySimulation < ApplicationRecord
     self.ticket_ids = lottery.draws.in_drawn_order.pluck(:ticket_id)
     self.results = simulation_run.divisions.ordered_by_name.map do |division|
       {
-        division_name: division.name
+        division_name: division.name,
+        accepted: {
+          male: division.winning_entrants.male.count,
+          female: division.winning_entrants.female.count
+        },
+        wait_list: {
+          male: division.wait_list_entrants.male.count,
+          female: division.wait_list_entrants.female.count
+        }
       }
     end
   end

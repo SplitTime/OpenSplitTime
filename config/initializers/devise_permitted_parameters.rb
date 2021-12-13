@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DevisePermittedParameters
   extend ActiveSupport::Concern
 
@@ -13,4 +15,6 @@ module DevisePermittedParameters
   end
 end
 
-DeviseController.include DevisePermittedParameters
+ActiveSupport.on_load(:action_controller_base) do
+  DeviseController.include DevisePermittedParameters
+end

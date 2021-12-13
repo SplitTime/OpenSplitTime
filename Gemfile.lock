@@ -139,8 +139,6 @@ GEM
     crass (1.0.6)
     dalli (3.0.4)
     dead_end (3.1.0)
-    derailed (0.1.0)
-      derailed_benchmarks
     derailed_benchmarks (2.1.1)
       benchmark-ips (~> 2)
       dead_end
@@ -570,7 +568,6 @@ DEPENDENCIES
   carmen
   coverband
   dalli
-  derailed
   derailed_benchmarks
   devise
   devise-bootstrap-views

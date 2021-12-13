@@ -69,7 +69,6 @@ gem "will_paginate", "~> 3.3"
 
 group :development do
   gem "better_errors", ">= 2.3"
-  gem "derailed"
   gem "derailed_benchmarks"
   gem "rails-erd"
   gem "rails_real_favicon", ">= 0.1.0"

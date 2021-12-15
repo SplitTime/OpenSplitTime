@@ -57,6 +57,10 @@ class LotteryPolicy < ApplicationPolicy
     user.authorized_for_lotteries?(organization)
   end
 
+  def delete_draws?
+    user.authorized_for_lotteries?(organization)
+  end
+
   def delete_entrants?
     user.authorized_for_lotteries?(organization)
   end

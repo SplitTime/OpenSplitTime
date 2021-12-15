@@ -36,6 +36,10 @@ class Lottery < ApplicationRecord
     draw
   end
 
+  def delete_all_draws!
+    draws.delete_all
+  end
+
   def generate_entrants!
     divisions.each do |division|
       entrant_count = rand(5..14)

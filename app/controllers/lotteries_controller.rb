@@ -125,7 +125,18 @@ class LotteriesController < ApplicationController
     end
   end
 
-  # DELETE /organizations/:organization_id/lotteries/:id/delete_tickets
+  # DELETE /organizations/:organization_id/lotteries/:id/delete_draws
+  def delete_draws
+    if @lottery.delete_all_draws!
+      flash[:success] = "Deleted all lottery draws"
+    else
+      flash[:danger] = "Unable to delete all lottery draws"
+    end
+
+    redirect_to setup_organization_lottery_path(@organization, @lottery)
+  end
+
+  # DELETE /organizations/:organization_id/lotteries/:id/delete_entrants
   def delete_entrants
     begin
       if @lottery.draws.delete_all &&

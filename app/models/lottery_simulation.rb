@@ -6,17 +6,17 @@ class LotterySimulation < ApplicationRecord
   delegate :lottery, to: :simulation_run
 
   def build
-    self.ticket_ids = lottery.draws.in_drawn_order.pluck(:ticket_id)
+    self.ticket_ids = lottery.draws.in_drawn_order.pluck(:lottery_ticket_id)
     self.results = simulation_run.divisions.ordered_by_name.map do |division|
       {
         division_name: division.name,
         accepted: {
-          male: division.winning_entrants.male.count,
-          female: division.winning_entrants.female.count
+          male: ::LotteryEntrant.from(division.winning_entrants, :lottery_entrants).male.count,
+          female: ::LotteryEntrant.from(division.winning_entrants, :lottery_entrants).female.count,
         },
         wait_list: {
-          male: division.wait_list_entrants.male.count,
-          female: division.wait_list_entrants.female.count
+          male: ::LotteryEntrant.from(division.wait_list_entrants, :lottery_entrants).male.count,
+          female: ::LotteryEntrant.from(division.wait_list_entrants, :lottery_entrants).female.count,
         }
       }
     end

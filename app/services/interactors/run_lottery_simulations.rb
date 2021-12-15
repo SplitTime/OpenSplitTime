@@ -2,6 +2,10 @@
 
 module Interactors
   class RunLotterySimulations
+    include ::Interactors::Errors
+
+    # @param [::LotterySimulationRun] simulation_run
+    # @return [Integer]
     def self.perform!(simulation_run)
       new(simulation_run).perform!
     end
@@ -12,31 +16,45 @@ module Interactors
       @errors = []
     end
 
+    # @return [Integer]
     def perform!
       simulation_run.start!
-      simulation_run.processing!
+      validate_lottery_state
 
-      requested_count.times do
-        simulate_lottery
-        save_simulation!
+      if errors.present?
+        fail_and_report_errors!
+      else
+        simulation_run.processing!
+
+        requested_count.times do
+          simulate_lottery
+          save_simulation!
+          delete_all_draws!
+        end
+
+        if errors.present?
+          fail_and_report_errors!
+        else
+          simulation_run.finished!
+        end
       end
     end
 
     private
 
+    def fail_and_report_errors!
+      simulation_run.update(status: :failed, error_message: errors.to_json)
+    end
+
     attr_reader :simulation_run, :errors
     attr_accessor :simulation
 
     delegate :lottery, :requested_count, to: :simulation_run
-    delegate :divisions, to: :lottery
+    delegate :divisions, :draws, :entrants, :tickets, to: :lottery
 
     def simulate_lottery
-      ActiveRecord::Base.transaction do
-        simulate_lottery_draws!
-        build_simulation_from_draws
-      ensure
-        raise ActiveRecord::Rollback
-      end
+      simulate_lottery_draws!
+      build_simulation_from_draws
     end
 
     def save_simulation!
@@ -48,6 +66,10 @@ module Interactors
       end
 
       simulation_run.set_elapsed_time!
+    end
+
+    def delete_all_draws!
+      lottery.delete_all_draws!
     end
 
     def simulate_lottery_draws!
@@ -72,6 +94,12 @@ module Interactors
 
         ticket_count_needed.times { division.draw_ticket! }
       end
+    end
+
+    def validate_lottery_state
+      errors << lottery_entrants_not_created_error unless entrants.exists?
+      errors << lottery_tickets_not_generated_error unless tickets.exists?
+      errors << lottery_draws_exist_error if draws.exists?
     end
   end
 end

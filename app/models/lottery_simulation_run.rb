@@ -25,10 +25,6 @@ class LotterySimulationRun < ApplicationRecord
           male: division.entrants.pre_selected.male.count,
           female: division.entrants.pre_selected.female.count
         },
-        already_drawn: {
-          male: division.entrants.drawn.male.count,
-          female: division.entrants.drawn.female.count
-        }
       }
     end
 

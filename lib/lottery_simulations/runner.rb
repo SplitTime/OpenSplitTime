@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Interactors
-  class RunLotterySimulations
+module LotterySimulations
+  class Runner
     include ::Interactors::Errors
 
     # @param [::LotterySimulationRun] simulation_run

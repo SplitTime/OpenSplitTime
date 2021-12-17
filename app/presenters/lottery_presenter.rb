@@ -55,6 +55,8 @@ class LotteryPresenter < BasePresenter
       lottery_entrants_paginated
     when "draws"
       lottery_draws
+    else
+      []
     end
   end
 

@@ -20,37 +20,34 @@ module LotterySimulations
     def perform!
       simulation_run.start!
       validate_lottery_state
-
-      if errors.present?
-        fail_and_report_errors!
-      else
-        simulation_run.processing!
-
-        requested_count.times do
-          simulate_lottery
-          save_simulation!
-          delete_all_draws!
-        end
-
-        if errors.present?
-          fail_and_report_errors!
-        else
-          simulation_run.finished!
-        end
-      end
+      run_simulations if errors.empty?
+      fail_and_report_errors! if errors.present?
+      requested_count
     end
 
     private
-
-    def fail_and_report_errors!
-      simulation_run.update(status: :failed, error_message: errors.to_json)
-    end
 
     attr_reader :simulation_run, :errors
     attr_accessor :simulation
 
     delegate :lottery, :requested_count, to: :simulation_run
     delegate :divisions, :draws, :entrants, :tickets, to: :lottery
+
+    def run_simulations
+      simulation_run.processing!
+
+      requested_count.times do
+        simulate_lottery
+        save_simulation!
+        delete_all_draws!
+      end
+
+      simulation_run.finished! if errors.empty?
+    end
+
+    def fail_and_report_errors!
+      simulation_run.update(status: :failed, error_message: errors.to_json)
+    end
 
     def simulate_lottery
       simulate_lottery_draws!

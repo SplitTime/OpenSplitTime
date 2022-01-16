@@ -148,6 +148,7 @@ Rails.application.routes.draw do
       resources :lottery_entrants, except: [:index] do
         member { post :draw }
       end
+      resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
     end
   end
 

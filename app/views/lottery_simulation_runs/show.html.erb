@@ -1,0 +1,80 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Lottery Simulation Run - #{@lottery_simulation_run.id}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@lottery.name}: Simulation Run" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @organization.name, organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery.name, organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Simulation Runs", organization_lottery_lottery_simulation_runs_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= @lottery_simulation_run.id %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <tbody>
+    <tr>
+      <td>Id</td>
+      <td><%= @lottery_simulation_run.id %></td>
+    </tr>
+    <tr>
+      <td>Created at</td>
+      <td><%= @lottery_simulation_run.created_at %></td>
+    </tr>
+    <tr>
+      <td>Requested count</td>
+      <td><%= @lottery_simulation_run.requested_count %></td>
+    </tr>
+    <tr>
+      <td>Good count</td>
+      <td><%= @lottery_simulation_run.success_count %></td>
+    </tr>
+    <tr>
+      <td>Bad count</td>
+      <td><%= @lottery_simulation_run.failure_count %></td>
+    </tr>
+    <tr>
+      <td>Elapsed time</td>
+      <td><%= pretty_duration(@lottery_simulation_run.elapsed_time) %></td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td><%= progress_monitorable_status_component(@lottery_simulation_run) %></td>
+    </tr>
+    <tr>
+      <td>Context</td>
+      <td>
+        <p style="white-space:pre-wrap"><%= JSON.pretty_generate(@lottery_simulation_run.context) %></p>
+      </td>
+    </tr>
+    <tr>
+      <td>Results</td>
+      <td>
+        <% @lottery_simulation_run.simulations.each do |simulation| %>
+          <p style="white-space:pre-wrap"><%= JSON.pretty_generate(simulation.results) %></p>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>Errors</td>
+      <td>
+        <% @lottery_simulation_run.parsed_errors.each do |error| %>
+          <p style="white-space:pre-wrap"><%= JSON.pretty_generate(error) %></p>
+        <% end %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</article>

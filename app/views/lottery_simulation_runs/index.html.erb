@@ -1,0 +1,42 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Lottery Simulation Runs - #{@lottery.name}" %>
+<% end %>
+
+<%= turbo_stream_from @lottery %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@lottery.name}: Simulation Runs" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @organization.name, organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery.name, organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item">Simulation Runs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Created</th>
+      <th class="text-center">Requested Count</th>
+      <th class="text-center">Good/Bad</th>
+      <th class="text-center">Elapsed Time</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody id="lottery_simulation_runs">
+    <%= render partial: "lottery_simulation_run", collection: @lottery.simulation_runs.most_recent_first %>
+    </tbody>
+  </table>
+</article>

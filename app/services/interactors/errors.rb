@@ -62,6 +62,21 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because laps exceed maximum required"]}}
     end
 
+    def lottery_draws_exist_error
+      {title: "Lottery draws already exist",
+       detail: {messages: ["Draws already exist for this lottery; please delete them before running this operation"]}}
+    end
+
+    def lottery_entrants_not_created_error
+      {title: "No lottery entrants exist",
+       detail: {messages: ["No entrants have yet been created for this lottery"]}}
+    end
+
+    def lottery_tickets_not_generated_error
+      {title: "No lottery tickets exist",
+       detail: {messages: ["Tickets have not yet been generated for this lottery"]}}
+    end
+
     def missing_absolute_time_error(raw_time)
       {title: "Missing absolute time",
        detail: {messages: ["Raw time #{raw_time} is missing an absolute time"]}}

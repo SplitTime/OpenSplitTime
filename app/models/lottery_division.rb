@@ -41,7 +41,11 @@ class LotteryDivision < ApplicationRecord
   end
 
   def full?
-    entrants.drawn.count >= maximum_entries + maximum_wait_list
+    entrants.drawn.count >= maximum_slots
+  end
+
+  def maximum_slots
+    maximum_entries + maximum_wait_list
   end
 
   def wait_list_entrants

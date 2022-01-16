@@ -5,6 +5,7 @@ class LotteryDraw < ApplicationRecord
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
 
   scope :for_division, ->(division) { joins(ticket: :entrant).where(lottery_entrants: { division: division }) }
+  scope :in_drawn_order, -> { reorder(created_at: :asc) }
   scope :include_entrant_and_division, -> { includes(ticket: { entrant: :division }) }
   scope :prior_to_draw, ->(draw) { where("lottery_draws.created_at < ?", draw.created_at) }
   scope :most_recent_first, -> { reorder(created_at: :desc) }

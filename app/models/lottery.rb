@@ -11,6 +11,7 @@ class Lottery < ApplicationRecord
   has_many :entrants, through: :divisions
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :draws, class_name: "LotteryDraw", dependent: :destroy
+  has_many :simulation_runs, class_name: "LotterySimulationRun", dependent: :destroy
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :name
@@ -33,6 +34,10 @@ class Lottery < ApplicationRecord
     # the division information will not be up to date when broadcast
     ticket.entrant.division.touch
     draw
+  end
+
+  def delete_all_draws!
+    draws.delete_all
   end
 
   def generate_entrants!

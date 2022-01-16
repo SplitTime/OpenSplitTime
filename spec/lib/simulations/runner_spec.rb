@@ -1,0 +1,85 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe LotterySimulations::Runner do
+  subject { described_class.new(simulation_run) }
+  let(:simulation_run) { create(:lottery_simulation_run, lottery: lottery, requested_count: 2) }
+  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+
+  describe "#perform!" do
+    context "when the simulation run is valid" do
+      before do
+        lottery.delete_all_draws!
+        subject.perform!
+      end
+
+      let(:expected_results) do
+        [{"division_name" => "Elses",
+          "accepted" => {"male" => anything, "female" => anything},
+          "wait_list" => {"male" => anything, "female" => anything}},
+         {"division_name" => "Never Ever Evers",
+          "accepted" => {"male" => anything, "female" => anything},
+          "wait_list" => {"male" => anything, "female" => anything}},
+         {"division_name" => "Veterans",
+          "accepted" => {"male" => anything, "female" => anything},
+          "wait_list" => {"male" => anything, "female" => anything}}]
+      end
+
+      it "creates the requested number of simulations" do
+        expect(simulation_run.simulations.count).to eq(2)
+      end
+
+      it "sets sets expected values" do
+        simulation_run.simulations.each do |simulation|
+          expect(simulation.ticket_ids).to be_present
+          expect(simulation.results).to match_array(expected_results)
+        end
+      end
+    end
+
+    context "when draws already exist" do
+      before { subject.perform! }
+      it "does not create any simulations" do
+        expect(simulation_run.simulations.count).to eq(0)
+      end
+
+      it "adds a descriptive error to the simulation run" do
+        expect(simulation_run.error_message).to include("Lottery draws already exist")
+      end
+    end
+
+    context "when tickets have not been generated" do
+      before do
+        lottery.delete_all_draws!
+        lottery.tickets.delete_all
+        subject.perform!
+      end
+
+      it "does not create any simulations" do
+        expect(simulation_run.simulations.count).to eq(0)
+      end
+
+      it "adds a descriptive error to the simulation run" do
+        expect(simulation_run.error_message).to include("Tickets have not yet been generated for this lottery")
+      end
+    end
+
+    context "when entrants have not been created" do
+      before do
+        lottery.delete_all_draws!
+        lottery.tickets.delete_all
+        lottery.divisions.each { |division| division.entrants.delete_all }
+        subject.perform!
+      end
+
+      it "does not create any simulations" do
+        expect(simulation_run.simulations.count).to eq(0)
+      end
+
+      it "adds a descriptive error to the simulation run" do
+        expect(simulation_run.error_message).to include("No lottery entrants exist")
+      end
+    end
+  end
+end

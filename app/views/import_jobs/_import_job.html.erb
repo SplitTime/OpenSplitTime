@@ -12,5 +12,5 @@
   <td class="text-center"><%= import_job.row_count %></td>
   <td class="text-center"><%= "#{import_job.success_count || 0}/#{import_job.failure_count || 0}" %></td>
   <td class="text-center"><%= pretty_duration(import_job.elapsed_time) %></td>
-  <td><%= import_job_status_component(import_job) %></td>
+  <td><%= progress_monitorable_status_component(import_job) %></td>
 </tr>

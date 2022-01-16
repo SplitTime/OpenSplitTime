@@ -36,7 +36,7 @@
     </tr>
     </thead>
     <tbody id="lottery_simulation_runs">
-    <%= render partial: "lottery_simulation_run", collection: @lottery.simulation_runs.most_recent_first %>
+    <%= render partial: "lottery_simulation_run", collection: @lottery.simulation_runs.most_recent_first, locals: {organization: @organization, lottery: @lottery} %>
     </tbody>
   </table>
 </article>

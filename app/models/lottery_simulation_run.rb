@@ -4,6 +4,8 @@ class LotterySimulationRun < ApplicationRecord
   belongs_to :lottery
   has_many :simulations, class_name: "LotterySimulation", dependent: :destroy
 
+  scope :most_recent_first, -> { reorder(created_at: :desc) }
+
   enum status: {
     waiting: 0,
     processing: 1,
@@ -12,6 +14,10 @@ class LotterySimulationRun < ApplicationRecord
   }
 
   delegate :divisions, to: :lottery
+
+  def parsed_errors
+    JSON.parse(error_message || "[\"None\"]")
+  end
 
   def set_context!
     context = divisions.map do |division|

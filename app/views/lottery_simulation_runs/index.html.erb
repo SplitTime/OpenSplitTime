@@ -2,7 +2,7 @@
   <% "OpenSplitTime: Lottery Simulation Runs - #{@lottery.name}" %>
 <% end %>
 
-<%= turbo_stream_from @lottery %>
+<%= turbo_stream_from @lottery, :lottery_simulation_runs %>
 
 <header class="ost-header">
   <div class="container">

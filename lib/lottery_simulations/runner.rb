@@ -18,7 +18,7 @@ module LotterySimulations
 
     # @return [Integer]
     def perform!
-      simulation_run.start!
+      start_simulation_run
       validate_lottery_state
       run_simulations if errors.empty?
       fail_and_report_errors! if errors.present?
@@ -33,8 +33,14 @@ module LotterySimulations
     delegate :lottery, :requested_count, to: :simulation_run
     delegate :divisions, :draws, :entrants, :tickets, to: :lottery
 
+    def start_simulation_run
+      simulation_run.start!
+      simulation_run.touch
+    end
+
     def run_simulations
       simulation_run.processing!
+      simulation_run.touch
 
       requested_count.times do
         simulate_lottery
@@ -43,10 +49,12 @@ module LotterySimulations
       end
 
       simulation_run.finished! if errors.empty?
+      simulation_run.touch
     end
 
     def fail_and_report_errors!
       simulation_run.update(status: :failed, error_message: errors.to_json)
+      simulation_run.touch
     end
 
     def simulate_lottery
@@ -63,6 +71,7 @@ module LotterySimulations
       end
 
       simulation_run.set_elapsed_time!
+      simulation_run.touch
     end
 
     def delete_all_draws!

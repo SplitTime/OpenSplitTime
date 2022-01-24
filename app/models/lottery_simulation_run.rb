@@ -4,6 +4,8 @@ class LotterySimulationRun < ApplicationRecord
   belongs_to :lottery
   has_many :simulations, class_name: "LotterySimulation", dependent: :destroy
 
+  after_touch :broadcast_lottery_simulation_run
+
   scope :most_recent_first, -> { reorder(created_at: :desc) }
 
   enum status: {
@@ -13,7 +15,9 @@ class LotterySimulationRun < ApplicationRecord
     failed: 3
   }
 
-  delegate :divisions, to: :lottery
+  validates_numericality_of :requested_count, greater_than: 0
+
+  delegate :divisions, :organization, to: :lottery
 
   def parsed_errors
     JSON.parse(error_message || "[\"None\"]")
@@ -45,5 +49,11 @@ class LotterySimulationRun < ApplicationRecord
 
   def start!
     update(started_at: ::Time.current)
+  end
+
+  private
+
+  def broadcast_lottery_simulation_run
+    broadcast_replace_to lottery, :lottery_simulation_runs, partial: "lottery_simulation_runs/lottery_simulation_run", locals: {organization: self.organization, lottery: self.lottery, lottery_simulation_run: self}
   end
 end

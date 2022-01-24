@@ -18,7 +18,7 @@ class LotterySimulationRunsController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_simulation_runs/new
   def new
-    @lottery_simulation_run = @lottery.simulation_runs.new(permitted_params)
+    @lottery_simulation_run = @lottery.simulation_runs.new
   end
 
   # POST /organizations/:organization_id/lotteries/:lottery_id/lottery_simulation_runs
@@ -26,14 +26,11 @@ class LotterySimulationRunsController < ApplicationController
     @lottery_simulation_run = @lottery.simulation_runs.new(permitted_params)
     @lottery_simulation_run.status = :waiting
 
-    simulation_run = @lottery.simulation_runs.new(permitted_params)
-
-    if simulation_run.save
-      ::LotterySimulations::RunnerJob.perform_later(simulation_run.id)
+    if @lottery_simulation_run.save
+      ::LotterySimulations::RunnerJob.perform_later(@lottery_simulation_run.id)
       flash[:success] = "Simulation run in progress."
       redirect_to organization_lottery_lottery_simulation_runs_path(@organization, @lottery)
     else
-      flash[:danger] = "Unable to create simulation run: #{@lottery_simulation_run.errors.full_messages.join(', ')}"
       render "new"
     end
   end

@@ -15,6 +15,7 @@
             <li class="breadcrumb-item"><%= link_to @organization.name, organization_lotteries_path(@organization) %></li>
             <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@organization) %></li>
             <li class="breadcrumb-item"><%= link_to @lottery.name, organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_organization_lottery_path(@organization, @lottery) %></li>
             <li class="breadcrumb-item">Simulation Runs</li>
           </ul>
         </div>

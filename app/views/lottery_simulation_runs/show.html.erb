@@ -13,6 +13,7 @@
             <li class="breadcrumb-item"><%= link_to @organization.name, organization_lotteries_path(@organization) %></li>
             <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@organization) %></li>
             <li class="breadcrumb-item"><%= link_to @lottery.name, organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_organization_lottery_path(@organization, @lottery) %></li>
             <li class="breadcrumb-item"><%= link_to "Simulation Runs", organization_lottery_lottery_simulation_runs_path(@organization, @lottery) %></li>
             <li class="breadcrumb-item"><%= @lottery_simulation_run.id %></li>
           </ul>

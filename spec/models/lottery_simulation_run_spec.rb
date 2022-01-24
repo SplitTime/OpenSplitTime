@@ -9,15 +9,23 @@ RSpec.describe LotterySimulationRun, type: :model do
 
     before { subject.set_context! }
     let(:expected_context) do
-      [{"division_name"=>"Never Ever Evers",
-        "entered"=>{"male"=>3, "female"=>3},
-        "pre_selected"=>{"male"=>0, "female"=>0}},
-       {"division_name"=>"Veterans",
-        "entered"=>{"male"=>3, "female"=>1},
-        "pre_selected"=>{"male"=>0, "female"=>0}},
-       {"division_name"=>"Elses",
-        "entered"=>{"male"=>2, "female"=>3},
-        "pre_selected"=>{"male"=>0, "female"=>0}}]
+      {
+        "Elses" => {
+          "slots"=>{"accepted"=>3, "wait_list"=>5},
+          "entered"=>{"male"=>2, "female"=>3},
+          "pre_selected"=>{"male"=>0, "female"=>0}
+        },
+        "Never Ever Evers" => {
+          "slots"=>{"accepted"=>3, "wait_list"=>2},
+          "entered"=>{"male"=>3, "female"=>3},
+          "pre_selected"=>{"male"=>0, "female"=>0},
+        },
+        "Veterans" => {
+          "slots"=>{"accepted"=>3, "wait_list"=>3},
+          "entered"=>{"male"=>3, "female"=>1},
+          "pre_selected"=>{"male"=>0, "female"=>0},
+        },
+      }
     end
 
     it "sets the context attribute" do

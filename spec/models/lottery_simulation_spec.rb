@@ -14,15 +14,20 @@ RSpec.describe LotterySimulation, type: :model do
 
         let(:expected_ticket_ids) { [18, 3, 10, 17, 9, 13, 6] }
         let(:expected_results) do
-          [{"division_name"=>"Elses",
-            "accepted"=>{"male"=>0, "female"=>2},
-            "wait_list"=>{"male"=>0, "female"=>0}},
-           {"division_name"=>"Never Ever Evers",
-            "accepted"=>{"male"=>1, "female"=>2},
-            "wait_list"=>{"male"=>1, "female"=>1}},
-           {"division_name"=>"Veterans",
-            "accepted"=>{"male"=>0, "female"=>0},
-            "wait_list"=>{"male"=>0, "female"=>0}}]
+          {
+            "Elses" => {
+              "accepted" => {"male" => 0, "female" => 2},
+              "wait_list" => {"male" => 0, "female" => 0},
+            },
+            "Never Ever Evers" => {
+              "accepted" => {"male" => 1, "female" => 2},
+              "wait_list" => {"male" => 1, "female" => 1},
+            },
+            "Veterans" => {
+              "accepted" => {"male" => 0, "female" => 0},
+              "wait_list" => {"male" => 0, "female" => 0},
+            },
+          }
         end
 
         it "sets the ticket ids and result" do
@@ -39,15 +44,20 @@ RSpec.describe LotterySimulation, type: :model do
 
         let(:expected_ticket_ids) { [] }
         let(:expected_results) do
-          [{"division_name"=>"Elses",
-            "accepted"=>{"male"=>0, "female"=>0},
-            "wait_list"=>{"male"=>0, "female"=>0}},
-           {"division_name"=>"Never Ever Evers",
-            "accepted"=>{"male"=>0, "female"=>0},
-            "wait_list"=>{"male"=>0, "female"=>0}},
-           {"division_name"=>"Veterans",
-            "accepted"=>{"male"=>0, "female"=>0},
-            "wait_list"=>{"male"=>0, "female"=>0}}]
+          {
+            "Elses" => {
+              "accepted" => {"male" => 0, "female" => 0},
+              "wait_list" => {"male" => 0, "female" => 0},
+            },
+            "Never Ever Evers" => {
+              "accepted" => {"male" => 0, "female" => 0},
+              "wait_list" => {"male" => 0, "female" => 0},
+            },
+            "Veterans" => {
+              "accepted" => {"male" => 0, "female" => 0},
+              "wait_list" => {"male" => 0, "female" => 0},
+            },
+          }
         end
 
         it "sets the ticket ids and result" do

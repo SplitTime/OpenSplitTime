@@ -4,6 +4,8 @@ module LotterySimulations
   class Runner
     include ::Interactors::Errors
 
+    UPDATE_INTERVAL = 25
+
     # @param [::LotterySimulationRun] simulation_run
     # @return [Integer]
     def self.perform!(simulation_run)
@@ -36,12 +38,10 @@ module LotterySimulations
     def start_simulation_run
       simulation_run.start!
       simulation_run.set_context!
-      simulation_run.touch
     end
 
     def run_simulations
       simulation_run.processing!
-      simulation_run.touch
 
       requested_count.times do
         simulate_lottery
@@ -50,12 +50,10 @@ module LotterySimulations
       end
 
       simulation_run.finished! if errors.empty?
-      simulation_run.touch
     end
 
     def fail_and_report_errors!
       simulation_run.update(status: :failed, error_message: errors.to_json)
-      simulation_run.touch
     end
 
     def simulate_lottery
@@ -72,7 +70,6 @@ module LotterySimulations
       end
 
       simulation_run.set_elapsed_time!
-      simulation_run.touch
     end
 
     def delete_all_draws!
@@ -91,6 +88,7 @@ module LotterySimulations
 
     def draw_pre_selected_entrants
       lottery.entrants.pre_selected.each(&:draw_ticket!)
+      simulation_run.set_elapsed_time!
     end
 
     def draw_random_tickets
@@ -99,7 +97,10 @@ module LotterySimulations
         undrawn_entrant_count = division.entrants.undrawn.count
         ticket_count_needed = [slots_available, undrawn_entrant_count].min
 
-        ticket_count_needed.times { division.draw_ticket! }
+        ticket_count_needed.times do |i|
+          division.draw_ticket!
+          simulation_run.set_elapsed_time! if i % UPDATE_INTERVAL == 0
+        end
       end
     end
 

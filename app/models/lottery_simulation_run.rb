@@ -30,7 +30,6 @@ class LotterySimulationRun < ApplicationRecord
     denominator = key_sets_for_denominator.sum { |set| division_sum(attr, *set) }
     return 0.0 if denominator == 0
 
-
     (numerator / denominator.to_f * 100).round(1)
   end
 

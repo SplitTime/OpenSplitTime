@@ -15,15 +15,20 @@ RSpec.describe LotterySimulations::Runner do
       end
 
       let(:expected_results) do
-        [{"division_name" => "Elses",
-          "accepted" => {"male" => anything, "female" => anything},
-          "wait_list" => {"male" => anything, "female" => anything}},
-         {"division_name" => "Never Ever Evers",
-          "accepted" => {"male" => anything, "female" => anything},
-          "wait_list" => {"male" => anything, "female" => anything}},
-         {"division_name" => "Veterans",
-          "accepted" => {"male" => anything, "female" => anything},
-          "wait_list" => {"male" => anything, "female" => anything}}]
+        {
+          "Elses" => {
+            "accepted" => {"male" => anything, "female" => anything},
+            "wait_list" => {"male" => anything, "female" => anything},
+          },
+          "Never Ever Evers" => {
+            "accepted" => {"male" => anything, "female" => anything},
+            "wait_list" => {"male" => anything, "female" => anything},
+          },
+          "Veterans" => {
+            "accepted" => {"male" => anything, "female" => anything},
+            "wait_list" => {"male" => anything, "female" => anything},
+          },
+        }
       end
 
       it "creates the requested number of simulations" do
@@ -33,7 +38,13 @@ RSpec.describe LotterySimulations::Runner do
       it "sets sets expected values" do
         simulation_run.simulations.each do |simulation|
           expect(simulation.ticket_ids).to be_present
-          expect(simulation.results).to match_array(expected_results)
+
+          # Mysteriously, expect(simulation.results).to eq(expected_results) does not work here
+          lottery.divisions.each do |division|
+            expect(simulation.results[division.name].keys).to eq(expected_results[division.name].keys)
+            expect(simulation.results.dig(division.name, "accepted").keys).to eq(expected_results.dig(division.name, "accepted").keys)
+            expect(simulation.results.dig(division.name, "wait_list").keys).to eq(expected_results.dig(division.name, "wait_list").keys)
+          end
         end
       end
     end

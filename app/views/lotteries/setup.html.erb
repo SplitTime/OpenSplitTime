@@ -68,6 +68,13 @@
                             class: "dropdown-item" %>
               <% end %>
               <div class="dropdown-divider"></div>
+              <%= link_to "Run simulations",
+                          new_organization_lottery_lottery_simulation_run_path(@presenter.organization, @presenter.lottery),
+                          class: "dropdown-item " %>
+              <%= link_to "View simulations",
+                          organization_lottery_lottery_simulation_runs_path(@presenter.organization, @presenter.lottery),
+                          class: "dropdown-item " %>
+              <div class="dropdown-divider"></div>
               <%= link_to "Export results",
                           export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :results),
                           class: "dropdown-item" %>

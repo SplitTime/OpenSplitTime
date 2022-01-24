@@ -35,6 +35,7 @@ module LotterySimulations
 
     def start_simulation_run
       simulation_run.start!
+      simulation_run.set_context!
       simulation_run.touch
     end
 

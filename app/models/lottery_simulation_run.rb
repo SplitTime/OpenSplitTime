@@ -4,7 +4,7 @@ class LotterySimulationRun < ApplicationRecord
   belongs_to :lottery
   has_many :simulations, class_name: "LotterySimulation", dependent: :destroy
 
-  after_touch :broadcast_lottery_simulation_run
+  after_update :broadcast_lottery_simulation_run
 
   scope :most_recent_first, -> { reorder(created_at: :desc) }
 
@@ -81,13 +81,13 @@ class LotterySimulationRun < ApplicationRecord
       ]
     end
 
-    update_column(:context, context_array.to_h)
+    update(context: context_array.to_h)
   end
 
   def set_elapsed_time!
     return unless persisted? && started_at.present?
 
-    update_column(:elapsed_time, Time.current - started_at)
+    update(elapsed_time: Time.current - started_at)
   end
 
   def start!

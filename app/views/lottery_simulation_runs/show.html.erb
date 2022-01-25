@@ -25,6 +25,7 @@
 
 <article class="ost-article container">
   <h4>Simulation Info</h4>
+  <hr class="my-1">
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -40,13 +41,14 @@
     <%= render partial: "lottery_simulation_run", locals: {organization: @lottery_simulation_run.organization, lottery: @lottery_simulation_run.lottery, lottery_simulation_run: @lottery_simulation_run} %>
     </tbody>
   </table>
-  <hr/>
+  <br/>
 
   <h4>Simulation Context</h4>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
       <th>Division Name</th>
+      <hr class="my-1">
       <th class="text-center">Slots</th>
       <th class="text-center">Wait List</th>
       <th class="text-center">Entered (M/F)</th>
@@ -78,13 +80,14 @@
     </tr>
     </tbody>
   </table>
-  <hr/>
+  <br/>
 
   <h4>Results Summary</h4>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
       <th>Division Name</th>
+      <hr class="my-1">
       <th class="text-center">Average Accepted (M/F)</th>
       <th class="text-center">% Accepted (M/F)</th>
       <th class="text-center">Average Wait List (M/F)</th>
@@ -110,18 +113,24 @@
     </tr>
     </tbody>
   </table>
-  <hr/>
+  <br/>
 
   <h4>Errors</h4>
+  <hr class="my-1">
   <table class="table table-condensed table-striped">
-    <tbody>
+    <thead>
     <tr>
-      <td>
-        <% @lottery_simulation_run.parsed_errors.each do |error| %>
-          <p style="white-space:pre-wrap"><%= JSON.pretty_generate(error) %></p>
-        <% end %>
-      </td>
+      <th>Title</th>
+      <th>Detail</th>
     </tr>
+    </thead>
+    <tbody>
+    <% @lottery_simulation_run.parsed_errors.each do |error| %>
+      <tr>
+        <td><%= error["title"] %></td>
+        <td><%= error.dig("detail", "messages").join("; ") %></td>
+      </tr>
+    <% end %>
     </tbody>
   </table>
 </article>

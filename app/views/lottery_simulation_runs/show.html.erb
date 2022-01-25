@@ -125,11 +125,17 @@
     </tr>
     </thead>
     <tbody>
-    <% @lottery_simulation_run.parsed_errors.each do |error| %>
-      <tr>
-        <td><%= error["title"] %></td>
-        <td><%= error.dig("detail", "messages").join("; ") %></td>
-      </tr>
+    <% if @lottery_simulation_run.parsed_errors.present? %>
+      <% @lottery_simulation_run.parsed_errors.each do |error| %>
+        <tr>
+          <td><%= error["title"] %></td>
+          <td><%= error.dig("detail", "messages").join("; ") %></td>
+        </tr>
+      <% end %>
+    <% else %>
+    <tr>
+      <td colspan="2">None</td>
+    </tr>
     <% end %>
     </tbody>
   </table>

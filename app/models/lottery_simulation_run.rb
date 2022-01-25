@@ -57,7 +57,7 @@ class LotterySimulationRun < ApplicationRecord
   end
 
   def parsed_errors
-    JSON.parse(error_message || "[\"None\"]")
+    JSON.parse(error_message || "[]")
   end
 
   def set_context!

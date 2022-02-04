@@ -92,7 +92,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
     context "when a division is not found" do
       let(:division_name_1) { "Nonexistent Division" }
       it "does not transform the proto record with the unknown division" do
-        expect(first_proto_record[:lotter_division_id]).to be_nil
+        expect(first_proto_record[:lottery_division_id]).to be_nil
       end
 
       it "transforms the other proto records" do

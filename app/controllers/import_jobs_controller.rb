@@ -17,6 +17,8 @@ class ImportJobsController < ApplicationController
   # GET /import_jobs/new
   def new
     @import_job = current_user.import_jobs.new(permitted_params)
+    @parent_resource = @import_job.parent # If not found, return 404 before authorization
+
     authorize @import_job
   end
 
@@ -24,6 +26,8 @@ class ImportJobsController < ApplicationController
   def create
     @import_job = current_user.import_jobs.new(permitted_params)
     @import_job.status = :waiting
+    @parent_resource = @import_job.parent # If not found, return 404 before authorization
+
     authorize @import_job
 
     begin

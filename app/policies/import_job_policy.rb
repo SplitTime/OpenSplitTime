@@ -14,10 +14,11 @@ class ImportJobPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :import_job
+  attr_reader :import_job, :parent_resource
 
   def post_initialize(import_job)
     @import_job = import_job
+    @parent_resource = import_job.parent
   end
 
   def index?
@@ -29,11 +30,11 @@ class ImportJobPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin? || user.owner_of?(import_job)
+    user.admin? || user.owner_of?(parent_resource)
   end
 
   def create?
-    user.admin? || user.owner_of?(import_job)
+    user.admin? || user.owner_of?(parent_resource)
   end
 
   def destroy?

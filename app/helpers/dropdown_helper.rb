@@ -311,7 +311,10 @@ module DropdownHelper
        link: reconcile_event_group_path(view_object.event_group)},
       {name: "Set data status",
        link: set_data_status_event_group_path(view_object.event_group),
-       method: :patch}
+       method: :patch},
+      {role: :separator},
+      {name: "Import entrants",
+       link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})}
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end

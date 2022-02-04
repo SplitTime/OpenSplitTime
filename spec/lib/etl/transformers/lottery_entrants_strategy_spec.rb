@@ -102,7 +102,7 @@ RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
       it "returns a descriptive error" do
         subject.transform
         expect(subject.errors).to be_present
-        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Division could not be found:/)
+        expect(subject.errors.first.dig(:detail, :messages).first).to match(/Lottery division could not be found:/)
         expect(subject.errors.first.dig(:detail, :row_index)).to eq(1)
       end
     end

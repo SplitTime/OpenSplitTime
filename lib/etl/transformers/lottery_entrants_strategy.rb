@@ -29,7 +29,7 @@ module ETL
             end
           else
             import_job.increment!(:failure_count)
-            errors << division_not_found_error(parameterized_division_name, row_index)
+            errors << resource_not_found_error(::LotteryDivision, parameterized_division_name, row_index)
           end
         end
 

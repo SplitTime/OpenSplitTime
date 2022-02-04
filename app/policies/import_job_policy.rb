@@ -18,7 +18,7 @@ class ImportJobPolicy < ApplicationPolicy
 
   def post_initialize(import_job)
     @import_job = import_job
-    @parent_resource = import_job.parent
+    @parent_resource = import_job.parent if import_job.is_a?(::ImportJob)
   end
 
   def index?

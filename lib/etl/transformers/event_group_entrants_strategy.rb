@@ -2,7 +2,7 @@
 
 module ETL
   module Transformers
-    class LotteryEntrantsStrategy < BaseTransformer
+    class EventGroupEntrantsStrategy < BaseTransformer
       def initialize(parsed_structs, options)
         @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
         @options = options
@@ -16,12 +16,12 @@ module ETL
 
         proto_records.each.with_index(1) do |proto_record, row_index|
           proto_record.underscore_keys!
-          parameterized_division_name = proto_record.delete_field(:division_name)&.parameterize
-          division = divisions_by_name[parameterized_division_name]
+          parameterized_event_name = proto_record.delete_field(:event_name)&.parameterize
+          event = events_by_short_name[parameterized_event_name] || single_event
 
-          if division.present?
+          if event.present?
             begin
-              proto_record.transform_as(:lottery_entrant, division: division)
+              proto_record.transform_as(:effort, event: event)
               proto_record.slice_permitted!
             rescue StandardError => e
               import_job.increment!(:failure_count)
@@ -29,7 +29,7 @@ module ETL
             end
           else
             import_job.increment!(:failure_count)
-            errors << resource_not_found_error(::LotteryDivision, parameterized_division_name, row_index)
+            errors << resource_not_found_error(::Event, parameterized_event_name, row_index)
           end
         end
 
@@ -39,20 +39,26 @@ module ETL
       private
 
       attr_reader :proto_records, :import_job
-      alias lottery parent
+      alias event_group parent
 
-      def divisions_by_name
-        lottery.divisions.index_by { |division| division.name.parameterize }
+      def events_by_short_name
+        event_group.events.index_by { |event| event.short_name.parameterize }
+      end
+
+      def single_event
+        return @single_event if defined?(@single_event)
+
+        @single_event = event_group.multiple_events? ? nil : event_group.first_event
       end
 
       def validate_setup
-        errors << missing_parent_error("Lottery") unless lottery.present?
+        errors << missing_parent_error("EventGroup") unless event_group.present?
         errors << missing_records_error unless proto_records.present?
 
-        if proto_records.present?
-          unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("division_name")
-            errors << missing_key_error("Division name")
-          end
+        return if errors.present? || single_event.present?
+
+        unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("event_name")
+          errors << missing_key_error("Event name")
         end
       end
     end

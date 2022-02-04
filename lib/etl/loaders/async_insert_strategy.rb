@@ -5,7 +5,7 @@ module ETL
     class AsyncInsertStrategy
       include ETL::Errors
 
-      CHUNK_SIZE = 100
+      CHUNK_SIZE = 20
 
       attr_reader :errors
 

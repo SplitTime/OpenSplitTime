@@ -10,11 +10,6 @@ module ETL
       {title: "Data not present", detail: {messages: ["No data was provided"]}}
     end
 
-    def division_not_found_error(division_name, row_index)
-      message = division_name.present? ? "Division could not be found: #{division_name}" : "Division was not provided"
-      {title: "Division not found", detail: {row_index: row_index, messages: [message]}}
-    end
-
     def file_not_found_error(file_path)
       {title: "File not found", detail: {messages: ["File #{file_path} could not be read"]}}
     end
@@ -99,6 +94,12 @@ module ETL
     def missing_table_error
       {title: "Table is missing",
        detail: {messages: ["A required table was not found in the provided source data"]}}
+    end
+
+    def resource_not_found_error(resource_class, provided_resource_name, row_index)
+      humanized_resource_class = resource_class.to_s.underscore.humanize
+      message = provided_resource_name.present? ? "#{humanized_resource_class} could not be found: #{provided_resource_name}" : "#{humanized_resource_class} was not provided"
+      {title: "#{humanized_resource_class} not found", detail: {row_index: row_index, messages: [message]}}
     end
 
     def record_not_saved_error(error, row_index)

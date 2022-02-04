@@ -59,7 +59,7 @@ RSpec.describe ETL::AsyncImporter do
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
         expect(import_job.elapsed_time).to be_present
-        expect(import_job.parsed_errors.first.dig("detail", "messages")).to include(/Division could not be found/)
+        expect(import_job.parsed_errors.first.dig("detail", "messages")).to include(/Lottery division could not be found/)
         expect(import_job.parsed_errors.first.dig("detail", "row_index")).to eq(1)
       end
     end

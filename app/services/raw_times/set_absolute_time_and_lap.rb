@@ -68,6 +68,8 @@ module RawTimes
     end
 
     def expected_lap(raw_time, subject_attribute, subject_value)
+      return unless raw_time.effort_id.present?
+
       ::FindExpectedLap.perform(effort: indexed_efforts[raw_time.effort_id],
                                 subject_attribute: subject_attribute,
                                 subject_value: subject_value,
@@ -96,7 +98,11 @@ module RawTimes
     end
 
     def indexed_efforts
-      @indexed_efforts ||= ::Effort.where(id: raw_times.map(&:effort_id)).index_by(&:id)
+      @indexed_efforts ||=
+        begin
+          effort_ids = raw_times.map(&:effort_id).compact
+          ::Effort.where(id: effort_ids).index_by(&:id)
+        end
     end
 
     def validate_setup

@@ -82,6 +82,7 @@ Rails.application.routes.draw do
       patch :rebuild
       patch :unstart
       patch :stop
+      patch :fix_multi_lap_stop
       delete :delete_split_times
     end
   end

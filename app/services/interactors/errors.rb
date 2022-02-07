@@ -42,6 +42,11 @@ module Interactors
        detail: {messages: ["Event group for #{resource_1} does not match the event group for #{resource_2}"]}}
     end
 
+    def finish_split_missing_error
+      {title: "Finish split missing",
+       detail: {messages: ["The event associated with the provided effort has no finish split"]}}
+    end
+
     def invalid_raw_time_error(raw_time, valid_sub_splits)
       {title: "Invalid raw time",
        detail: {messages: ["#{raw_time} is invalid; the sub_split #{raw_time.sub_split} must be one of #{valid_sub_splits}"]}}

@@ -25,7 +25,7 @@ module Interactors
     attr_reader :effort, :stop_status, :split_time_id, :errors
 
     def ordered_split_times
-      @ordered_split_times ||= effort.ordered_split_times.reject(&:destroyed?)
+      @ordered_split_times ||= effort.ordered_split_times.reject { |st| st.destroyed? || st.marked_for_destruction? }
     end
 
     def split_time

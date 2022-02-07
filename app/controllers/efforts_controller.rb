@@ -151,6 +151,15 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  def fix_multi_lap_stop
+    authorize @effort
+    effort = effort_with_splits
+
+    response = Interactors::FixMultiLapEffortStop.perform!(effort)
+    set_flash_message(response)
+    redirect_to effort_path(effort)
+  end
+
   def create_split_time_from_raw_time
     @effort = policy_scope(Effort).friendly.find(params[:id])
     authorize @effort

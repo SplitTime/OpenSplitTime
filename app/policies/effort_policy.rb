@@ -36,6 +36,10 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
+  def fix_multi_lap_stop?
+    user.authorized_to_edit?(effort)
+  end
+
   def create_split_time_from_raw_time?
     user.authorized_to_edit?(effort)
   end

@@ -34,7 +34,7 @@ class Effort < ApplicationRecord
 
   belongs_to :event, counter_cache: true, touch: true
   belongs_to :person, optional: true
-  has_many :split_times, dependent: :destroy
+  has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
   has_one_attached :photo
 

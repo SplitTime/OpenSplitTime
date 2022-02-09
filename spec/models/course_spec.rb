@@ -154,6 +154,24 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe "#track_points" do
+    context "when a gpx file is attached" do
+      let(:course) { create(:course, :with_gpx) }
+      it "returns an array of hashes containing lat/lon points" do
+        expect(course.track_points.count).to eq(113)
+        expect(course.track_points.first).to eq(lat: 39.627091, lon: -104.904226)
+        expect(course.track_points.last).to eq(lat: 39.623804, lon: -104.893363)
+      end
+    end
+
+    context "when no gpx file is attached" do
+      let(:course) { create(:course) }
+      it "returns an empty array" do
+        expect(course.track_points).to eq([])
+      end
+    end
+  end
+
   describe "#vert_gain" do
     let(:course) { courses(:rufa_course) }
     let(:finish_split) { course.finish_split }

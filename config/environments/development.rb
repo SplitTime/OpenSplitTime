@@ -58,7 +58,4 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.assets.quiet = true
-
-  # ActiveStorage
-  config.active_storage.service = :amazon
 end

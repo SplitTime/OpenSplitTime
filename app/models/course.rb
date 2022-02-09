@@ -59,13 +59,9 @@ class Course < ApplicationRecord
 
     @track_points ||=
       begin
-        file = gpx.download
-        gpx_file = GPX::GPXFile.new(gpx_data: file)
-        points = gpx_file.tracks.flat_map(&:points).presence ||
-                 gpx_file.routes.flat_map(&:points).presence ||
-                 gpx_file.waypoints
-
-        points.map { |point| {lat: point.lat, lon: point.lon} }
+        doc = Nokogiri::XML(gpx.download)
+        trackpoints = doc.xpath('//xmlns:trkpt')
+        trackpoints.map { |trkpt| { lat: trkpt.xpath('@lat').to_s.to_f, lon: trkpt.xpath('@lon').to_s.to_f } }
       end
   end
 

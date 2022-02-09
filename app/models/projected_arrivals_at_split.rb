@@ -13,7 +13,7 @@ class ProjectedArrivalsAtSplit < ::ApplicationQuery
   alias_attribute :completed?, :completed
   alias_attribute :stopped?, :stopped
 
-  def self.sql(event_group_id, parameterized_split_name)
+  def self.sql(event_group_id:, parameterized_split_name:)
     <<~SQL.squish
       with event_ids as
                (select id as event_id

@@ -6,7 +6,7 @@ class EffortsTogetherInAid < ::ApplicationQuery
   attribute :split_id, :integer
   attribute :together_effort_ids, :integer_array_from_string
 
-  def self.sql(effort_id)
+  def self.sql(effort_id:)
     <<~SQL.squish
       with effort_time_intervals as
         (select ist.effort_id, ist.lap, ist.split_id, ist.absolute_time as in_time, ost.absolute_time as out_time, events.event_group_id

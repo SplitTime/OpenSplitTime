@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "2.7.5"
+ruby "3.0.3"
 source "https://rubygems.org"
 gem "activerecord-import"
 gem "active_storage_validations", ">= 0.9.2"
@@ -47,7 +47,7 @@ gem "rails", ">= 6.1.3.1", "< 6.2"
 gem "record_tag_helper", ">= 1.0.1"
 gem "redis", "~> 4.0"
 gem "rest-client"
-gem "sass-rails", "~> 5.0.8"
+gem "sassc-rails"
 gem "scenic", ">= 1.5.4"
 gem "scout_apm"
 gem "sentry-rails"

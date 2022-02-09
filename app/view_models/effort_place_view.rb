@@ -75,7 +75,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def efforts_together_in_aid
-    @efforts_together_in_aid ||= EffortsTogetherInAid.execute_query(effort.id)
+    @efforts_together_in_aid ||= EffortsTogetherInAid.execute_query(effort_id: effort.id)
   end
 
   def frequent_encountered_ids

@@ -40,7 +40,12 @@ class ProjectedEffort
   end
 
   def projections
-    @projections ||= Projection.execute_query(baseline_split_time, starting_time_point, projected_time_points)
+    @projections ||=
+      Projection.execute_query(
+        split_time: baseline_split_time,
+        starting_time_point: starting_time_point,
+        subject_time_points: projected_time_points
+      )
   end
 
   def baseline_time

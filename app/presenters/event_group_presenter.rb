@@ -52,7 +52,7 @@ class EventGroupPresenter < BasePresenter
     @projected_arrivals_at_finish ||=
       begin
         finish_split_name = event.ordered_splits.last.parameterized_base_name
-        ::ProjectedArrivalsAtSplit.execute_query(event_group.id, finish_split_name)
+        ::ProjectedArrivalsAtSplit.execute_query(event_group_id: event_group.id, parameterized_split_name: finish_split_name)
       end
   end
 

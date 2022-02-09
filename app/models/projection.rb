@@ -15,7 +15,7 @@ class Projection < ::ApplicationQuery
 
   alias_attribute :bitkey, :sub_split_bitkey
 
-  def self.sql(split_time, starting_time_point, subject_time_points)
+  def self.sql(split_time:, starting_time_point:, subject_time_points:)
     unless split_time && starting_time_point && subject_time_points
       raise ArgumentError, "Projection.sql requires a split_time, starting_time_point, and subject_time_points"
     end

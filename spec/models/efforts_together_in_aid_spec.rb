@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe EffortsTogetherInAid, type: :model do
   describe ".execute_query" do
-    subject { described_class.execute_query(effort.id) }
+    subject { described_class.execute_query(effort_id: effort.id) }
 
     context "when given an effort id that coincides with other efforts in aid" do
       let(:effort) { efforts(:hardrock_2015_chris_rempel) }

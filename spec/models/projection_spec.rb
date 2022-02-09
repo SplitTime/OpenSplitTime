@@ -6,7 +6,13 @@ RSpec.describe ::Projection, type: :model do
   include BitkeyDefinitions
 
   describe ".execute_query" do
-    subject { described_class.execute_query(split_time, starting_time_point, subject_time_points) }
+    subject do
+      described_class.execute_query(
+        split_time: split_time,
+        starting_time_point: starting_time_point,
+        subject_time_points: subject_time_points
+      )
+    end
     let(:split_time) { effort.ordered_split_times.last }
     let(:effort) { efforts(:hardrock_2016_rene_mclaughlin) }
     let(:time_points) { effort.event.required_time_points }

@@ -214,9 +214,6 @@ GEM
       ffi (~> 1.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    gpx (1.0.0)
-      nokogiri (~> 1.7)
-      rake
     hashdiff (1.0.1)
     hashie (5.0.0)
     heapy (0.2.0)
@@ -581,7 +578,6 @@ DEPENDENCIES
   font_awesome5_rails (>= 1.4.0)
   friendly_id
   fx (>= 0.6.2)
-  gpx (>= 1.0.0)
   image_processing
   jquery-fileupload-rails (>= 1.0.0)
   jquery-rails (>= 4.4.0)

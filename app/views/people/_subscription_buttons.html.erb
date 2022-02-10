@@ -1,5 +1,5 @@
 <% if view_object.participation_notifiable? %>
-  <%= div_for(view_object.person, class: 'card') do %>
+  <div id="<%= dom_id(view_object.person) %>" class="card person">
     <h5 class="card-header">
       <strong><%= "Notify Me of #{view_object.person.first_name}'s Future Events" %></strong>
     </h5>
@@ -7,5 +7,5 @@
       <%= link_to_subscription(view_object.person, :email) %>
       <%= link_to_subscription(view_object.person, :sms) %>
     </div>
-  <% end %>
+  </div>
 <% end %>

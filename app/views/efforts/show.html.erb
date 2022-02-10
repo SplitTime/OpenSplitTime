@@ -58,9 +58,9 @@
       <% end %>
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-        <%= div_for(@presenter.effort, class: 'col-auto form-inline') do %>
+        <div id="<%= dom_id(@presenter.effort) %>" class="col-auto form-inline effort">
           <%= link_to_toggle_check_in(@presenter.effort, button_param: :check_in_effort_show) %>
-        <% end %>
+        </div>
       <% end %>
 
       <div class="col-auto form-inline">

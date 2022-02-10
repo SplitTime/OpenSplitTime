@@ -96,9 +96,9 @@
               <td><%= effort.data_status %></td>
             <% end %>
             <td>
-              <%= div_for(effort) do %>
+              <div id="<%= dom_id(effort) %>" class="effort">
                 <%= link_to_toggle_check_in(effort, button_param: @presenter.check_in_button_param) %>
-              <% end %>
+              </div>
             </td>
           </tr>
         <% end %>

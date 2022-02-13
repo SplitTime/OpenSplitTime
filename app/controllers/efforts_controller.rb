@@ -151,11 +151,11 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
-  def fix_multi_lap_stop
+  def smart_stop
     authorize @effort
     effort = effort_with_splits
 
-    response = Interactors::FixMultiLapEffortStop.perform!(effort)
+    response = Interactors::SmartUpdateEffortStop.perform!(effort)
     set_flash_message(response)
     redirect_to effort_path(effort)
   end

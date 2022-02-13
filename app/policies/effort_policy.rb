@@ -36,7 +36,7 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
-  def fix_multi_lap_stop?
+  def smart_stop?
     user.authorized_to_edit?(effort)
   end
 

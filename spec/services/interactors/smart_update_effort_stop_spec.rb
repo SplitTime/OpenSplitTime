@@ -59,11 +59,11 @@ RSpec.describe ::Interactors::SmartUpdateEffortStop do
         effort.ordered_split_times.last(2).each(&:destroy)
         effort.reload
         effort.ordered_split_times.last(2).first.destroy
+        effort.reload
       end
 
       context "when the effort is not stopped" do
         it "destroys the hanging split time, creates a final finish time, and sets the stop on the final finish time" do
-          effort.reload
           existing_absolute_time = effort.ordered_split_times.last.absolute_time
 
           expect(effort.ordered_split_times.last.split).not_to be_finish
@@ -78,7 +78,6 @@ RSpec.describe ::Interactors::SmartUpdateEffortStop do
       context "when the effort is already stopped" do
         before { ::Interactors::UpdateEffortsStop.perform!(effort) }
         it "destroys the hanging split time, creates a final finish time, and sets the stop on the final finish time" do
-          effort.reload
           existing_absolute_time = effort.ordered_split_times.last.absolute_time
 
           expect(effort.ordered_split_times.last.split).not_to be_finish

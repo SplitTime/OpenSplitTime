@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class FixMultiLapEffortStop
+  class SmartUpdateEffortStop
     def self.perform!(effort)
       new(effort).perform!
     end
@@ -14,7 +14,7 @@ module Interactors
     def perform!
       return if ordered_split_times.empty?
 
-      set_finish_split_time
+      set_proper_final_split_time
       destroy_hanging_split_time
       set_effort_stop
       save_effort
@@ -25,16 +25,34 @@ module Interactors
     private
 
     attr_reader :effort, :errors
-    attr_accessor :finish_split_time
+    attr_accessor :proper_final_split_time
 
-    def set_finish_split_time
-      self.finish_split_time = effort.split_times.find_or_initialize_by(
+    def set_proper_final_split_time
+      if effort.multiple_laps?
+        multi_lap_set_proper_final_split_time
+      else
+        single_lap_set_proper_final_split_time
+      end
+    end
+
+    def multi_lap_set_proper_final_split_time
+      self.proper_final_split_time = effort.split_times.find_or_initialize_by(
         lap: final_finished_lap,
         split: finish_split,
         bitkey: ::SubSplit::IN_BITKEY,
         )
 
-      finish_split_time.absolute_time ||= last_split_time.absolute_time
+      proper_final_split_time.absolute_time ||= last_split_time.absolute_time
+    end
+
+    def single_lap_set_proper_final_split_time
+      self.proper_final_split_time = effort.split_times.find_or_initialize_by(
+        lap: 1,
+        split: last_split_time.split,
+        bitkey: ::SubSplit::IN_BITKEY,
+        )
+
+      proper_final_split_time.absolute_time ||= last_split_time.absolute_time
     end
 
     def destroy_hanging_split_time
@@ -59,9 +77,19 @@ module Interactors
     end
 
     def hanging_split_time
-      return unless last_split_time.start? && last_split_time.lap > 1
+      if effort.multiple_laps?
+        multi_lap_hanging_split_time
+      else
+        single_lap_hanging_split_time
+      end
+    end
 
-      last_split_time
+    def multi_lap_hanging_split_time
+      last_split_time if last_split_time.start? && last_split_time.lap > 1
+    end
+
+    def single_lap_hanging_split_time
+      last_split_time if last_split_time.bitkey == ::SubSplit::OUT_BITKEY
     end
 
     def hanging_split_time?

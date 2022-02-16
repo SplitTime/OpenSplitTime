@@ -963,6 +963,11 @@
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.4.tgz#c3c5a9f8302c429af9722b6c50ab48049016d2a3"
   integrity sha512-0LmSKJTuo2dL6BQ+9xxLnS9lbkyfz2mBGeBnQ2J7o9Bn0l0q+ZC6VuoZMZZXPvABI4QT7Nfknv5WhfKYL+boew==
 
+"@rails/actioncable@^7.0.2-2":
+  version "7.0.2-2"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.0.2-2.tgz#cc0f57a5e815b28a78a0053fc1b95ac073bcef76"
+  integrity sha512-DgkWkU/GJ1EBUBfs9PWDDy49k1QGJ/zvebGWEAnMChyt/FI9aXkCy5SOcXwDf1A6uY4Aif8jRlFbUgHS6UJHcA==
+
 "@rails/webpacker@^5.4.3":
   version "5.4.3"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-5.4.3.tgz#cfe2d8faffe7db5001bad50a1534408b4f2efb2f"

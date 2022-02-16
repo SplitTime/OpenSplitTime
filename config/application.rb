@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module OpenSplitTime
   class Application < Rails::Application
     # Initialize configuration defaults for a specific Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
@@ -23,5 +23,6 @@ module OpenSplitTime
     config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+    config.active_support.remove_deprecated_time_with_zone_name = true
   end
 end

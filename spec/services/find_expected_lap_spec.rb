@@ -90,7 +90,7 @@ RSpec.describe FindExpectedLap do
   describe "#perform" do
     before do
       FactoryBot.reload
-      all_split_times.each { |st| st.assign_attributes(effort_id: effort.id) }
+      all_split_times.each { |st| st.assign_attributes(effort: effort) }
     end
 
     context "when effort has no split_times" do

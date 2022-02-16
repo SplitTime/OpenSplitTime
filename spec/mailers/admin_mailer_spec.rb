@@ -9,7 +9,7 @@ RSpec.describe AdminMailer, type: :mailer do
   let(:event_group) { event_groups(:sum) }
 
   it "creates a job" do
-    expect { subject.deliver_later }.to have_enqueued_job.on_queue("mailers")
+    expect { subject.deliver_later }.to have_enqueued_mail(AdminMailer, :new_event_group)
   end
 
   # Because we have config.action_mailer.delivery_method set to :test in our :test.rb,

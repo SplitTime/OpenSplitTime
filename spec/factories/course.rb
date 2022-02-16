@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :course do
-    name { FFaker::Product.product }
+    name { "#{FFaker::Product.product} #{rand(1000)}" }
     organization
 
     trait :with_description do

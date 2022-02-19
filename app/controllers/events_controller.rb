@@ -69,7 +69,7 @@ class EventsController < ApplicationController
       format.html
       format.csv do
         authorize @event
-        csv_stream = render_to_string(partial: "spread.csv.ruby")
+        csv_stream = render_to_string(partial: "spread", formats: :csv)
         send_data(csv_stream, type: "text/csv",
                               filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
@@ -156,9 +156,10 @@ class EventsController < ApplicationController
 
         requested_export_template = "#{export_format}.csv.ruby"
         requested_partial_name = Rails.root.join("app/views/events/_#{requested_export_template}")
-        partial = File.exist?(requested_partial_name) ? requested_export_template : "not_found.csv.ruby"
+        partial = File.exist?(requested_partial_name) ? export_format.to_s : "not_found"
         csv_stream = render_to_string(
           partial: partial,
+          formats: :csv,
           locals: {current_time: current_time, records: records, options: options}
         )
 

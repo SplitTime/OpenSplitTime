@@ -90,12 +90,12 @@ class LotteriesController < ApplicationController
         when :ultrasignup
           entrants = @lottery.divisions.flat_map(&:winning_entrants)
           filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "ultrasignup", locals: {records: entrants})
+          csv_stream = render_to_string(partial: "ultrasignup", formats: :csv, locals: {records: entrants})
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         when :results
           filename = "#{@lottery.name}-results-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "results", locals: {lottery: @lottery})
+          csv_stream = render_to_string(partial: "results", formats: :csv, locals: {lottery: @lottery})
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         else

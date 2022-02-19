@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require "csv"
+
 if records.present?
-  CSV.generate do |csv|
+  ::CSV.generate do |csv|
     csv << [
       "Order ID",
       "First name",

@@ -1,6 +1,8 @@
+require "csv"
+
 if records.present?
   if options[:event_finished]
-    CSV.generate do |csv|
+    ::CSV.generate do |csv|
       csv << %w[place time first last age gender city state dob bib status]
       records.each do |row|
         csv << [row.overall_rank,

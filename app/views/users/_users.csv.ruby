@@ -1,4 +1,6 @@
-CSV.generate do |csv|
+require "csv"
+
+::CSV.generate do |csv|
   attributes = %w[email first_name last_name confirmed_at]
   csv << attributes
   users.each do |user|

@@ -87,7 +87,7 @@ class CoursesController < ApplicationController
         session[:return_to] = plan_effort_course_path(@course)
       end
       format.csv do
-        csv_stream = render_to_string(partial: "plan.csv.ruby")
+        csv_stream = render_to_string(partial: "plan", formats: :csv)
         filename = "#{@course.name}-pacing-plan-#{@presenter.cleaned_time}-#{Date.today}.csv"
         send_data(csv_stream, type: "text/csv", filename: filename)
       end

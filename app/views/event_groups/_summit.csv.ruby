@@ -1,4 +1,6 @@
-CSV.generate do |csv|
+require "csv"
+
+::CSV.generate do |csv|
   csv << %w[Bib Kind Time Combined]
   if @raw_times.present?
     @raw_times.sort_by { |rt| rt.military_time(rt.event_group.home_time_zone) }.each do |rt|

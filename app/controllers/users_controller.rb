@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        csv_stream = render_to_string(partial: "users.csv.ruby", locals: {users: users})
+        csv_stream = render_to_string(partial: "users", formats: :csv, locals: {users: users})
         send_data(csv_stream, type: "text/csv", filename: "users-#{Date.today}.csv")
       end
     end

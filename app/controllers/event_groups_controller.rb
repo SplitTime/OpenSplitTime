@@ -212,7 +212,7 @@ class EventGroupsController < ApplicationController
 
     respond_to do |format|
       format.csv do
-        csv_stream = render_to_string(partial: "#{csv_template}.csv.ruby")
+        csv_stream = render_to_string(partial: csv_template, formats: :csv)
         send_data(csv_stream, type: "text/csv",
                               filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end

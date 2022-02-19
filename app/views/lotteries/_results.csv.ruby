@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 if lottery.entrants.exists?
   ::CSV.generate do |csv|
     csv << ["Results for #{lottery.name}"]

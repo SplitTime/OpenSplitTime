@@ -1,5 +1,7 @@
+require "csv"
+
 if records.present?
-  CSV.generate do |csv|
+  ::CSV.generate do |csv|
     csv << [
       "Ranking",
       "Time",

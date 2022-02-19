@@ -57,6 +57,7 @@ gem "sidekiq"
 gem "sidekiq-cron"
 gem "sitemap_generator"
 gem "smarter_csv", require: false
+gem "sprockets-rails"
 gem "strip_attributes"
 gem "structpluck"
 gem "turbo-rails"

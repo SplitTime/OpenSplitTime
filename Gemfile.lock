@@ -632,6 +632,7 @@ DEPENDENCIES
   smarter_csv
   spring
   spring-commands-rspec
+  sprockets-rails
   strip_attributes
   structpluck
   turbo-rails

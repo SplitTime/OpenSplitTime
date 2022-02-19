@@ -23,6 +23,7 @@ module OpenSplitTime
     config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+    config.active_storage.variant_processor = :mini_magick
     config.active_support.remove_deprecated_time_with_zone_name = true
   end
 end

@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pundit
+  include ::Pundit::Authorization
   include ::Turbo::Redirection
 
   # Prevent CSRF attacks by raising an exception.
@@ -13,14 +13,14 @@ class ApplicationController < ActionController::Base
   after_action :store_user_location!, if: :storable_location?
   helper_method :prepared_params
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  rescue_from ActionController::UnknownFormat, with: :not_acceptable_head
+  rescue_from ::Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ::ActionController::UnknownFormat, with: :not_acceptable_head
 
   impersonates :user
 
   def process_action(*args)
     super
-  rescue ActionDispatch::Http::MimeNegotiation::InvalidType => e
+  rescue ::ActionDispatch::Http::MimeNegotiation::InvalidType => e
     head :not_acceptable
   end
 
@@ -119,8 +119,8 @@ class ApplicationController < ActionController::Base
   end
 
   def set_sentry_context
-    Sentry.set_user(id: current_user&.id)
-    Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
+    ::Sentry.set_user(id: current_user&.id)
+    ::Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
   end
 
   def sample_requests_for_scout_apm

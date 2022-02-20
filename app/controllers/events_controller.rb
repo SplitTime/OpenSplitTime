@@ -153,10 +153,8 @@ class EventsController < ApplicationController
         records = @presenter.ranked_effort_rows
         records = records.select(&:finished?) if export_format.in?(FINISHERS_ONLY_EXPORT_FORMATS)
         filename = "#{@presenter.name}-#{export_format}-#{current_time.iso8601}.csv"
+        partial = lookup_context.exists?(export_format, :events, true) ? export_format.to_s : "not_found"
 
-        requested_export_template = "#{export_format}.csv.ruby"
-        requested_partial_name = Rails.root.join("app/views/events/_#{requested_export_template}")
-        partial = File.exist?(requested_partial_name) ? export_format.to_s : "not_found"
         csv_stream = render_to_string(
           partial: partial,
           formats: :csv,

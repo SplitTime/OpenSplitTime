@@ -21,7 +21,8 @@
               <div class="form-group col">
                 <label class="required">Choose an existing course or create a new course</label>
                 <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
-                <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id), {},
+                <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id),
+                                {},
                                 {autofocus: true,
                                  class: "form-control dropdown-select-field",
                                  data: {"event-setup-target" => "courseSelector",
@@ -48,7 +49,7 @@
                     <%= form.fields_for(:splits, presenter.finish_split) do |finish_split_form| %>
                       <div class="col">
                         <%= finish_split_form.label "Course distance (#{presenter.pref_distance_unit})", class: "required" %>
-                        <%= finish_split_form.text_field :distance_in_preferred_units, class: "form-control", placeholder: "34.5" %>
+                        <%= finish_split_form.text_field :distance_in_preferred_units, class: "form-control", placeholder: "for example, 34.5" %>
                       </div>
                       <%= finish_split_form.hidden_field :base_name %>
                       <%= finish_split_form.hidden_field :kind %>

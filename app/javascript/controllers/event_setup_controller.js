@@ -35,6 +35,10 @@ export default class extends Controller {
         })
     }
 
+    courseSelectorTargetConnected() {
+        this.fillDistance()
+    }
+
     fillEventName() {
         const shortName = this.eventShortNameTarget.value;
         const eventGroupName = this.formDataTarget.dataset.eventGroupName;

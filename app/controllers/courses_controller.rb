@@ -31,9 +31,11 @@ class CoursesController < ApplicationController
     @course = Course.new(permitted_params)
     authorize @course
 
+    @event_group = ::EventGroup.friendly.find(params[:event_group_id])
+
     if @course.save
-      if params[:event_group].present?
-        redirect_to new_event_path(event_group: params[:event_group], course: @course.slug)
+      if @event_group.present?
+        redirect_to new_event_group_event_path(@event_group, course_id: @course.id)
       else
         redirect_to course_path(@course)
       end

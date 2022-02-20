@@ -6,7 +6,7 @@ module MultiEventable
   delegate :scheduled_start_time, :scheduled_start_time_local, to: :first_event, allow_nil: true
 
   def ordered_events
-    events.sort_by { |event| [event.scheduled_start_time, event.name] }
+    events.select(&:scheduled_start_time?).sort_by { |event| [event.scheduled_start_time, event.name] }
   end
 
   def first_event

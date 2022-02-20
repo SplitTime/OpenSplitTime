@@ -39,6 +39,10 @@ class EventGroupSetupPresenter < BasePresenter
     event_group.name
   end
 
+  def event_group_names
+    events.map(&:name).to_sentence(two_words_connector: " and ", last_word_connector: ", and ")
+  end
+
   def events
     @events ||= event_group.events.order(:scheduled_start_time).to_a
   end

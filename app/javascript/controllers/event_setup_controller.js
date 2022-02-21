@@ -18,25 +18,11 @@ export default class extends Controller {
     connect() {
         this.fillEventName();
         this.fillDistance()
-
-        document.addEventListener("turbo:before-fetch-response", function (e) {
-            const controller = this
-
-            let frame = document.getElementById("course_info");
-            if (frame.complete) {
-                console.log("Frame is complete")
-            } else {
-                console.log("Frame is not complete")
-                frame.loaded.then(() => {
-                    console.log("Frame just loaded")
-                    console.log(controller.courseSelectorTarget.value)
-                })
-            }
-        })
     }
 
     courseSelectorTargetConnected() {
         this.fillDistance()
+        this.setCourseId()
     }
 
     fillEventName() {

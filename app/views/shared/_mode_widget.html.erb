@@ -1,22 +1,14 @@
 <!-- Mode Selector Widget: Requires local :presenter -->
 
-<div class="btn-group btn-group-ost" data-controller="navigation">
-  <%= link_to fa_icon("hammer"),
-              setup_event_group_path(presenter.event_group),
-              class: "btn has-tooltip #{ presenter.mode == "setup" ? 'btn-primary' : 'btn-outline-secondary' }",
-              data: {toggle: "tooltip",
-                     placement: "bottom",
-                     "original-title" => "Setup Mode [Ctrl-S]",
-                     "navigation-target" => "setupButton",
-                     action: "keyup@document->navigation#evaluateKeyup",
-              } %>
-  <%= link_to fa_icon("binoculars"),
-              roster_event_group_path(presenter.event_group),
-              class: "btn has-tooltip #{ presenter.mode == "monitor" ? 'btn-primary' : 'btn-outline-secondary' }",
-              data: {toggle: "tooltip",
-                     placement: "bottom",
-                     "original-title" => "Monitor Mode [Ctrl-M]",
-                     "navigation-target" => "monitorButton",
-                     action: "keyup@document->navigation#evaluateKeyup",
-              } %>
-</div>
+<aside class="bg-primary p-3">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col text-left">
+        <h5 class="nav-link">You are in Construction Mode</h5>
+      </div>
+      <div class="col text-right">
+        <%= link_to "Return to normal mode", roster_event_group_path(presenter.event_group), class: 'btn btn-outline-light' %>
+      </div>
+    </div>
+  </div>
+</aside>

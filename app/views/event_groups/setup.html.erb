@@ -2,14 +2,13 @@
   <% "OpenSplitTime: Setup Event Group - #{@presenter.event_group.name}" %>
 <% end %>
 
+<%= render "shared/mode_widget", presenter: @presenter %>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <div>
-            <%= render "shared/mode_widget", presenter: @presenter %>
-          </div>
           <h1><strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>

@@ -225,6 +225,14 @@ class EventGroupsController < ApplicationController
     redirect_to request.referrer
   end
 
+  def delete_all_efforts
+    authorize @event_group
+
+    response = Interactors::BulkDestroyEfforts.perform!(::Effort.where(event: @event_group.events))
+    set_flash_message(response) unless response.successful?
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+  end
+
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)

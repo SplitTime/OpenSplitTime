@@ -111,6 +111,7 @@ Rails.application.routes.draw do
       patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
+      delete :delete_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
     end

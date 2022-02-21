@@ -271,25 +271,25 @@ module DropdownHelper
 
   def event_actions_dropdown(event)
     dropdown_items = [
-        {name: "Edit/Delete Event",
-         link: edit_event_group_event_path(event.event_group, event),
-         data: {"turbo-frame" => "_top"}},
-        {name: "Establish Drops",
-         link: set_stops_event_path(event),
-         method: :put,
-         data: {confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
-             "at the last aid station for which times are available. Are you sure you want to proceed?"}},
-        {name: "Shift start time",
-         link: edit_start_time_event_path(event),
-         visible: current_user.admin?,
-         data: {"turbo-frame" => "_top"}},
-        {role: :separator},
-        {name: "Export Finishers List",
-         link: export_event_path(event, format: :csv, export_format: :finishers)},
-        {name: "Export to ITRA",
-         link: export_event_path(event, format: :csv, export_format: :itra)},
-        {name: "Export to Ultrasignup",
-         link: export_event_path(event, format: :csv, export_format: :ultrasignup)}
+      {name: "Edit/Delete Event",
+       link: edit_event_group_event_path(event.event_group, event),
+       data: {"turbo-frame" => "_top"}},
+      {name: "Establish Drops",
+       link: set_stops_event_path(event),
+       method: :put,
+       data: {confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
+         "at the last aid station for which times are available. Are you sure you want to proceed?"}},
+      {name: "Shift start time",
+       link: edit_start_time_event_path(event),
+       visible: current_user.admin?,
+       data: {"turbo-frame" => "_top"}},
+      {role: :separator},
+      {name: "Export Finishers List",
+       link: export_event_path(event, format: :csv, export_format: :finishers)},
+      {name: "Export to ITRA",
+       link: export_event_path(event, format: :csv, export_format: :itra)},
+      {name: "Export to Ultrasignup",
+       link: export_event_path(event, format: :csv, export_format: :ultrasignup)}
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end
@@ -307,15 +307,15 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
-  def entrants_roster_actions_dropdown(view_object)
+  def entrants_roster_import_dropdown(view_object)
     dropdown_items = [
-      {name: "Reconcile efforts",
-       link: reconcile_event_group_path(view_object.event_group)},
-      {role: :separator},
       {name: "Import entrants",
-       link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})}
+       link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})},
+      {role: :separator},
+      {name: "Download template",
+       link: efforts_path(filter: {id: 0}, format: :csv)},
     ]
-    build_dropdown_menu("Actions", dropdown_items, button: true)
+    build_dropdown_menu("Import", dropdown_items, button: true)
   end
 
   def roster_actions_dropdown(view_object)

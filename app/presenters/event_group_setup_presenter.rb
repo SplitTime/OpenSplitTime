@@ -68,7 +68,7 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def events
-    @events ||= event_group.events.order(:scheduled_start_time).to_a
+    @events ||= event_group.events.order(:scheduled_start_time)
   end
 
   def organization_name

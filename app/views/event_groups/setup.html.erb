@@ -46,25 +46,32 @@
     </div>
   </aside>
 
-  <%= turbo_frame_tag @presenter.event_group do %>
-    <article class="ost-article container">
-      <% if @presenter.events.present? %>
-        <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
-      <% else %>
-        <h4>This event group has no events yet.</h4>
-      <% end %>
+  <article class="ost-article container">
+    <% if @presenter.events.exists? %>
+      <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
+    <% else %>
+      <h4>This event group has no events yet.</h4>
+    <% end %>
 
-      <% if @presenter.candidate_events.present? %>
-        <hr>
-        <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
-        <%= render "events/setup_events", presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: "join" %>
-      <% end %>
-    </article>
-  <% end %>
+    <% if @presenter.candidate_events.exists? %>
+      <hr>
+      <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
+      <%= render "events/setup_events", presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: "join" %>
+    <% end %>
+  </article>
+
+<% when "entrants" %>
+  <article class="ost-article container">
+    <% if @presenter.event_group_efforts.exists? %>
+      <%= render "entrants_roster", presenter: @presenter %>
+    <% else %>
+      <h4>No entrants have been added yet.</h4>
+    <% end %>
+  </article>
 
 <% when "partners" %>
   <article class="ost-article container">
-    <% if @presenter.partners.present? %>
+    <% if @presenter.partners.exists? %>
       <%= render "partner_list", partners: @presenter.partners, view_model: @presenter %>
     <% else %>
       <h4>This event group has no sponsorship partners yet.</h4>

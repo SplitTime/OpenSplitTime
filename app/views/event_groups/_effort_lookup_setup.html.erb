@@ -1,0 +1,15 @@
+<%= form_tag setup_event_group_path(@presenter.event_group), method: :get do %>
+  <%= hidden_field_tag 'display_style', @presenter.display_style %>
+  <div class="input-group">
+    <%= text_field_tag 'filter[search]',
+                       @presenter.search_text,
+                       placeholder: 'Bib #, first name, last name, state, or country',
+                       autofocus: true,
+                       class: 'form-control search-box' %>
+    <span class="input-group-append">
+        <%= button_tag(id: 'roster-search-submit', type: :submit, class: 'btn btn-primary') do %>
+            <i class='fas fa-search'></i>
+        <% end %>
+      </span>
+  </div>
+<% end %>

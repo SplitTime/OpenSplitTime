@@ -4,7 +4,15 @@ class EventGroupSetupPresenter < BasePresenter
   CANDIDATE_SEPARATION_LIMIT = 7.days
 
   attr_reader :event_group
-  delegate :available_live?, :concealed?, :partners, :name, :organization, :to_param, to: :event_group
+  delegate :available_live?,
+           :concealed?,
+           :multiple_events?,
+           :name,
+           :organization,
+           :partners,
+           :to_param,
+           :unreconciled_efforts,
+           to: :event_group
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -33,6 +41,22 @@ class EventGroupSetupPresenter < BasePresenter
 
   def display_style
     params[:display_style].presence || default_display_style
+  end
+
+  def event_group_efforts
+    event_group.efforts.includes(:event)
+  end
+
+  def event_group_efforts_count
+    @event_group_efforts_count ||= event_group_efforts.count
+  end
+
+  def filtered_efforts
+    @filtered_efforts ||= event_group_efforts
+                            .where(filter_hash)
+                            .search(search_text)
+                            .order(sort_hash.presence || {bib_number: :asc})
+                            .paginate(page: page, per_page: per_page)
   end
 
   def event_group_name

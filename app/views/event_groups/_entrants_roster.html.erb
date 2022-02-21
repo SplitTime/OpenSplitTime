@@ -1,0 +1,82 @@
+<div data-controller="roster">
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col form-inline">
+          <div>
+            <%= entrants_roster_actions_dropdown(presenter) %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= render "effort_lookup_setup" %>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <article class="ost-article container">
+    <% if presenter.unreconciled_efforts.present? %>
+      <div class="row">
+        <div class="col">
+          <div class="card border-primary">
+            <h4 class="card-header bg-primary text-white"><strong>Note</strong></h4>
+            <div class="card-body">
+              <h5 class="card-text">
+                Unreconciled efforts exist.
+                Please <%= link_to "reconcile", reconcile_event_group_path(presenter.event_group) %> when you have a
+                moment.
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+    <% end %>
+
+    <% if presenter.filtered_efforts.exists? %>
+      <div class="row">
+        <div class="col-xs-8">
+          <h4><%= filter_count_text(presenter.filtered_efforts.total_entries, presenter.event_group_efforts_count, "entrant") %></h4>
+        </div>
+        <div class="col-xs-4 text-right">
+        </div>
+      </div>
+
+      <table class="table table-centered table-fixed-sm table-striped">
+        <thead>
+        <tr>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", presenter.existing_sort) %></th>
+          <% if presenter.multiple_events? %>
+            <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", presenter.existing_sort) %></th>
+          <% end %>
+          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Category", "gender,age", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Scheduled Start", "assumed_start_time", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", presenter.existing_sort) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% presenter.filtered_efforts.each do |effort| %>
+          <tr>
+            <td class="text-center"><%= effort.unreconciled? ? "No" : "Yes" %></td>
+            <% if presenter.multiple_events? %>
+              <td><%= effort.event.guaranteed_short_name %></td>
+            <% end %>
+            <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+            <td><%= effort.bib_number %></td>
+            <td><%= effort.bio_historic %></td>
+            <td><%= effort.flexible_geolocation %></td>
+            <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
+            <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    <% else %>
+      <strong>No results match that search.</strong>
+    <% end %>
+  </article>
+</div>

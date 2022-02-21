@@ -307,6 +307,17 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
+  def entrants_roster_actions_dropdown(view_object)
+    dropdown_items = [
+      {name: "Reconcile efforts",
+       link: reconcile_event_group_path(view_object.event_group)},
+      {role: :separator},
+      {name: "Import entrants",
+       link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})}
+    ]
+    build_dropdown_menu("Actions", dropdown_items, button: true)
+  end
+
   def roster_actions_dropdown(view_object)
     dropdown_items = [
       {name: "Reconcile efforts",

@@ -71,7 +71,7 @@ class EventGroupsController < ApplicationController
 
   def setup
     authorize @event_group
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
   end
 
   def efforts

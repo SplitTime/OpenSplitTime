@@ -4,6 +4,7 @@
   <thead>
   <tr>
     <th>Name</th>
+    <th>Course</th>
     <th>Date and Time</th>
     <th></th>
     <% if presenter.authorized_fully? %>
@@ -21,7 +22,8 @@
   <tbody>
   <% events.each do |event| %>
     <tr>
-      <td><strong><%= link_to event.name, edit_event_group_event_path(presenter.event_group, event), data: {"turbo-frame" => "_top"} %></strong></td>
+      <td><strong><%= link_to event.name, edit_event_group_event_path(presenter.event_group, event) %></strong></td>
+      <td><strong><%= link_to event.course_name, course_path(event.course, display_style: :splits) %></strong></td>
       <td><%= l(event.scheduled_start_time_local, format: :full_day_time_and_zone) %></td>
       <td><%= "#{pluralize(event.efforts_count, 'entrants')}" %></td>
 

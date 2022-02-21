@@ -83,7 +83,7 @@
             <% if presenter.multiple_events? %>
               <td><%= effort.event.guaranteed_short_name %></td>
             <% end %>
-            <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+            <td><strong><%= link_to effort.full_name, edit_effort_path(effort) %></strong></td>
             <td class="text-center"><%= effort.bib_number %></td>
             <td><%= effort.bio_historic %></td>
             <td><%= effort.flexible_geolocation %></td>

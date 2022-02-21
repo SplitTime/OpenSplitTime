@@ -68,7 +68,7 @@ class EffortsController < ApplicationController
       when :disassociate
         redirect_to request.referrer
       else
-        redirect_to effort_path(effort)
+        redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
       end
 
       if new_event_id && new_event_id != effort.event_id

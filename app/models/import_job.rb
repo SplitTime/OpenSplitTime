@@ -38,19 +38,21 @@ class ImportJob < ApplicationRecord
     parent.name
   end
 
-  def parsed_errors
-    JSON.parse(error_message || "[\"None\"]")
-  end
-
-  def resources_for_path
+  def parent_path
     return unless parent.present?
 
     case parent_type
     when "Lottery"
-      [parent.organization, parent]
+      ::Rails.application.routes.url_helpers.setup_organization_lottery_path(parent.organization, parent)
+    when "EventGroup"
+      ::Rails.application.routes.url_helpers.setup_event_group_path(parent, display_style: :entrants)
     else
-      [parent]
+      raise RuntimeError, "Unknown parent type #{parent_type} for import job #{id}"
     end
+  end
+
+  def parsed_errors
+    JSON.parse(error_message || "[\"None\"]")
   end
 
   def set_elapsed_time!

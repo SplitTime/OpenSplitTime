@@ -3,7 +3,7 @@
   <td><%= "#{time_ago_in_words(import_job.created_at)} ago" %></td>
   <td>
     <% if import_job.parent.present? %>
-      <%= link_to import_job.parent_name, polymorphic_path(import_job.resources_for_path) %>
+      <%= link_to import_job.parent_name, import_job.parent_path %>
     <% else %>
       Resource not found (it may have been deleted)
     <% end %>

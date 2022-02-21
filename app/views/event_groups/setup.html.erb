@@ -47,13 +47,13 @@
   </aside>
 
   <article class="ost-article container">
-    <% if @presenter.events.exists? %>
+    <% if @presenter.events.present? %>
       <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
     <% else %>
       <h4>This event group has no events yet.</h4>
     <% end %>
 
-    <% if @presenter.candidate_events.exists? %>
+    <% if @presenter.candidate_events.present? %>
       <hr>
       <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
       <%= render "events/setup_events", presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: "join" %>

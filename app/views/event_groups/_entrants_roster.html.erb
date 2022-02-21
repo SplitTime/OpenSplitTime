@@ -50,7 +50,7 @@
             <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", presenter.existing_sort) %></th>
           <% end %>
           <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading("Category", "gender,age", presenter.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
           <th><%= link_to_reversing_sort_heading("Scheduled Start", "assumed_start_time", presenter.existing_sort) %></th>
@@ -60,12 +60,14 @@
         <tbody>
         <% presenter.filtered_efforts.each do |effort| %>
           <tr>
-            <td class="text-center"><%= effort.unreconciled? ? "No" : "Yes" %></td>
+            <td class="text-center">
+              <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
+            </td>
             <% if presenter.multiple_events? %>
               <td><%= effort.event.guaranteed_short_name %></td>
             <% end %>
             <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
-            <td><%= effort.bib_number %></td>
+            <td class="text-center"><%= effort.bib_number %></td>
             <td><%= effort.bio_historic %></td>
             <td><%= effort.flexible_geolocation %></td>
             <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>

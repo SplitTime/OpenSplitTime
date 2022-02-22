@@ -69,10 +69,6 @@ class EventGroupRosterPresenter < BasePresenter
     :check_in_group
   end
 
-  def mode
-    "monitor"
-  end
-
   def method_missing(method)
     event_group.send(method)
   end

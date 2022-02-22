@@ -54,10 +54,6 @@ class EventSetupPresenter < BasePresenter
     organization.name
   end
 
-  def mode
-    "setup"
-  end
-
   private
 
   attr_reader :params, :current_user

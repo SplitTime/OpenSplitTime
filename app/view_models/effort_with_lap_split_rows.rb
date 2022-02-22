@@ -64,10 +64,6 @@ class EffortWithLapSplitRows
     effort.send(method)
   end
 
-  def mode
-    "monitor"
-  end
-
   private
 
   def difference(first_time, last_time)

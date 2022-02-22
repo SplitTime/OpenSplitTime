@@ -15,6 +15,8 @@ namespace :db do
       friendly_id_slugs
       import_jobs
       locations
+      lottery_simulations
+      lottery_simulation_runs
       schema_info
       schema_migrations
       shortened_urls
@@ -79,6 +81,8 @@ namespace :db do
       friendly_id_slugs
       import_jobs
       locations
+      lottery_simulations
+      lottery_simulation_runs
       schema_info
       schema_migrations
       shortened_urls

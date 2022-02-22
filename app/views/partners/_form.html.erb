@@ -53,7 +53,7 @@
       </div>
 
       <div class="col-xs-4 col-xs-offset-2">
-        <span class="brackets"><%= link_to 'Cancel', event_group_path(@partner.event_group_id, display_style: 'partners', force_settings: true) %></span>
+        <span class="brackets"><%= link_to 'Cancel', setup_event_group_path(@partner.event_group_id, display_style: "partners") %></span>
       </div>
     <% end %>
   </div>

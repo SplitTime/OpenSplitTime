@@ -20,6 +20,10 @@ class EventGroupPolicy < ApplicationPolicy
     @event_group = event_group
   end
 
+  def setup?
+    user.authorized_to_edit?(event_group)
+  end
+
   def raw_times?
     user.authorized_to_edit?(event_group)
   end
@@ -54,6 +58,10 @@ class EventGroupPolicy < ApplicationPolicy
 
   def finish_line?
     user.authorized_to_edit?(event_group)
+  end
+
+  def delete_all_efforts?
+    user.authorized_fully?(event_group)
   end
 
   def delete_all_times?

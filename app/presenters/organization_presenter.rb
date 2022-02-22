@@ -27,6 +27,14 @@ class OrganizationPresenter < BasePresenter
         .sort_by { |event_group| -event_group.scheduled_start_time.to_i }
   end
 
+  def concealed_event_groups
+    @concealed_event_groups ||= organization.event_groups.concealed
+  end
+
+  def visible_event_groups
+    @visible_event_groups ||= organization.event_groups.visible
+  end
+
   def event_series
     organization.event_series.includes(events: :event_group).sort_by(&:scheduled_start_time).reverse
   end

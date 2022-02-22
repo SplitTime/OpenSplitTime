@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-STATUS_INDICATOR_ATTRIBUTES = {
-  bad: {icon: "times-circle", class: "text-danger"},
-  questionable: {icon: "question-circle", class: "text-warning"}
-}.with_indifferent_access
-
 module DataStatusHelper
+  STATUS_INDICATOR_ATTRIBUTES = {
+    bad: {icon: "times-circle", class: "text-danger"},
+    questionable: {icon: "question-circle", class: "text-warning"}
+  }.with_indifferent_access
+
   def text_with_status_indicator(time, status, options = {})
     attributes = STATUS_INDICATOR_ATTRIBUTES[status]
     return time if attributes.nil?

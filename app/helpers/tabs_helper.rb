@@ -45,6 +45,22 @@ module TabsHelper
     build_view_tabs(items)
   end
 
+  def setup_view_tabs(presenter)
+    items = [
+      {name: "Events",
+       link: setup_event_group_path(presenter.event_group, display_style: "events"),
+       active: action_name == "setup" && presenter.display_style == "events"},
+      {name: "Entrants",
+       link: setup_event_group_path(presenter.event_group, display_style: "entrants"),
+       active: action_name == "setup" && presenter.display_style == "entrants"},
+      {name: "Partners",
+       link: setup_event_group_path(presenter.event_group, display_style: "partners"),
+       active: action_name == "setup" && presenter.display_style == "partners"},
+    ]
+
+    build_view_tabs(items)
+  end
+
   private
 
   def build_view_tabs(items)

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "search the event group index" do
+RSpec.describe "search the event group index", type: :system, js: true do
   let(:user) { users(:third_user) }
   let(:admin) { users(:admin_user) }
 
@@ -102,14 +102,14 @@ RSpec.describe "search the event group index" do
 
     verify_content_absent(visible_event_group_1)
     verify_content_absent(visible_event_group_2)
-    verify_link_present(concealed_event_group)
+    expect(page).to have_link(concealed_event_group.name, href: setup_event_group_path(concealed_event_group))
 
     fill_in "Event name", with: concealed_event.short_name
     click_button "event-group-lookup-submit"
 
     verify_content_absent(visible_event_group_1)
     verify_content_absent(visible_event_group_2)
-    verify_link_present(concealed_event_group)
+    expect(page).to have_link(concealed_event_group.name, href: setup_event_group_path(concealed_event_group))
   end
 
   scenario "The user is a searching for an event or event group using a lowercase search term" do

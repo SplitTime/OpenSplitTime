@@ -2,8 +2,8 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index, :create]
-  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list, :efforts]
+  before_action :set_event_group, except: [:index, :new, :create]
+  after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :drop_list, :efforts]
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
@@ -17,25 +17,48 @@ class EventGroupsController < ApplicationController
 
   def show
     events = @event_group.events
-    if events.one? && !params[:force_settings]
+
+    if events.present?
       redirect_to spread_event_path(events.first)
+    else
+      redirect_to setup_event_group_path(@event_group)
     end
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    session[:return_to] = event_group_path(@event_group, force_settings: true)
+  end
+
+  def new
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.new
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
+  end
+
+  def create
+    @event_group = EventGroup.new(permitted_params)
+    authorize @event_group
+
+    if @event_group.save
+      redirect_to setup_event_group_path(@event_group)
+    else
+      render "new"
+    end
   end
 
   def edit
-    authorize @event_group
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.friendly.find(params[:id])
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
   end
 
   def update
     authorize @event_group
 
-    if @event_group.update(permitted_params)
-      redirect_to event_group_path(@event_group, force_settings: true)
-    else
-      render "edit"
-    end
+    @event_group.update(permitted_params)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def destroy
@@ -44,6 +67,11 @@ class EventGroupsController < ApplicationController
     @event_group.destroy
     flash[:success] = "Event group deleted."
     redirect_to event_groups_path
+  end
+
+  def setup
+    authorize @event_group
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
   end
 
   def efforts
@@ -129,7 +157,7 @@ class EventGroupsController < ApplicationController
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
     flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
-    redirect_to event_group_path(@event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def associate_people
@@ -197,11 +225,19 @@ class EventGroupsController < ApplicationController
     redirect_to request.referrer
   end
 
+  def delete_all_efforts
+    authorize @event_group
+
+    response = Interactors::BulkDestroyEfforts.perform!(::Effort.where(event: @event_group.events))
+    set_flash_message(response) unless response.successful?
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+  end
+
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)
     set_flash_message(response)
-    redirect_to event_group_path(@event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def export_raw_times
@@ -232,5 +268,7 @@ class EventGroupsController < ApplicationController
   def set_event_group
     @event_group = policy_scope(EventGroup).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
+  rescue ::ActiveRecord::RecordNotFound
+    redirect_to "/404"
   end
 end

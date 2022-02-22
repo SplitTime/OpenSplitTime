@@ -89,16 +89,19 @@ Rails.application.routes.draw do
 
   resources :duplicate_event_groups, only: [:new, :create]
 
-  resources :event_groups, only: [:index, :show, :edit, :update, :destroy] do
+  resources :event_groups, only: [:index, :show] do
+    resources :events, except: [:index, :show]
+
     member do
       get :drop_list
       get :efforts
+      get :export_raw_times
       get :finish_line
       get :follow
       get :raw_times
       get :reconcile
       get :roster
-      get :export_raw_times
+      get :setup
       get :split_raw_times
       get :stats
       get :traffic
@@ -108,6 +111,7 @@ Rails.application.routes.draw do
       patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
+      delete :delete_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
     end
@@ -115,7 +119,7 @@ Rails.application.routes.draw do
 
   resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
 
-  resources :events, except: :index do
+  resources :events, only: [:show] do
     member do
       get :admin
       get :edit_start_time
@@ -135,6 +139,8 @@ Rails.application.routes.draw do
   resources :import_jobs, only: [:index, :show, :new, :create, :destroy]
 
   resources :organizations do
+    resources :event_groups, except: [:index, :show]
+
     resources :lotteries do
       member { get :draw_tickets }
       member { get :setup }

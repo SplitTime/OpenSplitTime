@@ -1,17 +1,19 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Edit event group - #{@event_group.name}" %>
+  <% "OpenSplitTime: Edit event group - #{@presenter.name}" %>
 <% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
 
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>Edit Event Group</strong></h1>
+          <h1><strong><%= @presenter.name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @event_group.name, event_group_path(@event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization_name, organization_path(@event_group.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group_name, setup_event_group_path(@event_group) %></li>
             <li class="breadcrumb-item active">Edit</li>
           </ul>
         </div>
@@ -21,15 +23,15 @@
 </header>
 
 <article class="ost-article container">
-  <%= render 'form' %>
-  <% if current_user.authorized_fully?(@event_group) %>
+  <%= render 'form', presenter: @presenter %>
+  <% if current_user.authorized_fully?(@presenter.event_group) %>
     <hr>
-    <%= link_to_delete_resource('Delete this event group', event_group_path(@event_group),
-                                resource: @event_group,
+    <%= link_to_delete_resource("Delete this event group", organization_event_group_path(@presenter.organization, @presenter.event_group),
+                                resource: @presenter.event_group,
                                 noteworthy_associations: [:events, :entrants, :split_times],
                                 class: 'btn btn-danger') %>
 
-    <%= link_with_strong_confirm('Delete all time records', delete_all_times_event_group_path(@event_group),
+    <%= link_with_strong_confirm("Delete all time records", delete_all_times_event_group_path(@event_group),
                                  class: 'btn btn-outline-secondary text-danger',
                                  message: "This action will permanently delete all split time and raw time records from the #{@event_group.name.upcase} event group.",
                                  required_pattern: "#{@event_group.name.upcase} TIMES",

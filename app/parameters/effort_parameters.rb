@@ -15,8 +15,8 @@ class EffortParameters < BaseParameters
       email
       emergency_contact
       emergency_phone
+      event_name
       scheduled_start_time_local
-      comments
     ]
   end
 

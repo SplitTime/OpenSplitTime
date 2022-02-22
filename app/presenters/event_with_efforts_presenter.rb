@@ -54,6 +54,10 @@ class EventWithEffortsPresenter < BasePresenter
     @event_finished ||= ranked_efforts.none?(&:in_progress?)
   end
 
+  def authorized_to_edit?
+    current_user&.authorized_to_edit?(event) || false
+  end
+
   private
 
   attr_reader :params, :current_user

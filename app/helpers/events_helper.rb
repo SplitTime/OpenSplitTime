@@ -44,7 +44,7 @@ module EventsHelper
     end
 
     link_to button_text,
-            event_group_path(view_object.event_group, event_group: {available_live: !view_object.available_live?}),
+            organization_event_group_path(view_object.organization, view_object.event_group, event_group: {available_live: !view_object.available_live?}),
             data: {confirm: confirm_text},
             method: :put,
             class: "btn btn-md btn-warning"
@@ -62,7 +62,7 @@ module EventsHelper
     end
 
     link_to button_text,
-            event_group_path(view_object.event_group, event_group: {concealed: !view_object.concealed?}),
+            organization_event_group_path(view_object.organization, view_object.event_group, event_group: {concealed: !view_object.concealed?}),
             data: {confirm: confirm_text},
             method: :put,
             class: "btn btn-md btn-warning"

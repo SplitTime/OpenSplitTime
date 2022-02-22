@@ -19,7 +19,6 @@
       </div>
       <aside class="col-auto">
         <% if current_user&.authorized_fully?(@presenter.organization) %>
-          <%= link_to 'Create New Event', event_staging_app_path('new'), class: "btn btn-outline-secondary" %>
           <%= link_to 'Edit this organization', edit_organization_path(@presenter.organization), class: "btn btn-outline-secondary" %>
         <% end %>
       </aside>
@@ -96,15 +95,17 @@
   <% end %>
 
 <% when "event_series" %>
-  <aside class="ost-toolbar">
-    <div class="container">
-      <div class="row">
-        <div class="col offset-md-6 col-md-6">
-          <%= link_to fa_icon('plus', text: 'Add'), new_event_series_path(organization: @presenter.organization), id: 'add-event-series', class: 'btn btn-success' %>
+  <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col offset-md-6 col-md-6">
+            <%= link_to fa_icon('plus', text: 'Add'), new_event_series_path(organization: @presenter.organization), id: 'add-event-series', class: 'btn btn-success' %>
+          </div>
         </div>
       </div>
-    </div>
-  </aside>
+    </aside>
+  <% end %>
 
   <article class="ost-article container">
     <% if @presenter.event_series.present? %>
@@ -136,11 +137,33 @@
   </article>
 
 <% else %>
+
+  <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <%= link_to fa_icon("plus", text: "New event group"), new_organization_event_group_path(@presenter.organization), id: "add-event-group", class: "btn btn-success" %>
+          </div>
+        </div>
+      </div>
+    </aside>
+  <% end %>
+
   <article class="ost-article container">
-    <% if @presenter.event_groups.present? %>
-      <%= render 'event_groups/list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
+    <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+      <% if @presenter.concealed_event_groups.present? %>
+        <div class="p-3 border border-primary">
+          <h3>Under Construction</h3>
+          <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <% if @presenter.visible_event_groups.present? %>
+      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.visible_event_groups %>
     <% else %>
-      <h4>No events are associated with this organization.</h4>
+      <h4>No events exist yet</h4>
     <% end %>
   </article>
 <% end %>

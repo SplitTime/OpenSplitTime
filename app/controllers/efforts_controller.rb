@@ -12,8 +12,13 @@ class EffortsController < ApplicationController
       end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
-        send_data(builder.full_string, type: "text/csv",
-                                       filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+        filename = if prepared_params[:filter] == {"id" => "0"}
+                     "ost-effort-import-template.csv"
+                   else
+                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                   end
+
+        send_data(builder.full_string, type: "text/csv", filename: filename)
       end
     end
   end
@@ -63,7 +68,7 @@ class EffortsController < ApplicationController
       when :disassociate
         redirect_to request.referrer
       else
-        redirect_to effort_path(effort)
+        redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
       end
 
       if new_event_id && new_event_id != effort.event_id

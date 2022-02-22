@@ -17,7 +17,7 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
   let(:organization) { event_group.organization }
 
   scenario "The user is a visitor" do
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
 
     expect(page).to have_current_path(root_path)
     verify_alert("You need to sign in or sign up before continuing")
@@ -26,7 +26,7 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
   scenario "The user is a user that is not authorized to edit the event group" do
     login_as user, scope: :user
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
 
     expect(page).to have_current_path(root_path)
     verify_alert("Access denied")
@@ -35,10 +35,10 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
   scenario "The user is a steward of the organization" do
     login_as steward, scope: :user
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_visit_and_update
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     expect(page).not_to have_link("Delete this event group")
     expect(page).not_to have_link("Delete all time records")
   end
@@ -46,40 +46,40 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
   scenario "The user is the owner of the organization" do
     login_as owner, scope: :user
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_visit_and_update
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_confirm_and_delete_times
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_confirm_and_delete
   end
 
   scenario "The user is an admin" do
     login_as admin, scope: :user
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_visit_and_update
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_confirm_and_delete_times
 
-    visit edit_event_group_path(event_group)
+    visit edit_organization_event_group_path(organization, event_group)
     verify_confirm_and_delete
   end
 
   def verify_visit_and_update
-    expect(page).to have_current_path(edit_event_group_path(event_group))
+    expect(page).to have_current_path(edit_organization_event_group_path(organization, event_group))
     expect(event_group.name).to eq("SUM")
 
-    fill_in "Name", with: "Silverton Ultra Marathon"
-    click_button "Update Event Group"
+    fill_in "event_group_name", with: "Silverton Ultra Marathon"
+    click_button "Continue"
 
-    expect(page).not_to have_current_path(edit_event_group_path(event_group))
+    expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
 
     event_group.reload
-    expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
+    expect(page).to have_current_path(setup_event_group_path(event_group))
     expect(event_group.name).to eq("Silverton Ultra Marathon")
   end
 
@@ -98,10 +98,10 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
 
     expect do
       click_link "Permanently Delete"
-      expect(page).not_to have_current_path(edit_event_group_path(event_group))
-    end.to change { SplitTime.count }.by(-split_time_count).and change { RawTime.count }.by(-raw_time_count)
+      expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
+    end.to change { SplitTime.count }.by(-split_time_count).and change { RawTime.count }.by (-raw_time_count)
 
-    expect(page).to have_current_path(event_group_path(event_group, force_settings: true))
+    expect(page).to have_current_path(setup_event_group_path(event_group))
   end
 
   def verify_confirm_and_delete
@@ -116,7 +116,7 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
 
     expect do
       click_link "Permanently Delete"
-      expect(page).not_to have_current_path(edit_event_group_path(event_group))
+      expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
     end.to change { EventGroup.count }.by(-1)
     expect(page).to have_current_path(event_groups_path)
   end

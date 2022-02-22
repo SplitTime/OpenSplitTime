@@ -32,6 +32,9 @@ module DropdownHelper
 
   def admin_dropdown_menu(view_object)
     dropdown_items = [
+      {name: "Setup",
+       link: setup_event_group_path(view_object.event_group),
+       active: action_name == "setup"},
       {name: "Staging",
        link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
        active: action_name == "app"},
@@ -44,15 +47,12 @@ module DropdownHelper
       {name: "Problems",
        link: roster_event_group_path(view_object.event_group, problem: true),
        active: action_name == "roster" && params[:problem]},
-      {name: "Settings",
-       link: event_group_path(view_object.event_group, force_settings: true),
-       active: controller_name == "event_groups" && action_name == "show"},
       {name: "Stats",
        link: stats_event_group_path(view_object.event_group),
        active: controller_name == "event_groups" && action_name == "stats"},
       {name: "Finish Line",
        link: finish_line_event_group_path(view_object.event_group),
-       active: controller_name == "event_groups" && action_name == "finish_line"}
+       active: controller_name == "event_groups" && action_name == "finish_line"},
     ]
     build_dropdown_menu("Admin", dropdown_items, class: "nav-item")
   end
@@ -272,7 +272,8 @@ module DropdownHelper
   def event_actions_dropdown(event)
     dropdown_items = [
       {name: "Edit/Delete Event",
-       link: edit_event_path(event)},
+       link: edit_event_group_event_path(event.event_group, event),
+       data: {"turbo-frame" => "_top"}},
       {name: "Establish Drops",
        link: set_stops_event_path(event),
        method: :put,
@@ -280,7 +281,8 @@ module DropdownHelper
          "at the last aid station for which times are available. Are you sure you want to proceed?"}},
       {name: "Shift start time",
        link: edit_start_time_event_path(event),
-       visible: current_user.admin?},
+       visible: current_user.admin?,
+       data: {"turbo-frame" => "_top"}},
       {role: :separator},
       {name: "Export Finishers List",
        link: export_event_path(event, format: :csv, export_format: :finishers)},
@@ -295,7 +297,7 @@ module DropdownHelper
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
       {name: "Edit/Delete Group",
-       link: edit_event_group_path(view_object)},
+       link: edit_organization_event_group_path(view_object.organization, view_object.event_group)},
       {name: "Duplicate Group",
        link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
       {role: :separator},
@@ -303,6 +305,17 @@ module DropdownHelper
        link: organization_path(view_object.organization, display_style: "stewards")}
     ]
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
+  end
+
+  def entrants_roster_import_dropdown(view_object)
+    dropdown_items = [
+      {name: "Import entrants",
+       link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})},
+      {role: :separator},
+      {name: "Download template",
+       link: efforts_path(filter: {id: 0}, format: :csv)},
+    ]
+    build_dropdown_menu("Import", dropdown_items, button: true)
   end
 
   def roster_actions_dropdown(view_object)
@@ -342,27 +355,6 @@ module DropdownHelper
     dropdown_items.unshift(default_item)
 
     build_dropdown_menu(nil, dropdown_items, button: true)
-  end
-
-  def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
-    icon_name = prior_or_next == :prior ? "caret-left" : "caret-right"
-    target = view_object.send("#{prior_or_next}_#{param}")
-    merge_param = target.present? ? {param => target} : {}
-    titleized_prior_or_next = prior_or_next.to_s.titleize
-    tooltip_title = "#{titleized_prior_or_next} [Ctrl-#{titleized_prior_or_next.first}]"
-
-    content_tag :span, data: {controller: :navigation} do
-      link_to fa_icon(icon_name, class: "fa-lg"),
-              request.params.merge(merge_param),
-              id: "#{prior_or_next}-button",
-              class: "btn btn-outline-secondary has-tooltip",
-              data: {action: "keyup@document->navigation#evaluateKeyup",
-                     target: "navigation.#{prior_or_next}Button",
-                     toggle: "tooltip",
-                     placement: :bottom,
-                     "original-title" => tooltip_title},
-              disabled: target.blank?
-    end
   end
 
   def sub_split_kind_dropdown(view_object)

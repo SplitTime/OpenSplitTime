@@ -1,104 +1,180 @@
-<%= render 'shared/errors', obj: @event %>
+<%= render 'shared/errors', obj: event %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@event, html: {class: "form-horizontal", role: "form"}) do |f| %>
+<aside class="col-12">
+  <h3>
+    <strong>Provide Your Event Details</strong>
+  </h3>
+  <p>Your event will be run on a course. You can use an existing course or create a new one. If you have more than one
+    event running in parallel, you must add a short name to distinguish between them.</p>
+</aside>
 
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :short_name %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :short_name, class: "form-control", placeholder: "Short name" %>
-        </div>
+<div data-controller="event-setup">
+  <div data-event-setup-target="formData"
+       data-event-group-name="<%= presenter.event_group.name %>"
+       data-pref-distance-unit="<%= presenter.pref_distance_unit %>"></div>
+  <%= turbo_frame_tag :course_info, data: {"event-setup-target" => "courseInfoFrame"} do %>
+    <div class="row">
+      <div class="col-12">
+        <%= form_with(model: presenter.course, html: {class: "form-horizontal", role: "form"}) do |form| %>
+          <div class="card card-body bg-light border-0">
+            <div class="row">
+              <div class="form-group col">
+                <label class="required">Choose an existing course or create a new course</label>
+                <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
+                <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id),
+                                {},
+                                {autofocus: true,
+                                 class: "form-control dropdown-select-field",
+                                 data: {"event-setup-target" => "courseSelector",
+                                        action: "event-setup#fillDistance event-setup#toggleCourseForm event-setup#setCourseId"}} %>
+              </div>
+            </div>
+
+            <div class="<%= presenter.course.persisted? ? 'd-none' : '' %>" data-event-setup-target="courseForm">
+              <div class="row">
+                <div class="form-group col">
+                  <div class="row">
+                    <div class="col">
+                      <%= form.label :course_name, class: "required" %>
+                      <%= form.text_field :name, class: "form-control", placeholder: "My Sweet Course" %>
+                    </div>
+
+                    <%= form.fields_for(:splits, presenter.start_split) do |start_split_form| %>
+                      <%= start_split_form.hidden_field :base_name %>
+                      <%= start_split_form.hidden_field :distance_in_preferred_units %>
+                      <%= start_split_form.hidden_field :kind %>
+                      <%= start_split_form.hidden_field :sub_split_bitmap %>
+                    <% end %>
+
+                    <%= form.fields_for(:splits, presenter.finish_split) do |finish_split_form| %>
+                      <div class="col">
+                        <%= finish_split_form.label "Course distance (#{presenter.pref_distance_unit})", class: "required" %>
+                        <%= finish_split_form.text_field :distance_in_preferred_units, class: "form-control", placeholder: "for example, 34.5" %>
+                      </div>
+                      <%= finish_split_form.hidden_field :base_name %>
+                      <%= finish_split_form.hidden_field :kind %>
+                      <%= finish_split_form.hidden_field :sub_split_bitmap %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+              <%= form.hidden_field :organization_id %>
+              <%= hidden_field_tag :event_group_id, presenter.event_group.id %>
+
+              <br/>
+
+              <div class="row">
+                <div class="col">
+                  <%= form.submit "Create course", class: "btn btn-primary btn-large" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
+    </div>
+  <% end %>
 
-      <% if @course.nil? %>
-        <div class="form-group required">
-          <div class="control-label col-sm-2">
-            <%= f.label :course_id %>
+  <br/>
+
+  <div class="row">
+    <div class="col-12">
+      <%= form_with(model: [presenter.event_group, presenter.event],
+                    data: {remote: false, turbo: false},
+                    html: {class: "form-horizontal", role: "form"}) do |form| %>
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <div class="row">
+                <%= form.hidden_field :course_id, data: {"event-setup-target" => "courseIdField"} %>
+                <div class="col">
+                  <%= form.label :laps_required, class: 'required' %>
+                  <%= form.select :laps_required, (1..20).map { |n| [n, n] }.unshift(['Unlimited', 0]), {},
+                                  class: "form-control dropdown-select-field", data: {'event-setup-target' => 'lapDropdown', action: 'event-setup#fillDistance'} %>
+                </div>
+                <div class="col">
+                  <%= form.label :course_distance %>
+                  <div class="form-auto-text" data-event-setup-target="courseDistance"></div>
+                </div>
+                <div class="col">
+                  <%= form.label :total_distance %>
+                  <div class="form-auto-text" data-event-setup-target="totalDistance"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <div class="row">
+                <div class="col">
+                  <%= form.label :short_name %>
+                  <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-original-title="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
+                  <%= form.text_field :short_name, class: "form-control", placeholder: "Short name", data: {"event-setup-target" => "eventShortName", action: 'keyup->event-setup#fillEventName'} %>
+                </div>
+                <div class="col">
+                  <%= form.label :full_name %>
+                  <div class="form-auto-text" data-event-setup-target="eventName"><%= presenter.event.name %></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-6">
+              <%= form.label :start_time, class: 'required' %>
+              <%= form.datetimepicker_field(:scheduled_start_time_local) %>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="card card-body bg-light border-0">
+          <div class="row">
+            <div class="form-group col">
+              <%= form.label :beacon_url %>
+              <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-original-title="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
+              <%= form.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
+            </div>
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+          <div class="control-label col">
+            <%= form.label :podium_template, class: 'required' %>
+            <span class="has-tooltip" tabindex="-1" data-toggle="tooltip" data-placement="bottom" data-original-title="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
           </div>
           <div class="col-sm-8">
-            <%= collection_select(:event, :course_id, Course.all.order(:name), :id, :name,
-                                  {prompt: true}, {class: "form-control dropdown-select-field"}) %>
+            <div class="card" data-controller="results-template">
+              <div class="card-header">
+                <h5>
+                  <%= results_template_selector(presenter.event) %>
+                </h5>
+              </div>
+              <div class="card-body" data-results-template-target="categories">
+                <%= render 'results_templates/categories_card', template: presenter.event.results_template %>
+              </div>
+            </div>
           </div>
         </div>
-      <% else %>
+
         <div class="form-group">
-          <div class="col-sm-8 col-sm-offset-2">
-            <%= f.hidden_field :course_id, value: @course.id %>
-            <h4><%= @course.name %></h4>
+          <div class="col">
+            <%= form.submit presenter.new_record? ? "Create event" : "Save changes", class: "btn btn-primary btn-large" %>
           </div>
+        </div>
+
+        <div class="col">
+          <span class="brackets"><%= link_to 'Cancel', setup_event_group_path(presenter.event_group) %></span>
         </div>
       <% end %>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label 'Start time' %>
-        </div>
-        <div class="col-sm-3">
-          <%= f.datetimepicker_field(:scheduled_start_time_local) %>
-          <%= "(#{@event.home_time_zone})" %>
-        </div>
-      </div>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :laps_required, "Laps required" %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.number_field :laps_required, class: "form-control", placeholder: "#" %>
-          <p>(Use 1 for an event that travels the course only once. Use 0 for unlimited laps (for a time-based
-            cutoff)</p>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :beacon_url %>
-        </div>
-        <div class="col-sm-4">
-          <%= f.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="control-label col-sm-2">
-          <%= f.label :notice_text %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.text_area :notice_text, class: "form-control", placeholder: "Any notice that should appear on the results view." %>
-        </div>
-      </div>
-
-      <div class="form-group required">
-        <div class="control-label col-sm-2">
-          <%= f.label :podium_template %>
-        </div>
-        <div class="col-sm-8">
-          <div class="card" data-controller="results-template">
-            <div class="card-header">
-              <h5>
-                <%= results_template_selector(@event) %>
-              </h5>
-            </div>
-            <div class="card-body" data-results-template-target="categories">
-              <%= render 'results_templates/categories_card', template: @event.results_template %>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit(@event.new_record? ? "Create Event" : "Update Event", class: 'btn btn-primary btn-large') %>
-        </div>
-      </div>
-
-      <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', event_group_path(@event.event_group, force_settings: true) %></span>
-      </div>
-
-    <% end %>
+    </div>
   </div>
 </div>

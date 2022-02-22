@@ -20,7 +20,7 @@ RSpec.describe "visit the import jobs index page" do
         expect(page).to have_content("Import Jobs")
         expect(page).to have_content(test_user.full_name)
         expect(page).to have_link(import_job.id.to_s, href: import_job_path(import_job))
-        expect(page).to have_link(parent_resource.name, href: organization_lottery_path(parent_resource.organization, parent_resource))
+        expect(page).to have_link(parent_resource.name, href: setup_organization_lottery_path(parent_resource.organization, parent_resource))
 
         expect(page).not_to have_link(other_user_import_job.id.to_s, href: import_job_path(other_user_import_job))
       end

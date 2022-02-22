@@ -44,7 +44,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to effort_path(@effort)
+      redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
     else
       render "new"
     end

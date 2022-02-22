@@ -6,6 +6,7 @@ class EventGroupSetupPresenter < BasePresenter
   attr_reader :event_group
   delegate :available_live?,
            :concealed?,
+           :first_event,
            :multiple_events?,
            :name,
            :organization,

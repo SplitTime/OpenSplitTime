@@ -9,7 +9,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong></h1>
+          <h1>
+            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
+          </h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -61,10 +63,10 @@
 
 <% when "entrants" %>
   <article class="ost-article container">
-    <% if @presenter.event_group_efforts.exists? %>
+    <% if @presenter.first_event.present? %>
       <%= render "entrants_roster", presenter: @presenter %>
     <% else %>
-      <h4>No entrants have been added yet.</h4>
+      <h4>You will need to add an event before adding entrants.</h4>
     <% end %>
   </article>
 

@@ -95,8 +95,10 @@
         </tbody>
       </table>
 
-    <% else %>
+    <% elsif presenter.event_group_efforts.exists? %>
       <strong>No results match that search.</strong>
+    <% else %>
+      <strong>No entrants have been added yet.</strong>
     <% end %>
   </article>
 </div>

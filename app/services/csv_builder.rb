@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 class CsvBuilder
   def initialize(model_class, resources)
     @model_class = model_class
@@ -9,7 +11,7 @@ class CsvBuilder
   def full_string
     return error_message if error_message.present?
 
-    CSV.generate do |csv|
+    ::CSV.generate do |csv|
       csv << headers
       resources.each { |resource| csv << serialize_resource(resource) }
     end

@@ -23,6 +23,6 @@
 
   <div class="form-group">
     <%= f.submit t('devise.sessions.new.sign_in'), id: 'log-in-modal-submit', class: 'btn btn-primary',
-                 data: {action: 'click->login#hideErrors'} %>
+                 data: {action: 'click->login#hideErrors', turbo: false} %>
   </div>
 <% end %>

@@ -2,14 +2,16 @@
   <% "OpenSplitTime: New effort" %>
 <% end %>
 
+<%= render "shared/mode_widget", event_group: @effort.event_group %>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>New Effort</strong></h1>
+          <h1><strong>New Entrant</strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @effort.event.event_group.organization.name, organization_path(@effort.event.event_group.organization) %></li>
             <% if @effort.event_group.multiple_events? %>
               <li class="breadcrumb-item"><%= link_to @effort.event_group.name, event_group_path(@effort.event_group) %></li>
@@ -24,5 +26,5 @@
 </header>
 
 <article class="ost-article container">
-  <%= render 'form' %>
+  <%= render "form" %>
 </article>

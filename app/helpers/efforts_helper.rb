@@ -43,6 +43,28 @@ module EffortsHelper
     time_string + provisional_marker
   end
 
+  def link_to_effort_delete(effort)
+    url = effort_path(effort)
+    tooltip = "Delete effort"
+    options = {method: :delete,
+               data: {confirm: "This cannot be undone. Continue?",
+                      toggle: :tooltip,
+                      placement: :bottom,
+                      "original-title" => tooltip},
+               class: "btn btn-danger has-tooltip"}
+    link_to fa_icon("trash"), url, options
+  end
+
+  def link_to_effort_edit(effort)
+    url = edit_effort_path(effort)
+    tooltip = "Edit effort"
+    options = {data: {toggle: :tooltip,
+                      placement: :bottom,
+                      "original-title" => tooltip},
+               class: "btn btn-primary has-tooltip"}
+    link_to fa_icon("pencil-alt"), url, options
+  end
+
   def effort_row_confirm_buttons(row, effort)
     if row.absolute_times_local.compact.present?
       row.time_data_statuses.each_with_index do |data_status, i|

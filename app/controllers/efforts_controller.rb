@@ -86,7 +86,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     @effort.destroy
-    redirect_to roster_event_group_path(@effort.event.event_group)
+    redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
   end
 
   def projections

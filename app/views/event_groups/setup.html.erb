@@ -72,10 +72,6 @@
 
 <% when "partners" %>
   <article class="ost-article container">
-    <% if @presenter.partners.exists? %>
-      <%= render "partner_list", presenter: @presenter %>
-    <% else %>
-      <h4>This event group has no sponsorship partners yet.</h4>
-    <% end %>
+    <%= render "partner_list", presenter: @presenter %>
   </article>
 <% end %>

@@ -76,6 +76,10 @@ class EventGroupSetupPresenter < BasePresenter
     organization.name
   end
 
+  def status
+    available_live? ? "live" : "not_live"
+  end
+
   private
 
   attr_reader :params, :current_user

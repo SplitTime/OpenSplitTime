@@ -22,7 +22,8 @@ module DropdownHelper
             concat content_tag(:div, "", class: "dropdown-divider")
           else
             active = item[:active] ? "active" : nil
-            html_class = ["dropdown-item", active, item[:class]].compact.join(" ")
+            disabled = item[:disabled] ? "disabled" : nil
+            html_class = ["dropdown-item", active, disabled, item[:class]].compact.join(" ")
             concat link_to item[:name], item[:link], {class: html_class}.merge(item.slice(:method, :data))
           end
         end
@@ -295,11 +296,44 @@ module DropdownHelper
   end
 
   def event_group_actions_dropdown(view_object)
+    make_public_text = "NOTE: This will make #{view_object.event_group_names} visible to the public, " +
+      "including all related efforts and people. Are you sure you want to proceed?"
+    make_private_text = "NOTE: This will conceal #{view_object.event_group_names} from the public, " +
+      "including all related efforts. Are you sure you want to proceed?"
+    enable_live_text = "NOTE: This will enable live entry actions for #{view_object.event_group_names}, " +
+      "and will also trigger live follower notifications by email and SMS text when new times are added. " +
+      "Are you sure you want to proceed?"
+    disable_live_text = "NOTE: This will suspend all live entry actions for #{view_object.event_group_names}, " +
+      "including any that may be in process, and will disable live follower notifications " +
+      "by email and SMS text when new times are added. Are you sure you want to proceed?"
+
     dropdown_items = [
       {name: "Edit/Delete Group",
        link: edit_organization_event_group_path(view_object.organization, view_object.event_group)},
       {name: "Duplicate Group",
        link: new_duplicate_event_group_path(existing_id: view_object.event_group.id)},
+      {role: :separator},
+      {name: "Make Public",
+       link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: {concealed: false}),
+       data: {confirm: make_public_text},
+       disabled: !view_object.concealed?,
+       method: :put},
+      {name: "Make Private",
+       link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: {concealed: true}),
+       data: {confirm: make_private_text},
+       disabled: view_object.concealed?,
+       method: :put},
+      {role: :separator},
+      {name: "Enable Live",
+       link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: {available_live: true}),
+       data: {confirm: enable_live_text},
+       disabled: view_object.available_live?,
+       method: :put},
+      {name: "Disable Live",
+       link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: {available_live: false}),
+       data: {confirm: disable_live_text},
+       disabled: !view_object.available_live?,
+       method: :put},
       {role: :separator},
       {name: "Add/Remove Stewards",
        link: organization_path(view_object.organization, display_style: "stewards")}

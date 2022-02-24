@@ -10,7 +10,8 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
@@ -32,17 +33,10 @@
       <div class="container">
         <div class="row">
           <div class="col">
-            <%= link_to fa_icon("plus", text: "Add an event"), new_event_group_event_path(@presenter.event_group), id: "add-event", class: "btn btn-success" %>
-          </div>
-
-          <div class="col-auto form-inline">
-            <div>
-              <% if current_user&.authorized_fully?(@presenter.event_group) %>
-                <%= link_to_toggle_public_private(@presenter) %>
-                <%= link_to_toggle_live_entry(@presenter) %>
-                <%= event_group_actions_dropdown(@presenter) %>
-              <% end %>
-            </div>
+            <% if current_user&.authorized_fully?(@presenter.event_group) %>
+              <%= link_to fa_icon("plus", text: "Add an event"), new_event_group_event_path(@presenter.event_group), id: "add-event", class: "btn btn-success" %>
+              <%= event_group_actions_dropdown(@presenter) %>
+            <% end %>
           </div>
         </div>
       </div>

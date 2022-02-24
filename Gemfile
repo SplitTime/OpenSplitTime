@@ -77,7 +77,7 @@ group :development do
 end
 
 group :test do
-  gem "capybara", "~> 3.35", ">= 3.35.3"
+  gem "capybara"
   gem "factory_bot_rails", "~> 5.2", ">= 5.2.0", require: false
   gem "pry"
   gem "vcr", "~> 4.0"

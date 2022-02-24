@@ -32,7 +32,7 @@ module DropdownHelper
 
   def admin_dropdown_menu(view_object)
     dropdown_items = [
-      {name: "Setup",
+      {name: "Construction",
        link: setup_event_group_path(view_object.event_group),
        active: action_name == "setup"},
       {name: "Staging",

@@ -173,26 +173,10 @@ RSpec.describe "Visit an event group setup page and try various features", type:
   end
 
   def verify_admin_links_absent
-    expect(page).not_to have_content("Make private")
-    expect(page).not_to have_content("Make public")
-    expect(page).not_to have_content("Disable live")
-    expect(page).not_to have_content("Enable live")
     expect(page).not_to have_content("Group Actions")
   end
 
   def verify_admin_links_present
-    if event_group.concealed?
-      expect(page).to have_link("Make public", href: organization_event_group_path(organization, event_group, event_group: {concealed: false}), visible: :all)
-    else
-      expect(page).to have_link("Make private", href: organization_event_group_path(organization, event_group, event_group: {concealed: true}), visible: :all)
-    end
-
-    if event_group.available_live?
-      expect(page).to have_link("Disable live", href: organization_event_group_path(organization, event_group, event_group: {available_live: false}), visible: :all)
-    else
-      expect(page).to have_link("Enable live", href: organization_event_group_path(organization, event_group, event_group: {available_live: true}), visible: :all)
-    end
-
     expect(page).to have_content("Group Actions")
   end
 end

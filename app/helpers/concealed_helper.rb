@@ -3,7 +3,7 @@
 module ConcealedHelper
   def name_with_concealed_indicator(presenter)
     icon_name = presenter.concealed? ? "eye-slash" : "eye"
-    tooltip_text = presenter.concealed? ? "Lottery is not visible to the public" : "Lottery is visible to the public"
+    tooltip_text = presenter.concealed? ? "Not visible to the public" : "Visible to the public"
 
     concat presenter.name.html_safe
     concat " "

@@ -5,10 +5,10 @@ module BadgeHelper
     case status
     when "not_live"
       color = :primary
-      tooltip_text = "Live entry is not available; event group will not be visible in OST Remote"
+      tooltip_text = "Live entry is not available; this event group will not be visible in OST Remote"
     when "live"
       color = :danger
-      tooltip_text = "Live entry is available; event group will be visible to authorized users in OST Remote"
+      tooltip_text = "Live entry is available; this event group will be visible to authorized users in OST Remote"
     else
       raise ArgumentError, "Can't build a badge; unknown status: #{status}"
     end

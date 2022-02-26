@@ -19,7 +19,7 @@ class EventGroupsController < ApplicationController
     event = @event_group.first_event
 
     if event.present?
-    redirect_to spread_event_path(event)
+      redirect_to spread_event_path(event)
     else
       redirect_to setup_event_group_path(@event_group)
     end

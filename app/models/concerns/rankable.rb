@@ -8,14 +8,17 @@
 module Rankable
   extend ActiveSupport::Concern
 
+  # @return [String (frozen)]
   def display_overall_rank
-    started? ? overall_rank : "--"
+    overall_rank || "--"
   end
 
+  # @return [String (frozen)]
   def display_gender_rank
-    started? ? gender_rank : "--"
+    gender_rank || "--"
   end
 
+  # @return [String (frozen)]
   def effort_status
     if finished?
       "Finished"

@@ -11,7 +11,7 @@ class EffortTimesRow
 
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
            :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset,
-           :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
+           :beyond_start?, :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,

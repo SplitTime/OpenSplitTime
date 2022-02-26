@@ -16,10 +16,10 @@ class EventGroupsController < ApplicationController
   end
 
   def show
-    events = @event_group.events
+    event = @event_group.first_event
 
-    if events.present?
-      redirect_to spread_event_path(events.first)
+    if event.present?
+    redirect_to spread_event_path(event)
     else
       redirect_to setup_event_group_path(@event_group)
     end

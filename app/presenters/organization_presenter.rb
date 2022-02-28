@@ -18,21 +18,12 @@ class OrganizationPresenter < BasePresenter
     scoped_lotteries.where(organization: organization).order(scheduled_start_date: :desc)
   end
 
-  def event_groups
-    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
-    EventGroup.distinct
-        .joins(:events) # Excludes "orphaned" event_groups (having no events)
-        .where(id: scoped_event_groups.map(&:id), organization: organization)
-        .includes(events: :efforts).includes(:organization)
-        .sort_by { |event_group| -event_group.scheduled_start_time.to_i }
-  end
-
   def concealed_event_groups
-    @concealed_event_groups ||= organization.event_groups.concealed
+    event_groups.concealed
   end
 
   def visible_event_groups
-    @visible_event_groups ||= organization.event_groups.visible
+    event_groups.visible
   end
 
   def event_series
@@ -64,6 +55,10 @@ class OrganizationPresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
+  def event_groups
+    organization.event_groups.by_group_start_time
+  end
 
   def event_dates(series)
     series.events.map(&:scheduled_start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }

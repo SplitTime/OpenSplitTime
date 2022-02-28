@@ -128,28 +128,26 @@ class EffortQuery < BaseQuery
                            when beyond_start then
                                        rank() over
                                    (partition by event_id
-                                   order by started desc,
+                                   order by beyond_start desc,
+                                       started desc,
                                        dropped,
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_elapsed_seconds,
-                                       gender desc,
-                                       age desc)
+                                       final_elapsed_seconds)
                            else null end
                            as overall_rank,
                        case
                            when beyond_start then
                                        rank() over
                                    (partition by event_id, gender
-                                   order by started desc,
+                                   order by beyond_start desc,
+                                       started desc,
                                        dropped,
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_elapsed_seconds,
-                                       gender desc,
-                                       age desc)
+                                       final_elapsed_seconds)
                            else null end
                            as gender_rank,
                        lag(id) over
@@ -160,9 +158,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_elapsed_seconds,
-                               gender desc,
-                               age desc)
+                               final_elapsed_seconds)
                            as prior_effort_id,
                        lead(id) over
                            (partition by event_id
@@ -172,9 +168,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_elapsed_seconds,
-                               gender desc,
-                               age desc)
+                               final_elapsed_seconds)
                            as next_effort_id
                 from main_subquery)
 

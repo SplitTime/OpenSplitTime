@@ -57,7 +57,7 @@ class OrganizationPresenter < BasePresenter
   attr_reader :params, :current_user
 
   def event_groups
-    organization.event_groups.by_group_start_time
+    organization.event_groups.by_group_start_time.includes(:events)
   end
 
   def event_dates(series)

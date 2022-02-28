@@ -151,16 +151,14 @@
   <% end %>
 
   <article class="ost-article container">
-    <% if current_user&.authorized_to_edit?(@presenter.organization) %>
-      <% if @presenter.concealed_event_groups.present? %>
-        <div class="p-3 border border-primary">
-          <h3>Under Construction</h3>
-          <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
-        </div>
-      <% end %>
+    <% if current_user&.authorized_to_edit?(@presenter.organization) && @presenter.concealed_event_groups.exists? %>
+      <div class="p-3 border border-primary">
+        <h3>Under Construction</h3>
+        <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
+      </div>
     <% end %>
 
-    <% if @presenter.visible_event_groups.present? %>
+    <% if @presenter.visible_event_groups.exists? %>
       <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.visible_event_groups %>
     <% else %>
       <h4>No events exist yet</h4>

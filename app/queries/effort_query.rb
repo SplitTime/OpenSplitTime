@@ -25,7 +25,7 @@ class EffortQuery < BaseQuery
                  order by effort_id),		
 
            beyond_start_split_times as (
-               select effort_id
+               select distinct on(effort_id) effort_id
                from split_times
                         join splits on splits.id = split_times.split_id
                where kind != 0

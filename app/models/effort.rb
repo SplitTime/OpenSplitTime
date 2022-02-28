@@ -281,12 +281,18 @@ class Effort < ApplicationRecord
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(laps_started)
   end
 
+  # @return [Integer, nil]
   def overall_rank
-    attributes["overall_rank"] || enriched.attributes["overall_rank"]
+    return attributes["overall_rank"] if attributes.has_key?("overall_rank")
+
+    enriched.attributes["overall_rank"]
   end
 
+  # @return [Integer, nil]
   def gender_rank
-    attributes["gender_rank"] || enriched.attributes["overall_rank"]
+    return attributes["gender_rank"] if attributes.has_key?("gender_rank")
+
+    enriched.attributes["gender_rank"]
   end
 
   def current_age_approximate

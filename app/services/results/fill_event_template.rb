@@ -24,9 +24,9 @@ module Results
       ranked_efforts = event.efforts.ranked_with_status
 
       if event.laps_unlimited?
-        ranked_efforts.select(&:overall_rank)
+        ranked_efforts.select(&:beyond_start?)
       else
-        ranked_efforts.select(&:finished)
+        ranked_efforts.select(&:finished?)
       end
     end
 

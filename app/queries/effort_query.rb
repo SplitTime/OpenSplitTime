@@ -134,9 +134,7 @@ class EffortQuery < BaseQuery
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_elapsed_seconds,
-                                       gender desc,
-                                       age desc)
+                                       final_elapsed_seconds)
                            else null end
                            as overall_rank,
                        case
@@ -149,9 +147,7 @@ class EffortQuery < BaseQuery
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
                                        final_bitkey desc,
-                                       final_elapsed_seconds,
-                                       gender desc,
-                                       age desc)
+                                       final_elapsed_seconds)
                            else null end
                            as gender_rank,
                        lag(id) over
@@ -162,9 +158,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_elapsed_seconds,
-                               gender desc,
-                               age desc)
+                               final_elapsed_seconds)
                            as prior_effort_id,
                        lead(id) over
                            (partition by event_id
@@ -174,9 +168,7 @@ class EffortQuery < BaseQuery
                                final_lap desc nulls last,
                                final_lap_distance desc,
                                final_bitkey desc,
-                               final_elapsed_seconds,
-                               gender desc,
-                               age desc)
+                               final_elapsed_seconds)
                            as next_effort_id
                 from main_subquery)
 

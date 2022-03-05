@@ -46,9 +46,8 @@ Getting Started
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install 2.6.5`
-6. `$ rbenv local 2.6.5` (to make sure this is correct, run `$ rbenv version`)
-7. `$ rbenv rehash` then restart the terminal session
+5. `$ rbenv install <current ruby version>`
+6. `$ rbenv rehash` then restart the terminal session
 
 **Rails and Gems**
 
@@ -58,7 +57,6 @@ Getting Started
 
 > ### Using Homebrew on MacOS
 > `$ brew install postgres`
-> or alternatively, install the Postgres App found here: https://postgresapp.com/downloads.html
 
 > ### Using Debian/Ubuntu
 > 1. `$ sudo apt install postgresql libpq-dev`

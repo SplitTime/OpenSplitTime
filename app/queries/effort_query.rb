@@ -128,7 +128,8 @@ class EffortQuery < BaseQuery
                            when beyond_start then
                                        rank() over
                                    (partition by event_id
-                                   order by started desc,
+                                   order by beyond_start desc,
+                                       started desc,
                                        dropped,
                                        final_lap desc nulls last,
                                        final_lap_distance desc,
@@ -142,7 +143,8 @@ class EffortQuery < BaseQuery
                            when beyond_start then
                                        rank() over
                                    (partition by event_id, gender
-                                   order by started desc,
+                                   order by beyond_start desc,
+                                       started desc,
                                        dropped,
                                        final_lap desc nulls last,
                                        final_lap_distance desc,

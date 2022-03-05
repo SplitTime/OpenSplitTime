@@ -28,8 +28,8 @@ class EffortQuery < BaseQuery
                select distinct on(effort_id) effort_id
                from split_times
                         join splits on splits.id = split_times.split_id
-               where kind != 0
-                  or lap != 1
+               where (kind != 0 or lap != 1)
+                 and effort_id in (select id from efforts_scoped)		
            ),
 
            stopped_split_times as

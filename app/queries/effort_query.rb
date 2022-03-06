@@ -39,8 +39,9 @@ class EffortQuery < BaseQuery
            ),
 
            course_subquery as (
-               select courses.id                 as course_id,
-                      splits.distance_from_start as course_distance
+               select courses.id                  as course_id,
+                      splits.distance_from_start  as course_distance,
+                      splits.vert_gain_from_start as course_vert_gain
                from courses
                         join splits on splits.course_id = courses.id
                         join events on events.course_id = courses.id
@@ -49,11 +50,12 @@ class EffortQuery < BaseQuery
            )
 
       select efforts.*,
-             base_name                                                            as final_split_name,
-             absolute_time                                                        as final_absolute_time,
-             elapsed_seconds                                                      as final_elapsed_seconds,
-             split_times.lap                                                      as final_lap,
-             (split_times.lap - 1) * course_distance + splits.distance_from_start as final_distance
+             base_name                                                              as final_split_name,
+             absolute_time                                                          as final_absolute_time,
+             elapsed_seconds                                                        as final_elapsed_seconds,
+             split_times.lap                                                        as final_lap,
+             (split_times.lap - 1) * course_distance + splits.distance_from_start   as final_distance,
+             (split_times.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
       from efforts
                join split_times on split_times.id = efforts.final_split_time_id
                join splits on splits.id = split_times.split_id

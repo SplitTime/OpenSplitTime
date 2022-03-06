@@ -83,11 +83,9 @@ class ProjectedArrivalsAtSplit < ::ApplicationQuery
                (select distinct on (cs.effort_id) cs.effort_id,
                                                   completed_time +
                                                   ((cs.elapsed_seconds * projected_percentage)::int * interval '1 second') as projected_time,
-                                                  projected_percentage <= 0                                                as completed,
-                                                  st.id is not null                                                        as stopped
+                                                  projected_percentage <= 0                                                as completed
                 from completed_segments cs
                          left join grouped_projected_percentages using (completed_lap, completed_split_id, completed_bitkey)
-                         left join split_times st on st.effort_id = cs.effort_id and st.stopped_here = true
                 order by cs.effort_id)
 
       select efforts.id as effort_id, 

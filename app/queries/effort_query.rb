@@ -60,6 +60,7 @@ class EffortQuery < BaseQuery
                join course_subquery using(course_id)
       where efforts.id in (select id from existing_scope)
       )
+
       as efforts
     SQL
   end
@@ -79,17 +80,9 @@ class EffortQuery < BaseQuery
                         join splits on splits.id = split_times.split_id
                where kind = 0
                  and lap = 1
-           ),
-
-           beyond_start_split_times as (
-               select effort_id
-               from split_times
-                        join splits on splits.id = split_times.split_id
-               where kind != 0
-                  or lap != 1
            )
 
-      select distinct on (ef.id) 
+      select
           ef.id, 
           ef.slug, 
           ef.event_id, 
@@ -107,18 +100,16 @@ class EffortQuery < BaseQuery
           ef.checked_in, 
           ef.emergency_contact, 
           ef.emergency_phone,
+          ef.started,
+          ef.beyond_start,
           sst.absolute_time                                                                     as actual_start_time,
-          sst.absolute_time is not null                                                         as started,
-          bsst.effort_id is not null                                                            as beyond_start,
           coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
           extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
-          (checked_in and 
-              sst.absolute_time is null and 
+          (checked_in and not started and
               (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
       from efforts ef
                join events ev on ev.id = ef.event_id
                left join starting_split_times sst on sst.effort_id = ef.id
-               left join beyond_start_split_times bsst on bsst.effort_id = ef.id
       where ef.id in (select id from existing_scope)
       )
 

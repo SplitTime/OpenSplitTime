@@ -1076,8 +1076,8 @@ finished_second:
   last_name: Second
   gender: 1
   birthdate: '1994-08-16'
-  city:
-  state_code:
+  city: Bozeman
+  state_code: MT
   email:
   phone:
   created_at: 2016-05-08 07:06:11.133052000 Z
@@ -1087,7 +1087,7 @@ finished_second:
   country_code:
   user_id:
   concealed: false
-  slug: finished-second
+  slug: finished-second-montana-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lisa-ledet
   state_name:
   country_name:

@@ -7,6 +7,7 @@ lottery_without_tickets:
   slug: lottery-without-tickets
   created_at: 2021-09-29 20:39:20.622755000 Z
   updated_at: 2021-10-02 19:30:32.255267000 Z
+  concealed:
   status: 0
 lottery_with_tickets_and_draws:
   id: 4
@@ -16,4 +17,5 @@ lottery_with_tickets_and_draws:
   slug: lottery-with-tickets-and-draws
   created_at: 2021-09-29 20:44:48.724219000 Z
   updated_at: 2021-10-02 19:33:57.419309000 Z
+  concealed:
   status: 1

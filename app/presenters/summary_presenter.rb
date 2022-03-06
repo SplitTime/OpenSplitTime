@@ -4,9 +4,11 @@ class SummaryPresenter < EventWithEffortsPresenter
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=
       ranked_efforts
-          .select { |effort| filtered_ids.include?(effort.id) }
-          .select { |effort| finished_filter.include?(effort.finished) }
-          .paginate(page: page, per_page: per_page)
+        .finish_info_subquery
+        .where(filter_hash)
+        .where(finished: finished_filter)
+        .search(search_text)
+        .paginate(page: page, per_page: per_page)
   end
 
   def summary_title

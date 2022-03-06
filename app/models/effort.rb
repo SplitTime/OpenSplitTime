@@ -66,6 +66,7 @@ class Effort < ApplicationRecord
   scope :started, -> { joins(:split_times).uniq }
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
+  scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
   scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
   scope :with_policy_scope_attributes, lambda {
     from(select("efforts.*, event_groups.organization_id, event_groups.concealed").joins(event: :event_group), :efforts)

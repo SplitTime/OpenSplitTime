@@ -30,17 +30,35 @@ class EffortQuery < BaseQuery
     <<~SQL.squish
       (with existing_scope as (
         #{existing_scope_subquery}
-      )
+      ),
 
-       select efforts.*,
-              base_name as final_split_name,
-              absolute_time as final_absolute_time,
-              elapsed_seconds as final_elapsed_seconds,
-              1 as final_distance
-       from efforts
-                join split_times on split_times.id = efforts.final_split_time_id
-                join splits on splits.id = split_times.split_id
-       where efforts.id in (select id from existing_scope)
+           event_subquery as (
+               select event_id
+               from efforts
+               where efforts.id in (select id from existing_scope)
+           ),
+
+           course_subquery as (
+               select courses.id                 as course_id,
+                      splits.distance_from_start as course_distance
+               from courses
+                        join splits on splits.course_id = courses.id
+                        join events on events.course_id = courses.id
+               where splits.kind = 1
+                 and events.id in (select event_id from event_subquery)
+           )
+
+      select efforts.*,
+             base_name                                                            as final_split_name,
+             absolute_time                                                        as final_absolute_time,
+             elapsed_seconds                                                      as final_elapsed_seconds,
+             split_times.lap                                                      as final_lap,
+             (split_times.lap - 1) * course_distance + splits.distance_from_start as final_distance
+      from efforts
+               join split_times on split_times.id = efforts.final_split_time_id
+               join splits on splits.id = split_times.split_id
+               join course_subquery using(course_id)
+      where efforts.id in (select id from existing_scope)
       )
       as efforts
     SQL

@@ -32,9 +32,7 @@ class EffortShowView < EffortWithLapSplitRows
   end
 
   def times_exist_after_stop?
-    stopped_split_id &&
-      ((final_lap != stopped_lap) ||
-          (final_split_id != stopped_split_id) ||
-          (final_bitkey != stopped_bitkey))
+    stopped_split_time_id.present? &&
+      stopped_split_time_id != final_split_time_id
   end
 end

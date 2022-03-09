@@ -18,7 +18,7 @@ class EffortTimesRow
                            required: [:effort, :lap_splits, :split_times],
                            exclusive: [:effort, :lap_splits, :split_times, :display_style],
                            class: self.class)
-    @effort = args[:effort] # Use an enriched effort for optimal performance
+    @effort = args[:effort]
     @lap_splits = args[:lap_splits]
     @split_times = args[:split_times]
     @display_style = args[:display_style]

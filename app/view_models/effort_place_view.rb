@@ -6,7 +6,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   CategorizedEffortIds = Struct.new(:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid, keyword_init: true)
 
   def initialize(args_effort)
-    @effort = args_effort.enriched
+    @effort = args_effort.with_rank
   end
 
   def place_detail_rows

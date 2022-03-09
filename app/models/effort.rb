@@ -68,6 +68,7 @@ class Effort < ApplicationRecord
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
+  scope :ranking_subquery, -> { from(EffortQuery.ranking_subquery(self)) }
   scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
   scope :with_policy_scope_attributes, lambda {
     from(select("efforts.*, event_groups.organization_id, event_groups.concealed").joins(event: :event_group), :efforts)
@@ -255,14 +256,14 @@ class Effort < ApplicationRecord
   def overall_rank
     return attributes["overall_rank"] if attributes.has_key?("overall_rank")
 
-    enriched.attributes["overall_rank"]
+    with_rank.attributes["overall_rank"]
   end
 
   # @return [Integer, nil]
   def gender_rank
     return attributes["gender_rank"] if attributes.has_key?("gender_rank")
 
-    enriched.attributes["gender_rank"]
+    with_rank.attributes["gender_rank"]
   end
 
   def current_age_approximate
@@ -276,8 +277,8 @@ class Effort < ApplicationRecord
     person_id.nil?
   end
 
-  def enriched
-    event.efforts.ranked_with_status(effort_id: id).first
+  def with_rank
+    Effort.where(id: id).ranking_subquery.first
   end
 
   def template_age

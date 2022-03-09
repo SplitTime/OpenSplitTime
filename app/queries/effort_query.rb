@@ -24,8 +24,51 @@ class EffortQuery < BaseQuery
     NEW_SQL
   end
 
+  def self.ranking_subquery(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
+
+    <<~SQL.squish
+      (with existing_scope as (
+              #{existing_scope_subquery}
+            ),
+
+           event_subquery as (
+               select distinct on (event_id) event_id
+               from efforts
+               where efforts.id in (select id from existing_scope)
+           ),
+
+           efforts_for_ranking as (
+               select id as effort_id, event_id, gender, overall_performance
+               from efforts
+               where efforts.event_id in (select event_id from event_subquery)
+           ),
+
+           ranking_subquery as (
+               select effort_id,
+                      rank() over (partition by event_id order by overall_performance desc)          as overall_rank,
+                      rank() over (partition by event_id, gender order by overall_performance desc)  as gender_rank,
+                      lag(effort_id) over (partition by event_id order by overall_performance desc)  as prior_effort_id,
+                      lead(effort_id) over (partition by event_id order by overall_performance desc) as next_effort_id
+               from efforts_for_ranking
+           )
+
+      select existing_scope.*,
+             overall_rank,
+             gender_rank,
+             prior_effort_id,
+             next_effort_id
+      from existing_scope
+           join ranking_subquery on ranking_subquery.effort_id = existing_scope.id
+      order by event_id, overall_rank
+      )
+
+      as efforts
+    SQL
+  end
+
   def self.finish_info_subquery(existing_scope)
-    existing_scope_subquery = sql_for_existing_scope(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 
     <<~SQL.squish
       (with existing_scope as (
@@ -49,18 +92,17 @@ class EffortQuery < BaseQuery
                  and events.id in (select event_id from event_subquery)
            )
 
-      select efforts.*,
+      select existing_scope.*,
              base_name                                                              as final_split_name,
              absolute_time                                                          as final_absolute_time,
              elapsed_seconds                                                        as final_elapsed_seconds,
              split_times.lap                                                        as final_lap,
              (split_times.lap - 1) * course_distance + splits.distance_from_start   as final_distance,
              (split_times.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
-      from efforts
-               join split_times on split_times.id = efforts.final_split_time_id
+      from existing_scope
+               join split_times on split_times.id = existing_scope.final_split_time_id
                join splits on splits.id = split_times.split_id
                join course_subquery using(course_id)
-      where efforts.id in (select id from existing_scope)
       )
 
       as efforts
@@ -68,7 +110,7 @@ class EffortQuery < BaseQuery
   end
 
   def self.roster_subquery(existing_scope)
-    existing_scope_subquery = sql_for_existing_scope(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 
     <<~SQL.squish
       (with 
@@ -80,39 +122,21 @@ class EffortQuery < BaseQuery
                select effort_id, absolute_time
                from split_times
                         join splits on splits.id = split_times.split_id
-               where kind = 0
+               where split_times.effort_id in (select id from existing_scope)
+                 and kind = 0
                  and lap = 1
            )
 
       select
-          ef.id, 
-          ef.slug, 
-          ef.event_id, 
-          ef.person_id, 
-          ef.bib_number, 
-          ef.city, 
-          ef.state_code, 
-          ef.country_code, 
-          ef.age, 
-          ef.gender, 
-          ef.first_name, 
-          ef.last_name, 
-          ef.birthdate, 
-          ef.data_status, 
-          ef.checked_in, 
-          ef.emergency_contact, 
-          ef.emergency_phone,
-          ef.started,
-          ef.beyond_start,
+          existing_scope.*,
           sst.absolute_time                                                                     as actual_start_time,
           coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
           extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
           (checked_in and not started and
               (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
-      from efforts ef
-               join events ev on ev.id = ef.event_id
+      from existing_scope
+               join events ev on ev.id = existing_scope.event_id
                left join starting_split_times sst on sst.effort_id = ef.id
-      where ef.id in (select id from existing_scope)
       )
 
       as efforts
@@ -142,6 +166,10 @@ class EffortQuery < BaseQuery
 
   def self.sql_for_existing_scope(scope)
     scope.connection.unprepared_statement { scope.reorder(nil).select("id").to_sql }
+  end
+
+  def self.full_sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).to_sql }
   end
 
   def self.permitted_column_names

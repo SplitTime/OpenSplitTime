@@ -142,7 +142,7 @@ module Results
                         case
                             when started
                                 then (not dropped)::int::bit(1) || final_lap::bit(14) || final_distance::bit(30) ||
-                                     final_bitkey::bit(7) || ~(coalesce(final_elapsed_seconds, 0) * 1000)::bigint::bit(44)
+                                     final_bitkey::bit(7) || ~(coalesce(final_elapsed_seconds * 1000, -1))::bigint::bit(44)
                             else
                                 0::bit(96)
                             end

@@ -1356,9 +1356,9 @@ ramble_not_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2014_finished_first:
   id: 4172
   event_id: 17
@@ -2031,7 +2031,7 @@ hardrock_2014_without_start:
   comments:
   state_name: Montana
   country_name: United States
-  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111111111111111111111111111111'
+  overall_performance: '000000000000001000000000000010110111010000000100000000000000000000000000000000000000000000000000'
   stopped_split_time_id: 94470
   final_split_time_id: 94470
   started: true
@@ -2116,9 +2116,9 @@ hardrock_2014_not_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2016_finished_first:
   id: 6518
   event_id: 34
@@ -3556,9 +3556,9 @@ ggd30_50k_not_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_12m_start_only:
   id: 16094
   event_id: 49
@@ -3716,9 +3716,9 @@ ggd30_12m_not_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 sum_55k_finished_first:
   id: 16227
   event_id: 57
@@ -3836,9 +3836,9 @@ sum_55k_not_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 sum_55k_progress_rolling:
   id: 16244
   event_id: 57
@@ -4316,9 +4316,9 @@ sum_100k_un_started:
   final_split_time_id:
   started: false
   beyond_start: false
-  stopped:
-  dropped:
-  finished:
+  stopped: false
+  dropped: false
+  finished: false
 sum_100k_on_dst_change:
   id: 16684
   event_id: 56

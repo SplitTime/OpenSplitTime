@@ -235,7 +235,7 @@ RSpec.describe Results::SetEffortPerformanceData do
       let(:effort_ids) { [] }
       it "does nothing and returns informative text" do
         result = subject.perform!
-        expect(result.cmd_status).to eq("SELECT 1")
+        expect(result.cmd_status).to eq("UPDATE 0")
       end
     end
   end

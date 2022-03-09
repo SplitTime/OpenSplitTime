@@ -58,6 +58,7 @@ class Effort < ApplicationRecord
             size: {less_than: 5000.kilobytes}
 
   before_save :reset_age_from_birthdate
+  after_touch :set_performance_data
 
   pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
@@ -196,44 +197,12 @@ class Effort < ApplicationRecord
     attributes["laps_started"] || last_reported_split_time&.lap || 0
   end
 
-  # For an unlimited-lap (time-based) event, an effort is 'finished' when the person decides not to continue.
-  # At that time, the stopped_here split_time is set, and the effort is considered to have finished.
-  def finished?
-    return attributes["finished"] if attributes.has_key?("finished")
-
-    (laps_required.zero? ? split_times.any?(&:stopped_here) : (laps_finished >= laps_required))
-  end
-
-  def stopped?
-    return attributes["stopped"] if attributes.has_key?("stopped")
-
-    finished? || split_times.any?(&:stopped_here)
-  end
-
-  def started?
-    return attributes["started"] if attributes.has_key?("started")
-
-    split_times.present?
-  end
-
   def has_start_time?
     split_times.find(&:start?).present?
   end
 
-  # For an unlimited-lap (time-based) event, nobody is considered to have 'dropped'
-  # (the logic cannot return true for that type of event).
-  def dropped?
-    stopped? && !finished?
-  end
-
   def in_progress?
     started? && !stopped?
-  end
-
-  def beyond_start?
-    return attributes["beyond_start"] if attributes.has_key?("beyond_start")
-
-    split_times.find { |st| !st.start? || st.lap > 1 }.present?
   end
 
   def finish_status
@@ -341,5 +310,9 @@ class Effort < ApplicationRecord
 
   def progress_notifications_timely?
     calculated_start_time > 1.day.ago
+  end
+
+  def set_performance_data
+    ::Results::SetEffortPerformanceData.perform!(id)
   end
 end

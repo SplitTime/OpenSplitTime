@@ -227,7 +227,7 @@ RSpec.describe Results::SetEffortPerformanceData do
       it "sets overall performance such that efforts are correctly ranked" do
         subject.perform!
         ranked_bib_numbers = event.efforts.order(overall_performance: :desc).pluck(:bib_number)
-        expect(ranked_bib_numbers).to eq([148, 4, 147, 104, 123, 159, 121, 37, 41, 36, 120, 32, 158, 145, 166, 119, 187, 142, 115])
+        expect(ranked_bib_numbers).to eq([148, 4, 147, 104, 123, 159, 121, 37, 41, 36, 120, 32, 158, 145, 166, 187, 119, 142, 115])
       end
     end
   end

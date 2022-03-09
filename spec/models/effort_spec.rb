@@ -72,82 +72,98 @@ RSpec.describe Effort, type: :model do
       let(:existing_effort) { Effort.where(event: event_1).where.not(person: nil).first }
 
       it "does not permit more than one effort by a person in a given event" do
-        effort = build_stubbed(:effort, event: event_1, person: existing_effort.person)
+        effort = build(:effort, event: event_1, person: existing_effort.person)
         expect(effort).not_to be_valid
         expect(effort.errors[:person]).to include(/has already been entered in/)
       end
 
       it "does not permit more than one effort by a person in a given event_group" do
-        effort = build_stubbed(:effort, event: event_2, person: existing_effort.person)
+        effort = build(:effort, event: event_2, person: existing_effort.person)
         expect(effort).not_to be_valid
         expect(effort.errors[:person]).to include(/has already been entered in/)
       end
 
       it "permits more than one effort in a given event with unassigned people" do
-        effort = build_stubbed(:effort, split_times: [], event: event_1, person: nil)
+        effort = build(:effort, split_times: [], event: event_1, person: nil)
         expect(effort).to be_valid
       end
 
       it "permits more than one effort in a given event with different people" do
-        effort = build_stubbed(:effort, event: event_1, person: build_stubbed(:person))
+        effort = build(:effort, event: event_1, person: build_stubbed(:person))
         expect(effort).to be_valid
       end
 
       it "does not permit duplicate bib_numbers within a given event" do
-        effort = build_stubbed(:effort, event: event_1, bib_number: existing_effort.bib_number)
+        effort = build(:effort, event: event_1, bib_number: existing_effort.bib_number)
         expect(effort).not_to be_valid
         expect(effort.errors[:bib_number]).to include(/already exists/)
       end
 
       it "does not permit duplicate bib_numbers within a given event_group" do
-        effort = build_stubbed(:effort, event: event_2, bib_number: existing_effort.bib_number)
+        effort = build(:effort, event: event_2, bib_number: existing_effort.bib_number)
         expect(effort).not_to be_valid
         expect(effort.errors[:bib_number]).to include(/already exists/)
       end
     end
   end
 
-  describe "#reset_age_from_birthdate" do
-    subject { build_stubbed(:effort, event: event, age: age, birthdate: birthdate) }
-    let(:event) { build_stubbed(:event, scheduled_start_time: "2018-10-31 06:00:00") }
+  describe "callbacks" do
+    describe "sets age based on birthdate" do
+      subject { build(:effort, event: event, age: age, birthdate: birthdate) }
+      let(:event) { events(:hardrock_2014) }
+      let(:scheduled_start_time) { "2018-10-31 06:00:00" }
 
-    context "when age is nil and birthdate is provided" do
-      let(:age) { nil }
-      let(:birthdate) { "1967-01-01" }
+      before { event.update(scheduled_start_time: scheduled_start_time) }
 
-      it "sets the age from the birthdate" do
-        subject.reset_age_from_birthdate
-        expect(subject.age).to eq(51)
+      context "when age is nil and birthdate is provided" do
+        let(:age) { nil }
+        let(:birthdate) { "1967-01-01" }
+
+        it "sets the age from the birthdate" do
+          subject.save!
+          expect(subject.age).to eq(51)
+        end
+      end
+
+      context "when age is provided and birthdate is nil" do
+        let(:age) { 51 }
+        let(:birthdate) { nil }
+
+        it "does not change age" do
+          subject.save!
+          expect(subject.age).to eq(51)
+        end
+      end
+
+      context "when both age and birthdate are provided" do
+        let(:age) { 40 }
+        let(:birthdate) { "1967-01-01" }
+
+        it "sets the age from the birthdate" do
+          subject.save!
+          expect(subject.age).to eq(51)
+        end
+      end
+
+      context "when neither age nor birthdate is provided" do
+        let(:age) { nil }
+        let(:birthdate) { nil }
+
+        it "does not attempt to set age" do
+          subject.save!
+          expect(subject.age).to be_nil
+        end
       end
     end
 
-    context "when age is provided and birthdate is nil" do
-      let(:age) { 51 }
-      let(:birthdate) { nil }
-
-      it "does not change age" do
-        subject.reset_age_from_birthdate
-        expect(subject.age).to eq(51)
-      end
-    end
-
-    context "when both age and birthdate are provided" do
-      let(:age) { 40 }
-      let(:birthdate) { "1967-01-01" }
-
-      it "sets the age from the birthdate" do
-        subject.reset_age_from_birthdate
-        expect(subject.age).to eq(51)
-      end
-    end
-
-    context "when neither age nor birthdate is provided" do
-      let(:age) { nil }
-      let(:birthdate) { nil }
-
-      it "does not attempt to set age" do
-        subject.reset_age_from_birthdate
-        expect(subject.age).to be_nil
+    describe "sets performance data" do
+      subject { efforts(:hardrock_2014_finished_first) }
+      before { allow(subject).to receive(:set_performance_data) }
+      context "when touched" do
+        it "sets performance data" do
+          expect(subject).to receive(:set_performance_data)
+          subject.touch
+        end
       end
     end
   end
@@ -206,201 +222,6 @@ RSpec.describe Effort, type: :model do
 
       it "correctly calculates time in aid based on times in and out of splits" do
         expect(effort.total_time_in_aid).to eq(24.minutes)
-      end
-    end
-  end
-
-  describe "#beyond_start?" do
-    let(:subject) { build_stubbed(:effort, split_times: split_times) }
-    let(:start_split) { build_stubbed(:split, :start) }
-    let(:aid_1) { build_stubbed(:split) }
-    let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: start_split) }
-    let(:split_time_2) { build_stubbed(:split_time, lap: 1, split: aid_1) }
-    let(:split_time_3) { build_stubbed(:split_time, lap: 2, split: start_split) }
-
-    context "when the effort has no split_times" do
-      let(:split_times) { [] }
-
-      it "returns false" do
-        expect(subject.beyond_start?).to eq(false)
-      end
-    end
-
-    context "when the effort has only a start split_time" do
-      let(:split_times) { [split_time_1] }
-
-      it "returns false" do
-        expect(subject.beyond_start?).to eq(false)
-      end
-    end
-
-    context "when the effort has a start split_time and an intermediate split_time" do
-      let(:split_times) { [split_time_1, split_time_2] }
-
-      it "returns true" do
-        expect(subject.beyond_start?).to eq(true)
-      end
-    end
-
-    context "when the effort has no start split_time but has an intermediate split_time" do
-      let(:split_times) { [split_time_2] }
-
-      it "returns true" do
-        expect(subject.beyond_start?).to eq(true)
-      end
-    end
-
-    context "when the effort has a start split_time for a lap greater than 1" do
-      let(:split_times) { [split_time_3] }
-
-      it "returns true" do
-        expect(subject.beyond_start?).to eq(true)
-      end
-    end
-  end
-
-  describe "#finished?" do
-    context "for an event with a fixed lap requirement" do
-      context "when laps_finished is at least equal to laps_required" do
-        let(:effort) { efforts(:hardrock_2014_finished_first) }
-
-        it "returns true" do
-          expect(effort.finished?).to eq(true)
-        end
-      end
-
-      context "when laps_finished is less than laps_required and effort is dropped" do
-        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
-
-        it "returns false" do
-          expect(effort.finished?).to eq(false)
-        end
-      end
-
-      context "when laps_finished is less than laps_required and effort is in progress" do
-        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
-
-        it "returns false" do
-          expect(effort.finished?).to eq(false)
-        end
-      end
-
-      context "when the effort is not started" do
-        let(:effort) { efforts(:hardrock_2014_not_started) }
-
-        it "returns false" do
-          expect(effort.finished?).to eq(false)
-        end
-      end
-    end
-
-    context "for an event with unlimited laps" do
-      context "when no when no split_time has stopped_here: true" do
-        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
-
-        it "returns false" do
-          expect(effort.finished?).to eq(false)
-        end
-      end
-
-      context "when any split_time has stopped_here == true" do
-        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
-
-        it "returns true" do
-          expect(effort.finished?).to eq(true)
-        end
-      end
-    end
-  end
-
-  describe "#dropped?" do
-    context "for an event with a fixed lap requirement" do
-      context "when a split_time is stopped_here and laps_required are not completed" do
-        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
-
-        it "returns true" do
-          expect(effort.dropped?).to eq(true)
-        end
-      end
-
-      context "when no split_time is stopped_here although laps_required are not completed" do
-        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
-
-        it "returns false" do
-          expect(effort.dropped?).to eq(false)
-        end
-      end
-    end
-
-    context "for an event with unlimited laps" do
-      context "always, including when a split_time is stopped_here" do
-        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
-
-        it "returns false" do
-          expect(effort.dropped?).to eq(false)
-        end
-      end
-
-      context "always, including when no split_time is stopped_here" do
-        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
-
-        it "returns false" do
-          expect(effort.dropped?).to eq(false)
-        end
-      end
-    end
-  end
-
-  describe "#stopped?" do
-    context "for an event with a fixed lap requirement" do
-      context "when the effort is finished and the last split_time is stopped_here" do
-        let(:effort) { efforts(:hardrock_2014_finished_with_stop) }
-
-        it "returns true" do
-          expect(effort.stopped?).to eq(true)
-        end
-      end
-
-      context "when the effort is finished even if no split_time is stopped_here" do
-        let(:effort) { efforts(:hardrock_2014_finished_without_stop) }
-
-        it "returns true" do
-          expect(effort.stopped?).to eq(true)
-        end
-      end
-
-      context "when the effort is not finished and any split_time is stopped_here" do
-        let(:effort) { efforts(:hardrock_2014_drop_ouray) }
-
-        it "returns true" do
-          expect(effort.stopped?).to eq(true)
-        end
-      end
-
-      context "when the effort is not finished and no split_time is stopped_here" do
-        let(:effort) { efforts(:hardrock_2016_progress_sherman) }
-
-        it "returns false" do
-          expect(effort.stopped?).to eq(false)
-        end
-      end
-    end
-
-    context "for an event with unlimited laps" do
-      context "when any split_time is stopped_here" do
-        let(:effort) { efforts(:rufa_2017_24h_finished_first) }
-
-        it "returns true" do
-          expect(effort.stopped?).to eq(true)
-        end
-      end
-
-      context "when no split_time is stopped_here" do
-        let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
-
-        it "returns false" do
-          expect(effort.stopped?).to eq(false)
-        end
       end
     end
   end

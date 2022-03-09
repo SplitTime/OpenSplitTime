@@ -112,12 +112,6 @@ class Effort < ApplicationRecord
     slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.short_name_changed? || event_group&.name_changed?
   end
 
-  def reset_age_from_birthdate
-    return unless birthdate.present? && calculated_start_time.present?
-
-    assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
-  end
-
   def actual_start_time
     return @actual_start_time if defined?(@actual_start_time)
 
@@ -311,6 +305,12 @@ class Effort < ApplicationRecord
 
   def progress_notifications_timely?
     calculated_start_time > 1.day.ago
+  end
+
+  def reset_age_from_birthdate
+    return unless birthdate.present? && calculated_start_time.present?
+
+    assign_attributes(age: ((event_start_time - birthdate.in_time_zone) / 1.year).to_i)
   end
 
   def set_performance_data

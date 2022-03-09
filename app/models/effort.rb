@@ -83,13 +83,6 @@ class Effort < ApplicationRecord
     names_locations_default_all(parser.word_component).bib_number_among(parser.number_component)
   end
 
-  def self.ranked_with_status(args = {})
-    return [] if EffortQuery.existing_scope_sql.blank?
-
-    query = EffortQuery.rank_and_status(args)
-    find_by_sql(query)
-  end
-
   def to_s
     slug
   end

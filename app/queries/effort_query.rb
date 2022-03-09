@@ -1,29 +1,6 @@
 # frozen_string_literal: true
 
 class EffortQuery < BaseQuery
-  def self.rank_and_status(args = {})
-    select_sql = sql_select_from_string(args[:fields], permitted_column_names, "*")
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "event_id,overall_rank")
-    where_clause = args[:effort_id].present? ? "where id = #{args[:effort_id]}" : ""
-
-    <<~NEW_SQL.squish
-      with existing_scope as (
-          #{existing_scope_sql}
-      ),
-
-           efforts_scoped as (
-               select efforts.*
-               from efforts
-                        inner join existing_scope on existing_scope.id = efforts.id
-           )
-
-      select #{select_sql}
-      from efforts_scoped
-          #{where_clause}
-      order by #{order_sql}
-    NEW_SQL
-  end
-
   def self.ranking_subquery(existing_scope)
     existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 

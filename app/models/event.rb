@@ -132,13 +132,6 @@ class Event < ApplicationRecord
     efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
   end
 
-  def ranked_efforts(args = {})
-    @ranked_efforts ||= Hash.new do |h, key|
-      h[key] = efforts.ranked_with_status(args)
-    end
-    @ranked_efforts[args]
-  end
-
   def simple?
     (splits_count < 3) && !multiple_laps?
   end

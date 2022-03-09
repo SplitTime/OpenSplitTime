@@ -14,6 +14,8 @@ lottery_entrant_4:
   updated_at: 2021-10-02 16:39:40.754593000 Z
   state_name: South Carolina
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_5:
   id: 5
   lottery_division_id: 1
@@ -29,6 +31,8 @@ lottery_entrant_5:
   updated_at: 2021-10-02 16:41:19.088935000 Z
   state_name: Kentucky
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_6:
   id: 6
   lottery_division_id: 2
@@ -44,6 +48,8 @@ lottery_entrant_6:
   updated_at: 2021-10-02 16:39:40.762589000 Z
   state_name: Wisconsin
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_7:
   id: 7
   lottery_division_id: 1
@@ -59,6 +65,8 @@ lottery_entrant_7:
   updated_at: 2021-10-02 16:39:40.765960000 Z
   state_name: Mississippi
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_8:
   id: 8
   lottery_division_id: 2
@@ -74,6 +82,8 @@ lottery_entrant_8:
   updated_at: 2021-10-02 16:39:40.771099000 Z
   state_name: New Mexico
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_9:
   id: 9
   lottery_division_id: 1
@@ -89,6 +99,8 @@ lottery_entrant_9:
   updated_at: 2021-10-02 16:39:40.774279000 Z
   state_name: Nebraska
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_10:
   id: 10
   lottery_division_id: 2
@@ -104,6 +116,8 @@ lottery_entrant_10:
   updated_at: 2021-10-02 16:39:40.777393000 Z
   state_name: Michigan
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_11:
   id: 11
   lottery_division_id: 1
@@ -119,6 +133,8 @@ lottery_entrant_11:
   updated_at: 2021-10-02 16:39:40.780810000 Z
   state_name: Indiana
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_12:
   id: 12
   lottery_division_id: 2
@@ -134,6 +150,8 @@ lottery_entrant_12:
   updated_at: 2021-10-02 16:39:40.783891000 Z
   state_name: Alabama
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_13:
   id: 13
   lottery_division_id: 1
@@ -149,6 +167,8 @@ lottery_entrant_13:
   updated_at: 2021-10-02 16:39:40.786956000 Z
   state_name: Pennsylvania
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_21:
   id: 21
   lottery_division_id: 6
@@ -164,6 +184,8 @@ lottery_entrant_21:
   updated_at: 2021-10-01 05:05:24.169087000 Z
   state_name: Virginia
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_22:
   id: 22
   lottery_division_id: 7
@@ -179,6 +201,8 @@ lottery_entrant_22:
   updated_at: 2021-10-01 05:05:24.173417000 Z
   state_name: Arizona
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_23:
   id: 23
   lottery_division_id: 7
@@ -194,6 +218,8 @@ lottery_entrant_23:
   updated_at: 2021-10-01 05:05:08.196992000 Z
   state_name: Rhode Island
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_24:
   id: 24
   lottery_division_id: 8
@@ -209,6 +235,8 @@ lottery_entrant_24:
   updated_at: 2021-10-02 16:39:40.790075000 Z
   state_name: North Dakota
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_25:
   id: 25
   lottery_division_id: 8
@@ -224,6 +252,8 @@ lottery_entrant_25:
   updated_at: 2021-10-02 16:39:40.792948000 Z
   state_name: Texas
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_26:
   id: 26
   lottery_division_id: 8
@@ -239,6 +269,8 @@ lottery_entrant_26:
   updated_at: 2021-10-02 16:39:40.796007000 Z
   state_name: Connecticut
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_27:
   id: 27
   lottery_division_id: 8
@@ -254,6 +286,8 @@ lottery_entrant_27:
   updated_at: 2021-10-02 16:39:40.798982000 Z
   state_name: Oregon
   country_name: United States
+  pre_selected: false
+  external_id:
 lottery_entrant_28:
   id: 28
   lottery_division_id: 8
@@ -269,3 +303,5 @@ lottery_entrant_28:
   updated_at: 2021-10-02 16:39:40.801943000 Z
   state_name: Alabama
   country_name: United States
+  pre_selected: false
+  external_id:

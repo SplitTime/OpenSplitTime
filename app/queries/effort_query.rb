@@ -1,186 +1,98 @@
 # frozen_string_literal: true
 
 class EffortQuery < BaseQuery
-  def self.rank_and_status(args = {})
-    select_sql = sql_select_from_string(args[:fields], permitted_column_names, "*")
-    order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "event_id,overall_rank")
-    where_clause = args[:effort_id].present? ? "where id = #{args[:effort_id]}" : ""
+  def self.ranking_subquery(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 
-    <<-SQL.squish
-      with existing_scope as
-               (#{existing_scope_sql}),
+    <<~SQL.squish
+      (with existing_scope as (
+              #{existing_scope_subquery}
+            ),
 
-           efforts_scoped as
-               (select efforts.*
-                from efforts
-                         inner join existing_scope on existing_scope.id = efforts.id),
-
-           start_split_times as		
-                (select effort_id, absolute_time		
-                 from split_times		
-                          inner join splits on splits.id = split_times.split_id		
-                 where lap = 1		
-                   and kind = 0		
-                   and effort_id in (select id from efforts_scoped)		
-                 order by effort_id),		
-
-           beyond_start_split_times as (
-               select distinct on(effort_id) effort_id
-               from split_times
-                        join splits on splits.id = split_times.split_id
-               where (kind != 0 or lap != 1)
-                 and effort_id in (select id from efforts_scoped)		
+           event_subquery as (
+               select distinct on (event_id) event_id
+               from efforts
+               where efforts.id in (select id from existing_scope)
            ),
 
-           stopped_split_times as
-               (select split_times.id               as stopped_split_time_id,
-                       split_times.lap              as stopped_lap,
-                       split_times.split_id         as stopped_split_id,
-                       split_times.sub_split_bitkey as stopped_bitkey,
-                       split_times.absolute_time    as stopped_absolute_time,
-                       split_times.effort_id
-                from split_times
-                where effort_id in (select id from efforts_scoped)
-                  and stopped_here = true),
+           efforts_for_ranking as (
+               select id as effort_id, event_id, gender, overall_performance
+               from efforts
+               where efforts.event_id in (select event_id from event_subquery)
+           ),
 
-           course_subquery as
-               (select courses.id                  as course_id,
-                       splits.distance_from_start  as course_distance,
-                       splits.vert_gain_from_start as course_vert_gain
-                from courses
-                         inner join splits on splits.course_id = courses.id
-                where splits.kind = 1),
+           ranking_subquery as (
+               select effort_id,
+                      rank() over (partition by event_id order by overall_performance desc)          as overall_rank,
+                      rank() over (partition by event_id, gender order by overall_performance desc)  as gender_rank,
+                      lag(effort_id) over (partition by event_id order by overall_performance desc)  as prior_effort_id,
+                      lead(effort_id) over (partition by event_id order by overall_performance desc) as next_effort_id
+               from efforts_for_ranking
+           )
 
-           base_subquery as
-               (select distinct on (efforts_scoped.id) 
-                           efforts_scoped.*,
-                           events.laps_required,
-                           events.scheduled_start_time                                 as event_start_time,
-                           event_groups.home_time_zone,
-                           splits.base_name                                            as final_split_name,
-                           splits.distance_from_start                                  as final_lap_distance,
-                           splits.vert_gain_from_start                                 as final_lap_vert_gain,
-                           split_times.lap                                             as final_lap,
-                           split_times.split_id                                        as final_split_id,
-                           split_times.sub_split_bitkey                                as final_bitkey,
-                           split_times.absolute_time                                   as final_absolute_time,
-                           sst.absolute_time                                           as actual_start_time,
-                           split_times.elapsed_seconds                                 as final_elapsed_seconds,
-                           split_times.id                                              as final_split_time_id,
-                           bsst.effort_id                                              as beyond_start_effort_id,
-                           stopped_split_time_id,
-                           stopped_lap,
-                           stopped_split_id,
-                           stopped_bitkey,
-                           stopped_absolute_time,
-                           course_distance,
-                           course_vert_gain,
-                           case when splits.kind = 1 then true else false end          as final_lap_complete
-                from efforts_scoped
-                         left join split_times on split_times.effort_id = efforts_scoped.id
-                         left join splits on splits.id = split_times.split_id
-                         left join events on events.id = efforts_scoped.event_id
-                         inner join event_groups on event_groups.id = events.event_group_id
-                         left join course_subquery on events.course_id = course_subquery.course_id
-                         left join stopped_split_times stop_st on split_times.effort_id = stop_st.effort_id
-                         left join beyond_start_split_times bsst on bsst.effort_id = efforts_scoped.id
-                         left join start_split_times sst on split_times.effort_id = sst.effort_id
-                order by efforts_scoped.id,
-                         final_lap desc,
-                         final_lap_distance desc,
-                         final_bitkey desc),
+      select existing_scope.*,
+             overall_rank,
+             gender_rank,
+             prior_effort_id,
+             next_effort_id
+      from existing_scope
+           join ranking_subquery on ranking_subquery.effort_id = existing_scope.id
+      order by event_id, overall_rank
+      )
 
-           distance_subquery as
-               (select *,
-                       coalesce(scheduled_start_time, event_start_time)                           as assumed_start_time,
-                       case when final_lap is null then false else true end                       as started,
-                       beyond_start_effort_id is not null                                         as beyond_start,
-                       final_lap                                                                  as laps_started,
-                       case when final_lap_complete is true then final_lap else final_lap - 1 end as laps_finished,
-                       (final_lap - 1) * course_distance + final_lap_distance                     as final_distance,
-                       (final_lap - 1) * course_vert_gain + final_lap_vert_gain                   as final_vert_gain
-                from base_subquery),
+      as efforts
+    SQL
+  end
 
-           finished_subquery as
-               (select *,
-                       case
-                           when laps_required = 0 then
-                               case when stopped_split_time_id is null then false else true end
-                           else
-                               case when laps_finished >= laps_required then true else false end
-                           end
-                           as finished
-                from distance_subquery),
+  def self.finish_info_subquery(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 
-           stopped_subquery as
-               (select *,
-                       case when finished or stopped_split_time_id is not null then true else false end as stopped
-                from finished_subquery),
+    <<~SQL.squish
+      (with existing_scope as (
+        #{existing_scope_subquery}
+      ),
 
-           main_subquery as
-               (select *,
-                       case when stopped and not finished then true else false end as dropped
-                from stopped_subquery),
+           event_subquery as (
+               select event_id
+               from efforts
+               where efforts.id in (select id from existing_scope)
+           ),
 
-           ranking_subquery as
-               (select #{select_sql},
-                       case
-                           when beyond_start then
-                                       rank() over
-                                   (partition by event_id
-                                   order by beyond_start desc,
-                                       started desc,
-                                       dropped,
-                                       final_lap desc nulls last,
-                                       final_lap_distance desc,
-                                       final_bitkey desc,
-                                       final_elapsed_seconds)
-                           else null end
-                           as overall_rank,
-                       case
-                           when beyond_start then
-                                       rank() over
-                                   (partition by event_id, gender
-                                   order by beyond_start desc,
-                                       started desc,
-                                       dropped,
-                                       final_lap desc nulls last,
-                                       final_lap_distance desc,
-                                       final_bitkey desc,
-                                       final_elapsed_seconds)
-                           else null end
-                           as gender_rank,
-                       lag(id) over
-                           (partition by event_id
-                           order by beyond_start desc,
-                               started desc,
-                               dropped,
-                               final_lap desc nulls last,
-                               final_lap_distance desc,
-                               final_bitkey desc,
-                               final_elapsed_seconds)
-                           as prior_effort_id,
-                       lead(id) over
-                           (partition by event_id
-                           order by beyond_start desc,
-                               started desc,
-                               dropped,
-                               final_lap desc nulls last,
-                               final_lap_distance desc,
-                               final_bitkey desc,
-                               final_elapsed_seconds)
-                           as next_effort_id
-                from main_subquery)
+           course_subquery as (
+               select courses.id                  as course_id,
+                      splits.distance_from_start  as course_distance,
+                      splits.vert_gain_from_start as course_vert_gain
+               from courses
+                        join splits on splits.course_id = courses.id
+                        join events on events.course_id = courses.id
+               where splits.kind = 1
+                 and events.id in (select event_id from event_subquery)
+           )
 
-      select *
-      from ranking_subquery
-      #{where_clause}
-      order by #{order_sql}
+      select existing_scope.*,
+             stop_st.lap                                                         as stopped_lap,
+             stop_st.split_id                                                    as stopped_split_id,
+             final_st.lap                                                        as final_lap,
+             splits.id                                                           as final_split_id,
+             final_st.sub_split_bitkey                                           as final_bitkey,
+             splits.base_name                                                    as final_split_name,
+             final_st.absolute_time                                              as final_absolute_time,
+             final_st.elapsed_seconds                                            as final_elapsed_seconds,
+             (final_st.lap - 1) * course_distance + splits.distance_from_start   as final_distance,
+             (final_st.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
+      from existing_scope
+               left join split_times stop_st on stop_st.id = existing_scope.stopped_split_time_id
+               left join split_times final_st on final_st.id = existing_scope.final_split_time_id
+               left join splits on splits.id = final_st.split_id
+               left join course_subquery using(course_id)
+      )
+
+      as efforts
     SQL
   end
 
   def self.roster_subquery(existing_scope)
-    existing_scope_subquery = sql_for_existing_scope(existing_scope)
+    existing_scope_subquery = full_sql_for_existing_scope(existing_scope)
 
     <<~SQL.squish
       (with 
@@ -192,49 +104,21 @@ class EffortQuery < BaseQuery
                select effort_id, absolute_time
                from split_times
                         join splits on splits.id = split_times.split_id
-               where kind = 0
+               where split_times.effort_id in (select id from existing_scope)
+                 and kind = 0
                  and lap = 1
-           ),
-
-           beyond_start_split_times as (
-               select effort_id
-               from split_times
-                        join splits on splits.id = split_times.split_id
-               where kind != 0
-                  or lap != 1
            )
 
-      select distinct on (ef.id) 
-          ef.id, 
-          ef.slug, 
-          ef.event_id, 
-          ef.person_id, 
-          ef.bib_number, 
-          ef.city, 
-          ef.state_code, 
-          ef.country_code, 
-          ef.age, 
-          ef.gender, 
-          ef.first_name, 
-          ef.last_name, 
-          ef.birthdate, 
-          ef.data_status, 
-          ef.checked_in, 
-          ef.emergency_contact, 
-          ef.emergency_phone,
+      select
+          es.*,
           sst.absolute_time                                                                     as actual_start_time,
-          sst.absolute_time is not null                                                         as started,
-          bsst.effort_id is not null                                                            as beyond_start,
-          coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
-          extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
-          (checked_in and 
-              sst.absolute_time is null and 
-              (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
-      from efforts ef
-               join events ev on ev.id = ef.event_id
-               left join starting_split_times sst on sst.effort_id = ef.id
-               left join beyond_start_split_times bsst on bsst.effort_id = ef.id
-      where ef.id in (select id from existing_scope)
+          coalesce(es.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
+          extract(epoch from (es.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
+          (checked_in and sst.absolute_time is null and
+              (coalesce(es.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
+      from existing_scope es
+               join events ev on ev.id = es.event_id
+               left join starting_split_times sst on sst.effort_id = es.id
       )
 
       as efforts
@@ -264,6 +148,10 @@ class EffortQuery < BaseQuery
 
   def self.sql_for_existing_scope(scope)
     scope.connection.unprepared_statement { scope.reorder(nil).select("id").to_sql }
+  end
+
+  def self.full_sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).to_sql }
   end
 
   def self.permitted_column_names

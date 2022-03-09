@@ -129,14 +129,7 @@ class Event < ApplicationRecord
   end
 
   def finished?
-    ranked_efforts.present? && ranked_efforts.any?(&:started?) && ranked_efforts.none?(&:in_progress?)
-  end
-
-  def ranked_efforts(args = {})
-    @ranked_efforts ||= Hash.new do |h, key|
-      h[key] = efforts.ranked_with_status(args)
-    end
-    @ranked_efforts[args]
+    efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
   end
 
   def simple?

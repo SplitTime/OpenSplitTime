@@ -55,7 +55,7 @@ module Results
     end
 
     def ranked_efforts
-      @ranked_efforts ||= event_series.efforts.ranked_with_status.select(&:finished?)
+      @ranked_efforts ||= event_series.efforts.where(finished: true).finish_info_subquery
     end
   end
 end

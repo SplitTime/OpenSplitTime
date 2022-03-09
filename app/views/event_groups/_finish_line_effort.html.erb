@@ -7,7 +7,7 @@
       </div>
     </div>
   <% elsif @efforts.present? %>
-    <% effort = ::EffortRow.new(@efforts.first.enriched) %>
+    <% effort = ::EffortRow.new(@efforts.first) %>
     <div class="card">
       <h3 class="card-header">
         <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong>

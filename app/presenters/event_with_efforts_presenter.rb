@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EventWithEffortsPresenter < BasePresenter
+  DEFAULT_ORDER_CRITERIA = { overall_rank: :asc }
+
   attr_reader :event
 
   delegate :id, :name, :course, :course_id, :simple?, :beacon_url, :home_time_zone, :finish_split,
@@ -30,8 +32,9 @@ class EventWithEffortsPresenter < BasePresenter
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=
       ranked_efforts
-          .select { |effort| filtered_ids.include?(effort.id) }
-          .paginate(page: page, per_page: per_page)
+        .where(filter_hash)
+        .search(search_text)
+        .paginate(page: page, per_page: per_page)
   end
 
   def event_efforts
@@ -63,7 +66,11 @@ class EventWithEffortsPresenter < BasePresenter
   attr_reader :params, :current_user
 
   def ranked_efforts
-    @ranked_efforts ||= event_efforts.ranked_with_status(sort: sort_hash)
+    @ranked_efforts ||= event_efforts.ranking_subquery.order(order_criteria)
+  end
+
+  def order_criteria
+    sort_hash.presence || DEFAULT_ORDER_CRITERIA
   end
 
   def filtered_ids

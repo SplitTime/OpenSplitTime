@@ -9,7 +9,7 @@ class EffortWithLapSplitRows
 
   def post_initialize(effort, options)
     ArgsValidator.validate(subject: effort, params: options, class: self.class)
-    @effort = effort.enriched
+    load_effort(effort)
   end
 
   def event
@@ -89,7 +89,7 @@ class EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    @ordered_split_times ||= loaded_effort.ordered_split_times
+    @ordered_split_times ||= effort.ordered_split_times
   end
 
   def indexed_split_times
@@ -116,11 +116,11 @@ class EffortWithLapSplitRows
     ordered_split_times.last&.lap || 1
   end
 
-  def loaded_effort
-    return @loaded_effort if defined?(@loaded_effort)
+  private
 
-    temp_effort = Effort.where(id: effort).includes(split_times: :split).first
+  def load_effort(effort)
+    temp_effort = Effort.where(id: effort).ranking_subquery.includes(split_times: :split).first
     AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
-    @loaded_effort = temp_effort
+    @effort = temp_effort
   end
 end

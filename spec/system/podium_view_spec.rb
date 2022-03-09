@@ -6,7 +6,7 @@ RSpec.describe "visit the podium page" do
   let(:user) { users(:third_user) }
   let(:admin) { users(:admin_user) }
   let(:event) { events(:hardrock_2015) }
-  let(:subject_efforts) { event.ranked_efforts }
+  let(:subject_efforts) { event.efforts.ranking_subquery }
 
   scenario "A visitor views the podium page" do
     visit podium_event_path(event)

@@ -31,6 +31,14 @@ hardrock_2015_tuan_jacobs:
   comments:
   state_name: Andalucía
   country_name: Spain
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111011000001001010101110011111'
+  stopped_split_time_id: 42
+  final_split_time_id: 42
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_erich_larson:
   id: 8
   event_id: 4
@@ -63,6 +71,14 @@ hardrock_2015_erich_larson:
   comments:
   state_name: Montana
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111010011110011000101001101111'
+  stopped_split_time_id: 72
+  final_split_time_id: 72
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_leif_carter:
   id: 15
   event_id: 4
@@ -95,6 +111,14 @@ hardrock_2015_leif_carter:
   comments:
   state_name:
   country_name: Spain
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110011000111100110111111'
+  stopped_split_time_id: 282
+  final_split_time_id: 282
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_carmine_adams:
   id: 20
   event_id: 4
@@ -127,6 +151,14 @@ hardrock_2015_carmine_adams:
   comments:
   state_name: Washington
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001010110111101110110011111'
+  stopped_split_time_id: 432
+  final_split_time_id: 432
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_garry_kuhlman:
   id: 24
   event_id: 4
@@ -159,6 +191,14 @@ hardrock_2015_garry_kuhlman:
   comments:
   state_name: Montana
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001101010110100111011111'
+  stopped_split_time_id: 552
+  final_split_time_id: 552
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_darius_jacobson:
   id: 25
   event_id: 4
@@ -191,6 +231,14 @@ hardrock_2015_darius_jacobson:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001100011100000001011111'
+  stopped_split_time_id: 582
+  final_split_time_id: 582
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_santa_green:
   id: 29
   event_id: 4
@@ -223,6 +271,14 @@ hardrock_2015_santa_green:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000110101110001110100111111'
+  stopped_split_time_id: 702
+  final_split_time_id: 702
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_gilberto_mckenzie:
   id: 31
   event_id: 4
@@ -255,6 +311,14 @@ hardrock_2015_gilberto_mckenzie:
   comments:
   state_name: Washington
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000011011001110100110111111'
+  stopped_split_time_id: 762
+  final_split_time_id: 762
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_vince_willms:
   id: 47
   event_id: 4
@@ -287,6 +351,14 @@ hardrock_2015_vince_willms:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000000100010101110000111111'
+  stopped_split_time_id: 1242
+  final_split_time_id: 1242
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_cedric_windler:
   id: 50
   event_id: 4
@@ -319,6 +391,14 @@ hardrock_2015_cedric_windler:
   comments:
   state_name: Tennessee
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111111100010001001011111'
+  stopped_split_time_id: 1332
+  final_split_time_id: 1332
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_chris_rempel:
   id: 56
   event_id: 4
@@ -351,6 +431,14 @@ hardrock_2015_chris_rempel:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111100001011100111111'
+  stopped_split_time_id: 1512
+  final_split_time_id: 1512
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_robby_gerlach:
   id: 57
   event_id: 4
@@ -383,6 +471,14 @@ hardrock_2015_robby_gerlach:
   comments:
   state_name: Virginia
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111000100001001111111'
+  stopped_split_time_id: 1542
+  final_split_time_id: 1542
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_rachelle_eichmann:
   id: 59
   event_id: 4
@@ -415,6 +511,14 @@ hardrock_2015_rachelle_eichmann:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101101111010001101111111'
+  stopped_split_time_id: 1602
+  final_split_time_id: 1602
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_elden_morissette:
   id: 61
   event_id: 4
@@ -447,6 +551,14 @@ hardrock_2015_elden_morissette:
   comments:
   state_name: Wisconsin
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101100110000111110011111'
+  stopped_split_time_id: 1662
+  final_split_time_id: 1662
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_leroy_leffler:
   id: 63
   event_id: 4
@@ -479,6 +591,14 @@ hardrock_2015_leroy_leffler:
   comments:
   state_name: New Mexico
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100101111001100001011111'
+  stopped_split_time_id: 1722
+  final_split_time_id: 1722
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_samara_vandervort:
   id: 73
   event_id: 4
@@ -511,6 +631,14 @@ hardrock_2015_samara_vandervort:
   comments:
   state_name: California
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111010111000001010111111111'
+  stopped_split_time_id: 2022
+  final_split_time_id: 2022
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_robt_wintheiser:
   id: 94
   event_id: 4
@@ -543,6 +671,14 @@ hardrock_2015_robt_wintheiser:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100100101010101101111111'
+  stopped_split_time_id: 2652
+  final_split_time_id: 2652
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_demetrius_moen:
   id: 96
   event_id: 4
@@ -575,6 +711,14 @@ hardrock_2015_demetrius_moen:
   comments:
   state_name: Oregon
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100011100001011110011111'
+  stopped_split_time_id: 2712
+  final_split_time_id: 2712
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_vern_buckridge:
   id: 105
   event_id: 4
@@ -607,6 +751,14 @@ hardrock_2015_vern_buckridge:
   comments:
   state_name: Texas
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001011100001111111111'
+  stopped_split_time_id: 2982
+  final_split_time_id: 2982
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_donte_spencer:
   id: 112
   event_id: 4
@@ -639,6 +791,14 @@ hardrock_2015_donte_spencer:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101111101010011001011111111'
+  stopped_split_time_id: 3192
+  final_split_time_id: 3192
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_bruno_fadel:
   id: 116
   event_id: 4
@@ -671,6 +831,14 @@ hardrock_2015_bruno_fadel:
   comments:
   state_name: California
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110110101010011000011111'
+  stopped_split_time_id: 3312
+  final_split_time_id: 3312
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_gus_walker:
   id: 117
   event_id: 4
@@ -703,6 +871,14 @@ hardrock_2015_gus_walker:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110101100001001000111111'
+  stopped_split_time_id: 3342
+  final_split_time_id: 3342
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_susanna_abshire:
   id: 121
   event_id: 4
@@ -735,6 +911,14 @@ hardrock_2015_susanna_abshire:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110011011101010011011111'
+  stopped_split_time_id: 3462
+  final_split_time_id: 3462
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_leandro_cole:
   id: 125
   event_id: 4
@@ -767,6 +951,14 @@ hardrock_2015_leandro_cole:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110010000101011010011111'
+  stopped_split_time_id: 3582
+  final_split_time_id: 3582
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_benedict_davis:
   id: 129
   event_id: 4
@@ -799,6 +991,14 @@ hardrock_2015_benedict_davis:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101101101000011001001011111'
+  stopped_split_time_id: 3702
+  final_split_time_id: 3702
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2015_raphael_swift:
   id: 136
   event_id: 4
@@ -831,6 +1031,14 @@ hardrock_2015_raphael_swift:
   comments:
   state_name: Arkansas
   country_name: United States
+  overall_performance: '100000000000001000000000000011100100110101000100000011111111111111111001011001111100010001111111'
+  stopped_split_time_id:
+  final_split_time_id: 3891
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2015_bad_status:
   id: 138
   event_id: 4
@@ -863,6 +1071,14 @@ hardrock_2015_bad_status:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000001000000000000100101001101010100100000011111111111111111000000010101111001110011111'
+  stopped_split_time_id: 101556
+  final_split_time_id: 101556
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2015_irvin_harber:
   id: 141
   event_id: 4
@@ -895,6 +1111,14 @@ hardrock_2015_irvin_harber:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000001000000000000011100100110101000100000011111111111111111010110110011010001111111111'
+  stopped_split_time_id: 101541
+  final_split_time_id: 101541
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2015_cassondra_nienow:
   id: 155
   event_id: 4
@@ -927,6 +1151,14 @@ hardrock_2015_cassondra_nienow:
   comments:
   state_name: Ohio
   country_name: United States
+  overall_performance: '000000000000001000000000000001011010100001101100000011111111111111111101011010100001001011011111'
+  stopped_split_time_id: 4198
+  final_split_time_id: 4198
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2015_donn_mckenzie:
   id: 158
   event_id: 4
@@ -959,6 +1191,14 @@ hardrock_2015_donn_mckenzie:
   comments:
   state_name: Wyoming
   country_name: United States
+  overall_performance: '100000000000001000000000000000011101001110110100000011111111111111111111011101101010101110111111'
+  stopped_split_time_id:
+  final_split_time_id: 4219
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 ramble_finished_first:
   id: 1040
   event_id: 14
@@ -991,6 +1231,14 @@ ramble_finished_first:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111111000001000100101001111'
+  stopped_split_time_id: 15145
+  final_split_time_id: 15145
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ramble_finished_second:
   id: 1048
   event_id: 14
@@ -1023,6 +1271,14 @@ ramble_finished_second:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111110111011010011100000111'
+  stopped_split_time_id: 15161
+  final_split_time_id: 15161
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ramble_start_only:
   id: 1051
   event_id: 14
@@ -1055,6 +1311,14 @@ ramble_start_only:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 15166
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 ramble_not_started:
   id: 1061
   event_id: 14
@@ -1087,6 +1351,14 @@ ramble_not_started:
   comments:
   state_name:
   country_name:
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2014_finished_first:
   id: 4172
   event_id: 17
@@ -1119,6 +1391,14 @@ hardrock_2014_finished_first:
   comments:
   state_name: Hokkaido
   country_name: Japan
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111101101110110011101111'
+  stopped_split_time_id: 91286
+  final_split_time_id: 91286
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_finished_with_stop:
   id: 4173
   event_id: 17
@@ -1151,6 +1431,14 @@ hardrock_2014_finished_with_stop:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111010000011011101001111'
+  stopped_split_time_id: 91314
+  final_split_time_id: 91314
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_finished_without_stop:
   id: 4174
   event_id: 17
@@ -1183,6 +1471,14 @@ hardrock_2014_finished_without_stop:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111000110111010010001111'
+  stopped_split_time_id:
+  final_split_time_id: 91342
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_claudio_wunsch:
   id: 4192
   event_id: 17
@@ -1215,6 +1511,14 @@ hardrock_2014_claudio_wunsch:
   comments:
   state_name:
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000010001111111100010110111'
+  stopped_split_time_id: 91846
+  final_split_time_id: 91846
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_paul_predovic:
   id: 4199
   event_id: 17
@@ -1247,6 +1551,14 @@ hardrock_2014_paul_predovic:
   comments:
   state_name: Idaho
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111010111001000001110111'
+  stopped_split_time_id: 92042
+  final_split_time_id: 92042
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_keith_metz:
   id: 4206
   event_id: 17
@@ -1279,6 +1591,14 @@ hardrock_2014_keith_metz:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101000101000110100001111'
+  stopped_split_time_id: 92238
+  final_split_time_id: 92238
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_major_green:
   id: 4207
   event_id: 17
@@ -1311,6 +1631,14 @@ hardrock_2014_major_green:
   comments:
   state_name: North Carolina
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100111100100101100110111'
+  stopped_split_time_id: 92266
+  final_split_time_id: 92266
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_humberto_adams:
   id: 4221
   event_id: 17
@@ -1343,6 +1671,14 @@ hardrock_2014_humberto_adams:
   comments:
   state_name: New Mexico
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111000011101101110001110111'
+  stopped_split_time_id: 92658
+  final_split_time_id: 92658
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_omer_yundt:
   id: 4246
   event_id: 17
@@ -1375,6 +1711,14 @@ hardrock_2014_omer_yundt:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110011000101101010101100111'
+  stopped_split_time_id: 93358
+  final_split_time_id: 93358
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_pat_schaden:
   id: 4247
   event_id: 17
@@ -1407,6 +1751,14 @@ hardrock_2014_pat_schaden:
   comments:
   state_name: Arizona
   country_name: United States
+  overall_performance: '100000000000001000000000000100011110101010100000000111111111111111110111010111011110101010111111'
+  stopped_split_time_id:
+  final_split_time_id: 93384
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2014_clarence_goyette:
   id: 4249
   event_id: 17
@@ -1439,6 +1791,14 @@ hardrock_2014_clarence_goyette:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001000110110000111111'
+  stopped_split_time_id: 93442
+  final_split_time_id: 93442
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_irvin_corkery:
   id: 4251
   event_id: 17
@@ -1471,6 +1831,14 @@ hardrock_2014_irvin_corkery:
   comments:
   state_name: District of Columbia
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010000001111000110011111'
+  stopped_split_time_id: 93498
+  final_split_time_id: 93498
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_willis_murray:
   id: 4253
   event_id: 17
@@ -1503,6 +1871,14 @@ hardrock_2014_willis_murray:
   comments:
   state_name: Georgia
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110001100101101100000111111'
+  stopped_split_time_id: 93554
+  final_split_time_id: 93554
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_ken_bradtke:
   id: 4256
   event_id: 17
@@ -1535,6 +1911,14 @@ hardrock_2014_ken_bradtke:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110000010110110101001111111'
+  stopped_split_time_id: 93638
+  final_split_time_id: 93638
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2014_progress_sherman:
   id: 4277
   event_id: 17
@@ -1567,6 +1951,14 @@ hardrock_2014_progress_sherman:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111000110100011001111011111111'
+  stopped_split_time_id:
+  final_split_time_id: 94175
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2014_multiple_stops:
   id: 4293
   event_id: 17
@@ -1599,6 +1991,14 @@ hardrock_2014_multiple_stops:
   comments:
   state_name: Hawaii
   country_name: United States
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010100110011000110110111111'
+  stopped_split_time_id: 94453
+  final_split_time_id: 94453
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2014_without_start:
   id: 4294
   event_id: 17
@@ -1631,6 +2031,14 @@ hardrock_2014_without_start:
   comments:
   state_name: Montana
   country_name: United States
+  overall_performance: '000000000000001000000000000010110111010000000100000000000000000000000000000000000000000000000000'
+  stopped_split_time_id: 94470
+  final_split_time_id: 94470
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2014_drop_ouray:
   id: 4295
   event_id: 17
@@ -1663,6 +2071,14 @@ hardrock_2014_drop_ouray:
   comments:
   state_name: California
   country_name: United States
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100000010011001100001111111'
+  stopped_split_time_id: 94483
+  final_split_time_id: 94483
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2014_not_started:
   id: 4302
   event_id: 17
@@ -1695,6 +2111,14 @@ hardrock_2014_not_started:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2016_finished_first:
   id: 6518
   event_id: 34
@@ -1727,6 +2151,14 @@ rufa_2016_finished_first:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111100111111100000101010011111'
+  stopped_split_time_id: 132059
+  final_split_time_id: 132059
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2016_finished_second:
   id: 6520
   event_id: 34
@@ -1759,6 +2191,14 @@ rufa_2016_finished_second:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111110001011101110100101111111'
+  stopped_split_time_id: 132090
+  final_split_time_id: 132090
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2016_progress_lap1:
   id: 6560
   event_id: 34
@@ -1791,6 +2231,14 @@ rufa_2016_progress_lap1:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000001000011111001000000111111111111111111111101100100010111000011111'
+  stopped_split_time_id:
+  final_split_time_id: 132439
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2016_not_started:
   id: 6561
   event_id: 34
@@ -1823,6 +2271,14 @@ rufa_2016_not_started:
   comments:
   state_name:
   country_name:
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_24h_finished_first:
   id: 6693
   event_id: 36
@@ -1855,6 +2311,14 @@ rufa_2017_24h_finished_first:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111100010110111111111000111111'
+  stopped_split_time_id: 133983
+  final_split_time_id: 133983
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2017_24h_progress_lap6:
   id: 6695
   event_id: 36
@@ -1887,6 +2351,14 @@ rufa_2017_24h_progress_lap6:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111101110010000101111101111111'
+  stopped_split_time_id:
+  final_split_time_id: 134018
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_24h_multiple_stops:
   id: 6756
   event_id: 36
@@ -1919,6 +2391,14 @@ rufa_2017_24h_multiple_stops:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000011000000000000000110010111010110000000111111111111111111110110001101110001110111111'
+  stopped_split_time_id: 134810
+  final_split_time_id: 134812
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2017_24h_finished_last:
   id: 6780
   event_id: 36
@@ -1951,6 +2431,14 @@ rufa_2017_24h_finished_last:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000010000000000000000100001111100100000000111111111111111111111001001110000010100011111'
+  stopped_split_time_id: 135012
+  final_split_time_id: 135012
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2017_24h_not_started:
   id: 6782
   event_id: 36
@@ -1983,6 +2471,14 @@ rufa_2017_24h_not_started:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_24h_progress_lap1:
   id: 6805
   event_id: 36
@@ -2015,6 +2511,14 @@ rufa_2017_24h_progress_lap1:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000000010000111110010000000111111111111111111111011000011001110100011111'
+  stopped_split_time_id:
+  final_split_time_id: 135134
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_lavon_paucek:
   id: 7270
   event_id: 37
@@ -2047,6 +2551,14 @@ hardrock_2016_lavon_paucek:
   comments:
   state_name:
   country_name: New Zealand
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110001010000001110010111'
+  stopped_split_time_id: 146950
+  final_split_time_id: 146950
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 hardrock_2016_vesta_borer:
   id: 7284
   event_id: 37
@@ -2079,6 +2591,14 @@ hardrock_2016_vesta_borer:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111001010101001000101010011111'
+  stopped_split_time_id:
+  final_split_time_id: 147341
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_kory_kulas:
   id: 7289
   event_id: 37
@@ -2111,6 +2631,14 @@ hardrock_2016_kory_kulas:
   comments:
   state_name: California
   country_name: United States
+  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111000111011010001011000111111'
+  stopped_split_time_id:
+  final_split_time_id: 147481
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_shad_hirthe:
   id: 7297
   event_id: 37
@@ -2143,6 +2671,14 @@ hardrock_2016_shad_hirthe:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010101000111001111111011111'
+  stopped_split_time_id:
+  final_split_time_id: 147699
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_douglas_vandervort:
   id: 7302
   event_id: 37
@@ -2175,6 +2711,14 @@ hardrock_2016_douglas_vandervort:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010010110100110000111011111'
+  stopped_split_time_id:
+  final_split_time_id: 147839
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_missing_telluride_out:
   id: 7308
   event_id: 37
@@ -2207,6 +2751,14 @@ hardrock_2016_missing_telluride_out:
   comments:
   state_name: Alaska
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001010001111000110011111'
+  stopped_split_time_id:
+  final_split_time_id: 148007
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_junior_lesch:
   id: 7311
   event_id: 37
@@ -2239,6 +2791,14 @@ hardrock_2016_junior_lesch:
   comments:
   state_name: New Mexico
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010000011001000111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 148091
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_eddy_goldner:
   id: 7315
   event_id: 37
@@ -2271,6 +2831,14 @@ hardrock_2016_eddy_goldner:
   comments:
   state_name: Washington
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001101001101100001111111'
+  stopped_split_time_id:
+  final_split_time_id: 148203
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_progress_sherman:
   id: 7328
   event_id: 37
@@ -2303,6 +2871,14 @@ hardrock_2016_progress_sherman:
   comments:
   state_name: Virginia
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010111000001111011011111111'
+  stopped_split_time_id:
+  final_split_time_id: 148567
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_benito_moen:
   id: 7337
   event_id: 37
@@ -2335,6 +2911,14 @@ hardrock_2016_benito_moen:
   comments:
   state_name: Ohio
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101011100100001101011111'
+  stopped_split_time_id:
+  final_split_time_id: 148819
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_kendall_koch:
   id: 7340
   event_id: 37
@@ -2367,6 +2951,14 @@ hardrock_2016_kendall_koch:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101010011010111101111111'
+  stopped_split_time_id:
+  final_split_time_id: 148903
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_charlie_mueller:
   id: 7343
   event_id: 37
@@ -2399,6 +2991,14 @@ hardrock_2016_charlie_mueller:
   comments:
   state_name: Oregon
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001110000100110011110011111'
+  stopped_split_time_id:
+  final_split_time_id: 148987
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_brinda_fisher:
   id: 7376
   event_id: 37
@@ -2431,6 +3031,14 @@ hardrock_2016_brinda_fisher:
   comments:
   state_name: South Carolina
   country_name: United States
+  overall_performance: '100000000000001000000000000010110111010000000100000011111111111111111010010110100110000111011111'
+  stopped_split_time_id:
+  final_split_time_id: 149907
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_rene_mclaughlin:
   id: 7380
   event_id: 37
@@ -2463,6 +3071,14 @@ hardrock_2016_rene_mclaughlin:
   comments:
   state_name: Texas
   country_name: United States
+  overall_performance: '100000000000001000000000000011100001010111101000000111111111111111111000111111001010011010011111'
+  stopped_split_time_id:
+  final_split_time_id: 150016
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 hardrock_2016_dropped_grouse:
   id: 7396
   event_id: 37
@@ -2495,6 +3111,14 @@ hardrock_2016_dropped_grouse:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111100110110100101010111111111'
+  stopped_split_time_id: 150335
+  final_split_time_id: 150335
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2016_mervin_smitham:
   id: 7400
   event_id: 37
@@ -2527,6 +3151,14 @@ hardrock_2016_mervin_smitham:
   comments:
   state_name: New Mexico
   country_name: United States
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010111000000000110010011111'
+  stopped_split_time_id: 150403
+  final_split_time_id: 150403
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2016_rhett_auer:
   id: 7404
   event_id: 37
@@ -2559,6 +3191,14 @@ hardrock_2016_rhett_auer:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111101111000010001011110011111'
+  stopped_split_time_id: 150467
+  final_split_time_id: 150467
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2016_hoyt_macejkovic:
   id: 7407
   event_id: 37
@@ -2591,6 +3231,14 @@ hardrock_2016_hoyt_macejkovic:
   comments:
   state_name: Maryland
   country_name: United States
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100001100000000110000111111'
+  stopped_split_time_id: 150506
+  final_split_time_id: 150506
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 hardrock_2016_start_only:
   id: 7411
   event_id: 37
@@ -2623,6 +3271,14 @@ hardrock_2016_start_only:
   comments:
   state_name: Maine
   country_name: United States
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 192705
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_50k_finished_first:
   id: 15626
   event_id: 48
@@ -2655,6 +3311,14 @@ ggd30_50k_finished_first:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110110100100001000101101101'
+  stopped_split_time_id:
+  final_split_time_id: 188951
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_50k_bad_finish:
   id: 15664
   event_id: 48
@@ -2687,6 +3351,14 @@ ggd30_50k_bad_finish:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101000000010111100110001'
+  stopped_split_time_id:
+  final_split_time_id: 189055
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_50k_progress_aid4:
   id: 15891
   event_id: 48
@@ -2719,6 +3391,14 @@ ggd30_50k_progress_aid4:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001001101000000100000000111111111111111111110100011000010111100011101'
+  stopped_split_time_id:
+  final_split_time_id: 189814
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_50k_progress_aid3:
   id: 15901
   event_id: 48
@@ -2751,6 +3431,14 @@ ggd30_50k_progress_aid3:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000110110000100000000000111111111111111111111000000001001000101011111'
+  stopped_split_time_id:
+  final_split_time_id: 189850
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_50k_drop_aid4:
   id: 15931
   event_id: 48
@@ -2783,6 +3471,14 @@ ggd30_50k_drop_aid4:
   comments:
   state_name:
   country_name:
+  overall_performance: '000000000000001000000000000001001101000000100000000111111111111111111110100010110011100000101001'
+  stopped_split_time_id: 189952
+  final_split_time_id: 189952
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 ggd30_50k_start_only:
   id: 16023
   event_id: 48
@@ -2815,6 +3511,14 @@ ggd30_50k_start_only:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 190761
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_50k_not_started:
   id: 16032
   event_id: 48
@@ -2847,6 +3551,14 @@ ggd30_50k_not_started:
   comments:
   state_name:
   country_name:
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_12m_start_only:
   id: 16094
   event_id: 49
@@ -2879,6 +3591,14 @@ ggd30_12m_start_only:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 190731
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_12m_finished_second:
   id: 16107
   event_id: 49
@@ -2911,6 +3631,14 @@ ggd30_12m_finished_second:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111101010101001101'
+  stopped_split_time_id:
+  final_split_time_id: 190273
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_12m_finished_first:
   id: 16173
   event_id: 49
@@ -2943,6 +3671,14 @@ ggd30_12m_finished_first:
   comments:
   state_name: Auvergne-Rhône-Alpes
   country_name: France
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111100111001111101100111111'
+  stopped_split_time_id:
+  final_split_time_id: 190117
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_12m_not_started:
   id: 16209
   event_id: 49
@@ -2975,6 +3711,14 @@ ggd30_12m_not_started:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 sum_55k_finished_first:
   id: 16227
   event_id: 57
@@ -3007,6 +3751,14 @@ sum_55k_finished_first:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000100110101101011001111'
+  stopped_split_time_id: 190508
+  final_split_time_id: 190508
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 sum_55k_finished_second:
   id: 16229
   event_id: 57
@@ -3039,6 +3791,14 @@ sum_55k_finished_second:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000010101010000001101111'
+  stopped_split_time_id: 190528
+  final_split_time_id: 190528
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 sum_55k_not_started:
   id: 16242
   event_id: 57
@@ -3071,6 +3831,14 @@ sum_55k_not_started:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 sum_55k_progress_rolling:
   id: 16244
   event_id: 57
@@ -3103,6 +3871,14 @@ sum_55k_progress_rolling:
   comments:
   state_name: California
   country_name: United States
+  overall_performance: '100000000000001000000000000001000100111011101100000011111111111111111111000101101000101001011111'
+  stopped_split_time_id:
+  final_split_time_id: 190672
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 sum_55k_drop_bandera:
   id: 16245
   event_id: 57
@@ -3135,6 +3911,14 @@ sum_55k_drop_bandera:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000001000000000000001001111100111101000000111111111111111111101111111100001010101111111'
+  stopped_split_time_id: 190683
+  final_split_time_id: 190683
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 sum_55k_start_only:
   id: 16246
   event_id: 57
@@ -3167,6 +3951,14 @@ sum_55k_start_only:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 190816
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 sum_100k_drop_anvil:
   id: 16247
   event_id: 56
@@ -3199,6 +3991,14 @@ sum_100k_drop_anvil:
   comments:
   state_name: Ohio
   country_name: United States
+  overall_performance: '000000000000001000000000000010110000010011100100000011111111111111111100111010111011101100011111'
+  stopped_split_time_id: 190695
+  final_split_time_id: 190695
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: true
+  finished: false
 sum_100k_progress_cascade:
   id: 16248
   event_id: 56
@@ -3231,6 +4031,14 @@ sum_100k_progress_cascade:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000001011010011101101100000011111111111111111110011100101010100100111111'
+  stopped_split_time_id:
+  final_split_time_id: 192704
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_12h_finished_first:
   id: 16643
   event_id: 70
@@ -3263,6 +4071,14 @@ rufa_2017_12h_finished_first:
   comments:
   state_name: Arizona
   country_name: United States
+  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111101100000111000011001111111'
+  stopped_split_time_id: 192201
+  final_split_time_id: 192201
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2017_12h_finished_lap6:
   id: 16648
   event_id: 70
@@ -3295,6 +4111,14 @@ rufa_2017_12h_finished_lap6:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111101100010100111001111101111'
+  stopped_split_time_id: 192295
+  final_split_time_id: 192295
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 rufa_2017_12h_progress_lap5_partial:
   id: 16657
   event_id: 70
@@ -3327,6 +4151,14 @@ rufa_2017_12h_progress_lap5_partial:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000101000000000000001001100011000001000000111111111111111111101101111111101111110110111'
+  stopped_split_time_id:
+  final_split_time_id: 192433
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_12h_progress_lap2:
   id: 16663
   event_id: 70
@@ -3359,6 +4191,14 @@ rufa_2017_12h_progress_lap2:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000010000000000000000100001111100100000000111111111111111111111000101111000110000101111'
+  stopped_split_time_id:
+  final_split_time_id: 192502
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_12h_start_only:
   id: 16667
   event_id: 70
@@ -3391,6 +4231,14 @@ rufa_2017_12h_start_only:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  stopped_split_time_id:
+  final_split_time_id: 192542
+  started: true
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 rufa_2017_12h_not_started:
   id: 16673
   event_id: 70
@@ -3423,6 +4271,14 @@ rufa_2017_12h_not_started:
   comments:
   state_name: Utah
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 sum_100k_un_started:
   id: 16683
   event_id: 56
@@ -3455,6 +4311,14 @@ sum_100k_un_started:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  stopped_split_time_id:
+  final_split_time_id:
+  started: false
+  beyond_start: false
+  stopped: false
+  dropped: false
+  finished: false
 sum_100k_on_dst_change:
   id: 16684
   event_id: 56
@@ -3487,6 +4351,14 @@ sum_100k_on_dst_change:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111011110110011111110011111'
+  stopped_split_time_id:
+  final_split_time_id: 192715
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 sum_100k_across_dst_change:
   id: 16685
   event_id: 56
@@ -3519,6 +4391,14 @@ sum_100k_across_dst_change:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111010110110011010001111111'
+  stopped_split_time_id:
+  final_split_time_id: 192710
+  started: true
+  beyond_start: true
+  stopped: false
+  dropped: false
+  finished: false
 ggd30_50k_finished_second:
   id: 16686
   event_id: 48
@@ -3551,6 +4431,14 @@ ggd30_50k_finished_second:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101010110110110001111111'
+  stopped_split_time_id:
+  final_split_time_id: 192722
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_12m_series_finisher:
   id: 16687
   event_id: 49
@@ -3583,6 +4471,14 @@ ggd30_12m_series_finisher:
   comments:
   state_name: Colorado
   country_name: United States
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111100100001011111'
+  stopped_split_time_id:
+  final_split_time_id: 192724
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 sum_55k_series_finisher:
   id: 16688
   event_id: 57
@@ -3615,6 +4511,14 @@ sum_55k_series_finisher:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111101110010000101111101111111'
+  stopped_split_time_id:
+  final_split_time_id: 192734
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 sum_55k_slow_finisher:
   id: 16689
   event_id: 57
@@ -3647,6 +4551,14 @@ sum_55k_slow_finisher:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111101010110010100011000010111'
+  stopped_split_time_id:
+  final_split_time_id: 192744
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true
 ggd30_12m_slow_finisher:
   id: 16690
   event_id: 49
@@ -3679,3 +4591,11 @@ ggd30_12m_slow_finisher:
   comments:
   state_name:
   country_name:
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111000001101101001011101111'
+  stopped_split_time_id:
+  final_split_time_id: 192746
+  started: true
+  beyond_start: true
+  stopped: true
+  dropped: false
+  finished: true

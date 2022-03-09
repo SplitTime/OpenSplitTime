@@ -26,7 +26,8 @@ class FindNotExpectedBibs
   def bib_numbers
     return [] if errors.present?
 
-    event_group.not_expected_bibs(split_name)
+    query = EventGroupQuery.not_expected_bibs(event_group.id, split_name)
+    ActiveRecord::Base.connection.execute(query).values.flatten
   end
 
   def validate_setup

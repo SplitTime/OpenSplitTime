@@ -25,7 +25,7 @@ class EventGroupFollowPresenter < BasePresenter
   end
 
   def event_group_finished?
-    events.all?(&:finished?)
+    event_group.finished?
   end
 
   def multiple_courses?

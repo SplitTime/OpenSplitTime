@@ -76,8 +76,9 @@ class EventGroupsController < ApplicationController
 
   def efforts
     @efforts = policy_scope(@event_group.efforts)
-        .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-        .where(prepared_params[:filter])
+                 .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+                 .where(prepared_params[:filter])
+                 .finish_info_subquery
 
     respond_to do |format|
       format.json do

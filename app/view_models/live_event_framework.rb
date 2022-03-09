@@ -84,7 +84,7 @@ class LiveEventFramework
   end
 
   def event_efforts
-    @event_efforts ||= event.efforts.ranked_with_status
+    @event_efforts ||= event.efforts.ranking_subquery.finish_info_subquery
   end
 
   def lap_splits

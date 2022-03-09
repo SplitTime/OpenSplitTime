@@ -8,7 +8,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   let(:event_group) { event.event_group }
   let(:organization) { event_group.organization }
 
-  let(:effort_1) { event.efforts.ranked_with_status.first }
+  let(:effort_1) { event.efforts.ranking_subquery.first }
   let(:other_efforts) { event.efforts.where.not(id: effort_1.id) }
 
   before(:all) { EffortSegment.set_all }
@@ -18,7 +18,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     visit best_efforts_course_path(course)
 
     expect(page).to have_content(course.name)
-    finished_efforts = event.efforts.ranked_with_status.select(&:finished)
+    finished_efforts = event.efforts.ranking_subquery.select(&:finished)
 
     finished_efforts.each { |effort| verify_link_present(effort, :full_name) }
 
@@ -33,7 +33,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   context "when hidden efforts exist for the course" do
     let(:hidden_event) { events(:hardrock_2014) }
     let(:hidden_event_group) { hidden_event.event_group }
-    let(:hidden_effort_1) { hidden_event.efforts.ranked_with_status.first }
+    let(:hidden_effort_1) { hidden_event.efforts.ranking_subquery.first }
     let(:other_hidden_efforts) { hidden_event.efforts.where.not(id: hidden_effort_1.id) }
 
     let(:user) { users(:third_user) }

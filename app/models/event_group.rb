@@ -55,6 +55,10 @@ class EventGroup < ApplicationRecord
     @efforts_count ||= events.sum(&:efforts_count)
   end
 
+  def finished?
+    efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
+  end
+
   def to_s
     name
   end
@@ -69,11 +73,6 @@ class EventGroup < ApplicationRecord
 
   def split_times
     SplitTime.joins(:effort).where(efforts: {event_id: events})
-  end
-
-  def not_expected_bibs(split_name)
-    query = EventGroupQuery.not_expected_bibs(id, split_name)
-    ActiveRecord::Base.connection.execute(query).values.flatten
   end
 
   def organization_name

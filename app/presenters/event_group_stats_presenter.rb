@@ -45,7 +45,7 @@ class EventGroupStatsPresenter < BasePresenter
   end
 
   def ranked_efforts
-    @ranked_efforts ||= efforts.ranked_with_status
+    @ranked_efforts ||= efforts.finish_info_subquery
   end
 
   def stats_available?

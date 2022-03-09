@@ -118,4 +118,10 @@ class EffortAnalysisView < EffortWithLapSplitRows
   def relevant_time_points
     typical_effort ? ordered_split_times.map(&:time_point) & typical_effort.ordered_split_times.map(&:time_point) : []
   end
+
+  def load_effort(effort)
+    temp_effort = Effort.where(id: effort).ranking_subquery.finish_info_subquery.includes(split_times: :split).first
+    AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
+    @effort = temp_effort
+  end
 end

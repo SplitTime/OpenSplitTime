@@ -129,7 +129,7 @@ class Event < ApplicationRecord
   end
 
   def finished?
-    ranked_efforts.present? && ranked_efforts.any?(&:started?) && ranked_efforts.none?(&:in_progress?)
+    efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
   end
 
   def ranked_efforts(args = {})

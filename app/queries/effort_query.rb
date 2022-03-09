@@ -93,15 +93,20 @@ class EffortQuery < BaseQuery
            )
 
       select existing_scope.*,
-             base_name                                                              as final_split_name,
-             absolute_time                                                          as final_absolute_time,
-             elapsed_seconds                                                        as final_elapsed_seconds,
-             split_times.lap                                                        as final_lap,
-             (split_times.lap - 1) * course_distance + splits.distance_from_start   as final_distance,
-             (split_times.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
+             stop_st.lap                                                         as stopped_lap,
+             stop_st.split_id                                                    as stopped_split_id,
+             final_st.lap                                                        as final_lap,
+             splits.id                                                           as final_split_id,
+             final_st.sub_split_bitkey                                           as final_bitkey,
+             splits.base_name                                                    as final_split_name,
+             final_st.absolute_time                                              as final_absolute_time,
+             final_st.elapsed_seconds                                            as final_elapsed_seconds,
+             (final_st.lap - 1) * course_distance + splits.distance_from_start   as final_distance,
+             (final_st.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
       from existing_scope
-               join split_times on split_times.id = existing_scope.final_split_time_id
-               join splits on splits.id = split_times.split_id
+               left join split_times stop_st on stop_st.id = existing_scope.stopped_split_time_id
+               join split_times final_st on final_st.id = existing_scope.final_split_time_id
+               join splits on splits.id = final_st.split_id
                join course_subquery using(course_id)
       )
 
@@ -128,15 +133,15 @@ class EffortQuery < BaseQuery
            )
 
       select
-          existing_scope.*,
+          es.*,
           sst.absolute_time                                                                     as actual_start_time,
-          coalesce(ef.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
-          extract(epoch from (ef.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
+          coalesce(es.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
+          extract(epoch from (es.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
           (checked_in and not started and
-              (coalesce(ef.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
-      from existing_scope
-               join events ev on ev.id = existing_scope.event_id
-               left join starting_split_times sst on sst.effort_id = ef.id
+              (coalesce(es.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
+      from existing_scope es
+               join events ev on ev.id = es.event_id
+               left join starting_split_times sst on sst.effort_id = es.id
       )
 
       as efforts

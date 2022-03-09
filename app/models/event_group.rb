@@ -55,6 +55,10 @@ class EventGroup < ApplicationRecord
     @efforts_count ||= events.sum(&:efforts_count)
   end
 
+  def finished?
+    efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
+  end
+
   def to_s
     name
   end

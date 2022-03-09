@@ -97,7 +97,10 @@ module Results
                         (final_lap - 1) * course_distance + final_lap_distance             as final_distance,
                         final_lap is not null                                              as started,
                         bse.effort_id is not null                                          as beyond_start,
-                        case when final_lap_complete then final_lap else final_lap - 1 end as laps_finished
+                        case when final_lap is null then 0
+                             when final_lap_complete then final_lap 
+                             else final_lap - 1 
+                        end as laps_finished
                  from scoped_efforts
                           left join events on events.id = scoped_efforts.event_id
                           left join course_subquery on events.course_id = course_subquery.course_id
@@ -114,7 +117,7 @@ module Results
                             when laps_required = 0
                                 then stopped_split_time_id is not null
                             else
-                                    laps_finished >= laps_required
+                                laps_finished >= laps_required
                             end
                             as finished
                  from base_subquery

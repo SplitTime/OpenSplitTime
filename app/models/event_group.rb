@@ -75,11 +75,6 @@ class EventGroup < ApplicationRecord
     SplitTime.joins(:effort).where(efforts: {event_id: events})
   end
 
-  def not_expected_bibs(split_name)
-    query = EventGroupQuery.not_expected_bibs(id, split_name)
-    ActiveRecord::Base.connection.execute(query).values.flatten
-  end
-
   def organization_name
     organization.name
   end

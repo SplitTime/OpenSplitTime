@@ -7,7 +7,7 @@ class EventGroupQuery < BaseQuery
       with relevant_events as (
                select id
                from events
-               where event_group_id = 4
+               where event_group_id = #{event_group_id}
            ),
 
            distances as (
@@ -25,9 +25,10 @@ class EventGroupQuery < BaseQuery
                       efforts.bib_number,
                       efforts.stopped,
                       distances.subject_distance,
-                      split_times.distance_from_start as farthest_distance
+                      splits.distance_from_start as farthest_distance
                from efforts
                         left join split_times on split_times.id = efforts.final_split_time_id
+                        left join splits on splits.id = split_times.split_id
                         left join distances on distances.event_id = efforts.event_id
                where efforts.event_id in (select id from relevant_events)
                order by efforts.id

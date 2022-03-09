@@ -6,10 +6,11 @@ RSpec.describe Api::V1::SplitTimesController do
   include BitkeyDefinitions
 
   let(:type) { "split_times" }
-  let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: bitkey) }
+  let(:split_time) { create(:split_time, effort: effort, split: split, bitkey: bitkey, absolute_time: absolute_time) }
   let(:effort) { efforts(:hardrock_2016_progress_sherman) }
   let(:split) { splits(:hardrock_cw_cunningham) }
   let(:bitkey) { in_bitkey }
+  let(:absolute_time) { effort.ordered_split_times.first.absolute_time + 1.day }
 
   describe "#show" do
     subject(:make_request) { get :show, params: params }
@@ -50,7 +51,7 @@ RSpec.describe Api::V1::SplitTimesController do
 
     via_login_and_jwt do
       context "when provided data is valid" do
-        let(:attributes) { {effort_id: effort.id, lap: 1, split_id: split.id, sub_split_bitkey: 1, absolute_time: "2018-10-31 06:00:00"} }
+        let(:attributes) { {effort_id: effort.id, lap: 1, split_id: split.id, sub_split_bitkey: 1, absolute_time: absolute_time} }
 
         it "returns a successful json response" do
           make_request

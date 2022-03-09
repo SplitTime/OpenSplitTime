@@ -114,7 +114,7 @@ class EffortQuery < BaseQuery
           sst.absolute_time                                                                     as actual_start_time,
           coalesce(es.scheduled_start_time, ev.scheduled_start_time)                            as assumed_start_time,
           extract(epoch from (es.scheduled_start_time - ev.scheduled_start_time))               as scheduled_start_offset,
-          (checked_in and not started and
+          (checked_in and sst.absolute_time is null and
               (coalesce(es.scheduled_start_time, ev.scheduled_start_time) < current_timestamp)) as ready_to_start
       from existing_scope es
                join events ev on ev.id = es.event_id

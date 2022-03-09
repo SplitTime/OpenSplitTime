@@ -7,7 +7,7 @@ module Results
     end
 
     def initialize(*effort_ids)
-      @effort_ids = effort_ids
+      @effort_ids = effort_ids.flatten.presence || [0]
     end
 
     def perform!

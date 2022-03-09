@@ -1070,7 +1070,7 @@ progress_sherman_colorado_us:
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-pearcy
   state_name: Colorado
   country_name: United States
-finished_second:
+finished_second_montana_us:
   id: 326
   first_name: Finished
   last_name: Second

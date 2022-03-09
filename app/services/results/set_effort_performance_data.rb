@@ -7,11 +7,17 @@ module Results
     end
 
     def initialize(*effort_ids)
-      @effort_ids = effort_ids
+      @effort_ids = effort_ids.flatten
     end
 
     def perform!
-      ::ActiveRecord::Base.connection.execute(query)
+      query_string = if effort_ids.present?
+                       query
+                     else
+                       "select 1 as no_effort_ids_provided"
+                     end
+
+      ::ActiveRecord::Base.connection.execute(query_string)
     end
 
     private

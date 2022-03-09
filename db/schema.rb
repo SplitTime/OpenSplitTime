@@ -119,10 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_05_141746) do
     t.string "comments"
     t.string "state_name"
     t.string "country_name"
-    t.integer "overall_rank"
-    t.integer "gender_rank"
-    t.integer "prior_effort_id"
-    t.integer "next_effort_id"
+    t.bit "overall_performance", limit: 96
     t.integer "stopped_split_time_id"
     t.integer "final_split_time_id"
     t.boolean "started"

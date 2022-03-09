@@ -82,9 +82,9 @@ class EffortQuery < BaseQuery
              (final_st.lap - 1) * course_vert_gain + splits.vert_gain_from_start as final_vert_gain
       from existing_scope
                left join split_times stop_st on stop_st.id = existing_scope.stopped_split_time_id
-               join split_times final_st on final_st.id = existing_scope.final_split_time_id
-               join splits on splits.id = final_st.split_id
-               join course_subquery using(course_id)
+               left join split_times final_st on final_st.id = existing_scope.final_split_time_id
+               left join splits on splits.id = final_st.split_id
+               left join course_subquery using(course_id)
       )
 
       as efforts

@@ -10,8 +10,10 @@ namespace :temp do
     Rails.application.eager_load!
 
     Event.find_each do |event|
-      result = ::Results::SetEffortPerformanceData.perform!(event.efforts.pluck(:id))
-      puts result.cmd_status
+      event.efforts.find_each do |effort|
+        result = ::Results::SetEffortPerformanceData.perform!(effort.id)
+        puts result.cmd_status
+      end
     end
 
     puts "Finished updating efforts for all events"

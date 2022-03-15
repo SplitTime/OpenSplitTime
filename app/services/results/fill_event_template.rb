@@ -21,7 +21,7 @@ module Results
 
     # @return [Array<::Effort>]
     def efforts
-      ranked_efforts = event.efforts.finish_info_subquery
+      ranked_efforts = event.efforts.finish_info_subquery.ranked_order
 
       if event.laps_unlimited?
         ranked_efforts.select(&:beyond_start?)

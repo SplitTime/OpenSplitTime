@@ -20,7 +20,7 @@
 <tbody class="collapse show" id="collapse_<%= category.position %>">
 <% if category.efforts.present? %>
   <% category.efforts.each.with_index(1) do |effort, i| %>
-    <tr>
+    <tr id='<%= "#{category.name.parameterize.underscore}_#{i}" %>'>
       <td><%= "#{i.ordinalize} Place" %></td>
       <% if @presenter.multiple_laps? %>
         <td><%= effort.laps_finished %></td>

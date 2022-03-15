@@ -68,6 +68,7 @@ class Effort < ApplicationRecord
   scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
+  scope :ranked_order, -> { order(overall_performance: :desc) }
   scope :ranking_subquery, -> { from(EffortQuery.ranking_subquery(self)) }
   scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
   scope :with_policy_scope_attributes, lambda {

@@ -64,8 +64,8 @@ class Effort < ApplicationRecord
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
   scope :unreconciled, -> { where(person_id: nil) }
-  scope :started, -> { joins(:split_times).uniq }
-  scope :unstarted, -> { includes(:split_times).where(split_times: {id: nil}) }
+  scope :started, -> { where(started: true) }
+  scope :unstarted, -> { where(started: false) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
   scope :ranked_order, -> { order(overall_performance: :desc) }

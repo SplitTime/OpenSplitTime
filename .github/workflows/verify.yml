@@ -34,7 +34,6 @@ jobs:
 
       - name: Run security checks
         run: |
-#          bin/brakeman -q -w2
           bin/bundle-audit check --update
 
   tests:
@@ -55,7 +54,7 @@ jobs:
           --health-retries 5
       redis:
         image: redis:alpine
-        ports: ["6379:6379"]
+        ports: [ "6379:6379" ]
         options: --entrypoint redis-server
 
     steps:

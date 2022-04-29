@@ -95,6 +95,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
+          ADMIN_EMAIL: test@example.com
           DURABLE_JWT_CODE: test_code
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}

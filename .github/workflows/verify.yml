@@ -32,9 +32,6 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
-      - name: Run linter
-        run: |
-#          bin/rubocop --parallel
       - name: Run security checks
         run: |
           bin/brakeman -q -w2

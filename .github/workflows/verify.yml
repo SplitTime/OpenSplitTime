@@ -88,6 +88,9 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
+      - name: Setup selenium
+
+
       - name: Setup test database
         env:
           RAILS_ENV: test

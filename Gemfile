@@ -87,6 +87,8 @@ end
 
 group :development, :test do
   gem "active_record_query_trace"
+  gem "brakeman"
+  gem "bundler-audit"
   gem "dotenv-rails", ">= 2.7.6"
   gem "rspec"
   gem "rspec-rails", ">= 4.0.2"

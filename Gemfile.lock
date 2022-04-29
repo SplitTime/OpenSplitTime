@@ -172,7 +172,7 @@ GEM
       warden (~> 1.2.3)
     devise-bootstrap-views (1.1.0)
     diff-lcs (1.5.0)
-    digest (3.1.0)
+    digest (3.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
@@ -568,6 +568,7 @@ DEPENDENCIES
   derailed_benchmarks
   devise
   devise-bootstrap-views
+  digest (= 3.0.0)
   dotenv-rails (>= 2.7.6)
   factory_bot_rails (~> 5.2, >= 5.2.0)
   ffaker

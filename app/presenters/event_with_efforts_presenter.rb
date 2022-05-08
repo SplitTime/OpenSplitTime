@@ -66,7 +66,7 @@ class EventWithEffortsPresenter < BasePresenter
   attr_reader :params, :current_user
 
   def ranked_efforts
-    @ranked_efforts ||= event_efforts.ranking_subquery.order(order_criteria)
+    @ranked_efforts ||= event_efforts.ranking_subquery.finish_info_subquery.order(order_criteria)
   end
 
   def order_criteria

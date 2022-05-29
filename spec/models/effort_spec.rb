@@ -157,12 +157,25 @@ RSpec.describe Effort, type: :model do
     end
 
     describe "sets performance data" do
-      subject { efforts(:hardrock_2014_finished_first) }
-      before { allow(subject).to receive(:set_performance_data) }
       context "when touched" do
-        it "sets performance data" do
-          expect(subject).to receive(:set_performance_data)
+        subject { efforts(:hardrock_2014_finished_first) }
+        before { subject.update_column(:overall_performance, nil) }
+
+        it "sets overall performance attribute" do
+          expect(subject.overall_performance).to be_nil
           subject.touch
+          subject.reload
+          expect(subject.overall_performance).to be_present
+        end
+      end
+
+      context "when created" do
+        subject { build(:effort) }
+        it "sets overall performance attribute" do
+          expect(subject.overall_performance).to be_nil
+          subject.save
+          subject.reload
+          expect(subject.overall_performance).to be_present
         end
       end
     end

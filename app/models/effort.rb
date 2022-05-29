@@ -58,6 +58,7 @@ class Effort < ApplicationRecord
             size: {less_than: 5000.kilobytes}
 
   before_save :reset_age_from_birthdate
+  after_save :set_performance_data
   after_touch :set_performance_data
 
   pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}

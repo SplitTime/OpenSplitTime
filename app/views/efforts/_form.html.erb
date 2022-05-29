@@ -60,6 +60,10 @@
             <%= f.label :bib_number %>
             <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
           </div>
+          <div class="col-md-6 mb-3">
+            <%= f.label "Tracking Beacon URL" %>
+            <%= f.text_field :beacon_url, class: "form-control", placeholder: "https://www.a-tracking-site.com" %>
+          </div>
         </div>
 
         <div class="form-row">

@@ -17,6 +17,8 @@ class EffortParameters < BaseParameters
       emergency_phone
       event_name
       scheduled_start_time_local
+      comments
+      beacon_url
     ]
   end
 

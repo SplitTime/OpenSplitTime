@@ -18,9 +18,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.13.0
+
       - name: Find yarn cache location
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: JS package cache
         uses: actions/cache@v1
         with:
@@ -28,6 +30,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install packages
         run: |
           yarn install --pure-lockfile
@@ -70,9 +73,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 16.13.0
+
       - name: Find yarn cache location
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: JS package cache
         uses: actions/cache@v1
         with:
@@ -80,6 +85,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install packages
         run: |
           yarn install --pure-lockfile
@@ -91,6 +97,13 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: |
           bin/rails db:setup
+
+      - name: Precompile assets
+        env:
+          RAILS_ENV: production
+          NODE_ENV: production
+        run: |
+          bundle exec rake assets:precompile
 
       - name: Run tests
         env:

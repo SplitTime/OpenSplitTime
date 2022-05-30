@@ -140,6 +140,7 @@ GEM
       xpath (~> 3.2)
     carmen (1.1.3)
       activesupport (>= 3.0.0)
+    chartkick (4.1.3)
     childprocess (4.1.0)
     choice (0.2.0)
     coderay (1.1.3)
@@ -566,6 +567,7 @@ DEPENDENCIES
   capitalize_attributes (>= 0.2)
   capybara
   carmen
+  chartkick
   coverband
   dalli
   derailed_benchmarks

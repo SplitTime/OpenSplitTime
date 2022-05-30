@@ -19,6 +19,15 @@ class EventGroupTrafficPresenter < BasePresenter
     @interval_split_traffics ||= ::IntervalSplitTraffic.execute_query(event_group: event_group, split_name: parameterized_split_name, band_width: band_width)
   end
 
+  def chart_data
+    @chart_data ||= sub_split_kinds.map do |subsplit|
+      {
+        name: subsplit.to_s.titleize,
+        data: interval_split_traffics.map { |ist| [localized_time(ist.start_time), ist.send("total_#{subsplit}_count")] }
+      }
+    end
+  end
+
   def table_title
     if split.nil?
       "Unknown split."

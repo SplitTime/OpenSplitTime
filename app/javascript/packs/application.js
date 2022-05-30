@@ -16,6 +16,7 @@ global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
 import 'utils/growl';
+import "chartkick/chart.js";
 
 import TurboLinksAdapter from 'vue-turbolinks';
 Vue.use(TurboLinksAdapter);

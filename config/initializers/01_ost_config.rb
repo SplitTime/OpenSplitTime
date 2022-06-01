@@ -23,6 +23,10 @@ module OstConfig
     ::ENV["GOOGLE_ANALYTICS_4_PROPERTY_ID"]
   end
 
+  def self.jwt_duration
+    3.days
+  end
+
   def self.scout_apm_sample_rate
     ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end

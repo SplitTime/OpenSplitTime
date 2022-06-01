@@ -20,7 +20,7 @@ Rails.application.configure do
     port: "587",
     authentication: :plain,
     user_name: "apikey",
-    password: ENV["SENDGRID_API_KEY"],
+    password: ::OstConfig.sendgrid_api_key,
     domain: "heroku.com",
     enable_starttls_auto: true
   }
@@ -31,7 +31,7 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.

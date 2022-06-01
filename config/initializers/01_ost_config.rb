@@ -55,6 +55,10 @@ module OstConfig
     ::Rails.application.credentials.dig(:google, :analytics_4, :property_id)
   end
 
+  def self.google_maps_api_key
+    ::Rails.application.credentials.dig(:google, :maps, :api_key)
+  end
+
   def self.google_oauth_client_id
     ::Rails.application.credentials.dig(:google, :oauth, :client_id)
   end
@@ -69,6 +73,14 @@ module OstConfig
 
   def self.scout_apm_sample_rate
     ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
+  end
+
+  def self.sendgrid_api_key
+    Rails.application.credentials.dig(:sendgrid, :api_key)
+  end
+
+  def self.sentry_dsn
+    Rails.application.credentials.dig(:sentry, :dsn)
   end
 
   def self.shortened_uri

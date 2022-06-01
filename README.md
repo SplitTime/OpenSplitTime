@@ -135,25 +135,6 @@ After you setup/seed your database, you should have four test users:
 | user  | fifthuser@example.com  | password |
 ```
 
-**AWS**
-
-OpenSplitTime relies on Amazon Web Services for file import and storage and for SNS (email and text) communications. To take full advantage of these, you will need AWS credentials loaded into your `.env` file, specifically:
-```
-AWS_ACCESS_KEY_ID=your_access_key_id
-AWS_SECRET_ACCESS_KEY=your_secret_access_key
-AWS_REGION=your_aws_region
-S3_BUCKET=your_aws_bucket
-```
-Use your own credentials or contact us if you would like to use the dev group's credentials.
-
-**Google Maps API**
-
-OpenSplitTime uses Google Maps API to display course gpx tracks and split locations. To access the API, you will need to add the following to your `.env` file:
-```
-GOOGLE_MAPS_API_KEY=xxx
-```
-Get your own free [Google Maps API key](https://console.cloud.google.com/google/maps-apis) or contact us for the dev team's credentials.
-
 **Sidekiq and Redis**
 
 OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:

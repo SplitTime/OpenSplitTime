@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ENV['BASE_URI']}) {}%>
+    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ::OstConfig.base_uri}) {}%>
     <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>

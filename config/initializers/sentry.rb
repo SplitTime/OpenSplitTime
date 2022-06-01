@@ -2,7 +2,7 @@
 
 # https://docs.sentry.io/clients/ruby/config/
 Sentry.init do |config|
-  config.dsn = ENV["SENTRY_DSN"]
+  config.dsn = ::OstConfig.sentry_dsn
   config.enabled_environments = ["production"]
 
   # Set to 1.0 to send 100% of events

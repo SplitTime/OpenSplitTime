@@ -24,7 +24,7 @@ class ProgressNotifier < BaseNotifier
   def shortened_url
     key = Shortener::ShortenedUrl.generate!(effort_path).unique_key
 
-    "#{OST::SHORTENED_URI}/s/#{key}"
+    "#{::OstConfig.shortened_uri}/s/#{key}"
   end
 
   def effort_path

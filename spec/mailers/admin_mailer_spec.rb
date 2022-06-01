@@ -24,6 +24,6 @@ RSpec.describe AdminMailer, type: :mailer do
     perform_enqueued_jobs { subject.deliver_later }
 
     mail = ActionMailer::Base.deliveries.last
-    expect(mail.to[0]).to eq ENV["ADMIN_EMAIL"]
+    expect(mail.to[0]).to eq ::OstConfig.admin_email
   end
 end

@@ -29,7 +29,7 @@ RSpec.describe ProgressNotifier do
         Results on OpenSplitTime: #{expected_shortened_url}
       MESSAGE
     end
-    let(:expected_shortened_url) { "#{OST::SHORTENED_URI}/s/#{expected_key}" }
+    let(:expected_shortened_url) { "#{::OstConfig.shortened_uri}/s/#{expected_key}" }
     let(:expected_key) { Shortener::ShortenedUrl.find_by(url: effort_path).unique_key }
     let(:effort_path) { subject.send(:effort_path) }
     let(:stubbed_response) { OpenStruct.new(successful?: true) }

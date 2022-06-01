@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require_relative("../initializers/01_ost_config")
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -13,14 +14,14 @@ Rails.application.configure do
   config.eager_load = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {host: ENV["BASE_URI"], protocol: "http"}
+  config.action_mailer.default_url_options = {host: ::OstConfig.base_uri, protocol: "http"}
 
   config.action_mailer.smtp_settings = {
     address: "smtp.sendgrid.net",
     port: "587",
     authentication: :plain,
     user_name: "apikey",
-    password: ENV["SENDGRID_API_KEY"],
+    password: ::OstConfig.sendgrid_api_key,
     domain: "heroku.com",
     enable_starttls_auto: true
   }
@@ -31,7 +32,7 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.

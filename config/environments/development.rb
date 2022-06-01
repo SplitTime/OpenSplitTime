@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require_relative("../initializers/01_ost_config")
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -40,7 +41,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = {host: ENV["BASE_URI"], port: 3000}
+  config.action_mailer.default_url_options = {host: ::OstConfig.base_uri, port: 3000}
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

@@ -109,3 +109,7 @@ storage/
 
 # Snyk working file
 .snyk
+
+# Rails master keys
+/config/master.key
+/config/credentials/production.key

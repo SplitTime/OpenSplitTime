@@ -21,11 +21,11 @@ class ParticipationNotifier < BaseNotifier
   def message
     <<~MESSAGE
       Your friend #{person.full_name} #{verb} at #{event.name}!
-      #{results_descriptor} here: #{ENV['BASE_URI']}/efforts/#{effort.id}
+      #{results_descriptor} here: #{::OstConfig.base_uri}/efforts/#{effort.id}
       #{live_update_message}
       Thank you for using OpenSplitTime!
       You are receiving this message because you signed up on OpenSplitTime and asked to follow #{person.first_name}. 
-      To change your preferences, go to #{ENV['BASE_URI']}/people/#{person.id}, then log in and click to unfollow.
+      To change your preferences, go to #{::OstConfig.base_uri}/people/#{person.id}, then log in and click to unfollow.
     MESSAGE
   end
 

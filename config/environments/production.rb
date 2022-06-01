@@ -13,7 +13,7 @@ Rails.application.configure do
   config.eager_load = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {host: ENV["BASE_URI"], protocol: "http"}
+  config.action_mailer.default_url_options = {host: ::OstConfig.base_uri, protocol: "http"}
 
   config.action_mailer.smtp_settings = {
     address: "smtp.sendgrid.net",

@@ -36,11 +36,11 @@ RSpec.describe ParticipationNotifier do
           expected_subject = "#{effort.full_name} is in progress at #{effort.event.name}"
           expected_message = <<~MESSAGE
             Your friend #{effort.full_name} is in progress at #{effort.event.name}!
-            Follow along here: #{ENV['BASE_URI']}/efforts/#{effort.id}
+            Follow along here: #{::OstConfig.base_uri}/efforts/#{effort.id}
             Click the link and sign in to receive live updates for #{effort.first_name}.
             Thank you for using OpenSplitTime!
             You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
-            To change your preferences, go to #{ENV['BASE_URI']}/people/#{effort.person.id}, then log in and click to unfollow.
+            To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
           MESSAGE
           expect(sns_client).to receive(:publish)
               .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
@@ -56,11 +56,11 @@ RSpec.describe ParticipationNotifier do
             expected_subject = "#{effort.full_name} will be participating at #{effort.event.name}"
             expected_message = <<~MESSAGE
               Your friend #{effort.full_name} will be participating at #{effort.event.name}!
-              Watch for results here: #{ENV['BASE_URI']}/efforts/#{effort.id}
+              Watch for results here: #{::OstConfig.base_uri}/efforts/#{effort.id}
               Click the link and sign in to receive live updates for #{effort.first_name}.
               Thank you for using OpenSplitTime!
               You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
-              To change your preferences, go to #{ENV['BASE_URI']}/people/#{effort.person.id}, then log in and click to unfollow.
+              To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
             MESSAGE
             expect(sns_client).to receive(:publish)
                 .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
@@ -77,11 +77,11 @@ RSpec.describe ParticipationNotifier do
             expected_subject = "#{effort.full_name} recently participated at #{effort.event.name}"
             expected_message = <<~MESSAGE
               Your friend #{effort.full_name} recently participated at #{effort.event.name}!
-              See full results here: #{ENV['BASE_URI']}/efforts/#{effort.id}
+              See full results here: #{::OstConfig.base_uri}/efforts/#{effort.id}
 
               Thank you for using OpenSplitTime!
               You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
-              To change your preferences, go to #{ENV['BASE_URI']}/people/#{effort.person.id}, then log in and click to unfollow.
+              To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
             MESSAGE
             expect(sns_client).to receive(:publish)
                 .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)

@@ -36,7 +36,7 @@ RSpec.describe Api::V1::AuthenticationController do
       token = parsed_response["token"]
       payload = JsonWebToken.decode(token)
       expect(Time.at(payload["exp"]))
-          .to be_within(1.minute).of(Time.current + Rails.application.secrets.jwt_duration)
+          .to be_within(1.minute).of(Time.current + ::OstConfig.jwt_duration)
     end
 
     it "returns an error if the email does not exist" do

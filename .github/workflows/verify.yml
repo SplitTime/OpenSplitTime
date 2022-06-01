@@ -101,7 +101,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          ADMIN_EMAIL: test@example.com
+          CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bin/rspec

@@ -35,36 +35,52 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.credentials_content_path
+    if credentials_env?
+      Rails.root.join("config/credentials/#{credentials_env}.yml.enc")
+    else
+      Rails.root.join("config/credentials.yml.enc")
+    end
+  end
+
+  def self.credentials_env
+    ENV["CREDENTIALS_ENV"]
+  end
+
+  def self.credentials_env?
+    credentials_env.present?
+  end
+
   def self.facebook_oauth_key
-    ::Rails.application.credentials.dig(:facebook, :oauth, :key)
+    Rails.application.credentials.dig(:facebook, :oauth, :key)
   end
 
   def self.facebook_oauth_secret
-    ::Rails.application.credentials.dig(:facebook, :oauth, :secret)
+    Rails.application.credentials.dig(:facebook, :oauth, :secret)
   end
 
   def self.full_uri
-    ::ENV["FULL_URI"] || "http://localhost:3000"
+    ENV["FULL_URI"] || "http://localhost:3000"
   end
 
   def self.google_analytics_4_measurement_id
-    ::Rails.application.credentials.dig(:google, :analytics_4, :measurement_id)
+    Rails.application.credentials.dig(:google, :analytics_4, :measurement_id)
   end
 
   def self.google_analytics_4_property_id
-    ::Rails.application.credentials.dig(:google, :analytics_4, :property_id)
+    Rails.application.credentials.dig(:google, :analytics_4, :property_id)
   end
 
   def self.google_maps_api_key
-    ::Rails.application.credentials.dig(:google, :maps, :api_key)
+    Rails.application.credentials.dig(:google, :maps, :api_key)
   end
 
   def self.google_oauth_client_id
-    ::Rails.application.credentials.dig(:google, :oauth, :client_id)
+    Rails.application.credentials.dig(:google, :oauth, :client_id)
   end
 
   def self.google_oauth_client_secret
-    ::Rails.application.credentials.dig(:google, :oauth, :client_secret)
+    Rails.application.credentials.dig(:google, :oauth, :client_secret)
   end
 
   def self.jwt_duration
@@ -72,7 +88,7 @@ module OstConfig
   end
 
   def self.scout_apm_sample_rate
-    ::ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
+    ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end
 
   def self.sendgrid_api_key
@@ -84,10 +100,10 @@ module OstConfig
   end
 
   def self.shortened_uri
-    ::ENV["SHORTENED_URI"] || base_uri
+    ENV["SHORTENED_URI"] || base_uri
   end
 
   def self.timestamp_bot_detection?
-    cast_to_boolean ::ENV["TIMESTAMP_BOT_DETECTION"]
+    cast_to_boolean ENV["TIMESTAMP_BOT_DETECTION"]
   end
 end

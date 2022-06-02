@@ -10,7 +10,7 @@ module OstConfig
   end
 
   def self.aws_region
-    Rails.application.credentials.dig(:aws, :region)
+    "us-west-2"
   end
 
   def self.aws_s3_bucket

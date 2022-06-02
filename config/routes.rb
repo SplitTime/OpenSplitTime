@@ -253,5 +253,15 @@ Rails.application.routes.draw do
 
   get "/s/:id" => "shortener/shortened_urls#show"
 
-  match "*unmatched", to: "application#route_not_found", via: :all
+  # Handle unmatched routes with 404, but allow routes from
+  # active storage, action mailbox, and turbo to pass through
+  match "*unmatched", to: "application#route_not_found", via: :all,
+        constraints: lambda { |request|
+          request.path.exclude?("rails/active_storage") &&
+            request.path.exclude?("rails/action_mailbox") &&
+            request.path.exclude?("rails/conductor") &&
+            request.path.exclude?("recede_historical_location") &&
+            request.path.exclude?("resume_historical_location") &&
+            request.path.exclude?("refresh_historical_location")
+        }
 end

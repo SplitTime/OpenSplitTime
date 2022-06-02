@@ -16,8 +16,12 @@ module ETL
 
         proto_records.each.with_index(1) do |proto_record, row_index|
           proto_record.underscore_keys!
-          parameterized_event_name = proto_record.delete_field(:event_name)&.parameterize
-          event = events_by_short_name[parameterized_event_name] || single_event
+          event = single_event
+
+          if event.nil?
+            parameterized_event_name = proto_record.has_key?(:event_name) ? proto_record.delete_field(:event_name)&.parameterize : nil
+            event = events_by_short_name[parameterized_event_name]
+          end
 
           if event.present?
             proto_record.transform_as(:effort, event: event)

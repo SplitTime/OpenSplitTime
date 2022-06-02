@@ -20,17 +20,15 @@ module ETL
           event = events_by_short_name[parameterized_event_name] || single_event
 
           if event.present?
-            begin
-              proto_record.transform_as(:effort, event: event)
-              proto_record.slice_permitted!
-            rescue StandardError => e
-              import_job.increment!(:failure_count)
-              errors << transform_failed_error(e, row_index)
-            end
+            proto_record.transform_as(:effort, event: event)
+            proto_record.slice_permitted!
           else
             import_job.increment!(:failure_count)
             errors << resource_not_found_error(::Event, parameterized_event_name, row_index)
           end
+        rescue StandardError => e
+          import_job.increment!(:failure_count)
+          errors << transform_failed_error(e, row_index)
         end
 
         proto_records

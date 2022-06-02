@@ -79,6 +79,11 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
         expect(second_proto_record[:bib_number]).to eq(13)
       end
 
+      it "deletes the event_name attribute" do
+        expect(first_proto_record).not_to have_key(:event_name)
+        expect(second_proto_record).not_to have_key(:event_name)
+      end
+
       it "does not return errors" do
         expect(subject.errors).to be_empty
       end
@@ -144,7 +149,7 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
         let(:struct_1_event_name) { "Hardrock" }
         let(:struct_2_event_name) { "Hello" }
 
-        it "ignores the event names and imports the records" do
+        it "imports the records without regard to the event name" do
           expect(proto_records.size).to eq(2)
           expect(proto_records).to all be_a(ProtoRecord)
         end
@@ -172,6 +177,11 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
           expect(second_proto_record[:state_code]).to eq("NY")
           expect(second_proto_record[:country_code]).to eq("US")
           expect(second_proto_record[:bib_number]).to eq(13)
+        end
+
+        it "deletes the event_name attribute" do
+          expect(first_proto_record).not_to have_key(:event_name)
+          expect(second_proto_record).not_to have_key(:event_name)
         end
 
         it "does not return errors" do
@@ -215,6 +225,11 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
           expect(second_proto_record[:state_code]).to eq("NY")
           expect(second_proto_record[:country_code]).to eq("US")
           expect(second_proto_record[:bib_number]).to eq(13)
+        end
+
+        it "deletes the event_name attribute" do
+          expect(first_proto_record).not_to have_key(:event_name)
+          expect(second_proto_record).not_to have_key(:event_name)
         end
 
         it "does not return errors" do

@@ -3,6 +3,8 @@
 module ETL
   module Extractors
     class RaceResultApiStrategy
+      NAME_WITHOUT_BIB_REGEX = /[^ #0-9\.].*/
+
       include ETL::Errors
       attr_reader :errors
 
@@ -27,8 +29,8 @@ module ETL
 
       def attribute_pairs(data_row)
         time_pairs = time_indices.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub("Time: ", "")] }.to_h
-        bib, name = data_row[1].split(". ")
-        bib = bib.gsub("#", "")
+        bib = data_row[0]
+        name = data_row[1].match(NAME_WITHOUT_BIB_REGEX).to_a.first
         name = name.titleize
         status = data_row[2].gsub("STATUS: ", "")
         time_pairs.merge(bib: bib, name: name, status: status, rr_id: data_row[0])

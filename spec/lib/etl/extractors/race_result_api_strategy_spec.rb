@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails_helper"
+
 RSpec.describe ETL::Extractors::RaceResultApiStrategy do
   subject { ETL::Extractors::RaceResultApiStrategy.new(raw_data, options) }
   let(:raw_data) do
@@ -35,7 +37,8 @@ RSpec.describe ETL::Extractors::RaceResultApiStrategy do
          ["194", "#194. MARK PERKINS", "STATUS: OK", "START", "Time: 7:05:05 AM", "AID 1", "Time: 8:05:19 AM", "Split: 1:00:14.64", "AID 2", "Time: 8:50:50 AM", "Split: 0:45:30.40", "AID 3", "Time: 9:37:57 AM", "Split: 0:47:06.79", "AID 4", "", "", "AID 5", "Time: 11:11:22 AM", "Split: ", "FINISH", "Time: 12:04:37 PM", "Total Time: 4:59:32.6"],
          ["1065", "#1065. NOAH GLICK", "STATUS: OK", "START", "Time: 7:05:29 AM", "AID 1", "Time: 8:11:19 AM", "Split: 1:05:49.65", "AID 2", "Time: 8:58:41 AM", "Split: 0:47:22.83", "AID 3", "Time: 9:45:39 AM", "Split: 0:46:57.80", "AID 4", "Time: 10:30:59 AM", "Split: 0:45:19.88", "AID 5", "Time: 11:22:34 AM", "Split: 0:51:35.07", "FINISH", "Time: 12:18:13 PM", "Total Time: 5:12:44.0"],
          ["167", "#167. SHAD MIKA", "STATUS: OK", "START", "Time: 7:05:42 AM", "AID 1", "Time: 8:22:41 AM", "Split: 1:16:58.85", "AID 2", "Time: 9:15:25 AM", "Split: 0:52:43.36", "AID 3", "Time: 10:07:56 AM", "Split: 0:52:30.96", "AID 4", "Time: 10:54:19 AM", "Split: 0:46:23.51", "AID 5", "", "", "FINISH", "", ""],
-         ["250", "#250. ALYSON WIEDENHEFT", "STATUS: DNS", "START", "", "AID 1", "", "", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""]
+         ["250", "#250. ALYSON WIEDENHEFT", "STATUS: DNS", "START", "", "AID 1", "", "", "AID 2", "", "", "AID 3", "", "", "AID 4", "", "", "AID 5", "", "", "FINISH", "", ""],
+         ["60", "#60. J.P. GIBLIN", "STATUS: OK", "START", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
        ]
      }}
   end
@@ -44,15 +47,19 @@ RSpec.describe ETL::Extractors::RaceResultApiStrategy do
   describe "#extract" do
     it "returns an array of attribute rows with effort data in OpenStruct format" do
       attribute_rows = subject.extract
-      expect(attribute_rows.size).to eq(4)
+      expect(attribute_rows.size).to eq(5)
       expect(attribute_rows.all? { |row| row.is_a?(OpenStruct) }).to eq(true)
       expect(attribute_rows.first[:name]).to eq("Mark Perkins")
       expect(attribute_rows.first[:bib]).to eq("194")
       expect(attribute_rows.first[:status]).to eq("OK")
       expect(attribute_rows.first[:time_0]).to eq("7:05:05 AM")
-      expect(attribute_rows.last[:name]).to eq("Alyson Wiedenheft")
-      expect(attribute_rows.last[:bib]).to eq("250")
-      expect(attribute_rows.last[:status]).to eq("DNS")
+      expect(attribute_rows.fourth[:name]).to eq("Alyson Wiedenheft")
+      expect(attribute_rows.fourth[:bib]).to eq("250")
+      expect(attribute_rows.fourth[:status]).to eq("DNS")
+      expect(attribute_rows.fourth[:time_0]).to eq("")
+      expect(attribute_rows.last[:name]).to eq("J.P. Giblin")
+      expect(attribute_rows.last[:bib]).to eq("60")
+      expect(attribute_rows.last[:status]).to eq("OK")
       expect(attribute_rows.last[:time_0]).to eq("")
     end
   end

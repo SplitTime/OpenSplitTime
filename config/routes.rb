@@ -179,7 +179,7 @@ Rails.application.routes.draw do
   resources :stewardships, only: [:create, :update, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
-  get "/sitemap.xml.gz", to: redirect("https://#{ENV['S3_BUCKET']}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
+  get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
   namespace :admin do
     get "dashboard", to: "dashboard#show"

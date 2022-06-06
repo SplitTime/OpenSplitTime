@@ -90,7 +90,7 @@ namespace :pull_event do
     # Upload source data to OpenSplitTime /import endpoint
 
     user_id = args[:user_id] || 1
-    auth_token = JsonWebToken.encode(sub: user_id)
+    auth_token = JsonWebToken.encode({sub: user_id})
     upload_url = "#{::OstConfig.full_uri}/api/v1/events/#{args[:event_id]}/import"
     upload_params = {data: source_response.body, data_format: args[:format]}
     upload_headers = {authorization: auth_token, accept: "application/json"}

@@ -43,8 +43,8 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
 
     context "in an event group with multiple events" do
       let(:event_group) { event_groups(:rufa_2017) }
-      let(:event_24_hour) { event_group.events.find_by(short_name: "24H") }
-      let(:event_12_hour) { event_group.events.find_by(short_name: "12H") }
+      let(:event_24_hour) { events("rufa_2017_24h") }
+      let(:event_12_hour) { events("rufa_2017_12h") }
 
       let(:struct_1_event_name) { "24H" }
       let(:struct_2_event_name) { "12H" }
@@ -85,7 +85,27 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
       end
 
       it "does not return errors" do
+        subject.transform
         expect(subject.errors).to be_empty
+      end
+
+      context "when event names are integers" do
+        let(:struct_1_event_name) { 24 }
+        let(:struct_2_event_name) { 12 }
+        before do
+          event_24_hour.update(short_name: struct_1_event_name)
+          event_12_hour.update(short_name: struct_2_event_name)
+        end
+
+        it "assigns the expected events" do
+          expect(proto_records.first[:event_id]).to eq(event_24_hour.id)
+          expect(proto_records.second[:event_id]).to eq(event_12_hour.id)
+        end
+
+        it "does not return errors" do
+          subject.transform
+          expect(subject.errors).to be_empty
+        end
       end
 
       context "when the transform fails" do
@@ -185,6 +205,7 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
         end
 
         it "does not return errors" do
+          subject.transform
           expect(subject.errors).to be_empty
         end
       end
@@ -233,6 +254,7 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
         end
 
         it "does not return errors" do
+          subject.transform
           expect(subject.errors).to be_empty
         end
       end

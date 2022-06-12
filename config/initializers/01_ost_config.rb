@@ -17,6 +17,10 @@ module OstConfig
     Rails.application.credentials.dig(:aws, :s3_bucket)
   end
 
+  def self.aws_s3_bucket_public
+    Rails.application.credentials.dig(:aws, :s3_bucket_public)
+  end
+
   def self.aws_secret_access_key
     Rails.application.credentials.dig(:aws, :secret_access_key)
   end

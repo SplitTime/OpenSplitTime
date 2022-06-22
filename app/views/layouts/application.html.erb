@@ -5,7 +5,7 @@
   <title><%= content_for?(:title) ? yield(:title) : "OpenSplitTime" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "OpenSplitTime" %>">
   <%= stylesheet_link_tag "application", media: "all", "data-turbo-track" => true %>
-  <%= javascript_include_tag "application", "data-turbo-track" => true %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   <% if @current_user %>
     <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
   <% end %>

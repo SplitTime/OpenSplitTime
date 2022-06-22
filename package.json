@@ -10,11 +10,15 @@
     "chartkick": "^4.2.0",
     "coffeescript": "1.12.7",
     "datatables.net-bs4": "^1.11.0",
+    "esbuild": "^0.14.47",
     "lodash": "^4.17.21",
     "vue-turbolinks": "^2.2.2"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "webpack-dev-server": "^4.5.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
   }
 }

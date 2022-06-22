@@ -510,6 +510,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    stimulus-rails (1.0.4)
+      railties (>= 6.0.0)
     strip_attributes (1.13.0)
       activemodel (>= 3.0, < 8.0)
     strscan (3.0.3)
@@ -645,6 +647,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   sprockets-rails
+  stimulus-rails
   strip_attributes
   structpluck
   terser

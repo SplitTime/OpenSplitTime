@@ -9,7 +9,6 @@
   <% if @current_user %>
     <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
   <% end %>
-  <%= javascript_pack_tag "application" %>
   <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{::OstConfig.google_maps_api_key}" %>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>

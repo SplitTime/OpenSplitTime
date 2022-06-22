@@ -68,7 +68,6 @@ gem "structpluck"
 gem "terser"
 gem "turbo-rails"
 gem "vuejs-rails"
-gem "webpacker", "< 6.0"
 gem "will_paginate", "~> 3.3"
 
 group :development do

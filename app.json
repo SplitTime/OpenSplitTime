@@ -30,5 +30,6 @@
         "test": "bin/rspec"
       }
     }
-  }
+  },
+  "stack": "heroku-22"
 }

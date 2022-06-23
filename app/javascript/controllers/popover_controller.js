@@ -1,5 +1,5 @@
 import {Controller} from "@hotwired/stimulus"
-import {isMobileSafari} from "utils";
+import {isMobileSafari} from "../src/utils";
 
 function safeParse(str) {
     try {

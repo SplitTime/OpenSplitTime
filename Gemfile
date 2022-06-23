@@ -67,6 +67,7 @@ gem "strip_attributes"
 gem "structpluck"
 gem "terser"
 gem "turbo-rails"
+gem "vuejs-rails"
 gem "will_paginate", "~> 3.3"
 
 group :development do

@@ -569,7 +569,7 @@
                                 $('#js-effort-table').append('\
                                     <tr data-title="' + split.splitName + '" data-lap="'+ split.lap +'">\
                                         <td>' + split.title + '</td>\
-                                        <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
+                                        <td>' + liveEntry.metersToMiles(split.distance).toFixed(1) + '</td>\
                                         <td>' + absoluteTimes.map(function(time, i) {
                                             if (time === null) return '--- --:--';
                                             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
@@ -1244,7 +1244,11 @@
                     liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
                 }
             })
-        } // END populateRows
+        }, // END populateRows
+
+        metersToMiles: function (meters) {
+            return meters * 0.00062
+        }
     }; // END liveEntry
 
     document.addEventListener("turbo:load", function () {

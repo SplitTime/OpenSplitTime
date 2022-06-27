@@ -4,6 +4,7 @@ import "./controllers"
 
 require("@hotwired/turbo-rails")
 
+// https://gorails.com/episodes/how-to-use-jquery-with-esbuild
 import "./src/jquery"
 import "./src/jquery-ui"
 

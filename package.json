@@ -9,6 +9,7 @@
     "coffeescript": "1.12.7",
     "datatables.net-bs4": "^1.11.0",
     "esbuild": "^0.14.47",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "sass": "^1.52.3",
     "vue-turbolinks": "^2.2.2"

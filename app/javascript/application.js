@@ -7,5 +7,6 @@ require("@hotwired/turbo-rails")
 import "./src/jquery"
 import "./src/jquery-ui"
 
-import './src/utils/growl';
+import "./src/utils/growl";
+
 import "chartkick/chart.js";

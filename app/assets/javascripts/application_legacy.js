@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery3
-//= require jquery-ui/effects/effect-highlight
 //= require rails-ujs
 //= require popper
 //= require bootstrap-sprockets

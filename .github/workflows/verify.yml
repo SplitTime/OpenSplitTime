@@ -90,6 +90,11 @@ jobs:
         run: |
           yarn install --pure-lockfile
 
+      - name: Compile assets
+        run: |
+          yarn build
+          yarn build:css
+
       - name: Setup test database
         env:
           RAILS_ENV: test

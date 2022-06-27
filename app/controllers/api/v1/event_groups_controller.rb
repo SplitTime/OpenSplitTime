@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "etl/etl"
+
 module Api
   module V1
     class EventGroupsController < ::Api::V1::BaseController

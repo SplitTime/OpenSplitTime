@@ -12,24 +12,25 @@
  *
  */
 
-@import "variables";
-@import "mixins";
+@import "./variables";
+@import "./mixins";
 
-@import "bootstrap/functions";
+@import "bootstrap/scss/functions";
 
-@import "vendor/1st_load_framework";
-@import "vendor/animate";
-@import "vendor/datatables.min";
-@import "vendor/simple-sidebar";
+@import "./vendor/1st_load_framework";
+@import "./vendor/animate";
+@import "./vendor/datatables.min";
+@import "./vendor/simple-sidebar";
 
-@import "jquery.fileupload";
-@import "jquery.fileupload-ui";
-@import "font_awesome5_webfont";
+$fa-font-path: ".";
+
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
-@import "bootstrap";
-@import "tempusdominus-bootstrap-4";
+@import "bootstrap/scss/bootstrap";
+//@import "tempusdominus-bootstrap-4";
 
 @import "jquery-ui";
-@import "pages/*";
-@import "utilities/*";
+@import "./pages";
+@import "./utilities";

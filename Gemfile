@@ -12,7 +12,6 @@ gem "aws-sdk-rails", "~> 3"
 gem "aws-sdk-s3", "~> 1", require: false
 gem "aws-sdk-sns", "~> 1", require: false
 gem "bootsnap"
-gem "bootstrap", "~> 4.6", ">= 4.6.0"
 gem "bootstrap4-datetime-picker-rails", ">= 0.3.1"
 gem "bootstrap-will_paginate"
 gem "capitalize_attributes", ">= 0.2"

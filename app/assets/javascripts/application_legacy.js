@@ -11,8 +11,6 @@
 // about supported directives.
 //
 //= require rails-ujs
-//= require popper
-//= require bootstrap-sprockets
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require moment

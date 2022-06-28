@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Gibson-SemiBold';
-  src: font_url('Gibson-SemiBold.eot');
-  src: font_url('Gibson-SemiBold.woff2') format('woff2'),
-  font_url('Gibson-SemiBold.woff') format('woff'),
-  font_url('Gibson-SemiBold.ttf') format('truetype'),
-  font_url('Gibson-SemiBold.svg#Gibson-SemiBold') format('svg'),
-  font_url('Gibson-SemiBold.eot?#iefix') format('embedded-opentype');
+  src: url('Gibson-SemiBold.eot');
+  src: url('Gibson-SemiBold.woff2') format('woff2'),
+  url('Gibson-SemiBold.woff') format('woff'),
+  url('Gibson-SemiBold.ttf') format('truetype'),
+  url('Gibson-SemiBold.svg#Gibson-SemiBold') format('svg'),
+  url('Gibson-SemiBold.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }

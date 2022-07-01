@@ -53,8 +53,12 @@ class LotteryEntrant < ApplicationRecord
   delegate :lottery, to: :division
   delegate :organization, to: :lottery
 
-  def delegated_division_name
-    division.name
+  def division_name
+    if attributes.key?("division_name")
+      attributes["division_name"]
+    else
+      division.name
+    end
   end
 
   def draw_ticket!

@@ -35,6 +35,6 @@ class LotteryTicket < ApplicationRecord
   end
 
   def entrant_division_name
-    entrant.delegated_division_name
+    entrant.division_name
   end
 end

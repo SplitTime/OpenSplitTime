@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_05_141746) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_01_010808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -284,6 +284,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_05_141746) do
     t.string "country_name"
     t.boolean "pre_selected", default: false
     t.string "external_id"
+    t.boolean "withdrawn"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
   end
@@ -635,7 +636,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_05_141746) do
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"
-  create_function :pg_search_dmetaphone, sql_definition: <<-SQL
+  create_function :pg_search_dmetaphone, sql_definition: <<-'SQL'
       CREATE OR REPLACE FUNCTION public.pg_search_dmetaphone(text)
        RETURNS text
        LANGUAGE sql

@@ -52,7 +52,7 @@ class LotteryDivision < ApplicationRecord
     ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
   end
 
-  def winning_entrants
+  def accepted_entrants
     ordered_drawn_entrants.limit(maximum_entries)
   end
 

@@ -31,11 +31,11 @@
           <h6 class="font-weight-bold">Accepted</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-right"><%= "(#{division.winning_entrants.count}/#{division.maximum_entries})" %></h6>
+          <h6 class="text-right"><%= "(#{division.accepted_entrants.count}/#{division.maximum_entries})" %></h6>
         </div>
       </div>
       <div class="progress">
-        <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_entries, current_value: division.winning_entrants.count, color: "success") %>
+        <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_entries, current_value: division.accepted_entrants.count, color: "success") %>
       </div>
       <div class="row mt-2">
         <div class="col-8">

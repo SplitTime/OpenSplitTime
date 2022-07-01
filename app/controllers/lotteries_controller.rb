@@ -88,7 +88,7 @@ class LotteriesController < ApplicationController
 
         case export_format
         when :ultrasignup
-          entrants = @lottery.divisions.flat_map(&:winning_entrants)
+          entrants = @lottery.divisions.flat_map(&:accepted_entrants)
           filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
           csv_stream = render_to_string(partial: "ultrasignup", formats: :csv, locals: {records: entrants})
 

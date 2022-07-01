@@ -126,9 +126,9 @@
             <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
             <div class="card-body">
               <h5>Accepted</h5>
-              <% if division.winning_entrants.present? %>
+              <% if division.accepted_entrants.present? %>
                 <ol>
-                  <% division.winning_entrants.each do |entrant| %>
+                  <% division.accepted_entrants.each do |entrant| %>
                     <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
                   <% end %>
                 </ol>

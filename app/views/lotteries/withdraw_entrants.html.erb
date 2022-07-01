@@ -42,22 +42,22 @@
           <table class="table table-condensed table-striped">
             <thead>
             <tr>
-              <td>Order</td>
-              <td>Name</td>
-              <td>Gender</td>
-              <td>From</td>
-              <td>Withdrawn?</td>
+              <th class="text-center">Order</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>From</th>
+              <th class="text-center">Withdrawn?</th>
             </tr>
             </thead>
             <tbody>
             <% if division.accepted_entrants.present? %>
               <% division.accepted_entrants.each.with_index(1) do |entrant, index| %>
                 <tr>
-                  <td><%= index %></td>
+                  <td class="text-center"><%= index %></td>
                   <td><%= entrant.name %></td>
                   <td><%= entrant.gender.titleize %></td>
                   <td><%= entrant.flexible_geolocation %></td>
-                  <td><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
+                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
                 </tr>
               <% end %>
             <% else %>
@@ -73,21 +73,21 @@
             <table class="table table-condensed table-striped">
               <thead>
               <tr>
-                <td>Order</td>
-                <td>Name</td>
-                <td>Gender</td>
-                <td>From</td>
-                <td>Withdrawn?</td>
+                <th class="text-center">Order</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>From</th>
+                <th class="text-center">Withdrawn?</th>
               </tr>
               </thead>
               <tbody>
               <% division.wait_list_entrants.each.with_index(1) do |entrant, index| %>
                 <tr>
-                  <td><%= index %></td>
+                  <td class="text-center"><%= index %></td>
                   <td><%= entrant.name %></td>
                   <td><%= entrant.gender.titleize %></td>
                   <td><%= entrant.flexible_geolocation %></td>
-                  <td><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
+                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
                 </tr>
               <% end %>
               </tbody>
@@ -99,21 +99,21 @@
             <table class="table table-condensed table-striped">
               <thead>
               <tr>
-                <td>Order</td>
-                <td>Name</td>
-                <td>Gender</td>
-                <td>From</td>
-                <td>Withdrawn?</td>
+                <th class="text-center">Order</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>From</th>
+                <th class="text-center">Withdrawn?</th>
               </tr>
               </thead>
               <tbody>
               <% division.withdrawn_entrants.each.with_index(1) do |entrant, index| %>
                 <tr>
-                  <td><%= index %></td>
+                  <td class="text-center"><%= index %></td>
                   <td><%= entrant.name %></td>
                   <td><%= entrant.gender.titleize %></td>
                   <td><%= entrant.flexible_geolocation %></td>
-                  <td><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
+                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
                 </tr>
               <% end %>
               </tbody>

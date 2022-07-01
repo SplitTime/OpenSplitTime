@@ -135,10 +135,20 @@
               <% else %>
                 <p>No entrants have been drawn yet</p>
               <% end %>
+
               <% if division.wait_list_entrants.present? %>
                 <h5>Wait List</h5>
                 <ol>
                   <% division.wait_list_entrants.each do |entrant| %>
+                    <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                  <% end %>
+                </ol>
+              <% end %>
+
+              <% if division.withdrawn_entrants.present? %>
+                <h5>Withdrawn</h5>
+                <ol>
+                  <% division.withdrawn_entrants.each do |entrant| %>
                     <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
                   <% end %>
                 </ol>

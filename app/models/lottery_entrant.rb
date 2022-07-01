@@ -23,6 +23,9 @@ class LotteryEntrant < ApplicationRecord
     from(select("distinct on (lottery_tickets.lottery_entrant_id) lottery_entrants.*, lottery_draws.created_at as drawn_at")
            .left_joins(tickets: :draw).order("lottery_tickets.lottery_entrant_id, drawn_at"), :lottery_entrants)
   }
+  scope :not_withdrawn, -> { where(withdrawn: [false, nil]) }
+  scope :withdrawn, -> { where(withdrawn: true) }
+
   scope :ordered, -> { order(:drawn_at) }
   scope :ordered_for_export, -> { with_division_name.order("division_name, last_name") }
   scope :pre_selected, -> { where(pre_selected: true) }
@@ -50,8 +53,12 @@ class LotteryEntrant < ApplicationRecord
   delegate :lottery, to: :division
   delegate :organization, to: :lottery
 
-  def delegated_division_name
-    division.name
+  def division_name
+    if attributes.key?("division_name")
+      attributes["division_name"]
+    else
+      division.name
+    end
   end
 
   def draw_ticket!

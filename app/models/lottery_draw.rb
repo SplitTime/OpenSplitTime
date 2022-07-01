@@ -27,7 +27,7 @@ class LotteryDraw < ApplicationRecord
   delegate :division, :number_of_tickets, to: :entrant
 
   def entrant_division_name
-    entrant.delegated_division_name
+    entrant.division_name
   end
 
   def waitlist?

@@ -23,6 +23,10 @@ class LotteryDivision < ApplicationRecord
 
   delegate :organization, to: :lottery
 
+  def accepted_entrants
+    ordered_drawn_entrants.limit(maximum_entries)
+  end
+
   def all_entrants_drawn?
     entrants.undrawn.empty?
   end
@@ -52,8 +56,8 @@ class LotteryDivision < ApplicationRecord
     ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
   end
 
-  def winning_entrants
-    ordered_drawn_entrants.limit(maximum_entries)
+  def withdrawn_entrants
+    entrants.withdrawn
   end
 
   private
@@ -63,6 +67,6 @@ class LotteryDivision < ApplicationRecord
   end
 
   def ordered_drawn_entrants
-    entrants.drawn.ordered
+    entrants.drawn.not_withdrawn.ordered
   end
 end

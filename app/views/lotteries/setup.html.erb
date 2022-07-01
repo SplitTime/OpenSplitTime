@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Draw Tickets for Lottery - #{@presenter.name}" %>
+  <% "OpenSplitTime: Set Up Lottery - #{@presenter.name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -28,14 +28,7 @@
       </aside>
     </div>
     <!-- Navigation -->
-    <ul class="nav nav-tabs nav-tabs-ost" data-turbo="false">
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.action_name == 'setup'}" do
-        link_to "Setup", setup_organization_lottery_path(@presenter.organization, @presenter.lottery)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.action_name == 'draw_tickets'}" do
-        link_to "Draw Tickets", draw_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery)
-      end %>
-    </ul>
+    <%= render partial: "admin_tabs", locals: { presenter: @presenter } %>
   </div>
 </header>
 

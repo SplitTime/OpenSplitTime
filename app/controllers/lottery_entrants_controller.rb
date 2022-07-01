@@ -37,10 +37,19 @@ class LotteryEntrantsController < ApplicationController
   # PATCH /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
   def update
     if @lottery_entrant.update(permitted_params)
-      @lottery_entrant = LotteryEntrant.where(id: @lottery_entrant.id).with_division_name.first
-      render partial: "lottery_entrant_admin", locals: {record: @lottery_entrant}
+      respond_to do |format|
+        format.html do
+          redirect_to organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
+        end
+
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("lottery_entrant_#{@lottery_entrant.id}",
+                                                    partial: "lottery_entrants/lottery_entrant_admin",
+                                                    locals: { record: @lottery_entrant })
+        end
+      end
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 

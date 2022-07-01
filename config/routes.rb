@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     resources :lotteries do
       member { get :draw_tickets }
       member { get :setup }
+      member { get :withdraw_entrants }
       member { get :export_entrants }
       member { post :draw }
       member { post :generate_entrants }

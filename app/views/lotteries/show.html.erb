@@ -126,19 +126,29 @@
             <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
             <div class="card-body">
               <h5>Accepted</h5>
-              <% if division.winning_entrants.present? %>
+              <% if division.accepted_entrants.present? %>
                 <ol>
-                  <% division.winning_entrants.each do |entrant| %>
+                  <% division.accepted_entrants.each do |entrant| %>
                     <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
                   <% end %>
                 </ol>
               <% else %>
                 <p>No entrants have been drawn yet</p>
               <% end %>
+
               <% if division.wait_list_entrants.present? %>
                 <h5>Wait List</h5>
                 <ol>
                   <% division.wait_list_entrants.each do |entrant| %>
+                    <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
+                  <% end %>
+                </ol>
+              <% end %>
+
+              <% if division.withdrawn_entrants.present? %>
+                <h5>Withdrawn</h5>
+                <ol>
+                  <% division.withdrawn_entrants.each do |entrant| %>
                     <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %></li>
                   <% end %>
                 </ol>

@@ -134,20 +134,20 @@ RSpec.describe LotteryDivision, type: :model do
     end
   end
 
-  describe "#winning_entrants" do
-    let(:result) { subject.winning_entrants }
+  describe "#accepted_entrants" do
+    let(:result) { subject.accepted_entrants }
 
-    context "when the winning entrants have all been drawn" do
+    context "when the accepted entrants have all been drawn" do
       let(:division_name) { "Never Ever Evers" }
-      it "returns winning entries equal in number to the maximum entries for the division" do
+      it "returns accepted entries equal in number to the maximum entries for the division" do
         expect(result.count).to eq(subject.maximum_entries)
         expect(result).to all be_a(LotteryEntrant)
       end
     end
 
-    context "when some winning entrants have been drawn" do
+    context "when some accepted entrants have been drawn" do
       let(:division_name) { "Elses" }
-      it "returns winning entries equal in number to the total draws for the division" do
+      it "returns accepted entries equal in number to the total draws for the division" do
         expect(result.count).to eq(2)
         expect(result).to all be_a(LotteryEntrant)
       end

@@ -11,7 +11,7 @@ if lottery.entrants.exists?
       csv << [division.name]
       csv << ["Accepted"]
 
-      division.winning_entrants.each.with_index(1) do |entrant, i|
+      division.accepted_entrants.each.with_index(1) do |entrant, i|
         csv << [
           i,
           entrant.first_name,

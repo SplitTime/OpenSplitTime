@@ -9,8 +9,8 @@ class LotterySimulation < ApplicationRecord
         division.name,
         {
           accepted: {
-            male: ::LotteryEntrant.from(division.winning_entrants, :lottery_entrants).male.count,
-            female: ::LotteryEntrant.from(division.winning_entrants, :lottery_entrants).female.count,
+            male: ::LotteryEntrant.from(division.accepted_entrants, :lottery_entrants).male.count,
+            female: ::LotteryEntrant.from(division.accepted_entrants, :lottery_entrants).female.count,
           },
           wait_list: {
             male: ::LotteryEntrant.from(division.wait_list_entrants, :lottery_entrants).male.count,

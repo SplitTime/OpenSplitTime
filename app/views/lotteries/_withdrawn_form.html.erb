@@ -1,0 +1,6 @@
+<%= form_with(model: [organization, lottery, entrant], html: { method: :patch, data: { controller: "form-auto-submit" } }) do |f| %>
+  <div class="custom-control custom-switch text-center">
+    <%= f.check_box :withdrawn, class: "custom-control-input", id: "withdrawn-check-box-#{dom_id(entrant)}" %>
+    <label class="custom-control-label" for="withdrawn-check-box-<%= dom_id(entrant) %>"></label>
+  </div>
+<% end %>

@@ -41,7 +41,8 @@ class LotteryEntrantParameters < BaseParameters
       :lottery_division_id,
       :number_of_tickets,
       :pre_selected,
-      :state_code
+      :state_code,
+      :withdrawn,
     ]
   end
 end

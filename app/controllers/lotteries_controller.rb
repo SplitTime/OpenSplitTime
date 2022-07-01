@@ -80,6 +80,11 @@ class LotteriesController < ApplicationController
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
+  # GET /organizations/:organization_id/lotteries/:id/withdraw_entrants
+  def withdraw_entrants
+    @presenter = LotteryPresenter.new(@lottery, view_context)
+  end
+
   # GET /organizations/:organization_id/lotteries/:id/export_entrants
   def export_entrants
     respond_to do |format|

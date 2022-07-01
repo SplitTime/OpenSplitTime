@@ -49,6 +49,10 @@ class LotteryPolicy < ApplicationPolicy
     user.authorized_for_lotteries?(organization)
   end
 
+  def withdraw_entrants?
+    user.authorized_for_lotteries?(organization)
+  end
+
   def export_entrants?
     user.authorized_for_lotteries?(organization)
   end

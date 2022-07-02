@@ -27,15 +27,12 @@
 </header>
 
 <article class="ost-article container">
-  <%= form_with() do |f| %>
-    <%= f.hidden_field :parent_type %>
-    <%= f.hidden_field :format %>
-
+  <%= form_with(url: load_lottery_entrants_event_group_path(@presenter.event_group)) do |f| %>
     <div class="form-row">
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <%= f.label :import_from %>
-          <%= f.select :source_id, options_for_select(@presenter.event_group.events.map { |event| [event.short_name, event.id] }) %>
+          <%= f.select :lottery_id, options_for_select(@presenter.organization.lotteries.map { |lottery| [lottery.name, lottery.id] }) %>
         </div>
       </div>
     </div>
@@ -45,12 +42,12 @@
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.label :import_into %>
-            <%= f.select :parent_id, options_for_select(@presenter.event_group.events.map { |event| [event.short_name, event.id] }) %>
+            <%= f.select :event_id, options_for_select(@presenter.event_group.events.map { |event| [event.short_name, event.id] }) %>
           </div>
         </div>
       </div>
     <% else %>
-      <%= f.hidden_field :parent_id, value: @presenter.event_group.first_event.id %>
+      <%= f.hidden_field :event_id, value: @presenter.event_group.first_event.id %>
     <% end %>
 
     <div class="form-row">
@@ -65,7 +62,7 @@
       <div class="form-group">
         <div class="col">
             <span class="brackets">
-                <%= link_to "Cancel", request.referrer || import_jobs_path %>
+                <%= link_to "Cancel", request.referrer || setup_event_group_path(@presenter.event_group, display_style: :entrants) %>
             </span>
         </div>
       </div>

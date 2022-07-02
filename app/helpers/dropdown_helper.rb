@@ -344,7 +344,7 @@ module DropdownHelper
   def setup_entrants_import_dropdown(view_object)
     dropdown_items = [
       {name: "Load entrants from lottery",
-       link: load_entrants_event_group_path(view_object.event_group)},
+       link: choose_lottery_entrants_event_group_path(view_object.event_group)},
       {name: "Import entrants from CSV",
        link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})},
       {role: :separator},

@@ -98,7 +98,7 @@ Rails.application.routes.draw do
       get :export_raw_times
       get :finish_line
       get :follow
-      get :load_entrants
+      get :choose_lottery_entrants
       get :raw_times
       get :reconcile
       get :roster
@@ -107,6 +107,7 @@ Rails.application.routes.draw do
       get :stats
       get :traffic
       post :create_people
+      post :load_lottery_entrants
       patch :set_data_status
       patch :auto_reconcile
       patch :associate_people

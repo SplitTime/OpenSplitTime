@@ -178,10 +178,27 @@ class EventGroupsController < ApplicationController
     redirect_to reconcile_event_group_path(@event_group)
   end
 
-  def load_entrants
+  # GET /event_groups/1/choose_lottery_entrants
+  def choose_lottery_entrants
     authorize @event_group
 
     @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # POST /event_groups/1/load_lottery_entrants
+  def load_lottery_entrants
+    authorize @event_group
+
+    event = @event_group.events.find(params[:event_id])
+    organization = @event_group.organization
+    lottery = organization.lotteries.find(params[:lottery_id])
+    import_job = ::ImportJobs::BuildFromLottery.perform(event: event, lottery: lottery, user_id: current_user.id)
+
+    if import_job.save
+      redirect_to import_jobs_path
+    else
+      redirect_to load_entrants_event_group_path(@event.event_group_id), notice: import_job.errors.full_messages
+    end
   end
 
   def set_data_status

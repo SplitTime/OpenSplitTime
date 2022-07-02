@@ -46,6 +46,8 @@ class ImportJob < ApplicationRecord
       ::Rails.application.routes.url_helpers.setup_organization_lottery_path(parent.organization, parent)
     when "EventGroup"
       ::Rails.application.routes.url_helpers.setup_event_group_path(parent, display_style: :entrants)
+    when "Event"
+      ::Rails.application.routes.url_helpers.setup_event_group_path(parent.event_group, display_style: :entrants)
     else
       raise RuntimeError, "Unknown parent type #{parent_type} for import job #{id}"
     end

@@ -195,6 +195,8 @@ class EventGroupsController < ApplicationController
     import_job = ::ImportJobs::BuildFromLottery.perform(event: event, lottery: lottery, user_id: current_user.id)
 
     if import_job.save
+      ::ImportAsyncJob.perform_later(import_job.id)
+      flash[:success] = "Import in progress."
       redirect_to import_jobs_path
     else
       redirect_to load_entrants_event_group_path(@event.event_group_id), notice: import_job.errors.full_messages

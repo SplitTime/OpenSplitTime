@@ -1,0 +1,71 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Load Entrants - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_event_group_path(@presenter.event_group, display_style: :entrants) %></li>
+            <li class="breadcrumb-item">Load Entrants</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= form_with(url: load_lottery_entrants_event_group_path(@presenter.event_group)) do |f| %>
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.label :import_from %>
+          <%= f.select :lottery_id, options_for_select(@presenter.organization.lotteries.map { |lottery| [lottery.name, lottery.id] }) %>
+        </div>
+      </div>
+    </div>
+
+    <% if @presenter.event_group.multiple_events? %>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <%= f.label :import_into %>
+            <%= f.select :event_id, options_for_select(@presenter.event_group.events.map { |event| [event.short_name, event.id] }) %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <%= f.hidden_field :event_id, value: @presenter.event_group.first_event.id %>
+    <% end %>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit("Import", class: "btn btn-primary") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col">
+            <span class="brackets">
+                <%= link_to "Cancel", request.referrer || setup_event_group_path(@presenter.event_group, display_style: :entrants) %>
+            </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</article>

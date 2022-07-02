@@ -22,7 +22,7 @@
                                      required_pattern: "DELETE ALL ENTRANTS",
                                      strong_confirm_id: "strong-confirm-entrants-event-group-#{@presenter.event_group.id}") %>
 
-            <%= entrants_roster_import_dropdown(presenter) %>
+            <%= setup_entrants_import_dropdown(@presenter) %>
           </div>
         </div>
         <div class="col-12 col-md-6">

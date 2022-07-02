@@ -341,12 +341,14 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
-  def entrants_roster_import_dropdown(view_object)
+  def setup_entrants_import_dropdown(view_object)
     dropdown_items = [
-      {name: "Import entrants",
+      {name: "Load entrants from lottery",
+       link: choose_lottery_entrants_event_group_path(view_object.event_group)},
+      {name: "Import entrants from CSV",
        link: new_import_job_path(import_job: {parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants})},
       {role: :separator},
-      {name: "Download template",
+      {name: "Download CSV template",
        link: efforts_path(filter: {id: 0}, format: :csv)},
     ]
     build_dropdown_menu("Import", dropdown_items, button: true)

@@ -178,6 +178,12 @@ class EventGroupsController < ApplicationController
     redirect_to reconcile_event_group_path(@event_group)
   end
 
+  def load_entrants
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
   def set_data_status
     authorize @event_group
 

@@ -98,6 +98,7 @@ Rails.application.routes.draw do
       get :export_raw_times
       get :finish_line
       get :follow
+      get :load_entrants
       get :raw_times
       get :reconcile
       get :roster

@@ -18,16 +18,15 @@ module ImportJobs
     # @param [::Event] event
     # @param [::Lottery] lottery
     # @return [ImportJob]
-    def self.perform(event:, lottery:, user_id:)
-      new(event: event, lottery: lottery, user_id: user_id).perform
+    def self.perform(event:, lottery:)
+      new(event: event, lottery: lottery).perform
     end
 
     # @param [::Event] event
     # @param [::Lottery] lottery
-    def initialize(event:, lottery:, user_id:)
+    def initialize(event:, lottery:)
       @event = event
       @lottery = lottery
-      @user_id = user_id
       validate_setup
     end
 
@@ -37,7 +36,6 @@ module ImportJobs
         format: :event_efforts_from_lottery,
         parent_type: "Event",
         parent_id: event.id,
-        user_id: user_id,
       )
 
       temp_file = ::Tempfile.create(["lottery_entrants", ".csv"])
@@ -64,7 +62,7 @@ module ImportJobs
 
     private
 
-    attr_reader :event, :lottery, :user_id, :temp_file_name
+    attr_reader :event, :lottery, :temp_file_name
 
     # @return [Array<::LotteryEntrant>]
     def accepted_entrants

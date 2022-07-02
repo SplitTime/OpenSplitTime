@@ -192,7 +192,8 @@ class EventGroupsController < ApplicationController
     event = @event_group.events.find(params[:event_id])
     organization = @event_group.organization
     lottery = organization.lotteries.find(params[:lottery_id])
-    import_job = ::ImportJobs::BuildFromLottery.perform(event: event, lottery: lottery, user_id: current_user.id)
+    import_job = ::ImportJobs::BuildFromLottery.perform(event: event, lottery: lottery)
+    import_job.user = current_user
 
     if import_job.save
       ::ImportAsyncJob.perform_later(import_job.id)

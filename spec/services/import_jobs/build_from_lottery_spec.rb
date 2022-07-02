@@ -3,10 +3,9 @@
 require "rails_helper"
 
 RSpec.describe ::ImportJobs::BuildFromLottery do
-  subject { described_class.new(event: event, lottery: lottery, user_id: user_id) }
+  subject { described_class.new(event: event, lottery: lottery) }
   let(:event) { events(:hardrock_2016) }
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
-  let(:user_id) { users(:admin_user).id }
 
   describe "#perform" do
     let(:import_job) { subject.perform }
@@ -39,7 +38,6 @@ RSpec.describe ::ImportJobs::BuildFromLottery do
         expect(import_job).to be_a(::ImportJob)
         expect(import_job.parent_type).to eq("Event")
         expect(import_job.parent_id).to eq(event.id)
-        expect(import_job.user_id).to eq(user_id)
         expect(import_job.format).to eq("event_efforts_from_lottery")
       end
 
@@ -48,6 +46,7 @@ RSpec.describe ::ImportJobs::BuildFromLottery do
       end
 
       it "writes expected data to the file" do
+        import_job.user = users(:admin_user)
         import_job.save!
 
         file_contents = import_job.file.download

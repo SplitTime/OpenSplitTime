@@ -204,6 +204,27 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/assign_bibs
+  def assign_bibs
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # PATCH /event_groups/1/update_bibs
+  def update_bibs
+    authorize @event_group
+    bib_assignments = bib_assignment_hash(params[:event_group])
+    response = ::Interactors::BulkSetBibNumbers.perform!(@event_group, bib_assignments)
+
+    if response.successful?
+      redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+    else
+      set_flash_message(response)
+      redirect_to assign_bibs_event_group_path(@event_group)
+    end
+  end
+
   def set_data_status
     authorize @event_group
 
@@ -291,6 +312,11 @@ class EventGroupsController < ApplicationController
   end
 
   private
+
+  def bib_assignment_hash(params_hash)
+    params_hash.select { |key, _| key.include?("bib_for") }
+               .transform_keys { |key| key.delete("^0-9").to_i }
+  end
 
   def set_event_group
     @event_group = policy_scope(EventGroup).friendly.find(params[:id])

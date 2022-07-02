@@ -199,7 +199,7 @@ class EventGroupsController < ApplicationController
       flash[:success] = "Import in progress."
       redirect_to import_jobs_path
     else
-      redirect_to load_entrants_event_group_path(@event.event_group_id), notice: import_job.errors.full_messages
+      redirect_to choose_lottery_entrants_event_group_path(@event.event_group_id), notice: import_job.errors.full_messages
     end
   end
 

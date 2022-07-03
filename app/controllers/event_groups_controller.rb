@@ -211,6 +211,19 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
   end
 
+  # PATCH /event_groups/1/auto_assign_bibs
+  def auto_assign_bibs
+    authorize @event_group
+
+    event = @event_group.first_event
+    strategy = params[:strategy]
+    bib_assignments = ::ComputeBibAssignments.perform(event, strategy)
+    response = ::Interactors::BulkSetBibNumbers.perform!(@event_group, bib_assignments)
+
+    set_flash_message(response)
+    redirect_to assign_bibs_event_group_path(@event_group)
+  end
+
   # PATCH /event_groups/1/update_bibs
   def update_bibs
     authorize @event_group

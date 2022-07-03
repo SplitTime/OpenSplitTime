@@ -110,6 +110,7 @@ Rails.application.routes.draw do
       post :create_people
       post :load_lottery_entrants
       patch :set_data_status
+      patch :auto_assign_bibs
       patch :auto_reconcile
       patch :associate_people
       patch :start_efforts

@@ -58,6 +58,15 @@ module DropdownHelper
     build_dropdown_menu("Admin", dropdown_items, class: "nav-item")
   end
 
+  def bib_number_auto_assignment_dropdown(view_object)
+    dropdown_items = [
+      {name: "Hardrock",
+       link: auto_assign_bibs_event_group_path(view_object.event_group, strategy: :hardrock),
+       method: :patch},
+    ]
+    build_dropdown_menu("Auto Assign", dropdown_items, button: true)
+  end
+
   def live_dropdown_menu(view_object)
     dropdown_items = [
       {name: "Time Entry",

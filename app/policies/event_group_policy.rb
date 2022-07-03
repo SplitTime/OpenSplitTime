@@ -60,6 +60,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def auto_assign_bibs?
+    user.authorized_to_edit?(event_group)
+  end
+
   def update_bibs?
     user.authorized_to_edit?(event_group)
   end

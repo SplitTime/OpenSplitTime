@@ -27,13 +27,23 @@
 </header>
 
 <article class="ost-article container">
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <%= bib_number_auto_assignment_dropdown(@presenter) %>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <%= form_with(model: @presenter.event_group,
                 url: update_bibs_event_group_path(@presenter.event_group),
                 method: :patch,
                 data: {turbo: false}) do |f| %>
     <% @presenter.event_group.events.each do |event| %>
       <div class="form-row">
-        <h5><%= event.name %></h5>
+        <h4 class="mt-3"><%= event.name %></h4>
         <table class="table table-condensed">
           <thead>
           <tr>

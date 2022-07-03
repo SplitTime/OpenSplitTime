@@ -12,6 +12,7 @@
               <div class="dropdown-menu">
                 <div class="dropdown-divider"></div>
                 <%= link_to "Reconcile", reconcile_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                <%= link_to "Assign Bibs", assign_bibs_event_group_path(@presenter.event_group), class: "dropdown-item" %>
                 <%= link_to "Export", efforts_path(filter: {event_id: @presenter.events.ids}, format: :csv), class: "dropdown-item" %>
                 <div class="dropdown-divider"></div>
                 <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-event-group-#{@presenter.event_group.id}", class: "dropdown-item text-danger") %>

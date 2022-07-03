@@ -32,9 +32,20 @@ module Interactors
        detail: {messages: ["#{child} cannot be assigned to #{new_parent} because distances do not coincide"]}}
     end
 
+    def duplicate_bib_numbers_error(bib_numbers)
+      {title: "Duplicate bib numbers",
+       detail: {messages: ["The operation resulted in the creation of duplicate bib numbers: #{bib_numbers.join(', ')}"]}}
+    end
+
     def efforts_not_provided_error
       {title: "Efforts not provided",
        detail: {messages: ["No efforts were provided"]}}
+    end
+
+    def empty_bib_numbers_error(problems)
+      problem_efforts_text = problems.map { |problem| "#{problem.first} could not be set to #{problem.last}" }.join("\n")
+      {title: "Empty bib numbers",
+       detail: {messages: ["The operation resulted in the following bib numbers being set to empty: #{problem_efforts_text}"]}}
     end
 
     def event_group_mismatch_error(resource_1, resource_2)

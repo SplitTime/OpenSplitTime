@@ -1,0 +1,78 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Assign Bibs - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_event_group_path(@presenter.event_group, display_style: :entrants) %></li>
+            <li class="breadcrumb-item">Assign Bibs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= form_with(model: @presenter.event_group,
+                url: update_bibs_event_group_path(@presenter.event_group),
+                method: :patch,
+                data: {turbo: false}) do |f| %>
+    <% @presenter.event_group.events.each do |event| %>
+      <div class="form-row">
+        <h5><%= event.name %></h5>
+        <table class="table table-condensed">
+          <thead>
+          <tr>
+            <th style="width: 10%">Bib</th>
+            <th style="width: 35%">Name</th>
+            <th style="width: 20%">Gender</th>
+            <th style="width: 35%">From</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% event.efforts.order(:last_name, :first_name).each do |effort| %>
+            <tr>
+              <td><%= f.text_field "bib_for_#{effort.id}", value: effort.bib_number %></td>
+              <td><%= effort.name %></td>
+              <td><%= effort.gender.titleize %></td>
+              <td><%= effort.flexible_geolocation %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit("Update", class: "btn btn-primary") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="col">
+            <span class="brackets">
+                <%= link_to "Cancel", request.referrer || setup_event_group_path(@presenter.event_group, display_style: :entrants) %>
+            </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</article>

@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     resources :events, except: [:index, :show]
 
     member do
+      get :assign_bibs
       get :drop_list
       get :efforts
       get :export_raw_times
@@ -113,6 +114,7 @@ Rails.application.routes.draw do
       patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
+      patch :update_bibs
       delete :delete_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times

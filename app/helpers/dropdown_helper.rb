@@ -64,7 +64,7 @@ module DropdownHelper
         name: "Hardrock",
         link: auto_assign_bibs_event_group_path(view_object.event_group, strategy: :hardrock),
         method: :patch,
-        data: {confirm: "Assign bib numbers beginning at 1 to prior-year entrants in order of finish rank, and to other entrants beginning at 100 in alphabetical name order. Proceed?"}
+        data: {confirm: "Assign bib numbers beginning at 1 to prior-year finishers in order of finish rank, and to other entrants beginning at 100 in alphabetical name order. Proceed?"}
       },
     ]
     build_dropdown_menu("Auto Assign", dropdown_items, button: true)

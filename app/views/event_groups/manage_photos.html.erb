@@ -62,7 +62,7 @@
     <div class="row">
       <% @presenter.event_group.entrant_photos.includes(:blob).references(:blobs).order(:filename).each do |photo| %>
         <div class="col-12 col-sm-4 col-lg-2 text-center my-2">
-          <div><%= image_tag photo %></div>
+          <div><%= image_tag photo.variant(:small) %></div>
           <div><%= photo.filename %></div>
           <div><%= link_to "Remove",
                            delete_entrant_photos_event_group_path(@presenter.event_group, entrant_photo_id: photo.id),

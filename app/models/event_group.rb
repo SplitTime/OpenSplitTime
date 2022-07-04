@@ -23,6 +23,8 @@ class EventGroup < ApplicationRecord
   has_many :partners
   belongs_to :organization
 
+  has_many_attached :entrant_photos
+
   after_create :notify_admin
   after_save :conform_concealed_status
   after_save :touch_all_events

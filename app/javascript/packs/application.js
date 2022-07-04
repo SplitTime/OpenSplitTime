@@ -9,6 +9,9 @@
 
 require("@hotwired/turbo-rails")
 
+import * as ActiveStorage from "@rails/activestorage"
+ActiveStorage.start()
+
 import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from 'utils/units';
 global.preferredDistanceUnit = preferredDistanceUnit;
 global.preferredElevationUnit = preferredElevationUnit;

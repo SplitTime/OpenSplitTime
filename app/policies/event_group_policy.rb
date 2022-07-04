@@ -68,6 +68,14 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def manage_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def update_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
   def roster?
     user.authorized_to_edit?(event_group)
   end

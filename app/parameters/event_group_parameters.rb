@@ -2,8 +2,19 @@
 
 class EventGroupParameters < BaseParameters
   def self.permitted
-    [:id, :slug, :name, :organization_id, :concealed, :available_live, :monitor_pacers, :data_entry_grouping_strategy,
-     :home_time_zone, {events_attributes: [*EventParameters.permitted]}]
+    [
+      :id,
+      :slug,
+      :name,
+      :organization_id,
+      :concealed,
+      :available_live,
+      :monitor_pacers,
+      :data_entry_grouping_strategy,
+      :home_time_zone,
+      entrant_photos: [],
+      events_attributes: [*EventParameters.permitted]
+    ]
   end
 
   def self.permitted_query

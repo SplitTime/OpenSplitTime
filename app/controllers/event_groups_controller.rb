@@ -258,6 +258,14 @@ class EventGroupsController < ApplicationController
     redirect_to manage_photos_event_group_path(@event_group)
   end
 
+  # DELETE /event_groups/1/delete_entrant_photos/1
+  def delete_entrant_photos
+    authorize @event_group
+
+    @event_group.entrant_photos.find(params[:entrant_photo_id]).purge_later
+    redirect_to manage_photos_event_group_path(@event_group)
+  end
+
   def set_data_status
     authorize @event_group
 

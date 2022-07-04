@@ -27,24 +27,7 @@
 </header>
 
 <article class="ost-article container">
-  <% if @presenter.event_group.entrant_photos.attached? %>
-    <h4><strong>Files already uploaded</strong></h4>
-    <div class="row">
-      <% @presenter.event_group.entrant_photos.includes(:blob).references(:blobs).order(:filename).each do |photo| %>
-        <div class="col-12 col-sm-4 col-lg-2 text-center">
-          <div><%= image_tag photo %></div>
-          <div><%= photo.filename %></div>
-          <div><%= link_to "Remove", nil, class: "btn btn-outline-secondary btn-sm" %></div>
-        </div>
-      <% end %>
-  <% else %>
-    <h4><strong>No files have been uploaded yet</strong></h4>
-  <% end %>
-  </div>
-  <br/>
-  <hr/>
-
-  <h4><strong>Upload additional files</strong></h4>
+  <h4><strong>Choose files to upload</strong></h4>
   <%= form_with(model: @presenter.event_group, url: update_photos_event_group_path, html: {method: :patch}) do |f| %>
     <div class="row my-4">
       <div class="col">
@@ -55,7 +38,7 @@
     <div class="form-row">
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit("Update", class: "btn btn-primary") %>
+          <%= f.submit("Upload", class: "btn btn-primary") %>
         </div>
       </div>
     </div>
@@ -70,4 +53,26 @@
       </div>
     </div>
   <% end %>
+
+  <br/>
+  <hr/>
+
+  <% if @presenter.event_group.entrant_photos.attached? %>
+    <h4><strong>Files already uploaded</strong></h4>
+    <div class="row">
+      <% @presenter.event_group.entrant_photos.includes(:blob).references(:blobs).order(:filename).each do |photo| %>
+        <div class="col-12 col-sm-4 col-lg-2 text-center my-2">
+          <div><%= image_tag photo %></div>
+          <div><%= photo.filename %></div>
+          <div><%= link_to "Remove",
+                           delete_entrant_photos_event_group_path(@presenter.event_group, entrant_photo_id: photo.id),
+                           method: :delete,
+                           class: "btn btn-outline-secondary btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+  <% else %>
+    <h4><strong>No files have been uploaded yet</strong></h4>
+  <% end %>
+  </div>
 </article>

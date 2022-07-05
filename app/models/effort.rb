@@ -57,7 +57,7 @@ class Effort < ApplicationRecord
   validates_with BirthdateValidator
   validates :photo,
             content_type: %w[image/png image/jpeg],
-            size: {less_than: 5000.kilobytes}
+            size: {less_than: 1.megabyte}
 
   before_save :reset_age_from_birthdate
   after_save :set_performance_data

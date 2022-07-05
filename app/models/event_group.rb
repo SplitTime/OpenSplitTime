@@ -36,6 +36,10 @@ class EventGroup < ApplicationRecord
   validate :home_time_zone_exists
   validates_with GroupedEventsValidator
 
+  validates :entrant_photos,
+            content_type: %w[image/png image/jpeg],
+            size: {less_than: 1.megabyte}
+
   accepts_nested_attributes_for :events
 
   attr_accessor :duplicate_event_date

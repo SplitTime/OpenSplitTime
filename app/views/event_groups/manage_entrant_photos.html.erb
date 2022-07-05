@@ -28,6 +28,10 @@
 
 <article class="ost-article container">
   <h4><strong>Choose photos to upload</strong></h4>
+  <p>Photo files must be less than 1 megabyte and must be PNG or JPEG type.</p>
+  <p>Photos will be assigned to bib numbers based on the filename of the photo. Only numeric information in the filename
+    is used to determine which bib number the photo will be assigned to. For example, a file named
+    <strong>runner_15.jpg</strong> will be assigned to the entrant with bib number 15.</p>
   <%= form_with(model: @presenter.event_group, url: update_entrant_photos_event_group_path, html: {method: :patch}) do |f| %>
     <div class="row my-4">
       <div class="col">

@@ -258,6 +258,15 @@ class EventGroupsController < ApplicationController
     redirect_to manage_entrant_photos_event_group_path(@event_group)
   end
 
+  # PATCH /event_groups/1/assign_entrant_photos
+  def assign_entrant_photos
+    authorize @event_group
+
+    response = ::Interactors::AssignEntrantPhotos.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
   # DELETE /event_groups/1/delete_entrant_photos/1
   def delete_entrant_photos
     authorize @event_group

@@ -27,7 +27,7 @@
 </header>
 
 <article class="ost-article container">
-  <h4><strong>Choose files to upload</strong></h4>
+  <h4><strong>Choose photos to upload</strong></h4>
   <%= form_with(model: @presenter.event_group, url: update_entrant_photos_event_group_path, html: {method: :patch}) do |f| %>
     <div class="row my-4">
       <div class="col">
@@ -47,7 +47,14 @@
   <hr/>
 
   <% if @presenter.event_group.entrant_photos.attached? %>
-    <h4><strong>Files waiting to be assigned</strong></h4>
+    <div class="row">
+      <div class="col">
+        <h4 class="font-weight-bold">Photos waiting to be assigned</h4>
+      </div>
+      <div class="col text-right">
+        <%= link_to "Assign photos", assign_entrant_photos_event_group_path(@presenter.event_group), method: :patch, class: "btn btn-primary" %>
+      </div>
+    </div>
     <div class="row">
       <% @presenter.event_group.entrant_photos.includes(:blob).references(:blobs).order(:filename).each do |photo| %>
         <div class="col-12 col-sm-4 col-lg-2 text-center my-2">
@@ -61,7 +68,7 @@
         </div>
       <% end %>
   <% else %>
-    <h4><strong>No files are waiting to be assigned</strong></h4>
+    <h4><strong>No photos are waiting to be assigned</strong></h4>
   <% end %>
   </div>
 

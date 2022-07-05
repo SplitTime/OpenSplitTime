@@ -17,6 +17,11 @@ module Interactors
        detail: {context: exception.context.http_request}}
     end
 
+    def bib_not_found_error(bib_number, filename)
+      {title: "Bib not found",
+       detail: {error_message: "Bib number #{bib_number} for filename #{filename} was not found"}}
+    end
+
     def database_error(error_message)
       {title: "A database error occurred",
        detail: {error_message: error_message}}
@@ -56,6 +61,11 @@ module Interactors
     def finish_split_missing_error
       {title: "Finish split missing",
        detail: {messages: ["The event associated with the provided effort has no finish split"]}}
+    end
+
+    def invalid_filename_error(filename)
+      {title: "Invalid file name",
+       detail: {error_message: "File name #{filename} could not be translated into a bib number"}}
     end
 
     def invalid_raw_time_error(raw_time, valid_sub_splits)

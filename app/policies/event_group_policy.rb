@@ -68,6 +68,26 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def assign_entrant_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def manage_entrant_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def update_entrant_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def delete_entrant_photos?
+    user.authorized_to_edit?(event_group)
+  end
+
+  def delete_photos_from_entrants?
+    user.authorized_to_edit?(event_group)
+  end
+
   def roster?
     user.authorized_to_edit?(event_group)
   end

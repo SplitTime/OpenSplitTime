@@ -23,6 +23,10 @@ class EventGroup < ApplicationRecord
   has_many :partners
   belongs_to :organization
 
+  has_many_attached :entrant_photos do |photo|
+    photo.variant :small, resize: "200x200"
+  end
+
   after_create :notify_admin
   after_save :conform_concealed_status
   after_save :touch_all_events

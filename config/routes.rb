@@ -100,6 +100,7 @@ Rails.application.routes.draw do
       get :finish_line
       get :follow
       get :choose_lottery_entrants
+      get :manage_entrant_photos
       get :raw_times
       get :reconcile
       get :roster
@@ -110,15 +111,19 @@ Rails.application.routes.draw do
       post :create_people
       post :load_lottery_entrants
       patch :set_data_status
+      patch :assign_entrant_photos
       patch :auto_assign_bibs
       patch :auto_reconcile
       patch :associate_people
       patch :start_efforts
       patch :update_all_efforts
       patch :update_bibs
+      patch :update_entrant_photos
       delete :delete_all_efforts
       delete :delete_all_times
       delete :delete_duplicate_raw_times
+      delete :delete_entrant_photos
+      delete :delete_photos_from_entrants
     end
   end
 

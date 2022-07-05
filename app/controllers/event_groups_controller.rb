@@ -238,6 +238,54 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/manage_entrant_photos
+  def manage_entrant_photos
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # PATCH /event_groups/1/update_entrant_photos
+  def update_entrant_photos
+    authorize @event_group
+
+    if @event_group.update(permitted_params)
+      flash[:success] = "Photos were attached"
+    else
+      flash[:danger] = "Photos could not be attached: #{@event_group.errors.full_messages}"
+    end
+
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # PATCH /event_groups/1/assign_entrant_photos
+  def assign_entrant_photos
+    authorize @event_group
+
+    response = ::Interactors::AssignEntrantPhotos.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # DELETE /event_groups/1/delete_entrant_photos?entrant_photo_id=1
+  def delete_entrant_photos
+    authorize @event_group
+
+    @event_group.entrant_photos.find(params[:entrant_photo_id]).purge_later
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # DELETE /event_groups/1/delete_photos_from_entrants
+  def delete_photos_from_entrants
+    authorize @event_group
+
+    @event_group.efforts.photo_assigned.find_each do |effort|
+      effort.photo.purge_later
+    end
+
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
   def set_data_status
     authorize @event_group
 

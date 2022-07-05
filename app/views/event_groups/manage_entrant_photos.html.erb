@@ -1,0 +1,114 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Manage Photos - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_event_group_path(@presenter.event_group, display_style: :entrants) %></li>
+            <li class="breadcrumb-item">Manage Photos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <h4><strong>Choose photos to upload</strong></h4>
+  <%= form_with(model: @presenter.event_group, url: update_entrant_photos_event_group_path, html: {method: :patch}) do |f| %>
+    <div class="row my-4">
+      <div class="col">
+        <%= f.file_field :entrant_photos, multiple: true, direct_upload: true %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit("Upload", class: "btn btn-primary") %>
+        <%= link_to "Back to setup", setup_event_group_path(@presenter.event_group, display_style: :entrants), class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  <% end %>
+
+  <br/>
+  <hr/>
+
+  <% if @presenter.event_group.entrant_photos.attached? %>
+    <div class="row">
+      <div class="col">
+        <h4 class="font-weight-bold">Photos waiting to be assigned</h4>
+      </div>
+      <div class="col text-right">
+        <%= link_to "Assign photos", assign_entrant_photos_event_group_path(@presenter.event_group), method: :patch, class: "btn btn-primary" %>
+      </div>
+    </div>
+    <div class="row">
+      <% @presenter.event_group.entrant_photos.includes(:blob).references(:blobs).order(:filename).each do |photo| %>
+        <div class="col-12 col-sm-4 col-lg-2 text-center my-2">
+          <div><%= image_tag photo.variant(:small) %></div>
+          <div><%= photo.filename %></div>
+          <div><%= link_to "Remove",
+                           delete_entrant_photos_event_group_path(@presenter.event_group, entrant_photo_id: photo.id),
+                           method: :delete,
+                           class: "btn btn-outline-secondary btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+  <% else %>
+    <h4><strong>No photos are waiting to be assigned</strong></h4>
+  <% end %>
+  </div>
+
+  <br/>
+  <hr/>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="row my-3">
+        <div class="col">
+          <h4 class="font-weight-bold">Already assigned</h4>
+        </div>
+        <div class="col">
+          <%= link_to "Remove all",
+                      delete_photos_from_entrants_event_group_path(@presenter.event_group),
+                      method: :delete,
+                      data: { confirm: "This will remove photos from all entrants and cannot be undone. Proceed?" },
+                      class: "btn btn-outline-danger" %>
+        </div>
+      </div>
+      <% @presenter.event_group.efforts.photo_assigned.with_attached_photo.order(:bib_number).each do |effort| %>
+        <div class="row">
+          <div class="col">
+            <%= image_tag effort.photo.variant(:thumbnail) %>
+            <span class="font-weight-bold"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <h4 class="my-3"><strong>Not yet assigned</strong></h4>
+      <% @presenter.event_group.efforts.no_photo_assigned.order(:bib_number).each do |effort| %>
+        <div class="row">
+          <div class="col">
+            <%= image_tag "small/avatar-empty.jpg" %>
+            <span class="font-weight-bold"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</article>

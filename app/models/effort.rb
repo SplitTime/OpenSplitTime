@@ -36,7 +36,9 @@ class Effort < ApplicationRecord
   belongs_to :person, optional: true
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
-  has_one_attached :photo
+  has_one_attached :photo do |photo|
+    photo.variant :thumbnail, resize: "50x50"
+  end
 
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?
 
@@ -69,6 +71,8 @@ class Effort < ApplicationRecord
   scope :started, -> { where(started: true) }
   scope :unstarted, -> { where(started: false) }
   scope :checked_in, -> { where(checked_in: true) }
+  scope :photo_assigned, -> { joins("join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id") }
+  scope :no_photo_assigned, -> { joins("left join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id").where("asa.id is null") }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
   scope :ranked_order, -> { order(overall_performance: :desc) }
   scope :ranking_subquery, -> { from(EffortQuery.ranking_subquery(self)) }

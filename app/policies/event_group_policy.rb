@@ -68,11 +68,11 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def manage_photos?
+  def manage_entrant_photos?
     user.authorized_to_edit?(event_group)
   end
 
-  def update_photos?
+  def update_entrant_photos?
     user.authorized_to_edit?(event_group)
   end
 

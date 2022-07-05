@@ -238,15 +238,15 @@ class EventGroupsController < ApplicationController
     end
   end
 
-  # GET /event_groups/1/manage_photos
-  def manage_photos
+  # GET /event_groups/1/manage_entrant_photos
+  def manage_entrant_photos
     authorize @event_group
 
     @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
   end
 
-  # PATCH /event_groups/1/update_photos
-  def update_photos
+  # PATCH /event_groups/1/update_entrant_photos
+  def update_entrant_photos
     authorize @event_group
 
     if @event_group.update(permitted_params)
@@ -255,7 +255,7 @@ class EventGroupsController < ApplicationController
       flash[:danger] = "Photos could not be attached: #{@event_group.errors.full_messages}"
     end
 
-    redirect_to manage_photos_event_group_path(@event_group)
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
   end
 
   # DELETE /event_groups/1/delete_entrant_photos/1
@@ -263,7 +263,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     @event_group.entrant_photos.find(params[:entrant_photo_id]).purge_later
-    redirect_to manage_photos_event_group_path(@event_group)
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
   end
 
   def set_data_status

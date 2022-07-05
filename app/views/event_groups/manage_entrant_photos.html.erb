@@ -77,7 +77,18 @@
 
   <div class="row">
     <div class="col-12 col-md-6">
-      <h4 class="my-3"><strong>Already assigned</strong></h4>
+      <div class="row my-3">
+        <div class="col">
+          <h4 class="font-weight-bold">Already assigned</h4>
+        </div>
+        <div class="col">
+          <%= link_to "Remove all",
+                      delete_photos_from_entrants_event_group_path(@presenter.event_group),
+                      method: :delete,
+                      data: { confirm: "This will remove photos from all entrants and cannot be undone. Proceed?" },
+                      class: "btn btn-outline-danger" %>
+        </div>
+      </div>
       <% @presenter.event_group.efforts.photo_assigned.with_attached_photo.order(:bib_number).each do |effort| %>
         <div class="row">
           <div class="col">

@@ -123,6 +123,7 @@ Rails.application.routes.draw do
       delete :delete_all_times
       delete :delete_duplicate_raw_times
       delete :delete_entrant_photos
+      delete :delete_photos_from_entrants
     end
   end
 

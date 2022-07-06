@@ -35,7 +35,9 @@
     <strong>runner_15.jpg</strong> will be assigned to the entrant with bib number 15.
   </p>
 
-  <%= form_with(model: @presenter.event_group, url: update_entrant_photos_event_group_path, html: {method: :patch}) do |f| %>
+  <%= form_with(model: @presenter.event_group,
+                url: update_entrant_photos_event_group_path,
+                html: { method: :patch, data: { controller: "form-apply" } }) do |f| %>
     <div class="mb-3 text-center">
       <div class="dropzone dropzone-default dz-clickable"
            data-controller="dropzone"

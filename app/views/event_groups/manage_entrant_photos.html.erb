@@ -29,27 +29,39 @@
 <article class="ost-article container">
   <h4><strong>Choose photos to upload</strong></h4>
   <p>Photo files must be less than 1 megabyte and must be PNG or JPEG type.</p>
-  <p>Photos will be assigned to bib numbers based on the filename of the photo. Only numeric information in the filename
+  <p>
+    Photos will be assigned to bib numbers based on the filename of the photo. Only <strong>numeric information</strong> in the filename
     is used to determine which bib number the photo will be assigned to. For example, a file named
-    <strong>runner_15.jpg</strong> will be assigned to the entrant with bib number 15.</p>
-  <%= form_with(model: @presenter.event_group, url: update_entrant_photos_event_group_path, html: { method: :patch }) do |f| %>
-    <div class="row my-4">
-      <div class="col">
-        <%= f.file_field :entrant_photos, multiple: true, direct_upload: true %>
+    <strong>runner_15.jpg</strong> will be assigned to the entrant with bib number 15.
+  </p>
+
+  <%= form_with(model: @presenter.event_group,
+                url: update_entrant_photos_event_group_path,
+                html: { method: :patch, data: { controller: "form-apply" } }) do |f| %>
+    <div class="mb-3 text-center">
+      <div class="dropzone dropzone-default dz-clickable"
+           data-controller="dropzone"
+           data-dropzone-max-file-size="1"
+           data-dropzone-max-files="50"
+           data-dropzone-accepted-files="image/*"
+           data-action="dropzone:success->form-apply#enableSubmitButton">
+        <%= f.file_field :entrant_photos, multiple: true, direct_upload: true, data: {"dropzone-target" => "input"} %>
+        <div class="dropzone-msg dz-message needsclick text-muted">
+          <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
+          <span class="dropzone-msg-desc text-sm">1 MB file size maximum. Allowed file types png, jpg.</span>
+        </div>
       </div>
     </div>
 
-    <div class="form-row">
-      <div class="col-sm-offset-2 col-sm-10">
-        <%= f.submit("Upload", class: "btn btn-primary") %>
-        <%= link_to "Back to setup", setup_event_group_path(@presenter.event_group, display_style: :entrants), class: "btn btn-outline-secondary" %>
-      </div>
+    <div class="mb-3 text-center">
+      <%= f.submit "Upload files", class: "btn btn-primary", data: {turbo: false, "form-apply-target" => "submitButton"} %>
+      <%= link_to "Back to setup", setup_event_group_path(@presenter.event_group, display_style: :entrants), class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
 
   <% if @presenter.event_group.entrant_photos.attached? %>
-  <br/>
-  <hr/>
+    <br/>
+    <hr/>
 
     <div class="row">
       <div class="col">

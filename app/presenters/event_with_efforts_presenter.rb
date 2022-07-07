@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EventWithEffortsPresenter < BasePresenter
-  DEFAULT_ORDER_CRITERIA = { overall_rank: :asc }
+  DEFAULT_ORDER_CRITERIA = { overall_rank: :asc, bib_number: :asc }
 
   attr_reader :event
 

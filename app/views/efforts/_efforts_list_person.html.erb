@@ -5,25 +5,27 @@
   <tr>
     <th><%= "#{@presenter.full_name}'s efforts:" %></th>
     <th>From</th>
+    <th>Date</th>
     <th class="text-right">Finish Time</th>
     <% if current_user&.admin? %>
-        <th class="text-right">Actions</th>
+      <th class="text-right">Actions</th>
     <% end %>
   </tr>
   </thead>
   <tbody>
-    <% efforts.each do |effort| %>
-      <tr>
+  <% efforts.each do |effort| %>
+    <tr>
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
+      <td><%= l(effort.final_absolute_time.to_date, format: :full_with_weekday) %></td>
       <td class="text-right"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>
-          <td class="text-right"><%= link_to 'Disassociate',
-                                             effort_path(effort, effort: {person_id: nil}, button: :disassociate),
-                                             method: :patch,
-                                             class: 'btn btn-xs btn-danger' %></td>
+        <td class="text-right"><%= link_to "Disassociate",
+                                           effort_path(effort, effort: {person_id: nil}, button: :disassociate),
+                                           method: :patch,
+                                           class: "btn btn-xs btn-danger" %></td>
       <% end %>
-      </tr>
+    </tr>
   <% end %>
   </tbody>
 </table>

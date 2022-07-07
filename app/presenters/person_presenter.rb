@@ -12,8 +12,12 @@ class PersonPresenter < BasePresenter
   end
 
   def efforts
-    @efforts ||= EffortPolicy::Scope.new(current_user, Effort).viewable.includes(event: :event_group, split_times: :split)
-        .where(person: person).sort_by { |effort| -effort.actual_start_time.to_i }
+    @efforts ||= EffortPolicy::Scope.new(current_user, person.efforts)
+                                    .viewable
+                                    .includes(event: :event_group)
+                                    .joins(:event)
+                                    .finish_info_subquery
+                                    .order("events.scheduled_start_time desc")
   end
 
   def participation_notifiable?

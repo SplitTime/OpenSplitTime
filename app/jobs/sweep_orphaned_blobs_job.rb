@@ -8,7 +8,7 @@ class SweepOrphanedBlobsJob < ApplicationJob
     logger.info "Started SweepOrphanedBlobsJob at #{start_time}\n"
 
     problem_blobs = []
-    orphaned_blobs = ActiveStorage::Blob.unattached
+    orphaned_blobs = ActiveStorage::Blob.unattached.where("active_storage_blobs.created_at < ?", 1.hour.ago)
 
     count = orphaned_blobs.count
     if count == 0

@@ -10,12 +10,12 @@ module Rankable
 
   # @return [String (frozen)]
   def display_overall_rank
-    started? ? overall_rank : "--"
+    beyond_start? ? overall_rank : "--"
   end
 
   # @return [String (frozen)]
   def display_gender_rank
-    started? ? gender_rank : "--"
+    beyond_start? ? gender_rank : "--"
   end
 
   # @return [String (frozen)]

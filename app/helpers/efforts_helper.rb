@@ -114,8 +114,8 @@ module EffortsHelper
 
   def effort_view_status(presenter)
     finish_status = presenter.finish_status
-    overall_place = presenter.overall_rank ? "#{presenter.overall_rank.ordinalize} Place" : nil
-    gender_place = presenter.gender_rank ? "#{presenter.gender_rank.ordinalize} #{presenter.gender.titleize}" : nil
+    overall_place = presenter.beyond_start ? "#{presenter.overall_rank.ordinalize} Place" : nil
+    gender_place = presenter.beyond_start ? "#{presenter.gender_rank.ordinalize} #{presenter.gender.titleize}" : nil
     bib_number = presenter.bib_number ? "Bib ##{presenter.bib_number}" : nil
 
     content_tag(:h6) do

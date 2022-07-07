@@ -5,10 +5,10 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 
-<%= render 'effort_header', view_object: @presenter, title: nil %>
+<%= render "effort_header", view_object: @presenter, title: nil %>
 
 <aside class="ost-toolbar" data-controller="roster">
-  <%= render 'event_groups/start_efforts_modal', resource: :effort %>
+  <%= render "event_groups/start_efforts_modal", resource: :effort %>
 
   <div class="container">
     <div class="row">
@@ -21,7 +21,7 @@
               <%= link_to_start_effort(@presenter) %>
             <% end %>
             <% if @presenter.needs_final_stop? %>
-              <%= link_to 'Set stop', stop_effort_path(@presenter.effort),
+              <%= link_to "Set stop", stop_effort_path(@presenter.effort),
                           method: :patch,
                           class: "btn btn-success has-tooltip",
                           data: {toggle: "tooltip",
@@ -29,21 +29,21 @@
                                  "original-title" => "Sets a stop on the final split time"} %>
             <% end %>
             <% if @presenter.has_removable_stop? %>
-              <%= link_to 'Remove stop', stop_effort_path(@presenter.effort, status: false),
+              <%= link_to "Remove stop", stop_effort_path(@presenter.effort, status: false),
                           method: :patch,
                           class: "btn btn-success has-tooltip",
                           data: {toggle: "tooltip",
                                  placement: :bottom,
                                  "original-title" => "Removes the stop from all split times"} %>
             <% end %>
-            <%= link_to 'Smart stop', smart_stop_effort_path(@presenter.effort),
+            <%= link_to "Smart stop", smart_stop_effort_path(@presenter.effort),
                         method: :patch,
                         class: "btn btn-success has-tooltip",
                         data: {toggle: "tooltip",
                                placement: :bottom,
                                "original-title" => "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time"} %>
             <% if @presenter.next_problem_effort %>
-              <%= link_to 'Find a problem effort', effort_path(@presenter.next_problem_effort),
+              <%= link_to "Find a problem effort", effort_path(@presenter.next_problem_effort),
                           class: "btn btn-success" %>
             <% end %>
             <%= link_to "Raw time records (#{@presenter.raw_times_count})",
@@ -82,6 +82,6 @@
 <article class="ost-article container">
 
   <% if @presenter.lap_split_rows.present? %>
-    <%= render 'split_times/split_times_list', view_object: @presenter %>
+    <%= render "split_times/split_times_list", view_object: @presenter %>
   <% end %>
 </article>

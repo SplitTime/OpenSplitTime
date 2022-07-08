@@ -71,7 +71,8 @@ class EffortQuery < BaseQuery
                  and events.id in (select event_id from event_subquery)
            )
 
-      select existing_scope.*,
+      select distinct on(existing_scope.id)
+             existing_scope.*,
              stop_st.lap                                                         as stopped_lap,
              stop_st.split_id                                                    as stopped_split_id,
              final_st.lap                                                        as final_lap,

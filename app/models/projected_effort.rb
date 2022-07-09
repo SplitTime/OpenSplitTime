@@ -14,10 +14,13 @@ class ProjectedEffort
 
   def ordered_split_times
     @ordered_split_times ||= projections.map do |projection|
-      effort.split_times.new(time_point: projection.time_point,
-                             absolute_time: add_to_baseline(projection.average_seconds),
-                             absolute_estimate_early: add_to_baseline(projection.low_seconds),
-                             absolute_estimate_late: add_to_baseline(projection.high_seconds))
+      effort.split_times.new(
+        time_point: projection.time_point,
+        designated_seconds_from_start: add_to_baseline(projection.average_seconds) - start_time,
+        absolute_time: add_to_baseline(projection.average_seconds),
+        absolute_estimate_early: add_to_baseline(projection.low_seconds),
+        absolute_estimate_late: add_to_baseline(projection.high_seconds),
+      )
     end
   end
 

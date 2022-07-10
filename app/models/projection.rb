@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Projection < ::ApplicationQuery
+  EVENT_LOOKBACK_COUNT = 5
+  OVERALL_EFFORT_LIMIT = 100
+  SIMILARITY_THRESHOLD = 0.3
+
   attribute :lap, :integer
   attribute :split_id, :integer
   attribute :sub_split_bitkey, :integer
@@ -31,11 +35,18 @@ class Projection < ::ApplicationQuery
     end
     projected_where_clause = projected_where_array.join(" or ").presence || "true"
 
-    overall_limit = 100
-    similarity_threshold = 0.3
-
     <<~SQL.squish
       with 
+        relevant_event_ids as (
+          select events.id as event_id
+          from events
+            join courses on courses.id = events.course_id
+            join splits on splits.course_id = courses.id
+          where splits.id = #{starting_split_id}
+          order by scheduled_start_time desc
+          limit #{EVENT_LOOKBACK_COUNT}
+        ),
+
         completed_split_times as (
           select cst.effort_id, 
                  cst.absolute_time,
@@ -47,11 +58,14 @@ class Projection < ::ApplicationQuery
                    and sst.lap = #{starting_lap}
                    and sst.split_id = #{starting_split_id}
                    and sst.sub_split_bitkey = #{starting_bitkey}
+            inner join efforts e
+                    on e.id = cst.effort_id
           where cst.lap = #{completed_lap}
             and cst.split_id = #{completed_split_id}
             and cst.sub_split_bitkey = #{completed_bitkey}
+            and e.event_id in (select event_id from relevant_event_ids)
           order by difference
-          limit #{overall_limit}
+          limit #{OVERALL_EFFORT_LIMIT}
         ),
 
         main_subquery as (
@@ -65,7 +79,7 @@ class Projection < ::ApplicationQuery
           from completed_split_times cst
             inner join split_times pst on pst.effort_id = cst.effort_id
           where (#{projected_where_clause})
-            and difference / #{completed_seconds} < #{similarity_threshold}
+            and difference / #{completed_seconds} < #{SIMILARITY_THRESHOLD}
         ),
 
         ratio_subquery as (

@@ -52,7 +52,7 @@ module ETL
           record = build_record(proto_record)
 
           if unique_key.present?
-            unique_attributes = unique_key.map { |attr| [attr => record.send(attr)] }.to_h
+            unique_attributes = unique_key.map { |attr| [attr, record.send(attr)] }.to_h
 
             next if record.class.exists?(unique_attributes)
           end

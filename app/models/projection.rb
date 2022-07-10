@@ -81,6 +81,7 @@ class Projection < ::ApplicationQuery
           
         quartiles as
             (select lap, 
+                effort_id, 
                 split_id, 
                 sub_split_bitkey,
                 effort_year,
@@ -105,11 +106,16 @@ class Projection < ::ApplicationQuery
               q1 - ((q3 - q1) * 1.5) as lower_bound,
               q3 + ((q3 - q1) * 1.5) as upper_bound
           from quartiles),
-              
-        valid_ratios as
-          (select *
+
+        valid_ratios as (
+          select *
           from bounds
-          where ratio between lower_bound and upper_bound),
+          where effort_id not in (
+            select distinct effort_id 
+            from bounds 
+            where ratio not between lower_bound and upper_bound
+          )
+        ),
 
         stats_subquery as
           (select lap, 

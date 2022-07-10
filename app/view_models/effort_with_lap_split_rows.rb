@@ -16,6 +16,10 @@ class EffortWithLapSplitRows
     @event ||= Event.where(id: effort.event_id).includes(:splits).first
   end
 
+  def event_splits
+    @event_splits ||= event.splits
+  end
+
   def total_time_in_aid
     lap_split_rows.map(&:time_in_aid).compact.sum
   end
@@ -72,10 +76,13 @@ class EffortWithLapSplitRows
 
   def rows_from_lap_splits(lap_splits, indexed_times, in_times_only: false)
     lap_splits.map do |lap_split|
-      LapSplitRow.new(lap_split: lap_split,
-                      split_times: related_split_times(lap_split, indexed_times),
-                      show_laps: event.multiple_laps?,
-                      in_times_only: in_times_only)
+      LapSplitRow.new(
+        lap_split: lap_split,
+        split_times: related_split_times(lap_split, indexed_times),
+        show_laps: event.multiple_laps?,
+        in_times_only: in_times_only,
+        not_in_event: event_splits.exclude?(lap_split.split),
+      )
     end
   end
 

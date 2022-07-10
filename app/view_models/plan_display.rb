@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PlanDisplay < EffortWithLapSplitRows
+  MINIMUM_EFFORT_COUNT = 4
+
   include TimeFormats
   attr_reader :course, :error_messages
 
@@ -23,7 +25,10 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    typical_effort&.ordered_split_times || []
+    return [] if projected_effort.nil?
+    return [] if projected_effort.effort_count < MINIMUM_EFFORT_COUNT
+
+    projected_effort.ordered_split_times
   end
 
   def expected_time
@@ -63,24 +68,12 @@ class PlanDisplay < EffortWithLapSplitRows
     lap_split_rows.map(&:segment_time).compact.sum
   end
 
-  def finish_time_from_start
-    ordered_split_times.last.absolute_time - start_time
-  end
-
   def relevant_efforts_count
-    relevant_effort_ids.size
+    projected_effort.effort_count
   end
 
   def event_years_analyzed
-    relevant_events.map(&:scheduled_start_time).sort.map(&:year).uniq
-  end
-
-  def relevant_events
-    @relevant_events ||= effort_finder.events.to_a
-  end
-
-  def relevant_efforts
-    @relevant_efforts ||= effort_finder.efforts.to_a
+    projected_effort.effort_years
   end
 
   def plan_description
@@ -93,25 +86,37 @@ class PlanDisplay < EffortWithLapSplitRows
 
   attr_reader :params
 
-  def typical_effort
-    if expected_time && start_time
-      @typical_effort ||= TypicalEffort.new(event: event,
-                                            expected_time_from_start: expected_time,
-                                            start_time: start_time,
-                                            time_points: time_points)
-    end
+  def projected_effort
+    return unless expected_time && start_time
+
+    @projected_effort ||= ProjectedEffort.new(
+      event: event,
+      start_time: start_time,
+      baseline_split_time: baseline_split_time,
+      projected_time_points: time_points,
+    )
+  end
+
+  def baseline_split_time
+    ::SplitTime.new(
+      split: course.finish_split,
+      bitkey: ::SubSplit::IN_BITKEY,
+      lap: event.laps_required || expected_laps,
+      absolute_time: start_time + expected_time,
+      designated_seconds_from_start: expected_time / 1.second,
+    )
+  end
+
+  def time_points
+    @time_points ||= lap_splits.flat_map(&:time_points)
   end
 
   def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(expected_laps)
-  end
-
-  def effort_finder
-    typical_effort.similar_effort_finder
-  end
-
-  def relevant_effort_ids
-    effort_finder.effort_ids
+    @lap_splits ||=
+      begin
+        laps = event.laps_required || expected_laps
+        course.lap_splits_through(laps)
+      end
   end
 
   def default_start_time

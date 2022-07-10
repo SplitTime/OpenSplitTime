@@ -28,9 +28,9 @@ RSpec.describe ::Projection, type: :model do
         expect(projection.low_ratio).to be_within(0.05).of(0.30)
         expect(projection.average_ratio).to be_within(0.05).of(0.35)
         expect(projection.high_ratio).to be_within(0.05).of(0.40)
-        expect(projection.low_seconds).to be_within(100).of(33_100)
-        expect(projection.average_seconds).to be_within(100).of(40_600)
-        expect(projection.high_seconds).to be_within(100).of(48_200)
+        expect(projection.low_seconds).to be_within(100).of(35_300)
+        expect(projection.average_seconds).to be_within(100).of(39_700)
+        expect(projection.high_seconds).to be_within(100).of(44_200)
       end
     end
 

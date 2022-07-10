@@ -28,6 +28,7 @@ class SplitTime < ApplicationRecord
 
   attribute :absolute_estimate_early, :datetime
   attribute :absolute_estimate_late, :datetime
+  attribute :designated_seconds_from_start, :integer
   attribute :matching_raw_time_id, :integer
   attribute :effort_ids_ahead, :integer_array_from_string
 
@@ -134,6 +135,7 @@ class SplitTime < ApplicationRecord
 
   def time_from_start
     return attributes["time_from_start"] if attributes.has_key?("time_from_start")
+    return designated_seconds_from_start if designated_seconds_from_start.present?
     return nil unless absolute_time
     return 0 if starting_split_time?
 

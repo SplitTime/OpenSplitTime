@@ -68,10 +68,6 @@ class PlanDisplay < EffortWithLapSplitRows
     lap_split_rows.map(&:segment_time).compact.sum
   end
 
-  def finish_time_from_start
-    ordered_split_times.last.absolute_time - start_time
-  end
-
   def relevant_efforts_count
     projected_effort.effort_count
   end
@@ -121,10 +117,6 @@ class PlanDisplay < EffortWithLapSplitRows
         laps = event.laps_required || expected_laps
         course.lap_splits_through(laps)
       end
-  end
-
-  def event_lap_splits
-    @event_lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(expected_laps)
   end
 
   def default_start_time

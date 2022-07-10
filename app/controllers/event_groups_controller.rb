@@ -185,7 +185,7 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
   end
 
-  # POST /event_groups/1/load_lottery_entrants
+  # POST /event_groups/1/load_lottery_entrants?lottery_id=1&event_id=1
   def load_lottery_entrants
     authorize @event_group
 

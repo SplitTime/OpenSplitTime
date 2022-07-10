@@ -13,6 +13,7 @@ module ETL
     def initialize(import_job)
       @import_job = import_job
       @errors = []
+      @custom_options = {}
       validate_setup
     end
 
@@ -47,7 +48,7 @@ module ETL
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::GenericResourcesStrategy
         self.load_strategy = Loaders::AsyncInsertStrategy
-        self.custom_options = { model: :effort }
+        self.custom_options = { model: :effort, unique_key: [:first_name, :last_name, :birthdate] }
       else
         errors << format_not_recognized_error(format)
       end
@@ -65,7 +66,7 @@ module ETL
     def transform_data
       import_job.transforming!
       import_job.set_elapsed_time!
-      options = { parent: parent, import_job: import_job }.merge(custom_options || {})
+      options = { parent: parent, import_job: import_job }.merge(custom_options)
       transformer = ::ETL::Transformer.new(extracted_structs, transform_strategy, options)
       self.transformed_protos = transformer.transform
       self.errors += transformer.errors
@@ -74,7 +75,8 @@ module ETL
     def load_records
       import_job.loading!
       import_job.set_elapsed_time!
-      loader = ::ETL::Loader.new(transformed_protos, load_strategy, import_job: import_job)
+      options = { import_job: import_job }.merge(custom_options)
+      loader = ::ETL::Loader.new(transformed_protos, load_strategy, options)
       loader.load_records
       self.errors += loader.errors
     end

@@ -40,9 +40,11 @@ class Projection < ::ApplicationQuery
         relevant_event_ids as (
           select events.id as event_id
           from events
+            join event_groups on event_groups.id = events.event_group_id
             join courses on courses.id = events.course_id
             join splits on splits.course_id = courses.id
           where splits.id = #{starting_split_id}
+            and (event_groups.concealed is false or event_groups.concealed is null)
           order by scheduled_start_time desc
           limit #{EVENT_LOOKBACK_COUNT}
         ),

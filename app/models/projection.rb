@@ -36,11 +36,11 @@ class Projection < ::ApplicationQuery
 
     <<~SQL.squish
       with 
-        completed_split_times as
-          (select cst.effort_id, 
-              cst.absolute_time,
-              extract(epoch from(cst.absolute_time - sst.absolute_time)) as completed_segment_seconds,
-              abs(extract(epoch from(cst.absolute_time - sst.absolute_time)) - #{completed_seconds}) as difference
+        completed_split_times as (
+          select cst.effort_id, 
+                 cst.absolute_time,
+                 extract(epoch from(cst.absolute_time - sst.absolute_time)) as completed_segment_seconds,
+                 abs(extract(epoch from(cst.absolute_time - sst.absolute_time)) - #{completed_seconds}) as difference
           from split_times cst
             inner join split_times sst 
                     on sst.effort_id = cst.effort_id 
@@ -51,10 +51,11 @@ class Projection < ::ApplicationQuery
             and cst.split_id = #{completed_split_id}
             and cst.sub_split_bitkey = #{completed_bitkey}
           order by difference
-          limit #{overall_limit}),
+          limit #{overall_limit}
+        ),
 
-        main_subquery as
-          (select pst.effort_id, 
+        main_subquery as (
+          select pst.effort_id, 
               lap,
               split_id,
               sub_split_bitkey,
@@ -64,48 +65,53 @@ class Projection < ::ApplicationQuery
           from completed_split_times cst
             inner join split_times pst on pst.effort_id = cst.effort_id
           where (#{projected_where_clause})
-            and difference / #{completed_seconds} < #{similarity_threshold}),
+            and difference / #{completed_seconds} < #{similarity_threshold}
+        ),
 
-        ratio_subquery as
-          (select *,
+        ratio_subquery as (
+          select *,
               case when completed_segment_seconds = 0 
                    then null 
                    else round((projected_segment_seconds / completed_segment_seconds)::numeric, 6) end as ratio
-          from main_subquery),
+          from main_subquery
+        ),
           
-        order_count_subquery as
-          (select *,
+        order_count_subquery as (
+          select *,
               row_number() over (partition by lap, split_id, sub_split_bitkey order by ratio) as row_number,
               sum(1) over (partition by lap, split_id, sub_split_bitkey) as total
-          from ratio_subquery),
+          from ratio_subquery
+        ),
           
-        quartiles as
-            (select lap, 
-                effort_id, 
-                split_id, 
-                sub_split_bitkey,
-                effort_year,
-                ratio,
-                avg(case when row_number >= (floor(total/2.0)/2.0)
-                      and row_number <= (floor(total/2.0)/2.0) + 1
+        quartiles as (
+          select lap, 
+                 effort_id, 
+                 split_id, 
+                 sub_split_bitkey,
+                 effort_year,
+                 ratio,
+                 avg(case when row_number >= (floor(total/2.0)/2.0)
+                           and row_number <= (floor(total/2.0)/2.0) + 1
                      then ratio else null end) 
-                  over (partition by lap, split_id, sub_split_bitkey) as q1,
-                avg(case when row_number >= (total/2.0)
-                      and row_number <= (total/2.0) + 1
+                 over (partition by lap, split_id, sub_split_bitkey) as q1,
+                 avg(case when row_number >= (total/2.0)
+                           and row_number <= (total/2.0) + 1
                      then ratio else null end)
-                  over (partition by lap, split_id, sub_split_bitkey) as median,
-                avg(case when row_number >= (ceil(total/2.0) + (floor(total/2.0)/2.0))
-                      and row_number <= (ceil(total/2.0) + (floor(total/2.0)/2.0) + 1)
+                 over (partition by lap, split_id, sub_split_bitkey) as median,
+                 avg(case when row_number >= (ceil(total/2.0) + (floor(total/2.0)/2.0))
+                           and row_number <= (ceil(total/2.0) + (floor(total/2.0)/2.0) + 1)
                      then ratio else null end)
-                  over (partition by lap, split_id, sub_split_bitkey) as q3
-            from order_count_subquery),
+                 over (partition by lap, split_id, sub_split_bitkey) as q3
+          from order_count_subquery
+        ),
               
-        bounds as
-          (select *,
+        bounds as (
+          select *,
               q3 - q1 as iqr,
               q1 - ((q3 - q1) * 1.5) as lower_bound,
               q3 + ((q3 - q1) * 1.5) as upper_bound
-          from quartiles),
+          from quartiles
+        ),
 
         valid_ratios as (
           select *
@@ -117,29 +123,31 @@ class Projection < ::ApplicationQuery
           )
         ),
 
-        stats_subquery as
-          (select lap, 
-              split_id, 
-              sub_split_bitkey,
-      				array_to_string(array_agg(distinct effort_year), ',') as effort_years,
-              count(ratio) as effort_count,
-              round(avg(ratio), 6) as average,
-              round(stddev(ratio) * 2, 6) as std2
+        stats_subquery as (
+          select lap, 
+                 split_id, 
+                 sub_split_bitkey,
+                 array_to_string(array_agg(distinct effort_year), ',') as effort_years,
+                 count(ratio) as effort_count,
+                 round(avg(ratio), 6) as average,
+                 round(stddev(ratio) * 2, 6) as std2
           from valid_ratios
-          group by lap, split_id, sub_split_bitkey),
+          group by lap, split_id, sub_split_bitkey
+        ),
       
-        final_subquery as
-          (select lap, 
-              split_id, 
-              sub_split_bitkey,
-              effort_count,
-              effort_years,
-              case when average >= 0 and (average - std2) is not null
-                   then greatest(0, average - std2) 
-                   else average - std2 end as low_ratio,
-              average as average_ratio,
-              average + std2 as high_ratio
-          from stats_subquery)
+        final_subquery as (
+          select lap, 
+                 split_id, 
+                 sub_split_bitkey,
+                 effort_count,
+                 effort_years,
+                 case when average >= 0 and (average - std2) is not null
+                      then greatest(0, average - std2) 
+                      else average - std2 end as low_ratio,
+                 average as average_ratio,
+                 average + std2 as high_ratio
+          from stats_subquery
+        )
           
       select final_subquery.*, 
           round(low_ratio * #{completed_seconds})::int as low_seconds,

@@ -29,7 +29,7 @@ class ProjectedEffort
   end
 
   def effort_count
-    projections.map(&:effort_count).max
+    projections.map(&:effort_count).max || 0
   end
 
   private

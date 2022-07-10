@@ -104,6 +104,12 @@ RSpec.describe Effort, type: :model do
         expect(effort).not_to be_valid
         expect(effort.errors[:bib_number]).to include(/already exists/)
       end
+
+      it "does not permit duplicate name/birthdate combinations within a given event_group" do
+        effort = build(:effort, event: event_2, first_name: existing_effort.first_name, last_name: existing_effort.last_name, birthdate: existing_effort.birthdate)
+        expect(effort).not_to be_valid
+        expect(effort.errors[:base]).to include(/already exists/)
+      end
     end
   end
 

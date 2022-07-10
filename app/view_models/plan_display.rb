@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PlanDisplay < EffortWithLapSplitRows
+  MINIMUM_EFFORT_COUNT = 4
+
   include TimeFormats
   attr_reader :course, :error_messages
 
@@ -23,7 +25,10 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    projected_effort&.ordered_split_times || []
+    return [] if projected_effort.nil?
+    return [] if projected_effort.effort_count < MINIMUM_EFFORT_COUNT
+
+    projected_effort.ordered_split_times
   end
 
   def expected_time

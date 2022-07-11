@@ -82,12 +82,14 @@ class EffortAnalysisView < EffortWithLapSplitRows
   private
 
   def typical_effort
-    @typical_effort ||= last_split_time && effort_start_time &&
-                        TypicalEffort.new(event: event,
-                                          expected_time_from_start: last_split_time.time_from_start,
-                                          start_time: effort_start_time,
-                                          time_points: ordered_split_times.map(&:time_point),
-                                          expected_time_point: last_split_time.time_point)
+    return if last_split_time.nil? || effort_start_time.nil?
+
+    @typical_effort ||= ProjectedEffort.new(
+      event: event,
+      start_time: effort_start_time,
+      baseline_split_time: ordered_split_times.last,
+      projected_time_points: ordered_split_times.map(&:time_point),
+    )
   end
 
   def last_split_time

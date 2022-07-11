@@ -59,6 +59,10 @@
       <td><%= @import_job.failed_count %></td>
     </tr>
     <tr>
+      <td>Ignored count</td>
+      <td><%= @import_job.ignored_count %></td>
+    </tr>
+    <tr>
       <td>Elapsed time</td>
       <td><%= pretty_duration(@import_job.elapsed_time) %></td>
     </tr>

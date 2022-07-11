@@ -2,6 +2,12 @@
 
 module ETL
   module Loaders
+    # If no unique_key is provided, this is a plain insert loader that will
+    # keep track of errors if validations are violated at the model or database
+    # level.
+    #
+    # If a unique_key is provided, records having the same unique key as an existing
+    # database record will be ignored.
     class AsyncInsertStrategy
       include ETL::Errors
 
@@ -22,6 +28,7 @@ module ETL
         @proto_records = proto_records
         @options = options
         @import_job = options[:import_job]
+        @unique_key = options[:unique_key]
         @errors = []
       end
 
@@ -32,7 +39,7 @@ module ETL
 
       private
 
-      attr_reader :proto_records, :options, :import_job
+      attr_reader :proto_records, :options, :import_job, :unique_key
 
       # @return [nil]
       def custom_load
@@ -43,6 +50,15 @@ module ETL
           end
 
           record = build_record(proto_record)
+
+          if unique_key.present?
+            unique_attributes = unique_key.map { |attr| [attr, record.send(attr)] }.to_h
+
+            if record.class.exists?(unique_attributes)
+              import_job.increment!(:ignored_count)
+              next
+            end
+          end
 
           if record.save
             import_job.increment!(:succeeded_count)

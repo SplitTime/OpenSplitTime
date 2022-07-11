@@ -86,8 +86,9 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
   end
 
   let(:all_proto_records) { valid_proto_records + invalid_proto_record }
-  let(:options) { {event: event, import_job: import_job} }
+  let(:options) { { event: event, import_job: import_job, unique_key: unique_key } }
   let!(:import_job) { create(:import_job, parent_type: "Event", parent_id: event.id, format: :test_format) }
+  let(:unique_key) { nil }
 
   describe "#load_records" do
     context "when all provided records are valid and none previously exists" do
@@ -118,6 +119,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         subject.load_records
         expect(import_job.succeeded_count).to eq(3)
         expect(import_job.failed_count).to eq(0)
+        expect(import_job.ignored_count).to eq(0)
       end
     end
 
@@ -145,7 +147,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       end
     end
 
-    context "when one or more records previously exists" do
+    context "when one or more records fails validation" do
       let(:proto_records) { valid_proto_records }
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
@@ -153,12 +155,12 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
       before do
         existing_effort = create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number])
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
-                            bitkey: first_child[:sub_split_bitkey], time_from_start: 0)
+               bitkey: first_child[:sub_split_bitkey], time_from_start: 0)
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
-                            bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
+               bitkey: second_child[:sub_split_bitkey], time_from_start: 1000)
       end
 
-      it "inserts only those records that do not previously exist" do
+      it "inserts only those records that do not fail validation" do
         expect { subject.load_records }.to change { Effort.count }.by(2).and change { SplitTime.count }.by(3)
       end
 
@@ -166,11 +168,59 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         subject.load_records
         expect(import_job.succeeded_count).to eq(2)
         expect(import_job.failed_count).to eq(1)
+        expect(import_job.ignored_count).to eq(0)
       end
 
       it "returns a descriptive error message" do
         subject.load_records
         expect(subject.errors.first.dig(:detail, :messages).first).to match(/Bib number \d already exists/)
+      end
+    end
+
+    context "when a unique key is provided" do
+      let(:unique_key) { [:first_name, :last_name, :birthdate, :event_id] }
+      let(:proto_records) { valid_proto_records }
+
+      context "when no records match the unique key" do
+        it "assigns attributes and creates new records" do
+          expect { subject.load_records }.to change { Effort.count }.by(3)
+          subject_efforts = Effort.last(3)
+
+          expect(subject_efforts.map(&:first_name)).to match_array(%w[Jatest Castest Mictest])
+          expect(subject_efforts.map(&:bib_number)).to match_array([5, 661, 633])
+          expect(subject_efforts.map(&:gender)).to match_array(%w[male female female])
+          expect(subject_efforts.map(&:event_id)).to all eq(event.id)
+        end
+      end
+
+      context "when an existing record matches the unique key" do
+        let!(:existing_effort) do
+          create(:effort,
+                 event: event,
+                 first_name: valid_proto_records.first[:first_name],
+                 last_name: valid_proto_records.first[:last_name],
+                 birthdate: valid_proto_records.first[:birthdate])
+        end
+
+        it "creates new records only for non-matching protos" do
+          expect { subject.load_records }.to change { Effort.count }.by(2)
+          subject_efforts = Effort.last(2)
+
+          expect(subject_efforts.map(&:first_name)).to match_array(%w[Castest Mictest])
+          expect(subject_efforts.map(&:bib_number)).to match_array([661, 633])
+          expect(subject_efforts.map(&:gender)).to match_array(%w[female female])
+          expect(subject_efforts.map(&:event_id)).to all eq(event.id)
+        end
+
+        it "ignores the matching record" do
+          expect(existing_effort).not_to receive(:update)
+          expect(existing_effort).not_to receive(:save)
+          subject.load_records
+
+          expect(import_job.succeeded_count).to eq(2)
+          expect(import_job.failed_count).to eq(0)
+          expect(import_job.ignored_count).to eq(1)
+        end
       end
     end
 
@@ -185,6 +235,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         subject.load_records
         expect(import_job.succeeded_count).to eq(3)
         expect(import_job.failed_count).to eq(1)
+        expect(import_job.ignored_count).to eq(0)
       end
 
       it "returns a descriptive error message" do
@@ -204,6 +255,7 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
         subject.load_records
         expect(import_job.succeeded_count).to eq(0)
         expect(import_job.failed_count).to eq(1)
+        expect(import_job.ignored_count).to eq(0)
       end
 
       it "returns a descriptive error message" do

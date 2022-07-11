@@ -116,8 +116,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "updates success count on the import job" do
         subject.load_records
-        expect(import_job.success_count).to eq(3)
-        expect(import_job.failure_count).to eq(0)
+        expect(import_job.succeeded_count).to eq(3)
+        expect(import_job.failed_count).to eq(0)
       end
     end
 
@@ -164,8 +164,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "sets success count and failure count on the import job" do
         subject.load_records
-        expect(import_job.success_count).to eq(2)
-        expect(import_job.failure_count).to eq(1)
+        expect(import_job.succeeded_count).to eq(2)
+        expect(import_job.failed_count).to eq(1)
       end
 
       it "returns a descriptive error message" do
@@ -183,8 +183,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "sets success count and failure count on the import job" do
         subject.load_records
-        expect(import_job.success_count).to eq(3)
-        expect(import_job.failure_count).to eq(1)
+        expect(import_job.succeeded_count).to eq(3)
+        expect(import_job.failed_count).to eq(1)
       end
 
       it "returns a descriptive error message" do
@@ -202,8 +202,8 @@ RSpec.describe ETL::Loaders::AsyncInsertStrategy do
 
       it "sets success count and failure count on the import job" do
         subject.load_records
-        expect(import_job.success_count).to eq(0)
-        expect(import_job.failure_count).to eq(1)
+        expect(import_job.succeeded_count).to eq(0)
+        expect(import_job.failed_count).to eq(1)
       end
 
       it "returns a descriptive error message" do

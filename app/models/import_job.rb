@@ -10,8 +10,8 @@ class ImportJob < ApplicationRecord
   scope :owned_by, ->(user) { where(user: user) }
 
   attribute :row_count, default: 0
-  attribute :success_count, default: 0
-  attribute :failure_count, default: 0
+  attribute :succeeded_count, default: 0
+  attribute :failed_count, default: 0
 
   enum status: {
     waiting: 0,

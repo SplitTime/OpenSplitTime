@@ -45,14 +45,14 @@ module ETL
           record = build_record(proto_record)
 
           if record.save
-            import_job.increment!(:success_count)
+            import_job.increment!(:succeeded_count)
           else
-            import_job.increment!(:failure_count)
+            import_job.increment!(:failed_count)
             errors << resource_error_object(record, row_index)
           end
 
         rescue ActiveRecord::ActiveRecordError => e
-          import_job.increment!(:failure_count)
+          import_job.increment!(:failed_count)
           errors << record_not_saved_error(e, row_index)
         ensure
           import_job.set_elapsed_time!

@@ -125,7 +125,7 @@ RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
 
         it "sets failure count on the import job" do
           subject.transform
-          expect(import_job.failure_count).to eq(2)
+          expect(import_job.failed_count).to eq(2)
         end
       end
 

@@ -24,11 +24,11 @@ module ETL
               proto_record.transform_as(:lottery_entrant, division: division)
               proto_record.slice_permitted!
             rescue StandardError => e
-              import_job.increment!(:failure_count)
+              import_job.increment!(:failed_count)
               errors << transform_failed_error(e, row_index)
             end
           else
-            import_job.increment!(:failure_count)
+            import_job.increment!(:failed_count)
             errors << resource_not_found_error(::LotteryDivision, parameterized_division_name, row_index)
           end
         end

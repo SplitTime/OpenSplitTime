@@ -37,8 +37,8 @@ RSpec.describe ETL::AsyncImporter do
     it "sets import job attributes properly" do
       subject.import!
       expect(import_job.row_count).to eq(3)
-      expect(import_job.success_count).to eq(3)
-      expect(import_job.failure_count).to eq(0)
+      expect(import_job.succeeded_count).to eq(3)
+      expect(import_job.failed_count).to eq(0)
       expect(import_job.status).to eq("finished")
       expect(import_job.started_at).to be_present
       expect(import_job.elapsed_time).to be_present
@@ -54,8 +54,8 @@ RSpec.describe ETL::AsyncImporter do
       it "sets import job attributes properly" do
         subject.import!
         expect(import_job.row_count).to eq(3)
-        expect(import_job.success_count).to eq(0)
-        expect(import_job.failure_count).to eq(1)
+        expect(import_job.succeeded_count).to eq(0)
+        expect(import_job.failed_count).to eq(1)
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
         expect(import_job.elapsed_time).to be_present
@@ -73,8 +73,8 @@ RSpec.describe ETL::AsyncImporter do
       it "sets import job attributes properly" do
         subject.import!
         expect(import_job.row_count).to eq(3)
-        expect(import_job.success_count).to eq(1)
-        expect(import_job.failure_count).to eq(2)
+        expect(import_job.succeeded_count).to eq(1)
+        expect(import_job.failed_count).to eq(2)
         expect(import_job.status).to eq("failed")
         expect(import_job.started_at).to be_present
         expect(import_job.elapsed_time).to be_present

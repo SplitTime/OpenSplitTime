@@ -27,11 +27,11 @@ module ETL
             proto_record.transform_as(:effort, event: event)
             proto_record.slice_permitted!
           else
-            import_job.increment!(:failure_count)
+            import_job.increment!(:failed_count)
             errors << resource_not_found_error(::Event, parameterized_event_name, row_index)
           end
         rescue StandardError => e
-          import_job.increment!(:failure_count)
+          import_job.increment!(:failed_count)
           errors << transform_failed_error(e, row_index)
         end
 

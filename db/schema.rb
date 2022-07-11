@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_01_010808) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_11_044625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -216,8 +216,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_01_010808) do
     t.integer "row_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "success_count"
-    t.integer "failure_count"
+    t.integer "succeeded_count"
+    t.integer "failed_count"
     t.datetime "started_at", precision: nil
     t.integer "elapsed_time"
     t.index ["parent_type", "parent_id"], name: "index_import_jobs_on_parent"

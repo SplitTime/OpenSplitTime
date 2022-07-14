@@ -16,7 +16,7 @@ class EffortQuery < BaseQuery
            ),
 
            efforts_for_ranking as (
-               select id as effort_id, event_id, gender, overall_performance
+               select id as effort_id, event_id, gender, overall_performance, bib_number
                from efforts
                where efforts.event_id in (select event_id from event_subquery)
            ),
@@ -26,7 +26,8 @@ class EffortQuery < BaseQuery
                       rank() over overall_window          as overall_rank,
                       rank() over gender_window           as gender_rank,
                       lag(effort_id) over overall_window  as prior_effort_id,
-                      lead(effort_id) over overall_window as next_effort_id
+                      lead(effort_id) over overall_window as next_effort_id,
+                      bib_number
                from efforts_for_ranking
                window overall_window as (partition by event_id order by overall_performance desc),
                       gender_window as (partition by event_id, gender order by overall_performance desc)
@@ -39,7 +40,7 @@ class EffortQuery < BaseQuery
              next_effort_id
       from existing_scope
            join ranking_subquery on ranking_subquery.effort_id = existing_scope.id
-      order by event_id, overall_rank, bib_number
+      order by event_id, overall_rank, ranking_subquery.bib_number
       )
 
       as efforts

@@ -30,8 +30,8 @@
   <h4><strong>Choose photos to upload</strong></h4>
   <p>Photo files must be less than 1 megabyte and must be PNG or JPEG type.</p>
   <p>
-    Photos will be assigned to bib numbers based on the filename of the photo. Only <strong>numeric information</strong> in the filename
-    is used to determine which bib number the photo will be assigned to. For example, a file named
+    Photos will be assigned to bib numbers based on the filename of the photo. Only <strong>numeric information</strong>
+    in the filename is used to determine which bib number the photo will be assigned to. For example, a file named
     <strong>runner_15.jpg</strong> will be assigned to the entrant with bib number 15.
   </p>
 
@@ -45,7 +45,7 @@
            data-dropzone-max-files="50"
            data-dropzone-accepted-files="image/*"
            data-action="dropzone:success->form-apply#enableSubmitButton">
-        <%= f.file_field :entrant_photos, multiple: true, direct_upload: true, data: {"dropzone-target" => "input"} %>
+        <%= f.file_field :entrant_photos, multiple: true, direct_upload: true, data: { "dropzone-target" => "input" } %>
         <div class="dropzone-msg dz-message needsclick text-muted">
           <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
           <span class="dropzone-msg-desc text-sm">1 MB file size maximum. Allowed file types png, jpg.</span>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="mb-3 text-center">
-      <%= f.submit "Upload files", class: "btn btn-primary", data: {turbo: false, "form-apply-target" => "submitButton"} %>
+      <%= f.submit "Upload files", class: "btn btn-primary", data: { turbo: false, "form-apply-target" => "submitButton" } %>
       <%= link_to "Back to setup", setup_event_group_path(@presenter.event_group, display_style: :entrants), class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
@@ -93,44 +93,60 @@
     <div class="col-12 col-md-6">
       <div class="row my-3">
         <div class="col">
-          <h4 class="font-weight-bold">Already assigned <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span></h4>
+          <h4 class="font-weight-bold">Already assigned
+            <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span>
+          </h4>
         </div>
         <div class="col">
           <%= link_to "Remove all",
                       delete_photos_from_entrants_event_group_path(@presenter.event_group),
                       method: :delete,
                       data: { confirm: "This will remove photos from all entrants and cannot be undone. Proceed?" },
-                      class: "btn btn-outline-danger" %>
+                      class: "btn btn-sm btn-outline-danger" %>
         </div>
       </div>
       <% @presenter.event_group.efforts.photo_assigned.with_attached_photo.order(:bib_number).each do |effort| %>
-        <div class="row">
-          <div class="col-1 text-center my-auto pr-0">
-            <%= link_to fa_icon("times-circle"),
-                        delete_photo_effort_path(effort),
-                        method: :delete,
-                        data: { confirm: "This will remove the photo. Proceed?" },
-                        class: "btn btn-sm btn-outline-danger" %>
-          </div>
-          <div class="col-2 mx-auto text-center">
-            <%= image_tag effort.photo.variant(:thumbnail) %>
-          </div>
-          <div class="col-9 my-auto">
-            <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+        <div class="card my-1">
+          <div class="card-body px-3 py-2">
+            <div class="row">
+              <div class="col-1 text-center my-auto pr-0">
+                <%= link_to fa_icon("times-circle"),
+                            delete_photo_effort_path(effort),
+                            method: :delete,
+                            data: { confirm: "This will remove the photo. Proceed?" },
+                            class: "btn btn-sm btn-outline-danger" %>
+              </div>
+              <div class="col-2 mx-auto text-center">
+                <%= image_tag effort.photo.variant(:thumbnail) %>
+              </div>
+              <div class="col-9 my-auto">
+                <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
     </div>
 
     <div class="col-12 col-md-6">
-      <h4 class="my-3"><strong>Not yet assigned <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span></strong></h4>
+      <div class="row my-3">
+        <div class="col">
+          <h4 class="font-weight-bold">Not yet assigned
+            <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span>
+          </h4>
+        </div>
+      </div>
       <% @presenter.event_group.efforts.no_photo_assigned.order(:bib_number).each do |effort| %>
-        <div class="row">
-          <div class="col-2 text-center">
-            <%= image_tag "small/avatar-empty.jpg" %>
-          </div>
-          <div class="col-10 my-auto">
-            <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+        <div class="card my-1">
+          <div class="card-body px-3 py-2">
+            <div class="row">
+              <div class="col-2 text-center">
+                <%= image_tag "small/avatar-empty.jpg" %>
+              </div>
+              <div class="col-10 my-auto">
+                <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>

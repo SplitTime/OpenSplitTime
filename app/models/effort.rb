@@ -74,7 +74,7 @@ class Effort < ApplicationRecord
   scope :photo_assigned, -> { joins("join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id") }
   scope :no_photo_assigned, -> { joins("left join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id").where("asa.id is null") }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
-  scope :ranked_order, -> { order(overall_performance: :desc) }
+  scope :ranked_order, -> { order(overall_performance: :desc, bib_number: :asc) }
   scope :ranking_subquery, -> { from(EffortQuery.ranking_subquery(self)) }
   scope :roster_subquery, -> { from(EffortQuery.roster_subquery(self)) }
   scope :with_policy_scope_attributes, lambda {

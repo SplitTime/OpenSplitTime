@@ -39,7 +39,7 @@ class EffortQuery < BaseQuery
              next_effort_id
       from existing_scope
            join ranking_subquery on ranking_subquery.effort_id = existing_scope.id
-      order by event_id, overall_rank
+      order by event_id, overall_rank, bib_number
       )
 
       as efforts

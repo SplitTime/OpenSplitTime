@@ -93,7 +93,7 @@
     <div class="col-12 col-md-6">
       <div class="row my-3">
         <div class="col">
-          <h4 class="font-weight-bold">Already assigned</h4>
+          <h4 class="font-weight-bold">Already assigned <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span></h4>
         </div>
         <div class="col">
           <%= link_to "Remove all",
@@ -105,21 +105,32 @@
       </div>
       <% @presenter.event_group.efforts.photo_assigned.with_attached_photo.order(:bib_number).each do |effort| %>
         <div class="row">
-          <div class="col">
+          <div class="col-1 text-center my-auto pr-0">
+            <%= link_to fa_icon("times-circle"),
+                        delete_photo_effort_path(effort),
+                        method: :delete,
+                        data: { confirm: "This will remove the photo. Proceed?" },
+                        class: "btn btn-sm btn-outline-danger" %>
+          </div>
+          <div class="col-2 mx-auto text-center">
             <%= image_tag effort.photo.variant(:thumbnail) %>
-            <span class="font-weight-bold"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+          </div>
+          <div class="col-9 my-auto">
+            <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
           </div>
         </div>
       <% end %>
     </div>
 
     <div class="col-12 col-md-6">
-      <h4 class="my-3"><strong>Not yet assigned</strong></h4>
+      <h4 class="my-3"><strong>Not yet assigned <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span></strong></h4>
       <% @presenter.event_group.efforts.no_photo_assigned.order(:bib_number).each do |effort| %>
         <div class="row">
-          <div class="col">
+          <div class="col-2 text-center">
             <%= image_tag "small/avatar-empty.jpg" %>
-            <span class="font-weight-bold"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+          </div>
+          <div class="col-10 my-auto">
+            <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
           </div>
         </div>
       <% end %>

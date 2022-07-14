@@ -89,6 +89,14 @@ class EffortsController < ApplicationController
     redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
   end
 
+  # DELETE /efforts/1/delete_photo
+  def delete_photo
+    authorize @effort
+
+    @effort.photo.purge_later
+    redirect_to manage_entrant_photos_event_group_path(@effort.event_group)
+  end
+
   def projections
     @presenter = EffortProjectionsView.new(@effort)
 

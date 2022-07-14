@@ -83,6 +83,7 @@ Rails.application.routes.draw do
       patch :unstart
       patch :stop
       patch :smart_stop
+      delete :delete_photo
       delete :delete_split_times
     end
   end

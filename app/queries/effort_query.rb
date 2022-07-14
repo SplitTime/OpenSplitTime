@@ -23,14 +23,15 @@ class EffortQuery < BaseQuery
 
            ranking_subquery as (
                select effort_id,
-                      rank() over overall_window          as overall_rank,
-                      rank() over gender_window           as gender_rank,
-                      lag(effort_id) over overall_window  as prior_effort_id,
-                      lead(effort_id) over overall_window as next_effort_id,
+                      rank() over overall_window                   as overall_rank,
+                      rank() over gender_window                    as gender_rank,
+                      lag(effort_id) over overall_window_with_bib  as prior_effort_id,
+                      lead(effort_id) over overall_window_with_bib as next_effort_id,
                       bib_number
                from efforts_for_ranking
                window overall_window as (partition by event_id order by overall_performance desc),
-                      gender_window as (partition by event_id, gender order by overall_performance desc)
+                      gender_window as (partition by event_id, gender order by overall_performance desc),
+                      overall_window_with_bib as (partition by event_id order by overall_performance desc, bib_number asc)
            )
 
       select existing_scope.*,

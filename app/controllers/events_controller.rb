@@ -114,8 +114,6 @@ class EventsController < ApplicationController
                   event_staging_app_path(@event)
                 when event_staging_app_url(@event)
                   request.referrer + "#/entrants"
-                when edit_event_url(@event)
-                  event_group_path(@event.event_group_id)
                 else
                   request.referrer
                 end

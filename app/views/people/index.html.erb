@@ -23,7 +23,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-6 form-inline">
-        <%= render 'lookup' %>
+        <%= render "lookup" %>
       </div>
       </div>
     </div>
@@ -33,12 +33,12 @@
 <article class="ost-article container">
   <%= will_paginate(inner_window: 2, outer_window: 0) %>
   <% if @people.present? %>
-      <%= render 'people_list' %>
+      <%= render "people_list" %>
   <% else %>
       <br/>
-      <% if params[:search].blank? %>
+      <% if prepared_params[:search].blank? %>
           <p><strong>Find someone by entering a name, state, or country</strong></p>
-      <% elsif params[:search].length < 3 %>
+      <% elsif prepared_params[:search].length < 3 %>
           <p><strong>Search parameter is too short</strong></p>
       <% else %>
           <p><strong>No people match this search</strong></p>

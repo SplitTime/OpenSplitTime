@@ -7,7 +7,7 @@ module TimeClusterHelper
       cluster_display_formatted_time(time, cluster, display_style) || "--:--:--"
     end
 
-    content_tag(:div) do
+    content_tag(:span) do
       if with_status
         time_array = formatted_times.zip(cluster.time_data_statuses)
 

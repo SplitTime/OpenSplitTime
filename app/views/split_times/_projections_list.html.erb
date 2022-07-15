@@ -26,8 +26,8 @@
     </tr>
     <tr>
       <th colspan="5"><%= "Projections based on #{pluralize(@presenter.effort_count, 'effort')} " +
-                              "from #{'year'.pluralize(@presenter.effort_years.size)} " +
-                              "#{@presenter.effort_years.to_sentence}" %></th>
+                            "from #{'year'.pluralize(@presenter.effort_years.size)} " +
+                            "#{@presenter.effort_years.to_sentence}" %></th>
     </tr>
     <tr class="thead-dark">
       <th>Split</th>
@@ -41,11 +41,38 @@
     <tbody>
     <% @presenter.projected_lap_split_rows.each do |row| %>
       <tr class="table-primary">
-        <td><%= strong_conditional row.name, row.done? %></td>
-        <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_without_seconds), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %></td>
+        <td>
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional row.name, row.done? %>
+        </span>
+          <% if row.not_in_event %>
+          <span class="text-danger">
+            <%= fa_icon("exclamation-circle",
+                        class: "has-tooltip",
+                        data: {toggle: "tooltip", "original-title" => "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."}) %>
+          </span>
+          <% end %>
+        </td>
+        <td class="text-right">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional d(row.distance_from_start), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_without_seconds), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %>
+        </span>
+        </td>
       </tr>
     <% end %>
     </tbody>

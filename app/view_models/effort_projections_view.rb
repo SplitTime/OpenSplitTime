@@ -48,7 +48,11 @@ class EffortProjectionsView < EffortWithLapSplitRows
   end
 
   def relevant_lap_splits
-    lap_splits_plus_one
+    @relevant_lap_splits ||=
+      begin
+        laps = event.laps_required || last_lap + 1
+        event.course.lap_splits_through(laps)
+      end
   end
 
   def projected_lap_splits

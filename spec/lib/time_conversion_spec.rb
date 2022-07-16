@@ -176,6 +176,15 @@ RSpec.describe TimeConversion do
   end
 
   describe ".user_entered_to_military" do
+    let(:result) { described_class.user_entered_to_military(time_string) }
+    context "when provided as a timestamp" do
+      let(:time_string) { "2022-07-15 06:34:12-0600" }
+      let(:expected) { "06:34:12" }
+
+      it "returns just the time information as a string" do
+        expect(result).to eq(expected)
+      end
+    end
     it "returns time in hh:mm:ss format when provided in hh:mm:ss format" do
       file_string = "12:30:45"
       expected = "12:30:45"
@@ -200,30 +209,6 @@ RSpec.describe TimeConversion do
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end
 
-    it "properly determines colon insertion points when time is provided in hhmmss format" do
-      file_string = "123045"
-      expected = "12:30:45"
-      expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
-    end
-
-    it "properly determines colon insertion points when time is provided in hhmm format" do
-      file_string = "1230"
-      expected = "12:30:00"
-      expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
-    end
-
-    it "properly determines colon insertion points when time is provided in hmmss format" do
-      file_string = "23045"
-      expected = "02:30:45"
-      expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
-    end
-
-    it "properly determines colon insertion points when time is provided in hmm format" do
-      file_string = "230"
-      expected = "02:30:00"
-      expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
-    end
-
     it "substitutes zeros for non-numeric characters at the end of the string" do
       file_string = "12:30:xx"
       expected = "12:30:00"
@@ -231,13 +216,13 @@ RSpec.describe TimeConversion do
     end
 
     it "substitutes zeros for non-numeric characters in the middle of the string" do
-      file_string = "12xx30"
+      file_string = "12:xx:30"
       expected = "12:00:30"
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end
 
     it "substitutes zeros for non-numeric characters at the beginning of the string" do
-      file_string = "xx3000"
+      file_string = "xx:30:00"
       expected = "00:30:00"
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end

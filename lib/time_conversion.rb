@@ -48,13 +48,30 @@ class TimeConversion
     end
   end
 
+  # Converts attempted military times like "12:45:xx" to real military times i.e. "12:45:00".
+  # Pads with `0` where needed, i.e. "5:33" => 05:33:00.
+  # Also converts timestamps like "2022-07-15 15:45:00-0600" to military times i.e. "15:45:00".
+  #
+  # Returns nil when the argument does not match either pattern.
   def self.user_entered_to_military(time_string)
-    number_string = time_string ? time_string.gsub(/[^\d:]/, "0").gsub(/\D/, "") : ""
-    return nil unless number_string.length.between?(3, 6)
+    return if time_string.blank? || time_string.length < 3
 
-    military = number_string.rjust((number_string.length / 2.0).ceil * 2, "0").ljust(6, "0")
-        .chars.each_slice(2).map(&:join).join(":")
-    valid_military?(military) ? military : nil
+    subbed_string = time_string.gsub("x", "0")
+    hours, minutes, seconds = subbed_string.split(":")
+    new_string = [hours, minutes, seconds].map do |component|
+      component ||= ""
+      component.rjust(2, "0")
+    end.join(":")
+
+    return new_string if valid_military?(new_string)
+    return if invalid_military?(new_string)
+
+    datetime = time_string.to_datetime rescue Date::Error
+    return absolute_to_hms(datetime) if datetime.present?
+  end
+
+  def self.invalid_military?(military)
+    military.present? && military.length == 8
   end
 
   def self.valid_military?(military)

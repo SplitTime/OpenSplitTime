@@ -695,6 +695,7 @@
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
+                                militaryTime: $timeField.val(),
                                 enteredLap: $('#js-lap-number').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
@@ -723,8 +724,8 @@
                 $('#js-unique-id').val(rawTimeRow.uniqueId);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
                 $('#js-lap-number').val(rawTime.enteredLap);
-                $inTimeField.val(inRawTime.enteredTime);
-                $outTimeField.val(outRawTime.enteredTime);
+                $inTimeField.val(inRawTime.militaryTime);
+                $outTimeField.val(outRawTime.militaryTime);
                 $('#js-pacer-in').prop('checked', inRawTime.withPacer);
                 $('#js-pacer-out').prop('checked', outRawTime.withPacer);
                 $('#js-dropped').prop('checked', inRawTime.stoppedHere || outRawTime.stoppedHere).change();

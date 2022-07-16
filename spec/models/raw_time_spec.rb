@@ -123,8 +123,8 @@ RSpec.describe RawTime, type: :model do
       end
     end
 
-    context "when entered_time has text where it should have zeros" do
-      let(:entered_time) { "08:mm:ss" }
+    context "when entered_time has `x` where it should have zeros" do
+      let(:entered_time) { "08:xx:xx" }
 
       it "returns the entered_time as a string with imputed :00 minutes and seconds" do
         expect(subject).to eq("08:00:00")

@@ -59,7 +59,7 @@ RSpec.shared_examples_for "time_recordable" do
 
     context "when absolute_time exists but zone does not exist" do
       it "returns the entered_time in hh:mm:ss format" do
-        resource = build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "0123")
+        resource = build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "01:23")
         zone = nil
         expect(resource.military_time(zone)).to eq("01:23:00")
       end
@@ -68,13 +68,6 @@ RSpec.shared_examples_for "time_recordable" do
     context "when no absolute_time exists" do
       it "returns the entered_time in hh:mm:ss format" do
         resource = build_stubbed(model_name, absolute_time: nil, entered_time: "16:30:45")
-        expect(resource.military_time).to eq("16:30:45")
-      end
-    end
-
-    context "when entered_time has no colons" do
-      it "returns the entered_time in hh:mm:ss format" do
-        resource = build_stubbed(model_name, absolute_time: nil, entered_time: "163045")
         expect(resource.military_time).to eq("16:30:45")
       end
     end

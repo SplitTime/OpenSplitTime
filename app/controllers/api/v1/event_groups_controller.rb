@@ -6,14 +6,15 @@ module Api
       include BackgroundNotifiable
       before_action :set_resource, except: [:index, :create]
 
+      # GET /api/v1/event_groups/1
       def show
         authorize @resource
 
         event_group = EventGroup.includes(organization: :stewards, events: [:efforts, :splits]).where(id: @resource.id).first
-
         serialize_and_render(event_group)
       end
 
+      # POST /api/v1/event_groups/1/import
       def import
         authorize @resource
 
@@ -34,6 +35,9 @@ module Api
         end
       end
 
+      # This endpoint should be removed as it is now obsolete.
+
+      # POST /api/v1/event_groups/1/import_csv_raw_times
       def import_csv_raw_times
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
@@ -55,15 +59,16 @@ module Api
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
       end
 
+      # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
+      # selects a batch, marks them as reviewed, combines them into time_rows, and returns them
+      # to the live entry page.
+      #
+      # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
+      # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
+      # even if they are marked as already having been reviewed.
+
+      # PATCH /api/v1/event_groups/1/pull_raw_times
       def pull_raw_times
-        # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
-        # selects a batch, marks them as reviewed, combines them into time_rows, and returns them
-        # to the live entry page.
-
-        # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
-        # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
-        # even if they are marked as already having been reviewed.
-
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
@@ -74,7 +79,7 @@ module Api
         scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unreviewed
 
         # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
-        # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
+        # This ordering is important to reduce the risk of incorrectly ordered times in multi-lap events.
         raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit)
         enriched_raw_times = raw_times.with_relation_ids
 
@@ -88,10 +93,11 @@ module Api
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
       end
 
-      def enrich_raw_time_row
-        # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
-        # with data_status, split_time_exists, lap, and other attributes set
+      # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
+      # with data_status, split_time_exists, lap, and other attributes set
 
+      # GET /api/v1/event_groups/1/enrich_raw_time_row
+      def enrich_raw_time_row
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
@@ -106,14 +112,15 @@ module Api
         end
       end
 
+      # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
+      # related split_time data where appropriate, and returns the others.
+      #
+      # In all instances, raw_times having bad split_name or bib_number data will be returned.
+      # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
+      # When params[:force_submit] is true, bad and duplicate times will be forced through.
+
+      # POST /api/v1/event_groups/1/submit_raw_time_rows
       def submit_raw_time_rows
-        # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
-        # related split_time data where appropriate, and returns the others.
-
-        # In all instances, raw_times having bad split_name or bib_number data will be returned.
-        # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
-        # When params[:force_submit] is true, bad and duplicate times will be forced through.
-
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
@@ -143,12 +150,14 @@ module Api
         end
       end
 
+      # GET /api/v1/event_groups/1/trigger_raw_times_push
       def trigger_raw_times_push
         authorize @resource
         report_raw_times_available(@resource)
         render json: {message: "Time records push notifications sent for #{@resource.name}"}
       end
 
+      # GET /api/v1/event_groups/1/not_expected
       def not_expected
         authorize @resource
         event_group = EventGroup.where(id: @resource).includes(events: :splits).first

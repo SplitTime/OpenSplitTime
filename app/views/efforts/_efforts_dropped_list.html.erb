@@ -5,7 +5,7 @@
     <% if @presenter.multiple_events? %>
       <th><%= link_to_reversing_sort_heading('Event', 'event_id,sortable_bib_number', @presenter.existing_sort) %></th>
     <% end %>
-    <th><%= link_to_reversing_sort_heading('Name', :effort_last_name, @presenter.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading('Name', :last_name, @presenter.existing_sort) %></th>
     <th>Category</th>
     <th>From</th>
     <th><%= link_to_reversing_sort_heading('Dropped where', :final_distance, @presenter.existing_sort) %></th>

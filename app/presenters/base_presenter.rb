@@ -37,7 +37,7 @@ class BasePresenter
   end
 
   def request_params_digest
-    ::Digest::MD5.base64digest(params.to_json)
+    ::OpenSSL::Digest::MD5.base64digest(params.to_json)
   end
 
   def search_text

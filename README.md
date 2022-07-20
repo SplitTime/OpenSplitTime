@@ -29,7 +29,7 @@ Getting Started
 **Ruby**
 
 1. Clone the repository to your local machine by [forking the repo](https://help.github.com/articles/fork-a-repo/)
-2. Install rbenv...
+2. Install rbenv:
 
 > ### Using Homebrew on MacOS
 > 1. Install Homebrew http://brew.sh/

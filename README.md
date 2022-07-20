@@ -53,7 +53,7 @@ Getting Started
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
 2. `$ gem install rails`
-3. Install Postgres...
+3. Install Postgres:
 
 > ### Using Homebrew on MacOS
 > `$ brew install postgres`

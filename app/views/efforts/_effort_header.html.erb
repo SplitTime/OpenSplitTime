@@ -25,7 +25,7 @@
       <% unless action_name == 'audit' %>
         <% if view_object.photo.attached? %>
           <div class="col-3">
-            <%= link_to image_tag(view_object.photo.variant(resize: '150x150')), {action: :show_photo} %>
+            <%= link_to image_tag(view_object.photo.variant(:small)), { action: :show_photo } %>
           </div>
         <% end %>
         <%= render 'subscription_buttons', view_object: view_object %>

@@ -594,7 +594,6 @@ DEPENDENCIES
   derailed_benchmarks
   devise
   devise-bootstrap-views
-  digest (= 3.0.0)
   factory_bot_rails (~> 5.2, >= 5.2.0)
   ffaker
   font_awesome5_rails (>= 1.4.0)

@@ -87,7 +87,7 @@ v1.13.0 instead.
 > 2. Restart your terminal session
 
 > ### Using Debian/Ubuntu
-> 1. Configure yarn repository...
+> 1. Configure yarn repository:
 > 2. `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
 > 3. `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
 > 4. `sudo apt-get update && sudo apt-get install yarn`

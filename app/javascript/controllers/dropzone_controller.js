@@ -1,6 +1,6 @@
 // https://web-crunch.com/posts/rails-drag-drop-active-storage-stimulus-dropzone
 
-import Dropzone from "dropzone";
+import Dropzone from "dropzone-exif-fix";
 import { Controller } from "@hotwired/stimulus";
 import { DirectUpload } from "@rails/activestorage";
 import {

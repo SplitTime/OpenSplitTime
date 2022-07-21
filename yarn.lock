@@ -2634,10 +2634,10 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dropzone@^5.9.3:
-  version "5.9.3"
-  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.9.3.tgz#b3070ae090fa48cbc04c17535635537ca72d70d6"
-  integrity sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==
+dropzone-exif-fix@^5.9.3-B:
+  version "5.9.3-B"
+  resolved "https://registry.yarnpkg.com/dropzone-exif-fix/-/dropzone-exif-fix-5.9.3-B.tgz#413fdbe64ed3cca3461be900ee038423683bb5bb"
+  integrity sha512-CJ+4vf86sourETdkMxvB/PXZZ2vntP+iNTH2T/ET26I9OvBzC/WRRCuW+dX8DMia54rmmCRkA7DREfZuCX0wjg==
 
 duplexify@^3.4.2, duplexify@^3.6.0:
   version "3.7.1"

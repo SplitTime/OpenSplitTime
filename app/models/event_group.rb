@@ -24,8 +24,8 @@ class EventGroup < ApplicationRecord
   belongs_to :organization
 
   has_many_attached :entrant_photos do |photo|
-    photo.variant :thumbnail, resize_to_limit: [50, 50], auto_orient: true
-    photo.variant :small, resize_to_limit: [200, 200], auto_orient: true
+    photo.variant :thumbnail, resize_to_limit: [50, 50]
+    photo.variant :small, resize_to_limit: [200, 200]
   end
 
   after_create :notify_admin
@@ -38,7 +38,7 @@ class EventGroup < ApplicationRecord
   validates_with GroupedEventsValidator
 
   validates :entrant_photos,
-            content_type: { in: %w[image/png image/jpeg image/heic], message: "must be png, jpeg, or heic files"},
+            content_type: { in: %w[image/png image/jpeg], message: "must be png or jpeg files"},
             size: {less_than: 1.megabyte, message: "must be less than 1 megabyte"}
 
   accepts_nested_attributes_for :events

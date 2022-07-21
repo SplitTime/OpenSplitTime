@@ -11,7 +11,7 @@
     "chartkick": "^4.2.0",
     "coffeescript": "1.12.7",
     "datatables.net-bs4": "^1.11.0",
-    "dropzone-exif-fix": "^5.9.3-B",
+    "dropzone": "^6.0.0-beta.2",
     "lodash": "^4.17.21",
     "vue-turbolinks": "^2.2.2"
   },

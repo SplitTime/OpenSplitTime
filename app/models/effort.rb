@@ -58,7 +58,7 @@ class Effort < ApplicationRecord
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
   validates :photo,
-            content_type: { in: %w[image/png image/jpeg], message: "must be a png or jpeg file"},
+            content_type: { in: %w[image/png image/jpeg image/heic], message: "must be png, jpeg, or heic files"},
             size: {less_than: 1.megabyte, message: "must be less than 1 megabyte"}
 
   before_save :reset_age_from_birthdate

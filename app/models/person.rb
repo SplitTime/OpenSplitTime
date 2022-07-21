@@ -22,9 +22,9 @@ class Person < ApplicationRecord
   has_many :efforts, dependent: :nullify
   belongs_to :claimant, class_name: "User", foreign_key: "user_id", optional: true
   has_one_attached :photo do |photo|
-    photo.variant :thumbnail, resize_to_limit: [50, 50]
-    photo.variant :small, resize_to_limit: [150, 150]
-    photo.variant :medium, resize_to_limit: [500, 500]
+    photo.variant :thumbnail, resize_to_limit: [50, 50], auto_orient: true
+    photo.variant :small, resize_to_limit: [150, 150], auto_orient: true
+    photo.variant :medium, resize_to_limit: [500, 500], auto_orient: true
   end
 
   attr_accessor :suggested_match

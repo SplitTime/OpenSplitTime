@@ -24,8 +24,8 @@ class EventGroup < ApplicationRecord
   belongs_to :organization
 
   has_many_attached :entrant_photos do |photo|
-    photo.variant :thumbnail, resize_to_limit: [50, 50]
-    photo.variant :small, resize_to_limit: [200, 200]
+    photo.variant :thumbnail, resize_to_limit: [50, 50], auto_orient: true
+    photo.variant :small, resize_to_limit: [200, 200], auto_orient: true
   end
 
   after_create :notify_admin

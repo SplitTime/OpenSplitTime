@@ -37,9 +37,9 @@ class Effort < ApplicationRecord
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
   has_one_attached :photo do |photo|
-    photo.variant :thumbnail, resize_to_limit: [50, 50]
-    photo.variant :small, resize_to_limit: [150, 150]
-    photo.variant :medium, resize_to_limit: [500, 500]
+    photo.variant :thumbnail, resize_to_limit: [50, 50], auto_orient: true
+    photo.variant :small, resize_to_limit: [150, 150], auto_orient: true
+    photo.variant :medium, resize_to_limit: [500, 500], auto_orient: true
   end
 
   accepts_nested_attributes_for :split_times, allow_destroy: true, reject_if: :reject_split_time?

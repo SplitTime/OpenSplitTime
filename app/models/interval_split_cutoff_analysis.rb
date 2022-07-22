@@ -10,13 +10,10 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
 
   # @param [Integer] split_id
   # @param [Integer,ActiveSupport::Duration] band_width
-  def self.execute_query(split_id:, band_width:)
-    split = Split.find_by(id: split_id)
-    return unless split.present?
-
+  def self.execute_query(split:, band_width:)
     start_split_id = split.course.start_split.id
     band_width /= 1.second
-    effort_segments = ::EffortSegment.where(begin_split_id: start_split_id, end_split_id: split_id)
+    effort_segments = ::EffortSegment.where(begin_split_id: start_split_id, end_split_id: split.id)
     max = effort_segments.maximum(:elapsed_seconds)
     min = effort_segments.minimum(:elapsed_seconds)
     return [] unless max.present? && min.present?
@@ -30,7 +27,7 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
   # @param [Integer] split_id
   # @param [Integer,ActiveSupport::Duration] band_width
   # @return [String]
-  def self.sql(split_id:, band_width:)
+  def self.sql(split:, band_width:)
     band_width /= 1.second
 
     <<~SQL.squish
@@ -39,22 +36,22 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
             select a.id, a.kind
             from splits s
             join splits a on a.course_id = s.course_id
-            where s.id = #{split_id}
+            where s.id = #{split.id}
           ),
 
           subject_effort_segments as (
               select distinct on (effort_id, lap) effort_id, lap, elapsed_seconds
               from effort_segments
-          where begin_split_id = (select id from course_splits where kind = 0)
-            and end_split_id = #{split_id}
+          where begin_split_id = (select id from course_splits where kind = #{::Split.kinds[:start]})
+            and end_split_id = #{split.id}
           order by effort_id, lap, end_bitkey desc
           ),
           
           finish_effort_segments as (
               select effort_id, lap, elapsed_seconds
               from effort_segments
-          where begin_split_id = (select id from course_splits where kind = 0)
-            and end_split_id = (select id from course_splits where kind = 1)
+          where begin_split_id = (select id from course_splits where kind = #{::Split.kinds[:start]})
+            and end_split_id = (select id from course_splits where kind = #{::Split.kinds[:finish]})
           ),
           
           all_effort_segments as (

@@ -21,6 +21,21 @@ namespace :effort_segments do
     end
   end
 
+  desc "deletes orphaned effort segments"
+  task sweep: :environment do
+    puts "Deleting orphaned effort segments"
+
+    query = <<~SQL
+delete from effort_segments
+where not exists
+      (select id from efforts where id = effort_segments.effort_id)
+    SQL
+
+    ::ActiveRecord::Base.connection.execute(query)
+
+    puts "Deleted all orphaned effort segments"
+  end
+
   desc "deletes effort segments for all efforts"
   task delete: :environment do
     puts "Deleting effort segments for all efforts"

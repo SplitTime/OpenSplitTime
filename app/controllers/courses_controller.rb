@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :best_efforts, :plan_effort]
+  before_action :authenticate_user!, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
   before_action :set_course, except: [:new, :create]
-  after_action :verify_authorized, except: [:show, :best_efforts, :plan_effort]
+  after_action :verify_authorized, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
 
   def show
     course = Course.where(id: @course).includes(:splits).first
@@ -83,6 +83,10 @@ class CoursesController < ApplicationController
         render json: {best_effort_segments: segments, html: html, links: {next: @presenter.next_page_url}}
       end
     end
+  end
+
+  def cutoff_analysis
+    @presenter = CourseCutoffAnalysisPresenter.new(@course, view_context)
   end
 
   def plan_effort

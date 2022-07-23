@@ -198,7 +198,9 @@ module DropdownHelper
       {name: "Plan my effort",
        link: plan_effort_course_path(view_object.course)},
       {name: "All-time best",
-       link: best_efforts_course_path(view_object.course)}
+       link: best_efforts_course_path(view_object.course)},
+      {name: "Cutoff analysis",
+       link: cutoff_analysis_course_path(view_object.course)},
     ]
     build_dropdown_menu("Explore", dropdown_items, button: true)
   end

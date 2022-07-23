@@ -1,0 +1,75 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Cutoff analysis - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@presenter.name}: Cutoff Analysis" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
+            <li class="breadcrumb-item active">Cutoff Analysis</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= course_view_tabs(@presenter) %>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col form-inline">
+        <div class="dropdown float-left-button">
+          <div class="btn-group btn-group-ost pull-right">
+            <%= prior_next_nav_button(@presenter, :prior) %>
+            <%= split_name_dropdown(@presenter) %>
+            <%= prior_next_nav_button(@presenter, :next) %>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="dropdown float-left-button">
+          <%= traffic_band_width_dropdown(@presenter) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <h4><%= @presenter.table_title %></h4>
+  <br/>
+
+  <% if @presenter.interval_split_cutoff_analyses.present? %>
+    <div>
+      <%= column_chart @presenter.chart_data, stacked: true %>
+    </div>
+
+    <table class="table table-condensed table-striped" style="width:80%">
+      <thead>
+      <tr>
+        <th>Elapsed Time</th>
+        <th class="text-center">Total Efforts</th>
+        <th class="text-center">Finished Efforts</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @presenter.interval_split_cutoff_analyses.each do |isca| %>
+        <tr>
+          <td><%= @presenter.duration_range_string(isca) %></td>
+          <td class="text-center"><%= isca.total_count %></td>
+          <td class="text-center"><%= isca.finished_count %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h5>No efforts have been measured at this aid station.</h5>
+  <% end %>
+</article>

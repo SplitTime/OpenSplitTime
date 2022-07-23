@@ -275,11 +275,11 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
-  def spread_style_dropdown_menu(view_object)
+  def display_style_dropdown_menu(view_object)
     dropdown_items = view_object.display_style_hash.map do |style, text|
       {name: text,
        link: request.params.merge(display_style: style),
-       active: view_object.display_style == style.to_s}
+       active: view_object.display_style.to_s == style.to_s}
     end
     build_dropdown_menu(nil, dropdown_items, button: true)
   end

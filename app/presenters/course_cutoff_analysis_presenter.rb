@@ -1,22 +1,27 @@
 # frozen_string_literal: true
 
 class CourseCutoffAnalysisPresenter < BasePresenter
+  include CourseAnalysisMethods
   include SplitAnalyzable
   include TimeFormats
 
-  attr_reader :course, :band_width
+  DEFAULT_BAND_WIDTH = 30.minutes
+  DEFAULT_DISPLAY_STYLE = :absolute
 
+  attr_reader :course
   delegate :name, :organization, :simple?, to: :course
 
   def initialize(course, view_context)
     @course = course
     @view_context = view_context
-    @parameterized_split_name = view_context.prepared_params[:parameterized_split_name]
-    @band_width = view_context.prepared_params[:band_width]&.to_i || 30.minutes
   end
 
   def interval_split_cutoff_analyses
     @interval_split_cutoff_analyses ||= ::IntervalSplitCutoffAnalysis.execute_query(split: split, band_width: band_width)
+  end
+
+  def band_width
+    @band_width ||= params[:band_width]&.to_i || DEFAULT_BAND_WIDTH
   end
 
   def chart_data
@@ -24,17 +29,48 @@ class CourseCutoffAnalysisPresenter < BasePresenter
       [
         {
           name: "Finished",
-          data: interval_split_cutoff_analyses.map { |isca| [duration_range_string(isca), isca.finished_count] }
+          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.finished_count] }
         },
         {
           name: "Unfinished",
-          data: interval_split_cutoff_analyses.map { |isca| [duration_range_string(isca), isca.total_count - isca.finished_count] }
+          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.total_count - isca.finished_count] }
         },
       ]
   end
 
+  def display_style
+    @display_style ||= params[:display_style].presence&.to_sym || DEFAULT_DISPLAY_STYLE
+  end
+
+  def display_style_hash
+    {
+      elapsed: "Elapsed",
+      absolute: "Absolute",
+    }
+  end
+
   def distance
     split&.distance_from_start
+  end
+
+  def range_string(isca)
+    if display_style == :elapsed
+      "#{time_format_hhmm(isca.start_seconds)} to #{time_format_hhmm(isca.end_seconds)}"
+    else
+      "#{localized_time(start_time + isca.start_seconds)} to #{localized_time(start_time + isca.end_seconds)}"
+    end
+  end
+
+  def parameterized_split_name
+    @parameterized_split_name ||= params[:parameterized_split_name]
+  end
+
+  def split_name
+    split.base_name
+  end
+
+  def suggested_band_widths
+    [1.minute, 2.minutes, 5.minutes, 10.minutes, 15.minutes, 30.minutes, 60.minutes]
   end
 
   def table_title
@@ -49,21 +85,10 @@ class CourseCutoffAnalysisPresenter < BasePresenter
     end
   end
 
-  def duration_range_string(isca)
-    "#{time_format_hhmm(isca.start_seconds)} to #{time_format_hhmm(isca.end_seconds)}"
-  end
-
-  def split_name
-    split.base_name
-  end
-
-  def suggested_band_widths
-    [1.minute, 2.minutes, 5.minutes, 10.minutes, 15.minutes, 30.minutes, 60.minutes]
-  end
-
   private
 
-  attr_reader :parameterized_split_name
+  attr_reader :view_context
+  delegate :params, to: :view_context, private: true
 
   def split
     @split ||= course.splits.find_by(parameterized_base_name: parameterized_split_name) || course.ordered_splits.second
@@ -74,6 +99,6 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   end
 
   def localized_time(datetime)
-    I18n.localize(datetime.in_time_zone(event_group.home_time_zone), format: :day_and_military)
+    I18n.localize(datetime, format: :day_and_military)
   end
 end

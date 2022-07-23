@@ -3,6 +3,7 @@
 class PlanDisplay < EffortWithLapSplitRows
   MINIMUM_EFFORT_COUNT = 4
 
+  include CourseAnalysisMethods
   include TimeFormats
   attr_reader :course, :error_messages
 
@@ -18,10 +19,6 @@ class PlanDisplay < EffortWithLapSplitRows
 
   def effort
     @effort ||= event.efforts.new
-  end
-
-  def event
-    @event ||= course.visible_events.latest
   end
 
   def ordered_split_times
@@ -42,18 +39,6 @@ class PlanDisplay < EffortWithLapSplitRows
 
   def expected_laps
     params[:expected_laps].to_i.clamp(1, 20)
-  end
-
-  def start_time
-    if params[:start_time].blank?
-      default_start_time
-    elsif params[:start_time].is_a?(String)
-      ActiveSupport::TimeZone[default_time_zone].parse(params[:start_time])
-    elsif params[:start_time].is_a?(ActionController::Parameters)
-      TimeConversion.components_to_absolute(params[:start_time]).in_time_zone(default_time_zone)
-    else
-      default_start_time
-    end
   end
 
   def course_name
@@ -117,17 +102,6 @@ class PlanDisplay < EffortWithLapSplitRows
         laps = event.laps_required || expected_laps
         course.lap_splits_through(laps)
       end
-  end
-
-  def default_start_time
-    return course.next_start_time.in_time_zone(default_time_zone) if course.next_start_time
-
-    years_prior = Time.now.year - event.scheduled_start_time.year
-    event.scheduled_start_time_local + (years_prior * 52.17).round(0).weeks
-  end
-
-  def default_time_zone
-    event.home_time_zone
   end
 
   def validate_setup

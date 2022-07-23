@@ -29,14 +29,12 @@
           <%= render 'best_efforts_lookup', presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-12 col-sm-5">
-        <div class="text-right">
-          <% unless @presenter.simple? %>
-            <%= segment_start_dropdown(@presenter) %>
-            <%= segment_finish_dropdown(@presenter) %>
-          <% end %>
-          <%= gender_dropdown_menu(@presenter) %>
-        </div>
+      <div class="col-12 col-sm-5 text-right">
+        <% unless @presenter.simple? %>
+          <%= segment_start_dropdown(@presenter) %>
+          <%= segment_finish_dropdown(@presenter) %>
+        <% end %>
+        <%= gender_dropdown_menu(@presenter) %>
       </div>
     </div>
   </div>

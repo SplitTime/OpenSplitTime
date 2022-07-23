@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module CourseAnalysisMethods
+  def event
+    @event ||= course.visible_events.latest
+  end
+
   private
 
   def default_start_time
@@ -12,10 +16,6 @@ module CourseAnalysisMethods
 
   def default_time_zone
     event.home_time_zone
-  end
-
-  def event
-    @event ||= course.visible_events.latest
   end
 
   def start_time

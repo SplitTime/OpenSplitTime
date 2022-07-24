@@ -62,7 +62,7 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   end
 
   def parameterized_split_name
-    @parameterized_split_name ||= params[:parameterized_split_name]
+    @parameterized_split_name ||= params[:parameterized_split_name] || default_split.parameterized_base_name
   end
 
   def split_name
@@ -91,7 +91,11 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   delegate :params, to: :view_context, private: true
 
   def split
-    @split ||= course.splits.find_by(parameterized_base_name: parameterized_split_name) || course.ordered_splits.second
+    @split ||= course.splits.find_by(parameterized_base_name: parameterized_split_name) || default_split
+  end
+
+  def default_split
+    @default_split ||= course.ordered_splits.second
   end
 
   def split_analyzable

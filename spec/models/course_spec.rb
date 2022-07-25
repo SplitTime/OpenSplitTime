@@ -169,19 +169,20 @@ RSpec.describe Course, type: :model do
   end
 
   describe "#track_points" do
-    context "when a gpx file is attached" do
-      let(:course) { create(:course, :with_gpx) }
+    let(:course) { create(:course, :with_gpx) }
+    context "when track points have been set" do
+      before { ::Interactors::SetTrackPoints.perform!(course) }
+
       it "returns an array of hashes containing lat/lon points" do
         expect(course.track_points.count).to eq(113)
-        expect(course.track_points.first).to eq(lat: 39.627091, lon: -104.904226)
-        expect(course.track_points.last).to eq(lat: 39.623804, lon: -104.893363)
+        expect(course.track_points.first).to eq("lat" => 39.627091, "lon" => -104.904226)
+        expect(course.track_points.last).to eq("lat" => 39.623804, "lon" => -104.893363)
       end
     end
 
-    context "when no gpx file is attached" do
-      let(:course) { create(:course) }
-      it "returns an empty array" do
-        expect(course.track_points).to eq([])
+    context "when no track points have been set" do
+      it "returns nil" do
+        expect(course.track_points).to be_nil
       end
     end
   end

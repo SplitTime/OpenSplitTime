@@ -24,6 +24,8 @@ class Course < ApplicationRecord
   scope :standard_includes, -> { includes(:splits) }
   scope :with_policy_scope_attributes, -> { all }
 
+  after_commit :sync_track_points, on: [:create, :update]
+
   validates_presence_of :name, :organization
   validates_uniqueness_of :name, case_sensitive: false
   validates :gpx,
@@ -60,17 +62,6 @@ class Course < ApplicationRecord
     @distance ||= finish_split.distance_from_start if finish_split.present?
   end
 
-  def track_points
-    return [] unless gpx.attached?
-
-    @track_points ||=
-      begin
-        doc = Nokogiri::XML(gpx.download)
-        trackpoints = doc.xpath('//xmlns:trkpt')
-        trackpoints.map { |trkpt| { lat: trkpt.xpath('@lat').to_s.to_f, lon: trkpt.xpath('@lon').to_s.to_f } }
-      end
-  end
-
   def vert_gain
     @vert_gain ||= finish_split.vert_gain_from_start if finish_split.present?
   end
@@ -81,5 +72,13 @@ class Course < ApplicationRecord
 
   def simple?
     splits_count < 3
+  end
+
+  private
+
+  def sync_track_points
+    return unless attachment_changes["gpx"].present?
+
+    ::SyncTrackPointsJob.perform_later(id)
   end
 end

@@ -1,4 +1,4 @@
-import {Controller} from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
@@ -15,10 +15,10 @@ export default class extends Controller {
                 const attributes = response.data.attributes;
 
                 let locations = null;
-                if(splitId === undefined) {
+                if (splitId === undefined) {
                     locations = attributes.locations;
                 } else {
-                    locations = attributes.locations.filter(function(e) {
+                    locations = attributes.locations.filter(function (e) {
                         return e.id === parseInt(splitId)
                     })
                 }

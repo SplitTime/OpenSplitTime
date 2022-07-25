@@ -118,6 +118,11 @@ module Interactors
        detail: {messages: ["#{raw_time} does not have a new_split_time"]}}
     end
 
+    def nokogiri_parse_error(exception)
+      {title: "An error occurred while attempting to parse the file",
+       detail: {exception: exception}}
+    end
+
     def raw_time_mismatch_error
       {title: "Raw times do not match",
        detail: {messages: ["One or more raw times is not related to the provided event group"]}}

@@ -23,7 +23,7 @@ export default class extends Controller {
                     })
                 }
 
-                const trackPoints = attributes.trackPoints;
+                const trackPoints = attributes.trackPoints || [];
                 gmap_show(locations, trackPoints);
             }
         })

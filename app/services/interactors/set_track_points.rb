@@ -32,7 +32,7 @@ module Interactors
     rescue Nokogiri::ParseException => e
       response.errors << nokogiri_parse_error(e)
     ensure
-      response
+      return response
     end
 
     private

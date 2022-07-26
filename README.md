@@ -49,17 +49,17 @@ Getting Started
 5. `$ rbenv install <current ruby version>`
 6. `$ rbenv rehash` then restart the terminal session
 
-**Rails and Gems**
+**Rails, Gems, Databases**
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
 2. `$ gem install rails`
 3. Install Postgres:
 
 > ### Using Homebrew on MacOS
-> `$ brew install postgres`
+> `$ brew install postgres redis`
 
 > ### Using Debian/Ubuntu
-> 1. `$ sudo apt install postgresql libpq-dev`
+> 1. `$ sudo apt install postgresql libpq-dev redis-server`
 > 2. Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
 
 4. `$ bundle install`
@@ -98,7 +98,7 @@ v1.13.0 instead.
 
 **Database**
 
-1. Start your local DB `$ brew services restart postgres` or run the Postgres App
+1. Start your local DB `$ brew services restart postgres && brew services restart redis` or run the Postgres App
 2. `$ rails db:setup` to create the database
 3. `$ rails db:from_fixtures` to load seed data from test fixtures files
 4. `$ rails s` to start the server
@@ -116,9 +116,9 @@ After you setup/seed your database, you should have four test users:
 | user  | fifthuser@example.com  | password |
 ```
 
-**Sidekiq and Redis**
+**Sidekiq**
 
-OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:
+OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Make sure your Redis server (installed above) is started. Run your Sidekiq server from the command line:
 
 `$ sidekiq`
 

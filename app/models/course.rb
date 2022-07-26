@@ -79,6 +79,6 @@ class Course < ApplicationRecord
   def sync_track_points
     return unless attachment_changes["gpx"].present?
 
-    ::SyncTrackPointsJob.perform_later(id)
+    ::SyncTrackPointsJob.set(wait: 5.seconds).perform_later(id)
   end
 end

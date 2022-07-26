@@ -17,13 +17,26 @@ module Interactors
 
     def perform!
       if course.gpx.attached?
+
+        Rails.logger.info "=============================================================="
+        Rails.logger.info "gpx is attached"
+
         doc = Nokogiri::XML(course.gpx.download)
+
+        Rails.logger.info "Filename: #{course.gpx.blob.filename}"
+        Rails.logger.info "=============================================================="
+
         points = doc.xpath('//xmlns:trkpt')
         json_points = points.map { |trkpt| { lat: trkpt.xpath('@lat').to_s.to_f, lon: trkpt.xpath('@lon').to_s.to_f } }
         filtered_json_points = filter(json_points)
 
         errors << resource_error_object(course) unless course.update(track_points: filtered_json_points)
       else
+
+        Rails.logger.info "=============================================================="
+        Rails.logger.info "gpx is not attached"
+        Rails.logger.info "=============================================================="
+
         errors << resource_error_object(course) unless course.update(track_points: [])
       end
 

@@ -77,8 +77,13 @@ class Course < ApplicationRecord
   private
 
   def sync_track_points
+    Rails.logger.info "=============================================================="
+    Rails.logger.info attachment_changes
+    Rails.logger.info attachment_changes["gpx"].present?
+    Rails.logger.info "=============================================================="
+
     return unless attachment_changes["gpx"].present?
 
-    ::SyncTrackPointsJob.perform_later(id)
+    ::SyncTrackPointsJob.set(wait: 5.seconds).perform_later(id)
   end
 end

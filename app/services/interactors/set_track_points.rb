@@ -6,15 +6,19 @@ module Interactors
 
     MAX_POINTS = 1000
 
+    # @param [::Course] course
+    # @return [::Interactors::Response]
     def self.perform!(course)
       new(course).perform!
     end
 
+    # @param [::Course] course
     def initialize(course)
       @course = course
       @response = ::Interactors::Response.new([])
     end
 
+    # @return [::Interactors::Response]
     def perform!
       if course.gpx.attached?
         doc = Nokogiri::XML(course.gpx.download)
@@ -40,6 +44,8 @@ module Interactors
 
     attr_reader :course, :response
 
+    # @param [Array<Hash>] points
+    # @return [Array<Hash>]
     def filter(points)
       points_size = points.size
       return points if points_size <= MAX_POINTS

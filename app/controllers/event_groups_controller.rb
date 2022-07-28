@@ -210,7 +210,7 @@ class EventGroupsController < ApplicationController
 
     response = ::Interactors::SyncLotteryEntrants.perform!(@event_group)
     set_flash_message(response)
-    redirect_to setup_event_group_path(@event_group)
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
   end
 
   # GET /event_groups/1/assign_bibs

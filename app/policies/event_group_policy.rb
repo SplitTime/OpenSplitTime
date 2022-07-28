@@ -56,6 +56,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def sync_lottery_entrants?
+    user.authorized_to_edit?(event_group)
+  end
+
   def assign_bibs?
     user.authorized_to_edit?(event_group)
   end

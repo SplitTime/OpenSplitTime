@@ -204,6 +204,15 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # POST /event_groups/1/sync_lottery_entrants
+  def sync_lottery_entrants
+    authorize @event_group
+
+    response = ::Interactors::SyncLotteryEntrants.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+  end
+
   # GET /event_groups/1/assign_bibs
   def assign_bibs
     authorize @event_group

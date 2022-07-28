@@ -20,6 +20,7 @@ class Event < ApplicationRecord
 
   belongs_to :course
   belongs_to :event_group
+  belongs_to :lottery, optional: true
   belongs_to :results_template
   has_many :event_series_events, dependent: :destroy
   has_many :event_series, through: :event_series_events

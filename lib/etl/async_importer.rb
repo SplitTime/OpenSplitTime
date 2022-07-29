@@ -44,11 +44,6 @@ module ETL
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::LotteryEntrantsStrategy
         self.load_strategy = Loaders::AsyncInsertStrategy
-      when :event_efforts_from_lottery
-        self.extract_strategy = Extractors::CsvFileStrategy
-        self.transform_strategy = Transformers::GenericResourcesStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
-        self.custom_options = { model: :effort, unique_key: [:first_name, :last_name, :birthdate, :event_id] }
       else
         errors << format_not_recognized_error(format)
       end

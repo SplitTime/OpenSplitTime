@@ -52,10 +52,13 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(permitted_params)
-      redirect_to setup_event_group_path(@event_group)
+      respond_to do |format|
+        format.html { redirect_to setup_event_group_path(@event_group) }
+        format.turbo_stream
+      end
     else
       @presenter = ::EventSetupPresenter.new(@event, params, current_user)
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

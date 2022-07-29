@@ -356,16 +356,7 @@ module DropdownHelper
   end
 
   def setup_entrants_import_dropdown(view_object)
-    sync_text = <<~STR
-      This will add all accepted entrants from related lotteries and will permanently delete all withdrawn entrants and 
-      others who do not match the list of accepted lottery entrants. This action cannot be undone. Proceed?
-    STR
     dropdown_items = [
-      { name: "Sync from lottery",
-        link: sync_lottery_entrants_event_group_path(view_object.event_group),
-        data: { confirm: sync_text },
-        disabled: view_object.event_group.events.pluck(:lottery_id).compact.empty?,
-        method: :post },
       { name: "Import from CSV file",
         link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants }) },
       { role: :separator },

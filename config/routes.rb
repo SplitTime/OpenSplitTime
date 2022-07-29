@@ -103,7 +103,7 @@ Rails.application.routes.draw do
       get :export_raw_times
       get :finish_line
       get :follow
-      get :choose_lottery_entrants
+      get :link_lotteries
       get :manage_entrant_photos
       get :raw_times
       get :reconcile

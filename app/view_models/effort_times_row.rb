@@ -88,6 +88,10 @@ class EffortTimesRow
     time_clusters.map(&:stopped_here_flags)
   end
 
+  def finish_time
+    effort.finish_split_time&.formatted_time_hhmmss
+  end
+
   alias stopped stopped?
   alias dropped dropped?
   alias finished finished?

@@ -2,9 +2,9 @@
   <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
   <td><%= row.bib_number %></td>
   <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
+  <td class="text-nowrap"><%= row.finish_time %></td>
   <td class="text-nowrap"><%= row.bio_historic %></td>
   <td class="text-nowrap"><%= row.flexible_geolocation %></td>
-  <td class="text-nowrap"><%= row.effort_status %></td>
   <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
     <td class="text-nowrap text-center">
       <%= time_cluster_display_data(cluster, display_style) %>

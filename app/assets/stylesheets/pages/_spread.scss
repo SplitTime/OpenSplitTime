@@ -4,4 +4,12 @@ body.events.spread {
     .container {
 	max-width: 100%;
     }
+
+    tbody tr.status {
+	height: 1.5em;
+	font-size: 0.9em;
+	font-variant: small-caps;
+	background: lightgray;
+    }
+
 }

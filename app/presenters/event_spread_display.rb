@@ -23,22 +23,12 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     {elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment"}
   end
 
-  def effort_times_rows
-    @effort_times_rows ||=
-      filtered_ranked_efforts.map do |effort|
-        EffortTimesRow.new(effort: effort,
-                           lap_splits: lap_splits,
-                           split_times: split_times_by_effort.fetch(effort.id, []),
-                           display_style: display_style)
-      end
-  end
-
-  def effort_times_row_ids
-    effort_times_rows.map(&:id)
+  def grouped_effort_times_rows
+    effort_times_rows.group_by(&:effort_status)
   end
 
   def lap_splits
-    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
+    @lp_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
   def partner_with_banner
@@ -105,5 +95,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   def split_times_by_effort
     @split_times_by_effort ||= split_times.group_by { |st| st[:effort_id] }
+  end
+
+  def effort_times_rows
+    @effort_times_rows ||=
+      filtered_ranked_efforts.map do |effort|
+        EffortTimesRow.new(effort: effort,
+                           lap_splits: lap_splits,
+                           split_times: split_times_by_effort.fetch(effort.id, []),
+                           display_style: display_style)
+      end
   end
 end

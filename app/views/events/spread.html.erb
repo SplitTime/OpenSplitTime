@@ -82,28 +82,25 @@
       </tr>
       </thead>
 
-      <tbody>
-      <% @presenter.effort_times_rows.each do |row| %>
-        <tr id="<%= "effort_#{row.id}" %>">
-          <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
-          <td><%= row.bib_number %></td>
-          <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
-          <td class="text-nowrap"><%= row.bio_historic %></td>
-          <td class="text-nowrap"><%= row.flexible_geolocation %></td>
-          <td class="text-nowrap"><%= row.effort_status %></td>
-          <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
-            <td class="text-nowrap text-center">
-              <%= time_cluster_display_data(cluster, @presenter.display_style) %>
-            </td>
+      <% @presenter.grouped_effort_times_rows.each do |status_text, rows| %>
+        <tbody>
+          <% if rows.any? %>
+            <tr class="status"> <th colspan="999" scope="rowgroup"> <%= status_text %> </th> </tr>
           <% end %>
-          <% if @presenter.show_segment_totals? %>
-            <td class="text-center text-nowrap">
-              <%= clustered_segment_total_data(row) %>
-            </td>
-          <% end %>
-        </tr>
+
+          <%=
+            render(
+              partial: "events/spread_row",
+              collection: rows,
+              as: :row,
+              locals: {
+                show_segment_totals: @presenter.show_segment_totals?,
+                display_style: @presenter.display_style
+              }
+            )
+          %>
+        </tbody>
       <% end %>
-      </tbody>
     </table>
   <% end %>
 </article>

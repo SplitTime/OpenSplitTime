@@ -1,3 +1,7 @@
 body.events.spread {
     overflow-x: visible;
+
+    .container {
+	max-width: 100%;
+    }
 }

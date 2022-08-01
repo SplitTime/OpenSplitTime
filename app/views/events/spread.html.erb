@@ -63,7 +63,7 @@
     <table class="table table-sm table-striped">
       <thead>
       <tr>
-        <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
+        <th title="Overall/group">O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Finish time', :finish_split, @presenter.existing_sort) %> </th>

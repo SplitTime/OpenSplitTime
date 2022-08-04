@@ -48,7 +48,7 @@ class TimeConversion
     end
   end
 
-  # Converts attempted military times like "12:45:xx" to real military times i.e. "12:45:00".
+  # Converts attempted military times like "12:45:ss" to real military times i.e. "12:45:00".
   # Pads with `0` where needed, i.e. "5:33" => 05:33:00.
   # Also converts timestamps like "2022-07-15 15:45:00-0600" to military times i.e. "15:45:00".
   #
@@ -56,7 +56,7 @@ class TimeConversion
   def self.user_entered_to_military(time_string)
     return if time_string.blank? || time_string.length < 3
 
-    subbed_string = time_string.gsub("x", "0")
+    subbed_string = time_string.gsub(/[a-zA-Z]/, "0")
     hours, minutes, seconds = subbed_string.split(":")
     new_string = [hours, minutes, seconds].map do |component|
       component ||= ""

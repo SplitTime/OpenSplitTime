@@ -210,19 +210,19 @@ RSpec.describe TimeConversion do
     end
 
     it "substitutes zeros for non-numeric characters at the end of the string" do
-      file_string = "12:30:xx"
+      file_string = "12:30:ss"
       expected = "12:30:00"
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end
 
     it "substitutes zeros for non-numeric characters in the middle of the string" do
-      file_string = "12:xx:30"
+      file_string = "12:mm:30"
       expected = "12:00:30"
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end
 
     it "substitutes zeros for non-numeric characters at the beginning of the string" do
-      file_string = "xx:30:00"
+      file_string = "hh:30:00"
       expected = "00:30:00"
       expect(TimeConversion.user_entered_to_military(file_string)).to eq(expected)
     end

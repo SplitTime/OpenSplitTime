@@ -49,17 +49,16 @@ Getting Started
 5. `$ rbenv install <current ruby version>`
 6. `$ rbenv rehash` then restart the terminal session
 
-**Rails and Gems**
+**Rails, Gems, Databases**
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
-2. `$ gem install rails`
-3. Install Postgres:
+2. Install Postgres:
 
 > ### Using Homebrew on MacOS
-> `$ brew install postgres`
+> `$ brew install postgres redis`
 
 > ### Using Debian/Ubuntu
-> 1. `$ sudo apt install postgresql libpq-dev`
+> 1. `$ sudo apt install postgresql libpq-dev redis-server`
 > 2. Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
 
 4. `$ bundle install`
@@ -68,37 +67,17 @@ Getting Started
 
 **Javascript Runtime + Yarn**
 
-1. Install Node.js
-
-> ### On MacOS
-> Download the package installer from nodejs.org. Use the LTS version (v10.16.0 as of mid-2019)
-
-> ### Using Debian/Ubuntu
-> 1. Configure repository `wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -`
-> 3. Install Node.js `sudo apt-get install -y nodejs`
+1. Install Node.js v16 (the latest LTS as of mid-2022). We recommend using [`nvm`](https://github.com/nvm-sh/nvm). Otherwise:
+- Using MacOS: You can download the package installer from nodejs.org.
+- Using Debian/Ubuntu: `wget -qO- https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs`
 
 2. Install Yarn
 
-> ### Using Homebrew on MacOS
-> Use the yarn install script so that you can specify the version you want. The newest versions of yarn (as of mid-2019) 
-depend on Nodejs v12 and will install it as a dependency even though you have already installed Nodejs v10. Specify
-v1.13.0 instead.
-> 1. `curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0`
-> 2. Restart your terminal session
-
-> ### Using Debian/Ubuntu
-> 1. Configure yarn repository:
-> 2. `curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -`
-> 3. `echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list`
-> 4. `sudo apt-get update && sudo apt-get install yarn`
-> 5. `$ cd` into your local `OpenSplitTime` directory
-> 6. Update dependancies `$ yarn`
->
-> *If you have any issues, refer to [yarn's website](https://yarnpkg.com/lang/en/docs/install)*
+After ensuring you're using the right version of Node.js (with `node --version`): `npm install -g yarn`
 
 **Database**
 
-1. Start your local DB `$ brew services restart postgres` or run the Postgres App
+1. Start your local DB `$ brew services restart postgres && brew services restart redis` or run the Postgres App
 2. `$ rails db:setup` to create the database
 3. `$ rails db:from_fixtures` to load seed data from test fixtures files
 4. `$ rails s` to start the server
@@ -116,9 +95,9 @@ After you setup/seed your database, you should have four test users:
 | user  | fifthuser@example.com  | password |
 ```
 
-**Sidekiq and Redis**
+**Sidekiq**
 
-OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Install Redis using the simple instructions you'll find at [redis.io](https://redis.io). Run your Sidekiq server from the command line:
+OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Make sure your Redis server (installed above) is started. Run your Sidekiq server from the command line:
 
 `$ sidekiq`
 

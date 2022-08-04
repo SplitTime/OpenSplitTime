@@ -48,11 +48,7 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def choose_lottery_entrants?
-    user.authorized_to_edit?(event_group)
-  end
-
-  def load_lottery_entrants?
+  def link_lotteries?
     user.authorized_to_edit?(event_group)
   end
 

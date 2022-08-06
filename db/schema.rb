@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_06_003259) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_06_013745) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -130,6 +130,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_003259) do
     t.boolean "dropped"
     t.boolean "finished"
     t.datetime "synced_at"
+    t.integer "completed_laps"
     t.index ["event_id"], name: "index_efforts_on_event_id"
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true

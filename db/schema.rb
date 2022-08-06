@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_28_030701) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_06_003259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_28_030701) do
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey"], name: "index_effort_segments_on_sub_splits"
     t.index ["course_id"], name: "index_effort_segments_on_course_id"
     t.index ["effort_id"], name: "index_effort_segments_on_effort_id"
+    t.index ["elapsed_seconds"], name: "index_effort_segments_on_elapsed_seconds"
   end
 
   create_table "efforts", id: :serial, force: :cascade do |t|

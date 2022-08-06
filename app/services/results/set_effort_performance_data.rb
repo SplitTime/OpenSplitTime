@@ -37,6 +37,7 @@ module Results
                         st.sub_split_bitkey,
                         st.absolute_time,
                         s.distance_from_start,
+                        s.kind,
                         case
                             when ev.laps_required = 0 then null
                             else ((s.kind = 1 and st.lap = ev.laps_required) or st.lap > ev.laps_required) end as fixed_lap_finish
@@ -61,6 +62,7 @@ module Results
         update efforts
         set stopped_split_time_id = stop_st.id,
             final_split_time_id   = last_st.id,
+            completed_laps        = coalesce(case when last_st.kind = #{::Split.kinds[:finish]} then last_st.lap else last_st.lap - 1 end, 0),
             started               = last_st.id is not null,
             beyond_start          = coalesce(start_st.id <> last_st.id, last_st.id is not null),
             stopped               = stop_st.id is not null or last_st.fixed_lap_finish is true,

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class BestEffortsDisplay < BasePresenter
+  DEFAULT_PER_PAGE = 50
+  FIRST_PAGE = 1
+
   attr_reader :course, :view_context, :request
 
   delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
@@ -73,11 +76,11 @@ class BestEffortsDisplay < BasePresenter
   end
 
   def page
-    params[:page]&.to_i || 1
+    params[:page]&.to_i || FIRST_PAGE
   end
 
   def per_page
-    params[:per_page]&.to_i || 25
+    params[:per_page]&.to_i || DEFAULT_PER_PAGE
   end
 
   def split1

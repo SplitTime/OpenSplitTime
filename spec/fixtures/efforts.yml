@@ -39,6 +39,8 @@ hardrock_2015_tuan_jacobs:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_erich_larson:
   id: 8
   event_id: 4
@@ -79,6 +81,8 @@ hardrock_2015_erich_larson:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_leif_carter:
   id: 15
   event_id: 4
@@ -119,6 +123,8 @@ hardrock_2015_leif_carter:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_carmine_adams:
   id: 20
   event_id: 4
@@ -159,6 +165,8 @@ hardrock_2015_carmine_adams:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_garry_kuhlman:
   id: 24
   event_id: 4
@@ -199,6 +207,8 @@ hardrock_2015_garry_kuhlman:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_darius_jacobson:
   id: 25
   event_id: 4
@@ -239,6 +249,8 @@ hardrock_2015_darius_jacobson:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_santa_green:
   id: 29
   event_id: 4
@@ -279,6 +291,8 @@ hardrock_2015_santa_green:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_gilberto_mckenzie:
   id: 31
   event_id: 4
@@ -319,6 +333,8 @@ hardrock_2015_gilberto_mckenzie:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_vince_willms:
   id: 47
   event_id: 4
@@ -359,6 +375,8 @@ hardrock_2015_vince_willms:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_cedric_windler:
   id: 50
   event_id: 4
@@ -399,6 +417,8 @@ hardrock_2015_cedric_windler:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_chris_rempel:
   id: 56
   event_id: 4
@@ -439,6 +459,8 @@ hardrock_2015_chris_rempel:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_robby_gerlach:
   id: 57
   event_id: 4
@@ -479,6 +501,8 @@ hardrock_2015_robby_gerlach:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_rachelle_eichmann:
   id: 59
   event_id: 4
@@ -519,6 +543,8 @@ hardrock_2015_rachelle_eichmann:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_elden_morissette:
   id: 61
   event_id: 4
@@ -559,6 +585,8 @@ hardrock_2015_elden_morissette:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_leroy_leffler:
   id: 63
   event_id: 4
@@ -599,6 +627,8 @@ hardrock_2015_leroy_leffler:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_samara_vandervort:
   id: 73
   event_id: 4
@@ -639,6 +669,8 @@ hardrock_2015_samara_vandervort:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_robt_wintheiser:
   id: 94
   event_id: 4
@@ -679,6 +711,8 @@ hardrock_2015_robt_wintheiser:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_demetrius_moen:
   id: 96
   event_id: 4
@@ -719,6 +753,8 @@ hardrock_2015_demetrius_moen:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_vern_buckridge:
   id: 105
   event_id: 4
@@ -759,6 +795,8 @@ hardrock_2015_vern_buckridge:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_donte_spencer:
   id: 112
   event_id: 4
@@ -799,6 +837,8 @@ hardrock_2015_donte_spencer:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_bruno_fadel:
   id: 116
   event_id: 4
@@ -839,6 +879,8 @@ hardrock_2015_bruno_fadel:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_gus_walker:
   id: 117
   event_id: 4
@@ -879,6 +921,8 @@ hardrock_2015_gus_walker:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_susanna_abshire:
   id: 121
   event_id: 4
@@ -919,6 +963,8 @@ hardrock_2015_susanna_abshire:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_leandro_cole:
   id: 125
   event_id: 4
@@ -959,6 +1005,8 @@ hardrock_2015_leandro_cole:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_benedict_davis:
   id: 129
   event_id: 4
@@ -999,6 +1047,8 @@ hardrock_2015_benedict_davis:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2015_raphael_swift:
   id: 136
   event_id: 4
@@ -1039,6 +1089,8 @@ hardrock_2015_raphael_swift:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2015_bad_status:
   id: 138
   event_id: 4
@@ -1079,6 +1131,8 @@ hardrock_2015_bad_status:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2015_irvin_harber:
   id: 141
   event_id: 4
@@ -1119,6 +1173,8 @@ hardrock_2015_irvin_harber:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2015_cassondra_nienow:
   id: 155
   event_id: 4
@@ -1159,6 +1215,8 @@ hardrock_2015_cassondra_nienow:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2015_donn_mckenzie:
   id: 158
   event_id: 4
@@ -1199,6 +1257,8 @@ hardrock_2015_donn_mckenzie:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ramble_finished_first:
   id: 1040
   event_id: 14
@@ -1239,6 +1299,8 @@ ramble_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ramble_finished_second:
   id: 1048
   event_id: 14
@@ -1279,6 +1341,8 @@ ramble_finished_second:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ramble_start_only:
   id: 1051
   event_id: 14
@@ -1319,6 +1383,8 @@ ramble_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ramble_not_started:
   id: 1061
   event_id: 14
@@ -1359,6 +1425,8 @@ ramble_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_finished_first:
   id: 4172
   event_id: 17
@@ -1399,6 +1467,8 @@ hardrock_2014_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_finished_with_stop:
   id: 4173
   event_id: 17
@@ -1439,6 +1509,8 @@ hardrock_2014_finished_with_stop:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_finished_without_stop:
   id: 4174
   event_id: 17
@@ -1479,6 +1551,8 @@ hardrock_2014_finished_without_stop:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_claudio_wunsch:
   id: 4192
   event_id: 17
@@ -1519,6 +1593,8 @@ hardrock_2014_claudio_wunsch:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_paul_predovic:
   id: 4199
   event_id: 17
@@ -1559,6 +1635,8 @@ hardrock_2014_paul_predovic:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_keith_metz:
   id: 4206
   event_id: 17
@@ -1599,6 +1677,8 @@ hardrock_2014_keith_metz:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_major_green:
   id: 4207
   event_id: 17
@@ -1639,6 +1719,8 @@ hardrock_2014_major_green:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_humberto_adams:
   id: 4221
   event_id: 17
@@ -1679,6 +1761,8 @@ hardrock_2014_humberto_adams:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_omer_yundt:
   id: 4246
   event_id: 17
@@ -1719,6 +1803,8 @@ hardrock_2014_omer_yundt:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_pat_schaden:
   id: 4247
   event_id: 17
@@ -1759,6 +1845,8 @@ hardrock_2014_pat_schaden:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_clarence_goyette:
   id: 4249
   event_id: 17
@@ -1799,6 +1887,8 @@ hardrock_2014_clarence_goyette:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_irvin_corkery:
   id: 4251
   event_id: 17
@@ -1839,6 +1929,8 @@ hardrock_2014_irvin_corkery:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_willis_murray:
   id: 4253
   event_id: 17
@@ -1879,6 +1971,8 @@ hardrock_2014_willis_murray:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_ken_bradtke:
   id: 4256
   event_id: 17
@@ -1919,6 +2013,8 @@ hardrock_2014_ken_bradtke:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2014_progress_sherman:
   id: 4277
   event_id: 17
@@ -1959,6 +2055,8 @@ hardrock_2014_progress_sherman:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_multiple_stops:
   id: 4293
   event_id: 17
@@ -1999,6 +2097,8 @@ hardrock_2014_multiple_stops:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_without_start:
   id: 4294
   event_id: 17
@@ -2039,6 +2139,8 @@ hardrock_2014_without_start:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_drop_ouray:
   id: 4295
   event_id: 17
@@ -2079,6 +2181,8 @@ hardrock_2014_drop_ouray:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2014_not_started:
   id: 4302
   event_id: 17
@@ -2119,6 +2223,8 @@ hardrock_2014_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2016_finished_first:
   id: 6518
   event_id: 34
@@ -2151,7 +2257,7 @@ rufa_2016_finished_first:
   comments:
   state_name:
   country_name:
-  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111100111111100000101010011111'
+  overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100111111100000101010011111'
   stopped_split_time_id: 132059
   final_split_time_id: 132059
   started: true
@@ -2159,6 +2265,8 @@ rufa_2016_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 7
 rufa_2016_finished_second:
   id: 6520
   event_id: 34
@@ -2191,7 +2299,7 @@ rufa_2016_finished_second:
   comments:
   state_name:
   country_name:
-  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111110001011101110100101111111'
+  overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111110001011101110100101111111'
   stopped_split_time_id: 132090
   final_split_time_id: 132090
   started: true
@@ -2199,6 +2307,8 @@ rufa_2016_finished_second:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 6
 rufa_2016_progress_lap1:
   id: 6560
   event_id: 34
@@ -2239,6 +2349,8 @@ rufa_2016_progress_lap1:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2016_not_started:
   id: 6561
   event_id: 34
@@ -2279,6 +2391,8 @@ rufa_2016_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2017_24h_finished_first:
   id: 6693
   event_id: 36
@@ -2311,7 +2425,7 @@ rufa_2017_24h_finished_first:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111100010110111111111000111111'
+  overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100010110111111111000111111'
   stopped_split_time_id: 133983
   final_split_time_id: 133983
   started: true
@@ -2319,6 +2433,8 @@ rufa_2017_24h_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 7
 rufa_2017_24h_progress_lap6:
   id: 6695
   event_id: 36
@@ -2351,7 +2467,7 @@ rufa_2017_24h_progress_lap6:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111101110010000101111101111111'
+  overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101110010000101111101111111'
   stopped_split_time_id:
   final_split_time_id: 134018
   started: true
@@ -2359,6 +2475,8 @@ rufa_2017_24h_progress_lap6:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 6
 rufa_2017_24h_multiple_stops:
   id: 6756
   event_id: 36
@@ -2391,14 +2509,16 @@ rufa_2017_24h_multiple_stops:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000011000000000000000110010111010110000000111111111111111111110110001101110001110111111'
-  stopped_split_time_id: 134810
+  overall_performance: '100000000000011000000000000000010000111110010000000111111111111111111110110001101110001110111111'
+  stopped_split_time_id: 134812
   final_split_time_id: 134812
   started: true
   beyond_start: true
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 3
 rufa_2017_24h_finished_last:
   id: 6780
   event_id: 36
@@ -2431,7 +2551,7 @@ rufa_2017_24h_finished_last:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000010000000000000000100001111100100000000111111111111111111111001001110000010100011111'
+  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111001001110000010100011111'
   stopped_split_time_id: 135012
   final_split_time_id: 135012
   started: true
@@ -2439,6 +2559,8 @@ rufa_2017_24h_finished_last:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 2
 rufa_2017_24h_not_started:
   id: 6782
   event_id: 36
@@ -2479,6 +2601,8 @@ rufa_2017_24h_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2017_24h_progress_lap1:
   id: 6805
   event_id: 36
@@ -2519,6 +2643,8 @@ rufa_2017_24h_progress_lap1:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 1
 hardrock_2016_lavon_paucek:
   id: 7270
   event_id: 37
@@ -2559,6 +2685,8 @@ hardrock_2016_lavon_paucek:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 hardrock_2016_vesta_borer:
   id: 7284
   event_id: 37
@@ -2599,6 +2727,8 @@ hardrock_2016_vesta_borer:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_kory_kulas:
   id: 7289
   event_id: 37
@@ -2639,6 +2769,8 @@ hardrock_2016_kory_kulas:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_shad_hirthe:
   id: 7297
   event_id: 37
@@ -2679,6 +2811,8 @@ hardrock_2016_shad_hirthe:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_douglas_vandervort:
   id: 7302
   event_id: 37
@@ -2719,6 +2853,8 @@ hardrock_2016_douglas_vandervort:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_missing_telluride_out:
   id: 7308
   event_id: 37
@@ -2759,6 +2895,8 @@ hardrock_2016_missing_telluride_out:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_junior_lesch:
   id: 7311
   event_id: 37
@@ -2799,6 +2937,8 @@ hardrock_2016_junior_lesch:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_eddy_goldner:
   id: 7315
   event_id: 37
@@ -2839,6 +2979,8 @@ hardrock_2016_eddy_goldner:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_progress_sherman:
   id: 7328
   event_id: 37
@@ -2879,6 +3021,8 @@ hardrock_2016_progress_sherman:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_benito_moen:
   id: 7337
   event_id: 37
@@ -2919,6 +3063,8 @@ hardrock_2016_benito_moen:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_kendall_koch:
   id: 7340
   event_id: 37
@@ -2959,6 +3105,8 @@ hardrock_2016_kendall_koch:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_charlie_mueller:
   id: 7343
   event_id: 37
@@ -2999,6 +3147,8 @@ hardrock_2016_charlie_mueller:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_brinda_fisher:
   id: 7376
   event_id: 37
@@ -3039,6 +3189,8 @@ hardrock_2016_brinda_fisher:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_rene_mclaughlin:
   id: 7380
   event_id: 37
@@ -3079,6 +3231,8 @@ hardrock_2016_rene_mclaughlin:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_dropped_grouse:
   id: 7396
   event_id: 37
@@ -3119,6 +3273,8 @@ hardrock_2016_dropped_grouse:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_mervin_smitham:
   id: 7400
   event_id: 37
@@ -3159,6 +3315,8 @@ hardrock_2016_mervin_smitham:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_rhett_auer:
   id: 7404
   event_id: 37
@@ -3199,6 +3357,8 @@ hardrock_2016_rhett_auer:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_hoyt_macejkovic:
   id: 7407
   event_id: 37
@@ -3239,6 +3399,8 @@ hardrock_2016_hoyt_macejkovic:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 hardrock_2016_start_only:
   id: 7411
   event_id: 37
@@ -3279,6 +3441,8 @@ hardrock_2016_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_finished_first:
   id: 15626
   event_id: 48
@@ -3319,6 +3483,8 @@ ggd30_50k_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_50k_bad_finish:
   id: 15664
   event_id: 48
@@ -3359,6 +3525,8 @@ ggd30_50k_bad_finish:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_50k_progress_aid4:
   id: 15891
   event_id: 48
@@ -3399,6 +3567,8 @@ ggd30_50k_progress_aid4:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_progress_aid3:
   id: 15901
   event_id: 48
@@ -3439,6 +3609,8 @@ ggd30_50k_progress_aid3:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_drop_aid4:
   id: 15931
   event_id: 48
@@ -3479,6 +3651,8 @@ ggd30_50k_drop_aid4:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_start_only:
   id: 16023
   event_id: 48
@@ -3519,6 +3693,8 @@ ggd30_50k_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_not_started:
   id: 16032
   event_id: 48
@@ -3559,6 +3735,8 @@ ggd30_50k_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_12m_start_only:
   id: 16094
   event_id: 49
@@ -3599,6 +3777,8 @@ ggd30_12m_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_12m_finished_second:
   id: 16107
   event_id: 49
@@ -3639,6 +3819,8 @@ ggd30_12m_finished_second:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_12m_finished_first:
   id: 16173
   event_id: 49
@@ -3679,6 +3861,8 @@ ggd30_12m_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_12m_not_started:
   id: 16209
   event_id: 49
@@ -3719,6 +3903,8 @@ ggd30_12m_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_55k_finished_first:
   id: 16227
   event_id: 57
@@ -3759,6 +3945,8 @@ sum_55k_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 sum_55k_finished_second:
   id: 16229
   event_id: 57
@@ -3799,6 +3987,8 @@ sum_55k_finished_second:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 sum_55k_not_started:
   id: 16242
   event_id: 57
@@ -3839,6 +4029,8 @@ sum_55k_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_55k_progress_rolling:
   id: 16244
   event_id: 57
@@ -3879,6 +4071,8 @@ sum_55k_progress_rolling:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_55k_drop_bandera:
   id: 16245
   event_id: 57
@@ -3919,6 +4113,8 @@ sum_55k_drop_bandera:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_55k_start_only:
   id: 16246
   event_id: 57
@@ -3959,6 +4155,8 @@ sum_55k_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_100k_drop_anvil:
   id: 16247
   event_id: 56
@@ -3999,6 +4197,8 @@ sum_100k_drop_anvil:
   stopped: true
   dropped: true
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_100k_progress_cascade:
   id: 16248
   event_id: 56
@@ -4039,6 +4239,8 @@ sum_100k_progress_cascade:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2017_12h_finished_first:
   id: 16643
   event_id: 70
@@ -4071,7 +4273,7 @@ rufa_2017_12h_finished_first:
   comments:
   state_name: Arizona
   country_name: United States
-  overall_performance: '100000000000111000000000000001110110110011110000000111111111111111111101100000111000011001111111'
+  overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111101100000111000011001111111'
   stopped_split_time_id: 192201
   final_split_time_id: 192201
   started: true
@@ -4079,6 +4281,8 @@ rufa_2017_12h_finished_first:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 7
 rufa_2017_12h_finished_lap6:
   id: 16648
   event_id: 70
@@ -4111,7 +4315,7 @@ rufa_2017_12h_finished_lap6:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000110000000000000001100101110101100000000111111111111111111101100010100111001111101111'
+  overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101100010100111001111101111'
   stopped_split_time_id: 192295
   final_split_time_id: 192295
   started: true
@@ -4119,6 +4323,8 @@ rufa_2017_12h_finished_lap6:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 6
 rufa_2017_12h_progress_lap5_partial:
   id: 16657
   event_id: 70
@@ -4151,7 +4357,7 @@ rufa_2017_12h_progress_lap5_partial:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000101000000000000001001100011000001000000111111111111111111101101111111101111110110111'
+  overall_performance: '100000000000101000000000000000001000011111001000000111111111111111111101101111111101111110110111'
   stopped_split_time_id:
   final_split_time_id: 192433
   started: true
@@ -4159,6 +4365,8 @@ rufa_2017_12h_progress_lap5_partial:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 4
 rufa_2017_12h_progress_lap2:
   id: 16663
   event_id: 70
@@ -4191,7 +4399,7 @@ rufa_2017_12h_progress_lap2:
   comments:
   state_name: Utah
   country_name: United States
-  overall_performance: '100000000000010000000000000000100001111100100000000111111111111111111111000101111000110000101111'
+  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111000101111000110000101111'
   stopped_split_time_id:
   final_split_time_id: 192502
   started: true
@@ -4199,6 +4407,8 @@ rufa_2017_12h_progress_lap2:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 2
 rufa_2017_12h_start_only:
   id: 16667
   event_id: 70
@@ -4239,6 +4449,8 @@ rufa_2017_12h_start_only:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 rufa_2017_12h_not_started:
   id: 16673
   event_id: 70
@@ -4279,6 +4491,8 @@ rufa_2017_12h_not_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_100k_un_started:
   id: 16683
   event_id: 56
@@ -4319,6 +4533,8 @@ sum_100k_un_started:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_100k_on_dst_change:
   id: 16684
   event_id: 56
@@ -4359,6 +4575,8 @@ sum_100k_on_dst_change:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 sum_100k_across_dst_change:
   id: 16685
   event_id: 56
@@ -4399,6 +4617,8 @@ sum_100k_across_dst_change:
   stopped: false
   dropped: false
   finished: false
+  synced_at:
+  completed_laps: 0
 ggd30_50k_finished_second:
   id: 16686
   event_id: 48
@@ -4439,6 +4659,8 @@ ggd30_50k_finished_second:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_12m_series_finisher:
   id: 16687
   event_id: 49
@@ -4479,6 +4701,8 @@ ggd30_12m_series_finisher:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 sum_55k_series_finisher:
   id: 16688
   event_id: 57
@@ -4519,6 +4743,8 @@ sum_55k_series_finisher:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 sum_55k_slow_finisher:
   id: 16689
   event_id: 57
@@ -4559,6 +4785,8 @@ sum_55k_slow_finisher:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1
 ggd30_12m_slow_finisher:
   id: 16690
   event_id: 49
@@ -4599,3 +4827,5 @@ ggd30_12m_slow_finisher:
   stopped: true
   dropped: false
   finished: true
+  synced_at:
+  completed_laps: 1

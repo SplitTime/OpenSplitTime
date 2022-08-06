@@ -21,6 +21,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to be_nil
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(false)
           expect(effort.beyond_start).to eq(false)
           expect(effort.stopped).to eq(false)
@@ -39,6 +40,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.first.id)
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(false)
           expect(effort.stopped).to eq(false)
@@ -57,6 +59,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(true)
           expect(effort.stopped).to eq(false)
@@ -75,6 +78,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to eq(effort.ordered_split_times.last.id)
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+          expect(effort.completed_laps).to eq(1)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(true)
           expect(effort.stopped).to eq(true)
@@ -93,6 +97,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to eq(effort.ordered_split_times.last.id)
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(true)
           expect(effort.stopped).to eq(true)
@@ -115,6 +120,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to be_nil
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(false)
           expect(effort.beyond_start).to eq(false)
           expect(effort.stopped).to eq(false)
@@ -133,6 +139,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.first.id)
+          expect(effort.completed_laps).to eq(0)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(false)
           expect(effort.stopped).to eq(false)
@@ -151,6 +158,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to be_nil
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+          expect(effort.completed_laps).to eq(4)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(true)
           expect(effort.stopped).to eq(false)
@@ -169,6 +177,7 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.overall_performance).to be_present
           expect(effort.stopped_split_time_id).to eq(effort.ordered_split_times.last.id)
           expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+          expect(effort.completed_laps).to eq(7)
           expect(effort.started).to eq(true)
           expect(effort.beyond_start).to eq(true)
           expect(effort.stopped).to eq(true)

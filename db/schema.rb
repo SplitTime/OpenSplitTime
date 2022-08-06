@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_06_013745) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_06_023029) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -656,17 +656,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_013745) do
 
 
   create_view "best_effort_segments", sql_definition: <<-SQL
-      WITH completed_lap_subquery AS (
-           SELECT DISTINCT ON (split_times.effort_id) split_times.effort_id,
-                  CASE
-                      WHEN (splits.kind = 1) THEN split_times.lap
-                      ELSE (split_times.lap - 1)
-                  END AS completed_laps
-             FROM (split_times
-               JOIN splits ON ((splits.id = split_times.split_id)))
-            ORDER BY split_times.effort_id, split_times.lap DESC, splits.distance_from_start DESC, split_times.sub_split_bitkey DESC
-          )
-   SELECT es.effort_id,
+      SELECT es.effort_id,
       e.first_name,
       e.last_name,
       e.bib_number,
@@ -687,11 +677,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_013745) do
       es.elapsed_seconds,
       eg.home_time_zone,
       (ev.laps_required <> 1) AS multiple_laps,
-      (cls.completed_laps >= ev.laps_required) AS finished
-     FROM ((((efforts e
+      (e.completed_laps >= ev.laps_required) AS finished
+     FROM (((efforts e
        JOIN effort_segments es ON ((es.effort_id = e.id)))
        JOIN events ev ON ((ev.id = e.event_id)))
-       JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
-       JOIN completed_lap_subquery cls ON ((cls.effort_id = e.id)));
+       JOIN event_groups eg ON ((eg.id = ev.event_group_id)));
   SQL
 end

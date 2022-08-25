@@ -46,7 +46,7 @@ class EffortsController < ApplicationController
     if @effort.save
       redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -78,7 +78,7 @@ class EffortsController < ApplicationController
       end
     else
       @effort = effort
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

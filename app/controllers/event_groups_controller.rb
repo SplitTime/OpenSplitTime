@@ -41,7 +41,7 @@ class EventGroupsController < ApplicationController
     if @event_group.save
       redirect_to setup_event_group_path(@event_group)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

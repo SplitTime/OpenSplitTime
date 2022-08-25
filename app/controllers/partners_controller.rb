@@ -22,7 +22,7 @@ class PartnersController < ApplicationController
     if @partner.save
       redirect_to partner_event_group_path
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class PartnersController < ApplicationController
     if @partner.update(permitted_params)
       redirect_to partner_event_group_path
     else
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

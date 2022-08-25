@@ -31,7 +31,7 @@ class LotterySimulationRunsController < ApplicationController
       flash[:success] = "Simulation run in progress."
       redirect_to organization_lottery_lottery_simulation_runs_path(@organization, @lottery)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

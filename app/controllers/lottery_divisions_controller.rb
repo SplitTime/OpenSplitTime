@@ -24,7 +24,7 @@ class LotteryDivisionsController < ApplicationController
     if @lottery_division.save
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -34,7 +34,7 @@ class LotteryDivisionsController < ApplicationController
     if @lottery_division.update(permitted_params)
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

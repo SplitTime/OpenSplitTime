@@ -29,7 +29,7 @@ class LotteryEntrantsController < ApplicationController
     if @lottery_entrant.save
       redirect_to setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery, entrant_id: @lottery_entrant.id)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

@@ -40,11 +40,11 @@ class SplitsController < ApplicationController
       redirect_to split_path(@split)
     else
       if @event
-        render "new", event_id: @event.id
+        render "new", event_id: @event.id, status: :unprocessable_entity
       elsif @course
-        render "new", course_id: @course.id
+        render "new", course_id: @course.id, status: :unprocessable_entity
       else
-        render "new"
+        render "new", status: :unprocessable_entity
       end
     end
   end
@@ -56,7 +56,7 @@ class SplitsController < ApplicationController
       redirect_to split_path(@split)
     else
       @course = Course.friendly.find(@split.course_id) if @split.course_id
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

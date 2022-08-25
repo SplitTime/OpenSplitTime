@@ -35,7 +35,7 @@ class EventSeriesController < ApplicationController
     if @event_series.save
       redirect_to @event_series
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -46,7 +46,7 @@ class EventSeriesController < ApplicationController
     if @event_series.update(permitted_params)
       redirect_to @event_series
     else
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

@@ -44,7 +44,7 @@ class EventsController < ApplicationController
       redirect_to setup_event_group_path(@event_group)
     else
       @presenter = ::EventSetupPresenter.new(@event, params, current_user)
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

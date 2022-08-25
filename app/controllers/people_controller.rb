@@ -36,7 +36,7 @@ class PeopleController < ApplicationController
     if @person.save
       redirect_to session.delete(:return_to) || @person
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -46,7 +46,7 @@ class PeopleController < ApplicationController
     if @person.update(permitted_params)
       redirect_to @person
     else
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

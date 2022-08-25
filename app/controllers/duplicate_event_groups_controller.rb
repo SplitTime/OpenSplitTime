@@ -17,7 +17,7 @@ class DuplicateEventGroupsController < ApplicationController
     if @duplicate_event_group.valid?
       redirect_to setup_event_group_path(@duplicate_event_group.new_event_group)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

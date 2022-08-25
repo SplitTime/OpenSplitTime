@@ -41,7 +41,7 @@ class OrganizationsController < ApplicationController
     if @organization.save
       redirect_to @organization
     else
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -51,7 +51,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(permitted_params)
       redirect_to @organization
     else
-      render "edit"
+      render "edit", status: :unprocessable_entity
     end
   end
 

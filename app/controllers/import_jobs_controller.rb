@@ -37,12 +37,12 @@ class ImportJobsController < ApplicationController
         redirect_to import_jobs_path
       else
         flash[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
-        render "new"
+        render "new", status: :unprocessable_entity
       end
     rescue Aws::Errors::NoSuchEndpointError => e
       flash[:danger] = "Unable to create import job: #{e}"
       @import_job.failed!
-      render "new"
+      render "new", status: :unprocessable_entity
     end
   end
 

@@ -28,7 +28,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def lap_splits
-    @lp_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
+    @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end
 
   def partner_with_banner

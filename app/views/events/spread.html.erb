@@ -58,7 +58,7 @@
   <%= render 'partner_banner', partner: @presenter.partner_with_banner, organization_name: @presenter.organization_name %>
 <% end %>
 
-<article class="ost-article container">
+<article class="ost-article container-fluid">
   <% cache @presenter.cache_key do %>
     <table class="table table-sm table-striped">
       <thead>

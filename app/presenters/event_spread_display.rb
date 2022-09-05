@@ -24,7 +24,13 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def grouped_effort_times_rows
-    effort_times_rows.group_by(&:effort_status)
+    result = effort_times_rows.group_by(&:effort_status)
+    if event.laps_required == 0 && result["In Progress"].any? then
+      { "Started" => result.slice("Finished", "In Progress", "Dropped").values.flatten,
+        "Not Started" => result["Not Started"] }
+    else
+      result
+    end
   end
 
   def lap_splits

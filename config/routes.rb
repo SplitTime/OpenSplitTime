@@ -105,6 +105,7 @@ Rails.application.routes.draw do
       get :follow
       get :link_lotteries
       get :manage_entrant_photos
+      get :manage_start_times
       get :raw_times
       get :reconcile
       get :roster

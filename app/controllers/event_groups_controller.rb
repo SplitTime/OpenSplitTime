@@ -276,6 +276,13 @@ class EventGroupsController < ApplicationController
     redirect_to manage_entrant_photos_event_group_path(@event_group)
   end
 
+  # GET /event_groups/1/manage_start_times
+  def manage_start_times
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
   def set_data_status
     authorize @event_group
 

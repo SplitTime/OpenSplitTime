@@ -35,7 +35,8 @@ module Docs
             "Overview",
             "Checking In",
             "Changing Entrants",
-            "Starting Entrants"
+            "Starting Entrants",
+            "Managing Start Times",
           ]
         },
         monitor: {

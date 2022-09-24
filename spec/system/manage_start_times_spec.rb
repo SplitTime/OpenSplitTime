@@ -89,7 +89,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     cancel_button = turbo_frame.find_link(href: page_path)
 
-    expect { submit_button.click }.not_to change { SplitTime.count }
+    expect { cancel_button.click }.not_to change { SplitTime.count }
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(actual_start_time) }
 
@@ -98,7 +98,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     submit_button = turbo_frame.find('button[type="submit"]')
 
-    expect { cancel_button.click }.to change { SplitTime.count }.by(1)
+    expect { submit_button.click }.to change { SplitTime.count }.by(1)
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(updated_actual_start_time_text.in_time_zone(event_group.home_time_zone)) }
   end

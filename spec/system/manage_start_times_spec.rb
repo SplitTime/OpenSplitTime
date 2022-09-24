@@ -17,8 +17,6 @@ RSpec.describe "Manage start times", type: :system do
   let(:organization) { organizations(:running_up_for_air) }
   let(:event_group) { event_groups(:rufa_2017) }
   let(:event) { events(:rufa_2017_12h) }
-  let(:scheduled_start_time) { "2017-02-11 07:00:00".in_time_zone(event_group.home_time_zone) }
-  let(:updated_actual_start_time_text) { "02/11/2017 07:01:23" }
 
   scenario "The user is a visitor" do
     verify_unable_to_visit_page
@@ -26,17 +24,20 @@ RSpec.describe "Manage start times", type: :system do
 
   scenario "The user is a steward" do
     login_as steward, scope: :user
-    verify_manage_start_times_flow
+    verify_manage_start_times_started
+    verify_manage_start_times_unstarted
   end
 
   scenario "The user owns the organization" do
     login_as owner, scope: :user
-    verify_manage_start_times_flow
+    verify_manage_start_times_started
+    verify_manage_start_times_unstarted
   end
 
   scenario "The user is an admin" do
     login_as admin, scope: :user
-    verify_manage_start_times_flow
+    verify_manage_start_times_started
+    verify_manage_start_times_unstarted
   end
 
   private
@@ -46,10 +47,13 @@ RSpec.describe "Manage start times", type: :system do
     expect(page).to have_current_path(root_path)
   end
 
-  def verify_manage_start_times_flow
+  def verify_manage_start_times_started
+    actual_start_time = "2017-02-11 07:00:00".in_time_zone(event_group.home_time_zone)
+    updated_actual_start_time_text = "02/11/2017 07:01:23"
+
     visit page_path
     expect(page).to have_text "Manage Start Times"
-    turbo_frame = find("turbo-frame", id: "#{event.id}_#{scheduled_start_time.to_i}")
+    turbo_frame = find("turbo-frame", id: "#{event.id}_#{actual_start_time.to_i}")
     edit_button = turbo_frame.find("a")
 
     # Test the cancel button
@@ -58,22 +62,44 @@ RSpec.describe "Manage start times", type: :system do
     cancel_button = turbo_frame.find_link(href: page_path)
 
     expect { cancel_button.click }.not_to change { SplitTime.count }
-    efforts = event.efforts.where(scheduled_start_time: scheduled_start_time)
-    efforts.each do |effort|
-      if effort.name.include?("Not Started")
-        expect(effort.actual_start_time).to be_nil
-      else
-        expect(effort.actual_start_time).to eq(scheduled_start_time)
-      end
-    end
+    efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
+    efforts.each { |effort| expect(effort.actual_start_time).to eq(actual_start_time) }
 
     # Test the submit button
     edit_button.click
     fill_in "actual_start_time", with: updated_actual_start_time_text
     submit_button = turbo_frame.find('button[type="submit"]')
 
-    expect { submit_button.click }.to change { SplitTime.count }.by(1)
-    efforts = event.efforts.where(scheduled_start_time: scheduled_start_time)
+    expect { submit_button.click }.not_to change { SplitTime.count }
+    efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
+    efforts.each { |effort| expect(effort.actual_start_time).to eq(updated_actual_start_time_text.in_time_zone(event_group.home_time_zone)) }
+  end
+
+  def verify_manage_start_times_unstarted
+    actual_start_time = nil
+    updated_actual_start_time_text = "02/11/2017 07:01:23"
+
+    visit page_path
+    expect(page).to have_text "Manage Start Times"
+    turbo_frame = find("turbo-frame", id: "#{event.id}_#{actual_start_time.to_i}")
+    edit_button = turbo_frame.find("a")
+
+    # Test the cancel button
+    edit_button.click
+    fill_in "actual_start_time", with: updated_actual_start_time_text
+    cancel_button = turbo_frame.find_link(href: page_path)
+
+    expect { submit_button.click }.not_to change { SplitTime.count }
+    efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
+    efforts.each { |effort| expect(effort.actual_start_time).to eq(actual_start_time) }
+
+    # Test the submit button
+    edit_button.click
+    fill_in "actual_start_time", with: updated_actual_start_time_text
+    submit_button = turbo_frame.find('button[type="submit"]')
+
+    expect { cancel_button.click }.to change { SplitTime.count }.by(1)
+    efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(updated_actual_start_time_text.in_time_zone(event_group.home_time_zone)) }
   end
 end

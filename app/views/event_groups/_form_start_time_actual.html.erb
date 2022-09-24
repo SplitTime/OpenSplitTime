@@ -1,4 +1,4 @@
-<%= turbo_frame_tag [event_id, scheduled_start_time.to_i] do %>
+<%= turbo_frame_tag [event_id, actual_start_time.to_i] do %>
   <%= form_with(url: start_efforts_event_group_path(@event_group, filter: { id: effort_ids }),
                 method: :patch,
                 data: { turbo: false }) do |f| %>
@@ -6,7 +6,7 @@
       <div class="col-12 col-md-7">
         <%= f.label :actual, class: "font-weight-bold" %>
         <%= f.text_field :actual_start_time,
-                         value: l(scheduled_start_time.in_time_zone(@event_group.home_time_zone), format: :datetime_input),
+                         value: actual_start_time.present? ? l(actual_start_time.in_time_zone(@event_group.home_time_zone), format: :datetime_input) : nil,
                          class: "form-control",
                          autofocus: true %>
       </div>

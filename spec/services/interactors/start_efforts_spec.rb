@@ -112,15 +112,18 @@ RSpec.describe Interactors::StartEfforts do
         let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_progress_cascade)] }
         let(:start_time) { "2017-09-23 08:00:00" }
 
-        it "creates starting split_times only for the effort that needs one, and returns a successful response" do
-          effort_2_start_time = subject_efforts.second.starting_split_time.absolute_time
+        it "creates or updates starting split times as needed" do
           expect { subject.perform! }.to change { SplitTime.count }.by(1)
 
           subject_efforts.each(&:reload)
           split_times = subject_efforts.map(&:starting_split_time)
           expect(split_times).to all be_present
           expect(split_times.first.absolute_time).to eq(start_time.in_time_zone(home_time_zone))
-          expect(split_times.second.absolute_time).to eq(effort_2_start_time)
+          expect(split_times.second.absolute_time).to eq(start_time.in_time_zone(home_time_zone))
+        end
+
+        it "returns a successful response" do
+          expect(subject.perform!).to be_successful
         end
       end
     end

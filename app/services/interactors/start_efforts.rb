@@ -37,13 +37,16 @@ module Interactors
     attr_reader :efforts, :start_time, :current_user_id, :errors, :saved_split_times
 
     def start_effort(effort)
-      return if effort.split_times.any?(&:starting_split_time?)
+      split_time = SplitTime.find_or_initialize_by(
+        effort_id: effort.id,
+        lap: 1,
+        split_id: effort.start_split_id,
+        bitkey: SubSplit::IN_BITKEY,
+      )
 
-      time_point = TimePoint.new(1, effort.start_split_id, SubSplit::IN_BITKEY)
-      split_time = SplitTime.new(effort_id: effort.id,
-                                 time_point: time_point,
-                                 absolute_time: effort_start_time(effort),
-                                 created_by: current_user_id)
+      split_time.absolute_time = effort_start_time(effort)
+      split_time.created_by = current_user_id
+
       if split_time.save
         saved_split_times << split_time
       else
@@ -79,11 +82,12 @@ module Interactors
         errors << efforts_not_provided_error
         return
       end
+
       errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
       errors << invalid_start_time_error(start_time) if invalid_start_time?
       errors << invalid_start_time_error(start_time || "nil") unless converted_start_time ||
-                                                                     efforts.all?(&:scheduled_start_time?) ||
-                                                                     efforts.all?(&:event)
+        efforts.all?(&:scheduled_start_time?) ||
+        efforts.all?(&:event)
     end
 
     def event_group_ids

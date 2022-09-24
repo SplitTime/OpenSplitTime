@@ -7,6 +7,7 @@ class EventGroupSetupPresenter < BasePresenter
   delegate :available_live?,
            :concealed?,
            :first_event,
+           :home_time_zone,
            :multiple_events?,
            :name,
            :organization,

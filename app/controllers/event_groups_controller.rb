@@ -276,6 +276,24 @@ class EventGroupsController < ApplicationController
     redirect_to manage_entrant_photos_event_group_path(@event_group)
   end
 
+  # GET /event_groups/1/manage_start_times
+  def manage_start_times
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # GET /event_groups/1/manage_start_times_edit_actual
+  def manage_start_times_edit_actual
+    authorize @event_group
+
+    render partial: "form_start_time_actual", locals: {
+      event_id: params[:event_id],
+      scheduled_start_time: params[:scheduled_start_time].to_datetime,
+      effort_ids: params[:effort_ids],
+    }
+  end
+
   def set_data_status
     authorize @event_group
 

@@ -85,8 +85,10 @@ module Interactors
     end
 
     def ordered_raw_times
-      @raw_times = RawTime.where(event_group_id: event_group.id, bib_number: effort.bib_number).with_relation_ids
-          .select(&:absolute_time).sort_by(&:absolute_time)
+      @raw_times = RawTime.where(event_group_id: event_group.id, matchable_bib_number: effort.bib_number)
+                          .with_relation_ids
+                          .select(&:absolute_time)
+                          .sort_by(&:absolute_time)
     end
 
     def validate_setup

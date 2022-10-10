@@ -38,7 +38,7 @@ class RawTime < ApplicationRecord
   }
 
   def self.with_relation_ids(args = {})
-    query = RawTimeQuery.with_relations(args)
+    query = RawTimeQuery.with_relations(self, args)
     find_by_sql(query)
   end
 

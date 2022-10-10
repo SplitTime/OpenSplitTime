@@ -1,38 +1,47 @@
 class RawTimeQuery < BaseQuery
-  def self.with_relations(args = {})
+  def self.with_relations(existing_scope, args = {})
+    existing_scope = existing_scope_sql(existing_scope)
     order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "sortable_bib_number")
 
-    query = <<-SQL
+    <<-SQL.squish
+      with existing_scope as (
+             #{existing_scope}
+           ),
 
-    WITH existing_scope AS (#{existing_scope_sql}),
-         raw_times_scoped AS (
-           SELECT raw_times.*
-           FROM raw_times
-           INNER JOIN existing_scope ON existing_scope.id = raw_times.id)
+           raw_times_scoped AS (
+               SELECT raw_times.*
+               FROM raw_times
+               INNER JOIN existing_scope ON existing_scope.id = raw_times.id
+           ),
+           
+           relevant_efforts as (
+               select ef.bib_number, ef.id as effort_id, ef.last_name, ev.course_id, ev.id as event_id
+               from events ev
+               inner join efforts ef on ef.event_id = ev.id
+               where ev.event_group_id in (select distinct event_group_id from raw_times_scoped)
+           ),
+           
+           relevant_splits as (
+               select parameterized_base_name, s.id as split_id, s.course_id
+               from splits s
+               where s.course_id in (select distinct course_id from relevant_efforts)
+           )
 
-    SELECT 
-     r.*, 
-     e.id AS effort_id,
-     e.last_name AS effort_last_name,
-     e.event_id, 
-     s.split_id
-    FROM raw_times_scoped r
-    LEFT JOIN (
-                SELECT ef.id, ef.event_id, ef.bib_number, ef.last_name, ev.event_group_id
-                FROM efforts ef
-                INNER JOIN events ev ON ef.event_id = ev.id
-               ) e ON r.matchable_bib_number is not null
-                   AND r.matchable_bib_number = e.bib_number
-                   AND e.event_group_id = r.event_group_id
-    LEFT JOIN LATERAL (
-                SELECT a.split_id FROM aid_stations a
-                INNER JOIN splits s ON a.split_id = s.id
-                WHERE a.event_id = e.event_id
-                AND s.parameterized_base_name = r.parameterized_split_name
-                limit 1) s ON TRUE
-    ORDER BY #{order_sql}, r.id
+      select
+           r.*, 
+           re.effort_id,
+           re.last_name as effort_last_name,
+           re.event_id, 
+           rs.split_id
+      from raw_times_scoped r
+        left join relevant_efforts re 
+               on r.matchable_bib_number is not null 
+              and re.bib_number = r.matchable_bib_number
+        left join relevant_splits rs 
+               on rs.parameterized_base_name = r.parameterized_split_name
+              and rs.course_id = re.course_id
+      order by #{order_sql}, r.id
     SQL
-    query.squish
   end
 
   def self.delete_duplicates(event_group, scope = {})
@@ -62,9 +71,9 @@ class RawTimeQuery < BaseQuery
     query.squish
   end
 
-  def self.existing_scope_sql
+  def self.existing_scope_sql(scope)
     # have to do this to get the binds interpolated. remove any ordering and just grab the ID
-    RawTime.connection.unprepared_statement { RawTime.reorder(nil).select("id").to_sql }
+    scope.connection.unprepared_statement { scope.reorder(nil).select("id").to_sql }
   end
 
   def self.permitted_column_names

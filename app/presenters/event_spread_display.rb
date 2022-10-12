@@ -24,12 +24,13 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def grouped_effort_times_rows
-    result = effort_times_rows.group_by(&:effort_status)
-    if event.laps_unlimited? && result[Rankable::IN_PROGRESS].any? then
-      { "Started" => result.slice(Rankable::FINISHED, Rankable::IN_PROGRESS, Rankable::DROPPED).values.flatten,
-        "Not Started" => result[Rankable::NOT_STARTED] }
+    if event.laps_unlimited? && !event.finished?
+      effort_times_rows.flatten.group_by(&:started?).then do |grouped_results|
+        {"Started" => grouped_results[true].sort_by { |row| -row.effort.laps_finished },
+         "Not Started" => grouped_results[false]}
+      end
     else
-      result
+      effort_times_rows.group_by(&:effort_status)
     end
   end
 

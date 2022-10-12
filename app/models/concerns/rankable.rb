@@ -8,6 +8,11 @@
 module Rankable
   extend ActiveSupport::Concern
 
+  FINISHED = "Finished"
+  IN_PROGRESS = "In Progress"
+  DROPPED = "Dropped"
+  NOT_STARTED = "Not Started"
+
   # @return [String (frozen)]
   def display_overall_rank
     beyond_start? ? overall_rank : "--"
@@ -21,13 +26,13 @@ module Rankable
   # @return [String (frozen)]
   def effort_status
     if finished?
-      "Finished"
+      FINISHED
     elsif dropped?
-      "Dropped"
+      DROPPED
     elsif in_progress?
-      "In Progress"
+      IN_PROGRESS
     else
-      "Not Started"
+      NOT_STARTED
     end
   end
 end

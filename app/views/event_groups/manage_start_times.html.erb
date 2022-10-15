@@ -47,7 +47,7 @@
                 <span class="mx-2">
                 <%= link_to(
                       fa_icon("pencil-alt"),
-                      manage_start_times_edit_actual_event_group_path(@event_group, event_id: event.id, actual_start_time: start_time, effort_ids: efforts.map(&:id)),
+                      manage_start_times_edit_actual_event_group_path(@event_group, event_id: event.id, actual_start_time: start_time),
                       class: "btn btn-sm btn-outline-primary"
                     ) %>
                 </span>

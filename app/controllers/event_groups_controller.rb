@@ -290,7 +290,6 @@ class EventGroupsController < ApplicationController
     render partial: "form_start_time_actual", locals: {
       event_id: params[:event_id],
       actual_start_time: params[:actual_start_time]&.to_datetime,
-      effort_ids: params[:effort_ids],
     }
   end
 

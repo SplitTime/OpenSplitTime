@@ -41,7 +41,7 @@ class OrganizationPresenter < BasePresenter
   end
 
   def course_groups
-    @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, ::CourseGroup).viewable
+    @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, organization.course_groups).viewable
   end
 
   def display_style

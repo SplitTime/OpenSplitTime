@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_06_023029) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_02_025812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -52,6 +52,24 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_023029) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["event_id"], name: "index_aid_stations_on_event_id"
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
+  end
+
+  create_table "course_group_courses", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.bigint "course_group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_group_id"], name: "index_course_group_courses_on_course_group_id"
+    t.index ["course_id"], name: "index_course_group_courses_on_course_id"
+  end
+
+  create_table "course_groups", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.string "name"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_course_groups_on_organization_id"
   end
 
   create_table "courses", id: :serial, force: :cascade do |t|
@@ -608,6 +626,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_06_023029) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
+  add_foreign_key "course_group_courses", "course_groups"
+  add_foreign_key "course_group_courses", "courses"
+  add_foreign_key "course_groups", "organizations"
   add_foreign_key "courses", "organizations"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"

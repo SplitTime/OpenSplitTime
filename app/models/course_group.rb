@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CourseGroup < ApplicationRecord
+  include DelegatedConcealable
   include Delegable
   extend FriendlyId
 

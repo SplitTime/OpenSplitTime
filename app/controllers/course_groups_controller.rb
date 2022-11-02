@@ -26,7 +26,7 @@ class CourseGroupsController < ApplicationController
     authorize @course_group
 
     if @course_group.save
-      redirect_to @course_group
+      redirect_to organization_course_group_path(@organization, @course_group)
     else
       render "new", status: :unprocessable_entity
     end
@@ -37,7 +37,7 @@ class CourseGroupsController < ApplicationController
     convert_checkbox_course_ids
 
     if @course_group.update(permitted_params)
-      redirect_to @course_group
+      redirect_to organization_course_group_path(@organization, @course_group)
     else
       render "edit", status: :unprocessable_entity
     end
@@ -52,7 +52,7 @@ class CourseGroupsController < ApplicationController
       flash[:danger] = @course_group.errors.full_messages.join("\n")
     end
 
-    redirect_to_organization
+    redirect_to organization_path(@organization, display_style: :course_groups)
   end
 
   private
@@ -69,9 +69,5 @@ class CourseGroupsController < ApplicationController
 
   def set_organization
     @organization = ::Organization.friendly.find(params[:organization_id])
-  end
-
-  def redirect_to_organization
-    redirect_to organization_path(@organization, display_style: :course_groups)
   end
 end

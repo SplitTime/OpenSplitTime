@@ -250,6 +250,20 @@ module DropdownHelper
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end
 
+  def course_group_actions_dropdown_menu(view_object)
+    dropdown_items = [
+      { name: "Edit",
+        link: edit_organization_course_group_path(view_object.organization, view_object.course_group) },
+      { role: :separator },
+      { name: "Delete course group",
+        link: organization_course_group_path(view_object.organization, view_object.course_group),
+        method: :delete,
+        data: { confirm: "This action cannot be undone. Proceed?" },
+        class: "text-danger" }
+    ]
+    build_dropdown_menu("Actions", dropdown_items, button: true)
+  end
+
   def person_actions_dropdown_menu(view_object)
     dropdown_items = [
       { name: "Edit",

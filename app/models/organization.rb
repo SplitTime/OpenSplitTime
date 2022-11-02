@@ -13,6 +13,7 @@ class Organization < ApplicationRecord
   NOT_FOUND_OWNER_ID = -1
 
   has_many :courses, dependent: :destroy
+  has_many :course_groups, dependent: :destroy
   has_many :event_groups, dependent: :destroy
   has_many :lotteries, dependent: :destroy
   has_many :stewardships, dependent: :destroy

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-  PERMITTED_DISPLAY_STYLES = %w[courses stewards events event_series lotteries].freeze
+  PERMITTED_DISPLAY_STYLES = %w[courses course_groups stewards events event_series lotteries].freeze
 
   attr_reader :organization
 
@@ -38,6 +38,10 @@ class OrganizationPresenter < BasePresenter
   def courses
     scoped_courses = CoursePolicy::Scope.new(current_user, Course).viewable
     @courses ||= organization.courses.includes(:splits, :events).where(id: scoped_courses)
+  end
+
+  def course_groups
+    @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, ::CourseGroup).viewable
   end
 
   def display_style

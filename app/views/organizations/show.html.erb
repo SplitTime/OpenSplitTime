@@ -25,24 +25,29 @@
     </div>
     <!-- Navigation -->
     <ul class="nav nav-tabs nav-tabs-ost">
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'courses'}" do
-        link_to "Courses", organization_path(@presenter.organization, display_style: :courses)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'events'}" do
-        link_to "Events", organization_path(@presenter.organization, display_style: :events)
-      end %>
-      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'event_series'}" do
-        link_to "Event Series", organization_path(@presenter.organization, display_style: :event_series)
-      end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'courses'}" do %>
+        <%= link_to "Courses", organization_path(@presenter.organization, display_style: :courses) %>
+      <% end %>
+      <% if current_user&.admin? %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'course_groups'}" do %>
+          <%= link_to "Course Groups", organization_path(@presenter.organization, display_style: :course_groups) %>
+        <% end %>
+      <% end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'events'}" do %>
+        <%= link_to "Events", organization_path(@presenter.organization, display_style: :events) %>
+      <% end %>
+      <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'event_series'}" do %>
+        <%= link_to "Event Series", organization_path(@presenter.organization, display_style: :event_series) %>
+      <% end %>
       <% if @presenter.lotteries.present? || current_user&.authorized_for_lotteries?(@presenter.organization) %>
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'lotteries'}" do
-          link_to "Lotteries", organization_lotteries_path(@presenter.organization)
-        end %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'lotteries'}" do %>
+          <%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %>
+        <% end %>
       <% end %>
       <% if current_user&.authorized_fully?(@presenter.organization) %>
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stewards'}" do
-          link_to "Stewards", organization_path(@presenter.organization, display_style: :stewards)
-        end %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stewards'}" do %>
+          <%= link_to "Stewards", organization_path(@presenter.organization, display_style: :stewards) %>
+        <% end %>
       <% end %>
     </ul>
   </div>
@@ -57,6 +62,28 @@
       <h4>No courses are associated with this organization.</h4>
     <% end %>
   </article>
+
+<% when "course_groups" %>
+  <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col offset-md-6 col-md-6">
+            <%= link_to fa_icon("plus", text: "Add"), new_organization_course_group_path(@presenter.organization), id: "add-course-group", class: "btn btn-success" %>
+          </div>
+        </div>
+      </div>
+    </aside>
+  <% end %>
+
+  <article class="ost-article container">
+    <% if @presenter.course_groups.present? %>
+      <%= render "course_groups_list", course_groups: @presenter.course_groups %>
+    <% else %>
+      <h4>No course groups are associated with this organization.</h4>
+    <% end %>
+  </article>
+
 <% when "stewards" %>
   <% if current_user&.authorized_fully?(@presenter.organization) %>
 

@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   resources :import_jobs, only: [:index, :show, :new, :create, :destroy]
 
   resources :organizations do
+    resources :course_groups, except: [:index]
     resources :event_groups, except: [:index, :show]
 
     resources :lotteries do

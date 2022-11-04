@@ -12,6 +12,7 @@ hardrock_ccw:
   slug: hardrock-ccw
   organization_id: 4
   concealed:
+  track_points:
 ramble_even_course:
   id: 9
   name: Ramble Even Course
@@ -24,6 +25,7 @@ ramble_even_course:
   slug: ramble-even-course
   organization_id: 6
   concealed:
+  track_points:
 hardrock_cw:
   id: 12
   name: Hardrock CW
@@ -36,6 +38,7 @@ hardrock_cw:
   slug: hardrock-cw
   organization_id: 4
   concealed:
+  track_points:
 rufa_course:
   id: 20
   name: RUFA Course
@@ -48,6 +51,7 @@ rufa_course:
   slug: rufa-course
   organization_id: 14
   concealed:
+  track_points:
 d30_50k_course:
   id: 26
   name: D30 50K Course
@@ -60,6 +64,7 @@ d30_50k_course:
   slug: d30-50k-course
   organization_id: 15
   concealed:
+  track_points:
 d30_12m_course:
   id: 27
   name: D30 12M Course
@@ -72,6 +77,7 @@ d30_12m_course:
   slug: d30-12m-course
   organization_id: 15
   concealed:
+  track_points:
 sum_100k_course:
   id: 31
   name: SUM 100K Course
@@ -84,6 +90,7 @@ sum_100k_course:
   slug: sum-100k-course
   organization_id: 15
   concealed:
+  track_points:
 sum_55k_course:
   id: 32
   name: SUM 55K Course
@@ -96,3 +103,4 @@ sum_55k_course:
   slug: sum-55k-course
   organization_id: 15
   concealed:
+  track_points:

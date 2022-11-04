@@ -16,6 +16,7 @@ lottery_entrant_4:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_5:
   id: 5
   lottery_division_id: 1
@@ -33,6 +34,7 @@ lottery_entrant_5:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_6:
   id: 6
   lottery_division_id: 2
@@ -50,6 +52,7 @@ lottery_entrant_6:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_7:
   id: 7
   lottery_division_id: 1
@@ -67,6 +70,7 @@ lottery_entrant_7:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_8:
   id: 8
   lottery_division_id: 2
@@ -84,6 +88,7 @@ lottery_entrant_8:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_9:
   id: 9
   lottery_division_id: 1
@@ -101,6 +106,7 @@ lottery_entrant_9:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_10:
   id: 10
   lottery_division_id: 2
@@ -118,6 +124,7 @@ lottery_entrant_10:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_11:
   id: 11
   lottery_division_id: 1
@@ -135,6 +142,7 @@ lottery_entrant_11:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_12:
   id: 12
   lottery_division_id: 2
@@ -152,6 +160,7 @@ lottery_entrant_12:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_13:
   id: 13
   lottery_division_id: 1
@@ -169,6 +178,7 @@ lottery_entrant_13:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_21:
   id: 21
   lottery_division_id: 6
@@ -186,6 +196,7 @@ lottery_entrant_21:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_22:
   id: 22
   lottery_division_id: 7
@@ -203,6 +214,7 @@ lottery_entrant_22:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_23:
   id: 23
   lottery_division_id: 7
@@ -220,6 +232,7 @@ lottery_entrant_23:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_24:
   id: 24
   lottery_division_id: 8
@@ -237,6 +250,7 @@ lottery_entrant_24:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_25:
   id: 25
   lottery_division_id: 8
@@ -254,6 +268,7 @@ lottery_entrant_25:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_26:
   id: 26
   lottery_division_id: 8
@@ -271,6 +286,7 @@ lottery_entrant_26:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_27:
   id: 27
   lottery_division_id: 8
@@ -288,6 +304,7 @@ lottery_entrant_27:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:
 lottery_entrant_28:
   id: 28
   lottery_division_id: 8
@@ -305,3 +322,4 @@ lottery_entrant_28:
   country_name: United States
   pre_selected: false
   external_id:
+  withdrawn:

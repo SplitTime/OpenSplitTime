@@ -1,0 +1,22 @@
+<%# Requires parameter courses %>
+
+<table class="table table-centered table-fixed-sm table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Splits</th>
+    <th>Events</th>
+    <th>GPX</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% courses.each do |course| %>
+      <tr>
+        <td><strong><%= link_to course.name, course_path(course) %></strong></td>
+        <td><%= pluralize(course.splits.size, "split") %></td>
+        <td><%= pluralize(course.events.size, "event") %></td>
+        <td><%= "#{course.gpx.filename} (#{(course.gpx.byte_size / 1.0.kilobytes).round(1)} KB)" if course.gpx.attached? %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

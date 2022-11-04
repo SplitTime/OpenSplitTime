@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_04_031629) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_04_191707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -700,11 +700,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_04_031629) do
       ev.course_id,
       (ev.laps_required <> 1) AS multiple_laps,
       (e.completed_laps >= ev.laps_required) AS finished,
-      ((begin_split.kind = 0) AND (end_split.kind = 1)) AS full_course
-     FROM (((((efforts e
+      ((es.begin_split_kind = 0) AND (es.end_split_kind = 1)) AS full_course
+     FROM (((efforts e
        JOIN effort_segments es ON ((es.effort_id = e.id)))
-       JOIN splits begin_split ON ((begin_split.id = es.begin_split_id)))
-       JOIN splits end_split ON ((end_split.id = es.end_split_id)))
        JOIN events ev ON ((ev.id = e.event_id)))
        JOIN event_groups eg ON ((eg.id = ev.event_group_id)));
   SQL

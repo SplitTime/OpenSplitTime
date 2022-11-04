@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class CourseGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:show, :best_efforts]
   before_action :set_course_group, except: [:new, :create]
   before_action :set_organization
-  after_action :verify_authorized, except: [:show]
+  after_action :verify_authorized, except: [:show, :best_efforts]
 
   def show
     @presenter = ::CourseGroupPresenter.new(@course_group, view_context)
@@ -56,8 +56,6 @@ class CourseGroupsController < ApplicationController
   end
 
   def best_efforts
-    skip_authorization
-
     @presenter = BestCourseGroupEffortsDisplay.new(@course_group, view_context)
 
     respond_to do |format|

@@ -16,6 +16,7 @@ hardrock_2015:
   results_template_id: 7
   efforts_count: 30
   notice_text:
+  lottery_id:
 ramble:
   id: 14
   course_id: 9
@@ -33,6 +34,7 @@ ramble:
   results_template_id: 7
   efforts_count: 4
   notice_text:
+  lottery_id:
 hardrock_2014:
   id: 17
   course_id: 12
@@ -50,6 +52,7 @@ hardrock_2014:
   results_template_id: 7
   efforts_count: 19
   notice_text:
+  lottery_id:
 rufa_2016:
   id: 34
   course_id: 20
@@ -67,6 +70,7 @@ rufa_2016:
   results_template_id: 7
   efforts_count: 4
   notice_text:
+  lottery_id:
 rufa_2017_24h:
   id: 36
   course_id: 20
@@ -84,6 +88,7 @@ rufa_2017_24h:
   results_template_id: 7
   efforts_count: 6
   notice_text:
+  lottery_id:
 hardrock_2016:
   id: 37
   course_id: 12
@@ -101,6 +106,7 @@ hardrock_2016:
   results_template_id: 7
   efforts_count: 19
   notice_text:
+  lottery_id:
 ggd30_50k:
   id: 48
   course_id: 26
@@ -118,6 +124,7 @@ ggd30_50k:
   results_template_id: 7
   efforts_count: 8
   notice_text:
+  lottery_id:
 ggd30_12m:
   id: 49
   course_id: 27
@@ -135,6 +142,7 @@ ggd30_12m:
   results_template_id: 7
   efforts_count: 6
   notice_text:
+  lottery_id:
 sum_100k:
   id: 56
   course_id: 31
@@ -152,6 +160,7 @@ sum_100k:
   results_template_id: 7
   efforts_count: 5
   notice_text:
+  lottery_id:
 sum_55k:
   id: 57
   course_id: 32
@@ -169,6 +178,7 @@ sum_55k:
   results_template_id: 3
   efforts_count: 8
   notice_text:
+  lottery_id:
 rufa_2017_12h:
   id: 70
   course_id: 20
@@ -186,3 +196,4 @@ rufa_2017_12h:
   results_template_id: 7
   efforts_count: 6
   notice_text:
+  lottery_id:

@@ -55,6 +55,21 @@ class CourseGroupsController < ApplicationController
     redirect_to organization_path(@organization, display_style: :course_groups)
   end
 
+  def best_efforts
+    skip_authorization
+
+    @presenter = BestCourseGroupEffortsDisplay.new(@course_group, view_context)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        segments = @presenter.filtered_segments
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], locals: {segments: segments}) : ""
+        render json: {best_effort_segments: segments, html: html, links: {next: @presenter.next_page_url}}
+      end
+    end
+  end
+
   private
 
   def convert_checkbox_course_ids

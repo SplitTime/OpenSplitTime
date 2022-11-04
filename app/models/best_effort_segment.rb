@@ -6,9 +6,13 @@ class BestEffortSegment < ::ApplicationRecord
   include DatabaseRankable
 
   enum gender: [:male, :female]
+  belongs_to :course
+  belongs_to :effort
 
   zonable_attribute :begin_time
 
+  scope :for_courses, -> (courses) { where(course_id: courses) }
+  scope :full_course, -> { where(full_course: true) }
   scope :for_efforts, -> (efforts) { where(effort_id: efforts) }
   scope :over_segment, lambda { |segment|
     where(begin_split_id: segment.begin_id,
@@ -16,6 +20,10 @@ class BestEffortSegment < ::ApplicationRecord
           end_split_id: segment.end_id,
           end_bitkey: segment.end_bitkey)
   }
+
+  def course_name
+    course.name
+  end
 
   def ends_at_finish?
     end_split_kind == Split.kinds[:finish]

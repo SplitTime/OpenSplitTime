@@ -11,6 +11,7 @@ class CourseGroup < ApplicationRecord
   belongs_to :organization
   has_many :course_group_courses, dependent: :destroy
   has_many :courses, through: :course_group_courses
+  has_many :events, through: :courses
 
   validates_presence_of :name, :organization
 

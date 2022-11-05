@@ -16,14 +16,15 @@ namespace :maintenance do
 
     ageless_efforts.find_each do |effort|
       progress_bar.increment!
-      person_birthdate = effort.person&.birthdate
+      person = effort.person
 
-      if person_birthdate.present?
-        effort.update(birthdate: person_birthdate)
-      elsif person.nil?
+      if person.nil?
         problem_efforts << "Effort #{effort.slug} has not been reconciled and therefore has no associated person"
+        next
+      elsif person.birthdate?
+        effort.update(birthdate: person.birthdate)
       else
-        other_effort_birthdates = effort.person.efforts.where.not(id: effort.id).pluck(:birthdate).uniq
+        other_effort_birthdates = person.efforts.where.not(id: effort.id).pluck(:birthdate).compact.uniq
         if other_effort_birthdates.many?
           problem_efforts << "Found conflicting birthdates for effort #{effort.slug}: #{other_effort_birthdates.join(', ')}"
         elsif other_effort_birthdates.one?

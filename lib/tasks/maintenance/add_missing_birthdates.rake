@@ -16,7 +16,7 @@ namespace :maintenance do
 
     ageless_efforts.find_each do |effort|
       progress_bar.increment!
-      person_birthdate = effort.person.birthdate
+      person_birthdate = effort.person&.birthdate
 
       if person_birthdate.present?
         effort.update(birthdate: person_birthdate)

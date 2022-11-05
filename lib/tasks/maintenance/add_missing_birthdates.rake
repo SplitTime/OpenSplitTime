@@ -20,7 +20,6 @@ namespace :maintenance do
 
       if person.nil?
         problem_efforts << "Effort #{effort.slug} has not been reconciled and therefore has no associated person"
-        next
       elsif person.birthdate?
         effort.update(birthdate: person.birthdate)
       else

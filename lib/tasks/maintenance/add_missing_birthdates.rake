@@ -19,7 +19,7 @@ namespace :maintenance do
       person_birthdate = effort.person.birthdate
 
       if person_birthdate.present?
-        effort.update(birthdate: person.birthdate)
+        effort.update(birthdate: person_birthdate)
       else
         other_effort_birthdates = effort.person.efforts.where.not(id: effort.id).pluck(:birthdate).uniq
         if other_effort_birthdates.many?
@@ -30,7 +30,7 @@ namespace :maintenance do
           problem_efforts << "No birthdate found for effort #{effort.slug}"
         end
       end
-    rescue ActiveRecordError => e
+    rescue ActiveRecord::ActiveRecordError => e
       problem_efforts << "Could not update effort #{effort.slug}: #{e}"
     end
 

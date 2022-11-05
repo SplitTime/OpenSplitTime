@@ -20,6 +20,8 @@ namespace :maintenance do
 
       if person_birthdate.present?
         effort.update(birthdate: person_birthdate)
+      elsif person.nil?
+        problem_efforts << "Effort #{effort.slug} has not been reconciled and therefore has no associated person"
       else
         other_effort_birthdates = effort.person.efforts.where.not(id: effort.id).pluck(:birthdate).uniq
         if other_effort_birthdates.many?

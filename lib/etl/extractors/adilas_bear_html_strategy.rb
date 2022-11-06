@@ -39,23 +39,23 @@ module ETL
       end
 
       def gender
-        bio.split.fourth
+        bio.third
       end
 
       def age
-        bio.split.third
+        bio.second
       end
 
       def city
-        bio.split.first.gsub(",", "")
+        bio.first.split(", ").first
       end
 
       def state_code
-        bio.split.second
+        bio.first.split(", ").second
       end
 
       def bio
-        @bio ||= runner_info_card.css(".runner-stats").text.squish
+        @bio ||= runner_info_card.css(".runner-stats").css("span").map(&:text)
       end
 
       def runner_info_card

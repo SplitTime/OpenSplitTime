@@ -26,13 +26,16 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <% if current_user&.authorized_to_edit?(@presenter.course_group) %>
-        <div class="col form-inline">
-          <div>
+      <div class="form-inline">
+        <div>
+          <%= link_to "All-time Finishers",
+                      best_efforts_organization_course_group_path(@presenter.organization, @presenter.course_group),
+                      class: "btn btn-primary" %>
+          <% if current_user&.authorized_to_edit?(@presenter.course_group) %>
             <%= course_group_actions_dropdown_menu(@presenter) %>
-          </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </aside>

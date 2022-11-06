@@ -10,7 +10,7 @@
           <h1><strong>New Course Group</strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @course_group.organization.name, organization_path(@course_group.organization, display_style: :course_groups) %></li>
+            <li class="breadcrumb-item"><%= link_to @course_group.organization.name, organization_path(@course_group.organization, display_style: :courses) %></li>
             <li class="breadcrumb-item active">New</li>
           </ul>
         </div>

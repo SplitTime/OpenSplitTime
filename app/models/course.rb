@@ -15,6 +15,8 @@ class Course < ApplicationRecord
   has_paper_trail
 
   belongs_to :organization
+  has_many :course_group_courses, dependent: :restrict_with_error
+  has_many :course_groups, through: :course_group_courses, dependent: :restrict_with_error
   has_many :events, dependent: :restrict_with_error
   has_many :splits, dependent: :destroy
   has_one_attached :gpx

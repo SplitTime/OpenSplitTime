@@ -13,8 +13,8 @@
           <h1><strong><%= "#{@presenter.organization.name} Course Group: #{@presenter.name}" %></strong></h1>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :course_groups) %></li>
-            <li class="breadcrumb-item"><%= link_to "Course Groups", organization_path(@presenter.organization, display_style: :course_groups) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item"><%= link_to "Course Groups", organization_path(@presenter.organization, display_style: :courses) %></li>
             <li class="breadcrumb-item active"><%= @presenter.name %></li>
           </ul>
         </div>

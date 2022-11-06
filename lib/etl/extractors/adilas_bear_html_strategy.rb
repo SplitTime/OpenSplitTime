@@ -35,56 +35,70 @@ module ETL
       end
 
       def bib_and_name
-        runner_info.xpath("tr[2]/td[2]").text.squish
+        @bib_and_name ||= runner_info_card.xpath("div/span").text.squish
       end
 
       def gender
-        bio.split.second
-      end
-
-      def age
         bio.split.fourth
       end
 
+      def age
+        bio.split.third
+      end
+
       def city
-        bio.split(":").last.split(", ").first
+        bio.split.first.gsub(",", "")
       end
 
       def state_code
-        bio.split(":").last.split(", ").last
+        bio.split.second
       end
 
       def bio
-        runner_info.xpath("tr[4]/td[2]").text.squish
+        @bio ||= runner_info_card.css(".runner-stats").text.squish
       end
 
-      def runner_info
-        html.search('[text()*="Runner Information"]')&.first&.parent&.parent&.parent
+      def runner_info_card
+        @runner_info_card ||= runner_info_container.css(".card")[0]
+      end
+
+      def runner_info_container
+        @runner_info_container ||= html.search('[text()*="Runner Information"]')&.first&.parent&.parent&.parent
       end
 
       def times
-        times_table.xpath("tr")[2..-1].map { |tr| times_from_tr(tr) }.to_h
+        times_card.css(".row").each_slice(2).map { |row| times_from_row(row) }.to_h
       end
 
       def dnf?
-        records_table.text.include?("DNF")
+        records_card.text.include?("DNF")
       end
 
-      def times_table
-        html.search('[text()*="Leg Length"]')&.first&.parent&.parent&.parent
+      def times_card
+        runner_info_container.css(".card")[-1]
       end
 
-      def records_table
-        html.search('[text()*="Aid Station Records"]')&.first&.parent&.parent&.parent
+      def records_card
+        runner_info_container.css(".card")[-2]
       end
 
-      def times_from_tr(tr)
-        cells = tr.xpath("td").map { |td| td.text.squish }
-        [cells[0].split(":").first.gsub(/\D/, "").to_i, [cells[1..2].join(" "), cells[3..4].join(" ")]]
+      def times_from_row(row)
+        raw_leg = row.first.css("span").first.text
+        raw_time_info = row.second.css("span").map(&:text)
+
+        index_key = raw_leg.split(":").first.gsub(/\D/, "").to_i
+        absolute_time_in = [raw_time_info[1], raw_time_info[0]].join(" ")
+        absolute_time_out = [raw_time_info[3], raw_time_info[2]].join(" ")
+
+        [index_key, [absolute_time_in, absolute_time_out]]
       end
 
       def validate_setup
-        errors << missing_table_error unless times_table.present? && runner_info.present? && records_table.present?
+        errors << missing_table_error unless
+          runner_info_container.present? &&
+          runner_info_card.present? &&
+          times_card.present? &&
+          records_card.present?
       end
     end
   end

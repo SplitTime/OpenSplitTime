@@ -33,7 +33,7 @@ namespace :pull_event do
 
     puts "Processing #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')}\n"
     (begin_id..end_id).each do |adilas_id|
-      source_uri = "https://www.adilas.biz/bear100/runner_details.cfm?id=#{adilas_id}"
+      source_uri = "https://data0.adilas.biz//bear100/runner_details.cfm?id=#{adilas_id}"
       Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, :adilas_bear_times)
       Rake::Task["pull_event:from_uri"].reenable
     end

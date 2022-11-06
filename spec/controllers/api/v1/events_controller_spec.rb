@@ -295,7 +295,7 @@ RSpec.describe Api::V1::EventsController do
             Net::HTTP.get(URI(url))
           end
         end
-        let(:url) { "https://www.adilas.biz/bear100/runner_details.cfm?id=500" }
+        let(:url) { "https://data0.adilas.biz//bear100/runner_details.cfm?id=500" }
 
         it "creates an effort and split_times" do
           expect { make_request }.to change { event.efforts.count }.by(1)

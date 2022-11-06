@@ -25,6 +25,18 @@ class CourseGroupPolicy < ApplicationPolicy
   end
 
   def create?
-    course_group.organization && user.authorized_to_edit?(course_group.organization)
+    new?
+  end
+
+  def edit?
+    new?
+  end
+
+  def update?
+    new?
+  end
+
+  def destroy?
+    new?
   end
 end

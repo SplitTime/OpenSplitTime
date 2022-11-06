@@ -13,7 +13,7 @@ RSpec.describe ::ETL::Extractors::AdilasBearHTMLStrategy do
 
   describe "#extract" do
     context "when complete and valid HTML data is provided" do
-      let(:url) { "https://www.adilas.biz/bear100/runner_details.cfm?id=314" }
+      let(:url) { "https://data0.adilas.biz//bear100/runner_details.cfm?id=314" }
       let(:attributes) { {full_name: "Kaci Lickteig", bib_number: "1", gender: "F", age: "30", city: "Omaha", state_code: "NE", times: times, dnf: false} }
       let(:times) do
         {0 => ["9/23/2016 6:00:00 am", "9/23/2016 7:45:30 am"],
@@ -38,7 +38,7 @@ RSpec.describe ::ETL::Extractors::AdilasBearHTMLStrategy do
     end
 
     context "when incomplete but valid HTML data is provided" do
-      let(:url) { "https://www.adilas.biz/bear100/runner_details.cfm?id=500" }
+      let(:url) { "https://data0.adilas.biz//bear100/runner_details.cfm?id=500" }
       let(:attributes) { {full_name: "Linda McFadden", bib_number: "187", gender: "F", age: "54", city: "Modesto", state_code: "CA", times: times, dnf: true} }
       let(:times) do
         {0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],

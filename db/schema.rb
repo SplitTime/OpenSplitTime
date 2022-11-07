@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_05_025926) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_07_005721) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -698,7 +698,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_05_025926) do
       es.begin_time,
       es.elapsed_seconds,
       eg.home_time_zone,
-      ev.course_id,
+      es.course_id,
       (ev.laps_required <> 1) AS multiple_laps,
       (e.completed_laps >= ev.laps_required) AS finished,
       ((es.begin_split_kind = 0) AND (es.end_split_kind = 1)) AS full_course

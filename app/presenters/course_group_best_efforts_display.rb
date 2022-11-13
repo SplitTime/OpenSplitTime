@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BestCourseGroupEffortsDisplay < BasePresenter
+class CourseGroupBestEffortsDisplay < BasePresenter
   DEFAULT_PER_PAGE = 50
   FIRST_PAGE = 1
 

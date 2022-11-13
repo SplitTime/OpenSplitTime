@@ -3,7 +3,12 @@
     <div class="card-body">
       <div class="row">
         <div class="col-12 col-md-8">
-          <h5 class="font-weight-bold"><%= user_export.filename.to_s %></h5>
+          <h5 class="font-weight-bold">
+            <%= user_export.filename.to_s %>
+            <% if user_export.created_at > user_export.record.reports_viewed_at %>
+            <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
+            <% end %>
+          </h5>
           <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(user_export.created_at)} ago" %></h6>
         </div>
         <div class="col-12 col-md-4 text-md-right">

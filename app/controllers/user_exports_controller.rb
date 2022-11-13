@@ -2,10 +2,10 @@
 
 class UserExportsController < ::ApplicationController
   before_action :authenticate_user!
+  after_action :set_exports_viewed_at
 
   # GET /user_exports
   def index
-    current_user.update(reports_viewed_at: ::Time.current)
     render locals: { user_exports: current_user.exports.includes(:blob).order(created_at: :desc) }
   end
 
@@ -20,5 +20,11 @@ class UserExportsController < ::ApplicationController
     end
 
     redirect_to user_exports_path
+  end
+
+  private
+
+  def set_exports_viewed_at
+    current_user.update(reports_viewed_at: ::Time.current)
   end
 end

@@ -25,6 +25,6 @@ class UserExportsController < ::ApplicationController
   private
 
   def set_exports_viewed_at
-    current_user.update(reports_viewed_at: ::Time.current)
+    current_user.update(exports_viewed_at: ::Time.current)
   end
 end

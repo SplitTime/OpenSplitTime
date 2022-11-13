@@ -1,13 +1,28 @@
 <%= turbo_frame_tag dom_id(user_report) do %>
-  <tr>
-    <td><%= user_report.id %></td>
-    <td><%= "#{time_ago_in_words(user_report.created_at)} ago" %></td>
-    <td><%= user_report.filename.to_s %></td>
-    <td><%= link_to fa_icon("download"),
-                    rails_blob_path(user_report, disposition: "attachment") %></td>
-    <td><%= link_to fa_icon("trash"),
-                    user_report_path(user_report),
-                    method: :delete,
-                    data: { confirm: "Delete this report?" } %></td>
-  </tr>
+  <div class="card bg-light mt-2">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <h5 class="font-weight-bold"><%= user_report.filename.to_s %></h5>
+          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(user_report.created_at)} ago" %></h6>
+        </div>
+        <div class="col-12 col-md-4 text-md-right">
+          <span class="mx-1">
+          <%= link_to fa_icon("download",
+                              class: "has-tooltip",
+                              data: { toggle: "tooltip", "original-title" => "Download" }),
+                      rails_blob_path(user_report, disposition: "attachment") %>
+          </span>
+          <span class="mx-1">
+          <%= link_to fa_icon("trash",
+                              class: "text-danger has-tooltip",
+                              data: { toggle: "tooltip", "original-title" => "Delete" }),
+                      user_report_path(user_report),
+                      method: :delete,
+                      data: { confirm: "Delete this report?" } %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>

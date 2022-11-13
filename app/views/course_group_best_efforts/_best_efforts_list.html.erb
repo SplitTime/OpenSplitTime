@@ -1,6 +1,6 @@
 <div data-controller="infinite-scroll"
      data-infinite-scroll-next-page-url="<%= presenter.next_page_url %>"
-     data-infinite-scroll-html-template="course_groups/best_effort_rows">
+     data-infinite-scroll-html-template="course_group_best_efforts/best_effort_segment">
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -16,14 +16,14 @@
     </tr>
     </thead>
     <tbody data-infinite-scroll-target="result">
-    <%= render "course_groups/best_effort_rows", segments: @presenter.filtered_segments %>
+    <%= render partial: "best_effort_segment", collection: @presenter.filtered_segments %>
     </tbody>
   </table>
 
   <div class="row">
     <div class="col text-center" data-infinite-scroll-target="link">
       <% if @presenter.filtered_segments_count == @presenter.per_page %>
-        <%= link_to "Show More", "#", data: {action: "infinite-scroll#loadFromClick"} %>
+        <%= link_to "Show More", "#", data: { action: "infinite-scroll#loadFromClick" } %>
       <% else %>
         <p>End of List</p>
       <% end %>

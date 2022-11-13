@@ -1,4 +1,4 @@
-<%= form_tag best_efforts_organization_course_group_path(presenter.organization, presenter.course_group), method: :get do %>
+<%= form_tag organization_course_group_best_efforts_path(presenter.organization, presenter.course_group), method: :get do %>
     <%= hidden_field_tag "filter[gender]", presenter.gender_text %>
     <div class="input-group">
       <%= text_field_tag "filter[search]",

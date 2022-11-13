@@ -15,7 +15,7 @@
       <td><%= course_group.courses.pluck(:name).join(", ") %></td>
       <td class="text-right">
         <%= link_to "All-time Finishers",
-                    best_efforts_organization_course_group_path(course_group.organization, course_group),
+                    organization_course_group_best_efforts_path(course_group.organization, course_group),
                     class: "btn btn-primary" %>
       </td>
     </tr>

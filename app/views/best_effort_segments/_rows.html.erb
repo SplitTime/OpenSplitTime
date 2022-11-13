@@ -10,6 +10,6 @@
     <% unless segment.ends_at_finish? %>
       <td class="text-center"><%= humanize_boolean(segment.finished?) %></td>
     <% end %>
-    <td class="text-right"><%= ::TimeConversion.seconds_to_hms(segment.elapsed_seconds) %></td>
+    <td class="text-right"><%= segment.elapsed_time %></td>
   </tr>
 <% end %>

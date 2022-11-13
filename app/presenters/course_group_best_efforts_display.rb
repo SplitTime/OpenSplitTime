@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BestCourseGroupEffortsDisplay < BasePresenter
+class CourseGroupBestEffortsDisplay < BasePresenter
   DEFAULT_PER_PAGE = 50
   FIRST_PAGE = 1
 
@@ -17,12 +17,15 @@ class BestCourseGroupEffortsDisplay < BasePresenter
   end
 
   def filtered_segments
-    @filtered_segments ||= ::BestEffortSegment.includes(:course)
-                                              .from(ranked_segments, :best_effort_segments)
-                                              .where(effort: filtered_efforts)
-                                              .order(:overall_rank)
-                                              .paginate(page: page, per_page: per_page, total_entries: 0)
-                                              .to_a
+    @filtered_segments ||= filtered_segments_unpaginated
+                             .paginate(page: page, per_page: per_page, total_entries: 0)
+                             .to_a
+  end
+
+  def filtered_segments_unpaginated
+    ::BestEffortSegment.from(ranked_segments, :best_effort_segments)
+                       .where(effort: filtered_efforts)
+                       .order(:overall_rank)
   end
 
   def filtered_segments_count

@@ -153,13 +153,15 @@ Rails.application.routes.draw do
   get "/events", to: redirect("event_groups")
 
   resources :import_jobs, only: [:index, :show, :new, :create, :destroy]
+  resources :user_exports, only: [:index, :destroy]
 
   resources :organizations do
     resources :course_groups, except: [:index] do
-      member do
-        get :best_efforts
+      resources :best_efforts, only: [:index], controller: "course_group_best_efforts" do
+        collection { post :export_async }
       end
     end
+
     resources :event_groups, except: [:index, :show]
 
     resources :lotteries do

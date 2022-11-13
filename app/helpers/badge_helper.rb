@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 module BadgeHelper
+  def badge_with_text(text, options = {})
+    color = options[:color] || "primary"
+    tooltip_text = options[:tooltip_text]
+    css_class_tooltip = tooltip_text.present? ? "has-tooltip" : nil
+    css_class = "badge badge-#{color} align-top #{css_class_tooltip}"
+    tooltip_data = tooltip_text.present? ? { toggle: "tooltip", "original-title" => tooltip_text } : {}
+
+    content_tag(:span,
+                text,
+                style: "font-size:0.8rem;",
+                class: css_class,
+                data: tooltip_data)
+  end
+
   def construction_status_badge(status)
     case status
     when "not_live"
@@ -17,7 +31,7 @@ module BadgeHelper
                 status.titleize,
                 style: "font-size:0.8rem;",
                 class: "badge badge-#{color} align-top has-tooltip",
-                data: {toggle: "tooltip", "original-title" => tooltip_text})
+                data: { toggle: "tooltip", "original-title" => tooltip_text })
   end
 
   def lottery_status_badge(status)
@@ -39,7 +53,7 @@ module BadgeHelper
                 status.titleize,
                 style: "font-size:0.8rem;",
                 class: "badge badge-#{color} align-top has-tooltip",
-                data: {toggle: "tooltip", "original-title" => tooltip_text})
+                data: { toggle: "tooltip", "original-title" => tooltip_text })
   end
 
   def waitlist_badge

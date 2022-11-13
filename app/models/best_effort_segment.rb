@@ -21,8 +21,8 @@ class BestEffortSegment < ::ApplicationRecord
           end_bitkey: segment.end_bitkey)
   }
 
-  def course_name
-    course.name
+  def elapsed_time
+    ::TimeConversion.seconds_to_hms(elapsed_seconds)
   end
 
   def ends_at_finish?

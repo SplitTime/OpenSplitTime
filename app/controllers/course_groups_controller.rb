@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class CourseGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :best_efforts]
+  before_action :authenticate_user!, except: [:show]
   before_action :set_course_group, except: [:new, :create]
   before_action :set_organization
-  after_action :verify_authorized, except: [:show, :best_efforts]
+  after_action :verify_authorized, except: [:show]
 
   def show
     @presenter = ::CourseGroupPresenter.new(@course_group, view_context)
@@ -53,19 +53,6 @@ class CourseGroupsController < ApplicationController
     end
 
     redirect_to organization_path(@organization, display_style: :courses)
-  end
-
-  def best_efforts
-    @presenter = BestCourseGroupEffortsDisplay.new(@course_group, view_context)
-
-    respond_to do |format|
-      format.html
-      format.json do
-        segments = @presenter.filtered_segments
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], locals: {segments: segments}) : ""
-        render json: {best_effort_segments: segments, html: html, links: {next: @presenter.next_page_url}}
-      end
-    end
   end
 
   private

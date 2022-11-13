@@ -5,7 +5,7 @@ class UserReportsController < ::ApplicationController
 
   # GET /user_reports
   def index
-    current_user.update(unviewed_reports: false)
+    current_user.update(reports_viewed_at: ::Time.current)
     render locals: { user_reports: current_user.reports.includes(:blob).order(created_at: :desc) }
   end
 

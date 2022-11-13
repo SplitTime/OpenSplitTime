@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_13_194621) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_13_202155) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -689,6 +689,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_13_194621) do
       e.age,
       e.gender,
       e.slug,
+      e.person_id,
       es.begin_split_id,
       es.begin_bitkey,
       es.begin_split_kind,

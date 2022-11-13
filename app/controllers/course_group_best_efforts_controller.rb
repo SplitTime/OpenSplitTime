@@ -35,6 +35,10 @@ class CourseGroupBestEffortsController < ApplicationController
 
   private
 
+  def params_class
+    ::CourseGroupBestEffortParameters
+  end
+
   def set_course_group
     @course_group = ::CourseGroup.friendly.find(params[:course_group_id])
   end

@@ -2,7 +2,7 @@
 
 class BestEffortSegmentParameters < BaseParameters
   def self.csv_export_attributes
-    %i[
+    %w[
       overall_rank
       gender_rank
       first_name

@@ -30,7 +30,7 @@
         <% end %>
       </div>
       <div class="col-12 col-sm-5 text-right">
-        <% if current_user.authorized_to_edit?(@presenter.organization) %>
+        <% if user_signed_in? %>
           <%= link_to_course_group_best_efforts_export_async(@presenter) %>
         <% end %>
         <%= gender_dropdown_menu(@presenter) %>

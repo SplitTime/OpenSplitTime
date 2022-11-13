@@ -12,14 +12,14 @@ class ExportAsyncJob < ApplicationJob
     params_class = "#{resource_class_name}Parameters".constantize
 
     # Get a new ActiveRecord::Relation from the sql_string
-    resources = resource_class.from("(#{sql_string}) #{resource_class_name.underscore.pluralize}")
+    resources = resource_class.from("(#{sql_string}) #{resource_class.table_name}")
     export_attributes = params_class.csv_export_attributes
 
     # Make a /tmp directory if one does not already exist
     ::FileUtils.mkdir_p(Rails.root.join("tmp"))
 
     # filename is in the form of "course_group_best_efforts-1668309553.csv"
-    filename = "#{controller_name.underscore.pluralize}-#{Time.current.to_i}.csv"
+    filename = "#{controller_name.underscore.pluralize}-#{Time.current.to_i}-#{resources.count}.csv"
     full_path = ::File.join(Rails.root.join("tmp"), filename)
     file = ::File.open(full_path, "w")
 

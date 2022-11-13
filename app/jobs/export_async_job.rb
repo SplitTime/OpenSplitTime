@@ -26,6 +26,6 @@ class ExportAsyncJob < ApplicationJob
     ::Exporter::ExportService.new(resource_class, resources, export_attributes).csv_to_file(file)
     file.close
 
-    current_user.reports.attach(:io => ::File.open(full_path), :filename => filename, :content_type => "text/csv")
+    current_user.exports.attach(:io => ::File.open(full_path), :filename => filename, :content_type => "text/csv")
   end
 end

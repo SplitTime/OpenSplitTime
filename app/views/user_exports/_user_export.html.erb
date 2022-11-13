@@ -1,23 +1,23 @@
-<%= turbo_frame_tag dom_id(user_report) do %>
+<%= turbo_frame_tag dom_id(user_export) do %>
   <div class="card bg-light mt-2">
     <div class="card-body">
       <div class="row">
         <div class="col-12 col-md-8">
-          <h5 class="font-weight-bold"><%= user_report.filename.to_s %></h5>
-          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(user_report.created_at)} ago" %></h6>
+          <h5 class="font-weight-bold"><%= user_export.filename.to_s %></h5>
+          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(user_export.created_at)} ago" %></h6>
         </div>
         <div class="col-12 col-md-4 text-md-right">
           <span class="mx-1">
           <%= link_to fa_icon("download",
                               class: "has-tooltip",
                               data: { toggle: "tooltip", "original-title" => "Download" }),
-                      rails_blob_path(user_report, disposition: "attachment") %>
+                      rails_blob_path(user_export, disposition: "attachment") %>
           </span>
           <span class="mx-1">
           <%= link_to fa_icon("trash",
                               class: "text-danger has-tooltip",
                               data: { toggle: "tooltip", "original-title" => "Delete" }),
-                      user_report_path(user_report),
+                      user_export_path(user_export),
                       method: :delete,
                       data: { confirm: "Delete this report?" } %>
           </span>

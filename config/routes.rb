@@ -153,7 +153,7 @@ Rails.application.routes.draw do
   get "/events", to: redirect("event_groups")
 
   resources :import_jobs, only: [:index, :show, :new, :create, :destroy]
-  resources :user_reports, only: [:index, :destroy]
+  resources :user_exports, only: [:index, :destroy]
 
   resources :organizations do
     resources :course_groups, except: [:index] do

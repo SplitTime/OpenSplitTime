@@ -23,8 +23,7 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   end
 
   def filtered_segments_unpaginated
-    ::BestEffortSegment.includes(:course)
-                       .from(ranked_segments, :best_effort_segments)
+    ::BestEffortSegment.from(ranked_segments, :best_effort_segments)
                        .where(effort: filtered_efforts)
                        .order(:overall_rank)
   end

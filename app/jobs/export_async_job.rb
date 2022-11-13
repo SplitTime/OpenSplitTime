@@ -9,9 +9,11 @@ class ExportAsyncJob < ApplicationJob
     current_user = ::User.find(user_id)
 
     resource_class = resource_class_name.constantize
+    params_class = "#{resource_class_name}Parameters".constantize
 
     # Get a new ActiveRecord::Relation from the sql_string
     resources = resource_class.from("(#{sql_string}) #{resource_class_name.underscore.pluralize}")
+    export_attributes = params_class.csv_export_attributes
 
     # Make a /tmp directory if one does not already exist
     ::FileUtils.mkdir_p(Rails.root.join("tmp"))
@@ -20,8 +22,8 @@ class ExportAsyncJob < ApplicationJob
     filename = "#{controller_name.underscore.pluralize}-#{Time.current.to_i}.csv"
     full_path = ::File.join(Rails.root.join("tmp"), filename)
     file = ::File.open(full_path, "w")
-    # ::ExporterService.new(resource_class, resources).csv_to_file(file)
-    file.write "This is another test, just putting some things here, to see if this works at all a second time."
+
+    ::Exporter::ExportService.new(resource_class, resources, export_attributes).csv_to_file(file)
     file.close
 
     current_user.reports.attach(:io => ::File.open(full_path), :filename => filename, :content_type => "text/csv")

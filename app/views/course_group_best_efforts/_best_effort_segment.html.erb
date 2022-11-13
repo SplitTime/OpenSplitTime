@@ -7,5 +7,5 @@
   <td><%= best_effort_segment.flexible_geolocation %></td>
   <td><%= best_effort_segment.course_name %></td>
   <td><%= best_effort_segment.year_and_lap %></td>
-  <td class="text-right"><%= ::TimeConversion.seconds_to_hms(best_effort_segment.elapsed_seconds) %></td>
+  <td class="text-right"><%= best_effort_segment.elapsed_time %></td>
 </tr>

@@ -201,7 +201,7 @@ module DropdownHelper
 
     view_object.course_groups.each do |course_group|
       item = { name: "All-time best (#{course_group.name})",
-               link: best_efforts_organization_course_group_path(view_object.organization, course_group) }
+               link: organization_course_group_best_efforts_path(view_object.organization, course_group) }
       dropdown_items << item
     end
 

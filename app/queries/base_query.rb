@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class BaseQuery
+  def self.full_sql_for_existing_scope(scope)
+    scope.connection.unprepared_statement { scope.reorder(nil).to_sql }
+  end
+
   def self.sql_safe_integer_list(array)
     array.flatten.compact.map(&:to_i).join(",")
   end

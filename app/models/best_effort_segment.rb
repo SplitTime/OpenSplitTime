@@ -20,6 +20,7 @@ class BestEffortSegment < ::ApplicationRecord
           end_split_id: segment.end_id,
           end_bitkey: segment.end_bitkey)
   }
+  scope :finish_count_subquery, -> { from(::BestEffortSegmentQuery.finish_count_subquery(self)) }
 
   def elapsed_time
     ::TimeConversion.seconds_to_hms(elapsed_seconds)

@@ -25,7 +25,7 @@ class CourseGroupBestEffortsController < ApplicationController
     authorize @organization
 
     @presenter = ::CourseGroupBestEffortsDisplay.new(@course_group, view_context)
-    sql_string = @presenter.filtered_segments_unpaginated.to_sql
+    sql_string = @presenter.filtered_segments_unpaginated.finish_count_subquery.to_sql
 
     ::ExportAsyncJob.perform_later(current_user.id, controller_name, "BestEffortSegment", sql_string)
 

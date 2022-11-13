@@ -1,0 +1,38 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: User Reports - #{@user.full_name}" %>
+<% end %>
+
+<%= turbo_stream_from @user %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>User Reports</strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to @user.full_name, user_path(@user) %></li>
+            <li class="breadcrumb-item active">User Reports</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Created</th>
+      <th>Filename</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody id="user_reports">
+    <%= render partial: "user_report", collection: user_reports %>
+    </tbody>
+  </table>
+</article>

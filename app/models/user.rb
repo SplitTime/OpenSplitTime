@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships
   has_many :import_jobs, dependent: :destroy
+  has_many_attached :reports
   has_one :avatar, class_name: "Person", dependent: :nullify
   alias_attribute :sms, :phone
   alias_attribute :http, :http_endpoint

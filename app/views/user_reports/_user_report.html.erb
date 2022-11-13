@@ -1,0 +1,13 @@
+<%= turbo_frame_tag dom_id(user_report) do %>
+  <tr>
+    <td><%= user_report.id %></td>
+    <td><%= "#{time_ago_in_words(user_report.created_at)} ago" %></td>
+    <td><%= user_report.filename.to_s %></td>
+    <td><%= link_to fa_icon("download"),
+                    rails_blob_path(user_report, disposition: "attachment") %></td>
+    <td><%= link_to fa_icon("trash"),
+                    user_report_path(user_report),
+                    method: :delete,
+                    data: { confirm: "Delete this report?" } %></td>
+  </tr>
+<% end %>

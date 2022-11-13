@@ -5,7 +5,7 @@
         <div class="col-12 col-md-8">
           <h5 class="font-weight-bold">
             <%= user_export.filename.to_s %>
-            <% if user_export.created_at > user_export.record.reports_viewed_at %>
+            <% if current_user.reports_viewed_at.nil? || user_export.created_at > current_user.reports_viewed_at %>
             <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
             <% end %>
           </h5>

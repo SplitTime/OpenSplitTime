@@ -15,6 +15,7 @@ class BestEffortSegmentParameters < BaseParameters
       course_name
       year_and_lap
       elapsed_time
+      finish_count
     ]
   end
 end

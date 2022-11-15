@@ -42,31 +42,4 @@ namespace :bulk_attach do
     elapsed_time = Time.current - start_time
     puts "\nFinished bulk_attach:filenames in #{elapsed_time} seconds"
   end
-
-  desc "For an event_group, attach photos to efforts"
-  task :photos_to_efforts, [:event_group_id, :path_prefix, :path_postfix] => :environment do |_, args|
-    event_group_id = args.event_group_id
-
-    begin
-      puts "Searching for event group id: #{event_group_id}"
-      event_group = EventGroup.friendly.find(event_group_id)
-      puts "Attaching photos for event group: #{event_group.to_param}"
-    rescue ActiveRecord::RecordNotFound
-      abort "Event group was not found"
-    end
-
-    events = Event.where(event_group_id: event_group.id)
-    efforts = Effort.where(event_id: events)
-
-    puts "Found #{efforts.size} efforts"
-
-    model = "efforts"
-    resource_ids = efforts.ids.join(",")
-    attachment_attribute = "photo"
-    path_prefix = args.path_prefix
-    key_attribute = "bib_number"
-    path_postfix = args.path_postfix
-
-    Rake::Task["bulk_attach:resources"].invoke(model, resource_ids, attachment_attribute, path_prefix, key_attribute, path_postfix)
-  end
 end

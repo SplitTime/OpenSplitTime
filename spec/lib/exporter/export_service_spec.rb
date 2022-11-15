@@ -34,11 +34,54 @@ RSpec.describe ::Exporter::ExportService do
       end
     end
 
-    context "when provided with a large number of resources" do
+    context "when one or more commas exist within resource attributes" do
+      before { organizations(:dirty_30_running).update(name: "Dirty 30, Running") }
+
+      it "exports resource headers to the file" do
+        subject.csv_to_file(file)
+        file.close
+
+        expect(resulting_lines.first.chomp).to eq(expected_header)
+      end
+
+      it "adds escaped quotation marks where needed" do
+        subject.csv_to_file(file)
+        file.close
+
+        expect(resulting_lines.count).to eq(5)
+        expect(resulting_lines.second.chomp).to eq("\"Dirty 30, Running\",dirty-30-running,false")
+        expect(resulting_lines.last.chomp).to eq("Running Up For Air,running-up-for-air,false")
+      end
+    end
+
+    context "when one or non-ascii characters exist within resource attributes" do
+      before { organizations(:dirty_30_running).update(name: "Dirty 30 Ruñning") }
+
+      it "exports resource headers to the file" do
+        subject.csv_to_file(file)
+        file.close
+
+        expect(resulting_lines.first.chomp).to eq(expected_header)
+      end
+
+      it "adds escaped quotation marks where needed" do
+        subject.csv_to_file(file)
+        file.close
+
+        expect(resulting_lines.count).to eq(5)
+        expect(resulting_lines.second.chomp).to eq("Dirty 30 Ruñning,dirty-30-running,false")
+        expect(resulting_lines.last.chomp).to eq("Running Up For Air,running-up-for-air,false")
+      end
+    end
+
+    context "when provided with a number of resources that is greater than the batch size" do
       let(:resource_class) { ::Effort }
       let(:resources) { ::Effort.order(:last_name) }
       let(:export_attributes) { [:id, :first_name, :last_name, :state_code] }
       let(:expected_header) { "Id,First name,Last name,State code" }
+      let(:stubbed_batch_size) { 25 }
+
+      before { stub_const("#{described_class}::BATCH_SIZE", stubbed_batch_size) }
 
       it "exports resource headers to the file" do
         subject.csv_to_file(file)
@@ -51,6 +94,7 @@ RSpec.describe ::Exporter::ExportService do
         subject.csv_to_file(file)
         file.close
 
+        expect(::Effort.count).to be > stubbed_batch_size
         expect(resulting_lines.count).to eq(::Effort.count + 1)
         expect(resulting_lines.second.chomp).to eq("121,Susanna,Abshire,CO")
         expect(resulting_lines.last.chomp).to eq("4246,Omer,Yundt,CO")

@@ -29,7 +29,7 @@ class CourseGroupBestEffortsController < ApplicationController
 
     ::ExportAsyncJob.perform_later(current_user.id, controller_name, "BestEffortSegment", sql_string)
 
-    flash[:success] = "Export in progress; your report will be available on the Reports page when finished."
+    flash[:success] = "Export in progress; your file will be available on the Exports page when finished."
     redirect_to request.referrer || user_exports_path
   end
 

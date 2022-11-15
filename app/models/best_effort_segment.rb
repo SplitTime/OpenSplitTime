@@ -38,5 +38,5 @@ class BestEffortSegment < ::ApplicationRecord
     lap_string = multiple_laps? ? "Lap #{lap}" : nil
     [begin_time_local.year, lap_string].compact.join(" / ")
   end
-  alias_method year year_and_lap
+  alias year year_and_lap
 end

@@ -1,15 +1,20 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: New event" %>
+  <% "OpenSplitTime: Setup Event Group - #{@presenter.event_group_name} - New Event" %>
 <% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
 
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>New Event</strong></h1>
+          <h1><strong><%= @presenter.event_group_name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item active">New Event</li>
+            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization_name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event_group_name %></li>
+            <li class="breadcrumb-item active">Setup</li>
           </ul>
         </div>
       </div>
@@ -18,5 +23,5 @@
 </header>
 
 <article class="ost-article container">
-  <%= render 'form' %>
+  <%= render "form", presenter: @presenter, event: @presenter.event %>
 </article>

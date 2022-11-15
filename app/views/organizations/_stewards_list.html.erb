@@ -4,6 +4,7 @@
     <th>Name</th>
     <th>Email</th>
     <th>Steward since</th>
+    <th>Level</th>
     <th></th>
   </tr>
   </thead>
@@ -13,6 +14,12 @@
         <td><%= stewardship.full_name %></td>
         <td><%= stewardship.email %></td>
         <td><%= l(stewardship.created_at, format: :full_with_weekday) %></td>
+        <td>
+          <%= form_for(stewardship) do |f| %>
+            <%= f.select(:level, Stewardship.levels.keys.map { |level| [level.titleize, level] }, {}, class: "dropdown-select-field") %>
+            <%= f.submit 'Confirm', :class => 'btn btn-primary' %>
+          <% end %>
+        </td>
         <td>
           <%= link_to "Remove",
                       stewardship_path(stewardship),

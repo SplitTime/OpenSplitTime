@@ -1,0 +1,115 @@
+<div data-controller="roster">
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col form-inline">
+          <div>
+            <%= link_to fa_icon("plus", text: "Add"), new_effort_path(event_id: presenter.first_event.id), id: "add-entrant", class: "btn btn-success" %>
+            <div class="btn-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-toggle="dropdown" aria-expanded="false">
+                Actions
+              </button>
+              <div class="dropdown-menu">
+                <%= link_to "Reconcile", reconcile_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                <%= link_to "Assign Bibs", assign_bibs_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                <%= link_to "Manage Start Times", manage_start_times_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                <div class="dropdown-divider"></div>
+                <%= link_to "Export", efforts_path(filter: { event_id: @presenter.events.ids }, format: :csv), class: "dropdown-item" %>
+                <div class="dropdown-divider"></div>
+                <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-event-group-#{@presenter.event_group.id}", class: "dropdown-item text-danger") %>
+              </div>
+            </div>
+            <%= strong_confirm_modal(path_on_confirm: delete_all_efforts_event_group_path(@presenter.event_group),
+                                     message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
+                                     required_pattern: "DELETE ALL ENTRANTS",
+                                     strong_confirm_id: "strong-confirm-entrants-event-group-#{@presenter.event_group.id}") %>
+
+            <%= setup_entrants_import_dropdown(@presenter) %>
+            <% if @presenter.event_group.organization.lotteries.exists? %>
+              <%= link_to "Sync with Lottery", link_lotteries_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= render "effort_lookup_setup" %>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <article class="ost-article container">
+    <% if presenter.unreconciled_efforts.present? %>
+      <div class="row">
+        <div class="col">
+          <div class="card border-primary">
+            <h4 class="card-header bg-primary text-white"><strong>Note</strong></h4>
+            <div class="card-body">
+              <h5 class="card-text">
+                Unreconciled efforts exist.
+                Please <%= link_to "reconcile", reconcile_event_group_path(presenter.event_group) %> when you have a
+                moment.
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+    <% end %>
+
+    <% if presenter.filtered_efforts.exists? %>
+      <div class="row">
+        <div class="col-xs-8">
+          <h4><%= filter_count_text(presenter.filtered_efforts.total_entries, presenter.event_group_efforts_count, "entrant") %></h4>
+        </div>
+        <div class="col-xs-4 text-right">
+        </div>
+      </div>
+
+      <table class="table table-centered table-fixed-sm table-striped">
+        <thead>
+        <tr>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", presenter.existing_sort) %></th>
+          <% if presenter.multiple_events? %>
+            <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", presenter.existing_sort) %></th>
+          <% end %>
+          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", presenter.existing_sort) %></th>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Category", "gender,age", presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
+          <th>Scheduled Start</th>
+          <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", presenter.existing_sort) %></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% presenter.filtered_efforts.each do |effort| %>
+          <tr>
+            <td class="text-center">
+              <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
+            </td>
+            <% if presenter.multiple_events? %>
+              <td><%= effort.event.guaranteed_short_name %></td>
+            <% end %>
+            <td><%= effort.full_name %></td>
+            <td class="text-center"><%= effort.bib_number %></td>
+            <td><%= effort.bio_historic %></td>
+            <td><%= effort.flexible_geolocation %></td>
+            <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
+            <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
+            <td class="text-center">
+              <%= link_to_effort_edit(effort) %>
+              <%= link_to_effort_delete(effort) %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    <% elsif presenter.event_group_efforts.exists? %>
+      <h5>No results match that search.</h5>
+    <% else %>
+      <h5>No entrants have been added yet.</h5>
+    <% end %>
+  </article>
+</div>

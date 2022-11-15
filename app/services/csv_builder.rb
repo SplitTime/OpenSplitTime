@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "csv"
+
 class CsvBuilder
   def initialize(model_class, resources)
     @model_class = model_class
@@ -9,7 +11,7 @@ class CsvBuilder
   def full_string
     return error_message if error_message.present?
 
-    CSV.generate do |csv|
+    ::CSV.generate do |csv|
       csv << headers
       resources.each { |resource| csv << serialize_resource(resource) }
     end
@@ -26,7 +28,7 @@ class CsvBuilder
   def serialize_resource(resource)
     export_attributes.map do |attribute|
       value = resource.send(attribute)
-      value.is_a?(Array) ? value.join(' ') : value
+      value.is_a?(Array) ? value.join(" ") : value
     end
   end
 
@@ -43,7 +45,8 @@ class CsvBuilder
   end
 
   def error_message
-    return 'No model class was provided' unless model_class.present?
+    return "No model class was provided" unless model_class.present?
+
     "No csv attributes defined for #{model_class}" unless export_attributes.present?
   end
 end

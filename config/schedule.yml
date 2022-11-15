@@ -1,3 +1,8 @@
+sweep_blobs:
+  cron: "0 8 * * *"
+  class: "SweepOrphanedBlobsJob"
+  queue: default
+
 sweep_subscriptions:
   cron: "0 7 1 * *"
   class: "SweepSubscriptionsJob"

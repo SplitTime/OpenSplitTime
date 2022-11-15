@@ -40,7 +40,6 @@
                     liveEntry.header.init();
                     liveEntry.liveEntryForm.init();
                     liveEntry.timeRowsTable.init();
-                    liveEntry.pusher.init();
                 });
         },
 
@@ -131,69 +130,6 @@
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
-            liveEntry.PopulatingFromRow = false;
-        },
-
-        pusher: {
-            init: function () {
-                if (!liveEntry.currentEventGroupId) {
-                    // Just for safety, abort this init if there is no event data
-                    // and avoid breaking execution
-                    return;
-                }
-                // Listen to push notifications
-
-                var liveTimesPusherKey = $('#js-live-times-pusher').data('key');
-                var pusher = new Pusher(liveTimesPusherKey);
-                var channel = pusher.subscribe('raw-times-available.event_group.' + liveEntry.currentEventGroupId);
-
-                channel.bind('pusher:subscription_succeeded', function () {
-                    // Force the server to trigger a push for initial display
-                    liveEntry.triggerRawTimesPush();
-                });
-
-                channel.bind('update', function (data) {
-                    // New value pushed from the server
-                    // Display updated number of new live times on Pull Times button
-                    var unconsideredCount = (typeof data.unconsidered === 'number') ? data.unconsidered : 0;
-                    var unmatchedCount = (typeof data.unmatched === 'number') ? data.unmatched : 0;
-                    liveEntry.pusher.displayNewCount(unconsideredCount, unmatchedCount);
-                });
-
-                $(document).on('click', '[href="#js-pull-times"]', function() {
-                    
-                });
-            },
-
-            displayNewCount: function (unconsideredCount, unmatchedCount) {
-                var unconsideredText = (unconsideredCount > 0) ? unconsideredCount : '';
-                var unmatchedText = (unmatchedCount > 0) ? unmatchedCount : '';
-                $('#js-pull-times-count').text(unconsideredText);
-                $('#js-force-pull-times-count').text(unmatchedText);
-
-                var notifier = liveEntry.pusher.notification;
-                if (unconsideredCount > 0) {
-                    if (!notifier || !notifier.$ele.is(':visible') || notifier.$ele.data('closing')) {
-                        liveEntry.pusher.notification = $.notify({
-                            icon: 'fas fa-stopwatch',
-                            title:'New Live Times Available',
-                            message: 'Click to pull times.',
-                            url: '#js-pull-times',
-                            target: '_self'
-                        }, {delay: 0});
-                    }
-                } else if (notifier) {
-                    notifier.close();
-                }
-            }
-        },
-
-        triggerRawTimesPush: function () {
-            var endpoint = '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/trigger_raw_times_push';
-            $.ajax({
-                url: endpoint,
-                cache: false
-            });
         },
 
         /**
@@ -701,15 +637,6 @@
              * Adds dataStatus and splitTimeExists to rawTimes in the form.
              */
             enrichTimeData: function () {
-                if (liveEntry.PopulatingFromRow) {
-                    // Do nothing.
-                    // This fn is being called from several places based on different actions.
-                    // None of them are needed if the form is being populated by the system from a
-                    // local row's data (i.e., if a user clicks on Edit icon in a Local Data Workspace row).
-                    // PopulatingFromRow will be on while the form is populated by that action
-                    // and turned off when that's done.
-                    return $.Deferred().resolve();
-                }
                 var bibNumber = $('#js-bib-number').val();
                 var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
                 var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -742,7 +669,7 @@
                     var outRawTime = liveEntry.currentRawTime('out');
 
                     if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-                        $('#js-lap-number').val(rawTime.lap);
+                        $('#js-lap-number').val(rawTime.enteredLap);
                         $('#js-lap-number:focus').select();
                     }
 
@@ -768,7 +695,8 @@
                                 eventGroupId: liveEntry.currentEventGroupId,
                                 bibNumber: $('#js-bib-number').val(),
                                 enteredTime: $timeField.val(),
-                                lap: $('#js-lap-number').val(),
+                                militaryTime: $timeField.val(),
+                                enteredLap: $('#js-lap-number').val(),
                                 splitName: liveEntry.currentStation().title,
                                 subSplitKind: kind,
                                 stoppedHere: $('#js-dropped').prop('checked'),
@@ -795,9 +723,9 @@
 
                 $('#js-unique-id').val(rawTimeRow.uniqueId);
                 $('#js-bib-number').val(rawTime.bibNumber).focus();
-                $('#js-lap-number').val(rawTime.lap);
-                $inTimeField.val(inRawTime.enteredTime);
-                $outTimeField.val(outRawTime.enteredTime);
+                $('#js-lap-number').val(rawTime.enteredLap);
+                $inTimeField.val(inRawTime.militaryTime);
+                $outTimeField.val(outRawTime.militaryTime);
                 $('#js-pacer-in').prop('checked', inRawTime.withPacer);
                 $('#js-pacer-out').prop('checked', outRawTime.withPacer);
                 $('#js-dropped').prop('checked', inRawTime.stoppedHere || outRawTime.stoppedHere).change();
@@ -1087,9 +1015,9 @@
                         <td class="event-name js-event-name group-only">' + event.name + '</td>\
                         <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
                         <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + rawTime.lap + '</td>\
-                        <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.enteredTime || '') + timeInIcon + '</td>\
-                        <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.enteredTime || '') + timeOutIcon + '</td>\
+                        <td class="lap-number js-lap-number lap-only">' + rawTime.enteredLap + '</td>\
+                        <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.militaryTime || '') + timeInIcon + '</td>\
+                        <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.militaryTime || '') + timeOutIcon + '</td>\
                         <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
                         <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
                         <td class="row-edit-btns">\
@@ -1125,7 +1053,7 @@
                 var callback = function () {
                     liveEntry.timeRowsTable.toggleDiscardAll(false);
                 };
-                document.addEventListener("turbolinks:load", function () {
+                document.addEventListener("turbo:load", function () {
                     $deleteWarning = $('#js-delete-all-warning').hide().detach();
                 });
                 return function (canDelete) {
@@ -1164,7 +1092,6 @@
             timeRowControls: function () {
 
                 $(document).on('click', '.js-edit-effort', function (event) {
-                    liveEntry.PopulatingFromRow = true;
                     event.preventDefault();
                     var $row = $(this).closest('tr');
                     var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
@@ -1172,7 +1099,6 @@
                     $row.addClass('bg-highlight');
                     liveEntry.liveEntryForm.buttonUpdateMode();
                     liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
-                    liveEntry.PopulatingFromRow = false;
                     liveEntry.liveEntryForm.enrichTimeData();
                     liveEntry.liveEntryForm.updateEffortInfo();
                 });
@@ -1271,7 +1197,8 @@
                         return {
                             bibNumber: rawTime.bibNumber,
                             enteredTime: rawTime.enteredTime,
-                            lap: rawTime.lap,
+                            militaryTime: rawTime.militaryTime,
+                            lap: rawTime.enteredLap,
                             splitName: rawTime.splitName,
                             subSplitKind: rawTime.subSplitKind,
                             stoppedHere: rawTime.stoppedHere
@@ -1322,7 +1249,7 @@
         } // END populateRows
     }; // END liveEntry
 
-    document.addEventListener("turbolinks:load", function () {
+    document.addEventListener("turbo:load", function () {
         if (Rails.$('.event_groups.live_entry')[0] === document.body) {
             liveEntry.init();
         }

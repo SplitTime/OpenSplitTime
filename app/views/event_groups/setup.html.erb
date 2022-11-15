@@ -1,0 +1,71 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Setup Event Group - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event_group.name %></li>
+            <li class="breadcrumb-item active">Setup</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= setup_view_tabs(@presenter) %>
+  </div>
+</header>
+
+<% case @presenter.display_style %>
+<% when "events" %>
+  <article class="ost-article container">
+    <aside class="ost-toolbar">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <% if current_user&.authorized_fully?(@presenter.event_group) %>
+              <%= link_to fa_icon("plus", text: "Add an event"), new_event_group_event_path(@presenter.event_group), id: "add-event", class: "btn btn-success" %>
+              <%= event_group_actions_dropdown(@presenter) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <% if @presenter.events.present? %>
+      <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
+    <% else %>
+      <h4>This event group has no events yet.</h4>
+    <% end %>
+
+    <% if @presenter.candidate_events.present? %>
+      <hr>
+      <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
+      <%= render "events/setup_events", presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: "join" %>
+    <% end %>
+  </article>
+
+<% when "entrants" %>
+  <article class="ost-article container">
+    <% if @presenter.first_event.present? %>
+      <%= render "entrants_roster", presenter: @presenter %>
+    <% else %>
+      <h4>You will need to add an event before adding entrants.</h4>
+    <% end %>
+  </article>
+
+<% when "partners" %>
+  <article class="ost-article container">
+    <%= render "partner_list", presenter: @presenter %>
+  </article>
+<% end %>

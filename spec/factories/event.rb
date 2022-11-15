@@ -2,13 +2,13 @@
 
 FactoryBot.define do
   factory :event do
-    start_time { FFaker::Time.datetime }
+    scheduled_start_time { FFaker::Time.datetime }
     laps_required { 1 }
     course
     event_group
 
     trait :with_short_name do
-      short_name { "#{rand(25..200)}#{%w(-mile -kilo k M).sample}" }
+      short_name { "#{rand(25..200)}#{%w[-mile -kilo k M].sample}" }
     end
 
     transient { without_slug { false } }

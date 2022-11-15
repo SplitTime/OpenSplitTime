@@ -10,13 +10,13 @@ module Interactors
 
     def initialize(args)
       ArgsValidator.validate(params: args,
-                             required: [:raw_time_rows, :event_group, :force_submit, :mark_as_pulled],
-                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_pulled, :current_user_id],
+                             required: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed],
+                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed, :current_user_id],
                              class: self.class)
       @raw_time_rows = args[:raw_time_rows]
       @event_group = args[:event_group]
       @force_submit = args[:force_submit]
-      @mark_as_pulled = args[:mark_as_pulled]
+      @mark_as_reviewed = args[:mark_as_reviewed]
       @current_user_id = args[:current_user_id]
       @times_container = SegmentTimesContainer.new(calc_model: :stats)
       @problem_rows = []
@@ -39,17 +39,18 @@ module Interactors
       end
       send_notifications if event_group.permit_notifications?
 
-      Interactors::Response.new(errors, '', resources)
+      Interactors::Response.new(errors, "", resources)
     end
 
     private
 
-    attr_reader :raw_time_rows, :event_group, :force_submit, :mark_as_pulled, :current_user_id, :times_container, :problem_rows,
+    attr_reader :raw_time_rows, :event_group, :force_submit, :mark_as_reviewed, :current_user_id, :times_container, :problem_rows,
                 :upserted_split_times, :errors
 
     def append_effort(rtr)
       raw_time = rtr.raw_times.first
       return unless raw_time
+
       raw_bib = raw_time.bib_number
       integer_bib = raw_bib =~ /\D/ ? nil : raw_bib.to_i
       rtr.effort ||= indexed_efforts[integer_bib]
@@ -58,7 +59,7 @@ module Interactors
     def enrich_raw_time_row(rtr)
       if rtr.effort
         EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: rtr, times_container: times_container)
-        rtr.errors << 'bad or duplicate time' unless (rtr.clean? || force_submit)
+        rtr.errors << "bad or duplicate time" unless rtr.clean? || force_submit
       else
         VerifyRawTimeRow.perform(rtr, times_container: times_container) # Adds relevant errors to the raw_time_row
       end
@@ -68,10 +69,8 @@ module Interactors
       rtr.raw_times.select!(&:has_time_data?) # Throw away empty raw_times
       rtr.raw_times.each do |raw_time|
         raw_time.event_group_id = event_group.id
-        raw_time.assign_attributes(pulled_by: current_user_id, pulled_at: Time.current) if mark_as_pulled
-        unless raw_time.save
-          rtr.errors << resource_error_object(raw_time)
-        end
+        raw_time.assign_attributes(reviewed_by: current_user_id, reviewed_at: Time.current) if mark_as_reviewed
+        rtr.errors << resource_error_object(raw_time) unless raw_time.save
       end
     end
 
@@ -86,7 +85,7 @@ module Interactors
 
     def indexed_efforts
       @indexed_efforts ||= Effort.where(event: event_group.events, bib_number: bib_numbers)
-                               .includes(event: :splits, split_times: :split).index_by(&:bib_number)
+          .includes(event: :splits, split_times: :split).index_by(&:bib_number)
     end
 
     def bib_numbers

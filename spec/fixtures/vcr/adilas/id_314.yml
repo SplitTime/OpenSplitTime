@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.adilas.biz/bear100/runner_details.cfm?id=314
+    uri: https://data0.adilas.biz//bear100/runner_details.cfm?id=314
     body:
       encoding: US-ASCII
       string: ''
@@ -18,378 +18,580 @@ http_interactions:
       code: 200
       message: OK
     headers:
+      Date:
+      - Sun, 06 Nov 2022 17:21:46 GMT
       Content-Type:
       - text/html;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - CFID=10304777; Expires=Tue, 29-Oct-2052 17:21:46 GMT; Path=/; Secure; HttpOnly
+      - CFTOKEN=352185a9f10233ac-0BA047BD-B048-7414-5995E349D5700FCC; Expires=Tue,
+        29-Oct-2052 17:21:46 GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=2D6FA011EEE131B97FFB8169E110FB4B.cfusion; Path=/; Secure; HttpOnly
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server-Timing:
+      - cf-q-config;dur=6.0000020312145e-06
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=EG9uiOxGLTPu9AzKEhtN7SomalwbgiFXWpD%2FGBK5qe36xN7Kq7gFA3PQlft8HQvux8yiE0eiCepsd9XbfNSv3m5SA5Mc7nxknxTjb4G4GPzjGMTKzrr7Shj3e5QTHCUodOA%3D"}],"group":"cf-nel","max_age":604800}'
+      Nel:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Server:
-      - Microsoft-IIS/7.5
-      X-Powered-By:
-      - ASP.NET
-      Date:
-      - Wed, 14 Mar 2018 22:23:24 GMT
-      Content-Length:
-      - '30541'
+      - cloudflare
+      Cf-Ray:
+      - 765f81e90a58fa1e-SJC
     body:
-      encoding: UTF-8
-      string: " \r\n\r\n\r\n<script type=\"text/javascript\">\r\n\t<!--\r\n\t// pass
-        in the page to go to as a string.\r\n\tfunction goToPage(pageSelection)\r\n\t{\r\n\t
-        \  window.location.href = pageSelection;\r\n\t}\r\n\t//-->\r\n</script>\r\n\r\n<!DOCTYPE
-        html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html
-        xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\"
-        content=\"text/html; charset=iso-8859-1\" />\r\n\r\n\r\n\r\n<title>Bear 100
-        - Bib1 - Kaci Lickteig</title>\r\n\r\n\r\n<style type=\"text/css\">\r\n\t<!--\r\n\tbody\r\n\t{\r\n\t\tfont-family:\"Times
-        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t\tbackground-color:#EEEEEE;\r\n\t\tbackground-image:url(../top_secret/images/corp768_AF12F389C8/bear_100_leaf.png);\r\n\t\tbackground-repeat:no-repeat;\r\n\t\tmargin:10px;\r\n\t}\r\n\t.basicText\r\n\t{\r\n\t\tfont-family:\"Times
-        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.timeSlotBasicText\r\n\t{\r\n\t\tfont-family:\"Times
-        New Roman\", Times, serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.imgText\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.imgText
-        a\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.imgText a:hover\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t}\r\n\t.footerText\r\n\t{\r\n\t\tfont-family:\"Times
-        New Roman\", Times, serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#718359;\r\n\t}\r\n\t.headingText\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#000000;\r\n\t}\r\n\t.titleText\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#8E3A30;\r\n\t}\r\n\t.callOutRow\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#C2C74F;\r\n\t\tbackground-color:#666666;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.callOutRowOther\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.messageErrorText\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.flagText\r\n\t{\r\n\t\tfont-family:Wingdings,
-        Webdings;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t}\r\n\t.flagText2\r\n\t{\r\n\t\tfont-family:Wingdings,
-        Webdings;\r\n\t\tfont-size:14px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#666666;\r\n\t\tbackground-color:#DDDDFF;\r\n\t}\r\n\t.flagText3\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:normal;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#FFD45C;\r\n\t\tbackground-color:#000000;\r\n\t}\r\n\t.messageText\r\n\t{\r\n\t\tfont-family:Arial,
-        Helvetica, sans-serif;\r\n\t\tfont-size:12px;\r\n\t\tfont-weight:bold;\r\n\t\tfont-style:normal;\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#C2C74F;\r\n\t\tbackground-color:#666666;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.tableRow1\r\n\t{\r\n\t\tbackground-color:#FFFFFF;\r\n\t}\r\n\t.tableRow2\r\n\t{\r\n\t\tbackground-color:#DDDDFF;\r\n\t}\r\n\t.legendText\r\n\t{\r\n\t\tbackground-color:#DDDDFF;\r\n\t\tpadding-left:10px;\r\n\t\tpadding-right:10px;\r\n\t}\r\n\t.basicText
-        a, \r\n\t.timeSlotBasicText a, \r\n\t.footerText a, \r\n\t.headingText a,
-        \r\n\t.titleText a, \r\n\t.callOutRow a, \r\n\t.callOutRowOther a, \r\n\t.messageErrorText
-        a, \r\n\t.flagText a, \r\n\t.flagText2 a, \r\n\t.flagText3 a, \r\n\t.messageText
-        a, \r\n\t.legendText a\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#718359;\r\n\t\tbackground-color:transparent;\r\n\t}\r\n\t.basicText
-        a:hover, \r\n\t.timeSlotBasicText a:hover, \r\n\t.footerText a:hover, \r\n\t.headingText
-        a:hover, \r\n\t.titleText a:hover, \r\n\t.callOutRow a:hover, \r\n\t.callOutRowOther
-        a:hover, \r\n\t.messageErrorText a:hover, \r\n\t.flagText a:hover, \r\n\t.flagText2
-        a:hover, \r\n\t.flagText3 a:hover, \r\n\t.messageText a:hover, \r\n\t.legendText
-        a:hover\r\n\t{\r\n\t\ttext-decoration:none;\r\n\t\tcolor:#464646;\r\n\t\tbackground-color:#EEEEEE;\r\n\t}\r\n\t#mainSearch\r\n\t{\r\n\t\tdisplay:none;\r\n\t}\r\n\t\r\n\t-->\r\n</style>\r\n\r\n</head>\r\n<body>\r\n\r\n\r\n\r\n<table
-        width=\"95%\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\r\n\t<tr>\r\n\t\t<td
-        valign=\"top\" class=\"imgText\" width=\"100\">\r\n\t\t\t<a href=\"index.cfm\"><img
-        src=\"../top_secret/images/logos/bear_100.gif\" border=\"0\" width=\"83\"
-        height=\"83\"  alt=\"Click to return to your default homepage.\" /></a>\r\n\t\t</td>\r\n\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t<table width=\"100%\" border=\"0\"
-        cellpadding=\"2\" cellspacing=\"2\">\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<hr width=\"100%\" color=\"#C46343\"
-        />\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"titleText\">\r\n\t\t\t\t\t\t<div align=\"left\">\r\n\t\t\t\t\t\t\tBear
-        100 - Bib1 - Kaci Lickteig\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"titleText\">\r\n\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t3/14/18\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<hr width=\"100%\"
-        color=\"#C46343\" />\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t<a href=\"index.cfm\">[runner
-        portal - home]</a>\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t</table>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n<br
-        />\r\n\r\n\r\n\r\n<div align=\"center\" class=\"basicText\">\r\n\t<input type=\"button\"
-        name=\"full_race_btn\" value=\"Full Race View\" onClick=\"goToPage('bear_100_full_race.cfm?id=314');\"
-        />\r\n</div>\r\n\r\n\r\n<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\"
-        align=\"center\">\r\n\t<tr>\r\n\t\t<td valign=\"top\">\r\n\t\t\t<form action=\"runner_details.cfm?id=314\"
-        method=\"post\">\r\n\t\t\t\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\"
-        align=\"center\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td valign=\"top\" class=\"callOutRow\"
-        colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tRunner
-        Information\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tBib/Name:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tBib1 - Kaci Lickteig\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tStatus:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tStarted\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tNotes:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\tGender: F<br />\r\n\t\t\t\t\t\t\tAge:
-        30<br />\r\n\t\t\t\t\t\t\tFrom:Omaha, NE\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">&nbsp;\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tAdd
-        A Comment:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\t<textarea
-        rows=\"3\" cols=\"40\" name=\"sub_comments\"></textarea>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\t<input
-        type=\"submit\" name=\"submit_btn\" value=\"Submit\">\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</form>\r\n\t\t</td>\r\n\t\t<td
-        valign=\"top\">\r\n\t\t\t&nbsp;&nbsp;&nbsp;\r\n\t\t</td>\r\n\t\t<td valign=\"top\">\r\n\t\t\t<form
-        action=\"time_photos_action.cfm\" method=\"post\" enctype=\"multipart/form-data\">\r\n\t\t\t\t<table
-        border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"callOutRow\" colspan=\"2\">\r\n\t\t\t\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\t\t\t\tPhotos
-        and Captions\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tFile
-        To Upload:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"file\"
-        name=\"image_name\" size=\"65\" />\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<div align=\"right\">\r\n\t\t\t\t\t\t\t\tCaption:\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"text\"
-        name=\"image_caption\" value=\"\" maxlength=\"250\" size=\"35\">\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">&nbsp;</td>\r\n\t\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t\t<input type=\"submit\" name=\"submit_btn\"
-        value=\"Add Photo\" /> \r\n\t\t\t\t\t\t\t(only jpg images)\r\n\t\t\t\t\t\t\t<input
-        type=\"hidden\" name=\"corp_id\" value=\"768\" /> \r\n\t\t\t\t\t\t\t<input
-        type=\"hidden\" name=\"image_number\" value=\"1\" /> \r\n\t\t\t\t\t\t\t<input
-        type=\"hidden\" name=\"mode\" value=\"add\" /> \r\n\t\t\t\t\t\t\t<input type=\"hidden\"
-        name=\"payee_id\" value=\"53547\" /> \r\n\t\t\t\t\t\t\t<input type=\"hidden\"
-        name=\"time_id\" value=\"314\" /> \r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t\t\t\t\tThis may
-        take some time depending on the image size.\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t</tr>\r\n\t\t\t\t</table>\r\n\t\t\t</form>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n\r\n\r\n\r\n\t<br
-        />\r\n\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
-        valign=\"top\" class=\"callOutRow\" colspan=\"3\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tAdditional
-        Comments/Notes - (7)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t<tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDate\r\n\t\t\t\t</td>\r\n\t\t\t\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tTime\r\n\t\t\t\t</td>\r\n\t\t\t\r\n\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\tComment/Note\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t12:50:02
-        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tMaking
-        it look easy.  Great racing!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t10:10:33
-        pm \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
-        Kaci!!!!!! Pixie Ninja crushing the field!!!!!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t5:35:26
-        pm \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
-        KC GO!!! #PixieNinja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t10:30:13
-        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tFl;y
-        like a Pixie ; Run like a Ninja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t8:46:38
-        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tFl;y
-        like a Pixie ; Run like a Ninja\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t7:11:33
-        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tGo
-        kaci!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t<tr class=\"tableRow1\">\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t7:05:45
-        am \r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\tYoure
-        awesome!!!\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t</table>\r\n\r\n\t<br
-        />\r\n\t<table border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
-        valign=\"top\" class=\"callOutRow\" colspan=\"7\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tAid
-        Station Records - (12)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tAid Station\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tStart Date\r\n\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tStart Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Date\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDuration\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tNotes\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        2:LEH to 2:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:13\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        1:MDF to 1:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:30 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:31 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.00 Seconds\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:15\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        4:COC to 4:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:13:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:15:11 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.23 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        3:RIH to 3:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:12\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        6:TEF to 6:TEF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:56:10 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:04:13 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t8.05 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        7:TOG to 7:TOG - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:38:03 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:39:12 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.15 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        5:RHF to 5:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:25:42 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:30:35 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t4.88 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        10:COC to 10:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:21:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.00 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        11:RIH to 11:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:12:57 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:13:55 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t58.00 Seconds\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        12:LEH to 12:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:4\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        13:MDF to 13:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:13:49 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:15:38 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.82 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:6\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tAS
-        9:RHF to 9:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:23:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t3.00 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tSeq:3\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t</table>\r\n\t\r\n\t\r\n\t\t\r\n\t\t<div
-        align=\"center\" class=\"basicText\">\r\n\t\t\t<hr width=\"50%\" color=\"#C46343\"
-        />\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t\r\n\t\t\t\tTotal Time In Hours, Minutes,
-        &amp; Seconds: \r\n\t\t\t\t0:22:07 \r\n\t\t</div>\r\n\t\r\n\t<br />\r\n\t<table
-        border=\"0\" cellpadding=\"2\" cellspacing=\"2\" align=\"center\">\r\n\t\t<tr>\r\n\t\t\t<td
-        valign=\"top\" class=\"callOutRow\" colspan=\"7\">\r\n\t\t\t\t<div align=\"center\">\r\n\t\t\t\t\tLeg
-        Length - (14)\r\n\t\t\t\t</div>\r\n\t\t\t</td>\r\n\t\t</tr>\r\n\t\t\r\n\t\t\r\n\t\t\t<tr>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tLeg\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tStart Date\r\n\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tStart Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Date\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\t\tEnd Time\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tDuration\r\n\t\t\t\t</td>\r\n\t\t\t\t<td
-        valign=\"top\" class=\"headingText\">\r\n\t\t\t\t\tNotes\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        0:STA to 1:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:00:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:30 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.76 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        1:MDF to 2:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t7:45:31 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.62 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
-        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        2:LEH to 3:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:23:00 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t27.32 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        3:RIH to 4:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9:50:19 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:13:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.39 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
-        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        4:COC to 5:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t11:15:11 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:25:42 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.18 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        5:RHF to 6:TEF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t12:30:35 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:56:10 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.43 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
-        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        6:TEF to 7:TOG - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:04:13 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:38:03 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.56 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        7:TOG to 8:SPC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t3:39:12 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t...\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t...\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t537.03 Days or 12888.74
-        Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        9:RHF to 10:COC - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:23:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.08 Days or 25.95 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
-        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        10:COC to 11:RIH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t8:21:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:12:57 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        11:RIH to 12:LEH - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:13:55 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t31.38 Minutes\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        12:LEH to 13:MDF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t10:45:18 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:13:49 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t2.48 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow1\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        13:MDF to 14:FIN - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t1:15:38 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/24/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t2:27:57 am\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t1.21 Hours\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t<tr
-        class=\"tableRow2\">\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tLeg
-        8:SPC to 9:RHF - Bib1\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t9/23/2016\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t\t6:20:00 pm\r\n\t\t\t\t\t\t</td>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\t0.00\r\n\t\t\t\t\t</td>\r\n\t\t\t\t\t<td
-        valign=\"top\" class=\"basicText\">\r\n\t\t\t\t\t\tForced entry of the leg
-        record. Unknown start time.\r\n\t\t\t\t\t</td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t</table>\r\n\t\r\n\t\r\n\t\t\r\n\t\t<div
-        align=\"center\" class=\"basicText\">\r\n\t\t\t<hr width=\"50%\" color=\"#C46343\"
-        />\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\t\r\n\t\t\t\tTotal Time In Hours, Minutes,
-        &amp; Seconds: \r\n\t\t\t\t12906:09:15 \r\n\t\t</div>\r\n\t\r\n<br /><br />\r\n\t\r\n<table
-        width=\"95%\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\r\n\t<tr>\r\n\t\t<td
-        valign=\"top\" class=\"basicText\" colspan=\"2\">\r\n\t\t\t<hr width=\"100%\"
-        color=\"#C46343\" />\r\n\t\t</td>\r\n\t</tr>\r\n\t<tr>\r\n\t\t<td valign=\"top\"
-        class=\"basicText\">\r\n\t\t\t<div align=\"left\">\r\n\t\t\t\t<a href=\"index.cfm\">Home</a>
-        | \r\n\t\t\t\t<a href=\"javascript:history.back();\">Back</a> | \r\n\t\t\t\t<a
-        href=\"javascript:window.print();\">Print</a> | \r\n\t\t\t\t\r\n\t\t\t\t-
-        &copy; 2018 Bear 100 Mile Race \r\n\t\t\t</div>\t\t\t\r\n\t\t</td>\r\n\t\t<td
-        valign=\"top\" class=\"footerText\">\r\n\t\t\t<div align=\"right\">\r\n\t\t\t\tpowered
-        by adilas.biz\r\n\t\t\t</div>\r\n\t\t</td>\r\n\t</tr>\r\n</table>\r\n\r\n\r\n</body>\r\n</html>"
-    http_version: 
-  recorded_at: Wed, 14 Mar 2018 22:23:29 GMT
+      encoding: ASCII-8BIT
+      string: "\n<script type=\"text/javascript\">\r\n\t// this is the toggle function
+        to toggle a hidden div tag. the useIdName argument is what div tag id to hide/show.\r\n\t//
+        the forceValue is auto, hide, or show.\r\n\tfunction showHideGifLoader(useIdName,
+        forceValue)\r\n\t{\r\n\t\t// set up some basic vars for the function.\r\n\t\tvar
+        myElement = \"\";\r\n\t\tvar myVisibility = \"\";\r\n\t\t// check for the
+        element by id.\r\n\t\tif(document.getElementById)\r\n\t\t{\r\n\t\t\tmyElement
+        = document.getElementById(useIdName);\r\n\t\t} else if (document.all) {\r\n\t\t\tmyElement
+        = document.all[useIdName];\r\n\t\t} else if (document.layers) {\r\n\t\t\tmyElement
+        = document.layers[useIdName];\r\n\t\t}\r\n\t\t// grab the styles for the element.\r\n\t\tmyVisibility
+        = myElement.style;\r\n\t\t// check for the force value.\r\n\t\tif(forceValue
+        == \"hide\")\r\n\t\t{\r\n\t\t\t// force a hide.\r\n\t\t\tmyVisibility.display
+        = \"none\";\r\n\t\t\treturn;\r\n\t\t} else if (forceValue == \"show\") {\r\n\t\t\t//
+        force a show.\r\n\t\t\tmyVisibility.display = \"block\";\r\n\t\t\treturn;\r\n\t\t}\r\n\t\t//
+        if it makes it this far, allow it to toggle between the options. check and
+        set the visibility of the display property.\r\n\t\t// for the record, this
+        assumes a forceValue of \"auto\" or something like that vs just hide or show.\r\n\t\tif(myVisibility.display
+        == \"block\")\r\n\t\t{\r\n\t\t\tmyVisibility.display = \"none\";\r\n\t\t}
+        else {\r\n\t\t\tmyVisibility.display = \"block\";\r\n\t\t}\r\n\t}\r\n</script>\n<!doctype
+        html>\n<html lang=\"en\">\n<head>\n\n<meta charset=\"utf-8\">\n<meta name=\"viewport\"
+        content=\"width=device-width, initial-scale=1\">\n\n<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css\"
+        rel=\"stylesheet\" integrity=\"sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU\"
+        crossorigin=\"anonymous\">\n\n<link rel=\"stylesheet\" href=\"css/normalize.css\">\n\n<script
+        src=\"https://kit.fontawesome.com/b288c862b3.js\" crossorigin=\"anonymous\"></script>\n\n<link
+        rel=\"stylesheet\" href=\"css/style.css\">\n<title>Bear 100 - Runner Profile</title>\n</head>\n<body>\n\n<nav
+        class=\"navbar fixed-top navbar-top\">\n<div class=\"container-fluid\">\n<a
+        href=\"index.cfm\" class=\"navbar-brand\">\n<img src=\"img/logo-1.png\" alt=\"Bear
+        100 Logo\" class=\"img-fluid navbar-logo\">\n</a>\n<h1 class=\"navbar-header\">Bear
+        100 - Runner Profile</h1>\n<button type=\"button\" class=\"btn btn-navbar-mobile
+        navbar-search\" data-bs-toggle=\"modal\" data-bs-target=\"#main-search-modal\"><i
+        class=\"fal fa-search\"></i></button>\n</div>\n</nav>\n\n<nav class=\"navbar
+        fixed-top navbar-top-second\">\n<div class=\"container-fluid\">\n<a href=\"runner_details.cfm?id=314&refresh=44871.4734491\"
+        class=\"btn btn-navbar-mobile navbar-search\"><i class=\"fal fa-sync\"></i></a>\n<span
+        class=\"second-nav-name-container\">\n<span class=\"second-nav-bib\"><i class=\"fal
+        fa-id-badge me-2\"></i> Bib1 - Kaci Lickteig</span>\n<span class=\"second-nav-name-name
+        ms-3\"></span>\n</span>\n<div align=\"right\">\n<a href=\"bear_100_full_race.cfm?id=314\"
+        class=\"btn btn-navbar-mobile navbar-search\"><i class=\"fal fa-map-marked-alt\"></i></a>\n</div>\n</div>\n</nav>\n\n<nav
+        class=\"navbar fixed-bottom navbar-dark bg-dark bottom-navbar\">\n<div class=\"container-md\">\n<ul
+        class=\"navbar-nav\">\n<li class=\"nav-item\">\n<a href=\"index.cfm\" class=\"btn
+        btn-bottom-nav nav-link active\" aria-current=\"Home\" aria-label=\"Home\"><i
+        class=\"fal fa-home\"></i></a>\n</li>\n<li class=\"nav-item\">\n<a href=\"bear_100_full_race.cfm\"
+        class=\"btn btn-bottom-nav nav-link\" aria-label=\"Full Race\"><i class=\"fal
+        fa-map-marked-alt\"></i></a>\n</li>\n<li class=\"nav-item\">\n<a href=\"bear_100_finish.cfm\"
+        class=\"btn btn-bottom-nav nav-link\" aria-label=\"Finish\"><i class=\"fal
+        fa-award\"></i></a>\n</li>\n<li class=\"nav-item\">\n<a href=\"bear_100_comments.cfm\"
+        class=\"btn btn-bottom-nav nav-link\" aria-label=\"Comments\"><i class=\"far
+        fa-comments-alt\"></i></a>\n</li>\n<li class=\"nav-item\">\n<a href=\"bear_100_photos.cfm\"
+        class=\"btn btn-bottom-nav nav-link\" aria-label=\"Photos\"><i class=\"far
+        fa-image\"></i></a>\n</li>\n</ul>\n</div>\n</nav>\n\n<div class=\"page-nav-spacer\"></div>\n\n<div
+        class=\"container\">\n<div class=\"top-spacer\"></div>\n\n<div class=\"row
+        \">\n<div class=\"col d-flex justify-content-center\">\n<h2 class=\"search-runners\"><i
+        class=\"fal fa-running me-3 accent-color-text\"></i>Runner Information</h2>\n</div>\n</div>\n<div
+        class=\"header-spacer\"></div>\n<div class=\"card\">\n<div href=\"\" class=\"card-harder
+        profile-header\">\n<span class=\"profile-card-bib\"><i class=\"fal fa-id-badge
+        me-2\"></i> Bib1 - Kaci Lickteig</span>\n<span class=\"profile-card-name\"></span>\n<div></div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"runner-status\">\n<span
+        class=\"runner-status-label me-3\">Status:</span>\n<span class=\"runner-status-actual\">Started</span>\n</div>\n<div
+        class=\"runner-stats\">\n<span class=\"runner-origin mt-2\"><i class=\"fal
+        fa-map-marker-alt me-2\"></i>Omaha, NE</span>\n<span class=\"runner-age mt-2\"><i
+        class=\"fal fa-hourglass me-2\"></i>30</span>\n<span class=\"runner-gender
+        mt-2\"><i class=\"fal fa-venus-mars me-2\"></i>F</span>\n<a href=\"bear_100_full_race.cfm?id=314\"
+        class=\"runner-race mt-2\"><i class=\"fal fa-map-marked-alt me-2\"></i>Full
+        Race<i class=\"fal fa-angle-double-right ms-2 color-fix\"></i></a>\n</div>\n</div>\n</div>\n</div>\n</div>\n\n<div
+        class=\"section-spacer\"></div>\n<div class=\"row \">\n<div class=\"col d-flex
+        justify-content-between\">\n<div></div>\n<h2 class=\"search-runners\"><i class=\"fal
+        fa-comments-alt me-3 accent-color-text\"></i>Comments</h2>\n<button type=\"button\"
+        class=\"btn profile-add-btn\" data-bs-toggle=\"modal\" data-bs-target=\"#add-comments-modal\"><i
+        class=\"fal fa-plus\"></i></button>\n</div>\n</div>\n<div class=\"header-spacer\"></div>\n<div
+        class=\"card\">\n<div class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div
+        class=\"time-date-comments\">\n<span class=\"comments-date\"><i class=\"fal
+        fa-calendar-day me-2\"></i>9/24/2016</span>\n<span class=\"comments-time\"><i
+        class=\"fal fa-clock me-2\"></i>12:50:02 am</span>\n</div>\n<p class=\"comments-content
+        mt-2\">Making it look easy. Great racing!</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>10:10:33 pm</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Go Kaci!!!!!! Pixie Ninja crushing the field!!!!!</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>5:35:26 pm</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Go KC GO!!! #PixieNinja</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>10:30:13 am</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Fl;y like a Pixie ; Run like a Ninja</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>8:46:38 am</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Fl;y like a Pixie ; Run like a Ninja</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>7:11:33 am</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Go kaci!</p>\n</div>\n</div>\n</div>\n<div
+        class=\"card-body\">\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"time-date-comments\">\n<span
+        class=\"comments-date\"><i class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n<span
+        class=\"comments-time\"><i class=\"fal fa-clock me-2\"></i>7:05:45 am</span>\n</div>\n<p
+        class=\"comments-content mt-2\">Youre awesome!!!</p>\n</div>\n</div>\n</div>\n</div>\n\n<div
+        class=\"section-spacer\"></div>\n<div class=\"row \">\n<div class=\"col d-flex
+        justify-content-between\">\n<div></div>\n<h2 class=\"search-runners\"><i class=\"fal
+        fa-image me-3 accent-color-text\"></i>Photos</h2>\n<button type=\"button\"
+        class=\"btn profile-add-btn\" data-bs-toggle=\"modal\" data-bs-target=\"#add-photo-modal\"><i
+        class=\"fal fa-plus\"></i></button>\n</div>\n</div>\n<div class=\"header-spacer\"></div>\n\n<div
+        class=\"section-spacer\"></div>\n<div class=\"row \">\n<div class=\"col d-flex
+        justify-content-center\">\n<h2 class=\"search-runners\"><i class=\"fal fa-star-of-life
+        me-3 accent-color-text\"></i>Aid Station Records</h2>\n</div>\n</div>\n<div
+        class=\"header-spacer\"></div>\n<div class=\"card\">\n<div class=\"card-harder
+        profile-header\">\n<span class=\"profile-card-bib\"><i class=\"fal fa-id-badge
+        me-2\"></i> Bib1 - Kaci Lickteig</span>\n<span class=\"profile-card-name\"></span>\n<div></div>\n</div>\n<div
+        class=\"card-body\">\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        2:LEH to 2:LEH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:23:00 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>9:23:00 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>0.00</span>\n</div>\n\n<div class=\"col-md-3
+        mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal fa-sticky-note
+        accent-color-text me-2\"></i>Seq:13</span>\n</div>\n</div>\n<br />\n\n<div
+        class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        1:MDF to 1:MDF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>7:45:30 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>7:45:31 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.00 Seconds</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:15</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        4:COC to 4:COC - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>11:13:57 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>11:15:11 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.23 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:4</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        3:RIH to 3:RIH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:50:19 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>9:50:19 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>0.00</span>\n</div>\n\n<div class=\"col-md-3
+        mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal fa-sticky-note
+        accent-color-text me-2\"></i>Seq:12</span>\n</div>\n</div>\n<br />\n\n<div
+        class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        6:TEF to 6:TEF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>1:56:10 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>2:04:13 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>8.05 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:4</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        7:TOG to 7:TOG - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>3:38:03 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>3:39:12 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.15 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:3</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        5:RHF to 5:RHF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>12:25:42 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>12:30:35 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>4.88 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:3</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        10:COC to 10:COC - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>8:20:00 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>8:21:00 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.00 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:3</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        11:RIH to 11:RIH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:12:57 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>10:13:55 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>58.00 Seconds</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:4</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        12:LEH to 12:LEH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:45:18 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>10:45:18 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>0.00</span>\n</div>\n\n<div class=\"col-md-3
+        mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal fa-sticky-note
+        accent-color-text me-2\"></i>Seq:4</span>\n</div>\n</div>\n\n<br />\n\n<div
+        class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        13:MDF to 13:MDF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>1:13:49 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>1:15:38 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.82 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:6</span>\n</div>\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-star-of-life me-2 accent-color-text\"></i>AS
+        9:RHF to 9:RHF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time me-2\"><i
+        class=\"fal fa-stopwatch me-2\"></i>6:20:00 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time
+        me-2\"><i class=\"fal fa-stopwatch me-2\"></i>6:23:00 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>3.00 Minutes</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Seq:3</span>\n</div>\n</div>\n<br
+        />\n</div>\n</div>\n\n<div class=\"section-spacer\"></div>\n<div class=\"row\">\n<div
+        class=\"col d-flex justify-content-center\">\n<h2 class=\"search-runners\"><i
+        class=\"fal fa-running me-3 accent-color-text\"></i>Leg Length</h2>\n</div>\n</div>\n<div
+        class=\"header-spacer\"></div>\n<div class=\"card\">\n<div class=\"card-harder
+        profile-header\">\n<span class=\"profile-card-bib\"><i class=\"fal fa-id-badge
+        me-2\"></i> Bib1 - Kaci Lickteig</span>\n<span class=\"profile-card-name\"></span>\n<div></div>\n</div>\n<div
+        class=\"card-body\">\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        0:STA to 1:MDF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>6:00:00 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>7:45:30 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.76 Hours</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        1:MDF to 2:LEH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>7:45:31 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:23:00 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.62 Hours</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Forced entry of the leg record.
+        Unknown start time.</span>\n</div>\n</div>\n<br />\n\n<div class=\"row\">\n<div
+        class=\"col\">\n<div class=\"profile-station\">\n<span class=\"profile-station-label\"><i
+        class=\"fal fa-running me-2 accent-color-text\"></i>Leg 2:LEH to 3:RIH - Bib1</span>\n</div>\n</div>\n</div>\n<div
+        class=\"row ms-2\">\n\n<div class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i
+        class=\"fal fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:23:00 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:50:19 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>27.32 Minutes</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        3:RIH to 4:COC - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>9:50:19 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>11:13:57 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.39 Hours</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Forced entry of the leg record.
+        Unknown start time.</span>\n</div>\n</div>\n<br />\n\n<div class=\"row\">\n<div
+        class=\"col\">\n<div class=\"profile-station\">\n<span class=\"profile-station-label\"><i
+        class=\"fal fa-running me-2 accent-color-text\"></i>Leg 4:COC to 5:RHF - Bib1</span>\n</div>\n</div>\n</div>\n<div
+        class=\"row ms-2\">\n\n<div class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i
+        class=\"fal fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>11:15:11 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>12:25:42 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.18 Hours</span>\n</div>\n\n</div>\n
+        <br />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        5:RHF to 6:TEF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>12:30:35 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>1:56:10 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.43 Hours</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Forced entry of the leg record.
+        Unknown start time.</span>\n</div>\n</div>\n<br />\n\n<div class=\"row\">\n<div
+        class=\"col\">\n<div class=\"profile-station\">\n<span class=\"profile-station-label\"><i
+        class=\"fal fa-running me-2 accent-color-text\"></i>Leg 6:TEF to 7:TOG - Bib1</span>\n</div>\n</div>\n</div>\n<div
+        class=\"row ms-2\">\n\n<div class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i
+        class=\"fal fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>2:04:13 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>3:38:03 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.56 Hours</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        7:TOG to 8:SPC - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>3:39:12 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>...</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>...</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>2234.82 Days or 53635.71 Hours</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        9:RHF to 10:COC - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>6:23:00 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>8:20:00 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.08 Days or 25.95 Hours</span>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal
+        fa-sticky-note accent-color-text me-2\"></i>Forced entry of the leg record.
+        Unknown start time.</span>\n</div>\n</div>\n<br />\n\n<div class=\"row\">\n<div
+        class=\"col\">\n<div class=\"profile-station\">\n<span class=\"profile-station-label\"><i
+        class=\"fal fa-running me-2 accent-color-text\"></i>Leg 10:COC to 11:RIH -
+        Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div class=\"col-md-3
+        mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal fa-sign-in
+        accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i class=\"fal
+        fa-stopwatch me-2\"></i>8:21:00 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:12:57 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>0.00</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n
+        <span class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        11:RIH to 12:LEH - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:13:55 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:45:18 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>31.38 Minutes</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        12:LEH to 13:MDF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>10:45:18 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>1:13:49 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>2.48 Hours</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        13:MDF to 14:FIN - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>1:15:38 am</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>2:27:57 am</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/24/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>1.21 Hours</span>\n</div>\n\n</div>\n<br
+        />\n\n<div class=\"row\">\n<div class=\"col\">\n<div class=\"profile-station\">\n<span
+        class=\"profile-station-label\"><i class=\"fal fa-running me-2 accent-color-text\"></i>Leg
+        8:SPC to 9:RHF - Bib1</span>\n</div>\n</div>\n</div>\n<div class=\"row ms-2\">\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-in\">\n<i class=\"fal
+        fa-sign-in accent-color-text me-2\"></i>\n<span class=\"profile-in-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>6:20:00 pm</span>\n<span class=\"profile-in-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<div class=\"profile-station-check-out\">\n<i class=\"fal
+        fa-sign-out accent-color-text me-2\"></i>\n<span class=\"profile-out-time\"><i
+        class=\"fal fa-stopwatch me-2\"></i>6:20:00 pm</span>\n<span class=\"profile-out-date\"><i
+        class=\"fal fa-calendar-day me-2\"></i>9/23/2016</span>\n</div>\n</div>\n\n<div
+        class=\"col-md-3 mt-2\">\n<span class=\"profile-aid-station-time\"><i class=\"fal
+        fa-history accent-color-text me-2\"></i>0.00</span>\n</div>\n\n<div class=\"col-md-3
+        mt-2\">\n<span class=\"profile-aid-station-note\"><i class=\"fal fa-sticky-note
+        accent-color-text me-2\"></i>Forced entry of the leg record. Unknown start
+        time.</span>\n</div>\n</div>\n<br />\n</div>\n</div>\n</div>\n\n<footer class=\"adilas-footer\">\n<div
+        class=\"container-fluid adilas-footer-container\">\n<span class=\"adilas-powered\"><i>Powered
+        By</i></span>\n<a href=\"https://news.adilas.biz/home/\" target=\"_blank\">\n<img
+        src=\"img/adilas-logo-footer-240.png\" alt=\"Adilas Logo\" class=\"img-fluid\">\n</a>\n</div>\n</footer>\n\n\n<div
+        class=\"modal fade\" id=\"main-search-modal\" tabindex=\"-1\" aria-labelledby=\"main-search-title\"
+        aria-hidden=\"true\">\n<div class=\"modal-dialog modal-dialog-centered\">\n<div
+        class=\"modal-content\">\n<div class=\"modal-header\">\n<div></div>\n<h5 class=\"modal-title\"
+        id=\"main-search-title text-center\"><i class=\"fal fa-running me-3\"></i>Search
+        Runners</h5>\n<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\"
+        aria-label=\"Close\"><i class=\"fal fa-times\"></i></button>\n</div>\n<div
+        class=\"modal-body\">\n<form class=\"modal-form\" action=\"bear_100_search_results.cfm\"
+        method=\"post\">\n<div class=\"input-group mb-4\">\n<span class=\"input-group-text\"
+        id=\"bib-num-search-modal-addon\"><i class=\"fal fa-id-badge\"></i></span>\n<input
+        type=\"text\" class=\"form-control\" placeholder=\"Bib Number\" aria-label=\"Bib
+        Number\" aria-describedby=\"bib-num-search-modal-addon\" name=\"bib_number\"
+        value=\"\" maxlength=\"15\">\n</div>\n<div class=\"input-group\">\n<span class=\"input-group-text\"
+        id=\"name-search-modal-addon\"><i class=\"fal fa-user\"></i></span>\n<input
+        type=\"text\" class=\"form-control\" placeholder=\"First or Last Name\" aria-label=\"First
+        or Last Name\" aria-describedby=\"name-search-modal-addon\" name=\"runner_name\"
+        value=\"\" maxlength=\"25\">\n</div>\n<div class=\"modal-footer\">\n<button
+        type=\"submit\" class=\"btn btn-submit-form\" data-bs-dismiss=\"modal\"><i
+        class=\"fal fa-running me-3\"></i>GO</button>\n</div>\n</form>\n</div>\n</div>\n</div>\n</div>\n\n<div
+        class=\"modal fade\" id=\"add-comments-modal\" tabindex=\"-1\" aria-labelledby=\"filter-title\"
+        aria-hidden=\"true\">\n<div class=\"modal-dialog modal-dialog-centered\">\n<div
+        class=\"modal-content\">\n<div class=\"modal-header\">\n<div></div>\n<h5 class=\"modal-title\"
+        id=\"filter-title text-center\">Add Comment</h5>\n<button type=\"button\"
+        class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"><i class=\"fal
+        fa-times\"></i></button>\n</div>\n<div class=\"modal-body\">\n<form action=\"runner_details.cfm?id=314\"
+        method=\"post\" class=\"modal-form\">\n<textarea rows=\"4\" class=\"form-control\"
+        placeholder=\"Comment\" name=\"sub_comments\"></textarea>\n<div class=\"modal-footer\">\n<button
+        type=\"submit\" class=\"btn btn-submit-form\" data-bs-dismiss=\"modal\" onClick=\"this.disabled=true;this.form.submit();\"><i
+        class=\"fal fa-running me-3\"></i>GO</button>\n</div>\n</form>\n</div>\n</div>\n</div>\n</div>\n\n<div
+        class=\"modal fade\" id=\"add-photo-modal\" tabindex=\"-1\" aria-labelledby=\"filter-title\"
+        aria-hidden=\"true\">\n<div class=\"modal-dialog modal-dialog-centered\">\n<div
+        class=\"modal-content\">\n<div class=\"modal-header\">\n<div></div>\n<h5 class=\"modal-title\"
+        id=\"filter-title text-center\">Add Photo</h5>\n<button type=\"button\" class=\"btn-close\"
+        data-bs-dismiss=\"modal\" aria-label=\"Close\" onClick=\"showHideGifLoader('spinningGif2',
+        'hide');\"><i class=\"fal fa-times\"></i></button>\n</div>\n<div class=\"modal-body\">\n<form
+        class=\"modal-form\" action=\"time_photos_action.cfm\" method=\"post\" enctype=\"multipart/form-data\">\n<input
+        class=\"form-control add-photo mb-4\" type=\"file\" name=\"image_name\">\n<div
+        class=\"input-group mb-4\">\n<span class=\"input-group-text\" id=\"photo-add-comments\"><i
+        class=\"fal fa-comment-alt\"></i></span>\n<input type=\"text\" class=\"form-control\"
+        placeholder=\"Photo Comments\" aria-label=\"Photo Comments\" aria-describedby=\"photo-add-comments\"
+        name=\"image_caption\" value=\"\" maxlength=\"250\">\n</div>\n<div id=\"spinningGif2\"
+        class=\"basicText\" style=\"display:none;\" align=\"center\">\n<img src=\"img/uploading.gif\"
+        width=\"50\" height=\"50\" alt=\"Uploading content...\">\nUploading content...<br
+        />\nTime varies based on image size. Please be patient.\n</div>\n<div class=\"modal-footer\">\n<button
+        type=\"submit\" class=\"btn btn-submit-form\" onClick=\"this.disabled=true;showHideGifLoader('spinningGif2',
+        'show');this.form.submit();\"><i class=\"fal fa-running me-3\"></i>GO</button>\n<input
+        type=\"hidden\" name=\"corp_id\" value=\"768\" />\n<input type=\"hidden\"
+        name=\"image_number\" value=\"1\" />\n<input type=\"hidden\" name=\"mode\"
+        value=\"add\" />\n<input type=\"hidden\" name=\"payee_id\" value=\"53547\"
+        />\n<input type=\"hidden\" name=\"time_id\" value=\"314\" />\n</div>\n</form>\n</div>\n</div>\n</div>\n</div>\n\n<script
+        src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js\"
+        integrity=\"sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ\"
+        crossorigin=\"anonymous\"></script>\n<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js/vaafb692b2aea4879b33c060e79fe94621666317369993\"
+        integrity=\"sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==\"
+        data-cf-beacon='{\"rayId\":\"765f81e90a58fa1e\",\"token\":\"a67cfd0aed084bf6b5cbac15ec5dd4fb\",\"version\":\"2022.11.0\",\"si\":100}'
+        crossorigin=\"anonymous\"></script>\n</body>\n</html>\n"
+    http_version:
+  recorded_at: Sun, 06 Nov 2022 17:21:46 GMT
 recorded_with: VCR 4.0.0

@@ -1,0 +1,142 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Lottery Simulation Run - #{@lottery_simulation_run.id}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "#{@lottery.name}: Simulation Run" %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @organization.name, organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @lottery.name, organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_organization_lottery_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to "Simulation Runs", organization_lottery_lottery_simulation_runs_path(@organization, @lottery) %></li>
+            <li class="breadcrumb-item"><%= @lottery_simulation_run.id %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <h4>Simulation Info</h4>
+  <hr class="my-1">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Created</th>
+      <th class="text-center">Requested Count</th>
+      <th class="text-center">Good/Bad</th>
+      <th class="text-center">Elapsed Time</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render partial: "lottery_simulation_run", locals: {organization: @lottery_simulation_run.organization, lottery: @lottery_simulation_run.lottery, lottery_simulation_run: @lottery_simulation_run} %>
+    </tbody>
+  </table>
+  <br/>
+
+  <h4>Simulation Context</h4>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Division Name</th>
+      <hr class="my-1">
+      <th class="text-center">Slots</th>
+      <th class="text-center">Wait List</th>
+      <th class="text-center">Entered (M/F)</th>
+      <th class="text-center">% Entered (M/F)</th>
+      <th class="text-center">Pre-Selected (M/F)</th>
+      <th class="text-center">% Pre-Selected (M/F)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @lottery_simulation_run.context.each do |division_name, division_context| %>
+      <tr>
+        <td><%= division_name %></td>
+        <td class="text-center"><%= division_context.dig("slots", "accepted") %></td>
+        <td class="text-center"><%= division_context.dig("slots", "wait_list") %></td>
+        <td class="text-center"><%= "#{division_context.dig('entered', 'male')} / #{division_context.dig('entered', 'female')}" %></td>
+        <td class="text-center"><%= "#{@lottery_simulation_run.single_division_percent(:context, division_name, :entered, :male)}% / #{@lottery_simulation_run.single_division_percent(:context, division_name, :entered, :female)}%" %></td>
+        <td class="text-center"><%= "#{division_context.dig('pre_selected', 'male')} / #{division_context.dig('pre_selected', 'female')}" %></td>
+        <td class="text-center"><%= "#{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :male)}% / #{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :female)}%" %></td>
+      </tr>
+    <% end %>
+    <tr class="font-weight-bold">
+      <td>Total</td>
+      <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :accepted) %></td>
+      <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :wait_list) %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:context, :entered, :male)} / #{@lottery_simulation_run.division_sum(:context, :entered, :female)}" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:context, :entered, :male)}% / #{@lottery_simulation_run.division_percent(:context, :entered, :female)}%" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:context, :pre_selected, :male)} / #{@lottery_simulation_run.division_sum(:context, :pre_selected, :female)}" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:context, :pre_selected, :male)}% / #{@lottery_simulation_run.division_percent(:context, :pre_selected, :female)}%" %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br/>
+
+  <h4>Results Summary</h4>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Division Name</th>
+      <hr class="my-1">
+      <th class="text-center">Average Accepted (M/F)</th>
+      <th class="text-center">% Accepted (M/F)</th>
+      <th class="text-center">Average Wait List (M/F)</th>
+      <th class="text-center">% Wait List (M/F)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @lottery_simulation_run.stats.each do |division_name, division_results| %>
+      <tr>
+        <td><%= division_name %></td>
+        <td class="text-center"><%= "#{division_results.dig('accepted', 'male')} / #{division_results.dig('accepted', 'female')}" %></td>
+        <td class="text-center"><%= "#{division_results.dig('accepted_percent', 'male')}% / #{division_results.dig('accepted_percent', 'female')}%" %></td>
+        <td class="text-center"><%= "#{division_results.dig('wait_list', 'male')} / #{division_results.dig('wait_list', 'female')}" %></td>
+        <td class="text-center"><%= "#{division_results.dig('wait_list_percent', 'male')}% / #{division_results.dig('wait_list_percent', 'female')}%" %></td>
+      </tr>
+    <% end %>
+    <tr class="font-weight-bold">
+      <td>Total</td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:stats, :accepted, :male)} / #{@lottery_simulation_run.division_sum(:stats, :accepted, :female)}" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:stats, :accepted, :male)}% / #{@lottery_simulation_run.division_percent(:stats, :accepted, :female)}%" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:stats, :wait_list, :male)} / #{@lottery_simulation_run.division_sum(:stats, :wait_list, :female)}" %></td>
+      <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:stats, :wait_list, :male)}% / #{@lottery_simulation_run.division_percent(:stats, :wait_list, :female)}%" %></td>
+    </tr>
+    </tbody>
+  </table>
+  <br/>
+
+  <h4>Errors</h4>
+  <hr class="my-1">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Detail</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if @lottery_simulation_run.parsed_errors.present? %>
+      <% @lottery_simulation_run.parsed_errors.each do |error| %>
+        <tr>
+          <td><%= error["title"] %></td>
+          <td><%= error.dig("detail", "messages").join("; ") %></td>
+        </tr>
+      <% end %>
+    <% else %>
+    <tr>
+      <td colspan="2">None</td>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+</article>

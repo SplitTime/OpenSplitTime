@@ -1,26 +1,29 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+ENV["RAILS_ENV"] ||= "test"
+require File.expand_path("../config/environment", __dir__)
 # Prevent database truncation if the environment is production
-abort('The Rails environment is running in production mode!') if Rails.env.production?
-require 'spec_helper'
-require 'rspec/rails'
+abort("The Rails environment is running in production mode!") if Rails.env.production?
+require "spec_helper"
+require "rspec/rails"
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
-require 'devise'
-require 'pundit/rspec'
-require 'factory_bot_rails'
-require 'capybara/rspec'
-require 'strip_attributes/matchers'
-require 'json'
-require 'active_support/core_ext/hash/keys'
-require 'active_support/inflector'
-require 'rack/test'
-require 'webmock/rspec'
-require 'aws-sdk-s3'
-require 'aws-sdk-sns'
-require 'paper_trail/frameworks/rspec'
+require "devise"
+require "pundit/rspec"
+require "factory_bot_rails"
+require "capybara/rspec"
+require "strip_attributes/matchers"
+require "capitalize_attributes/matchers"
+require "json"
+require "active_support/core_ext/hash/keys"
+require "active_support/inflector"
+require "rack/test"
+require "webmock/rspec"
+require "aws-sdk-s3"
+require "aws-sdk-sns"
+require "paper_trail/frameworks/rspec"
+require "etl/etl"
+require "open-uri"
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
@@ -38,7 +41,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # require only the support files necessary.
 #
 
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -49,10 +52,33 @@ FactoryBot::SyntaxRunner.class_eval do
 end
 
 RSpec.configure do |config|
-
-  config.global_fixtures = :organizations, :courses, :event_groups, :event_series, :events, :efforts, :split_times, :splits,
-      :aid_stations, :people, :notifications, :partners, :raw_times, :stewardships, :subscriptions, :users,
-      :results_categories, :results_templates, :results_template_categories
+  config.global_fixtures = [
+    :aid_stations,
+    :course_groups,
+    :courses,
+    :efforts,
+    :event_groups,
+    :event_series,
+    :events,
+    :lotteries,
+    :lottery_divisions,
+    :lottery_draws,
+    :lottery_entrants,
+    :lottery_tickets,
+    :notifications,
+    :organizations,
+    :partners,
+    :people,
+    :raw_times,
+    :results_categories,
+    :results_template_categories,
+    :results_templates,
+    :split_times,
+    :splits,
+    :stewardships,
+    :subscriptions,
+    :users
+  ]
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -66,7 +92,6 @@ RSpec.configure do |config|
   config.after do
     Warden.test_reset!
   end
-
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -88,6 +113,9 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  config.include ActiveSupport::Testing::Assertions
+  config.include ActiveSupport::Testing::TimeHelpers
+
   config.include Capybara::DSL
 
   config.include FactoryBot::Syntax::Methods
@@ -99,6 +127,8 @@ RSpec.configure do |config|
   config.include CapybaraLinkHelpers, type: :system
 
   config.include StripAttributes::Matchers
+  config.include CapitalizeAttributes::Matchers
+  config.include ::Turbo::FramesHelper
 
   config.run_all_when_everything_filtered = true
 

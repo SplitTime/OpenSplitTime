@@ -6,7 +6,7 @@ module Api
       before_action :set_resource, except: [:index, :create]
 
       def show
-        @resource.split_times.load.to_a if prepared_params[:include]&.include?('split_times')
+        @resource.split_times.load.to_a if prepared_params[:include]&.include?("split_times")
         super
       end
 
@@ -18,7 +18,8 @@ module Api
           end_st.segment_time ||= end_st.absolute_time - begin_st.absolute_time
         end
         presenter = EffortWithTimesRowPresenter.new(effort)
-        render json: presenter, include: :effort_times_row, serializer: EffortWithTimesRowSerializer
+
+        serialize_and_render(presenter, include: :effort_times_row, serializer: EffortWithTimesRowSerializer)
       end
     end
   end

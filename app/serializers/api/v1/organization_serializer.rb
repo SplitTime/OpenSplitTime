@@ -3,8 +3,10 @@
 module Api
   module V1
     class OrganizationSerializer < ::Api::V1::BaseSerializer
-      attributes :id, :name, :description, :concealed, :editable
-      link(:self) { api_v1_organization_path(object) }
+      set_type :organizations
+
+      attributes :id, :name, :description, :concealed
+      link :self, :api_v1_url
     end
   end
 end

@@ -5,57 +5,63 @@ bruno_fadel:
   last_name: Fadel
   gender: 0
   birthdate: '1988-05-11'
-  city: 
+  city:
   state_code: CA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:13.966803'
-  updated_at: '2019-02-01 07:19:53.037951'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:13.966803000 Z
+  updated_at: 2020-09-09 14:15:13.095995000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: bruno-fadel
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stevie-ansell
+  state_name: California
+  country_name: United States
 robby_gerlach:
   id: 13
   first_name: Robby
   last_name: Gerlach
   gender: 0
   birthdate: '1970-05-18'
-  city: 
+  city:
   state_code: VA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:13.995708'
-  updated_at: '2019-02-01 07:19:53.119492'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:13.995708000 Z
+  updated_at: 2020-09-09 14:15:13.290207000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: robby-gerlach
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_steve-barge
+  state_name: Virginia
+  country_name: United States
 brinda_fisher:
   id: 14
   first_name: Brinda
   last_name: Fisher
   gender: 1
   birthdate: '1994-07-12'
-  city: 
+  city:
   state_code: SC
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.005889'
-  updated_at: '2019-02-01 07:19:53.717197'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.005889000 Z
+  updated_at: 2020-09-09 14:15:13.300855000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: brinda-fisher
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_liz-bauer
+  state_name: South Carolina
+  country_name: United States
 bad_status:
   id: 18
   first_name: Bad
@@ -64,397 +70,439 @@ bad_status:
   birthdate: '1994-04-18'
   city: Erie
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.043379'
-  updated_at: '2019-02-01 07:19:53.13615'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.043379000 Z
+  updated_at: 2020-09-09 14:15:13.311210000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: bad-status
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_drew-brazier
+  state_name: Colorado
+  country_name: United States
 willis_murray:
   id: 21
   first_name: Willis
   last_name: Murray
   gender: 0
   birthdate: '1998-02-04'
-  city: 
+  city:
   state_code: FL
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.083822'
-  updated_at: '2019-02-01 07:19:53.50065'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.083822000 Z
+  updated_at: 2020-09-09 14:15:13.320823000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: willis-murray
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-brockmeier
+  state_name: Florida
+  country_name: United States
 finished_with_stop:
   id: 25
   first_name: Finished
   last_name: With Stop
   gender: 0
   birthdate: '1974-03-03'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.125481'
-  updated_at: '2019-02-01 07:19:53.397128'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.125481000 Z
+  updated_at: 2020-09-09 14:15:13.330776000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-with-stop
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jared-campbell
+  state_name: Utah
+  country_name: United States
 garry_kuhlman:
   id: 39
   first_name: Garry
   last_name: Kuhlman
   gender: 0
   birthdate: '1969-10-10'
-  city: 
+  city:
   state_code: MT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.265724'
-  updated_at: '2019-02-01 07:19:53.858243'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.265724000 Z
+  updated_at: 2020-09-09 14:15:13.343577000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: garry-kuhlman
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-davis
+  state_name: Montana
+  country_name: United States
 donn_mckenzie:
   id: 40
   first_name: Donn
   last_name: McKenzie
   gender: 0
   birthdate: '1998-12-29'
-  city: 
+  city:
   state_code: WY
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.276164'
-  updated_at: '2019-02-01 07:19:53.143973'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.276164000 Z
+  updated_at: 2020-09-09 14:15:13.354664000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: donn-mckenzie
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_aaron-denberg
+  state_name: Wyoming
+  country_name: United States
 gilberto_mckenzie:
   id: 42
   first_name: Gilberto
   last_name: McKenzie
   gender: 0
   birthdate: '1970-06-02'
-  city: 
+  city:
   state_code: WA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.297646'
-  updated_at: '2019-02-01 07:19:53.049667'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.297646000 Z
+  updated_at: 2020-09-09 14:15:13.365446000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: gilberto-mckenzie
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-douglas
+  state_name: Washington
+  country_name: United States
 benedict_davis:
   id: 43
   first_name: Benedict
   last_name: Davis
   gender: 0
   birthdate: '1983-06-28'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.311539'
-  updated_at: '2019-02-01 07:19:53.197569'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.311539000 Z
+  updated_at: 2020-09-09 14:15:13.375913000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: benedict-davis
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bogie-dumitrescu
+  state_name: Colorado
+  country_name: United States
 paul_predovic:
   id: 44
   first_name: Paul
   last_name: Predovic
   gender: 0
   birthdate: '1959-06-26'
-  city: 
+  city:
   state_code: ID
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.326152'
-  updated_at: '2019-02-01 07:19:53.419711'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.326152000 Z
+  updated_at: 2020-09-09 14:15:13.386510000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: paul-predovic
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-ehredt
+  state_name: Idaho
+  country_name: United States
 erich_larson:
   id: 51
   first_name: Erich
   last_name: Larson
   gender: 0
   birthdate: '1979-07-10'
-  city: 
+  city:
   state_code: MT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.4363'
-  updated_at: '2019-02-01 07:19:53.867965'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.436300000 Z
+  updated_at: 2020-09-09 14:15:13.399587000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: erich-larson
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-foote
+  state_name: Montana
+  country_name: United States
 lavon_paucek:
   id: 53
   first_name: Lavon
   last_name: Paucek
   gender: 1
   birthdate: '1974-07-29'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.463923'
-  updated_at: '2019-02-01 07:19:53.615313'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.463923000 Z
+  updated_at: 2020-09-09 14:15:13.428462000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: lavon-paucek
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_anna-frost
+  state_name:
+  country_name: United States
 irvin_harber:
   id: 61
   first_name: Irvin
   last_name: Harber
   gender: 0
   birthdate: '1996-07-05'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.569434'
-  updated_at: '2019-02-01 07:19:53.152853'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.569434000 Z
+  updated_at: 2020-09-09 14:15:13.439591000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: irvin-harber
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brett-gosney
+  state_name: Colorado
+  country_name: United States
 santa_green:
   id: 62
   first_name: Santa
   last_name: Green
   gender: 1
   birthdate: '1977-10-27'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.582024'
-  updated_at: '2019-02-01 07:19:53.070722'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.582024000 Z
+  updated_at: 2020-09-09 14:15:13.450468000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: santa-green
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_missy-gosney
+  state_name: Colorado
+  country_name: United States
 carmine_adams:
   id: 69
   first_name: Carmine
   last_name: Adams
   gender: 0
   birthdate: '1997-05-25'
-  city: 
+  city:
   state_code: WA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.67013'
-  updated_at: '2019-02-01 07:19:53.876183'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.670130000 Z
+  updated_at: 2020-09-09 14:15:13.461902000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: carmine-adams
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adam-hewey
+  state_name: Washington
+  country_name: United States
 vesta_borer:
   id: 70
   first_name: Vesta
   last_name: Borer
   gender: 1
   birthdate: '1995-04-24'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.681414'
-  updated_at: '2019-02-01 07:19:53.676494'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.681414000 Z
+  updated_at: 2020-09-09 14:15:13.472952000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: vesta-borer
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_meghan-hicks
+  state_name: Utah
+  country_name: United States
 susanna_abshire:
   id: 74
   first_name: Susanna
   last_name: Abshire
   gender: 1
   birthdate: '1980-08-17'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.73066'
-  updated_at: '2019-02-01 07:19:53.207005'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.730660000 Z
+  updated_at: 2020-09-09 14:15:13.485649000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: susanna-abshire
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sheila-huss
+  state_name: Colorado
+  country_name: United States
 pat_schaden:
   id: 79
   first_name: Pat
   last_name: Schaden
   gender: 0
   birthdate: '1960-09-09'
-  city: 
+  city:
   state_code: AZ
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.794649'
-  updated_at: '2019-02-01 07:19:53.458785'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.794649000 Z
+  updated_at: 2020-09-09 14:15:13.503411000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: pat-schaden
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeff-jones
+  state_name: Arizona
+  country_name: United States
 tuan_jacobs:
   id: 80
   first_name: Tuan
   last_name: Jacobs
   gender: 0
   birthdate: '1998-03-19'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.80464'
-  updated_at: '2019-02-01 07:19:53.004176'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.804640000 Z
+  updated_at: 2020-09-09 14:15:13.516517000 Z
   created_by: 1
   updated_by: 1
   country_code: ES
-  user_id: 
+  user_id:
   concealed: false
   slug: tuan-jacobs
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kilian-jornet
+  state_name:
+  country_name: Spain
 rachelle_eichmann:
   id: 81
   first_name: Rachelle
   last_name: Eichmann
   gender: 1
   birthdate: '1992-01-11'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.813922'
-  updated_at: '2019-02-01 07:19:53.375866'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.813922000 Z
+  updated_at: 2020-09-09 14:15:13.528406000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: rachelle-eichmann
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-kalmeyer
+  state_name: Colorado
+  country_name: United States
 leif_carter:
   id: 83
   first_name: Leif
   last_name: Carter
   gender: 0
   birthdate: '1960-02-01'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.83388'
-  updated_at: '2019-02-01 07:19:53.896369'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.833880000 Z
+  updated_at: 2020-09-09 14:15:13.541528000 Z
   created_by: 1
   updated_by: 1
   country_code: ES
-  user_id: 
+  user_id:
   concealed: false
   slug: leif-carter
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_iker-karrera
+  state_name:
+  country_name: Spain
 leroy_leffler:
   id: 85
   first_name: Leroy
   last_name: Leffler
   gender: 0
   birthdate: '1967-06-18'
-  city: 
+  city:
   state_code: NM
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.855811'
-  updated_at: '2019-02-01 07:19:53.082378'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.855811000 Z
+  updated_at: 2020-09-09 14:15:13.554347000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: leroy-leffler
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristen-kern
+  state_name: New Mexico
+  country_name: United States
 cassondra_nienow:
   id: 97
   first_name: Cassondra
   last_name: Nienow
   gender: 1
   birthdate: '1958-09-07'
-  city: 
+  city:
   state_code: OH
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.974286'
-  updated_at: '2019-02-01 07:19:53.216885'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.974286000 Z
+  updated_at: 2020-09-09 14:15:13.565822000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: cassondra-nienow
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kim-love-ottobre
+  state_name: Ohio
+  country_name: United States
 gus_walker:
   id: 98
   first_name: Gus
@@ -463,17 +511,19 @@ gus_walker:
   birthdate: '1960-11-23'
   city: Boulder
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.983941'
-  updated_at: '2019-02-01 07:19:53.169621'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.983941000 Z
+  updated_at: 2020-09-09 14:15:13.577591000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: gus-walker
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_joey-luther
+  state_name: Colorado
+  country_name: United States
 donte_spencer:
   id: 99
   first_name: Donte
@@ -482,36 +532,40 @@ donte_spencer:
   birthdate: '1984-07-14'
   city: Eden
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:14.993252'
-  updated_at: '2019-02-01 07:19:53.160812'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:14.993252000 Z
+  updated_at: 2020-09-09 14:15:13.589165000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: donte-spencer
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-martin
+  state_name: Utah
+  country_name: United States
 ken_bradtke:
   id: 101
   first_name: Ken
   last_name: Bradtke
   gender: 0
   birthdate: '1966-07-21'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.012012'
-  updated_at: '2019-02-01 07:19:53.491202'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.012012000 Z
+  updated_at: 2020-09-09 14:15:13.599469000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: ken-bradtke
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-martin
+  state_name: Colorado
+  country_name: United States
 darius_jacobson:
   id: 108
   first_name: Darius
@@ -520,36 +574,40 @@ darius_jacobson:
   birthdate: '1985-03-21'
   city: Carbondale
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.077918'
-  updated_at: '2019-02-01 07:19:53.887232'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.077918000 Z
+  updated_at: 2020-09-09 14:15:13.609603000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: darius-jacobson
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeason-murphy
+  state_name: Colorado
+  country_name: United States
 chris_rempel:
   id: 109
   first_name: Chris
   last_name: Rempel
   gender: 0
   birthdate: '1988-12-28'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.087654'
-  updated_at: '2019-02-01 07:19:53.015948'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.087654000 Z
+  updated_at: 2020-09-09 14:15:13.619876000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: chris-rempel
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_doug-newton
+  state_name: Colorado
+  country_name: United States
 samara_vandervort:
   id: 110
   first_name: Samara
@@ -558,302 +616,334 @@ samara_vandervort:
   birthdate: '1992-12-15'
   city: Truckee
   state_code: CA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.096853'
-  updated_at: '2019-02-01 07:19:53.127821'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.096853000 Z
+  updated_at: 2020-09-09 14:15:13.630395000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: samara-vandervort
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-nye
+  state_name: California
+  country_name: United States
 douglas_vandervort:
   id: 113
   first_name: Douglas
   last_name: Vandervort
   gender: 0
-  birthdate: 
-  city: 
+  birthdate:
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.126029'
-  updated_at: '2019-02-01 07:19:53.638248'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.126029000 Z
+  updated_at: 2020-09-09 14:15:13.642094000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: douglas-vandervort
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-oliver
+  state_name: Colorado
+  country_name: United States
 leandro_cole:
   id: 116
   first_name: Leandro
   last_name: Cole
   gender: 0
   birthdate: '1970-06-26'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.155158'
-  updated_at: '2019-02-01 07:19:53.178824'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.155158000 Z
+  updated_at: 2020-09-09 14:15:13.652702000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: leandro-cole
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_raymond-overson
+  state_name: Utah
+  country_name: United States
 elden_morissette:
   id: 119
   first_name: Elden
   last_name: Morissette
   gender: 0
   birthdate: '1972-11-21'
-  city: 
+  city:
   state_code: WI
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.183099'
-  updated_at: '2019-02-01 07:19:53.56644'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.183099000 Z
+  updated_at: 2020-09-09 14:15:13.665606000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: elden-morissette
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_garrett-peltonen
+  state_name: Wisconsin
+  country_name: United States
 raphael_swift:
   id: 120
   first_name: Raphael
   last_name: Swift
   gender: 0
   birthdate: '1974-07-14'
-  city: 
+  city:
   state_code: AR
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.192624'
-  updated_at: '2019-02-01 07:19:53.187844'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.192624000 Z
+  updated_at: 2020-09-09 14:15:13.677082000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: raphael-swift
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_george-peterka
+  state_name: Arkansas
+  country_name: United States
 vern_buckridge:
   id: 128
   first_name: Vern
   last_name: Buckridge
   gender: 0
   birthdate: '1981-10-15'
-  city: 
+  city:
   state_code: TX
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.271416'
-  updated_at: '2019-02-01 07:19:53.110715'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.271416000 Z
+  updated_at: 2020-09-09 14:15:13.689563000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: vern-buckridge
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brian-ricketts
+  state_name: Texas
+  country_name: United States
 cedric_windler:
   id: 135
   first_name: Cedric
   last_name: Windler
   gender: 0
   birthdate: '1979-07-10'
-  city: 
+  city:
   state_code: TN
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.342313'
-  updated_at: '2019-02-01 07:19:53.02791'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.342313000 Z
+  updated_at: 2020-09-09 14:15:13.701489000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: cedric-windler
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_billy-simpson
+  state_name: Tennessee
+  country_name: United States
 clarence_goyette:
   id: 136
   first_name: Clarence
   last_name: Goyette
   gender: 0
   birthdate: '1961-09-18'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.352342'
-  updated_at: '2019-02-01 07:19:53.509191'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.352342000 Z
+  updated_at: 2020-09-09 14:15:13.712905000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: clarence-goyette
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_julian-smith
+  state_name: Colorado
+  country_name: United States
 vince_willms:
   id: 141
   first_name: Vince
   last_name: Willms
   gender: 0
   birthdate: '1964-10-22'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.401845'
-  updated_at: '2019-02-01 07:19:53.059679'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.401845000 Z
+  updated_at: 2020-09-09 14:15:13.724118000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: vince-willms
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_clark-sundahl
+  state_name: Colorado
+  country_name: United States
 eddy_goldner:
   id: 147
   first_name: Eddy
   last_name: Goldner
   gender: 0
   birthdate: '1997-07-26'
-  city: 
+  city:
   state_code: WA
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.467534'
-  updated_at: '2019-02-01 07:19:53.657969'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.467534000 Z
+  updated_at: 2020-09-09 14:15:13.735437000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: eddy-goldner
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-varner
+  state_name: Washington
+  country_name: United States
 demetrius_moen:
   id: 148
   first_name: Demetrius
   last_name: Moen
   gender: 0
   birthdate: '1975-06-06'
-  city: 
+  city:
   state_code: OR
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.476481'
-  updated_at: '2019-02-01 07:19:53.093429'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.476481000 Z
+  updated_at: 2020-09-09 14:15:13.746369000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: demetrius-moen
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-ward
+  state_name: Oregon
+  country_name: United States
 robt_wintheiser:
   id: 152
   first_name: Robt
   last_name: Wintheiser
   gender: 0
-  birthdate: 
+  birthdate:
   city: Durango
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-18 09:10:15.513925'
-  updated_at: '2019-02-01 07:19:53.102516'
+  email:
+  phone:
+  created_at: 2016-04-18 09:10:15.513925000 Z
+  updated_at: 2020-09-09 14:15:13.758285000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: robt-wintheiser
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_phil-wiley
+  state_name: Colorado
+  country_name: United States
 mervin_smitham:
   id: 162
   first_name: Mervin
   last_name: Smitham
   gender: 0
   birthdate: '1991-10-08'
-  city: 
+  city:
   state_code: NM
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:29.684152'
-  updated_at: '2019-02-01 07:19:53.761114'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:29.684152000 Z
+  updated_at: 2020-09-09 14:15:13.769896000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: mervin-smitham
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_neil-blake
+  state_name: New Mexico
+  country_name: United States
 without_start:
   id: 170
   first_name: Without
   last_name: Start
   gender: 0
   birthdate: '1965-04-23'
-  city: 
+  city:
   state_code: MT
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:29.762812'
-  updated_at: '2019-02-01 07:19:53.52798'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:29.762812000 Z
+  updated_at: 2020-09-09 14:15:13.781403000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: without-start
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rich-desimone
+  state_name: Montana
+  country_name: United States
 humberto_adams:
   id: 182
   first_name: Humberto
   last_name: Adams
   gender: 0
   birthdate: '1990-04-25'
-  city: 
+  city:
   state_code: NM
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:29.886921'
-  updated_at: '2019-02-01 07:19:53.469167'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:29.886921000 Z
+  updated_at: 2020-09-09 14:15:13.792028000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: humberto-adams
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-gordon
+  state_name: New Mexico
+  country_name: United States
 omer_yundt:
   id: 190
   first_name: Omer
   last_name: Yundt
   gender: 0
   birthdate: '1974-06-23'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:29.962932'
-  updated_at: '2019-02-01 07:19:53.481573'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:29.962932000 Z
+  updated_at: 2020-09-09 14:15:13.802718000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: omer-yundt
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-hodges
+  state_name: Colorado
+  country_name: United States
 drop_ouray:
   id: 195
   first_name: Drop
@@ -862,36 +952,40 @@ drop_ouray:
   birthdate: '1974-01-05'
   city: Boulder Creek
   state_code: CA
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:31.327182'
-  updated_at: '2019-02-01 07:19:53.53757'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:31.327182000 Z
+  updated_at: 2020-09-09 14:15:13.813213000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: drop-ouray
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristina-irvin
+  state_name: California
+  country_name: United States
 charlie_mueller:
   id: 205
   first_name: Charlie
   last_name: Mueller
   gender: 0
   birthdate: '1989-06-10'
-  city: 
+  city:
   state_code: OR
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:31.426276'
-  updated_at: '2019-02-01 07:19:53.697537'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:31.426276000 Z
+  updated_at: 2020-09-09 14:15:13.827098000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: charlie-mueller
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-larsen
+  state_name: Oregon
+  country_name: United States
 kendall_koch:
   id: 226
   first_name: Kendall
@@ -900,150 +994,166 @@ kendall_koch:
   birthdate: '1976-02-05'
   city: Littleton
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-04-28 08:14:31.615349'
-  updated_at: '2019-02-01 07:19:53.687414'
+  email:
+  phone:
+  created_at: 2016-04-28 08:14:31.615349000 Z
+  updated_at: 2020-09-09 14:15:13.841071000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: kendall-koch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-snyder
+  state_name: Colorado
+  country_name: United States
 dropped_grouse:
   id: 249
   first_name: Dropped
   last_name: Grouse
   gender: 0
   birthdate: '1969-05-13'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-05-02 16:06:11.81628'
-  updated_at: '2019-02-01 07:19:53.742182'
+  email:
+  phone:
+  created_at: 2016-05-02 16:06:11.816280000 Z
+  updated_at: 2020-09-09 14:15:13.853126000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: dropped-grouse
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nick-clark
+  state_name: Colorado
+  country_name: United States
 hoyt_macejkovic:
   id: 256
   first_name: Hoyt
   last_name: Macejkovic
   gender: 0
   birthdate: '1960-07-23'
-  city: 
+  city:
   state_code: TX
-  email: 
-  phone: 
-  created_at: '2016-05-02 16:06:11.885594'
-  updated_at: '2019-02-01 07:19:53.770319'
+  email:
+  phone:
+  created_at: 2016-05-02 16:06:11.885594000 Z
+  updated_at: 2020-09-09 14:15:13.864703000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: hoyt-macejkovic
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-ficke
+  state_name: Texas
+  country_name: United States
 progress_sherman_colorado_us:
   id: 289
   first_name: Progress
   last_name: Sherman
   gender: 0
   birthdate: '1977-12-15'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-05-02 16:06:12.251172'
-  updated_at: '2019-02-01 07:19:53.546915'
+  email:
+  phone:
+  created_at: 2016-05-02 16:06:12.251172000 Z
+  updated_at: 2020-09-09 14:15:13.876692000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-sherman-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-pearcy
-finished_second:
+  state_name: Colorado
+  country_name: United States
+finished_second_montana_us:
   id: 326
   first_name: Finished
   last_name: Second
   gender: 1
   birthdate: '1994-08-16'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-08 07:06:11.133052'
-  updated_at: '2019-02-01 07:19:52.991074'
+  city: Bozeman
+  state_code: MT
+  email:
+  phone:
+  created_at: 2016-05-08 07:06:11.133052000 Z
+  updated_at: 2019-02-01 07:19:52.991074000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
-  slug: finished-second
+  slug: finished-second-montana-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lisa-ledet
+  state_name:
+  country_name:
 start_only_2019_02_01:
   id: 331
   first_name: Start
   last_name: Only
   gender: 1
   birthdate: '1968-07-11'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-08 07:06:11.174801'
-  updated_at: '2019-02-01 07:19:53.33921'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-05-08 07:06:11.174801000 Z
+  updated_at: 2019-02-01 07:19:53.339210000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: start-only-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alexa-mcnaul
+  state_name:
+  country_name:
 finished_first_2019_02_01:
   id: 369
   first_name: Finished
   last_name: First
   gender: 0
   birthdate: '1957-02-04'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-08 07:11:03.04274'
-  updated_at: '2019-02-01 07:19:53.35294'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-05-08 07:11:03.042740000 Z
+  updated_at: 2019-02-01 07:19:53.352940000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: finished-first-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stefan-griebel
+  state_name:
+  country_name:
 not_started_2019_02_01:
   id: 384
   first_name: Not
   last_name: Started
   gender: 0
   birthdate: '1989-03-22'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-08 07:11:03.177256'
-  updated_at: '2019-02-01 07:19:53.365861'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-05-08 07:11:03.177256000 Z
+  updated_at: 2019-02-01 07:19:53.365861000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: not-started-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jon-riebkes
+  state_name:
+  country_name:
 shad_hirthe:
   id: 463
   first_name: Shad
@@ -1052,530 +1162,586 @@ shad_hirthe:
   birthdate: '1975-09-05'
   city: Crested Butte
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-05-10 07:28:03.541069'
-  updated_at: '2019-02-01 07:19:53.648664'
+  email:
+  phone:
+  created_at: 2016-05-10 07:28:03.541069000 Z
+  updated_at: 2020-09-09 14:15:13.888748000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: shad-hirthe
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_allen-hadley
+  state_name: Colorado
+  country_name: United States
 finished_without_stop:
   id: 495
   first_name: Finished
   last_name: Without Stop
   gender: 0
-  birthdate: 
+  birthdate:
   city: Salt Lake City
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-05-10 07:28:11.212024'
-  updated_at: '2019-02-01 07:19:53.386067'
+  email:
+  phone:
+  created_at: 2016-05-10 07:28:11.212024000 Z
+  updated_at: 2020-09-09 14:15:13.899791000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-without-stop
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-jurynec
+  state_name: Utah
+  country_name: United States
 progress_sherman:
   id: 656
   first_name: Progress
   last_name: Sherman
   gender: 0
   birthdate: '1982-07-28'
-  city: 
+  city:
   state_code: ID
-  email: 
-  phone: 
-  created_at: '2016-05-11 15:44:32.114719'
-  updated_at: '2019-02-01 07:19:53.323784'
+  email:
+  phone:
+  created_at: 2016-05-11 15:44:32.114719000 Z
+  updated_at: 2020-09-09 14:15:13.911463000 Z
   created_by: 2
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-sherman
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_andy-jones-wilkins
+  state_name: Idaho
+  country_name: United States
 finished_first_japan:
   id: 682
   first_name: Finished
   last_name: First
   gender: 0
   birthdate: '1995-04-25'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:34.771455'
-  updated_at: '2019-02-01 07:19:53.408546'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:34.771455000 Z
+  updated_at: 2020-09-09 14:15:13.922385000 Z
   created_by: 1
   updated_by: 1
   country_code: JP
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-first-japan
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tsuyoshi-kaburaki
+  state_name:
+  country_name: Japan
 claudio_wunsch:
   id: 689
   first_name: Claudio
   last_name: Wunsch
   gender: 0
-  birthdate: 
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:34.845156'
-  updated_at: '2019-02-01 07:19:53.431583'
+  birthdate:
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:34.845156000 Z
+  updated_at: 2020-09-09 14:15:13.932886000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: claudio-wunsch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stuart-air
+  state_name:
+  country_name: United States
 keith_metz:
   id: 690
   first_name: Keith
   last_name: Metz
   gender: 0
   birthdate: '1971-11-06'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:34.856224'
-  updated_at: '2019-02-01 07:19:53.440317'
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:34.856224000 Z
+  updated_at: 2020-09-09 14:15:13.943328000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: keith-metz
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-mcdermott
+  state_name: Utah
+  country_name: United States
 major_green:
   id: 691
   first_name: Major
   last_name: Green
   gender: 0
   birthdate: '1955-09-29'
-  city: 
+  city:
   state_code: NC
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:34.865687'
-  updated_at: '2019-02-01 07:19:53.450078'
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:34.865687000 Z
+  updated_at: 2020-09-09 14:15:13.954019000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: major-green
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-dirito
+  state_name: North Carolina
+  country_name: United States
 irvin_corkery:
   id: 698
   first_name: Irvin
   last_name: Corkery
   gender: 0
   birthdate: '1991-11-01'
-  city: 
+  city:
   state_code: DC
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:34.94944'
-  updated_at: '2019-02-01 07:19:53.519045'
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:34.949440000 Z
+  updated_at: 2020-09-09 14:15:13.965433000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: irvin-corkery
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_josh-dickson
+  state_name: District of Columbia
+  country_name: United States
 multiple_stops:
   id: 707
   first_name: Multiple
   last_name: Stops
   gender: 1
   birthdate: '1954-03-21'
-  city: 
+  city:
   state_code: HI
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:35.032341'
-  updated_at: '2019-02-01 07:19:53.557519'
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:35.032341000 Z
+  updated_at: 2020-09-09 14:15:13.976330000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: multiple-stops
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rosie-warfield
+  state_name: Hawaii
+  country_name: United States
 not_started:
   id: 710
   first_name: Not
   last_name: Started
   gender: 0
   birthdate: '1986-03-23'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2016-05-23 07:18:35.057652'
-  updated_at: '2019-02-01 06:10:44.623804'
+  email:
+  phone:
+  created_at: 2016-05-23 07:18:35.057652000 Z
+  updated_at: 2020-09-09 14:15:13.987409000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: not-started
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
+  state_name: Colorado
+  country_name: United States
 start_only_maine_us:
   id: 818
   first_name: Start
   last_name: Only
   gender: 0
   birthdate: '1990-04-23'
-  city: 
+  city:
   state_code: ME
-  email: 
-  phone: 
-  created_at: '2016-05-24 04:48:52.37776'
-  updated_at: '2019-02-01 07:19:53.752476'
+  email:
+  phone:
+  created_at: 2016-05-24 04:48:52.377760000 Z
+  updated_at: 2020-09-09 14:15:13.998434000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: start-only-maine-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_craig-wilson
+  state_name: Maine
+  country_name: United States
 junior_lesch:
   id: 830
   first_name: Junior
   last_name: Lesch
   gender: 0
   birthdate: '1967-02-21'
-  city: 
+  city:
   state_code: NM
-  email: 
-  phone: 
-  created_at: '2016-05-24 04:48:52.529697'
-  updated_at: '2019-02-01 07:19:53.667794'
+  email:
+  phone:
+  created_at: 2016-05-24 04:48:52.529697000 Z
+  updated_at: 2020-09-09 14:15:14.009690000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: junior-lesch
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-halladay
+  state_name: New Mexico
+  country_name: United States
 finished_first_utah_us:
   id: 1265
   first_name: Finished
   last_name: First
   gender: 1
   birthdate: '1969-04-04'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2017-03-28 07:19:22.66871'
-  updated_at: '2019-02-01 07:19:53.57611'
+  email:
+  phone:
+  created_at: 2017-03-28 07:19:22.668710000 Z
+  updated_at: 2020-09-09 14:15:14.046848000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-first-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shalise-morgan
+  state_name: Utah
+  country_name: United States
 progress_lap6:
   id: 1266
   first_name: Progress
   last_name: Lap6
   gender: 0
-  birthdate: 
-  city: 
+  birthdate:
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2017-03-28 07:19:22.822139'
-  updated_at: '2019-02-01 07:19:53.585346'
+  email:
+  phone:
+  created_at: 2017-03-28 07:19:22.822139000 Z
+  updated_at: 2020-09-09 14:15:14.058789000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-lap6
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-hughes
+  state_name: Utah
+  country_name: United States
 multiple_stops_utah_us:
   id: 1305
   first_name: Multiple
   last_name: Stops
   gender: 1
   birthdate: '1973-11-14'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2017-03-28 07:19:29.184827'
-  updated_at: '2019-02-01 07:19:53.596042'
+  email:
+  phone:
+  created_at: 2017-03-28 07:19:29.184827000 Z
+  updated_at: 2020-09-09 14:15:14.070082000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: multiple-stops-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tara-warren
+  state_name: Utah
+  country_name: United States
 finished_last:
   id: 1324
   first_name: Finished
   last_name: Last
   gender: 0
   birthdate: '1976-05-03'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2017-03-28 07:19:32.066094'
-  updated_at: '2019-02-01 07:19:53.605615'
+  email:
+  phone:
+  created_at: 2017-03-28 07:19:32.066094000 Z
+  updated_at: 2020-09-09 14:15:14.081760000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-last
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-garrison
+  state_name: Utah
+  country_name: United States
 progress_lap1:
   id: 1344
   first_name: Progress
   last_name: Lap1
   gender: 0
   birthdate: '1967-03-21'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2017-03-28 07:19:35.252811'
-  updated_at: '2019-02-01 07:19:53.625378'
+  email:
+  phone:
+  created_at: 2017-03-28 07:19:35.252811000 Z
+  updated_at: 2020-09-09 14:15:14.092948000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-lap1
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_keith-sanders
+  state_name: Utah
+  country_name: United States
 kory_kulas:
   id: 1356
   first_name: Kory
   last_name: Kulas
   gender: 0
   birthdate: '1974-01-25'
-  city: 
+  city:
   state_code: CA
-  email: 
-  phone: 
-  created_at: '2017-04-18 08:22:57.70508'
-  updated_at: '2019-02-01 07:19:53.310718'
+  email:
+  phone:
+  created_at: 2017-04-18 08:22:57.705080000 Z
+  updated_at: 2020-09-09 14:15:14.111183000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: kory-kulas
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bill-clements
+  state_name: California
+  country_name: United States
 benito_moen:
   id: 1365
   first_name: Benito
   last_name: Moen
   gender: 0
   birthdate: '1964-01-16'
-  city: 
+  city:
   state_code: OH
-  email: 
-  phone: 
-  created_at: '2017-04-18 08:22:59.120573'
-  updated_at: '2019-02-01 07:19:53.7074'
+  email:
+  phone:
+  created_at: 2017-04-18 08:22:59.120573000 Z
+  updated_at: 2020-09-09 14:15:14.123212000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: benito-moen
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-peterman
+  state_name: Ohio
+  country_name: United States
 rene_mclaughlin:
   id: 1379
   first_name: Rene
   last_name: McLaughlin
   gender: 0
   birthdate: '1984-04-30'
-  city: 
+  city:
   state_code: TX
-  email: 
-  phone: 
-  created_at: '2017-04-18 08:23:01.385694'
-  updated_at: '2019-02-01 07:19:53.779293'
+  email:
+  phone:
+  created_at: 2017-04-18 08:23:01.385694000 Z
+  updated_at: 2020-09-09 14:15:14.136268000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: rene-mclaughlin
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-brown
+  state_name: Texas
+  country_name: United States
 start_only_colorado_us_2019_02_01:
   id: 1567
   first_name: Start
   last_name: Only
   gender: 0
   birthdate: '1967-10-27'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:53.922446'
-  updated_at: '2019-02-01 07:19:53.982809'
+  email:
+  phone:
+  created_at: 2018-01-18 05:23:53.922446000 Z
+  updated_at: 2020-09-09 14:15:14.147475000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: start-only-colorado-us-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_hewitt-gaynor
+  state_name: Colorado
+  country_name: United States
 drop_bandera:
   id: 1568
   first_name: Drop
   last_name: Bandera
   gender: 1
   birthdate: '1998-08-31'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:54.016843'
-  updated_at: '2019-02-01 07:19:53.991273'
+  email:
+  phone:
+  created_at: 2018-01-18 05:23:54.016843000 Z
+  updated_at: 2020-09-09 14:15:14.159556000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: drop-bandera
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lynn-hall
+  state_name: Colorado
+  country_name: United States
 progress_rolling:
   id: 1569
   first_name: Progress
   last_name: Rolling
   gender: 1
   birthdate: '1962-04-23'
-  city: 
+  city:
   state_code: CA
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:54.1754'
-  updated_at: '2019-02-01 07:19:54.001212'
+  email:
+  phone:
+  created_at: 2018-01-18 05:23:54.175400000 Z
+  updated_at: 2020-09-09 14:15:14.173638000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-rolling
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nicole-honda
+  state_name: California
+  country_name: United States
 not_started_colorado_us_2019_02_01:
   id: 1571
   first_name: Not
   last_name: Started
   gender: 1
   birthdate: '1981-03-31'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:54.418009'
-  updated_at: '2019-02-01 07:19:53.960413'
+  email:
+  phone:
+  created_at: 2018-01-18 05:23:54.418009000 Z
+  updated_at: 2020-09-09 14:15:14.185675000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: not-started-colorado-us-2019-02-01
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_glenda-lainis
+  state_name: Colorado
+  country_name: United States
 finished_first_colorado_us:
   id: 1585
   first_name: Finished
   last_name: First
   gender: 0
   birthdate: '1973-08-18'
-  city: 
+  city:
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-01-18 05:23:56.334499'
-  updated_at: '2019-02-21 23:10:08.501744'
+  email:
+  phone:
+  created_at: 2018-01-18 05:23:56.334499000 Z
+  updated_at: 2020-09-09 14:15:14.197020000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-first-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-oury
+  state_name: Colorado
+  country_name: United States
 drop_aid4:
   id: 1689
   first_name: Drop
   last_name: Aid4
   gender: 0
   birthdate: '1998-11-08'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-05-10 09:47:58.890141'
-  updated_at: '2019-02-01 07:19:53.832943'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-05-10 09:47:58.890141000 Z
+  updated_at: 2019-02-01 07:19:53.832943000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: drop-aid4
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nathan-evans
+  state_name:
+  country_name:
 progress_aid3:
   id: 1734
   first_name: Progress
   last_name: Aid3
   gender: 0
   birthdate: '1986-03-04'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-05-10 09:48:33.933618'
-  updated_at: '2019-02-01 07:19:53.810374'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-05-10 09:48:33.933618000 Z
+  updated_at: 2019-02-01 07:19:53.810374000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: progress-aid3
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-hefti
+  state_name:
+  country_name:
 drop_anvil:
   id: 1747
   first_name: Drop
   last_name: Anvil
   gender: 0
   birthdate: '1988-09-29'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-07-28 11:18:08.492197'
-  updated_at: '2019-02-01 07:19:54.011406'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-07-28 11:18:08.492197000 Z
+  updated_at: 2019-02-01 07:19:54.011406000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: drop-anvil
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ian-cropper
+  state_name:
+  country_name:
 progress_cascade:
   id: 1748
   first_name: Progress
@@ -1584,17 +1750,19 @@ progress_cascade:
   birthdate: '1997-05-20'
   city: Provo
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2018-07-28 11:18:10.049155'
-  updated_at: '2019-02-01 07:19:54.020929'
+  email:
+  phone:
+  created_at: 2018-07-28 11:18:10.049155000 Z
+  updated_at: 2020-09-09 14:15:14.210417000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-cascade
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_abram-early
+  state_name: Utah
+  country_name: United States
 not_started_colorado_us:
   id: 1771
   first_name: Not
@@ -1603,17 +1771,19 @@ not_started_colorado_us:
   birthdate: '1995-03-06'
   city: Greeley
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:34:35.09039'
-  updated_at: '2019-02-01 07:19:53.929463'
+  email:
+  phone:
+  created_at: 2018-12-28 19:34:35.090390000 Z
+  updated_at: 2020-09-09 14:15:14.222140000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: not-started-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_marybeth-wittenbach
+  state_name: Colorado
+  country_name: United States
 finished_second_colorado_us:
   id: 1862
   first_name: Finished
@@ -1622,17 +1792,19 @@ finished_second_colorado_us:
   birthdate: '1973-07-23'
   city: Boulder
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:34:43.417273'
-  updated_at: '2019-02-21 23:22:35.28103'
+  email:
+  phone:
+  created_at: 2018-12-28 19:34:43.417273000 Z
+  updated_at: 2020-09-09 14:15:14.233446000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-second-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sierra-horton
+  state_name: Colorado
+  country_name: United States
 start_only_colorado_us:
   id: 1874
   first_name: Start
@@ -1641,245 +1813,271 @@ start_only_colorado_us:
   birthdate: '1989-09-09'
   city: Aurora
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:34:44.799339'
-  updated_at: '2019-02-01 07:19:53.918886'
+  email:
+  phone:
+  created_at: 2018-12-28 19:34:44.799339000 Z
+  updated_at: 2020-09-09 14:15:14.244649000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: start-only-colorado-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_christina-gille
+  state_name: Colorado
+  country_name: United States
 finished_first_france:
   id: 1923
   first_name: Finished
   last_name: First
   gender: 0
   birthdate: '1993-06-05'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:34:49.62732'
-  updated_at: '2019-02-01 07:19:53.971283'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-12-28 19:34:49.627320000 Z
+  updated_at: 2020-09-09 14:15:14.254568000 Z
   created_by: 1
   updated_by: 1
   country_code: FR
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-first-france
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adrien-seguret
+  state_name:
+  country_name: France
 start_only_2019_02_01_07_19_53:
   id: 1926
   first_name: Start
   last_name: Only
   gender: 1
   birthdate: '1985-11-14'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:35:21.894405'
-  updated_at: '2019-02-01 07:19:53.845347'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-12-28 19:35:21.894405000 Z
+  updated_at: 2019-02-01 07:19:53.845347000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: start-only-2019-02-01-07-19-53
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_caolan-macmahon
+  state_name:
+  country_name:
 progress_aid4:
   id: 2003
   first_name: Progress
   last_name: Aid4
   gender: 1
   birthdate: '1982-03-29'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:35:28.943'
-  updated_at: '2019-02-01 07:19:53.821661'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-12-28 19:35:28.943000000 Z
+  updated_at: 2019-02-01 07:19:53.821661000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: progress-aid4
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alyson-wiedenheft
+  state_name:
+  country_name:
 bad_finish:
   id: 2104
   first_name: Bad
   last_name: Finish
   gender: 0
   birthdate: '1995-07-25'
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2018-12-28 19:35:38.330897'
-  updated_at: '2019-02-01 07:19:53.788073'
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2018-12-28 19:35:38.330897000 Z
+  updated_at: 2019-02-01 07:19:53.788073000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: bad-finish
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jimmy-picard
+  state_name:
+  country_name:
 progress_lap5_partial:
   id: 2169
   first_name: Progress
   last_name: Lap5 Partial
   gender: 0
   birthdate: '1988-09-15'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:44.965267'
-  updated_at: '2019-02-01 07:19:53.254811'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:44.965267000 Z
+  updated_at: 2020-09-09 14:15:14.265442000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-lap5-partial
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jactest-cartest
+  state_name: Utah
+  country_name: United States
 finished_first:
   id: 2170
   first_name: Finished
   last_name: First
   gender: 0
   birthdate: '1997-01-25'
-  city: 
+  city:
   state_code: AZ
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:45.095305'
-  updated_at: '2019-02-01 07:19:53.263433'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:45.095305000 Z
+  updated_at: 2020-09-09 14:15:14.277471000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-first
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jamtest-coutest
+  state_name: Arizona
+  country_name: United States
 finished_lap6:
   id: 2171
   first_name: Finished
   last_name: Lap6
   gender: 0
   birthdate: '1963-03-07'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:45.241578'
-  updated_at: '2019-02-01 07:19:53.272429'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:45.241578000 Z
+  updated_at: 2020-09-09 14:15:14.288991000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: finished-lap6
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_contest-eldtest
+  state_name: Utah
+  country_name: United States
 progress_lap2:
   id: 2174
   first_name: Progress
   last_name: Lap2
   gender: 1
   birthdate: '1992-10-06'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:45.694985'
-  updated_at: '2019-02-01 07:19:53.226652'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:45.694985000 Z
+  updated_at: 2020-09-09 14:15:14.299405000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: progress-lap2
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_coltest-fortest
+  state_name: Utah
+  country_name: United States
 not_started_utah_us:
   id: 2175
   first_name: Not
   last_name: Started
   gender: 1
-  birthdate: 
-  city: 
+  birthdate:
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:45.813779'
-  updated_at: '2019-02-01 07:19:53.28547'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:45.813779000 Z
+  updated_at: 2020-09-09 14:15:14.310401000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: not-started-utah-us
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest
+  state_name: Utah
+  country_name: United States
 start_only:
   id: 2176
   first_name: Start
   last_name: Only
   gender: 0
   birthdate: '1972-12-19'
-  city: 
+  city:
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-01-30 19:00:45.946704'
-  updated_at: '2019-02-01 07:19:53.299193'
+  email:
+  phone:
+  created_at: 2019-01-30 19:00:45.946704000 Z
+  updated_at: 2020-09-09 14:15:14.323832000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: start-only
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
+  state_name: Utah
+  country_name: United States
 on_dst_change:
   id: 2182
   first_name: 'On'
   last_name: DST Change
   gender: 1
-  birthdate: 
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2019-02-21 23:23:43.929477'
-  updated_at: '2019-02-21 23:23:43.929477'
+  birthdate:
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2019-02-21 23:23:43.929477000 Z
+  updated_at: 2019-02-21 23:23:43.929477000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: on-dst-change
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_on-dst-change
+  state_name:
+  country_name:
 across_dst_change:
   id: 2183
   first_name: Across
   last_name: DST Change
   gender: 1
-  birthdate: 
-  city: 
-  state_code: 
-  email: 
-  phone: 
-  created_at: '2019-02-21 23:23:44.141109'
-  updated_at: '2019-02-21 23:23:44.141109'
+  birthdate:
+  city:
+  state_code:
+  email:
+  phone:
+  created_at: 2019-02-21 23:23:44.141109000 Z
+  updated_at: 2019-02-21 23:23:44.141109000 Z
   created_by: 1
   updated_by: 1
-  country_code: 
-  user_id: 
+  country_code:
+  user_id:
   concealed: false
   slug: across-dst-change
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_across-dst-change
+  state_name:
+  country_name:
 un_started:
   id: 2184
   first_name: Un
@@ -1888,17 +2086,19 @@ un_started:
   birthdate: '1988-09-01'
   city: Fort Collins
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2019-02-21 23:23:44.276762'
-  updated_at: '2019-02-21 23:23:44.276762'
+  email:
+  phone:
+  created_at: 2019-02-21 23:23:44.276762000 Z
+  updated_at: 2020-09-09 14:15:14.337527000 Z
   created_by: 1
   updated_by: 1
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: un-started
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_un-started
+  state_name: Colorado
+  country_name: United States
 series_finisher:
   id: 2185
   first_name: Series
@@ -1907,17 +2107,19 @@ series_finisher:
   birthdate: '1983-03-03'
   city: Louisville
   state_code: CO
-  email: 
-  phone: 
-  created_at: '2019-02-21 23:40:15.216434'
-  updated_at: '2019-02-21 23:40:21.442364'
+  email:
+  phone:
+  created_at: 2019-02-21 23:40:15.216434000 Z
+  updated_at: 2020-09-09 14:15:14.348239000 Z
   created_by: 1
-  updated_by: 
+  updated_by:
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: series-finisher
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_series-finisher
+  state_name: Colorado
+  country_name: United States
 slow_finisher:
   id: 2186
   first_name: Slow
@@ -1926,14 +2128,16 @@ slow_finisher:
   birthdate: '1953-03-03'
   city: Orem
   state_code: UT
-  email: 
-  phone: 
-  created_at: '2019-02-21 23:53:21.216763'
-  updated_at: '2019-02-21 23:53:21.216763'
+  email:
+  phone:
+  created_at: 2019-02-21 23:53:21.216763000 Z
+  updated_at: 2020-09-09 14:15:14.358990000 Z
   created_by: 1
-  updated_by: 
+  updated_by:
   country_code: US
-  user_id: 
+  user_id:
   concealed: false
   slug: slow-finisher
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_slow-finisher
+  state_name: Utah
+  country_name: United States

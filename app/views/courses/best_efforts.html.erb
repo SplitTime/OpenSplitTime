@@ -2,9 +2,6 @@
   <% "OpenSplitTime: Best efforts - #{@presenter.name} - #{@presenter.segment_name}" %>
 <% end %>
 
-<% content_for(:container_type) do %>skip
-<% end %>
-
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -13,9 +10,7 @@
           <h1><strong><%= [@presenter.name, "All-time Best"].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <% if @presenter.organization %>
-              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
             <li class="breadcrumb-item active">All-Time best</li>
           </ul>
@@ -30,18 +25,16 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-sm-7">
-        <% if @presenter.all_efforts_count > 0 %>
+        <% if @presenter.all_efforts_count.positive? %>
           <%= render 'best_efforts_lookup', presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-12 col-sm-5">
-        <div class="text-right">
-          <% unless @presenter.simple? %>
-            <%= segment_start_dropdown(@presenter) %>
-            <%= segment_finish_dropdown(@presenter) %>
-          <% end %>
-          <%= gender_dropdown_menu(@presenter) %>
-        </div>
+      <div class="col-12 col-sm-5 text-right">
+        <% unless @presenter.simple? %>
+          <%= segment_start_dropdown(@presenter) %>
+          <%= segment_finish_dropdown(@presenter) %>
+        <% end %>
+        <%= gender_dropdown_menu(@presenter) %>
       </div>
     </div>
   </div>
@@ -51,24 +44,17 @@
   <h4>
     <strong><%= "#{@presenter.segment_name}: #{d(@presenter.distance)} #{pdu}, #{e(@presenter.vert_gain)} #{peu} elevation gain, #{e(@presenter.vert_loss)} #{peu} elevation loss" %></strong>
   </h4>
-  <% if @presenter.all_efforts_count > 0 %>
+  <% if @presenter.all_efforts_count.positive? %>
     <h5>
       <%= "Searched #{pluralize(@presenter.events_count, 'event')}
       from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
     </h5>
 
-    <% if @presenter.filtered_efforts_count > 0 %>
-      <%= render 'efforts/efforts_list_segment', presenter: @presenter %>
-
-      <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_efforts, inner_window: 2, outer_window: 0) %>
-        </div>
-      </div>
+    <% if @presenter.filtered_segments_count.positive? %>
+      <%= render "best_effort_segments/table" %>
     <% elsif params[:search].present? && params[:search].length < 3 %>
       <h4>Search parameter is too short</h4>
     <% else %>
-
       <h4>No efforts match this search</h4>
     <% end %>
   <% else %>

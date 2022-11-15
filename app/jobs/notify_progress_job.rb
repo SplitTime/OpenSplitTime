@@ -26,6 +26,7 @@ class NotifyProgressJob < ApplicationJob
   private
 
   attr_reader :effort_id, :split_time_ids
+
   delegate :topic_resource_key, to: :effort
 
   def effort
@@ -58,8 +59,8 @@ class NotifyProgressJob < ApplicationJob
 
   def farther_notification_exists?
     farthest_notification &&
-        ([farthest_notification.distance, farthest_notification.bitkey] <=>
-            [farthest_split_time.total_distance, farthest_split_time.bitkey]) > 0
+      ([farthest_notification.distance, farthest_notification.bitkey] <=>
+          [farthest_split_time.total_distance, farthest_split_time.bitkey]) > 0
   end
 
   def farthest_notification

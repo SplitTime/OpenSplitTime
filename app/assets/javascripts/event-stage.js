@@ -278,13 +278,12 @@
     } );
     api.define( 'events', {
         attributes: {
-            name: { type: String, default: '' },
             shortName: { type: String, default: '' },
             concealed: { type: Boolean, default: true },
-            laps: { type: Boolean, default: false },
+            multiLap: { type: Boolean, default: false },
             lapsRequired: { type: Number, default: 1 },
             virtualStartTime: { type: Date, default: null, local: true },
-            startTimeLocal: {
+            scheduledStartTimeLocal: {
                 get: function() {
                     if (!(this.virtualStartTime instanceof Date)) return null;
                     var regex = new RegExp('Z$');
@@ -794,7 +793,7 @@
 
             // Default Map Bounds
             var defaultBounds = null;
-            document.addEventListener("turbolinks:load", function() {
+            document.addEventListener("turbo:load", function() {
                 defaultBounds = new google.maps.LatLngBounds(
                     { lat: 24.846, lng: -126.826 },
                     { lat: 49.038, lng: -65.478 }
@@ -1615,7 +1614,7 @@
         } )()
     };
 
-    document.addEventListener("turbolinks:load", function() {
+    document.addEventListener("turbo:load", function() {
         if(Rails.$('.events.app').length > 0) {
             eventStage.init();
         }

@@ -9,11 +9,15 @@ class EffortWithLapSplitRows
 
   def post_initialize(effort, options)
     ArgsValidator.validate(subject: effort, params: options, class: self.class)
-    @effort = effort.enriched
+    load_effort(effort)
   end
 
   def event
     @event ||= Event.where(id: effort.event_id).includes(:splits).first
+  end
+
+  def event_splits
+    @event_splits ||= event.splits
   end
 
   def total_time_in_aid
@@ -72,10 +76,13 @@ class EffortWithLapSplitRows
 
   def rows_from_lap_splits(lap_splits, indexed_times, in_times_only: false)
     lap_splits.map do |lap_split|
-      LapSplitRow.new(lap_split: lap_split,
-                      split_times: related_split_times(lap_split, indexed_times),
-                      show_laps: event.multiple_laps?,
-                      in_times_only: in_times_only)
+      LapSplitRow.new(
+        lap_split: lap_split,
+        split_times: related_split_times(lap_split, indexed_times),
+        show_laps: event.multiple_laps?,
+        in_times_only: in_times_only,
+        not_in_event: event_splits.exclude?(lap_split.split),
+      )
     end
   end
 
@@ -89,7 +96,7 @@ class EffortWithLapSplitRows
   end
 
   def ordered_split_times
-    @ordered_split_times ||= loaded_effort.ordered_split_times
+    @ordered_split_times ||= effort.ordered_split_times
   end
 
   def indexed_split_times
@@ -116,10 +123,11 @@ class EffortWithLapSplitRows
     ordered_split_times.last&.lap || 1
   end
 
-  def loaded_effort
-    return @loaded_effort if defined?(@loaded_effort)
-    temp_effort = Effort.where(id: effort).includes(split_times: :split).first
+  private
+
+  def load_effort(effort)
+    temp_effort = Effort.where(id: effort).ranking_subquery.includes(split_times: :split).first
     AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
-    @loaded_effort = temp_effort
+    @effort = temp_effort
   end
 end

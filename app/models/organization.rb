@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class Organization < ApplicationRecord
-  include Auditable
+  include UrlAccessible
   include Concealable
+  include Auditable
   extend FriendlyId
+
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   has_paper_trail
@@ -11,27 +13,29 @@ class Organization < ApplicationRecord
   NOT_FOUND_OWNER_ID = -1
 
   has_many :courses, dependent: :destroy
+  has_many :course_groups, dependent: :destroy
   has_many :event_groups, dependent: :destroy
+  has_many :lotteries, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
   has_many :event_series, dependent: :destroy
   has_many :results_templates, dependent: :destroy
 
   scope :owned_by, ->(user) { where(created_by: user.id) }
-  scope :authorized_for, ->(user) do
+  scope :authorized_for, lambda { |user|
     left_joins(:stewardships)
-      .where('organizations.created_by = ? or stewardships.user_id = ?', user.id, user.id)
-      .distinct
-  end
-  scope :visible_or_authorized_for, ->(user) do
+        .where("organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
+        .distinct
+  }
+  scope :visible_or_authorized_for, lambda { |user|
     left_joins(:stewardships)
-      .where('organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?', user.id, user.id)
-      .distinct
-  end
-  scope :with_visible_event_count, -> do
-    left_joins(event_groups: :events).select('organizations.*, COUNT(DISTINCT events) AS event_count')
-      .where(event_groups: {concealed: false}).group('organizations.id, event_groups.organization_id')
-  end
+        .where("organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
+        .distinct
+  }
+  scope :with_visible_event_count, lambda {
+    left_joins(event_groups: :events).select("organizations.*, COUNT(DISTINCT events) AS event_count")
+        .where(event_groups: {concealed: false}).group("organizations.id, event_groups.organization_id")
+  }
 
   alias_attribute :owner_id, :created_by
 
@@ -51,8 +55,16 @@ class Organization < ApplicationRecord
     end
   end
 
+  def owner
+    @owner ||= User.find_by(id: owner_id)
+  end
+
+  def owner_full_name
+    owner&.full_name
+  end
+
   def owner_email
-    User.find_by(id: owner_id)&.email
+    owner&.email
   end
 
   def owner_email=(email)

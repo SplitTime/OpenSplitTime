@@ -1,5 +1,5 @@
 <% if view_object.progress_notifiable? %>
-  <%= div_for(view_object.effort, class: 'card') do %>
+  <div id="<%= dom_id(view_object.effort) %>" class="card effort">
     <h5 class="card-header">
       <strong><%= "Notify Me of #{view_object.effort.first_name}'s Progress" %></strong>
     </h5>
@@ -7,5 +7,5 @@
       <%= link_to_subscription(view_object.effort, :email) %>
       <%= link_to_subscription(view_object.effort, :sms) %>
     </div>
-  <% end %>
+  </div>
 <% end %>

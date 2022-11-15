@@ -1,7 +1,7 @@
 <% content_for :title do %>
   <% "OpenSplitTime: Plan my effort - #{@presenter.course_name}" %>
 <% end %>
-  
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
@@ -10,9 +10,7 @@
           <h1><strong><%= [@presenter.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <% if @presenter.organization %>
-              <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
-            <% end %>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
             <li class="breadcrumb-item active">Plan My Effort</li>
           </ul>
@@ -28,21 +26,21 @@
     <%= render 'time_input', presenter: @presenter %>
 
     <hr>
+  <% end %>
 
-    <% if @presenter.event %>
-      <% if @presenter.expected_time && @presenter.ordered_split_times.present? %>
-        <div class="row">
-          <div class="col-10">
-            <h4><strong><%= @presenter.plan_description %></strong></h4>
-            <h5><%= "Based on #{pluralize(@presenter.relevant_efforts_count, 'effort')} " +
+  <% if @presenter.error_messages.empty? %>
+    <% if @presenter.expected_time && @presenter.ordered_split_times.present? %>
+      <div class="row">
+        <div class="col-10">
+          <h4><strong><%= @presenter.plan_description %></strong></h4>
+          <h5><%= "Based on #{pluralize(@presenter.relevant_efforts_count, 'effort')} " +
                     "from #{'year'.pluralize(@presenter.event_years_analyzed.size)} " +
                     "#{@presenter.event_years_analyzed.to_sentence}" %></h5>
-          </div>
-          <div class="col-2 text-right">
-            <%= link_to 'Export plan', request.params.merge(format: :csv), class: 'btn btn-success' %>
-          </div>
         </div>
-      <% end %>
+        <div class="col-2 text-right">
+          <%= link_to 'Export plan', request.params.merge(format: :csv), class: 'btn btn-success' %>
+        </div>
+      </div>
     <% end %>
 
     <% if @presenter.expected_time %>
@@ -53,6 +51,8 @@
       <% end %>
     <% end %>
   <% else %>
-    <h4>No events have been run on this course.</h4>
+    <% @presenter.error_messages.each do |message| %>
+      <h4><%= message %></h4>
+    <% end %>
   <% end %>
 </article>

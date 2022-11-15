@@ -6,18 +6,6 @@
         }
     };
 
-    var switchery = {
-    	init: function () {
-    		$( '[data-toggle="switchery"]' ).each( function( i, el ) {
-				$( el ).data( 'switchery', new Switchery( el, {
-					size: $( el ).data( 'size' ),
-                    color: '#2A9FD8'
-				} ) );
-    		} );
-    	}
-    };
-
-
     var datetimepicker = {
         init: function () {
             $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
@@ -48,11 +36,10 @@
     };
 
     var init = function () {
-        switchery.init();
         datetimepicker.init();
     };
 
-    document.addEventListener("turbolinks:load", init );
+    document.addEventListener("turbo:load", init );
     $(document).bind( 'vue-ready', init );
 
 })(jQuery);

@@ -18,10 +18,11 @@ module ActionController
     end
 
     private
+
     def deep_underscore_params!(val)
       case val
       when Array
-        val.map {|v| deep_underscore_params! v }
+        val.map { |v| deep_underscore_params! v }
       when Hash
         val.keys.each do |k, v = val[k]|
           val.delete k
@@ -44,5 +45,5 @@ end
 
 # To enable root element in JSON for ActiveRecord objects.
 # ActiveSupport.on_load(:active_record) do
-#  self.include_root_in_json = true
+#   self.include_root_in_json = true
 # end

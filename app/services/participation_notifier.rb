@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ParticipationNotifier < BaseNotifier
-  VERBS = {unstarted: 'will be participating', in_progress: 'is in progress', stopped: 'recently participated'}
-  RESULTS_DESCRIPTORS = {unstarted: 'Watch for results', in_progress: 'Follow along', stopped: 'See full results'}
+  VERBS = {unstarted: "will be participating", in_progress: "is in progress", stopped: "recently participated"}.freeze
+  RESULTS_DESCRIPTORS = {unstarted: "Watch for results", in_progress: "Follow along", stopped: "See full results"}.freeze
 
   def post_initialize(args)
     @effort = args[:effort]
@@ -11,6 +11,7 @@ class ParticipationNotifier < BaseNotifier
   private
 
   attr_reader :effort
+
   delegate :event, :person, to: :effort
 
   def subject
@@ -20,11 +21,11 @@ class ParticipationNotifier < BaseNotifier
   def message
     <<~MESSAGE
       Your friend #{person.full_name} #{verb} at #{event.name}!
-      #{results_descriptor} here: #{ENV['BASE_URI']}/efforts/#{effort.id}
+      #{results_descriptor} here: #{::OstConfig.base_uri}/efforts/#{effort.id}
       #{live_update_message}
       Thank you for using OpenSplitTime!
       You are receiving this message because you signed up on OpenSplitTime and asked to follow #{person.first_name}. 
-      To change your preferences, go to #{ENV['BASE_URI']}/people/#{person.id}, then log in and click to unfollow.
+      To change your preferences, go to #{::OstConfig.base_uri}/people/#{person.id}, then log in and click to unfollow.
     MESSAGE
   end
 
@@ -41,10 +42,9 @@ class ParticipationNotifier < BaseNotifier
   end
 
   def effort_status
-    case
-    when effort.stopped?
+    if effort.stopped?
       :stopped
-    when effort.in_progress?
+    elsif effort.in_progress?
       :in_progress
     else
       :unstarted

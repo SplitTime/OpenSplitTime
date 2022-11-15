@@ -1,5 +1,6 @@
 class StewardshipsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_stewardship, only: [:update, :destroy]
   after_action :verify_authorized
 
   def create
@@ -22,8 +23,17 @@ class StewardshipsController < ApplicationController
     redirect_to organization_path(organization, display_style: :stewards)
   end
 
+  def update
+    authorize @stewardship
+
+    if @stewardship.update(permitted_params)
+      redirect_to organization_path(@stewardship.organization, display_style: :stewards), notice: "Stewardship updated."
+    else
+      redirect_to organization_path(@stewardship.organization, display_style: :stewards), alert: "Unable to update stewardship."
+    end
+  end
+
   def destroy
-    @stewardship = Stewardship.find(params[:id])
     authorize @stewardship
 
     if @stewardship.destroy
@@ -33,5 +43,11 @@ class StewardshipsController < ApplicationController
     end
 
     redirect_to organization_path(@stewardship.organization, display_style: :stewards)
+  end
+
+  private
+
+  def set_stewardship
+    @stewardship = Stewardship.find(params[:id])
   end
 end

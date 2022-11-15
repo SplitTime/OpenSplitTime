@@ -2,7 +2,6 @@
 
 module Interactors
   class SetEffortStatus
-
     # This class expects to be given an effort loaded with split_times: :splits, or in the alternative, it expects
     # :ordered_split_times and :lap_splits to be provided in tne options hash.
 
@@ -22,7 +21,7 @@ module Interactors
     def perform
       unconfirmed_split_times.each { |split_time| set_split_time_status(split_time) }
       set_effort_status
-      Interactors::Response.new([], '', changed_resources)
+      Interactors::Response.new([], "", changed_resources)
     end
 
     private
@@ -33,18 +32,19 @@ module Interactors
 
     def set_split_time_status(split_time)
       set_subject_attributes(split_time)
-      subject_split_time.data_status = case
-                                       when beyond_drop?
-                                         'bad'
-                                       when subject_segment.zero_start?
-                                         'good'
+      subject_split_time.data_status = if beyond_drop?
+                                         "bad"
+                                       elsif subject_segment.zero_start?
+                                         "good"
                                        else
                                          time_predictor.data_status(subject_segment_time)
                                        end
     end
 
     def set_effort_status
-      effort.data_status = ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses[:good]).compact.min
+      worst_split_time_status = ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses[:good]).compact.min
+      effort_status = times_without_start_time? ? ::Effort.data_statuses[:bad] : ::Effort.data_statuses[:good]
+      effort.data_status = [worst_split_time_status, effort_status].min
     end
 
     def set_subject_attributes(split_time)
@@ -62,6 +62,10 @@ module Interactors
 
     def beyond_drop?
       ordered_split_times.included_after?(first_dropped_split_time, subject_split_time)
+    end
+
+    def times_without_start_time?
+      ordered_split_times.present? && ordered_split_times.first.time_point != start_time_point
     end
 
     def time_predictor

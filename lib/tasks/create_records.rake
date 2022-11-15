@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'action_view/helpers/text_helper'
+require "action_view/helpers/text_helper"
 include ActionView::Helpers::TextHelper
 
 namespace :create_records do
-  desc 'Create random efforts for testing'
+  desc "Create random efforts for testing"
   task :efforts, [:event_group_id, :effort_count] => :environment do |_, args|
     process_start_time = Time.current
     abort "No event_group_id specified" unless args.event_group_id
@@ -17,18 +17,18 @@ namespace :create_records do
     abort "Event group #{event_group_id} not found" unless event_group
 
     puts "Building test data:"
-    events = event_group.events.order(:start_time)
+    events = event_group.events.order(:scheduled_start_time)
     puts "Found #{pluralize(events.size, 'event')}: #{events.map(&:name).to_sentence}"
 
     events.each_with_index do |event, i|
       bib_number = (i * 100) + 1
       effort_count.times do
-        gender = %w(male female).sample
+        gender = %w[male female].sample
         first_name = FFaker::Name.send("first_name_#{gender}")
         last_name = FFaker::Name.last_name
         birthdate = FFaker::Time.between(16.years.ago, 75.years.ago).to_date
-        country_code = 'US'
-        state_code = Carmen::Country.coded('US').subregions.map(&:code).sample
+        country_code = "US"
+        state_code = Carmen::Country.coded("US").subregions.map(&:code).sample
         city = FFaker::Address.city
         emergency_contact = FFaker::Name.name
         emergency_phone = FFaker::PhoneNumber.short_phone_number
@@ -36,7 +36,7 @@ namespace :create_records do
 
         effort = event.efforts.new(bib_number: bib_number, first_name: first_name, last_name: last_name, gender: gender,
                                    birthdate: birthdate, country_code: country_code, state_code: state_code, city: city,
-                                   scheduled_start_time: event.start_time, emergency_phone: emergency_phone,
+                                   scheduled_start_time: event.scheduled_start_time, emergency_phone: emergency_phone,
                                    emergency_contact: emergency_contact, created_by: user_id)
 
         effort_description = "#{effort.full_name} using bib number #{bib_number} for #{event.name}"
@@ -57,19 +57,19 @@ namespace :create_records do
     puts "\nCreated #{saved_efforts_count} efforts in #{elapsed_time} seconds"
   end
 
-  desc 'Create ResultsTemplates from yml files'
+  desc "Create ResultsTemplates from yml files"
   task results_templates: :environment do
     process_start_time = Time.current
 
-    ENV['FIXTURES_PATH'] = 'spec/fixtures'
-    ENV['FIXTURES'] = 'results_categories,results_templates,results_template_categories'
-    Rake::Task['db:fixtures:load'].invoke
+    ENV["FIXTURES_PATH"] = "spec/fixtures"
+    ENV["FIXTURES"] = "results_categories,results_templates,results_template_categories"
+    Rake::Task["db:fixtures:load"].invoke
 
     elapsed_time = Time.current - process_start_time
     puts "\nFinished in #{elapsed_time} seconds"
   end
 
-  desc 'Create random raw_time records for testing'
+  desc "Create random raw_time records for testing"
   task :raw_times, [:event_group_id, :effort_count, :laps] => :environment do |_, args|
     process_start_time = Time.current
     abort "No event_group_id specified" unless args.event_group_id
@@ -114,13 +114,13 @@ namespace :create_records do
     built_raw_times = []
     effort_count ||= (all_bib_numbers.size * 0.9).to_i
     sampled_bib_numbers = all_bib_numbers.sample(effort_count)
-    source = 'Rake Task'
+    source = "Rake Task"
     user_id = 1
 
     sampled_bib_numbers.each do |bib_number|
       event_id = grouped_bib_numbers.find { |_, bib_numbers| bib_numbers.include?(bib_number) }.first
       event = indexed_events[event_id]
-      event_start_time = event.start_time_local
+      event_start_time = event.scheduled_start_time_local
       laps_required = event.laps_required
       speed_factor = rand(0.75..1.5)
 
@@ -134,7 +134,7 @@ namespace :create_records do
 
       completed_segments.each.with_index(1) do |segment, i|
         bib_entry_error = rand(100) > 97
-        incorrect_bib_number = rand(10) > 8 ? bib_number.first + '*' : rand(9).to_s + bib_number[1..-1]
+        incorrect_bib_number = rand(10) > 8 ? bib_number.first + "*" : rand(9).to_s + bib_number[1..-1]
         entered_bib_number = bib_entry_error ? incorrect_bib_number : bib_number
 
         time_point = segment.end_point

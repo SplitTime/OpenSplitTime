@@ -12,7 +12,7 @@
   <h4 class="card-header">API Key Lifespan</h4>
   <div class="card-body">
     <p>For additional security, <strong>the API Key issued to you will expire
-      after <%= distance_of_time_in_words(Rails.application.secrets.jwt_duration) %></strong>. If you need to use the
+      after <%= distance_of_time_in_words(OstConfig.jwt_duration) %></strong>. If you need to use the
       API for a longer period, you will need to obtain a new API Key.</p>
     <p>For reference, when you obtain an API Key,
       <strong>the expiration date and time is included in the response</strong>. </p>

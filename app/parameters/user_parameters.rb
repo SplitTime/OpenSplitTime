@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class UserParameters < BaseParameters
-
   def self.permitted_query
     permitted + [:confirmed_at, :role, :avatar_first_name, :avatar_last_name]
   end

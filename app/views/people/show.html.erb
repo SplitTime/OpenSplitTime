@@ -9,7 +9,7 @@
         <div class="ost-title">
           <h1><strong><%= @presenter.full_name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+            <li class="breadcrumb-item"><%= link_to "People", people_path %></li>
             <li class="breadcrumb-item active"><%= @presenter.full_name %></li>
           </ul>
         </div>
@@ -32,10 +32,10 @@
       </div>
       <% if @presenter.photo.attached? %>
         <div class="col-3">
-          <%= image_tag(@presenter.photo.variant(resize: '150x150')) %>
+          <%= image_tag(@presenter.photo.variant(:small)) %>
         </div>
       <% end %>
-      <%= render 'subscription_buttons', view_object: @presenter %>
+      <%= render "subscription_buttons", view_object: @presenter %>
     </div>
   </div>
 </header>
@@ -46,7 +46,7 @@
       <div class="col form-inline justify-content-between">
         <div>
           <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
-            <%= link_to 'This is me', avatar_claim_person_path(@presenter.person),
+            <%= link_to "This is me", avatar_claim_person_path(@presenter.person),
                         data: {confirm: "Is this really you? (Please cancel if you were just kidding.)"},
                         class: "btn btn-success" %>
           <% end %>
@@ -61,6 +61,6 @@
 
 <article class="ost-article container">
   <% if @presenter.efforts.present? %>
-    <%= render 'efforts/efforts_list_person', efforts: @presenter.efforts %>
+    <%= render "efforts/efforts_list_person", efforts: @presenter.efforts %>
   <% end %>
 </article>

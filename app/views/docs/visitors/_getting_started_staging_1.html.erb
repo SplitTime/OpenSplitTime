@@ -3,8 +3,8 @@
   <div class="card-body">
     <p>If you are starting from scratch, you've come to the right page. If you are working with an Organization that has
       existing Events, it is probably easier
-      to <%= link_to 'duplicate an event group', getting_started_path(topic: :staging, page: 2) %>
-      or <%= link_to 'create it from within the Organization', getting_started_path(topic: :staging, page: 3) %></p>
+      to <%= link_to 'duplicate an event group', docs_getting_started_path(topic: :staging, page: 2) %>
+      or <%= link_to 'create it from within the Organization', docs_getting_started_path(topic: :staging, page: 3) %></p>
     <p> 1. <%= link_to 'Sign up', new_user_registration_path %>.</p>
     <p> 2. Create a <%= link_to 'new Event', event_staging_app_path('new') %>.</p>
     <p> 3. Follow the step-by-step instructions to add splits. You can manually enter information or import a splits CSV

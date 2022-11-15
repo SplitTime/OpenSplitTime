@@ -20,7 +20,7 @@ class RowifyRawTimes
 
   def build
     add_lap_to_raw_times
-    add_entered_time_from_absolute
+    add_entered_time_from_absolute # See note below
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
     raw_time_pairs.map(&method(:build_time_row))
   end
@@ -28,21 +28,20 @@ class RowifyRawTimes
   private
 
   attr_reader :event_group, :raw_times
+
   delegate :home_time_zone, to: :event_group
 
   def add_lap_to_raw_times
     raw_times.reject(&:lap).each do |raw_time|
-      if single_lap_event_group? || single_lap_event?(raw_time)
-        raw_time.lap = 1
-      elsif raw_time.effort_id.nil? || raw_time.split_id.nil?
-        raw_time.lap = nil
-      elsif raw_time.absolute_time
-        raw_time.lap = expected_lap(raw_time, :absolute_time_local, raw_time.absolute_time)
-      elsif raw_time.military_time
-        raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
-      else
-        raw_time.lap = nil
-      end
+      raw_time.lap = if single_lap_event_group? || single_lap_event?(raw_time)
+                       1
+                     elsif raw_time.effort_id.nil? || raw_time.split_id.nil?
+                       nil
+                     elsif raw_time.absolute_time
+                       expected_lap(raw_time, :absolute_time_local, raw_time.absolute_time)
+                     elsif raw_time.military_time
+                       expected_lap(raw_time, :military_time, raw_time.military_time)
+                     end
     end
   end
 
@@ -54,15 +53,19 @@ class RowifyRawTimes
                             bitkey: raw_time.bitkey)
   end
 
+  # This should be removed after OST Remote changes are
+  # well baked, circa January 2021.
   def add_entered_time_from_absolute
-    raw_times.each do |rt|
+    raw_times.reject(&:entered_time).each do |rt|
       rt.entered_time = rt.military_time(home_time_zone)
     end
   end
 
   def build_time_row(raw_time_pair)
     raw_time = raw_time_pair.first
-    effort, event, split = indexed_efforts[raw_time.effort_id], indexed_events[raw_time.event_id], indexed_splits[raw_time.split_id]
+    effort = indexed_efforts[raw_time.effort_id]
+    event = indexed_events[raw_time.event_id]
+    split = indexed_splits[raw_time.split_id]
     RawTimeRow.new(raw_time_pair, effort, event, split, [])
   end
 
@@ -91,6 +94,8 @@ class RowifyRawTimes
   end
 
   def validate_setup
-    raise ArgumentError, 'All raw_times must match the provided event_group' unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
+    unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
+      raise ArgumentError, "All raw_times must match the provided event_group"
+    end
   end
 end

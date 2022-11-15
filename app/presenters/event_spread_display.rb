@@ -7,6 +7,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
 
+  def api_v1_url
+    Rails.application.routes.url_helpers.spread_api_v1_event_path(self)
+  end
+
   def cache_key
     [event, request_params_digest]
   end
@@ -16,17 +20,21 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def display_style_hash
-    {elapsed: 'Elapsed', ampm: 'AM/PM', military: '24-Hour', segment: 'Segment'}
+    {elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment"}
   end
 
   def effort_times_rows
     @effort_times_rows ||=
-        filtered_ranked_efforts.map do |effort|
-          EffortTimesRow.new(effort: effort,
-                             lap_splits: lap_splits,
-                             split_times: split_times_by_effort.fetch(effort.id, []),
-                             display_style: display_style)
-        end
+      filtered_ranked_efforts.map do |effort|
+        EffortTimesRow.new(effort: effort,
+                           lap_splits: lap_splits,
+                           split_times: split_times_by_effort.fetch(effort.id, []),
+                           display_style: display_style)
+      end
+  end
+
+  def effort_times_row_ids
+    effort_times_rows.map(&:id)
   end
 
   def lap_splits
@@ -38,8 +46,8 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def segment_total_header_data
-    {title: aid_times_recorded? ? 'Totals' : 'Total',
-     extensions: aid_times_recorded? ? %w(Segment Aid) : []}
+    {title: aid_times_recorded? ? "Totals" : "Total",
+     extensions: aid_times_recorded? ? %w[Segment Aid] : []}
   end
 
   def show_partner_banners?
@@ -47,15 +55,17 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def show_segment_totals?
-    display_style == 'segment'
+    display_style == "segment"
   end
 
   def split_header_data
-    lap_splits.map { |lap_split| {title: header_name(lap_split),
-                                  extensions: header_extensions(lap_split),
-                                  distance: lap_split.distance_from_start,
-                                  split_name: lap_split.base_name_without_lap,
-                                  lap: lap_split.lap} }
+    lap_splits.map do |lap_split|
+      {title: header_name(lap_split),
+       extensions: header_extensions(lap_split),
+       distance: lap_split.distance_from_start,
+       split_name: lap_split.base_name_without_lap,
+       lap: lap_split.lap}
+    end
   end
 
   private
@@ -63,13 +73,12 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   delegate :multiple_laps?, to: :event
 
   def default_display_style
-    case
-    when simple?
-      'elapsed'
-    when available_live
-      'ampm'
+    if simple?
+      "elapsed"
+    elsif available_live
+      "ampm"
     else
-      'elapsed'
+      "elapsed"
     end
   end
 
@@ -78,7 +87,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def header_extensions(lap_split)
-    extension_components = display_style == 'segment' ? %w(Segment Aid) : lap_split.name_extensions
+    extension_components = display_style == "segment" ? %w[Segment Aid] : lap_split.name_extensions
     lap_split.name_extensions.size > 1 ? extension_components : []
   end
 

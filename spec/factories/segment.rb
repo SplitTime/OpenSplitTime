@@ -6,8 +6,8 @@ FactoryBot.define do
       end_lap { 1 }
       begin_split { Split.new(course_id: 10, distance_from_start: 1000) }
       end_split { Split.new(course_id: 10, distance_from_start: 1000) }
-      begin_in_out { 'in' }
-      end_in_out { 'in' }
+      begin_in_out { "in" }
+      end_in_out { "in" }
       order_control { true }
     end
 

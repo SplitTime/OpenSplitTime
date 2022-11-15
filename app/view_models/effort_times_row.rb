@@ -1,22 +1,24 @@
 # frozen_string_literal: true
 
 class EffortTimesRow
-  include ActiveModel::Serialization
-  include PersonalInfo, Rankable, TimeFormats
+  include TimeFormats
+  include Rankable
+  include PersonalInfo
 
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation]
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation].freeze
 
   attr_reader :effort, :display_style
+
   delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :start_offset,
-           :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
+           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset,
+           :beyond_start?, :started?, :in_progress?, :stopped?, :dropped?, :finished?, to: :effort
 
   def initialize(args)
     ArgsValidator.validate(params: args,
                            required: [:effort, :lap_splits, :split_times],
                            exclusive: [:effort, :lap_splits, :split_times, :display_style],
                            class: self.class)
-    @effort = args[:effort] # Use an enriched effort for optimal performance
+    @effort = args[:effort]
     @lap_splits = args[:lap_splits]
     @split_times = args[:split_times]
     @display_style = args[:display_style]
@@ -37,6 +39,58 @@ class EffortTimesRow
                       show_indicator_for_stop: show_indicator_for_stop?(lap_split))
     end
   end
+
+  def show_elapsed_times?
+    display_style.in? %w[elapsed all]
+  end
+
+  def show_absolute_times?
+    display_style.in? %w[ampm military absolute all]
+  end
+
+  def show_segment_times?
+    display_style.in? %w[segment all]
+  end
+
+  def show_pacer_flags?
+    display_style == "all"
+  end
+
+  def show_stopped_here_flags?
+    display_style == "all"
+  end
+
+  def show_time_data_statuses?
+    display_style == "all"
+  end
+
+  def elapsed_times
+    time_clusters.map(&:times_from_start)
+  end
+
+  def absolute_times
+    time_clusters.map(&:absolute_times_local)
+  end
+
+  def segment_times
+    time_clusters.map { |tc| [tc.segment_time, tc.time_in_aid] }
+  end
+
+  def time_data_statuses
+    time_clusters.map(&:time_data_statuses)
+  end
+
+  def pacer_flags
+    time_clusters.map(&:pacer_flags)
+  end
+
+  def stopped_here_flags
+    time_clusters.map(&:stopped_here_flags)
+  end
+
+  alias stopped stopped?
+  alias dropped dropped?
+  alias finished finished?
 
   private
 
@@ -68,7 +122,7 @@ class EffortTimesRow
 
   def last_split_time
     @last_split_time ||=
-        lap_splits.flat_map(&:time_points).map { |time_point| indexed_split_times[time_point] }.compact.last
+      lap_splits.flat_map(&:time_points).map { |time_point| indexed_split_times[time_point] }.compact.last
   end
 
   def lap_split_keys

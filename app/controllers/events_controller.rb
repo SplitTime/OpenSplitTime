@@ -1,36 +1,50 @@
+# frozen_string_literal: true
+
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
-  before_action :set_event, except: [:new, :create, :series]
-  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :series, :place, :analyze]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium]
+  before_action :set_event, except: [:new, :edit, :create, :update, :destroy]
+  before_action :set_event_group, only: [:new, :create]
+  before_action :set_event_group_and_event, only: [:edit, :update, :destroy]
+  before_action :redirect_to_friendly, only: [:podium, :spread, :summary]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium]
 
   MAX_SUMMARY_EFFORTS = 1000
+  FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
 
   def show
     redirect_to :spread_event
   end
 
   def new
-    if params[:course_id]
-      @event = Event.new(course_id: params[:course_id], laps_required: 1)
-      @course = Course.friendly.find(params[:course_id])
-    else
-      @event = Event.new(laps_required: 1)
-    end
+    course = params[:course_id].present? ? @event_group.organization.courses.friendly.find(params[:course_id]) : nil
+    @event = @event_group.events.new(
+      course: course,
+      laps_required: 1,
+      results_template: ::ResultsTemplate.default
+    )
+    # Scheduled start time has to be set separately otherwise home_time_zone
+    # delegation does not work
+    @event.scheduled_start_time_local = @event_group.scheduled_start_time_local || (7.days.from_now.in_time_zone(@event.home_time_zone).midnight + 6.hours)
     authorize @event
+
+    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
   end
 
   def edit
     authorize @event
+    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
   end
 
   def create
-    @event = Event.new(permitted_params)
+    @event = @event_group.events.new
+    @event.assign_attributes(permitted_params)
     authorize @event
 
     if @event.save
-      redirect_to event_group_path(@event.event_group)
+      redirect_to setup_event_group_path(@event_group)
     else
-      render 'new'
+      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -38,9 +52,13 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.update(permitted_params)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
+      respond_to do |format|
+        format.html { redirect_to setup_event_group_path(@event_group) }
+        format.turbo_stream
+      end
     else
-      render 'edit'
+      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -48,16 +66,18 @@ class EventsController < ApplicationController
     authorize @event
     @event.destroy
 
-    redirect_to event_groups_path
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def reassign
     authorize @event
     @event.assign_attributes(params.require(:event).permit(:event_group_id))
+    redirect_id = @event.event_group_id || @event.changed_attributes["event_group_id"]
 
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
     set_flash_message(response) unless response.successful?
-    redirect_to session.delete(:return_to) || event_group_path(@event.event_group)
+
+    redirect_to setup_event_group_path(redirect_id)
   end
 
   # Special views with results
@@ -68,9 +88,9 @@ class EventsController < ApplicationController
       format.html
       format.csv do
         authorize @event
-        csv_stream = render_to_string(partial: 'spread.csv.ruby')
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
+        csv_stream = render_to_string(partial: "spread", formats: :csv)
+        send_data(csv_stream, type: "text/csv",
+                              filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -83,7 +103,7 @@ class EventsController < ApplicationController
 
   def podium
     template = Results::FillEventTemplate.perform(@event)
-    @presenter = PodiumPresenter.new(@event, template, current_user)
+    @presenter = PodiumPresenter.new(@event, template, prepared_params, current_user)
   end
 
   # Event admin actions
@@ -96,9 +116,7 @@ class EventsController < ApplicationController
                 when nil
                   event_staging_app_path(@event)
                 when event_staging_app_url(@event)
-                  request.referrer + '#/entrants'
-                when edit_event_url(@event)
-                  event_group_path(@event.event_group_id)
+                  request.referrer + "#/entrants"
                 else
                   request.referrer
                 end
@@ -112,12 +130,11 @@ class EventsController < ApplicationController
     stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
-    redirect_to event_group_path(@event.event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event.event_group)
   end
 
-  # This action updates the event start_time and adjusts time_from_start on all
-  # existing non-start split_times to keep absolute time consistent.
-
+  # This action updates the event scheduled start time and adjusts absolute time on all
+  # existing split_times to keep elapsed times consistent.
   def edit_start_time
     authorize @event
   end
@@ -128,47 +145,39 @@ class EventsController < ApplicationController
     @event.assign_attributes(permitted_params)
 
     if @event.valid?
-      new_start_time = @event.start_time_local.to_s
+      new_start_time = @event.scheduled_start_time_local.to_s
       @event.reload
       response = EventUpdateStartTimeJob.perform_now(@event, new_start_time: new_start_time, current_user: current_user)
       set_flash_message(response)
-      redirect_to event_group_path(@event.event_group, force_settings: true)
+      redirect_to setup_event_group_path(@event.event_group)
     else
       render :edit_start_time
     end
   end
 
-  def export_finishers
+  def export
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
+    @presenter = ::EventWithEffortsPresenter.new(event: @event, params: prepared_params)
     respond_to do |format|
       format.csv do
         options = {}
-        export_format = :finishers
-        current_time = Time.current.in_time_zone(@event.home_time_zone)
-        records = @presenter.ranked_effort_rows.select(&:finished?)
-        csv_stream = render_to_string(partial: 'finishers.csv.ruby', locals: {current_time: current_time, records: records, options: options})
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
-      end
-    end
-  end
+        options[:event_finished] = @presenter.event_finished?
 
-  def export_to_ultrasignup
-    authorize @event
-    params[:per_page] = @event.efforts.size # Get all efforts without pagination
-    @presenter = EventWithEffortsPresenter.new(event: @event, params: prepared_params)
-    respond_to do |format|
-      format.csv do
-        options = {}
-        export_format = :ultrasignup
+        export_format = params[:export_format].to_sym
         current_time = Time.current.in_time_zone(@event.home_time_zone)
         records = @presenter.ranked_effort_rows
-        options[:event_finished] = @presenter.event_finished?
-        csv_stream = render_to_string(partial: 'ultrasignup.csv.ruby', locals: {current_time: current_time, records: records, options: options})
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@presenter.name}-#{export_format}-#{current_time.strftime('%Y-%m-%d-%H-%M-%S')}.csv")
+        records = records.select(&:finished?) if export_format.in?(FINISHERS_ONLY_EXPORT_FORMATS)
+        filename = "#{@presenter.name}-#{export_format}-#{current_time.iso8601}.csv"
+        partial = lookup_context.exists?(export_format, :events, true) ? export_format.to_s : "not_found"
+
+        csv_stream = render_to_string(
+          partial: partial,
+          formats: :csv,
+          locals: {current_time: current_time, records: records, options: options}
+        )
+
+        send_data(csv_stream, type: "text/csv", filename: filename)
       end
     end
   end
@@ -181,6 +190,18 @@ class EventsController < ApplicationController
 
   def set_event
     @event = policy_scope(Event).friendly.find(params[:id])
+  end
+
+  def set_event_group
+    @event_group = EventGroup.friendly.find(params[:event_group_id])
+  end
+
+  def set_event_group_and_event
+    @event_group = ::EventGroup.friendly.find(params[:event_group_id])
+    @event = @event_group.events.friendly.find(params[:id])
+  end
+
+  def redirect_to_friendly
     redirect_numeric_to_friendly(@event, params[:id])
   end
 end

@@ -7,8 +7,9 @@ test:
   root: <%= Rails.root.join("tmp/storage") %>
 
 amazon:
+  # access_key_id and secret_access_key are read and set directly from the
+  # Rails.credentials encrypted file by the aws-sdk-rails gem.
+  # https://github.com/aws/aws-sdk-rails#rails-52-encrypted-credentials
   service: S3
-  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
-  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
-  region: <%= ENV['AWS_REGION'] %>
-  bucket: <%= ENV['S3_BUCKET'] %>
+  region: <%= ::OstConfig.aws_region %>
+  bucket: <%= ::OstConfig.aws_s3_bucket %>

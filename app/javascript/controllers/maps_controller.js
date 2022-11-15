@@ -1,4 +1,4 @@
-import {Controller} from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
@@ -9,21 +9,21 @@ export default class extends Controller {
         const splitId = this.mapInfoTarget.dataset.splitId;
 
         Rails.ajax({
-            url: "/courses/" + courseId + '.json',
+            url: "/api/v1/courses/" + courseId,
             type: "GET",
-            success: function (data) {
-                const attributes = data.data.attributes;
+            success: function (response) {
+                const attributes = response.data.attributes;
 
-                var locations = null;
-                if(splitId === undefined) {
+                let locations = null;
+                if (splitId === undefined) {
                     locations = attributes.locations;
                 } else {
-                    locations = attributes.locations.filter(function(e) {
+                    locations = attributes.locations.filter(function (e) {
                         return e.id === parseInt(splitId)
                     })
                 }
 
-                const trackPoints = attributes.trackPoints;
+                const trackPoints = attributes.trackPoints || [];
                 gmap_show(locations, trackPoints);
             }
         })

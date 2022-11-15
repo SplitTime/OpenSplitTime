@@ -1,24 +1,24 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
-  before_action :set_effort, except: [:index, :new, :create, :associate_people, :mini_table, :subregion_options]
+  before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :associate_people, :mini_table, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
-
-  before_action do
-    locale = params[:locale]
-    Carmen.i18n_backend.locale = locale if locale
-  end
 
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                   .where(prepared_params[:filter])
+        .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
         @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
-        send_data(builder.full_string, type: 'text/csv',
-                  filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+        filename = if prepared_params[:filter] == {"id" => "0"}
+                     "ost-effort-import-template.csv"
+                   else
+                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                   end
+
+        send_data(builder.full_string, type: "text/csv", filename: filename)
       end
     end
   end
@@ -44,9 +44,9 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to effort_path(@effort)
+      redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
     else
-      render 'new'
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -60,7 +60,7 @@ class EffortsController < ApplicationController
       case params[:button]&.to_sym
       when :check_in_group
         event_group = effort.event_group
-        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        view_object = EventGroupRosterPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       when :check_in_effort_show
         effort = effort_with_splits
@@ -68,7 +68,7 @@ class EffortsController < ApplicationController
       when :disassociate
         redirect_to request.referrer
       else
-        redirect_to effort_path(effort)
+        redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
       end
 
       if new_event_id && new_event_id != effort.event_id
@@ -78,7 +78,7 @@ class EffortsController < ApplicationController
       end
     else
       @effort = effort
-      render 'edit'
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -86,11 +86,27 @@ class EffortsController < ApplicationController
     authorize @effort
 
     @effort.destroy
-    redirect_to roster_event_group_path(@effort.event.event_group)
+    redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
+  end
+
+  # DELETE /efforts/1/delete_photo
+  def delete_photo
+    authorize @effort
+
+    @effort.photo.purge_later
+    redirect_to manage_entrant_photos_event_group_path(@effort.event_group)
   end
 
   def projections
     @presenter = EffortProjectionsView.new(@effort)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
+        render json: {efforts: @presenter.effort, html: html}
+      end
+    end
   end
 
   def analyze
@@ -126,7 +142,7 @@ class EffortsController < ApplicationController
       case params[:button]&.to_sym
       when :check_in_group
         event_group = effort.event_group
-        view_object = EventGroupPresenter.new(event_group, {}, current_user)
+        view_object = EventGroupRosterPresenter.new(event_group, {}, current_user)
         render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
       else
         redirect_to request.referrer
@@ -148,6 +164,33 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  def smart_stop
+    authorize @effort
+    effort = effort_with_splits
+
+    response = Interactors::SmartUpdateEffortStop.perform!(effort)
+    set_flash_message(response)
+    redirect_to effort_path(effort)
+  end
+
+  def create_split_time_from_raw_time
+    @effort = policy_scope(Effort).friendly.find(params[:id])
+    authorize @effort
+
+    raw_time = RawTime.find(params[:raw_time_id])
+    split_time = ::SplitTimeFromRawTime.build(raw_time, effort: @effort, event: @effort.event, lap: params[:lap])
+
+    if split_time.save
+      raw_time.update(split_time: split_time)
+      Interactors::UpdateEffortsStatus.perform!(@effort.reload)
+      redirect_to audit_effort_path(@effort)
+    else
+      flash[:danger] = "Raw time could not be matched:\n#{split_time.errors.full_messages.join("\n")}"
+      @presenter = EffortAuditView.new(@effort)
+      render "efforts/audit"
+    end
+  end
+
   def edit_split_times
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first
@@ -167,7 +210,7 @@ class EffortsController < ApplicationController
     else
       flash[:danger] = "Effort failed to update for the following reasons: #{effort.errors.full_messages}"
       @presenter = EffortWithTimesPresenter.new(effort, params: params)
-      render 'edit_split_times', display_style: params[:display_style]
+      render "edit_split_times", display_style: params[:display_style]
     end
   end
 
@@ -189,15 +232,11 @@ class EffortsController < ApplicationController
 
   def mini_table
     @mini_table = EffortsMiniTable.new(params[:effort_ids])
-    render partial: 'efforts_mini_table'
+    render partial: "efforts_mini_table"
   end
 
   def show_photo
-    render partial: 'show_photo'
-  end
-
-  def subregion_options
-    render partial: 'subregion_select'
+    render partial: "show_photo"
   end
 
   private
@@ -208,6 +247,6 @@ class EffortsController < ApplicationController
 
   def set_effort
     @effort = policy_scope(Effort).friendly.find(params[:id])
-    redirect_numeric_to_friendly(@effort, params[:id])
+    redirect_numeric_to_friendly(@effort, params[:id]) if request.format.html?
   end
 end

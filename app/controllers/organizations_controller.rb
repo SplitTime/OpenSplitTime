@@ -4,14 +4,23 @@ class OrganizationsController < ApplicationController
   after_action :verify_authorized, except: [:index, :show]
 
   def index
-    @organizations = OrganizationPolicy::Scope.new(current_user, Organization).viewable.order(:name)
-                         .paginate(page: params[:page], per_page: 25)
-    @presenter = OrganizationsPresenter.new(@organizations, params, current_user)
-    session[:return_to] = organizations_path
+    @presenter = OrganizationsPresenter.new(view_context)
+
+    respond_to do |format|
+      format.html do
+        session[:return_to] = organizations_path
+      end
+
+      format.json do
+        records = @presenter.records_from_context
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], collection: records, as: :record, formats: [:html]) : ""
+        render json: {records: records, html: html, links: {next: @presenter.next_page_url}}
+      end
+    end
   end
 
   def show
-    params[:view] ||= 'events'
+    params[:view] ||= "events"
     @presenter = OrganizationPresenter.new(@organization, params, current_user)
     session[:return_to] = organization_path(@organization)
   end
@@ -32,7 +41,7 @@ class OrganizationsController < ApplicationController
     if @organization.save
       redirect_to @organization
     else
-      render 'new'
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -42,7 +51,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(permitted_params)
       redirect_to @organization
     else
-      render 'edit'
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -50,7 +59,7 @@ class OrganizationsController < ApplicationController
     authorize @organization
 
     if @organization.destroy
-      flash[:success] = 'Organization deleted.'
+      flash[:success] = "Organization deleted."
       redirect_to organizations_path
     else
       flash[:danger] = @organization.errors.full_messages.join("\n")

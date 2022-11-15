@@ -1,0 +1,16 @@
+<tr id=<%= dom_id import_job %>>
+  <td><%= link_to import_job.id, import_job_path(import_job) %></td>
+  <td><%= "#{time_ago_in_words(import_job.created_at)} ago" %></td>
+  <td>
+    <% if import_job.parent.present? %>
+      <%= link_to import_job.parent_name, import_job.parent_path %>
+    <% else %>
+      Resource not found (it may have been deleted)
+    <% end %>
+  </td>
+  <td><%= import_job.file.filename %></td>
+  <td class="text-center"><%= import_job.row_count %></td>
+  <td class="text-center"><%= "#{import_job.succeeded_count}/#{import_job.failed_count}/#{import_job.ignored_count}" %></td>
+  <td class="text-center"><%= pretty_duration(import_job.elapsed_time) %></td>
+  <td><%= progress_monitorable_status_component(import_job) %></td>
+</tr>

@@ -32,7 +32,7 @@
             <%= f.label 'Start time' %>
           </div>
           <div class="col-sm-3">
-            <%= f.datetimepicker_field(:start_time_local) %>
+            <%= f.datetimepicker_field(:scheduled_start_time_local) %>
             <%= "(#{@event.home_time_zone})" %>
           </div>
         </div>
@@ -42,12 +42,14 @@
         <p>
           <strong>NOTE:</strong> This form will shift the event start time and all of its split times by the same
           amount. For example, if you were to change the start time from 7/14/2019 at 6:00 AM to 7/14/2019 at 7:00 AM,
-          all existing split times would automatically shift forward by one hour. This is intended for utility purposes,
+          all existing split times would automatically shift forward by one hour. This is intended for utility
+          purposes,
           for example, when an older test event contains data and you would like to move it to a current date.
         </p>
 
         <p>
-          If you want to change the event start time without changing any related split times, use the <%= link_to 'Edit Event', edit_event_path(@event) %> feature instead.
+          If you want to change the event start time without changing any related split times, use
+          the <%= link_to 'Edit Event', edit_event_group_event_path(@event.event_group_id, @event) %> feature instead.
         </p>
 
         <hr/>
@@ -58,7 +60,7 @@
           </div>
         </div>
         <div class="col">
-          <span class="brackets"><%= link_to 'Cancel', event_group_path(@event.event_group, force_settings: true) %></span>
+          <span class="brackets"><%= link_to 'Cancel', setup_event_group_path(@event.event_group) %></span>
         </div>
       <% end %>
     </div>

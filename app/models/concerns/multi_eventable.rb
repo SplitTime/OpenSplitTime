@@ -3,14 +3,19 @@
 module MultiEventable
   extend ActiveSupport::Concern
 
-  delegate :start_time, :start_time_local, to: :first_event, allow_nil: true
+  delegate :scheduled_start_time, :scheduled_start_time_local, to: :first_event, allow_nil: true
 
   def ordered_events
-    events.sort_by { |event| [event.start_time, event.name] }
+    events.select(&:scheduled_start_time?).sort_by { |event| [event.scheduled_start_time, event.name] }
   end
 
   def first_event
     ordered_events.first
+  end
+
+  def maximum_laps
+    laps_required_array = events.map(&:laps_required)
+    laps_required_array.min == 0 ? nil : laps_required_array.max
   end
 
   def multiple_events?
@@ -20,6 +25,7 @@ module MultiEventable
   def multiple_laps?
     events.any?(&:multiple_laps?)
   end
+  alias multi_lap multiple_laps?
 
   def multiple_sub_splits?
     events.any?(&:multiple_sub_splits?)

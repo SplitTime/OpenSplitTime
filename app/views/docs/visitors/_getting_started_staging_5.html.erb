@@ -5,10 +5,14 @@
       Once your Splits are in place, it's time to get the Entrant data in.
     </p>
     <p>
-      Again, the first step is to download a template, which you can do from <strong>Admin > Staging > Entrants > Import >
-      Download template</strong>. Required fields are First Name, Last Name, and Gender. But please add as much
+      Again, the first step is to download a template, which you can do from <strong>Admin > Construction > Entrants >
+      Import > Download template</strong>. Required fields are First Name, Last Name, and Gender. But please add as much
       information as you have about your entrants, as this will help OpenSplitTime match up your entrants with existing
       entrants in the database. In particular, birthdate (or age) and city/state are helpful.
+    </p>
+    <p>
+      In addition, if your event group has multiple events, <strong>you will need to include an Event Name field.
+    </strong> Data in this field must exactly match the "Short Name" of each event in the group.
     </p>
   </div>
 </div>
@@ -22,6 +26,16 @@
       simply complete the template, save it as a CSV file, and import it using
       <strong>Admin > Staging > Entrants > Import > Without Times</strong>.
     </p>
+    <p>
+      One optional import field is "Comments." If you want to include comments about an entrant, import them in this
+      field. <strong>Your comments will be not be visible to the public.</strong> These comments appear, for example,
+      in the Finish Line view, and you can use them as announcer's notes when an entrant finishes the event.
+    </p>
+    <p>
+      Another optional import field is "Beacon URL." This allows you to link to an external GPS tracking service, like
+      MAProgress, SPOT, or TrackLeaders. If you use this field, you should include the entire URL for your entrants,
+      such as "https://silvertonultramarathon-2019.maprogress.com?bib=25".
+    </p>
   </div>
 </div>
 <br/>
@@ -30,8 +44,8 @@
   <h4 class="card-header">Entrant import (with times)</h4>
   <div class="card-body">
     <p>
-      If the event is already complete, you will probably want to import time data along with your entrants. To the right
-      of your personal information columns you will need to have exactly as many Split columns as you have Splits
+      If the event is already complete, you will probably want to import time data along with your entrants. To the
+      right of your personal information columns you will need to have exactly as many Split columns as you have Splits
       associated with your effort. OST will reject an import if it detects a mismatch.
     </p>
   </div>

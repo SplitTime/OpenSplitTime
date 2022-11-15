@@ -16,12 +16,12 @@ class ApiController < ::ApplicationController
   end
 
   def user_not_authorized
-    render json: {errors: ['not authorized']}, status: :unauthorized
+    render json: {errors: ["not authorized"]}, status: :unauthorized
   end
 
   def live_entry_unavailable(resource)
     {reportText: "Live entry for #{resource.name} is currently unavailable. " +
-        'Please enable live entry access through the admin/settings page.'}
+      "Please enable live entry access through the admin/settings page."}
   end
 
   def json_web_token_present?
@@ -29,17 +29,18 @@ class ApiController < ::ApplicationController
   end
 
   def report_to_ga
-    if Rails.env.production?
-      ga_params = {v: 1,
-                   t: 'event',
-                   tid: Rails.application.secrets.google_analytics_id,
-                   cid: 555,
-                   ec: controller_name,
-                   ea: action_name,
-                   el: params[:id],
-                   uip: request.remote_ip,
-                   ua: request.user_agent}
-      ReportAnalyticsJob.perform_later(ga_params)
-    end
+    return unless Rails.env.production?
+
+    ga_params = {
+      v: 1,
+      t: "event",
+      tid: ::OstConfig.google_analytics_4_property_id,
+      cid: 555,
+      ec: controller_name,
+      ea: action_name,
+      el: params[:id],
+    }
+
+    ::ReportAnalyticsJob.perform_later(ga_params)
   end
 end

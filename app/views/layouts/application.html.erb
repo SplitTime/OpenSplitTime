@@ -4,31 +4,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= content_for?(:title) ? yield(:title) : "OpenSplitTime" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "OpenSplitTime" %>">
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbo-track" => true %>
+  <%= javascript_include_tag "application", "data-turbo-track" => true %>
   <% if @current_user %>
     <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
   <% end %>
-  <%= javascript_pack_tag 'application' %>
-  <%= javascript_include_tag "//maps.googleapis.com/maps/api/js?libraries=places&key=#{ENV['GOOGLE_MAPS_API_KEY']}" %>
+  <%= javascript_pack_tag "application" %>
+  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{::OstConfig.google_maps_api_key}" %>
   <%= csrf_meta_tags %>
   <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
-  <%= render 'layouts/google_analytics' if Rails.env.production? %>
-  <%= render 'layouts/favicon' %>
-  <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+  <%= render "layouts/google_analytics" %>
+  <%= render "layouts/favicon" %>
 </head>
 
 <body class="<%= controller_name %> <%= action_name %>">
 
-<%= render 'layouts/navigation' %>
-<%= render 'layouts/messages' %>
+<%= render "layouts/navigation" %>
+<%= render "layouts/messages" %>
 
 <%= yield %>
 
 <% unless user_signed_in? %>
-  <%= render partial: 'devise/sessions/new' %>
+  <%= render partial: "devise/sessions/new" %>
 <% end %>
 
-<%= render 'layouts/footer' unless @skip_footer %>
+<%= render "layouts/footer" unless @skip_footer %>
 </body>
 </html>

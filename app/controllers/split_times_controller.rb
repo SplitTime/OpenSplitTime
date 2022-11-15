@@ -15,7 +15,7 @@ class SplitTimesController < ApplicationController
     else
       flash[:danger] = "Raw time could not be matched:\n#{@split_time.errors.full_messages.join("\n")}"
       @presenter = EffortAuditView.new(effort)
-      render 'efforts/audit'
+      render "efforts/audit"
     end
   end
 end

@@ -20,6 +20,10 @@ class EffortPolicy < ApplicationPolicy
     @effort = effort
   end
 
+  def delete_photo?
+    user.authorized_to_edit?(effort)
+  end
+
   def audit?
     user.authorized_to_edit?(effort)
   end
@@ -33,6 +37,14 @@ class EffortPolicy < ApplicationPolicy
   end
 
   def stop?
+    user.authorized_to_edit?(effort)
+  end
+
+  def smart_stop?
+    user.authorized_to_edit?(effort)
+  end
+
+  def create_split_time_from_raw_time?
     user.authorized_to_edit?(effort)
   end
 

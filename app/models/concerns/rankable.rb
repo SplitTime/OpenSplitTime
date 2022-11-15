@@ -8,24 +8,26 @@
 module Rankable
   extend ActiveSupport::Concern
 
+  # @return [String (frozen)]
   def display_overall_rank
-    started? ? overall_rank : '--'
+    beyond_start? ? overall_rank : "--"
   end
 
+  # @return [String (frozen)]
   def display_gender_rank
-    started? ? gender_rank : '--'
+    beyond_start? ? gender_rank : "--"
   end
 
+  # @return [String (frozen)]
   def effort_status
-    case
-    when finished?
-      'Finished'
-    when dropped?
-      'Dropped'
-    when in_progress?
-      'In Progress'
+    if finished?
+      "Finished"
+    elsif dropped?
+      "Dropped"
+    elsif in_progress?
+      "In Progress"
     else
-      'Not Started'
+      "Not Started"
     end
   end
 end

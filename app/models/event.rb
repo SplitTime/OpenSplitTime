@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 class Event < ApplicationRecord
-  include Auditable, Delegable, DelegatedConcealable, SplitMethods, LapsRequiredMethods, Reconcilable, TimeZonable
+  include UrlAccessible
+  include TrimTimeAttributes
+  include TimeZonable
+  include Reconcilable
+  include LapsRequiredMethods
+  include SplitMethods
+  include DelegatedConcealable
+  include Delegable
+  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
-  zonable_attributes :start_time
+  trim_time_attributes :scheduled_start_time
+  zonable_attributes :scheduled_start_time
   has_paper_trail
 
   belongs_to :course
   belongs_to :event_group
+  belongs_to :lottery, optional: true
   belongs_to :results_template
   has_many :event_series_events, dependent: :destroy
   has_many :event_series, through: :event_series_events
@@ -22,7 +32,7 @@ class Event < ApplicationRecord
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :permit_notifications?, :home_time_zone, to: :event_group
 
-  validates_presence_of :course_id, :start_time, :laps_required, :event_group, :results_template
+  validates_presence_of :course_id, :scheduled_start_time, :laps_required, :event_group, :results_template
   validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
   validate :course_is_consistent
 
@@ -30,34 +40,34 @@ class Event < ApplicationRecord
   before_validation :conform_changed_course
   before_save :add_all_course_splits
   after_save :validate_event_group
-  after_destroy :destroy_orphaned_event_group
 
-  scope :name_search, -> (search_param) { where('events.name ILIKE ?', "%#{search_param}%") }
-  scope :select_with_params, -> (search_param) do
+  scope :name_search, -> (search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
+  scope :select_with_params, lambda { |search_param|
     search(search_param)
         .left_joins(:efforts).left_joins(:event_group)
-        .group('events.id, event_groups.id')
-  end
+        .group("events.id, event_groups.id")
+  }
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
-  scope :with_policy_scope_attributes, -> do
-    from(select('events.*, event_groups.organization_id, event_groups.concealed').joins(:event_group), :events)
-  end
+  scope :with_policy_scope_attributes, lambda {
+    from(select("events.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :events)
+  }
 
   def self.search(search_param)
     return all if search_param.blank?
+
     name_search(search_param)
   end
 
   def self.latest
-    order(start_time: :desc).first
+    order(scheduled_start_time: :desc).first
   end
 
   def self.earliest
-    order(:start_time).first
+    order(:scheduled_start_time).first
   end
 
   def self.most_recent
-    where('start_time < ?', Time.now).order(start_time: :desc).first
+    where("scheduled_start_time < ?", Time.now).order(scheduled_start_time: :desc).first
   end
 
   def events_within_group
@@ -69,7 +79,7 @@ class Event < ApplicationRecord
   end
 
   def name
-    event_group_name = event_group&.name || 'Nonexistent Event Group'
+    event_group_name = event_group&.name || "Nonexistent Event Group"
     short_name ? "#{event_group_name} (#{short_name})" : event_group_name
   end
 
@@ -100,7 +110,7 @@ class Event < ApplicationRecord
   end
 
   def organization_id
-    attributes.key?('organization_id') ? attributes['organization_id'] : organization&.id
+    attributes.key?("organization_id") ? attributes["organization_id"] : organization&.id
   end
 
   def organization_name
@@ -120,14 +130,7 @@ class Event < ApplicationRecord
   end
 
   def finished?
-    ranked_efforts.present? && ranked_efforts.any?(&:started?) && ranked_efforts.none?(&:in_progress?)
-  end
-
-  def ranked_efforts(args = {})
-    @ranked_efforts ||= Hash.new do |h, key|
-      h[key] = efforts.ranked_with_status(args)
-    end
-    @ranked_efforts[args]
+    efforts.exists? && efforts.any?(&:started?) && efforts.none?(&:in_progress?)
   end
 
   def simple?
@@ -160,18 +163,8 @@ class Event < ApplicationRecord
     end
   end
 
-  def destroy_orphaned_event_group
-    event_group.reload
-
-    if events_within_group.empty?
-      event_group.destroy
-    end
-  end
-
   def add_all_course_splits
-    if splits.empty?
-      splits << course.splits
-    end
+    splits << course.splits if splits.empty?
   end
 
   def validate_event_group
@@ -179,7 +172,7 @@ class Event < ApplicationRecord
 
     unless event_group.valid?
       errors.merge!(event_group.errors)
-      raise ActiveRecord::RecordInvalid.new(self) # Causes a transaction to rollback
+      raise ActiveRecord::RecordInvalid, self # Causes a transaction to rollback
     end
   end
 end

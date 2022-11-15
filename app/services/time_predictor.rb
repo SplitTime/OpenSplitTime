@@ -17,7 +17,7 @@ class TimePredictor
     @completed_split_time = args[:completed_split_time] || last_valid_split_time || mock_start_split_time
     @similar_effort_ids = args[:similar_effort_ids]
     @times_container = args[:times_container] ||
-        SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
+                       SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
     @calc_model = args[:calc_model] || times_container.calc_model || :terrain
     validate_setup
   end
@@ -31,6 +31,7 @@ class TimePredictor
   end
 
   private
+
   attr_reader :segment, :effort, :lap_splits, :completed_split_time, :calc_model, :similar_effort_ids, :times_container
 
   def uncorrected_segment_time
@@ -51,7 +52,7 @@ class TimePredictor
 
   def actual_completed_time
     completed_split_time.absolute_time && effort.actual_start_time &&
-        completed_split_time.absolute_time - effort.actual_start_time
+      completed_split_time.absolute_time - effort.actual_start_time
   end
 
   def typical_completed_time
@@ -84,6 +85,6 @@ class TimePredictor
   end
 
   def validate_setup
-    raise ArgumentError, 'completed_split_time is not associated with the splits' unless completed_lap_split
+    raise ArgumentError, "completed_split_time is not associated with the splits" unless completed_lap_split
   end
 end

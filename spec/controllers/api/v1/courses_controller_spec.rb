@@ -1,182 +1,235 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Api::V1::CoursesController do
   let(:course) { create(:course) }
-  let(:type) { 'courses' }
+  let(:type) { "courses" }
 
-  describe '#index' do
-    subject(:make_request) { get :index, params: params }
+  describe "#index" do
+    subject(:make_request) { get :index, params: params, format: :json }
     let(:params) { {} }
 
     via_login_and_jwt do
-      it 'returns a successful 200 response' do
+      it "returns a successful 200 response" do
         make_request
         expect(response.status).to eq(200)
       end
 
-      it 'returns each course' do
+      it "returns each course" do
         make_request
         expect(response.status).to eq(200)
         parsed_response = JSON.parse(response.body)
-        expect(parsed_response['data'].map { |item| item['id'].to_i }).to eq(Course.all.map(&:id))
+        expect(parsed_response["data"].map { |item| item["id"].to_i }).to eq(Course.all.map(&:id))
       end
 
-      context 'when a sort parameter is provided' do
-        let(:params) { {sort: 'name'} }
+      context "when a sort parameter is provided" do
+        let(:params) { {sort: "name"} }
 
-        it 'sorts properly in ascending order based on the parameter' do
+        it "sorts properly in ascending order based on the parameter" do
           make_request
           parsed_response = JSON.parse(response.body)
-          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
-          expect(names.first).to eq('D30 12M Course')
-          expect(names.last).to eq('SUM 55K Course')
+          names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
+          expect(names.first).to eq("D30 12M Course")
+          expect(names.last).to eq("SUM 55K Course")
         end
       end
 
-      context 'when a negative sort parameter is provided' do
-        let(:params) { {sort: '-name'} }
+      context "when a negative sort parameter is provided" do
+        let(:params) { {sort: "-name"} }
 
-        it 'sorts properly in descending order based on the parameter' do
+        it "sorts properly in descending order based on the parameter" do
           make_request
           parsed_response = JSON.parse(response.body)
-          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
-          expect(names.first).to eq('SUM 55K Course')
-          expect(names.last).to eq('D30 12M Course')
+          names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
+          expect(names.first).to eq("SUM 55K Course")
+          expect(names.last).to eq("D30 12M Course")
         end
       end
 
-      context 'when multiple sort parameters are provided' do
-        let(:params) { {sort: 'description,name'} }
+      context "when multiple sort parameters are provided" do
+        let(:params) { {sort: "description,name"} }
 
-        it 'sorts properly on multiple fields' do
+        it "sorts properly on multiple fields" do
           make_request
           parsed_response = JSON.parse(response.body)
-          names = parsed_response['data'].map { |item| item.dig('attributes', 'name') }
-          expect(names.first).to eq('RUFA Course')
-          expect(names.last).to eq('SUM 55K Course')
+          names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
+          expect(names.first).to eq("RUFA Course")
+          expect(names.last).to eq("SUM 55K Course")
         end
+      end
+
+      context "when filtered to a single record" do
+        let(:params) { {filter: {name: "RUFA Course"}} }
+        it "returns just the requested records" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          data = parsed_response["data"]
+          expect(data.count).to eq(1)
+          expect(data.first.dig("attributes", "name")).to eq("RUFA Course")
+        end
+      end
+
+      context "when filtered to no records" do
+        let(:params) { {filter: {id: 0}} }
+        it "returns an empty response" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"]).to be_empty
+        end
+      end
+
+      context "when filtered to no records with include option" do
+        let(:params) { {filter: {id: 0}, include: [:splits]} }
+        it "returns an empty response" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"]).to be_empty
+        end
+      end
+    end
+
+    context "without logging in" do
+      it "returns unauthorized" do
+        make_request
+        expect(response.status).to eq(401)
       end
     end
   end
 
-  describe '#show' do
-    subject(:make_request) { get :show, params: params }
+  describe "#show" do
+    subject(:make_request) { get :show, params: params, format: :json }
 
     via_login_and_jwt do
-      context 'when an existing course.id is provided' do
+      context "when an existing course.id is provided" do
         let(:params) { {id: course} }
 
-        it 'returns a successful 200 response' do
+        it "returns a successful 200 response" do
           make_request
           expect(response.status).to eq(200)
         end
 
-        it 'returns data of a single course' do
+        it "returns data of a single course" do
           make_request
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data']['id'].to_i).to eq(course.id)
+          expect(parsed_response["data"]["id"].to_i).to eq(course.id)
           expect(response.body).to be_jsonapi_response_for(type)
         end
       end
 
-      context 'if the course does not exist' do
+      context "if the course does not exist" do
         let(:params) { {id: 0} }
 
-        it 'returns an error' do
+        it "returns an error" do
           make_request
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['errors']).to include(/not found/)
+          expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
+        end
+      end
+    end
+
+    context "without logging in" do
+      context "when an existing course id is provided" do
+        let(:params) { {id: course} }
+        it "returns a successful 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it "returns data of a single course" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"]["id"].to_i).to eq(course.id)
+          expect(response.body).to be_jsonapi_response_for(type)
         end
       end
     end
   end
 
-  describe '#create' do
-    subject(:make_request) { post :create, params: params }
+  describe "#create" do
+    subject(:make_request) { post :create, params: params, format: :json }
 
     via_login_and_jwt do
-      context 'when provided data is valid' do
+      context "when provided data is valid" do
         let(:organization) { organizations(:hardrock) }
-        let(:params) { {data: {type: type, attributes: {name: 'Test Course', organization_id: organization.id}}} }
+        let(:params) { {data: {type: type, attributes: {name: "Test Course", organization_id: organization.id}}} }
 
-        it 'returns a successful json response' do
+        it "returns a successful json response" do
           make_request
           expect(response.body).to be_jsonapi_response_for(type)
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['data']['id']).not_to be_nil
+          expect(parsed_response["data"]["id"]).not_to be_nil
           expect(response.status).to eq(201)
         end
 
-        it 'creates a course record' do
+        it "creates a course record" do
           expect { make_request }.to change { Course.count }.by(1)
         end
       end
     end
   end
 
-  describe '#update' do
-    subject(:make_request) { put :update, params: params }
+  describe "#update" do
+    subject(:make_request) { put :update, params: params, format: :json }
     let(:params) { {id: course_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {name: 'Updated Course Name'} }
+    let(:attributes) { {name: "Updated Course Name"} }
 
     via_login_and_jwt do
-      context 'when the course exists' do
+      context "when the course exists" do
         let(:course_id) { course.id }
 
-        it 'returns a successful json response' do
+        it "returns a successful json response" do
           make_request
           expect(response.body).to be_jsonapi_response_for(type)
           expect(response.status).to eq(200)
         end
 
-        it 'updates the specified fields' do
+        it "updates the specified fields" do
           make_request
           course.reload
           expect(course.name).to eq(attributes[:name])
         end
       end
 
-      context 'when the course does not exist' do
+      context "when the course does not exist" do
         let(:course_id) { 0 }
 
-        it 'returns an error if the course does not exist' do
+        it "returns an error if the course does not exist" do
           make_request
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['errors']).to include(/not found/)
+          expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end
       end
     end
   end
 
-  describe '#destroy' do
-    subject(:make_request) { delete :destroy, params: {id: course_id} }
+  describe "#destroy" do
+    subject(:make_request) { delete :destroy, params: {id: course_id}, format: :json }
 
     via_login_and_jwt do
-      context 'when the record exists' do
+      context "when the record exists" do
         let!(:course) { create(:course) }
         let(:course_id) { course.id }
 
-        it 'returns a successful json response' do
+        it "returns a successful json response" do
           make_request
           expect(response.status).to eq(200)
         end
 
-        it 'destroys the course record' do
+        it "destroys the course record" do
           expect { make_request }.to change { Course.count }.by(-1)
         end
       end
 
-      context 'when the record does not exist' do
+      context "when the record does not exist" do
         let(:course_id) { 0 }
 
-        it 'returns an error if the course does not exist' do
+        it "returns an error if the course does not exist" do
           make_request
           parsed_response = JSON.parse(response.body)
-          expect(parsed_response['errors']).to include(/not found/)
+          expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end
       end

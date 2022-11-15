@@ -1,0 +1,8 @@
+.collapse-rotate a {
+    display: inline-block;
+    transform: rotate(90deg) ;
+    transition: all linear 0.1s;
+}
+.collapse-rotate a.collapsed {
+    transform: rotate(0deg) ;
+}

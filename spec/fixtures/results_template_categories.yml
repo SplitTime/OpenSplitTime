@@ -3,307 +3,351 @@ results_template_category_1:
   id: 1
   results_template_id: 1
   results_category_id: 2
-  created_at: '2019-02-14 05:23:14.60864'
-  updated_at: '2019-02-14 05:23:14.60864'
+  created_at: 2019-02-14 05:23:14.608640000 Z
+  updated_at: 2019-02-14 05:23:14.608640000 Z
   position: 1
+  fixed_position: true
 results_template_category_2:
   id: 2
   results_template_id: 1
   results_category_id: 3
-  created_at: '2019-02-14 05:23:14.612271'
-  updated_at: '2019-02-14 05:23:14.612271'
+  created_at: 2019-02-14 05:23:14.612271000 Z
+  updated_at: 2019-02-14 05:23:14.612271000 Z
   position: 2
+  fixed_position: true
 results_template_category_3:
   id: 3
   results_template_id: 1
   results_category_id: 4
-  created_at: '2019-02-14 05:23:14.640713'
-  updated_at: '2019-02-14 05:23:14.640713'
+  created_at: 2019-02-14 05:23:14.640713000 Z
+  updated_at: 2019-02-14 05:23:14.640713000 Z
   position: 3
+  fixed_position: true
 results_template_category_4:
   id: 4
   results_template_id: 1
   results_category_id: 5
-  created_at: '2019-02-14 05:23:14.643194'
-  updated_at: '2019-02-14 05:23:14.643194'
+  created_at: 2019-02-14 05:23:14.643194000 Z
+  updated_at: 2019-02-14 05:23:14.643194000 Z
   position: 4
+  fixed_position: true
 results_template_category_5:
   id: 5
   results_template_id: 1
   results_category_id: 18
-  created_at: '2019-02-14 05:23:14.645254'
-  updated_at: '2019-02-14 05:23:14.645254'
+  created_at: 2019-02-14 05:23:14.645254000 Z
+  updated_at: 2019-02-14 05:23:14.645254000 Z
   position: 5
+  fixed_position:
 results_template_category_6:
   id: 6
   results_template_id: 1
   results_category_id: 19
-  created_at: '2019-02-14 05:23:14.64728'
-  updated_at: '2019-02-14 05:23:14.64728'
+  created_at: 2019-02-14 05:23:14.647280000 Z
+  updated_at: 2019-02-14 05:23:14.647280000 Z
   position: 6
+  fixed_position:
 results_template_category_7:
   id: 7
   results_template_id: 1
   results_category_id: 24
-  created_at: '2019-02-14 05:23:14.649226'
-  updated_at: '2019-02-14 05:23:14.649226'
+  created_at: 2019-02-14 05:23:14.649226000 Z
+  updated_at: 2019-02-14 05:23:14.649226000 Z
   position: 7
+  fixed_position:
 results_template_category_8:
   id: 8
   results_template_id: 1
   results_category_id: 25
-  created_at: '2019-02-14 05:23:14.651033'
-  updated_at: '2019-02-14 05:23:14.651033'
+  created_at: 2019-02-14 05:23:14.651033000 Z
+  updated_at: 2019-02-14 05:23:14.651033000 Z
   position: 8
+  fixed_position:
 results_template_category_9:
   id: 9
   results_template_id: 1
   results_category_id: 26
-  created_at: '2019-02-14 05:23:14.652781'
-  updated_at: '2019-02-14 05:23:14.652781'
+  created_at: 2019-02-14 05:23:14.652781000 Z
+  updated_at: 2019-02-14 05:23:14.652781000 Z
   position: 9
+  fixed_position:
 results_template_category_10:
   id: 10
   results_template_id: 1
   results_category_id: 27
-  created_at: '2019-02-14 05:23:14.654557'
-  updated_at: '2019-02-14 05:23:14.654557'
+  created_at: 2019-02-14 05:23:14.654557000 Z
+  updated_at: 2019-02-14 05:23:14.654557000 Z
   position: 10
+  fixed_position:
 results_template_category_11:
   id: 11
   results_template_id: 1
   results_category_id: 28
-  created_at: '2019-02-14 05:23:14.656262'
-  updated_at: '2019-02-14 05:23:14.656262'
+  created_at: 2019-02-14 05:23:14.656262000 Z
+  updated_at: 2019-02-14 05:23:14.656262000 Z
   position: 11
+  fixed_position:
 results_template_category_12:
   id: 12
   results_template_id: 1
   results_category_id: 29
-  created_at: '2019-02-14 05:23:14.657967'
-  updated_at: '2019-02-14 05:23:14.657967'
+  created_at: 2019-02-14 05:23:14.657967000 Z
+  updated_at: 2019-02-14 05:23:14.657967000 Z
   position: 12
+  fixed_position:
 results_template_category_13:
   id: 13
   results_template_id: 1
   results_category_id: 30
-  created_at: '2019-02-14 05:23:14.65963'
-  updated_at: '2019-02-14 05:23:14.65963'
+  created_at: 2019-02-14 05:23:14.659630000 Z
+  updated_at: 2019-02-14 05:23:14.659630000 Z
   position: 13
+  fixed_position:
 results_template_category_14:
   id: 14
   results_template_id: 1
   results_category_id: 31
-  created_at: '2019-02-14 05:23:14.661252'
-  updated_at: '2019-02-14 05:23:14.661252'
+  created_at: 2019-02-14 05:23:14.661252000 Z
+  updated_at: 2019-02-14 05:23:14.661252000 Z
   position: 14
+  fixed_position:
 results_template_category_15:
   id: 15
   results_template_id: 1
   results_category_id: 32
-  created_at: '2019-02-14 05:23:14.662843'
-  updated_at: '2019-02-14 05:23:14.662843'
+  created_at: 2019-02-14 05:23:14.662843000 Z
+  updated_at: 2019-02-14 05:23:14.662843000 Z
   position: 15
+  fixed_position:
 results_template_category_16:
   id: 16
   results_template_id: 1
   results_category_id: 33
-  created_at: '2019-02-14 05:23:14.664436'
-  updated_at: '2019-02-14 05:23:14.664436'
+  created_at: 2019-02-14 05:23:14.664436000 Z
+  updated_at: 2019-02-14 05:23:14.664436000 Z
   position: 16
+  fixed_position:
 results_template_category_17:
   id: 17
   results_template_id: 2
   results_category_id: 2
-  created_at: '2019-02-14 05:23:14.672381'
-  updated_at: '2019-02-14 05:23:14.672381'
+  created_at: 2019-02-14 05:23:14.672381000 Z
+  updated_at: 2019-02-14 05:23:14.672381000 Z
   position: 1
+  fixed_position:
 results_template_category_18:
   id: 18
   results_template_id: 2
   results_category_id: 3
-  created_at: '2019-02-14 05:23:14.674256'
-  updated_at: '2019-02-14 05:23:14.674256'
+  created_at: 2019-02-14 05:23:14.674256000 Z
+  updated_at: 2019-02-14 05:23:14.674256000 Z
   position: 2
+  fixed_position:
 results_template_category_19:
   id: 19
   results_template_id: 2
   results_category_id: 34
-  created_at: '2019-02-14 05:23:14.675766'
-  updated_at: '2019-02-14 05:23:14.675766'
+  created_at: 2019-02-14 05:23:14.675766000 Z
+  updated_at: 2019-02-14 05:23:14.675766000 Z
   position: 3
+  fixed_position:
 results_template_category_20:
   id: 20
   results_template_id: 2
   results_category_id: 35
-  created_at: '2019-02-14 05:23:14.677232'
-  updated_at: '2019-02-14 05:23:14.677232'
+  created_at: 2019-02-14 05:23:14.677232000 Z
+  updated_at: 2019-02-14 05:23:14.677232000 Z
   position: 4
+  fixed_position:
 results_template_category_21:
   id: 21
   results_template_id: 2
   results_category_id: 26
-  created_at: '2019-02-14 05:23:14.6787'
-  updated_at: '2019-02-14 05:23:14.6787'
+  created_at: 2019-02-14 05:23:14.678700000 Z
+  updated_at: 2019-02-14 05:23:14.678700000 Z
   position: 5
+  fixed_position:
 results_template_category_22:
   id: 22
   results_template_id: 2
   results_category_id: 27
-  created_at: '2019-02-14 05:23:14.680174'
-  updated_at: '2019-02-14 05:23:14.680174'
+  created_at: 2019-02-14 05:23:14.680174000 Z
+  updated_at: 2019-02-14 05:23:14.680174000 Z
   position: 6
+  fixed_position:
 results_template_category_23:
   id: 23
   results_template_id: 2
   results_category_id: 28
-  created_at: '2019-02-14 05:23:14.6816'
-  updated_at: '2019-02-14 05:23:14.6816'
+  created_at: 2019-02-14 05:23:14.681600000 Z
+  updated_at: 2019-02-14 05:23:14.681600000 Z
   position: 7
+  fixed_position:
 results_template_category_24:
   id: 24
   results_template_id: 2
   results_category_id: 29
-  created_at: '2019-02-14 05:23:14.683025'
-  updated_at: '2019-02-14 05:23:14.683025'
+  created_at: 2019-02-14 05:23:14.683025000 Z
+  updated_at: 2019-02-14 05:23:14.683025000 Z
   position: 8
+  fixed_position:
 results_template_category_25:
   id: 25
   results_template_id: 2
   results_category_id: 30
-  created_at: '2019-02-14 05:23:14.684548'
-  updated_at: '2019-02-14 05:23:14.684548'
+  created_at: 2019-02-14 05:23:14.684548000 Z
+  updated_at: 2019-02-14 05:23:14.684548000 Z
   position: 9
+  fixed_position:
 results_template_category_26:
   id: 26
   results_template_id: 2
   results_category_id: 31
-  created_at: '2019-02-14 05:23:14.685979'
-  updated_at: '2019-02-14 05:23:14.685979'
+  created_at: 2019-02-14 05:23:14.685979000 Z
+  updated_at: 2019-02-14 05:23:14.685979000 Z
   position: 10
+  fixed_position:
 results_template_category_27:
   id: 27
   results_template_id: 2
   results_category_id: 10
-  created_at: '2019-02-14 05:23:14.687401'
-  updated_at: '2019-02-14 05:23:14.687401'
+  created_at: 2019-02-14 05:23:14.687401000 Z
+  updated_at: 2019-02-14 05:23:14.687401000 Z
   position: 11
+  fixed_position:
 results_template_category_28:
   id: 28
   results_template_id: 2
   results_category_id: 11
-  created_at: '2019-02-14 05:23:14.688828'
-  updated_at: '2019-02-14 05:23:14.688828'
+  created_at: 2019-02-14 05:23:14.688828000 Z
+  updated_at: 2019-02-14 05:23:14.688828000 Z
   position: 12
+  fixed_position:
 results_template_category_29:
   id: 29
   results_template_id: 3
   results_category_id: 2
-  created_at: '2019-02-14 05:23:14.695887'
-  updated_at: '2019-02-14 05:23:14.695887'
+  created_at: 2019-02-14 05:23:14.695887000 Z
+  updated_at: 2019-02-14 05:23:14.695887000 Z
   position: 1
+  fixed_position:
 results_template_category_30:
   id: 30
   results_template_id: 3
   results_category_id: 3
-  created_at: '2019-02-14 05:23:14.697353'
-  updated_at: '2019-02-14 05:23:14.697353'
+  created_at: 2019-02-14 05:23:14.697353000 Z
+  updated_at: 2019-02-14 05:23:14.697353000 Z
   position: 2
+  fixed_position:
 results_template_category_31:
   id: 31
   results_template_id: 3
   results_category_id: 36
-  created_at: '2019-02-14 05:23:14.698787'
-  updated_at: '2019-02-14 05:23:14.698787'
+  created_at: 2019-02-14 05:23:14.698787000 Z
+  updated_at: 2019-02-14 05:23:14.698787000 Z
   position: 3
+  fixed_position:
 results_template_category_32:
   id: 32
   results_template_id: 3
   results_category_id: 37
-  created_at: '2019-02-14 05:23:14.701303'
-  updated_at: '2019-02-14 05:23:14.701303'
+  created_at: 2019-02-14 05:23:14.701303000 Z
+  updated_at: 2019-02-14 05:23:14.701303000 Z
   position: 4
+  fixed_position:
 results_template_category_33:
   id: 33
   results_template_id: 3
   results_category_id: 6
-  created_at: '2019-02-14 05:23:14.703485'
-  updated_at: '2019-02-14 05:23:14.703485'
+  created_at: 2019-02-14 05:23:14.703485000 Z
+  updated_at: 2019-02-14 05:23:14.703485000 Z
   position: 5
+  fixed_position:
 results_template_category_34:
   id: 34
   results_template_id: 3
   results_category_id: 7
-  created_at: '2019-02-14 05:23:14.705275'
-  updated_at: '2019-02-14 05:23:14.705275'
+  created_at: 2019-02-14 05:23:14.705275000 Z
+  updated_at: 2019-02-14 05:23:14.705275000 Z
   position: 6
+  fixed_position:
 results_template_category_35:
   id: 35
   results_template_id: 3
   results_category_id: 8
-  created_at: '2019-02-14 05:23:14.70693'
-  updated_at: '2019-02-14 05:23:14.70693'
+  created_at: 2019-02-14 05:23:14.706930000 Z
+  updated_at: 2019-02-14 05:23:14.706930000 Z
   position: 7
+  fixed_position:
 results_template_category_36:
   id: 36
   results_template_id: 3
   results_category_id: 9
-  created_at: '2019-02-14 05:23:14.708544'
-  updated_at: '2019-02-14 05:23:14.708544'
+  created_at: 2019-02-14 05:23:14.708544000 Z
+  updated_at: 2019-02-14 05:23:14.708544000 Z
   position: 8
+  fixed_position:
 results_template_category_37:
   id: 37
   results_template_id: 4
   results_category_id: 2
-  created_at: '2019-02-14 05:23:14.715758'
-  updated_at: '2019-02-14 05:23:14.715758'
+  created_at: 2019-02-14 05:23:14.715758000 Z
+  updated_at: 2019-02-14 05:23:14.715758000 Z
   position: 1
+  fixed_position:
 results_template_category_38:
   id: 38
   results_template_id: 4
   results_category_id: 3
-  created_at: '2019-02-14 05:23:14.717225'
-  updated_at: '2019-02-14 05:23:14.717225'
+  created_at: 2019-02-14 05:23:14.717225000 Z
+  updated_at: 2019-02-14 05:23:14.717225000 Z
   position: 2
+  fixed_position:
 results_template_category_39:
   id: 39
   results_template_id: 4
   results_category_id: 6
-  created_at: '2019-02-14 05:23:14.718644'
-  updated_at: '2019-02-14 05:23:14.718644'
+  created_at: 2019-02-14 05:23:14.718644000 Z
+  updated_at: 2019-02-14 05:23:14.718644000 Z
   position: 3
+  fixed_position:
 results_template_category_40:
   id: 40
   results_template_id: 4
   results_category_id: 7
-  created_at: '2019-02-14 05:23:14.720056'
-  updated_at: '2019-02-14 05:23:14.720056'
+  created_at: 2019-02-14 05:23:14.720056000 Z
+  updated_at: 2019-02-14 05:23:14.720056000 Z
   position: 4
+  fixed_position:
 results_template_category_41:
   id: 41
   results_template_id: 4
   results_category_id: 8
-  created_at: '2019-02-14 05:23:14.721467'
-  updated_at: '2019-02-14 05:23:14.721467'
+  created_at: 2019-02-14 05:23:14.721467000 Z
+  updated_at: 2019-02-14 05:23:14.721467000 Z
   position: 5
+  fixed_position:
 results_template_category_42:
   id: 42
   results_template_id: 4
   results_category_id: 9
-  created_at: '2019-02-14 05:23:14.722884'
-  updated_at: '2019-02-14 05:23:14.722884'
+  created_at: 2019-02-14 05:23:14.722884000 Z
+  updated_at: 2019-02-14 05:23:14.722884000 Z
   position: 6
+  fixed_position:
 results_template_category_61:
   id: 61
   results_template_id: 7
   results_category_id: 2
-  created_at: '2019-02-14 05:23:14.79598'
-  updated_at: '2019-02-14 05:23:14.79598'
+  created_at: 2019-02-14 05:23:14.795980000 Z
+  updated_at: 2019-02-14 05:23:14.795980000 Z
   position: 1
+  fixed_position:
 results_template_category_62:
   id: 62
   results_template_id: 7
   results_category_id: 3
-  created_at: '2019-02-14 05:23:14.797984'
-  updated_at: '2019-02-14 05:23:14.797984'
+  created_at: 2019-02-14 05:23:14.797984000 Z
+  updated_at: 2019-02-14 05:23:14.797984000 Z
   position: 2
+  fixed_position:

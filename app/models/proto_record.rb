@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "etl/etl"
+
 class ProtoRecord
   include ETL::Transformable
 
@@ -14,10 +16,18 @@ class ProtoRecord
     validate_setup
   end
 
-  delegate :[], :[]=, :to_h, :delete_field, to: :attributes
+  delegate :[]=, :to_h, :delete_field, to: :attributes
+
+  def [](key)
+    key.nil? ? nil : attributes[key]
+  end
 
   def has_key?(key)
     attributes.to_h.has_key?(key)
+  end
+
+  def keys
+    attributes.to_h.keys
   end
 
   def record_class
@@ -30,6 +40,10 @@ class ProtoRecord
 
   def parent_child_attributes
     to_h.merge(child_attributes)
+  end
+
+  def marked_for_destruction?
+    record_action == :destroy
   end
 
   def transform_as(model, options = {})
@@ -50,16 +64,27 @@ class ProtoRecord
       normalize_state_code!
       create_country_from_state!
       normalize_date!(:birthdate)
-      convert_start_offset!(event.start_time)
+      add_date_to_time!(:scheduled_start_time_local, event.scheduled_start_time_local.to_date)
       normalize_datetime!(:scheduled_start_time_local)
       localize_datetime!(:scheduled_start_time_local, :scheduled_start_time, event.home_time_zone)
+      convert_start_offset!(event.scheduled_start_time) if self[:scheduled_start_time].nil?
       self[:event_id] = event.id
 
-      # If no scheduled_start_time can be determined, set it to the event start time
-      self[:scheduled_start_time] ||= event.start_time
+      # If no scheduled_start_time can be determined, set it to the event scheduled start time
+      self[:scheduled_start_time] ||= event.scheduled_start_time
+
+    when :lottery_entrant
+      division = options[:division]
+      normalize_gender!
+      normalize_country_code!
+      normalize_state_code!
+      create_country_from_state!
+      normalize_date!(:birthdate)
+      self[:lottery_division_id] = division.id
 
     when :split
       event = options[:event]
+      normalize_split_kind!
       convert_split_distance!
       align_split_distance!(event.ordered_splits.map(&:distance_from_start))
       self[:course_id] = event.course_id
@@ -67,11 +92,9 @@ class ProtoRecord
     when :raw_time
       event_group = options[:event_group]
       self[:split_name] ||= options[:split_name]
-      self[:source] = 'File import'
+      self[:source] = "File import"
       self[:event_group_id] = event_group.id
 
-    else
-      return
     end
   end
 
@@ -80,6 +103,8 @@ class ProtoRecord
   end
 
   def validate_setup
-    raise ArgumentError, 'children of a ProtoRecord must be ProtoRecords' unless children.all? { |child| child.is_a?(ProtoRecord) }
+    unless children.all? { |child| child.is_a?(ProtoRecord) }
+      raise ArgumentError, "children of a ProtoRecord must be ProtoRecords"
+    end
   end
 end

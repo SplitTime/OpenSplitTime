@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ObjectPairer
-
   def self.pair(args)
     new(args).pair
   end
@@ -55,8 +54,7 @@ class ObjectPairer
 
   def pad_and_zip(left_array, right_array)
     left_shortage = right_array.size - left_array.size
-    padded_left_array = (left_shortage > 0) ? (left_array + [nil] * left_shortage) : left_array
+    padded_left_array = left_shortage > 0 ? (left_array + [nil] * left_shortage) : left_array
     padded_left_array.zip(right_array)
   end
-
 end

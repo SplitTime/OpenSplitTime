@@ -2,53 +2,95 @@
 
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
-  before_action :set_event_group, except: [:index, :create]
-  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :drop_list]
+  before_action :set_event_group, except: [:index, :new, :create]
+  after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :drop_list, :efforts]
 
   def index
     scoped_event_groups = policy_scope(EventGroup)
-                            .search(params[:search])
-                            .by_group_start_time
-                            .preload(:events)
-                            .paginate(page: params[:page], per_page: 25)
+        .search(params[:search])
+        .by_group_start_time
+        .preload(:events)
+        .paginate(page: params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end
 
   def show
-    events = @event_group.events
-    if events.one? && !params[:force_settings]
-      redirect_to spread_event_path(events.first)
+    event = @event_group.first_event
+
+    if event.present?
+      redirect_to spread_event_path(event)
+    else
+      redirect_to setup_event_group_path(@event_group)
     end
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    session[:return_to] = event_group_path(@event_group, force_settings: true)
+  end
+
+  def new
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.new
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
+  end
+
+  def create
+    @event_group = EventGroup.new(permitted_params)
+    authorize @event_group
+
+    if @event_group.save
+      redirect_to setup_event_group_path(@event_group)
+    else
+      render "new", status: :unprocessable_entity
+    end
   end
 
   def edit
-    authorize @event_group
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.friendly.find(params[:id])
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
   end
 
   def update
     authorize @event_group
 
-    if @event_group.update(permitted_params)
-      redirect_to event_group_path(@event_group, force_settings: true)
-    else
-      render 'edit'
-    end
+    @event_group.update(permitted_params)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def destroy
     authorize @event_group
 
     @event_group.destroy
-    flash[:success] = 'Event group deleted.'
+    flash[:success] = "Event group deleted."
     redirect_to event_groups_path
+  end
+
+  def setup
+    authorize @event_group
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  def efforts
+    @efforts = policy_scope(@event_group.efforts)
+                 .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+                 .where(prepared_params[:filter])
+                 .finish_info_subquery
+
+    respond_to do |format|
+      format.json do
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
+        render json: {efforts: @efforts, html: html}
+      end
+    end
   end
 
   def raw_times
     authorize @event_group
-    params[:sort] ||= '-created_at'
+    params[:sort] ||= "-created_at"
 
     event_group = EventGroup.where(id: @event_group).includes(:efforts, organization: :stewards, events: :splits).first
     @presenter = EventGroupRawTimesPresenter.new(event_group, prepared_params, current_user)
@@ -64,8 +106,8 @@ class EventGroupsController < ApplicationController
   def roster
     authorize @event_group
 
-    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).references(organization: :stewards, events: :splits).first
-    @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+    event_group = EventGroup.where(id: @event_group).includes(organization: :stewards, events: :splits).first
+    @presenter = EventGroupRosterPresenter.new(event_group, prepared_params, current_user)
   end
 
   def stats
@@ -77,6 +119,12 @@ class EventGroupsController < ApplicationController
   def drop_list
     event_group = EventGroup.where(id: @event_group).includes(:organization, events: :efforts).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
+  end
+
+  def finish_line
+    authorize @event_group
+
+    @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
   end
 
   def follow
@@ -109,8 +157,8 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
-    flash[:success] = 'Automatic reconcile has started. Please return to reconcile after a minute or so.'
-    redirect_to event_group_path(@event_group, force_settings: true)
+    flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def associate_people
@@ -130,10 +178,125 @@ class EventGroupsController < ApplicationController
     redirect_to reconcile_event_group_path(@event_group)
   end
 
+  # GET /event_groups/1/link_lotteries
+  def link_lotteries
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # POST /event_groups/1/sync_lottery_entrants
+  def sync_lottery_entrants
+    authorize @event_group
+
+    response = ::Interactors::SyncLotteryEntrants.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+  end
+
+  # GET /event_groups/1/assign_bibs
+  def assign_bibs
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # PATCH /event_groups/1/auto_assign_bibs
+  def auto_assign_bibs
+    authorize @event_group
+
+    event = @event_group.first_event
+    strategy = params[:strategy]
+    bib_assignments = ::ComputeBibAssignments.perform(event, strategy)
+    response = ::Interactors::BulkSetBibNumbers.perform!(@event_group, bib_assignments)
+
+    set_flash_message(response)
+    redirect_to assign_bibs_event_group_path(@event_group)
+  end
+
+  # PATCH /event_groups/1/update_bibs
+  def update_bibs
+    authorize @event_group
+    bib_assignments = bib_assignment_hash(params[:event_group])
+    response = ::Interactors::BulkSetBibNumbers.perform!(@event_group, bib_assignments)
+
+    if response.successful?
+      redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+    else
+      set_flash_message(response)
+      redirect_to assign_bibs_event_group_path(@event_group)
+    end
+  end
+
+  # GET /event_groups/1/manage_entrant_photos
+  def manage_entrant_photos
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # PATCH /event_groups/1/update_entrant_photos
+  def update_entrant_photos
+    authorize @event_group
+
+    if @event_group.update(permitted_params)
+      flash[:success] = "Photos were attached"
+    else
+      flash[:danger] = "Photos could not be attached: #{@event_group.errors.full_messages}"
+    end
+
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # PATCH /event_groups/1/assign_entrant_photos
+  def assign_entrant_photos
+    authorize @event_group
+
+    response = ::Interactors::AssignEntrantPhotos.perform!(@event_group)
+    set_flash_message(response)
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # DELETE /event_groups/1/delete_entrant_photos?entrant_photo_id=1
+  def delete_entrant_photos
+    authorize @event_group
+
+    @event_group.entrant_photos.find(params[:entrant_photo_id]).purge_later
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # DELETE /event_groups/1/delete_photos_from_entrants
+  def delete_photos_from_entrants
+    authorize @event_group
+
+    @event_group.efforts.photo_assigned.find_each do |effort|
+      effort.photo.purge_later
+    end
+
+    redirect_to manage_entrant_photos_event_group_path(@event_group)
+  end
+
+  # GET /event_groups/1/manage_start_times
+  def manage_start_times
+    authorize @event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+  end
+
+  # GET /event_groups/1/manage_start_times_edit_actual
+  def manage_start_times_edit_actual
+    authorize @event_group
+
+    render partial: "form_start_time_actual", locals: {
+      event_id: params[:event_id],
+      actual_start_time: params[:actual_start_time]&.to_datetime,
+    }
+  end
+
   def set_data_status
     authorize @event_group
 
-    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: { split_times: :split }).first
+    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: {split_times: :split}).first
     response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
     set_flash_message(response)
     redirect_to roster_event_group_path(@event_group)
@@ -143,11 +306,16 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     filter = prepared_params[:filter]
-    efforts = @event_group.efforts.includes(:event, split_times: :split).add_ready_to_start
+    efforts = @event_group.efforts.includes(:event, split_times: :split).roster_subquery
     filtered_efforts = Effort.from(efforts, :efforts).where(filter)
     start_time = params[:actual_start_time]
 
-    response = Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
+    start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
+
+    # Need to pick up the new start split time before setting status
+    filtered_efforts = filtered_efforts.includes(split_times: :split)
+    set_response = ::Interactors::UpdateEffortsStatus.perform!(filtered_efforts)
+    response = start_response.merge(set_response)
 
     respond_to do |format|
       format.html do
@@ -156,9 +324,9 @@ class EventGroupsController < ApplicationController
       end
       format.json do
         if response.successful?
-          render json: { success: true }, status: :created
+          render json: {success: true}, status: :created
         else
-          render json: { success: false, errors: response.errors }
+          render json: {success: false, errors: response.errors}
         end
       end
     end
@@ -173,11 +341,19 @@ class EventGroupsController < ApplicationController
     redirect_to request.referrer
   end
 
+  def delete_all_efforts
+    authorize @event_group
+
+    response = Interactors::BulkDestroyEfforts.perform!(::Effort.where(event: @event_group.events))
+    set_flash_message(response) unless response.successful?
+    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+  end
+
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)
     set_flash_message(response)
-    redirect_to event_group_path(@event_group, force_settings: true)
+    redirect_to setup_event_group_path(@event_group)
   end
 
   def export_raw_times
@@ -188,9 +364,9 @@ class EventGroupsController < ApplicationController
 
     respond_to do |format|
       format.csv do
-        csv_stream = render_to_string(partial: "#{csv_template}.csv.ruby")
-        send_data(csv_stream, type: 'text/csv',
-                  filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
+        csv_stream = render_to_string(partial: csv_template, formats: :csv)
+        send_data(csv_stream, type: "text/csv",
+                              filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
       end
     end
   end
@@ -205,8 +381,15 @@ class EventGroupsController < ApplicationController
 
   private
 
+  def bib_assignment_hash(params_hash)
+    params_hash.select { |key, _| key.include?("bib_for") }
+               .transform_keys { |key| key.delete("^0-9").to_i }
+  end
+
   def set_event_group
     @event_group = policy_scope(EventGroup).friendly.find(params[:id])
     redirect_numeric_to_friendly(@event_group, params[:id])
+  rescue ::ActiveRecord::RecordNotFound
+    redirect_to "/404"
   end
 end

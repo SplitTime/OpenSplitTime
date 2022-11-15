@@ -1,0 +1,83 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Import Job - #{@import_job.id}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= "Import Job #{@import_job.id}" %></strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to @user.full_name, user_path(@user) %></li>
+            <li class="breadcrumb-item"><%= link_to "Import Jobs", import_jobs_path %></li>
+            <li class="breadcrumb-item"><%= @import_job.id %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <tbody>
+    <tr>
+      <td>Id</td>
+      <td><%= @import_job.id %></td>
+    </tr>
+    <tr>
+      <td>Created at</td>
+      <td><%= @import_job.created_at %></td>
+    </tr>
+    <tr>
+      <td>Parent</td>
+      <td><%= link_to @import_job.parent_name, @import_job.parent_path %></td>
+    </tr>
+    <tr>
+      <td>Parent type</td>
+      <td><%= @import_job.parent_type %></td>
+    </tr>
+    <tr>
+      <td>Parent id</td>
+      <td><%= @import_job.parent_id %></td>
+    </tr>
+    <tr>
+      <td>File</td>
+      <td><%= @import_job.file.filename || "None" %></td>
+    </tr>
+    <tr>
+      <td>Row count</td>
+      <td><%= @import_job.row_count %></td>
+    </tr>
+    <tr>
+      <td>Good count</td>
+      <td><%= @import_job.succeeded_count %></td>
+    </tr>
+    <tr>
+      <td>Bad count</td>
+      <td><%= @import_job.failed_count %></td>
+    </tr>
+    <tr>
+      <td>Ignored count</td>
+      <td><%= @import_job.ignored_count %></td>
+    </tr>
+    <tr>
+      <td>Elapsed time</td>
+      <td><%= pretty_duration(@import_job.elapsed_time) %></td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td><%= progress_monitorable_status_component(@import_job) %></td>
+    </tr>
+    <tr>
+      <td>Errors</td>
+      <td>
+        <% @import_job.parsed_errors.each do |error| %>
+        <p style="white-space:pre-wrap"><%= JSON.pretty_generate(error) %></p>
+        <% end %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</article>

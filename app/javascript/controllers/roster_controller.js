@@ -1,4 +1,4 @@
-import {Controller} from "stimulus"
+import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
 
@@ -28,6 +28,6 @@ export default class extends Controller {
     }
 
     reloadPage() {
-        reloadWithTurbolinks()
+        reloadWithTurbo()
     }
 }

@@ -6,44 +6,44 @@ module Api
       include BackgroundNotifiable
       before_action :set_resource, except: [:index, :create]
 
+      # GET /api/v1/event_groups/1
       def show
         authorize @resource
+
         event_group = EventGroup.includes(organization: :stewards, events: [:efforts, :splits]).where(id: @resource.id).first
-        render json: event_group, include: prepared_params[:include], fields: prepared_params[:fields]
+        serialize_and_render(event_group)
       end
 
+      # POST /api/v1/event_groups/1/import
       def import
         authorize @resource
 
         limited_response = params[:limited_response]&.to_boolean
-        importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+        importer = ::ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
-        if importer.strict?
-          if errors.present?
-            render json: {errors: errors}, status: :unprocessable_entity
-          else
-            ETL::EventGroupImportProcess.perform!(@resource, importer)
-            response = limited_response ? {} : importer.saved_records
-            render json: response, status: :created
-          end
+        if errors.present?
+          render json: {errors: errors}, status: :unprocessable_entity
         else
-          ETL::EventGroupImportProcess.perform!(@resource, importer)
-          response = limited_response ? {} :
-                       {saved_records: importer.saved_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                        destroyed_records: importer.destroyed_records.map { |record| ActiveModel::SerializableResource.new(record) },
-                        errors: errors}
-          render json: response, status: importer.saved_records.present? ? :created : :unprocessable_entity
+          ::ETL::EventGroupImportProcess.perform!(@resource, importer)
+          if limited_response
+            render json: {}, status: :created
+          else
+            serialize_and_render(importer.saved_records, status: :created)
+          end
         end
       end
 
+      # This endpoint should be removed as it is now obsolete.
+
+      # POST /api/v1/event_groups/1/import_csv_raw_times
       def import_csv_raw_times
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
         params[:data_format] = :csv_raw_times
-        importer = ETL::ImporterFromContext.build(@resource, params, current_user)
+        importer = ::ETL::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
         raw_times = RawTime.where(id: importer.saved_records)
@@ -54,21 +54,21 @@ module Api
         times_container = SegmentTimesContainer.new(calc_model: :stats)
         raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-        raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+        raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
 
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
       end
 
+      # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
+      # selects a batch, marks them as reviewed, combines them into time_rows, and returns them
+      # to the live entry page.
+      #
+      # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
+      # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
+      # even if they are marked as already having been reviewed.
+
+      # PATCH /api/v1/event_groups/1/pull_raw_times
       def pull_raw_times
-
-        # This endpoint searches for un-pulled raw_times belonging to the event_group,
-        # selects a batch, marks them as pulled, combines them into time_rows, and returns them
-        # to the live entry page.
-
-        # Batch size is determined by params[:page][:size]; otherwise the default number will be used.
-        # If params[:force_pull] == true, raw_times without a matching split_time will be pulled
-        # even if they are marked as already having been pulled.
-
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(events: :splits).first
 
@@ -76,10 +76,10 @@ module Api
         default_record_limit = 50
         record_limit = params.dig(:page, :size) || default_record_limit
 
-        scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unconsidered
+        scoped_raw_times = force_pull ? event_group.raw_times.unmatched : event_group.raw_times.unreviewed
 
         # Order should be by absolute time ascending, and where absolute time is nil, then by entered time ascending.
-        # This ordering is important to minimize the risk of incorrectly ordered times in multi-lap events.
+        # This ordering is important to reduce the risk of incorrectly ordered times in multi-lap events.
         raw_times = scoped_raw_times.order(:absolute_time, :entered_time).limit(record_limit)
         enriched_raw_times = raw_times.with_relation_ids
 
@@ -87,17 +87,17 @@ module Api
         times_container = SegmentTimesContainer.new(calc_model: :stats)
         raw_time_rows.each { |rtr| VerifyRawTimeRow.perform(rtr, times_container: times_container) }
 
-        raw_times.update_all(pulled_by: current_user.id, pulled_at: Time.current)
+        raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
         report_raw_times_available(event_group)
 
         render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
       end
 
+      # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
+      # with data_status, split_time_exists, lap, and other attributes set
+
+      # GET /api/v1/event_groups/1/enrich_raw_time_row
       def enrich_raw_time_row
-
-        # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
-        # with data_status, split_time_exists, lap, and other attributes set
-
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
@@ -108,19 +108,19 @@ module Api
 
           render json: {data: {rawTimeRow: enriched_row.serialize}}, status: :ok
         else
-          render json: {errors: [{title: 'Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}'}]}, status: :unprocessable_entity
+          render json: {errors: [{title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}"}]}, status: :unprocessable_entity
         end
       end
 
+      # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
+      # related split_time data where appropriate, and returns the others.
+      #
+      # In all instances, raw_times having bad split_name or bib_number data will be returned.
+      # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
+      # When params[:force_submit] is true, bad and duplicate times will be forced through.
+
+      # POST /api/v1/event_groups/1/submit_raw_time_rows
       def submit_raw_time_rows
-
-        # This endpoint accepts an array of raw_time_rows, verifies them, saves raw_times and saves or updates
-        # related split_time data where appropriate, and returns the others.
-
-        # In all instances, raw_times having bad split_name or bib_number data will be returned.
-        # When params[:force_submit] is false/nil, all times having bad data status and all duplicate times will be returned.
-        # When params[:force_submit] is true, bad and duplicate times will be forced through.
-
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
@@ -132,7 +132,7 @@ module Api
           if raw_times_data[:raw_time_row]
             raw_time_rows << parse_raw_times_data(ActionController::Parameters.new(raw_times_data))
           else
-            errors << {title: 'Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}',
+            errors << {title: "Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}",
                        detail: {attributes: raw_times_data}}
           end
         end
@@ -140,7 +140,7 @@ module Api
         if errors.empty?
           force_submit = !!params[:force_submit]&.to_boolean
           response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
-                                                             force_submit: force_submit, mark_as_pulled: true, current_user_id: current_user.id)
+                                                             force_submit: force_submit, mark_as_reviewed: true, current_user_id: current_user.id)
           problem_rows = response.resources[:problem_rows]
           report_raw_times_available(event_group)
 
@@ -150,12 +150,14 @@ module Api
         end
       end
 
+      # GET /api/v1/event_groups/1/trigger_raw_times_push
       def trigger_raw_times_push
         authorize @resource
         report_raw_times_available(@resource)
         render json: {message: "Time records push notifications sent for #{@resource.name}"}
       end
 
+      # GET /api/v1/event_groups/1/not_expected
       def not_expected
         authorize @resource
         event_group = EventGroup.where(id: @resource).includes(events: :splits).first

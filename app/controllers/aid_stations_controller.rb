@@ -18,18 +18,17 @@ class AidStationsController < ApplicationController
     if @aid_station.update(permitted_params)
       redirect_to session.delete(:return_to) || @aid_station
     else
-      render 'edit'
+      render "edit"
     end
   end
 
   def destroy
     authorize @aid_station
     if @aid_station.events.present?
-      flash[:danger] = 'Aid_station cannot be deleted if events are present on the aid_station. ' +
-          'Delete the related events individually and then delete the aid_station.'
+      flash[:danger] = "Aid_station cannot be deleted if events are present on the aid_station. Delete the related events individually and then delete the aid_station."
     else
       @aid_station.destroy
-      flash[:success] = 'Aid_station deleted.'
+      flash[:success] = "Aid_station deleted."
     end
 
     session[:return_to] = params[:referrer_path] if params[:referrer_path]

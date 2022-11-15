@@ -17,15 +17,15 @@ module Delegable
   included do
     scope :owned_by, ->(user) { with_policy_scope_attributes.where("#{table_name}.organization_id in (?)", user.owned_organization_ids) }
 
-    scope :delegated_to, ->(user) do
+    scope :delegated_to, lambda { |user|
       with_policy_scope_attributes
-        .where("#{table_name}.organization_id in (?)", user.delegated_organization_ids)
-    end
+          .where("#{table_name}.organization_id in (?)", user.delegated_organization_ids)
+    }
 
-    scope :visible_or_delegated_to, ->(user) do
+    scope :visible_or_delegated_to, lambda { |user|
       with_policy_scope_attributes
-        .where("#{table_name}.concealed is not true or #{table_name}.organization_id in (?)", user.delegated_organization_ids)
-    end
+          .where("#{table_name}.concealed is not true or #{table_name}.organization_id in (?)", user.delegated_organization_ids)
+    }
   end
 
   delegate :stewards, to: :organization

@@ -6,7 +6,7 @@ class EffortPlaceView < EffortWithLapSplitRows
   CategorizedEffortIds = Struct.new(:passed_segment, :passed_in_aid, :passed_by_segment, :passed_by_in_aid, :together_in_aid, keyword_init: true)
 
   def initialize(args_effort)
-    @effort = args_effort.enriched
+    @effort = args_effort.with_rank
   end
 
   def place_detail_rows
@@ -35,9 +35,9 @@ class EffortPlaceView < EffortWithLapSplitRows
 
   def peers
     @peers ||= Effort.select(:id, :first_name, :last_name, :slug)
-                 .where(id: frequent_encountered_ids)
-                 .index_by(&:id)
-                 .values_at(*frequent_encountered_ids)
+        .where(id: frequent_encountered_ids)
+        .index_by(&:id)
+        .values_at(*frequent_encountered_ids)
   end
 
   private
@@ -75,12 +75,12 @@ class EffortPlaceView < EffortWithLapSplitRows
   end
 
   def efforts_together_in_aid
-    @efforts_together_in_aid ||= EffortsTogetherInAid.execute_query(effort.id)
+    @efforts_together_in_aid ||= EffortsTogetherInAid.execute_query(effort_id: effort.id)
   end
 
   def frequent_encountered_ids
     @frequent_encountered_ids ||= place_detail_rows.flat_map(&:encountered_ids).compact
-                                    .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
+        .count_each.sort_by { |_, count| -count }.first(5).map(&:first)
   end
 
   def related_split_times(time_points)

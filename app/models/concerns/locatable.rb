@@ -8,7 +8,7 @@ module Locatable
   end
 
   def same_location?(other)
-    self.location && other.location && self.location == other.location
+    location && other.location && location == other.location
   end
 
   def different_location?(other)
@@ -18,11 +18,13 @@ module Locatable
 
   def location
     return nil unless latitude && longitude
+
     Location.new(latitude, longitude, distance_threshold)
   end
 
   def location=(other)
-    return nil unless other
+    return unless other
+
     self.latitude = other.latitude
     self.longitude = other.longitude
   end
@@ -34,7 +36,10 @@ module Locatable
   protected
 
   def distance_threshold
-    raise NotImplementedError, 'Including class must implement DISTANCE_THRESHOLD' unless defined?(self.class::DISTANCE_THRESHOLD)
+    unless defined?(self.class::DISTANCE_THRESHOLD)
+      raise NotImplementedError, "Including class must implement DISTANCE_THRESHOLD"
+    end
+
     self.class::DISTANCE_THRESHOLD
   end
 end

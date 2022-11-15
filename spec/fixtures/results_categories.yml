@@ -1,72 +1,72 @@
 ---
 overall:
   id: 1
-  organization_id: 
+  organization_id:
   name: Overall
   male: true
   female: true
-  low_age: 
-  high_age: 
+  low_age:
+  high_age:
   temp_key: combined_overall
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.216125'
-  updated_at: '2019-02-14 05:23:14.216125'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.216125000 Z
+  updated_at: 2019-02-14 05:23:14.216125000 Z
 overall_men:
   id: 2
-  organization_id: 
+  organization_id:
   name: Overall Men
   male: true
   female: false
-  low_age: 
-  high_age: 
+  low_age:
+  high_age:
   temp_key: men_overall
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.240465'
-  updated_at: '2019-02-14 05:23:14.240465'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.240465000 Z
+  updated_at: 2019-02-14 05:23:14.240465000 Z
 overall_women:
   id: 3
-  organization_id: 
+  organization_id:
   name: Overall Women
   male: false
   female: true
-  low_age: 
-  high_age: 
+  low_age:
+  high_age:
   temp_key: women_overall
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.246694'
-  updated_at: '2019-02-14 05:23:14.246694'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.246694000 Z
+  updated_at: 2019-02-14 05:23:14.246694000 Z
 masters_men_40:
   id: 4
-  organization_id: 
+  organization_id:
   name: Masters Men (40+)
   male: true
   female: false
   low_age: 40
-  high_age: 
+  high_age:
   temp_key: men_masters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.252543'
-  updated_at: '2019-02-14 05:23:14.252543'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.252543000 Z
+  updated_at: 2019-02-14 05:23:14.252543000 Z
 masters_women_40:
   id: 5
-  organization_id: 
+  organization_id:
   name: Masters Women (40+)
   male: false
   female: true
   low_age: 40
-  high_age: 
+  high_age:
   temp_key: women_masters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.258249'
-  updated_at: '2019-02-14 05:23:14.258249'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.258249000 Z
+  updated_at: 2019-02-14 05:23:14.258249000 Z
 masters_men_40_49:
   id: 6
-  organization_id: 
+  organization_id:
   name: Masters Men (40-49)
   male: true
   female: false
@@ -74,12 +74,12 @@ masters_men_40_49:
   high_age: 49
   temp_key: men_40s_masters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.263779'
-  updated_at: '2019-02-14 05:23:14.263779'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.263779000 Z
+  updated_at: 2019-02-14 05:23:14.263779000 Z
 masters_women_40_49:
   id: 7
-  organization_id: 
+  organization_id:
   name: Masters Women (40-49)
   male: false
   female: true
@@ -87,90 +87,90 @@ masters_women_40_49:
   high_age: 49
   temp_key: women_40s_masters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.269301'
-  updated_at: '2019-02-14 05:23:14.269301'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.269301000 Z
+  updated_at: 2019-02-14 05:23:14.269301000 Z
 grandmasters_men_50:
   id: 8
-  organization_id: 
+  organization_id:
   name: Grandmasters Men (50+)
   male: true
   female: false
   low_age: 50
-  high_age: 
+  high_age:
   temp_key: men_grandmasters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.276758'
-  updated_at: '2019-02-14 05:23:14.276758'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.276758000 Z
+  updated_at: 2019-02-14 05:23:14.276758000 Z
 grandmasters_women_50:
   id: 9
-  organization_id: 
+  organization_id:
   name: Grandmasters Women (50+)
   male: false
   female: true
   low_age: 50
-  high_age: 
+  high_age:
   temp_key: women_grandmasters
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.282907'
-  updated_at: '2019-02-14 05:23:14.282907'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.282907000 Z
+  updated_at: 2019-02-14 05:23:14.282907000 Z
 senior_grandmasters_men_60:
   id: 10
-  organization_id: 
+  organization_id:
   name: Senior Grandmasters Men (60+)
   male: true
   female: false
   low_age: 60
-  high_age: 
+  high_age:
   temp_key: men_seniors
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.28843'
-  updated_at: '2019-02-14 05:23:14.28843'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.288430000 Z
+  updated_at: 2019-02-14 05:23:14.288430000 Z
 senior_grandmasters_women_60:
   id: 11
-  organization_id: 
+  organization_id:
   name: Senior Grandmasters Women (60+)
   male: false
   female: true
   low_age: 60
-  high_age: 
+  high_age:
   temp_key: women_seniors
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.295124'
-  updated_at: '2019-02-14 05:23:14.295124'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.295124000 Z
+  updated_at: 2019-02-14 05:23:14.295124000 Z
 boys_12_and_under:
   id: 12
-  organization_id: 
+  organization_id:
   name: Boys 12 and Under
   male: true
   female: false
-  low_age: 
+  low_age:
   high_age: 12
   temp_key: boys_12_and_under
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.303036'
-  updated_at: '2019-02-14 05:23:14.303036'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.303036000 Z
+  updated_at: 2019-02-14 05:23:14.303036000 Z
 girls_12_and_under:
   id: 13
-  organization_id: 
+  organization_id:
   name: Girls 12 and Under
   male: false
   female: true
-  low_age: 
+  low_age:
   high_age: 12
   temp_key: girls_12_and_under
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.310181'
-  updated_at: '2019-02-14 05:23:14.310181'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.310181000 Z
+  updated_at: 2019-02-14 05:23:14.310181000 Z
 boys_13_to_16:
   id: 14
-  organization_id: 
+  organization_id:
   name: Boys 13 to 16
   male: true
   female: false
@@ -178,12 +178,12 @@ boys_13_to_16:
   high_age: 16
   temp_key: boys_13_to_16
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.322522'
-  updated_at: '2019-02-14 05:23:14.322522'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.322522000 Z
+  updated_at: 2019-02-14 05:23:14.322522000 Z
 girls_13_to_16:
   id: 15
-  organization_id: 
+  organization_id:
   name: Girls 13 to 16
   male: false
   female: true
@@ -191,64 +191,64 @@ girls_13_to_16:
   high_age: 16
   temp_key: girls_13_to_16
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.330382'
-  updated_at: '2019-02-14 05:23:14.330382'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.330382000 Z
+  updated_at: 2019-02-14 05:23:14.330382000 Z
 boys_16_and_under:
   id: 16
-  organization_id: 
+  organization_id:
   name: Boys 16 and Under
   male: true
   female: false
-  low_age: 
+  low_age:
   high_age: 16
   temp_key: boys_16_and_under
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.338496'
-  updated_at: '2019-02-14 05:23:14.338496'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.338496000 Z
+  updated_at: 2019-02-14 05:23:14.338496000 Z
 girls_16_and_under:
   id: 17
-  organization_id: 
+  organization_id:
   name: Girls 16 and Under
   male: false
   female: true
-  low_age: 
+  low_age:
   high_age: 16
   temp_key: girls_16_and_under
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.348408'
-  updated_at: '2019-02-14 05:23:14.348408'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.348408000 Z
+  updated_at: 2019-02-14 05:23:14.348408000 Z
 under_20_men:
   id: 18
-  organization_id: 
+  organization_id:
   name: Under 20 Men
   male: true
   female: false
-  low_age: 
+  low_age:
   high_age: 19
   temp_key: men_under_20
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.357627'
-  updated_at: '2019-02-14 05:23:14.357627'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.357627000 Z
+  updated_at: 2019-02-14 05:23:14.357627000 Z
 under_20_women:
   id: 19
-  organization_id: 
+  organization_id:
   name: Under 20 Women
   male: false
   female: true
-  low_age: 
+  low_age:
   high_age: 19
   temp_key: women_under_20
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.371632'
-  updated_at: '2019-02-14 05:23:14.371632'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.371632000 Z
+  updated_at: 2019-02-14 05:23:14.371632000 Z
 13_to_39_men:
   id: 20
-  organization_id: 
+  organization_id:
   name: 13 to 39 Men
   male: true
   female: false
@@ -256,12 +256,12 @@ under_20_women:
   high_age: 39
   temp_key: men_13_to_39
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.38053'
-  updated_at: '2019-02-14 05:23:14.38053'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.380530000 Z
+  updated_at: 2019-02-14 05:23:14.380530000 Z
 13_to_39_women:
   id: 21
-  organization_id: 
+  organization_id:
   name: 13 to 39 Women
   male: false
   female: true
@@ -269,12 +269,12 @@ under_20_women:
   high_age: 39
   temp_key: women_13_to_39
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.388081'
-  updated_at: '2019-02-14 05:23:14.388081'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.388081000 Z
+  updated_at: 2019-02-14 05:23:14.388081000 Z
 17_to_39_men:
   id: 22
-  organization_id: 
+  organization_id:
   name: 17 to 39 Men
   male: true
   female: false
@@ -282,12 +282,12 @@ under_20_women:
   high_age: 39
   temp_key: men_17_to_39
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.396785'
-  updated_at: '2019-02-14 05:23:14.396785'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.396785000 Z
+  updated_at: 2019-02-14 05:23:14.396785000 Z
 17_to_39_women:
   id: 23
-  organization_id: 
+  organization_id:
   name: 17 to 39 Women
   male: false
   female: true
@@ -295,12 +295,12 @@ under_20_women:
   high_age: 39
   temp_key: women_17_to_39
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.405085'
-  updated_at: '2019-02-14 05:23:14.405085'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.405085000 Z
+  updated_at: 2019-02-14 05:23:14.405085000 Z
 20_to_29_men:
   id: 24
-  organization_id: 
+  organization_id:
   name: 20 to 29 Men
   male: true
   female: false
@@ -308,12 +308,12 @@ under_20_women:
   high_age: 29
   temp_key: men_20s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.418062'
-  updated_at: '2019-02-14 05:23:14.418062'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.418062000 Z
+  updated_at: 2019-02-14 05:23:14.418062000 Z
 20_to_29_women:
   id: 25
-  organization_id: 
+  organization_id:
   name: 20 to 29 Women
   male: false
   female: true
@@ -321,12 +321,12 @@ under_20_women:
   high_age: 29
   temp_key: women_20s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.426851'
-  updated_at: '2019-02-14 05:23:14.426851'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.426851000 Z
+  updated_at: 2019-02-14 05:23:14.426851000 Z
 30_to_39_men:
   id: 26
-  organization_id: 
+  organization_id:
   name: 30 to 39 Men
   male: true
   female: false
@@ -334,12 +334,12 @@ under_20_women:
   high_age: 39
   temp_key: men_30s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.435691'
-  updated_at: '2019-02-14 05:23:14.435691'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.435691000 Z
+  updated_at: 2019-02-14 05:23:14.435691000 Z
 30_to_39_women:
   id: 27
-  organization_id: 
+  organization_id:
   name: 30 to 39 Women
   male: false
   female: true
@@ -347,12 +347,12 @@ under_20_women:
   high_age: 39
   temp_key: women_30s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.445779'
-  updated_at: '2019-02-14 05:23:14.445779'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.445779000 Z
+  updated_at: 2019-02-14 05:23:14.445779000 Z
 40_to_49_men:
   id: 28
-  organization_id: 
+  organization_id:
   name: 40 to 49 Men
   male: true
   female: false
@@ -360,12 +360,12 @@ under_20_women:
   high_age: 49
   temp_key: men_40s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.453568'
-  updated_at: '2019-02-14 05:23:14.453568'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.453568000 Z
+  updated_at: 2019-02-14 05:23:14.453568000 Z
 40_to_49_women:
   id: 29
-  organization_id: 
+  organization_id:
   name: 40 to 49 Women
   male: false
   female: true
@@ -373,12 +373,12 @@ under_20_women:
   high_age: 49
   temp_key: women_40s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.461776'
-  updated_at: '2019-02-14 05:23:14.461776'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.461776000 Z
+  updated_at: 2019-02-14 05:23:14.461776000 Z
 50_to_59_men:
   id: 30
-  organization_id: 
+  organization_id:
   name: 50 to 59 Men
   male: true
   female: false
@@ -386,12 +386,12 @@ under_20_women:
   high_age: 59
   temp_key: men_50s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.469249'
-  updated_at: '2019-02-14 05:23:14.469249'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.469249000 Z
+  updated_at: 2019-02-14 05:23:14.469249000 Z
 50_to_59_women:
   id: 31
-  organization_id: 
+  organization_id:
   name: 50 to 59 Women
   male: false
   female: true
@@ -399,12 +399,12 @@ under_20_women:
   high_age: 59
   temp_key: women_50s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.476449'
-  updated_at: '2019-02-14 05:23:14.476449'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.476449000 Z
+  updated_at: 2019-02-14 05:23:14.476449000 Z
 60_to_69_men:
   id: 32
-  organization_id: 
+  organization_id:
   name: 60 to 69 Men
   male: true
   female: false
@@ -412,12 +412,12 @@ under_20_women:
   high_age: 69
   temp_key: men_60s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.483272'
-  updated_at: '2019-02-14 05:23:14.483272'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.483272000 Z
+  updated_at: 2019-02-14 05:23:14.483272000 Z
 60_to_69_women:
   id: 33
-  organization_id: 
+  organization_id:
   name: 60 to 69 Women
   male: false
   female: true
@@ -425,58 +425,58 @@ under_20_women:
   high_age: 69
   temp_key: women_60s
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.489825'
-  updated_at: '2019-02-14 05:23:14.489825'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.489825000 Z
+  updated_at: 2019-02-14 05:23:14.489825000 Z
 under_30_men:
   id: 34
-  organization_id: 
+  organization_id:
   name: Under 30 Men
   male: true
   female: false
-  low_age: 
+  low_age:
   high_age: 29
   temp_key: men_under_30
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.498658'
-  updated_at: '2019-02-14 05:23:14.498658'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.498658000 Z
+  updated_at: 2019-02-14 05:23:14.498658000 Z
 under_30_women:
   id: 35
-  organization_id: 
+  organization_id:
   name: Under 30 Women
   male: false
   female: true
-  low_age: 
+  low_age:
   high_age: 29
   temp_key: women_under_30
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.506807'
-  updated_at: '2019-02-14 05:23:14.506807'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.506807000 Z
+  updated_at: 2019-02-14 05:23:14.506807000 Z
 under_40_men:
   id: 36
-  organization_id: 
+  organization_id:
   name: Under 40 Men
   male: true
   female: false
-  low_age: 
+  low_age:
   high_age: 39
   temp_key: men_under_40
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.519912'
-  updated_at: '2019-02-14 05:23:14.519912'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.519912000 Z
+  updated_at: 2019-02-14 05:23:14.519912000 Z
 under_40_women:
   id: 37
-  organization_id: 
+  organization_id:
   name: Under 40 Women
   male: false
   female: true
-  low_age: 
+  low_age:
   high_age: 39
   temp_key: women_under_40
   created_by: 1
-  updated_by: 
-  created_at: '2019-02-14 05:23:14.529403'
-  updated_at: '2019-02-14 05:23:14.529403'
+  updated_by:
+  created_at: 2019-02-14 05:23:14.529403000 Z
+  updated_at: 2019-02-14 05:23:14.529403000 Z

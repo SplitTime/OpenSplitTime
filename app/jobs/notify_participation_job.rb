@@ -23,6 +23,7 @@ class NotifyParticipationJob < ApplicationJob
   private
 
   attr_reader :effort_id
+
   delegate :person, :event, to: :effort
   delegate :topic_resource_key, to: :person
 

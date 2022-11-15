@@ -1,6 +1,6 @@
 <!--requires local variable 'resource'-->
 
-<div class="modal fade" data-target="roster.startEffortsModal">
+<div class="modal fade" data-roster-target="startEffortsModal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -10,7 +10,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="row justify-content-center" style="display:none" data-target="roster.error">
+        <div class="row justify-content-center" style="display:none" data-roster-target="error">
           <div class="alert alert-info d-block" role="alert">
             <div class="col col-login">
               <strong>Could not start entrants.</strong>
@@ -23,12 +23,13 @@
                           method: :patch,
                           format: :json,
                           local: false,
-                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors'} do |f| %>
+                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors',
+                                 turbo: false} do |f| %>
 
               <% if resource == :event_group %>
                 <%= f.hidden_field 'filter[ready_to_start]', value: true %>
                 <%= f.hidden_field 'filter[assumed_start_time]', value: nil,
-                                   data: {target: 'roster.assumedStartTimeFilter'} %>
+                                   data: {"roster-target" => 'assumedStartTimeFilter'} %>
               <% end %>
 
               <% if resource == :effort %>
@@ -37,13 +38,13 @@
 
               <div class="form-group">
                 <%= f.label :scheduled_start_time %>
-                <p data-target="roster.scheduledStartTime"></p>
+                <p data-roster-target="scheduledStartTime"></p>
               </div>
 
               <div class="form-group">
                 <%= f.label :actual_start_time %>
                 <%= f.text_field :actual_start_time, value: nil, class: 'form-control', autofocus: true,
-                                 data: {target: 'roster.actualStartTimeField'} %>
+                                 data: {"roster-target" => 'actualStartTimeField'} %>
               </div>
 
               <div class="form-group">

@@ -10,11 +10,12 @@ module Concealable
 
   included do
     scope :visible, -> { where("#{table_name}.concealed is not true") }
+    scope :concealed, -> { where("#{table_name}.concealed is true") }
   end
 
   def visible?
     !concealed?
   end
 
-  alias_method :visible, :visible?
+  alias visible visible?
 end

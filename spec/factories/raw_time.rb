@@ -5,7 +5,7 @@ FactoryBot.define do
     bitkey { [SubSplit::IN_BITKEY, SubSplit::OUT_BITKEY].sample }
     bib_number { rand(1..999).to_s }
     absolute_time { FFaker::Time.datetime }
-    source { 'ost-test' }
+    source { "ost-test" }
 
     after(:build, :stub) do |raw_time|
       raw_time.run_callbacks(:validation)

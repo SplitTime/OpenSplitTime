@@ -1,0 +1,41 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Import Jobs - #{@user.full_name}" %>
+<% end %>
+
+<%= turbo_stream_from @user %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Import Jobs</strong></h1>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><%= link_to @user.full_name, user_path(@user) %></li>
+            <li class="breadcrumb-item active">Import Jobs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Created</th>
+      <th>Parent</th>
+      <th>File</th>
+      <th class="text-center">Row Count</th>
+      <th class="text-center">Good/Bad/Ignored</th>
+      <th class="text-center">Elapsed Time</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody id="import_jobs">
+    <%= render partial: "import_job", collection: @user.import_jobs.most_recent_first.with_attached_file %>
+    </tbody>
+  </table>
+</article>

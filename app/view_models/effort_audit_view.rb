@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EffortAuditView < EffortWithLapSplitRows
-  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :loaded_effort
+  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :effort
   delegate :simple?, :multiple_sub_splits?, :laps_unlimited?, :event_group, to: :event
 
   def audit_rows
@@ -31,9 +31,11 @@ class EffortAuditView < EffortWithLapSplitRows
   private
 
   def raw_times
+    return [] unless effort.bib_number.present?
+
     @raw_times ||=
       begin
-        result = event_group.raw_times.where(bib_number: effort.bib_number).with_relation_ids
+        result = event_group.raw_times.where(matchable_bib_number: effort.bib_number).with_relation_ids
         result.each { |rt| rt.lap ||= 1 }
         result
       end

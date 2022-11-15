@@ -1,0 +1,16 @@
+<%= turbo_frame_tag dom_id(record) do %>
+  <div class="card bg-light mt-2">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <h5 class="font-weight-bold"><%= record.name %></h5>
+          <h6><%= record.flexible_geolocation %></h6>
+        </div>
+        <div class="col">
+          <h4 class="text-right"><span class="badge badge-secondary"><%= record.division_name %></span></h4>
+          <h6 class="text-right font-weight-bold"><%= link_to "#{pluralize(record.number_of_tickets, 'ticket')}", organization_lottery_lottery_entrant_path(record.organization, record.lottery, record) %></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

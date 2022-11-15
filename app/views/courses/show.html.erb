@@ -46,7 +46,7 @@
 
 <article class="ost-article container">
   <% if @presenter.course_has_location_data? %>
-    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-target="maps.mapInfo"
+    <div id="map" style="width: 100%; height: 350px;" data-controller="maps" data-maps-target="mapInfo"
          data-course-id="<%= @presenter.id %>"></div>
   <% end %>
   <br/>

@@ -57,13 +57,21 @@ module Interactors
     end
 
     def response_message
-      errors.present? ? "#{effort.name} could not be changed from #{old_event.name} to #{new_event.name}. " :
-          "#{effort.name} was changed from #{old_event.name} to #{new_event.name}. "
+      if errors.present?
+        "#{effort.name} could not be changed from #{old_event.name} to #{new_event.name}. "
+      else
+        "#{effort.name} was changed from #{old_event.name} to #{new_event.name}. "
+      end
     end
 
     def verify_compatibility
-      errors << split_name_mismatch_error(effort, new_event) and return unless split_times.all? { |st| old_new_split_map[st.split_id] }
-      errors << sub_split_mismatch_error(effort, new_event) and return unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
+      unless split_times.all? { |st| old_new_split_map[st.split_id] }
+        errors << split_name_mismatch_error(effort, new_event) and return
+      end
+      unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
+        errors << sub_split_mismatch_error(effort, new_event) and return
+      end
+
       errors << lap_mismatch_error(effort, new_event) unless split_times.all? { |st| maximum_lap >= st.lap }
     end
   end

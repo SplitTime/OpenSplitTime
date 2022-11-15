@@ -3,10 +3,12 @@
 module Api
   module V1
     class EventSerializer < ::Api::V1::BaseSerializer
-      attributes :id, :course_id, :organization_id, :name, :start_time, :home_time_zone, :start_time_local,
-                 :start_time_in_home_zone, :concealed, :laps_required, :maximum_laps, :multi_lap, :slug, :short_name,
-                 :multiple_sub_splits, :parameterized_split_names, :split_names
-      link(:self) { api_v1_event_path(object) }
+      set_type :events
+
+      attributes :id, :course_id, :organization_id, :name, :start_time, :scheduled_start_time, :home_time_zone, :start_time_local,
+                 :start_time_in_home_zone, :scheduled_start_time_local, :concealed, :laps_required, :maximum_laps,
+                 :multi_lap, :slug, :short_name, :multiple_sub_splits, :parameterized_split_names, :split_names
+      link :self, :api_v1_url
 
       has_many :efforts
       has_many :splits
@@ -15,28 +17,34 @@ module Api
       belongs_to :event_group
 
       # Included for backward compatibility
-      def start_time_in_home_zone
-        object.start_time_local
+      attribute :start_time do |event|
+        event.scheduled_start_time
       end
 
-      def multi_lap
-        object.multiple_laps?
+      # Included for backward compatibility
+      attribute :start_time_in_home_zone do |event|
+        event.scheduled_start_time_local
       end
 
-      def concealed
-        object.event_group.concealed?
+      # Included for backward compatibility
+      attribute :start_time_local do |event|
+        event.scheduled_start_time_local
       end
 
-      def multiple_sub_splits
-        object.multiple_sub_splits?
+      attribute :multi_lap do |event|
+        event.multiple_laps?
       end
 
-      def parameterized_split_names
-        object.splits.map(&:parameterized_base_name)
+      attribute :multiple_sub_splits do |event|
+        event.multiple_sub_splits?
       end
 
-      def split_names
-        object.splits.map(&:base_name)
+      attribute :parameterized_split_names do |event|
+        event.splits.map(&:parameterized_base_name)
+      end
+
+      attribute :split_names do |event|
+        event.splits.map(&:base_name)
       end
     end
   end

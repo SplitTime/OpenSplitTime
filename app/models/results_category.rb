@@ -1,7 +1,7 @@
 class ResultsCategory < ApplicationRecord
   include Auditable
 
-  INF = 1.0/0
+  INF = 1.0 / 0
 
   belongs_to :organization, optional: true
   has_many :results_template_categories, dependent: :destroy
@@ -12,11 +12,23 @@ class ResultsCategory < ApplicationRecord
   validate :gender_present?
 
   attr_accessor :efforts
+
   attribute :invalid_efforts, :boolean
 
+  # `position` and `fixed_position` are persisted on the results_template_categories
+  # table, but can be set here for convenience, e.g., by ResultsTemplate#dup_with_categories
+  attribute :position, :integer
+  attribute :fixed_position, :boolean
+
   def self.invalid_category(attributes = {})
-    standard_attributes = {name: 'Invalid Efforts', male: true, female: true, invalid_efforts: true}
+    standard_attributes = {name: "Invalid Efforts", male: true, female: true, invalid_efforts: true}
     new(standard_attributes.merge(attributes))
+  end
+
+  def fastest_seconds
+    return INF unless efforts.present?
+
+    efforts.first.final_elapsed_seconds
   end
 
   def age_range
@@ -40,12 +52,11 @@ class ResultsCategory < ApplicationRecord
   end
 
   def age_description
-    case
-    when all_ages?
-      'all ages'
-    when age_range.begin == 0
+    if all_ages?
+      "all ages"
+    elsif age_range.begin == 0
       "up to #{high_age}"
-    when age_range.end == INF
+    elsif age_range.end == INF
       "#{low_age} and up"
     else
       "#{low_age} to #{high_age}"
@@ -59,8 +70,6 @@ class ResultsCategory < ApplicationRecord
   private
 
   def gender_present?
-    unless male? || female?
-      errors.add(:base, 'must include male or female entrants')
-    end
+    errors.add(:base, "must include male or female entrants") unless male? || female?
   end
 end

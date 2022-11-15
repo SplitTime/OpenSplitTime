@@ -1,5 +1,6 @@
 <%= form_tag people_path, class: 'w-100', method: :get do %>
   <div class="input-group">
+    <%= hidden_field_tag :sort, value: nil %>
     <%= text_field_tag 'filter[search]',
                         prepared_params[:search],
                         placeholder: 'First name, last name, state, or country',

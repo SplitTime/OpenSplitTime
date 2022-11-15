@@ -1,12 +1,12 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Sign Up" %>
+  <% "OpenSplitTime: Sign Up" %>
 <% end %>
 
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="ost-title col">
-        <h1><strong><%= t('.sign_up') %></strong></h1>
+        <h1><strong><%= t(".sign_up") %></strong></h1>
       </div>
     </div>
   </div>
@@ -15,8 +15,23 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= render 'devise/registrations/form' %>
-      <%= render 'devise/shared/links' %>
+      <%= button_to(user_facebook_omniauth_authorize_path,
+                    method: :post,
+                    form: {data: {turbo: false}},
+                    class: "btn btn-facebook btn-block") do %>
+        <%= fab_icon("facebook-square", text: " Sign up with Facebook") %>
+      <% end %>
+      <br/>
+      <%= button_to(user_google_oauth2_omniauth_authorize_path,
+                    method: :post,
+                    form: {data: {turbo: false}},
+                    class: "btn btn-google btn-block") do %>
+        <%= fab_icon("google", text: " Sign up with Google") %>
+      <% end %>
+      <hr class="hr-text" data-content="or">
+      <p class="text-center">Sign up with your Email</p>
+      <%= render "devise/registrations/form" %>
+      <%= render "devise/shared/links" %>
     </div>
   </div>
 </article>

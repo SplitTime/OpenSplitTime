@@ -1,0 +1,24 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: New Course Group" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>New Course Group</strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @course_group.organization.name, organization_path(@course_group.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item active">New</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+</article>

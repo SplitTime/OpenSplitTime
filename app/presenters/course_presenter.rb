@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
 class CoursePresenter < BasePresenter
+  attr_reader :course
 
-  attr_reader :course, :events
   delegate :id, :name, :description, :ordered_splits, :simple?, to: :course
 
   def initialize(course, params, current_user)
     @course = course
     @params = params
     @current_user = current_user
-    @events = course.events.select_with_params(params[:search]).order(start_time: :desc).to_a
   end
 
   def course_has_location_data?
@@ -17,7 +16,11 @@ class CoursePresenter < BasePresenter
   end
 
   def display_style
-    params[:display_style] == 'splits' ? 'splits' : 'events'
+    params[:display_style] == "splits" ? "splits" : "events"
+  end
+
+  def events
+    @events ||= ::EventPolicy::Scope.new(current_user, course.events).viewable.order(scheduled_start_time: :desc).to_a
   end
 
   def organization
@@ -31,5 +34,6 @@ class CoursePresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
   delegate :gpx, to: :course
 end

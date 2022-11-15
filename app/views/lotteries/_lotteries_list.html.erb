@@ -1,0 +1,17 @@
+<table class="table table-centered table-fixed-sm table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Scheduled Start Date</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @presenter.lotteries.each do |lottery| %>
+      <tr>
+        <td><%= link_to lottery.name, organization_lottery_path(@presenter.organization, lottery) %></td>
+        <td><%= l(lottery.scheduled_start_date, format: :full_with_weekday) %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,24 @@
+<%= turbo_frame_tag [event_id, actual_start_time.to_i] do %>
+  <%= form_with(url: start_efforts_event_group_path(@event_group, filter: { event_id: event_id, actual_start_time: actual_start_time }),
+                method: :patch,
+                data: { turbo: false }) do |f| %>
+    <div class="row">
+      <div class="col-12 col-md-7">
+        <%= f.label :actual, class: "font-weight-bold" %>
+        <%= f.text_field :actual_start_time,
+                         value: actual_start_time.present? ? l(actual_start_time.in_time_zone(@event_group.home_time_zone), format: :datetime_input) : nil,
+                         class: "form-control",
+                         autofocus: true %>
+      </div>
+
+      <div class="col-12 col-md-5 text-end">
+        <br/>
+        <%= button_tag type: "submit", class: "btn btn-outline-primary align-top" do %>
+          <%= fa_icon("check-circle") %>
+        <% end %>
+
+        <%= link_to fa_icon("times-circle"), manage_start_times_event_group_path(@event_group), class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

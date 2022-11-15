@@ -28,6 +28,7 @@ module Results
     private
 
     attr_reader :event_series, :series_template, :series_efforts
+
     delegate :scoring_method, :results_template, to: :event_series
 
     def blank_template
@@ -35,7 +36,7 @@ module Results
     end
 
     def events
-      event_series.events.sort_by(&:start_time)
+      event_series.events.sort_by(&:scheduled_start_time)
     end
 
     def scored_series_efforts
@@ -50,11 +51,11 @@ module Results
     end
 
     def indexed_people
-      @indexed_people ||= Person.find(event_series.efforts.pluck(:person_id)).index_by(&:id)
+      @indexed_people ||= Person.where(id: event_series.efforts.select(:person_id)).index_by(&:id)
     end
 
     def ranked_efforts
-      @ranked_efforts ||= event_series.efforts.ranked_with_status.select(&:finished?)
+      @ranked_efforts ||= event_series.efforts.where(finished: true).finish_info_subquery
     end
   end
 end

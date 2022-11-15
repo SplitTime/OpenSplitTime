@@ -1,0 +1,8 @@
+<tr id=<%= dom_id lottery_simulation_run %>>
+  <td><%= link_to lottery_simulation_run.id, organization_lottery_lottery_simulation_run_path(organization, lottery, lottery_simulation_run) %></td>
+  <td><%= "#{time_ago_in_words(lottery_simulation_run.created_at)} ago" %></td>
+  <td class="text-center"><%= lottery_simulation_run.requested_count %></td>
+  <td class="text-center"><%= "#{lottery_simulation_run.success_count || 0}/#{lottery_simulation_run.failure_count || 0}" %></td>
+  <td class="text-center"><%= pretty_duration(lottery_simulation_run.elapsed_time) %></td>
+  <td><%= progress_monitorable_status_component(lottery_simulation_run) %></td>
+</tr>

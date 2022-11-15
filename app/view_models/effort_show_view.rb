@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class EffortShowView < EffortWithLapSplitRows
-
-  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :loaded_effort
+  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :effort
   delegate :simple?, :multiple_sub_splits?, :multiple_laps?, :laps_unlimited?, :event_group, to: :event
 
   def next_problem_effort
@@ -33,9 +32,7 @@ class EffortShowView < EffortWithLapSplitRows
   end
 
   def times_exist_after_stop?
-    stopped_split_id &&
-        ((final_lap != stopped_lap) ||
-            (final_split_id != stopped_split_id) ||
-            (final_bitkey != stopped_bitkey))
+    stopped_split_time_id.present? &&
+      stopped_split_time_id != final_split_time_id
   end
 end

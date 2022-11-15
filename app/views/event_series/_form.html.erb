@@ -28,7 +28,7 @@
                 <%= results_template_selector(@event_series) %>
               </h5>
             </div>
-            <div class="card-body" data-target="results-template.categories">
+            <div class="card-body" data-results-template-target="categories">
               <%= render 'results_templates/categories_card', template: @event_series.results_template %>
             </div>
           </div>
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <% @event_series.organization.event_groups.flat_map(&:events).sort_by(&:start_time).each do |event| %>
+      <% @event_series.organization.event_groups.flat_map(&:events).sort_by(&:scheduled_start_time).each do |event| %>
         <div class="form-group">
           <div class="col-sm-8">
             <%= f.check_box "event_ids[#{event.id}]", checked: @event_series.events.include?(event) %>

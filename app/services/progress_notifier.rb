@@ -24,7 +24,7 @@ class ProgressNotifier < BaseNotifier
   def shortened_url
     key = Shortener::ShortenedUrl.generate!(effort_path).unique_key
 
-    "#{OST::SHORTENED_URI}/#{key}"
+    "#{::OstConfig.shortened_uri}/s/#{key}"
   end
 
   def effort_path
@@ -39,9 +39,9 @@ class ProgressNotifier < BaseNotifier
 
   def follower_update_body_text(split_time_data)
     "#{split_time_data[:split_name]} " +
-        "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " +
-        "#{split_time_data[:absolute_time_local]} " +
-        "(+#{split_time_data[:elapsed_time]})" +
-        "#{split_time_data[:stopped_here] ? ' and stopped there' : ''}"
+      "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " +
+      "#{split_time_data[:absolute_time_local]} " +
+      "(+#{split_time_data[:elapsed_time]})" +
+      (split_time_data[:stopped_here] ? " and stopped there" : "").to_s
   end
 end

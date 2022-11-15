@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'aws-sdk-sns'
+require "aws-sdk-sns"
 
 class SnsSubscriptionManager
-
   def self.generate(args)
     new(args).generate
   end
@@ -36,9 +35,8 @@ class SnsSubscriptionManager
       Rails.logger.warn "  Unable to generate #{subscription}"
       nil
     end
-
-  rescue Aws::SNS::Errors::ServiceError => exception
-    Rails.logger.warn "  Topic could not be generated: #{exception.message}"
+  rescue Aws::SNS::Errors::ServiceError => e
+    Rails.logger.warn "  Topic could not be generated: #{e.message}"
     nil
   end
 
@@ -53,8 +51,8 @@ class SnsSubscriptionManager
           Rails.logger.warn "  Unable to delete #{subscription}"
           nil
         end
-      rescue Aws::SNS::Errors::ServiceError => exception
-        Rails.logger.warn "  #{subscription} could not be deleted: #{exception.message}"
+      rescue Aws::SNS::Errors::ServiceError => e
+        Rails.logger.warn "  #{subscription} could not be deleted: #{e.message}"
       end
     else
       Rails.logger.warn "  #{subscription} is unconfirmed or does not exist"
@@ -62,7 +60,7 @@ class SnsSubscriptionManager
   end
 
   def locate
-    next_token = ''
+    next_token = ""
     found_subscription = nil
     while next_token && !found_subscription
       response = sns_client.list_subscriptions_by_topic(topic_arn: topic_arn)
@@ -70,8 +68,7 @@ class SnsSubscriptionManager
       next_token = response.next_token
       found_subscription = subs_by_topic.find { |sub| sub.endpoint == endpoint }
     end
-    (found_subscription && confirmed_arn?(found_subscription.subscription_arn)) ?
-        found_subscription.subscription_arn : nil
+    found_subscription.subscription_arn if found_subscription && confirmed_arn?(found_subscription.subscription_arn)
   end
 
   def update
@@ -89,6 +86,7 @@ class SnsSubscriptionManager
   private
 
   attr_reader :subscription, :sns_client
+
   delegate :subscribable, :user, :protocol, :resource_key, to: :subscription
 
   def endpoint
@@ -104,6 +102,6 @@ class SnsSubscriptionManager
   end
 
   def confirmed_arn?(string)
-    string.include?('arn:aws:sns')
+    string.include?("arn:aws:sns")
   end
 end

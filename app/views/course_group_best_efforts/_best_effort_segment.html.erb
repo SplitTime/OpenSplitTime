@@ -1,0 +1,11 @@
+<tr>
+  <td>
+    <%= "#{best_effort_segment.overall_rank}/#{best_effort_segment.gender_rank}" %>
+  </td>
+  <td><strong><%= link_to best_effort_segment.full_name, effort_path(best_effort_segment) %></strong></td>
+  <td><%= best_effort_segment.bio_historic %></td>
+  <td><%= best_effort_segment.flexible_geolocation %></td>
+  <td><%= best_effort_segment.course_name %></td>
+  <td><%= best_effort_segment.year_and_lap %></td>
+  <td class="text-right"><%= best_effort_segment.elapsed_time %></td>
+</tr>

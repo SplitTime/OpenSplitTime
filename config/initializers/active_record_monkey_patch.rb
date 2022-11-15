@@ -6,7 +6,15 @@ class ActiveRecord::Base
   def self.all_polymorphic_types(name)
     @poly_hash ||= {}.tap do |hash|
       Dir.glob(File.join(Rails.root, "app", "models", "**", "*.rb")).each do |file|
-        klass = File.basename(file, ".rb").camelize.constantize rescue nil
+        file.sub!(File.join(Rails.root, "app", "models"), "")
+        file.sub!(".rb", "")
+        klass = file.classify.safe_constantize
+
+        if klass.nil?
+          Rails.logger.warn "all_polymorphic_types method could not find a class for #{file}"
+          next
+        end
+
         next unless klass.ancestors.include?(ActiveRecord::Base)
 
         klass.reflect_on_all_associations(:has_many).select { |r| r.options[:as] }.each do |reflection|

@@ -1,0 +1,50 @@
+<%= render "shared/errors", obj: @course_group %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_with(model: [@course_group.organization, @course_group],
+                  local: true,
+                  html: { class: "form-horizontal", role: "form" }) do |f| %>
+
+      <%= f.hidden_field :organization_id, value: @course_group.organization.id %>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <%= f.label :name %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.text_field :name, class: "form-control", value: @course_group.name, placeholder: "Course group name", autofocus: true %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="control-label col-sm-2">
+          <strong>Courses in Group</strong>
+        </div>
+      </div>
+
+      <% @course_group.organization.courses.sort_by(&:name).each do |course| %>
+        <div class="form-group">
+          <div class="col-sm-8">
+            <%= f.check_box "course_ids[#{course.id}]", checked: @course_group.courses.include?(course) %>
+            <%= f.label :courses, course.name %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <div class="col">
+          <%= f.submit(@course_group.new_record? ? "Create Course Group" : "Update Course Group", class: "btn btn-primary btn-large") %>
+        </div>
+      </div>
+
+      <div class="col">
+        <span class="brackets">
+          <%= link_to "Cancel", @course_group.new_record? ?
+                                  organization_path(@course_group.organization, display_style: "course_groups") :
+                                  organization_course_group_path(@course_group.organization, @course_group) %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+</div>

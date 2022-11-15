@@ -20,6 +20,10 @@ class OrganizationPolicy < ApplicationPolicy
     @organization = organization
   end
 
+  def export_async?
+    user.authorized_to_edit?(organization)
+  end
+
   def post_event_course_org?
     user.authorized_to_edit?(organization)
   end

@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
+  PERMITTED_DISPLAY_STYLES = %w[courses course_groups stewards events event_series lotteries].freeze
+
   attr_reader :organization
+
   delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
 
   def initialize(organization, params, current_user)
@@ -10,22 +13,26 @@ class OrganizationPresenter < BasePresenter
     @current_user = current_user
   end
 
-  def event_groups
-    scoped_event_groups = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.search(params[:search])
-    EventGroup.distinct
-        .joins(:events) # Excludes "orphaned" event_groups (having no events)
-        .where(id: scoped_event_groups.map(&:id), organization: organization)
-        .includes(events: :efforts).includes(:organization)
-        .sort_by { |event_group| -event_group.start_time.to_i }
+  def lotteries
+    scoped_lotteries = LotteryPolicy::Scope.new(current_user, Lottery).viewable
+    scoped_lotteries.where(organization: organization).order(scheduled_start_date: :desc)
+  end
+
+  def concealed_event_groups
+    event_groups.concealed
+  end
+
+  def visible_event_groups
+    event_groups.visible
   end
 
   def event_series
-    organization.event_series.includes(events: :event_group).sort_by(&:start_time).reverse
+    organization.event_series.includes(events: :event_group).sort_by(&:scheduled_start_time).reverse
   end
 
   def event_date_range(series)
     dates = event_dates(series)
-    [dates.first, dates.last].uniq.join(' to ')
+    [dates.first, dates.last].uniq.join(" to ")
   end
 
   def courses
@@ -33,12 +40,16 @@ class OrganizationPresenter < BasePresenter
     @courses ||= organization.courses.includes(:splits, :events).where(id: scoped_courses)
   end
 
+  def course_groups
+    @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, organization.course_groups).viewable
+  end
+
   def display_style
-    %w[courses stewards events event_series].include?(params[:display_style]) ? params[:display_style] : default_display_style
+    PERMITTED_DISPLAY_STYLES.include?(params[:display_style]) ? params[:display_style] : default_display_style
   end
 
   def default_display_style
-    'events'
+    "events"
   end
 
   def show_visibility_columns?
@@ -49,7 +60,11 @@ class OrganizationPresenter < BasePresenter
 
   attr_reader :params, :current_user
 
+  def event_groups
+    organization.event_groups.by_group_start_time.includes(:events)
+  end
+
   def event_dates(series)
-    series.events.map(&:start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }
+    series.events.map(&:scheduled_start_time).sort.map { |datetime| I18n.localize(datetime, format: :date_only) }
   end
 end

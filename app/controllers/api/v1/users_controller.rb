@@ -7,7 +7,7 @@ module Api
 
       def current
         authorize User
-        render json: current_user
+        serialize_and_render(current_user)
       end
     end
   end

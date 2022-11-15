@@ -1,0 +1,33 @@
+<%= turbo_frame_tag dom_id(user_export) do %>
+  <div class="card bg-light mt-2">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <h5 class="font-weight-bold">
+            <%= user_export.filename.to_s %>
+            <% if current_user.exports_viewed_at.nil? || user_export.created_at > current_user.exports_viewed_at %>
+            <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
+            <% end %>
+          </h5>
+          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(user_export.created_at)} ago" %></h6>
+        </div>
+        <div class="col-12 col-md-4 text-md-right">
+          <span class="mx-1">
+          <%= link_to fa_icon("download",
+                              class: "has-tooltip",
+                              data: { toggle: "tooltip", "original-title" => "Download" }),
+                      rails_blob_path(user_export, disposition: "attachment") %>
+          </span>
+          <span class="mx-1">
+          <%= link_to fa_icon("trash",
+                              class: "text-danger has-tooltip",
+                              data: { toggle: "tooltip", "original-title" => "Delete" }),
+                      user_export_path(user_export),
+                      method: :delete,
+                      data: { confirm: "Delete this report?" } %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

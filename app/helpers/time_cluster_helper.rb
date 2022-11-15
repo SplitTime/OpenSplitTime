@@ -3,30 +3,33 @@
 module TimeClusterHelper
   def time_cluster_display_data(cluster, display_style, options = {})
     with_status = options[:with_status]
-    formatted_times = time_cluster_data(cluster, display_style).map { |time| cluster_display_formatted_time(time, cluster, display_style) || '--:--:--' }
+    formatted_times = time_cluster_data(cluster, display_style).map do |time|
+      cluster_display_formatted_time(time, cluster, display_style) || "--:--:--"
+    end
 
-    content_tag(:div) do
+    content_tag(:span) do
       if with_status
         time_array = formatted_times.zip(cluster.time_data_statuses)
 
         time_array.map.with_index(1) do |(formatted_time, status), i|
           concat text_with_status_indicator(formatted_time, status)
-          concat ' / ' unless i == time_array.size
+          concat " / " unless i == time_array.size
         end
       else
-        concat formatted_times.join(' / ')
+        concat formatted_times.join(" / ")
       end
 
       if cluster.show_stop_indicator?
-        concat ' '
-        concat fa_icon('hand-paper', class: 'text-danger has-tooltip', data: {toggle: 'tooltip', 'original-title' => 'Stopped Here'})
+        concat " "
+        concat fa_icon("hand-paper", class: "text-danger has-tooltip", data: {toggle: "tooltip", "original-title" => "Stopped Here"})
       end
     end
   end
 
   def time_cluster_export_data(cluster, display_style)
-    time_cluster_data(cluster, display_style)
-      .map { |time| cluster_export_formatted_time(time, cluster, display_style) }
+    time_cluster_data(cluster, display_style).map do |time|
+      cluster_export_formatted_time(time, cluster, display_style)
+    end
   end
 
   def time_cluster_data(cluster, display_style)
@@ -34,6 +37,10 @@ module TimeClusterHelper
     when :segment
       cluster.aid_time_recordable? ? [cluster.segment_time, cluster.time_in_aid] : [cluster.segment_time]
     when :ampm
+      cluster.absolute_times_local
+    when :ampm_with_seconds
+      cluster.absolute_times_local
+    when :ampm_without_seconds
       cluster.absolute_times_local
     when :military
       cluster.absolute_times_local
@@ -52,27 +59,31 @@ module TimeClusterHelper
       cluster.finish? ? time_format_xxhyymzzs(time) : time_format_xxhyym(time)
     when :ampm
       cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+    when :ampm_with_seconds
+      day_time_format_hhmmss(time)
+    when :ampm_without_seconds
+      day_time_format(time)
     when :military
       cluster.finish? ? day_time_military_format_hhmmss(time) : day_time_military_format(time)
     when :early_estimate
-      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+      day_time_format(time)
     when :late_estimate
-      cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
+      day_time_format(time)
     else
       cluster.finish? ? time_format_hhmmss(time) : time_format_hhmm(time)
     end
   end
 
-  def cluster_export_formatted_time(time, cluster, display_style)
+  def cluster_export_formatted_time(time, _cluster, display_style)
     case display_style.to_sym
     when :segment
-      time ? time_format_hhmmss(time) : ''
+      time ? time_format_hhmmss(time) : ""
     when :ampm
-      time ? day_time_format_hhmmss(time) : ''
+      time ? day_time_format_hhmmss(time) : ""
     when :military
-      time ? day_time_military_format_hhmmss(time) : ''
+      time ? day_time_military_format_hhmmss(time) : ""
     else
-      time ? time_format_hhmmss(time) : ''
+      time ? time_format_hhmmss(time) : ""
     end
   end
 end

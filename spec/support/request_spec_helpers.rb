@@ -7,17 +7,17 @@ module RequestSpecHelpers
   end
 
   def via_login_and_jwt(&block)
-    %w(login jwt).each do |strategy|
+    %w[login jwt].each do |strategy|
       context "with #{strategy} strategy" do
         let(:request_spec_admin) { FactoryBot.create(:admin) }
 
         case strategy
-        when 'login'
+        when "login"
           login_as_admin
-        when 'jwt'
+        when "jwt"
           add_jwt_headers
         else
-          raise RuntimeError, "Strategy #{strategy} is not recognized"
+          raise "Strategy #{strategy} is not recognized"
         end
 
         module_eval(&block)
@@ -28,7 +28,8 @@ module RequestSpecHelpers
   def add_jwt_headers
     before { request.headers.merge!(headers) }
     let(:headers) { {"Authorization" => "bearer #{token}"} }
-    let(:token) { JsonWebToken.encode(sub: request_spec_admin.id) }
+    let(:token) { JsonWebToken.encode(payload) }
+    let(:payload) { {sub: request_spec_admin.id} }
   end
 
   def login_as_admin

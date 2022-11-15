@@ -1,0 +1,30 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Edit Course Group - #{@course_group.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Edit Course Group - <%= @course_group.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @course_group.organization.name, organization_path(@course_group.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item"><%= link_to @course_group.name, organization_course_group_path(@course_group.organization, @course_group) %></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render 'form' %>
+  <hr>
+  <%= link_to 'Delete', organization_course_group_path(@course_group),
+              method: :delete,
+              data: {confirm: 'Are you sure?'},
+              class: "btn btn-danger" %>
+</article>

@@ -1,0 +1,30 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Edit lottery #{@lottery.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong>Edit Lottery - <%= @lottery.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to @lottery.organization.name, organization_lotteries_path(@lottery.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@lottery.organization) %></li>
+            <li class="breadcrumb-item"><%= @lottery.name %></li>
+            <li class="breadcrumb-item active">Edit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render "form" %>
+  <hr>
+  <%= link_to_delete_resource('Delete this lottery', organization_lottery_path(@lottery.organization, @lottery),
+                              resource: @lottery,
+                              noteworthy_associations: [:entrants],
+                              class: "btn btn-danger") %>
+</article>

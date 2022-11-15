@@ -35,17 +35,15 @@ class EnrichRawTimeRow
 
   def add_lap_to_raw_times
     raw_time_pair.reject(&:lap).each do |raw_time|
-      if single_lap_event_group? || single_lap_event?
-        raw_time.lap = 1
-      elsif effort.nil? || split.nil?
-        raw_time.lap = nil
-      elsif raw_time.absolute_time
-        raw_time.lap = expected_lap(raw_time, :absolute_time, raw_time.absolute_time)
-      elsif raw_time.military_time
-        raw_time.lap = expected_lap(raw_time, :military_time, raw_time.military_time)
-      else
-        raw_time.lap = nil
-      end
+      raw_time.lap = if single_lap_event_group? || single_lap_event?
+                       1
+                     elsif effort.nil? || split.nil?
+                       nil
+                     elsif raw_time.absolute_time
+                       expected_lap(raw_time, :absolute_time, raw_time.absolute_time)
+                     elsif raw_time.military_time
+                       expected_lap(raw_time, :military_time, raw_time.military_time)
+                     end
     end
   end
 
@@ -65,13 +63,20 @@ class EnrichRawTimeRow
 
   def set_stops
     return unless raw_time_pair.any?(&:stopped_here)
+
     raw_time_pair.each { |raw_time| raw_time.stopped_here = false }
     raw_time_pair.select(&:has_time_data?).last&.assign_attributes(stopped_here: true)
   end
 
   def add_attributes_and_verify
-    raw_time_pair.each { |raw_time| raw_time.effort, raw_time.event, raw_time.split = effort, event, split }
-    raw_time_row.effort, raw_time_row.event, raw_time_row.split = effort, event, split
+    raw_time_pair.each do |raw_time|
+      raw_time.effort = effort
+      raw_time.event = event
+      raw_time.split = split
+    end
+    raw_time_row.effort = effort
+    raw_time_row.event = event
+    raw_time_row.split = split
     raw_time_row.errors ||= []
     raw_time_row.errors += errors
     VerifyRawTimeRow.perform(raw_time_row, times_container: times_container)
@@ -91,8 +96,9 @@ class EnrichRawTimeRow
 
   def effort
     return @effort if defined?(@effort)
+
     @effort = raw_time_row.effort || Effort.where(event: event_group.events, bib_number: bib_number)
-                                         .includes(event: :splits, split_times: :split).first
+        .includes(event: :splits, split_times: :split).first
   end
 
   def event

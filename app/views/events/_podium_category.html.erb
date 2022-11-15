@@ -1,6 +1,9 @@
 <thead>
 <tr>
-  <th><%= category.name %></th>
+  <th>
+    <span class="collapse-rotate pr-2"><%= link_to fa_icon("caret-right", size: "lg"), "#collapse_#{category.position}", data: {toggle: "collapse"} %></span>
+    <span><%= "#{'*' if category.fixed_position} #{category.name}" %></span>
+  </th>
   <% if @presenter.multiple_laps? %>
     <th>Laps</th>
   <% end %>
@@ -14,15 +17,15 @@
 </tr>
 </thead>
 
-<tbody>
+<tbody class="collapse show" id="collapse_<%= category.position %>">
 <% if category.efforts.present? %>
   <% category.efforts.each.with_index(1) do |effort, i| %>
-    <tr>
+    <tr id='<%= "#{category.name.parameterize.underscore}_#{i}" %>'>
       <td><%= "#{i.ordinalize} Place" %></td>
       <% if @presenter.multiple_laps? %>
         <td><%= effort.laps_finished %></td>
       <% end %>
-      <td><%= time_format_hhmmss(effort.final_time_from_start) %></td>
+      <td><%= time_format_hhmmss(effort.final_elapsed_seconds) %></td>
       <td><%= effort.full_name %></td>
       <td><%= effort.bio_historic %></td>
       <td><%= effort.flexible_geolocation %></td>

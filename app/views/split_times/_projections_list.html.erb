@@ -8,26 +8,26 @@
   </thead>
 
   <tbody>
-  <% view_object.actual_lap_split_rows.each do |row| %>
+  <% @presenter.actual_lap_split_rows.each do |row| %>
     <tr>
       <td><%= strong_conditional row.name, row.done? %></td>
       <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
       <td></td>
-      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm, with_status: true), row.done? %></td>
+      <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_with_seconds, with_status: true), row.done? %></td>
       <td></td>
     </tr>
   <% end %>
   </tbody>
 
-  <% if view_object.projected_lap_split_rows.present? %>
+  <% if @presenter.projected_lap_split_rows.present? %>
     <thead>
     <tr>
       <th colspan="5"></th>
     </tr>
     <tr>
       <th colspan="5"><%= "Projections based on #{pluralize(@presenter.effort_count, 'effort')} " +
-                              "from #{'year'.pluralize(@presenter.effort_years.size)} " +
-                              "#{@presenter.effort_years.to_sentence}" %></th>
+                            "from #{'year'.pluralize(@presenter.effort_years.size)} " +
+                            "#{@presenter.effort_years.to_sentence}" %></th>
     </tr>
     <tr class="thead-dark">
       <th>Split</th>
@@ -39,19 +39,46 @@
     </thead>
 
     <tbody>
-    <% view_object.projected_lap_split_rows.each do |row| %>
+    <% @presenter.projected_lap_split_rows.each do |row| %>
       <tr class="table-primary">
-        <td><%= strong_conditional row.name, row.done? %></td>
-        <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm), row.done? %></td>
-        <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %></td>
+        <td>
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional row.name, row.done? %>
+        </span>
+          <% if row.not_in_event %>
+          <span class="text-danger">
+            <%= fa_icon("exclamation-circle",
+                        class: "has-tooltip",
+                        data: {toggle: "tooltip", "original-title" => "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."}) %>
+          </span>
+          <% end %>
+        </td>
+        <td class="text-right">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional d(row.distance_from_start), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :early_estimate), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_without_seconds), row.done? %>
+        </span>
+        </td>
+        <td class="text-center">
+        <span class="<%= 'brackets' if row.not_in_event %>">
+          <%= strong_conditional time_cluster_display_data(row.time_cluster, :late_estimate), row.done? %>
+        </span>
+        </td>
       </tr>
     <% end %>
     </tbody>
   <% end %>
 </table>
-<% unless view_object.projected_lap_split_rows.present? %>
+<% unless @presenter.projected_lap_split_rows.present? %>
   <hr/>
-  <h4><%= "No projections are available. #{@presenter.explanation}" %></h4>
+  <h4><%= @presenter.explanation %></h4>
 <% end %>

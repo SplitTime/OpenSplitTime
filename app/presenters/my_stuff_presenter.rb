@@ -2,6 +2,7 @@
 
 class MyStuffPresenter < BasePresenter
   attr_reader :current_user
+
   delegate :full_name, to: :current_user
 
   def initialize(current_user)
@@ -9,7 +10,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    event_groups.sort_by { |eg| eg.start_time || Time.current }.reverse.first(number)
+    event_groups.sort_by { |eg| eg.scheduled_start_time || Time.current }.reverse.first(number)
   end
 
   def event_groups
@@ -17,7 +18,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def recent_event_series(number)
-    event_series.sort_by(&:start_time).reverse.first(number)
+    event_series.sort_by(&:scheduled_start_time).reverse.first(number)
   end
 
   def event_series
@@ -42,6 +43,7 @@ class MyStuffPresenter < BasePresenter
 
   def user_efforts
     return nil unless avatar
+
     @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
   end
 

@@ -4,7 +4,9 @@ class SplitRawTimesPresenter < BasePresenter
   include SplitAnalyzable
 
   attr_reader :event_group, :parameterized_split_name
-  delegate :name, :organization, :events, :home_time_zone, :start_time_local, :available_live, :multiple_events?, :single_lap?, to: :event_group
+
+  delegate :name, :organization, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
+           :multiple_events?, :single_lap?, to: :event_group
 
   def initialize(event_group, params, current_user)
     @event_group = event_group
@@ -23,8 +25,8 @@ class SplitRawTimesPresenter < BasePresenter
   end
 
   def sub_split_kind
-    param_kind = (params[:sub_split_kind] || 'in').parameterize
-    sub_split_kinds.include?(param_kind) ? param_kind : 'in'
+    param_kind = (params[:sub_split_kind] || "in").parameterize
+    sub_split_kinds.include?(param_kind) ? param_kind : "in"
   end
 
   def sub_split_kinds

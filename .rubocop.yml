@@ -1,23 +1,21 @@
 AllCops:
-  Rails:
-    Enabled: true
-  TargetRubyVersion: 2.3
-  Include:
-    - '**/Gemfile'
-    - '**/Rakefile'
+  NewCops: enable
+  TargetRubyVersion: 2.7
   Exclude:
-   - 'bin/*'
-   - 'db/schema.rb'
-   - 'vendor/bundle/**/*'
-
-Documentation:
-  Enabled: false
+   - "bin/*"
+   - "db/schema.rb"
+   - "vendor/bundle/**/*"
 
 Layout/EndOfLine:
   EnforcedStyle: lf
 
-Layout/IndentHeredoc:
-  EnforcedStyle: powerpack
+Layout/HeredocIndentation:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - "spec/**/*.rb"
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -26,28 +24,58 @@ Layout/MultilineMethodCallIndentation:
 Layout/SpaceInLambdaLiteral:
   Enabled: false
 
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
+
+Metrics/AbcSize:
+  Exclude:
+    - "spec/**/*.rb"
 
 Metrics/BlockLength:
   Exclude:
-    - 'Rakefile'
-    - '**/*.rake'
-    - 'spec/**/*.rb'
+    - "Rakefile"
+    - "**/*.rake"
+    - "spec/**/*.rb"
 
-Metrics/LineLength:
-  Max: 120
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - "spec/**/*.rb"
+
+Metrics/MethodLength:
+  Exclude:
+    - "spec/**/*.rb"
 
 Metrics/ModuleLength:
   Exclude:
-    - 'spec/**/*.rb'
+    - "spec/**/*.rb"
 
-SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
+Naming/VariableNumber:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always
 
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/SlicingWithRange:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
 Style/SymbolArray:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
   Enabled: false

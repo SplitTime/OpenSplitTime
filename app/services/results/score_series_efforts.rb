@@ -21,6 +21,7 @@ module Results
     private
 
     attr_reader :series_efforts, :scoring_method, :event_series
+
     delegate :events, :results_template, to: :event_series
 
     def score_efforts
@@ -37,9 +38,9 @@ module Results
       when :rank
         filtered_series_efforts.sort_by(&:total_rank)
       when :time
-        filtered_series_efforts.sort_by(&:total_time)
+        filtered_series_efforts.sort_by(&:total_time_from_start)
       else
-        raise RuntimeError, "Unknown scoring method #{scoring_method} "
+        raise "Unknown scoring method #{scoring_method} "
       end
     end
 

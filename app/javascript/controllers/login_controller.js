@@ -1,18 +1,18 @@
-import {Controller} from "stimulus"
+import {Controller} from "@hotwired/stimulus"
 
 export default class extends Controller {
 
     static targets = ["error"]
 
-    onClickSubmit() {
+    hideErrors() {
         $(this.errorTarget).fadeOut()
     }
 
-    onPostSuccess() {
-        reloadWithTurbolinks()
+    reloadPage() {
+        reloadWithTurbo()
     }
 
-    onPostError() {
+    showErrors() {
         $(this.errorTarget).fadeIn()
     }
 }

@@ -1,14 +1,9 @@
+# frozen_string_literal: true
+
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :best_efforts, :plan_effort]
-  before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:show, :best_efforts, :plan_effort]
-
-  def index
-    authorize Course
-
-    @courses = policy_scope(Course).includes(:events, :splits).with_attached_gpx.order(:name).paginate(page: params[:page], per_page: 25)
-    session[:return_to] = courses_path
-  end
+  before_action :authenticate_user!, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
+  before_action :set_course, except: [:new, :create]
+  after_action :verify_authorized, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
 
   def show
     course = Course.where(id: @course).includes(:splits).first
@@ -36,10 +31,16 @@ class CoursesController < ApplicationController
     @course = Course.new(permitted_params)
     authorize @course
 
+    @event_group = ::EventGroup.friendly.find(params[:event_group_id])
+
     if @course.save
-      redirect_to courses_path
+      if @event_group.present?
+        redirect_to new_event_group_event_path(@event_group, course_id: @course.id)
+      else
+        redirect_to course_path(@course)
+      end
     else
-      render 'new'
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -47,9 +48,9 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to @course, notice: 'Course updated'
+      redirect_to @course, notice: "Course updated"
     else
-      render 'edit'
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -57,7 +58,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.destroy
-      flash[:success] = 'Course deleted.'
+      flash[:success] = "Course deleted."
       redirect_to organizations_path
     else
       flash[:danger] = @course.errors.full_messages.join("\n")
@@ -66,36 +67,39 @@ class CoursesController < ApplicationController
   end
 
   def best_efforts
-    if params[:split1] && params[:split2] && params[:split1] == params[:split2]
-      flash[:warning] = 'Select two different splits'
-      redirect_to request.params.merge(split1: nil, split2: nil)
-    elsif @course.visible_events.empty?
-      flash[:danger] = 'No events yet held on this course'
-      redirect_to course_path(@course)
-    elsif Effort.visible.on_course(@course).empty?
-      flash[:danger] = 'No efforts yet run on this course'
-      redirect_to course_path(@course)
-    else
-      @presenter = BestEffortsDisplay.new(@course, prepared_params, current_user)
-      session[:return_to] = best_efforts_course_path(@course)
+    # If someone tries to use a segment with the same begin and end split,
+    # just null them both out (which results in start/finish)
+    if params[:split1].present? && params[:split1] == params[:split2]
+      params[:split1] = params[:split2] = nil
+    end
+
+    @presenter = BestEffortsDisplay.new(@course, view_context)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        segments = @presenter.filtered_segments
+        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], locals: {segments: segments}) : ""
+        render json: {best_effort_segments: segments, html: html, links: {next: @presenter.next_page_url}}
+      end
     end
   end
 
+  def cutoff_analysis
+    @presenter = CourseCutoffAnalysisPresenter.new(@course, view_context)
+  end
+
   def plan_effort
-    if @course.visible_events.empty?
-      flash[:danger] = 'No events yet held on this course'
-      redirect_to course_path(@course)
-    else
-      @presenter = PlanDisplay.new(course: @course, params: params)
-      respond_to do |format|
-        format.html do
-          session[:return_to] = plan_effort_course_path(@course)
-        end
-        format.csv do
-          csv_stream = render_to_string(partial: 'plan.csv.ruby')
-          filename = "#{@course.name}-pacing-plan-#{@presenter.cleaned_time}-#{Date.today}.csv"
-          send_data(csv_stream, type: 'text/csv', filename: filename)
-        end
+    @presenter = PlanDisplay.new(course: @course, params: params)
+
+    respond_to do |format|
+      format.html do
+        session[:return_to] = plan_effort_course_path(@course)
+      end
+      format.csv do
+        csv_stream = render_to_string(partial: "plan", formats: :csv)
+        filename = "#{@course.name}-pacing-plan-#{@presenter.cleaned_time}-#{Date.today}.csv"
+        send_data(csv_stream, type: "text/csv", filename: filename)
       end
     end
   end

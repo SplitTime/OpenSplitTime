@@ -25,7 +25,7 @@ module Api
       # GET /api/vi/staging/:id/get_locations?west=&east=&south=&north=
       def get_locations
         splits = SplitLocationFinder.splits(params).where.not(course_id: @event.course_id)
-        render json: splits, each_serializer: SplitLocationSerializer
+        serialize_and_render(splits, serializer: SplitLocationSerializer)
       end
 
       # Creates or updates the given event, course, and organization
@@ -34,7 +34,7 @@ module Api
 
       # POST /api/v1/staging/:id/post_event_course_org
       def post_event_course_org
-        event = params[:id] == 'new' ? Event.new : Event.friendly.find(params[:id])
+        event = params[:id] == "new" ? Event.new : Event.friendly.find(params[:id])
 
         # This should change to params.dig(:event_group, :id) when the event-staging app supports event_groups
         event_group = EventGroup.find_or_initialize_by(id: event.event_group_id)
@@ -59,12 +59,12 @@ module Api
 
       # PATCH /api/v1/staging/:id/update_event_visibility
       def update_event_visibility
-        if %w(public private).include?(params[:status])
-          query = EventGroupQuery.set_concealed(@event.event_group_id, params[:status] == 'private')
+        if %w[public private].include?(params[:status])
+          query = EventGroupQuery.set_concealed(@event.event_group_id, params[:status] == "private")
           ActiveRecord::Base.connection.execute(query)
           render json: {errors: {}}, status: :ok
         else
-          render json: {errors: ['invalid status'], detail: 'request must include status: public or status: private'}, status: :bad_request
+          render json: {errors: ["invalid status"], detail: "request must include status: public or status: private"}, status: :bad_request
         end
       end
 

@@ -3,22 +3,16 @@ class PeopleController < ApplicationController
   before_action :set_person, except: [:index, :new, :create, :subregion_options]
   after_action :verify_authorized, except: [:index, :show, :subregion_options]
 
-  before_action do
-    locale = params[:locale]
-    Carmen.i18n_backend.locale = locale if locale
-  end
-
-  def subregion_options
-    render partial: 'subregion_select'
-  end
-
   def index
-    params[:sort] ||= 'last_name,first_name'
-    @people = policy_class::Scope.new(current_user, controller_class).viewable
-                        .search(prepared_params[:search])
-                        .with_age_and_effort_count
-                        .order(prepared_params[:sort_text])
-                        .paginate(page: params[:page], per_page: 25)
+    # Sort will destroy fuzzy match ranking, so don't automatically
+    # set it if a search param exists
+    params[:sort] ||= "last_name,first_name" unless prepared_params[:search].present?
+
+    @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
+    @people = @people.search(prepared_params[:search])
+    @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
+    @people = @people.paginate(page: params[:page], per_page: 25)
+
     session[:return_to] = people_path
   end
 
@@ -42,7 +36,7 @@ class PeopleController < ApplicationController
     if @person.save
       redirect_to session.delete(:return_to) || @person
     else
-      render 'new'
+      render "new", status: :unprocessable_entity
     end
   end
 
@@ -52,7 +46,7 @@ class PeopleController < ApplicationController
     if @person.update(permitted_params)
       redirect_to @person
     else
-      render 'edit'
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -79,7 +73,7 @@ class PeopleController < ApplicationController
     authorize @person
     @person_merge = PersonMergeView.new(@person, params[:proposed_match])
     if @person_merge.proposed_match.nil?
-      flash[:success] = 'No potential matches detected.'
+      flash[:success] = "No potential matches detected."
       redirect_to person_path(@person)
     end
   end

@@ -1,0 +1,53 @@
+<%= turbo_frame_tag dom_id export_job do %>
+  <div class="card bg-light mt-2">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <h5 class="font-weight-bold">
+            Filename: <%= export_job.file.filename.to_s.presence || "[No file]" %>
+            <% if current_user.exports_viewed_at.nil? || export_job.created_at > current_user.exports_viewed_at %>
+              <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
+            <% end %>
+          </h5>
+          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
+        </div>
+        <div class="col-12 col-md-4 text-md-right">
+          <span class="mx-1">
+            <% if export_job.file.attached? %>
+              <%= link_to fa_icon("download",
+                                  class: "has-tooltip",
+                                  data: { toggle: "tooltip", "original-title" => "Download" }),
+                          rails_blob_path(export_job.file, disposition: "attachment") %>
+            <% else %>
+              <%= fa_icon("download", class: "text-muted") %>
+            <% end %>
+          </span>
+          <span class="mx-1">
+          <%= link_to fa_icon("trash",
+                              class: "text-danger has-tooltip",
+                              data: { toggle: "tooltip", "original-title" => "Delete" }),
+                      export_job_path(export_job),
+                      method: :delete,
+                      data: { confirm: "Delete this export?" } %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <h5>Elapsed Time: <%= pretty_duration(export_job.elapsed_time) %></h5>
+        </div>
+        <div class="col text-right">
+          <h5><%= progress_monitorable_status_component(export_job) %></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p>Source: <%= link_to export_job.source_url, export_job.source_url %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

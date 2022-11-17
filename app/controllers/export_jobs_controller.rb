@@ -16,11 +16,12 @@ class ExportJobsController < ApplicationController
 
   # DELETE /export_jobs/:id
   def destroy
-    unless @export_job.destroy
-      flash[:danger] = "Unable to delete export job: #{@export_job.errors.full_messages.join(', ')}"
-    end
+    @export_job.destroy
 
-    redirect_to export_jobs_path
+    respond_to do |format|
+      format.html { redirect_to export_jobs_path, notice: "Export job was deleted." }
+      format.turbo_stream
+    end
   end
 
   private

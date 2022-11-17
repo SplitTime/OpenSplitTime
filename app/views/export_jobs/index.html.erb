@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: User Reports - #{current_user.full_name}" %>
+  <% "OpenSplitTime: Export Jobs - #{current_user.full_name}" %>
 <% end %>
 
 <%= turbo_stream_from current_user %>
@@ -21,7 +21,7 @@
 </header>
 
 <article class="ost-article container">
-  <div id="user_exports">
-    <%= render partial: "user_export", collection: user_exports %>
+  <div id="export_jobs">
+    <%= render partial: "export_job", collection: export_jobs %>
   </div>
 </article>

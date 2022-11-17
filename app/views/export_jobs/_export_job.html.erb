@@ -5,7 +5,7 @@
         <div class="col-12 col-md-8">
           <h5 class="font-weight-bold">
             Filename: <%= export_job.file.filename.to_s.presence || "[No file]" %>
-            <% if export_job.user.exports_viewed_at.nil? || export_job.created_at > export_job.user.exports_viewed_at %>
+            <% if export_job.user.exports_viewed_at.nil? || export_job.updated_at > export_job.user.exports_viewed_at %>
               <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
             <% end %>
           </h5>

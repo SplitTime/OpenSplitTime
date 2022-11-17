@@ -4,7 +4,6 @@ class CourseGroupBestEffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :set_course_group
   before_action :set_organization
-  after_action :verify_authorized, except: [:index]
 
   # GET /organizations/:organization_id/course_groups/:course_group_id/best_efforts
   def index
@@ -22,8 +21,6 @@ class CourseGroupBestEffortsController < ApplicationController
 
   # POST /organizations/:organization_id/course_groups/:course_group_id/best_efforts/export_async
   def export_async
-    authorize @organization
-
     @presenter = ::CourseGroupBestEffortsDisplay.new(@course_group, view_context)
     uri = URI(request.referrer)
     source_url = [uri.path, uri.query].compact.join("?")

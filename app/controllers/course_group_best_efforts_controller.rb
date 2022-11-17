@@ -26,7 +26,7 @@ class CourseGroupBestEffortsController < ApplicationController
 
     @presenter = ::CourseGroupBestEffortsDisplay.new(@course_group, view_context)
     uri = URI(request.referrer)
-    source_url = [uri.path, uri.query].join("?")
+    source_url = [uri.path, uri.query].compact.join("?")
     sql_string = @presenter.filtered_segments_unpaginated.finish_count_subquery.to_sql
 
     export_job = current_user.export_jobs.new(

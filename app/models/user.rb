@@ -16,7 +16,7 @@ class User < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name
   friendly_id :slug_candidates, use: [:slugged, :history]
-  has_paper_trail
+  has_paper_trail ignore: [:exports_viewed_at]
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :subscribable, source_type: "Person"

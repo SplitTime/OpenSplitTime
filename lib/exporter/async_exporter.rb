@@ -13,7 +13,6 @@ module Exporter
     def initialize(export_job)
       @export_job = export_job
       @errors = []
-      validate_setup
     end
 
     def export!
@@ -30,6 +29,7 @@ module Exporter
     delegate :file, :controller_name, :resource_class_name, :sql_string, to: :export_job
 
     def export_file
+      export_job.set_elapsed_time!
       resource_class = resource_class_name.constantize
       params_class = "#{resource_class_name}Parameters".constantize
 
@@ -52,15 +52,12 @@ module Exporter
     end
 
     def set_finish_attributes
+      export_job.set_elapsed_time!
       if errors.empty?
         export_job.update(status: :finished)
       else
         export_job.update(status: :failed, error_message: errors.to_json)
       end
-    end
-
-    def validate_setup
-      # errors << missing_parent_error(parent_type) unless parent.present?
     end
   end
 end

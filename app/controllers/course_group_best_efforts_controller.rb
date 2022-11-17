@@ -25,7 +25,8 @@ class CourseGroupBestEffortsController < ApplicationController
     authorize @organization
 
     @presenter = ::CourseGroupBestEffortsDisplay.new(@course_group, view_context)
-    source_url = URI(request.referrer).path
+    uri = URI(request.referrer)
+    source_url = [uri.path, uri.query].join("?")
     sql_string = @presenter.filtered_segments_unpaginated.finish_count_subquery.to_sql
 
     export_job = current_user.export_jobs.new(

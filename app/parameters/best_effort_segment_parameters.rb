@@ -14,6 +14,7 @@ class BestEffortSegmentParameters < BaseParameters
       country_code
       course_name
       year
+      place
       elapsed_time
       finish_count
     ]

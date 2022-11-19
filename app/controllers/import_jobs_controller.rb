@@ -1,17 +1,15 @@
 class ImportJobsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user
   before_action :set_import_job, only: [:show, :destroy]
-  after_action :verify_authorized
+  after_action :verify_authorized, only: [:new, :create]
 
   # GET /import_jobs
   def index
-    authorize ::ImportJob
+    render locals: { import_jobs: current_user.import_jobs.most_recent_first.with_attached_file }
   end
 
   # GET /import_jobs/:id
   def show
-    authorize @import_job
   end
 
   # GET /import_jobs/new
@@ -48,8 +46,6 @@ class ImportJobsController < ApplicationController
 
   # DELETE /import_jobs/:id
   def destroy
-    authorize @import_job
-
     unless @import_job.destroy
       flash[:danger] = "Unable to delete import job: #{@import_job.errors.full_messages.join(', ')}"
     end
@@ -60,14 +56,6 @@ class ImportJobsController < ApplicationController
   private
 
   def set_import_job
-    @import_job = policy_scope(::ImportJob).find(params[:id])
-  end
-
-  def set_user
-    @user = if current_user.admin?
-              params[:user_id].present? ? ::User.find_by(id: params[:user_id]) : current_user
-            else
-              current_user
-            end
+    @import_job = current_user.import_jobs.find(params[:id])
   end
 end

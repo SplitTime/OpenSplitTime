@@ -10,5 +10,12 @@ module DatabaseRankable
       order_string = attributes.join(", ")
       select("*, row_number() over (order by #{order_string}) as overall_rank, row_number() over (partition by gender order by #{order_string}) as gender_rank")
     }
+
+    scope :with_overall_gender_and_event_rank, lambda { |*attributes|
+      raise ArgumentError, "One or more ranking attributes must be provided" unless attributes.present?
+
+      order_string = attributes.join(", ")
+      select("*, row_number() over (order by #{order_string}) as overall_rank, row_number() over (partition by gender order by #{order_string}) as gender_rank, row_number() over (partition by event_id order by #{order_string}) as event_rank")
+    }
   end
 end

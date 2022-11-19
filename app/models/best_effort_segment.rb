@@ -9,6 +9,7 @@ class BestEffortSegment < ::ApplicationRecord
   belongs_to :course
   belongs_to :effort
 
+  alias_attribute :place, :event_rank
   zonable_attribute :begin_time
 
   scope :for_courses, -> (courses) { where(course_id: courses) }

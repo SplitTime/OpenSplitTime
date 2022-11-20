@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_20_175747) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_20_221938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -729,13 +729,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_175747) do
        JOIN courses c ON ((c.id = ev.course_id)));
   SQL
   create_view "course_group_finishers", sql_definition: <<-SQL
-      SELECT p.id AS person_id,
+      SELECT ((cg.id || ':'::text) || p.id) AS id,
+      p.id AS person_id,
       p.first_name,
       p.last_name,
       p.gender,
       p.city,
       p.state_code,
       p.country_code,
+      p.state_name,
+      p.country_name,
       p.slug,
       cg.id AS course_group_id,
       count(e.id) AS finish_count

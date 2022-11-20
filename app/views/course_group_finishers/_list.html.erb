@@ -1,0 +1,27 @@
+<div data-controller="infinite-scroll"
+     data-infinite-scroll-next-page-url="<%= presenter.next_page_url %>"
+     data-infinite-scroll-html-template="course_group_best_efforts/best_effort_segment">
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>From</th>
+      <th class="text-center">Finish Count</th>
+    </tr>
+    </thead>
+    <tbody data-infinite-scroll-target="result">
+    <%= render partial: "course_group_finisher", collection: @presenter.filtered_finishers %>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col text-center" data-infinite-scroll-target="link">
+      <% if @presenter.filtered_finishers_count == @presenter.per_page %>
+        <%= link_to "Show More", "#", data: { action: "infinite-scroll#loadFromClick" } %>
+      <% else %>
+        <p>End of List</p>
+      <% end %>
+    </div>
+  </div>
+</div>

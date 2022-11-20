@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_19_030323) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_20_175747) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -727,5 +727,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_19_030323) do
        JOIN events ev ON ((ev.id = e.event_id)))
        JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
        JOIN courses c ON ((c.id = ev.course_id)));
+  SQL
+  create_view "course_group_finishers", sql_definition: <<-SQL
+      SELECT p.id AS person_id,
+      p.first_name,
+      p.last_name,
+      p.gender,
+      p.city,
+      p.state_code,
+      p.country_code,
+      p.slug,
+      cg.id AS course_group_id,
+      count(e.id) AS finish_count
+     FROM (((((course_groups cg
+       JOIN course_group_courses cgc ON ((cgc.course_group_id = cg.id)))
+       JOIN courses c ON ((c.id = cgc.course_id)))
+       JOIN events e ON ((e.course_id = c.id)))
+       JOIN efforts ef ON ((ef.event_id = e.id)))
+       JOIN people p ON ((ef.person_id = p.id)))
+    WHERE (ef.finished = true)
+    GROUP BY cg.id, p.id;
   SQL
 end

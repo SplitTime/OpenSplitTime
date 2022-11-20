@@ -1,0 +1,59 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Course group finishers - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.name, "Finishers"].compact.join(': ') %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item"><%= link_to "Course Groups", organization_path(@presenter.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.name, organization_course_group_path(@presenter.organization, @presenter.course_group) %></li>
+            <li class="breadcrumb-item active">Finishers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-7">
+        <% if @presenter.all_finishers_count.positive? %>
+          <%= render "lookup", presenter: @presenter %>
+        <% end %>
+      </div>
+      <div class="col-12 col-sm-5 text-right">
+        <% if user_signed_in? %>
+          <%= link_to_course_group_finishers_export_async(@presenter) %>
+        <% end %>
+        <%= gender_dropdown_menu(@presenter) %>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <% if @presenter.all_finishers_count.positive? %>
+    <h5>
+      <%= "Searched #{pluralize(@presenter.events_count, 'event')}
+      from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
+    </h5>
+
+    <% if @presenter.filtered_finishers_count.positive? %>
+      <%= render "list", presenter: @presenter %>
+    <% elsif params[:search].present? && params[:search].length < 3 %>
+      <h4>Search parameter is too short</h4>
+    <% else %>
+      <h4>No finishers match this search</h4>
+    <% end %>
+  <% else %>
+    <h4>This course group has no finishers.</h4>
+  <% end %>
+</article>

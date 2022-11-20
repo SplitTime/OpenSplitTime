@@ -160,6 +160,9 @@ Rails.application.routes.draw do
       resources :best_efforts, only: [:index], controller: "course_group_best_efforts" do
         collection { post :export_async }
       end
+      resources :finishers, only: [:index], controller: "course_group_finishers" do
+        collection { post :export_async }
+      end
     end
 
     resources :event_groups, except: [:index, :show]

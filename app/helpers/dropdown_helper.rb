@@ -200,16 +200,24 @@ module DropdownHelper
     ]
 
     view_object.course_groups.each do |course_group|
+      item = { role: :separator }
+      dropdown_items << item
+
       item = { name: "All-time best (#{course_group.name})",
                link: organization_course_group_best_efforts_path(view_object.organization, course_group) }
       dropdown_items << item
+
+      item = { name: "All finishers (#{course_group.name})",
+               link: organization_course_group_finishers_path(view_object.organization, course_group) }
+      dropdown_items << item
     end
 
-    dropdown_items += [{ role: :separator },
-     { name: "Plan my effort",
-       link: plan_effort_course_path(view_object.course) },
-     { name: "Cutoff analysis",
-       link: cutoff_analysis_course_path(view_object.course) },
+    dropdown_items += [
+      { role: :separator },
+      { name: "Plan my effort",
+        link: plan_effort_course_path(view_object.course) },
+      { name: "Cutoff analysis",
+        link: cutoff_analysis_course_path(view_object.course) },
     ]
     build_dropdown_menu("Explore", dropdown_items, button: true)
   end

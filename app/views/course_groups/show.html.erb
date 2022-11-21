@@ -28,8 +28,11 @@
     <div class="row">
       <div class="form-inline">
         <div>
-          <%= link_to "All-time Finishers",
+          <%= link_to "All-time best",
                       organization_course_group_best_efforts_path(@presenter.organization, @presenter.course_group),
+                      class: "btn btn-primary" %>
+          <%= link_to "All finishers",
+                      organization_course_group_finishers_path(@presenter.organization, @presenter.course_group),
                       class: "btn btn-primary" %>
           <% if current_user&.authorized_to_edit?(@presenter.course_group) %>
             <%= course_group_actions_dropdown_menu(@presenter) %>

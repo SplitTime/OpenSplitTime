@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CourseGroupFinishersDisplay < BasePresenter
+  DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
   DEFAULT_PER_PAGE = 50
   FIRST_PAGE = 1
 
@@ -24,7 +25,7 @@ class CourseGroupFinishersDisplay < BasePresenter
 
   def filtered_finishers_unpaginated
     all_finishers.where(filter_hash).search(search_text)
-                 .order(:finish_count, :last_name)
+                 .order(sort_hash.presence || DEFAULT_ORDER)
   end
 
   def filtered_finishers_count

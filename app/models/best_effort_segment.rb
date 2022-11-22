@@ -8,6 +8,7 @@ class BestEffortSegment < ::ApplicationRecord
   enum gender: [:male, :female]
   belongs_to :course
   belongs_to :effort
+  belongs_to :person
 
   alias_attribute :place, :event_rank
   zonable_attribute :begin_time

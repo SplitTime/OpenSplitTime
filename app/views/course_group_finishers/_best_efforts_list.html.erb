@@ -1,0 +1,22 @@
+<table class="table table-condensed table-striped">
+  <thead>
+  <tr>
+    <th>
+      Overall/<br>Gender
+    </th>
+    <th>Course</th>
+    <th class="text-center">Year</th>
+    <th class="text-center">Place</th>
+    <th class="text-right">Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render partial: "best_effort_segment", collection: @presenter.course_group_best_efforts %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col text-center">
+    <p>End of List</p>
+  </div>
+</div>

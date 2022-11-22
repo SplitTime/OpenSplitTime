@@ -11,7 +11,9 @@
     </tr>
     </thead>
     <tbody data-infinite-scroll-target="result">
-    <%= render partial: "course_group_finisher", collection: @presenter.filtered_finishers %>
+    <%= render partial: "course_group_finisher",
+               collection: @presenter.filtered_finishers,
+               locals: { organization: @presenter.organization, course_group: @presenter.course_group } %>
     </tbody>
   </table>
 

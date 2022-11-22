@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CourseGroupFinishersController < ApplicationController
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_course_group
   before_action :set_organization
 
@@ -17,6 +17,12 @@ class CourseGroupFinishersController < ApplicationController
         render json: { course_group_finishers: finishers, html: html, links: { next: @presenter.next_page_url } }
       end
     end
+  end
+
+  # GET /organizations/:organization_id/course_groups/:course_group_id/finishers/:id
+  def show
+    course_group_finisher = ::CourseGroupFinisher.for_course_groups(@course_group).find_by!(slug: params[:id])
+    @presenter = ::CourseGroupFinisherPresenter.new(course_group_finisher)
   end
 
   # POST /organizations/:organization_id/course_groups/:course_group_id/finishers/export_async

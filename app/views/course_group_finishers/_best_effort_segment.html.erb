@@ -3,7 +3,7 @@
     <%= "#{best_effort_segment.overall_rank}/#{best_effort_segment.gender_rank}" %>
   </td>
   <td><%= best_effort_segment.course_name %></td>
-  <td class="text-center"><%= best_effort_segment.year_and_lap %></td>
+  <td class="text-center"><%= link_to best_effort_segment.year_and_lap, best_effort_segment.effort %></td>
   <td class="text-center"><%= best_effort_segment.place %></td>
   <td class="text-right"><%= best_effort_segment.elapsed_time %></td>
 </tr>

@@ -94,6 +94,6 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def ranked_segments
     ::BestEffortSegment.from(all_segments, :best_effort_segments)
-                       .with_overall_gender_and_event_rank(:elapsed_seconds)
+                       .with_overall_gender_age_and_event_rank
   end
 end

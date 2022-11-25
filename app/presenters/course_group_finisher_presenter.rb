@@ -12,10 +12,12 @@ class CourseGroupFinisherPresenter < ::SimpleDelegator
 
   def course_group_best_efforts
     @course_group_best_efforts ||=
-      ::BestEffortSegment.for_courses(course_group.courses)
-                         .where(person: course_group_finisher.person_id)
-                         .full_course
-                         .with_overall_gender_and_event_rank(:elapsed_seconds)
+      begin
+        efforts = ::BestEffortSegment.for_courses(course_group.courses)
+                                     .full_course
+                                     .with_overall_gender_age_and_event_rank
+        BestEffortSegment.from(efforts, :best_effort_segments).where(person: course_group_finisher.person_id)
+      end
   end
 
   def organization_name

@@ -24,6 +24,15 @@ class BestEffortSegment < ::ApplicationRecord
   }
   scope :finish_count_subquery, -> { from(::BestEffortSegmentQuery.finish_count_subquery(self)) }
 
+  scope :with_overall_gender_age_and_event_rank, lambda {
+    select("*, rank() over (order by elapsed_seconds) as overall_rank, rank() over (partition by gender order by elapsed_seconds) as gender_rank, rank() over (partition by age_group order by elapsed_seconds) as age_group_rank, rank() over (partition by event_id order by elapsed_seconds) as event_rank")
+  }
+
+  def age_group
+    base_age = age / 10 * 10
+    "#{gender[0].upcase}#{base_age}-#{base_age + 9}"
+  end
+
   def elapsed_time
     ::TimeConversion.seconds_to_hms(elapsed_seconds)
   end

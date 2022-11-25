@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_20_221938) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_25_061107) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -694,40 +694,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_221938) do
   SQL
 
 
-  create_view "best_effort_segments", sql_definition: <<-SQL
-      SELECT es.effort_id,
-      e.event_id,
-      e.first_name,
-      e.last_name,
-      e.bib_number,
-      e.city,
-      e.state_code,
-      e.country_code,
-      e.age,
-      e.gender,
-      e.slug,
-      e.person_id,
-      es.begin_split_id,
-      es.begin_bitkey,
-      es.begin_split_kind,
-      es.end_split_id,
-      es.end_bitkey,
-      es.end_split_kind,
-      es.lap,
-      es.begin_time,
-      es.elapsed_seconds,
-      eg.home_time_zone,
-      es.course_id,
-      (ev.laps_required <> 1) AS multiple_laps,
-      (e.completed_laps >= ev.laps_required) AS finished,
-      ((es.begin_split_kind = 0) AND (es.end_split_kind = 1)) AS full_course,
-      c.name AS course_name
-     FROM ((((efforts e
-       JOIN effort_segments es ON ((es.effort_id = e.id)))
-       JOIN events ev ON ((ev.id = e.event_id)))
-       JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
-       JOIN courses c ON ((c.id = ev.course_id)));
-  SQL
   create_view "course_group_finishers", sql_definition: <<-SQL
       SELECT ((cg.id || ':'::text) || p.id) AS id,
       p.id AS person_id,
@@ -750,5 +716,40 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_20_221938) do
        JOIN people p ON ((ef.person_id = p.id)))
     WHERE (ef.finished = true)
     GROUP BY cg.id, p.id;
+  SQL
+  create_view "best_effort_segments", sql_definition: <<-SQL
+      SELECT es.effort_id,
+      e.event_id,
+      e.first_name,
+      e.last_name,
+      e.bib_number,
+      e.city,
+      e.state_code,
+      e.country_code,
+      e.age,
+      e.gender,
+      e.slug,
+      e.person_id,
+      concat(e.gender, ':', ((e.age / 10) * 10)) AS age_group,
+      es.begin_split_id,
+      es.begin_bitkey,
+      es.begin_split_kind,
+      es.end_split_id,
+      es.end_bitkey,
+      es.end_split_kind,
+      es.lap,
+      es.begin_time,
+      es.elapsed_seconds,
+      eg.home_time_zone,
+      es.course_id,
+      (ev.laps_required <> 1) AS multiple_laps,
+      (e.completed_laps >= ev.laps_required) AS finished,
+      ((es.begin_split_kind = 0) AND (es.end_split_kind = 1)) AS full_course,
+      c.name AS course_name
+     FROM ((((efforts e
+       JOIN effort_segments es ON ((es.effort_id = e.id)))
+       JOIN events ev ON ((ev.id = e.event_id)))
+       JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
+       JOIN courses c ON ((c.id = ev.course_id)));
   SQL
 end

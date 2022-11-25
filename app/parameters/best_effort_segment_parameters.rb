@@ -9,6 +9,8 @@ class BestEffortSegmentParameters < BaseParameters
       last_name
       gender
       age
+      age_group
+      age_group_rank
       city
       state_code
       country_code

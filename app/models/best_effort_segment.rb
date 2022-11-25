@@ -29,6 +29,8 @@ class BestEffortSegment < ::ApplicationRecord
   }
 
   def age_group
+    return unless age.present? && gender.present?
+
     base_age = age / 10 * 10
     "#{gender[0].upcase}#{base_age}-#{base_age + 9}"
   end

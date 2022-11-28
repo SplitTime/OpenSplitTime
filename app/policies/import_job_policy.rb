@@ -30,14 +30,14 @@ class ImportJobPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin? || user.owner_of?(parent_resource)
+    user.admin? || user.owner_of?(parent_resource) || user.authorized_for_lotteries?(parent_resource)
   end
 
   def create?
-    user.admin? || user.owner_of?(parent_resource)
+    new?
   end
 
   def destroy?
-    user.admin? || user.owner_of?(import_job)
+    new?
   end
 end

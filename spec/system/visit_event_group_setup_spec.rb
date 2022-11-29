@@ -22,51 +22,86 @@ RSpec.describe "Visit an event group setup page and try various features", type:
   let(:outside_event_1) { outside_event_group.events.first }
   let(:outside_event_2) { outside_event_group.events.second }
 
-
   context "The event group is visible" do
-    scenario "The user is a visitor" do
-      visit setup_event_group_path(event_group)
+    context "The event group has events" do
+      scenario "The user is a visitor" do
+        visit setup_event_group_path(event_group)
 
-      expect(page).to have_current_path(root_path)
-      verify_alert("You need to sign in or sign up before continuing")
+        expect(page).to have_current_path(root_path)
+        verify_alert("You need to sign in or sign up before continuing")
+      end
+
+      scenario "The user is not the owner and not a steward" do
+        login_as user, scope: :user
+        visit setup_event_group_path(event_group)
+
+        expect(page).to have_current_path(root_path)
+        verify_alert("Access denied")
+      end
+
+      scenario "The user owns the organization" do
+        login_as owner, scope: :user
+        visit setup_event_group_path(event_group)
+
+        verify_public_links_present
+        verify_steward_links_present
+        verify_admin_links_present
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_roster
+      end
+
+      scenario "The user is a steward of the organization" do
+        login_as steward, scope: :user
+        visit setup_event_group_path(event_group)
+
+        verify_public_links_present
+        verify_steward_links_present
+        verify_admin_links_absent
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_roster
+      end
+
+      scenario "The user is an admin user" do
+        login_as admin, scope: :user
+        visit setup_event_group_path(event_group)
+
+        verify_public_links_present
+        verify_steward_links_present
+        verify_admin_links_present
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_roster
+      end
     end
 
-    scenario "The user is not the owner and not a steward" do
-      login_as user, scope: :user
-      visit setup_event_group_path(event_group)
+    context "The event group has no events" do
+      before { event_group.events.each(&:destroy) }
 
-      expect(page).to have_current_path(root_path)
-      verify_alert("Access denied")
-    end
+      scenario "The user owns the organization" do
+        login_as owner, scope: :user
+        visit setup_event_group_path(event_group)
 
-    scenario "The user owns the organization" do
-      login_as owner, scope: :user
-      visit setup_event_group_path(event_group)
+        verify_admin_links_present
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_organization
+      end
 
-      verify_public_links_present
-      verify_steward_links_present
-      verify_admin_links_present
-      verify_outside_content_absent
-    end
+      scenario "The user is a steward of the organization" do
+        login_as steward, scope: :user
+        visit setup_event_group_path(event_group)
 
-    scenario "The user is a steward of the organization" do
-      login_as steward, scope: :user
-      visit setup_event_group_path(event_group)
+        verify_admin_links_absent
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_organization
+      end
 
-      verify_public_links_present
-      verify_steward_links_present
-      verify_admin_links_absent
-      verify_outside_content_absent
-    end
+      scenario "The user is an admin" do
+        login_as admin, scope: :user
+        visit setup_event_group_path(event_group)
 
-    scenario "The user is an admin user" do
-      login_as admin, scope: :user
-      visit setup_event_group_path(event_group)
-
-      verify_public_links_present
-      verify_steward_links_present
-      verify_admin_links_present
-      verify_outside_content_absent
+        verify_admin_links_present
+        verify_outside_content_absent
+        verify_monitor_mode_returns_to_organization
+      end
     end
   end
 
@@ -178,5 +213,17 @@ RSpec.describe "Visit an event group setup page and try various features", type:
 
   def verify_admin_links_present
     expect(page).to have_content("Group Actions")
+  end
+
+  def verify_monitor_mode_returns_to_roster
+    click_link "Return to monitor mode"
+    expect(page).not_to have_content("You are in Construction Mode")
+    expect(page).to have_content("Roster")
+  end
+
+  def verify_monitor_mode_returns_to_organization
+    click_link "Return to monitor mode"
+    expect(page).not_to have_content("You are in Construction Mode")
+    event_group.organization.event_groups.each { |event_group| expect(page).to have_content(event_group.name) }
   end
 end

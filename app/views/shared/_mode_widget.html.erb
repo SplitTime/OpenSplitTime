@@ -8,7 +8,7 @@
       </div>
       <div class="col text-right">
         <%= link_to "Return to monitor mode",
-                    event_group.persisted? ? roster_event_group_path(event_group) : organization_path(event_group.organization),
+                    event_group.persisted? && event_group.events.exists? ? roster_event_group_path(event_group) : organization_path(event_group.organization),
                     class: "btn btn-outline-light" %>
       </div>
     </div>

@@ -4,7 +4,7 @@ module LotterySimulations
   class Runner
     include ::Interactors::Errors
 
-    UPDATE_INTERVAL = 25
+    UPDATE_INTERVAL = 5
 
     # @param [::LotterySimulationRun] simulation_run
     # @return [Integer]

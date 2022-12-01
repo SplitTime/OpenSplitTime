@@ -5,7 +5,8 @@ class LotteryPresenter < BasePresenter
 
   attr_reader :lottery, :params, :action_name
 
-  delegate :concealed?, :divisions, :name, :organization, :scheduled_start_date, :status, :to_param, to: :lottery
+  delegate :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
+           :tickets, :to_param, to: :lottery
   delegate :draws, :entrants, :tickets, to: :lottery, prefix: true
 
   def initialize(lottery, view_context)
@@ -18,7 +19,7 @@ class LotteryPresenter < BasePresenter
   end
 
   def ordered_divisions
-    divisions.ordered_by_name
+    @ordered_divisions ||= divisions.ordered_by_name
   end
 
   def lottery_draws_ordered

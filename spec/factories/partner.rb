@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :partner do
-    event_group
     sequence(:name) { |n| "Partner #{n}" }
 
     trait :with_banner do

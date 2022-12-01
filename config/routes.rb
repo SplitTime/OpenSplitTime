@@ -95,6 +95,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show]
+    resources :partners, except: [:index, :show], module: "event_groups"
 
     member do
       get :assign_bibs
@@ -183,6 +184,7 @@ Rails.application.routes.draw do
         member { post :draw }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
+      resources :partners, except: [:index, :show], module: "lotteries"
     end
   end
 
@@ -194,7 +196,6 @@ Rails.application.routes.draw do
     member { put :combine }
   end
 
-  resources :partners
   resources :raw_times, only: [:update, :destroy]
 
   resources :results_templates, only: [] do

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module PartnersHelper
-  def link_to_partner_delete(partner)
-    url = partner_path(partner)
+  def link_to_event_group_partner_delete(partner)
+    url = event_group_partner_path(partner.partnerable, partner)
     tooltip = "Delete partner"
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Continue?",
@@ -13,8 +13,8 @@ module PartnersHelper
     link_to fa_icon("trash"), url, options
   end
 
-  def link_to_partner_edit(partner)
-    url = edit_partner_path(partner)
+  def link_to_event_group_partner_edit(partner)
+    url = edit_event_group_partner_path(partner.partnerable, partner)
     tooltip = "Edit partner"
     options = {data: {toggle: :tooltip,
                       placement: :bottom,

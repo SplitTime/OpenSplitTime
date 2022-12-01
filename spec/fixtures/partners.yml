@@ -7,6 +7,8 @@ partner_5:
   updated_at: 2018-06-10 11:31:53.304523000 Z
   name: Black Diamond Equipment
   event_group_id: 27
+  partnerable_id: 27
+  partnerable_type: "EventGroup"
 partner_6:
   id: 6
   banner_link: blackdiamondequipment.com
@@ -15,3 +17,5 @@ partner_6:
   updated_at: 2018-06-11 10:24:00.962529000 Z
   name: BD
   event_group_id: 32
+  partnerable_id: 32
+  partnerable_type: "EventGroup"

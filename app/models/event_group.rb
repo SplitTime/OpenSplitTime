@@ -20,7 +20,7 @@ class EventGroup < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :efforts, through: :events
   has_many :raw_times, dependent: :destroy
-  has_many :partners
+  has_many :partners, as: :partnerable
   belongs_to :organization
 
   has_many_attached :entrant_photos do |photo|

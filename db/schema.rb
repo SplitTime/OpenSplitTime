@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_25_061107) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_01_140124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -402,6 +402,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_061107) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "name", null: false
     t.bigint "event_group_id", null: false
+    t.string "partnerable_type"
+    t.integer "partnerable_id"
     t.index ["event_group_id"], name: "index_partners_on_event_group_id"
   end
 

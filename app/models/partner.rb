@@ -2,6 +2,7 @@
 
 class Partner < ApplicationRecord
   belongs_to :event_group
+  belongs_to :partnerable, polymorphic: true
   scope :with_banners, -> { joins(:banner_attachment).where.not(banner_link: nil) }
 
   strip_attributes collapse_spaces: true

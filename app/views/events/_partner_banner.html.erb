@@ -1,12 +1,10 @@
 <div class="row header">
-  <div class="col-md-6 partner-ad">
-    <a href="<%= url_with_protocol(partner.banner_link) %>" target="_blank">
-      <img src="<%= partner.banner.variant(:banner_large) if partner.banner.attached? %>">
-    </a>
-  </div>
-  <div class="col-md-6">
-    <div class="text-muted text-right">
-      <%= "All partner proceeds for this event benefit #{organization_name}." %>
+  <div class="col text-center">
+    <div>
+      <%= link_to image_tag(partner.banner.variant(:banner_large)), url_with_protocol(partner.banner_link), target: "_blank" %>
+    </div>
+    <div class="font-size-small text-muted text-center mb-2">
+      <%= "All partner proceeds for this event benefit #{organization_name}" %>
     </div>
   </div>
 </div>

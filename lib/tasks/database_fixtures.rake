@@ -12,6 +12,7 @@ namespace :db do
       ar_internal_metadata
       delayed_jobs
       effort_segments
+      export_jobs
       friendly_id_slugs
       import_jobs
       locations
@@ -78,6 +79,7 @@ namespace :db do
       ar_internal_metadata
       delayed_jobs
       effort_segments
+      export_jobs
       friendly_id_slugs
       import_jobs
       locations

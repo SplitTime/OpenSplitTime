@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <%= link_to fa_icon("plus", text: "Add a partner"), new_partner_path(event_group_id: presenter.event_group.id), id: "add-partner", class: "btn btn-success" %>
+        <%= link_to fa_icon("plus", text: "Add a partner"), new_event_group_partner_path(presenter.event_group), id: "add-partner", class: "btn btn-success" %>
       </div>
     </div>
   </div>
@@ -29,8 +29,8 @@
         <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: "_blank" if partner.banner_link %></td>
         <td><%= partner.weight %></td>
         <td>
-          <%= link_to_partner_edit(partner) %>
-          <%= link_to_partner_delete(partner) %>
+          <%= link_to_event_group_partner_edit(partner) %>
+          <%= link_to_event_group_partner_delete(partner) %>
         </td>
       </tr>
     <% end %>

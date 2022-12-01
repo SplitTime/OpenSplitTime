@@ -12,19 +12,23 @@ class PartnerPolicy < ApplicationPolicy
     @partner = partner
   end
 
+  def new?
+    user.authorized_to_edit?(partner.partnerable) || user.authorized_for_lotteries?(partner.partnerable)
+  end
+
   def create?
-    user.authorized_to_edit?(partner.event_group)
+    new?
   end
 
   def edit?
-    user.authorized_to_edit?(partner.event_group)
+    new?
   end
 
   def update?
-    user.authorized_to_edit?(partner.event_group)
+    new?
   end
 
   def destroy?
-    user.authorized_to_edit?(partner.event_group)
+    new?
   end
 end

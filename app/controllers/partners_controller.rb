@@ -1,13 +1,13 @@
+# frozen_string_literal: true
+
 class PartnersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_partner, except: [:index, :new, :create]
+  before_action :set_partner, except: [:new, :create]
+  before_action :set_partnerable
   after_action :verify_authorized
 
-  def show
-  end
-
   def new
-    @partner = Partner.new(event_group_id: params[:event_group_id])
+    @partner = @partnerable.partners.new
     authorize @partner
   end
 
@@ -16,11 +16,11 @@ class PartnersController < ApplicationController
   end
 
   def create
-    @partner = Partner.new(permitted_params)
+    @partner = @partnerable.partners.new(permitted_params)
     authorize @partner
 
     if @partner.save
-      redirect_to partner_event_group_path
+      redirect_to partnerable_path
     else
       render "new", status: :unprocessable_entity
     end
@@ -30,7 +30,7 @@ class PartnersController < ApplicationController
     authorize @partner
 
     if @partner.update(permitted_params)
-      redirect_to partner_event_group_path
+      redirect_to partnerable_path
     else
       render "edit", status: :unprocessable_entity
     end
@@ -38,18 +38,23 @@ class PartnersController < ApplicationController
 
   def destroy
     authorize @partner
+
     @partner.destroy
     flash[:success] = "Partner deleted."
-    redirect_to partner_event_group_path
+    redirect_to partnerable_path
   end
 
   private
 
-  def partner_event_group_path
-    setup_event_group_path(@partner.event_group, display_style: :partners)
+  def partnerable_path
+    raise NotImplementedError, "partnerable_path must be implemented"
+  end
+
+  def set_partnerable
+    raise NotImplementedError, "set_partnerable must be implemented"
   end
 
   def set_partner
-    @partner = Partner.find(params[:id])
+    @partner = ::Partner.find(params[:id])
   end
 end

@@ -17,16 +17,46 @@ RSpec.describe LotterySimulations::Runner do
       let(:expected_results) do
         {
           "Elses" => {
-            "accepted" => {"male" => anything, "female" => anything},
-            "wait_list" => {"male" => anything, "female" => anything},
+            "accepted" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
+            "wait_list" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
           },
           "Never Ever Evers" => {
-            "accepted" => {"male" => anything, "female" => anything},
-            "wait_list" => {"male" => anything, "female" => anything},
+            "accepted" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
+            "wait_list" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
           },
           "Veterans" => {
-            "accepted" => {"male" => anything, "female" => anything},
-            "wait_list" => {"male" => anything, "female" => anything},
+            "accepted" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
+            "wait_list" => {
+              "male" => anything,
+              "male_entrant_ids" => anything,
+              "female" => anything,
+              "female_entrant_ids" => anything,
+            },
           },
         }
       end
@@ -42,8 +72,8 @@ RSpec.describe LotterySimulations::Runner do
           # Mysteriously, expect(simulation.results).to eq(expected_results) does not work here
           lottery.divisions.each do |division|
             expect(simulation.results[division.name].keys).to eq(expected_results[division.name].keys)
-            expect(simulation.results.dig(division.name, "accepted").keys).to eq(expected_results.dig(division.name, "accepted").keys)
-            expect(simulation.results.dig(division.name, "wait_list").keys).to eq(expected_results.dig(division.name, "wait_list").keys)
+            expect(simulation.results.dig(division.name, "accepted").keys).to match_array(expected_results.dig(division.name, "accepted").keys)
+            expect(simulation.results.dig(division.name, "wait_list").keys).to match_array(expected_results.dig(division.name, "wait_list").keys)
           end
         end
       end

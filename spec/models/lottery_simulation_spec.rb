@@ -16,16 +16,46 @@ RSpec.describe LotterySimulation, type: :model do
         let(:expected_results) do
           {
             "Elses" => {
-              "accepted" => {"male" => 0, "female" => 2},
-              "wait_list" => {"male" => 0, "female" => 0},
+              "accepted" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 2,
+                "female_entrant_ids" => [27, 24],
+              },
+              "wait_list" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
             },
             "Never Ever Evers" => {
-              "accepted" => {"male" => 1, "female" => 2},
-              "wait_list" => {"male" => 1, "female" => 1},
+              "accepted" => {
+                "male" => 1,
+                "male_entrant_ids" => [9],
+                "female" => 2,
+                "female_entrant_ids" => [13, 7],
+              },
+              "wait_list" => {
+                "male" => 1,
+                "male_entrant_ids" => [4],
+                "female" => 1,
+                "female_entrant_ids" => [11],
+              },
             },
             "Veterans" => {
-              "accepted" => {"male" => 0, "female" => 0},
-              "wait_list" => {"male" => 0, "female" => 0},
+              "accepted" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
+              "wait_list" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => []
+              },
             },
           }
         end
@@ -46,16 +76,46 @@ RSpec.describe LotterySimulation, type: :model do
         let(:expected_results) do
           {
             "Elses" => {
-              "accepted" => {"male" => 0, "female" => 0},
-              "wait_list" => {"male" => 0, "female" => 0},
+              "accepted" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
+              "wait_list" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
             },
             "Never Ever Evers" => {
-              "accepted" => {"male" => 0, "female" => 0},
-              "wait_list" => {"male" => 0, "female" => 0},
+              "accepted" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
+              "wait_list" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
             },
             "Veterans" => {
-              "accepted" => {"male" => 0, "female" => 0},
-              "wait_list" => {"male" => 0, "female" => 0},
+              "accepted" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => [],
+              },
+              "wait_list" => {
+                "male" => 0,
+                "male_entrant_ids" => [],
+                "female" => 0,
+                "female_entrant_ids" => []
+              },
             },
           }
         end

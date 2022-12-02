@@ -11,6 +11,7 @@ class Lottery < ApplicationRecord
   has_many :entrants, through: :divisions
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :draws, class_name: "LotteryDraw", dependent: :destroy
+  has_many :partners, as: :partnerable
   has_many :simulation_runs, class_name: "LotterySimulationRun", dependent: :destroy
 
   strip_attributes collapse_spaces: true
@@ -89,5 +90,9 @@ class Lottery < ApplicationRecord
 
     ticket_hashes = generate_ticket_hashes(beginning_reference_number: beginning_reference_number)
     LotteryTicket.insert_all(ticket_hashes)
+  end
+
+  def pick_partner_with_banner
+    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.sample
   end
 end

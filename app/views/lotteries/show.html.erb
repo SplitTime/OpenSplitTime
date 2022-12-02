@@ -55,7 +55,9 @@
 <article class="ost-article container">
   <% case @presenter.display_style %>
   <% when "entrants" %>
-    <h4 class="mt-5"><strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></small></h4>
+    <h4 class="mt-5">
+      <strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></small>
+    </h4>
     <hr/>
     <aside class="ost-toolbar">
       <div class="container">
@@ -79,7 +81,7 @@
         <div class="row">
           <div class="col text-center" data-infinite-scroll-target="link">
             <% if @presenter.next_page_url.present? %>
-              <%= link_to "Show More", @presenter.next_page_url, data: {action: "infinite-scroll#loadFromClick"} %>
+              <%= link_to "Show More", @presenter.next_page_url, data: { action: "infinite-scroll#loadFromClick" } %>
             <% else %>
               <p>End of List</p>
             <% end %>
@@ -165,3 +167,7 @@
     <% end %>
   <% end %>
 </article>
+
+<% if @presenter.show_partner_banners? %>
+  <%= render "partner_banner", partner: @presenter.partner_with_banner %>
+<% end %>

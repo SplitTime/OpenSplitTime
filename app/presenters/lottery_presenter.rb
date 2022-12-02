@@ -82,6 +82,14 @@ class LotteryPresenter < BasePresenter
     end
   end
 
+  def partner_with_banner
+    @partner_with_banner ||= lottery.pick_partner_with_banner
+  end
+
+  def show_partner_banners?
+    lottery.live? && partner_with_banner.present?
+  end
+
   def tickets_not_generated?
     @tickets_not_generated ||= lottery_tickets.empty?
   end

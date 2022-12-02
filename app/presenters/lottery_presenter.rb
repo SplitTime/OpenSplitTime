@@ -110,5 +110,6 @@ class LotteryPresenter < BasePresenter
     lottery_entrants
       .includes(division: {lottery: :organization})
       .search(search_text)
+      .order(:last_name)
   end
 end

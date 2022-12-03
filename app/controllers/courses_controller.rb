@@ -64,8 +64,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.destroy
-      flash[:success] = "Course deleted."
-      redirect_to organizations_path
+      redirect_to organization_courses_path(@organization), notice: "Course deleted"
     else
       flash[:danger] = @course.errors.full_messages.join("\n")
       redirect_to organization_course_path(@organization, @course)

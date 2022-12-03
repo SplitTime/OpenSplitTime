@@ -6,14 +6,19 @@ class PartnerPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :partner
+  attr_reader :organization
 
-  def post_initialize(partner)
-    @partner = partner
+  def post_initialize(organization)
+    verify_authorization_was_delegated(organization, ::Partner)
+    @organization = organization
+  end
+
+  def index?
+    user.authorized_to_edit?(organization) || user.authorized_for_lotteries?(organization)
   end
 
   def new?
-    user.authorized_to_edit?(partner.partnerable) || user.authorized_for_lotteries?(partner.partnerable)
+    index?
   end
 
   def create?

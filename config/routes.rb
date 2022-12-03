@@ -184,7 +184,7 @@ Rails.application.routes.draw do
         member { post :draw }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
-      resources :partners, except: [:index, :show], module: "lotteries"
+      resources :partners, except: [:show], module: "lotteries"
     end
   end
 

@@ -15,7 +15,7 @@
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @partnerable.organization.name, organization_path(@partnerable.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @partnerable.name, polymorphic_path(@partnerable) %></li>
+            <li class="breadcrumb-item"><%= link_to @partnerable.name, polymorphic_path([@partnerable.organization, @partnerable]) %></li>
             <li class="breadcrumb-item">Partners</li>
             <li class="breadcrumb-item">Edit</li>
           </ul>

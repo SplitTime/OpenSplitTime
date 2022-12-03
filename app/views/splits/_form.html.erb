@@ -95,7 +95,7 @@
           <% if @split.id %>
               [ <%= link_to 'Cancel', split_path(@split) %> ]
           <% elsif @split.course_id %>
-              [ <%= link_to 'Cancel', course_path(@split.course) %> ]
+              [ <%= link_to 'Cancel', organization_course_path(@split.course.organization, @split.course) %> ]
           <% else %>
               [ <%= link_to 'Cancel', courses_path %> ]
           <% end %>

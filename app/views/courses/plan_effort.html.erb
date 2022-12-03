@@ -4,19 +4,7 @@
 
 <header class="ost-header">
   <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong><%= [@presenter.course_name, "Plan My Effort"].compact.join(': ') %></strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.name, course_path(@presenter.course) %></li>
-            <li class="breadcrumb-item active">Plan My Effort</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+    <%= render partial: "course_heading", locals: { title: "Plan My Effort" } %>
     <%= course_view_tabs(@presenter) %>
   </div>
 </header>

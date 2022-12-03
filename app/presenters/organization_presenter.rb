@@ -6,11 +6,12 @@ class OrganizationPresenter < BasePresenter
   attr_reader :organization
 
   delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
+  delegate :controller_name, to: :view_context
 
-  def initialize(organization, params, current_user)
+  def initialize(organization, view_context)
     @organization = organization
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @params = view_context.prepared_params
   end
 
   def lotteries
@@ -58,7 +59,8 @@ class OrganizationPresenter < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :view_context, :params
+  delegate :current_user, to: :view_context, private: true
 
   def event_groups
     organization.event_groups.by_group_start_time.includes(:events)

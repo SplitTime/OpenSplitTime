@@ -67,7 +67,7 @@ RSpec.describe "Visit an organization lotteries page" do
   end
 
   def visit_page
-    visit organization_path(organization, display_style: :lotteries)
+    visit organization_lotteries_path(organization)
   end
 
   def verify_public_links_present

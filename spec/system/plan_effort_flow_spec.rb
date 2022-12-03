@@ -6,9 +6,10 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
   let(:user) { users(:third_user) }
   let(:admin) { users(:admin_user) }
   let(:course) { courses(:hardrock_ccw) }
+  let(:organization) { organizations(:hardrock) }
 
   scenario "The user is a visitor" do
-    visit plan_effort_course_path(course)
+    visit_page
     fill_in "hh:mm", with: "38:00"
     click_button "Create my plan"
 
@@ -18,7 +19,7 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
   scenario "The user is a user" do
     login_as user, scope: :user
 
-    visit plan_effort_course_path(course)
+    visit_page
     fill_in "hh:mm", with: "38:00"
     click_button "Create my plan"
 
@@ -28,7 +29,7 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
   scenario "The user is an admin" do
     login_as admin, scope: :user
 
-    visit plan_effort_course_path(course)
+    visit_page
     fill_in "hh:mm", with: "38:00"
     click_button "Create my plan"
 
@@ -36,7 +37,7 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
   end
 
   scenario "The user enters a time outside the normal scope" do
-    visit plan_effort_course_path(course)
+    visit_page
     fill_in "hh:mm", with: "18:00"
     click_button "Create my plan"
 
@@ -44,16 +45,23 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
     expect(page).to have_content("Insufficient data to create a plan.")
   end
 
-  scenario "The course has had no events held on it" do
-    course = create(:course)
-    visit plan_effort_course_path(course)
+  context "when a course has had no events held on it" do
+    let!(:course) { create(:course, organization: organization) }
 
-    verify_content_present(course)
-    expect(page).to have_content("No events have been held on this course.")
+    scenario "The user is a visitor" do
+      visit_page
+
+      verify_content_present(course)
+      expect(page).to have_content("No events have been held on this course.")
+    end
   end
 
   def verify_page_content
     verify_content_present(course)
     course.splits.each { |split| verify_content_present(split, :base_name) }
+  end
+
+  def visit_page
+    visit plan_effort_organization_course_path(organization, course)
   end
 end

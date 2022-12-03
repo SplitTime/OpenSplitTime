@@ -10,7 +10,7 @@
           <h1><strong>Edit Course - <%= @course.name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @course.name, course_path(@course) %></li>
+            <li class="breadcrumb-item"><%= link_to @course.name, organization_course_path(@course.organization, @course) %></li>
             <li class="breadcrumb-item active">Edit</li>
           </ul>
         </div>
@@ -22,7 +22,7 @@
 <article class="ost-article container">
   <%= render 'form' %>
   <hr>
-  <%= link_to_delete_resource('Delete this course', course_path(@course),
+  <%= link_to_delete_resource('Delete this course', organization_course_path(@course.organization, @course),
                               resource: @course,
                               noteworthy_associations: [:splits],
                               class: "btn btn-danger") %>

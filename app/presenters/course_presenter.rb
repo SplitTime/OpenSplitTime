@@ -2,8 +2,7 @@
 
 class CoursePresenter < BasePresenter
   attr_reader :course
-
-  delegate :id, :name, :description, :ordered_splits, :simple?, to: :course
+  delegate :id, :name, :description, :ordered_splits, :organization, :simple?, to: :course
 
   def initialize(course, params, current_user)
     @course = course
@@ -21,10 +20,6 @@ class CoursePresenter < BasePresenter
 
   def events
     @events ||= ::EventPolicy::Scope.new(current_user, course.events).viewable.order(scheduled_start_time: :desc).to_a
-  end
-
-  def organization
-    @organization ||= Organization.joins(event_groups: :events).where(events: {course_id: course.id}).first
   end
 
   def show_visibility_columns?

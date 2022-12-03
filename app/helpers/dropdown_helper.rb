@@ -196,7 +196,7 @@ module DropdownHelper
   def explore_dropdown_menu(view_object)
     dropdown_items = [
       { name: "All-time best (#{view_object.course.name})",
-        link: best_efforts_course_path(view_object.course) },
+        link: best_efforts_organization_course_path(view_object.organization, view_object.course) },
     ]
 
     view_object.course_groups.each do |course_group|
@@ -215,9 +215,9 @@ module DropdownHelper
     dropdown_items += [
       { role: :separator },
       { name: "Plan my effort",
-        link: plan_effort_course_path(view_object.course) },
+        link: plan_effort_organization_course_path(view_object.organization, view_object.course) },
       { name: "Cutoff analysis",
-        link: cutoff_analysis_course_path(view_object.course) },
+        link: cutoff_analysis_organization_course_path(view_object.organization, view_object.course) },
     ]
     build_dropdown_menu("Explore", dropdown_items, button: true)
   end

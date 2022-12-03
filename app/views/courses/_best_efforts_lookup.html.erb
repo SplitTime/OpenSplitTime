@@ -1,4 +1,4 @@
-<%= form_tag best_efforts_course_path(presenter), method: :get do %>
+<%= form_tag best_efforts_organization_course_path(presenter.organization, presenter.course), method: :get do %>
     <%= hidden_field_tag 'split1', presenter.split1 %>
     <%= hidden_field_tag 'split2', presenter.split2 %>
     <%= hidden_field_tag 'filter[gender]', presenter.gender_text %>

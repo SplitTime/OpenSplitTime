@@ -59,14 +59,6 @@ Rails.application.routes.draw do
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]
 
-  resources :courses, except: :index do
-    member do
-      get :best_efforts
-      get :cutoff_analysis
-      get :plan_effort
-    end
-  end
-
   resources :efforts do
     collection do
       get :subregion_options
@@ -163,6 +155,14 @@ Rails.application.routes.draw do
       end
       resources :finishers, only: [:index, :show], controller: "course_group_finishers" do
         collection { post :export_async }
+      end
+    end
+
+    resources :courses do
+      member do
+        get :best_efforts
+        get :cutoff_analysis
+        get :plan_effort
       end
     end
 

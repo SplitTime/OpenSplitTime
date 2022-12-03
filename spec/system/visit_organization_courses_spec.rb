@@ -23,7 +23,7 @@ RSpec.describe "Visit an organization courses page and try various features" do
   before { concealed_course.update(concealed: true) }
 
   scenario "The user is a visitor" do
-    visit organization_path(organization, display_style: :courses)
+    visit_page
 
     verify_public_links_present
     verify_concealed_content_absent
@@ -32,7 +32,7 @@ RSpec.describe "Visit an organization courses page and try various features" do
 
   scenario "The user is not the owner and not a steward" do
     login_as user, scope: :user
-    visit organization_path(organization, display_style: :courses)
+    visit_page
 
     verify_public_links_present
     verify_concealed_content_absent
@@ -41,7 +41,7 @@ RSpec.describe "Visit an organization courses page and try various features" do
 
   scenario "The user owns the organization" do
     login_as owner, scope: :user
-    visit organization_path(organization, display_style: :courses)
+    visit_page
 
     verify_public_links_present
     verify_concealed_links_present
@@ -50,7 +50,7 @@ RSpec.describe "Visit an organization courses page and try various features" do
 
   scenario "The user is a steward of the organization" do
     login_as steward, scope: :user
-    visit organization_path(organization, display_style: :courses)
+    visit_page
 
     verify_public_links_present
     verify_concealed_links_present
@@ -59,7 +59,7 @@ RSpec.describe "Visit an organization courses page and try various features" do
 
   scenario "The user is an admin user" do
     login_as admin, scope: :user
-    visit organization_path(organization, display_style: :courses)
+    visit_page
 
     verify_public_links_present
     verify_concealed_links_present
@@ -86,5 +86,9 @@ RSpec.describe "Visit an organization courses page and try various features" do
 
   def verify_concealed_links_present
     expect(page).to have_content(concealed_course.name)
+  end
+
+  def visit_page
+    visit organization_courses_path(organization)
   end
 end

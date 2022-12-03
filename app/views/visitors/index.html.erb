@@ -28,7 +28,7 @@
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
       <% @presenter.upcoming_courses(4).each do |course| %>
-        <%= link_to course.name, plan_effort_course_path(course), class: 'btn btn-info cta' %>
+        <%= link_to course.name, plan_effort_organization_course_path(course.organization, course), class: 'btn btn-info cta' %>
       <% end %>
     </div>
   </div>

@@ -9,10 +9,7 @@ class LotteriesController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries
   def index
-    params[:display_style] = "lotteries"
-    @presenter = OrganizationPresenter.new(@organization, prepared_params, current_user)
-
-    render "organizations/show"
+    @presenter = ::OrganizationPresenter.new(@organization, view_context)
   end
 
   # GET /organizations/:organization_id/lotteries/:id

@@ -13,7 +13,14 @@ class CourseGroupFinishersController < ApplicationController
       format.html
       format.json do
         finishers = @presenter.filtered_finishers
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], collection: finishers) : ""
+        html = if params[:html_template].present?
+                 render_to_string(partial: params[:html_template],
+                                  formats: [:html],
+                                  collection: finishers,
+                                  locals: { organization: @organization, course_group: @course_group })
+               else
+                 ""
+               end
         render json: { course_group_finishers: finishers, html: html, links: { next: @presenter.next_page_url } }
       end
     end

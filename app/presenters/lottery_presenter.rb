@@ -3,7 +3,8 @@
 class LotteryPresenter < BasePresenter
   DEFAULT_SORT_HASH = { division_name: :asc, last_name: :asc }.freeze
 
-  attr_reader :lottery, :params, :action_name
+  attr_reader :lottery, :params
+  delegate :action_name, :controller_name, to: :view_context
 
   delegate :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
            :tickets, :to_param, to: :lottery
@@ -13,9 +14,6 @@ class LotteryPresenter < BasePresenter
     @lottery = lottery
     @view_context = view_context
     @params = view_context.prepared_params
-    @current_user = view_context.current_user
-    @action_name = view_context.action_name
-    @request = view_context.request
   end
 
   def ordered_divisions
@@ -48,6 +46,10 @@ class LotteryPresenter < BasePresenter
 
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
+  end
+
+  def partners
+    @partners ||= lottery.partners.order(:name)
   end
 
   def records_from_context
@@ -104,7 +106,8 @@ class LotteryPresenter < BasePresenter
 
   private
 
-  attr_reader :view_context, :current_user, :request
+  attr_reader :view_context
+  delegate :current_user, :request, to: :view_context, private: true
 
   def lottery_entrants_filtered
     lottery_entrants

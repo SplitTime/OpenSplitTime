@@ -2,22 +2,20 @@
 
 class PartnersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_partner, except: [:new, :create]
+  before_action :set_partner, except: [:index, :new, :create]
   before_action :set_partnerable
+  before_action :authorize_organization
   after_action :verify_authorized
 
   def new
     @partner = @partnerable.partners.new
-    authorize @partner
   end
 
   def edit
-    authorize @partner
   end
 
   def create
     @partner = @partnerable.partners.new(permitted_params)
-    authorize @partner
 
     if @partner.save
       redirect_to partnerable_path
@@ -27,8 +25,6 @@ class PartnersController < ApplicationController
   end
 
   def update
-    authorize @partner
-
     if @partner.update(permitted_params)
       redirect_to partnerable_path
     else
@@ -37,14 +33,16 @@ class PartnersController < ApplicationController
   end
 
   def destroy
-    authorize @partner
-
     @partner.destroy
     flash[:success] = "Partner deleted."
     redirect_to partnerable_path
   end
 
   private
+
+  def authorize_organization
+    authorize @partnerable.organization, policy_class: ::PartnerPolicy
+  end
 
   def partnerable_path
     raise NotImplementedError, "partnerable_path must be implemented"

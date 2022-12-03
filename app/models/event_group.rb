@@ -11,6 +11,7 @@ class EventGroup < ApplicationRecord
   include Delegable
   include Concealable
   include Auditable
+  include Partnerable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -20,7 +21,6 @@ class EventGroup < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :efforts, through: :events
   has_many :raw_times, dependent: :destroy
-  has_many :partners, as: :partnerable
   belongs_to :organization
 
   has_many_attached :entrant_photos do |photo|
@@ -74,10 +74,6 @@ class EventGroup < ApplicationRecord
 
   def permit_notifications?
     visible? && available_live?
-  end
-
-  def pick_partner_with_banner
-    partners.with_banners.flat_map { |partner| [partner] * partner.weight }.sample
   end
 
   def split_times

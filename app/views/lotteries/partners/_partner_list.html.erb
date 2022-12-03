@@ -1,0 +1,46 @@
+<%# Requires parameter presenter %>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <%= link_to fa_icon("plus", text: "Add a partner"),
+                    new_organization_lottery_partner_path(presenter.organization, presenter.lottery),
+                    id: "add-partner",
+                    class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<% if presenter.partners.present? %>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Banner</th>
+      <th>Banner Link</th>
+      <th>Weight</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% presenter.partners.each do |partner| %>
+      <tr>
+        <td><%= partner.name %></td>
+        <td><%= image_tag partner.banner.variant(:banner_small) if partner.banner.attached? %></td>
+        <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: "_blank" if partner.banner_link %></td>
+        <td><%= partner.weight %></td>
+        <td>
+          <%= link_to_lottery_partner_edit(partner) %>
+          <%= link_to_lottery_partner_delete(partner) %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <br/>
+  <h5>No partners have been added yet.</h5>
+<% end %>

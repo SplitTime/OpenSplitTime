@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for([@partner.partnerable, @partner], multipart: true, html: { class: "form-horizontal", role: "form" }) do |f| %>
+    <%= form_for([@partner.organization, @partner.partnerable, @partner], multipart: true, html: { class: "form-horizontal", role: "form" }) do |f| %>
       <div class="form-group required">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="col-xs-4 col-xs-offset-2">
-        <span class="brackets"><%= link_to "Cancel", polymorphic_path([:setup, @partner.partnerable], display_style: "partners") %></span>
+        <span class="brackets"><%= link_to "Cancel", polymorphic_path([@partner.organization, @partner.partnerable, :partners]) %></span>
       </div>
     <% end %>
   </div>

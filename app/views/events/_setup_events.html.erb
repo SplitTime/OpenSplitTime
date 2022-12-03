@@ -23,7 +23,7 @@
   <% events.each do |event| %>
     <tr>
       <td><strong><%= link_to event.name, edit_event_group_event_path(presenter.event_group, event) %></strong></td>
-      <td><strong><%= link_to event.course_name, course_path(event.course, display_style: :splits) %></strong></td>
+      <td><strong><%= link_to event.course_name, organization_course_path(presenter.organization, event.course, display_style: :splits) %></strong></td>
       <td><%= l(event.scheduled_start_time_local, format: :full_day_time_and_zone) %></td>
       <td><%= "#{pluralize(event.efforts_count, 'entrants')}" %></td>
 

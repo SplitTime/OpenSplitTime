@@ -1,0 +1,34 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Courses - #{@presenter.name}" %>
+<% end %>
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading" %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs" %>
+  </div>
+</header>
+
+<% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <div class="col offset-md-6 col-md-6">
+          <%= link_to fa_icon("plus", text: "Add"), new_organization_lottery_path(@presenter.organization), id: "add-lottery", class: "btn btn-success" %>
+        </div>
+      </div>
+    </div>
+  </aside>
+<% end %>
+
+<article class="ost-article container">
+  <% if @presenter.lotteries.present? %>
+    <%= render "lotteries/lotteries_list", lotteries: @presenter.lotteries %>
+  <% else %>
+    <h4>No lotteries are associated with this organization.</h4>
+  <% end %>
+</article>

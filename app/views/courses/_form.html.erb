@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for(@course, html: {class: "form-horizontal", role: "form", data: {turbo: false}}) do |f| %>
+    <%= form_for([@course.organization, @course], html: {class: "form-horizontal", role: "form", data: {turbo: false}}) do |f| %>
       <div class="form-group">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
@@ -97,7 +97,7 @@
       </div>
 
       <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', @course.new_record? ? courses_path : @course %></span>
+        <span class="brackets"><%= link_to 'Cancel', @course.new_record? ? organization_courses_path(@course.organization) : organization_course_path(@course.organization, @course) %></span>
       </div>
 
     <% end %>

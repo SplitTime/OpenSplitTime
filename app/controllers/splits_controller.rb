@@ -64,7 +64,7 @@ class SplitsController < ApplicationController
     authorize @split
     @split.destroy
 
-    redirect_to course_path(@split.course, display_style: :splits)
+    redirect_to organization_course_path(@split.course.organization, @split.course, display_style: :splits)
   end
 
   private

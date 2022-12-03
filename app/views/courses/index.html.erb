@@ -1,0 +1,46 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Courses - #{@presenter.name}" %>
+<% end %>
+
+<% content_for(:container_type) do %>skip
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading" %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs" %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <% if @presenter.courses.present? %>
+    <%= render "courses_list", courses: @presenter.courses %>
+  <% else %>
+    <h4>No courses are associated with this organization.</h4>
+  <% end %>
+
+  <% if @presenter.course_groups.present? || current_user&.authorized_to_edit?(@presenter.organization) %>
+    <hr/>
+
+    <div class="row">
+      <div class="col">
+        <h4 class="font-weight-bold">Course Groups</h4>
+      </div>
+      <% if current_user&.authorized_to_edit?(@presenter.organization) %>
+        <div class="col-auto">
+          <%= link_to fa_icon("plus", text: "Add Course Group"),
+                      new_organization_course_group_path(@presenter.organization),
+                      id: "add-course-group",
+                      class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>
+    <% if @presenter.course_groups.present? %>
+      <%= render "organizations/course_groups_list", course_groups: @presenter.course_groups %>
+    <% else %>
+      <br/>
+      <h4>No course groups are associated with this organization.</h4>
+    <% end %>
+  <% end %>
+</article>

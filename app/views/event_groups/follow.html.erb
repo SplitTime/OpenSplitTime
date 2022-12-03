@@ -97,7 +97,7 @@
             finish time. You can plan your effort here:</p>
           <ul>
             <% @presenter.courses.each do |course| %>
-              <li><%= link_to course.name, plan_effort_course_path(course) %></li>
+              <li><%= link_to course.name, plan_effort_organization_course_path(course.organization, course) %></li>
             <% end %>
           </ul>
           <p>Just click <%= @presenter.multiple_courses? ? 'one of the links' : 'the link' %> above, type in your

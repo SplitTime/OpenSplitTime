@@ -1,0 +1,15 @@
+<!--Requires local variable `title`-->
+
+<div class="ost-heading row">
+  <div class="col">
+    <div class="ost-title">
+      <h1><strong><%= "#{@presenter.name}: #{title}" %></strong></h1>
+      <ul class="breadcrumb breadcrumb-ost">
+        <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+        <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+        <li class="breadcrumb-item"><%= link_to @presenter.name, organization_course_path(@presenter.organization, @presenter.course) %></li>
+        <li class="breadcrumb-item active"><%= title %></li>
+      </ul>
+    </div>
+  </div>
+</div>

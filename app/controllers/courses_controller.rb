@@ -1,16 +1,22 @@
 # frozen_string_literal: true
 
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
-  before_action :set_course, except: [:new, :create]
-  after_action :verify_authorized, except: [:show, :best_efforts, :cutoff_analysis, :plan_effort]
+  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :cutoff_analysis, :plan_effort]
+  before_action :set_organization
+  before_action :set_course, except: [:index, :new, :create]
+  after_action :verify_authorized, except: [:index, :show, :best_efforts, :cutoff_analysis, :plan_effort]
+
+  def index
+    @presenter = ::OrganizationPresenter.new(@organization, view_context)
+  end
 
   def show
-    course = Course.where(id: @course).includes(:splits).first
+    course = @organization.courses.where(id: @course).includes(:splits).first
+
     respond_to do |format|
       format.html do
         @presenter = CoursePresenter.new(course, params, current_user)
-        session[:return_to] = course_path(@course)
+        session[:return_to] = organization_course_path(@organization, @course)
       end
       format.json do
         render json: course
@@ -19,7 +25,7 @@ class CoursesController < ApplicationController
   end
 
   def new
-    @course = Course.new
+    @course = @organization.courses.new
     authorize @course
   end
 
@@ -28,7 +34,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(permitted_params)
+    @course = @organization.courses.new(permitted_params)
     authorize @course
 
     @event_group = ::EventGroup.friendly.find(params[:event_group_id])
@@ -37,7 +43,7 @@ class CoursesController < ApplicationController
       if @event_group.present?
         redirect_to new_event_group_event_path(@event_group, course_id: @course.id)
       else
-        redirect_to course_path(@course)
+        redirect_to organization_courses_path(@organization)
       end
     else
       render "new", status: :unprocessable_entity
@@ -48,7 +54,7 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.update(permitted_params)
-      redirect_to @course, notice: "Course updated"
+      redirect_to organization_course_path(@organization, @course), notice: "Course updated"
     else
       render "edit", status: :unprocessable_entity
     end
@@ -62,7 +68,7 @@ class CoursesController < ApplicationController
       redirect_to organizations_path
     else
       flash[:danger] = @course.errors.full_messages.join("\n")
-      redirect_to course_path(@course)
+      redirect_to organization_course_path(@organization, @course)
     end
   end
 
@@ -94,7 +100,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        session[:return_to] = plan_effort_course_path(@course)
+        session[:return_to] = plan_effort_organization_course_path(@organization, @course)
       end
       format.csv do
         csv_stream = render_to_string(partial: "plan", formats: :csv)
@@ -107,10 +113,14 @@ class CoursesController < ApplicationController
   private
 
   def set_course
-    @course = policy_scope(Course).friendly.find(params[:id])
+    @course = policy_scope(@organization.courses).friendly.find(params[:id])
 
-    if request.path != course_path(@course)
+    if request.path != organization_course_path(@organization, @course)
       redirect_numeric_to_friendly(@course, params[:id])
     end
+  end
+
+  def set_organization
+    @organization = policy_scope(::Organization).friendly.find(params[:organization_id])
   end
 end

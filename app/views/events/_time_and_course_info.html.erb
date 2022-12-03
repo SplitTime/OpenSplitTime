@@ -1,7 +1,7 @@
 <div class="ost-subtitle">
   <p><%= l(@presenter.scheduled_start_time_local, format: :full_day_time_and_zone) %>
     <% if @presenter.respond_to?(:course) %>
-      on <%= link_to @presenter.course_name, course_path(@presenter.course) %>
+      on <%= link_to @presenter.course_name, organization_course_path(@presenter.organization, @presenter.course) %>
     <% end %>
   </p>
 </div>

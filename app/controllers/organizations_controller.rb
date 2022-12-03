@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizationsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_organization, except: [:index, :new, :create]
@@ -21,7 +23,7 @@ class OrganizationsController < ApplicationController
 
   def show
     params[:view] ||= "events"
-    @presenter = OrganizationPresenter.new(@organization, params, current_user)
+    @presenter = ::OrganizationPresenter.new(@organization, view_context)
     session[:return_to] = organization_path(@organization)
   end
 

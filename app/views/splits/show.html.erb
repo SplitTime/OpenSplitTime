@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Show split - #{@presenter.base_name}" %>
+  <% "OpenSplitTime: Split - #{@presenter.base_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -11,7 +11,7 @@
             - <%= "#{pdu('singular').titleize} #{d(@presenter.distance_from_start)}" %></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item">Courses</li>
-            <li class="breadcrumb-item"><%= link_to @presenter.course.name, course_path(@presenter.course, display_style: :splits) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.course.name, organization_course_path(@presenter.organization, @presenter.course, display_style: :splits) %></li>
             <li class="breadcrumb-item active"><%= @presenter.base_name %></li>
           </ul>
         </div>

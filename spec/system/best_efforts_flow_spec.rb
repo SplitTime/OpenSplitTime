@@ -15,7 +15,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   after(:all) { EffortSegment.delete_all }
 
   scenario "Visitor visits the page and searches for a name" do
-    visit best_efforts_course_path(course)
+    visit_page
 
     expect(page).to have_content(course.name)
     finished_efforts = event.efforts.ranking_subquery.select(&:finished)
@@ -48,7 +48,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     end
 
     scenario "The user is a visitor" do
-      visit best_efforts_course_path(course)
+      visit_page
       verify_link_present(effort_1)
       verify_content_absent(hidden_effort_1)
     end
@@ -56,7 +56,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     scenario "The user is not the owner and not a steward" do
       login_as user, scope: :user
 
-      visit best_efforts_course_path(course)
+      visit_page
       verify_link_present(effort_1)
       verify_content_absent(hidden_effort_1)
     end
@@ -64,7 +64,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     scenario "The user owns the organization" do
       login_as owner, scope: :user
 
-      visit best_efforts_course_path(course)
+      visit_page
       verify_link_present(effort_1)
       verify_link_present(hidden_effort_1)
     end
@@ -72,7 +72,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     scenario "The user is a steward of the organization" do
       login_as steward, scope: :user
 
-      visit best_efforts_course_path(course)
+      visit_page
       verify_link_present(effort_1)
       verify_link_present(hidden_effort_1)
     end
@@ -80,9 +80,13 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
     scenario "The user is an admin" do
       login_as admin, scope: :user
 
-      visit best_efforts_course_path(course)
+      visit_page
       verify_link_present(effort_1)
       verify_link_present(hidden_effort_1)
     end
+  end
+
+  def visit_page
+    visit best_efforts_organization_course_path(course.organization, course)
   end
 end

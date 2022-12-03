@@ -216,4 +216,17 @@
       </div>
     </div>
   </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h2><strong>Pre-Selected Entrants</strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.pre_selected.count, 'entrant')}" %></small></h2>
+        </div>
+      </div>
+    </div>
+    <div class="card-body table-responsive">
+      <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants.pre_selected, as: :record %>
+    </div>
+  </div>
 </article>

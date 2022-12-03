@@ -4,7 +4,7 @@
 
 <header class="ost-header">
   <div class="container">
-    <%= render partial: "course_tabs", locals: { title: "Events" } %>
+    <%= render partial: "course_heading", locals: { title: nil } %>
     <%= course_view_tabs(@presenter) %>
   </div>
 </header>
@@ -15,7 +15,7 @@
       <div class="col">
         <div>
           <% if current_user&.authorized_to_edit?(@presenter.course) %>
-            <%= link_to 'Edit', edit_organization_course_path(@presenter.organization, @presenter.course), class: 'btn btn-outline-secondary' %>
+            <%= link_to "Edit", edit_organization_course_path(@presenter.organization, @presenter.course), class: "btn btn-outline-secondary" %>
           <% end %>
         </div>
       </div>
@@ -38,15 +38,15 @@
   <% end %>
   <br/>
 
-  <% if @presenter.display_style == 'splits' %>
+  <% if @presenter.display_style == "splits" %>
     <% if @presenter.ordered_splits.present? %>
-      <%= render 'splits/splits', splits: @presenter.ordered_splits, referred_by: organization_course_path(@presenter.organization, @presenter.course) %>
+      <%= render "splits/splits", splits: @presenter.ordered_splits, referred_by: organization_course_path(@presenter.organization, @presenter.course) %>
     <% else %>
       <h4>No splits are associated with this course.</h4>
     <% end %>
   <% else %>
     <% if @presenter.events.present? %>
-      <%= render 'events/events', presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
+      <%= render "events/events", presenter: @presenter, events: @presenter.events, show_grouping_button: false %>
     <% else %>
       <h4>No events have been held on this course.</h4>
     <% end %>

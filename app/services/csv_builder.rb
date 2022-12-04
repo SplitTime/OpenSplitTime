@@ -33,7 +33,7 @@ class CsvBuilder
   end
 
   def headers
-    export_attributes.map(&:humanize)
+    export_attributes.map { |attr| attr.humanize(keep_id_suffix: true) }
   end
 
   def export_attributes

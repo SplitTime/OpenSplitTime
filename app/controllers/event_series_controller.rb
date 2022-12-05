@@ -1,9 +1,9 @@
 class EventSeriesController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_organization
-  before_action :authorize_organization
+  before_action :authorize_organization, except: [:index, :show]
   before_action :set_event_series, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:show]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     @presenter = ::OrganizationPresenter.new(@organization, view_context)

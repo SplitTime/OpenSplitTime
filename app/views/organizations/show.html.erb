@@ -14,43 +14,6 @@
 </header>
 
 <% case @presenter.display_style %>
-<% when "stewards" %>
-  <% if current_user&.authorized_fully?(@presenter.organization) %>
-
-    <article class="ost-article container">
-      <div class="card">
-        <h4 class="card-header">Owner</h4>
-        <div class="card-body">
-          <h5><%= "#{@presenter.organization.owner_full_name} (#{@presenter.organization.owner_email})" %></h5>
-        </div>
-      </div>
-      <br/>
-
-      <div class="card">
-        <h4 class="card-header">
-          <div class="row">
-            <div class="col-md">Stewards</div>
-            <div class="col-md float-right">
-              <%= render "user_lookup" %>
-            </div>
-          </div>
-        </h4>
-        <div class="card-body">
-          <% if @presenter.stewards.present? %>
-            <%= render "stewards_list", stewards: @presenter.stewards %>
-          <% else %>
-            <h4>No stewards have been added to this organization.</h4>
-          <% end %>
-        </div>
-      </div>
-    </article>
-
-  <% else %>
-    <article class="ost-article container">
-      <h4>Not authorized.</h4>
-    </article>
-  <% end %>
-
 <% when "event_series" %>
   <% if current_user&.authorized_to_edit?(@presenter.organization) %>
     <aside class="ost-toolbar">

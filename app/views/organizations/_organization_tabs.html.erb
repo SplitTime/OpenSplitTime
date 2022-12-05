@@ -14,8 +14,8 @@
     <% end %>
   <% end %>
   <% if current_user&.authorized_fully?(@presenter.organization) %>
-    <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'organizations' && @presenter.display_style == 'stewards'}" do %>
-      <%= link_to "Stewards", organization_path(@presenter.organization, display_style: :stewards) %>
+    <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'stewardships'}" do %>
+      <%= link_to "Stewards", organization_stewardships_path(@presenter.organization) %>
     <% end %>
   <% end %>
 </ul>

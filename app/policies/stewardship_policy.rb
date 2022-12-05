@@ -6,17 +6,26 @@ class StewardshipPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :stewardship
+  attr_reader :organization
 
-  def post_initialize(stewardship)
-    @stewardship = stewardship
+  def post_initialize(organization)
+    verify_authorization_was_delegated(organization, ::Stewardship)
+    @organization = organization
+  end
+
+  def index?
+    user.admin? || user.authorized_fully?(organization)
   end
 
   def create?
-    user.admin? || user.authorized_fully?(stewardship.organization)
+    index?
+  end
+
+  def update?
+    create?
   end
 
   def destroy?
-    user.admin? || user.authorized_fully?(stewardship.organization)
+    create?
   end
 end

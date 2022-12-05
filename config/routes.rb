@@ -186,6 +186,8 @@ Rails.application.routes.draw do
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
       resources :partners, except: [:show], module: "lotteries"
     end
+
+    resources :stewardships, only: [:index, :create, :update, :destroy]
   end
 
   resources :people do
@@ -204,7 +206,6 @@ Rails.application.routes.draw do
 
   resources :split_times, only: [:update]
   resources :splits
-  resources :stewardships, only: [:create, :update, :destroy]
   resources :subscriptions, only: [:create, :destroy]
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap

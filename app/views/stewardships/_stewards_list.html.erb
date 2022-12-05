@@ -15,16 +15,16 @@
         <td><%= stewardship.email %></td>
         <td><%= l(stewardship.created_at, format: :full_with_weekday) %></td>
         <td>
-          <%= form_for(stewardship) do |f| %>
+          <%= form_for([@organization, stewardship]) do |f| %>
             <%= f.select(:level, Stewardship.levels.keys.map { |level| [level.titleize, level] }, {}, class: "dropdown-select-field") %>
-            <%= f.submit 'Confirm', :class => 'btn btn-primary' %>
+            <%= f.submit "Confirm", :class => "btn btn-primary" %>
           <% end %>
         </td>
         <td>
           <%= link_to "Remove",
-                      stewardship_path(stewardship),
+                      organization_stewardship_path(@organization, stewardship),
                       :method => :delete,
-                      :class => 'btn btn-xs btn-danger' %>
+                      :class => "btn btn-xs btn-danger" %>
         </td>
       </tr>
   <% end %>

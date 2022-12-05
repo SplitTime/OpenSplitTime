@@ -1,53 +1,59 @@
+# frozen_string_literal: true
+
 class StewardshipsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_organization
+  before_action :authorize_organization
   before_action :set_stewardship, only: [:update, :destroy]
   after_action :verify_authorized
 
+  def index
+    @presenter = ::OrganizationPresenter.new(@organization, view_context)
+  end
+
   def create
-    # Raise an error if organization does not exist
-    organization = Organization.friendly.find(params[:organization_id])
     user = User.find_by(email: params[:email])
 
     if user
-      @stewardship = Stewardship.new(user: user, organization: organization)
-      authorize @stewardship
+      @stewardship = @organization.stewardships.new(user: user)
 
       unless @stewardship.save
         flash[:warning] = "User #{user.full_name} could not be added as a steward.\n#{@stewardship.errors.full_messages.join("\n")}"
       end
     else
-      skip_authorization
       flash[:warning] = "No user with email #{params[:email]} was located."
     end
 
-    redirect_to organization_path(organization, display_style: :stewards)
+    redirect_to organization_stewardships_path(@organization)
   end
 
   def update
-    authorize @stewardship
-
     if @stewardship.update(permitted_params)
-      redirect_to organization_path(@stewardship.organization, display_style: :stewards), notice: "Stewardship updated."
+      flash[:success] = "Stewardship updated."
     else
-      redirect_to organization_path(@stewardship.organization, display_style: :stewards), alert: "Unable to update stewardship."
+      flash[:danger] = "Unable to update stewardship."
     end
+
+    redirect_to organization_stewardships_path(@organization)
   end
 
   def destroy
-    authorize @stewardship
+    @stewardship.destroy
 
-    if @stewardship.destroy
-      logger.info "#{@stewardship} destroyed"
-    else
-      logger.warn "#{@stewardship} not destroyed"
-    end
-
-    redirect_to organization_path(@stewardship.organization, display_style: :stewards)
+    redirect_to organization_stewardships_path(@organization)
   end
 
   private
 
+  def authorize_organization
+    authorize @organization, policy_class: ::StewardshipPolicy
+  end
+
+  def set_organization
+    @organization = policy_scope(::Organization).friendly.find(params[:organization_id])
+  end
+
   def set_stewardship
-    @stewardship = Stewardship.find(params[:id])
+    @stewardship = @organization.stewardships.find(params[:id])
   end
 end

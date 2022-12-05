@@ -1,0 +1,41 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Stewardships - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading" %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs" %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <article class="ost-article container">
+    <div class="card">
+      <h4 class="card-header">Owner</h4>
+      <div class="card-body">
+        <h5><%= "#{@presenter.organization.owner_full_name} (#{@presenter.organization.owner_email})" %></h5>
+      </div>
+    </div>
+    <br/>
+
+    <div class="card">
+      <h4 class="card-header">
+        <div class="row">
+          <div class="col-md">Stewards</div>
+          <div class="col-md float-right">
+            <%= render "user_lookup" %>
+          </div>
+        </div>
+      </h4>
+      <div class="card-body">
+        <% if @presenter.stewards.present? %>
+          <%= render "stewards_list", stewards: @presenter.stewards %>
+        <% else %>
+          <h4>No stewards have been added to this organization.</h4>
+        <% end %>
+      </div>
+    </div>
+  </article>
+</article>

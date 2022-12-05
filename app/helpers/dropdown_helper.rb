@@ -256,10 +256,10 @@ module DropdownHelper
   def event_series_actions_dropdown_menu(view_object)
     dropdown_items = [
       { name: "Edit",
-        link: edit_event_series_path(view_object.event_series) },
+        link: edit_organization_event_series_path(view_object.organization, view_object.event_series) },
       { role: :separator },
       { name: "Delete event series",
-        link: event_series_path(view_object.event_series),
+        link: organization_event_series_path(view_object.organization, view_object.event_series),
         method: :delete,
         data: { confirm: "This action cannot be undone. Proceed?" },
         class: "text-danger" }

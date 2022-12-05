@@ -3,13 +3,13 @@
 class EventSeriesPresenter < BasePresenter
   attr_reader :event_series
 
-  delegate :name, :organization, to: :event_series
+  delegate :name, :organization, :scoring_method, to: :event_series
   delegate :results_categories, to: :completed_template
 
-  def initialize(event_series, params, current_user)
+  def initialize(event_series, view_context)
     @event_series = event_series || []
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @params = view_context.prepared_params
   end
 
   def organization_name
@@ -34,10 +34,11 @@ class EventSeriesPresenter < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params, :view_context
 
-  delegate :results_template, :scoring_method, to: :event_series
-  delegate :podium_size, :point_system, to: :results_template
+  delegate :results_template, to: :event_series, private: true
+  delegate :podium_size, :point_system, to: :results_template, private: true
+  delegate :current_user, to: :view_context, private: true
 
   def completed_template
     @completed_template ||= Results::FillEventSeriesTemplate.perform(event_series)

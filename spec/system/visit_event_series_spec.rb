@@ -24,7 +24,7 @@ RSpec.describe "visit an event series page" do
       let(:subject_series) { event_series(:d30_short_series) }
 
       scenario "Visit the page" do
-        visit event_series_path(subject_series)
+        visit organization_event_series_path(organization, subject_series)
         verify_page_header
         verify_event_links
       end

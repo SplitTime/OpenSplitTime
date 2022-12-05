@@ -9,8 +9,9 @@
         <div class="ost-title">
           <h1><strong>New Event Series</strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @event_series.organization.name, organization_path(@event_series.organization, display_style: :event_series) %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @event_series.organization.name, organization_path(@event_series.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Event Series", organization_event_series_index_path(@event_series.organization) %></li>
             <li class="breadcrumb-item active">New</li>
           </ul>
         </div>
@@ -20,5 +21,5 @@
 </header>
 
 <article class="ost-article container">
-  <%= render 'form' %>
+  <%= render "form" %>
 </article>

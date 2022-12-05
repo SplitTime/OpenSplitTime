@@ -126,8 +126,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :event_series, only: [:show, :new, :create, :edit, :update, :destroy]
-
   resources :events, only: [:show] do
     member do
       get :admin
@@ -167,6 +165,7 @@ Rails.application.routes.draw do
     end
 
     resources :event_groups, except: [:index, :show]
+    resources :event_series
 
     resources :lotteries do
       member { get :draw_tickets }

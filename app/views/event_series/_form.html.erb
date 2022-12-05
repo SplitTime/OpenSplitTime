@@ -1,12 +1,10 @@
-<%= render 'shared/errors', obj: @event_series %>
+<%= render "shared/errors", obj: @event_series %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: @event_series,
+    <%= form_with(model: [@event_series.organization, @event_series],
                   local: true,
-                  html: {class: "form-horizontal", role: "form"}) do |f| %>
-
-      <%= f.hidden_field :organization_id, value: @event_series.organization.id %>
+                  html: { class: "form-horizontal", role: "form" }) do |f| %>
 
       <div class="form-group">
         <div class="control-label col-sm-2">
@@ -29,7 +27,7 @@
               </h5>
             </div>
             <div class="card-body" data-results-template-target="categories">
-              <%= render 'results_templates/categories_card', template: @event_series.results_template %>
+              <%= render "results_templates/categories_card", template: @event_series.results_template %>
             </div>
           </div>
         </div>
@@ -41,7 +39,7 @@
         </div>
         <div class="col-sm-8">
           <%= collection_select(:event_series, :scoring_method, EventSeries.scoring_methods.keys, :to_sym, :titleize,
-                                {prompt: false}, {class: "form-control dropdown-select-field"}) %>
+                                { prompt: false }, { class: "form-control dropdown-select-field" }) %>
         </div>
       </div>
 
@@ -62,14 +60,14 @@
 
       <div class="form-group">
         <div class="col">
-          <%= f.submit(@event_series.new_record? ? 'Create Event Series' : 'Update Event Series', class: 'btn btn-primary btn-large') %>
+          <%= f.submit(@event_series.new_record? ? "Create Event Series" : "Update Event Series", class: "btn btn-primary btn-large") %>
         </div>
       </div>
       <div class="col">
         <span class="brackets">
-          <%= link_to 'Cancel', @event_series.new_record? ?
-                                    organization_path(@event_series.organization, display_style: 'event_series') :
-                                    event_series_path(@event_series) %>
+          <%= link_to "Cancel", @event_series.new_record? ?
+                                  organization_event_series_index_path(@event_series.organization) :
+                                  organization_event_series_path(@event_series.organization, @event_series) %>
         </span>
       </div>
     <% end %>

@@ -1,84 +1,84 @@
 class EventSeriesController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
-  before_action :set_event_series, except: [:new, :create]
-  after_action :verify_authorized, except: [:show]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_organization
+  before_action :authorize_organization, except: [:index, :show]
+  before_action :set_event_series, except: [:index, :new, :create]
+  after_action :verify_authorized, except: [:index, :show]
+
+  def index
+    @presenter = ::OrganizationPresenter.new(@organization, view_context)
+  end
 
   def show
-    event_series = EventSeries.where(id: @event_series).includes(:organization, :results_template, events: :efforts).first
-    @presenter = EventSeriesPresenter.new(event_series, params, current_user)
+    event_series = @organization.event_series.where(id: @event_series).includes(events: :efforts).first
+    @presenter = ::EventSeriesPresenter.new(event_series, view_context)
   end
 
   def new
-    organization = Organization.where(id: Organization.friendly.find(params[:organization]))
-        .includes(event_groups: {events: :efforts}).first
+    organization = ::Organization.where(id: @organization.id).includes(event_groups: { events: :efforts }).first
 
-    if organization
-      @event_series = EventSeries.new(organization: organization, results_template: ResultsTemplate.default)
-      authorize @event_series
-    else
-      flash[:warning] = "A new event series must be created using an existing organization"
-      redirect_to organizations_path
-    end
+    @event_series = organization.event_series.new(results_template: ::ResultsTemplate.default)
   end
 
   def edit
-    authorize @event_series
-    @event_series = EventSeries.where(id: @event_series).includes(:organization, events: :efforts).first
+    @event_series = @organization.event_series.where(id: @event_series).includes(events: :efforts).first
   end
 
   def create
     convert_checkbox_event_ids
 
-    @event_series = EventSeries.new(permitted_params)
-    authorize @event_series
+    @event_series = @organization.event_series.new(permitted_params)
 
     if @event_series.save
-      redirect_to @event_series
+      redirect_to organization_event_series_path(@organization, @event_series)
     else
       render "new", status: :unprocessable_entity
     end
   end
 
   def update
-    authorize @event_series
     convert_checkbox_event_ids
 
     if @event_series.update(permitted_params)
-      redirect_to @event_series
+      redirect_to organization_event_series_path(@organization, @event_series)
     else
       render "edit", status: :unprocessable_entity
     end
   end
 
   def destroy
-    authorize @event_series
-
     if @event_series.destroy
       flash[:success] = "Event series deleted."
-      redirect_to_organization
     else
       flash[:danger] = @event_series.errors.full_messages.join("\n")
-      redirect_to_organization
     end
+
+    redirect_to_organization
   end
 
   private
 
-  def convert_checkbox_event_ids
-    if params.dig(:event_series, :event_ids).is_a?(ActionController::Parameters)
-      params[:event_series][:event_ids] = params.dig(:event_series, :event_ids).select { |_, value| value == "1" }.keys
-    end
+  def authorize_organization
+    authorize @organization, policy_class: ::EventSeriesPolicy
   end
 
-  def set_event_series
-    @event_series = EventSeries.friendly.find(params[:id])
+  def convert_checkbox_event_ids
+    event_id_params = params.dig(:event_series, :event_ids)
 
-    if request.path != event_series_path(@event_series)
-      redirect_numeric_to_friendly(@event_series, params[:id])
+    if event_id_params.is_a?(ActionController::Parameters)
+      params[:event_series][:event_ids] = event_id_params.select { |_, value| value == "1" }.keys
     end
   end
 
   def redirect_to_organization
-    redirect_to organization_path(@event_series.organization, display_style: :event_series)
+    redirect_to organization_event_series_index_path(@organization)
+  end
+
+  def set_event_series
+    @event_series = @organization.event_series.friendly.find(params[:id])
+  end
+
+  def set_organization
+    @organization = policy_scope(::Organization).friendly.find(params[:organization_id])
   end
 end

@@ -14,17 +14,30 @@ class EventSeriesPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :event_series
+  attr_reader :organization
 
-  def post_initialize(event_series)
-    @event_series = event_series
+  def post_initialize(organization)
+    verify_authorization_was_delegated(organization, ::EventSeries)
+    @organization = organization
   end
 
   def new?
-    event_series.organization && user.authorized_to_edit?(event_series.organization)
+    user.authorized_to_edit?(organization)
+  end
+
+  def edit?
+    new?
   end
 
   def create?
-    event_series.organization && user.authorized_to_edit?(event_series.organization)
+    new?
+  end
+
+  def update?
+    new?
+  end
+
+  def destroy?
+    new?
   end
 end

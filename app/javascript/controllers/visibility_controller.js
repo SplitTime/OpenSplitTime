@@ -33,14 +33,14 @@ export default class extends Controller {
 
     hideElement() {
         this.elementTarget.classList.add("d-none")
-        this.buttonTarget.innerHTML = this.buttonShowTextValue
+        this.buttonTarget.innerText = this.buttonShowTextValue
         this.buttonTarget.classList.remove(this.buttonHideClassValue)
         this.buttonTarget.classList.add(this.buttonShowClassValue)
     }
 
     showElement() {
         this.elementTarget.classList.remove("d-none")
-        this.buttonTarget.innerHTML = this.buttonHideTextValue
+        this.buttonTarget.innerText = this.buttonHideTextValue
         this.buttonTarget.classList.remove(this.buttonShowClassValue)
         this.buttonTarget.classList.add(this.buttonHideClassValue)
     }

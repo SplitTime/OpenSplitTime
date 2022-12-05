@@ -1,12 +1,12 @@
 <ul class="nav nav-tabs nav-tabs-ost">
+  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'organizations'}" do %>
+    <%= link_to "Events", organization_path(@presenter.organization) %>
+  <% end %>
   <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'courses'}" do %>
     <%= link_to "Courses", organization_courses_path(@presenter.organization) %>
   <% end %>
-  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'organizations' && @presenter.display_style == 'events'}" do %>
-    <%= link_to "Events", organization_path(@presenter.organization, display_style: :events) %>
-  <% end %>
-  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'organizations' && @presenter.display_style == 'event_series'}" do %>
-    <%= link_to "Event Series", organization_path(@presenter.organization, display_style: :event_series) %>
+  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'event_series'}" do %>
+    <%= link_to "Event Series", organization_event_series_index_path(@presenter.organization) %>
   <% end %>
   <% if @presenter.lotteries.present? || current_user&.authorized_for_lotteries?(@presenter.organization) %>
     <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'lotteries'}" do %>

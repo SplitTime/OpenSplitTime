@@ -68,7 +68,7 @@ class LotteryPresenter < BasePresenter
   end
 
   def stats
-    @stats ||= ::LotteryDivisionTicketStat.where(lottery: lottery).group_by(&:division_name)
+    @stats ||= ::LotteryDivisionTicketStat.where(lottery: lottery).order(:division_name).group_by(&:division_name)
   end
 
   def stats_chart_data(division_stats)

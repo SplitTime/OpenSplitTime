@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_06_034414) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_143954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -326,6 +326,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_034414) do
     t.boolean "pre_selected", default: false
     t.string "external_id"
     t.boolean "withdrawn"
+    t.date "service_completed_date"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
   end

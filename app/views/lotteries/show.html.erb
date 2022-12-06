@@ -39,13 +39,18 @@
     <!-- Navigation -->
     <% unless @presenter.display_style == "draws" %>
       <ul class="nav nav-tabs nav-tabs-ost">
-        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do
-          link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants)
-        end %>
+        <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'entrants'}" do %>
+          <%= link_to "Entrants", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants) %>
+        <% end %>
+
         <% if @presenter.viewable_results? %>
-          <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do
-            link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results)
-          end %>
+          <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'results'}" do %>
+            <%= link_to "Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :results) %>
+          <% end %>
+
+          <%= content_tag :li, class: "nav-item #{'active' if @presenter.display_style == 'stats'}" do %>
+            <%= link_to "Stats", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :stats) %>
+          <% end %>
         <% end %>
       </ul>
     <% end %>
@@ -161,6 +166,56 @@
         <% end %>
       <% else %>
         <p><strong>No results are available yet</strong></p>
+      <% end %>
+    <% else %>
+      <h6 class="text-center">This lottery is not yet live</h6>
+    <% end %>
+
+  <% when "stats" %>
+    <h4 class="mt-5"><strong>Lottery Stats</strong></h4>
+    <hr/>
+    <% if @presenter.viewable_results? %>
+      <% @presenter.stats.each do |division_name, division_stats| %>
+        <div class="card">
+          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division_name}" %></h4>
+          <div class="card-body">
+            <%= column_chart @presenter.stats_chart_data(division_stats),
+                             stacked: true,
+                             xtitle: "Number of Tickets",
+                             ytitle: "Entrants",
+                             colors: ["#28a745", "#3A9DD1", "#bbb"] %>
+
+            <hr/>
+
+            <table class="table table-condensed table-striped" style="width:80%">
+              <thead>
+              <tr class="font-weight-bold">
+                <th></th>
+                <th class="text-center">Accepted</th>
+                <th class="text-center">%</th>
+                <th class="text-center">Waitlisted</th>
+                <th class="text-center">%</th>
+                <th class="text-center">Not Drawn</th>
+                <th class="text-center">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% division_stats.each do |division_stat| %>
+                <tr>
+                  <td class="font-weight-bold"><%= pluralize(division_stat.number_of_tickets, "Ticket") %></td>
+                  <td class="text-center"><%= division_stat.accepted_entrants_count %></td>
+                  <td class="text-center"><%= (division_stat.accepted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+                  <td class="text-center"><%= division_stat.waitlisted_entrants_count %></td>
+                  <td class="text-center"><%= (division_stat.waitlisted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+                  <td class="text-center"><%= division_stat.undrawn_entrants_count %></td>
+                  <td class="text-center"><%= division_stat.entrants_count %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br/>
       <% end %>
     <% else %>
       <h6 class="text-center">This lottery is not yet live</h6>

@@ -78,7 +78,7 @@ class LotteryPresenter < BasePresenter
         data: division_stats.map { |stat| [stat.number_of_tickets, stat.accepted_entrants_count] },
       },
       {
-        name: "Waitlist",
+        name: "Waitlisted",
         data: division_stats.map { |stat| [stat.number_of_tickets, stat.waitlisted_entrants_count] },
       },
       {

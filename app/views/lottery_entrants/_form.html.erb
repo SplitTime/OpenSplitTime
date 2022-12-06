@@ -70,6 +70,14 @@
       </div>
 
       <div class="form-row">
+        <div class="form-group col-md-2">
+          <%= f.label :service_completed_date %>
+          <%= f.text_field :service_completed_date, class: "form-control", placeholder: "mm/dd/yyyy" %>
+        </div>
+      </div>
+
+      <br/>
+      <div class="form-row">
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@lottery_entrant.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary") %>

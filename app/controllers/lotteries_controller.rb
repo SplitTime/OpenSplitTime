@@ -129,7 +129,7 @@ class LotteriesController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:id/delete_draws
   def delete_draws
-    if @lottery.delete_all_draws!
+    if @lottery.delete_all_draws! && @lottery.entrants.update_all(withdrawn: false)
       flash[:success] = "Deleted all lottery draws"
     else
       flash[:danger] = "Unable to delete all lottery draws"

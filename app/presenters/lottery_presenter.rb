@@ -67,6 +67,23 @@ class LotteryPresenter < BasePresenter
     @records_from_context_count ||= records_from_context.size
   end
 
+  def stats
+    @stats ||= ::LotteryDivisionTicketStat.where(lottery: lottery).group_by(&:division_name)
+  end
+
+  def stats_chart_data(division_stats)
+    [
+      {
+        name: "Drawn",
+        data: division_stats.map { |stat| [stat.number_of_tickets, stat.drawn_entrants_count] },
+      },
+      {
+        name: "Undrawn",
+        data: division_stats.map { |stat| [stat.number_of_tickets, stat.entrants_count - stat.drawn_entrants_count] },
+      },
+    ]
+  end
+
   def viewable_results?
     lottery.live? || lottery.finished? || current_user&.authorized_for_lotteries?(lottery)
   end
@@ -111,7 +128,7 @@ class LotteryPresenter < BasePresenter
 
   def lottery_entrants_filtered
     lottery_entrants
-      .includes(division: {lottery: :organization})
+      .includes(division: { lottery: :organization })
       .search(search_text)
       .order(:last_name)
   end

@@ -760,7 +760,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_034414) do
               lottery_entrants.first_name,
               lottery_entrants.last_name,
               lottery_entrants.number_of_tickets,
-              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" <= lottery_divisions.maximum_entries)) AS drawn
+              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" <= lottery_divisions.maximum_entries)) AS accepted,
+              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" > lottery_divisions.maximum_entries)) AS waitlisted
              FROM (((lottery_entrants
                JOIN lottery_divisions ON ((lottery_divisions.id = lottery_entrants.lottery_division_id)))
                JOIN lottery_tickets ON ((lottery_tickets.lottery_entrant_id = lottery_entrants.id)))
@@ -771,7 +772,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_06_034414) do
       entrant_list.division_id,
       entrant_list.division_name,
       entrant_list.number_of_tickets,
-      count(*) FILTER (WHERE entrant_list.drawn) AS drawn_entrants_count,
+      count(*) FILTER (WHERE entrant_list.accepted) AS accepted_entrants_count,
+      count(*) FILTER (WHERE entrant_list.waitlisted) AS waitlisted_entrants_count,
       count(*) AS entrants_count
      FROM entrant_list
     GROUP BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets

@@ -74,12 +74,16 @@ class LotteryPresenter < BasePresenter
   def stats_chart_data(division_stats)
     [
       {
-        name: "Drawn",
-        data: division_stats.map { |stat| [stat.number_of_tickets, stat.drawn_entrants_count] },
+        name: "Accepted",
+        data: division_stats.map { |stat| [stat.number_of_tickets, stat.accepted_entrants_count] },
       },
       {
-        name: "Undrawn",
-        data: division_stats.map { |stat| [stat.number_of_tickets, stat.entrants_count - stat.drawn_entrants_count] },
+        name: "Waitlist",
+        data: division_stats.map { |stat| [stat.number_of_tickets, stat.waitlisted_entrants_count] },
+      },
+      {
+        name: "Not Drawn",
+        data: division_stats.map { |stat| [stat.number_of_tickets, stat.undrawn_entrants_count] },
       },
     ]
   end

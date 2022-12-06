@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_01_152629) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_034414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -751,5 +751,30 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_01_152629) do
        JOIN events ev ON ((ev.id = e.event_id)))
        JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
        JOIN courses c ON ((c.id = ev.course_id)));
+  SQL
+  create_view "lottery_division_ticket_stats", sql_definition: <<-SQL
+      WITH entrant_list AS (
+           SELECT DISTINCT ON (lottery_entrants.id) lottery_divisions.name AS division_name,
+              lottery_entrants.lottery_division_id AS division_id,
+              lottery_tickets.lottery_id,
+              lottery_entrants.first_name,
+              lottery_entrants.last_name,
+              lottery_entrants.number_of_tickets,
+              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" <= lottery_divisions.maximum_entries)) AS drawn
+             FROM (((lottery_entrants
+               JOIN lottery_divisions ON ((lottery_divisions.id = lottery_entrants.lottery_division_id)))
+               JOIN lottery_tickets ON ((lottery_tickets.lottery_entrant_id = lottery_entrants.id)))
+               LEFT JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
+            ORDER BY lottery_entrants.id, lottery_draws.id
+          )
+   SELECT entrant_list.lottery_id,
+      entrant_list.division_id,
+      entrant_list.division_name,
+      entrant_list.number_of_tickets,
+      count(*) FILTER (WHERE entrant_list.drawn) AS drawn_entrants_count,
+      count(*) AS entrants_count
+     FROM entrant_list
+    GROUP BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets
+    ORDER BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets;
   SQL
 end

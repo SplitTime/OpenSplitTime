@@ -39,85 +39,16 @@
         <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
         <div class="card-body">
           <h5>Accepted</h5>
-          <table class="table table-condensed table-striped">
-            <thead>
-            <tr>
-              <th class="text-center">Order</th>
-              <th>Name</th>
-              <th>Gender</th>
-              <th>From</th>
-              <th class="text-center">Withdrawn?</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% if division.accepted_entrants.present? %>
-              <% division.accepted_entrants.each.with_index(1) do |entrant, index| %>
-                <tr>
-                  <td class="text-center"><%= index %></td>
-                  <td><%= entrant.name %></td>
-                  <td><%= entrant.gender.titleize %></td>
-                  <td><%= entrant.flexible_geolocation %></td>
-                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
-                </tr>
-              <% end %>
-            <% else %>
-              <tr>
-                <td colspan="5" class="text-center">No entrants have been drawn yet</td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+          <%= render partial: "withdraw_entrants_table", locals: { entrants: division.accepted_entrants } %>
 
           <% if division.wait_list_entrants.present? %>
             <h5>Wait List</h5>
-            <table class="table table-condensed table-striped">
-              <thead>
-              <tr>
-                <th class="text-center">Order</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>From</th>
-                <th class="text-center">Withdrawn?</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% division.wait_list_entrants.each.with_index(1) do |entrant, index| %>
-                <tr>
-                  <td class="text-center"><%= index %></td>
-                  <td><%= entrant.name %></td>
-                  <td><%= entrant.gender.titleize %></td>
-                  <td><%= entrant.flexible_geolocation %></td>
-                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
+            <%= render partial: "withdraw_entrants_table", locals: { entrants: division.wait_list_entrants } %>
           <% end %>
 
           <% if division.withdrawn_entrants.present? %>
             <h5>Withdrawn</h5>
-            <table class="table table-condensed table-striped">
-              <thead>
-              <tr>
-                <th class="text-center">Order</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>From</th>
-                <th class="text-center">Withdrawn?</th>
-              </tr>
-              </thead>
-              <tbody>
-              <% division.withdrawn_entrants.each.with_index(1) do |entrant, index| %>
-                <tr>
-                  <td class="text-center"><%= index %></td>
-                  <td><%= entrant.name %></td>
-                  <td><%= entrant.gender.titleize %></td>
-                  <td><%= entrant.flexible_geolocation %></td>
-                  <td class="text-center"><%= render partial: "withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
+            <%= render partial: "withdraw_entrants_table", locals: { entrants: division.withdrawn_entrants } %>
           <% end %>
         </div>
       </div>

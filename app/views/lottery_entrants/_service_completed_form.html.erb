@@ -1,0 +1,8 @@
+<%= form_with(model: [organization, lottery, entrant], html: { method: :patch, data: { controller: "form-auto-submit" } }) do |f| %>
+  <div>
+    <%= f.text_field :service_completed_date,
+                     placeholder: "mm/dd/yyyy",
+                     id: "service-completed-date-input-#{dom_id(entrant)}",
+                     value: (l(entrant.service_completed_date, format: :default_full_year) if entrant.service_completed_date?) %>
+  </div>
+<% end %>

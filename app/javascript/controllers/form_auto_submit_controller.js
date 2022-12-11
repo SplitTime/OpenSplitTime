@@ -6,9 +6,15 @@ export default class extends Controller {
         const form = this.element
 
         Array.from(form).forEach(function (el) {
-            el.addEventListener("input", function () {
-                form.requestSubmit()
-            })
+            if (el.type === "checkbox") {
+                el.addEventListener("input", function () {
+                    form.requestSubmit()
+                })
+            } else {
+                el.addEventListener("focusout", function () {
+                    form.requestSubmit()
+                })
+            }
         })
     }
 }

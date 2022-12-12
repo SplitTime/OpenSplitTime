@@ -3,12 +3,19 @@ import {Controller} from "@hotwired/stimulus"
 export default class extends Controller {
 
     connect() {
+        window.onbeforeunload = null
         const form = this.element
 
         Array.from(form).forEach(function (el) {
-            el.addEventListener("input", function () {
-                form.requestSubmit()
-            })
+            if (el.type === "checkbox") {
+                el.addEventListener("input", function () {
+                    form.requestSubmit()
+                })
+            } else {
+                el.addEventListener("focusout", function () {
+                    form.requestSubmit()
+                })
+            }
         })
     }
 }

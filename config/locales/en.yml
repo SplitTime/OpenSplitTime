@@ -40,6 +40,7 @@ en:
     formats:
       full_with_weekday: "%A, %B %-d, %Y"
       default: "%m/%d/%y"
+      default_full_year: "%m/%d/%Y"
       short: "%m/%d"
 
   time:

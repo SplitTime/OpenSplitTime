@@ -42,11 +42,7 @@ class LotteryEntrantsController < ApplicationController
           redirect_to organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
         end
 
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("lottery_entrant_#{@lottery_entrant.id}",
-                                                    partial: "lottery_entrants/lottery_entrant_admin",
-                                                    locals: { record: @lottery_entrant })
-        end
+        format.turbo_stream
       end
     else
       render :edit, status: :unprocessable_entity

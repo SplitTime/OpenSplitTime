@@ -2,7 +2,7 @@
 
 module PartnersHelper
   def link_to_event_group_partner_delete(partner)
-    url = event_group_partner_path(partner.partnerable, partner)
+    url = organization_event_group_partner_path(partner.organization, partner.partnerable, partner)
     tooltip = "Delete partner"
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Continue?",
@@ -14,7 +14,7 @@ module PartnersHelper
   end
 
   def link_to_event_group_partner_edit(partner)
-    url = edit_event_group_partner_path(partner.partnerable, partner)
+    url = edit_organization_event_group_partner_path(partner.organization, partner.partnerable, partner)
     tooltip = "Edit partner"
     options = {data: {toggle: :tooltip,
                       placement: :bottom,

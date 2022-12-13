@@ -87,7 +87,6 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show]
-    resources :partners, except: [:index, :show], module: "event_groups"
 
     member do
       get :assign_bibs
@@ -164,7 +163,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :event_groups, except: [:index, :show]
+    resources :event_groups, except: [:index, :show] do
+      resources :partners, except: [:show], module: "event_groups"
+    end
+
     resources :event_series
 
     resources :lotteries do

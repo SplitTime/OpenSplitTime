@@ -1,0 +1,31 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Partners - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item active"><%= @presenter.event_group.name %></li>
+            <li class="breadcrumb-item active">Setup</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= setup_view_tabs(@presenter) %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render "partner_list", presenter: @presenter %>
+</article>

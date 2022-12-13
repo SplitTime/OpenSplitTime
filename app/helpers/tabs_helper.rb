@@ -60,8 +60,8 @@ module TabsHelper
         link: setup_event_group_path(presenter.event_group, display_style: "entrants"),
         active: action_name == "setup" && presenter.display_style == "entrants" },
       { name: "Partners",
-        link: setup_event_group_path(presenter.event_group, display_style: "partners"),
-        active: action_name == "setup" && presenter.display_style == "partners" },
+        link: organization_event_group_partners_path(presenter.organization, presenter.event_group),
+        active: controller_name == "partners" },
     ]
 
     build_view_tabs(items)

@@ -4,7 +4,10 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <%= link_to fa_icon("plus", text: "Add a partner"), new_event_group_partner_path(presenter.event_group), id: "add-partner", class: "btn btn-success" %>
+        <%= link_to fa_icon("plus", text: "Add a partner"),
+                    new_organization_event_group_partner_path(presenter.organization, presenter.event_group),
+                    id: "add-partner",
+                    class: "btn btn-success" %>
       </div>
     </div>
   </div>

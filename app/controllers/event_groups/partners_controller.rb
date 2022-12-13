@@ -2,10 +2,14 @@
 
 module EventGroups
   class PartnersController < ::PartnersController
+    def index
+      @presenter = ::EventGroupSetupPresenter.new(@partnerable, view_context)
+    end
+
     private
 
     def partnerable_path
-      setup_event_group_path(@partner.partnerable, display_style: :partners)
+      organization_event_group_partners_path(@partner.partnerable)
     end
 
     def set_partnerable

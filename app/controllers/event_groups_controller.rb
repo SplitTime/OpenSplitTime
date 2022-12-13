@@ -31,7 +31,7 @@ class EventGroupsController < ApplicationController
     event_group = organization.event_groups.new
     authorize event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
   def create
@@ -51,7 +51,7 @@ class EventGroupsController < ApplicationController
     event_group = organization.event_groups.friendly.find(params[:id])
     authorize event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(event_group, params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
   def update
@@ -71,7 +71,7 @@ class EventGroupsController < ApplicationController
 
   def setup
     authorize @event_group
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
   def efforts
@@ -182,7 +182,7 @@ class EventGroupsController < ApplicationController
   def link_lotteries
     authorize @event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
   # POST /event_groups/1/sync_lottery_entrants
@@ -198,7 +198,7 @@ class EventGroupsController < ApplicationController
   def assign_bibs
     authorize @event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
   # PATCH /event_groups/1/auto_assign_bibs
@@ -232,7 +232,7 @@ class EventGroupsController < ApplicationController
   def manage_entrant_photos
     authorize @event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
   # PATCH /event_groups/1/update_entrant_photos
@@ -280,7 +280,7 @@ class EventGroupsController < ApplicationController
   def manage_start_times
     authorize @event_group
 
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
   # GET /event_groups/1/manage_start_times_edit_actual

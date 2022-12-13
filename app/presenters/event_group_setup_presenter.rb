@@ -16,10 +16,10 @@ class EventGroupSetupPresenter < BasePresenter
            :unreconciled_efforts,
            to: :event_group
 
-  def initialize(event_group, params, current_user)
+  def initialize(event_group, view_context)
     @event_group = event_group
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @params = view_context.prepared_params
   end
 
   def authorized_fully?
@@ -83,7 +83,8 @@ class EventGroupSetupPresenter < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params, :view_context
+  delegate :current_user, to: :view_context, private: true
 
   def default_display_style
     "events"

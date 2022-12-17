@@ -39,6 +39,14 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.cloudflare_turnstile_secret_key
+    Rails.application.credentials.dig(:cloudflare, :turnstile, :secret_key)
+  end
+
+  def self.cloudflare_turnstile_site_key
+    Rails.application.credentials.dig(:cloudflare, :turnstile, :site_key)
+  end
+
   def self.credentials_content_path
     if credentials_env?
       Rails.root.join("config/credentials/#{credentials_env}.yml.enc")
@@ -105,9 +113,5 @@ module OstConfig
 
   def self.shortened_uri
     ENV["SHORTENED_URI"] || base_uri
-  end
-
-  def self.timestamp_bot_detection?
-    cast_to_boolean ENV["TIMESTAMP_BOT_DETECTION"]
   end
 end

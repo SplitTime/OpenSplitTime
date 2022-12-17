@@ -281,6 +281,7 @@ Rails.application.routes.draw do
     get "/:id/app", to: "events#app", as: "app"
   end
 
+  get "/courses(/*path)" => redirect { |params| "/organizations/#{::Course.friendly.find(params[:path]).organization.to_param}/courses/#{::Course.friendly.find(params[:path]).to_param}" }
   get "/s/:id" => "shortener/shortened_urls#show"
 
   # Handle unmatched routes with 404, but allow routes from

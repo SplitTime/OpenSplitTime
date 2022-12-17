@@ -39,6 +39,10 @@ module OstConfig
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def self.cloudflare_analytics_token
+    Rails.application.credentials.dig(:cloudflare, :analytics, :token)
+  end
+
   def self.cloudflare_turnstile_secret_key
     Rails.application.credentials.dig(:cloudflare, :turnstile, :secret_key)
   end

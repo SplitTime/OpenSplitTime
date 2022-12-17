@@ -12,9 +12,7 @@
   <%= javascript_pack_tag "application" %>
   <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{::OstConfig.google_maps_api_key}" %>
   <%= csrf_meta_tags %>
-  <meta name="google-site-verification" content="JUzhFcmle9w9R7FTwwMGSq5eM1fAPmU0vbrVM30TZlI"/>
-  <%= render "layouts/cloudflare_analytics" %>
-  <%= render "layouts/google_analytics" %>
+  <%= render "layouts/cloudflare_analytics" if Rails.env.production? %>
   <%= render "layouts/favicon" %>
 </head>
 

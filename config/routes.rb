@@ -282,8 +282,9 @@ Rails.application.routes.draw do
   end
 
   get "/courses(/*path)" => redirect { |params|
-    course = ::Course.friendly.find(params[:path])
-    "/organizations/#{course.organization.to_param}/courses/#{course.to_param}"
+    course_id, tail = params[:path].split("/", 2)
+    course = ::Course.friendly.find(course_id)
+    ["/organizations/#{course.organization.to_param}/courses/#{course.to_param}", tail].compact.join("/")
   }
 
   get "/s/:id" => "shortener/shortened_urls#show"

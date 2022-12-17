@@ -14,7 +14,8 @@ module Cloudflare
       }
 
       response = http_client.post(TURNSTILE_URL, params)
-      response.body["success"] == "true"
+      parsed_response = JSON.parse(response.body)
+      parsed_response["success"] == true
     end
   end
 end

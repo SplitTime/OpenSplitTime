@@ -13,7 +13,7 @@ module Cloudflare
         secret: ::OstConfig.cloudflare_turnstile_secret_key,
       }
 
-      response = http_client.post(url, params)
+      response = http_client.post(TURNSTILE_URL, params)
       response.body["success"] == "true"
     end
   end

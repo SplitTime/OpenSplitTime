@@ -6,7 +6,6 @@ class ApiController < ::ApplicationController
   skip_before_action :verify_authenticity_token, if: :json_web_token_present?
   before_action :authenticate_user!
   after_action :verify_authorized
-  after_action :report_to_ga
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found_json
 
   private
@@ -26,21 +25,5 @@ class ApiController < ::ApplicationController
 
   def json_web_token_present?
     !!current_user&.has_json_web_token
-  end
-
-  def report_to_ga
-    return unless Rails.env.production?
-
-    ga_params = {
-      v: 1,
-      t: "event",
-      tid: ::OstConfig.google_analytics_4_property_id,
-      cid: 555,
-      ec: controller_name,
-      ea: action_name,
-      el: params[:id],
-    }
-
-    ::ReportAnalyticsJob.perform_later(ga_params)
   end
 end

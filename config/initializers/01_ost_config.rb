@@ -79,14 +79,6 @@ module OstConfig
     ENV["FULL_URI"] || "http://localhost:3000"
   end
 
-  def self.google_analytics_4_measurement_id
-    Rails.application.credentials.dig(:google, :analytics_4, :measurement_id)
-  end
-
-  def self.google_analytics_4_property_id
-    Rails.application.credentials.dig(:google, :analytics_4, :property_id)
-  end
-
   def self.google_maps_api_key
     Rails.application.credentials.dig(:google, :maps, :api_key)
   end

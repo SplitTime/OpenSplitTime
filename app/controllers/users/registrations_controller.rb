@@ -2,9 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    before_action :protect_from_spam, only: [:create]
-
-    BOT_FORM_FILL_DURATION_LIMIT = 10.seconds
+    before_action :turnstile_verify, only: [:create]
 
     # GET /resource/sign_up
     def new
@@ -25,29 +23,13 @@ module Users
 
     private
 
-    def protect_from_spam
-      # params[:username] is a honeypot field
-      # params[:timestamp] contains seconds from epoch at the time the form was loaded
-      if params[:username].present?
-        redirect_to root_path
-      elsif random_generated_names?
-        redirect_to root_path
-      elsif ::OstConfig.timestamp_bot_detection? && params[:timestamp].blank?
-        redirect_to root_path
-      elsif ::OstConfig.timestamp_bot_detection?
-        form_fill_duration = Time.current.to_i - params[:timestamp].to_i
-        redirect_to root_path if form_fill_duration < BOT_FORM_FILL_DURATION_LIMIT
-      end
-    end
+    def turnstile_verify
+      return if ::OstConfig.cloudflare_turnstile_secret_key.nil?
 
-    def random_generated_names?
-      first_name = params.dig(:user, :first_name) || ""
-      last_name = params.dig(:user, :last_name) || ""
+      token = params[:cf_turnstile_response].to_s
+      return if ::Cloudflare::TurnstileVerifier.token_valid?(token)
 
-      first_name.length > 7 &&
-        last_name.length > 7 &&
-        [first_name.downcase, first_name.upcase, first_name.titleize].exclude?(first_name) &&
-        [last_name.downcase, last_name.upcase, last_name.titleize].exclude?(last_name)
+      redirect_to root_path, notice: "Unauthorized"
     end
 
     def pre_filled_params

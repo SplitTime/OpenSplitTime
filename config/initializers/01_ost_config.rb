@@ -114,8 +114,4 @@ module OstConfig
   def self.shortened_uri
     ENV["SHORTENED_URI"] || base_uri
   end
-
-  def self.timestamp_bot_detection?
-    cast_to_boolean ENV["TIMESTAMP_BOT_DETECTION"]
-  end
 end

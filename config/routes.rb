@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  draw :madmin
+
   root to: "visitors#index"
   get "photo_credits", to: "visitors#photo_credits"
   get "about", to: "visitors#about"

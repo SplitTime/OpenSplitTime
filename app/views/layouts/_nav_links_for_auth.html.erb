@@ -14,6 +14,7 @@
         <%= link_to "Change Preferences", edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: "dropdown-item" %>
         <% if current_user&.admin? %>
           <div class="dropdown-divider"></div>
+          <%= link_to "Admin Area", madmin_root_path, class: "dropdown-item" %>
           <%= link_to "List Users", users_path, class: "dropdown-item" %>
         <% end %>
         <div class="dropdown-divider"></div>

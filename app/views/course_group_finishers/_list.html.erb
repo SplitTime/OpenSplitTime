@@ -1,6 +1,4 @@
-<div data-controller="infinite-scroll"
-     data-infinite-scroll-next-page-url="<%= presenter.next_page_url %>"
-     data-infinite-scroll-html-template="course_group_finishers/course_group_finisher">
+<div>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -10,20 +8,12 @@
       <th class="text-center"><%= link_to_sort_heading("Finish Count", "-finish_count,last_name,first_name") %></th>
     </tr>
     </thead>
-    <tbody data-infinite-scroll-target="result">
+    <tbody id="course_group_finishers">
     <%= render partial: "course_group_finisher",
                collection: @presenter.filtered_finishers,
                locals: { organization: @presenter.organization, course_group: @presenter.course_group } %>
     </tbody>
   </table>
 
-  <div class="row">
-    <div class="col text-center" data-infinite-scroll-target="link">
-      <% if @presenter.filtered_finishers_count == @presenter.per_page %>
-        <%= link_to "Show More", "#", data: { action: "infinite-scroll#loadFromClick" } %>
-      <% else %>
-        <p>End of List</p>
-      <% end %>
-    </div>
-  </div>
+  <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 </div>

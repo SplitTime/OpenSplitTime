@@ -1,0 +1,8 @@
+<%= turbo_stream.append "lottery_entrants",
+                        partial: "lottery_entrants/lottery_entrant",
+                        collection: @presenter.lottery_entrants_paginated,
+                        as: :record %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

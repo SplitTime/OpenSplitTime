@@ -11,11 +11,7 @@ class CourseGroupBestEffortsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json do
-        segments = @presenter.filtered_segments
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html], collection: segments) : ""
-        render json: { best_effort_segments: segments, html: html, links: { next: @presenter.next_page_url } }
-      end
+      format.turbo_stream
     end
   end
 

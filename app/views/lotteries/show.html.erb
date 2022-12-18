@@ -75,23 +75,13 @@
     </aside>
 
     <% if @presenter.lottery_entrants_paginated.present? %>
-      <div data-controller="infinite-scroll"
-           data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
-           data-infinite-scroll-html-template="lottery_entrants/lottery_entrant">
-        <div data-infinite-scroll-target="result">
+      <div>
+        <div id="lottery_entrants">
           <%= render partial: "lottery_entrants/lottery_entrant", collection: @presenter.lottery_entrants_paginated, as: :record %>
         </div>
         <hr/>
 
-        <div class="row">
-          <div class="col text-center" data-infinite-scroll-target="link">
-            <% if @presenter.next_page_url.present? %>
-              <%= link_to "Show More", @presenter.next_page_url, data: { action: "infinite-scroll#loadFromClick" } %>
-            <% else %>
-              <p>End of List</p>
-            <% end %>
-          </div>
-        </div>
+        <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
       </div>
     <% else %>
       <br/>

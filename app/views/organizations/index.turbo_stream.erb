@@ -4,5 +4,5 @@
                         as: :record %>
 
 <%= turbo_stream.replace "pager",
-                         partial: "pager",
-                         locals: { presenter: @presenter } %>
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

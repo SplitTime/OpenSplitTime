@@ -1,10 +1,10 @@
-<%# locals: (presenter:) -%>
+<%# locals: (next_page_url:) -%>
 
 <div id="pager" class="row">
-  <div class="col text-center" data-infinite-scroll-target="link">
-    <% if presenter.next_page_url.present? %>
+  <div class="col text-center">
+    <% if next_page_url.present? %>
       <%= link_to "Show More",
-                  presenter.next_page_url,
+                  next_page_url,
                   data: {
                     controller: "autoclick",
                     turbo_stream: true,

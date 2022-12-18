@@ -1,6 +1,4 @@
-<div data-controller="infinite-scroll"
-     data-infinite-scroll-next-page-url="<%= @presenter.next_page_url %>"
-     data-infinite-scroll-html-template="best_effort_segments/rows">
+<div>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -17,18 +15,12 @@
       <th class="text-right"><%= @presenter.time_header_text %></th>
     </tr>
     </thead>
-    <tbody data-infinite-scroll-target="result">
-    <%= render "best_effort_segments/rows", segments: @presenter.filtered_segments %>
+    <tbody id="best_effort_segments">
+    <%= render partial: "best_effort_segments/best_effort_segment",
+               collection: @presenter.filtered_segments,
+               as: :segment %>
     </tbody>
   </table>
 
-  <div class="row">
-    <div class="col text-center" data-infinite-scroll-target="link">
-      <% if @presenter.filtered_segments_count == @presenter.per_page %>
-        <%= link_to "Show More", "#", data: {action: "infinite-scroll#loadFromClick"} %>
-      <% else %>
-        <p>End of List</p>
-      <% end %>
-    </div>
-  </div>
+  <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 </div>

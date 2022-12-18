@@ -218,7 +218,6 @@ Rails.application.routes.draw do
     get "dashboard/timeout", to: "dashboard#timeout"
     post "impersonate/start/:id", to: "impersonate#start", as: "impersonate_start"
     post "impersonate/stop", to: "impersonate#stop", as: "impersonate_stop"
-    resources :versions, only: [:index, :show]
   end
 
   namespace :live do

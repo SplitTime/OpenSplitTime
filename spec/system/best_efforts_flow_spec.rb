@@ -87,6 +87,6 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   end
 
   def visit_page
-    visit best_efforts_organization_course_path(course.organization, course)
+    visit organization_course_best_efforts_path(course.organization, course)
   end
 end

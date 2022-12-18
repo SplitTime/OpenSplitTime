@@ -158,8 +158,9 @@ Rails.application.routes.draw do
     end
 
     resources :courses do
+      resources :best_efforts, only: [:index], controller: "course_best_efforts"
+
       member do
-        get :best_efforts
         get :cutoff_analysis
         get :plan_effort
       end

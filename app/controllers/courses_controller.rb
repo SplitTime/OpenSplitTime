@@ -71,21 +71,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def best_efforts
-    # If someone tries to use a segment with the same begin and end split,
-    # just null them both out (which results in start/finish)
-    if params[:split1].present? && params[:split1] == params[:split2]
-      params[:split1] = params[:split2] = nil
-    end
-
-    @presenter = BestEffortsDisplay.new(@course, view_context)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
-  end
-
   def cutoff_analysis
     @presenter = CourseCutoffAnalysisPresenter.new(@course, view_context)
   end

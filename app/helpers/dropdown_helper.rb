@@ -196,7 +196,7 @@ module DropdownHelper
   def explore_dropdown_menu(view_object)
     dropdown_items = [
       { name: "All-time best (#{view_object.course.name})",
-        link: best_efforts_organization_course_path(view_object.organization, view_object.course) },
+        link: organization_course_best_efforts_path(view_object.organization, view_object.course) },
     ]
 
     view_object.course_groups.each do |course_group|

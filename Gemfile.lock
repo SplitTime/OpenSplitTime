@@ -261,6 +261,9 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    madmin (1.2.7)
+      pagy (>= 3.5, < 6.0)
+      rails (>= 6.0.3)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.2)
@@ -324,6 +327,8 @@ GEM
       omniauth (~> 2.0)
     options (2.3.2)
     orm_adapter (0.5.0)
+    pagy (5.10.1)
+      activesupport
     paper_trail (13.0.0)
       activerecord (>= 5.2)
       request_store (~> 1.1)
@@ -601,6 +606,7 @@ DEPENDENCIES
   jwt
   listen
   local_time
+  madmin
   momentjs-rails (>= 2.20.1)
   name_of_person
   omniauth-facebook (>= 8.0.0)

@@ -2,6 +2,8 @@ ApiPagination.configure do |config|
   DEFAULT_PER_PAGE ||= 25
   MAX_PER_PAGE ||= 50
 
+  config.paginator = :pagy
+
   config.page_param do |params|
     if params[:page].is_a? ActionController::Parameters
       params[:page][:number]

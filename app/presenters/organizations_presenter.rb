@@ -30,8 +30,7 @@ class OrganizationsPresenter < BasePresenter
   private
 
   attr_reader :view_context
-
-  delegate :current_user, :params, :request, to: :view_context
+  delegate :current_user, :params, :request, to: :view_context, private: true
 
   def records_from_context_count
     @records_from_context_count ||= records_from_context.size

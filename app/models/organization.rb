@@ -33,8 +33,9 @@ class Organization < ApplicationRecord
         .distinct
   }
   scope :with_visible_event_count, lambda {
-    left_joins(event_groups: :events).select("organizations.*, COUNT(DISTINCT events) AS event_count")
-        .where(event_groups: {concealed: false}).group("organizations.id, event_groups.organization_id")
+    left_joins(event_groups: :events)
+      .select("organizations.*, COUNT(DISTINCT events) filter (where event_groups.concealed is false) AS event_count")
+      .group("organizations.id, event_groups.organization_id")
   }
 
   alias_attribute :owner_id, :created_by

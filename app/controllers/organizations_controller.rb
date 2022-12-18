@@ -9,15 +9,8 @@ class OrganizationsController < ApplicationController
     @presenter = OrganizationsPresenter.new(view_context)
 
     respond_to do |format|
-      format.html do
-        session[:return_to] = organizations_path
-      end
-
-      format.json do
-        records = @presenter.records_from_context
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], collection: records, as: :record, formats: [:html]) : ""
-        render json: {records: records, html: html, links: {next: @presenter.next_page_url}}
-      end
+      format.html { session[:return_to] = organizations_path }
+      format.turbo_stream
     end
   end
 

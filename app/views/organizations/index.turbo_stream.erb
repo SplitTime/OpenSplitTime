@@ -1,0 +1,8 @@
+<%= turbo_stream.append "organizations",
+                        partial: "organization",
+                        collection: @presenter.records_from_context,
+                        as: :record %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

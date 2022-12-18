@@ -33,6 +33,6 @@ class OrganizationsPresenter < BasePresenter
   delegate :current_user, :params, :request, to: :view_context, private: true
 
   def records_from_context_count
-    @records_from_context_count ||= records_from_context.size
+    @records_from_context_count ||= ::Organization.from(records_from_context).count
   end
 end

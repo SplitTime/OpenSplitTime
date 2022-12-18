@@ -1,3 +1,5 @@
+<%# locals: (organization:, course_group:, course_group_finisher:) -%>
+
 <tr>
   <td><strong><%= link_to course_group_finisher.full_name, organization_course_group_finisher_path(organization, course_group, course_group_finisher.slug) %></strong></td>
   <td><%= course_group_finisher.gender.titleize %></td>

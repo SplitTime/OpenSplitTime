@@ -1,0 +1,8 @@
+<%= turbo_stream.append "best_effort_segments",
+                        partial: "best_effort_segment",
+                        collection: @presenter.filtered_segments,
+                        locals: { organization: @presenter.organization, course_group: @presenter.course_group } %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

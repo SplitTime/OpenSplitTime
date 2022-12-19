@@ -10,11 +10,7 @@ class ActiveRecord::Base
         file.sub!(".rb", "")
         klass = file.classify.safe_constantize
 
-        if klass.nil?
-          Rails.logger.warn "all_polymorphic_types method could not find a class for #{file}"
-          next
-        end
-
+        next if klass.nil?
         next unless klass.ancestors.include?(ActiveRecord::Base)
 
         klass.reflect_on_all_associations(:has_many).select { |r| r.options[:as] }.each do |reflection|

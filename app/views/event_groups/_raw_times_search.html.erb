@@ -1,16 +1,16 @@
 <%= form_tag raw_times_event_group_path(@presenter.event_group), method: :get do %>
   <div class="input-group">
-    <%= text_field_tag 'filter[search]',
+    <%= text_field_tag "filter[search]",
                        @presenter.search_text,
-                       placeholder: 'Bib #',
+                       placeholder: "Bib #",
                        autofocus: true,
-                       class: 'form-control search-box' %>
+                       class: "form-control search-box" %>
     <%= hidden_field_tag :stopped, request.params[:stopped] %>
     <%= hidden_field_tag :reviewed, request.params[:reviewed] %>
     <%= hidden_field_tag :matched, request.params[:matched] %>
     <span class="input-group-append">
-        <%= button_tag(type: :submit, class: 'btn btn-primary') do %>
-            <i class='fas fa-search'></i>
+        <%= button_tag(type: :submit, id: "raw-times-search-submit", class: "btn btn-primary") do %>
+            <i class="fas fa-search"></i>
         <% end %>
       </span>
   </div>

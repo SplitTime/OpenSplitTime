@@ -1,4 +1,4 @@
-<%# Requires parameter view_object %>
+<%# locals: (view_object:) -%>
 
 <% if view_object.raw_times.blank? %>
   <article class="ost-article container">
@@ -9,7 +9,7 @@
     <div class="container">
       <div class="row">
         <div class="col-auto">
-          <%= link_to 'Delete Duplicates', delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: 'btn btn-md btn-warning' %>
+          <%= link_to "Delete Duplicates", delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: "btn btn-md btn-warning" %>
         </div>
         <!-- Filter Widget -->
         <div class="col form-inline">
@@ -20,7 +20,7 @@
         </div>
         <!-- Search Widget -->
         <div class="col-auto form-inline">
-          <%= render 'raw_times_search' %>
+          <%= render "raw_times_search" %>
         </div>
       </div>
     </div>
@@ -48,26 +48,26 @@
       <table class="table table-condensed table-striped">
         <thead>
         <tr>
-          <th><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Bib", :sortable_bib_number, view_object.existing_sort) %></th>
           <% if view_object.multiple_events? %>
-            <th><%= link_to_reversing_sort_heading('Event', 'event_id,sortable_bib_number', view_object.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading("Event", "event_id,sortable_bib_number", view_object.existing_sort) %></th>
           <% end %>
-          <th><%= link_to_reversing_sort_heading('Name', :effort_last_name, view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Split Name', 'split_name,sortable_bib_number', view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Name", :effort_last_name, view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Split Name", "split_name,sortable_bib_number", view_object.existing_sort) %></th>
           <% if view_object.multiple_sub_splits? %>
-            <th class="text-center"><%= link_to_reversing_sort_heading('In/Out', 'bitkey,sortable_bib_number', view_object.existing_sort) %></th>
+            <th class="text-center"><%= link_to_reversing_sort_heading("In/Out", "bitkey,sortable_bib_number", view_object.existing_sort) %></th>
           <% end %>
-          <th><%= link_to_reversing_sort_heading('Time', :absolute_time, view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Time", :absolute_time, view_object.existing_sort) %></th>
           <% if view_object.monitor_pacers? %>
             <th class="text-center">Pacer</th>
           <% end %>
-          <th class="text-center"><%= link_to_reversing_sort_heading('Stop', 'stopped_here,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Source', 'source,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Created by', 'created_by,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Created at', 'created_at,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Reviewed by', 'reviewed_by,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Reviewed at', 'reviewed_at,sortable_bib_number', view_object.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Match?', 'split_time_id,sortable_bib_number', view_object.existing_sort) %></th>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Stop", "stopped_here,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Source", "source,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Created by", "created_by,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Created at", "created_at,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Reviewed by", "reviewed_by,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Reviewed at", "reviewed_at,sortable_bib_number", view_object.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Match?", "split_time_id,sortable_bib_number", view_object.existing_sort) %></th>
           <th></th>
         </tr>
         </thead>
@@ -76,7 +76,7 @@
           <tr id="<%= "raw_time_#{raw_time.id}" %>">
             <td><%= raw_time.bib_number %></td>
             <% if view_object.multiple_events? %>
-              <td><%= raw_time.event&.guaranteed_short_name || '--' %></td>
+              <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>
             <% end %>
             <td><%= link_to_raw_time_effort(raw_time) %></td>
             <td><%= link_to_raw_time_split(raw_time) %></td>
@@ -85,15 +85,15 @@
             <% end %>
             <td><%= raw_time.military_time(view_object.home_time_zone) %></td>
             <% if view_object.monitor_pacers? %>
-              <td class="text-center"><%= "#{raw_time.with_pacer? ? 'Yes' : 'No'}" %></td>
+              <td class="text-center"><%= "#{raw_time.with_pacer? ? "Yes" : "No"}" %></td>
             <% end %>
-            <td class="text-center"><%= "#{raw_time.stopped_here? ? 'Yes' : 'No'}" %></td>
+            <td class="text-center"><%= "#{raw_time.stopped_here? ? "Yes" : "No"}" %></td>
             <td><%= raw_time.source_text %></td>
             <td><%= raw_time.creator_full_name %></td>
-            <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
+            <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : "--" %></td>
             <td><%= raw_time.reviewer_full_name %></td>
-            <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : '--' %></td>
-            <td><%= raw_time.matched? ? 'Yes' : 'No' %></td>
+            <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : "--" %></td>
+            <td><%= raw_time.matched? ? "Yes" : "No" %></td>
             <td>
               <div class="col-xs-12 text-nowrap">
                 <%= link_to_toggle_raw_time_review(raw_time) %>

@@ -80,7 +80,7 @@ RSpec.describe "visit an event group raw times list page and try various feature
   end
 
   def search_button
-    find("[type=submit]")
+    find("#raw-times-search-submit")
   end
 
   def verify_raw_times_present(raw_times)

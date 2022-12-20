@@ -1,14 +1,16 @@
-<%= render 'shared/errors', obj: @effort %>
+<%= render "shared/errors", obj: @effort %>
 
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@effort, html: {class: "form-horizontal", role: "form"}) do |f| %>
+      <%= form_for(@effort, html: { class: "form-horizontal", role: "form" }) do |f| %>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <%= f.label :event %>
-            <%= f.select :event_id, @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
-                         {prompt: true}, {class: "form-control dropdown-select-field"} %>
+            <%= f.select :event_id,
+                         @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
+                         { prompt: true },
+                         { class: "form-control dropdown-select-field" } %>
           </div>
         </div>
 
@@ -23,8 +25,10 @@
           </div>
           <div class="col-md-2 mb-3">
             <%= f.label :gender %>
-            <%= f.select :gender, Effort.genders.keys.map { |gender| [gender.titleize, gender] },
-                         {prompt: true}, {class: "form-control"} %>
+            <%= f.select :gender,
+                         Effort.genders.keys.map { |gender| [gender.titleize, gender] },
+                         { prompt: true },
+                         { class: "form-control" } %>
           </div>
         </div>
 
@@ -41,13 +45,13 @@
 
         <div class="form-row" data-controller="carmen" data-carmen-model="effort">
           <div class="col-md-4 mb-3">
-            <%= f.label :country_code, 'Country' %>
-            <%= carmen_country_select :effort, :country_code, priority: %w(US CA),
-                                      prompt: 'Please select a country' %>
+            <%= f.label :country_code, "Country" %>
+            <%= carmen_country_select :effort, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :state_code, 'State' %><br/>
-            <%= render partial: 'carmen/subregion_select', locals: {model: :effort, parent_region: f.object.country_code} %>
+            <%= f.label :state_code, "State" %><br/>
+            <%= render partial: "carmen/subregion_select",
+                       locals: { model: :effort, parent_region: f.object.country_code } %>
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :city %>
@@ -80,14 +84,14 @@
         <div class="form-row">
           <div class="col-md-8 mb-3">
             <%= f.label :photo %>
-            <%= f.file_field :photo, class: 'form-control' %>
+            <%= f.file_field :photo, class: "form-control" %>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-md-8 mb-3">
             <%= f.label :comments %>
-            <%= f.text_area :comments, class: 'form-control' %>
+            <%= f.text_area :comments, class: "form-control" %>
           </div>
         </div>
 
@@ -114,10 +118,10 @@
         <br/>
         <div class="form-row">
           <div class="col-md-2 mb-3">
-            <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>
           </div>
           <div class="col-md-2 mb-3">
-            <%= link_to 'Cancel', request.referrer, class: "btn btn-outline-secondary" %>
+            <%= link_to "Cancel", request.referrer, class: "btn btn-outline-secondary" %>
           </div>
         </div>
       <% end %>

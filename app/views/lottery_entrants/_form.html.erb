@@ -1,8 +1,8 @@
-<%= render 'shared/errors', obj: @lottery_entrant %>
+<%= render "shared/errors", obj: @lottery_entrant %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: [@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant], html: {class: "form-horizontal"}) do |f| %>
+    <%= form_with(model: [@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant], html: { class: "form-horizontal" }) do |f| %>
       <div class="form-row">
         <div class="form-group col-md-4">
           <%= f.label :first_name %>
@@ -17,7 +17,7 @@
         <div class="form-group col-md-2">
           <%= f.label :gender %>
           <%= f.select :gender, LotteryEntrant.genders.keys.map { |gender| [gender.titleize, gender] },
-                       {prompt: true}, {class: "form-control"} %>
+                       { prompt: true }, { class: "form-control" } %>
         </div>
 
         <div class="form-group col-md-2">
@@ -34,23 +34,23 @@
 
         <div class="form-group col-md-4">
           <%= f.label :country_code, "Country" %>
-          <%= carmen_country_select :lottery_entrant, :country_code,
-                                    priority: %w(US CA),
-                                    selected: @lottery_entrant.country_code,
-                                    prompt: "Please select a country" %>
+          <%= carmen_country_select :lottery_entrant, :country_code %>
         </div>
 
         <div class="form-group col-md-3">
           <%= f.label :state_code, "State" %><br/>
-          <%= render partial: "carmen/subregion_select", locals: {model: :lottery_entrant, parent_region: f.object.country_code} %>
+          <%= render partial: "carmen/subregion_select",
+                     locals: { model: :lottery_entrant, parent_region: f.object.country_code } %>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-2">
           <%= f.label :division %>
-          <%= f.select :lottery_division_id, @lottery_entrant.lottery.divisions.map { |division| [division.name, division.id] },
-                       {}, {class: "form-control"} %>
+          <%= f.select :lottery_division_id,
+                       @lottery_entrant.lottery.divisions.map { |division| [division.name, division.id] },
+                       {},
+                       { class: "form-control" } %>
         </div>
 
         <div class="form-group col-md-2">
@@ -60,7 +60,7 @@
 
         <div class="form-group col-md-2">
           <%= f.label :pre_selected %>
-          <%= f.select :pre_selected, [["No", false], ["Yes", true]], {}, {class: "form-control"} %>
+          <%= f.select :pre_selected, [["No", false], ["Yes", true]], {}, { class: "form-control" } %>
         </div>
 
         <div class="form-group col-md-2">

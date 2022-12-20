@@ -1,9 +1,9 @@
-<%= render 'shared/errors', obj: @person %>
+<%= render "shared/errors", obj: @person %>
 
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@person, html: {class: "form-horizontal", role: "form"}) do |f| %>
+      <%= form_for(@person, html: { class: "form-horizontal", role: "form" }) do |f| %>
         <div class="form-row">
           <div class="col-md-4 mb-3">
             <%= f.label :first_name %>
@@ -15,8 +15,10 @@
           </div>
           <div class="col-md-2 mb-3">
             <%= f.label :gender %>
-            <%= f.select :gender, Effort.genders.keys.map { |gender| [gender.titleize, gender] },
-                         {prompt: true}, {class: "form-control"} %>
+            <%= f.select :gender,
+                         Effort.genders.keys.map { |gender| [gender.titleize, gender] },
+                         { prompt: true },
+                         { class: "form-control" } %>
           </div>
         </div>
 
@@ -29,13 +31,13 @@
 
         <div class="form-row" data-controller="carmen" data-carmen-model="person">
           <div class="col-md-4 mb-3">
-            <%= f.label :country_code, 'Country' %>
-            <%= carmen_country_select :person, :country_code, priority: %w(US CA),
-                                      prompt: 'Please select a country' %>
+            <%= f.label :country_code, "Country" %>
+            <%= carmen_country_select :person, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :state_code, 'State' %><br/>
-            <%= render partial: 'carmen/subregion_select', locals: {model: :person, parent_region: f.object.country_code} %>
+            <%= f.label :state_code, "State" %><br/>
+            <%= render partial: "carmen/subregion_select",
+                       locals: { model: :person, parent_region: f.object.country_code } %>
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :city %>
@@ -66,10 +68,10 @@
         <br/>
         <div class="form-row">
           <div class="col-md-2 mb-3">
-            <%= f.submit(@person.new_record? ? "Create Person" : "Update Person", class: 'btn btn-primary btn-large') %>
+            <%= f.submit(@person.new_record? ? "Create Person" : "Update Person", class: "btn btn-primary btn-large") %>
           </div>
           <div class="col-md-2 mb-3">
-            <%= link_to 'Cancel', @person.new_record? ? people_path : @person, class: "btn btn-outline-secondary" %>
+            <%= link_to "Cancel", @person.new_record? ? people_path : @person, class: "btn btn-outline-secondary" %>
           </div>
         </div>
       <% end %>

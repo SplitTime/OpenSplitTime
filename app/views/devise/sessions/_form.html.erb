@@ -4,25 +4,25 @@
              data: {action: "ajax:success->login#reloadPage ajax:error->login#showErrors"}) do |f| %>
   <div class="form-group">
     <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+    <%= f.email_field :email, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
   </div>
 
   <div class="form-group">
     <%= f.label :password %>
-    <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' %>
+    <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
   </div>
 
   <% if devise_mapping.rememberable? %>
     <div class="form-group form-check">
-      <%= f.check_box :remember_me, class: 'form-check-input' %>
-      <%= f.label :remember_me, class: 'form-check-label' do %>
-        <%= resource.class.human_attribute_name('remember_me') %>
+      <%= f.check_box :remember_me, class: "form-check-input" %>
+      <%= f.label :remember_me, class: "form-check-label" do %>
+        <%= resource.class.human_attribute_name("remember_me") %>
       <% end %>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= f.submit t('devise.sessions.new.sign_in'), id: 'log-in-modal-submit', class: 'btn btn-primary',
-                 data: {action: 'click->login#hideErrors', turbo: false} %>
+    <%= f.submit t("devise.sessions.new.sign_in"), id: "log-in-modal-submit", class: "btn btn-primary",
+                 data: {action: "click->login#hideErrors", turbo: false} %>
   </div>
 <% end %>

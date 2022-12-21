@@ -1,16 +1,14 @@
-class Geodata
-  def self.standard_countries_subregions
-    serialize_countries(sorted_countries(%w[US CA]))
-  end
+# frozen_string_literal: true
 
-  def self.serialize_countries(countries)
-    countries.map { |country| serialize_country(country) }
-  end
+class Geodata
+  ALL_COUNTRIES = ::Carmen::Country.all.freeze
+  PRIORITY_COUNTRY_CODES = %w[US CA].freeze
+  SORTED_COUNTRIES = ALL_COUNTRIES.sort_by { |country| [PRIORITY_COUNTRY_CODES.index(country.code) || Float::INFINITY, country.name] }.freeze
 
   def self.serialize_country(country)
-    {code: country.code,
-     name: country.name,
-     subregions: included_subregions(country).sort_by(&:name).map { |subregion| [subregion.code, subregion.name] }.to_h}
+    { code: country.code,
+      name: country.name,
+      subregions: included_subregions(country).sort_by(&:name).map { |subregion| [subregion.code, subregion.name] }.to_h }
   end
 
   def self.included_subregions(country)
@@ -22,11 +20,5 @@ class Geodata
     end
   end
 
-  def self.sorted_countries(priority = [])
-    all_countries.sort_by { |country| [priority.index(country.code) || Float::INFINITY, country.name] }
-  end
-
-  def self.all_countries
-    Carmen::Country.all
-  end
+  STANDARD_COUNTRIES_SUBREGIONS = SORTED_COUNTRIES.map { |country| serialize_country(country) }.freeze
 end

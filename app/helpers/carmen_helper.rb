@@ -1,23 +1,32 @@
 # frozen_string_literal: true
 
 module CarmenHelper
-  def carmen_country_select(model, field, args)
-    priority = args[:priority]
-    prompt = "Please select a country"
-    country_table = Geodata.sorted_countries(priority).map { |country| [country.name, country.code] }
-    country_table.unshift([prompt, nil])
+  SORTED_COUNTRIES_FOR_SELECT = Geodata::SORTED_COUNTRIES.map { |country| [country.name, country.code] }.freeze
 
-    select(model, field, country_table, {}, {class: "form-control",
-                                             data: {"carmen-target" => "countrySelect",
-                                                    action: "change->carmen#getSubregions"}})
+  def carmen_country_select(model, field, args = {})
+    prompt = args.delete(:prompt) || "Please select a country"
+    options = { include_blank: prompt }.merge(args)
+
+    select(model,
+           field,
+           SORTED_COUNTRIES_FOR_SELECT,
+           options,
+           { class: "form-control",
+             data: { "carmen-target" => "countrySelect",
+                     action: "change->carmen#getSubregions" } })
   end
 
   def carmen_subregion_select(model, field, country, args = {})
-    prompt = args[:prompt]
+    prompt = args.delete(:prompt)
+    options = { include_blank: prompt }.merge(args)
     subregion_table = country.present? ? carmen_subregions(country) : []
-    subregion_table.unshift([prompt, nil])
 
-    select(model, field, subregion_table, {}, {class: "form-control", disabled: country.blank?})
+    select(model,
+           field,
+           subregion_table,
+           options,
+           { class: "form-control",
+             disabled: country.blank? })
   end
 
   private

@@ -9,13 +9,13 @@ module Api
       # GET /api/v1/staging/get_countries
       def get_countries
         authorize Event
-        render json: {countries: Geodata.standard_countries_subregions}
+        render json: { countries: Geodata::STANDARD_COUNTRIES_SUBREGIONS }
       end
 
       # GET /api/v1/staging/get_time_zones
       def get_time_zones
         authorize Event
-        render json: {time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset] }}
+        render json: { time_zones: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.formatted_offset] } }
       end
 
       # Returns location data for all splits on any course that falls
@@ -50,7 +50,7 @@ module Api
         if setter.status == :ok
           render json: setter.resources.map { |resource| [resource.class.to_s.underscore, resource] }.to_h, status: setter.status
         else
-          render json: {errors: setter.resources.map { |resource| jsonapi_error_object(resource) }}, status: setter.status
+          render json: { errors: setter.resources.map { |resource| jsonapi_error_object(resource) } }, status: setter.status
         end
       end
 
@@ -62,9 +62,9 @@ module Api
         if %w[public private].include?(params[:status])
           query = EventGroupQuery.set_concealed(@event.event_group_id, params[:status] == "private")
           ActiveRecord::Base.connection.execute(query)
-          render json: {errors: {}}, status: :ok
+          render json: { errors: {} }, status: :ok
         else
-          render json: {errors: ["invalid status"], detail: "request must include status: public or status: private"}, status: :bad_request
+          render json: { errors: ["invalid status"], detail: "request must include status: public or status: private" }, status: :bad_request
         end
       end
 

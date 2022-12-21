@@ -42,16 +42,10 @@
           <% if @presenter.filtered_roster_efforts_count == @presenter.roster_efforts_count %>
             <h4><%= "#{@presenter.roster_efforts_count} efforts" %></h4>
           <% else %>
-            <h4><%= "Showing #{@presenter.filtered_roster_efforts_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
+            <h4><%= "Showing #{@presenter.filtered_roster_efforts_total_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
           <% end %>
         </div>
         <div class="col-xs-4 text-right">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
         </div>
       </div>
 
@@ -78,7 +72,8 @@
           </th>
         </tr>
         </thead>
-        <tbody>
+
+        <tbody id="roster_entrants">
         <%= render partial: "efforts/entrant_for_roster",
                    collection: @presenter.filtered_roster_efforts,
                    as: :effort,
@@ -86,11 +81,7 @@
         </tbody>
       </table>
 
-      <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
-        </div>
-      </div>
+      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 
     <% elsif @presenter.roster_efforts.blank? %>
       <strong>No efforts have been added to this event group.</strong>

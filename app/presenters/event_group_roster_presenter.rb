@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
 class EventGroupRosterPresenter < BasePresenter
+  DEFAULT_PER_PAGE = 50
+  FIRST_PAGE = 1
+
   attr_reader :event_group
+  delegate :available_live, :concealed?, :multiple_events?, :name, :organization, :scheduled_start_time_local,
+           :to_param, :unreconciled_efforts, to: :event_group
 
-  delegate :to_param, to: :event_group
-
-  def initialize(event_group, params, current_user)
+  def initialize(event_group, view_context)
     @event_group = event_group
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @params = view_context.prepared_params
   end
 
   def started_efforts
@@ -49,6 +52,22 @@ class EventGroupRosterPresenter < BasePresenter
     @filtered_roster_efforts_count ||= filtered_roster_efforts.size
   end
 
+  def filtered_roster_efforts_total_count
+    @filtered_roster_efforts_total_count ||= filtered_roster_efforts.total_entries
+  end
+
+  def next_page_url
+    view_context.url_for(request.params.merge(page: page + 1)) if filtered_roster_efforts_count == per_page
+  end
+
+  def page
+    params[:page]&.to_i || FIRST_PAGE
+  end
+
+  def per_page
+    params[:per_page]&.to_i || DEFAULT_PER_PAGE
+  end
+
   def events
     @events ||= event_group.events.select_with_params("").order(:scheduled_start_time).to_a
   end
@@ -69,13 +88,10 @@ class EventGroupRosterPresenter < BasePresenter
     :check_in_group
   end
 
-  def method_missing(method)
-    event_group.send(method)
-  end
-
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params, :view_context
+  delegate :current_user, :request, to: :view_context, private: true
 
   def matches_criteria?(effort)
     matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort) && matches_problem_criteria?(effort)

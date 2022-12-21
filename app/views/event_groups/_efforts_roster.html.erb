@@ -1,5 +1,5 @@
 <div data-controller="roster">
-  <%= render 'start_efforts_modal', resource: :event_group %>
+  <%= render "start_efforts_modal", resource: :event_group %>
   <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <%= render 'effort_lookup_stage' %>
+          <%= render "effort_lookup_stage" %>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
             <div class="card-body">
               <h5 class="card-text">
                 Unreconciled efforts exist.
-                Please <%= link_to 'reconcile', reconcile_event_group_path(@presenter.event_group) %> when you have a
+                Please <%= link_to "reconcile", reconcile_event_group_path(@presenter.event_group) %> when you have a
                 moment.
               </h5>
             </div>
@@ -42,35 +42,29 @@
           <% if @presenter.filtered_roster_efforts_count == @presenter.roster_efforts_count %>
             <h4><%= "#{@presenter.roster_efforts_count} efforts" %></h4>
           <% else %>
-            <h4><%= "Showing #{@presenter.filtered_roster_efforts_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
+            <h4><%= "Showing #{@presenter.filtered_roster_efforts_total_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
           <% end %>
         </div>
         <div class="col-xs-4 text-right">
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
-        </div>
-      </div>
-
       <table class="table table-centered table-fixed-sm table-striped">
         <thead>
         <tr>
-          <th class="text-center"><%= link_to_reversing_sort_heading('Reconciled?', 'person_id,bib_number', @presenter.existing_sort) %></th>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", @presenter.existing_sort) %></th>
           <% if @presenter.multiple_events? %>
-            <th><%= link_to_reversing_sort_heading('Event', 'event_id,bib_number', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", @presenter.existing_sort) %></th>
           <% end %>
-          <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Bib#', 'bib_number', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('From', 'state_code', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Scheduled Start', 'assumed_start_time', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Actual Start', 'actual_start_time', @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading('Emergency Contact', 'emergency_contact', @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Bib#", "bib_number", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Category", "gender,age", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("From", "state_code", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Scheduled Start", "assumed_start_time", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Actual Start", "actual_start_time", @presenter.existing_sort) %></th>
+          <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", @presenter.existing_sort) %></th>
           <% if @presenter.started_efforts.present? %>
-            <th><%= link_to_reversing_sort_heading('Status', 'data_status', @presenter.existing_sort) %></th>
+            <th><%= link_to_reversing_sort_heading("Status", "data_status", @presenter.existing_sort) %></th>
           <% end %>
           <th>
             <%= link_to_check_in_all(@presenter) %>
@@ -78,38 +72,16 @@
           </th>
         </tr>
         </thead>
-        <tbody>
-        <% @presenter.filtered_roster_efforts.each do |effort| %>
-          <tr>
-            <td class="text-center"><%= effort.unreconciled? ? 'No' : 'Yes' %></td>
-            <% if @presenter.multiple_events? %>
-              <td><%= effort.event.guaranteed_short_name %></td>
-            <% end %>
-            <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
-            <td><%= effort.bib_number %></td>
-            <td><%= effort.bio_historic %></td>
-            <td><%= effort.flexible_geolocation %></td>
-            <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
-            <td><%= day_time_military_format(effort.actual_start_time_local) %></td>
-            <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(' / ') %></td>
-            <% if @presenter.started_efforts.present? %>
-              <td><%= effort.data_status %></td>
-            <% end %>
-            <td>
-              <div id="<%= dom_id(effort) %>" class="effort">
-                <%= link_to_toggle_check_in(effort, button_param: @presenter.check_in_button_param) %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
+
+        <tbody id="roster_entrants">
+        <%= render partial: "efforts/entrant_for_roster",
+                   collection: @presenter.filtered_roster_efforts,
+                   as: :effort,
+                   locals: { presenter: @presenter } %>
         </tbody>
       </table>
 
-      <div class="row">
-        <div class="col-xs-8">
-          <%= will_paginate(@presenter.filtered_roster_efforts, inner_window: 2, outer_window: 0) %>
-        </div>
-      </div>
+      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 
     <% elsif @presenter.roster_efforts.blank? %>
       <strong>No efforts have been added to this event group.</strong>

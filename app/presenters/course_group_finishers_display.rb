@@ -2,8 +2,6 @@
 
 class CourseGroupFinishersDisplay < BasePresenter
   DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
-  DEFAULT_PER_PAGE = 50
-  FIRST_PAGE = 1
 
   attr_reader :course_group, :view_context, :request
 
@@ -54,14 +52,6 @@ class CourseGroupFinishersDisplay < BasePresenter
 
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if filtered_finishers_count == per_page
-  end
-
-  def page
-    params[:page]&.to_i || FIRST_PAGE
-  end
-
-  def per_page
-    params[:per_page]&.to_i || DEFAULT_PER_PAGE
   end
 
   private

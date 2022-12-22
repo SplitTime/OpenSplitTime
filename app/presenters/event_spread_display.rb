@@ -96,7 +96,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def per_page
-    params[:per_page] || ranked_efforts.size
+    params[:per_page]&.to_i || ranked_efforts.size
   end
 
   def split_times

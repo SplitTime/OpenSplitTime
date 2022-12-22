@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class CourseGroupBestEffortsDisplay < BasePresenter
-  DEFAULT_PER_PAGE = 50
-  FIRST_PAGE = 1
-
   attr_reader :course_group, :view_context, :request
 
   delegate :name, :organization, :to_param, to: :course_group
@@ -58,14 +55,6 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if filtered_segments_count == per_page
-  end
-
-  def page
-    params[:page]&.to_i || FIRST_PAGE
-  end
-
-  def per_page
-    params[:per_page]&.to_i || DEFAULT_PER_PAGE
   end
 
   private

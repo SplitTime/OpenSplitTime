@@ -11,14 +11,6 @@ class OrganizationsPresenter < BasePresenter
     view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
   end
 
-  def page
-    params[:page]&.to_i || 1
-  end
-
-  def per_page
-    params[:per_page]&.to_i || 25
-  end
-
   def records_from_context
     @records_from_context ||= OrganizationPolicy::Scope.new(current_user, Organization)
         .viewable

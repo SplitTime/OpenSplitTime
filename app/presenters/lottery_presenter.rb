@@ -117,14 +117,6 @@ class LotteryPresenter < BasePresenter
     @tickets_not_generated ||= lottery_tickets.empty?
   end
 
-  def page
-    params[:page]&.to_i || 1
-  end
-
-  def per_page
-    params[:per_page]&.to_i || 25
-  end
-
   private
 
   attr_reader :view_context

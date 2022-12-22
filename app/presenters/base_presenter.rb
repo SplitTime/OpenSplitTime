@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class BasePresenter
+  DEFAULT_PER_PAGE = 50
+  FIRST_PAGE = 1
+
   def initialize(_args)
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
@@ -29,11 +32,11 @@ class BasePresenter
   end
 
   def page
-    params[:page]
+    params[:page]&.to_i || FIRST_PAGE
   end
 
   def per_page
-    params[:per_page] || 200
+    params[:per_page]&.to_i || DEFAULT_PER_PAGE
   end
 
   def request_params_digest

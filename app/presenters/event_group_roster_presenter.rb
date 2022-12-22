@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class EventGroupRosterPresenter < BasePresenter
-  DEFAULT_PER_PAGE = 50
-  FIRST_PAGE = 1
-
   attr_reader :event_group
   delegate :available_live, :concealed?, :multiple_events?, :name, :organization, :scheduled_start_time_local,
            :to_param, :unreconciled_efforts, to: :event_group
@@ -58,14 +55,6 @@ class EventGroupRosterPresenter < BasePresenter
 
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if filtered_roster_efforts_count == per_page
-  end
-
-  def page
-    params[:page]&.to_i || FIRST_PAGE
-  end
-
-  def per_page
-    params[:per_page]&.to_i || DEFAULT_PER_PAGE
   end
 
   def events

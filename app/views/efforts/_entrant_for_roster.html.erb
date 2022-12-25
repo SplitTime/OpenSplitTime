@@ -16,8 +16,6 @@
     <td><%= effort.data_status %></td>
   <% end %>
   <td>
-    <div id="<%= dom_id(effort) %>" class="effort">
-      <%= link_to_toggle_check_in(effort, button_param: presenter.check_in_button_param) %>
-    </div>
+    <%= render partial: "efforts/check_in_button", locals: { effort: effort } %>
   </td>
 </tr>

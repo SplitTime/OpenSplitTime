@@ -56,9 +56,7 @@
       <% end %>
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-        <div id="<%= dom_id(@presenter.effort) %>" class="col-auto form-inline effort">
-          <%= link_to_toggle_check_in(@presenter.effort, button_param: :check_in_effort_show) %>
-        </div>
+        <%= render partial: "check_in_button", locals: { effort: @presenter.effort } %>
       <% end %>
 
       <div class="col-auto form-inline">

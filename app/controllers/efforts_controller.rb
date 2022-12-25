@@ -77,25 +77,14 @@ class EffortsController < ApplicationController
         end
       end
 
-      format.js do
+      format.turbo_stream do
         if @effort.update(permitted_params)
-          case params[:button]&.to_sym
-          when :check_in_group
-            event_group = @effort.event_group
-            view_object = EventGroupRosterPresenter.new(event_group, view_context)
-            render :toggle_group_check_in, locals: { effort: @effort, view_object: view_object }
-          when :check_in_effort_show
-            @effort = effort_with_splits
-            render :toggle_group_check_in, locals: { effort: @effort, view_object: nil }
-          else
-            raise "button not recognized"
-          end
+          presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+          render "update", locals: { effort: @effort, presenter: presenter }
         else
           render "edit", status: :unprocessable_entity
         end
       end
-
-      format.turbo_stream
     end
   end
 
@@ -151,22 +140,19 @@ class EffortsController < ApplicationController
 
   def unstart
     authorize @effort
-    effort = effort_with_splits
 
-    response = Interactors::UnstartEfforts.perform!([effort])
-    effort.reload
-    if response.successful?
-      case params[:button]&.to_sym
-      when :check_in_group
-        event_group = effort.event_group
-        view_object = EventGroupRosterPresenter.new(event_group, view_context)
-        render :toggle_group_check_in, locals: { effort: effort, view_object: view_object }
-      else
-        redirect_to request.referrer
+    response = ::Interactors::UnstartEfforts.perform!([@effort])
+    @effort.reload
+
+    respond_to do |format|
+      format.turbo_stream do
+        if response.successful?
+          presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+          render :update, locals: { effort: @effort, presenter: presenter }
+        else
+          render "edit", status: :unprocessable_entity
+        end
       end
-    else
-      set_flash_message(response)
-      redirect_to request.referrer
     end
   end
 

@@ -1,0 +1,9 @@
+<%# locals: (effort:, view_object:) -%>
+
+<%= turbo_stream.update dom_id(effort, :check_in_button),
+                        partial: "check_in_button",
+                        locals: { effort: effort } %>
+
+<%= turbo_stream.update dom_id(effort.event_group, :start_ready_efforts_button),
+                        partial: "event_groups/start_ready_efforts_button",
+                        locals: { presenter: presenter } %>

@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@effort, html: { class: "form-horizontal", role: "form" }) do |f| %>
+      <%= form_for(@effort, html: { class: "form-horizontal", role: "form", data: { turbo: false } }) do |f| %>
         <div class="form-row">
           <div class="col-md-6 mb-3">
             <%= f.label :event %>

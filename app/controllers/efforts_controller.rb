@@ -73,16 +73,16 @@ class EffortsController < ApplicationController
           end
         else
           @effort = effort
-          render "edit", status: :unprocessable_entity
+          render :edit, status: :unprocessable_entity
         end
       end
 
       format.turbo_stream do
         if @effort.update(permitted_params)
           presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
-          render "update", locals: { effort: @effort, presenter: presenter }
+          render :update, locals: { effort: @effort, presenter: presenter }
         else
-          render "edit", status: :unprocessable_entity
+          render :update, locals: { effort: @effort, presenter: presenter }, status: :unprocessable_entity
         end
       end
     end
@@ -147,10 +147,11 @@ class EffortsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         if response.successful?
-          presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
-          render :update, locals: { effort: @effort, presenter: presenter }
+          roster_presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+          effort_show_view = ::EffortShowView.new(@effort)
+          render :unstart, locals: { effort_presenter: effort_show_view, roster_presenter: roster_presenter }
         else
-          render "edit", status: :unprocessable_entity
+          redirect_to effort_path(@effort), status: :unprocessable_entity
         end
       end
     end

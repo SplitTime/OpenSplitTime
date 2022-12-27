@@ -1,6 +1,6 @@
 <%# locals: (effort:, presenter:) -%>
 
-<tr>
+<tr id="<%= dom_id effort, :roster_row %>">
   <td class="text-center"><%= effort.unreconciled? ? "No" : "Yes" %></td>
   <% if presenter.multiple_events? %>
     <td><%= effort.event.guaranteed_short_name %></td>

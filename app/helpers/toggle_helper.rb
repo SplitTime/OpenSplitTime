@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_toggle_check_in(effort, block: true)
-    block_string = block ? "btn-block" : ""
+  def link_to_toggle_check_in(effort)
     if effort.beyond_start?
       icon_name = "caret-square-right"
       button_text = "Beyond start"
@@ -29,7 +28,7 @@ module ToggleHelper
       button_class = "outline-secondary"
     end
 
-    class_string = "check-in click-spinner btn btn-#{button_class} #{block_string}"
+    class_string = "check-in click-spinner btn btn-block btn-#{button_class}"
     options = { method: :patch,
                 disabled: disabled,
                 class: class_string }

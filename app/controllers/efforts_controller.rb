@@ -5,14 +5,14 @@ class EffortsController < ApplicationController
 
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-        .where(prepared_params[:filter])
+                                   .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
         @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
       end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
-        filename = if prepared_params[:filter] == {"id" => "0"}
+        filename = if prepared_params[:filter] == { "id" => "0" }
                      "ost-effort-import-template.csv"
                    else
                      "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
@@ -36,7 +36,7 @@ class EffortsController < ApplicationController
 
   def edit
     authorize @effort
-    @effort = Effort.where(id: @effort).includes(event: {event_group: :events}).first
+    @effort = Effort.where(id: @effort).includes(event: { event_group: :events }).first
   end
 
   def create
@@ -53,32 +53,38 @@ class EffortsController < ApplicationController
   def update
     authorize @effort
 
-    effort = effort_with_splits
-    new_event_id = permitted_params.delete(:event_id)&.to_i
-
-    if effort.update(permitted_params)
-      case params[:button]&.to_sym
-      when :check_in_group
-        event_group = effort.event_group
-        view_object = EventGroupRosterPresenter.new(event_group, view_context)
-        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
-      when :check_in_effort_show
+    respond_to do |format|
+      format.html do
         effort = effort_with_splits
-        render :toggle_group_check_in, locals: {effort: effort, view_object: nil}
-      when :disassociate
-        redirect_to request.referrer
-      else
-        redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
+        new_event_id = permitted_params.delete(:event_id)&.to_i
+
+        if effort.update(permitted_params)
+          case params[:button]&.to_sym
+          when :disassociate
+            redirect_to request.referrer
+          else
+            redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
+          end
+
+          if new_event_id && new_event_id != effort.event_id
+            new_event = Event.find(new_event_id)
+            response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
+            set_flash_message(response)
+          end
+        else
+          @effort = effort
+          render :edit, status: :unprocessable_entity
+        end
       end
 
-      if new_event_id && new_event_id != effort.event_id
-        new_event = Event.find(new_event_id)
-        response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
-        set_flash_message(response)
+      format.turbo_stream do
+        if @effort.update(permitted_params)
+          presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+          render :update, locals: { effort: @effort, presenter: presenter }
+        else
+          render :update, locals: { effort: @effort, presenter: presenter }, status: :unprocessable_entity
+        end
       end
-    else
-      @effort = effort
-      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -104,7 +110,7 @@ class EffortsController < ApplicationController
       format.html
       format.json do
         html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
-        render json: {efforts: @presenter.effort, html: html}
+        render json: { efforts: @presenter.effort, html: html }
       end
     end
   end
@@ -134,22 +140,20 @@ class EffortsController < ApplicationController
 
   def unstart
     authorize @effort
-    effort = effort_with_splits
 
-    response = Interactors::UnstartEfforts.perform!([effort])
-    effort.reload
-    if response.successful?
-      case params[:button]&.to_sym
-      when :check_in_group
-        event_group = effort.event_group
-        view_object = EventGroupRosterPresenter.new(event_group, view_context)
-        render :toggle_group_check_in, locals: {effort: effort, view_object: view_object}
-      else
-        redirect_to request.referrer
+    response = ::Interactors::UnstartEfforts.perform!([@effort])
+    @effort.reload
+
+    respond_to do |format|
+      format.turbo_stream do
+        if response.successful?
+          roster_presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+          effort_show_view = ::EffortShowView.new(@effort)
+          render :unstart, locals: { effort_presenter: effort_show_view, roster_presenter: roster_presenter }
+        else
+          redirect_to effort_path(@effort), status: :unprocessable_entity
+        end
       end
-    else
-      set_flash_message(response)
-      redirect_to request.referrer
     end
   end
 
@@ -216,7 +220,7 @@ class EffortsController < ApplicationController
 
   def delete_split_times
     authorize @effort
-    effort = Effort.where(id: @effort.id).includes(split_times: {split: :course}).first
+    effort = Effort.where(id: @effort.id).includes(split_times: { split: :course }).first
 
     destroy_response = Interactors::DestroyEffortSplitTimes.perform!(effort, params[:split_time_ids])
     update_response = Interactors::UpdateEffortsStatus.perform!(effort)

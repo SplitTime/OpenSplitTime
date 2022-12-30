@@ -1,4 +1,4 @@
-<%# Requires parameter efforts %>
+<%# locals: (efforts:) -%>
 
 <table class="table table-condensed table-striped">
   <thead>
@@ -13,6 +13,7 @@
     <% end %>
   </tr>
   </thead>
+
   <tbody>
   <% efforts.each do |effort| %>
     <tr>
@@ -23,7 +24,10 @@
       <td class="text-right"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>
         <td class="text-right"><%= link_to "Disassociate",
-                                           effort_path(effort, effort: {person_id: nil}, button: :disassociate),
+                                           effort_path(effort,
+                                                       effort: { person_id: nil },
+                                                       button: :disassociate,
+                                                       format: :html),
                                            method: :patch,
                                            class: "btn btn-xs btn-danger" %></td>
       <% end %>

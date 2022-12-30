@@ -1,0 +1,17 @@
+<%# locals: (effort_presenter:, roster_presenter:) -%>
+
+<%= turbo_stream.replace dom_id(effort_presenter.effort, :check_in_button),
+                        partial: "check_in_button",
+                        locals: { effort: effort_presenter.effort } %>
+
+<%= turbo_stream.replace dom_id(effort_presenter.effort, :roster_row),
+                        partial: "entrant_for_roster",
+                        locals: { effort: effort_presenter.effort, presenter: roster_presenter } %>
+
+<%= turbo_stream.replace dom_id(effort_presenter.effort, :start_stop_buttons),
+                        partial: "start_stop_buttons",
+                        locals: { presenter: effort_presenter } %>
+
+<%= turbo_stream.update dom_id(effort_presenter.effort, :split_times_list),
+                        partial: "split_times/split_times_list",
+                        locals: { presenter: effort_presenter } %>

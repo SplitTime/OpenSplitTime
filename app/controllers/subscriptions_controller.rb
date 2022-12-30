@@ -1,44 +1,52 @@
+# frozen_string_literal: true
+
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_subscribable
+  before_action :set_subscription, except: [:create]
   after_action :verify_authorized
 
-  VALID_SUBSCRIBABLES = Subscription.all_polymorphic_types(:subscribable).map(&:to_s)
-  PROTOCOL_WARNINGS = {"sms" => "Please add a mobile phone number to receive sms text notifications.",
-                       "http" => "Please add an http endpoint to receive http notifications.",
-                       "https" => "Please add an https endpoint to receive https notifications."}.freeze
-
-  def index
-  end
+  PROTOCOL_WARNINGS = {
+    "sms" => "Please add a mobile phone number to receive sms text notifications.",
+    "http" => "Please add an http endpoint to receive http notifications.",
+    "https" => "Please add an https endpoint to receive https notifications.",
+  }.freeze
 
   def create
-    subscription_params = permitted_params.allow(subscribable_type: VALID_SUBSCRIBABLES).merge(user_id: current_user.id)
-    @subscription = Subscription.new(subscription_params)
+    @subscription = @subscribable.subscriptions.new(permitted_params)
+    @subscription.user = current_user
+    protocol = permitted_params[:protocol]
     authorize @subscription
 
-    if current_user.send(permitted_params[:protocol])
-      logger.warn "  Subscription could not be created: #{@subscription.errors.full_messages}" unless @subscription.save
-      render :toggle_progress_subscription
+    if current_user.send(protocol)
+      @subscription.save!
+      render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
     else
       flash_protocol_warning
-      render :edit_user_endpoints
+      redirect_to edit_preferences_user_path(current_user)
     end
   end
 
   def destroy
-    @subscription = Subscription.find(params[:id])
+    @subscription = @subscribable.subscriptions.find(params[:id])
+    protocol = @subscription.protocol
     authorize @subscription
 
-    if @subscription.destroy
-      logger.info "  #{@subscription} deleted"
-    else
-      logger.warn "  #{@subscription} not deleted" and return
-    end
-    render :toggle_progress_subscription
+    @subscription.destroy
+    render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
   end
 
   private
 
   def flash_protocol_warning
     flash[:warning] = PROTOCOL_WARNINGS[permitted_params[:protocol]] || "Protocol does not exist."
+  end
+
+  def set_subscribable
+    raise NotImplementedError, "set_subscribable must be implemented"
+  end
+
+  def set_subscription
+    @subscription = @subscribable.subscriptions.find(params[:id])
   end
 end

@@ -1,0 +1,5 @@
+<%# locals: (subscribable:, protocol:) -%>
+
+<%= turbo_stream.replace dom_id(subscribable, protocol),
+                         partial: "subscription_button",
+                         locals: { subscribable: subscribable, protocol: protocol } %>

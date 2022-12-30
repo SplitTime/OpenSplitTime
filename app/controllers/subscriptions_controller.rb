@@ -42,10 +42,6 @@ class SubscriptionsController < ApplicationController
     flash[:warning] = PROTOCOL_WARNINGS[permitted_params[:protocol]] || "Protocol does not exist."
   end
 
-  def subscribable_path
-    raise NotImplementedError, "subscribable_path must be implemented"
-  end
-
   def set_subscribable
     raise NotImplementedError, "set_subscribable must be implemented"
   end

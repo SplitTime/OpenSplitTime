@@ -1,11 +1,11 @@
 <%# locals: (effort:) -%>
 
-<div id="<%= dom_id(effort) %>" class="card effort">
+<div class="card effort">
   <h5 class="card-header">
     <strong><%= "Notify Me of #{effort.first_name}'s Progress" %></strong>
   </h5>
   <div class="card-body text-center">
-    <%= link_to_subscription(effort, :email) %>
-    <%= link_to_subscription(effort, :sms) %>
+    <%= render "subscriptions/subscription_button", subscribable: effort, protocol: :email %>
+    <%= render "subscriptions/subscription_button", subscribable: effort, protocol: :sms %>
   </div>
 </div>

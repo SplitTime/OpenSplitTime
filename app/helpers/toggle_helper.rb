@@ -57,11 +57,13 @@ module ToggleHelper
     protocol = protocol.to_s
     raise ArgumentError, "Improper protocol: #{protocol}" unless protocol.in?(%w[email sms])
 
-    update_type = case subscribable.class.to_s
+    update_type = case subscribable.class.name
                   when "Effort"
                     "live progress"
                   when "Person"
                     "future event sign-up"
+                  else
+                    raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
                   end
 
     args = case protocol
@@ -90,30 +92,26 @@ module ToggleHelper
   end
 
   def link_to_toggle_subscription(args)
-    subscribable_type = args[:subscribable].class.to_s
-    subscribable_id = args[:subscribable].id
+    subscribable = args[:subscribable]
     icon_name = args[:icon_name]
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    existing_subscription = current_user&.subscriptions&.find do |sub|
-      (sub.subscribable_type == subscribable_type) && (sub.subscribable_id == subscribable_id) && (sub.protocol == protocol)
-    end
+    existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
     if existing_subscription
-      url = subscription_path(existing_subscription)
+      url = polymorphic_path([subscribable, existing_subscription])
       options = { method: "delete",
-                  remote: true,
                   class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
                   data: { confirm: unsubscribe_alert } }
     else
-      url = subscriptions_path(subscription: { subscribable_type: subscribable_type, subscribable_id: subscribable_id, protocol: protocol })
+      url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
       options = { method: "post",
-                  remote: true,
                   class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
                   data: { confirm: subscribe_alert } }
     end
-    link_to fa_icon(icon_name, text: " #{protocol}"), url, options
+
+    link_to fa_icon(icon_name, text: protocol), url, options
   end
 
   def link_to_sign_in(args)

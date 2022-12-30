@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   resources :aid_stations, only: [:show, :create, :update, :destroy]
 
   resources :efforts do
+    resources :subscriptions, only: [:create, :destroy], module: "efforts"
     collection do
       get :subregion_options
       post :mini_table
@@ -195,6 +196,7 @@ Rails.application.routes.draw do
   end
 
   resources :people do
+    resources :subscriptions, only: [:create, :destroy], module: "people"
     collection { get :subregion_options }
     member { get :avatar_claim }
     member { delete :avatar_disclaim }
@@ -210,7 +212,6 @@ Rails.application.routes.draw do
 
   resources :split_times, only: [:update]
   resources :splits
-  resources :subscriptions, only: [:create, :destroy]
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 

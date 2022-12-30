@@ -35,7 +35,9 @@
           <%= image_tag(@presenter.photo.variant(:small)) %>
         </div>
       <% end %>
-      <%= render "subscription_buttons", view_object: @presenter %>
+      <% if @presenter.participation_notifiable? %>
+        <%= render "subscription_buttons", person: @presenter.person %>
+      <% end %>
     </div>
   </div>
 </header>

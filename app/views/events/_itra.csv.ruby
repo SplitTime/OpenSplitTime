@@ -20,7 +20,7 @@ if records.present?
         record.final_elapsed_seconds && time_format_hhmmss(record.final_elapsed_seconds),
         record.last_name,
         record.first_name,
-        record.gender,
+        record.gender&.first&.upcase,
         record.birthdate&.strftime("%F"),
         record.country_code_ioc,
         record.bib_number,

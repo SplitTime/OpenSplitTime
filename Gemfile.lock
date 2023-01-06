@@ -301,6 +301,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.10-x86_64-linux)
       racc (~> 1.4)
+    normalize_country (0.3.2)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -610,6 +611,7 @@ DEPENDENCIES
   madmin
   momentjs-rails (>= 2.20.1)
   name_of_person
+  normalize_country
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 1.0.0)

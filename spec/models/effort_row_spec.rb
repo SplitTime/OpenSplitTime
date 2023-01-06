@@ -61,6 +61,38 @@ RSpec.describe EffortRow, type: :model do
     end
   end
 
+  describe "#country_code_ioc" do
+    let(:result) { subject.country_code_ioc }
+
+    context "when country code is nil" do
+      let(:country_code) { nil }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+
+    context "when country code is valid" do
+      let(:country_code) { "US" }
+      it "returns the three-letter ioc code" do
+        expect(result).to eq("USA")
+      end
+    end
+
+    context "when ioc code is different from iso code" do
+      let(:country_code) { "DE" }
+      it "returns the three-letter ioc code" do
+        expect(result).to eq("GER")
+      end
+    end
+
+    context "when country code is invalid" do
+      let(:country_code) { "XX" }
+      it "returns nil" do
+        expect(result).to be_nil
+      end
+    end
+  end
+
   describe "#effort_status" do
     context "when the run is neither finished nor dropped nor in progress" do
       it "returns 'Not Started'" do

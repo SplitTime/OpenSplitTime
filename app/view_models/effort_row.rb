@@ -8,7 +8,13 @@ class EffortRow < SimpleDelegator
   def country_code_alpha_3
     return nil unless country_code.present?
 
-    Carmen::Country.coded(country_code)&.alpha_3_code
+    ::Carmen::Country.coded(country_code)&.alpha_3_code
+  end
+
+  def country_code_ioc
+    return nil unless country_code.present?
+
+    ::NormalizeCountry.convert(country_code, to: :ioc)
   end
 
   def final_lap_split_name

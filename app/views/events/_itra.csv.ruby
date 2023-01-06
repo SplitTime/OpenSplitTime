@@ -5,13 +5,13 @@ if records.present?
     csv << [
       "Ranking",
       "Time",
-      "Last name",
-      "First name",
-      "Birthdate",
+      "Family Name",
+      "First Name",
       "Gender",
+      "Birthdate",
       "Nationality",
+      "Bib no.",
       "City",
-      "Bib number"
     ]
 
     records.each do |record|
@@ -20,11 +20,11 @@ if records.present?
         record.final_elapsed_seconds && time_format_hhmmss(record.final_elapsed_seconds),
         record.last_name,
         record.first_name,
-        record.birthdate&.strftime("%F"),
         record.gender,
-        record.country_code_alpha_3,
+        record.birthdate&.strftime("%F"),
+        record.country_code_ioc,
+        record.bib_number,
         record.city,
-        record.bib_number
       ]
     end
   end

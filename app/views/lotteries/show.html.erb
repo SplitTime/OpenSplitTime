@@ -114,7 +114,7 @@
     <% end %>
 
   <% when "results" %>
-    <h4 class="mt-5"><strong>Lottery Results</strong></h4>
+    <h4 class="mt-5"><strong>Lottery Results</strong><small class="text-muted"><%= " Last updated #{time_ago_in_words(@presenter.lottery.updated_at)} ago" %></small></h4>
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery_draws.exists? %>

@@ -11,7 +11,7 @@ class LotteryEntrant < ApplicationRecord
   has_person_name
   enum gender: [:male, :female]
 
-  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id"
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
 
   strip_attributes collapse_spaces: true

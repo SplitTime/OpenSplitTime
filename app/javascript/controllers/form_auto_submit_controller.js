@@ -7,7 +7,7 @@ export default class extends Controller {
         const form = this.element
 
         Array.from(form).forEach(function (el) {
-            if (el.type === "checkbox") {
+            if (el.type === "checkbox" || el.type === "select-one") {
                 el.addEventListener("input", function () {
                     form.requestSubmit()
                 })

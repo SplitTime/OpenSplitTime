@@ -4,21 +4,21 @@ require "rails_helper"
 
 RSpec.describe Interactors::SyncLotteryEntrants do
   describe ".perform!" do
-    subject { described_class.new(event_group) }
+    subject { described_class.new(event) }
     let(:event_group) { create(:event_group, organization: organizations(:hardrock)) }
     let(:event) { create(:event, event_group: event_group, course: courses(:hardrock_cw), lottery_id: lottery_id) }
     let(:lottery_id) { nil }
     let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
 
-    context "when no events are linked to a lottery" do
+    context "when the event is not linked to a lottery" do
       it "returns a descriptive error" do
         response = subject.perform!
         expect(response).not_to be_successful
-        expect(response.errors.first.dig(:detail, :messages).first).to include("No events have been linked to a lottery")
+        expect(response.errors.first.dig(:detail, :messages).first).to include("The event has not been linked to a lottery")
       end
     end
 
-    context "when a single event is linked to a lottery" do
+    context "when the event is linked to a lottery" do
       let(:lottery_id) { lottery.id }
       let(:resulting_effort_ids) { event.reload.efforts.pluck(:id) }
 

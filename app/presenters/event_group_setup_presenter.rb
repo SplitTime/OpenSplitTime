@@ -61,6 +61,10 @@ class EventGroupSetupPresenter < BasePresenter
                             .paginate(page: page, per_page: per_page)
   end
 
+  def filtered_efforts_count
+    @filtered_efforts_count ||= filtered_efforts.size
+  end
+
   def event_group_name
     event_group.name
   end
@@ -71,6 +75,10 @@ class EventGroupSetupPresenter < BasePresenter
 
   def events
     @events ||= event_group.events.order(:scheduled_start_time)
+  end
+
+  def next_page_url
+    view_context.url_for(request.params.merge(page: page + 1)) if filtered_efforts_count == per_page
   end
 
   def organization_name
@@ -84,7 +92,7 @@ class EventGroupSetupPresenter < BasePresenter
   private
 
   attr_reader :params, :view_context
-  delegate :current_user, to: :view_context, private: true
+  delegate :current_user, :request, to: :view_context, private: true
 
   def default_display_style
     "events"

@@ -79,14 +79,14 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
     click_link "Delete this event"
     modal = page.find("aside")
     expect(modal).to have_content("Are you absolutely sure?")
-    expect(modal).to have_link("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete", class: "disabled")
 
     fill_in "confirm", with: event.name.upcase
-    expect(modal).not_to have_link("Permanently Delete", class: "disabled")
-    expect(modal).to have_link("Permanently Delete")
+    expect(modal).not_to have_button("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete")
 
     expect do
-      click_link "Permanently Delete"
+      click_button "Permanently Delete"
       expect(page).to have_current_path(setup_event_group_path(event_group))
     end.to change { Event.count }.by(-1)
   end

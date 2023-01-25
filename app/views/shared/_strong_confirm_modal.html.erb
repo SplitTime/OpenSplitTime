@@ -1,3 +1,5 @@
+<%# locals: (message:, path_on_confirm:, required_pattern:, strong_confirm_id: -%>
+
 <aside id="<%= strong_confirm_id %>" class="modal fade" role="dialog" data-controller="confirm">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -12,8 +14,26 @@
         <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the Delete button.</p>
       </div>
       <div class="modal-footer">
-        <%= text_field_tag "confirm", nil, class: "form-control col", autofocus: true, tabindex: 1, data: {action: "keyup->confirm#compare", "confirm-target" => "pattern", "pattern-required" => required_pattern} %>
-        <%= link_to "Permanently Delete", path_on_confirm, tabindex: -1, class: "btn btn-block btn-danger font-weight-bold disabled", method: :delete, data: {"confirm-target" => "deleteButton", action: "click->confirm#onClickDelete"} %>
+        <%= text_field_tag "confirm",
+                           nil,
+                           class: "form-control col",
+                           autofocus: true,
+                           tabindex: 1,
+                           data: {
+                             action: "keyup->confirm#compare",
+                             "confirm-target" => "pattern",
+                             "pattern-required" => required_pattern,
+                           } %>
+        <%= button_to "Permanently Delete",
+                      path_on_confirm,
+                      tabindex: -1,
+                      class: "btn btn-block btn-danger font-weight-bold disabled",
+                      method: :delete,
+                      data: {
+                        "confirm-target" => "deleteButton",
+                        action: "click->confirm#onClickDelete",
+                        turbo: false,
+                      } %>
       </div>
     </div>
   </div>

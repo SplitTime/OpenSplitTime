@@ -54,7 +54,10 @@ class EventsController < ApplicationController
     if @event.update(permitted_params)
       respond_to do |format|
         format.html { redirect_to setup_event_group_path(@event_group) }
-        format.turbo_stream
+        format.turbo_stream do
+          presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
+          render "update", locals: { presenter: presenter, event: @event }
+        end
       end
     else
       @presenter = ::EventSetupPresenter.new(@event, params, current_user)
@@ -180,6 +183,23 @@ class EventsController < ApplicationController
         send_data(csv_stream, type: "text/csv", filename: filename)
       end
     end
+  end
+
+  # GET /events/1/preview_lottery_sync
+  def preview_lottery_sync
+    authorize @event
+
+    presenter = ::LotterySyncPreviewPresenter.new(@event, view_context)
+    render partial: "preview_lottery_sync", locals: { presenter: presenter }
+  end
+
+  # POST /events/1/sync_lottery_entrants
+  def sync_lottery_entrants
+    authorize @event
+
+    response = ::Interactors::SyncLotteryEntrants.perform!(@event)
+    set_flash_message(response)
+    redirect_to setup_event_group_path(@event.event_group, display_style: :entrants)
   end
 
   private

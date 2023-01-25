@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Load Entrants - #{@presenter.event_group.name}" %>
+  <% "OpenSplitTime: Sync Lotteries - #{@presenter.event_group.name}" %>
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
@@ -27,42 +27,15 @@
 </header>
 
 <article class="ost-article container">
-  <% @presenter.event_group.events.order(:scheduled_start_time).each do |event| %>
-    <div class="card">
-      <div class="card-body">
-        <%= form_with(model: [@presenter.event_group, event], html: { data: { controller: "form-auto-submit" } }) do |f| %>
-          <div class="row">
-            <div class="col-12 col-sm-5 mb-2 text-center">
-              <%= f.select :lottery_id,
-                           options_for_select(@presenter.organization.lotteries.pluck(:name, :id).unshift(["None", nil]), event.lottery_id),
-                           {},
-                           class: "form-control dropdown-select-field" %>
-            </div>
-            <div class="col-12 col-sm-2 mt-1 text-center">
-              <%= fa_icon("arrow-circle-right", size: "3x", class: "d-none d-sm-block text-success") %>
-              <%= fa_icon("arrow-circle-down", size: "3x", class: "d-block d-sm-none text-success") %>
-            </div>
-            <div class="col-12 col-sm-5 mt-2 text-center">
-              <h3><%= event.name %></h3>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <br/>
-  <% end %>
+  <%= render partial: "events/lottery_sync_card",
+             locals: { presenter: @presenter },
+             collection: @presenter.event_group.events.order(:scheduled_start_time),
+             as: :event %>
 
+  <hr/>
   <div class="form-row">
     <div class="form-group">
       <div class="col">
-        <%= link_to "Sync with lotteries",
-                    sync_lottery_entrants_event_group_path(@presenter.event_group),
-                    class: "btn btn-success",
-                    method: :post,
-                    data: { confirm: "This will add all accepted entrants from related lotteries and will permanently
-                    delete all withdrawn entrants and others who do not match the list of accepted lottery entrants.
-                    This action cannot be undone. Proceed?" }
-        %>
         <%= link_to "Back to setup",
                     setup_event_group_path(@presenter.event_group, display_style: :entrants),
                     class: "btn btn-outline-secondary" %>

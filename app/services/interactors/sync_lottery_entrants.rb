@@ -71,6 +71,8 @@ module Interactors
         resources[:created_efforts] << effort
       elsif effort.changed?
         resources[:updated_efforts] << effort
+      else
+        resources[:ignored_efforts] << effort
       end
     end
 
@@ -80,7 +82,7 @@ module Interactors
     end
 
     def delete_obsolete_entrants
-      retained_ids = (resources[:updated_efforts] + resources[:created_efforts]).map(&:id)
+      retained_ids = (resources[:updated_efforts] + resources[:created_efforts] + resources[:ignored_efforts]).map(&:id)
       resources[:deleted_efforts] = event.efforts.where.not(id: retained_ids).to_a
       resources[:deleted_efforts].each(&:destroy) unless preview_only
     end
@@ -90,9 +92,10 @@ module Interactors
     end
 
     def set_response_resource_keys
-      resources[:updated_efforts] = []
       resources[:created_efforts] = []
+      resources[:updated_efforts] = []
       resources[:deleted_efforts] = []
+      resources[:ignored_efforts] = []
     end
   end
 end

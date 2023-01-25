@@ -8,6 +8,10 @@ class LotterySyncPreviewPresenter
 
   attr_reader :event
 
+  def syncable?
+    created_efforts.present? || deleted_efforts.present? || updated_efforts.present?
+  end
+
   def created_efforts
     preview_response.resources[:created_efforts]
   end

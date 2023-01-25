@@ -17,14 +17,18 @@
   <hr/>
   <div class="row">
     <div class="col-12">
-      <%= link_to "Sync with lottery",
-                  sync_lottery_entrants_event_path(presenter.event),
-                  class: "btn btn-success",
-                  method: :post,
-                  data: { confirm: "This will add all accepted entrants from related lotteries and will permanently" +
-                    " delete all withdrawn entrants and others who do not match the list of accepted lottery entrants." +
-                    " This action cannot be undone. Proceed?" }
-      %>
+      <% if presenter.syncable? %>
+        <%= link_to "Sync with lottery",
+                    sync_lottery_entrants_event_path(presenter.event),
+                    class: "btn btn-success",
+                    method: :post,
+                    data: { confirm: "This will add all accepted entrants from related lotteries and will permanently" +
+                      " delete all withdrawn entrants and others who do not match the list of accepted lottery entrants." +
+                      " This action cannot be undone. Proceed?" }
+        %>
+      <% else %>
+        <%= button_tag "Nothing to sync", class: "btn btn-success", disabled: true %>
+      <% end %>
     </div>
   </div>
 <% end %>

@@ -1,0 +1,9 @@
+<%= turbo_stream.append "entrants",
+                        partial: "efforts/entrant_for_setup",
+                        collection: presenter.filtered_efforts,
+                        as: :effort,
+                        locals: { presenter: presenter } %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: presenter.next_page_url } %>

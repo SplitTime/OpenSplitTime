@@ -72,6 +72,11 @@ class EventGroupsController < ApplicationController
   def setup
     authorize @event_group
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render "setup", locals: { presenter: @presenter } }
+    end
   end
 
   def efforts

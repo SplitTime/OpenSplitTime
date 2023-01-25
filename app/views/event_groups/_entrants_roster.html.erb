@@ -82,29 +82,15 @@
           <th></th>
         </tr>
         </thead>
-        <tbody>
-        <% presenter.filtered_efforts.each do |effort| %>
-          <tr>
-            <td class="text-center">
-              <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
-            </td>
-            <% if presenter.multiple_events? %>
-              <td><%= effort.event.guaranteed_short_name %></td>
-            <% end %>
-            <td><%= effort.full_name %></td>
-            <td class="text-center"><%= effort.bib_number %></td>
-            <td><%= effort.bio_historic %></td>
-            <td><%= effort.flexible_geolocation %></td>
-            <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
-            <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
-            <td class="text-center">
-              <%= link_to_effort_edit(effort) %>
-              <%= link_to_effort_delete(effort) %>
-            </td>
-          </tr>
-        <% end %>
+        <tbody id="entrants">
+        <%= render partial: "efforts/entrant_for_setup",
+                   collection: presenter.filtered_efforts,
+                   as: :effort,
+                   locals: { presenter: presenter } %>
         </tbody>
       </table>
+
+      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 
     <% elsif presenter.event_group_efforts.exists? %>
       <h5>No results match that search.</h5>

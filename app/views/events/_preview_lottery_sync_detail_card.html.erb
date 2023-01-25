@@ -1,0 +1,16 @@
+<%# locals: (efforts:, verb:) -%>
+
+<div class="card mt-2">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h5><%= "To be #{verb}: #{efforts.size}" %></h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <% efforts.each do |effort| %>
+      <h6><%= "#{effort.full_name}, #{effort.flexible_geolocation}" %></h6>
+    <% end %>
+  </div>
+</div>

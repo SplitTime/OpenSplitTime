@@ -110,7 +110,6 @@ Rails.application.routes.draw do
       get :stats
       get :traffic
       post :create_people
-      post :sync_lottery_entrants
       patch :set_data_status
       patch :assign_entrant_photos
       patch :auto_assign_bibs
@@ -134,9 +133,11 @@ Rails.application.routes.draw do
       get :edit_start_time
       get :export
       get :podium
+      get :preview_lottery_sync
       get :spread
       get :summary
       put :set_stops
+      post :sync_lottery_entrants
       patch :reassign
       patch :update_start_time
       delete :delete_all_efforts

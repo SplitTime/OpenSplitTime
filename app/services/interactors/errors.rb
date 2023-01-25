@@ -58,9 +58,9 @@ module Interactors
        detail: {messages: ["Event group for #{resource_1} does not match the event group for #{resource_2}"]}}
     end
 
-    def events_not_linked_error
-      {title: "Events not linked to lotteries",
-       detail: {messages: ["No events have been linked to a lottery. Link an event to a lottery and try again."]}}
+    def event_not_linked_error
+      {title: "Event not linked to lotteries",
+       detail: {messages: ["The event has not been linked to a lottery. Link the event to a lottery and try again."]}}
     end
 
     def finish_split_missing_error

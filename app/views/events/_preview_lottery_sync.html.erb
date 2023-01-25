@@ -1,0 +1,34 @@
+<%# locals: (presenter:) -%>
+
+<%= turbo_frame_tag(presenter.event, :preview_lottery_sync) do %>
+  <hr/>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <%= render partial: "preview_lottery_sync_detail_card", locals: { efforts: presenter.created_efforts, verb: "created" } %>
+    </div>
+    <div class="col-12 col-lg-4">
+      <%= render partial: "preview_lottery_sync_detail_card", locals: { efforts: presenter.updated_efforts, verb: "updated" } %>
+    </div>
+    <div class="col-12 col-lg-4">
+      <%= render partial: "preview_lottery_sync_detail_card", locals: { efforts: presenter.deleted_efforts, verb: "deleted" } %>
+    </div>
+  </div>
+
+  <hr/>
+  <div class="row">
+    <div class="col-12">
+      <% if presenter.syncable? %>
+        <%= link_to "Sync with lottery",
+                    sync_lottery_entrants_event_path(presenter.event),
+                    class: "btn btn-success",
+                    method: :post,
+                    data: { confirm: "This will add all accepted entrants from related lotteries and will permanently" +
+                      " delete all withdrawn entrants and others who do not match the list of accepted lottery entrants." +
+                      " This action cannot be undone. Proceed?" }
+        %>
+      <% else %>
+        <%= button_tag "Nothing to sync", class: "btn btn-success", disabled: true %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

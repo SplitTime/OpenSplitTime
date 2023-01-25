@@ -60,6 +60,14 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
+  def preview_lottery_sync?
+    user.authorized_to_edit?(event)
+  end
+
+  def sync_lottery_entrants?
+    preview_lottery_sync?
+  end
+
   # Policies for live namespace
 
   def progress_report?

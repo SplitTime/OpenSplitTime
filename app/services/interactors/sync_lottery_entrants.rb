@@ -14,32 +14,45 @@ module Interactors
       "country_code",
     ].freeze
 
-    def self.perform!(event_group)
-      new(event_group).perform!
+    def self.perform!(event)
+      new(event).perform!
     end
 
-    def initialize(event_group)
-      @event_group = event_group
-      @response = ::Interactors::Response.new([])
+    def self.preview(event)
+      new(event).preview
+    end
+
+    def initialize(event)
+      @event = event
+      @response = ::Interactors::Response.new([], nil, {})
       @time = Time.current
+      @preview_only = false
       validate_setup
+      set_response_resource_keys
     end
 
     def perform!
-      events.each do |event|
-        find_and_create_entrants(event)
-        delete_obsolete_entrants(event)
-      end
+      return response if errors.present?
+
+      find_and_create_entrants
+      delete_obsolete_entrants
 
       response
     end
 
+    def preview
+      self.preview_only = true
+
+      perform!
+    end
+
     private
 
-    attr_reader :event_group, :response, :time
-    delegate :errors, to: :response, private: true
+    attr_reader :event, :response, :time
+    attr_accessor :preview_only
+    delegate :errors, :resources, to: :response, private: true
 
-    def find_and_create_entrants(event)
+    def find_and_create_entrants
       accepted_entrants = event.lottery.divisions.flat_map(&:accepted_entrants)
                                .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
 
@@ -47,22 +60,42 @@ module Interactors
         unique_key = { first_name: entrant.first_name, last_name: entrant.last_name, birthdate: entrant.birthdate }
         effort = event.efforts.find_or_initialize_by(unique_key)
         RELEVANT_ATTRIBUTES.each { |attr| effort.send("#{attr}=", entrant.send(attr)) }
-        errors << resource_error_object(effort) unless effort.save
-        effort.update_attribute(:synced_at, time)
+
+        add_effort_to_response(effort)
+        update_effort(effort) unless preview_only
       end
     end
 
-    def delete_obsolete_entrants(event)
-      obsolete_entrants = event.efforts.where("synced_at is null or synced_at != ?", time)
-      obsolete_entrants.find_each(&:destroy)
+    def add_effort_to_response(effort)
+      if effort.new_record?
+        resources[:created_efforts] << effort
+      elsif effort.changed?
+        resources[:updated_efforts] << effort
+      else
+        resources[:ignored_efforts] << effort
+      end
     end
 
-    def events
-      @events ||= event_group.events.where.not(lottery_id: nil)
+    def update_effort(effort)
+      errors << resource_error_object(effort) unless effort.save
+      effort.update_attribute(:synced_at, time)
+    end
+
+    def delete_obsolete_entrants
+      retained_ids = (resources[:updated_efforts] + resources[:created_efforts] + resources[:ignored_efforts]).map(&:id)
+      resources[:deleted_efforts] = event.efforts.where.not(id: retained_ids).to_a
+      resources[:deleted_efforts].each(&:destroy) unless preview_only
     end
 
     def validate_setup
-      errors << events_not_linked_error unless events.present?
+      errors << event_not_linked_error unless event.lottery.present?
+    end
+
+    def set_response_resource_keys
+      resources[:created_efforts] = []
+      resources[:updated_efforts] = []
+      resources[:deleted_efforts] = []
+      resources[:ignored_efforts] = []
     end
   end
 end

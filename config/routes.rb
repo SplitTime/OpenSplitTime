@@ -110,7 +110,6 @@ Rails.application.routes.draw do
       get :stats
       get :traffic
       post :create_people
-      post :sync_lottery_entrants
       patch :set_data_status
       patch :assign_entrant_photos
       patch :auto_assign_bibs

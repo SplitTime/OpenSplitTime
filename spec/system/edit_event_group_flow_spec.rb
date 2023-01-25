@@ -87,17 +87,17 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
     click_link "Delete all time records"
     modal = page.find("aside")
     expect(modal).to have_content("Are you absolutely sure?")
-    expect(modal).to have_link("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete", class: "disabled")
 
     fill_in "confirm", with: "#{event_group.name.upcase} TIMES"
-    expect(modal).not_to have_link("Permanently Delete", class: "disabled")
-    expect(modal).to have_link("Permanently Delete")
+    expect(modal).not_to have_button("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete")
 
     split_time_count = event_group.split_times.count
     raw_time_count = event_group.raw_times.count
 
     expect do
-      click_link "Permanently Delete"
+      click_button "Permanently Delete"
       expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
     end.to change { SplitTime.count }.by(-split_time_count).and change { RawTime.count }.by (-raw_time_count)
 
@@ -108,14 +108,14 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
     click_link "Delete this event group"
     modal = page.find("aside")
     expect(modal).to have_content("Are you absolutely sure?")
-    expect(modal).to have_link("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete", class: "disabled")
 
     fill_in "confirm", with: event_group.name.upcase
-    expect(modal).not_to have_link("Permanently Delete", class: "disabled")
-    expect(modal).to have_link("Permanently Delete")
+    expect(modal).not_to have_button("Permanently Delete", class: "disabled")
+    expect(modal).to have_button("Permanently Delete")
 
     expect do
-      click_link "Permanently Delete"
+      click_button "Permanently Delete"
       expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
     end.to change { EventGroup.count }.by(-1)
     expect(page).to have_current_path(event_groups_path)

@@ -1,25 +1,14 @@
 <%# locals: (efforts:, verb:) -%>
 
-<div class="card mt-2"
-     data-controller="visibility"
-     data-visibility-button-hide-class-value="btn-primary"
-     data-visibility-button-hide-text-value="Hide"
-     data-visibility-button-show-class-value="btn-outline-primary"
-     data-visibility-button-show-text-value="Show">
+<div class="card mt-2">
   <div class="card-header">
     <div class="row">
-      <div class="col-8">
+      <div class="col">
         <h5><%= "To be #{verb}: #{efforts.size}" %></h5>
-      </div>
-      <div class="col-4 text-right">
-        <%= button_tag nil,
-                       class: "btn btn-sm btn-block d-none",
-                       "data-action": "visibility#toggleElement",
-                       "data-visibility-target": "button" %>
       </div>
     </div>
   </div>
-  <div class="card-body" data-visibility-target="element">
+  <div class="card-body">
     <% efforts.each do |effort| %>
       <h6><%= "#{effort.full_name}, #{effort.flexible_geolocation}" %></h6>
     <% end %>

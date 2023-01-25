@@ -61,7 +61,7 @@
   <% case @presenter.display_style %>
   <% when "entrants" %>
     <h4 class="mt-5">
-      <strong><%= "Lottery Entrants" %></strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></small>
+      <span class="font-weight-bold"><%= "Lottery Entrants" %></span><span class="px-1 h5 font-weight-light text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></span>
     </h4>
     <hr/>
     <aside class="ost-toolbar">
@@ -95,7 +95,7 @@
     <% end %>
 
   <% when "draws" %>
-    <h4 class="mt-5"><strong>Lottery Draws (Most recent at the top)</strong></h4>
+    <h4 class="mt-5"><span class="font-weight-bold">Lottery Draws</span><span class="px-1 h5 font-weight-light text-muted">(Most recent at the top)</span></h4>
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery.live? %>
@@ -114,7 +114,7 @@
     <% end %>
 
   <% when "results" %>
-    <h4 class="mt-5"><strong>Lottery Results</strong></h4>
+    <h4 class="mt-5"><span class="font-weight-bold">Lottery Results</span><span class="px-1 h5 font-weight-light text-muted"><%= " Last updated #{time_ago_in_words(@presenter.lottery.updated_at)} ago" %></span></h4>
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery_draws.exists? %>

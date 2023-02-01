@@ -1,6 +1,6 @@
 # Below are the routes for madmin
 namespace :madmin do
-  resources :sync_relations
+  resources :syncable_relations
   namespace :active_storage do
     resources :variant_records
   end

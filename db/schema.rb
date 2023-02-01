@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_144112) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_01_155148) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -591,7 +591,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_144112) do
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "sync_relations", force: :cascade do |t|
+  create_table "syncable_relations", force: :cascade do |t|
     t.string "source_name"
     t.string "source_type"
     t.string "source_id"

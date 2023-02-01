@@ -13,10 +13,11 @@ class User < ApplicationRecord
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
 
+  encrypts :credentials
+
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name
   friendly_id :slug_candidates, use: [:slugged, :history]
-  has_paper_trail ignore: [:exports_viewed_at]
 
   has_many :subscriptions, dependent: :destroy
   has_many :interests, through: :subscriptions, source: :subscribable, source_type: "Person"

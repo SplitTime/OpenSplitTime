@@ -36,7 +36,6 @@ class UserResource < Madmin::Resource
 
   # Associations
   attribute :slugs
-  attribute :versions
   attribute :subscriptions
   attribute :interests
   attribute :watch_efforts

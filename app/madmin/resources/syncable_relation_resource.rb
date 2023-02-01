@@ -1,4 +1,4 @@
-class SyncRelationResource < Madmin::Resource
+class SyncableRelationResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :source_name

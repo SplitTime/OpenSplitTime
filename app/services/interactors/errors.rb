@@ -153,9 +153,19 @@ module Interactors
        detail: {messages: ["Attempted to start efforts from multiple event_groups: #{event_group_ids.to_sentence}"]}}
     end
 
+    def multiple_runsignup_race_ids_error(race_ids, event_group_id)
+      {title: "Multiple race ids assigned to event group",
+       detail: {messages: ["Multiple runsignup race ids (#{race_ids.to_sentence}) are assigned to a single event group (#{event_group_id})"]}}
+    end
+
     def mismatched_organization_error(old_event_group, new_event_group)
       {title: "Event group organizations do not match",
        detail: {messages: ["The event cannot be updated because #{old_event_group} is organized under #{old_event_group.organization}, but #{new_event_group} is organized under #{new_event_group.organization}"]}}
+    end
+
+    def no_runsignup_race_id_error(event_group_id)
+      {title: "No race id assigned to event group",
+       detail: {messages: ["No runsignup race id is assigned to event group #{event_group_id}"]}}
     end
 
     def effort_offset_failure_error(effort)

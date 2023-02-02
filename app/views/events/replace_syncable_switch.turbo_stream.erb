@@ -1,0 +1,10 @@
+<%# locals: (event_group:, event:, external_id:, external_name:) -%>
+
+<%= turbo_stream.replace "toggle_check_box_external_id_#{external_id}",
+                         partial: "events/syncable_switch",
+                         locals: {
+                           event_group: event_group,
+                           event: event,
+                           external_id: external_id,
+                           external_name: external_name,
+                         } %>

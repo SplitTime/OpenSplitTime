@@ -1,0 +1,28 @@
+<%# locals: (presenter:, event:) -%>
+
+<%= content_tag(:div, id: dom_id(event, :sync_efforts_card)) do %>
+  <div class="card">
+    <div class="card-header">
+      <h3><%= event.name %></h3>
+    </div>
+    <div class="card-body">
+      <label>Select corresponding external events</label>
+      <% presenter.runsignup_events(event).each do |runsignup_event| %>
+        <%= render partial: "events/syncable_switch",
+                   locals: {
+                     event_group: presenter.event_group,
+                     event: event,
+                     external_id: runsignup_event.id,
+                     external_name: runsignup_event.name,
+                   } %>
+      <% end %>
+      <div class="row">
+        <div class="form-group col">
+          <%= turbo_frame_tag(event, :preview_lottery_sync) do %>
+            <%= link_to "Preview sync", preview_lottery_sync_event_path(event), class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

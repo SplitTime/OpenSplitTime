@@ -122,7 +122,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_not_linked_error unless event.lottery.present?
+      errors << event_not_linked_error unless event.syncable_sources(:runsignup).where(source_type: "Event").exists?
     end
 
     def set_response_resource_keys

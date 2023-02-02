@@ -59,8 +59,8 @@ module Interactors
     end
 
     def event_not_linked_error
-      {title: "Event not linked to lotteries",
-       detail: {messages: ["The event has not been linked to a lottery. Link the event to a lottery and try again."]}}
+      {title: "Event not linked to source",
+       detail: {messages: ["The event has not been linked to a source. Link the event to a source and try again."]}}
     end
 
     def finish_split_missing_error

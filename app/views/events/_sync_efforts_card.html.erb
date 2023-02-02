@@ -18,9 +18,7 @@
       <% end %>
       <div class="row">
         <div class="form-group col">
-          <%= turbo_frame_tag(event, :preview_lottery_sync) do %>
-            <%= link_to "Preview sync", preview_lottery_sync_event_path(event), class: "btn btn-primary" %>
-          <% end %>
+          <%= render partial: "events/preview_sync_button", locals: { event: event } %>
         </div>
       </div>
     </div>

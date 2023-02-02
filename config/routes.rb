@@ -137,9 +137,11 @@ Rails.application.routes.draw do
       get :export
       get :podium
       get :preview_lottery_sync
+      get :preview_sync
       get :spread
       get :summary
       put :set_stops
+      post :sync_entrants
       post :sync_lottery_entrants
       patch :reassign
       patch :update_start_time

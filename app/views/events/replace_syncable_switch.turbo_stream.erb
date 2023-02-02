@@ -8,3 +8,7 @@
                            external_id: external_id,
                            external_name: external_name,
                          } %>
+
+<%= turbo_stream.replace dom_id(event, :preview_sync),
+                         partial: "events/preview_sync_button",
+                         locals: { event: event } %>

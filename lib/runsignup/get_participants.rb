@@ -63,7 +63,7 @@ module Runsignup
         first_name: raw_participant.dig("user", "first_name"),
         last_name: raw_participant.dig("user", "last_name"),
         birthdate: raw_participant.dig("user", "dob"),
-        gender: raw_participant.dig("user", "gender"),
+        gender: convert_gender(raw_participant.dig("user", "gender")),
         email: raw_participant.dig("user", "email"),
         phone: raw_participant.dig("user", "phone"),
         city: raw_participant.dig("user", "address", "city"),
@@ -71,6 +71,14 @@ module Runsignup
         country_code: raw_participant.dig("user", "address", "country_code"),
         bib_number: raw_participant.dig("bib_num"),
       )
+    end
+
+    def convert_gender(string)
+      if string.first.downcase == "m"
+        "male"
+      else
+        "female"
+      end
     end
   end
 end

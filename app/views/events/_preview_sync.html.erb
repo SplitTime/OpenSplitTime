@@ -18,13 +18,14 @@
   <div class="row">
     <div class="col-12">
       <% if presenter.syncable? %>
-        <%= link_to "Sync",
-                    sync_entrants_event_path(presenter.event),
-                    class: "btn btn-success",
-                    method: :post,
-                    data: { confirm: "This will add all accepted entrants from related sources and will permanently" +
-                      " delete all withdrawn entrants and others who are not found in related sources." +
-                      " This action cannot be undone. Proceed?" }
+        <%= button_to "Sync",
+                      sync_entrants_event_path(presenter.event),
+                      class: "btn btn-success",
+                      method: :post,
+                      data: { turbo: false,
+                              confirm: "This will add all accepted entrants from related sources and will permanently" +
+                                " delete all withdrawn entrants and others who are not found in related sources." +
+                                " This action cannot be undone. Proceed?" }
         %>
       <% else %>
         <%= button_tag "Nothing to sync", class: "btn btn-success", disabled: true %>

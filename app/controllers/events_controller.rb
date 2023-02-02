@@ -210,6 +210,15 @@ class EventsController < ApplicationController
     redirect_to setup_event_group_path(@event.event_group, display_style: :entrants)
   end
 
+  # POST /events/1/sync_entrants
+  def sync_entrants
+    authorize @event
+
+    response = ::Interactors::SyncRunsignupParticipants.perform!(@event, current_user)
+    set_flash_message(response)
+    redirect_to setup_event_group_path(@event.event_group, display_style: :entrants)
+  end
+
   private
 
   def reconcile_redirect_path

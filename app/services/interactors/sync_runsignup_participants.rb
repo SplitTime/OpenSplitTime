@@ -65,8 +65,9 @@ module Interactors
       participants.sort_by! { |participant| [participant.last_name, participant.first_name] }
 
       participants.each do |participant|
-        unique_key = { first_name: participant.first_name, last_name: participant.last_name, birthdate: participant.birthdate }
-        effort = event.efforts.find_or_initialize_by(unique_key)
+        effort = event.efforts.where("first_name ilike ? and last_name ilike ?", participant.first_name, participant.last_name)
+                      .where(birthdate: participant.birthdate)
+                      .first_or_initialize
         RELEVANT_ATTRIBUTES.each { |attr| effort.send("#{attr}=", participant.send(attr)) }
 
         add_effort_to_response(effort)
@@ -96,6 +97,10 @@ module Interactors
     end
 
     def add_effort_to_response(effort)
+      # Validate the effort first to get the effects of before_validation callbacks
+      # like strip_attributes and capitalize_attributes
+      effort.validate
+
       if effort.new_record?
         resources[:created_efforts] << effort
       elsif effort.changed?

@@ -45,7 +45,7 @@ module Runsignup
     end
 
     def event_from_raw(raw_event)
-      OpenStruct.new(
+      ::Runsignup::Event.new(
         id: raw_event["event_id"],
         name: raw_event["name"],
         start_time: raw_event["start_time"],

@@ -59,7 +59,7 @@ module Runsignup
     end
 
     def participant_from_raw(raw_participant)
-      OpenStruct.new(
+      ::Runsignup::Participant.new(
         first_name: raw_participant.dig("user", "first_name"),
         last_name: raw_participant.dig("user", "last_name"),
         birthdate: raw_participant.dig("user", "dob"),

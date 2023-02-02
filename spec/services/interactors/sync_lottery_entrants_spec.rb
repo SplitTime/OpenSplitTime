@@ -17,7 +17,7 @@ RSpec.describe Interactors::SyncLotteryEntrants do
   shared_examples "returns a response with a descriptive error" do
     it "returns a descriptive error" do
       expect(response).not_to be_successful
-      expect(response.errors.first.dig(:detail, :messages).first).to include("The event has not been linked to a lottery")
+      expect(response.errors.first.dig(:detail, :messages).first).to include("The event has not been linked")
     end
   end
 

@@ -1,0 +1,45 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Sync Efforts - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
+            <%= construction_status_badge(@presenter.status) %>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Setup", setup_event_group_path(@presenter.event_group, display_style: :entrants) %></li>
+            <li class="breadcrumb-item">Sync Efforts</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render partial: "events/sync_efforts_card",
+             locals: { presenter: @presenter },
+             collection: @presenter.event_group.events.order(:scheduled_start_time),
+             as: :event %>
+
+  <hr/>
+  <div class="form-row">
+    <div class="form-group">
+      <div class="col">
+        <%= link_to "Back to setup",
+                    setup_event_group_path(@presenter.event_group, display_style: :entrants),
+                    class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
+</article>

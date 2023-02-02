@@ -89,7 +89,9 @@ Rails.application.routes.draw do
   resources :duplicate_event_groups, only: [:new, :create]
 
   resources :event_groups, only: [:index, :show] do
-    resources :events, except: [:index, :show]
+    resources :events, except: [:index, :show] do
+      resources :syncable_relations, only: [:create, :destroy], module: "events"
+    end
 
     member do
       get :assign_bibs
@@ -108,6 +110,7 @@ Rails.application.routes.draw do
       get :setup
       get :split_raw_times
       get :stats
+      get :sync_efforts
       get :traffic
       post :create_people
       patch :set_data_status
@@ -134,9 +137,11 @@ Rails.application.routes.draw do
       get :export
       get :podium
       get :preview_lottery_sync
+      get :preview_sync
       get :spread
       get :summary
       put :set_stops
+      post :sync_entrants
       post :sync_lottery_entrants
       patch :reassign
       patch :update_start_time
@@ -170,6 +175,7 @@ Rails.application.routes.draw do
 
     resources :event_groups, except: [:index, :show] do
       resources :partners, except: [:show], module: "event_groups"
+      resources :syncable_relations, only: [:create, :destroy], module: "event_groups"
     end
 
     resources :event_series

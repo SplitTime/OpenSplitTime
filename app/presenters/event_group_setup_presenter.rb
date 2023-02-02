@@ -85,6 +85,24 @@ class EventGroupSetupPresenter < BasePresenter
     organization.name
   end
 
+  def runsignup_events(event)
+    all_runsignup_events.reject do |event_struct|
+      (event_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs > CANDIDATE_SEPARATION_LIMIT
+    end
+  end
+
+  def all_runsignup_events
+    return [] unless runsignup_race_id.present?
+
+    @all_runsignup_events ||= ::Runsignup::GetEvents.perform(race_id: runsignup_race_id, user: current_user)
+  end
+
+  def runsignup_race_id
+    return @runsignup_race_id if defined?(@runsignup_race_id)
+
+    @runsignup_race_id = event_group.syncable_sources(:runsignup).where(source_type: "Race").first&.source_id
+  end
+
   def status
     available_live? ? "live" : "not_live"
   end

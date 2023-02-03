@@ -58,6 +58,14 @@ module Runsignup
       @credentials ||= user.credentials["runsignup"] || {}
     end
 
+    def event_start_time
+      return @event_start_time if defined?(@event_start_time)
+
+      events = ::Runsignup::GetEvents.perform(race_id: race_id, user: user)
+      event = events.find { |event| event.id == event_id }
+      @event_start_time = event&.start_time
+    end
+
     def participant_from_raw(raw_participant)
       ::Runsignup::Participant.new(
         first_name: raw_participant.dig("user", "first_name"),
@@ -70,6 +78,7 @@ module Runsignup
         state_code: raw_participant.dig("user", "address", "state"),
         country_code: raw_participant.dig("user", "address", "country_code"),
         bib_number: raw_participant.dig("bib_num"),
+        scheduled_start_time_local: event_start_time,
       )
     end
 

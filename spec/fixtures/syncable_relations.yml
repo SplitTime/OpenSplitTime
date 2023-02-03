@@ -1,0 +1,31 @@
+---
+syncable_relation_1:
+  id: 1
+  source_name: runsignup
+  source_type: Race
+  source_id: '123'
+  destination_name: internal
+  destination_type: EventGroup
+  destination_id: '59'
+  created_at: 2023-02-03 03:02:40.494099000 Z
+  updated_at: 2023-02-03 03:02:40.494099000 Z
+syncable_relation_2:
+  id: 2
+  source_name: runsignup
+  source_type: Event
+  source_id: '24'
+  destination_name: internal
+  destination_type: Event
+  destination_id: '36'
+  created_at: 2023-02-03 03:03:41.940759000 Z
+  updated_at: 2023-02-03 03:03:41.940759000 Z
+syncable_relation_3:
+  id: 3
+  source_name: runsignup
+  source_type: Event
+  source_id: '12'
+  destination_name: internal
+  destination_type: Event
+  destination_id: '70'
+  created_at: 2023-02-03 03:04:17.734829000 Z
+  updated_at: 2023-02-03 03:04:17.734829000 Z

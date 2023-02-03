@@ -5,17 +5,25 @@ module Runsignup
     BASE_URL = "https://runsignup.com/Rest"
     BATCH_SIZE = 50
 
+    # @param [String] race_id
+    # @param [String] event_id
+    # @param [User] user
+    # @return [Array<::Runsignup::Participant>]
     def self.perform(race_id:, event_id:, user:)
       new(race_id: race_id, event_id: event_id, user: user).perform
     end
 
+    # @param [String] race_id
+    # @param [String] event_id
+    # @param [User] user
     def initialize(race_id:, event_id:, user:)
-      @race_id = race_id
-      @event_id = event_id
+      @race_id = race_id.to_i
+      @event_id = event_id.to_i
       @user = user
       @participants = []
     end
 
+    # @return [Array<::Runsignup::Participant>]
     def perform
       page = 1
 
@@ -39,10 +47,12 @@ module Runsignup
 
     attr_reader :race_id, :event_id, :user, :participants
 
+    # @return [String]
     def url
       BASE_URL + "/race/#{race_id}/participants"
     end
 
+    # @return [Hash{Symbol->Symbol | Integer}]
     def base_params
       {
         api_key: credentials["api_key"],
@@ -54,10 +64,12 @@ module Runsignup
       }
     end
 
+    # @return [Hash, nil]
     def credentials
-      @credentials ||= user.credentials["runsignup"] || {}
+      @credentials ||= user.credentials&.dig("runsignup")
     end
 
+    # @return [String, nil]
     def event_start_time
       return @event_start_time if defined?(@event_start_time)
 
@@ -66,6 +78,8 @@ module Runsignup
       @event_start_time = event&.start_time
     end
 
+    # @param [Hash] raw_participant
+    # @return [::Runsignup::Participant]
     def participant_from_raw(raw_participant)
       ::Runsignup::Participant.new(
         first_name: raw_participant.dig("user", "first_name"),
@@ -82,6 +96,8 @@ module Runsignup
       )
     end
 
+    # @param [String] string
+    # @return [String (frozen)]
     def convert_gender(string)
       if string.first.downcase == "m"
         "male"

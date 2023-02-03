@@ -10,6 +10,7 @@ module Runsignup
     :country_code,
     :email,
     :phone,
+    :scheduled_start_time_local,
     keyword_init: true
   )
 end

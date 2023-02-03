@@ -7,14 +7,15 @@ module Interactors
     RELEVANT_ATTRIBUTES = [
       "first_name",
       "last_name",
-      "gender",
       "birthdate",
+      "gender",
+      "bib_number",
       "city",
       "state_code",
       "country_code",
-      "bib_number",
       "email",
       "phone",
+      "scheduled_start_time_local",
     ].freeze
 
     def self.perform!(event, current_user)

@@ -6,16 +6,15 @@ RSpec.describe ::Runsignup::GetEvents do
   subject { described_class.new(race_id: race_id, user: user) }
   let(:race_id) { 123 }
   let(:user) { users(:third_user) }
-  let(:fake_credentials) { { runsignup: { api_key: "api-123", api_secret: "api-secret-123" } } }
+  let(:fake_credentials) { { "runsignup" => { "api_key" => "api-123", "api_secret" => "api-secret-123" } } }
 
   describe "#perform" do
     let(:result) { subject.perform }
     context "when credentials are present" do
       before do
-        user.update(credentials: fake_credentials)
+        allow(user).to receive(:credentials).and_return(fake_credentials)
         allow(subject).to receive(:parsed_body).and_return(parsed_body)
       end
-
 
       context "when the race_id is valid" do
         let(:parsed_body) do

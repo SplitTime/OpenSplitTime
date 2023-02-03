@@ -4,21 +4,28 @@ module Runsignup
   class GetEvents
     BASE_URL = "https://runsignup.com/Rest"
 
+    # @param [String] race_id
+    # @param [User] user
+    # @return [Array<::Runsignup::Event>]
     def self.perform(race_id:, user:)
       new(race_id: race_id, user: user).perform
     end
 
+    # @param [String] race_id
+    # @param [User] user
     def initialize(race_id:, user:)
       @race_id = race_id
       @user = user
       @events = []
     end
 
+    # @return [Array<::Runsignup::Event>]
     def perform
-      response = ::RestClient.get(url, { params: base_params })
-      body = JSON.parse(response.body)
-      body = body.first if body.is_a?(Array)
-      raw_events = body.dig("race", "events")
+      return unless credentials.present?
+
+      raw_events = parsed_body.dig("race", "events")
+      return unless raw_events.present?
+
       raw_events.each { |raw_event| events << event_from_raw(raw_event) }
 
       events
@@ -28,10 +35,20 @@ module Runsignup
 
     attr_reader :race_id, :user, :events
 
+    # @return [Hash, nil]
+    def parsed_body
+      response = ::RestClient.get(url, { params: base_params })
+      body = JSON.parse(response.body)
+      body = body.first if body.is_a?(Array)
+      body
+    end
+
+    # @return [String]
     def url
       BASE_URL + "/race/#{race_id}"
     end
 
+    # @return [Hash]
     def base_params
       {
         api_key: credentials["api_key"],
@@ -40,10 +57,13 @@ module Runsignup
       }
     end
 
+    # @return [Hash, nil]
     def credentials
-      @credentials ||= user.credentials["runsignup"] || {}
+      @credentials ||= user.credentials&.dig("runsignup")
     end
 
+    # @param [Hash] raw_event
+    # @return [::Runsignup::Event]
     def event_from_raw(raw_event)
       ::Runsignup::Event.new(
         id: raw_event["event_id"],

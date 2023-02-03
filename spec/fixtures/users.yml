@@ -31,6 +31,8 @@ admin_user:
   phone_confirmation_token:
   phone_confirmed_at:
   phone_confirmation_sent_at:
+  exports_viewed_at:
+  credentials:
 third_user:
   id: 3
   first_name: Third
@@ -63,6 +65,8 @@ third_user:
   phone_confirmation_token:
   phone_confirmed_at:
   phone_confirmation_sent_at:
+  exports_viewed_at:
+  credentials:
 fourth_user:
   id: 4
   first_name: Fourth
@@ -95,6 +99,8 @@ fourth_user:
   phone_confirmation_token:
   phone_confirmed_at:
   phone_confirmation_sent_at:
+  exports_viewed_at:
+  credentials:
 fifth_user:
   id: 11
   first_name: Fifth
@@ -127,3 +133,5 @@ fifth_user:
   phone_confirmation_token:
   phone_confirmed_at:
   phone_confirmation_sent_at:
+  exports_viewed_at:
+  credentials:

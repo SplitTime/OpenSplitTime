@@ -4,56 +4,38 @@ require "rails_helper"
 
 RSpec.describe ::Runsignup::GetEvents do
   subject { described_class.new(race_id: race_id, user: user) }
-  let(:race_id) { 123 }
+  let(:race_id) { 85675 }
   let(:user) { users(:third_user) }
-  let(:fake_credentials) { { "runsignup" => { "api_key" => "api-123", "api_secret" => "api-secret-123" } } }
+  let(:fake_credentials) { { "runsignup" => { "api_key" => "1234", "api_secret" => "2345" } } }
 
   describe "#perform" do
     let(:result) { subject.perform }
+
     context "when credentials are present" do
-      before do
-        allow(user).to receive(:credentials).and_return(fake_credentials)
-        allow(subject).to receive(:parsed_body).and_return(parsed_body)
-      end
+      before { allow(user).to receive(:credentials).and_return(fake_credentials) }
 
       context "when the race_id is valid" do
-        let(:parsed_body) do
-          { "race" =>
-              { "race_id" => 81625,
-                "name" => "Running Up for Air - Grandeur",
-                "last_date" => "02/04/2022",
-                "last_end_date" => "02/05/2022",
-                "next_date" => "02/03/2023",
-                "next_end_date" => "02/04/2023",
-                "timezone" => "America/Denver",
-                "events" =>
-                  [
-                    { "event_id" => 661804, "name" => "24 hr", "start_time" => "2/3/2023 18:00", "end_time" => "2/4/2023 18:00" },
-                    { "event_id" => 661805, "name" => "12 hr", "start_time" => "2/4/2023 06:00", "end_time" => "2/4/2023 18:00" },
-                  ]
-              }
-          }
-        end
-
         let(:expected_result) do
           [
-            ::Runsignup::Event.new(id: 661804, name: "24 hr", start_time: "2/3/2023 18:00", end_time: "2/4/2023 18:00"),
-            ::Runsignup::Event.new(id: 661805, name: "12 hr", start_time: "2/4/2023 06:00", end_time: "2/4/2023 18:00"),
+            ::Runsignup::Event.new(id: 661702, name: "24 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 18:00"),
+            ::Runsignup::Event.new(id: 661703, name: "12 hr", start_time: "2/11/2023 06:00", end_time: "2/11/2023 18:00"),
+            ::Runsignup::Event.new(id: 661817, name: "6 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 00:00"),
           ]
         end
 
         it "returns event structs" do
-          expect(result).to match_array(expected_result)
+          VCR.use_cassette("runsignup/events") do
+            expect(result).to eq(expected_result)
+          end
         end
       end
 
       context "when the race id is not valid" do
-        let(:parsed_body) do
-          { "error" => { "error_code" => 201, "error_msg" => "Race not found." } }
-        end
-
+        let(:race_id) { 9999999 }
         it "returns nil" do
-          expect(result).to be_nil
+          VCR.use_cassette("runsignup/events_invalid_race_id") do
+            expect(result).to be_nil
+          end
         end
       end
     end

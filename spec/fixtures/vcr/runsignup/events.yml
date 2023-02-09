@@ -1,0 +1,87 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://runsignup.com/Rest/race/85675?api_key=1234&api_secret=2345&format=json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.1.3p185
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - runsignup.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Thu, 09 Feb 2023 05:20:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '14464'
+      Connection:
+      - keep-alive
+      P3p:
+      - CP="CAO PSA OUR"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=15768000
+    body:
+      encoding: ASCII-8BIT
+      string: '{
+      "race":{
+        "race_id":85675,
+        "name":"Running Up For Air",
+        "last_date":"02\/25\/2022",
+        "last_end_date":"02\/26\/2022",
+        "next_date":"02\/10\/2023",
+        "next_end_date":"02\/11\/2023",
+        "is_draft_race":"F",
+        "is_private_race":"F",
+        "is_registration_open":"T",
+        "created":"1\/20\/2020 16:55",
+        "last_modified":"2\/8\/2023 21:39",
+        "description":"<p>A Race<\/p>",
+        "events":[
+          {
+            "event_id":661702,
+            "race_event_days_id":243601,
+            "name":"24 hr",
+            "details":null,
+            "start_time":"2\/10\/2023 18:00",
+            "end_time":"2\/11\/2023 18:00"
+          },
+          {
+            "event_id":661703,
+            "race_event_days_id":243601,
+            "name":"12 hr",
+            "details":null,
+            "start_time":"2\/11\/2023 06:00",
+            "end_time":"2\/11\/2023 18:00"
+          },
+          {
+            "event_id":661817,
+            "race_event_days_id":243601,
+            "name":"6 hr",
+            "details":null,
+            "start_time":"2\/10\/2023 18:00",
+            "end_time":"2\/11\/2023 00:00"
+          }
+        ]}}'
+    http_version:
+  recorded_at: Thu, 09 Feb 2023 05:20:28 GMT
+recorded_with: VCR 4.0.0

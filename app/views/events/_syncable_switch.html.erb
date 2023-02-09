@@ -6,8 +6,8 @@
                   html: { method: :delete, data: { controller: "form-auto-submit" } }) do |f| %>
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>
-      <%= check_box_tag "delete", "1", true, class: "custom-control-input", id: "delete_check_box_external_id_#{external_id}" %>
-      <label class="custom-control-label" for="delete_check_box_external_id_<%= external_id %>"><%= external_name %></label>
+      <%= check_box_tag "delete", "1", true, class: "custom-control-input", id: "delete_toggle_event_#{event.id}_external_id_#{external_id}" %>
+      <label class="custom-control-label" for='<%= "delete_toggle_event_#{event.id}_external_id_#{external_id}" %>'><%= external_name %></label>
     <% end %>
   <% else %>
     <%= form_with(model: [event_group, event, ::SyncableRelation.new], html: { method: :post, data: { controller: "form-auto-submit" } }) do |f| %>
@@ -16,8 +16,8 @@
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>
 
-      <%= check_box_tag "create", "0", false, class: "custom-control-input", id: "create_check_box_external_id_#{external_id}" %>
-      <label class="custom-control-label" for="create_check_box_external_id_<%= external_id %>"><%= external_name %></label>
+      <%= check_box_tag "create", "0", false, class: "custom-control-input", id: "create_toggle_event_#{event.id}_external_id_#{external_id}" %>
+      <label class="custom-control-label" for='<%= "create_toggle_event_#{event.id}_external_id_#{external_id}" %>'><%= external_name %></label>
     <% end %>
   <% end %>
 </div>

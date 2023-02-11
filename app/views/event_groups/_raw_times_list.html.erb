@@ -66,12 +66,18 @@
       <th></th>
     </tr>
     </thead>
-    <tbody id="raw_times_list">
+    <tbody id="raw_times">
     <% if view_object.filtered_raw_times.present? %>
-      <%= render partial: "raw_times/raw_time_for_list",
+      <%= render partial: "raw_times/raw_time",
                  collection: view_object.filtered_raw_times,
                  as: :raw_time,
-                 locals: { view_object: view_object } %>
+                 locals: {
+                   multiple_events: view_object.multiple_events?,
+                   multiple_sub_splits: view_object.multiple_sub_splits?,
+                   monitor_pacers: view_object.monitor_pacers?,
+                   home_time_zone: view_object.home_time_zone,
+                 }
+      %>
     <% else %>
       <tr class="font-weight-bold">
         <td colspan="100">No results match that search.</td>

@@ -30,8 +30,10 @@ class RawTime < ApplicationRecord
   before_validation :create_sortable_bib_number
   before_validation :create_matchable_bib_number
 
+  after_create_commit :broadcast_raw_time_create
+
   validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
-  validates :bib_number, length: {maximum: 6}, format: {with: /\A[\d*]+\z/, message: "may contain only digits and asterisks"}
+  validates :bib_number, length: { maximum: 6 }, format: { with: /\A[\d*]+\z/, message: "may contain only digits and asterisks" }
 
   scope :with_policy_scope_attributes, lambda {
     from(select("raw_times.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :raw_times)
@@ -60,7 +62,7 @@ class RawTime < ApplicationRecord
     @effort = if has_effort_id?
                 Effort.find(attributes["effort_id"])
               else
-                Effort.joins(:event).find_by(bib_number: matchable_bib_number, events: {event_group_id: event_group_id})
+                Effort.joins(:event).find_by(bib_number: matchable_bib_number, events: { event_group_id: event_group_id })
               end
   end
 
@@ -79,7 +81,7 @@ class RawTime < ApplicationRecord
     @event = if has_event_id?
                Event.find(attributes["event_id"])
              else
-               Event.joins(:efforts).find_by(event_group: event_group_id, efforts: {bib_number: matchable_bib_number})
+               Event.joins(:efforts).find_by(event_group: event_group_id, efforts: { bib_number: matchable_bib_number })
              end
   end
 
@@ -120,6 +122,16 @@ class RawTime < ApplicationRecord
   end
 
   private
+
+  def broadcast_raw_time_create
+    broadcast_prepend_to event_group,
+                         locals: {
+                           multiple_events: event_group.multiple_events?,
+                           multiple_sub_splits: event_group.multiple_sub_splits?,
+                           monitor_pacers: event_group.monitor_pacers?,
+                           home_time_zone: event_group.home_time_zone,
+                         }
+  end
 
   def create_sortable_bib_number
     self.sortable_bib_number = bib_number&.gsub(/\D/, "0").to_i

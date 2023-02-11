@@ -1,25 +1,25 @@
-<%# locals: (view_object:, raw_time:) -%>
+<%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, monitor_pacers:, home_time_zone:) -%>
 
 <tr id="<%= "raw_time_#{raw_time.id}" %>">
   <td><%= raw_time.bib_number %></td>
-  <% if view_object.multiple_events? %>
+  <% if multiple_events %>
     <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>
   <% end %>
   <td><%= link_to_raw_time_effort(raw_time) %></td>
   <td><%= link_to_raw_time_split(raw_time) %></td>
-  <% if view_object.multiple_sub_splits? %>
+  <% if multiple_sub_splits %>
     <td class="text-center"><%= raw_time.sub_split_kind %></td>
   <% end %>
-  <td><%= raw_time.military_time(view_object.home_time_zone) %></td>
-  <% if view_object.monitor_pacers? %>
+  <td><%= raw_time.military_time(home_time_zone) %></td>
+  <% if monitor_pacers %>
     <td class="text-center"><%= "#{raw_time.with_pacer? ? "Yes" : "No"}" %></td>
   <% end %>
   <td class="text-center"><%= "#{raw_time.stopped_here? ? "Yes" : "No"}" %></td>
   <td><%= raw_time.source_text %></td>
   <td><%= raw_time.creator_full_name %></td>
-  <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : "--" %></td>
+  <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(home_time_zone), format: :short_day_and_time) : "--" %></td>
   <td><%= raw_time.reviewer_full_name %></td>
-  <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(view_object.home_time_zone), format: :short_day_and_time) : "--" %></td>
+  <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(home_time_zone), format: :short_day_and_time) : "--" %></td>
   <td><%= raw_time.matched? ? "Yes" : "No" %></td>
   <td>
     <div class="col-xs-12 text-nowrap">

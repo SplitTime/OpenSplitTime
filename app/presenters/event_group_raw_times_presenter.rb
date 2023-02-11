@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class EventGroupRawTimesPresenter < BasePresenter
-  attr_reader :event_group
+  attr_reader :event_group, :request
 
   delegate :to_param, to: :event_group
 
-  def initialize(event_group, params, current_user)
+  def initialize(event_group, view_context)
     @event_group = event_group
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @request = view_context.request
+    @params = view_context.prepared_params
+    @current_user = view_context.current_user
   end
 
   def events
@@ -48,7 +50,15 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def filtered_raw_times_count
+    filtered_raw_times.size
+  end
+
+  def filtered_raw_times_unpaginated_count
     filtered_raw_times.total_entries
+  end
+
+  def next_page_url
+    view_context.url_for(request.params.merge(page: page + 1)) if filtered_raw_times_count == per_page
   end
 
   def split_name
@@ -61,7 +71,7 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :view_context, :params, :current_user
 
   def indexed_efforts
     @indexed_efforts ||= event_group.efforts.index_by(&:id)

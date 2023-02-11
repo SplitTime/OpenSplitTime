@@ -1,0 +1,9 @@
+<%= turbo_stream.append "raw_times_list",
+                        partial: "raw_times/raw_time_for_list",
+                        collection: @presenter.filtered_raw_times,
+                        as: :raw_time,
+                        locals: { view_object: @presenter } %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

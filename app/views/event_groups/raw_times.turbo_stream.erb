@@ -1,0 +1,14 @@
+<%= turbo_stream.append "raw_times",
+                        partial: "raw_times/raw_time",
+                        collection: @presenter.filtered_raw_times,
+                        as: :raw_time,
+                        locals: {
+                          multiple_events: @presenter.multiple_events?,
+                          multiple_sub_splits: @presenter.multiple_sub_splits?,
+                          monitor_pacers: @presenter.monitor_pacers?,
+                          home_time_zone: @presenter.home_time_zone,
+                        } %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

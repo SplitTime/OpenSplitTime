@@ -24,7 +24,6 @@ module RawTimesHelper
       tooltip_text = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
       button_class = "primary"
     else
-      reviewed_by = current_user.id
       reviewed_at = Time.current
       tooltip_text = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
       button_class = "outline-secondary"

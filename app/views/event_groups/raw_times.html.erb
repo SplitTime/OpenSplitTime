@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-        <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
+          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -25,9 +25,5 @@
 </header>
 
 <article class="ost-article container">
-<% if @presenter.raw_times.present? %>
   <%= render "event_groups/raw_times_list", view_object: @presenter %>
-<% else %>
-  <h4>No raw times exist for this event group.</h4>
-<% end %>
 </article>

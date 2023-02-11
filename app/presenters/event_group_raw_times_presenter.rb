@@ -10,7 +10,6 @@ class EventGroupRawTimesPresenter < BasePresenter
     @view_context = view_context
     @request = view_context.request
     @params = view_context.prepared_params
-    @current_user = view_context.current_user
   end
 
   def events
@@ -71,7 +70,7 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   private
 
-  attr_reader :view_context, :params, :current_user
+  attr_reader :view_context, :params
 
   def indexed_efforts
     @indexed_efforts ||= event_group.efforts.index_by(&:id)

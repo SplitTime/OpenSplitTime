@@ -39,6 +39,8 @@ RSpec.describe RowifyRawTimes do
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7]).with_relation_ids }
 
         it "groups raw_times by split name and adds lap to them" do
+          expect(FindExpectedLap).not_to receive(:perform)
+
           raw_time_rows = subject.build
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
@@ -49,7 +51,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
-          expect(FindExpectedLap).not_to have_received(:perform)
         end
       end
 
@@ -57,6 +58,8 @@ RSpec.describe RowifyRawTimes do
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7, raw_time_8]).with_relation_ids }
 
         it "groups raw_times by split name and adds lap to them" do
+          expect(FindExpectedLap).not_to receive(:perform)
+
           expect(raw_time_rows.size).to eq(5)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1, nil])
@@ -65,7 +68,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(5)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7], [raw_time_8]])
           expect(raw_time_pairs.flatten.map(&:lap)).to all eq(1)
-          expect(FindExpectedLap).not_to have_received(:perform)
         end
       end
     end
@@ -75,10 +77,16 @@ RSpec.describe RowifyRawTimes do
       let(:event_2) { events(:rufa_2017_24h) }
 
       context "when some bib_numbers are in a single-lap event" do
-        before { event_1.update(laps_required: 1) }
+        before do
+          event_1.update!(laps_required: 1)
+          event_group.reload
+        end
+
         let(:subject_raw_times) { event_group.raw_times.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4, raw_time_5, raw_time_6, raw_time_7]).with_relation_ids }
 
         it "groups raw_times by split name and calls FindExpectedLap only when necessary" do
+          expect(FindExpectedLap).to receive(:perform).exactly(2).times # Only for effort_2, which is in event_2
+
           expect(raw_time_rows.size).to eq(4)
           expect(raw_time_rows).to all be_a(RawTimeRow)
           expect(raw_time_rows.map(&:effort)).to match_array([effort_1, effort_2, effort_1, effort_1])
@@ -87,7 +95,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(4)
           expect(raw_time_pairs).to match_array([[raw_time_1, raw_time_2], [raw_time_3, raw_time_4], [raw_time_5, raw_time_6], [raw_time_7]])
           expect(subject_raw_times.size).to eq(7)
-          expect(FindExpectedLap).to have_received(:perform).exactly(2).times # Only for effort_2, which is in event_2
         end
       end
 
@@ -96,6 +103,8 @@ RSpec.describe RowifyRawTimes do
         before { subject_raw_times.each { |rt| rt.assign_attributes(lap: 2) } }
 
         it "groups raw_times by split name but does not call FindExpectedLap" do
+          expect(FindExpectedLap).to receive(:perform).exactly(0).times # Because lap was already assigned
+
           expect(raw_time_rows.size).to eq(1)
           raw_time_row = raw_time_rows.first
           expect(raw_time_row).to be_a(RawTimeRow)
@@ -105,7 +114,6 @@ RSpec.describe RowifyRawTimes do
           expect(raw_time_pairs.size).to eq(1)
           expect(raw_time_pairs).to eq([[raw_time_3, raw_time_4]])
           expect(subject_raw_times.size).to eq(2)
-          expect(FindExpectedLap).to have_received(:perform).exactly(0).times # Because lap was already assigned
         end
       end
     end

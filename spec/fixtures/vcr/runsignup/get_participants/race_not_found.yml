@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://runsignup.com/Rest/race/9999999/participants?api_key=1234&api_secret=2345&event_id=661702&format=json&page=1&results_per_page=200&sort=registration_id%20ASC
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.1.3p185
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - runsignup.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 21 Feb 2023 16:34:06 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '58'
+      Connection:
+      - keep-alive
+      P3p:
+      - CP="CAO PSA OUR"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=15768000
+    body:
+      encoding: UTF-8
+      string: '{"error":{"error_code":201,"error_msg":"Race not found."}}'
+    http_version:
+  recorded_at: Tue, 21 Feb 2023 16:34:06 GMT
+recorded_with: VCR 4.0.0

@@ -32,7 +32,7 @@
     </tr>
     <tr>
       <td>Parent</td>
-      <% if import_job.parent.present? %>
+      <% if @import_job.parent.present? %>
         <%= link_to @import_job.parent_name, @import_job.parent_path %>
       <% else %>
         Resource not found (it may have been deleted)

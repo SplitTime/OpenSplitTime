@@ -8,7 +8,13 @@
       Resource not found (it may have been deleted)
     <% end %>
   </td>
-  <td><%= import_job.file.filename %></td>
+  <td>
+    <ul class="mb-0" style="padding-left: 1.2em">
+      <% import_job.files.each do |file| %>
+        <li><%= file.filename %></li>
+      <% end %>
+    </ul>
+  </td>
   <td class="text-center"><%= import_job.row_count %></td>
   <td class="text-center"><%= "#{import_job.succeeded_count}/#{import_job.failed_count}/#{import_job.ignored_count}" %></td>
   <td class="text-center"><%= pretty_duration(import_job.elapsed_time) %></td>

@@ -50,10 +50,10 @@ module ETL
               File.open(source_data)
             elsif source_data.is_a?(::File)
               source_data
-            elsif source_data.is_a?(::ActiveStorage::Attached)
+            elsif source_data.is_a?(::ActiveStorage::Attached) || source_data.is_a?(::ActiveStorage::Attachment)
               StringIO.new(source_data.download, "r:utf-8")
             else
-              errors << invalid_file_error(file)
+              errors << invalid_file_error(source_data)
             end
           end
       end

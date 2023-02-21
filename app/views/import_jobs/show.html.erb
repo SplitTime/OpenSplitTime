@@ -43,8 +43,14 @@
       <td><%= @import_job.parent_id %></td>
     </tr>
     <tr>
-      <td>File</td>
-      <td><%= @import_job.file.filename || "None" %></td>
+      <td>Files</td>
+      <td>
+        <ul class="mb-0" style="padding-left: 1.2em">
+          <% @import_job.files.each do |file| %>
+            <li><%= file.filename %></li>
+          <% end %>
+        </ul>
+      </td>
     </tr>
     <tr>
       <td>Row count</td>
@@ -74,7 +80,7 @@
       <td>Errors</td>
       <td>
         <% @import_job.parsed_errors.each do |error| %>
-        <p style="white-space:pre-wrap"><%= JSON.pretty_generate(error) %></p>
+          <p style="white-space:pre-wrap"><%= JSON.pretty_generate(error) %></p>
         <% end %>
       </td>
     </tr>

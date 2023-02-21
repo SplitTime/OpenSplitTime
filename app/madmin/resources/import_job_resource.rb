@@ -14,7 +14,7 @@ class ImportJobResource < Madmin::Resource
   attribute :started_at
   attribute :elapsed_time
   attribute :ignored_count, form: false
-  attribute :file, index: false
+  attribute :files, index: false
 
   # Associations
   attribute :user

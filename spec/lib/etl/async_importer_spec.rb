@@ -4,15 +4,24 @@ require "rails_helper"
 
 RSpec.describe ETL::AsyncImporter do
   subject { ETL::AsyncImporter.new(import_job) }
-  let(:import_job) { create(:import_job, parent_type: "Lottery", parent_id: lottery_id, format: format) }
+  let(:import_job) do
+    create(
+      :import_job,
+      :with_file,
+      file: source_data,
+      filename: File.basename(source_data),
+      content_type: "text/csv",
+      parent_type: "Lottery",
+      parent_id: lottery_id,
+      format: format,
+    )
+  end
   let(:lottery) { lotteries(:lottery_without_tickets) }
   let(:lottery_id) { lottery.id }
   let(:format) { :lottery_entrants }
   let(:fast_division) { lottery.divisions.find_by(name: "Fast People") }
   let(:slow_division) { lottery.divisions.find_by(name: "Slow People") }
   let(:source_data) { file_fixture("test_lottery_entrants.csv") }
-
-  before { import_job.file.attach(io: File.open(source_data), filename: "test_lottery_entrants.csv", content_type: "text/csv") }
 
   context "when the import file is valid and format is recognized" do
     it "creates new lottery entrants" do

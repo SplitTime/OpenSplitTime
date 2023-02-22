@@ -13,6 +13,7 @@ module ETL
     def initialize(import_job)
       @import_job = import_job
       @errors = []
+      @extracted_structs = []
       @custom_options = {}
       validate_setup
     end
@@ -32,7 +33,7 @@ module ETL
     attr_writer :errors
     attr_accessor :extract_strategy, :transform_strategy, :load_strategy, :custom_options, :extracted_structs, :transformed_protos
 
-    delegate :file, :format, :parent_type, :parent_id, to: :import_job
+    delegate :files, :format, :parent_type, :parent_id, to: :import_job
 
     def set_etl_strategies
       case format.to_sym
@@ -51,11 +52,13 @@ module ETL
 
     def extract_data
       import_job.extracting!
-      import_job.set_elapsed_time!
-      extractor = ::ETL::Extractor.new(file, extract_strategy)
-      self.extracted_structs = extractor.extract
-      self.errors += extractor.errors
-      import_job.update(row_count: extracted_structs.size)
+      files.each do |file|
+        import_job.set_elapsed_time!
+        extractor = ::ETL::Extractor.new(file, extract_strategy)
+        self.extracted_structs += extractor.extract
+        self.errors += extractor.errors
+        import_job.update(row_count: extracted_structs.size)
+      end
     end
 
     def transform_data

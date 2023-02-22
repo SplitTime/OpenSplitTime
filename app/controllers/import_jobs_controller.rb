@@ -5,7 +5,7 @@ class ImportJobsController < ApplicationController
 
   # GET /import_jobs
   def index
-    render locals: { import_jobs: current_user.import_jobs.most_recent_first.with_attached_file }
+    render locals: { import_jobs: current_user.import_jobs.most_recent_first.with_attached_files }
   end
 
   # GET /import_jobs/:id

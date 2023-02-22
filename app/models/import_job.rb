@@ -4,7 +4,7 @@ class ImportJob < ApplicationRecord
   belongs_to :user
   broadcasts_to :user, inserts_by: :prepend
 
-  has_one_attached :file
+  has_many_attached :files
 
   scope :most_recent_first, -> { reorder(created_at: :desc) }
   scope :owned_by, ->(user) { where(user: user) }
@@ -24,8 +24,7 @@ class ImportJob < ApplicationRecord
   }
 
   validates_presence_of :parent_type, :parent_id, :format
-  validates :file,
-            attached: true,
+  validates :files,
             size: {less_than: 1.megabyte},
             content_type: {in: %w[text/csv text/plain], message: "must be a CSV file"}
 

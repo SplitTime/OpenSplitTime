@@ -27,7 +27,7 @@
 
 <article class="ost-article container">
   <% if @presenter.event_series.present? %>
-    <%= render "event_series_list", event_series: @presenter.event_series %>
+    <%= render "event_series_list", presenter: @presenter, event_series: @presenter.event_series %>
   <% else %>
     <h4>No event series are associated with this organization.</h4>
   <% end %>

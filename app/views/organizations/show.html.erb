@@ -34,12 +34,13 @@
   <% if current_user&.authorized_to_edit?(@presenter.organization) && @presenter.concealed_event_groups.exists? %>
     <div class="p-3 border border-primary">
       <h3>Under Construction</h3>
-      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups, event_series: @presenter.event_series %>
+      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
     </div>
   <% end %>
 
   <% if @presenter.visible_event_groups.exists? %>
-    <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.visible_event_groups, event_series: @presenter.event_series %>
+    <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.visible_event_groups %>
+    <%= render "event_series/list_event_series", presenter: @presenter, event_series: @presenter.event_series %>
   <% else %>
     <h4>No events exist yet</h4>
   <% end %>

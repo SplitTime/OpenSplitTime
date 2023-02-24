@@ -36,7 +36,6 @@ RSpec.describe "Create a new event series" do
 
   def create_and_verify_series
     visit organization_path(organization)
-    click_link "Event Series"
     click_link "add-event-series"
 
     expect(page).to have_content("New Event Series")

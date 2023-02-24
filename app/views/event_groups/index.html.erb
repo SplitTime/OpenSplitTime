@@ -41,7 +41,7 @@
     <%= will_paginate(@presenter.event_groups, inner_window: 2, outer_window: 0) %>
   </nav>
   <% if @presenter.event_groups.present? %>
-    <%= render 'list_event_groups', presenter: @presenter, event_groups: @presenter.event_groups %>
+    <%= render "list_event_groups", presenter: @presenter, event_groups: @presenter.event_groups %>
   <% else %>
     <br/>
     <% if params[:search].blank? %>

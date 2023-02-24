@@ -178,7 +178,7 @@ Rails.application.routes.draw do
       resources :syncable_relations, only: [:create, :destroy], module: "event_groups"
     end
 
-    resources :event_series
+    resources :event_series, except: [:index]
 
     resources :lotteries do
       member { get :draw_tickets }

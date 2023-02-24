@@ -34,7 +34,7 @@
   <% if current_user&.authorized_to_edit?(@presenter.organization) && @presenter.concealed_event_groups.exists? %>
     <div class="p-3 border border-primary">
       <h3>Under Construction</h3>
-      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups %>
+      <%= render "event_groups/list_event_groups", presenter: @presenter, event_groups: @presenter.concealed_event_groups, event_series: @presenter.event_series %>
     </div>
   <% end %>
 

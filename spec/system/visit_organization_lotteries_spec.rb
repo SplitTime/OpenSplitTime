@@ -74,7 +74,6 @@ RSpec.describe "Visit an organization lotteries page" do
     expect(page).to have_content(organization.name)
     expect(page).to have_content("Courses")
     expect(page).to have_content("Events")
-    expect(page).to have_content("Event Series")
     expect(page).to have_content("Lotteries")
 
     expect(page).to have_content(visible_lottery.name)

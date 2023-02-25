@@ -257,4 +257,37 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#has_credentials_for?" do
+    let(:user) { users(:third_user) }
+    let(:result) { user.has_credentials_for?(source_name) }
+    let(:source_name) { "partner_service" }
+    let(:test_credentials) { nil }
+
+    before { allow(user).to receive(:credentials).and_return(test_credentials) }
+
+    context "when credentials are nil" do
+      it { expect(result).to eq(false) }
+    end
+
+    context "when credentials are empty" do
+      let(:test_credentials) { {} }
+      it { expect(result).to eq(false) }
+    end
+
+    context "when credentials exist but do not include the requested key" do
+      let(:test_credentials) { { "other_service" => { "api_key" => "1234", "api_secret" => "2345"} } }
+      it { expect(result).to eq(false) }
+    end
+
+    context "when credentials exist for the requested key" do
+      let(:test_credentials) { { "partner_service" => { "api_key" => "1234", "api_secret" => "2345"} } }
+      it { expect(result).to eq(true) }
+
+      context "when the key is a symbol" do
+        let(:source_name) { :partner_service }
+        it { expect(result).to eq(true) }
+      end
+    end
+  end
 end

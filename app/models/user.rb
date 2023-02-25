@@ -148,6 +148,10 @@ class User < ApplicationRecord
     avatar.present?
   end
 
+  def has_credentials_for?(source_name)
+    credentials.present? && credentials[source_name.to_s].present?
+  end
+
   def from_omniauth?
     provider? && uid?
   end

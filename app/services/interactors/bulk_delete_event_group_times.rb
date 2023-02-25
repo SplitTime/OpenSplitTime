@@ -11,21 +11,25 @@ module Interactors
 
     def initialize(event_group)
       @event_group = event_group
-      @errors = []
+      @response = Interactors::Response.new([])
     end
 
     def perform!
       ActiveRecord::Base.transaction do
         delete_raw_times
         delete_split_times
+        touch_records
         raise ActiveRecord::Rollback if errors.present?
       end
-      Interactors::Response.new(errors, message, {})
+
+      set_response_message
+      response
     end
 
     private
 
-    attr_reader :event_group, :errors
+    attr_reader :event_group, :response
+    delegate :errors, to: :response, private: true
 
     def delete_raw_times
       @raw_time_count = RawTime.where(event_group_id: event_group).delete_all
@@ -40,12 +44,18 @@ module Interactors
       errors << active_record_error(e)
     end
 
-    def message
-      if errors.present?
-        "Unable to delete times"
-      else
-        "Deleted #{pluralize(@raw_time_count, 'raw time')} and #{pluralize(@split_time_count, 'split time')}"
-      end
+    def touch_records
+      event_group.touch
+      event_group.events.each(&:touch)
+    end
+
+    def set_response_message
+      response.message =
+        if errors.present?
+          "Unable to delete times"
+        else
+          "Deleted #{pluralize(@raw_time_count, 'raw time')} and #{pluralize(@split_time_count, 'split time')}"
+        end
     end
   end
 end

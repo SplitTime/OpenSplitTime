@@ -17,7 +17,6 @@ module RawTimes
     def perform
       raw_times.each do |raw_time|
         set_lap_simple(raw_time)
-        set_entered_from_absolute_time(raw_time) if raw_time.absolute_time.present? # See note below
         set_absolute_from_entered_time(raw_time) unless raw_time.absolute_time.present?
         set_lap_using_time(raw_time) unless raw_time.lap.present?
       end
@@ -35,20 +34,6 @@ module RawTimes
       elsif single_lap_event_group? || single_lap_event?(raw_time)
         raw_time.lap = 1
       end
-    end
-
-    # Versions of OST Remote prior to July 2020 set absolute_time directly,
-    # making it necessary to copy absolute_time to entered_time
-    # if absolute_time exists.
-    #
-    # This method can be removed once OST Remote sets entered_time
-    # instead of absolute_time (and there has been plenty of time for
-    # users to upgrade). January 2021 should be about right.
-    #
-    # See also the RowifyRawTimes class.
-    #
-    def set_entered_from_absolute_time(raw_time)
-      raw_time.entered_time = raw_time.absolute_time
     end
 
     def set_absolute_from_entered_time(raw_time)

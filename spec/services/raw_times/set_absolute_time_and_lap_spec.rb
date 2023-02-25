@@ -40,8 +40,7 @@ RSpec.describe ::RawTimes::SetAbsoluteTimeAndLap do
       shared_examples "sets lap and time for a single-lap event" do
         context "when absolute time is present" do
           let(:absolute_time) { "2020-04-04 07:30:00-0600" }
-          it "sets entered time and lap" do
-            expect(resulting_raw_time.entered_time.to_datetime).to eq(absolute_time.to_datetime)
+          it "sets the lap" do
             expect(resulting_raw_time.lap).to eq(1)
           end
         end
@@ -99,9 +98,6 @@ RSpec.describe ::RawTimes::SetAbsoluteTimeAndLap do
 
         context "when absolute time is present" do
           let(:absolute_time) { "2017-02-11 11:55:00-0600" }
-          it "sets entered time" do
-            expect(resulting_raw_time.entered_time.to_datetime).to eq(absolute_time.to_datetime)
-          end
 
           include_examples "uses FindExpectedLap to set the lap"
         end
@@ -146,9 +142,6 @@ RSpec.describe ::RawTimes::SetAbsoluteTimeAndLap do
 
         context "when absolute time is present" do
           let(:absolute_time) { "2017-02-11 11:55:00-0600" }
-          it "sets entered time" do
-            expect(resulting_raw_time.entered_time.to_datetime).to eq(absolute_time.to_datetime)
-          end
 
           include_examples "uses entered lap to set the lap"
         end

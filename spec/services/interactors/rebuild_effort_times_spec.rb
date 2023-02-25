@@ -38,8 +38,15 @@ RSpec.describe Interactors::RebuildEffortTimes do
         end
 
         ordered_split_times[1..-1].map do |st|
-          RawTime.create!(event_group: effort.event_group, bib_number: effort.bib_number, split_name: st.split.base_name,
-                          absolute_time: st.absolute_time, bitkey: st.bitkey, source: "rebuild_effort_test")
+          RawTime.create!(
+            event_group: effort.event_group,
+            bib_number: effort.bib_number,
+            split_name: st.split.base_name,
+            entered_time: st.absolute_time,
+            absolute_time: st.absolute_time,
+            bitkey: st.bitkey,
+            source: "rebuild_effort_test",
+          )
         end
       end
 
@@ -77,9 +84,16 @@ RSpec.describe Interactors::RebuildEffortTimes do
           st = ordered_split_times[3]
           duplicate_time = st.absolute_time + 1.minute
           earlier_creation_time = st.created_at - 1.minute
-          RawTime.create!(event_group: effort.event_group, bib_number: effort.bib_number, split_name: st.split.base_name,
-                          absolute_time: duplicate_time, bitkey: st.bitkey, source: "rebuild_effort_test",
-                          created_at: earlier_creation_time)
+          RawTime.create!(
+            event_group: effort.event_group,
+            bib_number: effort.bib_number,
+            split_name: st.split.base_name,
+            entered_time: duplicate_time,
+            absolute_time: duplicate_time,
+            bitkey: st.bitkey,
+            source: "rebuild_effort_test",
+            created_at: earlier_creation_time,
+          )
         end
 
         it "reorders the split_times, retaining sub_split integrity and skipping the duplicate time" do

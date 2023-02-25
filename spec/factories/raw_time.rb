@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :raw_time do
     event_group
+    entered_time { "12:34:56" }
     split_name { "#{FFaker::Name.first_name} #{FFaker::Name.first_name}".parameterize }
     bitkey { [SubSplit::IN_BITKEY, SubSplit::OUT_BITKEY].sample }
     bib_number { rand(1..999).to_s }

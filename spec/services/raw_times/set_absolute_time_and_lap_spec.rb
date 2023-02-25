@@ -20,7 +20,7 @@ RSpec.describe ::RawTimes::SetAbsoluteTimeAndLap do
   end
 
   let(:entered_lap) { nil }
-  let(:entered_time) { nil }
+  let(:entered_time) { "2020-04-04 07:30:00-0600" }
   let(:absolute_time) { nil }
   let(:effort) { event.efforts.order(:bib_number).first }
   let(:bib_number) { effort.bib_number.to_s }

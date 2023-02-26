@@ -106,27 +106,6 @@ RSpec.describe ProcessImportedRawTimesJob do
       end
     end
 
-    context "when raw times have absolute times but no entered times" do
-      let(:raw_time_1) do
-        create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: "in",
-                          absolute_time: absolute_time_in, entered_time: nil, with_pacer: "true", stopped_here: "false", source: source)
-      end
-      let(:raw_time_2) do
-        create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: "out",
-                          absolute_time: absolute_time_out, entered_time: nil, with_pacer: "true", stopped_here: "true", source: source)
-      end
-
-      include_examples "processes raw times as expected"
-
-      it "sets entered times without changing absolute times" do
-        perform_process
-        raw_times.each(&:reload)
-
-        expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
-        expect(raw_times.map { |rt| time_zone.parse(rt.entered_time) }).to eq([absolute_time_in, absolute_time_out])
-      end
-    end
-
     context "when raw times have entered times but no absolute times" do
       let(:raw_time_1) do
         create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: "in",

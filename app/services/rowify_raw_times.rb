@@ -20,7 +20,6 @@ class RowifyRawTimes
 
   def build
     add_lap_to_raw_times
-    add_entered_time_from_absolute # See note below
     raw_time_pairs = RawTimePairer.pair(event_group: event_group, raw_times: raw_times).map(&:compact)
     raw_time_pairs.map(&method(:build_time_row))
   end
@@ -51,14 +50,6 @@ class RowifyRawTimes
                             subject_value: subject_value,
                             split_id: raw_time.split_id,
                             bitkey: raw_time.bitkey)
-  end
-
-  # This should be removed after OST Remote changes are
-  # well baked, circa January 2021.
-  def add_entered_time_from_absolute
-    raw_times.reject(&:entered_time).each do |rt|
-      rt.entered_time = rt.military_time(home_time_zone)
-    end
   end
 
   def build_time_row(raw_time_pair)

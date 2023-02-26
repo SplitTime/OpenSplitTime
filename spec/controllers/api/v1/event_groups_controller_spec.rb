@@ -288,8 +288,8 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:event_group) { event.event_group }
     let(:event) { events(:hardrock_2016) }
     let(:time_zone) { ActiveSupport::TimeZone[event.home_time_zone] }
-    let(:absolute_time_in) { time_zone.parse("2016-07-15 17:00:00") }
-    let(:absolute_time_out) { time_zone.parse("2016-07-15 17:20:00") }
+    let(:entered_time_in) { time_zone.parse("2016-07-15 17:00:00") }
+    let(:entered_time_out) { time_zone.parse("2016-07-15 17:20:00") }
     let(:effort) { efforts(:hardrock_2016_start_only) }
     let(:bib_number) { effort.bib_number.to_s }
     let(:strict) { nil }
@@ -302,16 +302,16 @@ RSpec.describe Api::V1::EventGroupsController do
       let(:data) do
         [
           {type: "raw_time",
-           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "in", absoluteTime: absolute_time_in,
+           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
                         withPacer: "true", stoppedHere: "false", source: source}},
           {type: "raw_time",
-           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", absoluteTime: absolute_time_out,
+           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
                         withPacer: "true", stoppedHere: "true", source: source}}
         ]
       end
       let(:source) { "ost-remote-1234" }
 
-      shared_examples "creates and processes raw times" do |time_attribute|
+      context "when raw_time data is valid" do
         via_login_and_jwt do
           it "creates raw_times" do
             expect { make_request }.to change { RawTime.count }.by(2)
@@ -322,7 +322,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(parsed_response["data"].map { |record| record["type"] }).to all eq("rawTimes")
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map(&time_attribute).map(&:to_datetime)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map(&:entered_time).map(&:to_datetime)).to eq([entered_time_in, entered_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
 
@@ -339,34 +339,15 @@ RSpec.describe Api::V1::EventGroupsController do
         end
       end
 
-      context "when raw_time data is valid" do
-        include_examples "creates and processes raw times", :absolute_time
-      end
-
-      context "when raw_times use enteredTime instead of absoluteTime" do
-        let(:data) do
-          [
-            {type: "raw_time",
-             attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "in", enteredTime: absolute_time_in,
-                          withPacer: "true", stoppedHere: "false", source: source}},
-            {type: "raw_time",
-             attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: absolute_time_out,
-                          withPacer: "true", stoppedHere: "true", source: source}}
-          ]
-        end
-
-        include_examples "creates and processes raw times", :entered_time
-      end
-
       context "when raw_times include leading zeros" do
         via_login_and_jwt do
           let(:data) do
             [
               {type: "raw_time",
-               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "in", absoluteTime: absolute_time_in,
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
                             withPacer: "true", stoppedHere: "false", source: source}},
               {type: "raw_time",
-               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "out", absoluteTime: absolute_time_out,
+               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
                             withPacer: "true", stoppedHere: "true", source: source}}
             ]
           end
@@ -381,7 +362,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(parsed_response["data"].map { |record| record["type"] }).to all eq("rawTimes")
             expect(raw_times.map(&:bib_number)).to all eq(bib_number_leading_zeros)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map { |rt| rt.entered_time.to_datetime }).to eq([entered_time_in, entered_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
         end
@@ -392,10 +373,10 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:data) do
             [
               {type: "raw_time",
-               attributes: {bibNumber: nil, splitName: split_name, subSplitKind: "in", absoluteTime: absolute_time_in,
+               attributes: {bibNumber: nil, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
                             withPacer: "true", stoppedHere: "false", source: source}},
               {type: "raw_time",
-               attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", absoluteTime: absolute_time_out,
+               attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
                             withPacer: "true", stoppedHere: "true", source: source}}
             ]
           end
@@ -423,7 +404,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(raw_times.size).to eq(2)
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map { |rt| rt.entered_time.to_datetime }).to eq([entered_time_in, entered_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
         end
@@ -443,7 +424,7 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(raw_times.size).to eq(2)
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map(&:absolute_time)).to eq([absolute_time_in, absolute_time_out])
+            expect(raw_times.map { |rt| rt.entered_time.to_datetime }).to eq([entered_time_in, entered_time_out])
             expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
         end
@@ -452,12 +433,12 @@ RSpec.describe Api::V1::EventGroupsController do
       context "when there is a duplicate raw_time in the database" do
         before do
           create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
-                            absolute_time: absolute_time_in, with_pacer: true, stopped_here: false, source: source)
+                 entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source)
         end
 
         context "when unique_key is set" do
           via_login_and_jwt do
-            let(:unique_key) { %w[absoluteTime splitName bitkey bibNumber source withPacer stoppedHere] }
+            let(:unique_key) { %w[enteredTime splitName bitkey bibNumber source withPacer stoppedHere] }
 
             it "saves the non-duplicate raw_time to the database and updates the duplicate raw_time" do
               expect { make_request }.to change { RawTime.count }.by(1)
@@ -498,8 +479,8 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:current_user) { controller.current_user }
 
     context "when unreviewed raw_times are available" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, absolute_time: "2017-07-01 11:22:33-0600", split_name: "Finish") }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, absolute_time: "2017-07-01 12:23:34-0600", split_name: "Finish") }
+      let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, entered_time: "2017-07-01 11:22:33-0600", split_name: "Finish") }
+      let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, entered_time: "2017-07-01 12:23:34-0600", split_name: "Finish") }
 
       via_login_and_jwt do
         it "marks the raw_times as having been reviewed and returns raw_time_rows with entered_times" do
@@ -513,7 +494,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(time_rows.map { |row| row["rawTimes"].size }).to match_array([1, 1])
           expect(time_rows.map { |row| row["rawTimes"].first["splitName"] }).to all eq(finish_split.base_name)
           expect(time_rows.map { |row| row["rawTimes"].first["bibNumber"] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
-          expect(time_rows.map { |row| row["rawTimes"].first["enteredTime"] }).to match_array(%w[11:22:33 12:23:34])
+          expect(time_rows.map { |row| row["rawTimes"].first["enteredTime"] }).to match_array(["2017-07-01 11:22:33-0600", "2017-07-01 12:23:34-0600"])
         end
       end
     end

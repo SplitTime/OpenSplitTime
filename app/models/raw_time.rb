@@ -32,7 +32,7 @@ class RawTime < ApplicationRecord
 
   after_create_commit :broadcast_raw_time_create
 
-  validates_presence_of :event_group, :split_name, :bitkey, :bib_number, :source
+  validates_presence_of :entered_time, :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: { maximum: 6 }, format: { with: /\A[\d*]+\z/, message: "may contain only digits and asterisks" }
 
   scope :with_policy_scope_attributes, lambda {

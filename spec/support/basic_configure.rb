@@ -1,4 +1,4 @@
-# Noel Rappin at https://medium.com/table-xi/a-quick-guide-to-rails-system-tests-in-rspec-b6e9e8a8b5f6
+# frozen_string_literal: true
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
@@ -6,6 +6,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium_chrome_headless
+    driven_by :chrome_headless
   end
 end

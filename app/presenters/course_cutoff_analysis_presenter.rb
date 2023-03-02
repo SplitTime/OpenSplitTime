@@ -9,7 +9,7 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   DEFAULT_DISPLAY_STYLE = :absolute
 
   attr_reader :course
-  delegate :name, :organization, :simple?, to: :course
+  delegate :events, :name, :organization, :simple?, to: :course
 
   def initialize(course, view_context)
     @course = course
@@ -83,6 +83,10 @@ class CourseCutoffAnalysisPresenter < BasePresenter
     else
       "Cutoff analysis for #{split_name} in increments of #{band_width / 1.minute} minutes"
     end
+  end
+
+  def visible_events_exist?
+    events.visible.exists?
   end
 
   private

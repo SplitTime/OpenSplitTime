@@ -77,7 +77,7 @@ RSpec.describe "visit the edit event page and make changes", type: :system, js: 
 
   def verify_confirm_and_delete
     click_link "Delete this event"
-    modal = page.find("aside")
+    modal = page.find(:css, "aside.modal")
     expect(modal).to have_content("Are you absolutely sure?")
     expect(modal).to have_button("Permanently Delete", class: "disabled")
 

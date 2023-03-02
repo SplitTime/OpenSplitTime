@@ -85,7 +85,7 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
 
   def verify_confirm_and_delete_times
     click_link "Delete all time records"
-    modal = page.find("aside")
+    modal = page.find(:css, "aside.modal")
     expect(modal).to have_content("Are you absolutely sure?")
     expect(modal).to have_button("Permanently Delete", class: "disabled")
 
@@ -106,7 +106,7 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
 
   def verify_confirm_and_delete
     click_link "Delete this event group"
-    modal = page.find("aside")
+    modal = page.find(:css, "aside.modal")
     expect(modal).to have_content("Are you absolutely sure?")
     expect(modal).to have_button("Permanently Delete", class: "disabled")
 

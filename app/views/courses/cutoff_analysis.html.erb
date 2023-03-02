@@ -35,7 +35,7 @@
   <h4><%= @presenter.table_title %></h4>
   <br/>
 
-  <% if @presenter.interval_split_cutoff_analyses.present? %>
+  <% if @presenter.visible_events_exist? && @presenter.interval_split_cutoff_analyses.present? %>
     <div>
       <%= column_chart @presenter.chart_data, stacked: true %>
     </div>

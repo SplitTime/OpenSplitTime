@@ -15,7 +15,7 @@ module CourseAnalysisMethods
   end
 
   def default_time_zone
-    event.home_time_zone
+    event&.home_time_zone
   end
 
   def start_time

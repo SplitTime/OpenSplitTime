@@ -95,6 +95,14 @@ module OstConfig
     3.days
   end
 
+  def self.redis_url
+    if Rails.env.production? && base_uri == "ost-stage.herokuapp.com"
+      ENV["REDIS_TLS_URL"] || ENV["REDIS_URL"]
+    else
+      ENV["REDIS_URL"]
+    end
+  end
+
   def self.scout_apm_sample_rate
     ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end

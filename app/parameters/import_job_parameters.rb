@@ -3,7 +3,7 @@
 class ImportJobParameters < BaseParameters
   def self.permitted
     [
-      :file,
+      :files,
       :format,
       :parent_id,
       :parent_type

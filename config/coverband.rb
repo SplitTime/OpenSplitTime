@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 Coverband.configure do |config|
+  redis_params = {
+    url: OstConfig.redis_url,
+    ssl_params: {
+      verify_mode: OpenSSL::SSL::VERIFY_NONE
+    },
+  }
+  config.store = Coverband::Adapters::RedisStore.new(Redis.new(redis_params))
+
   # default false. button at the top of the web interface which clears all data
   config.web_enable_clear = true
 

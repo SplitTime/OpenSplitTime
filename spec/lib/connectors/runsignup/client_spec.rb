@@ -27,8 +27,19 @@ RSpec.describe ::Connectors::Runsignup::Client do
       it "returns a json blob with race and event information" do
         VCR.use_cassette("runsignup/get_race/valid") do
           parsed_result = JSON.parse(result)
-          expect(parsed_result["race"]).to be_present
-          expect(parsed_result.dig("race", "events")).to be_present
+
+          race = parsed_result["race"]
+          expect(race).to be_present
+          expect(race.dig("race_id")).to eq(race_id)
+          expect(race.dig("name")).to eq("Running Up For Air")
+
+          events = parsed_result.dig("race", "events")
+          expect(events).to be_present
+          expect(events.count).to eq(3)
+
+          event = events.first
+          expect(event.dig("event_id")).to eq(661702)
+          expect(event.dig("name")).to eq("24 hr")
         end
       end
     end
@@ -57,8 +68,18 @@ RSpec.describe ::Connectors::Runsignup::Client do
           VCR.use_cassette("runsignup/get_participants/valid") do
             parsed_result = JSON.parse(result)
 
-            expect(parsed_result.first["event"]).to be_present
-            expect(parsed_result.first["participants"]).to be_present
+            event = parsed_result.first["event"]
+            expect(event).to be_present
+            expect(event["event_id"]).to eq(event_id)
+
+            participants = parsed_result.first["participants"]
+            expect(participants).to be_present
+            expect(participants.size).to eq(2)
+
+            participant = participants.first
+            expect(participant.dig("bib_num")).to eq(3)
+            expect(participant.dig("user", "first_name")).to eq("Bubba")
+            expect(participant.dig("user", "last_name")).to eq("Gump")
           end
         end
       end

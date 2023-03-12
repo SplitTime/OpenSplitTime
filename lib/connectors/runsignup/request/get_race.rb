@@ -20,17 +20,6 @@ module Connectors
         def specific_params
           {}
         end
-
-        # # @param [Hash] raw_event
-        # # @return [::Runsignup::Resources::Event]
-        # def object_from_hash(raw_event)
-        #   Runsignup::Resources::Event.new(
-        #     id: raw_event["event_id"],
-        #     name: raw_event["name"],
-        #     start_time: raw_event["start_time"],
-        #     end_time: raw_event["end_time"],
-        #   )
-        # end
       end
     end
   end

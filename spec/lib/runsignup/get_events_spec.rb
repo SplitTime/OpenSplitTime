@@ -24,7 +24,7 @@ RSpec.describe ::Runsignup::GetEvents do
         end
 
         it "returns event structs" do
-          VCR.use_cassette("runsignup/events") do
+          VCR.use_cassette("runsignup/get_race/valid") do
             expect(result).to eq(expected_result)
           end
         end
@@ -33,7 +33,7 @@ RSpec.describe ::Runsignup::GetEvents do
       context "when the race id is not valid" do
         let(:race_id) { 9999999 }
         it "returns nil" do
-          VCR.use_cassette("runsignup/events_invalid_race_id") do
+          VCR.use_cassette("runsignup/get_race/not_found") do
             expect(result).to be_nil
           end
         end

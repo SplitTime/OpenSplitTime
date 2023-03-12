@@ -10,7 +10,7 @@
     <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
   <% end %>
   <%= javascript_pack_tag "application" %>
-  <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places&key=#{::OstConfig.google_maps_api_key}" %>
+  <%= render "layouts/google_maps_api_js" %>
   <%= csrf_meta_tags %>
   <%= render "layouts/cloudflare_analytics" if Rails.env.production? %>
   <%= render "layouts/favicon" %>

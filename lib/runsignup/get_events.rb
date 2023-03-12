@@ -70,7 +70,7 @@ module Runsignup
         name: raw_event["name"],
         start_time: raw_event["start_time"],
         end_time: raw_event["end_time"],
-        )
+      )
     end
   end
 end

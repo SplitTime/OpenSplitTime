@@ -93,7 +93,7 @@ module Runsignup
         country_code: raw_participant.dig("user", "address", "country_code"),
         bib_number: raw_participant.dig("bib_num"),
         scheduled_start_time_local: event_start_time,
-        )
+      )
     end
 
     # @param [String] string

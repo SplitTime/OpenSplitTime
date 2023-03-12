@@ -79,7 +79,7 @@ module Connectors
             end
           end
         else
-          raise Connectors::Errors::BadRequest
+          raise Connectors::Errors::BadRequest, "#{response.code}: #{response.body}"
         end
       end
 

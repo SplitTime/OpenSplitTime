@@ -99,7 +99,7 @@ module OstConfig
     if Rails.env.production? && base_uri == "ost-stage.herokuapp.com"
       ENV["REDIS_TLS_URL"] || ENV["REDIS_URL"]
     else
-      ENV["REDIS_URL"]
+      ENV["REDIS_URL"] || "redis://localhost:6379/1"
     end
   end
 

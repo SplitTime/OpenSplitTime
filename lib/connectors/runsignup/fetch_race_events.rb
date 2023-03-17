@@ -5,16 +5,18 @@ module Connectors
     class FetchRaceEvents
       # @param [String] race_id
       # @param [User] user
+      # @param [Runsignup::Client, nil] client
       # @return [Array<::Runsignup::Event>]
-      def self.perform(race_id:, user:)
-        new(race_id: race_id, user: user).perform
+      def self.perform(race_id:, user:, client: nil)
+        new(race_id: race_id, user: user, client: client).perform
       end
 
       # @param [String] race_id
       # @param [User] user
-      def initialize(race_id:, user:)
+      # @param [Runsignup::Client, nil] client
+      def initialize(race_id:, user:, client: nil)
         @race_id = race_id
-        @client = ::Connectors::Runsignup::Client.new(user)
+        @client = client || ::Connectors::Runsignup::Client.new(user)
         @events = []
       end
 

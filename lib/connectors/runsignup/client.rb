@@ -12,7 +12,7 @@ module Connectors
 
       def initialize(user)
         @user = user
-        verify_credentials_present
+        verify_credentials_present!
       end
 
       def get_race(race_id)
@@ -30,7 +30,7 @@ module Connectors
       attr_reader :user
       attr_accessor :request, :response
 
-      # @return [Array<Connectors::Runsignup::Resources>]
+      # @return [String]
       def make_request
         self.response = ::RestClient.get(url, { params: params })
         check_response_validity
@@ -101,7 +101,7 @@ module Connectors
         @parsed_body
       end
 
-      def verify_credentials_present
+      def verify_credentials_present!
         unless credentials.present?
           raise Connectors::Errors::MissingCredentials,
                 "This source requires credentials for runsignup, but none were found."

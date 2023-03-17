@@ -1,0 +1,84 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://runsignup.com/Rest/race/85675/participants?api_key=1234&api_secret=2345&event_id=661702&format=json&page=1&results_per_page=200&sort=registration_id%20ASC
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.1.3p185
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - runsignup.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Tue, 21 Feb 2023 16:15:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '10442'
+      Connection:
+      - keep-alive
+      P3p:
+      - CP="CAO PSA OUR"
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=15768000
+    body:
+      encoding: ASCII-8BIT
+      string: '[{
+        "event":{"event_id":661702,"participants":[]},
+        "participants":[
+          {
+            "user":{
+              "user_id":18498798,
+              "first_name":"Gilford",
+              "middle_name":null,
+              "last_name":"Granger",
+              "email":"gilford@gmail.com",
+              "address":{"street":"876 Main Street","city":"Boston","state":"MA","zipcode":"02123","country_code":"US"},
+              "dob":"1998-01-01",
+              "gender":"M",
+              "phone":"776-583-3514"
+              },
+            "event_id":661702,
+            "bib_num":13,
+            "age":25
+          },
+          {
+            "user":{
+              "user_id":58758754,
+              "first_name":"Yolanda",
+              "middle_name":null,
+              "last_name":"Yorgenson",
+              "email":"yolanda@hotmail.com",
+              "address":{"street":"76576 Harbinger","city":"Golan Heights","state":"MI","zipcode":"67584","country_code":"US"},
+              "dob":"1988-11-11",
+              "gender":"F",
+              "phone":"535-528-7078"
+            },
+            "event_id":661702,
+            "bib_num":15,
+            "age":35
+          }
+        ]
+      }]'
+    http_version:
+  recorded_at: Tue, 21 Feb 2023 16:15:41 GMT
+recorded_with: VCR 4.0.0

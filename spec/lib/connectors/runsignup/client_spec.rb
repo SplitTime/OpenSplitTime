@@ -4,9 +4,8 @@ require "rails_helper"
 
 RSpec.describe ::Connectors::Runsignup::Client do
   subject { described_class.new(user) }
-  let(:user) { users(:third_user) }
-  let(:test_credentials) { { "runsignup" => { "api_key" => "1234", "api_secret" => "2345" } } }
-  before { allow(user).to receive(:credentials).and_return(test_credentials) }
+
+  include_context "user_with_runsignup_credentials"
 
   describe "initialize" do
     context "when runsignup credentials are present" do
@@ -14,7 +13,8 @@ RSpec.describe ::Connectors::Runsignup::Client do
     end
 
     context "when runsignup credentials are not present" do
-      let(:test_credentials) { {} }
+      include_context "user_without_credentials"
+
       it { expect { subject }.to raise_error Connectors::Errors::MissingCredentials }
     end
   end

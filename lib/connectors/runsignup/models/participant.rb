@@ -1,4 +1,4 @@
-module Runsignup
+module Connectors::Runsignup::Models
   Participant = Struct.new(
     :first_name,
     :last_name,

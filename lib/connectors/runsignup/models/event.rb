@@ -1,4 +1,6 @@
-module Runsignup
+# frozen_string_literal: true
+
+module Connectors::Runsignup::Models
   Event = Struct.new(
     :id,
     :name,

@@ -7,14 +7,22 @@ RSpec.describe ETL::AsyncImporter do
   let(:import_job) do
     create(
       :import_job,
-      :with_file,
-      file: source_data,
-      filename: File.basename(source_data),
-      content_type: "text/csv",
+      :with_files,
+      file_params_array: file_params_array,
       parent_type: "Lottery",
       parent_id: lottery_id,
       format: format,
     )
+  end
+
+  let(:file_params_array) do
+    [
+      {
+        file: source_data,
+        filename: File.basename(source_data),
+        content_type: "text/csv",
+      }
+    ]
   end
   let(:lottery) { lotteries(:lottery_without_tickets) }
   let(:lottery_id) { lottery.id }

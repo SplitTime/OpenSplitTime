@@ -197,7 +197,7 @@ class EventsController < ApplicationController
   def preview_sync
     authorize @event
 
-    presenter = ::EventSyncPreviewPresenter.new(@event, ::Interactors::SyncRunsignupParticipants, view_context)
+    presenter = ::EventSyncPreviewPresenter.new(@event, view_context, previewer: Interactors::SyncRunsignupParticipants)
     render partial: "preview_sync", locals: { presenter: presenter }
   end
 

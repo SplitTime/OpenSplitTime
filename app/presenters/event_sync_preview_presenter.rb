@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class EventSyncPreviewPresenter
-  def initialize(event, previewer, view_context)
+  def initialize(event, view_context, previewer:)
     @event = event
-    @previewer = previewer
     @view_context = view_context
+    @previewer = previewer
   end
 
   attr_reader :event

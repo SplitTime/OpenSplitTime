@@ -6,8 +6,8 @@ class Connectors::Runsignup::FetchEventParticipants
   # @param [String] race_id
   # @param [String] event_id
   # @param [User] user
-  # @param [Runsignup::Client, nil] client
-  # @return [Array<::Runsignup::Participant>]
+  # @param [::Connectors::Runsignup::Client, nil] client
+  # @return [Array<::Connectors::Runsignup::Models::Participant>]
   def self.perform(race_id:, event_id:, user:)
     new(race_id: race_id, event_id: event_id, user: user).perform
   end
@@ -15,7 +15,7 @@ class Connectors::Runsignup::FetchEventParticipants
   # @param [String] race_id
   # @param [String] event_id
   # @param [User] user
-  # @param [Runsignup::Client, nil] client
+  # @param [::Connectors::Runsignup::Client, nil] client
   def initialize(race_id:, event_id:, user:, client: nil)
     @race_id = race_id.to_i
     @event_id = event_id.to_i
@@ -24,7 +24,7 @@ class Connectors::Runsignup::FetchEventParticipants
     @participants = []
   end
 
-  # @return [Array<::Runsignup::Participant>]
+  # @return [Array<::Connectors::Runsignup::Models::Participant>]
   def perform
     page = 1
 
@@ -58,7 +58,7 @@ class Connectors::Runsignup::FetchEventParticipants
   end
 
   # @param [Hash] raw_participant
-  # @return [::Runsignup::Participant]
+  # @return [::Connectors::Runsignup::Models::Participant]
   def participant_from_raw(raw_participant)
     ::Connectors::Runsignup::Models::Participant.new(
       first_name: raw_participant.dig("user", "first_name"),

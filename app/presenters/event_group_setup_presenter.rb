@@ -94,7 +94,7 @@ class EventGroupSetupPresenter < BasePresenter
   def all_runsignup_events
     return [] unless runsignup_race_id.present? && current_user.has_credentials_for?(:runsignup)
 
-    @all_runsignup_events ||= ::Runsignup::GetEvents.perform(race_id: runsignup_race_id, user: current_user)
+    @all_runsignup_events ||= ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: runsignup_race_id, user: current_user)
   end
 
   def runsignup_race_id

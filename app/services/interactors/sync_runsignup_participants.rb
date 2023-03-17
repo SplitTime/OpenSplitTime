@@ -60,7 +60,7 @@ module Interactors
 
     def find_and_create_entrants
       participants = runsignup_event_ids.flat_map do |runsignup_event_id|
-        ::Runsignup::GetParticipants.perform(race_id: runsignup_race_id, event_id: runsignup_event_id, user: current_user)
+        ::Connectors::Runsignup::FetchEventParticipants.perform(race_id: runsignup_race_id, event_id: runsignup_event_id, user: current_user)
       end
 
       participants.sort_by! { |participant| [participant.last_name, participant.first_name] }

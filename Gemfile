@@ -23,7 +23,7 @@ gem "chartkick"
 gem "coverband"
 gem "dalli"
 gem "data_migrate"
-gem "devise"
+gem "devise", "< 4.9" # Remove this restriction once we are tested with hotwire
 gem "devise-bootstrap-views"
 gem "ffaker"
 gem "font_awesome5_rails", ">= 1.4.0"

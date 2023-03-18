@@ -29,10 +29,10 @@ RSpec.describe "Modal login", type: :request do
     let(:email) { invalid_email }
     let(:password) { valid_password }
 
-    it "returns 403 but does not attempt to redirect to the sign_in page" do
+    it "returns 422 but does not attempt to redirect to the sign_in page" do
       make_request
 
-      expect(response.status).to eq(403)
+      expect(response.status).to eq(422)
       expect(response.body).to include("Invalid email or password.")
       expect(response).not_to redirect_to("/users/sign_in")
     end
@@ -42,10 +42,10 @@ RSpec.describe "Modal login", type: :request do
     let(:email) { valid_email }
     let(:password) { invalid_password }
 
-    it "returns 403 but does not attempt to redirect to the sign_in page" do
+    it "returns 422 but does not attempt to redirect to the sign_in page" do
       make_request
 
-      expect(response.status).to eq(403)
+      expect(response.status).to eq(422)
       expect(response.body).to include("Invalid email or password.")
       expect(response).not_to redirect_to("/users/sign_in")
     end

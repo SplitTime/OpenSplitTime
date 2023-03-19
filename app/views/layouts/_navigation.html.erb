@@ -14,16 +14,16 @@
 <% end %>
 
 <nav class="navbar navbar-dark bg-dark navbar-expand-md">
-  <div class="container mx-auto">
+  <div class="container-fluid mx-1">
     <%= link_to "OpenSplitTime", root_path, class: "navbar-brand", id: "logo" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarMain">
-      <ul class="navbar-nav me-auto mt-2 mt-md-0">
+      <ul class="navbar-nav mt-2 mt-md-0">
         <%= render "layouts/navigation_links" %>
       </ul>
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
         <%= render "layouts/nav_links_for_auth" %>
       </ul>
     </div>

@@ -6,7 +6,7 @@
         <%= current_user.email %><%= " (admin)" if current_user.admin? %>
         <span class="caret"></span>
       </a>
-      <div class="dropdown-menu" aria-labelledby="nav-dropdown-auth">
+      <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="nav-dropdown-auth">
         <% unless current_user.from_omniauth? %>
           <%= link_to "Edit My Profile", edit_user_registration_path, class: "dropdown-item" %>
         <% end %>

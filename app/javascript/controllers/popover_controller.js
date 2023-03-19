@@ -1,5 +1,5 @@
-import {Controller} from "@hotwired/stimulus"
-import {isMobileSafari} from "utils";
+import { Controller } from "@hotwired/stimulus"
+import { isMobileSafari } from "utils";
 
 function safeParse(str) {
     try {
@@ -24,41 +24,41 @@ export default class extends Controller {
                 'container': 'body'
             });
         let popover = $self.data('bs.popover');
-        this.whitelistAdditions(popover.config);
+        this.allowListAdditions(popover.config);
         $self.on('show.bs.popover', (event) => {
-                if (effortIds) {
-                    var ajax = $self.data('ajax');
-                    if ( !ajax || typeof ajax.status == 'undefined' ) {
-                        $(popover.tip).addClass('efforts-popover');
-                        var data = { effortIds };
-                        $self.data('ajax', $.post('/efforts/mini_table/', data)
-                            .done(function (response) {
-                                popover.config.content = response;
-                                popover.show();
-                            }).always(function () {
-                                $self.data('ajax', null);
-                            })
-                        );
-                        event.preventDefault();
-                    }
-                } else {
-                    $(popover.tip).addClass('static-popover');
-                    if (theme) {
-                        $(popover.tip).addClass(`static-popover-${theme}`);
-                    }
+            if (effortIds) {
+                var ajax = $self.data('ajax');
+                if (!ajax || typeof ajax.status == 'undefined') {
+                    $(popover.tip).addClass('efforts-popover');
+                    var data = {effortIds};
+                    $self.data('ajax', $.post('/efforts/mini_table/', data)
+                        .done(function (response) {
+                            popover.config.content = response;
+                            popover.show();
+                        }).always(function () {
+                            $self.data('ajax', null);
+                        })
+                    );
+                    event.preventDefault();
                 }
-            });
-        if ( isMobileSafari() ) {
+            } else {
+                $(popover.tip).addClass('static-popover');
+                if (theme) {
+                    $(popover.tip).addClass(`static-popover-${theme}`);
+                }
+            }
+        });
+        if (isMobileSafari()) {
             $('body').css('cursor', 'pointer');
         }
     }
 
-    whitelistAdditions(popoverConfig) {
-        popoverConfig.whiteList['table'] = [];
-        popoverConfig.whiteList['thead'] = [];
-        popoverConfig.whiteList['tbody'] = [];
-        popoverConfig.whiteList['tr'] = [];
-        popoverConfig.whiteList['td'] = [];
-        popoverConfig.whiteList['th'] = [];
+    allowListAdditions(popoverConfig) {
+        popoverConfig.allowList['table'] = [];
+        popoverConfig.allowList['thead'] = [];
+        popoverConfig.allowList['tbody'] = [];
+        popoverConfig.allowList['tr'] = [];
+        popoverConfig.allowList['td'] = [];
+        popoverConfig.allowList['th'] = [];
     }
 }

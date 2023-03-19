@@ -2,7 +2,7 @@
 <% if user_signed_in? %>
   <li class="nav-item">
     <div class="dropdown">
-      <a href="#" id="nav-dropdown-auth" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <a href="#" id="nav-dropdown-auth" class="dropdown-toggle nav-link" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <%= current_user.email %><%= " (admin)" if current_user.admin? %>
         <span class="caret"></span>
       </a>

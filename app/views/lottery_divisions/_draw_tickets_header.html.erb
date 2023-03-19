@@ -8,7 +8,7 @@
                 disabled: division.full? || division.all_entrants_drawn?,
                 class: "btn btn-lg btn-block btn-success font-weight-bold" %>
     <% if division.entrants.pre_selected.present? %>
-      <button class="btn btn-lg btn-success font-weight-bold dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-lg btn-success font-weight-bold dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <div class="dropdown-menu">

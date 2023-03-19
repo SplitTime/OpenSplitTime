@@ -41,8 +41,8 @@
             </tr>
             <template slot="row" scope="vm">
               <td>
-                <i class="fas fa-check-circle" v-show="vm.row.personId" data-toggle="tooltip" title="This effort has been reconciled"></i>
-                <i class="fas fa-question-circle" v-show="!vm.row.personId" data-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
+                <i class="fas fa-check-circle" v-show="vm.row.personId" data-bs-toggle="tooltip" title="This effort has been reconciled"></i>
+                <i class="fas fa-question-circle" v-show="!vm.row.personId" data-bs-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
               </td>
               <td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
               <td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>
@@ -51,7 +51,7 @@
               <td>{{ vm.row.bibNumber }}</td>
 
               <td class="edit">
-                <button class="btn btn-primary entrant-edit" data-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">
+                <button class="btn btn-primary entrant-edit" data-bs-toggle="modal" data-target="#js-participant-modal" v-on:click="vm.$emit('edit')">
                   <i class="fas fa-pencil-alt"></i>
                 </button>
                 <button class="btn btn-danger" v-confirm:click="'A deleted entrant cannot be recovered.'" v-promise:confirm="[vm.row.delete, vm.row]" v-on:done="vm.$emit('remove')">
@@ -63,11 +63,11 @@
         </div>
         <div class="col-12">
           <div class="float-left-button">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-target="#js-participant-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
             </button>
           </div>
           <div class="dropdown float-left-button">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
             </button>

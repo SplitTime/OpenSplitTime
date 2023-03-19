@@ -5,7 +5,7 @@ module EventGroupsHelper
     if view_object.ready_efforts.present?
       content_tag :div, class: "btn-group" do
         concat content_tag(:button, class: "btn btn-success dropdown-toggle start-ready-efforts",
-                                    data: {toggle: :dropdown}) {
+                                    data: {"bs-toggle": :dropdown}) {
                  safe_concat "Start entrants"
                  safe_concat "&nbsp;"
                  concat content_tag(:span, "", class: "caret")

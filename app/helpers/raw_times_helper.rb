@@ -30,7 +30,7 @@ module RawTimesHelper
     end
     url = raw_time_path(raw_time, raw_time: {reviewed_by: reviewed_by, reviewed_at: reviewed_at}, referrer_path: request.params)
     options = {method: :patch,
-               data: {toggle: :tooltip, placement: :bottom, "original-title" => tooltip_text},
+               data: {"bs-toggle": :tooltip, placement: :bottom, "original-title" => tooltip_text},
                class: "btn btn-#{button_class} has-tooltip click-spinner"}
 
     link_to fa_icon("glasses"), url, options
@@ -41,7 +41,7 @@ module RawTimesHelper
     tooltip = "Delete raw time"
     options = {method: :delete,
                data: {confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?",
-                      toggle: :tooltip,
+                      "bs-toggle": :tooltip,
                       placement: :bottom,
                       "original-title" => tooltip},
                class: "btn btn-danger has-tooltip"}
@@ -53,7 +53,7 @@ module RawTimesHelper
       url = split_time_path(split_time, split_time: {matching_raw_time_id: raw_time_id})
       tooltip = icon == :link ? "Match this raw time" : "Set this as the governing time"
       options = {method: :patch,
-                 data: {toggle: :tooltip,
+                 data: {"bs-toggle": :tooltip,
                         placement: :bottom,
                         "original-title" => tooltip},
                  id: "match-raw-time-#{raw_time_id}",
@@ -62,7 +62,7 @@ module RawTimesHelper
       url = create_split_time_from_raw_time_effort_path(split_time.effort_id, raw_time_id: raw_time_id, lap: split_time.lap)
       tooltip = "Create a split time from this raw time"
       options = {method: :post,
-                 data: {toggle: :tooltip,
+                 data: {"bs-toggle": :tooltip,
                         placement: :bottom,
                         "original-title" => tooltip},
                  id: "match-raw-time-#{raw_time_id}",
@@ -76,7 +76,7 @@ module RawTimesHelper
     url = raw_time_path(raw_time_id, raw_time: {split_time_id: nil})
     tooltip = "Un-match this raw time"
     options = {method: :patch,
-               data: {toggle: :tooltip,
+               data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "original-title" => tooltip},
                id: "unmatch-raw-time-#{raw_time_id}",
@@ -89,7 +89,7 @@ module RawTimesHelper
     url = raw_time_path(raw_time_id, raw_time: {disassociated_from_effort: false})
     tooltip = "Associate this raw time with this effort"
     options = {method: :patch,
-               data: {toggle: :tooltip,
+               data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "original_title" => tooltip},
                id: "associate-raw-time-#{raw_time_id}",
@@ -102,7 +102,7 @@ module RawTimesHelper
     url = raw_time_path(raw_time_id, raw_time: {disassociated_from_effort: true})
     tooltip = "Disassociate this raw time from this effort"
     options = {method: :patch,
-               data: {toggle: :tooltip,
+               data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "original_title" => tooltip},
                id: "disassociate-raw-time-#{raw_time_id}",

@@ -72,7 +72,7 @@
                 </td>
                 <td class="edit">
                   <!--<span class="marker"><%= image_tag("icons/dblue.svg", size: '16') %></span>-->
-                  <button class="btn btn-primary" data-bs-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></button>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></button>
                   <template v-if="vm.row.kind === 'intermediate'">
                     <button class="btn btn-primary" v-confirm:click="'Deassociating a split will erase related data and cannot be recovered.'" v-on:confirm="vm.row.associate( false )" v-show="vm.row.associated">
                       <i class="far fa-check-square"></i>
@@ -99,7 +99,7 @@
         </div>
         <div class="col-12">
           <div class="float-left-button">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
             </button>
           </div>
           <div class="dropdown float-left-button">

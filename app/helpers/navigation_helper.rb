@@ -10,7 +10,7 @@ module NavigationHelper
               class: "btn btn-primary has-tooltip",
               data: {action: "click->animation#spinIcon keyup@document->navigation#evaluateKeyup",
                      "navigation-target" => "refreshButton",
-                     toggle: "tooltip",
+                     "bs-toggle": "tooltip",
                      placement: :bottom,
                      "original-title" => tooltip_title}
     end
@@ -30,7 +30,7 @@ module NavigationHelper
               class: 'btn btn-outline-secondary has-tooltip',
               data: {action: 'keyup@document->navigation#evaluateKeyup',
                      "navigation-target" => "#{prior_or_next}Button",
-                     toggle: 'tooltip',
+                     "bs-toggle": 'tooltip',
                      placement: :bottom,
                      'original-title' => tooltip_title},
               disabled: target.blank?

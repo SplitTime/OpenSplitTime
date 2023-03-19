@@ -9,6 +9,6 @@ module ConcealedHelper
     concat " "
     fa_icon(icon_name,
             class: "has-tooltip",
-            data: {toggle: "tooltip", "original-title" => tooltip_text})
+            data: {"bs-toggle": "tooltip", "original-title" => tooltip_text})
   end
 end

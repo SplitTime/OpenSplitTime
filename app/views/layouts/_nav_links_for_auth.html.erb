@@ -24,7 +24,7 @@
   </li>
 <% else %>
   <li class="nav-item">
-    <%= link_to t("devise.sessions.new.sign_in").titleize, "#", class: "nav-link", data: {toggle: "modal", target: "#log-in-modal"} %>
+    <%= link_to t("devise.sessions.new.sign_in").titleize, "#", class: "nav-link", data: { "bs-toggle": "modal", target: "#log-in-modal" } %>
   </li>
   <li class="nav-item">
     <%= link_to new_registration_path(resource_name), class: "nav-link" do %>

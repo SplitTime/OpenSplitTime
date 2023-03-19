@@ -24,7 +24,7 @@ module DatetimepickerHelper
                                  class: "form-control datetimepicker-input",
                                  data: {target: "##{html_id}"}
 
-    append = content_tag(:div, nil, class: "input-group-append", data: {target: "##{html_id}", toggle: "datetimepicker"}) do
+    append = content_tag(:div, nil, class: "input-group-append", data: {target: "##{html_id}", "bs-toggle": "datetimepicker"}) do
       content_tag(:span, nil, class: "input-group-text far fa-calendar-alt")
     end
 

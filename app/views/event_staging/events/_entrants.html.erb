@@ -230,7 +230,7 @@
               </div>
               <div class="row p-controls">
                 <div class="col-12">
-                  <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
+                  <span class="brackets" data-bs-dismiss="modal"><a href="#">Cancel</a></span>
                   <button type="button" class="btn btn-primary" v-bind:disabled="invalid" v-promise:click="[value.post, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
                     <template v-if="!model._dtid">Add Entrant</template>
                     <template v-else>Done</template>

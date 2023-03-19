@@ -9,7 +9,7 @@ $.notify = function(content, options) {
 $.notifyDefaults({
     template: 
 '<aside data-notify="container" class="col-xs-11 col-sm-4 alert growl alert-{0}" role="alert">\
-    <button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>\
+    <button type="button" aria-hidden="true" class="btn-close" data-notify="dismiss"></button>\
     <span data-notify="wrapper">\
         <span data-notify="icon"></span>\
         <span data-notify="content">\

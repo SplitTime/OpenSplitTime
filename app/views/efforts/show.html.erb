@@ -14,7 +14,7 @@
     <div class="row">
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) %>
-        <div class="col form-inline">
+        <div class="col d-inline-flex">
           <div>
             <%= effort_actions_dropdown_menu(@presenter) %>
             <%= render "start_stop_buttons", presenter: @presenter %>
@@ -32,7 +32,9 @@
       <% end %>
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-        <%= render partial: "check_in_button", locals: { effort: @presenter.effort } %>
+        <div class="col text-end">
+          <%= render partial: "check_in_button", locals: { effort: @presenter.effort } %>
+        </div>
       <% end %>
 
       <div class="col-auto form-inline">

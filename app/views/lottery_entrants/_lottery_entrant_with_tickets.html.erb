@@ -7,7 +7,7 @@
           <h6><%= record.flexible_geolocation %></h6>
         </div>
         <div class="col">
-          <h4 class="text-right"><span class="badge badge-secondary"><%= record.division_name %></span></h4>
+          <h4 class="text-right"><span class="badge bg-secondary"><%= record.division_name %></span></h4>
           <h6 class="text-right font-weight-bold"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
@@ -15,7 +15,7 @@
       <div class="row">
         <% record.tickets.each do |ticket| %>
           <div class="col-6 col-sm-3 col-md-2 text-center">
-            <h4><span class="badge badge-primary text-center text-monospace p-3"><%= "##{ticket.reference_number}" %></span></h4>
+            <h4><span class="badge bg-primary text-center text-monospace p-3"><%= "##{ticket.reference_number}" %></span></h4>
           </div>
         <% end %>
       </div>

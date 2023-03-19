@@ -5,7 +5,7 @@ module BadgeHelper
     color = options[:color] || "primary"
     tooltip_text = options[:tooltip_text]
     css_class_tooltip = tooltip_text.present? ? "has-tooltip" : nil
-    css_class = "badge badge-#{color} align-top #{css_class_tooltip}"
+    css_class = "badge bg-#{color} align-top #{css_class_tooltip}"
     tooltip_data = tooltip_text.present? ? { toggle: "tooltip", "original-title" => tooltip_text } : {}
 
     content_tag(:span,
@@ -30,7 +30,7 @@ module BadgeHelper
     content_tag(:span,
                 status.titleize,
                 style: "font-size:0.8rem;",
-                class: "badge badge-#{color} align-top has-tooltip",
+                class: "badge bg-#{color} align-top has-tooltip",
                 data: { toggle: "tooltip", "original-title" => tooltip_text })
   end
 
@@ -52,7 +52,7 @@ module BadgeHelper
     content_tag(:span,
                 status.titleize,
                 style: "font-size:0.8rem;",
-                class: "badge badge-#{color} align-top has-tooltip",
+                class: "badge bg-#{color} align-top has-tooltip",
                 data: { toggle: "tooltip", "original-title" => tooltip_text })
   end
 
@@ -60,6 +60,6 @@ module BadgeHelper
     content_tag(:span,
                 "Wait List",
                 style: "font-size:0.8rem;",
-                class: "badge badge-warning align-top")
+                class: "badge bg-warning align-top")
   end
 end

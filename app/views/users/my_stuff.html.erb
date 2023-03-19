@@ -96,13 +96,13 @@
           <% @presenter.owned_organizations.each do |organization| %>
             <h4 class="card-text">
               <strong><%= link_to organization.name, organization_path(organization) %></strong>
-              <span class="badge badge-secondary">Owner</span>
+              <span class="badge bg-secondary">Owner</span>
             </h4>
           <% end %>
           <% @presenter.steward_organizations.each do |organization| %>
             <h4 class="card-text">
               <strong><%= link_to organization.name, organization_path(organization) %></strong>
-              <span class="badge badge-secondary">Steward</span>
+              <span class="badge bg-secondary">Steward</span>
             </h4>
           <% end %>
         </div>

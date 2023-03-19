@@ -13,7 +13,7 @@ module ApplicationHelper
 
     color = boolean ? "success" : "danger"
     text = humanize_boolean(boolean)
-    content_tag(:span, text, class: "badge badge-#{color}")
+    content_tag(:span, text, class: "badge bg-#{color}")
   end
 
   def humanize_boolean(boolean)

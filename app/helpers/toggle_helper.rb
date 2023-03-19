@@ -117,6 +117,6 @@ module ToggleHelper
   def link_to_sign_in(args)
     icon_name = args[:icon_name]
     protocol = args[:protocol]
-    link_to fa_icon(icon_name, text: " #{protocol}"), "#", class: "btn btn-lg btn-outline-secondary", data: { "bs-toggle": "modal", target: "#log-in-modal" }
+    link_to fa_icon(icon_name, text: " #{protocol}"), "#", class: "btn btn-lg btn-outline-secondary", data: { "bs-toggle": "modal", "bs-target": "#log-in-modal" }
   end
 end

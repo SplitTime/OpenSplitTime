@@ -25,9 +25,9 @@
         <div class="col-12 col-md-5">
           <div class="form-group">
             <span class="input-group">
-              <input type="text" class="form-control border-right-0" v-model="filter" placeholder="Filter:"/>
+              <input type="text" class="form-control border-end-0" v-model="filter" placeholder="Filter:"/>
               <span class="input-group-append">
-                <a href="#" class="btn btn-input-group border-left-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
+                <a href="#" class="btn btn-input-group border-start-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
               </span>
             </span>
           </div>
@@ -98,11 +98,11 @@
           </data-tables>
         </div>
         <div class="col-12">
-          <div class="float-left-button">
+          <div class="float-start-button">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
             </button>
           </div>
-          <div class="dropdown float-left-button">
+          <div class="dropdown float-start-button">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-import-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
@@ -117,7 +117,7 @@
               <%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}), class: 'dropdown-item' %>
             </div>
           </div>
-          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
+          <div class="float-start-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
           <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="fas fa-arrow-right"></i>
           </router-link>
         </div>

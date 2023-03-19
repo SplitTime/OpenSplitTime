@@ -45,7 +45,7 @@
 
 <article class="ost-article container">
   <% if @presenter.courses.present? %>
-    <h4 class="font-weight-bold">Courses in this Group</h4>
+    <h4 class="fw-bold">Courses in this Group</h4>
     <%= render "course_groups/courses_list", courses: @presenter.courses %>
   <% else %>
     <h4>No courses are associated with this course group.</h4>

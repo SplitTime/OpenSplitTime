@@ -4,7 +4,7 @@
 
 <div class="d-flex" id="wrapper" data-controller="sidebar" data-sidebar-target="wrapper">
   <!-- Sidebar -->
-  <div class="bg-light border-right" id="sidebar-wrapper">
+  <div class="bg-light border-end" id="sidebar-wrapper">
     <%= build_sidebar_menu(@presenter) %>
   </div>
   <!-- /#sidebar-wrapper -->
@@ -19,7 +19,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
         </div>
-        <div class="col text-right">
+        <div class="col text-end">
           <h1><strong><%= @presenter.display_category %></strong></h1>
         </div>
       </div>

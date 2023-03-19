@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu('singular').titleize %></th>
     <th class="text-center">Time of Day
       <% if view_object.multiple_sub_splits? %><br/>In / Out<% end %>
     </th>
@@ -25,7 +25,7 @@
   <% view_object.place_detail_rows.each do |place_detail_row| %>
     <tr>
       <td><%= place_detail_row.name %></td>
-      <td class="text-right"><%= d(place_detail_row.distance_from_start) %></td>
+      <td class="text-end"><%= d(place_detail_row.distance_from_start) %></td>
       <td class="text-center"><%= place_detail_row.absolute_times_local.map(&method(:day_time_format)).join(' / ') %></td>
       <td class="text-center"><%= place_detail_row.split_times.map { |st| st.try(:time_point_rank) || '--' }.compact.join(' / ') %></td>
       <td class="text-center">

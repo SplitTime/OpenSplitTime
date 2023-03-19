@@ -2,15 +2,15 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu('singular').titleize %></th>
     <th class="text-center">Time of Day</th>
     <th class="text-center">Elapsed Time</th>
     <th class="text-center">Segment</th>
     <% if presenter.out_sub_splits? %>
-      <th class="text-right">In Aid</th>
+      <th class="text-end">In Aid</th>
     <% end %>
     <% if presenter.multiple_laps? %>
-      <th class="text-right">Lap Time</th>
+      <th class="text-end">Lap Time</th>
     <% end %>
   </tr>
   </thead>
@@ -29,7 +29,7 @@
           </span>
         <% end %>
       </td>
-      <td class="text-right">
+      <td class="text-end">
         <span class="<%= 'brackets' if row.not_in_event %>">
           <%= strong_conditional d(row.distance_from_start), row.finish? %>
         </span>
@@ -50,14 +50,14 @@
         </span>
       </td>
       <% if presenter.out_sub_splits? %>
-        <td class="text-right">
+        <td class="text-end">
           <span class="<%= 'brackets' if row.not_in_event %>">
             <%= strong_text_conditional time_format_minutes(presenter.total_time_in_aid), time_format_minutes(row.time_in_aid), row.finish? %>
           </span>
         </td>
       <% end %>
       <% if presenter.multiple_laps? %>
-        <td class="text-right">
+        <td class="text-end">
           <% if row.finish? %>
             <span class="<%= 'brackets' if row.not_in_event %>">
               <%= strong_conditional lap_time_text(presenter, row), true %>

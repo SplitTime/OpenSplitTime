@@ -6,9 +6,9 @@
     <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
                 method: :post,
                 disabled: division.full? || division.all_entrants_drawn?,
-                class: "btn btn-lg btn-block btn-success font-weight-bold" %>
+                class: "btn btn-lg btn-block btn-success fw-bold" %>
     <% if division.entrants.pre_selected.present? %>
-      <button class="btn btn-lg btn-success font-weight-bold dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-lg btn-success fw-bold dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="sr-only">Toggle Dropdown</span>
       </button>
       <div class="dropdown-menu">
@@ -28,10 +28,10 @@
     <div class="card-body">
       <div class="row">
         <div class="col-8">
-          <h6 class="font-weight-bold">Accepted</h6>
+          <h6 class="fw-bold">Accepted</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-right"><%= "(#{division.accepted_entrants.count}/#{division.maximum_entries})" %></h6>
+          <h6 class="text-end"><%= "(#{division.accepted_entrants.count}/#{division.maximum_entries})" %></h6>
         </div>
       </div>
       <div class="progress">
@@ -39,10 +39,10 @@
       </div>
       <div class="row mt-2">
         <div class="col-8">
-          <h6 class="font-weight-bold">Wait List</h6>
+          <h6 class="fw-bold">Wait List</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-right"><%= "(#{division.wait_list_entrants.count}/#{division.maximum_wait_list})" %></h6>
+          <h6 class="text-end"><%= "(#{division.wait_list_entrants.count}/#{division.maximum_wait_list})" %></h6>
         </div>
       </div>
       <div class="progress">
@@ -50,10 +50,10 @@
       </div>
       <div class="row mt-2">
         <div class="col-8">
-          <h6 class="font-weight-bold">Pre-selected</h6>
+          <h6 class="fw-bold">Pre-selected</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-right"><%= "(#{division.entrants.pre_selected.drawn.count}/#{division.entrants.pre_selected.count})" %></h6>
+          <h6 class="text-end"><%= "(#{division.entrants.pre_selected.drawn.count}/#{division.entrants.pre_selected.count})" %></h6>
         </div>
       </div>
       <div class="progress">

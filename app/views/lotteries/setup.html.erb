@@ -150,7 +150,7 @@
         </thead>
         <tbody>
         <%= render partial: "lottery_divisions/lottery_division", collection: @presenter.ordered_divisions, as: :division %>
-        <tr class="font-weight-bold bg-light">
+        <tr class="fw-bold bg-light">
           <td>Totals</td>
           <td class="text-center"><%= @presenter.ordered_divisions.sum(&:maximum_entries) %></td>
           <td class="text-center"><%= @presenter.ordered_divisions.sum(&:maximum_wait_list) %></td>
@@ -196,7 +196,7 @@
       <% else %>
         <div class="card bg-light mt-2">
           <div class="card-body">
-            <h6 class="font-weight-bold">
+            <h6 class="fw-bold">
               <% if @presenter.params[:search].blank? %>
                 Find someone by entering a name, state, or country
               <% elsif @presenter.params[:search].length < 3 %>
@@ -229,7 +229,7 @@
           <h2><strong>Pre-Selected Entrants</strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.pre_selected.count, 'entrant')}" %></small>
           </h2>
         </div>
-        <div class="col-4 col-md-2 text-right">
+        <div class="col-4 col-md-2 text-end">
           <%= button_tag nil,
                          class: "btn btn-block d-none",
                          "data-action": "visibility#toggleElement",

@@ -29,7 +29,7 @@
     <div class="row">
       <!-- Navigation Widget -->
       <div class="col form-inline">
-        <div class="dropdown float-left-button">
+        <div class="dropdown float-start-button">
           <div class="btn-group btn-group-ost pull-right">
             <%= prior_next_nav_button(@presenter, :prior) %>
             <%= split_name_dropdown(@presenter) %>
@@ -55,21 +55,21 @@
       <tr>
         <th></th>
         <th></th>
-        <th class="border-right"></th>
+        <th class="border-end"></th>
         <th class="text-center" colspan="<%= @presenter.sources.size %>">Raw Time Sources</th>
         <% if @presenter.single_lap? %>
-          <th class="border-left"></th>
+          <th class="border-start"></th>
         <% end %>
       </tr>
       <tr>
         <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :sortable_bib_number, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading('Name', :last_name, @presenter.existing_sort) %></th>
-        <th class="text-center border-right"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Split Time' : 'Split Times', :sortable_time, @presenter.existing_sort) %></th>
+        <th class="text-center border-end"><%= link_to_reversing_sort_heading(@presenter.single_lap? ? 'Split Time' : 'Split Times', :sortable_time, @presenter.existing_sort) %></th>
         <% @presenter.sources.each do |source| %>
           <th class="text-center"><%= source %></th>
         <% end %>
         <% if @presenter.single_lap? %>
-          <th class="text-center border-left">Discrepancy</th>
+          <th class="text-center border-start">Discrepancy</th>
         <% end %>
       </tr>
       </thead>
@@ -79,12 +79,12 @@
         <tr id="<%= "bib_#{row.bib_number}" %>" class="<%= 'bg-highlight' if row.problem? %>">
           <td class="text-center"><%= row.bib_number %></td>
           <td><%= row.effort_id ? (link_to row.full_name, audit_effort_path(row.effort_id)) : row.full_name %></td>
-          <td class="text-center font-weight-bold border-right" style="white-space:pre-wrap; word-wrap:break-word"><%= lap_and_time_builder(row) %></td>
+          <td class="text-center fw-bold border-end" style="white-space:pre-wrap; word-wrap:break-word"><%= lap_and_time_builder(row) %></td>
           <% @presenter.sources.each do |source| %>
             <td class="text-center" style="white-space:pre-wrap; word-wrap:break-word"><%= row.grouped_raw_times.fetch(source, []).map(&:military_time).join("\n") %></td>
           <% end %>
           <% if @presenter.single_lap? %>
-            <td class="text-center border-left"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy, blank_zero: true) %></td>
+            <td class="text-center border-start"><%= TimeConversion.seconds_to_hms(row.largest_discrepancy, blank_zero: true) %></td>
           <% end %>
         </tr>
       <% end %>

@@ -40,7 +40,7 @@
         <div class="col-md-8">
           <h3><%= "Showing #{@presenter.unreconciled_batch.size} of #{@presenter.unreconciled_efforts.size} unreconciled efforts for #{@presenter.name}" %></h3>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-4 text-end">
           <% if suggested_match_count(@presenter.unreconciled_batch) > 0 %>
             <%= link_to "Match #{pluralize(suggested_match_count(@presenter.unreconciled_batch), 'person')}",
                         associate_people_event_group_path(ids: suggested_match_id_hash(@presenter.unreconciled_batch)),

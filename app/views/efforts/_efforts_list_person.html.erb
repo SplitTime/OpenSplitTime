@@ -7,9 +7,9 @@
     <th>From</th>
     <th>Age</th>
     <th>Date</th>
-    <th class="text-right">Finish Time</th>
+    <th class="text-end">Finish Time</th>
     <% if current_user&.admin? %>
-      <th class="text-right">Actions</th>
+      <th class="text-end">Actions</th>
     <% end %>
   </tr>
   </thead>
@@ -21,9 +21,9 @@
       <td><%= effort.state_and_country %></td>
       <td><%= effort.age %></td>
       <td><%= l(effort.event.scheduled_start_time.to_date, format: :full_with_weekday) %></td>
-      <td class="text-right"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
+      <td class="text-end"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>
-        <td class="text-right"><%= link_to "Disassociate",
+        <td class="text-end"><%= link_to "Disassociate",
                                            effort_path(effort,
                                                        effort: { person_id: nil },
                                                        button: :disassociate,

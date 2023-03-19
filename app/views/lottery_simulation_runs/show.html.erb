@@ -69,7 +69,7 @@
         <td class="text-center"><%= "#{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :male)}% / #{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :female)}%" %></td>
       </tr>
     <% end %>
-    <tr class="font-weight-bold">
+    <tr class="fw-bold">
       <td>Total</td>
       <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :accepted) %></td>
       <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :wait_list) %></td>
@@ -104,7 +104,7 @@
         <td class="text-center"><%= "#{division_results.dig('wait_list_percent', 'male')}% / #{division_results.dig('wait_list_percent', 'female')}%" %></td>
       </tr>
     <% end %>
-    <tr class="font-weight-bold">
+    <tr class="fw-bold">
       <td>Total</td>
       <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:stats, :accepted, :male)} / #{@lottery_simulation_run.division_sum(:stats, :accepted, :female)}" %></td>
       <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:stats, :accepted, :male)}% / #{@lottery_simulation_run.division_percent(:stats, :accepted, :female)}%" %></td>

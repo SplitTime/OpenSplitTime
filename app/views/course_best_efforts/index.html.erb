@@ -17,7 +17,7 @@
           <%= render "lookup", presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-12 col-sm-5 text-right">
+      <div class="col-12 col-sm-5 text-end">
         <% unless @presenter.simple? %>
           <%= segment_start_dropdown(@presenter) %>
           <%= segment_finish_dropdown(@presenter) %>

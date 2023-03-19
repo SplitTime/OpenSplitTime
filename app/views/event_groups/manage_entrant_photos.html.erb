@@ -65,9 +65,9 @@
 
     <div class="row">
       <div class="col">
-        <h4 class="font-weight-bold">Photos waiting to be assigned</h4>
+        <h4 class="fw-bold">Photos waiting to be assigned</h4>
       </div>
-      <div class="col text-right">
+      <div class="col text-end">
         <%= link_to "Assign photos", assign_entrant_photos_event_group_path(@presenter.event_group), method: :patch, class: "btn btn-primary" %>
       </div>
     </div>
@@ -93,8 +93,8 @@
     <div class="col-12 col-md-6">
       <div class="row my-3">
         <div class="col">
-          <h4 class="font-weight-bold">Already assigned
-            <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span>
+          <h4 class="fw-bold">Already assigned
+            <span class="fw-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span>
           </h4>
         </div>
         <div class="col">
@@ -120,7 +120,7 @@
                 <%= image_tag effort.photo.variant(:thumbnail) %>
               </div>
               <div class="col-9 my-auto">
-                <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+                <span class="fw-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
               </div>
             </div>
           </div>
@@ -131,8 +131,8 @@
     <div class="col-12 col-md-6">
       <div class="row my-3">
         <div class="col">
-          <h4 class="font-weight-bold">Not yet assigned
-            <span class="font-weight-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span>
+          <h4 class="fw-bold">Not yet assigned
+            <span class="fw-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span>
           </h4>
         </div>
       </div>
@@ -144,7 +144,7 @@
                 <%= image_tag "small/avatar-empty.jpg" %>
               </div>
               <div class="col-10 my-auto">
-                <span class="font-weight-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+                <span class="fw-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
               </div>
             </div>
           </div>

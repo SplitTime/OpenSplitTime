@@ -2,7 +2,7 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu('singular').titleize %></th>
     <th class="text-center">Segment<br/>
       <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
       /
@@ -38,7 +38,7 @@
   <% view_object.analysis_rows.each do |analysis_row| %>
     <tr>
       <td><%= analysis_row.name %></td>
-      <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
+      <td class="text-end"><%= d(analysis_row.distance_from_start) %></td>
       <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
       <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under(round_to: 1.minute)) %></td>
       <% if view_object.multiple_sub_splits? %>

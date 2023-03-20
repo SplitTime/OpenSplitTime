@@ -9,7 +9,7 @@ module PartnersHelper
                       "bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-danger has-tooltip"}
+               class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
 
@@ -19,7 +19,7 @@ module PartnersHelper
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-primary has-tooltip"}
+               class: "btn btn-primary"}
     link_to fa_icon("pencil-alt"), url, options
   end
 
@@ -31,7 +31,7 @@ module PartnersHelper
                       "bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-danger has-tooltip"}
+               class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
 
@@ -41,7 +41,7 @@ module PartnersHelper
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-primary has-tooltip"}
+               class: "btn btn-primary"}
     link_to fa_icon("pencil-alt"), url, options
   end
 end

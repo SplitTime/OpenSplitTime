@@ -4,8 +4,7 @@ module BadgeHelper
   def badge_with_text(text, options = {})
     color = options[:color] || "primary"
     tooltip_text = options[:tooltip_text]
-    css_class_tooltip = tooltip_text.present? ? "has-tooltip" : nil
-    css_class = "badge bg-#{color} align-top #{css_class_tooltip}"
+    css_class = "badge bg-#{color} align-top"
     tooltip_data = tooltip_text.present? ? { "bs-toggle": "tooltip", "bs-original-title": tooltip_text } : {}
 
     content_tag(:span,
@@ -30,7 +29,7 @@ module BadgeHelper
     content_tag(:span,
                 status.titleize,
                 style: "font-size:0.8rem;",
-                class: "badge bg-#{color} align-top has-tooltip",
+                class: "badge bg-#{color} align-top",
                 data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
   end
 
@@ -52,7 +51,7 @@ module BadgeHelper
     content_tag(:span,
                 status.titleize,
                 style: "font-size:0.8rem;",
-                class: "badge bg-#{color} align-top has-tooltip",
+                class: "badge bg-#{color} align-top",
                 data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
   end
 

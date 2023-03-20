@@ -24,7 +24,6 @@
         <% if row.not_in_event %>
           <span class="text-danger">
             <%= fa_icon("exclamation-circle",
-                        class: "has-tooltip",
                         data: {
                           "bs-toggle": "tooltip",
                           "bs-original-title": "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."

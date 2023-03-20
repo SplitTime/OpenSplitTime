@@ -10,7 +10,7 @@ module LotteryHelper
                       "bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-danger btn-sm has-tooltip"}
+               class: "btn btn-danger btn-sm"}
     link_to fa_icon("trash"), url, options
   end
 
@@ -20,7 +20,7 @@ module LotteryHelper
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-primary btn-sm has-tooltip"}
+               class: "btn btn-primary btn-sm"}
     link_to fa_icon("pencil-alt"), url, options
   end
 
@@ -33,7 +33,7 @@ module LotteryHelper
                       "bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-danger btn-sm has-tooltip"}
+               class: "btn btn-danger btn-sm"}
     link_to fa_icon("trash"), url, options
   end
 
@@ -43,7 +43,7 @@ module LotteryHelper
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-primary btn-sm has-tooltip"}
+               class: "btn btn-primary btn-sm"}
     link_to fa_icon("pencil-alt"), url, options
   end
 

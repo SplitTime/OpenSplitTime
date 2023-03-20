@@ -31,7 +31,7 @@ module RawTimesHelper
     url = raw_time_path(raw_time, raw_time: {reviewed_by: reviewed_by, reviewed_at: reviewed_at}, referrer_path: request.params)
     options = {method: :patch,
                data: {"bs-toggle": :tooltip, placement: :bottom, "bs-original-title": tooltip_text},
-               class: "btn btn-#{button_class} has-tooltip click-spinner"}
+               class: "btn btn-#{button_class} click-spinner"}
 
     link_to fa_icon("glasses"), url, options
   end
@@ -44,7 +44,7 @@ module RawTimesHelper
                       "bs-toggle": :tooltip,
                       placement: :bottom,
                       "bs-original-title": tooltip},
-               class: "btn btn-danger has-tooltip"}
+               class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
 
@@ -57,7 +57,7 @@ module RawTimesHelper
                         placement: :bottom,
                         "bs-original-title": tooltip},
                  id: "match-raw-time-#{raw_time_id}",
-                 class: "btn btn-sm btn-success has-tooltip"}
+                 class: "btn btn-sm btn-success"}
     else
       url = create_split_time_from_raw_time_effort_path(split_time.effort_id, raw_time_id: raw_time_id, lap: split_time.lap)
       tooltip = "Create a split time from this raw time"
@@ -66,7 +66,7 @@ module RawTimesHelper
                         placement: :bottom,
                         "bs-original-title": tooltip},
                  id: "match-raw-time-#{raw_time_id}",
-                 class: "btn btn-sm btn-success has-tooltip"}
+                 class: "btn btn-sm btn-success"}
     end
 
     link_to fa_icon(icon), url, options
@@ -80,7 +80,7 @@ module RawTimesHelper
                       placement: :bottom,
                       "bs-original-title": tooltip},
                id: "unmatch-raw-time-#{raw_time_id}",
-               class: "btn btn-sm btn-danger has-tooltip"}
+               class: "btn btn-sm btn-danger"}
 
     link_to fa_icon(:unlink), url, options
   end
@@ -93,7 +93,7 @@ module RawTimesHelper
                       placement: :bottom,
                       "original_title" => tooltip},
                id: "associate-raw-time-#{raw_time_id}",
-               class: "btn btn-sm btn-success has-tooltip"}
+               class: "btn btn-sm btn-success"}
 
     link_to fa_icon(:plus_square), url, options
   end
@@ -106,7 +106,7 @@ module RawTimesHelper
                       placement: :bottom,
                       "original_title" => tooltip},
                id: "disassociate-raw-time-#{raw_time_id}",
-               class: "btn btn-sm btn-danger has-tooltip"}
+               class: "btn btn-sm btn-danger"}
 
     link_to fa_icon(:minus_square), url, options
   end

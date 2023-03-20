@@ -9,7 +9,7 @@
 
       <div class="form-group col-12" data-target="eg-form.eventGroupName">
         <label class="required">What will you call your event?</label>
-        <span class="has-tooltip" tabindex="-1" data-bs-toggle="tooltip" data-placement="bottom" data-bs-original-title="This is the name for your entire event group. If this is the Great Rocky Run for 2023 and you are running 25- and 50-mile races, the name should be something like '2023 Great Rocky Run'. You'll specify your individual events later."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="tooltip" data-placement="bottom" data-bs-original-title="This is the name for your entire event group. If this is the Great Rocky Run for 2023 and you are running 25- and 50-mile races, the name should be something like '2023 Great Rocky Run'. You'll specify your individual events later."><i class="fas fa-question-circle"></i></span>
         <%= form.text_field :name,
                             class: "form-control",
                             placeholder: "Example: #{Date.today.year} #{presenter.organization_name}",
@@ -19,7 +19,7 @@
 
       <div class="form-group col-12">
         <label class="required">In what time zone will your event occur?</label>
-        <span class="has-tooltip" tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
         <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
                                    {selected: presenter.event_group.home_time_zone || "Mountain Time (US & Canada)"},
                                    {class: "form-control dropdown-select-field"}) %>
@@ -27,7 +27,7 @@
 
       <div class="form-group col-12">
         <label class="required">Will you monitor pacers?</label>
-        <span class="has-tooltip" tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="Choose 'Yes' only if you will actively track pacers using OST Remote."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="Choose 'Yes' only if you will actively track pacers using OST Remote."><i class="fas fa-question-circle"></i></span>
         <div>
           <div><%= form.radio_button :monitor_pacers, true %> Yes</div>
           <div><%= form.radio_button :monitor_pacers, false %> No</div>
@@ -36,7 +36,7 @@
 
       <div class="form-group col-12">
         <label class="required">How will data entry points be grouped in OST Remote?</label>
-        <span class="has-tooltip" tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'."><i class="fas fa-question-circle"></i></span>
         <div>
           <%= form.select(:data_entry_grouping_strategy,
                           EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },

@@ -40,7 +40,7 @@ module ToggleHelper
     options = { method: "patch",
                 data: { confirm: "This will check in all entrants, making them eligible to start. Do you want to proceed?",
                         "bs-toggle": :tooltip, placement: :bottom, "bs-original-title": "Check in all" },
-                class: "btn btn-success has-tooltip click-spinner" }
+                class: "btn btn-success click-spinner" }
     link_to fa_icon("check-square", text: "All", type: :regular), url, options
   end
 
@@ -49,7 +49,7 @@ module ToggleHelper
     options = { method: "patch",
                 data: { confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
                         "bs-toggle": :tooltip, placement: :bottom, "bs-original-title": "Check out all" },
-                class: "btn btn-outline-secondary has-tooltip click-spinner" }
+                class: "btn btn-outline-secondary click-spinner" }
     link_to fa_icon("square", text: "All", type: :regular), url, options
   end
 

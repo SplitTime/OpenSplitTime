@@ -7,19 +7,19 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong></h1>
+          <h1><strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon("eye-slash") : fa_icon("eye") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Reconcile</li>
           </ul>
         </div>
-        <%= render 'events/time_and_course_info' %>
+        <%= render "events/time_and_course_info" %>
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
@@ -27,8 +27,8 @@
   <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
-        <div class="col-auto form-inline">
-          <%= link_to 'Auto Reconcile', auto_reconcile_event_group_path(@presenter.event_group), method: :patch, class: 'btn btn-warning' %>
+        <div class="col-auto">
+          <%= link_to "Auto Reconcile", auto_reconcile_event_group_path(@presenter.event_group), method: :patch, class: "btn btn-warning" %>
         </div>
       </div>
     </div>
@@ -36,41 +36,38 @@
 
   <article class="ost-article container">
     <div class="page-header">
-      <div class="row">
-        <div class="col-md-8">
+      <div class="row mb-3">
+        <div class="col-12 col-md">
           <h3><%= "Showing #{@presenter.unreconciled_batch.size} of #{@presenter.unreconciled_efforts.size} unreconciled efforts for #{@presenter.name}" %></h3>
         </div>
-        <div class="col-md-4 text-end">
+        <div class="col-12 col-md text-end">
           <% if suggested_match_count(@presenter.unreconciled_batch) > 0 %>
-            <%= link_to "Match #{pluralize(suggested_match_count(@presenter.unreconciled_batch), 'person')}",
+            <%= link_to "Match #{pluralize(suggested_match_count(@presenter.unreconciled_batch), "person")}",
                         associate_people_event_group_path(ids: suggested_match_id_hash(@presenter.unreconciled_batch)),
                         method: :patch,
-                        class: 'btn btn-primary btn-margin-top' %>
+                        class: "btn btn-primary" %>
           <% end %>
-          <%= link_to "Create #{pluralize(@presenter.unreconciled_batch.size, 'person')}",
+          <%= link_to "Create #{pluralize(@presenter.unreconciled_batch.size, "person")}",
                       create_people_event_group_path(effort_ids: @presenter.unreconciled_batch.ids),
                       method: :post,
                       data: {confirm: "Create #{pluralize(@presenter.unreconciled_batch.size, 'new person')}?"},
-                      class: 'btn btn-success btn-margin-top pull-right' %>
+                      class: "btn btn-success pull-right" %>
         </div>
       </div>
     </div>
 
-    <table class="table table-condensed table-striped">
+    <table class="table table-striped">
 
       <thead>
       <tr>
-        <th>Personal Effort Info</th>
-        <th></th>
-        <th>Suggested Match</th>
-        <th>Create</th>
-        <th></th>
+        <th colspan="2">Personal Effort Info</th>
+        <th colspan="2">Suggested Match</th>
       </tr>
       </thead>
 
       <tbody>
       <% @presenter.unreconciled_batch.each do |effort| %>
-        <%= render 'unreconciled_effort', effort: effort %>
+        <%= render "unreconciled_effort", effort: effort %>
       <% end %>
       </tbody>
 
@@ -80,7 +77,7 @@
 <% elsif @presenter.efforts.empty? %>
   <article class="ost-article container">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col">
         <h3>No entrants have been added to this event group.</h3>
       </div>
     </div>
@@ -88,7 +85,7 @@
 <% else %>
   <article class="ost-article container">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col">
         <h3>All entrants have been reconciled.</h3>
       </div>
     </div>

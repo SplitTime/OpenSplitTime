@@ -30,7 +30,7 @@
   <div class="container">
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-      <div class="col form-inline">
+      <div class="col d-inline-flex">
         <div>
           <%= summary_filter_dropdown %>
           <%= explore_dropdown_menu(@presenter) %>

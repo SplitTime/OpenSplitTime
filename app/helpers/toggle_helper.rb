@@ -28,7 +28,7 @@ module ToggleHelper
       button_class = "outline-secondary"
     end
 
-    class_string = "check-in click-spinner btn btn-block btn-#{button_class}"
+    class_string = "check-in click-spinner btn btn-#{button_class}"
     options = { method: :patch,
                 disabled: disabled,
                 class: class_string }

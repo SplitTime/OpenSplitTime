@@ -28,9 +28,9 @@
   <div class="container">
     <div class="row">
       <!-- Navigation Widget -->
-      <div class="col form-inline">
-        <div class="dropdown float-start-button">
-          <div class="btn-group btn-group-ost pull-right">
+      <div class="col">
+        <div class="dropdown">
+          <div class="btn-group btn-group-ost">
             <%= prior_next_nav_button(@presenter, :prior) %>
             <%= split_name_dropdown(@presenter) %>
             <%= prior_next_nav_button(@presenter, :next) %>
@@ -41,7 +41,7 @@
         </div>
       </div>
       <!-- Export Widget -->
-      <div class="col-auto form-inline">
+      <div class="col-auto">
         <%= link_to_export_raw_times(@presenter, @presenter.split_name, :summit) %>
       </div>
     </div>

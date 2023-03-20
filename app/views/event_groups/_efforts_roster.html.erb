@@ -3,7 +3,7 @@
   <aside class="ost-toolbar">
     <div class="container">
       <div class="row">
-        <div class="col form-inline">
+        <div class="col">
           <div>
             <%= check_in_filter_dropdown %>
             <%= roster_actions_dropdown(@presenter) %>
@@ -68,8 +68,10 @@
           <% end %>
           <th>
             <div class="row">
-              <span><%= link_to_check_in_all(@presenter) %></span>
-              <span><%= link_to_check_out_all(@presenter) %></span>
+              <div class="col d-inline-flex">
+                <span><%= link_to_check_in_all(@presenter) %></span>
+                <span><%= link_to_check_out_all(@presenter) %></span>
+              </div>
             </div>
           </th>
         </tr>

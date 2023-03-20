@@ -22,14 +22,8 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col">
-        <% if current_user %>
-            <%= link_to 'Create event', event_staging_app_path('new'),
-                        class: 'btn btn-success' %>
-        <% end %>
-      </div>
-      <div class="col-12 col-md-6 form-inline">
-        <%= render 'lookup' %>
+      <div class="col-12 col-md-6">
+        <%= render "lookup" %>
       </div>
       </div>
     </div>

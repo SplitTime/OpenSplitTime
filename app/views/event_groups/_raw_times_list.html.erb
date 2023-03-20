@@ -7,14 +7,14 @@
         <%= link_to "Delete Duplicates", delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: "btn btn-md btn-warning" %>
       </div>
       <!-- Filter Widget -->
-      <div class="col form-inline">
+      <div class="col">
         <div>
           <%= raw_time_filter_dropdown %>
           <%= split_name_filter_dropdown(view_object) %>
         </div>
       </div>
       <!-- Search Widget -->
-      <div class="col-auto form-inline">
+      <div class="col-auto">
         <%= render "raw_times_search" %>
       </div>
     </div>

@@ -1,13 +1,13 @@
-<%= form_tag event_groups_path, class: 'w-100', method: :get do %>
+<%= form_tag event_groups_path, class: "w-100", method: :get do %>
     <div class="input-group">
       <%= text_field_tag :search,
                           params[:search],
-                          placeholder: 'Event name',
+                          placeholder: "Event name",
                           autofocus: true,
-                          class: 'form-control search-box' %>
+                          class: "form-control search-box" %>
       <span class="input-group-append">
-        <%= button_tag(type: :submit, id: 'event-group-lookup-submit', class: 'btn btn-primary') do %>
-            <i class='fas fa-search'></i>
+        <%= button_tag(type: :submit, id: "event-group-lookup-submit", class: "btn btn-primary") do %>
+            <i class="fas fa-search"></i>
         <% end %>
       </span>
     </div>

@@ -50,7 +50,7 @@ module EffortsHelper
                data: {confirm: "This cannot be undone. Continue?",
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -60,7 +60,7 @@ module EffortsHelper
     tooltip = "Edit effort"
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-primary has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end

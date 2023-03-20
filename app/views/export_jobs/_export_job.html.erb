@@ -16,7 +16,7 @@
             <% if export_job.file.attached? %>
               <%= link_to fa_icon("download",
                                   class: "has-tooltip",
-                                  data: { "bs-toggle": "tooltip", "original-title" => "Download" }),
+                                  data: { "bs-toggle": "tooltip", "bs-original-title": "Download" }),
                           rails_blob_path(export_job.file, disposition: "attachment") %>
             <% else %>
               <%= fa_icon("download", class: "text-muted") %>
@@ -25,7 +25,7 @@
           <span class="mx-1">
           <%= link_to fa_icon("trash",
                               class: "text-danger has-tooltip",
-                              data: { "bs-toggle": "tooltip", "original-title" => "Delete" }),
+                              data: { "bs-toggle": "tooltip", "bs-original-title": "Delete" }),
                       export_job_path(export_job),
                       method: :delete,
                       data: { confirm: "Delete this export?" } %>

@@ -8,7 +8,7 @@ module PartnersHelper
                data: {confirm: "This cannot be undone. Continue?",
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -18,7 +18,7 @@ module PartnersHelper
     tooltip = "Edit partner"
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-primary has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end
@@ -30,7 +30,7 @@ module PartnersHelper
                data: {confirm: "This cannot be undone. Continue?",
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -40,7 +40,7 @@ module PartnersHelper
     tooltip = "Edit partner"
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-primary has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end

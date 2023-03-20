@@ -9,7 +9,7 @@ module LotteryHelper
                       turbo: false,
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger btn-sm has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -19,7 +19,7 @@ module LotteryHelper
     tooltip = "Edit this division"
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-primary btn-sm has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end
@@ -32,7 +32,7 @@ module LotteryHelper
                       turbo: false,
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger btn-sm has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -42,7 +42,7 @@ module LotteryHelper
     tooltip = "Edit this entrant"
     options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-primary btn-sm has-tooltip"}
     link_to fa_icon("pencil-alt"), url, options
   end

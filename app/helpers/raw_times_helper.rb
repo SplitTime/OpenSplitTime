@@ -30,7 +30,7 @@ module RawTimesHelper
     end
     url = raw_time_path(raw_time, raw_time: {reviewed_by: reviewed_by, reviewed_at: reviewed_at}, referrer_path: request.params)
     options = {method: :patch,
-               data: {"bs-toggle": :tooltip, placement: :bottom, "original-title" => tooltip_text},
+               data: {"bs-toggle": :tooltip, placement: :bottom, "bs-original-title": tooltip_text},
                class: "btn btn-#{button_class} has-tooltip click-spinner"}
 
     link_to fa_icon("glasses"), url, options
@@ -43,7 +43,7 @@ module RawTimesHelper
                data: {confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?",
                       "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                class: "btn btn-danger has-tooltip"}
     link_to fa_icon("trash"), url, options
   end
@@ -55,7 +55,7 @@ module RawTimesHelper
       options = {method: :patch,
                  data: {"bs-toggle": :tooltip,
                         placement: :bottom,
-                        "original-title" => tooltip},
+                        "bs-original-title": tooltip},
                  id: "match-raw-time-#{raw_time_id}",
                  class: "btn btn-sm btn-success has-tooltip"}
     else
@@ -64,7 +64,7 @@ module RawTimesHelper
       options = {method: :post,
                  data: {"bs-toggle": :tooltip,
                         placement: :bottom,
-                        "original-title" => tooltip},
+                        "bs-original-title": tooltip},
                  id: "match-raw-time-#{raw_time_id}",
                  class: "btn btn-sm btn-success has-tooltip"}
     end
@@ -78,7 +78,7 @@ module RawTimesHelper
     options = {method: :patch,
                data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
+                      "bs-original-title": tooltip},
                id: "unmatch-raw-time-#{raw_time_id}",
                class: "btn btn-sm btn-danger has-tooltip"}
 

@@ -12,7 +12,7 @@ module NavigationHelper
                     "navigation-target" => "refreshButton",
                     "bs-toggle": "tooltip",
                     placement: :bottom,
-                    "original-title" => tooltip_title }
+                    "bs-original-title": tooltip_title }
   end
 
   def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
@@ -31,7 +31,7 @@ module NavigationHelper
                     "navigation-target" => "#{prior_or_next}Button",
                     "bs-toggle": "tooltip",
                     placement: :bottom,
-                    "original-title" => tooltip_title },
+                    "bs-original-title": tooltip_title },
             disabled: target.blank?
   end
 end

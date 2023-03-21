@@ -3,7 +3,7 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 <div class="homepage">
-  <div class="row first">
+  <div class="row first position-relative">
     <div class="over-text">
       <h2><br/>Endurance Event Data Lives Here</h2>
       <p>OpenSplitTime is a free resource built by endurance athletes for the ultra community. OpenSplitTime makes it
@@ -15,8 +15,18 @@
       <% end %>
     </div>
     <div class="gradient"></div>
-    <a data-controller="popover" data-theme="dark" data-placement="left" data-content="Traversing the west side of Isolation Peak, photo by Mark Oveson" class="photo-credit">Photo
-      Credit</a>
+    <div class="position-absolute bottom-0 end-0">
+      <a tabindex="0"
+         data-controller="popover"
+         data-popover-theme-value="dark"
+         data-bs-toggle="popover"
+         data-bs-trigger="focus"
+         data-bs-placement="left"
+         data-bs-content="Traversing the west side of Isolation Peak, photo by Mark Oveson"
+         class="photo-credit">
+        Photo Credit
+      </a>
+    </div>
   </div>
   <div class="row second">
     <div class="over-text">
@@ -43,8 +53,18 @@
       <%= link_to 'Search Hardrock Archives', organization_path('hardrock'), class: 'btn btn-info cta' %>
     </div>
     <div class="gradient"></div>
-    <a data-controller="popover" data-theme="dark" data-placement="left" data-content="Descending from Grant-Swamp Pass, photo by Bill Wright" class="photo-credit">Photo
-      Credit</a>
+    <div class="position-absolute bottom-0 end-0">
+      <a tabindex="0"
+         data-controller="popover"
+         data-popover-theme-value="dark"
+         data-bs-toggle="popover"
+         data-bs-trigger="focus"
+         data-bs-placement="left"
+         data-bs-content="Descending from Grant-Swamp Pass, photo by Bill Wright"
+         class="photo-credit">
+        Photo Credit
+      </a>
+    </div>
   </div>
   <div class="row fourth">
     <div class="over-text">
@@ -68,8 +88,18 @@
         <strong>Omniscience is pretty cool.</strong></p>
     </div>
     <div class="gradient"></div>
-    <a data-controller="popover" data-theme="dark" data-placement="left" data-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser" class="photo-credit">Photo
-      Credit</a>
+    <div class="position-absolute bottom-0 end-0">
+      <a tabindex="0"
+         data-controller="popover"
+         data-popover-theme-value="dark"
+         data-bs-toggle="popover"
+         data-bs-trigger="focus"
+         data-bs-placement="left"
+         data-bs-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser"
+         class="photo-credit">
+        Photo Credit
+      </a>
+    </div>
   </div>
   <div class="row sixth">
     <div class="over-text">

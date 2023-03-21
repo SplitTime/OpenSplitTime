@@ -27,7 +27,7 @@
 
       <div class="mb-3 col-12">
         <label class="required">Will you monitor pacers?</label>
-        <span tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="Choose 'Yes' only if you will actively track pacers using OST Remote."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="tooltip" data-bs-original-title="Choose 'Yes' only if you will actively track pacers using OST Remote."><i class="fas fa-question-circle"></i></span>
         <div>
           <div><%= form.radio_button :monitor_pacers, true %> Yes</div>
           <div><%= form.radio_button :monitor_pacers, false %> No</div>
@@ -36,7 +36,7 @@
 
       <div class="mb-3 col-12">
         <label class="required">How will data entry points be grouped in OST Remote?</label>
-        <span tabindex="-1" data-bs-toggle="static-popover" data-placement="bottom" data-bs-original-title="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="tooltip" data-bs-original-title="This determines whether data entry points at the same location will be grouped together on the Live Entry screen in OST Remote. If in doubt, choose 'Location Grouped'."><i class="fas fa-question-circle"></i></span>
         <div>
           <%= form.select(:data_entry_grouping_strategy,
                           EventGroup.data_entry_grouping_strategies.keys.map { |strategy| [strategy.titleize, strategy] },

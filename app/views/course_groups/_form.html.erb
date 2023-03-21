@@ -8,7 +8,7 @@
 
       <%= f.hidden_field :organization_id, value: @course_group.organization.id %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
         </div>
@@ -17,14 +17,14 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <strong>Courses in Group</strong>
         </div>
       </div>
 
       <% @course_group.organization.courses.sort_by(&:name).each do |course| %>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col-sm-8">
             <%= f.check_box "course_ids[#{course.id}]", checked: @course_group.courses.include?(course) %>
             <%= f.label :courses, course.name %>
@@ -32,7 +32,7 @@
         </div>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="col">
           <%= f.submit(@course_group.new_record? ? "Create Course Group" : "Update Course Group", class: "btn btn-primary btn-large") %>
         </div>

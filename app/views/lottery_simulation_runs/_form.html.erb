@@ -4,14 +4,14 @@
   <div class="col-md-12">
     <%= form_with(model: [@lottery_simulation_run.organization, @lottery_simulation_run.lottery, @lottery_simulation_run], local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
       <div class="form-row">
-        <div class="form-group col-md-4">
+        <div class="mb-3 col-md-4">
           <%= f.label :how_many_simulations? %>
           <%= f.text_field :requested_count, class: "form-control", autofocus: true %>
         </div>
       </div>
 
       <div class="form-row">
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit("Run simulations", class: "btn btn-primary") %>
           </div>
@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-row">
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col">
             <span class="brackets">
                 <%= link_to "Cancel", organization_lottery_lottery_simulation_runs_path(@organization, @lottery) %>

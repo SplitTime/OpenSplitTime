@@ -19,7 +19,7 @@
           <h5><strong>Your Entrants:</strong></h5>
         </div>
         <div class="col-12 col-md-5">
-          <div class="form-group has-feedback">
+          <div class="mb-3 has-feedback">
             <span class="input-group">
               <input type="text" class="form-control border-end-0" v-model="filter" placeholder="Filter:"/>
               <span class="input-group-append">
@@ -114,15 +114,15 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <input id="effort-first-name-field" type="text" class="form-control" v-model="model.firstName" placeholder="First Name" autofocus></input>
                 </div>
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <input id="effort-last-name-field" type="text" class="form-control" v-model="model.lastName" placeholder="Last Name"></input>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label class="required">Gender</label><br/>
                   <label class="custom-radio">
                     <input id="effort-male-radio" type="radio" name="gender" value="male" v-model="model.gender" v-on:keydown.77="model.gender = 'male'" v-on:keydown.70="model.gender = 'female'">
@@ -135,42 +135,42 @@
                     <span class="custom-radio-label">Female</span>
                   </label>
                 </div>
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Date of Birth</label>
                   <input-date id="effort-birthdate-field" v-model="model.birthdate"></input-date>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Bib Number</label>
                   <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered using Live Entry or OST Remote."><i class="fas fa-question-circle"></i></span>
                   <input id="effort-bib-number-field" type="text" class="form-control" v-model.number="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Age</label>
                   <input id="effort-age-field" type="text" class="form-control" v-model.number="model.age" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder=""></input>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Email</label>
                   <input id="effort-email-field" type="text" class="form-control" v-model="model.email" placeholder="example@gmail.com"></input>
                 </div>
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Phone Number</label>
                   <input id="effort-phone-field" type="text" class="form-control" v-model="model.phone" placeholder="(xxx) xxx - xxxx"></input>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Country</label>
                   <select id="effort-country-select" class="form-control" v-model="model.countryCode" v-on:change="model.stateCode = null">
                     <option :value="null"></option>
                     <option v-for="country in countries" :value="country.code">{{ country.name }}</option>
                   </select>
                 </div>
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>State / Region</label>
                   <select id="effort-state-select" class="form-control" v-model="model.stateCode" :disabled="!model.countryCode">
                     <option :value="null">
@@ -183,23 +183,23 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>City</label>
                   <input id="effort-city-field" type="text" class="form-control" v-model="model.city" placeholder="City name"></input>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Beacon URL</label>
                   <input id="effort-beacon-url-field" type="text" class="form-control" v-model="model.beaconUrl" placeholder="http://example.com"></input>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Emergency Contact</label>
                   <input id="effort-emergency-contact-field" type="text" class="form-control" v-model="model.emergencyContact" placeholder="Name"></input>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="mb-3 col-6">
                   <label>Emergency Phone</label>
                   <input id="effort-emergency-phone-field" type="text" class="form-control" v-model="model.emergencyPhone" placeholder="(xxx) xxx - xxxx"></input>
                 </div>
@@ -209,7 +209,7 @@
                   <div class="row no-gutters">
                     <div class="col-6">
                       <div class="row">
-                        <div class="form-group col-12">
+                        <div class="mb-3 col-12">
                           <label class="required">Entrant's Start
                             Time</label>&nbsp;&nbsp;<span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="If any Entrant will start at a time other than the Event start time, use these fields to indicate start time."><i class="fas fa-question-circle"></i></span>
                         </div>
@@ -217,7 +217,7 @@
                       <input-datetime id="effort-start-time-field" v-model="model.scheduledStartTime" class="no-gutters"></input-datetime>
                     </div>
                     <div class="col-6">
-                      <div class="form-group col-12">
+                      <div class="mb-3 col-12">
                         <label class="required sto-label">Start Time Offset</label>
                       </div>
                       <div class="col-12 sto-input-wrap">

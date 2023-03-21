@@ -841,7 +841,7 @@
 
                 // Wrap search field with clear button
                 $('#js-local-workspace-table_filter input')
-                    .wrap('<div class="form-group form-group-sm has-feedback"></div>')
+                    .wrap('<div class="mb-3 has-feedback"></div>')
                     .on('change keyup', function () {
                         var value = $(this).val() || '';
                         if (value.length > 0) {

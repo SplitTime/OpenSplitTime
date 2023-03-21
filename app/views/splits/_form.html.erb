@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for(@split, html: {class: "form-horizontal", role: "form"}) do |f| %>
-        <div class="form-group">
+        <div class="mb-3">
           <% if @split.course_id %>
               <div class="col-sm-8 col-sm-offset-2">
                 <%= f.hidden_field :course_id, value: @split.course_id %>
@@ -22,7 +22,7 @@
         <% if @split.new_record? %>
             <%= f.hidden_field :kind, value: 'intermediate' %>
         <% end %>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :base_name %>
           </div>
@@ -30,7 +30,7 @@
             <%= f.text_field :base_name, class: "form-control", placeholder: "Split name", autofocus: true %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :distance_in_preferred_units, 'Distance from start' %>
           </div>
@@ -38,7 +38,7 @@
             <%= f.text_field :distance_in_preferred_units, class: "form-control", placeholder: pdu %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :description %>
           </div>
@@ -46,7 +46,7 @@
             <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Split description" %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :vert_gain_in_preferred_units, 'Vertical gain from start' %>
           </div>
@@ -54,7 +54,7 @@
             <%= f.text_field :vert_gain_in_preferred_units, class: "form-control", placeholder: peu %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :vert_loss_in_preferred_units, 'Vertical loss from start' %>
           </div>
@@ -62,7 +62,7 @@
             <%= f.text_field :vert_loss_in_preferred_units, class: "form-control", placeholder: peu %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :elevation_in_preferred_units, 'Elevation' %>
           </div>
@@ -70,7 +70,7 @@
             <%= f.text_field :elevation_in_preferred_units, class: "form-control", placeholder: peu %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :latitude, 'Latitude' %>
           </div>
@@ -78,7 +78,7 @@
             <%= f.text_field :latitude, class: "form-control", placeholder: 'deg.decimal' %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label :longitude, 'Longitude' %>
           </div>
@@ -86,7 +86,7 @@
             <%= f.text_field :longitude, class: "form-control", placeholder: 'deg.decimal' %>
           </div>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
           </div>

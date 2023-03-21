@@ -850,7 +850,7 @@
                             $('#js-filter-clear').hide();
                         }
                     });
-                $('#js-local-workspace-table_filter .form-group').append(
+                $('#js-local-workspace-table_filter .input-group').append(
                     '<span id="js-filter-clear" class="fas fa-times-circle dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
                 );
                 $('#js-filter-clear').on('click', function () {

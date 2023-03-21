@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for([@course.organization, @course], html: {class: "form-horizontal", role: "form", data: {turbo: false}}) do |f| %>
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
         </div>
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :description %>
         </div>
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :next_start_time, 'Start time of next event (if known)' %>
         </div>
@@ -31,7 +31,7 @@
       </div>
 
       <% if @course.gpx.attached? %>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="control-label col-sm-2">
             <%= f.label 'Existing gpx file' %>
           </div>
@@ -41,7 +41,7 @@
         </div>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label @course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
         </div>
@@ -63,7 +63,7 @@
           <%= builder.hidden_field :base_name, value: 'Finish' %>
           <%= builder.hidden_field :sub_split_bitmap, value: 1 %>
           <%= builder.hidden_field :kind, value: :finish %>
-          <div class="form-group">
+          <div class="mb-3">
             <div class="control-label col-sm-2">
               <%= builder.label :distance_in_preferred_units, 'Course distance' %>
             </div>
@@ -71,7 +71,7 @@
               <%= builder.text_field :distance_in_preferred_units, class: "form-control", placeholder: pdu %>
             </div>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <div class="control-label col-sm-2">
               <%= builder.label :vert_gain_in_preferred_units, 'Total vertical gain' %>
             </div>
@@ -79,7 +79,7 @@
               <%= builder.text_field :vert_gain_in_preferred_units, class: "form-control", placeholder: peu %>
             </div>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <div class="control-label col-sm-2">
               <%= builder.label :vert_loss_in_preferred_units, 'Total vertical loss' %>
             </div>
@@ -90,7 +90,7 @@
         <% end %>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="col-sm-offset-2 col-sm-10">
           <%= f.submit(@course.new_record? ? "Create Course" : "Update Course", class: 'btn btn-primary btn-large') %>
         </div>

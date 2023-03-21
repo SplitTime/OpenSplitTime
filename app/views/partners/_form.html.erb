@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-12">
     <%= form_for([@partner.organization, @partner.partnerable, @partner], multipart: true, html: { class: "form-horizontal", role: "form" }) do |f| %>
-      <div class="form-group required">
+      <div class="mb-3 required">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
         </div>
@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :banner %>
         </div>
@@ -21,11 +21,11 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <%= image_tag @partner.banner.variant(:banner_large) if @partner.banner.attached? %>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :banner_link %>
         </div>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="form-group required">
+      <div class="mb-3 required">
         <div class="control-label col-sm-2">
           <%= f.label :weight %>
         </div>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="col-sm-offset-2 col-sm-10">
           <%= f.submit(@partner.new_record? ? "Create partner" : "Update partner", class: "btn btn-primary btn-large") %>
         </div>

@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <%= form_with(model: @import_job, local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
       <div class="form-row">
-        <div class="form-group col-md-4">
+        <div class="mb-3 col-md-4">
           <%= f.label :file_name %>
           <%= f.file_field :files, class: "form-control", autofocus: true %>
         </div>
@@ -14,7 +14,7 @@
       </div>
 
       <div class="form-row">
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col-sm-offset-2 col-sm-10">
             <%= f.submit("Import", class: "btn btn-primary") %>
           </div>
@@ -22,7 +22,7 @@
       </div>
 
       <div class="form-row">
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col">
             <span class="brackets">
                 <%= link_to "Cancel", request.referrer || import_jobs_path %>

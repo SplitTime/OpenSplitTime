@@ -34,18 +34,18 @@
                 <%= f.hidden_field 'filter[id]', value: @presenter.id %>
               <% end %>
 
-              <div class="form-group">
+              <div class="mb-3">
                 <%= f.label :scheduled_start_time %>
                 <p data-roster-target="scheduledStartTime"></p>
               </div>
 
-              <div class="form-group">
+              <div class="mb-3">
                 <%= f.label :actual_start_time %>
                 <%= f.text_field :actual_start_time, value: nil, class: 'form-control', autofocus: true,
                                  data: {"roster-target" => 'actualStartTimeField'} %>
               </div>
 
-              <div class="form-group">
+              <div class="mb-3">
                 <%= f.submit 'Start', class: 'btn btn-success', data: {action: 'click->roster#reloadPage'} %>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
               </div>

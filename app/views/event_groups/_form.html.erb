@@ -9,7 +9,7 @@
 
       <div class="mb-3 col-12" data-target="eg-form.eventGroupName">
         <label class="form-label required">What will you call your event?</label>
-        <span tabindex="-1" data-bs-toggle="tooltip" data-placement="bottom" data-bs-original-title="This is the name for your entire event group. If this is the Great Rocky Run for 2023 and you are running 25- and 50-mile races, the name should be something like '2023 Great Rocky Run'. You'll specify your individual events later."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="This is the name for your entire event group. If this is the Great Rocky Run for 2023 and you are running 25- and 50-mile races, the name should be something like '2023 Great Rocky Run'. You'll specify your individual events later."><i class="fas fa-question-circle"></i></span>
         <%= form.text_field :name,
                             class: "form-control",
                             placeholder: "Example: #{Date.today.year} #{presenter.organization_name}",
@@ -19,7 +19,7 @@
 
       <div class="mb-3 col-12">
         <label class="required">In what time zone will your event occur?</label>
-        <span tabindex="-1" data-bs-toggle="tooltip" data-placement="bottom" data-bs-original-title="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
+        <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-question-circle"></i></span>
         <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
                                    { selected: presenter.event_group.home_time_zone || "Mountain Time (US & Canada)" },
                                    { class: "form-control dropdown-select-field" }) %>

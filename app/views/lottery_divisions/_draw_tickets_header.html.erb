@@ -2,26 +2,28 @@
   <h2 class="text-center"><strong><%= division.name %></strong></h2>
   <hr/>
 
-  <div class="btn-group btn-lg btn-block p-0">
-    <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
-                method: :post,
-                disabled: division.full? || division.all_entrants_drawn?,
-                class: "btn btn-lg btn-block btn-success fw-bold" %>
-    <% if division.entrants.pre_selected.present? %>
-      <button class="btn btn-lg btn-success fw-bold dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item disabled" href="#">Pre-Selected Entrants</a>
-        <div class="dropdown-divider"></div>
-        <% division.entrants.pre_selected.each do |entrant| %>
-          <%= link_to "Draw #{entrant.full_name}", draw_organization_lottery_lottery_entrant_path(division.organization, division.lottery, entrant),
-                      method: :post,
-                      disabled: entrant.drawn?,
-                      class: "dropdown-item" %>
-        <% end %>
-      </div>
-    <% end %>
+  <div class="d-grid">
+    <div class="btn-group">
+      <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
+                  method: :post,
+                  disabled: division.full? || division.all_entrants_drawn?,
+                  class: "btn btn-lg btn-success fw-bold w-100" %>
+      <% if division.entrants.pre_selected.present? %>
+        <button class="btn btn-lg btn-success fw-bold dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item disabled" href="#">Pre-Selected Entrants</a>
+          <div class="dropdown-divider"></div>
+          <% division.entrants.pre_selected.each do |entrant| %>
+            <%= link_to "Draw #{entrant.full_name}", draw_organization_lottery_lottery_entrant_path(division.organization, division.lottery, entrant),
+                        method: :post,
+                        disabled: entrant.drawn?,
+                        class: "dropdown-item" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <div class="card mt-3">

@@ -27,12 +27,16 @@
     </div>
     <% if @presenter.viewable_results? %>
       <% if @presenter.display_style == "draws" %>
-        <div class="mb-4">
-          <%= link_to "Browse Entrants and Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block fw-bold" %>
+        <div class="mb-4 d-grid">
+          <%= link_to "Browse Entrants and Results",
+                      organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants),
+                      class: "btn btn-success fw-bold" %>
         </div>
       <% else %>
-        <div>
-          <%= link_to "View Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws), class: "btn btn-outline-secondary btn-block text-success fw-bold" %>
+        <div class="d-grid">
+          <%= link_to "View Draws",
+                      organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws),
+                      class: "btn btn-outline-secondary text-success fw-bold" %>
         </div>
       <% end %>
     <% end %>

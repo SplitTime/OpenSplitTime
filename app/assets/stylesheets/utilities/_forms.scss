@@ -1,4 +1,4 @@
-.form-group.required label:after, .form-row.required label:after {
+.input-group.required label:after, .form-row.required label:after {
     content: " *";
     color: $danger;
 }

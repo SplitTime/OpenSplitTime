@@ -9,7 +9,7 @@
         <div class="ost-title">
           <h1><strong><%= @presenter.name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <% if @presenter.multiple_events? %>
               <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
@@ -18,18 +18,18 @@
             <li class="breadcrumb-item active">Results summary</li>
           </ul>
         </div>
-        <%= render 'time_and_course_info' %>
+        <%= render "time_and_course_info" %>
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'view_buttons', view_object: @presenter %>
+    <%= render "view_buttons", view_object: @presenter %>
   </div>
 </header>
 
 <aside class="ost-toolbar d-print-none">
   <div class="container">
     <div class="row">
-      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col d-inline-flex">
         <div>
           <%= summary_filter_dropdown %>
@@ -46,6 +46,6 @@
   <% elsif @presenter.ranked_effort_rows.empty? %>
     <h4><strong><%= "There are no #{@presenter.summary_title.downcase}." %></strong></h4>
   <% else %>
-    <%= render 'efforts/efforts_list_summary', view_object: @presenter %>
+    <%= render "efforts/efforts_list_summary", view_object: @presenter %>
   <% end %>
 </article>

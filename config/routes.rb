@@ -202,7 +202,7 @@ Rails.application.routes.draw do
     resources :stewardships, only: [:index, :create, :update, :destroy]
   end
 
-  resources :people do
+  resources :people, only: [:index, :show, :edit, :update, :destroy] do
     resources :subscriptions, only: [:create, :destroy], module: "people"
     collection { get :subregion_options }
     member { get :avatar_claim }

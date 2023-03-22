@@ -1,7 +1,7 @@
 class PeopleController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :subregion_options]
-  before_action :set_person, except: [:index, :new, :create, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :subregion_options]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_person, except: [:index]
+  after_action :verify_authorized, except: [:index, :show]
 
   def index
     # Sort will destroy fuzzy match ranking, so don't automatically
@@ -20,24 +20,8 @@ class PeopleController < ApplicationController
     @presenter = PersonPresenter.new(@person, prepared_params, current_user)
   end
 
-  def new
-    @person = Person.new
-    authorize @person
-  end
-
   def edit
     authorize @person
-  end
-
-  def create
-    @person = Person.new(permitted_params)
-    authorize @person
-
-    if @person.save
-      redirect_to session.delete(:return_to) || @person
-    else
-      render "new", status: :unprocessable_entity
-    end
   end
 
   def update

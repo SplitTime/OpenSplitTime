@@ -4,9 +4,9 @@
   <div class="row">
     <div class="col-md-12">
       <%= form_for(@effort, html: { class: "form-horizontal", role: "form", data: { turbo: false } }) do |f| %>
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-6 mb-3">
-            <%= f.label :event %>
+            <%= f.label :event, class: "required" %>
             <%= f.select :event_id,
                          @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
                          { prompt: true },
@@ -14,17 +14,17 @@
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-4 mb-3">
-            <%= f.label :first_name %>
+            <%= f.label :first_name, class: "mb-1 required" %>
             <%= f.text_field :first_name, class: "form-control", placeholder: "First name", autofocus: true %>
           </div>
           <div class="col-md-4 mb-3">
-            <%= f.label :last_name %>
+            <%= f.label :last_name, class: "mb-1 required" %>
             <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
           </div>
           <div class="col-md-2 mb-3">
-            <%= f.label :gender %>
+            <%= f.label :gender, class: "mb-1 required" %>
             <%= f.select :gender,
                          Effort.genders.keys.map { |gender| [gender.titleize, gender] },
                          { prompt: true },
@@ -32,83 +32,83 @@
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-3 mb-3">
-            <%= f.label :birthdate %>
+            <%= f.label :birthdate, class: "mb-1" %>
             <%= f.datepicker_field :birthdate %>
           </div>
           <div class="col-md-2 mb-3">
-            <%= f.label :age %>
+            <%= f.label :age, class: "mb-1" %>
             <%= f.number_field :age, class: "form-control", placeholder: "Age" %>
           </div>
         </div>
 
-        <div class="form-row" data-controller="carmen" data-carmen-model="effort">
+        <div class="row" data-controller="carmen" data-carmen-model="effort">
           <div class="col-md-4 mb-3">
-            <%= f.label :country_code, "Country" %>
+            <%= f.label :country_code, "Country", class: "mb-1" %>
             <%= carmen_country_select :effort, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :state_code, "State" %><br/>
+            <%= f.label :state_code, "State", class: "mb-1" %><br/>
             <%= render partial: "carmen/subregion_select",
                        locals: { model: :effort, parent_region: f.object.country_code } %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :city %>
+            <%= f.label :city, class: "mb-1" %>
             <%= f.text_field :city, class: "form-control", placeholder: "City" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-2 mb-3">
-            <%= f.label :bib_number %>
+            <%= f.label :bib_number, class: "mb-1" %>
             <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
           </div>
           <div class="col-md-6 mb-3">
-            <%= f.label "Tracking Beacon URL" %>
+            <%= f.label "Tracking Beacon URL", class: "mb-1" %>
             <%= f.text_field :beacon_url, class: "form-control", placeholder: "https://www.a-tracking-site.com" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-5 mb-3">
-            <%= f.label :email %>
+            <%= f.label :email, class: "mb-1" %>
             <%= f.text_field :email, class: "form-control", placeholder: "example@gmail.com" %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :phone %>
+            <%= f.label :phone, class: "mb-1" %>
             <%= f.text_field :phone, class: "form-control", placeholder: "Phone number" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-8 mb-3">
-            <%= f.label :photo %>
+            <%= f.label :photo, class: "mb-1" %>
             <%= f.file_field :photo, class: "form-control" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-8 mb-3">
-            <%= f.label :comments %>
+            <%= f.label :comments, class: "mb-1" %>
             <%= f.text_area :comments, class: "form-control" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-5 mb-3">
-            <%= f.label :emergency_contact %>
+            <%= f.label :emergency_contact, class: "mb-1" %>
             <%= f.text_field :emergency_contact, class: "form-control", placeholder: "Contact Name" %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :emergency_phone %>
+            <%= f.label :emergency_phone, class: "mb-1" %>
             <%= f.text_field :emergency_phone, class: "form-control", placeholder: "Phone number" %>
           </div>
         </div>
 
-        <div class="form-row">
+        <div class="row">
           <div class="col-md-3 mb-3">
-            <%= f.label :scheduled_start_time %>
+            <%= f.label :scheduled_start_time, class: "mb-1 required" %>
             <div class="input-group date" id="datetimepicker">
               <%= f.datetimepicker_field :scheduled_start_time_local %>
             </div>
@@ -116,11 +116,9 @@
         </div>
 
         <br/>
-        <div class="form-row">
-          <div class="col-md-2 mb-3">
+        <div class="row mb-3">
+          <div class="col">
             <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>
-          </div>
-          <div class="col-md-2 mb-3">
             <%= link_to "Cancel", request.referrer, class: "btn btn-outline-secondary" %>
           </div>
         </div>

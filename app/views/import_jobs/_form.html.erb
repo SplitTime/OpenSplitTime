@@ -1,9 +1,9 @@
-<%= render 'shared/errors', obj: @import_job %>
+<%= render "shared/errors", obj: @import_job %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: @import_job, local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
-      <div class="form-row">
+    <%= form_with(model: @import_job, local: true, html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
+      <div class="row">
         <div class="mb-3 col-md-4">
           <%= f.label :file_name %>
           <%= f.file_field :files, class: "form-control", autofocus: true %>
@@ -13,21 +13,10 @@
         <%= f.hidden_field :format %>
       </div>
 
-      <div class="form-row">
-        <div class="mb-3">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit("Import", class: "btn btn-primary") %>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="mb-3">
-          <div class="col">
-            <span class="brackets">
-                <%= link_to "Cancel", request.referrer || import_jobs_path %>
-            </span>
-          </div>
+      <div class="row mb-3">
+        <div class="col">
+          <%= f.submit("Import", class: "btn btn-primary") %>
+          <%= link_to "Cancel", request.referrer || import_jobs_path, class: "btn btn-outline-secondary" %>
         </div>
       </div>
     <% end %>

@@ -39,12 +39,10 @@
         <div class="col-8">
           <div class="input-group">
             <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-check-circle good text-success" title="Bib Found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Bib In Wrong Event" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Bib Not Found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-check-circle good text-success" title="Bib found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Bib in wrong event" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Bib not found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
@@ -62,13 +60,11 @@
         <div class="col-8">
           <div class="input-group">
             <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-exclamation-circle exists" title="Data Already Exists" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-check-circle good text-success" title="Time Appears Good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Time Appears Questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Time Appears Bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-check-circle good text-success" title="Time appears good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
@@ -78,13 +74,11 @@
         <div class="col-8">
           <div class="input-group">
             <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-exclamation-circle exists" title="Data Already Exists" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-check-circle good text-success" title="Time Appears Good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Time Appears Questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Time Appears Bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-check-circle good text-success" title="Time appears good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
@@ -103,7 +97,7 @@
       <div class="mb-3 row">
         <label class="col-4"></label>
         <div class="col-8">
-          <button id="js-dropped-button" type="button" class="btn btn-sm btn-outline-secondary col-12">
+          <button id="js-dropped-button" type="button" class="btn btn-outline-secondary col-12">
             <input id="js-dropped" type="checkbox" name="dropped" value="true">
             <span class="far fa-square"></span>
             &nbsp;Dropped Here

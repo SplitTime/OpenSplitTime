@@ -24,6 +24,12 @@
 
 <article class="ost-article container">
   <%= turbo_frame_tag dom_id(@lottery_entrant) do %>
-    <%= render "form" %>
+    <div class="container py-5">
+      <div class="card border-primary">
+        <div class="card-body p-4">
+          <%= render "form" %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </article>

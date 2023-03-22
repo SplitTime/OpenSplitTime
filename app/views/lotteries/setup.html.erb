@@ -179,33 +179,33 @@
       </div>
     </div>
     <div class="card-body table-responsive">
-      <aside class="ost-toolbar">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <%= render "lottery_entrants/entrant_lookup_admin" %>
-            </div>
+      <aside class="container ost-toolbar">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <%= render "lottery_entrants/entrant_lookup_admin" %>
           </div>
         </div>
       </aside>
 
-      <% if @presenter.lottery_entrants_default_none.present? %>
-        <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
-      <% else %>
-        <div class="card bg-light mt-2">
-          <div class="card-body">
-            <h6 class="fw-bold">
-              <% if @presenter.params[:search].blank? %>
-                Find someone by entering a name, state, or country
-              <% elsif @presenter.params[:search].length < 3 %>
-                Search parameter is too short
-              <% else %>
-                No entrants match this search
-              <% end %>
-            </h6>
+      <div class="container">
+        <% if @presenter.lottery_entrants_default_none.present? %>
+          <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
+        <% else %>
+          <div class="card bg-light mt-2">
+            <div class="card-body">
+              <h6 class="fw-bold">
+                <% if @presenter.params[:search].blank? %>
+                  Find someone by entering a name, state, or country
+                <% elsif @presenter.params[:search].length < 3 %>
+                  Search parameter is too short
+                <% else %>
+                  No entrants match this search
+                <% end %>
+              </h6>
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
       <hr/>
       <div>
         <%= link_to fa_icon("plus", text: "Add"),

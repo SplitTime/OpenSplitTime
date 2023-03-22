@@ -24,8 +24,8 @@ module DatetimepickerHelper
                                  class: "form-control datetimepicker-input",
                                  data: {"bs-target": "##{html_id}"}
 
-    append = content_tag(:div, nil, class: "input-group-append", data: {"bs-target": "##{html_id}", "bs-toggle": "datetimepicker"}) do
-      content_tag(:span, nil, class: "input-group-text far fa-calendar-alt")
+    append = content_tag(:div, nil, class: "input-group-text", data: {"bs-target": "##{html_id}", "bs-toggle": "datetimepicker"}) do
+      content_tag(:span, nil, class: "far fa-calendar-alt")
     end
 
     content_tag(:div, nil, class: "input-group date", id: html_id, data: {"target-input" => "nearest"}) do

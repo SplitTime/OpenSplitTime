@@ -26,9 +26,7 @@
           <div class="mb-3">
             <span class="input-group">
               <input type="text" class="form-control border-end-0" v-model="filter" placeholder="Filter:"/>
-              <span class="input-group-append">
-                <a href="#" class="btn btn-input-group border-start-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
-              </span>
+              <a href="#" class="btn btn-input-group input-group-text border-start-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
             </span>
           </div>
         </div>
@@ -159,7 +157,7 @@
 										</span>
                       <div class="input-group">
                         <input-units id="split-distance-field" type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal', digits: 2 }" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.distance }}</span></span>
+                        <span class="input-group-text">{{ units.distance }}</span>
                       </div>
                     </div>
                     <div class="mb-3 col-6">
@@ -189,7 +187,7 @@
 										</span>
                       <div class="input-group">
                         <input-units id="split-vert-gain-field" type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
                     <div class="mb-3 col-6 vg-group">
@@ -199,7 +197,7 @@
 										</span>
                       <div class="input-group">
                         <input-units id="split-vert-loss-field" type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
                   </div>
@@ -230,7 +228,7 @@
 										</span>
                       <div class="input-group">
                         <input-units id="split-elevation-field" type="text" class="form-control" v-model.number="model.elevation" v-mask="{ alias: 'integer' }" :scale="units.forElevation()"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
                   </div>

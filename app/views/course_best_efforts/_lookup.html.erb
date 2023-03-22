@@ -1,19 +1,17 @@
 <%# locals: (presenter:) -%>
 
 <%= form_tag organization_course_best_efforts_path(presenter.organization, presenter.course), method: :get do %>
-    <%= hidden_field_tag "split1", presenter.split1 %>
-    <%= hidden_field_tag "split2", presenter.split2 %>
-    <%= hidden_field_tag "filter[gender]", presenter.gender_text %>
-    <div class="input-group">
-      <%= text_field_tag "filter[search]",
-                          presenter.search_text,
-                          placeholder: "First name, last name, state, or country",
-                          autofocus: true,
-                          class: "form-control search-box" %>
-      <span class="input-group-append">
-          <%= button_tag(type: :submit, id: "search-submit", class: "btn btn-primary") do %>
-              <i class="fas fa-search"></i>
-          <% end %>
-        </span>
-    </div>
+  <%= hidden_field_tag "split1", presenter.split1 %>
+  <%= hidden_field_tag "split2", presenter.split2 %>
+  <%= hidden_field_tag "filter[gender]", presenter.gender_text %>
+  <div class="input-group">
+    <%= text_field_tag "filter[search]",
+                       presenter.search_text,
+                       placeholder: "First name, last name, state, or country",
+                       autofocus: true,
+                       class: "form-control search-box" %>
+    <%= button_tag(type: :submit, id: "search-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
+  </div>
 <% end %>

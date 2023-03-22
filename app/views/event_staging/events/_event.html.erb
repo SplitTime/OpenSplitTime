@@ -98,7 +98,7 @@
             <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the distance of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-distance-field" type="text" class="form-control" placeholder="miles" v-model.number="eventModel.course.endSplit('finish').distanceFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 2 }" :scale="units.forDistance()"/>
-              <span class="input-group-append"><span class="input-group-text">{{ units.distance }}</span></span>
+              <span class="input-group-text">{{ units.distance }}</span>
             </div>
           </div>
           <div class="mb-3 col-6">
@@ -106,7 +106,7 @@
             <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical gain for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical gain of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-vert-gain-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertGainFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
-              <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+              <span class="input-group-text">{{ units.elevation }}</span>
             </div>
           </div>
           <div class="mb-3 col-6">
@@ -114,7 +114,7 @@
             <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical loss for your Course. If your Event consists of multiple identical laps (and you are keeping track of laps as such), then this should be the vertical loss of a single lap."><i class="fas fa-question-circle"></i></span>
             <div class="input-group">
               <input-units id="course-vert-loss-field" type="text" class="form-control" placeholder="feet" v-model.number="eventModel.course.endSplit('finish').vertLossFromStart" v-mask="{ alias: 'decimal', placeholder: '', digits: 1 }" :scale="units.forElevation()" :places="1"/>
-              <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+              <span class="input-group-text">{{ units.elevation }}</span>
             </div>
           </div>
           <div class="mb-3 col-12">

@@ -17,8 +17,8 @@
           </div>
         </div>
       <% end %>
-      <div class="row">
-        <div class="mb-3 col">
+      <div class="row mt-2">
+        <div class="col">
           <%= turbo_frame_tag(event, :preview_lottery_sync) do %>
             <%= link_to "Preview sync", preview_lottery_sync_event_path(event), class: "btn btn-primary" %>
           <% end %>

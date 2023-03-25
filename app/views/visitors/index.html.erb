@@ -11,26 +11,20 @@
       <br/>
       <h2>Recent Results</h2>
       <% @presenter.recent_event_groups(4).each do |event_group| %>
-        <%= link_to event_group.name, event_group_path(event_group), class: 'btn btn-info cta' %>
+        <%= link_to event_group.name, event_group_path(event_group), class: "btn btn-info cta" %>
       <% end %>
     </div>
     <div class="gradient"></div>
     <div class="position-absolute bottom-0 end-0">
-      <a tabindex="0"
-         data-controller="popover"
-         data-popover-theme-value="dark"
-         data-bs-toggle="popover"
-         data-bs-trigger="focus"
-         data-bs-placement="left"
-         data-bs-content="Traversing the west side of Isolation Peak, photo by Mark Oveson"
-         class="photo-credit">
-        Photo Credit
-      </a>
+      <%= link_to_static_popover(text: "Photo Credit",
+                                 content: "Traversing the west side of Isolation Peak, photo by Mark Oveson",
+                                 theme: "dark",
+                                 css_class: "photo-credit") %>
     </div>
   </div>
   <div class="row second">
     <div class="over-text">
-      <%= image_tag("icons/icon-map.png", alt: 'Map Icon') %>
+      <%= image_tag("icons/icon-map.png", alt: "Map Icon") %>
       <h2>Plan Your Efforts</h2>
       <p>Runners, pacers, families, and crews can use OpenSplitTime to plan for ultras. Just estimate your finish time
         and
@@ -38,7 +32,7 @@
         <strong>Hours of research converted to a few seconds? Yes please.</strong></p>
       <br/>
       <% @presenter.upcoming_courses(4).each do |course| %>
-        <%= link_to course.name, plan_effort_organization_course_path(course.organization, course), class: 'btn btn-info cta' %>
+        <%= link_to course.name, plan_effort_organization_course_path(course.organization, course), class: "btn btn-info cta" %>
       <% end %>
     </div>
   </div>
@@ -49,32 +43,26 @@
         your best segments, and find your peers. Much more is yet to come as the community gathers its data here.<br/>
         <strong>You can find every Hardrock effort ever run.</strong></p>
       <br/>
-      <%= link_to 'Find Someone', people_path, class: 'btn btn-info cta' %>
-      <%= link_to 'Search Hardrock Archives', organization_path('hardrock'), class: 'btn btn-info cta' %>
+      <%= link_to "Find Someone", people_path, class: "btn btn-info cta" %>
+      <%= link_to "Search Hardrock Archives", organization_path("hardrock"), class: "btn btn-info cta" %>
     </div>
     <div class="gradient"></div>
     <div class="position-absolute bottom-0 end-0">
-      <a tabindex="0"
-         data-controller="popover"
-         data-popover-theme-value="dark"
-         data-bs-toggle="popover"
-         data-bs-trigger="focus"
-         data-bs-placement="left"
-         data-bs-content="Descending from Grant-Swamp Pass, photo by Bill Wright"
-         class="photo-credit">
-        Photo Credit
-      </a>
+      <%= link_to_static_popover(text: "Photo Credit",
+                                 content: "Descending from Grant-Swamp Pass, photo by Bill Wright",
+                                 theme: "dark",
+                                 css_class: "photo-credit") %>
     </div>
   </div>
   <div class="row fourth">
     <div class="over-text">
-      <%= image_tag("icons/icon-timer.png", alt: 'Timer Icon') %>
+      <%= image_tag("icons/icon-timer.png", alt: "Timer Icon") %>
       <h2>Open to Race Directors</h2>
       <p>We love to compete, but many of us don't love to organize. And the tools for tracking and organizing endurance
         events have been sorely lacking.<br/>
         <strong>All that has now changed.</strong></p>
       <br/>
-      <%= link_to 'Full Documentation', docs_getting_started_path, class: 'btn btn-info cta' %>
+      <%= link_to "Full Documentation", docs_getting_started_path, class: "btn btn-info cta" %>
     </div>
   </div>
   <div class="row fifth">
@@ -89,16 +77,10 @@
     </div>
     <div class="gradient"></div>
     <div class="position-absolute bottom-0 end-0">
-      <a tabindex="0"
-         data-controller="popover"
-         data-popover-theme-value="dark"
-         data-bs-toggle="popover"
-         data-bs-trigger="focus"
-         data-bs-placement="left"
-         data-bs-content="Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser"
-         class="photo-credit">
-        Photo Credit
-      </a>
+      <%= link_to_static_popover(text: "Photo Credit",
+                                 content: "Running the North Inlet Trail in Rocky Mountain National Park, photo by Kari Fraser",
+                                 theme: "dark",
+                                 css_class: "photo-credit") %>
     </div>
   </div>
   <div class="row sixth">
@@ -108,7 +90,7 @@
         wander alone. They help us feel the simple joys of food, warmth, and rest by exposing us to cold, hunger and
         discomfort. They help us realize how much more is buried within when we seem empty and dry.</p>
       <p><strong>Go git 'er done.</strong></p>
-      <%= image_tag("icons/icon-s.png", alt: 'S Icon') %>
+      <%= image_tag("icons/icon-s.png", alt: "S Icon") %>
       <h1>OpenSplitTime.org</h1>
     </div>
   </div>

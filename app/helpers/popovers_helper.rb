@@ -16,4 +16,17 @@ module PopoversHelper
                   bs_trigger: "focus",
                 }
   end
+
+  def link_to_static_popover(text:, content:, theme:, css_class:)
+    content_tag :a, text,
+                tabindex: 0,
+                class: css_class,
+                data: {
+                  controller: "popover",
+                  popover_theme_value: theme,
+                  bs_toggle: "popover",
+                  bs_content: content,
+                  bs_trigger: "focus",
+                }
+  end
 end

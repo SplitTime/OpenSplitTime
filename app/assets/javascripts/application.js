@@ -15,7 +15,6 @@
 //= require rails-ujs
 //= require popper
 //= require bootstrap
-//= require bootstrap_event_listeners
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require moment

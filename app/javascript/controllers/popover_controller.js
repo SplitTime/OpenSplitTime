@@ -35,11 +35,17 @@ export default class extends Controller {
           popover._config.fetched = true
 
           request.perform().then(function (response) {
-            response.html.then(function (html) {
-              popover.setContent({
-                ".popover-body": html
+            if (response.ok) {
+              response.html.then(function (html) {
+                popover.setContent({
+                  ".popover-body": html
+                })
               })
-            })
+            } else {
+              popover.setContent({
+                ".popover-body": "Error loading efforts."
+              })
+            }
           }, function (error) {
             popover.setContent({
               ".popover-body": error

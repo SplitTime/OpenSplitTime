@@ -2,7 +2,7 @@
     font-family: "Gibson-Semibold";
 }
 
-.navbar-right {
+.navbar-nav {
     border-radius: 0;
     @include media-breakpoint-up(md) {
       & .nav-link .sign-up {

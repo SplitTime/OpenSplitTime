@@ -1,10 +1,10 @@
 (function ($) {
 
     var timeIcons = {
-        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-toggle="tooltip" title="Data Already Exists"></span>',
-        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Time Appears Good"></span>',
-        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Time Appears Questionable"></span>',
-        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Time Appears Bad"></span>'
+        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-bs-toggle="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-bs-toggle="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-bs-toggle="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-bs-toggle="tooltip" title="Time Appears Bad"></span>'
     };
 
     /**
@@ -407,7 +407,7 @@
                     showMaskOnHover: false,
                 };
 
-                $('#js-add-effort-form [data-toggle="tooltip"]').tooltip({container: 'body'});
+                $('#js-add-effort-form [data-bs-toggle="tooltip"]').tooltip({container: 'body'});
 
                 $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
                 $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
@@ -826,8 +826,8 @@
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
 
-                $('[data-toggle="popover"]').popover();
-                liveEntry.timeRowsTable.$dataTable.on('mouseover', '[data-toggle="tooltip"]', function () {
+                $('[data-bs-toggle="popover"]').popover();
+                liveEntry.timeRowsTable.$dataTable.on('mouseover', '[data-bs-toggle="tooltip"]', function () {
                     $(this).tooltip('show');
                 });
 
@@ -841,7 +841,7 @@
 
                 // Wrap search field with clear button
                 $('#js-local-workspace-table_filter input')
-                    .wrap('<div class="form-group form-group-sm has-feedback"></div>')
+                    .wrap('<div class="mb-3 has-feedback"></div>')
                     .on('change keyup', function () {
                         var value = $(this).val() || '';
                         if (value.length > 0) {
@@ -850,7 +850,7 @@
                             $('#js-filter-clear').hide();
                         }
                     });
-                $('#js-local-workspace-table_filter .form-group').append(
+                $('#js-local-workspace-table_filter .input-group').append(
                     '<span id="js-filter-clear" class="fas fa-times-circle dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
                 );
                 $('#js-filter-clear').on('click', function () {
@@ -990,9 +990,9 @@
 
             buildTrHtml: function (rawTimeRow) {
                 var bibIcons = {
-                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-toggle="tooltip" title="Bib Found"></span>',
-                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-toggle="tooltip" title="Bib In Wrong Event"></span>',
-                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-toggle="tooltip" title="Bib Not Found"></span>'
+                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-bs-toggle="tooltip" title="Bib Found"></span>',
+                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-bs-toggle="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-bs-toggle="tooltip" title="Bib Not Found"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');

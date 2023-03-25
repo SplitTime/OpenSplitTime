@@ -8,7 +8,7 @@
     <div class="card-body">
       <%= form_with(model: [presenter.event_group, event], html: { data: { controller: "form-auto-submit" } }) do |f| %>
         <div class="row">
-          <div class="form-group col">
+          <div class="mb-3 col">
             <%= f.label :syncing_with %>
             <%= f.select :lottery_id,
                          options_for_select(presenter.organization.lotteries.pluck(:name, :id).unshift(["None", nil]), event.lottery_id),
@@ -17,8 +17,8 @@
           </div>
         </div>
       <% end %>
-      <div class="row">
-        <div class="form-group col">
+      <div class="row mt-2">
+        <div class="col">
           <%= turbo_frame_tag(event, :preview_lottery_sync) do %>
             <%= link_to "Preview sync", preview_lottery_sync_event_path(event), class: "btn btn-primary" %>
           <% end %>

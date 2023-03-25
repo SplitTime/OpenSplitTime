@@ -2,18 +2,18 @@
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name), format: :json, remote: true,
              data: {action: "ajax:success->login#reloadPage ajax:error->login#showErrors"}) do |f| %>
-  <div class="form-group">
-    <%= f.label :email %>
+  <div class="form-floating mb-3">
     <%= f.email_field :email, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
+    <%= f.label :email %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :password %>
+  <div class="form-floating mb-3">
     <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+    <%= f.label :password %>
   </div>
 
   <% if devise_mapping.rememberable? %>
-    <div class="form-group form-check">
+    <div class="form-check mb-3">
       <%= f.check_box :remember_me, class: "form-check-input" %>
       <%= f.label :remember_me, class: "form-check-label" do %>
         <%= resource.class.human_attribute_name("remember_me") %>
@@ -21,7 +21,7 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="mb-3">
     <%= f.submit t("devise.sessions.new.sign_in"), id: "log-in-modal-submit", class: "btn btn-primary",
                  data: {action: "click->login#hideErrors", turbo: false} %>
   </div>

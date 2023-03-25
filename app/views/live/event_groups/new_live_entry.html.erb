@@ -28,28 +28,26 @@
   <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
     <form id="js-add-effort-form">
       <input type="hidden" id="js-unique-id" value=""/>
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-4" for="js-station-select">Aid Station</label>
         <div class="col-8">
           <select id="js-station-select" name="js-station-select" class="form-control form-control-sm" autofocus>Aid Station</select>
         </div>
       </div>
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-4" for="js-bib-number">Bib</label>
         <div class="col-8">
           <div class="input-group">
             <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-check-circle good text-success" title="Bib Found" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Bib In Wrong Event" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Bib Not Found" data-toggle="tooltip" data-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-check-circle good text-success" title="Bib found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Bib in wrong event" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Bib not found" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
       </div>
-      <div class="form-group row lap-only">
+      <div class="mb-3 row lap-only">
         <label class="col-4" for="js-lap-number">Lap</label>
         <div class="col-8">
           <div class="input-group">
@@ -57,39 +55,35 @@
           </div>
         </div>
       </div>
-      <div class="form-group row time-in-only">
+      <div class="mb-3 row time-in-only">
         <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
         <div class="col-8">
           <div class="input-group">
             <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-exclamation-circle exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-check-circle good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-check-circle good text-success" title="Time appears good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
       </div>
-      <div class="form-group row time-out-only">
+      <div class="mb-3 row time-out-only">
         <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
         <div class="col-8">
           <div class="input-group">
             <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-append time-status">
-              <span class="input-group-text">
-                <span class="fas fa-exclamation-circle exists" title="Data Already Exists" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-check-circle good text-success" title="Time Appears Good" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-question-circle questionable text-warning" title="Time Appears Questionable" data-toggle="tooltip" data-placement="right"></span>
-                <span class="fas fa-times-circle bad text-danger" title="Time Appears Bad" data-toggle="tooltip" data-placement="right"></span>
-              </span>
+            <span class="input-group-text time-status">
+              <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-check-circle good text-success" title="Time appears good" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-bs-toggle="tooltip" data-bs-placement="right"></span>
+              <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-bs-toggle="tooltip" data-bs-placement="right"></span>
             </span>
           </div>
         </div>
       </div>
-      <div class="form-group row pacer-only">
+      <div class="mb-3 row pacer-only">
         <label class="col-4" for="pacer">Pacer</label>
         <div class="col-8">
           <label class="checkbox-inline" for="js-pacer-in">
@@ -100,10 +94,10 @@
           </label>
         </div>
       </div>
-      <div class="form-group row">
+      <div class="mb-3 row">
         <label class="col-4"></label>
         <div class="col-8">
-          <button id="js-dropped-button" type="button" class="btn btn-sm btn-outline-secondary col-12">
+          <button id="js-dropped-button" type="button" class="btn btn-outline-secondary col-12">
             <input id="js-dropped" type="checkbox" name="dropped" value="true">
             <span class="far fa-square"></span>
             &nbsp;Dropped Here
@@ -155,13 +149,6 @@
       <div class="col-md-6">
         <h3><strong>Local Data Workspace</strong></h3>
       </div>
-      <!--<div class="col-md-6 form-inline text-right">
-        Show
-        <select class="form-control">
-          <option>10</option>
-        </select>
-        Entries
-      </div>-->
     </div>
   </div>
 </header>

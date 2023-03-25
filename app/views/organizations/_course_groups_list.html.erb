@@ -9,11 +9,11 @@
   <tbody>
   <% course_groups.each do |course_group| %>
     <tr>
-      <td class="font-weight-bold">
+      <td class="fw-bold">
         <%= link_to course_group.name, organization_course_group_path(course_group.organization, course_group) %>
       </td>
       <td><%= course_group.courses.pluck(:name).join(", ") %></td>
-      <td class="text-right">
+      <td class="text-end">
         <%= link_to "All-time best",
                     organization_course_group_best_efforts_path(course_group.organization, course_group),
                     class: "btn btn-primary" %>

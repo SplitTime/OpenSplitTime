@@ -10,6 +10,7 @@ namespace :db do
       active_storage_blobs
       active_storage_variant_records
       ar_internal_metadata
+      data_migrations
       delayed_jobs
       effort_segments
       export_jobs
@@ -77,6 +78,7 @@ namespace :db do
       active_storage_blobs
       active_storage_variant_records
       ar_internal_metadata
+      data_migrations
       delayed_jobs
       effort_segments
       export_jobs

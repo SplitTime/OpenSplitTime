@@ -5,22 +5,22 @@ module UsersHelper
     url = user_path(user, referrer_path: request.params)
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Are you sure you want to delete this record?",
-                      toggle: :tooltip,
+                      "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => "Delete user"},
+                      "bs-original-title": "Delete user"},
                id: "delete_user_#{user.id}",
-               class: "btn btn-danger has-tooltip"}
+               class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
 
   def link_to_become_user(user)
     url = admin_impersonate_start_path(user)
     options = {method: :post,
-               data: {toggle: :tooltip,
+               data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => "Impersonate user"},
+                      "bs-original-title": "Impersonate user"},
                id: "impersonate_user_#{user.id}",
-               class: "btn btn-warning has-tooltip"}
+               class: "btn btn-warning"}
     link_to fa_icon("theater-masks"), url, options
   end
 end

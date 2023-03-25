@@ -26,12 +26,9 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-
       <% if current_user&.authorized_to_edit?(@presenter.event_series) %>
-        <div class="col form-inline">
-          <div>
-            <%= event_series_actions_dropdown_menu(@presenter) %>
-          </div>
+        <div class="col">
+          <%= event_series_actions_dropdown_menu(@presenter) %>
         </div>
       <% end %>
     </div>

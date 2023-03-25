@@ -14,40 +14,42 @@
     <div class="row">
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) %>
-        <div class="col form-inline">
-          <div>
-            <%= effort_actions_dropdown_menu(@presenter) %>
-            <%= render "start_stop_buttons", presenter: @presenter %>
+        <div class="col">
+          <div class="d-inline-flex">
+            <span class="mx-1"><%= effort_actions_dropdown_menu(@presenter) %></span>
+            <span class="mx-1"><%= render "start_stop_buttons", presenter: @presenter %></span>
             <% if @presenter.next_problem_effort %>
-              <%= link_to "Find a problem effort", effort_path(@presenter.next_problem_effort),
-                          class: "btn btn-success" %>
+              <span class="mx-1"><%= link_to "Find a problem effort",
+                                             effort_path(@presenter.next_problem_effort),
+                                             class: "btn btn-success" %></span>
             <% end %>
-            <%= link_to "Raw time records (#{@presenter.raw_times_count})",
-                        raw_times_event_group_path(@presenter.event_group,
-                                                   filter: {bib_number: @presenter.bib_number},
-                                                   sort: [:absolute_time, :entered_time]),
-                        class: "btn btn-success" %>
+            <span class="mx-1"><%= link_to "Raw time records (#{@presenter.raw_times_count})",
+                                           raw_times_event_group_path(@presenter.event_group,
+                                                                      filter: { bib_number: @presenter.bib_number },
+                                                                      sort: [:absolute_time, :entered_time]),
+                                           class: "btn btn-success" %></span>
           </div>
         </div>
       <% end %>
 
-      <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-        <%= render partial: "check_in_button", locals: { effort: @presenter.effort } %>
-      <% end %>
-
-      <div class="col-auto form-inline">
-        <% if @presenter.beacon_url %>
-          <%= link_to effort_beacon_button_text(@presenter.beacon_url),
-                      url_with_protocol(@presenter.beacon_url),
-                      class: "btn btn-outline-secondary btn-outline-secondary",
-                      target: "_blank" %>
-        <% end %>
-        <% if @presenter.report_url %>
-          <%= link_to effort_report_button_text(@presenter.report_url),
-                      url_with_protocol(@presenter.report_url),
-                      class: "btn btn-outline-secondary btn-outline-secondary",
-                      target: "_blank" %>
-        <% end %>
+      <div class="col text-end">
+        <div class="d-inline-flex">
+          <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
+            <span class="mx-1"><%= render partial: "check_in_button", locals: { effort: @presenter.effort } %></span>
+          <% end %>
+          <% if @presenter.beacon_url %>
+          <span class="mx-1"><%= link_to effort_beacon_button_text(@presenter.beacon_url),
+                                         url_with_protocol(@presenter.beacon_url),
+                                         class: "btn btn-outline-secondary",
+                                         target: "_blank" %></span>
+          <% end %>
+          <% if @presenter.report_url %>
+            <span class="mx-1"><%= link_to effort_report_button_text(@presenter.report_url),
+                                           url_with_protocol(@presenter.report_url),
+                                           class: "btn btn-outline-secondary",
+                                           target: "_blank" %></span>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>

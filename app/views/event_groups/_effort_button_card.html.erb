@@ -7,7 +7,7 @@
       <% if arrivals.present? %>
         <% arrivals.each do |arrival| %>
           <div class="card">
-            <button class="btn btn-primary btn-lg text-lg-left" data-action="click->finish-line#lookup keyup->finish-line#lookup" data-bib-number="<%= arrival.bib_number %>">
+            <button class="btn btn-primary btn-lg text-lg-start" data-action="click->finish-line#lookup keyup->finish-line#lookup" data-bib-number="<%= arrival.bib_number %>">
               <%= effort_button_card_text(arrival, time_zone, multiple_events) %>
             </button>
           </div>

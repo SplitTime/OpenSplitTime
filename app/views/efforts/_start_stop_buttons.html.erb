@@ -7,25 +7,25 @@
   <% if presenter.needs_final_stop? %>
     <%= link_to "Set stop", stop_effort_path(presenter.effort),
                 method: :patch,
-                class: "btn btn-success has-tooltip",
-                data: { toggle: "tooltip",
+                class: "btn btn-success",
+                data: { "bs-toggle": "tooltip",
                         placement: :bottom,
-                        "original-title" => "Sets a stop on the final split time" } %>
+                        "bs-original-title": "Sets a stop on the final split time" } %>
   <% end %>
   <% if presenter.has_removable_stop? %>
     <%= link_to "Remove stop", stop_effort_path(presenter.effort, status: false),
                 method: :patch,
-                class: "btn btn-success has-tooltip",
-                data: { toggle: "tooltip",
+                class: "btn btn-success",
+                data: { "bs-toggle": "tooltip",
                         placement: :bottom,
-                        "original-title" => "Removes the stop from all split times" } %>
+                        "bs-original-title": "Removes the stop from all split times" } %>
   <% end %>
   <% if presenter.started? %>
     <%= link_to "Smart stop", smart_stop_effort_path(presenter.effort),
                 method: :patch,
-                class: "btn btn-success has-tooltip",
-                data: { toggle: "tooltip",
+                class: "btn btn-success",
+                data: { "bs-toggle": "tooltip",
                         placement: :bottom,
-                        "original-title" => "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time" } %>
+                        "bs-original-title": "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time" } %>
   <% end %>
 </span>

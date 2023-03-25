@@ -30,3 +30,22 @@ import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 const application = Application.start()
 const context = require.context("controllers", true, /.js$/)
 application.load(definitionsFromContext(context))
+
+// Initialize Bootstrap tooltips
+document.addEventListener("turbo:load", () => {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+})
+
+// Expand the default allowList for Bootstrap tooltips and popovers
+let myDefaultAllowList = bootstrap.Tooltip.Default.allowList;
+
+myDefaultAllowList.table = [];
+myDefaultAllowList.tr = [];
+myDefaultAllowList.td = [];
+myDefaultAllowList.th = [];
+myDefaultAllowList.tbody = [];
+myDefaultAllowList.thead = [];
+

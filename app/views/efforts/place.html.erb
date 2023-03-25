@@ -2,16 +2,16 @@
   <% "OpenSplitTime: Place detail - #{@presenter.full_name} - #{@presenter.event_name}" %>
 <% end %>
 
-<%= render 'effort_header', view_object: @presenter, title: 'Place' %>
+<%= render "effort_header", view_object: @presenter, title: "Place" %>
 
 <article class="ost-article container">
   <% if !@presenter.started? %>
     <strong>The effort has not started.</strong>
   <% else %>
     <strong>Closest peers:
-      <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ', '.html_safe) %>
+      <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ", ".html_safe) %>
     </strong><br/>
     <hr/>
-    <%= render 'place_detail_rows', view_object: @presenter %>
+    <%= render "place_detail_rows", view_object: @presenter %>
   <% end %>
 </article>

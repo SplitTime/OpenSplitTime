@@ -26,7 +26,7 @@
 <article class="ost-article container">
   <h4>Simulation Info</h4>
   <hr class="my-1">
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>Id</th>
@@ -44,7 +44,7 @@
   <br/>
 
   <h4>Simulation Context</h4>
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>Division Name</th>
@@ -69,7 +69,7 @@
         <td class="text-center"><%= "#{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :male)}% / #{@lottery_simulation_run.single_division_percent(:context, division_name, :pre_selected, :female)}%" %></td>
       </tr>
     <% end %>
-    <tr class="font-weight-bold">
+    <tr class="fw-bold">
       <td>Total</td>
       <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :accepted) %></td>
       <td class="text-center"><%= @lottery_simulation_run.division_sum(:context, :slots, :wait_list) %></td>
@@ -83,7 +83,7 @@
   <br/>
 
   <h4>Results Summary</h4>
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>Division Name</th>
@@ -104,7 +104,7 @@
         <td class="text-center"><%= "#{division_results.dig('wait_list_percent', 'male')}% / #{division_results.dig('wait_list_percent', 'female')}%" %></td>
       </tr>
     <% end %>
-    <tr class="font-weight-bold">
+    <tr class="fw-bold">
       <td>Total</td>
       <td class="text-center"><%= "#{@lottery_simulation_run.division_sum(:stats, :accepted, :male)} / #{@lottery_simulation_run.division_sum(:stats, :accepted, :female)}" %></td>
       <td class="text-center"><%= "#{@lottery_simulation_run.division_percent(:stats, :accepted, :male)}% / #{@lottery_simulation_run.division_percent(:stats, :accepted, :female)}%" %></td>
@@ -117,7 +117,7 @@
 
   <h4>Errors</h4>
   <hr class="my-1">
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>Title</th>

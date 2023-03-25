@@ -1,0 +1,8 @@
+// Removes default underlines from all links in Bootstrap 5
+
+a:not([class*="btn"]) {
+  text-decoration: none;
+}
+a:not([class*="btn"]):hover {
+  text-decoration: underline;
+}

@@ -3,20 +3,19 @@
     <div class="card-header">
       <div class="row">
         <div class="col-12 col-md-8">
-          <h5 class="font-weight-bold">
+          <h5 class="fw-bold">
             Filename: <%= export_job.file.filename.to_s.presence || "[No file]" %>
             <% if export_job.user.exports_viewed_at.nil? || export_job.updated_at > export_job.user.exports_viewed_at %>
               <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
             <% end %>
           </h5>
-          <h6 class="font-size-small text-muted"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
+          <h6 class="fs-6 text-muted"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
         </div>
         <div class="col-12 col-md-4 text-md-right">
           <span class="mx-1">
             <% if export_job.file.attached? %>
               <%= link_to fa_icon("download",
-                                  class: "has-tooltip",
-                                  data: { toggle: "tooltip", "original-title" => "Download" }),
+                                  data: { "bs-toggle": "tooltip", "bs-original-title": "Download" }),
                           rails_blob_path(export_job.file, disposition: "attachment") %>
             <% else %>
               <%= fa_icon("download", class: "text-muted") %>
@@ -24,8 +23,8 @@
           </span>
           <span class="mx-1">
           <%= link_to fa_icon("trash",
-                              class: "text-danger has-tooltip",
-                              data: { toggle: "tooltip", "original-title" => "Delete" }),
+                              class: "text-danger",
+                              data: { "bs-toggle": "tooltip", "bs-original-title": "Delete" }),
                       export_job_path(export_job),
                       method: :delete,
                       data: { confirm: "Delete this export?" } %>
@@ -39,7 +38,7 @@
         <div class="col">
           <h5>Elapsed Time: <%= pretty_duration(export_job.elapsed_time) %></h5>
         </div>
-        <div class="col text-right">
+        <div class="col text-end">
           <h5><%= progress_monitorable_status_component(export_job) %></h5>
         </div>
       </div>

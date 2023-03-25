@@ -5,6 +5,28 @@ Variables
 $font-size-base: (14px / 16px) * 1rem;
 // $font-family-sans-serif: "Gibson-Semibold";
 
+// Theme Color Overrides
+$primary: #3A9DD1;
+$secondary: #6c757d;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #f0ad4e;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #101010;
+
+$theme-colors: (
+    primary: $primary,
+    secondary: $secondary,
+    success: $success,
+    info: $info,
+    warning: $warning,
+    danger: $danger,
+    light: $light,
+    dark: $dark,
+    // add any additional color below
+);
+
 $lightishGray: #F1F1F1;
 $lightGray: #eee;
 $mediumGray: #aaa;
@@ -18,10 +40,6 @@ $white: #FFF;
 // $red: pink;
 $blue: #3A9DD1;
 $orange: #F0AD4E;
-
-// Theme Color Overrides
-$primary: #3A9DD1;
-$dark: #101010;
 
 // Breadcrumb Overrides
 $breadcrumb-bg: transparent;

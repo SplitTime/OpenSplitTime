@@ -235,8 +235,12 @@ class EffortsController < ApplicationController
   end
 
   def mini_table
-    @mini_table = EffortsMiniTable.new(params[:effort_ids])
-    render partial: "efforts_mini_table"
+    if params[:effort_ids].present?
+      @mini_table = EffortsMiniTable.new(params[:effort_ids])
+      render partial: "efforts_mini_table"
+    else
+      render html: "No effort ids provided", status: :unprocessable_entity
+    end
   end
 
   def show_photo

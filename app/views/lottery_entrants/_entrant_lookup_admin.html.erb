@@ -1,4 +1,6 @@
-<%= form_tag setup_organization_lottery_path(@presenter.organization, @presenter.lottery, anchor: "entrant_lookup_input"),
+<%# locals: (presenter:) -%>
+
+<%= form_tag setup_organization_lottery_path(presenter.organization, presenter.lottery, anchor: "entrant_lookup_input"),
              class: "w-100", method: :get do %>
   <div id="entrant_lookup_input" class="input-group">
     <%= text_field_tag "filter[search]",
@@ -6,10 +8,8 @@
                        placeholder: "Find an entrant",
                        autofocus: true,
                        class: "form-control search-box" %>
-    <span class="input-group-append">
-      <%= button_tag(type: :submit, id: "lottery-entrant-admin-lookup-submit", class: "btn btn-primary") do %>
-          <i class="fas fa-search"></i>
-      <% end %>
-    </span>
+    <%= button_tag(type: :submit, id: "lottery-entrant-admin-lookup-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
   </div>
 <% end %>

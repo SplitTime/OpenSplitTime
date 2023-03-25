@@ -31,12 +31,14 @@
         </div>
       </div>
       <% if @presenter.photo.attached? %>
-        <div class="col-3">
+        <div class="col">
           <%= image_tag(@presenter.photo.variant(:small)) %>
         </div>
       <% end %>
       <% if @presenter.participation_notifiable? %>
-        <%= render "subscription_buttons", person: @presenter.person %>
+        <div class="col">
+          <%= render "subscription_buttons", person: @presenter.person %>
+        </div>
       <% end %>
     </div>
   </div>
@@ -45,7 +47,7 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col form-inline justify-content-between">
+      <div class="col d-inline-flex justify-content-between">
         <div>
           <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
             <%= link_to "This is me", avatar_claim_person_path(@presenter.person),

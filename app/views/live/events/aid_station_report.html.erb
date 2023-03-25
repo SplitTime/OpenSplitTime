@@ -37,11 +37,11 @@
   <div class="row">
     <div class="col-6">
       <h4><%= "Event started on #{l(@aid_stations_display.start_time, format: :full_day_military_and_zone)} with #{@aid_stations_display.efforts_started_count} entrants" %></h4>
-      <table class="table table-condensed table-striped">
+      <table class="table table-striped">
         <thead>
         <tr>
           <th>Name</th>
-          <th class="text-right"><%= pdu('singular').titleize %></th>
+          <th class="text-end"><%= pdu('singular').titleize %></th>
           <th class="text-center">Recorded
             <% if @aid_stations_display.multiple_sub_splits? %>
               <br/>In / Out
@@ -57,7 +57,7 @@
         <% @aid_stations_display.aid_station_rows.each do |row| %>
           <tr>
             <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, parameterized_split_name: row.parameterized_split_name) %></td>
-            <td class="text-right"><%= d(row.split.distance_from_start) %></td>
+            <td class="text-end"><%= d(row.split.distance_from_start) %></td>
             <td class="text-center">
               <%= render 'link_to_efforts', row: row, category: :recorded_in %>
               <% if @aid_stations_display.multiple_sub_splits? %>

@@ -1,64 +1,65 @@
-import {Controller} from "@hotwired/stimulus"
-import {isMobileSafari} from "utils";
-
-function safeParse(str) {
-    try {
-        return JSON.parse(str);
-    } catch (e) {
-        return null;
-    }
-}
+import { Controller } from "@hotwired/stimulus"
+import { FetchRequest } from "@rails/request.js"
 
 export default class extends Controller {
-    connect() {
-        let effortIds = safeParse(this.element.dataset.effortIds);
-        let theme = this.element.dataset.theme;
-        let $self = $(this.element);
-        $self.attr('tabindex', $self.attr('tabindex') || '0')
-            .attr('role', 'button')
-            .data('ajax', null)
-            .css('cursor', 'pointer')
-            .popover({
-                'html': true,
-                'trigger': 'focus',
-                'container': 'body'
-            });
-        let popover = $self.data('bs.popover');
-        this.whitelistAdditions(popover.config);
-        $self.on('show.bs.popover', (event) => {
-                if (effortIds) {
-                    var ajax = $self.data('ajax');
-                    if ( !ajax || typeof ajax.status == 'undefined' ) {
-                        $(popover.tip).addClass('efforts-popover');
-                        var data = { effortIds };
-                        $self.data('ajax', $.post('/efforts/mini_table/', data)
-                            .done(function (response) {
-                                popover.config.content = response;
-                                popover.show();
-                            }).always(function () {
-                                $self.data('ajax', null);
-                            })
-                        );
-                        event.preventDefault();
-                    }
-                } else {
-                    $(popover.tip).addClass('static-popover');
-                    if (theme) {
-                        $(popover.tip).addClass(`static-popover-${theme}`);
-                    }
-                }
-            });
-        if ( isMobileSafari() ) {
-            $('body').css('cursor', 'pointer');
-        }
-    }
+  static values = {
+    effortIds: Array,
+    theme: String,
+  }
 
-    whitelistAdditions(popoverConfig) {
-        popoverConfig.whiteList['table'] = [];
-        popoverConfig.whiteList['thead'] = [];
-        popoverConfig.whiteList['tbody'] = [];
-        popoverConfig.whiteList['tr'] = [];
-        popoverConfig.whiteList['td'] = [];
-        popoverConfig.whiteList['th'] = [];
-    }
+  connect() {
+    const theme = this.themeValue
+    const effortIds = this.effortIdsValue
+
+    this.element.style.cursor = "pointer"
+
+    const popover = new bootstrap.Popover(
+      this.element,
+      {
+        fetched: false,
+        html: true,
+      }
+    )
+
+    this.element.addEventListener("inserted.bs.popover", function (event) {
+      if (effortIds.length > 0) {
+        popover.tip.classList.add("efforts-popover");
+
+        const request = new FetchRequest("post", "/efforts/mini_table/", {
+          body: {effortIds: effortIds},
+          contentType: "application/json",
+          responseKind: "html"
+        })
+
+        if (!popover._config.fetched) {
+          popover._config.fetched = true
+
+          request.perform().then(function (response) {
+            if (response.ok) {
+              response.html.then(function (html) {
+                popover.setContent({
+                  ".popover-body": html
+                })
+              })
+            } else {
+              popover.setContent({
+                ".popover-body": "Error loading efforts."
+              })
+            }
+          }, function (error) {
+            popover.setContent({
+              ".popover-body": error
+            })
+          })
+        }
+
+      } else {
+        popover.tip.classList.add("static-popover");
+
+        if (theme) {
+          popover.tip.classList.add(`static-popover-${theme}`);
+        }
+      }
+    })
+  }
 }

@@ -1,34 +1,34 @@
-<table class="table table-condensed table-striped">
+<table class="table table-striped">
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu('singular').titleize %></th>
     <th class="text-center">Segment<br/>
-      <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
+      <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
       /
-      <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+      <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
     <th class="text-center">Segment<br/>
-      <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
+      <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
     <% if view_object.multiple_sub_splits? %>
       <th class="text-center">In Aid<br/>
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
         /
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
       <th class="text-center">In Aid<br/>
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
       <th class="text-center">Combined<br/>
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
         /
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
       <th class="text-center">Combined<br/>
-        <a data-controller="popover" data-placement="bottom" data-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
+        <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
     <% end %>
@@ -38,7 +38,7 @@
   <% view_object.analysis_rows.each do |analysis_row| %>
     <tr>
       <td><%= analysis_row.name %></td>
-      <td class="text-right"><%= d(analysis_row.distance_from_start) %></td>
+      <td class="text-end"><%= d(analysis_row.distance_from_start) %></td>
       <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
       <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under(round_to: 1.minute)) %></td>
       <% if view_object.multiple_sub_splits? %>

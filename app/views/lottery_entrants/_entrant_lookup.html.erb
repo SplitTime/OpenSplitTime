@@ -1,16 +1,16 @@
-<%= form_tag organization_lottery_path(@presenter.organization, @presenter.lottery), class: "w-100", method: :get do %>
+<%# locals: (presenter:) -%>
+
+<%= form_tag organization_lottery_path(presenter.organization, presenter.lottery), class: "w-100", method: :get do %>
   <div class="input-group">
     <%= hidden_field_tag :sort, nil %>
-    <%= hidden_field_tag :display_style, @presenter.display_style %>
+    <%= hidden_field_tag :display_style, presenter.display_style %>
     <%= text_field_tag "filter[search]",
                        prepared_params[:search],
                        placeholder: "Find someone",
                        autofocus: true,
                        class: "form-control search-box" %>
-    <span class="input-group-append">
-      <%= button_tag(type: :submit, id: "lottery-entrant-lookup-submit", class: "btn btn-primary") do %>
-          <i class="fas fa-search"></i>
-      <% end %>
-    </span>
+    <%= button_tag(type: :submit, id: "lottery-entrant-lookup-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
   </div>
 <% end %>

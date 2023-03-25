@@ -19,7 +19,7 @@
           <p><%= l(@presenter.scheduled_start_date, format: :full_with_weekday) %></p>
         </div>
       </div>
-      <aside class="col-auto text-right">
+      <aside class="col-auto text-end">
         <% if current_user&.authorized_for_lotteries?(@presenter.organization) %>
           <%= link_to "Admin", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
         <% end %>
@@ -27,12 +27,16 @@
     </div>
     <% if @presenter.viewable_results? %>
       <% if @presenter.display_style == "draws" %>
-        <div class="mb-4">
-          <%= link_to "Browse Entrants and Results", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants), class: "btn btn-success btn-block font-weight-bold" %>
+        <div class="mb-4 d-grid">
+          <%= link_to "Browse Entrants and Results",
+                      organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants),
+                      class: "btn btn-success fw-bold" %>
         </div>
       <% else %>
-        <div>
-          <%= link_to "View Draws", organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws), class: "btn btn-outline-secondary btn-block text-success font-weight-bold" %>
+        <div class="d-grid">
+          <%= link_to "View Draws",
+                      organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :draws),
+                      class: "btn btn-outline-secondary text-success fw-bold" %>
         </div>
       <% end %>
     <% end %>
@@ -61,14 +65,14 @@
   <% case @presenter.display_style %>
   <% when "entrants" %>
     <h4 class="mt-5">
-      <span class="font-weight-bold"><%= "Lottery Entrants" %></span><span class="px-1 h5 font-weight-light text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></span>
+      <span class="fw-bold"><%= "Lottery Entrants" %></span><span class="px-1 h5 fw-light text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></span>
     </h4>
     <hr/>
     <aside class="ost-toolbar">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-6 form-inline">
-            <%= render "lottery_entrants/entrant_lookup" %>
+          <div class="col-12 col-md-6">
+            <%= render "lottery_entrants/entrant_lookup", presenter: @presenter %>
           </div>
         </div>
       </div>
@@ -95,7 +99,7 @@
     <% end %>
 
   <% when "draws" %>
-    <h4 class="mt-5"><span class="font-weight-bold">Lottery Draws</span><span class="px-1 h5 font-weight-light text-muted">(Most recent at the top)</span></h4>
+    <h4 class="mt-5"><span class="fw-bold">Lottery Draws</span><span class="px-1 h5 fw-light text-muted">(Most recent at the top)</span></h4>
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery.live? %>
@@ -114,13 +118,13 @@
     <% end %>
 
   <% when "results" %>
-    <h4 class="mt-5"><span class="font-weight-bold">Lottery Results</span><span class="px-1 h5 font-weight-light text-muted"><%= " Last updated #{time_ago_in_words(@presenter.lottery.updated_at)} ago" %></span></h4>
+    <h4 class="mt-5"><span class="fw-bold">Lottery Results</span><span class="px-1 h5 fw-light text-muted"><%= " Last updated #{time_ago_in_words(@presenter.lottery.updated_at)} ago" %></span></h4>
     <hr/>
     <% if @presenter.viewable_results? %>
       <% if @presenter.lottery_draws.exists? %>
         <% @presenter.ordered_divisions.each do |division| %>
           <div class="card">
-            <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
+            <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
             <div class="card-body">
               <h5>Accepted</h5>
               <% if division.accepted_entrants.present? %>
@@ -161,7 +165,7 @@
     <% if @presenter.viewable_results? %>
       <% @presenter.stats.each do |division_name, division_stats| %>
         <div class="card">
-          <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division_name}" %></h4>
+          <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division_name}" %></h4>
           <div class="card-body">
             <%= column_chart @presenter.stats_chart_data(division_stats),
                              stacked: true,
@@ -171,9 +175,9 @@
 
             <hr/>
 
-            <table class="table table-condensed table-striped" style="width:80%">
+            <table class="table table-striped" style="width:80%">
               <thead>
-              <tr class="font-weight-bold">
+              <tr class="fw-bold">
                 <th></th>
                 <th class="text-center">Entrants</th>
                 <th class="text-center">Accepted</th>
@@ -187,12 +191,12 @@
               <tbody>
               <% division_stats.each do |division_stat| %>
                 <tr>
-                  <td class="font-weight-bold"><%= pluralize(division_stat.number_of_tickets, "Ticket") %></td>
-                  <td class="text-center border-right"><%= division_stat.entrants_count %></td>
+                  <td class="fw-bold"><%= pluralize(division_stat.number_of_tickets, "Ticket") %></td>
+                  <td class="text-center border-end"><%= division_stat.entrants_count %></td>
                   <td class="text-center"><%= division_stat.accepted_entrants_count %></td>
-                  <td class="text-center border-right"><%= (division_stat.accepted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+                  <td class="text-center border-end"><%= (division_stat.accepted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
                   <td class="text-center"><%= division_stat.waitlisted_entrants_count %></td>
-                  <td class="text-center border-right"><%= (division_stat.waitlisted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+                  <td class="text-center border-end"><%= (division_stat.waitlisted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
                   <td class="text-center"><%= division_stat.undrawn_entrants_count %></td>
                   <td class="text-center"><%= (division_stat.undrawn_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
                 </tr>

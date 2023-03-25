@@ -1,5 +1,5 @@
 <div>
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th>
@@ -12,7 +12,7 @@
       <% unless @presenter.segment_ends_at_finish? %>
         <th class="text-center">Finished?</th>
       <% end %>
-      <th class="text-right"><%= @presenter.time_header_text %></th>
+      <th class="text-end"><%= @presenter.time_header_text %></th>
     </tr>
     </thead>
     <tbody id="best_effort_segments">

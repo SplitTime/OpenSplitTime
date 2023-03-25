@@ -1,14 +1,12 @@
-<%= form_tag users_path, class: 'w-100', method: :get do %>
+<%= form_tag users_path, class: "w-100", method: :get do %>
   <div class="input-group">
-    <%= text_field_tag 'filter[search]',
+    <%= text_field_tag "filter[search]",
                        params[:filter] && params[:filter][:search],
-                       placeholder: 'First name, last name, or email',
+                       placeholder: "First name, last name, or email",
                        autofocus: true,
-                       class: 'form-control search-box' %>
-    <span class="input-group-append">
-      <%= button_tag(type: :submit, id: 'user-lookup-submit', class: 'btn btn-primary') do %>
-          <i class='fas fa-search'></i>
-      <% end %>
-    </span>
+                       class: "form-control search-box" %>
+    <%= button_tag(type: :submit, id: "user-lookup-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
   </div>
 <% end %>

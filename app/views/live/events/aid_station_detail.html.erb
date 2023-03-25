@@ -32,7 +32,7 @@
     <div class="row">
       <%= render 'event_groups/event_widget', events: @aid_station_detail.ordered_events_within_group, current_event: @aid_station_detail.event %>
       <!-- Navigation Widget -->
-      <div class="col form-inline">
+      <div class="col">
         <div class="btn-group btn-group-ost pull-right">
           <%= prior_next_nav_button(@aid_station_detail, :prior) %>
           <%= split_name_dropdown(@aid_station_detail) %>
@@ -40,9 +40,9 @@
         </div>
       </div>
       <!-- Filter Widget -->
-      <div class="col-auto form-inline">
+      <div class="col-auto">
         <div class="btn-group btn-group-ost pull-right">
-          <div class="btn btn-outline-secondary" disabled><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
+          <div class="btn btn-outline-secondary disabled"><%= "Of #{@aid_station_detail.efforts_started_count}" %></div>
           <%= render 'aid_station_detail_button_cluster' %>
         </div>
       </div>

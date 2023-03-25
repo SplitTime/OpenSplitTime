@@ -36,7 +36,7 @@
   <% if @presenter.lottery_draws.present? %>
     <% @presenter.ordered_divisions.each do |division| %>
       <div class="card">
-        <h4 class="card-header font-weight-bold bg-primary text-white"><%= "#{division.name}" %></h4>
+        <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
         <div class="card-body">
           <h5>Accepted</h5>
           <%= render partial: "withdraw_entrants_table", locals: { entrants: division.accepted_entrants } %>

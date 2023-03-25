@@ -35,91 +35,89 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col form-inline">
-        <div>
-          <div class="btn-group">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-toggle="dropdown" aria-expanded="false">
-              Lottery
-            </button>
-            <div class="dropdown-menu">
-              <%= link_to "Make public",
-                          organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: {concealed: false}),
+      <div>
+        <div class="btn-group">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+            Lottery
+          </button>
+          <div class="dropdown-menu">
+            <%= link_to "Make public",
+                        organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: false }),
+                        method: :put,
+                        disabled: @presenter.lottery.visible?,
+                        class: "dropdown-item" %>
+            <%= link_to "Make private",
+                        organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: true }),
+                        method: :put,
+                        disabled: @presenter.lottery.concealed?,
+                        class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <% ::Lottery.statuses.keys.each do |status| %>
+              <%= link_to "Set to #{status.titleize}",
+                          organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { status: status }),
                           method: :put,
-                          disabled: @presenter.lottery.visible?,
+                          disabled: @presenter.lottery.send("#{status}?"),
                           class: "dropdown-item" %>
-              <%= link_to "Make private",
-                          organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: {concealed: true}),
-                          method: :put,
-                          disabled: @presenter.lottery.concealed?,
-                          class: "dropdown-item" %>
-              <div class="dropdown-divider"></div>
-              <% ::Lottery.statuses.keys.each do |status| %>
-                <%= link_to "Set to #{status.titleize}",
-                            organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: {status: status}),
-                            method: :put,
-                            disabled: @presenter.lottery.send("#{status}?"),
-                            class: "dropdown-item" %>
-              <% end %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Run simulations",
-                          new_organization_lottery_lottery_simulation_run_path(@presenter.organization, @presenter.lottery),
-                          class: "dropdown-item " %>
-              <%= link_to "View simulations",
-                          organization_lottery_lottery_simulation_runs_path(@presenter.organization, @presenter.lottery),
-                          class: "dropdown-item " %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Export results",
-                          export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :results),
-                          class: "dropdown-item" %>
-              <%= link_to "Export to ultrasignup",
-                          export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
-                          class: "dropdown-item" %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Edit lottery details", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "dropdown-item" %>
-            </div>
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Run simulations",
+                        new_organization_lottery_lottery_simulation_run_path(@presenter.organization, @presenter.lottery),
+                        class: "dropdown-item " %>
+            <%= link_to "View simulations",
+                        organization_lottery_lottery_simulation_runs_path(@presenter.organization, @presenter.lottery),
+                        class: "dropdown-item " %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Export results",
+                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :results),
+                        class: "dropdown-item" %>
+            <%= link_to "Export to ultrasignup",
+                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
+                        class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Edit lottery details", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "dropdown-item" %>
           </div>
-          <div class="btn-group">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-toggle="dropdown" aria-expanded="false">
-              Entrants
-            </button>
-            <div class="dropdown-menu">
-              <%= link_to "Import entrants",
-                          new_import_job_path(import_job: {parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants}),
-                          class: "dropdown-item" %>
-              <%= link_to "Generate entrants",
-                          generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                          method: :post,
-                          data: {confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?"},
-                          class: "dropdown-item" %>
-              <div class="dropdown-divider"></div>
-              <%= link_to "Download template", export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, params: {filter: {id: 0}}), format: :csv, class: "dropdown-item" %>
-              <div class="dropdown-divider"></div>
-              <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-lottery-#{@presenter.lottery.id}", class: "dropdown-item text-danger") %>
-            </div>
-          </div>
-          <%= strong_confirm_modal(path_on_confirm: delete_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                                   message: "This action will permanently delete all entrants, tickets, and draws from the #{@presenter.name} lottery.",
-                                   required_pattern: "DELETE ALL ENTRANTS",
-                                   strong_confirm_id: "strong-confirm-entrants-lottery-#{@presenter.lottery.id}") %>
-
-          <% if @presenter.lottery_tickets.exists? %>
-            <%= link_with_strong_confirm("Delete tickets", delete_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                                         class: "btn btn-outline-secondary text-danger",
-                                         message: "This action will permanently delete all tickets and draws from the #{@presenter.name} lottery.",
-                                         required_pattern: "DELETE TICKETS",
-                                         strong_confirm_id: "strong-confirm-tickets-lottery-#{@presenter.lottery.id}") %>
-          <% else %>
-            <%= link_to "Generate tickets", generate_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                        method: :post,
-                        class: "btn btn-danger" %>
-          <% end %>
-          <%= link_with_strong_confirm("Delete draws", delete_draws_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                                       class: "btn btn-outline-secondary text-danger",
-                                       disabled: @presenter.lottery_draws.empty?,
-                                       message: "This action will permanently delete all draws from the #{@presenter.name} lottery.",
-                                       required_pattern: "DELETE DRAWS",
-                                       strong_confirm_id: "strong-confirm-draws-lottery-#{@presenter.lottery.id}") %>
         </div>
+        <div class="btn-group">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+            Entrants
+          </button>
+          <div class="dropdown-menu">
+            <%= link_to "Import entrants",
+                        new_import_job_path(import_job: { parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants }),
+                        class: "dropdown-item" %>
+            <%= link_to "Generate entrants",
+                        generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                        method: :post,
+                        data: { confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?" },
+                        class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Download template", export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, params: { filter: { id: 0 } }), format: :csv, class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-lottery-#{@presenter.lottery.id}", class: "dropdown-item text-danger") %>
+          </div>
+        </div>
+        <%= strong_confirm_modal(path_on_confirm: delete_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                                 message: "This action will permanently delete all entrants, tickets, and draws from the #{@presenter.name} lottery.",
+                                 required_pattern: "DELETE ALL ENTRANTS",
+                                 strong_confirm_id: "strong-confirm-entrants-lottery-#{@presenter.lottery.id}") %>
+
+        <% if @presenter.lottery_tickets.exists? %>
+          <%= link_with_strong_confirm("Delete tickets", delete_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                                       class: "btn btn-outline-secondary text-danger",
+                                       message: "This action will permanently delete all tickets and draws from the #{@presenter.name} lottery.",
+                                       required_pattern: "DELETE TICKETS",
+                                       strong_confirm_id: "strong-confirm-tickets-lottery-#{@presenter.lottery.id}") %>
+        <% else %>
+          <%= link_to "Generate tickets", generate_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                      method: :post,
+                      class: "btn btn-danger" %>
+        <% end %>
+        <%= link_with_strong_confirm("Delete draws", delete_draws_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                                     class: "btn btn-outline-secondary text-danger",
+                                     disabled: @presenter.lottery_draws.empty?,
+                                     message: "This action will permanently delete all draws from the #{@presenter.name} lottery.",
+                                     required_pattern: "DELETE DRAWS",
+                                     strong_confirm_id: "strong-confirm-draws-lottery-#{@presenter.lottery.id}") %>
       </div>
     </div>
   </div>
@@ -150,7 +148,7 @@
         </thead>
         <tbody>
         <%= render partial: "lottery_divisions/lottery_division", collection: @presenter.ordered_divisions, as: :division %>
-        <tr class="font-weight-bold bg-light">
+        <tr class="fw-bold bg-light">
           <td>Totals</td>
           <td class="text-center"><%= @presenter.ordered_divisions.sum(&:maximum_entries) %></td>
           <td class="text-center"><%= @presenter.ordered_divisions.sum(&:maximum_wait_list) %></td>
@@ -181,33 +179,33 @@
       </div>
     </div>
     <div class="card-body table-responsive">
-      <aside class="ost-toolbar">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-md-6 form-inline">
-              <%= render "lottery_entrants/entrant_lookup_admin" %>
-            </div>
+      <aside class="container ost-toolbar">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <%= render "lottery_entrants/entrant_lookup_admin", presenter: @presenter %>
           </div>
         </div>
       </aside>
 
-      <% if @presenter.lottery_entrants_default_none.present? %>
-        <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
-      <% else %>
-        <div class="card bg-light mt-2">
-          <div class="card-body">
-            <h6 class="font-weight-bold">
-              <% if @presenter.params[:search].blank? %>
-                Find someone by entering a name, state, or country
-              <% elsif @presenter.params[:search].length < 3 %>
-                Search parameter is too short
-              <% else %>
-                No entrants match this search
-              <% end %>
-            </h6>
+      <div class="container">
+        <% if @presenter.lottery_entrants_default_none.present? %>
+          <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
+        <% else %>
+          <div class="card bg-light mt-2">
+            <div class="card-body">
+              <h6 class="fw-bold">
+                <% if @presenter.params[:search].blank? %>
+                  Find someone by entering a name, state, or country
+                <% elsif @presenter.params[:search].length < 3 %>
+                  Search parameter is too short
+                <% else %>
+                  No entrants match this search
+                <% end %>
+              </h6>
+            </div>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
       <hr/>
       <div>
         <%= link_to fa_icon("plus", text: "Add"),
@@ -229,9 +227,9 @@
           <h2><strong>Pre-Selected Entrants</strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.pre_selected.count, 'entrant')}" %></small>
           </h2>
         </div>
-        <div class="col-4 col-md-2 text-right">
+        <div class="col-4 col-md-2 text-end d-grid">
           <%= button_tag nil,
-                         class: "btn btn-block d-none",
+                         class: "btn d-none",
                          "data-action": "visibility#toggleElement",
                          "data-visibility-target": "button" %>
         </div>

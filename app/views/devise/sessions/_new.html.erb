@@ -3,9 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title"><strong><%= t("devise.sessions.new.sign_in").titleize %></strong></h3>
-        <button type="button" class="close" data-dismiss="modal" tabindex="-1">
-          <span>&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" tabindex="-1"></button>
       </div>
       <div class="modal-body">
         <div class="row justify-content-center" style="display:none" data-login-target="error">
@@ -15,21 +13,21 @@
             </div>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col col-login">
+        <div class="row">
+          <div class="col px-4">
             <%= button_to(user_facebook_omniauth_authorize_path,
                           method: :post,
                           id: "facebook-log-in-button",
-                          form: {data: {turbo: false}},
-                          class: "btn btn-facebook btn-block") do %>
+                          form: { class: "d-grid", data: { turbo: false } },
+                          class: "btn btn-lg btn-facebook") do %>
               <%= fab_icon("facebook-square", text: " Log in with Facebook") %>
             <% end %>
             <br/>
             <%= button_to(user_google_oauth2_omniauth_authorize_path,
                           method: :post,
                           id: "google-log-in-button",
-                          form: {data: {turbo: false}},
-                          class: "btn btn-google btn-block") do %>
+                          form: { class: "d-grid", data: { turbo: false } },
+                          class: "btn btn-lg btn-google") do %>
               <%= fab_icon("google", text: " Log in with Google") %>
             <% end %>
             <hr class="hr-text" data-content="or">

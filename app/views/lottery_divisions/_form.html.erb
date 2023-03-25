@@ -1,38 +1,33 @@
-<%= render 'shared/errors', obj: @lottery_division %>
+<%= render "shared/errors", obj: @lottery_division %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= form_with(model: [@lottery_division.organization, @lottery_division.lottery, @lottery_division], local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <%= f.label :name %>
+<div class="row justify-content-center">
+  <div class="col-md-11">
+    <%= form_with(model: [@lottery_division.organization, @lottery_division.lottery, @lottery_division],
+                  local: true,
+                  html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <%= f.label :name, class: "mb-1 required" %>
           <%= f.text_field :name, class: "form-control", placeholder: "My New Division", autofocus: true %>
         </div>
 
-        <div class="form-group col-md-3">
-          <%= f.label "Winner slots" %>
+        <div class="mb-3 col-md-3">
+          <%= f.label "Winner slots", class: "mb-1 required" %>
           <%= f.text_field :maximum_entries, class: "form-control", placeholder: "# of winner slots" %>
         </div>
 
-        <div class="form-group col-md-3">
-          <%= f.label "Wait list slots" %>
+        <div class="mb-3 col-md-3">
+          <%= f.label "Wait list slots", class: "mb-1 required" %>
           <%= f.text_field :maximum_wait_list, class: "form-control", placeholder: "# of wait list slots" %>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@lottery_division.new_record? ? "Create Division" : "Update Division", class: "btn btn-primary") %>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <span class="brackets"><%= link_to "Cancel", setup_organization_lottery_path(@lottery_division.organization, @lottery_division.lottery) %></span>
-          </div>
+      <div class="row mb-3">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit(@lottery_division.new_record? ? "Create Division" : "Update Division", class: "btn btn-primary") %>
+          <%= link_to "Cancel",
+                      setup_organization_lottery_path(@lottery_division.organization, @lottery_division.lottery),
+                      class: "btn btn-outline-secondary" %>
         </div>
       </div>
     <% end %>

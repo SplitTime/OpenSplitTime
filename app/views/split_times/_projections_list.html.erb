@@ -1,8 +1,8 @@
-<table class="table table-condensed table-striped">
+<table class="table table-striped">
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-right"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu('singular').titleize %></th>
     <th class="text-center" colspan="3">Completed Time of Day</th>
   </tr>
   </thead>
@@ -11,7 +11,7 @@
   <% @presenter.actual_lap_split_rows.each do |row| %>
     <tr>
       <td><%= strong_conditional row.name, row.done? %></td>
-      <td class="text-right"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
+      <td class="text-end"><%= strong_conditional d(row.distance_from_start), row.done? %></td>
       <td></td>
       <td class="text-center"><%= strong_conditional time_cluster_display_data(row.time_cluster, :ampm_with_seconds, with_status: true), row.done? %></td>
       <td></td>
@@ -29,9 +29,9 @@
                             "from #{'year'.pluralize(@presenter.effort_years.size)} " +
                             "#{@presenter.effort_years.to_sentence}" %></th>
     </tr>
-    <tr class="thead-dark">
+    <tr class="table-dark">
       <th>Split</th>
-      <th class="text-right"><%= pdu('singular').titleize %></th>
+      <th class="text-end"><%= pdu('singular').titleize %></th>
       <th class="text-center">Projected Early</th>
       <th class="text-center">Projected Average</th>
       <th class="text-center">Projected Late</th>
@@ -48,12 +48,14 @@
           <% if row.not_in_event %>
           <span class="text-danger">
             <%= fa_icon("exclamation-circle",
-                        class: "has-tooltip",
-                        data: {toggle: "tooltip", "original-title" => "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."}) %>
+                        data: {
+                          "bs-toggle": "tooltip",
+                          "bs-original-title": "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."
+                        }) %>
           </span>
           <% end %>
         </td>
-        <td class="text-right">
+        <td class="text-end">
         <span class="<%= 'brackets' if row.not_in_event %>">
           <%= strong_conditional d(row.distance_from_start), row.done? %>
         </span>

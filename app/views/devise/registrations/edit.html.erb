@@ -14,68 +14,58 @@
 
 <article class="ost-article container">
   <div class="row justify-content-center">
-    <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put, data: {turbo: false}}) do |f| %>
+    <div class="col">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, data: { turbo: false } }) do |f| %>
         <%= bootstrap_devise_error_messages! %>
 
-        <div class="form-row required">
-          <div class="col-md-6 mb-3">
-            <%= f.label :first_name, "First name" %>
-            <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
-          </div>
-          <div class="col-md-6 mb-3">
-            <%= f.label :last_name, "Last name" %>
-            <%= f.text_field :last_name, class: "form-control" %>
-          </div>
+        <div class="form-floating mb-3">
+          <%= f.text_field :first_name, autofocus: true, class: "form-control" %>
+          <%= f.label :first_name, "First name", class: "required" %>
         </div>
 
-        <div class="form-row required">
-          <div class="col-md-12 mb-3">
-            <%= f.label :email %>
-            <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
-          </div>
+        <div class="form-floating mb-3">
+          <%= f.text_field :last_name, class: "form-control" %>
+          <%= f.label :last_name, "Last name", class: "required" %>
         </div>
 
-        <div class="form-row">
-          <div class="col-md-12 mb-3">
-            <%= f.label :new_password %>
-            <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-
-            <small class="form-text text-muted"><%= t(".leave_blank_if_you_don_t_want_to_change_it") %></small>
-          </div>
+        <div class="form-floating mb-3">
+          <%= f.email_field :email, autocomplete: "email", class: "form-control" %>
+          <%= f.label :email, class: "required" %>
         </div>
 
-        <div class="form-row">
-          <div class="col-md-12 mb-3">
-            <%= f.label :new_password_confirmation %>
-            <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-
-            <small class="form-text text-muted"><%= t(".leave_blank_if_you_don_t_want_to_change_it") %></small>
-          </div>
+        <div class="form-floating mb-3">
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+          <%= f.label :new_password %>
+          <small class="form-text text-muted"><%= t(".leave_blank_if_you_don_t_want_to_change_it") %></small>
         </div>
 
-        <div class="form-row required">
-          <div class="col-md-12 mb-3">
-            <%= f.label :current_password %>
-            <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+        <div class="form-floating mb-3">
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+          <%= f.label :new_password_confirmation %>
+          <small class="form-text text-muted"><%= t(".leave_blank_if_you_don_t_want_to_change_it") %></small>
+        </div>
 
-            <small class="form-text text-muted"><%= t(".we_need_your_current_password_to_confirm_your_changes") %></small>
-          </div>
+        <div class="form-floating mb-3">
+          <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+          <%= f.label :current_password, class: "required" %>
+          <small class="form-text text-muted"><%= t(".we_need_your_current_password_to_confirm_your_changes") %></small>
         </div>
         <hr/>
 
-        <div class="form-row">
-          <div class="col-4">
+        <div class="row">
+          <div class="col">
             <%= f.submit t(".update"), class: "btn btn-primary" %>
-          </div>
-          <div class="col-4">
             <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
           </div>
         </div>
       <% end %>
       <hr/>
 
-      <p><%= link_to t(".cancel_my_account"), registration_path(resource_name), data: {confirm: t(".are_you_sure")}, method: :delete, class: "text-danger" %></p>
+      <p><%= link_to t(".cancel_my_account"),
+                     registration_path(resource_name),
+                     data: { confirm: t(".are_you_sure") },
+                     method: :delete,
+                     class: "btn btn-outline-danger" %></p>
     </div>
   </div>
 </article>

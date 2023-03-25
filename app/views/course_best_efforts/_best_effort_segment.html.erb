@@ -11,5 +11,5 @@
   <% unless best_effort_segment.ends_at_finish? %>
     <td class="text-center"><%= humanize_boolean(best_effort_segment.finished?) %></td>
   <% end %>
-  <td class="text-right"><%= best_effort_segment.elapsed_time %></td>
+  <td class="text-end"><%= best_effort_segment.elapsed_time %></td>
 </tr>

@@ -55,7 +55,7 @@
     .form-fields {
       margin-bottom: 10px;
     }
-    .form-group {
+    .input-group {
       padding: 0 5px;
     }
     input[id="user_email"],
@@ -156,10 +156,20 @@
         min-height: 800px;
       }
     }
+    &.third {
+      @media only screen and (min-width: 768px ) {
+        min-height: 1000px;
+      }
+    }
     &.second,
     &.fourth {
       background-color: #336633;
       min-height: 500px;
+    }
+    &.fifth {
+      @media only screen and (min-width: 768px ) {
+        min-height: 1000px;
+      }
     }
     &.sixth {
       background-color: #101010;

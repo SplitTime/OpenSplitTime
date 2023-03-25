@@ -134,12 +134,8 @@ Globals
     .time-status {
         font-size: 16px;
         text-align: center;
-    }
 
-    $status-list: good bad questionable exists;
-
-    .time-status {
-        .input-group-text {
+        &.input-group-text {
             width: 4em;
             align-items: center;
             justify-content: center;
@@ -152,6 +148,8 @@ Globals
             display: inline-block;
         }
     }
+
+    $status-list: good bad questionable exists;
 
     @each $status in $status-list {
         input.#{$status} ~ .time-status {
@@ -229,7 +227,7 @@ Globals
     }
 
     .splits-slider-data {
-        [data-toggle="modal"] {
+        [data-bs-toggle="modal"] {
             cursor: pointer;
         }
 

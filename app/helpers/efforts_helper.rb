@@ -48,20 +48,20 @@ module EffortsHelper
     tooltip = "Delete effort"
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Continue?",
-                      toggle: :tooltip,
+                      "bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
-               class: "btn btn-danger has-tooltip"}
+                      "bs-original-title": tooltip},
+               class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
 
   def link_to_effort_edit(effort)
     url = edit_effort_path(effort)
     tooltip = "Edit effort"
-    options = {data: {toggle: :tooltip,
+    options = {data: {"bs-toggle": :tooltip,
                       placement: :bottom,
-                      "original-title" => tooltip},
-               class: "btn btn-primary has-tooltip"}
+                      "bs-original-title": tooltip},
+               class: "btn btn-primary"}
     link_to fa_icon("pencil-alt"), url, options
   end
 

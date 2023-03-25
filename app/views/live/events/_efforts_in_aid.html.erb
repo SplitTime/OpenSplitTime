@@ -2,7 +2,7 @@
     <h4><%= "No efforts are in aid at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
 <% else %>
     <h4><%= "#{pluralize(@aid_station_detail.effort_data.size, 'effort')} in aid at #{@aid_station_detail.split_name} as of #{day_time_current_military_full(@aid_station_detail.home_time_zone)}" %></h4>
-    <table class="table table-condensed table-striped">
+    <table class="table table-striped">
       <thead>
       <tr>
         <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>

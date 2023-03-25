@@ -1,4 +1,4 @@
-<table class="table table-condensed table-striped">
+<table class="table table-striped">
   <thead>
   <tr>
     <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
@@ -9,7 +9,7 @@
     <th>Category</th>
     <th>From</th>
     <th><%= link_to_reversing_sort_heading('Dropped where', :final_distance, @presenter.existing_sort) %></th>
-    <th class="text-right"><%= link_to_reversing_sort_heading('Dropped when', :final_elapsed_seconds, @presenter.existing_sort) %></th>
+    <th class="text-end"><%= link_to_reversing_sort_heading('Dropped when', :final_elapsed_seconds, @presenter.existing_sort) %></th>
   </tr>
   </thead>
 
@@ -23,7 +23,7 @@
     <td><%= effort.bio_historic %></td>
     <td><%= effort.flexible_geolocation %></td>
     <td><%= effort.final_split_name %></td>
-    <td class="text-right"><%= day_time_format(effort.final_day_and_time) %></td>
+    <td class="text-end"><%= day_time_format(effort.final_day_and_time) %></td>
     </tr>
   <% end %>
   </tbody>

@@ -4,7 +4,7 @@
                 data: { turbo: false }) do |f| %>
     <div class="row">
       <div class="col-12 col-md-7">
-        <%= f.label :actual, class: "font-weight-bold" %>
+        <%= f.label :actual, class: "fw-bold" %>
         <%= f.text_field :actual_start_time,
                          value: actual_start_time.present? ? l(actual_start_time.in_time_zone(@event_group.home_time_zone), format: :datetime_input) : nil,
                          class: "form-control",

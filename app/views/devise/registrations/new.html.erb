@@ -15,19 +15,19 @@
 </header>
 
 <article class="ost-article container">
-  <div class="row justify-content-center">
-    <div class="col col-login">
+  <div class="row">
+    <div class="col col-md-6 px-4 mx-auto justify-content-center">
       <%= button_to(user_facebook_omniauth_authorize_path,
                     method: :post,
-                    form: {data: {turbo: false}},
-                    class: "btn btn-facebook btn-block") do %>
+                    form: { class: "d-grid", data: { turbo: false } },
+                    class: "btn btn-lg btn-facebook") do %>
         <%= fab_icon("facebook-square", text: " Sign up with Facebook") %>
       <% end %>
       <br/>
       <%= button_to(user_google_oauth2_omniauth_authorize_path,
                     method: :post,
-                    form: {data: {turbo: false}},
-                    class: "btn btn-google btn-block") do %>
+                    form: { class: "d-grid", data: { turbo: false } },
+                    class: "btn btn-lg btn-google") do %>
         <%= fab_icon("google", text: " Sign up with Google") %>
       <% end %>
       <hr class="hr-text" data-content="or">

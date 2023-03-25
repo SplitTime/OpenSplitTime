@@ -4,10 +4,10 @@
   <div class="card-body">
     <div class="row">
       <div class="col">
-        <h5 class="font-weight-bold"><%= link_to record.name, organization_path(record) %></h5>
+        <h5 class="fw-bold"><%= link_to record.name, organization_path(record) %></h5>
       </div>
       <div class="col">
-        <h6 class="text-right"><%= pluralize(record.event_count, "event") %></h6>
+        <h6 class="text-end"><%= pluralize(record.event_count, "event") %></h6>
       </div>
     </div>
   </div>

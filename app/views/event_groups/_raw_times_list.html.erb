@@ -7,15 +7,15 @@
         <%= link_to "Delete Duplicates", delete_duplicate_raw_times_event_group_path(view_object.event_group), method: :delete, class: "btn btn-md btn-warning" %>
       </div>
       <!-- Filter Widget -->
-      <div class="col form-inline">
+      <div class="col">
         <div>
           <%= raw_time_filter_dropdown %>
           <%= split_name_filter_dropdown(view_object) %>
         </div>
       </div>
       <!-- Search Widget -->
-      <div class="col-auto form-inline">
-        <%= render "raw_times_search" %>
+      <div class="col-auto">
+        <%= render "raw_times_search", presenter: @presenter %>
       </div>
     </div>
   </div>
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <table class="table table-condensed table-striped">
+  <table class="table table-striped">
     <thead>
     <tr>
       <th><%= link_to_reversing_sort_heading("Bib", :sortable_bib_number, view_object.existing_sort) %></th>
@@ -79,7 +79,7 @@
                  }
       %>
     <% else %>
-      <tr class="font-weight-bold">
+      <tr class="fw-bold">
         <td colspan="100">No results match that search.</td>
       </tr>
     <% end %>

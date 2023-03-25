@@ -6,7 +6,7 @@
                   local: true,
                   html: { class: "form-horizontal", role: "form" }) do |f| %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :name %>
         </div>
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="form-group required">
+      <div class="mb-3 required">
         <div class="control-label col-sm-2">
           <%= f.label :podium_template %>
         </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <%= f.label :scoring_method %>
         </div>
@@ -43,14 +43,14 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="control-label col-sm-2">
           <strong>Events in Series</strong>
         </div>
       </div>
 
       <% @event_series.organization.event_groups.flat_map(&:events).sort_by(&:scheduled_start_time).each do |event| %>
-        <div class="form-group">
+        <div class="mb-3">
           <div class="col-sm-8">
             <%= f.check_box "event_ids[#{event.id}]", checked: @event_series.events.include?(event) %>
             <%= f.label :events, event.name %>
@@ -58,7 +58,7 @@
         </div>
       <% end %>
 
-      <div class="form-group">
+      <div class="mb-3">
         <div class="col">
           <%= f.submit(@event_series.new_record? ? "Create Event Series" : "Update Event Series", class: "btn btn-primary btn-large") %>
         </div>

@@ -35,7 +35,7 @@ export default class extends Controller {
     displayNewCount(unreviewedCount, unmatchedCount) {
         const countBadge = document.getElementById("js-pull-times-count");
         const forceCountBadge = document.getElementById("js-force-pull-times-count");
-        const unreviewedClass = (unreviewedCount > 0) ? "badge badge-danger" : "badge";
+        const unreviewedClass = (unreviewedCount > 0) ? "badge bg-danger" : "badge";
         const unreviewedText = (unreviewedCount > 0) ? unreviewedCount : "";
         const unmatchedText = (unmatchedCount > 0) ? unmatchedCount : "";
         countBadge.className = unreviewedClass

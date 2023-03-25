@@ -758,7 +758,7 @@
                     }
                 } );
                 eventStage.dataTables.onDataChange.call( this );
-                $( this.$el ).on( 'mouseover', '[data-toggle="tooltip"]', function() {
+                $( this.$el ).on( 'mouseover', '[data-bs-toggle="tooltip"]', function() {
                     $( this ).tooltip( 'show' );
                 } );
             },
@@ -1207,9 +1207,7 @@
                         <div class="col-12">\
                             <div class="input-group" :id="\'datetimepicker-\'+_uid" data-target-input="nearest">\
                                 <input type="text" :id="id" class="js-input form-control datetimepicker-input" :data-target="\'#datetimepicker-\'+_uid"/>\
-                                <span class="input-group-append" :data-target="\'#datetimepicker-\'+_uid" data-toggle="datetimepicker">\
-                                    <span class="input-group-text fas fa-calendar-alt"></span>\
-                                </span>\
+                                <span class="input-group-text fas fa-calendar-alt" :data-target="\'#datetimepicker-\'+_uid" data-bs-toggle="datetimepicker"/>\
                             </div>\
                         </div>\
                     </div>',
@@ -1250,9 +1248,7 @@
                 Vue.component( 'input-date', {
                     template: '<div class="input-group" :id="\'datepicker-\'+_uid" data-target-input="nearest">\
                                 <input type="text" :id="id" class="js-input form-control datetimepicker-input" :data-target="\'#datepicker-\'+_uid"/>\
-                                <span class="input-group-append" :data-target="\'#datepicker-\'+_uid" data-toggle="datetimepicker">\
-                                    <span class="input-group-text fas fa-calendar-alt"></span>\
-                                </span>\
+                                <span class="input-group-text fas fa-calendar-alt" :data-target="\'#datepicker-\'+_uid" data-bs-toggle="datetimepicker"/>\
                             </div>',
                     props: {
                         value: { required: true, default: null },

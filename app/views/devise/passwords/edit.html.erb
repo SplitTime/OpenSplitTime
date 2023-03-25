@@ -15,19 +15,19 @@
         <%= bootstrap_devise_error_messages! %>
         <%= f.hidden_field :reset_password_token %>
 
-        <div class="form-group">
-          <%= f.label :password, t('.new_password') %>
+        <div class="form-floating mb-3">
           <%= f.password_field :password, autofocus: true, class: 'form-control' %>
+          <%= f.label :password, t('.new_password') %>
 
           <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length') %></small>
         </div>
 
-        <div class="form-group">
-          <%= f.label :password_confirmation, t('.confirm_new_password') %>
+        <div class="form-floating mb-3">
           <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control' %>
+          <%= f.label :password_confirmation, t('.confirm_new_password') %>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
           <%= f.submit t('.change_my_password'), class: 'btn btn-primary' %>
         </div>
       <% end %>

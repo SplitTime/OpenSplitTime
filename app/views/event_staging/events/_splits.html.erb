@@ -3,7 +3,7 @@
     <aside class="col-12">
       <h3>
         <strong>Create Splits For Your Event</strong>
-        <span class="help-tooltip pull-right" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="From this screen you can create new Splits, delete unused Splits, and associate or disassociate Course Splits with your Event."><i class="fas fa-question-circle"></i></span>
+        <span class="help-tooltip pull-right" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="From this screen you can create new Splits, delete unused Splits, and associate or disassociate Course Splits with your Event."><i class="fas fa-question-circle"></i></span>
       </h3>
       <p>Start and Finish splits have been created for you. Edit them to add location and elevation data. Add
         intermediate splits at points where intermediate times will be recorded.</p>
@@ -19,16 +19,14 @@
         <div class="col-12 col-md-7">
           <h5>
             <strong>Your Splits:</strong>
-            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Splits having latitude and longitude will appear on this map. Click in the table below to add or edit Splits."><i class="fas fa-question-circle"></i></span>
+            <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Splits having latitude and longitude will appear on this map. Click in the table below to add or edit Splits."><i class="fas fa-question-circle"></i></span>
           </h5>
         </div>
         <div class="col-12 col-md-5">
-          <div class="form-group">
+          <div class="mb-3">
             <span class="input-group">
-              <input type="text" class="form-control border-right-0" v-model="filter" placeholder="Filter:"/>
-              <span class="input-group-append">
-                <a href="#" class="btn btn-input-group border-left-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
-              </span>
+              <input type="text" class="form-control border-end-0" v-model="filter" placeholder="Filter:"/>
+              <a href="#" class="btn btn-input-group input-group-text border-start-0" v-on:click.prevent="filter = ''"><i class="fas fa-times"></i></a>
             </span>
           </div>
         </div>
@@ -51,7 +49,7 @@
               </th>
               <th data-orderable="false">
                 Manage
-                <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Edit, associate or disassociate, and delete. Note that a Split cannot be deleted if any times are associated with it."><i class="fas fa-question-circle"></i></span>
+                <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Edit, associate or disassociate, and delete. Note that a Split cannot be deleted if any times are associated with it."><i class="fas fa-question-circle"></i></span>
               </th>
             </tr>
             <template slot="row" scope="vm">
@@ -72,7 +70,7 @@
                 </td>
                 <td class="edit">
                   <!--<span class="marker"><%= image_tag("icons/dblue.svg", size: '16') %></span>-->
-                  <button class="btn btn-primary" data-toggle="modal" data-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></button>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#js-split-modal" v-on:click="vm.$emit('edit')" v-if="vm.row.editable"><i class="fas fa-pencil-alt"></i></button>
                   <template v-if="vm.row.kind === 'intermediate'">
                     <button class="btn btn-primary" v-confirm:click="'Deassociating a split will erase related data and cannot be recovered.'" v-on:confirm="vm.row.associate( false )" v-show="vm.row.associated">
                       <i class="far fa-check-square"></i>
@@ -98,12 +96,12 @@
           </data-tables>
         </div>
         <div class="col-12">
-          <div class="float-left-button">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
+          <div class="float-start-button">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#js-split-modal" v-on:click="modalData = blank()">Add&nbsp;<i class="fas fa-plus"></i>
             </button>
           </div>
-          <div class="dropdown float-left-button">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-import-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <div class="dropdown float-start-button">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="split-import-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               Import
               <span class="caret"></span>
             </button>
@@ -117,7 +115,7 @@
               <%= link_to 'Download Template', splits_path(format: :csv, params: {filter: {id: 0}}), class: 'dropdown-item' %>
             </div>
           </div>
-          <div class="float-left-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
+          <div class="float-start-button"><%= link_to 'Export', splits_path(format: :csv, filter: {course_id: @presenter&.course_id}), class: 'btn btn-outline-secondary' %></div>
           <router-link to="/entrants" id="continue-bottom-2" class="btn btn-primary pull-right">Continue&nbsp;<i class="fas fa-arrow-right"></i>
           </router-link>
         </div>
@@ -136,35 +134,35 @@
 
                 <div class="col-12 col-lg-6 col-lg-pull-6">
                   <div class="row">
-                    <div class="form-group col-6">
+                    <div class="mb-3 col-6">
                       <label class="required">Split Name</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Name of the split or aid station.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Name of the split or aid station.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <input id="split-name-field" type="text" class="form-control" v-model="model.baseName" autofocus>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="mb-3 col-6">
                       <label>Description</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Add a helpful description of this place.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Add a helpful description of this place.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <input id="split-description-field" type="text" class="form-control" v-model="model.description">
                     </div>
                   </div>
                   <div class="row">
-                    <div class="form-group col-6">
+                    <div class="mb-3 col-6">
                       <label class="required">Distance From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Cumulative distance from the start of the course.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative distance from the start of the course.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
                         <input-units id="split-distance-field" type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal', digits: 2 }" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.distance }}</span></span>
+                        <span class="input-group-text">{{ units.distance }}</span>
                       </div>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="mb-3 col-6">
                       <label class="required">Time Recording</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out..">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out..">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="split-time-recording-wrap">
@@ -182,24 +180,24 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="form-group col-6 vg-group">
+                    <div class="mb-3 col-6 vg-group">
                       <label class="required">Vertical Gain From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Cumulative vertical gain from the start of the course.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical gain from the start of the course.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
                         <input-units id="split-vert-gain-field" type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
-                    <div class="form-group col-6 vg-group">
+                    <div class="mb-3 col-6 vg-group">
                       <label class="required">Vertical Loss From Start</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Cumulative vertical loss from the start of the course.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical loss from the start of the course.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
                         <input-units id="split-vert-loss-field" type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
                   </div>
@@ -209,34 +207,34 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="form-group col-4">
+                    <div class="mb-3 col-4">
                       <label>Latitude</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Enter latitude or pick a point on the map.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter latitude or pick a point on the map.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <input id="split-latitude-field" type="text" class="form-control" v-model.number="model.latitude" v-mask="{ alias: 'decimal', digits: 6 }">
                     </div>
-                    <div class="form-group col-4">
+                    <div class="mb-3 col-4">
                       <label>Longitude</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Enter longitude or pick a point on the map.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter longitude or pick a point on the map.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <input id="split-longitude-field" type="text" class="form-control" v-model.number="model.longitude" v-mask="{ alias: 'decimal', digits: 6 }">
                     </div>
-                    <div class="form-group col-4">
+                    <div class="mb-3 col-4">
                       <label>Elevation</label>
-                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-placement="bottom" data-content="Enter elevation or pick a point on the map.">
+                      <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter elevation or pick a point on the map.">
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
                         <input-units id="split-elevation-field" type="text" class="form-control" v-model.number="model.elevation" v-mask="{ alias: 'integer' }" :scale="units.forElevation()"/>
-                        <span class="input-group-append"><span class="input-group-text">{{ units.elevation }}</span></span>
+                        <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
                   </div>
                   <div class="col-12 split-modal-btn-wrap">
-                    <span class="brackets" data-dismiss="modal"><a href="#">Cancel</a></span>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
+                    <span class="brackets" data-bs-dismiss="modal"><a href="#">Cancel</a></span>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
                       <template v-if="!model._dtid">Add Split</template>
                       <template v-else>Done</template>
                     </button>

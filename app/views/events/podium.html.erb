@@ -30,10 +30,10 @@
   <div class="container">
     <div class="row">
       <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-      <div class="col form-inline">
+      <div class="col d-inline-flex">
         <%= explore_dropdown_menu(@presenter) %>
       </div>
-      <div class="col form-inline">
+      <div class="col text-end">
         <div class="btn-group btn-group-ost">
           <% [:category, :fastest_times].each do |sort_method| %>
             <%= link_to sort_method.to_s.titleize,

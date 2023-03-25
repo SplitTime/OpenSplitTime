@@ -31,19 +31,19 @@
     <div class="col-12">
       <% @presenter.events.order(:scheduled_start_time).each do |event| %>
         <div class="row my-3 px-2 pt-2 pb-0 bg-light border-bottom border-secondary">
-          <h3 class="font-weight-bold"><%= event.short_name %></h3>
+          <h3 class="fw-bold"><%= event.short_name %></h3>
         </div>
         <% event.efforts.roster_subquery.order(:actual_start_time, :bib_number).group_by(&:actual_start_time).each do |start_time, efforts| %>
           <div class="row my-3 px-2 pt-2 pb-1 bg-light">
             <div class="col-4">
-              <span class="font-weight-bold"><%= start_time.present? ? "Started #{l(start_time.in_time_zone(@presenter.home_time_zone), format: :datetime_input)}" : "Not started" %></span>
+              <span class="fw-bold"><%= start_time.present? ? "Started #{l(start_time.in_time_zone(@presenter.home_time_zone), format: :datetime_input)}" : "Not started" %></span>
             </div>
             <div class="col-4">
-              <span class="font-weight-bold">Scheduled</span>
+              <span class="fw-bold">Scheduled</span>
             </div>
             <div class="col-4">
               <%= turbo_frame_tag [event.id, start_time.to_i] do %>
-                <span class="font-weight-bold">Actual</span>
+                <span class="fw-bold">Actual</span>
                 <span class="mx-2">
                 <%= link_to(
                       fa_icon("pencil-alt"),

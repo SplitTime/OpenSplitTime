@@ -1,6 +1,6 @@
-<div class="form-group">
+<div class="mb-3">
   <%- if controller_name != 'sessions' %>
-    <%= link_to t(".sign_in"), '#', data: {toggle: 'modal', target: '#log-in-modal'} %><br />
+    <%= link_to t(".sign_in"), '#', data: {"bs-toggle": 'modal', "bs-target": '#log-in-modal'} %><br />
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>

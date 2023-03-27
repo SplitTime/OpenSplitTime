@@ -39,17 +39,17 @@
         <div class="card-body">
           <%= form_with(model: current_user, url: user_settings_update_path, html: { method: :put, data: { controller: "form-apply" } }) do |f| %>
             <div class="mb-3">
-              <%= f.label :first_name %>
+              <%= f.label :first_name, class: "mb-1 required" %>
               <%= f.text_field :first_name, class: "form-control", placeholder: "First name" %>
             </div>
 
             <div class="mb-3">
-              <%= f.label :last_name %>
+              <%= f.label :last_name, class: "mb-1 required" %>
               <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
             </div>
 
             <div class="mb-2">
-              <%= f.label "Phone (to receive text messages)" %>
+              <%= f.label "Phone", class: "mb-1" %>
               <%= f.text_field :phone, class: "form-control", placeholder: "XXX-XXX-XXXX" %>
             </div>
 

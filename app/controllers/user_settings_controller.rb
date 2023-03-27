@@ -39,7 +39,7 @@ class UserSettingsController < ApplicationController
             :first_name,
             :last_name,
             :email,
-            :phone_number,
+            :phone,
             :pref_distance_unit,
             :pref_elevation_unit,
           )

@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   namespace :user_settings do
     get :preferences
     get :password
+    get :credentials
     put :update
   end
 

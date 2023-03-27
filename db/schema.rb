@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_155148) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_27_151233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -86,6 +86,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_155148) do
     t.json "track_points"
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
+  end
+
+  create_table "credentials", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "service", null: false
+    t.string "key", null: false
+    t.string "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credentials_on_user_id"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "effort_segments", id: false, force: :cascade do |t|
@@ -660,6 +673,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_155148) do
   add_foreign_key "course_group_courses", "courses"
   add_foreign_key "course_groups", "organizations"
   add_foreign_key "courses", "organizations"
+  add_foreign_key "credentials", "users"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
   add_foreign_key "event_groups", "organizations"

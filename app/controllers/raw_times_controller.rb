@@ -18,7 +18,10 @@ class RawTimesController < ApplicationController
     authorize @raw_time
 
     @raw_time.destroy
-    redirect_to request.referrer
+    respond_to do |format|
+      format.html { redirect_to request.referrer }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@raw_time) }
+    end
   end
 
   private

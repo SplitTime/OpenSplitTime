@@ -39,6 +39,12 @@ Rails.application.routes.draw do
     get "api", to: "visitors#api"
   end
 
+  namespace :user_settings do
+    get :preferences
+    get :password
+    put :update
+  end
+
   devise_for :users, controllers: {
     passwords: "users/passwords",
     registrations: "users/registrations",

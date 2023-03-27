@@ -1,0 +1,16 @@
+<div class="col-auto col-md-4 col-lg-4 col-xl-3 px-sm-2 px-0">
+  <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
+    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
+      <li class="nav-item border-sidebar w-100 <%= action_name == "preferences" ? "active" : nil %>">
+        <%= link_to user_settings_preferences_path, class: "nav-link align-middle px-0" do %>
+          <i class="fs-3 bi-card-list"></i> <span class="ms-2 d-none d-md-inline fs-5">Preferences</span>
+        <% end %>
+      </li>
+      <li class="nav-item border-sidebar w-100 <%= action_name == "password" ? "active" : nil %>">
+        <%= link_to user_settings_password_path, class: "nav-link align-middle px-0" do %>
+          <i class="fs-3 bi-shield-check"></i> <span class="ms-2 d-none d-md-inline fs-5">Password</span>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</div>

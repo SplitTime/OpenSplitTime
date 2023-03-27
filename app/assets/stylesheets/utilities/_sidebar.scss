@@ -1,0 +1,8 @@
+.border-sidebar {
+  border-bottom: .35rem solid !important;
+  border-bottom-color: lightgrey !important;
+}
+
+.border-sidebar.active {
+  border-bottom-color: $primary !important;
+}

@@ -7,11 +7,7 @@
         <span class="caret"></span>
       </a>
       <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="nav-dropdown-auth">
-        <% unless current_user.from_omniauth? %>
-          <%= link_to "Edit My Profile", edit_user_registration_path, class: "dropdown-item" %>
-        <% end %>
-        <%= link_to "View My Profile", user_path(current_user), class: "dropdown-item" %>
-        <%= link_to "Change Preferences", edit_preferences_user_path(current_user, referrer_path: URI(request.original_url).path), class: "dropdown-item" %>
+        <%= link_to "Settings", user_settings_preferences_path, class: "dropdown-item" %>
         <% if current_user&.admin? %>
           <div class="dropdown-divider"></div>
           <%= link_to "Admin Area", madmin_root_path, class: "dropdown-item" %>

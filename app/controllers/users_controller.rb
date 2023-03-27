@@ -21,23 +21,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    authorize @user
-  end
-
-  def edit_preferences
-    authorize @user
-  end
-
-  def update_preferences
-    authorize @user
-    if @user.update(permitted_params)
-      redirect_to params[:referrer_path] || user_path(@user), notice: "Preferences updated."
-    else
-      redirect_to params[:referrer_path] || user_path(@user), alert: "Unable to update preferences."
-    end
-  end
-
   def update
     authorize @user
     if @user.update(secure_params)

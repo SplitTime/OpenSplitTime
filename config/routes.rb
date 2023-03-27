@@ -39,6 +39,12 @@ Rails.application.routes.draw do
     get "api", to: "visitors#api"
   end
 
+  namespace :user_settings do
+    get :preferences
+    get :password
+    put :update
+  end
+
   devise_for :users, controllers: {
     passwords: "users/passwords",
     registrations: "users/registrations",
@@ -50,12 +56,9 @@ Rails.application.routes.draw do
     get "/users/auth/failure" => "users/omniauth_callbacks#failure"
   end
 
-  resources :users do
+  resources :users, only: [:index, :update, :destroy] do
     member do
-      get :people
-      get :edit_preferences
       get :my_stuff
-      put :update_preferences
     end
   end
 

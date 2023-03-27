@@ -6,6 +6,18 @@ class UserParameters < BaseParameters
   end
 
   def self.permitted
-    [:id, :first_name, :last_name, :email, :phone, :http, :https, :password, :pref_distance_unit, :pref_elevation_unit]
+    [
+      :id,
+      :first_name,
+      :last_name,
+      :email,
+      :phone,
+      :http,
+      :https,
+      :password,
+      :password_confirmation,
+      :pref_distance_unit,
+      :pref_elevation_unit,
+    ]
   end
 end

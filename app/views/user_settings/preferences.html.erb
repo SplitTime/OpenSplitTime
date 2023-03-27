@@ -18,7 +18,7 @@
   </div>
 </header>
 
-<div class="ost-article container-fluid">
+<div class="ost-article container">
   <div class="row flex-nowrap">
     <%= render "sidebar" %>
     <div class="col px-md-4 py-3">
@@ -69,13 +69,13 @@
         <div class="card-body">
           <%= form_with(model: current_user, url: user_settings_update_path, html: { method: :put, data: { controller: "form-auto-submit" } }) do |f| %>
             <div class="mb-4 ms-3">
-              <%= f.label :pref_distance_unit, "View distances in" %>
+              <%= f.label :pref_distance_unit, "View distance in" %>
               <%= f.select :pref_distance_unit, User.pref_distance_units.keys.map { |unit| [unit.titleize, unit] },
                            { prompt: true }, { class: "form-control dropdown-select-field" } %>
             </div>
 
             <div class="mb-4 ms-3">
-              <%= f.label :pref_elevation_unit, "View distances in" %>
+              <%= f.label :pref_elevation_unit, "View elevation in" %>
               <%= f.select :pref_elevation_unit, User.pref_elevation_units.keys.map { |unit| [unit.titleize, unit] },
                            { prompt: true }, { class: "form-control dropdown-select-field" } %>
             </div>

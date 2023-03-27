@@ -14,7 +14,15 @@ class UserSettingsController < ApplicationController
   end
 
   def update
-    message = current_user.update(settings_update_params) ? nil : current_user.errors.full_messages.join("; ")
+    updated = current_user.update(settings_update_params)
+    message = case
+              when updated && current_user.unconfirmed_email.present?
+                "You have requested that your email address be changed. Please check your email to confirm your new address."
+              when updated
+                nil
+              else
+                current_user.errors.full_messages.join("; ")
+              end
 
     redirect_to request.referrer, notice: message
   end
@@ -30,6 +38,7 @@ class UserSettingsController < ApplicationController
           .permit(
             :first_name,
             :last_name,
+            :email,
             :phone_number,
             :pref_distance_unit,
             :pref_elevation_unit,

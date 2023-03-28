@@ -57,17 +57,12 @@ class Connectors::Runsignup::Client
 
   # @return [String, nil]
   def runsignup_api_key
-    credentials.find { |cred| cred.key == "api_key" }&.value
+    @runsignup_api_key ||= user.credentials.fetch("runsignup", "api_key")
   end
 
   # @return [String, nil]
   def runsignup_api_secret
-    credentials.find { |cred| cred.key == "api_secret" }&.value
-  end
-
-  # @return [ActiveRecord::Relation<Credential>]
-  def credentials
-    @credentials ||= user.credentials.for_service(:runsignup)
+    @runsignup_api_secret ||= user.credentials.fetch("runsignup", "api_secret")
   end
 
   def check_response_validity!
@@ -110,7 +105,7 @@ class Connectors::Runsignup::Client
   end
 
   def verify_credentials_present!
-    unless credentials.present?
+    unless runsignup_api_key.present? && runsignup_api_secret.present?
       raise Connectors::Errors::MissingCredentials,
             "This source requires credentials for runsignup, but none were found."
     end

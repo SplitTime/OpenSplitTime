@@ -26,4 +26,8 @@ class Credential < ApplicationRecord
             }
 
   scope :for_service, ->(service_identifier) { where(service_identifier: service_identifier) }
+
+  def self.fetch(service_identifier, key)
+    find_by(service_identifier: service_identifier, key: key)&.value
+  end
 end

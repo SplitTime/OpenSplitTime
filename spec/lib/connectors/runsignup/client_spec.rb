@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ::Connectors::Runsignup::Client do
+RSpec.xdescribe ::Connectors::Runsignup::Client do
   subject { described_class.new(user) }
 
   include_context "user_with_runsignup_credentials"

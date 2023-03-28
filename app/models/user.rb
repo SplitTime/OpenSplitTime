@@ -5,8 +5,6 @@ class User < ApplicationRecord
   include ::CapitalizeAttributes
   extend FriendlyId
 
-  self.ignored_columns = %w[credentials]
-
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]

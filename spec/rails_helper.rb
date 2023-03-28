@@ -56,6 +56,7 @@ RSpec.configure do |config|
     :aid_stations,
     :course_groups,
     :courses,
+    :credentials,
     :efforts,
     :event_groups,
     :event_series,

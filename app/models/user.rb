@@ -5,6 +5,8 @@ class User < ApplicationRecord
   include ::CapitalizeAttributes
   extend FriendlyId
 
+  self.ignored_columns = %w[credentials]
+
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
@@ -12,8 +14,6 @@ class User < ApplicationRecord
   enum role: [:user, :admin]
   enum pref_distance_unit: [:miles, :kilometers]
   enum pref_elevation_unit: [:feet, :meters]
-
-  encrypts :credentials
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name
@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :organizations, through: :stewardships
   has_many :export_jobs, dependent: :destroy
   has_many :import_jobs, dependent: :destroy
+  has_many :credentials, dependent: :destroy
   has_many_attached :exports
   has_one :avatar, class_name: "Person", dependent: :nullify
   alias_attribute :sms, :phone
@@ -149,7 +150,7 @@ class User < ApplicationRecord
   end
 
   def has_credentials_for?(source_name)
-    credentials.present? && credentials[source_name.to_s].present?
+    credentials.for_service(source_name).exists?
   end
 
   def from_omniauth?

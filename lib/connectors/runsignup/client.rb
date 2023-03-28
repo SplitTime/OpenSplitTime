@@ -49,15 +49,25 @@ class Connectors::Runsignup::Client
   # @return [Hash]
   def base_params
     {
-      api_key: credentials["api_key"],
-      api_secret: credentials["api_secret"],
+      api_key: runsignup_api_key,
+      api_secret: runsignup_api_secret,
       format: :json,
     }
   end
 
-  # @return [Hash, nil]
+  # @return [String, nil]
+  def runsignup_api_key
+    credentials.find { |cred| cred.key == "api_key" }&.value
+  end
+
+  # @return [String, nil]
+  def runsignup_api_secret
+    credentials.find { |cred| cred.key == "api_secret" }&.value
+  end
+
+  # @return [ActiveRecord::Relation<Credential>]
   def credentials
-    @credentials ||= user.credentials&.dig("runsignup")
+    @credentials ||= user.credentials.for_service(:runsignup)
   end
 
   def check_response_validity!

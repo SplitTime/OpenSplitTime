@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.xdescribe ::Connectors::Runsignup::FetchRaceEvents do
+RSpec.describe ::Connectors::Runsignup::FetchRaceEvents do
   subject { described_class.new(race_id: race_id, user: user) }
   let(:race_id) { 85675 }
 

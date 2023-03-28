@@ -68,4 +68,5 @@ Rails.application.configure do
   config.active_record.encryption.primary_key = "test"
   config.active_record.encryption.deterministic_key = "test"
   config.active_record.encryption.key_derivation_salt = "test"
+  config.active_record.encryption.encrypt_fixtures = true
 end

@@ -28,12 +28,22 @@ RSpec.describe Credential do
   describe ".fetch" do
     let(:result) { user.credentials.fetch(service_identifier, key) }
     let(:user) { users(:third_user) }
+    let(:other_user) { users(:fourth_user) }
     let(:service_identifier) { "runsignup" }
     let(:key) { "api_key" }
 
-    context "when credentials exist" do
+    context "when a single record exists" do
       it "returns the value for the specified key" do
         expect(result).to eq("1234")
+      end
+    end
+
+    context "when multiple records exist" do
+      let(:result) { Credential.fetch(service_identifier, key) }
+      before { described_class.create(user: other_user, service_identifier: service_identifier, key: key, value: "5678") }
+
+      it "raises an error" do
+        expect { result }.to raise_error(ActiveRecord::RecordNotUnique)
       end
     end
 

@@ -27,7 +27,13 @@ class Credential < ApplicationRecord
 
   scope :for_service, ->(service_identifier) { where(service_identifier: service_identifier) }
 
+  # @param [String,Symbol] service_identifier
+  # @param [String,Symbol] key
+  # @return [String, nil]
   def self.fetch(service_identifier, key)
-    find_by(service_identifier: service_identifier, key: key)&.value
+    records = where(service_identifier: service_identifier, key: key).limit(2).to_a
+    raise ActiveRecord::RecordNotUnique, "Multiple records found for service_identifier #{service_identifier} and key #{key}" if records.many?
+
+    records.first&.value
   end
 end

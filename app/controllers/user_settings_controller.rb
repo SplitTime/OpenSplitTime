@@ -5,12 +5,17 @@ class UserSettingsController < ApplicationController
   before_action :authorize_action
   after_action :verify_authorized
 
-  # GET /preferences
+  # GET /user_settings/preferences
   def preferences
   end
 
-  # GET /password
+  # GET /user_settings/password
   def password
+  end
+
+  # GET /user_settings/credentials
+  def credentials
+    @user = current_user
   end
 
   def update

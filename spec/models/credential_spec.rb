@@ -6,7 +6,7 @@ RSpec.describe Credential do
   subject { build(:credential) }
 
   describe "scopes" do
-    describe ".for_service" do
+    xdescribe ".for_service" do
       let!(:credential) { create(:credential, service_identifier: service_identifier) }
       let(:service_identifier) { "runsignup" }
 

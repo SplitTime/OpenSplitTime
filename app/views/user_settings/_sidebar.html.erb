@@ -2,22 +2,16 @@
   <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
       <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "preferences" ? "active" : nil %>">
-        <%= link_to user_settings_preferences_path, class: "nav-link align-middle px-0" do %>
-          <span><%= fa_icon "list-alt", type: :regular, size: "2x" %></span><span class="ms-2 d-none d-md-inline fs-4">Preferences</span>
-        <% end %>
+        <%= render "sidebar_item", title: "Preferences", icon: "list-alt", link: user_settings_preferences_path %>
       </li>
       <% unless current_user.from_omniauth? %>
         <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "password" ? "active" : nil %>">
-          <%= link_to user_settings_password_path, class: "nav-link align-middle px-0" do %>
-            <span><%= fa_icon "user-shield", type: :regular, size: "2x" %></span><span class="ms-2 d-none d-md-inline fs-4">Password</span>
-          <% end %>
+          <%= render "sidebar_item", title: "Password", icon: "user-shield", link: user_settings_password_path %>
         </li>
       <% end %>
-<!--      <li class="nav-item border-sidebar w-100 mb-3 <%#= action_name == "credentials" ? "active" : nil %>">-->
-        <%#= link_to user_settings_credentials_path, class: "nav-link align-middle px-0" do %>
-<!--          <span><%#= fa_icon "key", type: :regular, size: "2x" %></span><span class="ms-2 d-none d-md-inline fs-4">Credentials</span>-->
-        <%# end %>
-<!--      </li>-->
+      <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "credentials" ? "active" : nil %>">
+        <%= render "sidebar_item", title: "Credentials", icon: "key", link: user_settings_credentials_path %>
+      </li>
     </ul>
   </div>
 </div>

@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   end
 
   resources :aid_stations, only: [:show, :create, :update, :destroy]
+  resources :credentials, only: [:create, :update, :destroy]
 
   resources :efforts do
     resources :subscriptions, only: [:create, :destroy], module: "efforts"

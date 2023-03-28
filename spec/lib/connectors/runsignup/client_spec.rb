@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.xdescribe ::Connectors::Runsignup::Client do
+RSpec.describe ::Connectors::Runsignup::Client do
   subject { described_class.new(user) }
 
   include_context "user_with_runsignup_credentials"
@@ -61,8 +61,6 @@ RSpec.xdescribe ::Connectors::Runsignup::Client do
     let(:page) { 1 }
 
     context "when credentials are valid" do
-      let(:test_credentials) { { "runsignup" => { "api_key" => "1234", "api_secret" => "2345" } } }
-
       context "when the race and event are found" do
         it "returns a json blob with race and event information" do
           VCR.use_cassette("runsignup/get_participants/valid") do

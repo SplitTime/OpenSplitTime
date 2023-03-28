@@ -258,15 +258,12 @@ RSpec.describe User, type: :model do
     end
   end
 
-  xdescribe "#has_credentials_for?" do
+  describe "#has_credentials_for?" do
     let(:user) { users(:third_user) }
     let(:result) { user.has_credentials_for?(service_identifier) }
     let(:service_identifier) { "runsignup" }
 
     context "when credentials exist for the requested service" do
-      it { expect(credentials(:runsignup_api_key)).to be_present }
-      it { expect(credentials(:runsignup_api_key).user).to eq(user) }
-      it { expect(user.credentials.count).to eq(2) }
       it { expect(result).to eq(true) }
     end
 

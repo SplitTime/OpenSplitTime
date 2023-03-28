@@ -78,7 +78,7 @@ RSpec.configure do |config|
     :splits,
     :stewardships,
     :subscriptions,
-    :users
+    :users,
   ]
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

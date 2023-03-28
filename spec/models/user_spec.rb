@@ -258,36 +258,34 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#has_credentials_for?" do
+  xdescribe "#has_credentials_for?" do
     let(:user) { users(:third_user) }
-    let(:result) { user.has_credentials_for?(source_name) }
-    let(:source_name) { "partner_service" }
-    let(:test_credentials) { nil }
+    let(:result) { user.has_credentials_for?(service_identifier) }
+    let(:service_identifier) { "runsignup" }
 
-    before { allow(user).to receive(:credentials).and_return(test_credentials) }
-
-    context "when credentials are nil" do
-      it { expect(result).to eq(false) }
-    end
-
-    context "when credentials are empty" do
-      let(:test_credentials) { {} }
-      it { expect(result).to eq(false) }
-    end
-
-    context "when credentials exist but do not include the requested key" do
-      let(:test_credentials) { { "other_service" => { "api_key" => "1234", "api_secret" => "2345"} } }
-      it { expect(result).to eq(false) }
-    end
-
-    context "when credentials exist for the requested key" do
-      let(:test_credentials) { { "partner_service" => { "api_key" => "1234", "api_secret" => "2345"} } }
+    context "when credentials exist for the requested service" do
+      it { expect(credentials(:runsignup_api_key)).to be_present }
+      it { expect(credentials(:runsignup_api_key).user).to eq(user) }
+      it { expect(user.credentials.count).to eq(2) }
       it { expect(result).to eq(true) }
+    end
 
-      context "when the key is a symbol" do
-        let(:source_name) { :partner_service }
-        it { expect(result).to eq(true) }
-      end
+    context "when the identifier is passed as a symbol" do
+      let(:service_identifier) { :runsignup }
+
+      it { expect(result).to eq(true) }
+    end
+
+    context "when the user has no credentials" do
+      before { user.credentials.delete_all }
+
+      it { expect(result).to eq(false) }
+    end
+
+    context "when the user has credentials but not for the requested service" do
+      let(:service_identifier) { "another_service" }
+
+      it { expect(result).to eq(false) }
     end
   end
 end

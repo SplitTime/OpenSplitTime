@@ -2,6 +2,8 @@
 
 class CredentialsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authorize_action
+  after_action :verify_authorized
 
   # POST /credentials
   def create
@@ -34,6 +36,10 @@ class CredentialsController < ApplicationController
   end
 
   private
+
+  def authorize_action
+    authorize self, policy_class: ::CredentialPolicy
+  end
 
   def credential_params
     params.require(:credential).permit(:service_identifier, :key, :value)

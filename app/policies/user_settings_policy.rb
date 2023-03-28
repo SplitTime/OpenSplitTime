@@ -14,6 +14,10 @@ class UserSettingsPolicy < ApplicationPolicy
     preferences?
   end
 
+  def credentials?
+    user.present?
+  end
+
   def update?
     preferences?
   end

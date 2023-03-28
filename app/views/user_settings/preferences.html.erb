@@ -2,21 +2,7 @@
   <% "OpenSplitTime: User Preferences" %>
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong>User Settings</strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item active"><%= link_to "User Settings", user_settings_preferences_path %></li>
-            <li class="breadcrumb-item">Preferences</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+<%= render "header", title: "Preferences" %>
 
 <div class="ost-article container">
   <div class="row flex-nowrap">

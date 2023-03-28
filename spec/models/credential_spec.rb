@@ -3,6 +3,43 @@
 require "rails_helper"
 
 RSpec.describe Credential do
+  subject { described_class.new(user: user, service_identifier: service_identifier, key: key, value: value) }
+  let(:user) { users(:third_user) }
+  let(:service_identifier) { "runsignup" }
+  let(:key) { "api_key" }
+  let(:value) { "1234" }
+
+  describe "validations" do
+    before { subject.validate }
+
+    context "when no conflicting credentials exist" do
+      before { Credential.delete_all }
+
+      context "when all attributes are valid" do
+        it { expect(subject).to be_valid }
+      end
+
+      context "when the service_identifier is not valid" do
+        let(:service_identifier) { "foo" }
+
+        it { expect(subject).to be_invalid }
+        it { expect(subject.errors[:service_identifier]).to include("Invalid service_identifier foo") }
+      end
+
+      context "when the key is not valid for the given service_identifier" do
+        let(:key) { "not_a_key" }
+
+        it { expect(subject).to be_invalid }
+        it { expect(subject.errors[:key]).to include("Invalid key not_a_key for service_identifier runsignup") }
+      end
+    end
+
+    context "when conflicting credentials exist" do
+      it { expect(subject).to be_invalid }
+      it { expect(subject.errors[:key]).to include("Duplicate key api_key for user #{user.id} and service_identifier runsignup") }
+    end
+  end
+
   describe "scopes" do
     describe ".for_service" do
       let(:result) { user.credentials.for_service(service_identifier) }

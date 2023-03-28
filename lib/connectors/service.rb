@@ -5,13 +5,14 @@ module Connectors
     def self.all
       [
         new(
-          identifier: :runsignup,
+          identifier: "runsignup",
           name: "RunSignup",
-          credentials: [:api_key, :api_secret]
+          credentials: %w[api_key api_secret]
         )
       ]
     end
 
-    self::IDENTIFIERS = all.map { |service| service.identifier.to_s }
+    self::BY_IDENTIFIER = all.index_by(&:identifier).with_indifferent_access
+    self::IDENTIFIERS = self::BY_IDENTIFIER.keys
   end
 end

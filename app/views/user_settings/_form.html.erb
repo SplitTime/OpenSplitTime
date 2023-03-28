@@ -1,0 +1,19 @@
+<%# locals: (service_identifier:, key:) -%>
+
+<% credential = @user.credentials.find_or_initialize_by(service_identifier: service_identifier, key: key) %>
+
+<%= form_with(model: credential) do |form| %>
+  <%= form.hidden_field :service_identifier %>
+  <%= form.hidden_field :key %>
+  <div class="row">
+    <div class="col col-md-9">
+      <div class="input-group my-2 font-monospace">
+        <div class="input-group-text w-25"><%= key %></div>
+        <%= form.text_field :value, class: "px-3 w-75" %>
+      </div>
+    </div>
+    <div class="col col-md-3 my-2">
+      <%= form.submit "Save", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

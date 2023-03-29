@@ -20,6 +20,7 @@ global.elevationToPreferred = elevationToPreferred;
 
 import 'utils/growl';
 import "chartkick/chart.js";
+import Inputmask from "inputmask/dist/jquery.inputmask.min";
 
 import TurboLinksAdapter from 'vue-turbolinks';
 Vue.use(TurboLinksAdapter);

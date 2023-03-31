@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { FetchRequest } from "@rails/request.js"
+import { Popover } from "bootstrap"
 
 export default class extends Controller {
   static values = {
@@ -13,7 +14,7 @@ export default class extends Controller {
 
     this.element.style.cursor = "pointer"
 
-    const popover = new bootstrap.Popover(
+    const popover = new Popover(
       this.element,
       {
         fetched: false,

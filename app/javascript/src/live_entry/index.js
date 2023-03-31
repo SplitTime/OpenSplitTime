@@ -1,6 +1,3 @@
-const JSONAPI = require('jsonapi');
-const apiConfig = {
-    baseUrl: '/api/v1'
-};
-
-console.log(new JSONAPI(apiConfig));
+import "./new_live_entry";
+import Inputmask from "inputmask/dist/jquery.inputmask";
+import "datatables.net-bs5";

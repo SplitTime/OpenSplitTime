@@ -408,7 +408,7 @@
                     showMaskOnHover: false,
                 };
 
-                $('#js-add-effort-form [data-bs-toggle="tooltip"]').tooltip({container: 'body'});
+                // $('#js-add-effort-form [data-bs-toggle="tooltip"]').tooltip({container: 'body'});
 
                 $('#js-time-in').inputmask("datetime", timeMaskOptions);
                 $('#js-time-out').inputmask("datetime", timeMaskOptions);
@@ -830,7 +830,6 @@
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
 
-                $('[data-bs-toggle="popover"]').popover();
                 liveEntry.timeRowsTable.$dataTable.on('mouseover', '[data-bs-toggle="tooltip"]', function () {
                     $(this).tooltip('show');
                 });
@@ -1129,25 +1128,6 @@
                     return false;
                 });
 
-                $('#js-file-upload').fileupload({
-                    dataType: 'json',
-                    url: '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/import_csv_raw_times',
-                    submit: function (e, data) {
-                        data.formData = {splitName: liveEntry.currentStation().splitName};
-                        liveEntry.timeRowsTable.busy = true;
-                    },
-                    done: function (e, data) {
-                        var rawTimeRows = data.result.data.rawTimeRows;
-                        liveEntry.populateRows(rawTimeRows);
-                    },
-                    fail: function (e, data) {
-                        $('#debug').empty().append(data.response().jqXHR.responseText);
-                    },
-                    always: function () {
-                        liveEntry.timeRowsTable.busy = false;
-                    }
-                });
-
                 $(document).on('keydown', function (event) {
                     if (event.keyCode === 16) {
                         $('#js-pull-times').hide();
@@ -1254,7 +1234,7 @@
     }; // END liveEntry
 
     document.addEventListener("turbo:load", function () {
-        if (Rails.$('.event_groups.live_entry')[0] === document.body) {
+        if ($('.event_groups.live_entry')[0] === document.body) {
             liveEntry.init();
         }
     });

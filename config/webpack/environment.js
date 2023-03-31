@@ -1,11 +1,11 @@
-const { environment } = require("@rails/webpacker")
+const { environment } = require('@rails/webpacker')
 const webpack = require("webpack")
 const WebpackAssetsManifest = require("webpack-assets-manifest");
 
-environment.config.merge({
-    externals: {
-        jquery: "jQuery",
-    },
-})
+environment.plugins.append('Provide', new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery',
+}))
 
 module.exports = environment

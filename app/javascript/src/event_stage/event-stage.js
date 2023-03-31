@@ -1,4 +1,4 @@
-//= require jsonapi
+//= require ../jsonapi/jsonapi.js
 
 (function ($) {
 

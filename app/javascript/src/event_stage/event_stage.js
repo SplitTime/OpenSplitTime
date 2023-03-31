@@ -1,4 +1,4 @@
-//= require ../jsonapi/jsonapi.js
+import JSONAPI from '../jsonapi/index';
 
 (function ($) {
 
@@ -1611,7 +1611,7 @@
     };
 
     document.addEventListener("turbo:load", function() {
-        if(Rails.$('.events.app').length > 0) {
+        if($('.events.app').length > 0) {
             eventStage.init();
         }
     });

@@ -10,17 +10,3 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require moment
-//= require vue
-//= require vue-router
-//= require local-time
-//= require_tree .
-
-Vue.use( VueRouter );
-Vue.filter( 'padding', function( value, length, character ) {
-	var strlen = ( value + '' ).length;
-	for ( strlen; strlen < length; strlen++ ) {
-		value = ( character ).concat( value );
-	}
-	return value;
-} );

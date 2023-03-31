@@ -18,10 +18,6 @@ global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
-require("@popperjs/core")
-
-import "bootstrap"
-
 import 'utils/growl';
 import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
@@ -37,16 +33,20 @@ const application = Application.start()
 const context = require.context("controllers", true, /.js$/)
 application.load(definitionsFromContext(context))
 
-// Initialize Bootstrap tooltips
-document.addEventListener("turbo:load", () => {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-})
+// Bootstrap and Popper.js
+require("@popperjs/core")
+import "bootstrap"
 
 // Import specific Bootstrap modules
 import { Tooltip } from "bootstrap"
+
+// Initialize tooltips
+document.addEventListener("turbo:load", () => {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new Tooltip(tooltipTriggerEl)
+  })
+})
 
 // Expand the default allowList for Bootstrap tooltips and popovers
 let myDefaultAllowList = Tooltip.Default.allowList;

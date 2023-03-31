@@ -4,26 +4,29 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 //
-// To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
+// To reference this file, add <%= javascript_pack_tag "application" %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
 require("@hotwired/turbo-rails")
 
 import * as ActiveStorage from "@rails/activestorage"
+
 ActiveStorage.start()
 
-import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from 'utils/units';
+import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from "utils/units";
+
 global.preferredDistanceUnit = preferredDistanceUnit;
 global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
-import 'utils/growl';
+import "utils/growl";
 import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
-import TurboLinksAdapter from 'vue-turbolinks';
+import TurboLinksAdapter from "vue-turbolinks";
+
 Vue.use(TurboLinksAdapter);
 
 import { Application } from "@hotwired/stimulus"

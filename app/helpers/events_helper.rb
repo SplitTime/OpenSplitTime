@@ -1,6 +1,28 @@
 # frozen_string_literal: true
 
 module EventsHelper
+  def link_to_event_delete(event)
+    url = event_group_event_path(event.event_group, event)
+    tooltip = "Delete this event"
+    options = { data: { turbo_confirm: "This will delete the event, together with all related entrants. Are you sure you want to proceed?",
+                        turbo_method: :delete,
+                        bs_toggle: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: tooltip },
+                class: "btn btn-danger btn-sm" }
+    link_to fa_icon("trash"), url, options
+  end
+
+  def link_to_event_edit(event)
+    url = edit_event_group_event_path(event.event_group, event)
+    tooltip = "Edit this event"
+    options = { data: { bs_toggle: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: tooltip },
+                class: "btn btn-primary btn-sm" }
+    link_to fa_icon("pencil-alt"), url, options
+  end
+
   def results_template_selector(resource)
     public_organization = Organization.new(name: "Public Templates", results_templates: ResultsTemplate.standard)
     private_organization = resource.organization.results_templates.present? ? resource.organization : nil
@@ -8,9 +30,9 @@ module EventsHelper
     resource_type = resource.class.name.underscore.to_sym
 
     grouped_collection_select(resource_type, :results_template_id, organizations, :results_templates, :name, :id, :name,
-                              {prompt: false},
-                              {class: "form-control dropdown-select-field",
-                               data: {"results-template-target" => "dropdown", action: "results-template#replaceCategories"}})
+                              { prompt: false },
+                              { class: "form-control dropdown-select-field",
+                                data: { "results-template-target" => "dropdown", action: "results-template#replaceCategories" } })
   end
 
   def link_to_beacon_button(view_object)

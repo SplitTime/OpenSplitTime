@@ -2,35 +2,7 @@
   <% "OpenSplitTime: Partners for Lottery - #{@presenter.name}" %>
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1>
-            <strong><%= name_with_concealed_indicator(@presenter) %></strong>
-            <%= lottery_status_badge(@presenter.status) %>
-          </h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.name, organization_lottery_path(@presenter.organization, @presenter.lottery) %></li>
-            <li class="breadcrumb-item">Draw Tickets</li>
-          </ul>
-        </div>
-        <div class="ost-subtitle">
-          <p><%= l(@presenter.scheduled_start_date, format: :full_with_weekday) %></p>
-        </div>
-      </div>
-      <aside class="col-auto">
-        <%= link_to "Public", organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-secondary" %>
-      </aside>
-    </div>
-    <!-- Navigation -->
-    <%= render partial: "lotteries/admin_tabs", locals: { presenter: @presenter } %>
-  </div>
-</header>
+<%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Partners"] %>
 
 <article class="ost-article container">
   <%= render "partner_list", presenter: @presenter %>

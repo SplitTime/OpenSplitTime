@@ -1,5 +1,31 @@
 <%# locals: (presenter:, events:) -%>
 
+<% events.each do |event| %>
+  <div id="<%= dom_id(event) %>" class="card mt-3">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="h2 fw-bold"><%= event.short_name %></span>
+          <span class="h4 text-muted ms-2"><%= " #{pluralize(event.efforts.count, 'entrant')}" %></span>
+        </div>
+        <div class="col text-md-end my-2 my-md-0">
+          <%= link_to_event_edit(event) %>
+          <%= link_to_event_delete(event) %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h5><%= fa_icon("stopwatch") %> <%= l event.scheduled_start_time_local, format: :full_day_time_and_zone %></h5>
+      <div class="row">
+        <div class="col-md-6">
+          <span class="h5"><%= fa_icon("map-marked-alt") %> <%= event.course.name %></span>
+          <span class="h6 text-muted ms-2"><%= " #{pluralize(event.course.splits.count, 'split')}" %></span>
+          <span class="ms-2"><%= link_to_course_edit(event.course) %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -23,20 +49,22 @@
   <% events.each do |event| %>
     <tr>
       <td><strong><%= link_to event.name, edit_event_group_event_path(presenter.event_group, event) %></strong></td>
-      <td><strong><%= link_to event.course_name, organization_course_path(presenter.organization, event.course, display_style: :splits) %></strong></td>
+      <td>
+        <strong><%= link_to event.course_name, organization_course_path(presenter.organization, event.course, display_style: :splits) %></strong>
+      </td>
       <td><%= l(event.scheduled_start_time_local, format: :full_day_time_and_zone) %></td>
       <td><%= "#{pluralize(event.efforts_count, 'entrants')}" %></td>
 
       <% if presenter.authorized_fully? %>
         <% if show_grouping_button == "join" %>
-          <td class="text-center"><%= link_to "Join", reassign_event_path(event, event: {event_group_id: presenter.event_group.id}),
+          <td class="text-center"><%= link_to "Join", reassign_event_path(event, event: { event_group_id: presenter.event_group.id }),
                                               method: :patch,
-                                              data: {confirm: "Join #{event.name} into the #{presenter.event_group.name} group?"},
+                                              data: { confirm: "Join #{event.name} into the #{presenter.event_group.name} group?" },
                                               class: "btn btn-xs btn-success" %></td>
         <% elsif events.many? && show_grouping_button == "leave" %>
-          <td class="text-center"><%= link_to "Leave", reassign_event_path(event, event: {event_group_id: nil}),
+          <td class="text-center"><%= link_to "Leave", reassign_event_path(event, event: { event_group_id: nil }),
                                               method: :patch,
-                                              data: {confirm: "Remove #{event.name} from the #{presenter.event_group.name} group?"},
+                                              data: { confirm: "Remove #{event.name} from the #{presenter.event_group.name} group?" },
                                               class: "btn btn-xs btn-success" %></td>
         <% end %>
       <% end %>

@@ -67,9 +67,12 @@ class EventsController < ApplicationController
 
   def destroy
     authorize @event
-    @event.destroy
 
-    redirect_to setup_event_group_path(@event_group)
+    @event.destroy
+    respond_to do |format|
+      format.html { redirect_to setup_event_group_path(@event_group) }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@event) }
+    end
   end
 
   def reassign

@@ -401,7 +401,8 @@
             lastStationIndex: null,
             init: function () {
                 // Apply input masks on time in / out
-                var maskOptions = {
+                const timeMaskOptions = {
+                    inputFormat: "HH:MM:ss",
                     placeholder: "hh:mm:ss",
                     insertMode: false,
                     showMaskOnHover: false,
@@ -409,10 +410,13 @@
 
                 $('#js-add-effort-form [data-bs-toggle="tooltip"]').tooltip({container: 'body'});
 
-                $('#js-time-in').inputmask("hh:mm:ss", maskOptions);
-                $('#js-time-out').inputmask("hh:mm:ss", maskOptions);
-                $('#js-bib-number').inputmask("Regex", {regex: "[0-9|*]{0,6}"});
-                $('#js-lap-number').inputmask("integer", {
+                $('#js-time-in').inputmask("datetime", timeMaskOptions);
+                $('#js-time-out').inputmask("datetime", timeMaskOptions);
+                $('#js-bib-number').inputmask({regex: "[0-9|*]{0,6}"});
+                $('#js-lap-number').inputmask({
+                    alias: "integer",
+                    rightAlign: false,
+                    nullable: true,
                     min: 1,
                     max: liveEntry.eventGroupAttributes.maximumLaps || undefined
                 });

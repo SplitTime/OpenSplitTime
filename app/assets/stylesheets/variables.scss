@@ -57,9 +57,9 @@ $navbar-toggler-padding-x: 0.5rem;
 /******************************
  * Import Bootstrap Variables *
  ******************************/
-@import "bootstrap/functions";
-@import "bootstrap/variables";
-@import "bootstrap/mixins";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
 
 // Boostrap breakpoints
 $break-small: map-get($grid-breakpoints, 'sm');

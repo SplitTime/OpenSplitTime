@@ -16,11 +16,10 @@
 @import "mixins";
 @import "fix_bootstrap_5_links";
 
-@import "bootstrap/functions";
+@import "bootstrap/scss/functions";
 
 @import "vendor/1st_load_framework";
 @import "vendor/animate";
-@import "vendor/datatables.min";
 @import "vendor/simple-sidebar";
 
 @import "jquery.fileupload";
@@ -28,7 +27,7 @@
 @import "font_awesome5_webfont";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
-@import "bootstrap";
+@import "bootstrap/scss/bootstrap";
 @import "tempusdominus-bootstrap-4";
 
 @import "pages/*";

@@ -13,8 +13,6 @@
 //= require jquery3
 //= require jquery-ui/effects/effect-highlight
 //= require rails-ujs
-//= require popper
-//= require bootstrap
 //= require jquery-readyselector
 //= require jquery-fileupload/basic
 //= require moment

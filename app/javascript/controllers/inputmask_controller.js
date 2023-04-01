@@ -1,27 +1,42 @@
-import {Controller} from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-    static targets = ["militaryTime", "elapsedTime", "elapsedTimeShort"];
+  static targets = [
+    "militaryTime",
+    "elapsedTime",
+    "elapsedTimeShort",
+  ];
 
-    connect() {
-        const maskOptions = {
-            placeholder: "hh:mm:ss",
-            insertMode: false,
-            showMaskOnHover: false,
-        };
+  connect() {
+    $(this.militaryTimeTargets).inputmask("datetime", {
+      inputFormat: "HH:MM:ss",
+      placeholder: "hh:mm:ss",
+      insertMode: false,
+      showMaskOnHover: false,
+    });
 
-        $(this.militaryTimeTargets).inputmask("hh:mm:ss", maskOptions);
-        $(this.elapsedTimeTargets).inputmask("99:s:s", maskOptions);
-        $(this.elapsedTimeShortTargets).inputmask("99:s", maskOptions);
+    $(this.elapsedTimeTargets).inputmask("datetime", {
+      inputFormat: "H2:MM:ss",
+      placeholder: "hh:mm:ss",
+      insertMode: false,
+      showMaskOnHover: false,
+    });
+
+    $(this.elapsedTimeShortTargets).inputmask("datetime", {
+      inputFormat: "H2:MM",
+      placeholder: "hh:mm",
+      insertMode: false,
+      showMaskOnHover: false,
+    });
+  }
+
+  fill() {
+    const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets).concat(this.elapsedTimeShortTargets);
+    for (let field of fields) {
+      field.value = field.value.replace(/[^\d:]/g, '0')
     }
 
-    fill() {
-        const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets).concat(this.elapsedTimeShortTargets);
-        for (let field of fields) {
-            field.value = field.value.replace(/[^\d:]/g, '0')
-        }
-
-    }
+  }
 
 }

@@ -35,7 +35,9 @@
           <div class="col">
             <% if current_user&.authorized_fully?(@presenter.event_group) %>
               <%= link_to fa_icon("plus", text: "Add an event"), new_event_group_event_path(@presenter.event_group), id: "add-event", class: "btn btn-success" %>
-              <%= event_group_actions_dropdown(@presenter) %>
+              <% if @presenter.events.present? %>
+                <%= event_group_actions_dropdown(@presenter) %>
+              <% end %>
             <% end %>
           </div>
         </div>
@@ -45,7 +47,10 @@
     <% if @presenter.events.present? %>
       <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
     <% else %>
-      <h4>This event group has no events yet.</h4>
+      <div class="callout callout-info">
+        <h5>The next step is to add an event to this group</h5>
+        <p>Click the <strong>Add an event</strong> button to add an event to this group.</p>
+      </div>
     <% end %>
 
     <% if @presenter.candidate_events.present? %>
@@ -60,7 +65,10 @@
     <% if @presenter.first_event.present? %>
       <%= render "entrants_roster", presenter: @presenter %>
     <% else %>
-      <h4>You will need to add an event before adding entrants.</h4>
+      <div class="callout callout-info">
+        <h5>You will need to add an Event before adding Entrants</h5>
+        <p>Click the <strong>Events</strong> tab to add an Event</p>
+      </div>
     <% end %>
   </article>
 <% end %>

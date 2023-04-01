@@ -4,8 +4,10 @@
   <h3>
     <strong>Provide Your Event Details</strong>
   </h3>
-  <p>Your event will be run on a course. You can use an existing course or create a new one. If you have more than one
-    event running in parallel, you must add a short name to distinguish between them.</p>
+  <div class="callout callout-info">
+    <h5>Each Event is run on a Course</h5>
+    <p>You can use an existing Course or create a new one. Your Courses can be reused for future Events.</p>
+  </div>
 </aside>
 
 <div data-controller="event-setup">
@@ -35,7 +37,7 @@
                 <div class="mb-3 col">
                   <div class="row">
                     <div class="col">
-                      <%= form.label :course_name, class: "required" %>
+                      <%= form.label :course_name, class: "mb-1 required" %>
                       <%= form.text_field :name, class: "form-control", placeholder: "My Sweet Course" %>
                     </div>
 
@@ -48,7 +50,7 @@
 
                     <%= form.fields_for(:splits, presenter.finish_split) do |finish_split_form| %>
                       <div class="col">
-                        <%= finish_split_form.label "Course distance (#{presenter.pref_distance_unit})", class: "required" %>
+                        <%= finish_split_form.label "Course distance (#{presenter.pref_distance_unit})", class: "mb-1 required" %>
                         <%= finish_split_form.text_field :distance_in_preferred_units, class: "form-control", placeholder: "for example, 34.5" %>
                       </div>
                       <%= finish_split_form.hidden_field :base_name %>
@@ -78,6 +80,15 @@
 
   <br/>
 
+  <div class="callout callout-info">
+    <h5>Set the Required Laps</h5>
+    <ul class="mb-0">
+      <li>If the Event requires participants to complete the course <strong>only once</strong>, leave this as "1".</li>
+      <li>If the Event requires participants to complete the course <strong>a fixed number of times</strong>, choose that number.</li>
+      <li>If the Event is <strong>time-based</strong> with an unspecified number of laps, choose "Unlimited."</li>
+    </ul>
+  </div>
+
   <div class="row">
     <div class="col-12">
       <%= form_with(model: [presenter.event_group, presenter.event],
@@ -97,11 +108,11 @@
                                   data: { "event-setup-target" => "lapDropdown", action: "event-setup#fillDistance" } %>
                 </div>
                 <div class="col">
-                  <%= form.label :course_distance %>
+                  <%= form.label "Course distance is:", class: "mb-1" %>
                   <div class="form-auto-text" data-event-setup-target="courseDistance"></div>
                 </div>
                 <div class="col">
-                  <%= form.label :total_distance %>
+                  <%= form.label "Total distance is:", class: "mb-1" %>
                   <div class="form-auto-text" data-event-setup-target="totalDistance"></div>
                 </div>
               </div>
@@ -111,12 +122,18 @@
 
         <br/>
 
+        <div class="callout callout-info">
+          <h5>Use a Short Name for Multiple Events</h5>
+          <p>If you have more than one Event in this Event Group, you must add a short name to distinguish between Events. Use a concise short name, like "50 mile" or "Half Marathon."</p>
+          <p>Note: If you have only one Event in your Event Group, you can leave the "Short name" field blank.</p>
+        </div>
+
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="mb-3 col">
               <div class="row">
                 <div class="col">
-                  <%= form.label :short_name %>
+                  <%= form.label :short_name, class: "mb-1" %>
                   <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
                   <%= form.text_field :short_name,
                                       class: "form-control",
@@ -124,12 +141,22 @@
                                       data: { "event-setup-target" => "eventShortName", action: "keyup->event-setup#fillEventName" } %>
                 </div>
                 <div class="col">
-                  <%= form.label :full_name %>
+                  <%= form.label "Full name will appear as:", class: "mb-1" %>
                   <div class="form-auto-text" data-event-setup-target="eventName"><%= presenter.event.name %></div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <br/>
+
+        <div class="callout callout-info">
+          <h5>Set the Start Time</h5>
+          <p>If you have multiple starting times for this Event, use the earliest starting time here.</p>
+        </div>
+
+        <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="mb-3 col-6">
               <%= form.label :start_time, class: "required" %>
@@ -164,7 +191,7 @@
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="mb-3 col">
-              <%= form.label :beacon_url %>
+              <%= form.label "Tracking site URL", class: "mb-1" %>
               <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
               <%= form.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
             </div>
@@ -175,7 +202,7 @@
 
         <div class="mb-3">
           <div class="control-label col">
-            <%= form.label :podium_template, class: "required" %>
+            <%= form.label :podium_template, class: "mb-1 required" %>
             <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
           </div>
           <div class="col-sm-8">

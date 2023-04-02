@@ -1,4 +1,4 @@
-<%# locals: (event:) -%>
+<%# locals: (event:, event_group:, grouping_button:) -%>
 
 <div id="<%= dom_id(event) %>" class="card mt-3">
   <div class="card-header">
@@ -8,6 +8,11 @@
         <span class="h4 text-muted ms-2"><%= " #{pluralize(event.efforts.count, 'entrant')}" %></span>
       </div>
       <div class="col text-md-end my-2 my-md-0">
+        <% if grouping_button == "join" %>
+          <%= link_to_event_reassign_join(event, event_group) %>
+        <% elsif event_group.events.many? && grouping_button == "leave" %>
+          <%= link_to_event_reassign_leave(event, event_group) %>
+        <% end %>
         <%= link_to_event_edit(event) %>
         <%= link_to_event_delete(event) %>
         <%= event_actions_dropdown(event) %>

@@ -2,9 +2,9 @@
 
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium]
-  before_action :set_event, except: [:new, :edit, :create, :update, :destroy]
+  before_action :set_event, except: [:new, :edit, :create, :update, :destroy, :reassign]
   before_action :set_event_group, only: [:new, :create]
-  before_action :set_event_group_and_event, only: [:edit, :update, :destroy]
+  before_action :set_event_group_and_event, only: [:edit, :update, :destroy, :reassign]
   before_action :redirect_to_friendly, only: [:podium, :spread, :summary]
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium]
 
@@ -81,16 +81,29 @@ class EventsController < ApplicationController
     end
   end
 
-  # PATCH /events/1/reassign
+  # PATCH /event_groups/1/events/1/reassign
   def reassign
     authorize @event
+
     @event.assign_attributes(params.require(:event).permit(:event_group_id))
     redirect_id = @event.event_group_id || @event.changed_attributes["event_group_id"]
 
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
-    set_flash_message(response) unless response.successful?
 
-    redirect_to setup_event_group_path(redirect_id)
+    if response.successful?
+      respond_to do |format|
+        format.html { redirect_to setup_event_group_path(redirect_id) }
+        format.turbo_stream do
+          redirect_event_group = EventGroup.find(redirect_id)
+          presenter = ::EventGroupSetupPresenter.new(redirect_event_group, view_context)
+          render turbo_stream: turbo_stream.replace("event_overview_cards", partial: "event_groups/event_overview_cards", locals: { presenter: presenter })
+        end
+      end
+    else
+      set_flash_message(response)
+      redirect_to setup_event_group_path(redirect_id), status: :unprocessable_entity
+    end
+
   end
 
   # Special views with results

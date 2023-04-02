@@ -1,0 +1,24 @@
+<%# locals: (presenter:) -%>
+
+<div id="event_overview_cards">
+  <% if presenter.events.present? %>
+    <%= render partial: "events/event_overview_card",
+               collection: presenter.events,
+               as: :event,
+               locals: { event_group: presenter.event_group, grouping_button: "leave" } %>
+  <% else %>
+    <div class="callout callout-info">
+      <h5>The next step is to add an event to this group</h5>
+      <p>Click the <strong>Add an event</strong> button to add an event to this group.</p>
+    </div>
+  <% end %>
+
+  <% if presenter.candidate_events.present? %>
+    <hr>
+    <h4><strong><%= "Events that may be added to the #{presenter.name} group" %></strong></h4>
+    <%= render partial: "events/event_overview_card",
+               collection: presenter.candidate_events,
+               as: :event,
+               locals: { event_group: presenter.event_group, grouping_button: "join" } %>
+  <% end %>
+</div>

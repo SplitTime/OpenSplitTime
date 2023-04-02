@@ -317,9 +317,6 @@ module DropdownHelper
 
   def event_actions_dropdown(event)
     dropdown_items = [
-      { name: "Edit/Delete Event",
-        link: edit_event_group_event_path(event.event_group, event),
-        data: { "turbo-frame" => "_top" } },
       { name: "Establish Drops",
         link: set_stops_event_path(event),
         method: :put,
@@ -337,7 +334,7 @@ module DropdownHelper
       { name: "Export to Ultrasignup",
         link: export_event_path(event, format: :csv, export_format: :ultrasignup) }
     ]
-    build_dropdown_menu("Actions", dropdown_items, button: true)
+    build_dropdown_menu(fa_icon("cog"), dropdown_items, button: true)
   end
 
   def event_group_actions_dropdown(view_object)

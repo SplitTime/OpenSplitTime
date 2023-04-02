@@ -2,19 +2,21 @@
 
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium]
-  before_action :set_event, except: [:new, :edit, :create, :update, :destroy]
+  before_action :set_event, except: [:new, :edit, :create, :update, :destroy, :reassign]
   before_action :set_event_group, only: [:new, :create]
-  before_action :set_event_group_and_event, only: [:edit, :update, :destroy]
+  before_action :set_event_group_and_event, only: [:edit, :update, :destroy, :reassign]
   before_action :redirect_to_friendly, only: [:podium, :spread, :summary]
   after_action :verify_authorized, except: [:show, :spread, :summary, :podium]
 
   MAX_SUMMARY_EFFORTS = 1000
   FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
 
+  # GET /events/1
   def show
     redirect_to :spread_event
   end
 
+  # GET /event_groups/1/events/1/new
   def new
     course = params[:course_id].present? ? @event_group.organization.courses.friendly.find(params[:course_id]) : nil
     @event = @event_group.events.new(
@@ -30,11 +32,13 @@ class EventsController < ApplicationController
     @presenter = ::EventSetupPresenter.new(@event, params, current_user)
   end
 
+  # GET /event_groups/1/events/1/edit
   def edit
     authorize @event
     @presenter = ::EventSetupPresenter.new(@event, params, current_user)
   end
 
+  # POST /event_groups/1/events
   def create
     @event = @event_group.events.new
     @event.assign_attributes(permitted_params)
@@ -48,6 +52,7 @@ class EventsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /event_groups/1/events/1
   def update
     authorize @event
 
@@ -65,26 +70,45 @@ class EventsController < ApplicationController
     end
   end
 
+  # DELETE /event_groups/1/events/1
   def destroy
     authorize @event
-    @event.destroy
 
-    redirect_to setup_event_group_path(@event_group)
+    @event.destroy
+    respond_to do |format|
+      format.html { redirect_to setup_event_group_path(@event_group) }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@event) }
+    end
   end
 
+  # PATCH /event_groups/1/events/1/reassign
   def reassign
     authorize @event
+
     @event.assign_attributes(params.require(:event).permit(:event_group_id))
     redirect_id = @event.event_group_id || @event.changed_attributes["event_group_id"]
 
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
-    set_flash_message(response) unless response.successful?
 
-    redirect_to setup_event_group_path(redirect_id)
+    if response.successful?
+      respond_to do |format|
+        format.html { redirect_to setup_event_group_path(redirect_id) }
+        format.turbo_stream do
+          redirect_event_group = EventGroup.find(redirect_id)
+          presenter = ::EventGroupSetupPresenter.new(redirect_event_group, view_context)
+          render turbo_stream: turbo_stream.replace("event_overview_cards", partial: "event_groups/event_overview_cards", locals: { presenter: presenter })
+        end
+      end
+    else
+      set_flash_message(response)
+      redirect_to setup_event_group_path(redirect_id), status: :unprocessable_entity
+    end
+
   end
 
   # Special views with results
 
+  # GET /events/1/spread
   def spread
     @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     respond_to do |format|
@@ -98,12 +122,14 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/1/summary
   def summary
     event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
     params[:per_page] ||= MAX_SUMMARY_EFFORTS
     @presenter = SummaryPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
 
+  # GET /events/1/podium
   def podium
     template = Results::FillEventTemplate.perform(@event)
     @presenter = PodiumPresenter.new(@event, template, prepared_params, current_user)
@@ -111,6 +137,7 @@ class EventsController < ApplicationController
 
   # Event admin actions
 
+  # DELETE /events/1/delete_all_efforts
   def delete_all_efforts
     authorize @event
     response = Interactors::BulkDestroyEfforts.perform!(@event.efforts)
@@ -127,6 +154,7 @@ class EventsController < ApplicationController
 
   # Actions related to the event/effort/split_time relationship
 
+  # PUT /events/1/set_stops
   def set_stops
     authorize @event
     event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
@@ -138,10 +166,13 @@ class EventsController < ApplicationController
 
   # This action updates the event scheduled start time and adjusts absolute time on all
   # existing split_times to keep elapsed times consistent.
+  #
+  # GET /events/1/edit_start_time
   def edit_start_time
     authorize @event
   end
 
+  # PATCH /events/1/update_start_time
   def update_start_time
     authorize @event
 
@@ -158,6 +189,7 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /events/1/export
   def export
     authorize @event
     params[:per_page] = @event.efforts.size # Get all efforts without pagination

@@ -6,6 +6,7 @@ class EventSetupPresenter < BasePresenter
   attr_reader :event
   delegate :event_group, :new_record?, :organization, :to_param, to: :event
   delegate :id, to: :event, prefix: true
+  delegate :available_live?, :concealed?, to: :event_group
   delegate :pref_distance_unit, to: :current_user
 
   def initialize(event, params, current_user)
@@ -52,6 +53,10 @@ class EventSetupPresenter < BasePresenter
 
   def organization_name
     organization.name
+  end
+
+  def status
+    available_live? ? "live" : "not_live"
   end
 
   private

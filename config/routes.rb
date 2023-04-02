@@ -95,6 +95,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show] do
+      member { patch :reassign }
       resources :syncable_relations, only: [:create, :destroy], module: "events"
     end
 
@@ -148,7 +149,6 @@ Rails.application.routes.draw do
       put :set_stops
       post :sync_entrants
       post :sync_lottery_entrants
-      patch :reassign
       patch :update_start_time
       delete :delete_all_efforts
     end

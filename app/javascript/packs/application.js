@@ -43,14 +43,6 @@ import "bootstrap"
 // Import specific Bootstrap modules
 import { Tooltip } from "bootstrap"
 
-// Initialize tooltips
-document.addEventListener("turbo:load", () => {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new Tooltip(tooltipTriggerEl)
-  })
-})
-
 // Expand the default allowList for Bootstrap tooltips and popovers
 let myDefaultAllowList = Tooltip.Default.allowList;
 

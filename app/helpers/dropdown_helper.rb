@@ -9,7 +9,7 @@ module DropdownHelper
     content_tag container_tag, class: [container_class, options[:class]].join(" ") do
       toggle_tag = options[:button] ? :button : :a
       toggle_class = (options[:button] ? "btn btn-outline-secondary" : "") + " dropdown-toggle"
-      concat content_tag(toggle_tag, class: toggle_class, data: { "bs-toggle": "dropdown" }) {
+      concat content_tag(toggle_tag, class: toggle_class, data: { bs_toggle: "dropdown" }) {
         active_name = items.find { |item| item[:active] }&.dig(:name)
         safe_concat [title, active_name].compact.join(" / ")
         safe_concat "&nbsp;"

@@ -5,27 +5,29 @@ module EventGroupsHelper
     if view_object.ready_efforts.present?
       content_tag :div, class: "btn-group" do
         concat content_tag(:button, class: "btn btn-success dropdown-toggle start-ready-efforts",
-                                    data: {"bs-toggle": :dropdown}) {
-                 safe_concat "Start entrants"
-                 safe_concat "&nbsp;"
-                 concat content_tag(:span, "", class: "caret")
-               }
+                           data: { bs_toggle: :dropdown }) {
+          safe_concat "Start entrants"
+          safe_concat "&nbsp;"
+          concat content_tag(:span, "", class: "caret")
+        }
 
         concat content_tag(:div, class: "dropdown-menu") {
           view_object.ready_efforts.count_by(&:assumed_start_time_local).sort.each do |time, effort_count|
             display_time = l(time, format: :full_day_military_and_zone)
             concat content_tag(:div, "(#{effort_count}) scheduled at #{display_time}",
-                               {class: "dropdown-item", data: {action: "click->roster#showModal",
-                                                               title: "Start #{pluralize(effort_count, 'Entrant')}",
-                                                               time: time.in_time_zone("UTC").to_s,
-                                                               displaytime: l(time, format: :datetime_input)}})
+                               { class: "dropdown-item",
+                                 data: { action: "click->roster#showModal",
+                                         title: "Start #{pluralize(effort_count, 'Entrant')}",
+                                         time: time.in_time_zone("UTC").to_s,
+                                         displaytime: l(time, format: :datetime_input) }
+                               })
           end
         }
       end
     else
       link_to "Nothing to start", "#", disabled: true,
-                                       data: {confirm: "No entrants are ready to start. Reload the page to check again."},
-                                       class: "start-ready-efforts btn btn-md btn-success"
+              data: { confirm: "No entrants are ready to start. Reload the page to check again." },
+              class: "start-ready-efforts btn btn-md btn-success"
     end
   end
 

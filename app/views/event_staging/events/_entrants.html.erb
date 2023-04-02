@@ -45,8 +45,8 @@
             </tr>
             <template slot="row" scope="vm">
               <td>
-                <i class="fas fa-check-circle" v-show="vm.row.personId" data-bs-toggle="tooltip" title="This effort has been reconciled"></i>
-                <i class="fas fa-question-circle" v-show="!vm.row.personId" data-bs-toggle="tooltip" title="This effort is not reconciled with participants in the database"></i>
+                <i class="fas fa-check-circle" v-show="vm.row.personId" data-controller="tooltip" title="This effort has been reconciled"></i>
+                <i class="fas fa-question-circle" v-show="!vm.row.personId" data-controller="tooltip" title="This effort is not reconciled with participants in the database"></i>
               </td>
               <td>{{ vm.row.firstName }} {{ vm.row.lastName }}</td>
               <td>{{ vm.row.gender === 'male' ? 'M' : 'F' }}</td>

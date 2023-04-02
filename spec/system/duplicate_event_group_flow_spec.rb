@@ -103,7 +103,7 @@ RSpec.describe "create a duplicate event group using the duplicate event group p
 
     new_events = Event.last(2)
     new_events.each do |event|
-      expect(page).to have_text(event.name)
+      expect(page).to have_text(event.short_name)
       expect(event.scheduled_start_time_local.to_date).to eq(new_date.to_date)
     end
   end

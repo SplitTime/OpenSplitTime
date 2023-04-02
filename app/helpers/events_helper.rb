@@ -9,7 +9,7 @@ module EventsHelper
                         bs_toggle: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
-                class: "btn btn-danger btn-sm" }
+                class: "btn btn-danger" }
     link_to fa_icon("trash"), url, options
   end
 
@@ -19,7 +19,7 @@ module EventsHelper
     options = { data: { bs_toggle: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
-                class: "btn btn-primary btn-sm" }
+                class: "btn btn-primary" }
     link_to fa_icon("pencil-alt"), url, options
   end
 

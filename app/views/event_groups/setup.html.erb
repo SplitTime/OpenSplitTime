@@ -13,7 +13,10 @@
         <div class="row">
           <div class="col">
             <% if current_user&.authorized_fully?(@presenter.event_group) %>
-              <%= link_to fa_icon("plus", text: "Add an event"), new_event_group_event_path(@presenter.event_group), id: "add-event", class: "btn btn-success" %>
+              <%= link_to fa_icon("plus", text: "Add an event"),
+                          new_event_group_event_path(@presenter.event_group),
+                          id: "add-event",
+                          class: "btn btn-success" %>
               <% if @presenter.events.present? %>
                 <%= event_group_actions_dropdown(@presenter) %>
               <% end %>
@@ -23,20 +26,30 @@
       </div>
     </aside>
 
-    <% if @presenter.events.present? %>
-      <%= render "events/setup_events", presenter: @presenter, events: @presenter.events, show_grouping_button: "leave" %>
-    <% else %>
-      <div class="callout callout-info">
-        <h5>The next step is to add an event to this group</h5>
-        <p>Click the <strong>Add an event</strong> button to add an event to this group.</p>
-      </div>
-    <% end %>
+    <div id="event_overview_cards">
+      <% if @presenter.events.present? %>
+        <%= render partial: "events/event_overview_card",
+                   collection: @presenter.events,
+                   as: :event,
+                   locals: { show_grouping_button: "leave" } %>
+      <% else %>
+        <div class="callout callout-info">
+          <h5>The next step is to add an event to this group</h5>
+          <p>Click the <strong>Add an event</strong> button to add an event to this group.</p>
+        </div>
+      <% end %>
+    </div>
 
-    <% if @presenter.candidate_events.present? %>
-      <hr>
-      <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
-      <%= render "events/setup_events", presenter: @presenter, events: @presenter.candidate_events, show_grouping_button: "join" %>
-    <% end %>
+    <div id="event_candidate_overview_cards">
+      <% if @presenter.candidate_events.present? %>
+        <hr>
+        <h4><strong><%= "Events that may be added to the #{@presenter.name} group" %></strong></h4>
+        <%= render partial: "events/event_overview_card",
+                   collection: @presenter.candidate_events,
+                   as: :event,
+                   locals: { show_grouping_button: "join" } %>
+      <% end %>
+    </div>
   </article>
 
 <% when "entrants" %>

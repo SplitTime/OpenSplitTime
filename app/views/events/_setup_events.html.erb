@@ -1,31 +1,5 @@
 <%# locals: (presenter:, events:) -%>
 
-<% events.each do |event| %>
-  <div id="<%= dom_id(event) %>" class="card mt-3">
-    <div class="card-header">
-      <div class="row">
-        <div class="col-md-6">
-          <span class="h2 fw-bold"><%= event.short_name %></span>
-          <span class="h4 text-muted ms-2"><%= " #{pluralize(event.efforts.count, 'entrant')}" %></span>
-        </div>
-        <div class="col text-md-end my-2 my-md-0">
-          <%= link_to_event_edit(event) %>
-          <%= link_to_event_delete(event) %>
-        </div>
-      </div>
-    </div>
-    <div class="card-body">
-      <h5><%= fa_icon("stopwatch") %> <%= l event.scheduled_start_time_local, format: :full_day_time_and_zone %></h5>
-      <div class="row">
-        <div class="col-md-6">
-          <span class="h5"><%= fa_icon("map-marked-alt") %> <%= event.course.name %></span>
-          <span class="h6 text-muted ms-2"><%= " #{pluralize(event.course.splits.count, 'split')}" %></span>
-          <span class="ms-2"><%= link_to_course_edit(event.course) %></span>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
 <table class="table table-striped">
   <thead>
   <tr>
@@ -40,8 +14,6 @@
         <th class="text-center">Leave Group</th>
       <% end %>
     <% end %>
-
-    <th class="text-center"></th>
   </tr>
   </thead>
 
@@ -68,9 +40,6 @@
                                               class: "btn btn-xs btn-success" %></td>
         <% end %>
       <% end %>
-      <td class="text-center">
-        <%= event_actions_dropdown(event) %>
-      </td>
     </tr>
   <% end %>
   </tbody>

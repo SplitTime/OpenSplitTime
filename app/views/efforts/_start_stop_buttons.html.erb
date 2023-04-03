@@ -8,24 +8,24 @@
     <%= link_to "Set stop", stop_effort_path(presenter.effort),
                 method: :patch,
                 class: "btn btn-success",
-                data: { "bs-toggle": "tooltip",
-                        placement: :bottom,
-                        "bs-original-title": "Sets a stop on the final split time" } %>
+                data: { controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: "Sets a stop on the final split time" } %>
   <% end %>
   <% if presenter.has_removable_stop? %>
     <%= link_to "Remove stop", stop_effort_path(presenter.effort, status: false),
                 method: :patch,
                 class: "btn btn-success",
-                data: { "bs-toggle": "tooltip",
-                        placement: :bottom,
-                        "bs-original-title": "Removes the stop from all split times" } %>
+                data: { controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: "Removes the stop from all split times" } %>
   <% end %>
   <% if presenter.started? %>
     <%= link_to "Smart stop", smart_stop_effort_path(presenter.effort),
                 method: :patch,
                 class: "btn btn-success",
-                data: { "bs-toggle": "tooltip",
-                        placement: :bottom,
-                        "bs-original-title": "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time" } %>
+                data: { controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time" } %>
   <% end %>
 </span>

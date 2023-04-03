@@ -4,8 +4,8 @@ module CoursesHelper
   def link_to_course_edit(course)
     url = edit_organization_course_path(course.organization, course)
     tooltip = "Edit this course"
-    options = { data: { bs_toggle: :tooltip,
-                        bs_placement: :bottom,
+    options = { data: { controller: :tooltip,
+                        bs_placement: :top,
                         bs_original_title: tooltip },
                 class: "btn btn-primary btn-sm" }
     link_to fa_icon("pencil-alt"), url, options

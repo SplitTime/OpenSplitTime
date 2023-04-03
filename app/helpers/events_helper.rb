@@ -6,7 +6,7 @@ module EventsHelper
     tooltip = "Delete this event"
     options = { data: { turbo_confirm: "This will delete the event, together with all related entrants. Are you sure you want to proceed?",
                         turbo_method: :delete,
-                        bs_toggle: :tooltip,
+                        controller: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
                 class: "btn btn-danger" }
@@ -16,7 +16,7 @@ module EventsHelper
   def link_to_event_edit(event)
     url = edit_event_group_event_path(event.event_group, event)
     tooltip = "Edit this event"
-    options = { data: { bs_toggle: :tooltip,
+    options = { data: { controller: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
                 class: "btn btn-primary" }
@@ -27,7 +27,7 @@ module EventsHelper
     link_to fa_icon("sign-in-alt"),
             reassign_event_group_event_path(event.event_group, event, event: { event_group_id: desired_event_group.id }),
             data: {
-              bs_toggle: "tooltip",
+              controller: :tooltip,
               bs_placement: "bottom",
               bs_original_title: "Join #{event.name} into the #{desired_event_group.name} group",
               turbo_method: :patch,
@@ -40,7 +40,7 @@ module EventsHelper
     link_to fa_icon("sign-out-alt"),
             reassign_event_group_event_path(current_event_group, event, event: { event_group_id: nil }),
             data: {
-              bs_toggle: "tooltip",
+              controller: :tooltip,
               bs_placement: "bottom",
               bs_original_title: "Remove #{event.name} from the #{current_event_group.name} group",
               turbo_method: :patch,

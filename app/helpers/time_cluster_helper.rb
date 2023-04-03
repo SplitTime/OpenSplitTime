@@ -21,7 +21,10 @@ module TimeClusterHelper
 
       if cluster.show_stop_indicator?
         concat " "
-        concat fa_icon("hand-paper", class: "text-danger", data: {"bs-toggle": "tooltip", "bs-original-title": "Stopped Here"})
+        concat fa_icon("hand-paper",
+                       class: "text-danger",
+                       data: { controller: :tooltip,
+                               bs_original_title: "Stopped Here" })
       end
     end
   end

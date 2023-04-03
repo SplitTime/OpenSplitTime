@@ -10,9 +10,9 @@ module NavigationHelper
             data: { controller: "navigation animation",
                     action: "click->animation#spinIcon keyup@document->navigation#evaluateKeyup",
                     "navigation-target" => "refreshButton",
-                    "bs-toggle": "tooltip",
-                    placement: :bottom,
-                    "bs-original-title": tooltip_title }
+                    controller: :tooltip,
+                    bs_placement: :bottom,
+                    bs_original_title: tooltip_title }
   end
 
   def prior_next_nav_button(view_object, prior_or_next, param: :parameterized_split_name)
@@ -29,9 +29,9 @@ module NavigationHelper
             data: { controller: "navigation",
                     action: "keyup@document->navigation#evaluateKeyup",
                     "navigation-target" => "#{prior_or_next}Button",
-                    "bs-toggle": "tooltip",
-                    placement: :bottom,
-                    "bs-original-title": tooltip_title },
+                    controller: :tooltip,
+                    bs_placement: :bottom,
+                    bs_original_title: tooltip_title },
             disabled: target.blank?
   end
 end

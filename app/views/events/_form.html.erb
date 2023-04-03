@@ -22,7 +22,10 @@
             <div class="row">
               <div class="mb-3 col">
                 <label class="required">Choose an existing course or create a new course</label>
-                <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
+                <span tabindex="-1"
+                      data-controller="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-original-title="Each event is run on a course. Your courses can be reused in future events."><i class="fas fa-question-circle"></i></span>
                 <%= form.select :id, options_for_select(presenter.courses_for_select, presenter.event.course_id),
                                 {},
                                 { autofocus: true,
@@ -134,7 +137,10 @@
               <div class="row">
                 <div class="col">
                   <%= form.label :short_name, class: "mb-1" %>
-                  <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
+                  <span tabindex="-1"
+                        data-controller="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-original-title="If you will have more than one event in this group, give each a short name (like '50K' or '24-hour') to distinguish them"><i class="fas fa-question-circle"></i></span>
                   <%= form.text_field :short_name,
                                       class: "form-control",
                                       placeholder: "Short name",
@@ -174,7 +180,10 @@
                 <div class="row">
                   <div class="col">
                     <%= form.label :linked_lottery %>
-                    <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="If entrants to this event were chosen in an OpenSplitTime lottery, choose the lottery from this dropdown. Otherwise, leave this selection blank."><i class="fas fa-question-circle"></i></span>
+                    <span tabindex="-1"
+                          data-controller="tooltip"
+                          data-bs-placement="bottom"
+                          data-bs-original-title="If entrants to this event were chosen in an OpenSplitTime lottery, choose the lottery from this dropdown. Otherwise, leave this selection blank."><i class="fas fa-question-circle"></i></span>
                     <%= form.select :lottery_id,
                                     options_for_select(event.organization.lotteries.pluck(:name, :id).unshift(["None", nil]), event.lottery_id),
                                     {},
@@ -192,7 +201,10 @@
           <div class="row">
             <div class="mb-3 col">
               <%= form.label "Tracking site URL", class: "mb-1" %>
-              <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
+              <span tabindex="-1"
+                    data-controller="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="If this event will use an external GPS-based tracking site, you may enter the site URL here to create a convenient link from the event page."><i class="fas fa-question-circle"></i></span>
               <%= form.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
             </div>
           </div>
@@ -203,7 +215,10 @@
         <div class="mb-3">
           <div class="control-label col">
             <%= form.label :podium_template, class: "mb-1 required" %>
-            <span tabindex="-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
+            <span tabindex="-1"
+                  data-controller="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-original-title="Select a template for the Results/Podium view. If you aren't sure, choose Simple."><i class="fas fa-question-circle"></i></span>
           </div>
           <div class="col-sm-8">
             <div class="card" data-controller="results-template">

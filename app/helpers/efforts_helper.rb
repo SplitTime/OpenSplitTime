@@ -46,22 +46,22 @@ module EffortsHelper
   def link_to_effort_delete(effort)
     url = effort_path(effort)
     tooltip = "Delete effort"
-    options = {method: :delete,
-               data: {confirm: "This cannot be undone. Continue?",
-                      "bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
-               class: "btn btn-danger"}
+    options = { method: :delete,
+                data: { confirm: "This cannot be undone. Continue?",
+                        controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: tooltip },
+                class: "btn btn-danger" }
     link_to fa_icon("trash"), url, options
   end
 
   def link_to_effort_edit(effort)
     url = edit_effort_path(effort)
     tooltip = "Edit effort"
-    options = {data: {"bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
-               class: "btn btn-primary"}
+    options = { data: { controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: tooltip },
+                class: "btn btn-primary" }
     link_to fa_icon("pencil-alt"), url, options
   end
 
@@ -70,11 +70,11 @@ module EffortsHelper
       row.time_data_statuses.each_with_index do |data_status, i|
         new_data_status = data_status == "confirmed" ? "" : "confirmed"
         button_class = data_status == "confirmed" ? "success" : "outline-secondary"
-        effort_data = {split_times_attributes: {id: row.split_time_ids[i], data_status: new_data_status}}
+        effort_data = { split_times_attributes: { id: row.split_time_ids[i], data_status: new_data_status } }
         url = update_split_times_effort_path(effort, effort: effort_data)
-        options = {method: :patch,
-                   disabled: row.split_time_ids[i].blank?,
-                   class: "btn btn-#{button_class}"}
+        options = { method: :patch,
+                    disabled: row.split_time_ids[i].blank?,
+                    class: "btn btn-#{button_class}" }
         concat link_to fa_icon("thumbs-up"), url, options
         concat " "
       end
@@ -85,10 +85,10 @@ module EffortsHelper
     if row.split_time_ids.compact.present?
       row.split_time_ids.each do |id|
         url = delete_split_times_effort_path(effort, split_time_ids: [id])
-        options = {method: :delete,
-                   disabled: id.blank?,
-                   data: {confirm: "This action cannot be undone. OK to proceed?"},
-                   class: "btn btn-danger"}
+        options = { method: :delete,
+                    disabled: id.blank?,
+                    data: { confirm: "This action cannot be undone. OK to proceed?" },
+                    class: "btn btn-danger" }
         concat link_to fa_icon("trash"), url, options
         concat " "
       end
@@ -97,10 +97,10 @@ module EffortsHelper
 
   def link_to_start_effort(view_object)
     time = view_object.assumed_start_time_local
-    button_tag "Start effort", class: "btn btn-success", data: {action: "click->roster#showModal",
-                                                                title: "Start Effort",
-                                                                time: time.to_s,
-                                                                displaytime: l(time, format: :datetime_input)}
+    button_tag "Start effort", class: "btn btn-success", data: { action: "click->roster#showModal",
+                                                                 title: "Start Effort",
+                                                                 time: time.to_s,
+                                                                 displaytime: l(time, format: :datetime_input) }
   end
 
   def effort_start_time_string(presenter)

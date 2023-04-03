@@ -7,6 +7,6 @@ module ConcealedHelper
 
     concat name.html_safe
     concat " "
-    fa_icon(icon_name, data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
+    fa_icon(icon_name, data: { controller: :tooltip, bs_original_title: tooltip_text })
   end
 end

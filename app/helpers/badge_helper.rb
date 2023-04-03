@@ -5,7 +5,7 @@ module BadgeHelper
     color = options[:color] || "primary"
     tooltip_text = options[:tooltip_text]
     css_class = "badge bg-#{color} align-top"
-    tooltip_data = tooltip_text.present? ? { "bs-toggle": "tooltip", "bs-original-title": tooltip_text } : {}
+    tooltip_data = tooltip_text.present? ? { controller: :tooltip, bs_original_title: tooltip_text } : {}
 
     content_tag(:span,
                 text,
@@ -30,7 +30,7 @@ module BadgeHelper
                 status.titleize,
                 style: "font-size:0.8rem;",
                 class: "badge bg-#{color} align-top",
-                data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
+                data: { controller: :tooltip, bs_original_title: tooltip_text })
   end
 
   def lottery_status_badge(status)
@@ -52,7 +52,7 @@ module BadgeHelper
                 status.titleize,
                 style: "font-size:0.8rem;",
                 class: "badge bg-#{color} align-top",
-                data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
+                data: { controller: :tooltip, bs_original_title: tooltip_text })
   end
 
   def waitlist_badge

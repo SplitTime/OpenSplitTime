@@ -758,9 +758,6 @@
                     }
                 } );
                 eventStage.dataTables.onDataChange.call( this );
-                $( this.$el ).on( 'mouseover', '[data-bs-toggle="tooltip"]', function() {
-                    $( this ).tooltip( 'show' );
-                } );
             },
             init: function() {
                 Vue.component( 'data-tables', {

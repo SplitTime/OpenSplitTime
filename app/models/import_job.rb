@@ -25,8 +25,8 @@ class ImportJob < ApplicationRecord
 
   validates_presence_of :parent_type, :parent_id, :format
   validates :files,
-            size: {less_than: 1.megabyte},
-            content_type: {in: %w[text/csv text/plain], message: "must be a CSV file"}
+            size: { less_than: 1.megabyte },
+            content_type: { in: %w[text/csv text/plain], message: "must be a CSV file" }
 
   alias_attribute :owner_id, :user_id
 
@@ -47,7 +47,11 @@ class ImportJob < ApplicationRecord
     when "EventGroup"
       ::Rails.application.routes.url_helpers.setup_event_group_path(parent, display_style: :entrants)
     when "Event"
-      ::Rails.application.routes.url_helpers.setup_event_group_path(parent.event_group, display_style: :entrants)
+      if format == "event_course_splits"
+        ::Rails.application.routes.url_helpers.setup_course_event_group_event_path(parent.event_group, parent)
+      else
+        ::Rails.application.routes.url_helpers.setup_event_group_path(parent.event_group, display_style: :entrants)
+      end
     else
       raise RuntimeError, "Unknown parent type #{parent_type} for import job #{id}"
     end

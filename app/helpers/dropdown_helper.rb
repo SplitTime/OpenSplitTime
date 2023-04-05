@@ -383,6 +383,17 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
+  def event_setup_course_import_dropdown(view_object)
+    dropdown_items = [
+      { name: "Import from CSV file",
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: view_object.event.id, format: :event_course_splits }) },
+      { role: :separator },
+      { name: "Download CSV template",
+        link: splits_path(filter: { id: 0 }, format: :csv) },
+    ]
+    build_dropdown_menu("Import", dropdown_items, button: true)
+  end
+
   def setup_entrants_import_dropdown(view_object)
     dropdown_items = [
       { name: "Import from CSV file",

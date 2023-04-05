@@ -95,7 +95,10 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show] do
-      member { patch :reassign }
+      member do
+        get :setup_course
+        patch :reassign
+      end
       resources :syncable_relations, only: [:create, :destroy], module: "events"
     end
 

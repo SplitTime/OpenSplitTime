@@ -1,0 +1,58 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Setup Course - #{@presenter.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.name] %>
+
+<%= render "shared/errors", obj: @presenter.course %>
+
+<article class="ost-article container">
+  <aside class="col-12">
+    <h3>
+      <strong>Provide Your Course Details</strong>
+    </h3>
+    <div class="callout callout-info">
+      <p>Add a GPX file to see your course on the map below.</p>
+    </div>
+  </aside>
+
+  <div class="ost-subtitle">
+    <% if @presenter.description %>
+      <h5>
+        <%= @presenter.description %>
+      </h5>
+    <% end %>
+  </div>
+
+  <div id="map"
+       style="width: 100%; height: 500px;"
+       data-controller="maps"
+       data-maps-target="mapInfo"
+       data-course-id="<%= @presenter.course_id %>"></div>
+  <br/>
+
+  <aside class="col-12">
+    <h3>
+      <strong></strong>
+    </h3>
+    <div class="callout callout-info">
+      <h5>Add Splits wherever you want to record times</h5>
+      <ul class="mb-0">
+        <li>A Start and Finish Split have been created for you. Edit them to add location and elevation data.</li>
+        <li>Create new splits using the tools in the table below.</li>
+      </ul>
+    </div>
+  </aside>
+
+  <%= render "splits/splits", splits: @presenter.ordered_splits %>
+
+  <div class="col-12">
+    <div>
+      <%= link_to fa_icon("plus", text: "Add"), "#", id: "add-split", class: "btn btn-success" %>
+      <%= event_setup_course_import_dropdown(@presenter) %>
+      <%= link_to "Export", splits_path(filter: { course_id: @presenter.course_id }, format: :csv), class: "btn btn-outline-secondary" %>
+      <%= link_to "Return to setup", setup_event_group_path(@presenter.event_group), class: "btn btn-primary" %>
+    </div>
+  </div>
+</article>

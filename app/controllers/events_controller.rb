@@ -81,6 +81,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def setup_course
+    authorize @event
+
+    @presenter = EventSetupCoursePresenter.new(@event, view_context)
+  end
+
+
   # PATCH /event_groups/1/events/1/reassign
   def reassign
     authorize @event

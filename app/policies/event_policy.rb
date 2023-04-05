@@ -20,6 +20,10 @@ class EventPolicy < ApplicationPolicy
     @event = event
   end
 
+  def setup_course?
+    user.authorized_fully?(event)
+  end
+
   def spread?
     user.present?
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SplitsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_split, except: [:index, :new, :create]
@@ -13,8 +15,13 @@ class SplitsController < ApplicationController
       end
       format.csv do
         builder = CsvBuilder.new(Split, @splits)
-        send_data(builder.full_string, type: "text/csv",
-                                       filename: "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv")
+        filename = if prepared_params[:filter] == { "id" => "0" }
+                     "ost-split-import-template.csv"
+                   else
+                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                   end
+
+        send_data(builder.full_string, type: "text/csv", filename: filename)
       end
     end
   end

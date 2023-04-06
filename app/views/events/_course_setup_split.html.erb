@@ -1,6 +1,6 @@
 <%# locals: (event:, split:, aid_station: -%>
 
-<tr id="<%= dom_id(split, dom_id(event)) %>">
+<tr id="<%= dom_id(split, dom_id(event)) %>" class="<%= 'bg-light fst-italic fw-light' if aid_station.blank? %>">
   <td><%= render "events/aid_station_checkbox", event: event, split: split, aid_station: aid_station %></td>
   <td><strong><%= split.base_name %></strong></td>
   <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>

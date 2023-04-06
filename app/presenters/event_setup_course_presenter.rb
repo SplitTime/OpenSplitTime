@@ -12,12 +12,20 @@ class EventSetupCoursePresenter < BasePresenter
   delegate :description, :name, :ordered_splits, :organization, to: :course
   delegate :concealed?, :status, to: :event_group
 
+  def aid_stations_by_split_id
+    @aid_stations_by_split_id ||= event.aid_stations.index_by(&:split_id)
+  end
+
   def course_id
     course.id
   end
 
   def event_group_name
     event_group.name
+  end
+
+  def event_name
+    event.guaranteed_short_name
   end
 
   def status

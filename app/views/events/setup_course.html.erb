@@ -3,7 +3,7 @@
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.name] %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, "Course Setup"] %>
 
 <%= render "shared/errors", obj: @presenter.course %>
 
@@ -45,7 +45,12 @@
     </div>
   </aside>
 
-  <%= render "splits/splits", splits: @presenter.ordered_splits %>
+  <%= render partial: "events/course_setup_splits",
+             locals: {
+               event: @presenter.event,
+               splits: @presenter.ordered_splits,
+               aid_stations_by_split_id: @presenter.aid_stations_by_split_id,
+             } %>
 
   <div class="col-12">
     <div>

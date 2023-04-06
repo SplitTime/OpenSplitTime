@@ -63,7 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy]
   resources :credentials, only: [:create, :update, :destroy]
 
   resources :efforts do
@@ -140,6 +139,7 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:show] do
+    resources :aid_stations, only: [:create, :destroy]
     member do
       get :admin
       get :edit_start_time

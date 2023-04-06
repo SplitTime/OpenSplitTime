@@ -1,0 +1,17 @@
+<%# locals: (event:, split:, aid_station:) -%>
+
+<div class="d-flex justify-content-center">
+  <div class="form-check form-switch">
+    <label class="form-check-label" for="aid-station-check-box-<%= dom_id(split) %>"></label>
+    <input class="form-check-input"
+           type="checkbox"
+           id="aid-station-check-box-<%= dom_id(split) %>"
+           data-controller="aid-station-checkbox"
+           data-aid-station-checkbox-event-id-value="<%= event.id %>"
+            data-aid-station-checkbox-split-id-value="<%= split.id %>"
+           data-aid-station-checkbox-aid-station-id-value="<%= aid_station&.id %>"
+           <%= split.intermediate? ? "" : "disabled" %>
+           <%= event.aid_stations.find_by(split: split) ? "checked" : "" %>
+    >
+  </div>
+</div>

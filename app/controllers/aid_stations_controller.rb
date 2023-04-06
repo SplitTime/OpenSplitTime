@@ -1,43 +1,53 @@
 class AidStationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_aid_station
+  before_action :set_event
+  before_action :authorize_organization
   after_action :verify_authorized
 
-  def show
-    authorize @aid_station
-    session[:return_to] = aid_station_path(@aid_station)
-  end
+  def create
+    @aid_station = @event.aid_stations.new(aid_station_params)
 
-  def edit
-    authorize @aid_station
-  end
+    if @aid_station.save
+      split = @aid_station.split
 
-  def update
-    authorize @aid_station
-
-    if @aid_station.update(permitted_params)
-      redirect_to session.delete(:return_to) || @aid_station
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(helpers.dom_id(split, helpers.dom_id(@event)),
+                                                    partial: "events/course_setup_split",
+                                                    locals: { event: @event, split: split, aid_station: @aid_station })
+        end
+      end
     else
-      render "edit"
+      redirect_to event_group_event_course_setup_path(@event.event_group, @event), status: :unprocessable_entity
     end
   end
 
   def destroy
-    authorize @aid_station
-    if @aid_station.events.present?
-      flash[:danger] = "Aid_station cannot be deleted if events are present on the aid_station. Delete the related events individually and then delete the aid_station."
-    else
-      @aid_station.destroy
-      flash[:success] = "Aid_station deleted."
-    end
+    @aid_station = @event.aid_stations.find(params[:id])
+    split = @aid_station.split
+    @aid_station.destroy
 
-    session[:return_to] = params[:referrer_path] if params[:referrer_path]
-    redirect_to session.delete(:return_to) || aid_stations_path
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(helpers.dom_id(split, helpers.dom_id(@event)),
+                                                  partial: "events/course_setup_split",
+                                                  locals: { event: @event, split: split, aid_station: nil })
+      end
+    end
   end
 
   private
 
-  def set_aid_station
-    @aid_station = AidStation.find(params[:id])
+  def aid_station_params
+    params.require(:aid_station).permit(:split_id)
+  end
+
+  def authorize_organization
+    organization = @event.organization
+    authorize organization, policy_class: ::AidStationPolicy
+  end
+
+  def set_event
+    @event = Event.find(params[:event_id])
   end
 end

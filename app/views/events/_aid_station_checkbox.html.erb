@@ -8,9 +8,9 @@
                                    when split.start? || split.finish?
                                      'Start and finish splits are always included'
                                    when aid_station.present?
-                                     'Remove this split from the event'
+                                     'Turn off time recording at this split for this event'
                                    else
-                                     'Include this split in the event'
+                                     'Turn on time recording at this split for this event'
                                    end %>">
     <label class="form-check-label" for="aid-station-check-box-<%= dom_id(split) %>"></label>
     <input class="form-check-input"

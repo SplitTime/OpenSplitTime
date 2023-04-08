@@ -99,11 +99,11 @@ class EventsController < ApplicationController
   def attach_course_gpx
     authorize @event
 
-    @event.course.gpx.attach(params.require(:course).permit(:gpx))
+    @event.course.gpx.attach(params.require(:course).require(:gpx))
     Interactors::SetTrackPoints.perform!(@event.course)
 
     respond_to do |format|
-      format.html { redirect_to setup_course_event_group_event_path(@event_group, @event) }
+      format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
       format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
     end
   end

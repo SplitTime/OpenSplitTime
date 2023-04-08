@@ -5,7 +5,10 @@
     <% if event.course.gpx.attached? %>
       <div class="callout callout-info">
         <div class="d-inline-flex justify-content-between w-100">
-          <span>A GPX file has been added for this course.</span>
+          <div>
+            <span class="text-success"><%= fa_icon "check-circle" %></span>
+            <span class="ms-1">A GPX file has been added for this course.</span>
+          </div>
           <%= link_to "Remove",
                       remove_course_gpx_event_group_event_path(event.event_group, event),
                       method: :delete,
@@ -16,7 +19,10 @@
     <% else %>
       <div class="callout callout-info">
         <div class="d-inline-flex justify-content-between w-100">
-          <span>Add a GPX file to see your course on the map below.</span>
+          <div>
+            <span class="text-info"><%= fa_icon "info-circle" %></span>
+            <span class="ms-1">Add a GPX file to see your course on the map below.</span>
+          </div>
           <%= link_to "Add",
                       new_course_gpx_event_group_event_path(event.event_group, event),
                       data: { turbo_frame: "form_modal" },

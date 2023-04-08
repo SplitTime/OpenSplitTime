@@ -22,7 +22,7 @@
                data-controller="dropzone"
                data-dropzone-max-file-size="1"
                data-dropzone-max-files="1"
-               data-dropzone-accepted-files="image/*"
+               data-dropzone-accepted-files=".gpx"
                data-action="dropzone:success->form-apply#enableSubmitButton"
           >
             <%= f.file_field :gpx, direct_upload: true, data: { "dropzone-target" => "input" } %>

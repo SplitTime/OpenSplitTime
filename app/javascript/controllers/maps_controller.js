@@ -8,10 +8,15 @@ export default class extends Controller {
   }
 
   connect() {
-
+    const controller = this
     const courseId = this.courseIdValue;
     const splitId = this.splitIdValue;
-    const controller = this
+
+    let mapOptions = {
+      mapTypeId: "terrain"
+    };
+
+    let map = new google.maps.Map(this.element, mapOptions);
 
     Rails.ajax({
       url: "/api/v1/courses/" + courseId,
@@ -29,12 +34,12 @@ export default class extends Controller {
         }
 
         const trackPoints = attributes.trackPoints || [];
-        controller.gmapShow(locations, trackPoints);
+        controller.plotMarkersAndTrack(map, locations, trackPoints);
       }
     })
   }
 
-  gmapShow(locations, trackPoints) {
+  plotMarkersAndTrack(map, locations, trackPoints) {
     locations = Array.isArray(locations) ? locations : [locations];
     trackPoints = Array.isArray(trackPoints) ? trackPoints : [trackPoints];
 
@@ -49,13 +54,7 @@ export default class extends Controller {
       bounds.extend(p);
     });
 
-    let mapOptions = {
-      mapTypeId: 'terrain'
-    };
-
-    let map = new google.maps.Map(this.element, mapOptions);
-
-    let markers = locations.map(function (location, i) {
+    let markers = locations.map(function (location) {
       if (location.latitude !== null && location.longitude !== null) {
         let lat = parseFloat(location.latitude);
         let lng = parseFloat(location.longitude);
@@ -73,7 +72,7 @@ export default class extends Controller {
         });
 
         marker.addListener('click', function () {
-          markers.map(function (v, index) {
+          markers.map(function (v) {
             if (v.infowindow) {
               v.infowindow.close();
             }
@@ -90,7 +89,7 @@ export default class extends Controller {
       path: points,
       strokeColor: "#1000CA",
       strokeOpacity: .7,
-      strokeWeight: 4
+      strokeWeight: 6
     });
 
     poly.setMap(map);

@@ -18,7 +18,7 @@
         <div class="mb-3 col-6">
           <%= form.label "Split name", class: "mb-1 required" %>
           <%= tooltip("Name this Split") %>
-          <%= form.text_field :base_name, class: "form-control", placeholder: "My Aid Station" %>
+          <%= form.text_field :base_name, class: "form-control", placeholder: "My Aid Station", data: { controller: :autofocus } %>
         </div>
         <div class="mb-3 col-6">
           <%= form.label :description, class: "mb-1" %>

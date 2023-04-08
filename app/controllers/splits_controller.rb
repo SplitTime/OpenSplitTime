@@ -45,11 +45,11 @@ class SplitsController < ApplicationController
         format.turbo_stream do
           presenter = EventSetupCoursePresenter.new(@event, view_context)
 
-          render turbo_stream: turbo_stream.replace("event_course_splits",
-                                                    partial: "event_course_splits",
+          render turbo_stream: turbo_stream.replace("course_setup_splits_event_#{presenter.event.id}",
+                                                    partial: "events/course_setup_splits",
                                                     locals: {
                                                       event: presenter.event,
-                                                      splits: presenter.splits,
+                                                      splits: presenter.ordered_splits,
                                                       aid_stations_by_split_id: presenter.aid_stations_by_split_id,
                                                     }
           )
@@ -64,9 +64,11 @@ class SplitsController < ApplicationController
     authorize @split
 
     if @split.update(permitted_params)
-      redirect_to split_path(@split)
+      respond_to do |format|
+        format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
+        format.turbo_stream { @aid_station = @event.aid_stations.find_by(split_id: @split.id) }
+      end
     else
-      @course = Course.friendly.find(@split.course_id) if @split.course_id
       render "edit", status: :unprocessable_entity
     end
   end
@@ -87,6 +89,6 @@ class SplitsController < ApplicationController
   end
 
   def set_split
-    @split = @course.splits.find(params[:id])
+    @split = @course.splits.friendly.find(params[:id])
   end
 end

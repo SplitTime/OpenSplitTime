@@ -13,112 +13,102 @@
   </div>
 
   <div class="col-12 col-lg-6 col-lg-pull-6">
-    <div class="row">
-      <div class="mb-3 col-6">
-        <label class="required">Split Name</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Name of the split or aid station.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <input id="split-name-field" type="text" class="form-control" autofocus>
-      </div>
-      <div class="mb-3 col-6">
-        <label>Description</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Add a helpful description of this place.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <input id="split-description-field" type="text" class="form-control" v-model="model.description">
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 col-6">
-        <label class="required">Distance From Start</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative distance from the start of the course.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <div class="input-group">
-          <input-units id="split-distance-field" type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal', digits: 2 }" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
-          <span class="input-group-text">{{ units.distance }}</span>
+    <%= form_with model: [event.event_group, event, split] do |form| %>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <%= form.label "Split name", class: "mb-1 required" %>
+          <%= tooltip("Name this Split") %>
+          <%= form.text_field :base_name, class: "form-control", placeholder: "My Aid Station" %>
+        </div>
+        <div class="mb-3 col-6">
+          <%= form.label :description, class: "mb-1" %>
+          <%= tooltip("Add a helpful description of this place") %>
+          <%= form.text_field :description, class: "form-control", placeholder: "My description" %>
         </div>
       </div>
-      <div class="mb-3 col-6">
-        <label class="required">Time Recording</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out..">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <div class="split-time-recording-wrap">
-          <label class="custom-radio">
-            <input id="split-in-radio" type="radio" name="split-time" :value="['In']" v-model="model.nameExtensions">
-            <span class="custom-radio-indicator"></span>
-            <span class="custom-radio-label">Time In</span>
-          </label>&nbsp;&nbsp;
-          <label class="custom-radio">
-            <input id="split-in-out-radio" type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" :disabled="model.kind !== 'intermediate'">
-            <span class="custom-radio-indicator"></span>
-            <span class="custom-radio-label">Time In and Out</span>
-          </label>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <%= form.label :distance_from_start, class: "mb-1 required" %>
+          <%= tooltip("Cumulative distance from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :distance_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_distance_unit %></span>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <%= form.label :time_recording, class: "mb-1 required" %>
+          <%= tooltip("Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out") %>
+          <div class="split-time-recording-wrap">
+            <label class="custom-radio">
+              <input id="split-in-radio" type="radio" name="split-time" :value="['In']" v-model="model.nameExtensions">
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">Time In</span>
+            </label>&nbsp;&nbsp;
+            <label class="custom-radio">
+              <input id="split-in-out-radio" type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" :disabled="model.kind !== 'intermediate'">
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">Time In and Out</span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 col-6 vg-group">
-        <label class="required">Vertical Gain From Start</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical gain from the start of the course.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <div class="input-group">
-          <input-units id="split-vert-gain-field" type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-          <span class="input-group-text">{{ units.elevation }}</span>
+      <div class="row">
+        <div class="mb-3 col-6 vg-group">
+          <%= form.label :vertical_gain_from_start, class: "mb-1" %>
+          <%= tooltip("Cumulative vertical gain from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :vert_gain_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
+          </div>
+        </div>
+        <div class="mb-3 col-6 vg-group">
+          <%= form.label :vertical_loss_from_start, class: "mb-1" %>
+          <%= tooltip("Cumulative vertical loss from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :vert_loss_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
+          </div>
         </div>
       </div>
-      <div class="mb-3 col-6 vg-group">
-        <label class="required">Vertical Loss From Start</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Cumulative vertical loss from the start of the course.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <div class="input-group">
-          <input-units id="split-vert-loss-field" type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
-          <span class="input-group-text">{{ units.elevation }}</span>
+      <div class="row">
+        <div class="col-12">
+          <h4><strong>Add A Location</strong></h4>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <h4><strong>Add A Location</strong></h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 col-4">
-        <label>Latitude</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter latitude or pick a point on the map.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <input id="split-latitude-field" type="text" class="form-control" v-model.number="model.latitude" v-mask="{ alias: 'decimal', digits: 6 }">
-      </div>
-      <div class="mb-3 col-4">
-        <label>Longitude</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter longitude or pick a point on the map.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <input id="split-longitude-field" type="text" class="form-control" v-model.number="model.longitude" v-mask="{ alias: 'decimal', digits: 6 }">
-      </div>
-      <div class="mb-3 col-4">
-        <label>Elevation</label>
-        <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter elevation or pick a point on the map.">
-											<i class="fas fa-question-circle"></i>
-										</span>
-        <div class="input-group">
-          <input-units id="split-elevation-field" type="text" class="form-control" v-model.number="model.elevation" v-mask="{ alias: 'integer' }" :scale="units.forElevation()"/>
-          <span class="input-group-text">{{ units.elevation }}</span>
+      <div class="row">
+        <div class="mb-3 col-4">
+          <%= form.label :latitude, class: "mb-1" %>
+          <%= tooltip("Enter latitude or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :latitude, class: "form-control" %>
+            <span class="input-group-text">degrees</span>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <%= form.label :longitude, class: "mb-1" %>
+          <%= tooltip("Enter longitude or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :longitude, class: "form-control" %>
+            <span class="input-group-text">degrees</span>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <%= form.label :elevation, class: "mb-1" %>
+          <%= tooltip("Enter elevation or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :elevation_in_preferred_units, class: "form-control" %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-12 split-modal-btn-wrap">
-      <span class="brackets" data-bs-dismiss="modal"><a href="#">Cancel</a></span>
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" v-bind:disabled="invalid" v-promise:click="[value.submit, value]" v-on:done="$emit('done');" v-on:fail="error = $event.data.errors">
-        <template v-if="!model._dtid">Add Split</template>
-        <template v-else>Done</template>
-      </button>
-    </div>
+      <div class="col-12 split-modal-btn-wrap">
+        <%= form.submit class: "btn btn-primary" %>
+        <%= button_tag "Cancel",
+                       type: :button,
+                       data: { action: "click->form-modal#hide" },
+                       class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
   </div>
 
 </div>

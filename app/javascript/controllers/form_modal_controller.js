@@ -2,6 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 import * as bootstrap from "bootstrap"
 
 export default class extends Controller {
+  static targets = [ "cancelButton" ]
+
   connect() {
     this.modal = new bootstrap.Modal(this.element)
   }
@@ -16,5 +18,10 @@ export default class extends Controller {
     if (event.detail.success) {
       this.modal.hide()
     }
+  }
+
+  hide(event) {
+    event.preventDefault()
+    this.modal.hide()
   }
 }

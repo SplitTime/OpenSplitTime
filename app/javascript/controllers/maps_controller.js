@@ -11,6 +11,7 @@ export default class extends Controller {
     const controller = this
     const courseId = this.courseIdValue;
     const splitId = this.splitIdValue;
+    const splitProvided = splitId !== 0;
 
     let mapOptions = {
       mapTypeId: "terrain"
@@ -25,24 +26,22 @@ export default class extends Controller {
         const attributes = response.data.attributes;
         let locations = null;
 
-        if (splitId === 0) {
-          locations = attributes.locations;
-        } else {
+        if (splitProvided) {
           locations = attributes.locations.filter(function (e) {
             return e.id === parseInt(splitId)
           })
+        } else {
+          locations = attributes.locations;
         }
 
         const trackPoints = attributes.trackPoints || [];
-        controller.plotMarkersAndTrack(map, locations, trackPoints);
+        const singleLocation = locations.length === 1 && splitProvided;
+        controller.plotMarkersAndTrack(map, locations, trackPoints, singleLocation);
       }
     })
   }
 
-  plotMarkersAndTrack(map, locations, trackPoints) {
-    locations = Array.isArray(locations) ? locations : [locations];
-    trackPoints = Array.isArray(trackPoints) ? trackPoints : [trackPoints];
-
+  plotMarkersAndTrack(map, locations, trackPoints, singleLocation) {
     let points = [];
     let bounds = new google.maps.LatLngBounds();
 
@@ -51,7 +50,7 @@ export default class extends Controller {
       const lon = trackPoint.lon;
       const p = new google.maps.LatLng(lat, lon);
       points.push(p);
-      bounds.extend(p);
+      if (!singleLocation) { bounds.extend(p) }
     });
 
     let markers = locations.map(function (location) {

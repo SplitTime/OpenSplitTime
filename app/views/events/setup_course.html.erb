@@ -9,19 +9,7 @@
 
 <article class="ost-article container">
   <h3><strong>Provide Your Course Details</strong></h3>
-  <%= turbo_frame_tag "gox" do %>
-    <aside class="col-12">
-      <% if @presenter.course.gpx.attached? %>
-        <div class="callout callout-info">
-          <p>A GPX file has been added for this course.</p>
-        </div>
-      <% else %>
-        <div class="callout callout-info">
-          <p>Add a GPX file to see your course on the map below.</p>
-        </div>
-      <% end %>
-    </aside>
-  <% end %>
+  <%= render "course_setup_gpx", event: @presenter.event %>
 
   <div class="ost-subtitle">
     <% if @presenter.description %>

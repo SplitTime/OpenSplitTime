@@ -96,8 +96,11 @@ Rails.application.routes.draw do
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
       member do
+        get :new_course_gpx
         get :setup_course
         patch :reassign
+        patch :attach_course_gpx
+        delete :remove_course_gpx
       end
       resources :syncable_relations, only: [:create, :destroy], module: "events"
     end

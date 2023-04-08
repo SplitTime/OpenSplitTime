@@ -1,0 +1,28 @@
+<%# locals: (event:) -%>
+
+<%= turbo_frame_tag "course_setup_gpx" do %>
+  <aside class="col-12">
+    <% if event.course.gpx.attached? %>
+      <div class="callout callout-info">
+        <div class="d-inline-flex justify-content-between w-100">
+          <span>A GPX file has been added for this course.</span>
+          <%= link_to "Remove",
+                      remove_course_gpx_event_group_event_path(event.event_group, event),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { confirm: "This cannot be undone. Proceed?" } %>
+        </div>
+      </div>
+    <% else %>
+      <div class="callout callout-info">
+        <div class="d-inline-flex justify-content-between w-100">
+          <span>Add a GPX file to see your course on the map below.</span>
+          <%= link_to "Add",
+                      new_course_gpx_event_group_event_path(event.event_group, event),
+                      data: { turbo_frame: "form_modal" },
+                      class: "btn btn-sm btn-outline-success" %>
+        </div>
+      </div>
+    <% end %>
+  </aside>
+<% end %>

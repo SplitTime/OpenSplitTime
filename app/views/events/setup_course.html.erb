@@ -8,14 +8,20 @@
 <%= render "shared/errors", obj: @presenter.course %>
 
 <article class="ost-article container">
-  <aside class="col-12">
-    <h3>
-      <strong>Provide Your Course Details</strong>
-    </h3>
-    <div class="callout callout-info">
-      <p>Add a GPX file to see your course on the map below.</p>
-    </div>
-  </aside>
+  <h3><strong>Provide Your Course Details</strong></h3>
+  <%= turbo_frame_tag "gox" do %>
+    <aside class="col-12">
+      <% if @presenter.course.gpx.attached? %>
+        <div class="callout callout-info">
+          <p>A GPX file has been added for this course.</p>
+        </div>
+      <% else %>
+        <div class="callout callout-info">
+          <p>Add a GPX file to see your course on the map below.</p>
+        </div>
+      <% end %>
+    </aside>
+  <% end %>
 
   <div class="ost-subtitle">
     <% if @presenter.description %>
@@ -31,18 +37,17 @@
   ></div>
   <br/>
 
-  <aside class="col-12">
-    <h3>
-      <strong></strong>
-    </h3>
-    <div class="callout callout-info">
-      <h5>Add Splits wherever you want to record times</h5>
-      <ul class="mb-0">
-        <li>A Start and Finish Split have been created for you. Edit them to add location and elevation data.</li>
-        <li>Create new splits using the tools in the table below.</li>
-      </ul>
-    </div>
-  </aside>
+  <% if @presenter.ordered_splits.count == 2 %>
+    <aside class="col-12">
+      <div class="callout callout-info">
+        <h5>Add Splits wherever you want to record times</h5>
+        <ul class="mb-0">
+          <li>A Start and Finish Split have been created for you. Edit them to add location and elevation data.</li>
+          <li>Create new splits using the tools in the table below.</li>
+        </ul>
+      </div>
+    </aside>
+  <% end %>
 
   <%= render partial: "events/course_setup_splits",
              locals: {

@@ -1,8 +1,8 @@
 <div class="modal fade"
      tabindex="-1"
-     data-controller="modal"
-     data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
-  <div class="modal-dialog">
+     data-controller="form-modal"
+     data-action="turbo:frame-load->form-modal#open turbo:submit-end->form-modal#close">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <%= turbo_frame_tag "form_modal" %>
     </div>

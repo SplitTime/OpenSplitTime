@@ -94,6 +94,7 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show] do
+      resources :splits, except: [:show]
       member do
         get :setup_course
         patch :reassign
@@ -226,7 +227,6 @@ Rails.application.routes.draw do
   end
 
   resources :split_times, only: [:update]
-  resources :splits
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 

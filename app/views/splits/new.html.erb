@@ -1,6 +1,15 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: New split" %>
+    <% "OpenSplitTime: New split for #{@event.name}" %>
 <% end %>
-<h1 align="center">New Split</h1>
 
-<%= render 'form' %>
+<main class="container">
+  <%= turbo_frame_tag "form_modal" do %>
+    <h1 class="h3 modal-header">
+      New Split
+    </h1>
+
+    <div class="modal-body">
+      <%= render "splits/form", event: @event, split: @split %>
+    </div>
+  <% end %>
+</main>

@@ -1,24 +1,23 @@
 # frozen_string_literal: true
 
 class SplitsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index]
+  before_action :set_event_and_course
   before_action :set_split, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show]
+  after_action :verify_authorized, except: [:index]
 
   def index
-    order = prepared_params[:sort].presence || [:course_id, :distance_from_start]
-    @splits = policy_scope(Split).order(order).where(prepared_params[:filter])
+    template_only = prepared_params[:filter] == { "id" => "0" }
+    order = prepared_params[:sort].presence || [:distance_from_start]
+    @splits = template_only ? Split.none : @event.splits.order(order)
 
     respond_to do |format|
-      format.html do
-        @splits = @splits.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
-      end
       format.csv do
         builder = CsvBuilder.new(Split, @splits)
-        filename = if prepared_params[:filter] == { "id" => "0" }
+        filename = if template_only
                      "ost-split-import-template.csv"
                    else
-                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                     "#{@event.name.parameterize}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
                    end
 
         send_data(builder.full_string, type: "text/csv", filename: filename)
@@ -26,12 +25,8 @@ class SplitsController < ApplicationController
     end
   end
 
-  def show
-    @presenter = SplitPresenter.new(@split, params, current_user)
-  end
-
   def new
-    @split = Split.new(course_id: params[:course_id])
+    @split = @course.splits.new
     authorize @split
   end
 
@@ -40,19 +35,28 @@ class SplitsController < ApplicationController
   end
 
   def create
-    @split = Split.new(permitted_params)
+    @split = @course.splits.new(permitted_params)
     authorize @split
 
     if @split.save
-      redirect_to split_path(@split)
-    else
-      if @event
-        render "new", event_id: @event.id, status: :unprocessable_entity
-      elsif @course
-        render "new", course_id: @course.id, status: :unprocessable_entity
-      else
-        render "new", status: :unprocessable_entity
+      @event.aid_stations.create(split: @split)
+      respond_to do |format|
+        format.html { redirect_to event_group_event_course_setup_path(@event.event_group, @event) }
+        format.turbo_stream do
+          presenter = EventSetupCoursePresenter.new(@event, view_context)
+
+          render turbo_stream: turbo_stream.replace("event_course_splits",
+                                                    partial: "event_course_splits",
+                                                    locals: {
+                                                      event: presenter.event,
+                                                      splits: presenter.splits,
+                                                      aid_stations_by_split_id: presenter.aid_stations_by_split_id,
+                                                    }
+          )
+        end
       end
+    else
+      render "new", event_id: @event.id, status: :unprocessable_entity
     end
   end
 
@@ -76,8 +80,13 @@ class SplitsController < ApplicationController
 
   private
 
+  def set_event_and_course
+    event_group = EventGroup.friendly.find(params[:event_group_id])
+    @event = event_group.events.friendly.find(params[:event_id])
+    @course = @event.course
+  end
+
   def set_split
-    @split = policy_scope(Split).friendly.find(params[:id])
-    redirect_numeric_to_friendly(@split, params[:id])
+    @split = @course.splits.find(params[:id])
   end
 end

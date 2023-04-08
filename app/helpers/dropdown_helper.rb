@@ -389,7 +389,7 @@ module DropdownHelper
         link: new_import_job_path(import_job: { parent_type: "Event", parent_id: view_object.event.id, format: :event_course_splits }) },
       { role: :separator },
       { name: "Download CSV template",
-        link: splits_path(filter: { id: 0 }, format: :csv) },
+        link: event_group_event_splits_path(view_object.event_group, view_object.event, filter: { id: 0 }, format: :csv) },
     ]
     build_dropdown_menu("Import", dropdown_items, button: true)
   end

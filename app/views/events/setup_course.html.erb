@@ -53,9 +53,16 @@
 
   <div class="col-12">
     <div>
-      <%= link_to fa_icon("plus", text: "Add"), "#", id: "add-split", class: "btn btn-success" %>
+      <%= link_to fa_icon("plus", text: "Add"),
+                  new_event_group_event_split_path(@presenter.event_group, @presenter.event),
+                  id: "add-split",
+                  class: "btn btn-success",
+                  data: { turbo_frame: "form_modal" }
+      %>
       <%= event_setup_course_import_dropdown(@presenter) %>
-      <%= link_to "Export", splits_path(filter: { course_id: @presenter.course_id }, format: :csv), class: "btn btn-outline-secondary" %>
+      <%= link_to "Export",
+                  event_group_event_splits_path(@presenter.event_group, @presenter.event, format: :csv),
+                  class: "btn btn-outline-secondary" %>
       <%= link_to "Return to setup", setup_event_group_path(@presenter.event_group), class: "btn btn-primary" %>
     </div>
   </div>

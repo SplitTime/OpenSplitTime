@@ -9,6 +9,6 @@
   <td><%= "#{e(split.elevation)} #{peu}" if split.elevation? %></td>
   <td><%= "#{split.latitude} / #{split.longitude}" if split.latitude? && split.longitude? %></td>
   <td>
-    <%= link_to_split_edit(split) %>
+    <%= link_to_event_split_edit(event, split) %>
   </td>
 </tr>

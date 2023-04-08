@@ -23,6 +23,8 @@
 
 <%= yield %>
 
+<%= render "layouts/form_modal" %>
+
 <% unless user_signed_in? %>
   <%= render partial: "devise/sessions/new" %>
 <% end %>

@@ -25,11 +25,10 @@
     <% end %>
   </div>
 
-  <div id="map"
-       style="width: 100%; height: 500px;"
+  <div style="width: 100%; height: 500px;"
        data-controller="maps"
-       data-maps-target="mapInfo"
-       data-course-id="<%= @presenter.course_id %>"></div>
+       data-maps-course-id-value="<%= @presenter.course_id %>"
+  ></div>
   <br/>
 
   <aside class="col-12">

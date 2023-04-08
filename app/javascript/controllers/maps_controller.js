@@ -42,9 +42,9 @@ export default class extends Controller {
     let bounds = new google.maps.LatLngBounds();
 
     trackPoints.forEach(function (trackPoint) {
-      let lat = trackPoint.attr("lat");
-      let lon = trackPoint.attr("lon");
-      let p = new google.maps.LatLng(lat, lon);
+      const lat = trackPoint.lat;
+      const lon = trackPoint.lon;
+      const p = new google.maps.LatLng(lat, lon);
       points.push(p);
       bounds.extend(p);
     });

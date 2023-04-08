@@ -3,12 +3,12 @@
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, "Course Setup"] %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, "#{@presenter.course_name} Course Setup"] %>
 
 <%= render "shared/errors", obj: @presenter.course %>
 
 <article class="ost-article container">
-  <h3><strong>Provide Your Course Details</strong></h3>
+  <h3><strong>Provide Your Course Details for <%= @presenter.course_name %></strong></h3>
   <%= render "course_setup_gpx", event: @presenter.event %>
 
   <div class="ost-subtitle">
@@ -20,6 +20,7 @@
   </div>
 
   <div style="width: 100%; height: 500px;"
+       class="border border-secondary"
        data-controller="maps"
        data-maps-course-id-value="<%= @presenter.course_id %>"
   ></div>

@@ -46,7 +46,9 @@
 
                     <%= form.fields_for(:splits, presenter.start_split) do |start_split_form| %>
                       <%= start_split_form.hidden_field :base_name %>
-                      <%= start_split_form.hidden_field :distance_in_preferred_units %>
+                      <%= start_split_form.hidden_field :distance_from_start %>
+                      <%= start_split_form.hidden_field :vert_gain_from_start %>
+                      <%= start_split_form.hidden_field :vert_loss_from_start %>
                       <%= start_split_form.hidden_field :kind %>
                       <%= start_split_form.hidden_field :sub_split_bitmap %>
                     <% end %>

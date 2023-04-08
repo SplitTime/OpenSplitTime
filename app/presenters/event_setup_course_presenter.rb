@@ -20,6 +20,10 @@ class EventSetupCoursePresenter < BasePresenter
     course.id
   end
 
+  def course_name
+    course.name
+  end
+
   def event_group_name
     event_group.name
   end

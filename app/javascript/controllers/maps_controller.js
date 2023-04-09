@@ -11,7 +11,6 @@ export default class extends Controller {
     const controller = this
     const courseId = this.courseIdValue;
     const splitId = this.splitIdValue;
-    const splitProvided = splitId !== 0;
     const defaultLatLng = new google.maps.LatLng(40, -90);
     const defaultZoom = 4;
 
@@ -21,11 +20,18 @@ export default class extends Controller {
       zoom: defaultZoom,
     };
 
-    this._gmap = new google.maps.Map(this.element, mapOptions);
-    this._elevator = new google.maps.ElevationService();
+    controller._splitProvided = (splitId !== 0);
+    controller._elevator = new google.maps.ElevationService();
+    controller._bounds = new google.maps.LatLngBounds();
+    controller._gmap = new google.maps.Map(this.element, mapOptions);
+    controller._gmap.maxDefaultZoom = 16;
 
-    this._gmap.addListener("click", (event) => {
+    controller._gmap.addListener("click", (event) => {
       this.dispatchClicked(event.latLng);
+    });
+
+    google.maps.event.addListenerOnce(controller._gmap, "bounds_changed", function () {
+      this.setZoom(Math.min(this.getZoom(), this.maxDefaultZoom))
     });
 
     Rails.ajax({
@@ -35,16 +41,18 @@ export default class extends Controller {
         const attributes = response.data.attributes;
         let locations = attributes.locations || [];
 
-        if (splitProvided) {
+        if (controller._splitProvided) {
           locations = locations.filter(function (e) {
             return e.id === parseInt(splitId)
           })
         }
 
         const trackPoints = attributes.trackPoints || [];
-        const singleLocation = locations.length === 1 && splitProvided;
+        const singleLocation = locations.length === 1 && controller._splitProvided;
 
-        controller.plotMarkersAndTrack(locations, trackPoints, singleLocation);
+        controller.plotTrack(trackPoints, singleLocation)
+        controller.plotMarkers(locations)
+        controller.fitBounds()
       }
     })
   }
@@ -76,30 +84,46 @@ export default class extends Controller {
       );
   }
 
-  plotMarkersAndTrack(locations, trackPoints, singleLocation) {
-    if (locations.length === 0 && trackPoints.length === 0) { return }
+  plotTrack(trackPoints, singleLocation) {
+    if (trackPoints.length === 0) {
+      return
+    }
 
     const controller = this
     let points = [];
-    let bounds = new google.maps.LatLngBounds();
 
     trackPoints.forEach(function (trackPoint) {
-      const lat = trackPoint.lat;
-      const lon = trackPoint.lon;
-      const p = new google.maps.LatLng(lat, lon);
+      const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
       points.push(p);
       if (!singleLocation) {
-        bounds.extend(p)
+        controller._bounds.extend(p)
       }
     });
 
+    let poly = new google.maps.Polyline({
+      path: points,
+      strokeColor: "#1000CA",
+      strokeOpacity: .7,
+      strokeWeight: 6
+    });
+
+    poly.setMap(controller._gmap);
+  }
+
+  plotMarkers(locations) {
+    if (locations.length === 0) {
+      return
+    }
+
+    const controller = this
+
     let markers = locations.map(function (location) {
-      if (location.latitude !== null && location.longitude !== null) {
+      if (location.latitude && location.longitude) {
         let lat = parseFloat(location.latitude);
         let lng = parseFloat(location.longitude);
         let point = new google.maps.LatLng(lat, lng);
 
-        bounds.extend(point);
+        controller._bounds.extend(point);
 
         let marker = new google.maps.Marker({
           position: point,
@@ -121,17 +145,12 @@ export default class extends Controller {
 
         return marker;
       }
-
     });
+  }
 
-    let poly = new google.maps.Polyline({
-      path: points,
-      strokeColor: "#1000CA",
-      strokeOpacity: .7,
-      strokeWeight: 6
-    });
+  fitBounds() {
+    if (this._bounds.isEmpty()) { return }
 
-    poly.setMap(controller._gmap);
-    controller._gmap.fitBounds(bounds);
-  };
+    this._gmap.fitBounds(this._bounds)
+  }
 }

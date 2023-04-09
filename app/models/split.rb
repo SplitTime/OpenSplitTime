@@ -60,6 +60,10 @@ class Split < ApplicationRecord
     slug
   end
 
+  def to_param
+    id&.to_s
+  end
+
   def distance_in_preferred_units
     Split.meters_to_preferred_distance(distance_from_start).round(2) if distance_from_start
   end
@@ -103,7 +107,7 @@ class Split < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || base_name_changed? || course&.name_changed?
+    base_name.present? && course.present? && (slug.blank? || base_name_changed? || course.name_changed?)
   end
 
   def name(bitkey = nil)

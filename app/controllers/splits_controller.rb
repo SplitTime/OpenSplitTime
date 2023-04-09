@@ -51,12 +51,11 @@ class SplitsController < ApplicationController
                                                       event: presenter.event,
                                                       splits: presenter.ordered_splits,
                                                       aid_stations_by_split_id: presenter.aid_stations_by_split_id,
-                                                    }
-          )
+                                                    })
         end
       end
     else
-      render "new", event_id: @event.id, status: :unprocessable_entity
+      render "new", status: :unprocessable_entity
     end
   end
 

@@ -77,30 +77,9 @@ export default class extends Controller {
   }
 
   dispatchClicked(latLng) {
-    const controller = this
-
-    controller._elevator.getElevationForLocations({
-      locations: [latLng],
+    this.dispatch("clicked", {
+      detail: { latLng: latLng }
     })
-      .then(({results}) => {
-        if (results[0]) {
-          const elevationInMeters = results[0].elevation;
-          const elevation = Math.round(elevationInMeters * 3.28084);
-
-          controller.dispatch("clicked", {
-            detail: {
-              lat: latLng.lat(),
-              lon: latLng.lng(),
-              elevation: elevation,
-            }
-          })
-        } else {
-          console.error("No results found");
-        }
-      })
-      .catch((e) =>
-        console.error("Elevation service failed due to: " + e)
-      );
   }
 
   plotTrack() {

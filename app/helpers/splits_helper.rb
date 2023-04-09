@@ -8,7 +8,7 @@ module SplitsHelper
                         controller: "tooltip",
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
-                class: "btn btn-primary" }
+                class: "btn btn-sm btn-outline-primary" }
     link_to fa_icon("pencil-alt"), url, options
   end
 end

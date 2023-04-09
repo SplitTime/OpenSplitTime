@@ -12,36 +12,74 @@ export default class extends Controller {
     const courseId = this.courseIdValue;
     const splitId = this.splitIdValue;
     const splitProvided = splitId !== 0;
+    const defaultLatLng = new google.maps.LatLng(40, -90);
+    const defaultZoom = 4;
 
     let mapOptions = {
-      mapTypeId: "terrain"
+      mapTypeId: "terrain",
+      center: defaultLatLng,
+      zoom: defaultZoom,
     };
 
-    let map = new google.maps.Map(this.element, mapOptions);
+    this._gmap = new google.maps.Map(this.element, mapOptions);
+    this._elevator = new google.maps.ElevationService();
+
+    this._gmap.addListener("click", (event) => {
+      this.dispatchClicked(event.latLng);
+    });
 
     Rails.ajax({
       url: "/api/v1/courses/" + courseId,
       type: "GET",
       success: function (response) {
         const attributes = response.data.attributes;
-        let locations = null;
+        let locations = attributes.locations || [];
 
         if (splitProvided) {
-          locations = attributes.locations.filter(function (e) {
+          locations = locations.filter(function (e) {
             return e.id === parseInt(splitId)
           })
-        } else {
-          locations = attributes.locations;
         }
 
         const trackPoints = attributes.trackPoints || [];
         const singleLocation = locations.length === 1 && splitProvided;
-        controller.plotMarkersAndTrack(map, locations, trackPoints, singleLocation);
+
+        controller.plotMarkersAndTrack(locations, trackPoints, singleLocation);
       }
     })
   }
 
-  plotMarkersAndTrack(map, locations, trackPoints, singleLocation) {
+  dispatchClicked(latLng) {
+    const controller = this
+
+    controller._elevator.getElevationForLocations({
+      locations: [latLng],
+    })
+      .then(({results}) => {
+        if (results[0]) {
+          const elevationInMeters = results[0].elevation;
+          const elevation = Math.round(elevationInMeters * 3.28084);
+
+          controller.dispatch("clicked", {
+            detail: {
+              lat: latLng.lat(),
+              lon: latLng.lng(),
+              elevation: elevation,
+            }
+          })
+        } else {
+          console.error("No results found");
+        }
+      })
+      .catch((e) =>
+        console.error("Elevation service failed due to: " + e)
+      );
+  }
+
+  plotMarkersAndTrack(locations, trackPoints, singleLocation) {
+    if (locations.length === 0 && trackPoints.length === 0) { return }
+
+    const controller = this
     let points = [];
     let bounds = new google.maps.LatLngBounds();
 
@@ -50,7 +88,9 @@ export default class extends Controller {
       const lon = trackPoint.lon;
       const p = new google.maps.LatLng(lat, lon);
       points.push(p);
-      if (!singleLocation) { bounds.extend(p) }
+      if (!singleLocation) {
+        bounds.extend(p)
+      }
     });
 
     let markers = locations.map(function (location) {
@@ -63,7 +103,7 @@ export default class extends Controller {
 
         let marker = new google.maps.Marker({
           position: point,
-          map: map
+          map: controller._gmap
         });
 
         marker.infowindow = new google.maps.InfoWindow({
@@ -76,7 +116,7 @@ export default class extends Controller {
               v.infowindow.close();
             }
           });
-          marker.infowindow.open(map, marker);
+          marker.infowindow.open(controller._gmap, marker);
         });
 
         return marker;
@@ -91,14 +131,7 @@ export default class extends Controller {
       strokeWeight: 6
     });
 
-    poly.setMap(map);
-
-    google.maps.event.addListenerOnce(map, 'bounds_changed', function () {
-      this.setZoom(Math.min(15, this.getZoom()));
-    });
-
-    map.initialZoom = true;
-    map.fitBounds(bounds);
-
+    poly.setMap(controller._gmap);
+    controller._gmap.fitBounds(bounds);
   };
 }

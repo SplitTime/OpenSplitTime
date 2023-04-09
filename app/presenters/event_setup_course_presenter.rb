@@ -28,6 +28,10 @@ class EventSetupCoursePresenter < BasePresenter
     event_group.name
   end
 
+  def event_id
+    event.id
+  end
+
   def event_name
     event.guaranteed_short_name
   end

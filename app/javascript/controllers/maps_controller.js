@@ -1,18 +1,26 @@
 import { Controller } from "@hotwired/stimulus"
+import { FetchRequest } from "@rails/request.js"
 
 export default class extends Controller {
 
   static values = {
-    courseId: Number,
-    splitId: Number,
+    courseId: String,
+    eventId: String,
+    splitId: String,
+    markerUrl: String,
   }
 
   connect() {
     const controller = this
     const courseId = this.courseIdValue;
+    const eventId = this.eventIdValue;
     const splitId = this.splitIdValue;
     const defaultLatLng = new google.maps.LatLng(40, -90);
     const defaultZoom = 4;
+
+    if (courseId.length === 0) {
+      throw "Course ID is required."
+    }
 
     let mapOptions = {
       mapTypeId: "terrain",
@@ -20,7 +28,11 @@ export default class extends Controller {
       zoom: defaultZoom,
     };
 
-    controller._splitProvided = (splitId !== 0);
+    controller._withoutEvent = (eventId.length === 0);
+    controller._splitProvided = (splitId.length > 0);
+    controller._splitLocation = null;
+    controller._trackPoints = [];
+    controller._locations = [];
     controller._elevator = new google.maps.ElevationService();
     controller._bounds = new google.maps.LatLngBounds();
     controller._gmap = new google.maps.Map(this.element, mapOptions);
@@ -34,27 +46,34 @@ export default class extends Controller {
       this.setZoom(Math.min(this.getZoom(), this.maxDefaultZoom))
     });
 
-    Rails.ajax({
-      url: "/api/v1/courses/" + courseId,
-      type: "GET",
-      success: function (response) {
-        const attributes = response.data.attributes;
-        let locations = attributes.locations || [];
-
-        if (controller._splitProvided) {
-          locations = locations.filter(function (e) {
-            return e.id === parseInt(splitId)
-          })
-        }
-
-        const trackPoints = attributes.trackPoints || [];
-        const singleLocation = locations.length === 1 && controller._splitProvided;
-
-        controller.plotTrack(trackPoints, singleLocation)
-        controller.plotMarkers(locations)
-        controller.fitBounds()
-      }
+    controller.fetchData().then(() => {
+      controller.plotTrack()
+      controller.plotSplitMarker()
+      controller.plotMarkers()
+      controller.fitBounds()
     })
+  }
+
+  async fetchData() {
+    const controller = this
+    const url = "/api/v1/courses/" + controller.courseIdValue
+
+    const request = new FetchRequest("get", url, {responseKind: "json"})
+    const response = await request.perform()
+
+    if (response.ok) {
+      const json = await response.json
+
+      controller._trackPoints = json.data.attributes.trackPoints || []
+      controller._locations = json.data.attributes.locations || []
+      if (controller._splitProvided) {
+        controller._splitLocation = controller._locations.find(function (location) {
+          return location.id === parseInt(controller.splitIdValue)
+        });
+      }
+    } else {
+      console.error("Error fetching course data")
+    }
   }
 
   dispatchClicked(latLng) {
@@ -84,18 +103,15 @@ export default class extends Controller {
       );
   }
 
-  plotTrack(trackPoints, singleLocation) {
-    if (trackPoints.length === 0) {
-      return
-    }
-
+  plotTrack() {
     const controller = this
     let points = [];
+    if (controller._trackPoints.length === 0) { return }
 
-    trackPoints.forEach(function (trackPoint) {
+    controller._trackPoints.forEach(function (trackPoint) {
       const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
       points.push(p);
-      if (!singleLocation) {
+      if (!controller._splitLocation) {
         controller._bounds.extend(p)
       }
     });
@@ -110,25 +126,52 @@ export default class extends Controller {
     poly.setMap(controller._gmap);
   }
 
-  plotMarkers(locations) {
-    if (locations.length === 0) {
-      return
-    }
-
+  plotSplitMarker() {
     const controller = this
+    const location = controller._splitLocation;
+    if (!location) { return }
 
-    let markers = locations.map(function (location) {
+    let lat = parseFloat(location.latitude);
+    let lng = parseFloat(location.longitude);
+    let point = new google.maps.LatLng(lat, lng);
+
+    controller._bounds.extend(point);
+
+    controller._splitMarker = new google.maps.Marker({
+      map: controller._gmap,
+      position: point,
+      zIndex: 1000,
+      draggable: true,
+    });
+  }
+
+  plotMarkers() {
+    const controller = this
+    if (controller._locations.length === 0) { return }
+
+    let markers = controller._locations.map(function (location, i) {
       if (location.latitude && location.longitude) {
         let lat = parseFloat(location.latitude);
         let lng = parseFloat(location.longitude);
         let point = new google.maps.LatLng(lat, lng);
 
-        controller._bounds.extend(point);
+        if (!controller._splitLocation) {
+          controller._bounds.extend(point);
+        }
 
         let marker = new google.maps.Marker({
           position: point,
-          map: controller._gmap
+          map: controller._gmap,
         });
+
+        if (controller.hasMarkerUrlValue) {
+          marker.setLabel((i + 1).toString())
+          marker.setIcon({
+            url: controller.markerUrlValue,
+            labelOrigin: new google.maps.Point(16, 14),
+            anchor: new google.maps.Point(16, 16)
+          })
+        }
 
         marker.infowindow = new google.maps.InfoWindow({
           content: location.base_name + " : " + location.latitude + ", " + location.longitude

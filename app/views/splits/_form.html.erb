@@ -42,12 +42,12 @@
           <%= tooltip("Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out") %>
           <div class="split-time-recording-wrap">
             <label class="custom-radio">
-              <input id="split-in-radio" type="radio" name="split-time" :value="['In']" v-model="model.nameExtensions">
+              <%= form.radio_button :sub_split_bitmap, 1 %>
               <span class="custom-radio-indicator"></span>
               <span class="custom-radio-label">Time In</span>
-            </label>&nbsp;&nbsp;
-            <label class="custom-radio">
-              <input id="split-in-out-radio" type="radio" name="split-time" :value="['In','Out']" v-model="model.nameExtensions" :disabled="model.kind !== 'intermediate'">
+            </label>
+            <label class="custom-radio ms-3">
+              <%= form.radio_button :sub_split_bitmap, 64 %>
               <span class="custom-radio-indicator"></span>
               <span class="custom-radio-label">Time In and Out</span>
             </label>

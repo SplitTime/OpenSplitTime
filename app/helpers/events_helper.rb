@@ -9,7 +9,7 @@ module EventsHelper
                         controller: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
-                class: "btn btn-danger" }
+                class: "btn btn-outline-danger" }
     link_to fa_icon("trash"), url, options
   end
 
@@ -19,7 +19,7 @@ module EventsHelper
     options = { data: { controller: :tooltip,
                         bs_placement: :bottom,
                         bs_original_title: tooltip },
-                class: "btn btn-primary" }
+                class: "btn btn-outline-primary" }
     link_to fa_icon("pencil-alt"), url, options
   end
 

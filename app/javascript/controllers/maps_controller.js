@@ -33,9 +33,9 @@ export default class extends Controller {
     controller._splitLocation = null;
     controller._trackPoints = [];
     controller._locations = [];
-    controller._elevator = new google.maps.ElevationService();
     controller._bounds = new google.maps.LatLngBounds();
-    controller._gmap = new google.maps.Map(this.element, mapOptions);
+
+    controller._gmap = new google.maps.Map(controller.element, mapOptions);
     controller._gmap.maxDefaultZoom = 16;
 
     controller._gmap.addListener("click", (event) => {
@@ -45,6 +45,17 @@ export default class extends Controller {
     google.maps.event.addListenerOnce(controller._gmap, "bounds_changed", function () {
       this.setZoom(Math.min(this.getZoom(), this.maxDefaultZoom))
     });
+
+    controller._splitMarker = new google.maps.Marker({
+      map: controller._gmap,
+      position: null,
+      zIndex: 1000,
+      draggable: true,
+    })
+
+    controller._splitMarker.addListener("dragend", (event) => {
+      this.dispatchClicked(event.latLng);
+    })
 
     controller.fetchData().then(() => {
       controller.plotTrack()
@@ -112,16 +123,10 @@ export default class extends Controller {
 
     let lat = parseFloat(location.latitude);
     let lng = parseFloat(location.longitude);
-    let point = new google.maps.LatLng(lat, lng);
+    let latLng = new google.maps.LatLng(lat, lng);
 
-    controller._bounds.extend(point);
-
-    controller._splitMarker = new google.maps.Marker({
-      map: controller._gmap,
-      position: point,
-      zIndex: 1000,
-      draggable: true,
-    });
+    controller._bounds.extend(latLng);
+    controller._splitMarker.setPosition(latLng);
   }
 
   plotMarkers() {
@@ -168,6 +173,11 @@ export default class extends Controller {
         return marker;
       }
     });
+  }
+
+  updateSplitLocation(event) {
+    this._splitLocation = event.detail.splitLocation
+    this.plotSplitMarker()
   }
 
   fitBounds() {

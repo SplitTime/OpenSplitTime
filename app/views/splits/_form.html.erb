@@ -10,6 +10,8 @@
     <div style="width: 100%; height: 500px;"
          class="border border-secondary"
          data-controller="maps"
+         data-split-location-target="map"
+         data-action="split-location:changed->maps#updateSplitLocation"
          data-maps-course-id-value="<%= split.course_id %>"
          data-maps-event-id-value="<%= event.id %>"
          data-maps-split-id-value="<%= split.id %>"
@@ -25,7 +27,13 @@
         <div class="mb-3 col-6">
           <%= form.label "Split name", class: "mb-1 required" %>
           <%= tooltip("Name this Split") %>
-          <%= form.text_field :base_name, class: "form-control", placeholder: "My Aid Station", data: { controller: :autofocus } %>
+          <%= form.text_field :base_name,
+                              class: "form-control",
+                              placeholder: "My Aid Station",
+                              data: {
+                                split_location_target: "baseName",
+                                action: "change->split-location#changed",
+                              } %>
         </div>
         <div class="mb-3 col-6">
           <%= form.label :description, class: "mb-1" %>
@@ -87,7 +95,12 @@
           <%= form.label :latitude, class: "mb-1" %>
           <%= tooltip("Enter latitude or pick a point on the map") %>
           <div class="input-group">
-            <%= form.text_field :latitude, class: "form-control", data: { split_location_target: "latitude" } %>
+            <%= form.text_field :latitude,
+                                class: "form-control",
+                                data: {
+                                  split_location_target: "latitude",
+                                  action: "change->split-location#changed",
+                                } %>
             <span class="input-group-text">deg</span>
           </div>
         </div>
@@ -95,7 +108,12 @@
           <%= form.label :longitude, class: "mb-1" %>
           <%= tooltip("Enter longitude or pick a point on the map") %>
           <div class="input-group">
-            <%= form.text_field :longitude, class: "form-control", data: { split_location_target: "longitude" } %>
+            <%= form.text_field :longitude,
+                                class: "form-control",
+                                data: {
+                                  split_location_target: "longitude",
+                                  action: "change->split-location#changed",
+                                } %>
             <span class="input-group-text">deg</span>
           </div>
         </div>

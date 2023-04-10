@@ -16,8 +16,17 @@ export default class extends Controller {
 
   changed() {
     const latLng = new google.maps.LatLng(this.latitudeTarget.value, this.longitudeTarget.value)
-    this.updateElevation(latLng);
     this.dispatchSplitLocation();
+    this.updateElevation(latLng);
+  }
+
+  updateLocation(event) {
+    const latLng = event.detail.latLng
+
+    this.latitudeTarget.value = latLng.lat()
+    this.longitudeTarget.value = latLng.lng()
+    this.dispatchSplitLocation()
+    this.updateElevation(latLng)
   }
 
   dispatchSplitLocation() {
@@ -32,15 +41,6 @@ export default class extends Controller {
     };
 
     this.mapTarget.dispatchEvent(new CustomEvent("split-location:changed", payload))
-  }
-
-  updateLocation(event) {
-    const latLng = event.detail.latLng
-
-    this.latitudeTarget.value = latLng.lat()
-    this.longitudeTarget.value = latLng.lng()
-    this.updateElevation(latLng)
-    this.dispatchSplitLocation()
   }
 
   updateElevation(latLng) {

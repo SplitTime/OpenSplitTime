@@ -2,10 +2,12 @@
 
 module LinkHelper
   def link_to_monitor_mode(event_group)
-    return_path = if event_group.present? && event_group.persisted? && event_group.events.exists?
+    return_path = if event_group.blank?
+                    organizations_path
+                  elsif event_group.persisted? && event_group.events.exists?
                     roster_event_group_path(event_group)
                   else
-                    organizations_path
+                    organization_path(event_group.organization)
                   end
 
     link_to "Return to monitor mode", return_path, class: "btn btn-outline-light"

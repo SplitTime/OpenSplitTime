@@ -16,7 +16,7 @@
   <tbody>
   <% splits.each do |split| %>
       <tr>
-        <td><strong><%= link_to split.base_name, split_path(split) %></strong></td>
+        <td><strong><%= split.base_name %></strong></td>
         <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
         <td><%= "#{e(split.vert_gain_from_start)} #{peu}" %></td>
         <td><%= "#{e(split.vert_loss_from_start)} #{peu}" %></td>

@@ -8,36 +8,46 @@
 <% case @presenter.display_style %>
 <% when "events" %>
   <article class="ost-article container">
-    <aside class="ost-toolbar">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <% if current_user&.authorized_fully?(@presenter.event_group) %>
-              <%= link_to fa_icon("plus", text: "Add an event"),
-                          new_event_group_event_path(@presenter.event_group),
-                          id: "add-event",
-                          class: "btn btn-success" %>
-              <% if @presenter.events.present? %>
-                <%= event_group_actions_dropdown(@presenter) %>
-              <% end %>
-            <% end %>
+    <div class="row flex-nowrap">
+      <%= render "setup_sidebar", event_group: @presenter.event_group %>
+      <div class="col px-md-4 py-3">
+        <aside class="ost-toolbar">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <% if current_user&.authorized_fully?(@presenter.event_group) %>
+                  <%= link_to fa_icon("plus", text: "Add an event"),
+                              new_event_group_event_path(@presenter.event_group),
+                              id: "add-event",
+                              class: "btn btn-success" %>
+                  <% if @presenter.events.present? %>
+                    <%= event_group_actions_dropdown(@presenter) %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </aside>
+        </aside>
 
-    <%= render "event_overview_cards", presenter: @presenter %>
+        <%= render "event_overview_cards", presenter: @presenter %>
+      </div>
+    </div>
   </article>
 
 <% when "entrants" %>
   <article class="ost-article container">
-    <% if @presenter.first_event.present? %>
-      <%= render "entrants_roster", presenter: @presenter %>
-    <% else %>
-      <div class="callout callout-info">
-        <h5>You will need to add an Event before adding Entrants</h5>
-        <p>Click the <strong>Events</strong> tab to add an Event</p>
+    <div class="row flex-nowrap">
+      <%= render "setup_sidebar", event_group: @presenter.event_group %>
+      <div class="col px-md-4 py-3">
+        <% if @presenter.first_event.present? %>
+          <%= render "entrants_roster", presenter: @presenter %>
+        <% else %>
+          <div class="callout callout-info">
+            <h5>You will need to add an Event before adding Entrants</h5>
+            <p>Click the <strong>Events</strong> tab to add an Event</p>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
   </article>
 <% end %>

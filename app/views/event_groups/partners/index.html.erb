@@ -6,5 +6,10 @@
 <%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Partners"] %>
 
 <article class="ost-article container">
-  <%= render "partner_list", presenter: @presenter %>
+  <div class="row flex-nowrap">
+    <%= render "event_groups/setup_sidebar", event_group: @presenter.event_group %>
+    <div class="col px-md-4 py-3">
+      <%= render "partner_list", presenter: @presenter %>
+    </div>
+  </div>
 </article>

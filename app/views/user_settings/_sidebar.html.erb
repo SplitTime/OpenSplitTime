@@ -1,16 +1,16 @@
-<div class="col-auto col-md-4 col-lg-4 col-xl-3 px-sm-2 px-0">
+<div class="col-auto col-xl-3 px-sm-2 px-0">
   <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white">
     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
       <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "preferences" ? "active" : nil %>">
-        <%= render "sidebar_item", title: "Preferences", icon: "list-alt", link: user_settings_preferences_path %>
+        <%= render "shared/sidebar_item", title: "Preferences", icon: "list-alt", link: user_settings_preferences_path %>
       </li>
       <% unless current_user.from_omniauth? %>
         <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "password" ? "active" : nil %>">
-          <%= render "sidebar_item", title: "Password", icon: "user-shield", link: user_settings_password_path %>
+          <%= render "shared/sidebar_item", title: "Password", icon: "user-shield", link: user_settings_password_path %>
         </li>
       <% end %>
       <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "credentials" ? "active" : nil %>">
-        <%= render "sidebar_item", title: "Credentials", icon: "key", link: user_settings_credentials_path %>
+        <%= render "shared/sidebar_item", title: "Credentials", icon: "key", link: user_settings_credentials_path %>
       </li>
     </ul>
   </div>

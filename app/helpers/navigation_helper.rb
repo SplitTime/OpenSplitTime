@@ -7,10 +7,9 @@ module NavigationHelper
             request.params,
             id: "refresh-button",
             class: "btn btn-primary",
-            data: { controller: "navigation animation",
+            data: { controller: "navigation animation tooltip",
                     action: "click->animation#spinIcon keyup@document->navigation#evaluateKeyup",
                     "navigation-target" => "refreshButton",
-                    controller: :tooltip,
                     bs_placement: :bottom,
                     bs_original_title: tooltip_title }
   end
@@ -26,10 +25,9 @@ module NavigationHelper
             request.params.merge(merge_param),
             id: "#{prior_or_next}-button",
             class: "btn btn-outline-secondary",
-            data: { controller: "navigation",
+            data: { controller: "navigation tooltip",
                     action: "keyup@document->navigation#evaluateKeyup",
                     "navigation-target" => "#{prior_or_next}Button",
-                    controller: :tooltip,
                     bs_placement: :bottom,
                     bs_original_title: tooltip_title },
             disabled: target.blank?

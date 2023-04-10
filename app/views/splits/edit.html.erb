@@ -1,24 +1,11 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit split - #{@split.base_name}" %>
+  <% "OpenSplitTime: Edit split #{@split.base_name} for #{@event.name}" %>
 <% end %>
 
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong><%= @split.base_name %></strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to @split.course.name, organization_course_path(@split.course.organization, @split.course) %></li>
-            <li class="breadcrumb-item active"><%= @split.base_name %></li>
-          </ul>
-        </div>
-      </div>
+<main class="container">
+  <%= turbo_frame_tag "form_modal_large" do %>
+    <div class="modal-body">
+      <%= render "splits/form", event: @event, split: @split %>
     </div>
-    <!-- Navigation -->
-  </div>
-</header>
-
-<article class="ost-article container">
-    <%= render 'form' %>
-</article>
+  <% end %>
+</main>

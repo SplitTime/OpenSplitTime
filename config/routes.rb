@@ -63,7 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy]
   resources :credentials, only: [:create, :update, :destroy]
 
   resources :efforts do
@@ -95,7 +94,14 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show] do
-      member { patch :reassign }
+      resources :splits, except: [:show]
+      member do
+        get :new_course_gpx
+        get :setup_course
+        patch :reassign
+        patch :attach_course_gpx
+        delete :remove_course_gpx
+      end
       resources :syncable_relations, only: [:create, :destroy], module: "events"
     end
 
@@ -137,6 +143,7 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:show] do
+    resources :aid_stations, only: [:create, :destroy]
     member do
       get :admin
       get :edit_start_time
@@ -223,7 +230,6 @@ Rails.application.routes.draw do
   end
 
   resources :split_times, only: [:update]
-  resources :splits
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 

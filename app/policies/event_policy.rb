@@ -20,6 +20,22 @@ class EventPolicy < ApplicationPolicy
     @event = event
   end
 
+  def setup_course?
+    user.authorized_fully?(event)
+  end
+
+  def new_course_gpx?
+    setup_course?
+  end
+
+  def attach_course_gpx?
+    setup_course?
+  end
+
+  def remove_course_gpx?
+    setup_course?
+  end
+
   def spread?
     user.present?
   end

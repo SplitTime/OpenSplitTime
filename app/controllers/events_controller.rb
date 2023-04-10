@@ -81,6 +81,50 @@ class EventsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/events/1/setup_course
+  def setup_course
+    authorize @event
+
+    @presenter = EventSetupCoursePresenter.new(@event, view_context)
+  end
+
+  # GET /event_groups/1/events/1/new_course_gpx
+  def new_course_gpx
+    authorize @event
+
+    render partial: "events/course_gpx_form", locals: { event: @event }
+  end
+
+  # PATCH /event_groups/1/events/1/attach_course_gpx
+  def attach_course_gpx
+    authorize @event
+
+    @event.course.gpx.attach(params.require(:course).require(:gpx))
+    Interactors::SetTrackPoints.perform!(@event.course)
+
+    respond_to do |format|
+      format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
+    end
+  end
+
+  # DELETE /event_groups/1/events/1/remove_course_gpx
+  def remove_course_gpx
+    authorize @event
+
+    course = @event.course
+
+    if course.gpx.attached?
+      course.gpx.purge
+      Interactors::SetTrackPoints.perform!(course)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to setup_course_event_group_event_path(@event_group, @event) }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
+    end
+  end
+
   # PATCH /event_groups/1/events/1/reassign
   def reassign
     authorize @event

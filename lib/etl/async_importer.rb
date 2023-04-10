@@ -37,6 +37,10 @@ module ETL
 
     def set_etl_strategies
       case format.to_sym
+      when :event_course_splits
+        self.extract_strategy = Extractors::CsvFileStrategy
+        self.transform_strategy = Transformers::EventCourseSplitsStrategy
+        self.load_strategy = Loaders::AsyncInsertStrategy
       when :event_group_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::EventGroupEntrantsStrategy

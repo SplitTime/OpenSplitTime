@@ -39,7 +39,7 @@ class Course < ApplicationRecord
   end
 
   def add_basic_splits!
-    splits << Split.new(base_name: "Start", kind: :start, sub_split_bitmap: 1, distance_from_start: 0)
+    splits << Split.new(base_name: "Start", kind: :start, sub_split_bitmap: 1, distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0)
     splits << Split.new(base_name: "Finish", kind: :finish, sub_split_bitmap: 1)
     self
   end

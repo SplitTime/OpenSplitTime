@@ -1,0 +1,22 @@
+<%# locals: (event:, splits:, aid_stations_by_split_id) -%>
+
+<table id="<%= dom_id(event, :course_setup_splits) %>" class="table">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Name</th>
+    <th>Distance</th>
+    <th>Gain<br/>From Start</th>
+    <th>Loss<br/>From Start</th>
+    <th>Elevation</th>
+    <th>Lat / Lon</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% splits.each do |split| %>
+    <%= render partial: "events/course_setup_split",
+               locals: { event: event, split: split, aid_station: aid_stations_by_split_id[split.id] } %>
+  <% end %>
+  </tbody>
+</table>

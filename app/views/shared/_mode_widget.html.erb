@@ -1,4 +1,4 @@
-<!-- Mode Selector Widget: Requires local :event_group -->
+<%# locals: (event_group:) -%>
 
 <aside class="bg-primary p-3">
   <div class="container">
@@ -7,9 +7,7 @@
         <h5>You are in Construction Mode</h5>
       </div>
       <div class="col text-end">
-        <%= link_to "Return to monitor mode",
-                    event_group.persisted? && event_group.events.exists? ? roster_event_group_path(event_group) : organization_path(event_group.organization),
-                    class: "btn btn-outline-light" %>
+        <%= link_to_monitor_mode(event_group) %>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ module CoursesHelper
     options = { data: { controller: :tooltip,
                         bs_placement: :top,
                         bs_original_title: tooltip },
-                class: "btn btn-primary btn-sm" }
+                class: "btn btn-outline-primary btn-sm" }
     link_to fa_icon("pencil-alt"), url, options
   end
 

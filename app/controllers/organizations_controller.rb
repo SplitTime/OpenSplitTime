@@ -34,7 +34,7 @@ class OrganizationsController < ApplicationController
     authorize @organization
 
     if @organization.save
-      redirect_to @organization
+      redirect_to new_organization_event_group_path(@organization)
     else
       render "new", status: :unprocessable_entity
     end

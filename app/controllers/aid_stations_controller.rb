@@ -1,11 +1,11 @@
 class AidStationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_event
-  before_action :authorize_organization
   after_action :verify_authorized
 
   def create
     @aid_station = @event.aid_stations.new(aid_station_params)
+    authorize @aid_station
 
     if @aid_station.save
       split = @aid_station.split
@@ -24,6 +24,8 @@ class AidStationsController < ApplicationController
 
   def destroy
     @aid_station = @event.aid_stations.find(params[:id])
+    authorize @aid_station
+
     split = @aid_station.split
     @aid_station.destroy
 
@@ -40,11 +42,6 @@ class AidStationsController < ApplicationController
 
   def aid_station_params
     params.require(:aid_station).permit(:split_id)
-  end
-
-  def authorize_organization
-    organization = @event.organization
-    authorize organization, policy_class: ::AidStationPolicy
   end
 
   def set_event

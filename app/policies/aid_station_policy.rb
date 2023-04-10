@@ -6,15 +6,14 @@ class AidStationPolicy < ApplicationPolicy
     end
   end
 
-  attr_reader :organization
+  attr_reader :aid_station
 
-  def post_initialize(organization)
-    verify_authorization_was_delegated(organization, ::AidStation)
-    @organization = organization
+  def post_initialize(aid_station)
+    @aid_station = aid_station
   end
 
   def create?
-    user.authorized_fully?(organization)
+    user.authorized_fully?(aid_station.event)
   end
 
   def destroy?

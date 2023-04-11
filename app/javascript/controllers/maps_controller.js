@@ -7,7 +7,8 @@ export default class extends Controller {
     courseId: String,
     eventId: String,
     splitId: String,
-    markerUrl: String,
+    activeMarkerUrl: String,
+    inactiveMarkerUrl: String,
   }
 
   connect() {
@@ -27,6 +28,7 @@ export default class extends Controller {
     controller._splitLocation = null;
     controller._trackPoints = [];
     controller._locations = [];
+    controller._markers = [];
     controller._bounds = new google.maps.LatLngBounds();
 
     const mapOptions = {
@@ -78,13 +80,52 @@ export default class extends Controller {
 
       controller._trackPoints = json.data.attributes.trackPoints || []
       controller._locations = json.data.attributes.locations || []
+      controller._locations.forEach(function (location) {
+        location.active = true
+      })
       if (controller._splitProvided) {
         controller._splitLocation = controller._locations.find(function (location) {
           return location.id === parseInt(controller.splitIdValue)
         });
       }
+      if (controller._withoutEvent) { return }
+
+      await controller.fetchEventData()
     } else {
       console.error("Error fetching course data")
+    }
+  }
+
+  async fetchEventData() {
+    const controller = this
+    const url = "/api/v1/events/" + controller.eventIdValue
+
+    const request = new FetchRequest("get", url, {
+        responseKind: "json",
+        query: {include: "aid_stations"},
+      }
+    )
+    const response = await request.perform()
+
+    if (response.ok) {
+      const json = await response.json
+
+      const aidStations = json.included.filter(function (record) {
+        return record.type === "aidStations"
+      })
+
+      const activeSplitIds = aidStations.map(function (record) {
+        return record.attributes.splitId
+      })
+
+      controller._locations.forEach(function (location) {
+        if (!activeSplitIds.includes(location.id)) {
+          location.active = false
+        }
+      })
+
+    } else {
+      console.error("Error fetching event data")
     }
   }
 
@@ -102,9 +143,7 @@ export default class extends Controller {
     controller._trackPoints.forEach(function (trackPoint) {
       const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
       points.push(p);
-      if (!controller._splitLocation) {
-        controller._bounds.extend(p)
-      }
+      controller.conditionallyExtendBounds(p);
     });
 
     let poly = new google.maps.Polyline({
@@ -128,38 +167,49 @@ export default class extends Controller {
 
     controller._bounds.extend(latLng);
     controller._splitMarker.setPosition(latLng);
+    controller.fitBounds();
   }
 
   plotMarkers() {
     const controller = this
-    if (controller._locations.length === 0) { return }
+    controller.removeMarkers()
 
-    let markers = controller._locations.map(function (location, i) {
+    let markerIndex = 1;
+
+    let markers = controller._locations.map(function (location) {
       if (location.latitude && location.longitude) {
-        let lat = parseFloat(location.latitude);
-        let lng = parseFloat(location.longitude);
-        let point = new google.maps.LatLng(lat, lng);
-
-        if (!controller._splitLocation) {
-          controller._bounds.extend(point);
-        }
+        let point = new google.maps.LatLng(location.latitude, location.longitude);
+        controller.conditionallyExtendBounds(point);
 
         let marker = new google.maps.Marker({
           position: point,
           map: controller._gmap,
         });
 
-        if (controller.hasMarkerUrlValue) {
-          marker.setLabel((i + 1).toString())
+        if (location.active && controller.hasActiveMarkerUrlValue) {
+          marker.setLabel((markerIndex).toString())
           marker.setIcon({
-            url: controller.markerUrlValue,
+            url: controller.activeMarkerUrlValue,
             labelOrigin: new google.maps.Point(16, 14),
+            anchor: new google.maps.Point(16, 16)
+          })
+          markerIndex++
+        } else if (!location.active && controller.hasInactiveMarkerUrlValue) {
+          marker.setIcon({
+            url: controller.inactiveMarkerUrlValue,
             anchor: new google.maps.Point(16, 16)
           })
         }
 
+        let inactiveText = location.active ? "" : "(inactive)"
+
         marker.infowindow = new google.maps.InfoWindow({
-          content: location.base_name + " : " + location.latitude + ", " + location.longitude
+          content:
+            "<div class='h5'>" +
+            "<span class='h5 fw-bold'>" + location.base_name + "</span>" +
+            "<span class='h6 ms-1'>" + inactiveText + "</span>" +
+            "</div>" +
+            "<div class='p'>" + location.latitude + ", " + location.longitude + "</div>"
         });
 
         marker.addListener('click', function () {
@@ -174,16 +224,35 @@ export default class extends Controller {
         return marker;
       }
     });
+
+    controller._markers = markers;
   }
 
-  updateSplitLocation(event) {
-    this._splitLocation = event.detail.splitLocation
-    this.plotSplitMarker()
+  conditionallyExtendBounds(point) {
+    const controller = this
+
+    if (!controller._splitLocation) {
+      controller._bounds.extend(point);
+    }
   }
 
   fitBounds() {
     if (this._bounds.isEmpty()) { return }
 
     this._gmap.fitBounds(this._bounds)
+  }
+
+  removeMarkers() {
+    const controller = this
+
+    controller._markers.forEach(function (marker) {
+      marker.setMap(null)
+    })
+    controller._markers.length = 0
+  }
+
+  updateSplitLocation(event) {
+    this._splitLocation = event.detail.splitLocation
+    this.plotSplitMarker()
   }
 }

@@ -259,6 +259,13 @@ export default class extends Controller {
     });
   }
 
+  updateMarkers() {
+    this.fetchData().then(() => {
+      this.plotMarkers()
+      this.plotSplitMarker()
+    })
+  }
+
   updateSplitLocation(event) {
     this._splitLocation = event.detail.splitLocation
     this.plotSplitMarker()

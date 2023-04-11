@@ -22,10 +22,10 @@ export default class extends Controller {
     }
   }
 
-  createAidStation() {
+  async createAidStation() {
     const url = `/events/${this.eventIdValue}/aid_stations`;
 
-    post(url, {
+    await post(url, {
       body: {
         aid_station: {
           split_id: this.splitIdValue
@@ -33,13 +33,17 @@ export default class extends Controller {
       },
       responseKind: "turbo-stream",
     })
+
+    this.dispatch("changed")
   }
 
-  deleteAidStation() {
+  async deleteAidStation() {
     const url = `/events/${this.eventIdValue}/aid_stations/${this.aidStationIdValue}`;
 
-    destroy(url, {
+    await destroy(url, {
       responseKind: "turbo-stream",
     })
+
+    this.dispatch("changed")
   }
 }

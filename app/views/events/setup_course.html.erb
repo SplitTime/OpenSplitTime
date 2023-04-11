@@ -7,7 +7,10 @@
 
 <%= render "shared/errors", obj: @presenter.course %>
 
-<article class="ost-article container">
+<article class="ost-article container"
+         data-controller="course-setup"
+         data-action="aid-station-checkbox:changed->course-setup#aidStationChanged"
+>
   <h3><strong>Provide Your Course Details for <%= @presenter.course_name %></strong></h3>
   <%= render "course_setup_gpx", event: @presenter.event %>
 
@@ -22,9 +25,13 @@
   <div style="width: 100%; height: 500px;"
        class="border border-secondary"
        data-controller="maps"
+       data-course-setup-target="map"
        data-maps-course-id-value="<%= @presenter.course_id %>"
        data-maps-event-id-value="<%= @presenter.event_id %>"
-       data-maps-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
+       data-maps-active-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
+       data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
+       data-action="course-setup:aid-station-changed->maps#updateMarkers
+                    course-setup:set-marker-highlight->maps#highlightMarker"
   ></div>
   <br/>
 

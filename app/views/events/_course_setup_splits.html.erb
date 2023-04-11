@@ -1,6 +1,6 @@
 <%# locals: (event:, splits:, aid_stations_by_split_id) -%>
 
-<table id="<%= dom_id(event, :course_setup_splits) %>" class="table">
+<table id="<%= dom_id(event, :course_setup_splits) %>" class="table table-hover">
   <thead>
   <tr>
     <th></th>
@@ -13,7 +13,7 @@
     <th></th>
   </tr>
   </thead>
-  <tbody>
+  <tbody data-course-setup-target="splitTableBody">
   <% splits.each do |split| %>
     <%= render partial: "events/course_setup_split",
                locals: { event: event, split: split, aid_station: aid_stations_by_split_id[split.id] } %>

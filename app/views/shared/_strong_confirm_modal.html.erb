@@ -9,7 +9,9 @@
       </div>
       <div class="modal-body">
         <p><strong>This action cannot be undone.</strong></p>
-        <p><%= message %></p>
+        <% message.split("\n").each do |fragment| %>
+          <p><%= fragment %></p>
+        <% end %>
         <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the Delete button.</p>
       </div>
       <div class="modal-footer">

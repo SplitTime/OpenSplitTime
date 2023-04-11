@@ -156,7 +156,7 @@
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
-                        <input-units id="split-distance-field" type="text" class="form-control" v-model.number="model.distanceFromStart" v-mask="{ alias: 'decimal', digits: 2 }" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
+                        <input-units id="split-distance-field" type="text" class="form-control" v-model.number="model.distanceFromStart" :disabled="model.kind === 'start'" :scale="units.forDistance()"/>
                         <span class="input-group-text">{{ units.distance }}</span>
                       </div>
                     </div>
@@ -186,7 +186,7 @@
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
-                        <input-units id="split-vert-gain-field" type="text" class="form-control" v-model.number="model.vertGainFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
+                        <input-units id="split-vert-gain-field" type="text" class="form-control" v-model.number="model.vertGainFromStart" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
                         <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
@@ -196,7 +196,7 @@
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
-                        <input-units id="split-vert-loss-field" type="text" class="form-control" v-model.number="model.vertLossFromStart" v-mask="{ alias: 'decimal', digits: 1 }" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
+                        <input-units id="split-vert-loss-field" type="text" class="form-control" v-model.number="model.vertLossFromStart" :disabled="model.kind === 'start'" :scale="units.forElevation()" :places="1"/>
                         <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>
@@ -212,14 +212,14 @@
                       <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter latitude or pick a point on the map.">
 											<i class="fas fa-question-circle"></i>
 										</span>
-                      <input id="split-latitude-field" type="text" class="form-control" v-model.number="model.latitude" v-mask="{ alias: 'decimal', digits: 6 }">
+                      <input id="split-latitude-field" type="text" class="form-control" v-model.number="model.latitude">
                     </div>
                     <div class="mb-3 col-4">
                       <label>Longitude</label>
                       <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Enter longitude or pick a point on the map.">
 											<i class="fas fa-question-circle"></i>
 										</span>
-                      <input id="split-longitude-field" type="text" class="form-control" v-model.number="model.longitude" v-mask="{ alias: 'decimal', digits: 6 }">
+                      <input id="split-longitude-field" type="text" class="form-control" v-model.number="model.longitude">
                     </div>
                     <div class="mb-3 col-4">
                       <label>Elevation</label>
@@ -227,7 +227,7 @@
 											<i class="fas fa-question-circle"></i>
 										</span>
                       <div class="input-group">
-                        <input-units id="split-elevation-field" type="text" class="form-control" v-model.number="model.elevation" v-mask="{ alias: 'integer' }" :scale="units.forElevation()"/>
+                        <input-units id="split-elevation-field" type="text" class="form-control" v-model.number="model.elevation" :scale="units.forElevation()"/>
                         <span class="input-group-text">{{ units.elevation }}</span>
                       </div>
                     </div>

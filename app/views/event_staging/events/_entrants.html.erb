@@ -148,12 +148,12 @@
                 <div class="mb-3 col-6">
                   <label>Bib Number</label>
                   <span class="help-tooltip" tabindex="-1" data-controller="popover" data-bs-placement="bottom" data-bs-content="Bib numbers are not strictly required, but entrants must have bib numbers for their times to be entered using Live Entry or OST Remote."><i class="fas fa-question-circle"></i></span>
-                  <input id="effort-bib-number-field" type="text" class="form-control" v-model.number="model.bibNumber" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder="example: 1234"></input>
+                  <input id="effort-bib-number-field" type="text" class="form-control" v-model.number="model.bibNumber" placeholder="example: 1234"></input>
                 </div>
 
                 <div class="mb-3 col-6">
                   <label>Age</label>
-                  <input id="effort-age-field" type="text" class="form-control" v-model.number="model.age" v-mask.insert="{ alias: 'integer', placeholder: '' }" placeholder=""></input>
+                  <input id="effort-age-field" type="text" class="form-control" v-model.number="model.age" placeholder=""></input>
                 </div>
               </div>
               <div class="row">
@@ -226,7 +226,7 @@
                       </div>
                       <div class="col-12 sto-input-wrap">
                         <span class="sto-or">or</span>
-                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" v-mask.insert="{ alias: 'Regex', regex: '^[\-+]?[0-9]*:[0-5][0-9]$' }" placeholder="hh:mm">
+                        <input id="effort-start-offset-field" type="text" class="form-control sto-input" v-model="model.offsetTime" placeholder="hh:mm">
                       </div>
                     </div>
                   </div>

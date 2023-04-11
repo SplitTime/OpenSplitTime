@@ -183,6 +183,7 @@ export default class extends Controller {
         let marker = new google.maps.Marker({
           position: point,
           map: controller._gmap,
+          splitId: location.id,
         });
 
         controller.setMarkerIcon(marker, location, markerIndex)
@@ -206,6 +207,21 @@ export default class extends Controller {
     if (this._bounds.isEmpty()) { return }
 
     this._gmap.fitBounds(this._bounds)
+  }
+
+  highlightMarker(event) {
+    const controller = this
+
+    controller._markers.forEach(function (marker) {
+      if (marker.splitId === event.detail.splitId) {
+        marker.setAnimation(google.maps.Animation.BOUNCE)
+        setTimeout(function () {
+          marker.setAnimation(null)
+        }, 300)
+      } else {
+        marker.setAnimation(null)
+      }
+    })
   }
 
   removeMarkers() {
@@ -233,7 +249,6 @@ export default class extends Controller {
         anchor: new google.maps.Point(16, 16)
       })
     }
-
   }
 
   setMarkerInfoWindow(marker, location) {

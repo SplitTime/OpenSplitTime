@@ -74,9 +74,15 @@ class SplitsController < ApplicationController
 
   def destroy
     authorize @split
-    @split.destroy
 
-    redirect_to event_group_event_course_setup_path(@event.event_group, @event)
+    if @split.destroy
+      respond_to do |format|
+        format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
+        format.turbo_stream { render turbo_stream: turbo_stream.remove(helpers.dom_id(@split, helpers.dom_id(@event))) }
+      end
+    else
+      redirect_to setup_course_event_group_event_path(@event.event_group, @event), status: :unprocessable_entity
+    end
   end
 
   private

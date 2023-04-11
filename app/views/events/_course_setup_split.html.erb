@@ -10,5 +10,6 @@
   <td><%= "#{split.latitude} / #{split.longitude}" if split.latitude.present? && split.longitude.present? %></td>
   <td>
     <%= link_to_event_split_edit(event, split) %>
+    <%= link_to_event_split_delete(event, split) %>
   </td>
 </tr>

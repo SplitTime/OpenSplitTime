@@ -173,10 +173,9 @@ export default class extends Controller {
   plotMarkers() {
     const controller = this
     controller.removeMarkers()
-
     let markerIndex = 1;
 
-    let markers = controller._locations.map(function (location) {
+    controller._markers = controller._locations.map(function (location) {
       if (location.latitude && location.longitude) {
         let point = new google.maps.LatLng(location.latitude, location.longitude);
         controller.conditionallyExtendBounds(point);
@@ -186,46 +185,13 @@ export default class extends Controller {
           map: controller._gmap,
         });
 
-        if (location.active && controller.hasActiveMarkerUrlValue) {
-          marker.setLabel((markerIndex).toString())
-          marker.setIcon({
-            url: controller.activeMarkerUrlValue,
-            labelOrigin: new google.maps.Point(16, 14),
-            anchor: new google.maps.Point(16, 16)
-          })
-          markerIndex++
-        } else if (!location.active && controller.hasInactiveMarkerUrlValue) {
-          marker.setIcon({
-            url: controller.inactiveMarkerUrlValue,
-            anchor: new google.maps.Point(16, 16)
-          })
-        }
-
-        let inactiveText = location.active ? "" : "(inactive)"
-
-        marker.infowindow = new google.maps.InfoWindow({
-          content:
-            "<div class='h5'>" +
-            "<span class='h5 fw-bold'>" + location.base_name + "</span>" +
-            "<span class='h6 ms-1'>" + inactiveText + "</span>" +
-            "</div>" +
-            "<div class='p'>" + location.latitude + ", " + location.longitude + "</div>"
-        });
-
-        marker.addListener('click', function () {
-          markers.map(function (v) {
-            if (v.infowindow) {
-              v.infowindow.close();
-            }
-          });
-          marker.infowindow.open(controller._gmap, marker);
-        });
+        controller.setMarkerIcon(marker, location, markerIndex)
+        controller.setMarkerInfoWindow(marker, location)
+        if (location.active) { markerIndex++ }
 
         return marker;
       }
     });
-
-    controller._markers = markers;
   }
 
   conditionallyExtendBounds(point) {
@@ -249,6 +215,48 @@ export default class extends Controller {
       marker.setMap(null)
     })
     controller._markers.length = 0
+  }
+
+  setMarkerIcon(marker, location, markerIndex) {
+    const controller = this
+
+    if (location.active && controller.hasActiveMarkerUrlValue) {
+      marker.setLabel((markerIndex).toString())
+      marker.setIcon({
+        url: controller.activeMarkerUrlValue,
+        labelOrigin: new google.maps.Point(16, 14),
+        anchor: new google.maps.Point(16, 16)
+      })
+    } else if (!location.active && controller.hasInactiveMarkerUrlValue) {
+      marker.setIcon({
+        url: controller.inactiveMarkerUrlValue,
+        anchor: new google.maps.Point(16, 16)
+      })
+    }
+
+  }
+
+  setMarkerInfoWindow(marker, location) {
+    const controller = this
+    const inactiveText = location.active ? "" : "(inactive)"
+
+    marker.infowindow = new google.maps.InfoWindow({
+      content:
+        "<div class='h5'>" +
+        "<span class='h5 fw-bold'>" + location.base_name + "</span>" +
+        "<span class='h6 ms-1'>" + inactiveText + "</span>" +
+        "</div>" +
+        "<div class='p'>" + location.latitude + ", " + location.longitude + "</div>"
+    });
+
+    marker.addListener('click', function () {
+      controller._markers.map(function (v) {
+        if (v.infowindow) {
+          v.infowindow.close();
+        }
+      });
+      marker.infowindow.open(controller._gmap, marker);
+    });
   }
 
   updateSplitLocation(event) {

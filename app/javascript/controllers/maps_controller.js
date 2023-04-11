@@ -22,18 +22,19 @@ export default class extends Controller {
       throw "Course ID is required."
     }
 
-    let mapOptions = {
-      mapTypeId: "terrain",
-      center: defaultLatLng,
-      zoom: defaultZoom,
-    };
-
     controller._withoutEvent = (eventId.length === 0);
     controller._splitProvided = (splitId.length > 0);
     controller._splitLocation = null;
     controller._trackPoints = [];
     controller._locations = [];
     controller._bounds = new google.maps.LatLngBounds();
+
+    const mapOptions = {
+      mapTypeId: "terrain",
+      center: defaultLatLng,
+      zoom: defaultZoom,
+      draggableCursor: controller._splitProvided ? "crosshair" : null,
+    };
 
     controller._gmap = new google.maps.Map(controller.element, mapOptions);
     controller._gmap.maxDefaultZoom = 16;

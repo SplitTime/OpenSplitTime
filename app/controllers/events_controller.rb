@@ -29,13 +29,13 @@ class EventsController < ApplicationController
     @event.scheduled_start_time_local = @event_group.scheduled_start_time_local || (7.days.from_now.in_time_zone(@event.home_time_zone).midnight + 6.hours)
     authorize @event
 
-    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+    @presenter = ::EventSetupPresenter.new(@event, view_context)
   end
 
   # GET /event_groups/1/events/1/edit
   def edit
     authorize @event
-    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+    @presenter = ::EventSetupPresenter.new(@event, view_context)
   end
 
   # POST /event_groups/1/events
@@ -47,7 +47,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to setup_event_group_path(@event_group)
     else
-      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      @presenter = ::EventSetupPresenter.new(@event, view_context)
       render "new", status: :unprocessable_entity
     end
   end
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
         end
       end
     else
-      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      @presenter = ::EventSetupPresenter.new(@event, view_context)
       render "edit", status: :unprocessable_entity
     end
   end

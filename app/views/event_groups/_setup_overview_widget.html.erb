@@ -1,0 +1,65 @@
+<%# locals: (presenter:) -%>
+
+<div class="ost-heading">
+  <div class="row bg-white border border-2 border-primary rounded">
+
+    <!-- Event Group Card-->
+    <div class="col-2 border-end">
+      <div class="row rounded-top text-center bg-light border-bottom p-1 pt-2">
+        <span class="h6 fw-bold">Group</span>
+      </div>
+      <div class="row p-2 mt-4 d-flex align-items-center">
+        <div class="text-center">
+          <%= link_to_setup_widget_event_group(presenter) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Card-->
+    <div class="col-6 border-end">
+      <div class="row text-center bg-light border-bottom p-1 pt-2">
+        <span class="h6 fw-bold">Events and Courses</span>
+      </div>
+      <div class="row py-3">
+        <% presenter.event_group.events.each do |event| %>
+          <%= render "event_groups/setup_overview_widget_event",
+                     presenter: presenter,
+                     event: event,
+                     css_class: "border-end" %>
+        <% end %>
+        <%= render "event_groups/setup_overview_widget_event",
+                   presenter: presenter,
+                   event: presenter.event_group.events.new(short_name: "New Event"),
+                   css_class: nil %>
+      </div>
+    </div>
+
+    <!-- Entrants Card-->
+    <div class="col-2 border-end">
+      <div class="row text-center bg-light border-bottom p-1 pt-2">
+        <span class="h6 fw-bold">Entrants</span>
+      </div>
+      <div class="row p-2 mt-4 d-flex align-items-center">
+        <div class="text-center">
+          <%= link_to_setup_widget_entrants(presenter) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Card-->
+    <div class="col-2">
+      <div class="row rounded-top text-center bg-light border-bottom p-1 pt-2">
+        <span class="h6 fw-bold">Summary</span>
+      </div>
+      <div class="row p-2 mt-4 d-flex align-items-center">
+        <div class="text-center">
+          <%= link_to fa_icon("times-circle",
+                              type: :regular,
+                              size: "2x",
+                              data: { controller: "tooltip", bs_original_title: "This Event Group is not yet public" }),
+                      "#" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

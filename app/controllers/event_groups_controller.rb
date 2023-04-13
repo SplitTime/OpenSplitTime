@@ -163,11 +163,12 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/reconcile
   def reconcile
     authorize @event_group
 
     event_group = EventGroup.where(id: @event_group.id).includes(efforts: :person).first
-    @presenter = ReconcilePresenter.new(parent: event_group, params: prepared_params, current_user: current_user)
+    @presenter = ReconcilePresenter.new(event_group, view_context)
   end
 
   def auto_reconcile

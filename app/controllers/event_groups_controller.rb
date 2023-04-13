@@ -69,6 +69,7 @@ class EventGroupsController < ApplicationController
     redirect_to event_groups_path
   end
 
+  # GET /event_groups/1/setup
   def setup
     authorize @event_group
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
@@ -76,6 +77,17 @@ class EventGroupsController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream { render "setup", locals: { presenter: @presenter } }
+    end
+  end
+
+  # GET /event_groups/1/setup_summary
+  def setup_summary
+    authorize @event_group
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render "summary", locals: { presenter: @presenter } }
     end
   end
 

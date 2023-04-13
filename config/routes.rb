@@ -120,6 +120,7 @@ Rails.application.routes.draw do
       get :reconcile
       get :roster
       get :setup
+      get :setup_summary
       get :split_raw_times
       get :stats
       get :sync_efforts

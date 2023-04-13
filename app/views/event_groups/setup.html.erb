@@ -9,7 +9,6 @@
 <% when "events" %>
   <article class="ost-article container">
     <div class="row flex-nowrap">
-      <%= render "setup_sidebar", event_group: @presenter.event_group %>
       <div class="col px-md-4 py-3">
         <aside class="ost-toolbar">
           <div class="container">
@@ -37,7 +36,6 @@
 <% when "entrants" %>
   <article class="ost-article container">
     <div class="row flex-nowrap">
-      <%= render "setup_sidebar", event_group: @presenter.event_group %>
       <div class="col px-md-4 py-3">
         <% if @presenter.first_event.present? %>
           <%= render "entrants_roster", presenter: @presenter %>

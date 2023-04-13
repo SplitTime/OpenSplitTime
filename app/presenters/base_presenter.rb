@@ -8,6 +8,14 @@ class BasePresenter
     raise NotImplementedError, "#{self.class.name} is an abstract class."
   end
 
+  def action_name
+    view_context.action_name
+  end
+
+  def controller_name
+    view_context.controller_name
+  end
+
   def existing_sort
     params.original_params[:sort]
   end

@@ -1,33 +1,38 @@
 # frozen_string_literal: true
 
 class ReconcilePresenter < BasePresenter
-  delegate :name, :organization, :scheduled_start_time_local, :available_live, :efforts, :unreconciled_efforts, :id, :concealed?,
-           to: :parent
+  attr_reader :event_group, :view_context
+  delegate :available_live?,
+           :concealed?,
+           :efforts,
+           :id,
+           :name,
+           :organization,
+           :scheduled_start_time_local,
+           :unreconciled_efforts,
+           to: :event_group
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:parent, :current_user],
-                           exclusive: [:parent, :params, :current_user],
-                           class: self.class)
-    @parent = args[:parent]
-    @params = args[:params]
-    @current_user = args[:current_user]
+  def initialize(event_group, view_context)
+    @event_group = event_group
+    @view_context = view_context
+    @params = view_context.prepared_params
+    @current_user = view_context.current_user
     unreconciled_batch.each(&:suggest_close_match)
   end
 
+  def event_group_name
+    event_group.name
+  end
+
+  def status
+    available_live? ? "live" : "not_live"
+  end
+
   def unreconciled_batch
-    @unreconciled_batch ||= parent.unreconciled_efforts.includes(split_times: :split).order(:last_name).limit(20)
-  end
-
-  def event_group
-    parent.respond_to?(:event_group) ? parent.event_group : parent
-  end
-
-  def event
-    parent.respond_to?(:first_event) ? parent.first_event : parent
+    @unreconciled_batch ||= event_group.unreconciled_efforts.includes(split_times: :split).order(:last_name).limit(20)
   end
 
   private
 
-  attr_reader :parent, :params, :current_user
+  attr_reader :params, :current_user
 end

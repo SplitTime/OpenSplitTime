@@ -1,0 +1,34 @@
+<%# locals: (presenter:) -%>
+
+<div id="<%= dom_id(presenter.event_group, 'setup_widget') %>">
+  <div class="row bg-white border border-2 border-primary rounded">
+
+    <!-- Event Group Card-->
+    <div class="col border-end">
+      <%= render "event_groups/setup_widget_header", title: "Group" %>
+      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_event_group(presenter) %>
+    </div>
+
+    <!-- Events Card-->
+    <div class="col-7 border-end">
+      <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
+      <% if presenter.event_group.new_record? %>
+        <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>
+      <% else %>
+        <%= render "event_groups/setup_widget_events", presenter: presenter %>
+      <% end %>
+    </div>
+
+    <!-- Entrants Card-->
+    <div class="col border-end">
+      <%= render "event_groups/setup_widget_header", title: "Entrants" %>
+      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_entrants(presenter) %>
+    </div>
+
+    <!-- Summary Card-->
+    <div class="col">
+      <%= render "event_groups/setup_widget_header", title: "Summary" %>
+      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_summary(presenter) %>
+    </div>
+  </div>
+</div>

@@ -29,13 +29,13 @@ class EventsController < ApplicationController
     @event.scheduled_start_time_local = @event_group.scheduled_start_time_local || (7.days.from_now.in_time_zone(@event.home_time_zone).midnight + 6.hours)
     authorize @event
 
-    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+    @presenter = ::EventSetupPresenter.new(@event, view_context)
   end
 
   # GET /event_groups/1/events/1/edit
   def edit
     authorize @event
-    @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+    @presenter = ::EventSetupPresenter.new(@event, view_context)
   end
 
   # POST /event_groups/1/events
@@ -45,9 +45,9 @@ class EventsController < ApplicationController
     authorize @event
 
     if @event.save
-      redirect_to setup_event_group_path(@event_group)
+      redirect_to setup_course_event_group_event_path(@event_group, @event)
     else
-      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      @presenter = ::EventSetupPresenter.new(@event, view_context)
       render "new", status: :unprocessable_entity
     end
   end
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
         end
       end
     else
-      @presenter = ::EventSetupPresenter.new(@event, params, current_user)
+      @presenter = ::EventSetupPresenter.new(@event, view_context)
       render "edit", status: :unprocessable_entity
     end
   end
@@ -77,7 +77,7 @@ class EventsController < ApplicationController
     @event.destroy
     respond_to do |format|
       format.html { redirect_to setup_event_group_path(@event_group) }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@event) }
+      format.turbo_stream { @presenter = EventGroupSetupPresenter.new(@event_group, view_context) }
     end
   end
 

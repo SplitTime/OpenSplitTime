@@ -3,23 +3,7 @@
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-
-<header class="ost-header">
-  <div class="container">
-    <div class="ost-heading row">
-      <div class="col">
-        <div class="ost-title">
-          <h1><strong>Your Event Group</strong></h1>
-          <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization_name, organization_path(@presenter.organization) %></li>
-            <li class="breadcrumb-item active">Your Event Group</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+<%= render "setup_header", presenter: @presenter %>
 
 <article class="ost-article container">
   <h4>We will first need some basic information about your Event Group</h4>

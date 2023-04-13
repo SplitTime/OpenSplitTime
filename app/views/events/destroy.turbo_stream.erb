@@ -1,4 +1,4 @@
 <%= turbo_stream.remove @event %>
 <%= turbo_stream.replace dom_id(@presenter.event_group, "setup_widget"),
-                         partial: "event_groups/setup_overview_widget",
+                         partial: "event_groups/setup_widget",
                          locals: { presenter: @presenter } %>

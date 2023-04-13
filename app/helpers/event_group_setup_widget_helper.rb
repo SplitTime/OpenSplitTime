@@ -14,7 +14,9 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_entrants(presenter)
-    if presenter.controller_name == "event_groups" && presenter.action_name == "setup" && presenter.display_style == "entrants"
+    if presenter.controller_name == "event_groups" &&
+      (presenter.action_name == "setup" && presenter.display_style == "entrants") ||
+      presenter.action_name.in?(%w(assign_bibs manage_entrant_photos manage_start_times reconcile))
       type = :solid
       tooltip = "Manage your Entrants"
       icon_only = false

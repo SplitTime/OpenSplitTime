@@ -4,7 +4,7 @@
   <% presenter.event_group.events.each do |event| %>
     <% next if event.new_record? %>
     <!-- Event-->
-    <%= render "event_groups/setup_overview_widget_event",
+    <%= render "event_groups/setup_widget_event",
                presenter: presenter,
                event: event,
                css_class: "border-end" %>

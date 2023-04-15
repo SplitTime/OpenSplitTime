@@ -904,8 +904,8 @@
 
                     setTimeout(function () {
                         node.node().classList.remove("bg-highlight");
-                        node.node().classList.add("bg-highlight-faded");
-                    }, 1000);
+                        node.node().classList.add("bg-highlight-faded-fast");
+                    }, 200);
                 }
             },
 

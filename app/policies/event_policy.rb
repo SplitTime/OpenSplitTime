@@ -101,34 +101,4 @@ class EventPolicy < ApplicationPolicy
   def aid_station_report?
     user.authorized_to_edit?(event)
   end
-
-  # Policies for staging namespace
-
-  def get_countries?
-    user.present?
-  end
-
-  def get_time_zones?
-    user.present?
-  end
-
-  def get_locations?
-    user.authorized_to_edit?(event)
-  end
-
-  def event_staging_app?
-    user.authorized_to_edit?(event)
-  end
-
-  def post_event_course_org?
-    user.authorized_to_edit?(event)
-  end
-
-  def update_event_visibility?
-    user.authorized_to_edit?(event)
-  end
-
-  def new_staging?
-    user.present?
-  end
 end

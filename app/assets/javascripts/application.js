@@ -17,16 +17,5 @@
 //= require jquery-fileupload/basic
 //= require moment
 //= require tempusdominus-bootstrap-4.js
-//= require vue
-//= require vue-router
 //= require local-time
 //= require_tree .
-
-Vue.use( VueRouter );
-Vue.filter( 'padding', function( value, length, character ) {
-	var strlen = ( value + '' ).length;
-	for ( strlen; strlen < length; strlen++ ) {
-		value = ( character ).concat( value );
-	}
-	return value;
-} );

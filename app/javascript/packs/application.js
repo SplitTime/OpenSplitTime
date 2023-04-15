@@ -43,11 +43,6 @@ import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
-// Vue
-import TurboLinksAdapter from "vue-turbolinks";
-
-Vue.use(TurboLinksAdapter);
-
 // Stimulus
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"

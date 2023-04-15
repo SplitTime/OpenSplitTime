@@ -900,7 +900,12 @@
                     var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
                     var pageIndex = Math.floor(index / pageInfo.length);
                     liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
-                    $(node.node()).effect('highlight', 1000);
+                    node.node().classList.add("bg-highlight")
+
+                    setTimeout(function () {
+                        node.node().classList.remove("bg-highlight");
+                        node.node().classList.add("bg-highlight-faded");
+                    }, 1000);
                 }
             },
 

@@ -19,7 +19,6 @@
     "dropzone": "^6.0.0-beta.2",
     "inputmask": "^5.0.8",
     "jquery": "^3.6.4",
-    "jquery-ui-dist": "^1.13.2",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
     "stimulus-use": "^0.51.1",

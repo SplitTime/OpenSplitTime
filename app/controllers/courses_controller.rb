@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :best_efforts, :cutoff_analysis, :plan_effort]
+  before_action :authenticate_user!, except: [:index, :show, :cutoff_analysis, :plan_effort]
   before_action :set_organization
   before_action :set_course, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show, :best_efforts, :cutoff_analysis, :plan_effort]
+  after_action :verify_authorized, except: [:index, :show, :cutoff_analysis, :plan_effort]
 
   def index
     @presenter = ::OrganizationPresenter.new(@organization, view_context)

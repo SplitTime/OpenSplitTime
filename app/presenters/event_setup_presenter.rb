@@ -3,15 +3,17 @@
 class EventSetupPresenter < BasePresenter
   include ::UnitConversions
 
-  attr_reader :event
+  attr_reader :event, :view_context
   delegate :event_group, :new_record?, :organization, :to_param, to: :event
   delegate :id, to: :event, prefix: true
+  delegate :available_live?, :concealed?, to: :event_group
   delegate :pref_distance_unit, to: :current_user
 
-  def initialize(event, params, current_user)
+  def initialize(event, view_context)
     @event = event
-    @params = params
-    @current_user = current_user
+    @view_context = view_context
+    @params = view_context.params
+    @current_user = view_context.current_user
   end
 
   def course
@@ -52,6 +54,10 @@ class EventSetupPresenter < BasePresenter
 
   def organization_name
     organization.name
+  end
+
+  def status
+    available_live? ? "live" : "not_live"
   end
 
   private

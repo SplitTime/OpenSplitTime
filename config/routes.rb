@@ -63,7 +63,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :aid_stations, only: [:show, :create, :update, :destroy]
   resources :credentials, only: [:create, :update, :destroy]
 
   resources :efforts do
@@ -95,6 +94,14 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :events, except: [:index, :show] do
+      resources :splits, except: [:show]
+      member do
+        get :new_course_gpx
+        get :setup_course
+        patch :reassign
+        patch :attach_course_gpx
+        delete :remove_course_gpx
+      end
       resources :syncable_relations, only: [:create, :destroy], module: "events"
     end
 
@@ -113,6 +120,7 @@ Rails.application.routes.draw do
       get :reconcile
       get :roster
       get :setup
+      get :setup_summary
       get :split_raw_times
       get :stats
       get :sync_efforts
@@ -136,6 +144,7 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:show] do
+    resources :aid_stations, only: [:create, :destroy]
     member do
       get :admin
       get :edit_start_time
@@ -148,7 +157,6 @@ Rails.application.routes.draw do
       put :set_stops
       post :sync_entrants
       post :sync_lottery_entrants
-      patch :reassign
       patch :update_start_time
       delete :delete_all_efforts
     end
@@ -223,7 +231,6 @@ Rails.application.routes.draw do
   end
 
   resources :split_times, only: [:update]
-  resources :splits
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
 
@@ -284,16 +291,7 @@ Rails.application.routes.draw do
         collection { get :current }
       end
       post "auth", to: "authentication#create"
-      get "staging/get_countries", to: "staging#get_countries", as: :staging_get_countries
-      get "staging/get_time_zones", to: "staging#get_time_zones", as: :staging_get_time_zones
-      get "staging/:id/get_locations", to: "staging#get_locations", as: :staging_get_locations
-      post "staging/:id/post_event_course_org", to: "staging#post_event_course_org", as: :staging_post_event_course_org
-      patch "staging/:id/update_event_visibility", to: "staging#update_event_visibility", as: :staging_update_event_visibility
     end
-  end
-
-  namespace :event_staging do
-    get "/:id/app", to: "events#app", as: "app"
   end
 
   get "/courses(/*path)" => redirect(::NamespaceRedirector.new("courses"))

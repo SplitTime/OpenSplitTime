@@ -1,0 +1,32 @@
+<%# locals: (event:, event_group:, grouping_button:) -%>
+
+<div id="<%= dom_id(event) %>" class="card mt-3">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="h2 fw-bold"><%= event.short_name %></span>
+        <span class="h4 text-muted ms-2"><%= " #{pluralize(event.efforts.count, 'entrant')}" %></span>
+      </div>
+      <div class="col text-md-end my-2 my-md-0">
+        <% if grouping_button == "join" %>
+          <%= link_to_event_reassign_join(event, event_group) %>
+        <% elsif event_group.events.many? && grouping_button == "leave" %>
+          <%= link_to_event_reassign_leave(event, event_group) %>
+        <% end %>
+        <%= link_to_event_edit(event) %>
+        <%= link_to_event_delete(event) %>
+        <%= event_actions_dropdown(event) %>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <h5><%= fa_icon("stopwatch") %> <%= l event.scheduled_start_time_local, format: :full_day_time_and_zone %></h5>
+      <div class="col-md-6">
+        <span class="h5 me-2"><%= fa_icon("map-marked-alt") %> <%= event.course.name %></span>
+        <span class="h6 text-muted"><%= " #{pluralize(event.course.splits.count, 'split')}" %></span>
+        <span class="ms-2"><%= link_to_event_setup_course(event) %></span>
+      </div>
+    </div>
+  </div>
+</div>

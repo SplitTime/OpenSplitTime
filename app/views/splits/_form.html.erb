@@ -1,105 +1,142 @@
-<%= render 'shared/errors', obj: @split %>
-<% set_course_and_event %>
-<div class="row">
-  <div class="col-md-12">
-    <%= form_for(@split, html: {class: "form-horizontal", role: "form"}) do |f| %>
-        <div class="mb-3">
-          <% if @split.course_id %>
-              <div class="col-sm-8 col-sm-offset-2">
-                <%= f.hidden_field :course_id, value: @split.course_id %>
-                <h4><%= "Located on #{@split.course_name}" %></h4>
-              </div>
-          <% else %>
-              <div class="control-label col-sm-2">
-                <%= f.label :course_id %>
-              </div>
-              <div class="col-sm-8">
-                <%= collection_select(:split, :course_id, Course.all, :id, :name,
-                                      {prompt: true}, {class: "form-control dropdown-select-field"}) %>
-              </div>
-          <% end %>
+<%# locals: (event:, split:) -%>
+
+<%= render "shared/errors", obj: split %>
+
+<div class="row"
+     data-controller="split-location"
+     data-action="maps:clicked->split-location#updateLocation"
+>
+  <div class="col-12 col-lg-6 col-lg-push-6">
+    <div style="width: 100%; height: 500px;"
+         class="border border-secondary"
+         data-controller="maps"
+         data-split-location-target="map"
+         data-action="split-location:changed->maps#updateSplitLocation"
+         data-maps-course-id-value="<%= split.course_id %>"
+         data-maps-event-id-value="<%= event.id %>"
+         data-maps-split-id-value="<%= split.id %>"
+         data-maps-active-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
+         data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
+    ></div>
+    <br/>
+  </div>
+
+  <div class="col-12 col-lg-6 col-lg-pull-6">
+    <%= form_with model: [event.event_group, event, split] do |form| %>
+      <hr/>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <%= form.label "Split name", class: "mb-1 required" %>
+          <%= tooltip("Name this Split") %>
+          <%= form.text_field :base_name,
+                              class: "form-control",
+                              placeholder: "My Aid Station",
+                              data: {
+                                split_location_target: "baseName",
+                                action: "change->split-location#changed",
+                              } %>
         </div>
-        <% if @split.new_record? %>
-            <%= f.hidden_field :kind, value: 'intermediate' %>
-        <% end %>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :base_name %>
-          </div>
-          <div class="col-sm-4">
-            <%= f.text_field :base_name, class: "form-control", placeholder: "Split name", autofocus: true %>
-          </div>
+        <div class="mb-3 col-6">
+          <%= form.label :description, class: "mb-1" %>
+          <%= tooltip("Add a helpful description of this place") %>
+          <%= form.text_field :description, class: "form-control", placeholder: "My description" %>
         </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :distance_in_preferred_units, 'Distance from start' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :distance_in_preferred_units, class: "form-control", placeholder: pdu %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :description %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.text_area :description, rows: 4, class: "form-control", placeholder: "Split description" %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :vert_gain_in_preferred_units, 'Vertical gain from start' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :vert_gain_in_preferred_units, class: "form-control", placeholder: peu %>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-6">
+          <%= form.label :distance_from_start, class: "mb-1 required" %>
+          <%= tooltip("Cumulative distance from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :distance_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_distance_unit %></span>
           </div>
         </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :vert_loss_in_preferred_units, 'Vertical loss from start' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :vert_loss_in_preferred_units, class: "form-control", placeholder: peu %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :elevation_in_preferred_units, 'Elevation' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :elevation_in_preferred_units, class: "form-control", placeholder: peu %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :latitude, 'Latitude' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :latitude, class: "form-control", placeholder: 'deg.decimal' %>
+        <div class="mb-3 col-6">
+          <%= form.label :time_recording, class: "mb-1 required" %>
+          <%= tooltip("Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out") %>
+          <div class="split-time-recording-wrap">
+            <label class="custom-radio">
+              <%= form.radio_button :sub_split_bitmap, 1 %>
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">Time In</span>
+            </label>
+            <label class="custom-radio ms-3">
+              <%= form.radio_button :sub_split_bitmap, 64 %>
+              <span class="custom-radio-indicator"></span>
+              <span class="custom-radio-label">Time In and Out</span>
+            </label>
           </div>
         </div>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :longitude, 'Longitude' %>
-          </div>
-          <div class="col-sm-2">
-            <%= f.text_field :longitude, class: "form-control", placeholder: 'deg.decimal' %>
-          </div>
-        </div>
-        <div class="mb-3">
-          <div class="col-sm-offset-2 col-sm-10">
-            <%= f.submit(@split.new_record? ? "Create Split" : "Update Split", class: 'btn btn-primary btn-large') %>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-6 vg-group">
+          <%= form.label :vertical_gain_from_start, class: "mb-1" %>
+          <%= tooltip("Cumulative vertical gain from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :vert_gain_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
           </div>
         </div>
-        <div class="col-xs-4 col-xs-offset-2">
-          <% if @split.id %>
-              [ <%= link_to 'Cancel', split_path(@split) %> ]
-          <% elsif @split.course_id %>
-              [ <%= link_to 'Cancel', organization_course_path(@split.course.organization, @split.course) %> ]
-          <% else %>
-              [ <%= link_to 'Cancel', courses_path %> ]
-          <% end %>
+        <div class="mb-3 col-6 vg-group">
+          <%= form.label :vertical_loss_from_start, class: "mb-1" %>
+          <%= tooltip("Cumulative vertical loss from the start of the course") %>
+          <div class="input-group">
+            <%= form.text_field :vert_loss_in_preferred_units, class: "form-control", disabled: split.start? %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
+          </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h5><strong>Add A Location</strong></h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-4">
+          <%= form.label :latitude, class: "mb-1" %>
+          <%= tooltip("Enter latitude or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :latitude,
+                                class: "form-control",
+                                data: {
+                                  split_location_target: "latitude",
+                                  action: "change->split-location#changed",
+                                } %>
+            <span class="input-group-text">deg</span>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <%= form.label :longitude, class: "mb-1" %>
+          <%= tooltip("Enter longitude or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :longitude,
+                                class: "form-control",
+                                data: {
+                                  split_location_target: "longitude",
+                                  action: "change->split-location#changed",
+                                } %>
+            <span class="input-group-text">deg</span>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <%= form.label :elevation, class: "mb-1" %>
+          <%= tooltip("Enter elevation or pick a point on the map") %>
+          <div class="input-group">
+            <%= form.text_field :elevation_in_preferred_units, class: "form-control", data: { split_location_target: "elevation" } %>
+            <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+      <div class="col-12">
+        <%= form.submit class: "btn btn-primary" %>
+        <%= button_tag "Cancel",
+                       type: :button,
+                       data: { action: "click->form-modal#hide" },
+                       class: "btn btn-outline-secondary" %>
+      </div>
     <% end %>
   </div>
+
 </div>

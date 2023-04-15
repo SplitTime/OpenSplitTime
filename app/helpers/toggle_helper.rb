@@ -39,7 +39,9 @@ module ToggleHelper
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: { checked_in: true }, button: :check_in_all)
     options = { method: "patch",
                 data: { confirm: "This will check in all entrants, making them eligible to start. Do you want to proceed?",
-                        "bs-toggle": :tooltip, placement: :bottom, "bs-original-title": "Check in all" },
+                        controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: "Check in all" },
                 class: "btn btn-success click-spinner" }
     link_to fa_icon("check-square", text: "All", type: :regular), url, options
   end
@@ -48,7 +50,9 @@ module ToggleHelper
     url = update_all_efforts_event_group_path(view_object.event_group, efforts: { checked_in: false }, button: :check_out_all)
     options = { method: "patch",
                 data: { confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
-                        "bs-toggle": :tooltip, placement: :bottom, "bs-original-title": "Check out all" },
+                        controller: :tooltip,
+                        bs_placement: :bottom,
+                        bs_original_title: "Check out all" },
                 class: "btn btn-outline-secondary click-spinner" }
     link_to fa_icon("square", text: "All", type: :regular), url, options
   end
@@ -117,6 +121,8 @@ module ToggleHelper
   def link_to_sign_in(args)
     icon_name = args[:icon_name]
     protocol = args[:protocol]
-    link_to fa_icon(icon_name, text: " #{protocol}"), "#", class: "btn btn-lg btn-outline-secondary", data: { "bs-toggle": "modal", "bs-target": "#log-in-modal" }
+    link_to fa_icon(icon_name, text: " #{protocol}"), "#",
+            class: "btn btn-lg btn-outline-secondary",
+            data: { bs_toggle: "modal", bs_target: "#log-in-modal" }
   end
 end

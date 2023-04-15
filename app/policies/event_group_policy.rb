@@ -24,6 +24,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def setup_summary?
+    setup?
+  end
+
   def raw_times?
     user.authorized_to_edit?(event_group)
   end
@@ -137,10 +141,6 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def live_entry?
-    user.authorized_to_edit?(event_group)
-  end
-
-  def post_event_course_org?
     user.authorized_to_edit?(event_group)
   end
 

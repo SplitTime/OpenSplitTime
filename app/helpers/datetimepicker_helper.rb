@@ -22,13 +22,13 @@ module DatetimepickerHelper
                                  value: object.send(method)&.strftime(strftime_format),
                                  placeholder: placeholder_format,
                                  class: "form-control datetimepicker-input",
-                                 data: {"bs-target": "##{html_id}"}
+                                 data: { bs_target: "##{html_id}" }
 
-    append = content_tag(:div, nil, class: "input-group-text", data: {"bs-target": "##{html_id}", "bs-toggle": "datetimepicker"}) do
+    append = content_tag(:div, nil, class: "input-group-text", data: { bs_target: "##{html_id}", bs_toggle: "datetimepicker" }) do
       content_tag(:span, nil, class: "far fa-calendar-alt")
     end
 
-    content_tag(:div, nil, class: "input-group date", id: html_id, data: {"target-input" => "nearest"}) do
+    content_tag(:div, nil, class: "input-group date", id: html_id, data: { "target-input" => "nearest" }) do
       text_field + append
     end
   end

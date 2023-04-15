@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 module CoursesHelper
+  def link_to_event_setup_course(event)
+    url = setup_course_event_group_event_path(event.event_group, event)
+    tooltip = "Setup the Course for this Event"
+    options = { data: { controller: :tooltip,
+                        bs_placement: :top,
+                        bs_original_title: tooltip },
+                class: "btn btn-outline-primary btn-sm" }
+    link_to fa_icon("pencil-alt"), url, options
+  end
+
   def segment_start_dropdown(view_object)
     ordered_split_params = view_object.ordered_splits.map(&:to_param)
     items = view_object.ordered_splits_without_finish.map do |split|
@@ -8,10 +18,10 @@ module CoursesHelper
       valid_split2_params = ordered_split_params.elements_after(split_param)
       split2_param = valid_split2_params.include?(view_object.split2) ? view_object.split2 : valid_split2_params.first
 
-      {name: split.base_name,
-       link: request.params.merge(split1: split.to_param, split2: split2_param),
-       active: view_object.split1.to_param == split.to_param,
-       visible: true}
+      { name: split.base_name,
+        link: request.params.merge(split1: split.to_param, split2: split2_param),
+        active: view_object.split1.to_param == split.to_param,
+        visible: true }
     end
     build_dropdown_menu(nil, items, button: true)
   end
@@ -23,10 +33,10 @@ module CoursesHelper
       valid_split1_params = ordered_split_params.elements_before(split_param)
       split1_param = valid_split1_params.include?(view_object.split1) ? view_object.split1 : valid_split1_params.last
 
-      {name: split.base_name,
-       link: request.params.merge(split1: split1_param, split2: split.to_param),
-       active: view_object.split2.to_param == split.to_param,
-       visible: true}
+      { name: split.base_name,
+        link: request.params.merge(split1: split1_param, split2: split.to_param),
+        active: view_object.split2.to_param == split.to_param,
+        visible: true }
     end
     build_dropdown_menu(nil, items, button: true)
   end

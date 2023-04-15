@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module ConcealedHelper
-  def name_with_concealed_indicator(presenter)
-    icon_name = presenter.concealed? ? "eye-slash" : "eye"
-    tooltip_text = presenter.concealed? ? "Not visible to the public" : "Visible to the public"
+  def name_with_concealed_indicator(name, concealed)
+    icon_name = concealed ? "eye-slash" : "eye"
+    tooltip_text = concealed ? "Not visible to the public" : "Visible to the public"
 
-    concat presenter.name.html_safe
+    concat name.html_safe
     concat " "
-    fa_icon(icon_name, data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_text })
+    fa_icon(icon_name, data: { controller: :tooltip, bs_original_title: tooltip_text })
   end
 end

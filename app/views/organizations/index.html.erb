@@ -13,6 +13,11 @@
           </ul>
         </div>
       </div>
+      <% if user_signed_in? %>
+        <div class="col text-end">
+          <%= link_to "Create a new organization", new_organization_path, class: "btn btn-outline-success mt-2" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </header>

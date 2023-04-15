@@ -12,11 +12,11 @@ class AidStationPolicy < ApplicationPolicy
     @aid_station = aid_station
   end
 
-  def show?
-    user.admin?
+  def create?
+    user.authorized_fully?(aid_station.event)
   end
 
   def destroy?
-    user.authorized_to_edit?(aid_station.event)
+    create?
   end
 end

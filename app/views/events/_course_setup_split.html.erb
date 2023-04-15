@@ -1,0 +1,19 @@
+<%# locals: (event:, split:, aid_station: -%>
+
+<tr id="<%= dom_id(split, dom_id(event)) %>"
+    class="align-middle <%= ' bg-light fst-italic fw-light' if aid_station.blank? %>"
+    data-course-setup-target="splitRow"
+    data-split-id="<%= split.id %>"
+>
+  <td class="mx-0 px-0"><%= render "events/aid_station_checkbox", event: event, split: split, aid_station: aid_station %></td>
+  <td><strong><%= split.base_name %></strong></td>
+  <td><%= "#{pdu('singular').titleize} #{d(split.distance_from_start)}" %></td>
+  <td><%= "#{e(split.vert_gain_from_start)} #{peu}" if split.vert_gain_from_start.present? %></td>
+  <td><%= "#{e(split.vert_loss_from_start)} #{peu}" if split.vert_loss_from_start.present? %></td>
+  <td><%= "#{e(split.elevation)} #{peu}" if split.elevation.present? %></td>
+  <td><%= "#{split.latitude} / #{split.longitude}" if split.latitude.present? && split.longitude.present? %></td>
+  <td class="text-end">
+    <%= link_to_event_split_edit(event, split) %>
+    <%= link_to_event_split_delete(event, split) %>
+  </td>
+</tr>

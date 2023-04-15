@@ -1,0 +1,72 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Setup Course - #{@presenter.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, "#{@presenter.course_name} Course Setup"] %>
+
+<%= render "shared/errors", obj: @presenter.course %>
+
+<article class="ost-article container"
+         data-controller="course-setup"
+         data-action="aid-station-checkbox:changed->course-setup#aidStationChanged"
+>
+  <h3><strong>Provide Your Course Details for <%= @presenter.course_name %></strong></h3>
+  <%= render "course_setup_gpx", event: @presenter.event %>
+
+  <div class="ost-subtitle">
+    <% if @presenter.description %>
+      <h5>
+        <%= @presenter.description %>
+      </h5>
+    <% end %>
+  </div>
+
+  <div style="width: 100%; height: 500px;"
+       class="border border-secondary"
+       data-controller="maps"
+       data-course-setup-target="map"
+       data-maps-course-id-value="<%= @presenter.course_id %>"
+       data-maps-event-id-value="<%= @presenter.event_id %>"
+       data-maps-active-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
+       data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
+       data-action="course-setup:aid-station-changed->maps#updateMarkers
+                    course-setup:set-marker-highlight->maps#highlightMarker"
+  ></div>
+  <br/>
+
+  <% if @presenter.ordered_splits.count == 2 %>
+    <aside class="col-12">
+      <div class="callout callout-info">
+        <h5>Add Splits wherever you want to record times</h5>
+        <ul class="mb-0">
+          <li>A Start and Finish Split have been created for you. Edit them to add location and elevation data.</li>
+          <li>Create new splits using the tools in the table below.</li>
+        </ul>
+      </div>
+    </aside>
+  <% end %>
+
+  <%= render partial: "events/course_setup_splits",
+             locals: {
+               event: @presenter.event,
+               splits: @presenter.ordered_splits,
+               aid_stations_by_split_id: @presenter.aid_stations_by_split_id,
+             } %>
+
+  <div class="col-12">
+    <div>
+      <%= link_to fa_icon("plus", text: "Add"),
+                  new_event_group_event_split_path(@presenter.event_group, @presenter.event),
+                  id: "add-split",
+                  class: "btn btn-success",
+                  data: { turbo_frame: "form_modal_large" }
+      %>
+      <%= event_setup_course_import_dropdown(@presenter) %>
+      <%= link_to "Export",
+                  event_group_event_splits_path(@presenter.event_group, @presenter.event, format: :csv),
+                  class: "btn btn-outline-secondary" %>
+      <%= link_to "Return to setup", setup_event_group_path(@presenter.event_group), class: "btn btn-primary" %>
+    </div>
+  </div>
+</article>

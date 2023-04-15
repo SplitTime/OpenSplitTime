@@ -1,0 +1,63 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Summary - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "setup_header", presenter: @presenter, breadcrumbs: [] %>
+
+<article class="ost-article container">
+  <div class="row">
+    <div class="col">
+      <div class="callout callout-info">
+        <h5>Here's a summary of your Event Group</h5>
+        <p>Come here anytime for an overview of the Events, Courses, and Entrants for this Event Group.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header">
+      <span class="h3">Events and Courses</span>
+    </div>
+    <div class="card-body">
+      <% @presenter.events.each do |event| %>
+        <div class="row mx-3 py-3 border-bottom">
+          <div class="col-12">
+            <span class="h4"><%= event.guaranteed_short_name %></span><span class="h5 text-muted ms-2"><%= pluralize(event.efforts.count, "entrant") %></span>
+          </div>
+          <div class="col-12">
+            <span class="h5"><%= "Course: #{event.course.name}" %></span><span class="h5 text-muted ms-2"><%= pluralize(event.course.splits.count, "split") %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <span class="h3">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
+    </div>
+    <div class="card-body">
+      <table class="table table-sm">
+        <thead>
+        <tr>
+          <th class="text-center">Reconciled?</th>
+          <% if @presenter.multiple_events? %>
+            <th>Event</th>
+          <% end %>
+          <th>Name</th>
+          <th class="text-center">Bib</th>
+          <th>Category</th>
+          <th>From</th>
+          <th>Scheduled Start Time</th>
+        </tr>
+        </thead>
+        <tbody id="entrants">
+        <%= render partial: "efforts/entrant_for_setup_small",
+                   collection: @presenter.filtered_efforts,
+                   as: :effort,
+                   locals: { presenter: @presenter } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</article>

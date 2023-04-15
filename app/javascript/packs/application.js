@@ -7,12 +7,29 @@
 // To reference this file, add <%= javascript_pack_tag "application" %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+// Sentry error reporting
+import * as Sentry from "@sentry/browser";
+
+Sentry.init({
+  dsn: "https://75503de427ae47638046edde0174a0ea@o361209.ingest.sentry.io/3805803",
+  release: process.env.npm_package_version,
+  integrations: [new Sentry.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+// Turbo-Rails
 require("@hotwired/turbo-rails")
 
+// ActiveStorage
 import * as ActiveStorage from "@rails/activestorage"
 
 ActiveStorage.start()
 
+// Preferred units
 import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from "utils/units";
 
 global.preferredDistanceUnit = preferredDistanceUnit;
@@ -20,11 +37,13 @@ global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
+// Miscellaneous imports
 import "utils/growl";
 import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
+// Stimulus
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
@@ -38,17 +57,7 @@ application.load(definitionsFromContext(context))
 // Bootstrap and Popper.js
 require("@popperjs/core")
 import "bootstrap"
-
-// Import specific Bootstrap modules
 import { Tooltip } from "bootstrap"
-
-// Initialize tooltips
-document.addEventListener("turbo:load", () => {
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new Tooltip(tooltipTriggerEl)
-  })
-})
 
 // Expand the default allowList for Bootstrap tooltips and popovers
 let myDefaultAllowList = Tooltip.Default.allowList;

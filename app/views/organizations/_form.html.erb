@@ -1,45 +1,26 @@
-<%= render 'shared/errors', obj: @organization %>
+<%= render "shared/errors", obj: @organization %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_for(@organization, html: {class: "form-horizontal", role: "form"}) do |f| %>
-      <div class="mb-3">
-        <div class="control-label col-sm-2">
-          <%= f.label :name %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.text_field :name, class: "form-control", placeholder: "Organization name", autofocus: true %>
-        </div>
+    <%= form_with model: @organization do |f| %>
+      <div class="mb-3 col-12">
+        <%= f.label :name, class: "mb-1 required" %>
+        <%= f.text_field :name, class: "form-control", placeholder: "Organization name", autofocus: true %>
+      </div>
+
+      <div class="mb-3 col-12">
+        <%= f.label :description, class: "mb-1" %>
+        <%= f.text_area :description, rows: 4, class: "form-control",
+                        placeholder: "(Optional) Say something about your organization" %>
       </div>
 
       <div class="mb-3">
-        <div class="control-label col-sm-2">
-          <%= f.label :description %>
-        </div>
-        <div class="col-sm-8">
-          <%= f.text_area :description, rows: 4, class: "form-control",
-                          placeholder: "Say something about your organization" %>
-        </div>
-      </div>
-
-      <% if current_user.admin? %>
-        <div class="mb-3">
-          <div class="control-label col-sm-2">
-            <%= f.label :owner %>
-          </div>
-          <div class="col-sm-8">
-            <%= f.text_field :owner_email, class: "form-control", placeholder: "race.director@yourorg.com" %>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="mb-3">
-        <div class="col">
-          <%= f.submit(@organization.new_record? ? "Create Organization" : "Update Organization", class: 'btn btn-primary btn-large') %>
-        </div>
-      </div>
-      <div class="col">
-        [ <%= link_to 'Cancel', @organization.new_record? ? organizations_path : @organization %> ]
+        <%= link_to "Cancel",
+                    @organization.new_record? ? organizations_path : organization_path(@organization),
+                    class: "btn btn-outline-secondary" %>
+        <%= button_tag(type: :submit, value: "Continue", class: "btn btn-primary") do %>
+          <%= fa_icon "arrow-right", text: "Continue", right: true %>
+        <% end %>
       </div>
     <% end %>
   </div>

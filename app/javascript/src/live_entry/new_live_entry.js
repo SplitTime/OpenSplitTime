@@ -1,10 +1,10 @@
 (function ($) {
 
     var timeIcons = {
-        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-bs-toggle="tooltip" title="Data Already Exists"></span>',
-        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-bs-toggle="tooltip" title="Time Appears Good"></span>',
-        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-bs-toggle="tooltip" title="Time Appears Questionable"></span>',
-        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-bs-toggle="tooltip" title="Time Appears Bad"></span>'
+        'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-controller="tooltip" title="Data Already Exists"></span>',
+        'good': '&nbsp;<span class="fas fa-check-circle text-success" data-controller="tooltip" title="Time Appears Good"></span>',
+        'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-controller="tooltip" title="Time Appears Questionable"></span>',
+        'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-controller="tooltip" title="Time Appears Bad"></span>'
     };
 
     /**
@@ -407,8 +407,6 @@
                     insertMode: false,
                     showMaskOnHover: false,
                 };
-
-                // $('#js-add-effort-form [data-bs-toggle="tooltip"]').tooltip({container: 'body'});
 
                 $('#js-time-in').inputmask("datetime", timeMaskOptions);
                 $('#js-time-out').inputmask("datetime", timeMaskOptions);
@@ -830,9 +828,7 @@
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
 
-                liveEntry.timeRowsTable.$dataTable.on('mouseover', '[data-bs-toggle="tooltip"]', function () {
-                    $(this).tooltip('show');
-                });
+                $('[data-bs-toggle="popover"]').popover();
 
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
@@ -993,9 +989,9 @@
 
             buildTrHtml: function (rawTimeRow) {
                 var bibIcons = {
-                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-bs-toggle="tooltip" title="Bib Found"></span>',
-                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-bs-toggle="tooltip" title="Bib In Wrong Event"></span>',
-                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-bs-toggle="tooltip" title="Bib Not Found"></span>'
+                    'good': '&nbsp;<span class="fas fa-check-circle text-success" data-controller="tooltip" title="Bib Found"></span>',
+                    'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-controller="tooltip" title="Bib In Wrong Event"></span>',
+                    'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-controller="tooltip" title="Bib Not Found"></span>'
                 };
                 var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
                 var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');

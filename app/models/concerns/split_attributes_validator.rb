@@ -51,6 +51,8 @@ class SplitAttributesValidator < ActiveModel::Validator
   end
 
   def validate_order
+    return unless split.distance_from_start.present?
+
     finish_split_distance = split.course&.finish_split&.distance_from_start
     if split.distance_from_start && finish_split_distance && (split.distance_from_start >= finish_split_distance)
       split.errors.add(:distance_from_start, "must be less than the finish split distance_from_start")

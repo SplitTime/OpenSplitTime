@@ -6,9 +6,9 @@ module PartnersHelper
     tooltip = "Delete partner"
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Continue?",
-                      "bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
+                      controller: :tooltip,
+                      bs_placement: :bottom,
+                      bs_original_title: tooltip},
                class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
@@ -16,9 +16,9 @@ module PartnersHelper
   def link_to_event_group_partner_edit(partner)
     url = edit_organization_event_group_partner_path(partner.organization, partner.partnerable, partner)
     tooltip = "Edit partner"
-    options = {data: {"bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
+    options = {data: {controller: :tooltip,
+                      bs_placement: :bottom,
+                      bs_original_title: tooltip},
                class: "btn btn-primary"}
     link_to fa_icon("pencil-alt"), url, options
   end
@@ -28,9 +28,9 @@ module PartnersHelper
     tooltip = "Delete partner"
     options = {method: :delete,
                data: {confirm: "This cannot be undone. Continue?",
-                      "bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
+                      controller: :tooltip,
+                      bs_placement: :bottom,
+                      bs_original_title: tooltip},
                class: "btn btn-danger"}
     link_to fa_icon("trash"), url, options
   end
@@ -38,9 +38,9 @@ module PartnersHelper
   def link_to_lottery_partner_edit(partner)
     url = edit_organization_lottery_partner_path(partner.organization, partner.partnerable, partner)
     tooltip = "Edit partner"
-    options = {data: {"bs-toggle": :tooltip,
-                      placement: :bottom,
-                      "bs-original-title": tooltip},
+    options = {data: {controller: :tooltip,
+                      bs_placement: :bottom,
+                      bs_original_title: tooltip},
                class: "btn btn-primary"}
     link_to fa_icon("pencil-alt"), url, options
   end

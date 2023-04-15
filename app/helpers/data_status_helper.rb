@@ -16,6 +16,6 @@ module DataStatusHelper
     fa_icon(attributes[:icon],
             class: attributes[:class],
             text: time,
-            data: { "bs-toggle": "tooltip", "bs-original-title": tooltip_title })
+            data: { controller: :tooltip, bs_original_title: tooltip_title })
   end
 end

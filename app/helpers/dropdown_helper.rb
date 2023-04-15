@@ -9,7 +9,7 @@ module DropdownHelper
     content_tag container_tag, class: [container_class, options[:class]].join(" ") do
       toggle_tag = options[:button] ? :button : :a
       toggle_class = (options[:button] ? "btn btn-outline-secondary" : "") + " dropdown-toggle"
-      concat content_tag(toggle_tag, class: toggle_class, data: { "bs-toggle": "dropdown" }) {
+      concat content_tag(toggle_tag, class: toggle_class, data: { bs_toggle: "dropdown" }) {
         active_name = items.find { |item| item[:active] }&.dig(:name)
         safe_concat [title, active_name].compact.join(" / ")
         safe_concat "&nbsp;"
@@ -36,9 +36,6 @@ module DropdownHelper
       { name: "Construction",
         link: setup_event_group_path(view_object.event_group),
         active: action_name == "setup" },
-      { name: "Staging",
-        link: "#{event_staging_app_path(view_object.event)}#/#{event_staging_app_page(view_object)}",
-        active: action_name == "app" },
       { name: "Reconcile",
         link: reconcile_event_group_path(view_object.event_group),
         active: action_name == "reconcile" },
@@ -317,9 +314,6 @@ module DropdownHelper
 
   def event_actions_dropdown(event)
     dropdown_items = [
-      { name: "Edit/Delete Event",
-        link: edit_event_group_event_path(event.event_group, event),
-        data: { "turbo-frame" => "_top" } },
       { name: "Establish Drops",
         link: set_stops_event_path(event),
         method: :put,
@@ -337,7 +331,7 @@ module DropdownHelper
       { name: "Export to Ultrasignup",
         link: export_event_path(event, format: :csv, export_format: :ultrasignup) }
     ]
-    build_dropdown_menu("Actions", dropdown_items, button: true)
+    build_dropdown_menu(fa_icon("cog"), dropdown_items, button: true)
   end
 
   def event_group_actions_dropdown(view_object)
@@ -384,6 +378,17 @@ module DropdownHelper
         link: organization_path(view_object.organization, display_style: "stewards") }
     ]
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
+  end
+
+  def event_setup_course_import_dropdown(view_object)
+    dropdown_items = [
+      { name: "Import from CSV file",
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: view_object.event.id, format: :event_course_splits }) },
+      { role: :separator },
+      { name: "Download CSV template",
+        link: event_group_event_splits_path(view_object.event_group, view_object.event, filter: { id: 0 }, format: :csv) },
+    ]
+    build_dropdown_menu("Import", dropdown_items, button: true)
   end
 
   def setup_entrants_import_dropdown(view_object)

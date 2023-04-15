@@ -4,7 +4,7 @@ module UnitConversions
   extend ActiveSupport::Concern
 
   METERS_PER_MILE = 1609.344
-  METERS_PER_KM = 1000
+  METERS_PER_KM = 1000.0
   FEET_PER_METER = 3.28084
 
   module ClassMethods

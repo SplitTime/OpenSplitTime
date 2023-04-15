@@ -25,8 +25,8 @@
           <span class="text-danger">
             <%= fa_icon("exclamation-circle",
                         data: {
-                          "bs-toggle": "tooltip",
-                          "bs-original-title": "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."
+                          controller: :tooltip,
+                          bs_original_title: "#{row.base_name} does not exist as an aid station in the upcoming event. It is presented here for reference only."
                         }) %>
           </span>
         <% end %>

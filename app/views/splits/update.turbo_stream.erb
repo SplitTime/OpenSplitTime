@@ -1,0 +1,3 @@
+<%= turbo_stream.replace(dom_id(@split, dom_id(@event)),
+                         partial: "events/course_setup_split",
+                         locals: { event: @event, split: @split, aid_station: @aid_station }) %>

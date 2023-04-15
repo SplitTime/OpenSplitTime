@@ -1,0 +1,21 @@
+<%# locals: (presenter:) -%>
+
+<div class="row py-3">
+  <% presenter.event_group.events.each do |event| %>
+    <% next if event.new_record? %>
+    <!-- Event-->
+    <%= render "event_groups/setup_widget_event",
+               presenter: presenter,
+               event: event,
+               css_class: "border-end" %>
+  <% end %>
+
+  <!--New Event-->
+  <div class="col">
+    <div class="row p-2 mt-3 d-flex align-items-center">
+      <div class="text-center">
+        <%= link_to_setup_widget_new_event(presenter) %>
+      </div>
+    </div>
+  </div>
+</div>

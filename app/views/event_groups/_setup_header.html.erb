@@ -1,0 +1,40 @@
+<%# locals: (presenter:, breadcrumbs:) -%>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1>
+            <span class="fw-bold">
+              <% if presenter.event_group.new_record? %>
+                <%= name_with_concealed_indicator("Your Event Group", true) %>
+              <% else %>
+                <%= name_with_concealed_indicator(presenter.event_group_name, presenter.concealed?) %>
+              <% end %>
+            </span>
+            <span><%= construction_status_badge(presenter.status) %></span>
+          </h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to presenter.organization.name, organization_path(presenter.organization) %></li>
+            <% if presenter.event_group.new_record? %>
+              <li class="breadcrumb-item active">Your Event Group</li>
+            <% else %>
+              <li class="breadcrumb-item"><%= link_to presenter.event_group.name, event_group_path(presenter.event_group) %></li>
+              <li class="breadcrumb-item"><%= link_to "Setup", setup_event_group_path(presenter.event_group) %></li>
+              <% breadcrumbs.each do |breadcrumb_text| %>
+                <li class="breadcrumb-item active"><%= breadcrumb_text %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container w-75">
+    <div class="ost-heading">
+      <%= render "event_groups/setup_widget", presenter: presenter %>
+    </div>
+  </div>
+</header>

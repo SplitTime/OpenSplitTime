@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import consumer from "../channels/consumer"
+import Rails from "@rails/ujs"
 
 export default class extends Controller {
 

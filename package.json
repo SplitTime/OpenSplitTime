@@ -19,8 +19,7 @@
     "inputmask": "^5.0.8",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
-    "stimulus-use": "^0.51.1",
-    "vue-turbolinks": "^2.2.2"
+    "stimulus-use": "^0.51.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",

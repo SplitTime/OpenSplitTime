@@ -535,7 +535,6 @@ GEM
     version_gem (1.1.2)
     voight_kampff (1.1.4)
       rack (>= 1.4, < 3.0)
-    vuejs-rails (2.5.13)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (3.7.0)
@@ -654,7 +653,6 @@ DEPENDENCIES
   terser
   turbo-rails
   vcr (~> 4.0)
-  vuejs-rails
   web-console (~> 3.7, >= 3.7.0)
   webdrivers (>= 4.5.0)
   webmock (~> 3.5)

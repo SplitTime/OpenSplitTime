@@ -40,6 +40,4 @@
     };
 
     document.addEventListener("turbo:load", init );
-    $(document).bind( 'vue-ready', init );
-
 })(jQuery);

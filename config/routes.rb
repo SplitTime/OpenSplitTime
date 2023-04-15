@@ -291,16 +291,7 @@ Rails.application.routes.draw do
         collection { get :current }
       end
       post "auth", to: "authentication#create"
-      get "staging/get_countries", to: "staging#get_countries", as: :staging_get_countries
-      get "staging/get_time_zones", to: "staging#get_time_zones", as: :staging_get_time_zones
-      get "staging/:id/get_locations", to: "staging#get_locations", as: :staging_get_locations
-      post "staging/:id/post_event_course_org", to: "staging#post_event_course_org", as: :staging_post_event_course_org
-      patch "staging/:id/update_event_visibility", to: "staging#update_event_visibility", as: :staging_update_event_visibility
     end
-  end
-
-  namespace :event_staging do
-    get "/:id/app", to: "events#app", as: "app"
   end
 
   get "/courses(/*path)" => redirect(::NamespaceRedirector.new("courses"))

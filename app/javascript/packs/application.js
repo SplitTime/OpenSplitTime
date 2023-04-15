@@ -8,18 +8,18 @@
 // layout file, like app/views/layouts/application.html.erb
 
 // Sentry error reporting
-import * as Sentry from "@sentry/browser";
-
-Sentry.init({
-  dsn: "https://75503de427ae47638046edde0174a0ea@o361209.ingest.sentry.io/3805803",
-  release: process.env.npm_package_version,
-  integrations: [new Sentry.BrowserTracing()],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0,
-});
+// import * as Sentry from "@sentry/browser";
+//
+// Sentry.init({
+//   dsn: "https://75503de427ae47638046edde0174a0ea@o361209.ingest.sentry.io/3805803",
+//   release: process.env.npm_package_version,
+//   integrations: [new Sentry.BrowserTracing()],
+//
+//   // Set tracesSampleRate to 1.0 to capture 100%
+//   // of transactions for performance monitoring.
+//   // We recommend adjusting this value in production
+//   tracesSampleRate: 1.0,
+// });
 
 // Turbo-Rails
 require("@hotwired/turbo-rails")
@@ -43,16 +43,28 @@ import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
+// jQuery
+import $ from 'jquery';
+
+global.$ = $
+global.jQuery = $
+require('jquery-ui');
+
+// jquery-ui theme
+require.context('file-loader?name=[path][name].[ext]&context=node_modules/jquery-ui-dist!jquery-ui-dist', true,    /jquery-ui\.css/ );
+require.context('file-loader?name=[path][name].[ext]&context=node_modules/jquery-ui-dist!jquery-ui-dist', true,    /jquery-ui\.theme\.css/ );
+
 // Stimulus
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
-import Rails from '@rails/ujs';
-Rails.start();
-
 const application = Application.start()
 const context = require.context("controllers", true, /.js$/)
 application.load(definitionsFromContext(context))
+
+// Rails.ujs
+import Rails from '@rails/ujs';
+Rails.start();
 
 // Bootstrap and Popper.js
 require("@popperjs/core")

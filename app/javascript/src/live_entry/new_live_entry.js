@@ -828,8 +828,6 @@
                 liveEntry.timeRowsTable.populateTableFromCache();
                 liveEntry.timeRowsTable.timeRowControls();
 
-                $('[data-bs-toggle="popover"]').popover();
-
                 // Attach add listener
                 $('#js-add-to-cache').on('click', function (event) {
                     event.preventDefault();

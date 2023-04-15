@@ -610,6 +610,7 @@ DEPENDENCIES
   jsonapi-serializer
   jwt
   listen
+  local_time
   madmin
   name_of_person
   normalize_country

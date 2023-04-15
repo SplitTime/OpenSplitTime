@@ -1,5 +1,5 @@
-var reloadWithTurbo = (function () {
-    var scrollPosition;
+export function reloadWithTurbo() {
+    let scrollPosition;
 
     function reload() {
         scrollPosition = [window.scrollX, window.scrollY];
@@ -14,4 +14,4 @@ var reloadWithTurbo = (function () {
     });
 
     return reload
-})();
+}

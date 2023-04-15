@@ -43,6 +43,10 @@ import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
+// reloadWithTurbo
+import { reloadWithTurbo } from "utils/reload_with_turbo"
+global.reloadWithTurbo = reloadWithTurbo()
+
 // jQuery
 import $ from 'jquery';
 

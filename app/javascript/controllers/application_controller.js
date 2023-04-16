@@ -1,7 +1,9 @@
-import {Controller} from "@hotwired/stimulus";
+import { Application } from "@hotwired/stimulus"
 
-export default class extends Controller {
-    reloadWithTurbo() {
-        Turbo.visit(window.location.toString(), {action: 'replace'})
-    }
-}
+const application = Application.start()
+
+// Configure Stimulus development experience
+application.debug = false
+window.Stimulus   = application
+
+export { application }

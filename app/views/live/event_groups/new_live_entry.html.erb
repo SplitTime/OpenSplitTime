@@ -2,8 +2,6 @@
   <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
 <% end %>
 
-<%= javascript_pack_tag "live_entry" %>
-
 <header class="ost-header">
   <div class="container" data-controller="notification" data-notification-channel="EventGroupsChannel" data-notification-id="<%= @event_group.id %>">
     <div class="ost-heading row">

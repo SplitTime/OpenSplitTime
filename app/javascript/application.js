@@ -34,7 +34,7 @@ window.elevationToPreferred = elevationToPreferred;
 
 // Miscellaneous imports
 import "./src/utils/growl";
-import "./src/chartkick/chart.js";
+import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
@@ -49,14 +49,6 @@ window.reloadWithTurbo = reloadWithTurbo()
 import $ from 'jquery';
 window.$ = $
 window.jQuery = $
-
-// Stimulus
-import { Application } from "@hotwired/stimulus"
-import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
-
-const application = Application.start()
-const context = require.context("controllers", true, /.js$/)
-application.load(definitionsFromContext(context))
 
 // Rails.ujs
 import Rails from '@rails/ujs';

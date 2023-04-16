@@ -13,6 +13,7 @@
   <%= csrf_meta_tags %>
   <%= render "layouts/cloudflare_analytics" if Rails.env.production? %>
   <%= render "layouts/favicon" %>
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 </head>
 
 <body class="<%= controller_name %> <%= action_name %>">

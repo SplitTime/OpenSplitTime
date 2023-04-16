@@ -17,6 +17,7 @@
     "coffeescript": "1.12.7",
     "datatables.net-bs5": "^1.13.4",
     "dropzone": "^6.0.0-beta.2",
+    "esbuild": "^0.17.16",
     "inputmask": "^5.0.8",
     "jquery": "^3.6.4",
     "lodash": "^4.17.21",
@@ -30,5 +31,8 @@
   },
   "engines": {
     "node": "16.x"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets"
   }
 }

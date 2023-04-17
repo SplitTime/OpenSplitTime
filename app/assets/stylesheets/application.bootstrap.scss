@@ -8,10 +8,35 @@
 @import "vendor/animate";
 @import "vendor/simple-sidebar";
 
-@import "font_awesome5_webfont";
+//@import "font_awesome5_webfont";
 
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap/scss/bootstrap";
 
-@import "pages/*";
-@import "utilities/*";
+@import "pages/errors";
+@import "pages/finish_line";
+@import "pages/homepage";
+@import "pages/live-entry";
+@import "pages/spread";
+
+@import "utilities/back_and_forth";
+@import "utilities/breadcrumbs";
+@import "utilities/buttons";
+@import "utilities/callouts";
+@import "utilities/collapse";
+@import "utilities/colors";
+@import "utilities/dropzone";
+@import "utilities/flex";
+@import "utilities/forms";
+@import "utilities/growl";
+@import "utilities/header";
+@import "utilities/highlight";
+@import "utilities/hr";
+@import "utilities/icons";
+@import "utilities/layout";
+@import "utilities/modals";
+@import "utilities/navbar";
+@import "utilities/popover";
+@import "utilities/saving";
+@import "utilities/sidebar";
+@import "utilities/tables";

@@ -53,6 +53,7 @@ Rails.start();
 // Bootstrap and Popper.js
 require("@popperjs/core")
 import * as bootstrap from "bootstrap"
+import { Tooltip } from "bootstrap"
 
 // Expand the default allowList for Bootstrap tooltips and popovers
 let myDefaultAllowList = Tooltip.Default.allowList;

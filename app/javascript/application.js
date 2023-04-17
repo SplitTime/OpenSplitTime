@@ -14,11 +14,12 @@
 //   tracesSampleRate: 1.0,
 // });
 
+// jQuery
+import "./src/add_jquery"
+
+// Turbo and Stimulus
 import "@hotwired/turbo-rails"
 import "./controllers"
-
-// Turbo-Rails
-require("@hotwired/turbo-rails")
 
 // ActiveStorage
 import * as ActiveStorage from "@rails/activestorage"
@@ -44,11 +45,6 @@ import "./src/live_entry/index";
 // reloadWithTurbo
 import { reloadWithTurbo } from "./src/utils/reload_with_turbo"
 window.reloadWithTurbo = reloadWithTurbo()
-
-// jQuery
-import $ from 'jquery';
-window.$ = $
-window.jQuery = $
 
 // Rails.ujs
 import Rails from '@rails/ujs';

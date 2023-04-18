@@ -1,0 +1,63 @@
+<%# locals: (presenter:) -%>
+
+<div id="setup_summary_status" class="mb-5">
+  <aside class="col-12">
+    <div class="callout callout-info">
+      <div class="d-inline-flex justify-content-between w-100">
+        <% if presenter.event_group.visible? %>
+          <div>
+            <span class="text-success"><%= fa_icon "check-circle" %></span>
+            <span class="h5 ms-1">Congratulations, your Event Group is public!</span>
+            <p>Results and Follow pages are now available for your entrants to view.</p>
+          </div>
+          <%= link_to "Take Private",
+                      organization_event_group_path(presenter.organization, presenter.event_group, event_group: { concealed: true }),
+                      method: :patch,
+                      data: { confirm: t("event_groups.setup.make_private_confirm", event_group_name: presenter.event_group_name) },
+                      class: "btn btn-outline-success" %>
+        <% else %>
+          <div>
+            <span class="text-info"><%= fa_icon "info-circle" %></span>
+            <span class="h5 ms-1">Your Event Group is still private</span>
+            <p>Once your Events and Courses are ready and you have Entrants loaded, click the "Go Public" button to make
+              your Event Group visible to the public.</p>
+          </div>
+          <%= link_to "Go Public",
+                      organization_event_group_path(presenter.organization, presenter.event_group, event_group: { concealed: false }),
+                      method: :patch,
+                      data: { confirm: t("event_groups.setup.make_public_confirm", event_group_name: presenter.event_group_name) },
+                      class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="col-12">
+    <div class="callout callout-info">
+      <div class="d-inline-flex justify-content-between w-100">
+        <% if presenter.event_group.available_live? %>
+          <div>
+            <span class="h5 ms-1">Your Event Group is available for Live Entry</span>
+            <p>You can now access the Live Entry view and use OST Remote to record times.</p>
+          </div>
+          <%= link_to "Disable Live Entry",
+                      organization_event_group_path(presenter.organization, presenter.event_group, event_group: { available_live: false }),
+                      method: :patch,
+                      data: { confirm: t("event_groups.setup.disable_live_confirm", event_group_name: presenter.event_group_name) },
+                      class: "btn btn-success" %>
+        <% else %>
+          <div>
+            <span class="h5 ms-1">Your Event Group is not available for Live Entry</span>
+            <p>You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the "Enable Live Entry" button.</p>
+          </div>
+
+          <%= link_to "Enable Live Entry",
+                      organization_event_group_path(presenter.organization, presenter.event_group, event_group: { available_live: true }),
+                      method: :patch,
+                      data: { confirm: t("event_groups.setup.enable_live_confirm", event_group_name: presenter.event_group_name) },
+                      class: "btn btn-outline-success" %>
+        <% end %>
+      </div>
+    </div>
+  </aside>
+</div>

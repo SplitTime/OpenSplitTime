@@ -335,17 +335,6 @@ module DropdownHelper
   end
 
   def event_group_actions_dropdown(view_object)
-    make_public_text = "NOTE: This will make #{view_object.event_group_names} visible to the public, " +
-      "including all related efforts and people. Are you sure you want to proceed?"
-    make_private_text = "NOTE: This will conceal #{view_object.event_group_names} from the public, " +
-      "including all related efforts. Are you sure you want to proceed?"
-    enable_live_text = "NOTE: This will enable live entry actions for #{view_object.event_group_names}, " +
-      "and will also trigger live follower notifications by email and SMS text when new times are added. " +
-      "Are you sure you want to proceed?"
-    disable_live_text = "NOTE: This will suspend all live entry actions for #{view_object.event_group_names}, " +
-      "including any that may be in process, and will disable live follower notifications " +
-      "by email and SMS text when new times are added. Are you sure you want to proceed?"
-
     dropdown_items = [
       { name: "Edit/Delete Group",
         link: edit_organization_event_group_path(view_object.organization, view_object.event_group) },
@@ -354,23 +343,23 @@ module DropdownHelper
       { role: :separator },
       { name: "Make Public",
         link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: false }),
-        data: { confirm: make_public_text },
+        data: { confirm: I18n.t("event_groups.setup.make_public_confirm", event_group_name: view_object.event_group_name) },
         disabled: !view_object.concealed?,
         method: :put },
       { name: "Make Private",
         link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: true }),
-        data: { confirm: make_private_text },
+        data: { confirm: I18n.t("event_groups.setup.make_private_confirm", event_group_name: view_object.event_group_name) },
         disabled: view_object.concealed?,
         method: :put },
       { role: :separator },
       { name: "Enable Live",
         link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { available_live: true }),
-        data: { confirm: enable_live_text },
+        data: { confirm: I18n.t("event_groups.setup.enable_live_confirm", event_group_name: view_object.event_group_name) },
         disabled: view_object.available_live?,
         method: :put },
       { name: "Disable Live",
         link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { available_live: false }),
-        data: { confirm: disable_live_text },
+        data: { confirm: I18n.t("event_groups.setup.disable_live_confirm", event_group_name: view_object.event_group_name) },
         disabled: !view_object.available_live?,
         method: :put },
       { role: :separator },

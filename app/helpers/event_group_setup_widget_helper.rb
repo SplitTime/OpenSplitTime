@@ -5,7 +5,7 @@ module EventGroupSetupWidgetHelper
     type = presenter.controller_name == "events" && presenter.action_name == "setup_course" && presenter.event == event ? :solid : :regular
     path = setup_course_event_group_event_path(event.event_group, event)
     tooltip = event.course.name
-    icon = fa_icon("check-circle",
+    icon = fa_icon("dot-circle",
                    type: type,
                    size: "2x",
                    data: { controller: "tooltip", bs_original_title: tooltip })
@@ -20,7 +20,7 @@ module EventGroupSetupWidgetHelper
       type = :solid
       tooltip = "Manage your Entrants"
       icon_only = false
-    elsif presenter.event_group.new_record?
+    elsif presenter.event_group.new_record? || presenter.no_persisted_events?
       type = :regular
       tooltip = "You'll be able to add Entrants after your Event Group and Events are created"
       icon_only = true
@@ -48,7 +48,8 @@ module EventGroupSetupWidgetHelper
   def link_to_setup_widget_event_group(presenter)
     type = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w(setup new)) && presenter.display_style != "entrants" ? :solid : :regular
     path = presenter.event_group.new_record? ? new_organization_event_group_path(presenter.organization) : setup_event_group_path(presenter.event_group)
-    icon = fa_icon("check-circle",
+    icon_name = presenter.event_group.new_record? ? "dot-circle" : "check-circle"
+    icon = fa_icon(icon_name,
                    type: type,
                    size: "2x")
 
@@ -102,9 +103,9 @@ module EventGroupSetupWidgetHelper
       type = :solid
       tooltip = ""
       icon_only = false
-    elsif presenter.event_group.new_record?
+    elsif presenter.event_group.new_record? || presenter.no_persisted_events?
       type = :regular
-      tooltip = "You can view a summary here after your Event Group is created"
+      tooltip = "You can view a summary here after your Event Group and Events are created"
       icon_only = true
     else
       type = :regular

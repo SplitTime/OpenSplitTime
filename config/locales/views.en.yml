@@ -1,0 +1,7 @@
+en:
+  event_groups:
+    setup:
+      enable_live_confirm: "NOTE: This will enable live entry actions for %{event_group_name}, and will also enable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"
+      disable_live_confirm: "NOTE: This will suspend all live entry actions for %{event_group_name}, including any that may be in process, and will disable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"
+      make_public_confirm: "NOTE: This will make %{event_group_name} visible to the public, including all related entrants. Are you sure you want to proceed?"
+      make_private_confirm: "NOTE: This will conceal %{event_group_name} from the public, including all related entrants. Are you sure you want to proceed?"

@@ -77,6 +77,10 @@ class EventGroupSetupPresenter < BasePresenter
     @events ||= event_group.events.order(:scheduled_start_time)
   end
 
+  def no_persisted_events?
+    @persisted_events ||= events.none?(&:persisted?)
+  end
+
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if filtered_efforts_count == per_page
   end

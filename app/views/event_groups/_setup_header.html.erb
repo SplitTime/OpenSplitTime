@@ -5,16 +5,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1>
-            <span class="fw-bold">
-              <% if presenter.event_group.new_record? %>
-                <%= name_with_concealed_indicator("Your Event Group", true) %>
-              <% else %>
-                <%= name_with_concealed_indicator(presenter.event_group_name, presenter.concealed?) %>
-              <% end %>
-            </span>
-            <span><%= construction_status_badge(presenter.status) %></span>
-          </h1>
+          <%= render "event_groups/setup_header_name_and_indicators", presenter: presenter %>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to presenter.organization.name, organization_path(presenter.organization) %></li>

@@ -11,6 +11,21 @@ module CoursesHelper
     link_to fa_icon("pencil-alt"), url, options
   end
 
+  def link_to_add_course_gpx(event)
+    link_to "Add",
+            new_course_gpx_event_group_event_path(event.event_group, event),
+            data: { turbo_frame: "form_modal" },
+            class: "btn btn-sm btn-outline-success"
+  end
+
+  def link_to_remove_course_gpx(event)
+    link_to "Remove",
+            remove_course_gpx_event_group_event_path(event.event_group, event),
+            method: :delete,
+            class: "btn btn-sm btn-outline-danger",
+            data: { confirm: "This cannot be undone. Proceed?" }
+  end
+
   def segment_start_dropdown(view_object)
     ordered_split_params = view_object.ordered_splits.map(&:to_param)
     items = view_object.ordered_splits_without_finish.map do |split|

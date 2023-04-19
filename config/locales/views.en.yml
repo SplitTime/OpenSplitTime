@@ -15,3 +15,6 @@ en:
       group_is_live_detail: "You can now access the Live Entry view and use OST Remote to record times."
       group_is_not_live_main: "Your Event Group is not yet available for Live Entry"
       group_is_not_live_detail: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button."
+
+      gpx_is_attached: "A GPX file has been added for this course"
+      gpx_is_not_attached: "Add a GPX file to see your course on the map below"

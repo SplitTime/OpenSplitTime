@@ -2,29 +2,22 @@
 
 <%= turbo_frame_tag "course_setup_gpx" do %>
   <aside class="col-12">
-    <div class="callout callout-info">
-      <div class="d-inline-flex justify-content-between w-100">
-        <% if event.course.gpx.attached? %>
-          <div>
-            <span class="text-success"><%= fa_icon "check-circle" %></span>
-            <span class="ms-1">A GPX file has been added for this course.</span>
-          </div>
-          <%= link_to "Remove",
-                      remove_course_gpx_event_group_event_path(event.event_group, event),
-                      method: :delete,
-                      class: "btn btn-sm btn-outline-danger",
-                      data: { confirm: "This cannot be undone. Proceed?" } %>
-        <% else %>
-          <div>
-            <span class="text-info"><%= fa_icon "info-circle" %></span>
-            <span class="ms-1">Add a GPX file to see your course on the map below.</span>
-          </div>
-          <%= link_to "Add",
-                      new_course_gpx_event_group_event_path(event.event_group, event),
-                      data: { turbo_frame: "form_modal" },
-                      class: "btn btn-sm btn-outline-success" %>
-        <% end %>
-      </div>
-    </div>
+    <% if event.course.gpx.attached? %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "success",
+                   icon_name: "check-circle",
+                   main_text: t("event_groups.setup.gpx_is_attached"),
+                   link: link_to_remove_course_gpx(event),
+                 } %>
+    <% else %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "warning",
+                   icon_name: "info-circle",
+                   main_text: t("event_groups.setup.gpx_is_not_attached"),
+                   link: link_to_add_course_gpx(event),
+                 } %>
+    <% end %>
   </aside>
 <% end %>

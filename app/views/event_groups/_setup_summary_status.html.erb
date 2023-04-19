@@ -11,11 +11,7 @@
             <p>Results and Follow pages are now available for your entrants to view.</p>
           </div>
           <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to "Take Private",
-                        organization_event_group_path(presenter.organization, presenter.event_group, event_group: { concealed: true }),
-                        method: :patch,
-                        data: { confirm: t("event_groups.setup.make_private_confirm", event_group_name: presenter.event_group_name) },
-                        class: "btn btn-outline-success" %>
+            <%= link_to_event_group_take_private(presenter) %>
           </div>
         </div>
       <% else %>
@@ -27,11 +23,7 @@
               your Event Group visible to the public.</p>
           </div>
           <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to "Go Public",
-                        organization_event_group_path(presenter.organization, presenter.event_group, event_group: { concealed: false }),
-                        method: :patch,
-                        data: { confirm: t("event_groups.setup.make_public_confirm", event_group_name: presenter.event_group_name) },
-                        class: "btn btn-outline-success" %>
+            <%= link_to_event_group_go_public(presenter) %>
           </div>
         </div>
       <% end %>
@@ -47,11 +39,7 @@
             <p>You can now access the Live Entry view and use OST Remote to record times.</p>
           </div>
           <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to "Disable Live Entry",
-                        organization_event_group_path(presenter.organization, presenter.event_group, event_group: { available_live: false }),
-                        method: :patch,
-                        data: { confirm: t("event_groups.setup.disable_live_confirm", event_group_name: presenter.event_group_name) },
-                        class: "btn btn-outline-success" %>
+            <%= link_to_event_group_disable_live(presenter) %>
           </div>
         </div>
       <% else %>
@@ -63,11 +51,7 @@
               you make it available by clicking the "Enable Live Entry" button.</p>
           </div>
           <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to "Enable Live Entry",
-                        organization_event_group_path(presenter.organization, presenter.event_group, event_group: { available_live: true }),
-                        method: :patch,
-                        data: { confirm: t("event_groups.setup.enable_live_confirm", event_group_name: presenter.event_group_name) },
-                        class: "btn btn-outline-success" %>
+            <%= link_to_event_group_enable_live(presenter) %>
           </div>
         </div>
       <% end %>

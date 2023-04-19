@@ -32,3 +32,10 @@
     color: $success;
   }
 }
+
+.callout-warning {
+  border-left-color: $warning;
+  h4 {
+    color: $warning;
+  }
+}

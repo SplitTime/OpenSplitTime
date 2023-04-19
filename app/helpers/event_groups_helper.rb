@@ -33,6 +33,12 @@ module EventGroupsHelper
             class: "btn btn-outline-success"
   end
 
+  def link_to_reconcile_efforts(event_group)
+    link_to "Reconcile",
+            reconcile_event_group_path(event_group),
+            class: "btn btn-outline-success"
+  end
+
   def link_to_start_ready_efforts(view_object)
     if view_object.ready_efforts.present?
       content_tag :div, class: "btn-group" do

@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "setup_header_name_and_indicators",
+                         partial: "setup_header_name_and_indicators",
+                         locals: { presenter: @presenter } %>
+
+<%= turbo_stream.replace "setup_summary_status",
+                         partial: "setup_summary_status",
+                         locals: { presenter: @presenter } %>

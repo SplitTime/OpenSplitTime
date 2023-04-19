@@ -6,17 +6,11 @@
 <%= render "setup_header", presenter: @presenter, breadcrumbs: [] %>
 
 <article class="ost-article container">
-  <div class="row">
-    <div class="col">
-      <div class="callout callout-info">
-        <h5>Here's a summary of your Event Group</h5>
-        <p>Come here anytime for an overview of the Events, Courses, and Entrants for this Event Group.</p>
-      </div>
-    </div>
-  </div>
-  <div class="card mb-4">
+  <%= render "setup_summary_status", presenter: @presenter %>
+  <div class="h3 fw-bold">Event Group Summary</div>
+  <div class="card my-3">
     <div class="card-header">
-      <span class="h3">Events and Courses</span>
+      <span class="h4">Events and Courses</span>
     </div>
     <div class="card-body">
       <% @presenter.events.each do |event| %>
@@ -32,9 +26,9 @@
     </div>
   </div>
 
-  <div class="card mb-4">
+  <div class="card my-3">
     <div class="card-header">
-      <span class="h3">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
+      <span class="h4">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
     </div>
     <div class="card-body">
       <table class="table table-sm">

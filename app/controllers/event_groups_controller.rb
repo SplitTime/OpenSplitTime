@@ -58,7 +58,11 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     @event_group.update(permitted_params)
-    redirect_to setup_event_group_path(@event_group)
+
+    respond_to do |format|
+      format.html { redirect_to setup_event_group_path(@event_group) }
+      format.turbo_stream { @presenter = EventGroupSetupPresenter.new(@event_group, view_context) }
+    end
   end
 
   def destroy

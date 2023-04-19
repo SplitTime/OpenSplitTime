@@ -1,0 +1,20 @@
+en:
+  event_groups:
+    setup:
+      enable_live_confirm: "NOTE: This will enable live entry actions for %{event_group_name}, and will also enable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"
+      disable_live_confirm: "NOTE: This will suspend all live entry actions for %{event_group_name}, including any that may be in process, and will disable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"
+      make_public_confirm: "NOTE: This will make %{event_group_name} visible to the public, including all related entrants. Are you sure you want to proceed?"
+      make_private_confirm: "NOTE: This will conceal %{event_group_name} from the public, including all related entrants. Are you sure you want to proceed?"
+
+      group_is_public_main: "Congratulations, your Event Group is public!"
+      group_is_public_detail: "Results and Follow pages are now available for your entrants to view."
+      group_is_private_main: "Your Event Group is still private"
+      group_is_private_detail: "Once your Events and Courses are ready and you have Entrants loaded, click the \"Go Public\" button to make your Event Group visible to the public."
+
+      group_is_live_main: "Your Event Group is available for Live Entry"
+      group_is_live_detail: "You can now access the Live Entry view and use OST Remote to record times."
+      group_is_not_live_main: "Your Event Group is not yet available for Live Entry"
+      group_is_not_live_detail: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button."
+
+      gpx_is_attached: "A GPX file has been added for this course"
+      gpx_is_not_attached: "Add a GPX file to see your course on the map below"

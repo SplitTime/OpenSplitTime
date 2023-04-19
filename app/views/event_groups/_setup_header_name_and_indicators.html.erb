@@ -1,0 +1,14 @@
+<%# locals: (presenter:) -%>
+
+<div id="setup_header_name_and_indicators">
+  <h1>
+    <span class="fw-bold">
+      <% if presenter.event_group.new_record? %>
+        <%= name_with_concealed_indicator("Your Event Group", true) %>
+      <% else %>
+        <%= name_with_concealed_indicator(presenter.event_group_name, presenter.concealed?) %>
+      <% end %>
+    </span>
+    <span><%= construction_status_badge(presenter.status) %></span>
+  </h1>
+</div>

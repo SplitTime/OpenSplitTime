@@ -1,0 +1,45 @@
+<%# locals: (presenter:) -%>
+
+<div id="setup_summary_status" class="mb-5">
+  <aside class="col-12">
+    <% if presenter.event_group.visible? %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "success",
+                   icon_name: "check-circle",
+                   main_text: t("event_groups.setup.group_is_public_main"),
+                   detail_text: t("event_groups.setup.group_is_public_detail"),
+                   link: link_to_event_group_make_private(presenter)
+                 } %>
+    <% else %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "warning",
+                   icon_name: "exclamation-circle",
+                   main_text: t("event_groups.setup.group_is_private_main"),
+                   detail_text: t("event_groups.setup.group_is_private_detail"),
+                   link: link_to_event_group_make_public(presenter)
+                 } %>
+    <% end %>
+  </aside>
+
+  <aside class="col-12">
+    <% if presenter.event_group.available_live? %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   main_text: t("event_groups.setup.group_is_live_main"),
+                   detail_text: t("event_groups.setup.group_is_live_detail"),
+                   link: link_to_event_group_disable_live(presenter)
+                 } %>
+    <% else %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "warning",
+                   icon_name: "exclamation-circle",
+                   main_text: t("event_groups.setup.group_is_not_live_main"),
+                   detail_text: t("event_groups.setup.group_is_not_live_detail"),
+                   link: link_to_event_group_enable_live(presenter)
+                 } %>
+    <% end %>
+  </aside>
+</div>

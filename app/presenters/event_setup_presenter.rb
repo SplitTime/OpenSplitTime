@@ -44,6 +44,10 @@ class EventSetupPresenter < BasePresenter
     event_group.name
   end
 
+  def no_persisted_events?
+    event_group.events.none?(&:persisted?)
+  end
+
   def event_name
     event.name
   end

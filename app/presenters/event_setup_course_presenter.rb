@@ -28,6 +28,10 @@ class EventSetupCoursePresenter < BasePresenter
     event_group.name
   end
 
+  def no_persisted_events?
+    event_group.events.none?(&:persisted?)
+  end
+
   def event_id
     event.id
   end

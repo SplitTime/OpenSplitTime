@@ -2,59 +2,44 @@
 
 <div id="setup_summary_status" class="mb-5">
   <aside class="col-12">
-    <div class="callout callout-success">
-      <% if presenter.event_group.visible? %>
-        <div class="row">
-          <div class="col-12 col-md-9">
-            <span class="text-success me-1"><%= fa_icon "check-circle" %></span>
-            <span class="h5">Congratulations, your Event Group is public!</span>
-            <p>Results and Follow pages are now available for your entrants to view.</p>
-          </div>
-          <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to_event_group_take_private(presenter) %>
-          </div>
-        </div>
-      <% else %>
-        <div class="row">
-          <div class="col-12 col-md-9">
-            <span class="text-info me-1"><%= fa_icon "info-circle" %></span>
-            <span class="h5">Your Event Group is still private</span>
-            <p>Once your Events and Courses are ready and you have Entrants loaded, click the "Go Public" button to make
-              your Event Group visible to the public.</p>
-          </div>
-          <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to_event_group_go_public(presenter) %>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <% if presenter.event_group.visible? %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "success",
+                   icon_name: "check-circle",
+                   main_text: "Congratulations, your Event Group is public!",
+                   detail_text: "Results and Follow pages are now available for your entrants to view.",
+                   link: link_to_event_group_take_private(presenter)
+                 } %>
+    <% else %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "warning",
+                   icon_name: "exclamation-circle",
+                   main_text: "Your Event Group is still private",
+                   detail_text: "Once your Events and Courses are ready and you have Entrants loaded, click the \"Go Public\" button to make your Event Group visible to the public.",
+                   link: link_to_event_group_go_public(presenter)
+                 } %>
+    <% end %>
   </aside>
 
   <aside class="col-12">
-    <div class="callout callout-success">
-      <% if presenter.event_group.available_live? %>
-        <div class="row">
-          <div class="col-12 col-md-9">
-            <span class="h5">Your Event Group is available for Live Entry</span>
-            <p>You can now access the Live Entry view and use OST Remote to record times.</p>
-          </div>
-          <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to_event_group_disable_live(presenter) %>
-          </div>
-        </div>
-      <% else %>
-        <div class="row">
-          <div class="col-12 col-md-9">
-            <span class="text-warning me-1"><%= fa_icon "exclamation-circle" %></span>
-            <span class="h5">Your Event Group is not yet available for Live Entry</span>
-            <p>You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until
-              you make it available by clicking the "Enable Live Entry" button.</p>
-          </div>
-          <div class="col-12 col-md-3 text-center text-md-end pt-3 pt-md-0">
-            <%= link_to_event_group_enable_live(presenter) %>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <% if presenter.event_group.available_live? %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   main_text: "Your Event Group is available for Live Entry",
+                   detail_text: "You can now access the Live Entry view and use OST Remote to record times.",
+                   link: link_to_event_group_disable_live(presenter)
+                 } %>
+    <% else %>
+      <%= render partial: "shared/callout_with_link",
+                 locals: {
+                   icon_color: "warning",
+                   icon_name: "exclamation-circle",
+                   main_text: "Your Event Group is not yet available for Live Entry",
+                   detail_text: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button.",
+                   link: link_to_event_group_enable_live(presenter)
+                 } %>
+    <% end %>
   </aside>
 </div>

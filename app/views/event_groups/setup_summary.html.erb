@@ -7,9 +7,10 @@
 
 <article class="ost-article container">
   <%= render "setup_summary_status", presenter: @presenter %>
-  <div class="card mb-4">
+  <div class="h3 fw-bold">Event Group Summary</div>
+  <div class="card my-3">
     <div class="card-header">
-      <span class="h3">Events and Courses</span>
+      <span class="h4">Events and Courses</span>
     </div>
     <div class="card-body">
       <% @presenter.events.each do |event| %>
@@ -25,9 +26,9 @@
     </div>
   </div>
 
-  <div class="card mb-4">
+  <div class="card my-3">
     <div class="card-header">
-      <span class="h3">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
+      <span class="h4">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
     </div>
     <div class="card-body">
       <table class="table table-sm">

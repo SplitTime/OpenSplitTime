@@ -7,18 +7,18 @@
                  locals: {
                    icon_color: "success",
                    icon_name: "check-circle",
-                   main_text: "Congratulations, your Event Group is public!",
-                   detail_text: "Results and Follow pages are now available for your entrants to view.",
-                   link: link_to_event_group_take_private(presenter)
+                   main_text: t("event_groups.setup.group_is_public_main"),
+                   detail_text: t("event_groups.setup.group_is_public_detail"),
+                   link: link_to_event_group_make_private(presenter)
                  } %>
     <% else %>
       <%= render partial: "shared/callout_with_link",
                  locals: {
                    icon_color: "warning",
                    icon_name: "exclamation-circle",
-                   main_text: "Your Event Group is still private",
-                   detail_text: "Once your Events and Courses are ready and you have Entrants loaded, click the \"Go Public\" button to make your Event Group visible to the public.",
-                   link: link_to_event_group_go_public(presenter)
+                   main_text: t("event_groups.setup.group_is_private_main"),
+                   detail_text: t("event_groups.setup.group_is_private_detail"),
+                   link: link_to_event_group_make_public(presenter)
                  } %>
     <% end %>
   </aside>
@@ -27,8 +27,8 @@
     <% if presenter.event_group.available_live? %>
       <%= render partial: "shared/callout_with_link",
                  locals: {
-                   main_text: "Your Event Group is available for Live Entry",
-                   detail_text: "You can now access the Live Entry view and use OST Remote to record times.",
+                   main_text: t("event_groups.setup.group_is_live_main"),
+                   detail_text: t("event_groups.setup.group_is_live_detail"),
                    link: link_to_event_group_disable_live(presenter)
                  } %>
     <% else %>
@@ -36,8 +36,8 @@
                  locals: {
                    icon_color: "warning",
                    icon_name: "exclamation-circle",
-                   main_text: "Your Event Group is not yet available for Live Entry",
-                   detail_text: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button.",
+                   main_text: t("event_groups.setup.group_is_not_live_main"),
+                   detail_text: t("event_groups.setup.group_is_not_live_detail"),
                    link: link_to_event_group_enable_live(presenter)
                  } %>
     <% end %>

@@ -17,7 +17,7 @@ module EventGroupsHelper
             class: "btn btn-outline-success"
   end
 
-  def link_to_event_group_go_public(view_object)
+  def link_to_event_group_make_public(view_object)
     link_to "Go Public",
             organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: false }),
             method: :patch,
@@ -25,7 +25,7 @@ module EventGroupsHelper
             class: "btn btn-outline-success"
   end
 
-  def link_to_event_group_take_private(view_object)
+  def link_to_event_group_make_private(view_object)
     link_to "Take Private",
             organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: true }),
             method: :patch,

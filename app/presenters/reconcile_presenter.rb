@@ -24,6 +24,14 @@ class ReconcilePresenter < BasePresenter
     event_group.name
   end
 
+  def events
+    @events ||= event_group.events
+  end
+
+  def no_persisted_events?
+    @persisted_events ||= events.none?(&:persisted?)
+  end
+
   def status
     available_live? ? "live" : "not_live"
   end

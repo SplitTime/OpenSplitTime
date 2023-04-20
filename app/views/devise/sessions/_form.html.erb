@@ -32,10 +32,10 @@
       <% end %>
       <hr class="hr-text" data-content="or">
       <p class="text-center">Log in with Email</p>
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name),
-                   data: { action: "ajax:success->login#reloadPage ajax:error->login#showErrors" }) do |f| %>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="form-floating mb-3">
-          <%= f.email_field :email, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
           <%= f.label :email %>
         </div>
 
@@ -54,8 +54,7 @@
         <% end %>
 
         <div class="mb-3">
-          <%= f.submit t("devise.sessions.new.sign_in"), id: "log-in-modal-submit", class: "btn btn-primary",
-                       data: { action: "click->login#hideErrors" } %>
+          <%= f.submit t("devise.sessions.new.sign_in"), class: "btn btn-primary" %>
         </div>
       <% end %>
       <%= render "devise/shared/modal_links" %>

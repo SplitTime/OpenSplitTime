@@ -6,7 +6,8 @@ module Users
       respond_to do |format|
         format.html { super }
         format.turbo_stream do
-          locals = { resource: User.new, resource_name: :user }
+          user = User.new(email: params.dig(:user, :email))
+          locals = { resource: user, resource_name: :user }
           render turbo_stream: turbo_stream.replace("form_modal", partial: "devise/sessions/form", locals: locals)
         end
       end

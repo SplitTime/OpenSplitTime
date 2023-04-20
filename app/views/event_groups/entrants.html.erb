@@ -9,7 +9,7 @@
   <div class="row flex-nowrap">
     <div class="col px-md-4 py-3">
       <% if @presenter.first_event.present? %>
-        <%= render "entrants_roster", presenter: @presenter %>
+        <%= render "entrants_list", presenter: @presenter %>
       <% else %>
         <div class="callout callout-info">
           <h5>You will need to add an Event before adding Entrants</h5>

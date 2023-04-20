@@ -283,7 +283,7 @@ class EventsController < ApplicationController
 
     response = ::Interactors::SyncLotteryEntrants.perform!(@event)
     set_flash_message(response)
-    redirect_to setup_event_group_path(@event.event_group, display_style: :entrants)
+    redirect_to entrants_event_group_path(@event.event_group)
   end
 
   # POST /events/1/sync_entrants
@@ -292,7 +292,7 @@ class EventsController < ApplicationController
 
     response = ::Interactors::SyncRunsignupParticipants.perform!(@event, current_user)
     set_flash_message(response)
-    redirect_to setup_event_group_path(@event.event_group, display_style: :entrants)
+    redirect_to entrants_event_group_path(@event.event_group)
   end
 
   private

@@ -3,16 +3,6 @@
   <button type="button" class="btn-close" data-bs-dismiss="modal" tabindex="-1"></button>
 </div>
 <div class="modal-body">
-  <% if alert.present? %>
-    <div class="row justify-content-center">
-      <div class="alert alert-info d-block" role="alert">
-        <div class="col col-login">
-          <strong><%= alert %></strong>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
   <div class="row">
     <div class="col px-4">
       <%= button_to(user_facebook_omniauth_authorize_path,
@@ -33,9 +23,19 @@
       <hr class="hr-text" data-content="or">
       <p class="text-center">Log in with Email</p>
 
+      <% if alert.present? %>
+        <div class="row justify-content-center">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login">
+              <strong><%= alert %></strong>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="form-floating mb-3">
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
           <%= f.label :email %>
         </div>
 

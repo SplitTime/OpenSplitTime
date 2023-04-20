@@ -24,4 +24,11 @@ export default class extends Controller {
     event.preventDefault()
     this.modal.hide()
   }
+
+  autofocus() {
+    const autofocusInput = this.element.querySelector("[autofocus]")
+    if (autofocusInput) {
+      autofocusInput.focus()
+    }
+  }
 }

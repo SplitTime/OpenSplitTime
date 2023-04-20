@@ -44,7 +44,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
+      redirect_to entrants_event_group_path(@effort.event_group)
     else
       render "new", status: :unprocessable_entity
     end
@@ -63,7 +63,7 @@ class EffortsController < ApplicationController
           when :disassociate
             redirect_to request.referrer
           else
-            redirect_to setup_event_group_path(effort.event_group, display_style: :entrants)
+            redirect_to entrants_event_group_path(effort.event_group)
           end
 
           if new_event_id && new_event_id != effort.event_id
@@ -92,7 +92,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     @effort.destroy
-    redirect_to setup_event_group_path(@effort.event_group, display_style: :entrants)
+    redirect_to entrants_event_group_path(@effort.event_group)
   end
 
   # DELETE /efforts/1/delete_photo

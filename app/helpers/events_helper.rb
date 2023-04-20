@@ -89,8 +89,4 @@ module EventsHelper
   def data_status(status_int)
     Effort.data_statuses.key(status_int)
   end
-
-  def event_staging_app_page(view_object)
-    view_object.respond_to?(:display_style) && (view_object.display_style == "splits") ? "splits" : "entrants"
-  end
 end

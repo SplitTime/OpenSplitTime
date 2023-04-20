@@ -84,6 +84,17 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/entrants
+  def entrants
+    authorize @event_group
+    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream { render "entrants", locals: { presenter: @presenter } }
+    end
+  end
+
   # GET /event_groups/1/setup_summary
   def setup_summary
     authorize @event_group
@@ -241,7 +252,7 @@ class EventGroupsController < ApplicationController
     response = ::Interactors::BulkSetBibNumbers.perform!(@event_group, bib_assignments)
 
     if response.successful?
-      redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+      redirect_to entrants_event_group_path(@event_group)
     else
       set_flash_message(response)
       redirect_to assign_bibs_event_group_path(@event_group)
@@ -366,7 +377,7 @@ class EventGroupsController < ApplicationController
 
     response = Interactors::BulkDestroyEfforts.perform!(::Effort.where(event: @event_group.events))
     set_flash_message(response) unless response.successful?
-    redirect_to setup_event_group_path(@event_group, display_style: :entrants)
+    redirect_to entrants_event_group_path(@event_group)
   end
 
   def delete_all_times

@@ -1,7 +1,9 @@
 <%# locals: (effort:, presenter:) -%>
 
 <tr id="<%= dom_id effort, :roster_row %>">
-  <td class="text-center"><%= effort.unreconciled? ? "No" : "Yes" %></td>
+  <td class="text-center">
+    <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
+  </td>
   <% if presenter.multiple_events? %>
     <td><%= effort.event.guaranteed_short_name %></td>
   <% end %>

@@ -1,0 +1,21 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Entrants - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "setup_header", presenter: @presenter, breadcrumbs: [] %>
+
+<article class="ost-article container">
+  <div class="row flex-nowrap">
+    <div class="col px-md-4 py-3">
+      <% if @presenter.first_event.present? %>
+        <%= render "entrants_list", presenter: @presenter %>
+      <% else %>
+        <div class="callout callout-info">
+          <h5>You will need to add an Event before adding Entrants</h5>
+          <p>Click the <strong>Setup</strong> tab to add an Event</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</article>

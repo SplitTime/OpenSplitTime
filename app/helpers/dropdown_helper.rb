@@ -447,8 +447,4 @@ module DropdownHelper
     end
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
-
-  def event_staging_app_page(view_object)
-    view_object.respond_to?(:display_style) && (view_object.display_style == "splits") ? "splits" : "entrants"
-  end
 end

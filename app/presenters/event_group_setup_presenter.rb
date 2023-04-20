@@ -41,10 +41,6 @@ class EventGroupSetupPresenter < BasePresenter
     events.map(&:course).uniq
   end
 
-  def display_style
-    params[:display_style].presence || default_display_style
-  end
-
   def event_group_efforts
     event_group.efforts.includes(:event)
   end
@@ -115,8 +111,4 @@ class EventGroupSetupPresenter < BasePresenter
 
   attr_reader :params, :view_context
   delegate :current_user, :request, to: :view_context, private: true
-
-  def default_display_style
-    "events"
-  end
 end

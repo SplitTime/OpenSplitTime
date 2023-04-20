@@ -109,6 +109,7 @@ Rails.application.routes.draw do
       get :assign_bibs
       get :drop_list
       get :efforts
+      get :entrants
       get :export_raw_times
       get :finish_line
       get :follow

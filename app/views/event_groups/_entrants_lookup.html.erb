@@ -1,14 +1,13 @@
 <%# locals: (presenter:) -%>
 
-<%= form_tag setup_event_group_path(presenter.event_group), method: :get do %>
-  <%= hidden_field_tag "display_style", presenter.display_style %>
+<%= form_tag entrants_event_group_path(presenter.event_group), method: :get do %>
   <div class="input-group">
     <%= text_field_tag "filter[search]",
                        presenter.search_text,
                        placeholder: "Bib #, first name, last name, state, or country",
                        autofocus: true,
                        class: "form-control search-box" %>
-    <%= button_tag(id: "roster-search-submit", type: :submit, class: "btn btn-primary input-group-text") do %>
+    <%= button_tag(id: "entrants-search-submit", type: :submit, class: "btn btn-primary input-group-text") do %>
       <i class="fas fa-search"></i>
     <% end %>
   </div>

@@ -24,6 +24,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def entrants?
+    setup?
+  end
+
   def setup_summary?
     setup?
   end

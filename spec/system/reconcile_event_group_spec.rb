@@ -37,49 +37,55 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
       login_as steward, scope: :user
 
       visit_page
-      expect(page).to have_content("All entrants have been reconciled")
+      verify_reconciled_content
     end
 
     scenario "The user is the owner of the organization" do
       login_as owner, scope: :user
 
       visit_page
-      expect(page).to have_content("All entrants have been reconciled")
+      verify_reconciled_content
     end
 
     scenario "The user is an admin" do
       login_as admin, scope: :user
 
       visit_page
-      expect(page).to have_content("All entrants have been reconciled")
+      verify_reconciled_content
     end
   end
 
   context "when some entrants have not been reconciled" do
-    before do
-      event_group.efforts.first.update(person: nil)
-    end
+    before { event_group.efforts.first.update(person: nil) }
 
     scenario "The user is a steward of the organization" do
       login_as steward, scope: :user
 
       visit_page
-      expect(page).to have_content(/Showing \d+ of \d+ unreconciled efforts/)
+      verify_unreconciled_content
     end
 
     scenario "The user is the owner of the organization" do
       login_as owner, scope: :user
 
       visit_page
-      expect(page).to have_content(/Showing \d+ of \d+ unreconciled efforts/)
+      verify_unreconciled_content
     end
 
     scenario "The user is an admin" do
       login_as admin, scope: :user
 
       visit_page
-      expect(page).to have_content(/Showing \d+ of \d+ unreconciled efforts/)
+      verify_unreconciled_content
     end
+  end
+
+  def verify_reconciled_content
+    expect(page).to have_content("All entrants have been reconciled")
+  end
+
+  def verify_unreconciled_content
+    expect(page).to have_content(/Showing \d+ of \d+ unreconciled efforts/)
   end
 
   def visit_page

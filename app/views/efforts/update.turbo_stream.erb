@@ -7,3 +7,7 @@
 <%= turbo_stream.replace dom_id(effort.event_group, :start_ready_efforts_button),
                         partial: "event_groups/start_ready_efforts_button",
                         locals: { presenter: presenter } %>
+
+<%= turbo_stream.replace dom_id(effort, :event_group_setup),
+                         partial: "efforts/entrant_for_setup",
+                         locals: { presenter: presenter, effort: effort }%>

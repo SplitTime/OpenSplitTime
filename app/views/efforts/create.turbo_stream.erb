@@ -1,0 +1,3 @@
+<%= turbo_stream.prepend("entrants",
+                         partial: "efforts/entrant_for_setup",
+                         locals: { presenter: @presenter, effort: @effort }) %>

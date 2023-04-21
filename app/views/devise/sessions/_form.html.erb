@@ -1,28 +1,63 @@
-<!--Requires local variable modal (boolean)-->
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), format: :json, remote: true,
-             data: {action: "ajax:success->login#reloadPage ajax:error->login#showErrors"}) do |f| %>
-  <div class="form-floating mb-3">
-    <%= f.email_field :email, autocomplete: "email", class: "form-control", data: { controller: :autofocus } %>
-    <%= f.label :email %>
-  </div>
-
-  <div class="form-floating mb-3">
-    <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
-    <%= f.label :password %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="form-check mb-3">
-      <%= f.check_box :remember_me, class: "form-check-input" %>
-      <%= f.label :remember_me, class: "form-check-label" do %>
-        <%= resource.class.human_attribute_name("remember_me") %>
+<div class="modal-header">
+  <h3 class="modal-title"><strong><%= t("devise.sessions.new.sign_in").titleize %></strong></h3>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" tabindex="-1"></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col px-4">
+      <%= button_to(user_facebook_omniauth_authorize_path,
+                    method: :post,
+                    id: "facebook-log-in-button",
+                    form: { class: "d-grid", data: { turbo: false } },
+                    class: "btn btn-lg btn-facebook") do %>
+        <%= fab_icon("facebook-square", text: " Log in with Facebook") %>
       <% end %>
-    </div>
-  <% end %>
+      <br/>
+      <%= button_to(user_google_oauth2_omniauth_authorize_path,
+                    method: :post,
+                    id: "google-log-in-button",
+                    form: { class: "d-grid", data: { turbo: false } },
+                    class: "btn btn-lg btn-google") do %>
+        <%= fab_icon("google", text: " Log in with Google") %>
+      <% end %>
+      <hr class="hr-text" data-content="or">
+      <p class="text-center">Log in with Email</p>
 
-  <div class="mb-3">
-    <%= f.submit t("devise.sessions.new.sign_in"), id: "log-in-modal-submit", class: "btn btn-primary",
-                 data: {action: "click->login#hideErrors", turbo: false} %>
+      <% if alert.present? %>
+        <div class="row justify-content-center">
+          <div class="alert alert-info d-block" role="alert">
+            <div class="col col-login">
+              <strong><%= alert %></strong>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-floating mb-3">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
+          <%= f.label :email %>
+        </div>
+
+        <div class="form-floating mb-3">
+          <%= f.password_field :password, autocomplete: "current-password", class: "form-control" %>
+          <%= f.label :password %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="form-check mb-3">
+            <%= f.check_box :remember_me, class: "form-check-input" %>
+            <%= f.label :remember_me, class: "form-check-label" do %>
+              <%= resource.class.human_attribute_name("remember_me") %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="mb-3">
+          <%= f.submit t("devise.sessions.new.sign_in"), class: "btn btn-primary" %>
+        </div>
+      <% end %>
+      <%= render "devise/shared/modal_links" %>
+    </div>
   </div>
-<% end %>
+</div>

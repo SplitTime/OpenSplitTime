@@ -1,0 +1,9 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Log In" %>
+<% end %>
+
+<main class="container">
+  <%= turbo_frame_tag "form_modal" do %>
+    <%= render "form" %>
+  <% end %>
+</main>

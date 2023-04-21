@@ -1,35 +1,37 @@
-# https://github.com/plataformatec/devise/wiki/How-To:-redirect-to-a-specific-page-on-successful-sign-in
+# frozen_string_literal: true
 
 module Users
   class SessionsController < Devise::SessionsController
     def new
-      redirect_to root_path
+      respond_to do |format|
+        format.html { super }
+        format.turbo_stream do
+          user = User.new(email: params.dig(:user, :email))
+          locals = { resource: user, resource_name: :user }
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "devise/sessions/form", locals: locals)
+        end
+      end
     end
 
     def create
-      resource = warden.authenticate!(scope: resource_name, recall: "#{controller_path}#log_in_failure")
-      sign_in_and_render_json(resource_name, resource)
-    end
+      resource = warden.authenticate!(auth_options)
+      resource_or_scope = resource_name
+      scope = Devise::Mapping.find_scope!(resource_or_scope)
+      resource ||= resource_or_scope
 
-    # If status is 401, Devise will redirect to the login screen, so use 403 (Forbidden) instead,
-    # which is proper in any case according to https://stackoverflow.com/a/45405518/5961578
-    def log_in_failure
-      render json: { success: false, errors: { detail: { messages: [t("devise.sessions.invalid")] } } }, status: :forbidden
+      if sign_in(scope, resource)
+        clear_oauth_provider(resource) if resource.provider.present? || resource.uid.present?
+        render turbo_stream: turbo_stream.replace("ost_navbar", partial: "layouts/navigation")
+      end
     end
 
     private
 
-    def sign_in_and_render_json(resource_or_scope, resource = nil)
-      scope = Devise::Mapping.find_scope!(resource_or_scope)
-      resource ||= resource_or_scope
-
-      # On a successful sign in using database authentication, we want to remove
-      # omniauth provider and uid from the user record
-      if sign_in(scope, resource) && (resource.provider.present? || resource.uid.present?)
-        resource.update(provider: nil, uid: nil)
-      end
-
-      render json: { success: true }, status: :created
+    # On a successful sign in using database authentication, we want to remove
+    # omniauth provider and uid from the user record
+    def clear_oauth_provider(resource)
+      resource.update(provider: nil, uid: nil)
     end
+
   end
 end

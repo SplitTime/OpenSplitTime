@@ -36,7 +36,7 @@ RSpec.describe "User logs in with modal", type: :system, js: true do
       click_link "Log In"
     end
 
-    within("#log-in-modal") do
+    within("#form_modal") do
       fill_in "Email", with: email
       fill_in "Password", with: password
       click_button "Log in"

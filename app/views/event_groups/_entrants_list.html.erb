@@ -4,7 +4,11 @@
       <div class="row">
         <div class="col">
           <div>
-            <%= link_to fa_icon("plus", text: "Add"), new_effort_path(event_id: presenter.first_event.id), id: "add-entrant", class: "btn btn-success" %>
+            <%= link_to fa_icon("plus", text: "Add"),
+                        new_effort_path(event_id: presenter.first_event.id),
+                        data: { turbo_frame: "form_modal_large" },
+                        id: "add-entrant",
+                        class: "btn btn-success" %>
             <div class="btn-group">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
                 Actions

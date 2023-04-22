@@ -44,7 +44,10 @@ class EffortsController < ApplicationController
     authorize @effort
 
     if @effort.save
-      redirect_to entrants_event_group_path(@effort.event_group)
+      respond_to do |format|
+        format.html { redirect_to entrants_event_group_path(@effort.event_group) }
+        format.turbo_stream { @presenter = EventGroupSetupPresenter.new(@effort.event_group, view_context) }
+      end
     else
       render "new", status: :unprocessable_entity
     end

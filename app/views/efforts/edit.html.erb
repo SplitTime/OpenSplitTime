@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit Entrant - #{@effort.full_name}" %>
+  <% "OpenSplitTime: Edit Entrant - #{@effort.full_name}" %>
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @effort.event_group %>
@@ -27,5 +27,12 @@
 </header>
 
 <article class="ost-article container">
-  <%= render "form" %>
+  <%= turbo_frame_tag "form_modal_large" do %>
+    <div class="modal-header">
+      <div class="modal-title h4 fw-bold">Edit Entrant - <%= @effort.full_name %></div>
+    </div>
+    <div class="modal-body">
+      <%= render "form" %>
+    </div>
+  <% end %>
 </article>

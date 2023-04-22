@@ -1,6 +1,6 @@
 <%# locals: (effort:, presenter:) -%>
 
-<tr>
+<tr id="<%= dom_id(effort, :event_group_setup) %>">
   <td class="text-center">
     <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
   </td>

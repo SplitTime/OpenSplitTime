@@ -3,7 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@effort, html: { class: "form-horizontal", role: "form", data: { turbo: false } }) do |f| %>
+      <%= form_for(@effort, html: { class: "form-horizontal", role: "form" }) do |f| %>
         <div class="row">
           <div class="col-md-6 mb-3">
             <%= f.label :event, class: "required" %>
@@ -119,7 +119,10 @@
         <div class="row mb-3">
           <div class="col">
             <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>
-            <%= link_to "Cancel", request.referrer, class: "btn btn-outline-secondary" %>
+            <%= button_tag "Cancel",
+                           type: :button,
+                           data: { action: "click->form-modal#hide" },
+                           class: "btn btn-outline-secondary" %>
           </div>
         </div>
       <% end %>

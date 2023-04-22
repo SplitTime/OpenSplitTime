@@ -9,26 +9,27 @@
                         data: { turbo_frame: "form_modal_large" },
                         id: "add-entrant",
                         class: "btn btn-success" %>
-            <div class="btn-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
-                Actions
-              </button>
-              <div class="dropdown-menu">
-                <%= link_to "Reconcile", reconcile_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                <%= link_to "Assign Bibs", assign_bibs_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                <%= link_to "Manage Start Times", manage_start_times_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                <div class="dropdown-divider"></div>
-                <%= link_to "Export", efforts_path(filter: { event_id: @presenter.events.ids }, format: :csv), class: "dropdown-item" %>
-                <div class="dropdown-divider"></div>
-                <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-event-group-#{@presenter.event_group.id}", class: "dropdown-item text-danger") %>
+            <% if @presenter.event_group_efforts_count.positive? %>
+              <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Actions
+                </button>
+                <div class="dropdown-menu">
+                  <%= link_to "Reconcile", reconcile_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Assign Bibs", assign_bibs_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Manage Start Times", manage_start_times_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                  <div class="dropdown-divider"></div>
+                  <%= link_to "Export", efforts_path(filter: { event_id: @presenter.events.ids }, format: :csv), class: "dropdown-item" %>
+                  <div class="dropdown-divider"></div>
+                  <%= link_for_strong_confirm("Delete all entrants", "strong-confirm-entrants-event-group-#{@presenter.event_group.id}", class: "dropdown-item text-danger") %>
+                </div>
               </div>
-            </div>
-            <%= strong_confirm_modal(path_on_confirm: delete_all_efforts_event_group_path(@presenter.event_group),
-                                     message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
-                                     required_pattern: "DELETE ALL ENTRANTS",
-                                     strong_confirm_id: "strong-confirm-entrants-event-group-#{@presenter.event_group.id}") %>
-
+              <%= strong_confirm_modal(path_on_confirm: delete_all_efforts_event_group_path(@presenter.event_group),
+                                       message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
+                                       required_pattern: "DELETE ALL ENTRANTS",
+                                       strong_confirm_id: "strong-confirm-entrants-event-group-#{@presenter.event_group.id}") %>
+            <% end %>
             <%= setup_entrants_import_dropdown(@presenter) %>
             <% if @presenter.event_group.organization.lotteries.exists? %>
               <%= link_to "Sync with Lottery", link_lotteries_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
@@ -93,9 +94,15 @@
       <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 
     <% elsif presenter.event_group_efforts.exists? %>
-      <h5>No results match that search.</h5>
+      <div class="callout callout-info">
+        <h5>No results match that search</h5>
+        <p>Did you spell the search term correctly? Try again with a different search.</p>
+      </div>
     <% else %>
-      <h5>No entrants have been added yet.</h5>
+      <div class="callout callout-info">
+        <h5>Add or Import Your Entrants</h5>
+        <p>Click the <strong>Add</strong> button to manually add an Entrant. Click the <strong>Import</strong> button to import Entrants from a CSV file.</p>
+      </div>
     <% end %>
   </article>
 </div>

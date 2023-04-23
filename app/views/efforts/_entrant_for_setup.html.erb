@@ -14,7 +14,6 @@
   <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
   <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
   <td class="text-center">
-    <%= link_to_effort_edit(effort) %>
-    <%= link_to_effort_delete(effort) %>
+    <%= render "efforts/actions_kebab", effort: effort %>
   </td>
 </tr>

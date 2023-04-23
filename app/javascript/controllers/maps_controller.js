@@ -199,9 +199,8 @@ export default class extends Controller {
   }
 
   fitBounds() {
-    const controller = this
-    const bounds = controller._bounds
-    if (controller._bounds.isEmpty()) { return }
+    const bounds = this._bounds
+    if (bounds.isEmpty()) { return }
 
     // Don't zoom in too far on only one marker
     // https://stackoverflow.com/a/5345708/5961578

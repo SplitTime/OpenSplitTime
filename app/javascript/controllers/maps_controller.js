@@ -201,9 +201,23 @@ export default class extends Controller {
   }
 
   fitBounds() {
-    if (this._bounds.isEmpty()) { return }
+    const controller = this
+    const bounds = controller._bounds
+    if (controller._bounds.isEmpty()) { return }
 
-    this._gmap.fitBounds(this._bounds)
+    // Don't zoom in too far on only one marker
+    // https://stackoverflow.com/a/5345708/5961578
+    const northEast = bounds.getNorthEast();
+    const southWest = bounds.getSouthWest();
+
+    if (northEast.equals(southWest)) {
+      const extendPoint1 = new google.maps.LatLng(northEast.lat() + 0.01, northEast.lng() + 0.01);
+      const extendPoint2 = new google.maps.LatLng(northEast.lat() - 0.01, northEast.lng() - 0.01);
+      bounds.extend(extendPoint1);
+      bounds.extend(extendPoint2);
+    }
+
+    this._gmap.fitBounds(bounds)
   }
 
   highlightMarker(event) {

@@ -138,9 +138,9 @@ export default class extends Controller {
     if (!controller._trackPoints.length) { return }
 
     controller._trackPoints.forEach(function (trackPoint) {
-      const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
-      points.push(p);
-      controller.conditionallyExtendBounds(p);
+      const point = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
+      points.push(point);
+      controller.conditionallyExtendBounds(point);
     });
 
     let poly = new google.maps.Polyline({
@@ -158,9 +158,7 @@ export default class extends Controller {
     const location = controller._splitLocation;
     if (!location) { return }
 
-    let lat = parseFloat(location.latitude);
-    let lng = parseFloat(location.longitude);
-    let latLng = new google.maps.LatLng(lat, lng);
+    const latLng = this.latLngFromLocation(location);
 
     controller._bounds.extend(latLng);
     controller._splitMarker.setPosition(latLng);
@@ -174,7 +172,7 @@ export default class extends Controller {
 
     controller._markers = controller._locations.map(function (location) {
       if (location.latitude && location.longitude) {
-        let point = new google.maps.LatLng(location.latitude, location.longitude);
+        let point = controller.latLngFromLocation(location);
         controller.conditionallyExtendBounds(point);
 
         let marker = new google.maps.Marker({
@@ -233,6 +231,10 @@ export default class extends Controller {
         marker.setAnimation(null)
       }
     })
+  }
+
+  latLngFromLocation(location) {
+    return new google.maps.LatLng(location.latitude, location.longitude);
   }
 
   removeMarkers() {

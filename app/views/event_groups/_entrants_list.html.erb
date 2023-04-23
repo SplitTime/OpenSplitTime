@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <table class="table table-centered table-fixed-sm table-striped">
+      <table class="table table-centered table-fixed-sm">
         <thead>
         <tr>
           <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", presenter.existing_sort) %></th>
@@ -80,7 +80,7 @@
           <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
           <th>Scheduled Start</th>
           <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", presenter.existing_sort) %></th>
-          <th></th>
+          <th class="text-center">Actions</th>
         </tr>
         </thead>
         <tbody id="entrants">

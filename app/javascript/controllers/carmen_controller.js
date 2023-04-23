@@ -1,21 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
-import Rails from "@rails/ujs"
+import { get } from "@rails/request.js"
 
 export default class extends Controller {
 
-  static targets = ["countrySelect", "stateSelectWrapper"]
+  static targets = ["countrySelect"]
+  static values = { model: String }
 
   getSubregions() {
     const countryCode = this.countrySelectTarget.value
-    const model = this.data.get("model")
-    const selectWrapper = this.stateSelectWrapperTarget
+    const model = this.modelValue
+    const url = "/carmen/subregion_options?model=" + model + "&parent_region=" + countryCode
+    const options = { responseKind: "turbo-stream" }
 
-    Rails.ajax({
-      type: "GET",
-      url: "/carmen/subregion_options?model=" + model + "&parent_region=" + countryCode,
-      success: function (data, status, xml) {
-        selectWrapper.outerHTML = xml.response
-      }
+    get(url, options).then (response => {
+      if (!response.ok) { console.error(response) }
     })
   }
 }

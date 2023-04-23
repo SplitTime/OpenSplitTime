@@ -3,14 +3,12 @@ import { get } from "@rails/request.js"
 
 export default class extends Controller {
 
-  static targets = ["categories", "dropdown"]
+  static targets = ["dropdown"]
 
   replaceCategories() {
     const templateId = this.dropdownTarget.value;
     const url = "/results_templates/" + templateId
-    const options = {
-      responseKind: "turbo-stream",
-    }
+    const options = { responseKind: "turbo-stream" }
 
     get(url, options).then (response => {
       if (!response.ok) { console.error(response) }

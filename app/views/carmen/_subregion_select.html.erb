@@ -1,6 +1,6 @@
 <%# locals: (model:, parent_region:) -%>
 
-<div data-carmen-target="stateSelectWrapper">
+<div id="carmen_subregion_select">
   <% country = Carmen::Country.coded(parent_region) %>
 
   <% if country.nil? %>

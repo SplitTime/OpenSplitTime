@@ -34,7 +34,12 @@ class Effort < ApplicationRecord
 
   belongs_to :event, counter_cache: true, touch: true
   belongs_to :person, optional: true
-  has_many :effort_segments, dependent: :destroy
+
+  # effort_segments are destroyed when the associated split_times are destroyed.
+  # This is accomplished by the :dependent option on the has_many :split_times association.
+  # Do not add a dependent: :destroy option to the has_many :effort_segments association
+  # because it will cause postgres to throw an error when an effort is destroyed.
+  has_many :effort_segments
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
   has_one_attached :photo do |photo|

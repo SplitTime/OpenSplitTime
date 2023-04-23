@@ -187,6 +187,37 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe "relations" do
+    describe "destroy dependent effort_segments" do
+      before { EffortSegment.set_for_effort(effort) }
+
+      context "when an effort has no effort_segments" do
+        let(:effort) { efforts(:sum_100k_un_started)}
+
+        it "destroys the effort" do
+          expect { effort.destroy }.to change(Effort, :count).by(-1)
+        end
+
+        it "destroys no effort_segments" do
+          expect { effort.destroy }.not_to change(EffortSegment, :count)
+        end
+      end
+
+      context "when an effort has effort_segments" do
+        let(:effort) { efforts(:hardrock_2014_finished_first) }
+        let(:effort_segments_count) { effort.effort_segments.count }
+
+        it "destroys the effort" do
+          expect { effort.destroy }.to change(Effort, :count).by(-1)
+        end
+
+        it "destroys the effort_segments" do
+          expect { effort.destroy }.to change(EffortSegment, :count).by(-effort_segments_count)
+        end
+      end
+    end
+  end
+
   describe "#current_age_approximate" do
     subject { build_stubbed(:effort, event: event, age: age) }
     let(:event) { build_stubbed(:event, scheduled_start_time: scheduled_start_time) }
@@ -370,8 +401,8 @@ RSpec.describe Effort, type: :model do
 
   describe ".visible" do
     let(:concealed_event_group) { event_groups(:dirty_30) }
-    let(:visible_efforts) { Effort.joins(:event).where.not(events: {event_group_id: concealed_event_group.id}).first(5) }
-    let(:concealed_efforts) { Effort.joins(:event).where(events: {event_group_id: concealed_event_group.id}).first(5) }
+    let(:visible_efforts) { Effort.joins(:event).where.not(events: { event_group_id: concealed_event_group.id }).first(5) }
+    let(:concealed_efforts) { Effort.joins(:event).where(events: { event_group_id: concealed_event_group.id }).first(5) }
 
     before { concealed_event_group.update(concealed: true) }
 

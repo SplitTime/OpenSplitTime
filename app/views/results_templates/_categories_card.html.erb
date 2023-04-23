@@ -1,18 +1,20 @@
-<h5><%= "#{template.podium_size ? pluralize(template.podium_size, 'Participant') : 'Unlimited Participants'} Per Category" %></h5>
-<table>
-  <tbody>
-  <% template.results_template_categories.includes(:results_category).each do |rtc| %>
-    <tr>
-      <td class="text-danger"><%= "#{'*' if rtc.fixed_position}" %></td>
-      <td><%= "#{rtc.position}." %></td>
-      <td><%= "#{rtc.category_name} (#{rtc.category_description})" %></td>
-    </tr>
-  <% end %>
+<div id="results_template_categories_card">
+  <h5><%= "#{template.podium_size ? pluralize(template.podium_size, 'Participant') : 'Unlimited Participants'} Per Category" %></h5>
+  <table>
+    <tbody>
+    <% template.results_template_categories.includes(:results_category).each do |rtc| %>
+      <tr>
+        <td class="text-danger"><%= "#{'*' if rtc.fixed_position}" %></td>
+        <td><%= "#{rtc.position}." %></td>
+        <td><%= "#{rtc.category_name} (#{rtc.category_description})" %></td>
+      </tr>
+    <% end %>
 
-  <% if template.results_template_categories.any?(&:fixed_position?) %>
-    <tr>
-      <td colspan="3" class="text-danger">* Position is fixed</td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+    <% if template.results_template_categories.any?(&:fixed_position?) %>
+      <tr>
+        <td colspan="3" class="text-danger">* Position is fixed</td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

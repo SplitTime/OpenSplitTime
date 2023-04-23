@@ -1,20 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
-import Rails from "@rails/ujs"
+import { get } from "@rails/request.js"
 
 export default class extends Controller {
 
   static targets = ["categories", "dropdown"]
 
   replaceCategories() {
-    let templateId = this.dropdownTarget.value;
-    let categories = this.categoriesTarget;
+    const templateId = this.dropdownTarget.value;
+    const url = "/results_templates/" + templateId
+    const options = {
+      responseKind: "turbo-stream",
+    }
 
-    Rails.ajax({
-      type: "GET",
-      url: "/results_templates/" + templateId + "/categories",
-      success: function (data, status, xml) {
-        categories.innerHTML = xml.response
-      }
+    get(url, options).then (response => {
+      if (!response.ok) { console.error(response) }
     })
   }
 }

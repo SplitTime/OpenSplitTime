@@ -227,9 +227,7 @@ Rails.application.routes.draw do
 
   resources :raw_times, only: [:update, :destroy]
 
-  resources :results_templates, only: [] do
-    member { get :categories }
-  end
+  resources :results_templates, only: [:show]
 
   resources :split_times, only: [:update]
 

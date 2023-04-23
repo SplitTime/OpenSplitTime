@@ -9,22 +9,19 @@ export default class extends Controller {
     splitId: String,
     activeMarkerUrl: String,
     inactiveMarkerUrl: String,
+    editable: Boolean,
   }
 
   connect() {
     const controller = this
     const courseId = this.courseIdValue;
     const eventId = this.eventIdValue;
-    const splitId = this.splitIdValue;
     const defaultLatLng = new google.maps.LatLng(40, -90);
     const defaultZoom = 4;
 
-    if (courseId.length === 0) {
-      throw "Course ID is required."
-    }
+    if (!courseId.length) { throw "Course ID is required." }
 
-    controller._withoutEvent = (eventId.length === 0);
-    controller._splitProvided = (splitId.length > 0);
+    controller._withoutEvent = (!eventId.length);
     controller._splitLocation = null;
     controller._trackPoints = [];
     controller._locations = [];
@@ -35,7 +32,7 @@ export default class extends Controller {
       mapTypeId: "terrain",
       center: defaultLatLng,
       zoom: defaultZoom,
-      draggableCursor: controller._splitProvided ? "crosshair" : null,
+      draggableCursor: this.editableValue ? "crosshair" : null,
     };
 
     controller._gmap = new google.maps.Map(controller.element, mapOptions);
@@ -83,7 +80,7 @@ export default class extends Controller {
       controller._locations.forEach(function (location) {
         location.active = true
       })
-      if (controller._splitProvided) {
+      if (controller.splitIdValue) {
         controller._splitLocation = controller._locations.find(function (location) {
           return location.id === parseInt(controller.splitIdValue)
         });
@@ -138,12 +135,12 @@ export default class extends Controller {
   plotTrack() {
     const controller = this
     let points = [];
-    if (controller._trackPoints.length === 0) { return }
+    if (!controller._trackPoints.length) { return }
 
     controller._trackPoints.forEach(function (trackPoint) {
-      const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
-      points.push(p);
-      controller.conditionallyExtendBounds(p);
+      const point = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);
+      points.push(point);
+      controller.conditionallyExtendBounds(point);
     });
 
     let poly = new google.maps.Polyline({
@@ -161,9 +158,7 @@ export default class extends Controller {
     const location = controller._splitLocation;
     if (!location) { return }
 
-    let lat = parseFloat(location.latitude);
-    let lng = parseFloat(location.longitude);
-    let latLng = new google.maps.LatLng(lat, lng);
+    const latLng = this.latLngFromLocation(location);
 
     controller._bounds.extend(latLng);
     controller._splitMarker.setPosition(latLng);
@@ -177,7 +172,7 @@ export default class extends Controller {
 
     controller._markers = controller._locations.map(function (location) {
       if (location.latitude && location.longitude) {
-        let point = new google.maps.LatLng(location.latitude, location.longitude);
+        let point = controller.latLngFromLocation(location);
         controller.conditionallyExtendBounds(point);
 
         let marker = new google.maps.Marker({
@@ -204,9 +199,22 @@ export default class extends Controller {
   }
 
   fitBounds() {
-    if (this._bounds.isEmpty()) { return }
+    const bounds = this._bounds
+    if (bounds.isEmpty()) { return }
 
-    this._gmap.fitBounds(this._bounds)
+    // Don't zoom in too far on only one marker
+    // https://stackoverflow.com/a/5345708/5961578
+    const northEast = bounds.getNorthEast();
+    const southWest = bounds.getSouthWest();
+
+    if (northEast.equals(southWest)) {
+      const extendPoint1 = new google.maps.LatLng(northEast.lat() + 0.01, northEast.lng() + 0.01);
+      const extendPoint2 = new google.maps.LatLng(northEast.lat() - 0.01, northEast.lng() - 0.01);
+      bounds.extend(extendPoint1);
+      bounds.extend(extendPoint2);
+    }
+
+    this._gmap.fitBounds(bounds)
   }
 
   highlightMarker(event) {
@@ -222,6 +230,10 @@ export default class extends Controller {
         marker.setAnimation(null)
       }
     })
+  }
+
+  latLngFromLocation(location) {
+    return new google.maps.LatLng(location.latitude, location.longitude);
   }
 
   removeMarkers() {

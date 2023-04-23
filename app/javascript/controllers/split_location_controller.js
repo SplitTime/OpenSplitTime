@@ -15,9 +15,16 @@ export default class extends Controller {
   }
 
   changed() {
-    const latLng = new google.maps.LatLng(this.latitudeTarget.value, this.longitudeTarget.value)
-    this.dispatchSplitLocation();
-    this.updateElevation(latLng);
+    const lat = this.latitudeTarget.value
+    const lng = this.longitudeTarget.value
+
+    if (lat.length && lng.length) {
+      const latLng = new google.maps.LatLng(this.latitudeTarget.value, this.longitudeTarget.value)
+      this.dispatchSplitLocation();
+      this.updateElevation(latLng);
+    } else {
+      this.elevationTarget.value = ""
+    }
   }
 
   updateLocation(event) {

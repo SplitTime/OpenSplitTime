@@ -95,7 +95,10 @@ class EffortsController < ApplicationController
     authorize @effort
 
     @effort.destroy
-    redirect_to entrants_event_group_path(@effort.event_group)
+    respond_to do |format|
+      format.html { redirect_to entrants_event_group_path(@effort.event_group) }
+      format.turbo_stream
+    end
   end
 
   # DELETE /efforts/1/delete_photo

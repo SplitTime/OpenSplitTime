@@ -9,22 +9,19 @@ export default class extends Controller {
     splitId: String,
     activeMarkerUrl: String,
     inactiveMarkerUrl: String,
+    editable: Boolean,
   }
 
   connect() {
     const controller = this
     const courseId = this.courseIdValue;
     const eventId = this.eventIdValue;
-    const splitId = this.splitIdValue;
     const defaultLatLng = new google.maps.LatLng(40, -90);
     const defaultZoom = 4;
 
-    if (courseId.length === 0) {
-      throw "Course ID is required."
-    }
+    if (!courseId.length) { throw "Course ID is required." }
 
-    controller._withoutEvent = (eventId.length === 0);
-    controller._splitProvided = (splitId.length > 0);
+    controller._withoutEvent = (!eventId.length);
     controller._splitLocation = null;
     controller._trackPoints = [];
     controller._locations = [];
@@ -35,7 +32,7 @@ export default class extends Controller {
       mapTypeId: "terrain",
       center: defaultLatLng,
       zoom: defaultZoom,
-      draggableCursor: controller._splitProvided ? "crosshair" : null,
+      draggableCursor: this.editableValue ? "crosshair" : null,
     };
 
     controller._gmap = new google.maps.Map(controller.element, mapOptions);
@@ -83,7 +80,7 @@ export default class extends Controller {
       controller._locations.forEach(function (location) {
         location.active = true
       })
-      if (controller._splitProvided) {
+      if (controller.splitIdValue) {
         controller._splitLocation = controller._locations.find(function (location) {
           return location.id === parseInt(controller.splitIdValue)
         });
@@ -138,7 +135,7 @@ export default class extends Controller {
   plotTrack() {
     const controller = this
     let points = [];
-    if (controller._trackPoints.length === 0) { return }
+    if (!controller._trackPoints.length) { return }
 
     controller._trackPoints.forEach(function (trackPoint) {
       const p = new google.maps.LatLng(trackPoint.lat, trackPoint.lon);

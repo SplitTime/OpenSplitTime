@@ -30,6 +30,7 @@
        data-maps-event-id-value="<%= @presenter.event_id %>"
        data-maps-active-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
        data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
+       data-maps-editable-value="false"
        data-action="course-setup:aid-station-changed->maps#updateMarkers
                     course-setup:set-marker-highlight->maps#highlightMarker"
   ></div>

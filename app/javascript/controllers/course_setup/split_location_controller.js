@@ -47,7 +47,7 @@ export default class extends Controller {
       }
     };
 
-    this.mapTarget.dispatchEvent(new CustomEvent("split-location:changed", payload))
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--split-location:changed", payload))
   }
 
   updateElevation(latLng) {

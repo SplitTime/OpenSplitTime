@@ -15,14 +15,14 @@ export default class extends Controller {
   }
 
   aidStationChanged() {
-    this.mapTarget.dispatchEvent(new CustomEvent("course-setup:aid-station-changed"))
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:aid-station-changed"))
   }
 
   highlightMapMarker(event) {
-    this.mapTarget.dispatchEvent(new CustomEvent("course-setup:set-marker-highlight", {detail: {splitId: parseInt(event.target.dataset.splitId)}}))
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:set-marker-highlight", {detail: {splitId: parseInt(event.target.dataset.splitId)}}))
   }
 
   unhighlightMapMarkers() {
-    this.mapTarget.dispatchEvent(new CustomEvent("course-setup:set-marker-highlight", {detail: {splitId: null}}))
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:set-marker-highlight", {detail: {splitId: null}}))
   }
 }

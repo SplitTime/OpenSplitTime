@@ -13,7 +13,7 @@
     <th></th>
   </tr>
   </thead>
-  <tbody data-course-setup-target="splitTableBody">
+  <tbody data-course-setup--main-target="splitTableBody">
   <% splits.each do |split| %>
     <%= render partial: "events/course_setup_split",
                locals: { event: event, split: split, aid_station: aid_stations_by_split_id[split.id] } %>

@@ -3,15 +3,15 @@
 <%= render "shared/errors", obj: split %>
 
 <div class="row"
-     data-controller="split-location"
-     data-action="maps:clicked->split-location#updateLocation"
+     data-controller="course-setup--split-location"
+     data-action="maps:clicked->course-setup--split-location#updateLocation"
 >
   <div class="col-12 col-lg-6 col-lg-push-6">
     <div style="width: 100%; height: 500px;"
          class="border border-secondary"
          data-controller="maps"
-         data-split-location-target="map"
-         data-action="split-location:changed->maps#updateSplitLocation"
+         data-course-setup--split-location-target="map"
+         data-action="course-setup--split-location:changed->maps#updateSplitLocation"
          data-maps-course-id-value="<%= split.course_id %>"
          data-maps-event-id-value="<%= event.id %>"
          data-maps-split-id-value="<%= split.id %>"
@@ -34,8 +34,8 @@
                               autofocus: true,
                               placeholder: "My Aid Station",
                               data: {
-                                split_location_target: "baseName",
-                                action: "change->split-location#changed",
+                                "course-setup--split-location-target": "baseName",
+                                action: "change->course-setup--split-location#changed",
                               } %>
         </div>
         <div class="mb-3 col-6">
@@ -101,8 +101,8 @@
             <%= form.text_field :latitude,
                                 class: "form-control",
                                 data: {
-                                  split_location_target: "latitude",
-                                  action: "change->split-location#changed",
+                                  "course-setup--split-location-target": "latitude",
+                                  action: "change->course-setup--split-location#changed",
                                 } %>
             <span class="input-group-text">deg</span>
           </div>
@@ -114,8 +114,8 @@
             <%= form.text_field :longitude,
                                 class: "form-control",
                                 data: {
-                                  split_location_target: "longitude",
-                                  action: "change->split-location#changed",
+                                  "course-setup--split-location-target": "longitude",
+                                  action: "change->course-setup--split-location#changed",
                                 } %>
             <span class="input-group-text">deg</span>
           </div>
@@ -124,7 +124,11 @@
           <%= form.label :elevation, class: "mb-1" %>
           <%= tooltip("Enter elevation or pick a point on the map") %>
           <div class="input-group">
-            <%= form.text_field :elevation_in_preferred_units, class: "form-control", data: { split_location_target: "elevation" } %>
+            <%= form.text_field :elevation_in_preferred_units,
+                                class: "form-control",
+                                data: {
+                                  "course-setup--split-location-target": "elevation",
+                                } %>
             <span class="input-group-text"><%= current_user.pref_elevation_unit %></span>
           </div>
         </div>

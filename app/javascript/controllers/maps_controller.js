@@ -294,6 +294,10 @@ export default class extends Controller {
   }
 
   updateSplitLocation(event) {
+    // If splitLocation was null at initialization, the bounds will include the entire track,
+    // so empty the bounds to keep from zooming out when we plot the marker.
+    if (!this._splitLocation) { this._bounds = new google.maps.LatLngBounds(); }
+
     this._splitLocation = event.detail.splitLocation
     this.plotSplitMarker()
   }

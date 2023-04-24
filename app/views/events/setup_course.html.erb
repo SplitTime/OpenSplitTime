@@ -11,7 +11,7 @@
          data-controller="course-setup--main"
          data-action="course-setup--aid-station-checkbox:changed->course-setup--main#aidStationChanged
                       course-setup--splits-table:set-marker-highlight->course-setup--main#highlightMapMarker
-                      course-setup--splits-table:connected->course-setup--main#updateMap"
+                      split-table-modified@window->course-setup--main#refreshMapMarkers"
 >
   <h3><strong>Provide Your Course Details for <%= @presenter.course_name %></strong></h3>
   <%= render "course_setup_gpx", event: @presenter.event %>
@@ -34,7 +34,8 @@
        data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
        data-maps-editable-value="false"
        data-action="course-setup--main:aid-station-changed->maps#updateMarkers
-                    course-setup--main:set-marker-highlight->maps#highlightMarker"
+                    course-setup--main:set-marker-highlight->maps#highlightMarker
+                    course-setup--main:refresh-markers->maps#refreshMarkers"
   ></div>
   <br/>
 

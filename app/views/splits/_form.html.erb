@@ -23,7 +23,8 @@
   </div>
 
   <div class="col-12 col-lg-6 col-lg-pull-6">
-    <%= form_with model: [event.event_group, event, split] do |form| %>
+    <%= form_with model: [event.event_group, event, split],
+                  data: { action: "turbo:submit-end->course-setup--split-location#dispatchSplitTableModified"} do |form| %>
       <hr/>
       <div class="row">
         <div class="mb-3 col-6">

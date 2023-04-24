@@ -236,6 +236,12 @@ export default class extends Controller {
     return new google.maps.LatLng(location.latitude, location.longitude);
   }
 
+  refreshMarkers() {
+    this.fetchData().then(() => {
+      this.plotMarkers()
+    })
+  }
+
   removeMarkers() {
     const controller = this
 
@@ -284,13 +290,6 @@ export default class extends Controller {
       });
       marker.infowindow.open(controller._gmap, marker);
     });
-  }
-
-  updateMarkers() {
-    this.fetchData().then(() => {
-      this.plotMarkers()
-      this.plotSplitMarker()
-    })
   }
 
   updateSplitLocation(event) {

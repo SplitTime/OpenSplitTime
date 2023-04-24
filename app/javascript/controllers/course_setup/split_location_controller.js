@@ -50,6 +50,10 @@ export default class extends Controller {
     this.mapTarget.dispatchEvent(new CustomEvent("course-setup--split-location:changed", payload))
   }
 
+  dispatchSplitTableModified() {
+    window.dispatchEvent(new CustomEvent("split-table-modified"))
+  }
+
   updateElevation(latLng) {
     const controller = this
 

@@ -17,7 +17,7 @@ export default class extends Controller {
     this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:set-marker-highlight", payload))
   }
 
-  updateMap() {
-    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:update-map"))
+  refreshMapMarkers() {
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:refresh-markers"))
   }
 }

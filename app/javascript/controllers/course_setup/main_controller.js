@@ -6,7 +6,7 @@ export default class extends Controller {
   ]
 
   aidStationChanged() {
-    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:aid-station-changed"))
+    this.mapTarget.dispatchEvent(new CustomEvent("course-setup--main:refresh-markers"))
   }
 
   highlightMapMarker(event) {

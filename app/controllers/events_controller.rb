@@ -102,10 +102,7 @@ class EventsController < ApplicationController
     @event.course.gpx.attach(params.require(:course).require(:gpx))
     Interactors::SetTrackPoints.perform!(@event.course)
 
-    respond_to do |format|
-      format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
-    end
+    redirect_to setup_course_event_group_event_path(@event.event_group, @event)
   end
 
   # DELETE /event_groups/1/events/1/remove_course_gpx
@@ -119,10 +116,7 @@ class EventsController < ApplicationController
       Interactors::SetTrackPoints.perform!(course)
     end
 
-    respond_to do |format|
-      format.html { redirect_to setup_course_event_group_event_path(@event_group, @event) }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
-    end
+    redirect_to setup_course_event_group_event_path(@event.event_group, @event)
   end
 
   # PATCH /event_groups/1/events/1/reassign
@@ -160,8 +154,9 @@ class EventsController < ApplicationController
       format.csv do
         authorize @event
         csv_stream = render_to_string(partial: "spread", formats: :csv)
-        send_data(csv_stream, type: "text/csv",
-                              filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
+        send_data(csv_stream,
+                  type: "text/csv",
+                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
       end
     end
   end
@@ -201,7 +196,7 @@ class EventsController < ApplicationController
   # PUT /events/1/set_stops
   def set_stops
     authorize @event
-    event = Event.where(id: @event.id).includes(efforts: {split_times: :split}).first
+    event = Event.where(id: @event.id).includes(efforts: { split_times: :split }).first
     stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
@@ -253,7 +248,7 @@ class EventsController < ApplicationController
         csv_stream = render_to_string(
           partial: partial,
           formats: :csv,
-          locals: {current_time: current_time, records: records, options: options}
+          locals: { current_time: current_time, records: records, options: options }
         )
 
         send_data(csv_stream, type: "text/csv", filename: filename)

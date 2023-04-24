@@ -236,6 +236,12 @@ export default class extends Controller {
     return new google.maps.LatLng(location.latitude, location.longitude);
   }
 
+  refreshMarkers() {
+    this.fetchData().then(() => {
+      this.plotMarkers()
+    })
+  }
+
   removeMarkers() {
     const controller = this
 
@@ -286,14 +292,11 @@ export default class extends Controller {
     });
   }
 
-  updateMarkers() {
-    this.fetchData().then(() => {
-      this.plotMarkers()
-      this.plotSplitMarker()
-    })
-  }
-
   updateSplitLocation(event) {
+    // If splitLocation was null at initialization, the bounds will include the entire track,
+    // so empty the bounds to keep from zooming out when we plot the marker.
+    if (!this._splitLocation) { this._bounds = new google.maps.LatLngBounds(); }
+
     this._splitLocation = event.detail.splitLocation
     this.plotSplitMarker()
   }

@@ -2,7 +2,7 @@
 
 <tr id="<%= dom_id(split, dom_id(event)) %>"
     class="align-middle <%= ' bg-light fst-italic fw-light' if aid_station.blank? %>"
-    data-course-setup-target="splitRow"
+    data-course-setup--splits-table-target="splitRow"
     data-split-id="<%= split.id %>"
 >
   <td class="mx-0 px-0"><%= render "events/aid_station_checkbox", event: event, split: split, aid_station: aid_station %></td>

@@ -16,10 +16,10 @@
     <input class="form-check-input"
            type="checkbox"
            id="aid-station-check-box-<%= dom_id(split) %>"
-           data-controller="aid-station-checkbox"
-           data-aid-station-checkbox-event-id-value="<%= event.id %>"
-           data-aid-station-checkbox-split-id-value="<%= split.id %>"
-           data-aid-station-checkbox-aid-station-id-value="<%= aid_station&.id %>"
+           data-controller="course-setup--aid-station-checkbox"
+           data-course-setup--aid-station-checkbox-event-id-value="<%= event.id %>"
+           data-course-setup--aid-station-checkbox-split-id-value="<%= split.id %>"
+           data-course-setup--aid-station-checkbox-aid-station-id-value="<%= aid_station&.id %>"
            <%= split.intermediate? ? "" : "disabled" %>
            <%= event.aid_stations.find_by(split: split) ? "checked" : "" %>
     >

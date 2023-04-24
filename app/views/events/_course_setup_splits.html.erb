@@ -1,6 +1,9 @@
 <%# locals: (event:, splits:, aid_stations_by_split_id) -%>
 
-<table id="<%= dom_id(event, :course_setup_splits) %>" class="table table-hover">
+<table id="<%= dom_id(event, :course_setup_splits) %>"
+       class="table table-hover"
+       data-controller="course-setup--splits-table"
+>
   <thead>
   <tr>
     <th></th>

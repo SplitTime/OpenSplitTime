@@ -104,7 +104,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to setup_course_event_group_event_path(@event.event_group, @event) }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
+      format.turbo_stream
     end
   end
 
@@ -121,7 +121,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to setup_course_event_group_event_path(@event_group, @event) }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("course_setup_gpx", partial: "events/course_setup_gpx", locals: { event: @event }) }
+      format.turbo_stream
     end
   end
 

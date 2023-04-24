@@ -24,19 +24,7 @@
     <% end %>
   </div>
 
-  <div style="width: 100%; height: 500px;"
-       class="border border-secondary"
-       data-controller="maps"
-       data-course-setup--main-target="map"
-       data-maps-course-id-value="<%= @presenter.course_id %>"
-       data-maps-event-id-value="<%= @presenter.event_id %>"
-       data-maps-active-marker-url-value="<%= asset_path('icons/dot-blue.svg') %>"
-       data-maps-inactive-marker-url-value="<%= asset_path('icons/dot-lblue.svg') %>"
-       data-maps-editable-value="false"
-       data-action="course-setup--main:aid-station-changed->maps#updateMarkers
-                    course-setup--main:set-marker-highlight->maps#highlightMarker
-                    course-setup--main:refresh-markers->maps#refreshMarkers"
-  ></div>
+  <%= render "course_setup_map", course_id: @presenter.course_id, event_id: @presenter.event_id %>
   <br/>
 
   <% if @presenter.ordered_splits.count == 2 %>
@@ -51,12 +39,11 @@
     </aside>
   <% end %>
 
-  <%= render partial: "events/course_setup_splits",
-             locals: {
-               event: @presenter.event,
-               splits: @presenter.ordered_splits,
-               aid_stations_by_split_id: @presenter.aid_stations_by_split_id,
-             } %>
+  <%= render "events/course_setup_splits",
+             event: @presenter.event,
+             splits: @presenter.ordered_splits,
+             aid_stations_by_split_id: @presenter.aid_stations_by_split_id
+  %>
 
   <div class="col-12">
     <div>

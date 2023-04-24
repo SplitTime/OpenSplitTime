@@ -21,7 +21,7 @@
            data-course-setup--aid-station-checkbox-split-id-value="<%= split.id %>"
            data-course-setup--aid-station-checkbox-aid-station-id-value="<%= aid_station&.id %>"
            <%= split.intermediate? ? "" : "disabled" %>
-           <%= event.aid_stations.find_by(split: split) ? "checked" : "" %>
+           <%= aid_station.present? ? "checked" : "" %>
     >
   </div>
 </div>

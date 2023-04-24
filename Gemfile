@@ -54,7 +54,7 @@ gem "sentry-rails"
 gem "sentry-ruby"
 gem "sentry-sidekiq"
 gem "shortener"
-gem "sidekiq", "< 7.0"
+gem "sidekiq", "< 8.0"
 gem "sidekiq-cron"
 gem "sitemap_generator"
 gem "smarter_csv", require: false

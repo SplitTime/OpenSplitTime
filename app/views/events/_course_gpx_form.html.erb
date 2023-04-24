@@ -6,7 +6,9 @@
       <h5 class="modal-title">Add a GPX file for this Course</h5>
     </div>
     <div class="modal-body">
-      <%= form_with model: [event.course], url: attach_course_gpx_event_group_event_path(event.event_group, event) do |f| %>
+      <%= form_with model: [event.course],
+                    url: attach_course_gpx_event_group_event_path(event.event_group, event),
+                    data: { turbo_frame: "_top" } do |f| %>
         <% if current_user.errors.any? %>
           <div id="error_explanation">
             <ul>
@@ -34,7 +36,7 @@
         </div>
 
         <div class="mb-3 text-center">
-          <%= f.submit "Save GPX", class: "btn btn-primary", data: { turbo: false, "form-apply-target" => "submitButton" } %>
+          <%= f.submit "Save GPX", class: "btn btn-primary", data: { "form-apply-target" => "submitButton" } %>
         </div>
       <% end %>
     </div>

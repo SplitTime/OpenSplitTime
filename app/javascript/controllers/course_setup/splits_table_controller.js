@@ -6,19 +6,14 @@ export default class extends Controller {
   ]
 
   connect() {
-    this.element.addEventListener("mouseleave", this.unhighlightMapMarkers.bind(this))
     this.splitRowTargets.forEach((splitRow) => {
-      splitRow.addEventListener("mouseenter", this.highlightMapMarker.bind(this))
+      splitRow.addEventListener("click", this.highlightMapMarker.bind(this))
     })
   }
 
   highlightMapMarker(event) {
-    const splitId = parseInt(event.target.dataset.splitId)
+    const splitId = parseInt(event.currentTarget.dataset.splitId)
     this.dispatchHighlightEvent(splitId)
-  }
-
-  unhighlightMapMarkers() {
-    this.dispatchHighlightEvent(null)
   }
 
   dispatchHighlightEvent(splitId) {

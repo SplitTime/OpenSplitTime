@@ -275,10 +275,6 @@ class EventsController < ApplicationController
 
   private
 
-  def reconcile_redirect_path
-    "#{event_staging_app_path(@event)}#/entrants"
-  end
-
   def set_event
     @event = policy_scope(Event).friendly.find(params[:id])
   end

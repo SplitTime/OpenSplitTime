@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "management", to: redirect("docs/management")
   get "ost_remote", to: redirect("docs/ost_remote")
   get "carmen/subregion_options"
+  get "strong_confirm", to: "strong_confirm#show"
 
   get "/404", to: "errors#not_found"
   get "/422", to: "errors#unprocessable_entity"
@@ -159,7 +160,6 @@ Rails.application.routes.draw do
       post :sync_entrants
       post :sync_lottery_entrants
       patch :update_start_time
-      delete :delete_all_efforts
     end
   end
 

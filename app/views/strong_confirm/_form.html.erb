@@ -1,0 +1,39 @@
+<%# locals: (message:, path_on_confirm:, required_pattern:) -%>
+
+<div data-controller="confirm" data-confirm-required-pattern-value="<%= required_pattern %>">
+  <div class="modal-header">
+    <h4 class="modal-title"><strong>Are you absolutely sure?</strong></h4>
+    <button type="button" tabindex="2" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <p><strong>This action cannot be undone.</strong></p>
+    <% message.split("\n").each do |fragment| %>
+      <p><%= fragment %></p>
+    <% end %>
+    <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the Delete button.</p>
+  </div>
+  <div class="modal-footer">
+    <div class="container p-0 d-block justify-content-center">
+      <%= text_field_tag "confirm",
+                         nil,
+                         class: "form-control w-100",
+                         autofocus: true,
+                         tabindex: 1,
+                         data: {
+                           action: "keyup->confirm#compare",
+                           "confirm-target": "pattern",
+                         } %>
+      <%= button_to "Permanently Delete",
+                    path_on_confirm,
+                    tabindex: -1,
+                    class: "btn btn-danger fw-bold disabled w-100",
+                    form: { class: "mt-2" },
+                    method: :delete,
+                    data: {
+                      "confirm-target" => "deleteButton",
+                      action: "click->confirm#onClickDelete",
+                      turbo: false,
+                    } %>
+    </div>
+  </div>
+</div>

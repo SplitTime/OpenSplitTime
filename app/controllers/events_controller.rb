@@ -174,23 +174,6 @@ class EventsController < ApplicationController
     @presenter = PodiumPresenter.new(@event, template, prepared_params, current_user)
   end
 
-  # Event admin actions
-
-  # DELETE /events/1/delete_all_efforts
-  def delete_all_efforts
-    authorize @event
-    response = Interactors::BulkDestroyEfforts.perform!(@event.efforts)
-    set_flash_message(response) unless response.successful?
-    redirect_to case request.referrer
-                when nil
-                  event_staging_app_path(@event)
-                when event_staging_app_url(@event)
-                  request.referrer + "#/entrants"
-                else
-                  request.referrer
-                end
-  end
-
   # Actions related to the event/effort/split_time relationship
 
   # PUT /events/1/set_stops
@@ -291,10 +274,6 @@ class EventsController < ApplicationController
   end
 
   private
-
-  def reconcile_redirect_path
-    "#{event_staging_app_path(@event)}#/entrants"
-  end
 
   def set_event
     @event = policy_scope(Event).friendly.find(params[:id])

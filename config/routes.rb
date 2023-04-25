@@ -160,7 +160,6 @@ Rails.application.routes.draw do
       post :sync_entrants
       post :sync_lottery_entrants
       patch :update_start_time
-      delete :delete_all_efforts
     end
   end
 

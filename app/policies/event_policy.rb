@@ -48,10 +48,6 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def delete_all_efforts?
-    user.authorized_fully?(event)
-  end
-
   def set_stops?
     user.authorized_to_edit?(event)
   end

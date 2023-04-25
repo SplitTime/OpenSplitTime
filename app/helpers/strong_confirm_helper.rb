@@ -2,8 +2,13 @@
 
 module StrongConfirmHelper
   def link_to_strong_confirm(name, path_on_confirm, options)
-    link_to name,
-            strong_confirm_path(on_confirm: path_on_confirm, message: options[:message], required_pattern: options[:required_pattern]),
+    params = {
+      on_confirm: path_on_confirm,
+      message: options[:message],
+      required_pattern: options[:required_pattern],
+    }
+
+    link_to name, strong_confirm_path(params),
             class: options[:class],
             data: { turbo_frame: "form_modal" }
   end
@@ -16,6 +21,7 @@ module StrongConfirmHelper
     message = "This will permanently delete the #{resource.name.upcase} #{resource.class.model_name.human.downcase} with all of its #{list_items}."
     message += "\n#{additional_warning}" if additional_warning.present?
 
-    link_to_strong_confirm(name, path_on_confirm, options.merge(message: message, required_pattern: resource.name.upcase))
+    link_to_strong_confirm name, path_on_confirm,
+                           options.merge(message: message, required_pattern: resource.name.upcase)
   end
 end

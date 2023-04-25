@@ -22,11 +22,10 @@
                   <div class="dropdown-divider"></div>
                   <%= link_to "Export", efforts_path(filter: { event_id: @presenter.events.ids }, format: :csv), class: "dropdown-item" %>
                   <div class="dropdown-divider"></div>
-                  <%= link_to_server_strong_confirm "Delete all entrants",
-                                                    delete_all_efforts_event_group_path(@presenter.event_group),
-                                                    class: "dropdown-item text-danger",
-                                                    message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
-                                                    required_pattern: "DELETE ALL ENTRANTS" %>
+                  <%= link_to_strong_confirm "Delete all entrants", delete_all_efforts_event_group_path(@presenter.event_group),
+                                             class: "dropdown-item text-danger",
+                                             message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
+                                             required_pattern: "DELETE ALL ENTRANTS" %>
                 </div>
               </div>
             <% end %>

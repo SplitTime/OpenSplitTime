@@ -1,9 +1,9 @@
-<%# Rails flash messages styled for Bootstrap %>
+<%# Rails flash messages %>
 
-<div id="messages" class="flash">
+<div id="flash" class="flash">
   <% if flash.present? %>
     <% flash.each do |name, msg| %>
-      <div class="alert alert-<%= name %> alert-dismissible fade show mb-0" role="alert">
+      <div class="alert alert-<%= name %> alert-dismissible text-center fade show mb-0" role="alert">
         <%= msg %>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>

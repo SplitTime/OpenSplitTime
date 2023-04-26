@@ -1,19 +1,12 @@
-<%# Rails flash messages styled for Bootstrap 3.0 %>
+<%# Rails flash messages styled for Bootstrap %>
 
-<%# New Growl Style Flash Messages %>
-<% if flash.present? %>
-<script type="text/javascript">
-  $(function() {
+<div id="messages" class="flash">
+  <% if flash.present? %>
     <% flash.each do |name, msg| %>
-      <% if msg.is_a?(String) %>
-        $.notify({
-          message: '<%= j msg %>'
-        }, {
-          type: '<%= j name %>',
-          delay: 0 // Prevent automatic dismissal
-        });
-      <% end %>
+      <div class="alert alert-<%= name %> alert-dismissible fade show mb-0" role="alert">
+        <%= msg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     <% end %>
-  });
-</script>
-<% end %>
+  <% end %>
+</div>

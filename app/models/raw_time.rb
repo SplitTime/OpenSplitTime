@@ -134,22 +134,22 @@ class RawTime < ApplicationRecord
                                  home_time_zone: event_group.home_time_zone,
                                }
     broadcast_replace_later_to event_group,
-                               target: "js-pull-times-count",
-                               partial: "live/event_groups/pull_times_count",
+                               target: "js-pull-times",
+                               partial: "live/event_groups/pull_times_button",
                                locals: { event_group: event_group }
   end
 
   def broadcast_raw_time_update
     broadcast_replace_later_to event_group,
-                               target: "js-pull-times-count",
-                               partial: "live/event_groups/pull_times_count",
+                               target: "js-pull-times",
+                               partial: "live/event_groups/pull_times_button",
                                locals: { event_group: event_group }
   end
 
   def broadcast_raw_time_destroy
     broadcast_replace_later_to event_group,
-                               target: "js-pull-times-count",
-                               partial: "live/event_groups/pull_times_count",
+                               target: "js-pull-times",
+                               partial: "live/event_groups/pull_times_button",
                                locals: { event_group: event_group }
   end
 

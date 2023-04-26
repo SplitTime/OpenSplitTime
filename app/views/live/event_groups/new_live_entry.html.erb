@@ -20,115 +20,115 @@
         </div>
       </div>
     </div>
-    <%= content_tag(:div, id: "js-event-group-id", data: {event_group_id: @event_group.id, server_uri: ::OstConfig.base_uri}) {}%>
+    <%= content_tag(:div, id: "js-event-group-id", data: { event_group_id: @event_group.id, server_uri: ::OstConfig.base_uri }) {} %>
     <!-- Navigation -->
     <%= render 'events/view_buttons', view_object: @presenter %>
   </div>
 </header>
 
 <article class="container">
-<div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-  <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
-    <form id="js-add-effort-form">
-      <input type="hidden" id="js-unique-id" value=""/>
-      <div class="mb-3 row">
-        <label class="col-4" for="js-station-select">Aid Station</label>
-        <div class="col-8">
-          <select id="js-station-select" name="js-station-select" class="form-control form-control-sm" autofocus>Aid Station</select>
+  <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+    <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
+      <form id="js-add-effort-form">
+        <input type="hidden" id="js-unique-id" value=""/>
+        <div class="mb-3 row">
+          <label class="col-4" for="js-station-select">Aid Station</label>
+          <div class="col-8">
+            <select id="js-station-select" name="js-station-select" class="form-control form-control-sm" autofocus>Aid Station</select>
+          </div>
         </div>
-      </div>
-      <div class="mb-3 row">
-        <label class="col-4" for="js-bib-number">Bib</label>
-        <div class="col-8">
-          <div class="input-group">
-            <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
-            <span class="input-group-text time-status">
+        <div class="mb-3 row">
+          <label class="col-4" for="js-bib-number">Bib</label>
+          <div class="col-8">
+            <div class="input-group">
+              <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+              <span class="input-group-text time-status">
               <span class="fas fa-check-circle good text-success" title="Bib found" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-question-circle questionable text-warning" title="Bib in wrong event" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-times-circle bad text-danger" title="Bib not found" data-controller="tooltip" data-bs-placement="right"></span>
             </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mb-3 row lap-only">
-        <label class="col-4" for="js-lap-number">Lap</label>
-        <div class="col-8">
-          <div class="input-group">
-            <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+        <div class="mb-3 row lap-only">
+          <label class="col-4" for="js-lap-number">Lap</label>
+          <div class="col-8">
+            <div class="input-group">
+              <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mb-3 row time-in-only">
-        <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
-        <div class="col-8">
-          <div class="input-group">
-            <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-text time-status">
+        <div class="mb-3 row time-in-only">
+          <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
+          <div class="col-8">
+            <div class="input-group">
+              <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-controller="tooltip" data-bs-placement="right"></span>
             </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mb-3 row time-out-only">
-        <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
-        <div class="col-8">
-          <div class="input-group">
-            <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
-            <span class="input-group-text time-status">
+        <div class="mb-3 row time-out-only">
+          <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
+          <div class="col-8">
+            <div class="input-group">
+              <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-question-circle questionable text-warning" title="Time appears questionable" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-times-circle bad text-danger" title="Time appears bad" data-controller="tooltip" data-bs-placement="right"></span>
             </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="mb-3 row pacer-only">
-        <label class="col-4" for="pacer">Pacer</label>
-        <div class="col-8">
-          <label class="checkbox-inline" for="js-pacer-in">
-            <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
-          </label>
-          <label class="checkbox-inline" for="js-pacer-out">
-            <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true"> Out
-          </label>
+        <div class="mb-3 row pacer-only">
+          <label class="col-4" for="pacer">Pacer</label>
+          <div class="col-8">
+            <label class="checkbox-inline" for="js-pacer-in">
+              <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
+            </label>
+            <label class="checkbox-inline" for="js-pacer-out">
+              <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true"> Out
+            </label>
+          </div>
         </div>
-      </div>
-      <div class="mb-3 row">
-        <label class="col-4"></label>
-        <div class="col-8">
-          <button id="js-dropped-button" type="button" class="btn btn-outline-secondary col-12">
-            <input id="js-dropped" type="checkbox" name="dropped" value="true">
-            <span class="far fa-square"></span>
-            &nbsp;Dropped Here
-          </button>
+        <div class="mb-3 row">
+          <label class="col-4"></label>
+          <div class="col-8">
+            <button id="js-dropped-button" type="button" class="btn btn-outline-secondary col-12">
+              <input id="js-dropped" type="checkbox" name="dropped" value="true">
+              <span class="far fa-square"></span>
+              &nbsp;Dropped Here
+            </button>
+          </div>
         </div>
-      </div>
-      <input id="js-effort-id" type="hidden" name="effort-id" value="">
-      <input id="js-live-bib" type="hidden" name="live-bib" value="">
-      <div class="row">
-        <div class="col-4 offset-4">
-          <button id="js-add-to-cache" type="submit" class="btn btn-primary w-100">Add</button>
+        <input id="js-effort-id" type="hidden" name="effort-id" value="">
+        <input id="js-live-bib" type="hidden" name="live-bib" value="">
+        <div class="row">
+          <div class="col-4 offset-4">
+            <button id="js-add-to-cache" type="submit" class="btn btn-primary w-100">Add</button>
+          </div>
+          <div class="col-4">
+            <button id="js-discard-entry-form" type="submit" class="btn btn-danger w-100">Discard</button>
+          </div>
         </div>
-        <div class="col-4">
-          <button id="js-discard-entry-form" type="submit" class="btn btn-danger w-100">Discard</button>
-        </div>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
 
-  <div class="col-12 col-md-7 col-lg-8 splits-slider">
-    <div class="splits-slider-data group-splits-slider-data">
-      <h4>
-        <a id="js-effort-name" target="_blank" data-effort-id="" data-event-id=""></a>
-        <span class="group-only">&nbsp;(<span id="js-effort-event-name"></span>)</span>
-      </h4>
-      <div class="table-wrapper">
-        <table class="table table-striped table-condensed">
-          <thead>
+    <div class="col-12 col-md-7 col-lg-8 splits-slider">
+      <div class="splits-slider-data group-splits-slider-data">
+        <h4>
+          <a id="js-effort-name" target="_blank" data-effort-id="" data-event-id=""></a>
+          <span class="group-only">&nbsp;(<span id="js-effort-event-name"></span>)</span>
+        </h4>
+        <div class="table-wrapper">
+          <table class="table table-striped table-condensed">
+            <thead>
             <tr>
               <th>Split</th>
               <th><%= pdu('singular').titlecase %></th>
@@ -137,13 +137,13 @@
               <th></th>
               <th class="pacer-only text-center" colspan="2">Pacer</th>
             </tr>
-          </thead>
-          <tbody id="js-effort-table"></tbody>
-        </table>
+            </thead>
+            <tbody id="js-effort-table"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </article>
 
 <header class="ost-header">
@@ -157,70 +157,64 @@
 </header>
 
 <article class="ost-article container">
-<div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-  <div class="col-12">
-    <div class="provisional-table-wrapper">
-      <table id="js-local-workspace-table" class="table provisional-data-table">
-        <thead>
-        <tr>
-          <th>Aid Station</th>
-          <th class="group-only">Event</th>
-          <th>Bib</th>
-          <th>Name</th>
-          <th class="lap-only">Lap</th>
-          <th class="time-in-only">Time In</th>
-          <th class="time-out-only">Time Out</th>
-          <th class="pacer-only">Pacer</th>
-          <th>Dropped</th>
-          <th data-orderable="false">&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr style="display: none">
-          <td data-order="0"></td>
-          <td class="group-only"></td>
-          <td></td>
-          <td></td>
-          <td class="lap-only"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        </tbody>
-      </table>
+  <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+    <div class="col-12">
+      <div class="provisional-table-wrapper">
+        <table id="js-local-workspace-table" class="table provisional-data-table">
+          <thead>
+          <tr>
+            <th>Aid Station</th>
+            <th class="group-only">Event</th>
+            <th>Bib</th>
+            <th>Name</th>
+            <th class="lap-only">Lap</th>
+            <th class="time-in-only">Time In</th>
+            <th class="time-out-only">Time Out</th>
+            <th class="pacer-only">Pacer</th>
+            <th>Dropped</th>
+            <th data-orderable="false">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr style="display: none">
+            <td data-order="0"></td>
+            <td class="group-only"></td>
+            <td></td>
+            <td></td>
+            <td class="lap-only"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-12" id="js-live-messages">
-    <div class="alert alert-warning" role="alert" id="js-import-live-warning">
-      <strong>You're up to date.</strong> No raw time data available to pull.
-    </div>
-    <div class="alert alert-danger" role="alert" id="js-import-live-error">
-      <strong>Error</strong> Couldn't read data from the server.
+  <div class="row">
+    <div class="col-12" id="js-live-messages">
+      <div class="alert alert-warning" role="alert" id="js-import-live-warning">
+        <strong>You're up to date.</strong> No raw time data available to pull.
+      </div>
+      <div class="alert alert-danger" role="alert" id="js-import-live-error">
+        <strong>Error</strong> Couldn't read data from the server.
+      </div>
     </div>
   </div>
-</div>
-<div class="row provisional-data">
-  <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper">
-    <button id="js-pull-times" class="btn btn-primary">
-      Pull Times
-      <%= render "pull_times_count", event_group: @event_group %>
-    </button>
-    <button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
-      Force Pull
-      <span class="badge" id="js-force-pull-times-count"></span>
-    </button>
-    <div class="btn-group" role="group">
-      <button id="js-delete-all-time-rows" class="btn btn-danger">Discard All</button>
-      <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+  <div class="row provisional-data">
+    <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper d-flex-inline">
+      <%= render "pull_times_button", event_group: @event_group %>
+      <%= render "force_pull_times_button", event_group: @event_group %>
+      <div class="btn-group" role="group">
+        <button id="js-delete-all-time-rows" class="btn btn-danger">Discard All</button>
+        <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
+      </div>
+      <button id="js-submit-all-time-rows" class="btn btn-success">Submit All</button>
     </div>
-    <button id="js-submit-all-time-rows" class="btn btn-success">Submit All</button>
-  </div>
 
-  <div id="debug">
+    <div id="debug">
+    </div>
   </div>
-</div>
 </article>

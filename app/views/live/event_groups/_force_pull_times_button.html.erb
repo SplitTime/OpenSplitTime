@@ -1,0 +1,8 @@
+<%# locals: (event_group) -%>
+
+<% count = event_group.raw_times.unmatched.count %>
+
+<button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
+  Force Pull
+  <span class="badge bg-secondary ms-1"><%= count if count.positive? %></span>
+</button>

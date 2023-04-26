@@ -112,12 +112,7 @@ class EventGroupsController < ApplicationController
                  .where(prepared_params[:filter])
                  .finish_info_subquery
 
-    respond_to do |format|
-      format.json do
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
-        render json: {efforts: @efforts, html: html}
-      end
-    end
+    render partial: "event_groups/finish_line_effort", locals: { efforts: @efforts }
   end
 
   def raw_times

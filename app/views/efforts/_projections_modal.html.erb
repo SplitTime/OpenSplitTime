@@ -1,11 +1,10 @@
-<div class="modal fade" data-finish-line-target="projectionsModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"></h3>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
+<%# locals: (presenter:) -%>
+
+<%= turbo_frame_tag "form_modal_large" do %>
+  <div class="modal-header">
+    <div class="modal-title h4 fw-bold"><%= "##{presenter.bib_number} #{presenter.full_name}" %></div>
   </div>
-</div>
+  <div class="modal-body">
+    <%= render "split_times/projections_list", presenter: presenter %>
+  </div>
+<% end %>

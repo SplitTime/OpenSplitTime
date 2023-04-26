@@ -1,11 +1,13 @@
+<%# locals: (presenter:) -%>
+
 <% content_for :title do %>
-  <% "OpenSplitTime: Projections - #{@presenter.full_name} - #{@presenter.event_name}" %>
+  <% "OpenSplitTime: Projections - #{presenter.full_name} - #{presenter.event_name}" %>
 <% end %>
 
 <% content_for(:container_type) do %>skip
 <% end %>
 
-<%= render 'effort_header', view_object: @presenter, title: 'Projections' %>
+<%= render "effort_header", view_object: presenter, title: "Projections" %>
 
 <aside class="ost-toolbar">
   <div class="container">
@@ -16,5 +18,5 @@
 </aside>
 
 <article class="ost-article container">
-  <%= render 'split_times/projections_list' %>
+  <%= render "split_times/projections_list", presenter: presenter %>
 </article>

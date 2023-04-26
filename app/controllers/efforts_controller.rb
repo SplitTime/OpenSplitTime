@@ -112,12 +112,10 @@ class EffortsController < ApplicationController
   def projections
     @presenter = EffortProjectionsView.new(@effort)
 
-    respond_to do |format|
-      format.html
-      format.json do
-        html = params[:html_template].present? ? render_to_string(partial: params[:html_template], formats: [:html]) : ""
-        render json: { efforts: @presenter.effort, html: html }
-      end
+    if params[:modal] == "true"
+      render partial: "projections_modal", locals: { presenter: @presenter }
+    else
+      render "projections", locals: { presenter: @presenter }
     end
   end
 

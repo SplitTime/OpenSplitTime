@@ -38,7 +38,6 @@ global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
 // Miscellaneous imports
-import "utils/growl";
 import "chartkick/chart.js";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";

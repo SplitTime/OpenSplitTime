@@ -57,22 +57,4 @@ export default class extends Controller {
     this.searchTarget.value = bibNumber
     this.getEffort(bibNumber)
   }
-
-  showProjectionsModal() {
-    const effortId = this.data.get("effortId")
-    const url = "/efforts/" + effortId + "/projections?html_template=split_times/projections_list"
-
-    Rails.ajax({
-      type: "GET",
-      url: url,
-      dataType: "json",
-      success: (data) => {
-        const title = "#" + data.efforts.bib_number + " " + data.efforts.first_name + " " + data.efforts.last_name
-
-        $(this.projectionsModalTarget).modal("show")
-        this.projectionsModalTarget.querySelector(".modal-title").innerHTML = "<strong>" + title + "</strong>"
-        this.projectionsModalTarget.querySelector(".modal-body").innerHTML = data.html
-      }
-    })
-  }
 }

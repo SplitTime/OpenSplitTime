@@ -11,9 +11,9 @@
     <div class="card">
       <h3 class="card-header">
         <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong>
-        <button type="button" class="float-end btn btn-success" data-action="click->finish-line#showProjectionsModal">
-          <span>Details</span>
-        </button>
+        <%= link_to "Details", projections_effort_path(effort, modal: true),
+                    class: "btn btn-success float-end",
+                    data: { turbo_frame: "form_modal_large" } %>
       </h3>
       <div class="card-body">
         <h4 class="card-text"><%= effort.bio %></h4>
@@ -22,7 +22,8 @@
         <h4 class="card-text"><strong>Status: </strong><%= effort.effort_status %></h4>
         <% if effort.final_absolute_time %>
           <h4 class="card-text">
-            <strong>Last recorded at: </strong><%= "#{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %>
+            <strong>Last recorded at: </strong>
+            <%= "#{effort.final_lap_split_name} (#{l effort.final_absolute_time_local, format: :day_and_military})" %>
           </h4>
         <% end %>
         <% if effort.beyond_start? %>

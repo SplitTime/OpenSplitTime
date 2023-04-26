@@ -3,6 +3,7 @@
 <% end %>
 
 <%= javascript_pack_tag "live_entry" %>
+<%= turbo_stream_from @event_group %>
 
 <header class="ost-header">
   <div class="container" data-controller="notification" data-notification-channel="EventGroupsChannel" data-notification-id="<%= @event_group.id %>">
@@ -206,7 +207,7 @@
   <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper">
     <button id="js-pull-times" class="btn btn-primary">
       Pull Times
-      <span class="badge" id="js-pull-times-count"></span>
+      <%= render "pull_times_count", event_group: @event_group %>
     </button>
     <button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
       Force Pull

@@ -1,0 +1,4 @@
+<%# locals: (event_group) -%>
+
+<% count = event_group.raw_times.unreviewed.count %>
+<span class="badge" id="js-pull-times-count"><%= count if count > 0 %></span>

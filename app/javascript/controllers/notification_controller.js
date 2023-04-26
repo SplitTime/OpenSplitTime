@@ -5,30 +5,32 @@ import Rails from "@rails/ujs"
 export default class extends Controller {
 
   connect() {
-    let notificationController = this;
 
-    this.subscription = consumer.subscriptions.create(
-      {
-        channel: this.data.get("channel"),
-        id: this.data.get("id")
-      },
-      {
-        connected() {
-          notificationController.triggerRawTimesPush();
-        },
-        disconnected() {
-        },
-        received(data) {
-          if (data.event !== "raw_times_available") {
-            return
-          }
-
-          const unreviewedCount = (typeof data.detail.unreviewed === "number") ? data.detail.unreviewed : 0;
-          const unmatchedCount = (typeof data.detail.unmatched === "number") ? data.detail.unmatched : 0;
-          notificationController.displayNewCount(unreviewedCount, unmatchedCount);
-        }
-      }
-    )
+    console.log("NotificationController connect but not subscribed")
+    // let notificationController = this;
+    //
+    // this.subscription = consumer.subscriptions.create(
+    //   {
+    //     channel: this.data.get("channel"),
+    //     id: this.data.get("id")
+    //   },
+    //   {
+    //     connected() {
+    //       notificationController.triggerRawTimesPush();
+    //     },
+    //     disconnected() {
+    //     },
+    //     received(data) {
+    //       if (data.event !== "raw_times_available") {
+    //         return
+    //       }
+    //
+    //       const unreviewedCount = (typeof data.detail.unreviewed === "number") ? data.detail.unreviewed : 0;
+    //       const unmatchedCount = (typeof data.detail.unmatched === "number") ? data.detail.unmatched : 0;
+    //       notificationController.displayNewCount(unreviewedCount, unmatchedCount);
+    //     }
+    //   }
+    // )
   }
 
   disconnect() {

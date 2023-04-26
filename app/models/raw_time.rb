@@ -31,6 +31,8 @@ class RawTime < ApplicationRecord
   before_validation :create_matchable_bib_number
 
   after_create_commit :broadcast_raw_time_create
+  after_update_commit :broadcast_raw_time_update
+  after_destroy_commit :broadcast_raw_time_destroy
 
   validates_presence_of :entered_time, :event_group, :split_name, :bitkey, :bib_number, :source
   validates :bib_number, length: { maximum: 6 }, format: { with: /\A[\d*]+\z/, message: "may contain only digits and asterisks" }
@@ -95,7 +97,7 @@ class RawTime < ApplicationRecord
 
   def split
     @split = nil if matchable_bib_number.nil? ||
-                    (attributes.has_key?("split_id") && attributes["split_id"].nil?)
+      (attributes.has_key?("split_id") && attributes["split_id"].nil?)
     return @split if defined?(@split)
 
     if attributes["split_id"]
@@ -124,13 +126,31 @@ class RawTime < ApplicationRecord
   private
 
   def broadcast_raw_time_create
-    broadcast_prepend_to event_group,
-                         locals: {
-                           multiple_events: event_group.multiple_events?,
-                           multiple_sub_splits: event_group.multiple_sub_splits?,
-                           monitor_pacers: event_group.monitor_pacers?,
-                           home_time_zone: event_group.home_time_zone,
-                         }
+    broadcast_prepend_later_to event_group,
+                               locals: {
+                                 multiple_events: event_group.multiple_events?,
+                                 multiple_sub_splits: event_group.multiple_sub_splits?,
+                                 monitor_pacers: event_group.monitor_pacers?,
+                                 home_time_zone: event_group.home_time_zone,
+                               }
+    broadcast_replace_later_to event_group,
+                               target: "js-pull-times-count",
+                               partial: "live/event_groups/pull_times_count",
+                               locals: { event_group: event_group }
+  end
+
+  def broadcast_raw_time_update
+    broadcast_replace_later_to event_group,
+                               target: "js-pull-times-count",
+                               partial: "live/event_groups/pull_times_count",
+                               locals: { event_group: event_group }
+  end
+
+  def broadcast_raw_time_destroy
+    broadcast_replace_later_to event_group,
+                               target: "js-pull-times-count",
+                               partial: "live/event_groups/pull_times_count",
+                               locals: { event_group: event_group }
   end
 
   def create_sortable_bib_number

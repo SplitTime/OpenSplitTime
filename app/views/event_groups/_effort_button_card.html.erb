@@ -1,4 +1,4 @@
-<!--Requires local variables arrivals, time_zone, multiple_events, and title-->
+<%# locals: (arrivals:, time_zone:, event_group:, title:) -%>
 
 <div class="card">
   <h3 class="card-header"><strong><%= title %></strong></h3>
@@ -6,11 +6,15 @@
     <div class="card-body">
       <% if arrivals.present? %>
         <% arrivals.each do |arrival| %>
-          <div class="card">
-            <button class="btn btn-primary btn-lg text-lg-start" data-action="click->finish-line#lookup keyup->finish-line#lookup" data-bib-number="<%= arrival.bib_number %>">
-              <%= effort_button_card_text(arrival, time_zone, multiple_events) %>
-            </button>
-          </div>
+            <%= form_tag efforts_event_group_path(event_group),
+                         method: :get,
+                         class: "d-flex my-1",
+                         data: { turbo_frame: "finish_line_effort" } do %>
+              <%= hidden_field_tag "filter[bib_number]", arrival.bib_number %>
+              <%= button_tag(effort_button_card_text(arrival, time_zone, event_group.multiple_events?),
+                             type: :submit,
+                             class: "btn btn-primary btn-lg text-lg-start w-100") %>
+            <% end %>
         <% end %>
       <% else %>
         <div class="card">

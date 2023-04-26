@@ -1,0 +1,14 @@
+<%# locals: (event_group:, params:) -%>
+
+<%= form_tag efforts_event_group_path(event_group), method: :get, data: { turbo_frame: "finish_line_effort" } do %>
+  <div class="input-group">
+    <%= text_field_tag "filter[bib_number]",
+                       params.dig(:effort, :bib_number),
+                       placeholder: "Bib #",
+                       autofocus: true,
+                       class: "form-control search-box input-xl" %>
+    <%= button_tag(type: :submit, id: "search-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
+  </div>
+<% end %>

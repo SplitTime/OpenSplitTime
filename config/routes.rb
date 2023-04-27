@@ -250,7 +250,10 @@ Rails.application.routes.draw do
     end
 
     resources :event_groups, only: [] do
-      member { get :live_entry }
+      member do
+        get :live_entry
+        get :trigger_raw_times_push
+      end
     end
   end
 
@@ -266,7 +269,6 @@ Rails.application.routes.draw do
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
           get :enrich_raw_time_row
-          get :trigger_raw_times_push
           get :not_expected
           post :import
           post :import_csv_raw_times

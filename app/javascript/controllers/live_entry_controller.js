@@ -8,9 +8,6 @@ export default class extends Controller {
   }
 
   connect() {
-
-    console.log("LiveEntryController#connect")
-
     this.triggerRawTimesPush();
   }
 

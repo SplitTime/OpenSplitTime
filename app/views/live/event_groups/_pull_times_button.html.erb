@@ -1,8 +1,6 @@
-<%# locals: (event_group) -%>
-
-<% count = event_group.raw_times.unreviewed.count %>
+<%# locals: (count:) -%>
 
 <button id="js-pull-times" class="btn btn-primary">
   Pull Times
-  <span class="badge bg-secondary ms-1"><%= count if count.positive? %></span>
+  <span class="badge bg-danger ms-1"><%= count if count.positive? %></span>
 </button>

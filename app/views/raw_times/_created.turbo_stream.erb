@@ -9,7 +9,3 @@
                            monitor_pacers: event_group.monitor_pacers?,
                            home_time_zone: event_group.home_time_zone,
                          } %>
-
-<%= turbo_stream.replace "js-pull-times", partial: "live/event_groups/pull_times_button", locals: { event_group: event_group } %>
-<%= turbo_stream.replace "js-force-pull-times", partial: "live/event_groups/force_pull_times_button", locals: { event_group: event_group } %>
-<%= turbo_stream.prepend "toasts", partial: "shared/toast", locals: { title: "Raw Times Available", body: "Raw times are available to pull."} %>

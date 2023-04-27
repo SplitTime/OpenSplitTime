@@ -1,6 +1,8 @@
 <%# locals: (count:) -%>
 
+<% count ||= nil %>
+
 <button id="js-pull-times" class="btn btn-primary">
   Pull Times
-  <span class="badge bg-danger ms-1"><%= count if count.positive? %></span>
+  <span class="badge bg-danger ms-1"><%= count if count&.positive? %></span>
 </button>

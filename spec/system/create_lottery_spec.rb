@@ -53,7 +53,7 @@ RSpec.describe "Create and update a lottery" do
     expect(page).to have_button("Create Lottery")
 
     click_button "Create Lottery"
-    expect(page).to have_content(:all, "errors prohibited this record from being saved")
+    expect(page).to have_content(:all, "Name can't be blank")
 
     fill_in "Name", with: new_lottery_name
     fill_in "Scheduled start date", with: new_lottery_date

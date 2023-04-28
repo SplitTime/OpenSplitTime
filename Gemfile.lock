@@ -189,7 +189,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-bootstrap-views (1.1.0)
+    devise-bootstrap5 (0.1.3)
+    devise-i18n (1.11.0)
+      devise (>= 4.9.0)
     diff-lcs (1.5.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -578,7 +580,8 @@ DEPENDENCIES
   data_migrate
   derailed_benchmarks
   devise
-  devise-bootstrap-views
+  devise-bootstrap5
+  devise-i18n
   factory_bot_rails (~> 5.2, >= 5.2.0)
   ffaker
   font_awesome5_rails (>= 1.4.0)

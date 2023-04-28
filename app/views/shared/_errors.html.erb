@@ -2,7 +2,7 @@
 
 <% if obj.errors.any? %>
   <div id="error_explanation">
-    <ul>
+    <ul class="mb-0">
       <% obj.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>

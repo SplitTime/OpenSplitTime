@@ -3,6 +3,7 @@
 module Api
   module V1
     class EventGroupsController < ::Api::V1::BaseController
+      include BackgroundNotifiable
       before_action :set_resource, except: [:index, :create]
 
       # GET /api/v1/event_groups/1

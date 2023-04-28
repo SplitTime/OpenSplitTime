@@ -3,7 +3,7 @@ import { Toast } from "bootstrap"
 
 export default class extends Controller {
   static values = {
-    delay: { type: Number, default: 10000 },
+    delay: { type: Number, default: 10_000 },
   }
 
   connect() {

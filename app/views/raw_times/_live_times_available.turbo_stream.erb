@@ -2,9 +2,11 @@
 
 <%= turbo_stream.replace "js-pull-times", partial: "live/event_groups/pull_times_button", locals: { count: unreviewed_count } %>
 <%= turbo_stream.replace "js-force-pull-times", partial: "live/event_groups/force_pull_times_button", locals: { count: unmatched_count } %>
-<%= turbo_stream.prepend "toasts",
-                         partial: "shared/toast",
-                         locals: {
-                           title: "Raw Times Available",
-                           body: "Raw times are available to pull. Click \"Pull Times\" to bring them into the Local Data Workspace.",
-                         } %>
+<% if unreviewed_count.positive? %>
+  <%= turbo_stream.prepend "toasts",
+                           partial: "shared/toast",
+                           locals: {
+                             title: "Raw Times Available",
+                             body: "Raw times are available to pull. Click \"Pull Times\" to bring them into the Local Data Workspace.",
+                           } %>
+<% end %>

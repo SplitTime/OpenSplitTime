@@ -130,6 +130,7 @@
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
             liveEntry.importLiveError = $('#js-import-live-error').hide().detach();
             liveEntry.newTimesAlert = $('#js-new-times-alert').hide();
+            liveEntry.container = document.getElementById('live-entry-container');
         },
 
         /**
@@ -497,10 +498,6 @@
                         $('#js-add-to-cache').click()
                     }
                     return false;
-                });
-
-                $('#js-effort-table').scroll(function() {
-                    console.log($(this).scrollTop);
                 });
             },
 
@@ -968,18 +965,18 @@
                     if (returnedRows.length >= 1) {
                         // If submitting one node...
                         if (tableNodes.length <= 1) {
-                            $.notify({
-                                title: 'Failed to submit time row!',
-                                message: returnedRows[0].errors.join(', ')
+                            liveEntry.sendNotice({
+                                title: 'Failed to submit time row',
+                                body: returnedRows[0].errors.join(', ')
                             }, { 
                                 type: 'danger'
                             });
                         // If submitting multiple nodes...
                         } else {
-                            $.notify({
+                            liveEntry.sendNotice({
                                 title: 'Failed to submit ' + returnedRows.length +
-                                    ' of ' + tableNodes.length + ' time rows!',
-                                message: ''
+                                    ' of ' + tableNodes.length + ' time rows',
+                                body: ''
                             }, { 
                                 type: 'danger'
                             });
@@ -1216,6 +1213,20 @@
                 });
             }, 4000);
             return;
+        },
+
+        sendNotice: function (object) {
+            const options = {
+                detail: {
+                    title: object.title,
+                    body: object.body,
+                    type: object.type,
+                },
+                bubbles: true,
+            }
+
+            const showToastEvent = new CustomEvent("show-toast", options)
+            liveEntry.container.dispatchEvent(showToastEvent)
         },
 
         populateRows: function (rawTimeRows) {

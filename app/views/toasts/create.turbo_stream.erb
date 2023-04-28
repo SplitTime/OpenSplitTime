@@ -1,0 +1,3 @@
+<%# locals: (title:, body:) -%>
+
+<%= turbo_stream.prepend "toasts", partial: "toasts/toast", locals: { title: title, body: body } %>

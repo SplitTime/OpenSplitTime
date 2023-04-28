@@ -938,27 +938,6 @@ RSpec.describe Api::V1::EventGroupsController do
     end
   end
 
-  describe "#trigger_raw_times_push" do
-    subject(:make_request) { get :trigger_raw_times_push, params: request_params }
-    let(:event) { events(:hardrock_2016) }
-    let(:split) { splits(:hardrock_cw_cunningham) }
-    let(:event_group) { event.event_group }
-    let(:request_params) { {id: event_group.id} }
-    before do
-      create_list(:raw_time, 3, event_group: event_group, split_name: split.base_name)
-    end
-
-    via_login_and_jwt do
-      it "sends a push notification that includes the count of available times" do
-        expected_rt_args = ["event_groups:#{event_group.id}",
-                            {event: "raw_times_available",
-                             detail: {unreviewed: 3, unmatched: 3}}]
-        expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
-        make_request
-      end
-    end
-  end
-
   describe "#not_expected" do
     subject(:make_request) { get :not_expected, params: request_params }
     let(:event_group) { event_groups(:sum) }

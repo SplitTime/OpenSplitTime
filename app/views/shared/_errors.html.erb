@@ -1,19 +1,11 @@
-<%# New Growl Style Flash Messages %>
+<%# locals: (obj:) %>
+
 <% if obj.errors.any? %>
-<script type="text/javascript">
-  $(function() {
-    $.notify({
-      title: '<%= pluralize(obj.errors.size, "error") %> prohibited this record from being saved:',
-      message: '\
-          <ul class="list-unstyled">\
-            <% obj.errors.full_messages.each do |msg| %>\
-                <li><%= msg %></li>\
-            <% end %>\
-          </ul>'
-    }, {
-      type: 'danger',
-      delay: 0 // Prevent automatic dismissal
-    });
-  });
-</script>
+  <div id="error_explanation">
+    <ul class="mb-0">
+      <% obj.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>

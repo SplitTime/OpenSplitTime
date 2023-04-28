@@ -24,7 +24,7 @@ module Api
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
-          render json: {errors: errors}, status: :unprocessable_entity
+          render json: { errors: errors }, status: :unprocessable_entity
         else
           ::ETL::EventGroupImportProcess.perform!(@resource, importer)
           if limited_response
@@ -56,7 +56,7 @@ module Api
 
         raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
 
-        render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}, errors: errors}, status: :ok
+        render json: { data: { rawTimeRows: raw_time_rows.map { |row| row.serialize } }, errors: errors }, status: :ok
       end
 
       # This endpoint searches for raw_times that have not been reviewed belonging to the event_group,
@@ -90,7 +90,7 @@ module Api
         raw_times.update_all(reviewed_by: current_user.id, reviewed_at: Time.current)
         report_raw_times_available(event_group)
 
-        render json: {data: {rawTimeRows: raw_time_rows.map { |row| row.serialize }}}, status: :ok
+        render json: { data: { rawTimeRows: raw_time_rows.map { |row| row.serialize } } }, status: :ok
       end
 
       # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
@@ -106,9 +106,9 @@ module Api
           parsed_row = parse_raw_times_data(raw_times_data)
           enriched_row = EnrichRawTimeRow.perform(event_group: event_group, raw_time_row: parsed_row)
 
-          render json: {data: {rawTimeRow: enriched_row.serialize}}, status: :ok
+          render json: { data: { rawTimeRow: enriched_row.serialize } }, status: :ok
         else
-          render json: {errors: [{title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}"}]}, status: :unprocessable_entity
+          render json: { errors: [{ title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}" }] }, status: :unprocessable_entity
         end
       end
 
@@ -132,8 +132,8 @@ module Api
           if raw_times_data[:raw_time_row]
             raw_time_rows << parse_raw_times_data(ActionController::Parameters.new(raw_times_data))
           else
-            errors << {title: "Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}",
-                       detail: {attributes: raw_times_data}}
+            errors << { title: "Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}",
+                        detail: { attributes: raw_times_data } }
           end
         end
 
@@ -144,17 +144,10 @@ module Api
           problem_rows = response.resources[:problem_rows]
           report_raw_times_available(event_group)
 
-          render json: {data: {rawTimeRows: problem_rows.map(&:serialize)}}, status: :created
+          render json: { data: { rawTimeRows: problem_rows.map(&:serialize) } }, status: :created
         else
-          render json: {errors: errors}, status: :unprocessable_entity
+          render json: { errors: errors }, status: :unprocessable_entity
         end
-      end
-
-      # GET /api/v1/event_groups/1/trigger_raw_times_push
-      def trigger_raw_times_push
-        authorize @resource
-        report_raw_times_available(@resource)
-        render json: {message: "Time records push notifications sent for #{@resource.name}"}
       end
 
       # GET /api/v1/event_groups/1/not_expected
@@ -164,9 +157,9 @@ module Api
         response = FindNotExpectedBibs.perform(event_group, params[:split_name])
 
         if response.errors.present?
-          render json: {errors: response.errors}, status: :unprocessable_entity
+          render json: { errors: response.errors }, status: :unprocessable_entity
         else
-          render json: {data: {bib_numbers: response.bib_numbers}}, status: :ok
+          render json: { data: { bib_numbers: response.bib_numbers } }, status: :ok
         end
       end
 

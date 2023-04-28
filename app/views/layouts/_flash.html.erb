@@ -1,0 +1,12 @@
+<%# Rails flash messages %>
+
+<div id="flash" class="flash">
+  <% if flash.present? %>
+    <% flash.each do |name, msg| %>
+      <div class="alert alert-<%= name %> alert-dismissible text-center fade show mb-0" role="alert">
+        <%= msg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end %>
+  <% end %>
+</div>

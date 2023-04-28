@@ -95,7 +95,7 @@ class RawTime < ApplicationRecord
 
   def split
     @split = nil if matchable_bib_number.nil? ||
-                    (attributes.has_key?("split_id") && attributes["split_id"].nil?)
+      (attributes.has_key?("split_id") && attributes["split_id"].nil?)
     return @split if defined?(@split)
 
     if attributes["split_id"]
@@ -124,13 +124,7 @@ class RawTime < ApplicationRecord
   private
 
   def broadcast_raw_time_create
-    broadcast_prepend_to event_group,
-                         locals: {
-                           multiple_events: event_group.multiple_events?,
-                           multiple_sub_splits: event_group.multiple_sub_splits?,
-                           monitor_pacers: event_group.monitor_pacers?,
-                           home_time_zone: event_group.home_time_zone,
-                         }
+    broadcast_render_later_to event_group, partial: "raw_times/created", locals: { event_group: event_group, raw_time: self }
   end
 
   def create_sortable_bib_number

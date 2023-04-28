@@ -148,12 +148,12 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
-  def import?
-    user.authorized_to_edit?(event_group)
+  def trigger_raw_times_push?
+    live_entry?
   end
 
-  def trigger_raw_times_push?
-    user.present?
+  def import?
+    user.authorized_to_edit?(event_group)
   end
 
   def pull_raw_times?

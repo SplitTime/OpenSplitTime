@@ -1,0 +1,8 @@
+<%# locals: (count:) -%>
+
+<% count ||= nil %>
+
+<button id="js-force-pull-times" class="btn btn-danger" style="display: none;">
+  Force Pull
+  <span class="badge bg-light text-black ms-1"><%= count if count&.positive? %></span>
+</button>

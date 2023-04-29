@@ -41,6 +41,7 @@ class EventGroupsController < ApplicationController
     if @event_group.save
       redirect_to setup_event_group_path(@event_group)
     else
+      @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
       render "new", status: :unprocessable_entity
     end
   end
@@ -70,7 +71,7 @@ class EventGroupsController < ApplicationController
 
     @event_group.destroy
     flash[:success] = "Event group deleted."
-    redirect_to event_groups_path
+    redirect_to organization_path(@event_group.organization)
   end
 
   # GET /event_groups/1/setup

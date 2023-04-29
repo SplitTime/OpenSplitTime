@@ -17,9 +17,7 @@
                             new_event_group_event_path(@presenter.event_group),
                             id: "add-event",
                             class: "btn btn-success" %>
-                <% if @presenter.events.present? %>
-                  <%= event_group_actions_dropdown(@presenter) %>
-                <% end %>
+                <%= event_group_actions_dropdown(@presenter) %>
               <% end %>
             </div>
           </div>

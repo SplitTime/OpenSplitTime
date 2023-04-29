@@ -118,6 +118,6 @@ RSpec.describe "visit the edit event group page and make changes", type: :system
       click_button "Permanently Delete"
       expect(page).not_to have_current_path(edit_organization_event_group_path(organization, event_group))
     end.to change { EventGroup.count }.by(-1)
-    expect(page).to have_current_path(event_groups_path)
+    expect(page).to have_current_path(organization_path(organization))
   end
 end

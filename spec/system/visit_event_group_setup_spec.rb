@@ -80,8 +80,7 @@ RSpec.describe "Visit an event group setup page and try various features", type:
         login_as owner, scope: :user
         visit setup_event_group_path(event_group)
 
-        # Group Actions is not visible when there are no events
-        verify_admin_links_absent
+        verify_admin_links_present
         verify_outside_content_absent
         verify_monitor_mode_returns_to_organization
       end
@@ -99,8 +98,7 @@ RSpec.describe "Visit an event group setup page and try various features", type:
         login_as admin, scope: :user
         visit setup_event_group_path(event_group)
 
-        # Group Actions is not visible when there are no events
-        verify_admin_links_absent
+        verify_admin_links_present
         verify_outside_content_absent
         verify_monitor_mode_returns_to_organization
       end

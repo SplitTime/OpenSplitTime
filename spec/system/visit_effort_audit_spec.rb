@@ -31,12 +31,12 @@ RSpec.describe "visit an effort audit page" do
 
   shared_examples "authorized user visits and clicks links" do
     scenario "The user visits the page" do
-      visit audit_effort_path(effort)
+      visit_page
       verify_links_present
     end
 
     scenario "The user matches a raw time" do
-      visit audit_effort_path(effort)
+      visit_page
 
       expect(page).not_to have_link(id: "unmatch-raw-time-#{unmatched_raw_time.id}")
       expect(page).to have_link(id: "unmatch-raw-time-#{matched_raw_time.id}")
@@ -53,7 +53,7 @@ RSpec.describe "visit an effort audit page" do
     end
 
     scenario "The user unmatches a raw time" do
-      visit audit_effort_path(effort)
+      visit_page
 
       expect(page).not_to have_link(id: "unmatch-raw-time-#{unmatched_raw_time.id}")
       expect(page).to have_link(id: "unmatch-raw-time-#{matched_raw_time.id}")
@@ -70,7 +70,7 @@ RSpec.describe "visit an effort audit page" do
     end
 
     scenario "The user disassociates and associates a raw time" do
-      visit audit_effort_path(effort)
+      visit_page
 
       expect(page).not_to have_link(id: "associate-raw-time-#{disassociated_raw_time.id}")
       expect(page).to have_link(id: "disassociate-raw-time-#{disassociated_raw_time.id}")
@@ -110,14 +110,14 @@ RSpec.describe "visit an effort audit page" do
   context "The user is not an owner or steward" do
     before { login_as user, scope: :user }
     scenario "The user visits the page" do
-      visit audit_effort_path(effort)
+      visit_page
       verify_redirect_to_root
     end
   end
 
   context "The user is a visitor" do
     scenario "The user visits the page" do
-      visit audit_effort_path(effort)
+      visit_page
       verify_redirect_to_root
     end
   end
@@ -136,5 +136,9 @@ RSpec.describe "visit an effort audit page" do
 
   def verify_redirect_to_root
     expect(current_path).to eq(root_path)
+  end
+
+  def visit_page
+    visit audit_effort_path(effort)
   end
 end

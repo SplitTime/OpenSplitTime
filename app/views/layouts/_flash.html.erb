@@ -1,7 +1,7 @@
 <%# Rails flash messages %>
 
 <div id="flash" class="flash">
-  <% if flash.present? %>
+  <% if flash.to_h.compact.present? %>
     <% flash.each do |name, msg| %>
       <div class="alert alert-<%= name %> alert-dismissible text-center fade show mb-0" role="alert">
         <%= msg %>

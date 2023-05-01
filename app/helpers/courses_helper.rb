@@ -21,9 +21,12 @@ module CoursesHelper
   def link_to_remove_course_gpx(event)
     link_to "Remove",
             remove_course_gpx_event_group_event_path(event.event_group, event),
-            method: :delete,
             class: "btn btn-sm btn-outline-danger",
-            data: { confirm: "This cannot be undone. Proceed?" }
+            data: {
+              turbo_confirm: "This cannot be undone. Proceed?",
+              turbo_method: :delete,
+              turbo_frame: "_top",
+            }
   end
 
   def segment_start_dropdown(view_object)

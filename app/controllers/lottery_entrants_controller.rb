@@ -53,7 +53,7 @@ class LotteryEntrantsController < ApplicationController
   def destroy
     respond_to do |format|
       format.turbo_stream do
-        if @lottery_entrant.tickets.present?
+        if @lottery_entrant.tickets.exists?
           flash.now[:warning] = "A lottery entrant cannot be deleted unless all of the entrant's tickets and draws have been deleted first."
           render "destroy", status: :unprocessable_entity
         elsif @lottery_entrant.destroy

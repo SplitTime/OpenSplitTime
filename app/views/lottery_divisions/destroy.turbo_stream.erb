@@ -1,0 +1,2 @@
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
+<%= turbo_stream.remove dom_id(@lottery_division) if @lottery_division.destroyed? %>

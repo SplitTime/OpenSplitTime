@@ -45,8 +45,15 @@ RSpec.describe "Visitor signs up" do
     expect(page).to have_content(:all, "Password is too short")
   end
 
+  scenario "didn't receive confirmation instructions" do
+    visit_page
+    click_link I18n.t("devise.shared.links.didn_t_receive_confirmation_instructions")
+
+    expect(page).to have_current_path(new_user_confirmation_path)
+  end
+
   def sign_up_with(first_name, last_name, email, password, phone = nil)
-    visit new_user_registration_path
+    visit_page
 
     within(".ost-article") do
       fill_in "First name", with: first_name
@@ -57,5 +64,9 @@ RSpec.describe "Visitor signs up" do
       fill_in "Password confirmation", with: password
       click_button "Sign up"
     end
+  end
+
+  def visit_page
+    visit new_user_registration_path
   end
 end

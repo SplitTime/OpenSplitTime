@@ -31,16 +31,42 @@ RSpec.describe "User logs in with modal", type: :system, js: true do
     verify_invalid
   end
 
+  scenario "sign up" do
+    visit organizations_path
+    within(".navbar") { click_link "Log In" }
+    within("#form_modal") { click_link I18n.t("devise.shared.links.sign_up") }
+
+    expect(page).to have_current_path(new_user_registration_path)
+  end
+
+  scenario "forgot password" do
+    visit organizations_path
+    within(".navbar") { click_link "Log In" }
+    within("#form_modal") { click_link I18n.t("devise.shared.links.forgot_your_password") }
+
+    expect(page).to have_current_path(new_user_password_path)
+  end
+
+  scenario "didn't receive confirmation instructions" do
+    visit organizations_path
+    within(".navbar") { click_link "Log In" }
+    within("#form_modal") { click_link I18n.t("devise.shared.links.didn_t_receive_confirmation_instructions") }
+
+    expect(page).to have_current_path(new_user_confirmation_path)
+  end
+
   def login_with_modal(email, password)
-    within(".navbar") do
-      click_link "Log In"
-    end
+    click_login_link
 
     within("#form_modal") do
       fill_in "Email", with: email
       fill_in "Password", with: password
       click_button "Log in"
     end
+  end
+
+  def click_login_link
+    within(".navbar") { click_link "Log In" }
   end
 
   def verify_valid

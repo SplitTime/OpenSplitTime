@@ -12,7 +12,7 @@
   <div class="row justify-content-center">
     <div class="col col-login">
       <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post, data: {turbo: false}}) do |f| %>
-        <%= bootstrap_devise_error_messages! %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-floating mb-3">
           <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control" %>

@@ -12,7 +12,7 @@
   <div class="row justify-content-center">
     <div class="col col-login">
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}) do |f| %>
-        <%= bootstrap_devise_error_messages! %>
+        <%= render "devise/shared/error_messages", resource: resource %>
         <%= f.hidden_field :reset_password_token %>
 
         <div class="form-floating mb-3">

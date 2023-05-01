@@ -12,7 +12,7 @@
   <div class="row justify-content-center">
     <div class="col col-login">
       <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-        <%= bootstrap_devise_error_messages! %>
+        <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-floating mb-3">
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>

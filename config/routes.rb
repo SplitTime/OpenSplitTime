@@ -227,7 +227,7 @@ Rails.application.routes.draw do
 
   resources :raw_times, only: [:update, :destroy]
   resources :results_templates, only: [:show]
-  resources :split_times, only: [:update]
+  resources :split_times, only: [:update, :destroy]
   resources :toasts, only: [:create]
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap

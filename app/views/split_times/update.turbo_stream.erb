@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
+
+<% if defined?(@show_presenter) %>
+  <%= turbo_stream.replace "lap_split_rows_for_effort_show",
+                           partial: "split_times/lap_split_rows_for_effort_show",
+                           locals: { presenter: @show_presenter } %>
+<% end %>
+
+<% if defined?(@audit_presenter) %>
+  <%= turbo_stream.replace "effort_audit_table",
+                           partial: "split_times/effort_audit_table",
+                           locals: { presenter: @audit_presenter } %>
+<% end %>

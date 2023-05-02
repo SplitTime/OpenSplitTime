@@ -66,32 +66,46 @@ module EffortsHelper
     link_to fa_icon("pencil-alt"), url, options
   end
 
-  def effort_row_confirm_buttons(row, effort)
+  def effort_row_confirm_buttons(row)
     if row.absolute_times_local.compact.present?
       row.time_data_statuses.each_with_index do |data_status, i|
-        new_data_status = data_status == "confirmed" ? "" : "confirmed"
-        button_class = data_status == "confirmed" ? "success" : "outline-secondary"
-        effort_data = { split_times_attributes: { id: row.split_time_ids[i], data_status: new_data_status } }
-        url = update_split_times_effort_path(effort, effort: effort_data)
-        options = { method: :patch,
-                    disabled: row.split_time_ids[i].blank?,
-                    class: "btn btn-#{button_class}" }
-        concat link_to fa_icon("thumbs-up"), url, options
-        concat " "
+        split_time_id = row.split_time_ids[i]
+        new_data_status = data_status == "confirmed" ? nil : "confirmed"
+        button_class = data_status == "confirmed" ? "success" : "outline-success"
+        split_time_data = { split_time: { data_status: new_data_status } }
+        url = split_time_id.blank? ? "#" : split_time_path(split_time_id)
+        html_options = {
+          disabled: split_time_id.blank?,
+          class: "btn btn-sm btn-#{button_class} mx-1",
+          method: :patch,
+          params: split_time_data,
+          data: {
+            turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+          },
+        }
+
+        button = button_to(url, html_options) { fa_icon("thumbs-up") }
+        concat button
       end
     end
   end
 
-  def effort_row_delete_buttons(row, effort)
+  def effort_row_delete_buttons(row)
     if row.split_time_ids.compact.present?
       row.split_time_ids.each do |id|
-        url = delete_split_times_effort_path(effort, split_time_ids: [id])
-        options = { method: :delete,
-                    disabled: id.blank?,
-                    data: { confirm: "This action cannot be undone. OK to proceed?" },
-                    class: "btn btn-danger" }
-        concat link_to fa_icon("trash"), url, options
-        concat " "
+        url = id.blank? ? "#" : split_time_path(id)
+        html_options = {
+          disabled: id.blank?,
+          class: "btn btn-sm btn-outline-danger mx-1",
+          method: :delete,
+          data: {
+            turbo_confirm: "This action cannot be undone. OK to proceed?",
+            turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+          },
+        }
+
+        button = button_to(url, html_options) { fa_icon("trash") }
+        concat button
       end
     end
   end

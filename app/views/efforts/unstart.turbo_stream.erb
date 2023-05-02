@@ -12,6 +12,6 @@
                         partial: "start_stop_buttons",
                         locals: { presenter: effort_presenter } %>
 
-<%= turbo_stream.update dom_id(effort_presenter.effort, :split_times_list),
-                        partial: "split_times/split_times_list",
+<%= turbo_stream.update dom_id(effort_presenter.effort, :effort_show_table),
+                        partial: "split_times/effort_show_table",
                         locals: { presenter: effort_presenter } %>

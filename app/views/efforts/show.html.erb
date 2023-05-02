@@ -58,6 +58,6 @@
 <article class="ost-article container">
 
   <% if @presenter.lap_split_rows.present? %>
-    <%= render "split_times/split_times_list", presenter: @presenter %>
+    <%= render "split_times/effort_show_table", presenter: @presenter %>
   <% end %>
 </article>

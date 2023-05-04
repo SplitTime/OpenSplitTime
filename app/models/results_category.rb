@@ -70,6 +70,6 @@ class ResultsCategory < ApplicationRecord
   private
 
   def gender_present?
-    errors.add(:base, "must include male or female or nonbinary entrants") unless male? || female?
+    errors.add(:base, "must include male or female entrants") unless male? || female?
   end
 end

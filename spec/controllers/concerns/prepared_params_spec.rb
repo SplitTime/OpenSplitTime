@@ -293,7 +293,7 @@ RSpec.describe PreparedParams do
       end
     end
 
-    context "when provided with the names of both genders" do
+    context "when provided with the names of two genders" do
       let(:gender_param) { "male,female" }
 
       it "returns an array containing numeric values for both genders" do
@@ -302,11 +302,20 @@ RSpec.describe PreparedParams do
       end
     end
 
+    context "when provided with the names of three genders" do
+      let(:gender_param) { "male,female,nonbinary" }
+
+      it "returns an array containing numeric values for both genders" do
+        expected = {"gender" => [0, 1, 2]}
+        validate_param("filter", expected)
+      end
+    end
+
     context "when provided with combined" do
       let(:gender_param) { "combined" }
 
-      it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1]}
+      it "returns an array containing numeric values for all genders" do
+        expected = {"gender" => [0, 1, 2]}
         validate_param("filter", expected)
       end
     end
@@ -329,10 +338,10 @@ RSpec.describe PreparedParams do
       end
     end
 
-    context "when provided with numbers representing both genders" do
+    context "when provided with numbers representing two genders" do
       let(:gender_param) { %w[0 1] }
 
-      it "returns an array containing numeric values for both genders" do
+      it "returns an array containing numeric values for those genders" do
         expected = {"gender" => [0, 1]}
         validate_param("filter", expected)
       end
@@ -342,7 +351,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { [] }
 
       it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1]}
+        expected = {"gender" => [0, 1, 2]}
         validate_param("filter", expected)
       end
     end
@@ -350,8 +359,8 @@ RSpec.describe PreparedParams do
     context "when gender param is nil" do
       let(:gender_param) { nil }
 
-      it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1]}
+      it "returns an array containing numeric values for all genders" do
+        expected = {"gender" => [0, 1, 2]}
         validate_param("filter", expected)
       end
     end

@@ -143,7 +143,7 @@ RSpec.describe ETL::AsyncImporter do
   end
 
   context "when the parent cannot be found" do
-    let(:lottery_id) { 0 }
+    let(:parent_id) { 0 }
     it "does not import any records" do
       expect { subject.import! }.not_to change { ::LotteryEntrant.count }
     end

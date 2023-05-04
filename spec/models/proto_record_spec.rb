@@ -140,7 +140,8 @@ RSpec.describe ProtoRecord, type: :model do
 
     context "for an effort" do
       let(:model) { :effort }
-      let(:attributes) { {sex: "M", country: "United States", state: "California", birthdate: "09/01/66"}.merge(start_time_attributes).merge(start_offset_attributes) }
+      let(:attributes) { {sex: gender, country: "United States", state: "California", birthdate: "09/01/66"}.merge(start_time_attributes).merge(start_offset_attributes) }
+      let(:gender) { "M" }
       let(:start_time_attributes) { {} }
       let(:start_offset_attributes) { {} }
       let(:options) { {event: event} }
@@ -151,6 +152,15 @@ RSpec.describe ProtoRecord, type: :model do
       it "sets the record type and normalizes data" do
         expect(pr.record_type).to eq(:effort)
         expect(pr.to_h).to eq({gender: "male", country_code: "US", state_code: "CA", birthdate: "1966-09-01", event_id: event.id, scheduled_start_time: event.scheduled_start_time})
+      end
+
+      context "for a runner listed as non-binary" do
+        let(:gender) { "N" }
+
+        it "sets the record type and normalizes data" do
+          expect(pr.record_type).to eq(:effort)
+          expect(pr.to_h).to eq({gender: "non_binary", country_code: "US", state_code: "CA", birthdate: "1966-09-01", event_id: event.id, scheduled_start_time: event.scheduled_start_time})
+        end
       end
 
       context "when scheduled start time is not provided" do

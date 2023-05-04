@@ -2,7 +2,7 @@
 
 class Effort < ApplicationRecord
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
-  enum gender: [:male, :female]
+  enum gender: [:male, :female, :non_binary]
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze

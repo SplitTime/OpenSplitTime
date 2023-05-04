@@ -109,7 +109,7 @@ RSpec.describe ETL::AsyncImporter do
     let(:format) { :event_group_entrants }
     let(:event_55k) { events(:sum_55k) }
     let(:event_100k) { events(:sum_100k) }
-    let(:source_data) { file_fixture("test_efforts_non_binary.csv") }
+    let(:source_data) { file_fixture("test_efforts_nonbinary.csv") }
 
     it "creates new efforts" do
       expect { subject.import! }.to change { ::Effort.count }.by(3)
@@ -126,7 +126,7 @@ RSpec.describe ETL::AsyncImporter do
       expect(entrant_3.event).to eq(event_100k)
 
       expect(entrant_1.gender).to eq("male")
-      expect(entrant_2.gender).to eq("non_binary")
+      expect(entrant_2.gender).to eq("nonbinary")
       expect(entrant_3.gender).to eq("female")
     end
 

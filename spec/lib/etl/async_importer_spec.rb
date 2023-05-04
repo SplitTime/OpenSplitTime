@@ -9,8 +9,8 @@ RSpec.describe ETL::AsyncImporter do
       :import_job,
       :with_files,
       file_params_array: file_params_array,
-      parent_type: "Lottery",
-      parent_id: lottery_id,
+      parent_type: parent_type,
+      parent_id: parent_id,
       format: format,
     )
   end
@@ -24,14 +24,15 @@ RSpec.describe ETL::AsyncImporter do
       }
     ]
   end
+  let(:parent_type) { "Lottery" }
+  let(:parent_id) { lottery.id }
   let(:lottery) { lotteries(:lottery_without_tickets) }
-  let(:lottery_id) { lottery.id }
   let(:format) { :lottery_entrants }
   let(:fast_division) { lottery.divisions.find_by(name: "Fast People") }
   let(:slow_division) { lottery.divisions.find_by(name: "Slow People") }
   let(:source_data) { file_fixture("test_lottery_entrants.csv") }
 
-  context "when the import file is valid and format is recognized" do
+  context "when a lottery entrant import file is valid and format is recognized" do
     it "creates new lottery entrants" do
       expect { subject.import! }.to change { ::LotteryEntrant.count }.by(3)
     end
@@ -101,8 +102,48 @@ RSpec.describe ETL::AsyncImporter do
     end
   end
 
+  context "when an event group entrant import file is valid and format is recognized" do
+    let(:parent_type) { "EventGroup" }
+    let(:parent_id) { event_group.id }
+    let(:event_group) { event_groups(:sum) }
+    let(:format) { :event_group_entrants }
+    let(:event_55k) { events(:sum_55k) }
+    let(:event_100k) { events(:sum_100k) }
+    let(:source_data) { file_fixture("test_efforts_nonbinary.csv") }
+
+    it "creates new efforts" do
+      expect { subject.import! }.to change { ::Effort.count }.by(3)
+    end
+
+    it "assigns expected attributes and events" do
+      subject.import!
+      entrant_1 = ::Effort.find_by(first_name: "Bjorn", last_name: "Borg")
+      entrant_2 = ::Effort.find_by(first_name: "Pat", last_name: "Manticus")
+      entrant_3 = ::Effort.find_by(first_name: "Lucy", last_name: "Pendergrast")
+
+      expect(entrant_1.event).to eq(event_100k)
+      expect(entrant_2.event).to eq(event_55k)
+      expect(entrant_3.event).to eq(event_100k)
+
+      expect(entrant_1.gender).to eq("male")
+      expect(entrant_2.gender).to eq("nonbinary")
+      expect(entrant_3.gender).to eq("female")
+    end
+
+    it "sets import job attributes properly" do
+      subject.import!
+      expect(import_job.row_count).to eq(3)
+      expect(import_job.succeeded_count).to eq(3)
+      expect(import_job.failed_count).to eq(0)
+      expect(import_job.status).to eq("finished")
+      expect(import_job.started_at).to be_present
+      expect(import_job.elapsed_time).to be_present
+      expect(import_job.error_message).to be_blank
+    end
+  end
+
   context "when the parent cannot be found" do
-    let(:lottery_id) { 0 }
+    let(:parent_id) { 0 }
     it "does not import any records" do
       expect { subject.import! }.not_to change { ::LotteryEntrant.count }
     end

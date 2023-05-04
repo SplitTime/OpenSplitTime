@@ -4004,7 +4004,7 @@ sum_55k_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: 2
   country_code: US
   birthdate: '1981-03-31'
   data_status: 2
@@ -4760,7 +4760,7 @@ sum_55k_slow_finisher:
   updated_by: 1
   first_name: Slow
   last_name: Finisher
-  gender: 0
+  gender: 2
   country_code:
   birthdate: '1953-03-03'
   data_status: 2

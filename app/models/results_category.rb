@@ -40,11 +40,11 @@ class ResultsCategory < ApplicationRecord
   end
 
   def genders
-    %w[male female nonbinary].select(&method(:send))
+    %w[male female].select(&method(:send))
   end
 
   def all_genders?
-    male? && female? && nonbinary?
+    male? && female?
   end
 
   def description
@@ -70,6 +70,6 @@ class ResultsCategory < ApplicationRecord
   private
 
   def gender_present?
-    errors.add(:base, "must include male or female or nonbinary entrants") unless male? || female? || nonbinary?
+    errors.add(:base, "must include male or female or nonbinary entrants") unless male? || female?
   end
 end

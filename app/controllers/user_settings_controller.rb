@@ -7,6 +7,8 @@ class UserSettingsController < ApplicationController
 
   # GET /user_settings/preferences
   def preferences
+    # Need to hang on to flash messages from the subscriptions controller
+    flash.keep
   end
 
   # GET /user_settings/password

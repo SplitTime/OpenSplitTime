@@ -23,7 +23,7 @@ class SubscriptionsController < ApplicationController
       render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
     else
       flash_protocol_warning
-      redirect_to edit_preferences_user_path(current_user)
+      redirect_to user_settings_preferences_path(current_user)
     end
   end
 

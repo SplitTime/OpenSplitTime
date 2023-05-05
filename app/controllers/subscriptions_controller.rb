@@ -19,11 +19,16 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if current_user.send(protocol)
-      @subscription.save!
-      render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+      if @subscription.save
+        flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.full_name}."
+        render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+      else
+        flash.now[:danger] = @subscription.errors.full_messages.to_sentence
+        render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+      end
     else
       flash_protocol_warning
-      redirect_to user_settings_preferences_path(current_user)
+      redirect_to user_settings_preferences_path
     end
   end
 

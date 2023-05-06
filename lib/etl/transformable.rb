@@ -140,6 +140,8 @@ module ETL
                           "male"
                         when "f"
                           "female"
+                        when "n"
+                          "nonbinary"
                         end
                       end
     end

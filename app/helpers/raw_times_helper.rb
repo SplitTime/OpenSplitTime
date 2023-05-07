@@ -79,8 +79,8 @@ module RawTimesHelper
     button_to(url, html_options) { fa_icon(icon) }
   end
 
-  def link_to_raw_time_unmatch(raw_time_id)
-    url = raw_time_path(raw_time_id)
+  def link_to_raw_time_unmatch(split_time, raw_time_id)
+    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
     tooltip = "Un-match this raw time"
     raw_time_params = { raw_time: { split_time_id: nil } }
     options = {
@@ -99,8 +99,8 @@ module RawTimesHelper
     button_to(url, options) { fa_icon(:unlink) }
   end
 
-  def link_to_raw_time_associate(raw_time_id)
-    url = raw_time_path(raw_time_id)
+  def link_to_raw_time_associate(split_time, raw_time_id)
+    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
     tooltip = "Associate this raw time with this effort"
     raw_time_params = { raw_time: { disassociated_from_effort: false } }
     options = {
@@ -119,8 +119,8 @@ module RawTimesHelper
     button_to(url, options) { fa_icon(:plus_square) }
   end
 
-  def link_to_raw_time_disassociate(raw_time_id)
-    url = raw_time_path(raw_time_id)
+  def link_to_raw_time_disassociate(split_time, raw_time_id)
+    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
     tooltip = "Disassociate this raw time from this effort"
     raw_time_params = { raw_time: { disassociated_from_effort: true } }
     options = {

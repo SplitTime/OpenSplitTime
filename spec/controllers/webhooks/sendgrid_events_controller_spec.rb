@@ -20,7 +20,7 @@ RSpec.describe Webhooks::SendgridEventsController do
             { "email" => "example@test.com", "timestamp" => 1683409840, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "spamreport", "category" => ["cat facts"], "sg_event_id" => "8d3NZA6Z1kW0AMvY_M3vwA==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0" },
             { "email" => "example@test.com", "timestamp" => 1683409840, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "unsubscribe", "category" => ["cat facts"], "sg_event_id" => "6vWZmy42HQKbOKYIZNV52w==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0" },
             { "email" => "example@test.com", "timestamp" => 1683409840, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "group_unsubscribe", "category" => ["cat facts"], "sg_event_id" => "uEJBetZyOuZyEXrtbNPTmg==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0", "useragent" => "Mozilla/4.0 (compatible; MSIE 6.1; Windows XP; .NET CLR 1.1.4322; .NET CLR 2.0.50727)", "ip" => "255.255.255.255", "url" => "http://www.sendgrid.com/", "asm_group_id" => 10 },
-            { "email" => "example@test.com", "timestamp" => 1683409840, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "group_resubscribe", "category" => ["cat facts"], "sg_event_id" => "48uaslePyuuE7YEzQbu6nA==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0", "useragent" => "Mozilla/4.0 (compatible; MSIE 6.1; Windows XP; .NET CLR 1.1.4322; .NET CLR 2.0.50727)", "ip" => "255.255.255.255", "url" => "http://www.sendgrid.com/", "asm_group_id" => 10 }
+            { "email" => "example@test.com", "timestamp" => 1683409840, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "group_resubscribe", "category" => ["cat facts"], "sg_event_id" => "48uaslePyuuE7YEzQbu6nA==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0", "useragent" => "Mozilla/4.0 (compatible; MSIE 6.1; Windows XP; .NET CLR 1.1.4322; .NET CLR 2.0.50727)", "ip" => "255.255.255.255", "url" => "http://www.sendgrid.com/", "asm_group_id" => 10 },
           ]
         }
       end
@@ -35,10 +35,29 @@ RSpec.describe Webhooks::SendgridEventsController do
       end
     end
 
+    context "when the request appears valid but lacks a required attribute" do
+      let(:params) do
+        {
+          "_json" => [
+            { "email" => "example@test.com", "timestamp" => nil, "smtp_id" => "<14c5d75ce93.dfd.64b469@ismtpd-555>", "event" => "processed", "category" => ["cat facts"], "sg_event_id" => "X8wfWWCzIxX8tMWL7sjY5w==", "sg_message_id" => "14c5d75ce93.dfd.64b469.filter0001.16648.5515E0B88.0" },
+          ]
+        }
+      end
+
+      it "returns a 422 response" do
+        make_request
+        expect(response.status).to eq(422)
+      end
+
+      it "does not create a new record" do
+        expect { make_request }.to_not change { SendgridEvent.count }
+      end
+    end
+
     context "when the request is invalid" do
       let(:params) { { not: "valid" } }
 
-      it "returns a bad request 400 response" do
+      it "returns a 422 response" do
         make_request
         expect(response.status).to eq(422)
       end

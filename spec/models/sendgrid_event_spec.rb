@@ -12,6 +12,12 @@ RSpec.describe SendgridEvent do
       it { expect(sendgrid_event.timestamp).to eq(Time.at(timestamp)) }
     end
 
+    context "when provided a timestamp as a string" do
+      let(:timestamp) { "1683409840" }
+
+      it { expect(sendgrid_event.timestamp).to eq(Time.at(timestamp.to_i)) }
+    end
+
     context "when provided a string" do
       let(:timestamp) { "2023-01-01 12:00:00" }
 

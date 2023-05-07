@@ -42,4 +42,8 @@ module FixtureHelper
     :reset_password_sent_at,
     :updated_at,
   ].freeze
+
+  ATTRIBUTES_TO_PRESERVE = {
+    lottery_draws: [:created_at],
+  }.freeze
 end

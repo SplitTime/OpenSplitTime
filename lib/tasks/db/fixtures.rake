@@ -40,7 +40,10 @@ namespace :db do
                     else
                       "#{table_name.singularize}_#{suffix}"
                     end
-            FixtureHelper::ATTRIBUTES_TO_IGNORE.each { |attr| record.delete(attr.to_s) }
+            FixtureHelper::ATTRIBUTES_TO_IGNORE.each do |attr|
+              next if attr.in? FixtureHelper::ATTRIBUTES_TO_PRESERVE.fetch(table_name.to_sym, [])
+              record.delete(attr.to_s)
+            end
             hash[title] = record
           end
           puts "Writing table '#{table_name}' to '#{file_path}'"

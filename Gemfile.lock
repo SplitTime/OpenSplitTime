@@ -443,6 +443,7 @@ GEM
     ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
+    ruby_http_client (3.5.5)
     rubyzip (2.3.2)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -462,6 +463,8 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    sendgrid-ruby (6.6.2)
+      ruby_http_client (~> 3.4)
     sentry-rails (5.9.0)
       railties (>= 5.0)
       sentry-ruby (~> 5.9.0)
@@ -617,6 +620,7 @@ DEPENDENCIES
   sassc-rails
   scenic (>= 1.5.4)
   scout_apm
+  sendgrid-ruby
   sentry-rails
   sentry-ruby
   sentry-sidekiq

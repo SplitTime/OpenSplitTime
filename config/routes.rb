@@ -40,6 +40,10 @@ Rails.application.routes.draw do
     get "api", to: "visitors#api"
   end
 
+  namespace :webhooks do
+    resources :sendgrid_events, only: [:create]
+  end
+
   namespace :user_settings do
     get :preferences
     get :password

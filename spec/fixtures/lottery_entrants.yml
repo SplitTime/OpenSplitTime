@@ -10,8 +10,6 @@ lottery_entrant_4:
   city: Amadashire
   state_code: SC
   country_code: US
-  created_at: 2021-09-30 03:54:51.607806000 Z
-  updated_at: 2021-10-02 16:39:40.754593000 Z
   state_name: South Carolina
   country_name: United States
   pre_selected: false
@@ -29,8 +27,6 @@ lottery_entrant_5:
   city: O'Connertown
   state_code: KY
   country_code: US
-  created_at: 2021-09-30 03:54:51.711874000 Z
-  updated_at: 2021-10-02 16:41:19.088935000 Z
   state_name: Kentucky
   country_name: United States
   pre_selected: false
@@ -48,8 +44,6 @@ lottery_entrant_6:
   city: Port Brandaburgh
   state_code: WI
   country_code: US
-  created_at: 2021-09-30 03:54:51.747905000 Z
-  updated_at: 2021-10-02 16:39:40.762589000 Z
   state_name: Wisconsin
   country_name: United States
   pre_selected: false
@@ -67,8 +61,6 @@ lottery_entrant_7:
   city: West Vicentafurt
   state_code: MS
   country_code: US
-  created_at: 2021-09-30 03:54:51.782475000 Z
-  updated_at: 2021-10-02 16:39:40.765960000 Z
   state_name: Mississippi
   country_name: United States
   pre_selected: false
@@ -86,8 +78,6 @@ lottery_entrant_8:
   city: Caroleeville
   state_code: NM
   country_code: US
-  created_at: 2021-09-30 03:54:51.817823000 Z
-  updated_at: 2021-10-02 16:39:40.771099000 Z
   state_name: New Mexico
   country_name: United States
   pre_selected: false
@@ -105,8 +95,6 @@ lottery_entrant_9:
   city: Hungborough
   state_code: NE
   country_code: US
-  created_at: 2021-09-30 03:54:51.851597000 Z
-  updated_at: 2021-10-02 16:39:40.774279000 Z
   state_name: Nebraska
   country_name: United States
   pre_selected: false
@@ -124,8 +112,6 @@ lottery_entrant_10:
   city: East Lauraport
   state_code: MI
   country_code: US
-  created_at: 2021-09-30 03:54:51.857232000 Z
-  updated_at: 2021-10-02 16:39:40.777393000 Z
   state_name: Michigan
   country_name: United States
   pre_selected: false
@@ -143,8 +129,6 @@ lottery_entrant_11:
   city: Lebsackville
   state_code: IN
   country_code: US
-  created_at: 2021-09-30 03:54:51.872673000 Z
-  updated_at: 2021-10-02 16:39:40.780810000 Z
   state_name: Indiana
   country_name: United States
   pre_selected: false
@@ -162,8 +146,6 @@ lottery_entrant_12:
   city: Lake Nickyberg
   state_code: AL
   country_code: US
-  created_at: 2021-09-30 03:54:51.875905000 Z
-  updated_at: 2021-10-02 16:39:40.783891000 Z
   state_name: Alabama
   country_name: United States
   pre_selected: false
@@ -181,8 +163,6 @@ lottery_entrant_13:
   city: Beerbury
   state_code: PA
   country_code: US
-  created_at: 2021-09-30 03:54:51.878887000 Z
-  updated_at: 2021-10-02 16:39:40.786956000 Z
   state_name: Pennsylvania
   country_name: United States
   pre_selected: false
@@ -200,8 +180,6 @@ lottery_entrant_21:
   city: Port Glennis
   state_code: VA
   country_code: US
-  created_at: 2021-09-30 04:11:51.993457000 Z
-  updated_at: 2021-10-01 05:05:24.169087000 Z
   state_name: Virginia
   country_name: United States
   pre_selected: false
@@ -219,8 +197,6 @@ lottery_entrant_22:
   city: West Rebecka
   state_code: AZ
   country_code: US
-  created_at: 2021-09-30 04:11:51.996405000 Z
-  updated_at: 2021-10-01 05:05:24.173417000 Z
   state_name: Arizona
   country_name: United States
   pre_selected: false
@@ -238,8 +214,6 @@ lottery_entrant_23:
   city: Prohaskaside
   state_code: RI
   country_code: US
-  created_at: 2021-09-30 04:11:51.999359000 Z
-  updated_at: 2021-10-01 05:05:08.196992000 Z
   state_name: Rhode Island
   country_name: United States
   pre_selected: false
@@ -257,8 +231,6 @@ lottery_entrant_24:
   city: Piamouth
   state_code: ND
   country_code: US
-  created_at: 2021-09-30 04:17:29.287393000 Z
-  updated_at: 2021-10-02 16:39:40.790075000 Z
   state_name: North Dakota
   country_name: United States
   pre_selected: false
@@ -276,8 +248,6 @@ lottery_entrant_25:
   city: Lake Antonialand
   state_code: TX
   country_code: US
-  created_at: 2021-09-30 04:17:29.291779000 Z
-  updated_at: 2021-10-02 16:39:40.792948000 Z
   state_name: Texas
   country_name: United States
   pre_selected: false
@@ -295,8 +265,6 @@ lottery_entrant_26:
   city: West Virgenborough
   state_code: CT
   country_code: US
-  created_at: 2021-09-30 04:17:29.295672000 Z
-  updated_at: 2021-10-02 16:39:40.796007000 Z
   state_name: Connecticut
   country_name: United States
   pre_selected: false
@@ -314,8 +282,6 @@ lottery_entrant_27:
   city: North Jessia
   state_code: OR
   country_code: US
-  created_at: 2021-09-30 04:17:29.299192000 Z
-  updated_at: 2021-10-02 16:39:40.798982000 Z
   state_name: Oregon
   country_name: United States
   pre_selected: false
@@ -333,8 +299,6 @@ lottery_entrant_28:
   city: Refugialand
   state_code: AL
   country_code: US
-  created_at: 2021-09-30 04:17:29.302712000 Z
-  updated_at: 2021-10-02 16:39:40.801943000 Z
   state_name: Alabama
   country_name: United States
   pre_selected: false

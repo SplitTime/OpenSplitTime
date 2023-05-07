@@ -4,180 +4,128 @@ lottery_ticket_1:
   lottery_entrant_id: 28
   lottery_id: 4
   reference_number: 10000
-  created_at: 2021-10-02 16:41:51.449427000 Z
-  updated_at: 2021-10-02 16:41:51.449430000 Z
 lottery_ticket_2:
   id: 2
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10001
-  created_at: 2021-10-02 16:41:51.449449000 Z
-  updated_at: 2021-10-02 16:41:51.449451000 Z
 lottery_ticket_3:
   id: 3
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10002
-  created_at: 2021-10-02 16:41:51.449414000 Z
-  updated_at: 2021-10-02 16:41:51.449416000 Z
 lottery_ticket_4:
   id: 4
   lottery_entrant_id: 12
   lottery_id: 4
   reference_number: 10003
-  created_at: 2021-10-02 16:41:51.449384000 Z
-  updated_at: 2021-10-02 16:41:51.449386000 Z
 lottery_ticket_5:
   id: 5
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10004
-  created_at: 2021-10-02 16:41:51.449334000 Z
-  updated_at: 2021-10-02 16:41:51.449336000 Z
 lottery_ticket_6:
   id: 6
   lottery_entrant_id: 24
   lottery_id: 4
   reference_number: 10005
-  created_at: 2021-10-02 16:41:51.449394000 Z
-  updated_at: 2021-10-02 16:41:51.449396000 Z
 lottery_ticket_7:
   id: 7
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10006
-  created_at: 2021-10-02 16:41:51.449435000 Z
-  updated_at: 2021-10-02 16:41:51.449437000 Z
 lottery_ticket_8:
   id: 8
   lottery_entrant_id: 25
   lottery_id: 4
   reference_number: 10007
-  created_at: 2021-10-02 16:41:51.449404000 Z
-  updated_at: 2021-10-02 16:41:51.449406000 Z
 lottery_ticket_9:
   id: 9
   lottery_entrant_id: 4
   lottery_id: 4
   reference_number: 10008
-  created_at: 2021-10-02 16:41:51.449305000 Z
-  updated_at: 2021-10-02 16:41:51.449321000 Z
 lottery_ticket_10:
   id: 10
   lottery_entrant_id: 7
   lottery_id: 4
   reference_number: 10009
-  created_at: 2021-10-02 16:41:51.449344000 Z
-  updated_at: 2021-10-02 16:41:51.449346000 Z
 lottery_ticket_11:
   id: 11
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10010
-  created_at: 2021-10-02 16:41:51.449444000 Z
-  updated_at: 2021-10-02 16:41:51.449446000 Z
 lottery_ticket_12:
   id: 12
   lottery_entrant_id: 26
   lottery_id: 4
   reference_number: 10011
-  created_at: 2021-10-02 16:41:51.449409000 Z
-  updated_at: 2021-10-02 16:41:51.449411000 Z
 lottery_ticket_13:
   id: 13
   lottery_entrant_id: 11
   lottery_id: 4
   reference_number: 10012
-  created_at: 2021-10-02 16:41:51.449379000 Z
-  updated_at: 2021-10-02 16:41:51.449381000 Z
 lottery_ticket_14:
   id: 14
   lottery_entrant_id: 8
   lottery_id: 4
   reference_number: 10013
-  created_at: 2021-10-02 16:41:51.449349000 Z
-  updated_at: 2021-10-02 16:41:51.449351000 Z
 lottery_ticket_15:
   id: 15
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10014
-  created_at: 2021-10-02 16:41:51.449418000 Z
-  updated_at: 2021-10-02 16:41:51.449420000 Z
 lottery_ticket_16:
   id: 16
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10015
-  created_at: 2021-10-02 16:41:51.449453000 Z
-  updated_at: 2021-10-02 16:41:51.449455000 Z
 lottery_ticket_17:
   id: 17
   lottery_entrant_id: 9
   lottery_id: 4
   reference_number: 10016
-  created_at: 2021-10-02 16:41:51.449360000 Z
-  updated_at: 2021-10-02 16:41:51.449362000 Z
 lottery_ticket_18:
   id: 18
   lottery_entrant_id: 13
   lottery_id: 4
   reference_number: 10017
-  created_at: 2021-10-02 16:41:51.449389000 Z
-  updated_at: 2021-10-02 16:41:51.449391000 Z
 lottery_ticket_19:
   id: 19
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10018
-  created_at: 2021-10-02 16:41:51.449423000 Z
-  updated_at: 2021-10-02 16:41:51.449424000 Z
 lottery_ticket_20:
   id: 20
   lottery_entrant_id: 11
   lottery_id: 4
   reference_number: 10019
-  created_at: 2021-10-02 16:41:51.449375000 Z
-  updated_at: 2021-10-02 16:41:51.449377000 Z
 lottery_ticket_21:
   id: 21
   lottery_entrant_id: 10
   lottery_id: 4
   reference_number: 10020
-  created_at: 2021-10-02 16:41:51.449370000 Z
-  updated_at: 2021-10-02 16:41:51.449372000 Z
 lottery_ticket_22:
   id: 22
   lottery_entrant_id: 24
   lottery_id: 4
   reference_number: 10021
-  created_at: 2021-10-02 16:41:51.449399000 Z
-  updated_at: 2021-10-02 16:41:51.449401000 Z
 lottery_ticket_23:
   id: 23
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10022
-  created_at: 2021-10-02 16:41:51.449440000 Z
-  updated_at: 2021-10-02 16:41:51.449442000 Z
 lottery_ticket_24:
   id: 24
   lottery_entrant_id: 10
   lottery_id: 4
   reference_number: 10023
-  created_at: 2021-10-02 16:41:51.449365000 Z
-  updated_at: 2021-10-02 16:41:51.449367000 Z
 lottery_ticket_25:
   id: 25
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10024
-  created_at: 2021-10-02 16:41:51.449328000 Z
-  updated_at: 2021-10-02 16:41:51.449331000 Z
 lottery_ticket_26:
   id: 26
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10025
-  created_at: 2021-10-02 16:41:51.449338000 Z
-  updated_at: 2021-10-02 16:41:51.449340000 Z

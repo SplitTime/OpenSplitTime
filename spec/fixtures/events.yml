@@ -3,8 +3,6 @@ hardrock_2015:
   id: 4
   course_id: 4
   historical_name: Hardrock 2015
-  created_at: 2016-04-16 19:25:07.717306000 Z
-  updated_at: 2020-08-08 19:04:59.836439000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -21,8 +19,6 @@ ramble:
   id: 14
   course_id: 9
   historical_name: Ramble
-  created_at: 2016-05-08 07:14:16.236390000 Z
-  updated_at: 2020-08-08 19:04:59.844186000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
@@ -39,8 +35,6 @@ hardrock_2014:
   id: 17
   course_id: 12
   historical_name: Hardrock 2014
-  created_at: 2016-05-23 01:05:15.602165000 Z
-  updated_at: 2020-08-08 19:04:59.845718000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -57,8 +51,6 @@ rufa_2016:
   id: 34
   course_id: 20
   historical_name: RUFA 2016
-  created_at: 2017-01-28 13:22:25.985588000 Z
-  updated_at: 2020-08-08 19:04:59.847193000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
@@ -75,8 +67,6 @@ rufa_2017_24h:
   id: 36
   course_id: 20
   historical_name: RUFA 2017 24H
-  created_at: 2017-03-28 07:18:29.860735000 Z
-  updated_at: 2020-08-08 19:04:59.848674000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-02-11 13:00:00.000000000 Z
@@ -93,8 +83,6 @@ hardrock_2016:
   id: 37
   course_id: 12
   historical_name: Hardrock 2016
-  created_at: 2017-04-18 08:19:16.928331000 Z
-  updated_at: 2020-08-08 19:04:59.850133000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -111,8 +99,6 @@ ggd30_50k:
   id: 48
   course_id: 26
   historical_name: GGD30 50K
-  created_at: 2017-05-28 13:58:46.392428000 Z
-  updated_at: 2020-08-08 19:04:59.851567000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-06-04 01:00:00.000000000 Z
@@ -129,8 +115,6 @@ ggd30_12m:
   id: 49
   course_id: 27
   historical_name: GGD30 12M
-  created_at: 2017-06-09 09:51:15.491594000 Z
-  updated_at: 2020-08-08 19:04:59.852935000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-06-04 02:00:00.000000000 Z
@@ -147,8 +131,6 @@ sum_100k:
   id: 56
   course_id: 31
   historical_name: SUM 100K
-  created_at: 2018-01-18 05:09:16.764958000 Z
-  updated_at: 2020-08-08 19:04:59.854183000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
@@ -165,8 +147,6 @@ sum_55k:
   id: 57
   course_id: 32
   historical_name: SUM 55K
-  created_at: 2018-01-18 05:15:20.769855000 Z
-  updated_at: 2020-08-08 19:04:59.856993000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-09-23 15:00:00.000000000 Z
@@ -183,8 +163,6 @@ rufa_2017_12h:
   id: 70
   course_id: 20
   historical_name: RUFA 2017 12H
-  created_at: 2019-01-30 17:38:14.220608000 Z
-  updated_at: 2020-08-08 19:04:59.858665000 Z
   created_by: 1
   updated_by: 1
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z

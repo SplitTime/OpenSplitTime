@@ -111,6 +111,10 @@ module OstConfig
     Rails.application.credentials.dig(:sendgrid, :api_key)
   end
 
+  def self.sendgrid_webhook_verification_key
+    Rails.application.credentials.dig(:sendgrid, :webhook_verification_key)
+  end
+
   def self.sentry_dsn
     Rails.application.credentials.dig(:sentry, :dsn)
   end

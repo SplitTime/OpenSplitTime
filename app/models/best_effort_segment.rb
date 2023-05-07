@@ -5,7 +5,7 @@ class BestEffortSegment < ::ApplicationRecord
   include PersonalInfo
   include DatabaseRankable
 
-  enum gender: [:male, :female]
+  enum gender: [:male, :female, :nonbinary]
   belongs_to :course
   belongs_to :effort
   belongs_to :person

@@ -7,8 +7,6 @@ hardrock_ccw_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2016-04-18 09:09:56.005933000 Z
-  updated_at: 2018-03-16 14:58:28.105359000 Z
   created_by: 3
   updated_by: 1
   description: Silverton High School
@@ -27,8 +25,6 @@ hardrock_ccw_cunningham:
   vert_gain_from_start: 1170.432
   vert_loss_from_start: 844.296
   kind: 2
-  created_at: 2016-04-18 09:09:56.017581000 Z
-  updated_at: 2019-01-31 08:35:14.073410000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -47,8 +43,6 @@ hardrock_ccw_sherman:
   vert_gain_from_start: 3084.576
   vert_loss_from_start: 2749.296
   kind: 2
-  created_at: 2016-04-18 09:09:56.048422000 Z
-  updated_at: 2019-01-31 08:35:32.868078000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -67,8 +61,6 @@ hardrock_ccw_grouse:
   vert_gain_from_start: 4452.5184
   vert_loss_from_start: 4025.7984
   kind: 2
-  created_at: 2016-04-18 09:09:56.067613000 Z
-  updated_at: 2019-01-31 08:36:52.637995000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -87,8 +79,6 @@ hardrock_ccw_ouray:
   vert_gain_from_start: 5295.2904
   vert_loss_from_start: 5792.1144
   kind: 2
-  created_at: 2016-04-18 09:09:56.086046000 Z
-  updated_at: 2018-03-16 14:58:28.264170000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -107,8 +97,6 @@ hardrock_ccw_telluride:
   vert_gain_from_start: 6961.9368
   vert_loss_from_start: 7144.8168
   kind: 2
-  created_at: 2016-04-18 09:09:56.114590000 Z
-  updated_at: 2018-03-16 14:58:28.321610000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -127,8 +115,6 @@ hardrock_ccw_putnam:
   vert_gain_from_start: 9974.8848
   vert_loss_from_start: 9276.8928
   kind: 2
-  created_at: 2016-04-18 09:09:56.148374000 Z
-  updated_at: 2018-03-16 14:58:28.379562000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -147,8 +133,6 @@ hardrock_ccw_finish:
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
   kind: 1
-  created_at: 2016-04-18 09:09:56.159252000 Z
-  updated_at: 2019-01-30 21:33:24.052358000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -167,8 +151,6 @@ ramble_even_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2016-05-08 07:10:07.193995000 Z
-  updated_at: 2019-01-30 21:33:43.974804000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the Ramble Even-Year Course course.
@@ -187,8 +169,6 @@ ramble_even_course_finish:
   vert_gain_from_start: 249.935992002048
   vert_loss_from_start: 249.935992002048
   kind: 1
-  created_at: 2016-05-08 07:10:07.195406000 Z
-  updated_at: 2019-01-30 21:34:01.576579000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the Ramble Even-Year Course course.
@@ -207,8 +187,6 @@ hardrock_cw_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2016-05-23 01:04:57.226299000 Z
-  updated_at: 2019-01-31 08:29:08.562736000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the Hardrock CW course.
@@ -227,8 +205,6 @@ hardrock_cw_finish:
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
   kind: 1
-  created_at: 2016-05-23 01:04:57.227554000 Z
-  updated_at: 2019-01-31 08:33:29.136331000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the Hardrock CW course.
@@ -247,8 +223,6 @@ hardrock_cw_telluride:
   vert_gain_from_start: 2928.82310627766
   vert_loss_from_start: 3099.51110081564
   kind: 2
-  created_at: 2016-05-23 01:09:02.026784000 Z
-  updated_at: 2019-01-31 08:28:21.230857000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -267,8 +241,6 @@ hardrock_cw_ouray:
   vert_gain_from_start: 4281.52546299119
   vert_loss_from_start: 4778.34944709282
   kind: 2
-  created_at: 2016-05-23 01:09:02.078134000 Z
-  updated_at: 2019-01-31 08:29:48.792823000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -287,8 +259,6 @@ hardrock_cw_grouse:
   vert_gain_from_start: 6047.84140646908
   vert_loss_from_start: 5621.12142012411
   kind: 2
-  created_at: 2016-05-23 01:09:02.100361000 Z
-  updated_at: 2019-01-31 08:30:38.830627000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -307,8 +277,6 @@ hardrock_cw_sherman:
   vert_gain_from_start: 7324.343765621
   vert_loss_from_start: 7223.75976883969
   kind: 2
-  created_at: 2016-05-23 01:09:02.122487000 Z
-  updated_at: 2019-01-31 08:31:27.036218000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -327,8 +295,6 @@ hardrock_cw_cunningham:
   vert_gain_from_start: 9229.343704661
   vert_loss_from_start: 8903.20771509735
   kind: 2
-  created_at: 2016-05-23 01:09:02.155415000 Z
-  updated_at: 2019-01-31 08:32:27.561806000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -347,8 +313,6 @@ rufa_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2017-01-28 13:21:38.627377000 Z
-  updated_at: 2018-03-16 14:58:29.096437000 Z
   created_by: 1
   updated_by: 1
   description: Starting point for the RUFA Course course.
@@ -367,8 +331,6 @@ rufa_course_finish:
   vert_gain_from_start: 780.288
   vert_loss_from_start: 780.288
   kind: 1
-  created_at: 2017-01-28 13:21:38.656813000 Z
-  updated_at: 2018-03-16 14:58:29.106766000 Z
   created_by: 1
   updated_by: 1
   description: Finish point for the RUFA Course course.
@@ -387,8 +349,6 @@ rufa_course_grandeur_peak:
   vert_gain_from_start: 780.288
   vert_loss_from_start: 0.0
   kind: 2
-  created_at: 2017-01-28 13:23:10.270043000 Z
-  updated_at: 2018-11-21 00:01:19.151959000 Z
   created_by: 1
   updated_by: 1
   description: Top of Grander Peak
@@ -407,8 +367,6 @@ d30_50k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2017-05-23 06:06:29.670579000 Z
-  updated_at: 2019-01-30 21:33:24.072287000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -427,8 +385,6 @@ d30_50k_course_finish:
   vert_gain_from_start: 2286.0
   vert_loss_from_start: 2286.0
   kind: 1
-  created_at: 2017-05-23 06:06:29.673112000 Z
-  updated_at: 2019-01-30 21:33:24.089928000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -447,8 +403,6 @@ d30_50k_course_aid_5:
   vert_gain_from_start: 2164.08
   vert_loss_from_start: 2072.64
   kind: 2
-  created_at: 2017-05-23 06:17:22.480349000 Z
-  updated_at: 2019-01-30 21:33:24.144024000 Z
   created_by: 1
   updated_by: 1
   description: On the Burro Trail on the slopes of Windy Peak
@@ -467,8 +421,6 @@ d30_50k_course_aid_1:
   vert_gain_from_start: 487.68
   vert_loss_from_start: 243.84
   kind: 2
-  created_at: 2017-05-23 06:19:26.049070000 Z
-  updated_at: 2019-01-30 21:33:24.182548000 Z
   created_by: 1
   updated_by: 1
   description: In Forgotten Valley
@@ -487,8 +439,6 @@ d30_50k_course_aid_4:
   vert_gain_from_start: 1798.32
   vert_loss_from_start: 1615.44
   kind: 2
-  created_at: 2017-05-23 06:20:05.636886000 Z
-  updated_at: 2019-01-30 21:33:24.201557000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -507,8 +457,6 @@ d30_50k_course_aid_3:
   vert_gain_from_start: 1310.64
   vert_loss_from_start: 1158.24
   kind: 2
-  created_at: 2017-05-23 06:23:13.751342000 Z
-  updated_at: 2019-01-30 21:33:24.220248000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -527,8 +475,6 @@ d30_50k_course_aid_2:
   vert_gain_from_start: 1036.32
   vert_loss_from_start: 701.04
   kind: 2
-  created_at: 2017-05-31 15:06:56.010141000 Z
-  updated_at: 2019-01-30 21:33:24.238842000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -547,8 +493,6 @@ d30_12m_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2017-06-09 09:51:15.477285000 Z
-  updated_at: 2019-01-30 21:33:24.255640000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -567,8 +511,6 @@ d30_12m_course_finish:
   vert_gain_from_start: 1066.7999658624
   vert_loss_from_start: 1066.7999658624
   kind: 1
-  created_at: 2017-06-09 09:51:15.480173000 Z
-  updated_at: 2019-01-30 21:33:24.274251000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -587,8 +529,6 @@ sum_100k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2018-01-18 05:09:16.742408000 Z
-  updated_at: 2019-01-30 21:33:24.327917000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -607,8 +547,6 @@ sum_100k_course_finish:
   vert_gain_from_start: 2676.144
   vert_loss_from_start: 2529.84
   kind: 1
-  created_at: 2018-01-18 05:09:16.744523000 Z
-  updated_at: 2019-01-30 21:33:24.343889000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -627,8 +565,6 @@ sum_100k_course_molas_pass_aid1:
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
   kind: 2
-  created_at: 2018-01-18 05:09:24.887373000 Z
-  updated_at: 2019-01-30 21:33:24.308328000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -647,8 +583,6 @@ sum_100k_course_rolling_pass_aid2:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
   kind: 2
-  created_at: 2018-01-18 05:09:24.901188000 Z
-  updated_at: 2019-01-30 21:33:24.401037000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -667,8 +601,6 @@ sum_100k_course_cascade_creek_rd_aid3:
   vert_gain_from_start: 1112.52
   vert_loss_from_start: 365.76
   kind: 2
-  created_at: 2018-01-18 05:09:24.912892000 Z
-  updated_at: 2019-01-30 21:33:24.418100000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -687,8 +619,6 @@ sum_100k_course_engineer_mtn_th_aid4:
   vert_gain_from_start: 1271.016
   vert_loss_from_start: 1203.96
   kind: 2
-  created_at: 2018-01-18 05:09:24.923832000 Z
-  updated_at: 2019-01-30 21:33:24.434565000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -707,8 +637,6 @@ sum_100k_course_bandera_mine_aid5:
   vert_gain_from_start: 2496.312
   vert_loss_from_start: 1938.528
   kind: 2
-  created_at: 2018-01-18 05:09:24.936790000 Z
-  updated_at: 2019-01-30 21:33:24.449463000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -727,8 +655,6 @@ sum_100k_course_anvil_cg_aid6:
   vert_gain_from_start: 2542.032
   vert_loss_from_start: 2328.672
   kind: 2
-  created_at: 2018-01-18 05:09:24.961170000 Z
-  updated_at: 2019-01-30 21:33:24.585470000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -747,8 +673,6 @@ sum_55k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
   kind: 0
-  created_at: 2018-01-18 05:15:20.743652000 Z
-  updated_at: 2019-01-30 21:45:11.794264000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -767,8 +691,6 @@ sum_55k_course_finish:
   vert_gain_from_start: 1097.28
   vert_loss_from_start: 1097.28
   kind: 1
-  created_at: 2018-01-18 05:15:20.745798000 Z
-  updated_at: 2019-01-30 21:45:11.812282000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -787,8 +709,6 @@ sum_55k_course_molas_pass_aid1:
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
   kind: 2
-  created_at: 2018-01-18 05:20:09.848746000 Z
-  updated_at: 2019-01-30 21:45:11.828308000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -807,8 +727,6 @@ sum_55k_course_rolling_pass_aid2:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
   kind: 2
-  created_at: 2018-01-18 05:20:09.859521000 Z
-  updated_at: 2019-01-30 21:45:11.844000000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -827,8 +745,6 @@ sum_55k_course_bandera_mine_aid5:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 670.56
   kind: 2
-  created_at: 2018-01-18 05:20:09.869372000 Z
-  updated_at: 2019-01-30 21:45:11.858884000 Z
   created_by: 1
   updated_by: 1
   description:
@@ -847,8 +763,6 @@ sum_55k_course_anvil_cg_aid6:
   vert_gain_from_start: 1051.56
   vert_loss_from_start: 1021.08
   kind: 2
-  created_at: 2018-01-18 05:20:09.879917000 Z
-  updated_at: 2019-01-30 21:45:11.873936000 Z
   created_by: 1
   updated_by: 1
   description:

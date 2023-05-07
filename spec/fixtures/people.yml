@@ -9,8 +9,6 @@ bruno_fadel:
   state_code: CA
   email:
   phone:
-  created_at: 2016-04-18 09:10:13.966803000 Z
-  updated_at: 2020-09-09 14:15:13.095995000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -30,8 +28,6 @@ robby_gerlach:
   state_code: VA
   email:
   phone:
-  created_at: 2016-04-18 09:10:13.995708000 Z
-  updated_at: 2020-09-09 14:15:13.290207000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -51,8 +47,6 @@ brinda_fisher:
   state_code: SC
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.005889000 Z
-  updated_at: 2020-09-09 14:15:13.300855000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -72,8 +66,6 @@ bad_status:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.043379000 Z
-  updated_at: 2020-09-09 14:15:13.311210000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -93,8 +85,6 @@ willis_murray:
   state_code: FL
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.083822000 Z
-  updated_at: 2020-09-09 14:15:13.320823000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -114,8 +104,6 @@ finished_with_stop:
   state_code: UT
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.125481000 Z
-  updated_at: 2020-09-09 14:15:13.330776000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -135,8 +123,6 @@ garry_kuhlman:
   state_code: MT
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.265724000 Z
-  updated_at: 2020-09-09 14:15:13.343577000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -156,8 +142,6 @@ donn_mckenzie:
   state_code: WY
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.276164000 Z
-  updated_at: 2020-09-09 14:15:13.354664000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -177,8 +161,6 @@ gilberto_mckenzie:
   state_code: WA
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.297646000 Z
-  updated_at: 2020-09-09 14:15:13.365446000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -198,8 +180,6 @@ benedict_davis:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.311539000 Z
-  updated_at: 2020-09-09 14:15:13.375913000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -219,8 +199,6 @@ paul_predovic:
   state_code: ID
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.326152000 Z
-  updated_at: 2020-09-09 14:15:13.386510000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -240,8 +218,6 @@ erich_larson:
   state_code: MT
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.436300000 Z
-  updated_at: 2020-09-09 14:15:13.399587000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -261,8 +237,6 @@ lavon_paucek:
   state_code:
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.463923000 Z
-  updated_at: 2020-09-09 14:15:13.428462000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -282,8 +256,6 @@ irvin_harber:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.569434000 Z
-  updated_at: 2020-09-09 14:15:13.439591000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -303,8 +275,6 @@ santa_green:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.582024000 Z
-  updated_at: 2020-09-09 14:15:13.450468000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -324,8 +294,6 @@ carmine_adams:
   state_code: WA
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.670130000 Z
-  updated_at: 2020-09-09 14:15:13.461902000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -345,8 +313,6 @@ vesta_borer:
   state_code: UT
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.681414000 Z
-  updated_at: 2020-09-09 14:15:13.472952000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -366,8 +332,6 @@ susanna_abshire:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.730660000 Z
-  updated_at: 2020-09-09 14:15:13.485649000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -387,8 +351,6 @@ pat_schaden:
   state_code: AZ
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.794649000 Z
-  updated_at: 2020-09-09 14:15:13.503411000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -408,8 +370,6 @@ tuan_jacobs:
   state_code:
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.804640000 Z
-  updated_at: 2020-09-09 14:15:13.516517000 Z
   created_by: 1
   updated_by: 1
   country_code: ES
@@ -429,8 +389,6 @@ rachelle_eichmann:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.813922000 Z
-  updated_at: 2020-09-09 14:15:13.528406000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -450,8 +408,6 @@ leif_carter:
   state_code:
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.833880000 Z
-  updated_at: 2020-09-09 14:15:13.541528000 Z
   created_by: 1
   updated_by: 1
   country_code: ES
@@ -471,8 +427,6 @@ leroy_leffler:
   state_code: NM
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.855811000 Z
-  updated_at: 2020-09-09 14:15:13.554347000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -492,8 +446,6 @@ cassondra_nienow:
   state_code: OH
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.974286000 Z
-  updated_at: 2020-09-09 14:15:13.565822000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -513,8 +465,6 @@ gus_walker:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.983941000 Z
-  updated_at: 2020-09-09 14:15:13.577591000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -534,8 +484,6 @@ donte_spencer:
   state_code: UT
   email:
   phone:
-  created_at: 2016-04-18 09:10:14.993252000 Z
-  updated_at: 2020-09-09 14:15:13.589165000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -555,8 +503,6 @@ ken_bradtke:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.012012000 Z
-  updated_at: 2020-09-09 14:15:13.599469000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -576,8 +522,6 @@ darius_jacobson:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.077918000 Z
-  updated_at: 2020-09-09 14:15:13.609603000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -597,8 +541,6 @@ chris_rempel:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.087654000 Z
-  updated_at: 2020-09-09 14:15:13.619876000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -618,8 +560,6 @@ samara_vandervort:
   state_code: CA
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.096853000 Z
-  updated_at: 2020-09-09 14:15:13.630395000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -639,8 +579,6 @@ douglas_vandervort:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.126029000 Z
-  updated_at: 2020-09-09 14:15:13.642094000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -660,8 +598,6 @@ leandro_cole:
   state_code: UT
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.155158000 Z
-  updated_at: 2020-09-09 14:15:13.652702000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -681,8 +617,6 @@ elden_morissette:
   state_code: WI
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.183099000 Z
-  updated_at: 2020-09-09 14:15:13.665606000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -702,8 +636,6 @@ raphael_swift:
   state_code: AR
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.192624000 Z
-  updated_at: 2020-09-09 14:15:13.677082000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -723,8 +655,6 @@ vern_buckridge:
   state_code: TX
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.271416000 Z
-  updated_at: 2020-09-09 14:15:13.689563000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -744,8 +674,6 @@ cedric_windler:
   state_code: TN
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.342313000 Z
-  updated_at: 2020-09-09 14:15:13.701489000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -765,8 +693,6 @@ clarence_goyette:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.352342000 Z
-  updated_at: 2020-09-09 14:15:13.712905000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -786,8 +712,6 @@ vince_willms:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.401845000 Z
-  updated_at: 2020-09-09 14:15:13.724118000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -807,8 +731,6 @@ eddy_goldner:
   state_code: WA
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.467534000 Z
-  updated_at: 2020-09-09 14:15:13.735437000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -828,8 +750,6 @@ demetrius_moen:
   state_code: OR
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.476481000 Z
-  updated_at: 2020-09-09 14:15:13.746369000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -849,8 +769,6 @@ robt_wintheiser:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-18 09:10:15.513925000 Z
-  updated_at: 2020-09-09 14:15:13.758285000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -870,8 +788,6 @@ mervin_smitham:
   state_code: NM
   email:
   phone:
-  created_at: 2016-04-28 08:14:29.684152000 Z
-  updated_at: 2020-09-09 14:15:13.769896000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -891,8 +807,6 @@ without_start:
   state_code: MT
   email:
   phone:
-  created_at: 2016-04-28 08:14:29.762812000 Z
-  updated_at: 2020-09-09 14:15:13.781403000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -912,8 +826,6 @@ humberto_adams:
   state_code: NM
   email:
   phone:
-  created_at: 2016-04-28 08:14:29.886921000 Z
-  updated_at: 2020-09-09 14:15:13.792028000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -933,8 +845,6 @@ omer_yundt:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-28 08:14:29.962932000 Z
-  updated_at: 2020-09-09 14:15:13.802718000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -954,8 +864,6 @@ drop_ouray:
   state_code: CA
   email:
   phone:
-  created_at: 2016-04-28 08:14:31.327182000 Z
-  updated_at: 2020-09-09 14:15:13.813213000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -975,8 +883,6 @@ charlie_mueller:
   state_code: OR
   email:
   phone:
-  created_at: 2016-04-28 08:14:31.426276000 Z
-  updated_at: 2020-09-09 14:15:13.827098000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -996,8 +902,6 @@ kendall_koch:
   state_code: CO
   email:
   phone:
-  created_at: 2016-04-28 08:14:31.615349000 Z
-  updated_at: 2020-09-09 14:15:13.841071000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1017,8 +921,6 @@ dropped_grouse:
   state_code: CO
   email:
   phone:
-  created_at: 2016-05-02 16:06:11.816280000 Z
-  updated_at: 2020-09-09 14:15:13.853126000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1038,8 +940,6 @@ hoyt_macejkovic:
   state_code: TX
   email:
   phone:
-  created_at: 2016-05-02 16:06:11.885594000 Z
-  updated_at: 2020-09-09 14:15:13.864703000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1059,8 +959,6 @@ progress_sherman_colorado_us:
   state_code: CO
   email:
   phone:
-  created_at: 2016-05-02 16:06:12.251172000 Z
-  updated_at: 2020-09-09 14:15:13.876692000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1080,8 +978,6 @@ finished_second_montana_us:
   state_code: MT
   email:
   phone:
-  created_at: 2016-05-08 07:06:11.133052000 Z
-  updated_at: 2019-02-01 07:19:52.991074000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1101,8 +997,6 @@ start_only_2019_02_01:
   state_code:
   email:
   phone:
-  created_at: 2016-05-08 07:06:11.174801000 Z
-  updated_at: 2019-02-01 07:19:53.339210000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1122,8 +1016,6 @@ finished_first_2019_02_01:
   state_code:
   email:
   phone:
-  created_at: 2016-05-08 07:11:03.042740000 Z
-  updated_at: 2019-02-01 07:19:53.352940000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1143,8 +1035,6 @@ not_started_2019_02_01:
   state_code:
   email:
   phone:
-  created_at: 2016-05-08 07:11:03.177256000 Z
-  updated_at: 2019-02-01 07:19:53.365861000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1164,8 +1054,6 @@ shad_hirthe:
   state_code: CO
   email:
   phone:
-  created_at: 2016-05-10 07:28:03.541069000 Z
-  updated_at: 2020-09-09 14:15:13.888748000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1185,8 +1073,6 @@ finished_without_stop:
   state_code: UT
   email:
   phone:
-  created_at: 2016-05-10 07:28:11.212024000 Z
-  updated_at: 2020-09-09 14:15:13.899791000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1206,8 +1092,6 @@ progress_sherman:
   state_code: ID
   email:
   phone:
-  created_at: 2016-05-11 15:44:32.114719000 Z
-  updated_at: 2020-09-09 14:15:13.911463000 Z
   created_by: 2
   updated_by: 1
   country_code: US
@@ -1227,8 +1111,6 @@ finished_first_japan:
   state_code:
   email:
   phone:
-  created_at: 2016-05-23 07:18:34.771455000 Z
-  updated_at: 2020-09-09 14:15:13.922385000 Z
   created_by: 1
   updated_by: 1
   country_code: JP
@@ -1248,8 +1130,6 @@ claudio_wunsch:
   state_code:
   email:
   phone:
-  created_at: 2016-05-23 07:18:34.845156000 Z
-  updated_at: 2020-09-09 14:15:13.932886000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1269,8 +1149,6 @@ keith_metz:
   state_code: UT
   email:
   phone:
-  created_at: 2016-05-23 07:18:34.856224000 Z
-  updated_at: 2020-09-09 14:15:13.943328000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1290,8 +1168,6 @@ major_green:
   state_code: NC
   email:
   phone:
-  created_at: 2016-05-23 07:18:34.865687000 Z
-  updated_at: 2020-09-09 14:15:13.954019000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1311,8 +1187,6 @@ irvin_corkery:
   state_code: DC
   email:
   phone:
-  created_at: 2016-05-23 07:18:34.949440000 Z
-  updated_at: 2020-09-09 14:15:13.965433000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1332,8 +1206,6 @@ multiple_stops:
   state_code: HI
   email:
   phone:
-  created_at: 2016-05-23 07:18:35.032341000 Z
-  updated_at: 2020-09-09 14:15:13.976330000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1353,8 +1225,6 @@ not_started:
   state_code: CO
   email:
   phone:
-  created_at: 2016-05-23 07:18:35.057652000 Z
-  updated_at: 2020-09-09 14:15:13.987409000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1374,8 +1244,6 @@ start_only_maine_us:
   state_code: ME
   email:
   phone:
-  created_at: 2016-05-24 04:48:52.377760000 Z
-  updated_at: 2020-09-09 14:15:13.998434000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1395,8 +1263,6 @@ junior_lesch:
   state_code: NM
   email:
   phone:
-  created_at: 2016-05-24 04:48:52.529697000 Z
-  updated_at: 2020-09-09 14:15:14.009690000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1416,8 +1282,6 @@ finished_first_utah_us:
   state_code: UT
   email:
   phone:
-  created_at: 2017-03-28 07:19:22.668710000 Z
-  updated_at: 2020-09-09 14:15:14.046848000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1437,8 +1301,6 @@ progress_lap6:
   state_code: UT
   email:
   phone:
-  created_at: 2017-03-28 07:19:22.822139000 Z
-  updated_at: 2020-09-09 14:15:14.058789000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1458,8 +1320,6 @@ multiple_stops_utah_us:
   state_code: UT
   email:
   phone:
-  created_at: 2017-03-28 07:19:29.184827000 Z
-  updated_at: 2020-09-09 14:15:14.070082000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1479,8 +1339,6 @@ finished_last:
   state_code: UT
   email:
   phone:
-  created_at: 2017-03-28 07:19:32.066094000 Z
-  updated_at: 2020-09-09 14:15:14.081760000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1500,8 +1358,6 @@ progress_lap1:
   state_code: UT
   email:
   phone:
-  created_at: 2017-03-28 07:19:35.252811000 Z
-  updated_at: 2020-09-09 14:15:14.092948000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1521,8 +1377,6 @@ kory_kulas:
   state_code: CA
   email:
   phone:
-  created_at: 2017-04-18 08:22:57.705080000 Z
-  updated_at: 2020-09-09 14:15:14.111183000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1542,8 +1396,6 @@ benito_moen:
   state_code: OH
   email:
   phone:
-  created_at: 2017-04-18 08:22:59.120573000 Z
-  updated_at: 2020-09-09 14:15:14.123212000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1563,8 +1415,6 @@ rene_mclaughlin:
   state_code: TX
   email:
   phone:
-  created_at: 2017-04-18 08:23:01.385694000 Z
-  updated_at: 2020-09-09 14:15:14.136268000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1584,8 +1434,6 @@ start_only_colorado_us_2019_02_01:
   state_code: CO
   email:
   phone:
-  created_at: 2018-01-18 05:23:53.922446000 Z
-  updated_at: 2020-09-09 14:15:14.147475000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1605,8 +1453,6 @@ drop_bandera:
   state_code: CO
   email:
   phone:
-  created_at: 2018-01-18 05:23:54.016843000 Z
-  updated_at: 2020-09-09 14:15:14.159556000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1626,8 +1472,6 @@ progress_rolling:
   state_code: CA
   email:
   phone:
-  created_at: 2018-01-18 05:23:54.175400000 Z
-  updated_at: 2020-09-09 14:15:14.173638000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1647,8 +1491,6 @@ not_started_colorado_us_2019_02_01:
   state_code: CO
   email:
   phone:
-  created_at: 2018-01-18 05:23:54.418009000 Z
-  updated_at: 2020-09-09 14:15:14.185675000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1668,8 +1510,6 @@ finished_first_colorado_us:
   state_code: CO
   email:
   phone:
-  created_at: 2018-01-18 05:23:56.334499000 Z
-  updated_at: 2020-09-09 14:15:14.197020000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1689,8 +1529,6 @@ drop_aid4:
   state_code:
   email:
   phone:
-  created_at: 2018-05-10 09:47:58.890141000 Z
-  updated_at: 2019-02-01 07:19:53.832943000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1710,8 +1548,6 @@ progress_aid3:
   state_code:
   email:
   phone:
-  created_at: 2018-05-10 09:48:33.933618000 Z
-  updated_at: 2019-02-01 07:19:53.810374000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1731,8 +1567,6 @@ drop_anvil:
   state_code:
   email:
   phone:
-  created_at: 2018-07-28 11:18:08.492197000 Z
-  updated_at: 2019-02-01 07:19:54.011406000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1752,8 +1586,6 @@ progress_cascade:
   state_code: UT
   email:
   phone:
-  created_at: 2018-07-28 11:18:10.049155000 Z
-  updated_at: 2020-09-09 14:15:14.210417000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1773,8 +1605,6 @@ not_started_colorado_us:
   state_code: CO
   email:
   phone:
-  created_at: 2018-12-28 19:34:35.090390000 Z
-  updated_at: 2020-09-09 14:15:14.222140000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1794,8 +1624,6 @@ finished_second_colorado_us:
   state_code: CO
   email:
   phone:
-  created_at: 2018-12-28 19:34:43.417273000 Z
-  updated_at: 2020-09-09 14:15:14.233446000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1815,8 +1643,6 @@ start_only_colorado_us:
   state_code: CO
   email:
   phone:
-  created_at: 2018-12-28 19:34:44.799339000 Z
-  updated_at: 2020-09-09 14:15:14.244649000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1836,8 +1662,6 @@ finished_first_france:
   state_code:
   email:
   phone:
-  created_at: 2018-12-28 19:34:49.627320000 Z
-  updated_at: 2020-09-09 14:15:14.254568000 Z
   created_by: 1
   updated_by: 1
   country_code: FR
@@ -1857,8 +1681,6 @@ start_only_2019_02_01_07_19_53:
   state_code:
   email:
   phone:
-  created_at: 2018-12-28 19:35:21.894405000 Z
-  updated_at: 2019-02-01 07:19:53.845347000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1878,8 +1700,6 @@ progress_aid4:
   state_code:
   email:
   phone:
-  created_at: 2018-12-28 19:35:28.943000000 Z
-  updated_at: 2019-02-01 07:19:53.821661000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1899,8 +1719,6 @@ bad_finish:
   state_code:
   email:
   phone:
-  created_at: 2018-12-28 19:35:38.330897000 Z
-  updated_at: 2019-02-01 07:19:53.788073000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -1920,8 +1738,6 @@ progress_lap5_partial:
   state_code: UT
   email:
   phone:
-  created_at: 2019-01-30 19:00:44.965267000 Z
-  updated_at: 2020-09-09 14:15:14.265442000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1941,8 +1757,6 @@ finished_first:
   state_code: AZ
   email:
   phone:
-  created_at: 2019-01-30 19:00:45.095305000 Z
-  updated_at: 2020-09-09 14:15:14.277471000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1962,8 +1776,6 @@ finished_lap6:
   state_code: UT
   email:
   phone:
-  created_at: 2019-01-30 19:00:45.241578000 Z
-  updated_at: 2020-09-09 14:15:14.288991000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -1983,8 +1795,6 @@ progress_lap2:
   state_code: UT
   email:
   phone:
-  created_at: 2019-01-30 19:00:45.694985000 Z
-  updated_at: 2020-09-09 14:15:14.299405000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -2004,8 +1814,6 @@ not_started_utah_us:
   state_code: UT
   email:
   phone:
-  created_at: 2019-01-30 19:00:45.813779000 Z
-  updated_at: 2020-09-09 14:15:14.310401000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -2025,8 +1833,6 @@ start_only:
   state_code: UT
   email:
   phone:
-  created_at: 2019-01-30 19:00:45.946704000 Z
-  updated_at: 2020-09-09 14:15:14.323832000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -2046,8 +1852,6 @@ on_dst_change:
   state_code:
   email:
   phone:
-  created_at: 2019-02-21 23:23:43.929477000 Z
-  updated_at: 2019-02-21 23:23:43.929477000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -2067,8 +1871,6 @@ across_dst_change:
   state_code:
   email:
   phone:
-  created_at: 2019-02-21 23:23:44.141109000 Z
-  updated_at: 2019-02-21 23:23:44.141109000 Z
   created_by: 1
   updated_by: 1
   country_code:
@@ -2088,8 +1890,6 @@ un_started:
   state_code: CO
   email:
   phone:
-  created_at: 2019-02-21 23:23:44.276762000 Z
-  updated_at: 2020-09-09 14:15:14.337527000 Z
   created_by: 1
   updated_by: 1
   country_code: US
@@ -2109,8 +1909,6 @@ series_finisher:
   state_code: CO
   email:
   phone:
-  created_at: 2019-02-21 23:40:15.216434000 Z
-  updated_at: 2020-09-09 14:15:14.348239000 Z
   created_by: 1
   updated_by:
   country_code: US
@@ -2130,8 +1928,6 @@ slow_finisher:
   state_code: UT
   email:
   phone:
-  created_at: 2019-02-21 23:53:21.216763000 Z
-  updated_at: 2020-09-09 14:15:14.358990000 Z
   created_by: 1
   updated_by:
   country_code: US

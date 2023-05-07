@@ -8,8 +8,6 @@ hardrock_2015_tuan_jacobs:
   city:
   state_code: AN
   age: 17
-  created_at: 2016-04-18 09:10:02.632497000 Z
-  updated_at: 2020-09-09 14:53:45.540056000 Z
   created_by: 1
   updated_by: 1
   first_name: Tuan
@@ -50,8 +48,6 @@ hardrock_2015_erich_larson:
   city:
   state_code: MT
   age: 36
-  created_at: 2016-04-18 09:10:02.669411000 Z
-  updated_at: 2020-09-09 14:53:45.600851000 Z
   created_by: 1
   updated_by: 1
   first_name: Erich
@@ -92,8 +88,6 @@ hardrock_2015_leif_carter:
   city:
   state_code:
   age: 55
-  created_at: 2016-04-18 09:10:02.914611000 Z
-  updated_at: 2020-09-09 14:53:45.627299000 Z
   created_by: 1
   updated_by: 1
   first_name: Leif
@@ -134,8 +128,6 @@ hardrock_2015_carmine_adams:
   city:
   state_code: WA
   age: 18
-  created_at: 2016-04-18 09:10:02.994073000 Z
-  updated_at: 2020-09-09 14:53:45.657611000 Z
   created_by: 1
   updated_by: 1
   first_name: Carmine
@@ -176,8 +168,6 @@ hardrock_2015_garry_kuhlman:
   city:
   state_code: MT
   age: 45
-  created_at: 2016-04-18 09:10:03.077148000 Z
-  updated_at: 2020-09-09 14:53:45.685165000 Z
   created_by: 1
   updated_by: 1
   first_name: Garry
@@ -218,8 +208,6 @@ hardrock_2015_darius_jacobson:
   city:
   state_code: CO
   age: 30
-  created_at: 2016-04-18 09:10:03.093446000 Z
-  updated_at: 2020-09-09 14:53:45.715528000 Z
   created_by: 1
   updated_by: 1
   first_name: Darius
@@ -260,8 +248,6 @@ hardrock_2015_santa_green:
   city:
   state_code: CO
   age: 37
-  created_at: 2016-04-18 09:10:03.171265000 Z
-  updated_at: 2020-09-09 14:53:45.745785000 Z
   created_by: 1
   updated_by: 1
   first_name: Santa
@@ -302,8 +288,6 @@ hardrock_2015_gilberto_mckenzie:
   city:
   state_code: WA
   age: 45
-  created_at: 2016-04-18 09:10:03.210408000 Z
-  updated_at: 2020-09-09 14:53:45.775035000 Z
   created_by: 1
   updated_by: 1
   first_name: Gilberto
@@ -344,8 +328,6 @@ hardrock_2015_vince_willms:
   city:
   state_code: CO
   age: 50
-  created_at: 2016-04-18 09:10:03.559700000 Z
-  updated_at: 2020-09-09 14:53:45.802137000 Z
   created_by: 1
   updated_by: 1
   first_name: Vince
@@ -386,8 +368,6 @@ hardrock_2015_cedric_windler:
   city:
   state_code: TN
   age: 36
-  created_at: 2016-04-18 09:10:03.606136000 Z
-  updated_at: 2020-09-09 14:53:45.843863000 Z
   created_by: 1
   updated_by: 1
   first_name: Cedric
@@ -428,8 +408,6 @@ hardrock_2015_chris_rempel:
   city:
   state_code: CO
   age: 26
-  created_at: 2016-04-18 09:10:03.704495000 Z
-  updated_at: 2020-09-09 14:53:45.873705000 Z
   created_by: 1
   updated_by: 1
   first_name: Chris
@@ -470,8 +448,6 @@ hardrock_2015_robby_gerlach:
   city:
   state_code: VA
   age: 45
-  created_at: 2016-04-18 09:10:03.721673000 Z
-  updated_at: 2020-09-09 14:53:45.902174000 Z
   created_by: 1
   updated_by: 1
   first_name: Robby
@@ -512,8 +488,6 @@ hardrock_2015_rachelle_eichmann:
   city:
   state_code: CO
   age: 23
-  created_at: 2016-04-18 09:10:03.755229000 Z
-  updated_at: 2020-09-09 14:53:45.930067000 Z
   created_by: 1
   updated_by: 1
   first_name: Rachelle
@@ -554,8 +528,6 @@ hardrock_2015_elden_morissette:
   city:
   state_code: WI
   age: 42
-  created_at: 2016-04-18 09:10:03.787728000 Z
-  updated_at: 2020-09-09 14:53:45.960285000 Z
   created_by: 1
   updated_by: 1
   first_name: Elden
@@ -596,8 +568,6 @@ hardrock_2015_leroy_leffler:
   city:
   state_code: NM
   age: 48
-  created_at: 2016-04-18 09:10:03.821143000 Z
-  updated_at: 2020-09-09 14:53:45.988739000 Z
   created_by: 1
   updated_by: 1
   first_name: Leroy
@@ -638,8 +608,6 @@ hardrock_2015_samara_vandervort:
   city:
   state_code: CA
   age: 22
-  created_at: 2016-04-18 09:10:03.987419000 Z
-  updated_at: 2020-09-09 14:53:46.018982000 Z
   created_by: 1
   updated_by: 1
   first_name: Samara
@@ -680,8 +648,6 @@ hardrock_2015_robt_wintheiser:
   city:
   state_code: CO
   age: 57
-  created_at: 2016-04-18 09:10:04.337334000 Z
-  updated_at: 2020-09-09 14:53:46.046970000 Z
   created_by: 1
   updated_by: 1
   first_name: Robt
@@ -722,8 +688,6 @@ hardrock_2015_demetrius_moen:
   city:
   state_code: OR
   age: 40
-  created_at: 2016-04-18 09:10:04.367628000 Z
-  updated_at: 2020-09-09 14:53:46.075425000 Z
   created_by: 1
   updated_by: 1
   first_name: Demetrius
@@ -764,8 +728,6 @@ hardrock_2015_vern_buckridge:
   city:
   state_code: TX
   age: 33
-  created_at: 2016-04-18 09:10:04.514797000 Z
-  updated_at: 2020-09-09 14:53:46.106301000 Z
   created_by: 1
   updated_by: 1
   first_name: Vern
@@ -806,8 +768,6 @@ hardrock_2015_donte_spencer:
   city:
   state_code: UT
   age: 30
-  created_at: 2016-04-18 09:10:04.637912000 Z
-  updated_at: 2020-09-09 14:53:46.141007000 Z
   created_by: 1
   updated_by: 1
   first_name: Donte
@@ -848,8 +808,6 @@ hardrock_2015_bruno_fadel:
   city:
   state_code: CA
   age: 27
-  created_at: 2016-04-18 09:10:04.699167000 Z
-  updated_at: 2020-09-09 14:53:46.168238000 Z
   created_by: 1
   updated_by: 1
   first_name: Bruno
@@ -890,8 +848,6 @@ hardrock_2015_gus_walker:
   city:
   state_code: CO
   age: 54
-  created_at: 2016-04-18 09:10:04.715410000 Z
-  updated_at: 2020-09-09 14:53:46.197187000 Z
   created_by: 1
   updated_by: 1
   first_name: Gus
@@ -932,8 +888,6 @@ hardrock_2015_susanna_abshire:
   city:
   state_code: CO
   age: 34
-  created_at: 2016-04-18 09:10:04.780476000 Z
-  updated_at: 2020-09-09 14:53:46.269875000 Z
   created_by: 1
   updated_by: 1
   first_name: Susanna
@@ -974,8 +928,6 @@ hardrock_2015_leandro_cole:
   city:
   state_code: UT
   age: 45
-  created_at: 2016-04-18 09:10:04.842620000 Z
-  updated_at: 2020-09-09 14:53:46.298147000 Z
   created_by: 1
   updated_by: 1
   first_name: Leandro
@@ -1016,8 +968,6 @@ hardrock_2015_benedict_davis:
   city:
   state_code: CO
   age: 32
-  created_at: 2016-04-18 09:10:04.905460000 Z
-  updated_at: 2020-09-09 14:53:46.324434000 Z
   created_by: 1
   updated_by: 1
   first_name: Benedict
@@ -1058,8 +1008,6 @@ hardrock_2015_raphael_swift:
   city:
   state_code: AR
   age: 40
-  created_at: 2016-04-18 09:10:05.014754000 Z
-  updated_at: 2020-09-09 14:53:46.349841000 Z
   created_by: 1
   updated_by: 1
   first_name: Raphael
@@ -1100,8 +1048,6 @@ hardrock_2015_bad_status:
   city:
   state_code: CO
   age: 21
-  created_at: 2016-04-18 09:10:05.047829000 Z
-  updated_at: 2020-09-09 14:53:46.374735000 Z
   created_by: 1
   updated_by: 1
   first_name: Bad
@@ -1142,8 +1088,6 @@ hardrock_2015_irvin_harber:
   city:
   state_code: CO
   age: 19
-  created_at: 2016-04-18 09:10:05.103548000 Z
-  updated_at: 2020-09-09 14:53:46.395706000 Z
   created_by: 1
   updated_by: 1
   first_name: Irvin
@@ -1184,8 +1128,6 @@ hardrock_2015_cassondra_nienow:
   city:
   state_code: OH
   age: 56
-  created_at: 2016-04-18 09:10:05.298384000 Z
-  updated_at: 2020-09-09 14:53:46.420979000 Z
   created_by: 1
   updated_by: 1
   first_name: Cassondra
@@ -1226,8 +1168,6 @@ hardrock_2015_donn_mckenzie:
   city:
   state_code: WY
   age: 16
-  created_at: 2016-04-18 09:10:05.339566000 Z
-  updated_at: 2020-09-09 14:53:46.446814000 Z
   created_by: 1
   updated_by: 1
   first_name: Donn
@@ -1268,8 +1208,6 @@ ramble_finished_first:
   city:
   state_code:
   age: 49
-  created_at: 2016-05-09 01:56:15.125469000 Z
-  updated_at: 2019-02-01 06:38:32.510437000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1310,8 +1248,6 @@ ramble_finished_second:
   city:
   state_code:
   age: 12
-  created_at: 2016-05-09 01:56:15.230348000 Z
-  updated_at: 2019-02-01 06:38:45.308003000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1352,8 +1288,6 @@ ramble_start_only:
   city:
   state_code:
   age: 38
-  created_at: 2016-05-09 01:56:15.271716000 Z
-  updated_at: 2019-02-01 06:37:29.491883000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -1394,8 +1328,6 @@ ramble_not_started:
   city:
   state_code:
   age: 17
-  created_at: 2016-05-09 01:56:15.407929000 Z
-  updated_at: 2019-02-01 06:37:07.323951000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -1436,8 +1368,6 @@ hardrock_2014_finished_first:
   city:
   state_code: '01'
   age: 19
-  created_at: 2016-05-24 03:02:35.765362000 Z
-  updated_at: 2020-09-09 14:53:46.470415000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1478,8 +1408,6 @@ hardrock_2014_finished_with_stop:
   city:
   state_code: UT
   age: 40
-  created_at: 2016-05-24 03:02:35.777780000 Z
-  updated_at: 2020-09-09 14:53:46.497693000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1520,8 +1448,6 @@ hardrock_2014_finished_without_stop:
   city:
   state_code: UT
   age: 25
-  created_at: 2016-05-24 03:02:35.789178000 Z
-  updated_at: 2020-09-09 14:53:46.524465000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -1562,8 +1488,6 @@ hardrock_2014_claudio_wunsch:
   city:
   state_code:
   age: 33
-  created_at: 2016-05-24 03:02:36.044742000 Z
-  updated_at: 2020-09-09 14:53:46.555500000 Z
   created_by: 1
   updated_by: 1
   first_name: Claudio
@@ -1604,8 +1528,6 @@ hardrock_2014_paul_predovic:
   city:
   state_code: ID
   age: 55
-  created_at: 2016-05-24 03:02:36.127624000 Z
-  updated_at: 2020-09-09 14:53:46.581622000 Z
   created_by: 1
   updated_by: 1
   first_name: Paul
@@ -1646,8 +1568,6 @@ hardrock_2014_keith_metz:
   city:
   state_code: UT
   age: 42
-  created_at: 2016-05-24 03:02:36.226666000 Z
-  updated_at: 2020-09-09 14:53:46.611194000 Z
   created_by: 1
   updated_by: 1
   first_name: Keith
@@ -1688,8 +1608,6 @@ hardrock_2014_major_green:
   city:
   state_code: NC
   age: 58
-  created_at: 2016-05-24 03:02:36.242262000 Z
-  updated_at: 2020-09-09 14:53:46.640945000 Z
   created_by: 1
   updated_by: 1
   first_name: Major
@@ -1730,8 +1648,6 @@ hardrock_2014_humberto_adams:
   city:
   state_code: NM
   age: 24
-  created_at: 2016-05-24 03:02:36.472804000 Z
-  updated_at: 2020-09-09 14:53:46.669204000 Z
   created_by: 1
   updated_by: 1
   first_name: Humberto
@@ -1772,8 +1688,6 @@ hardrock_2014_omer_yundt:
   city:
   state_code: CO
   age: 40
-  created_at: 2016-05-24 03:02:36.780679000 Z
-  updated_at: 2020-09-09 14:53:46.697006000 Z
   created_by: 1
   updated_by: 1
   first_name: Omer
@@ -1814,8 +1728,6 @@ hardrock_2014_pat_schaden:
   city:
   state_code: AZ
   age: 53
-  created_at: 2016-05-24 03:02:36.793599000 Z
-  updated_at: 2020-09-09 14:53:46.727556000 Z
   created_by: 1
   updated_by: 1
   first_name: Pat
@@ -1856,8 +1768,6 @@ hardrock_2014_clarence_goyette:
   city:
   state_code: CO
   age: 52
-  created_at: 2016-05-24 03:02:36.820543000 Z
-  updated_at: 2020-09-09 14:53:46.759696000 Z
   created_by: 1
   updated_by: 1
   first_name: Clarence
@@ -1898,8 +1808,6 @@ hardrock_2014_irvin_corkery:
   city:
   state_code: DC
   age: 22
-  created_at: 2016-05-24 03:02:36.844005000 Z
-  updated_at: 2020-09-09 14:53:46.786060000 Z
   created_by: 1
   updated_by: 1
   first_name: Irvin
@@ -1940,8 +1848,6 @@ hardrock_2014_willis_murray:
   city:
   state_code: GA
   age: 16
-  created_at: 2016-05-24 03:02:36.871396000 Z
-  updated_at: 2020-09-09 14:53:46.814201000 Z
   created_by: 1
   updated_by: 1
   first_name: Willis
@@ -1982,8 +1888,6 @@ hardrock_2014_ken_bradtke:
   city:
   state_code: CO
   age: 47
-  created_at: 2016-05-24 03:02:36.906798000 Z
-  updated_at: 2020-09-09 14:53:46.842055000 Z
   created_by: 1
   updated_by: 1
   first_name: Ken
@@ -2024,8 +1928,6 @@ hardrock_2014_progress_sherman:
   city:
   state_code: CO
   age: 36
-  created_at: 2016-05-24 03:02:37.144241000 Z
-  updated_at: 2020-09-09 14:53:46.870316000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -2066,8 +1968,6 @@ hardrock_2014_multiple_stops:
   city:
   state_code: HI
   age: 60
-  created_at: 2016-05-24 03:02:37.319538000 Z
-  updated_at: 2020-09-09 14:53:46.895800000 Z
   created_by: 1
   updated_by: 1
   first_name: Multiple
@@ -2108,8 +2008,6 @@ hardrock_2014_without_start:
   city:
   state_code: MT
   age: 49
-  created_at: 2016-05-24 03:02:37.329357000 Z
-  updated_at: 2020-09-09 14:53:46.922513000 Z
   created_by: 1
   updated_by: 1
   first_name: Without
@@ -2150,8 +2048,6 @@ hardrock_2014_drop_ouray:
   city:
   state_code: CA
   age: 40
-  created_at: 2016-05-24 03:02:37.338785000 Z
-  updated_at: 2020-09-09 14:53:46.977479000 Z
   created_by: 1
   updated_by: 1
   first_name: Drop
@@ -2192,8 +2088,6 @@ hardrock_2014_not_started:
   city:
   state_code: CO
   age: 28
-  created_at: 2016-05-24 03:02:37.399692000 Z
-  updated_at: 2020-09-09 14:53:47.001367000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -2234,8 +2128,6 @@ rufa_2016_finished_first:
   city:
   state_code:
   age: 35
-  created_at: 2017-02-18 07:04:03.460025000 Z
-  updated_at: 2019-02-01 06:13:42.623687000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -2276,8 +2168,6 @@ rufa_2016_finished_second:
   city:
   state_code:
   age: 32
-  created_at: 2017-02-18 07:04:04.964494000 Z
-  updated_at: 2019-02-01 06:33:07.990941000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -2318,8 +2208,6 @@ rufa_2016_progress_lap1:
   city:
   state_code:
   age: 25
-  created_at: 2017-02-18 07:04:23.649965000 Z
-  updated_at: 2019-02-01 06:35:06.886454000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -2360,8 +2248,6 @@ rufa_2016_not_started:
   city:
   state_code:
   age: 57
-  created_at: 2017-02-18 07:04:23.903673000 Z
-  updated_at: 2019-02-01 06:34:33.765616000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -2402,8 +2288,6 @@ rufa_2017_24h_finished_first:
   city:
   state_code: UT
   age: 47
-  created_at: 2017-03-28 07:24:12.485505000 Z
-  updated_at: 2020-09-09 14:53:47.028087000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -2444,8 +2328,6 @@ rufa_2017_24h_progress_lap6:
   city:
   state_code: UT
   age: 33
-  created_at: 2017-03-28 07:24:13.143418000 Z
-  updated_at: 2020-09-09 14:53:47.054889000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -2486,8 +2368,6 @@ rufa_2017_24h_multiple_stops:
   city:
   state_code: UT
   age: 43
-  created_at: 2017-03-28 07:24:25.977802000 Z
-  updated_at: 2020-09-09 14:53:47.083534000 Z
   created_by: 1
   updated_by: 1
   first_name: Multiple
@@ -2528,8 +2408,6 @@ rufa_2017_24h_finished_last:
   city:
   state_code: UT
   age: 40
-  created_at: 2017-03-28 07:24:29.153267000 Z
-  updated_at: 2020-09-09 14:53:47.109168000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -2570,8 +2448,6 @@ rufa_2017_24h_not_started:
   city:
   state_code: UT
   age: 30
-  created_at: 2017-03-28 07:24:29.350276000 Z
-  updated_at: 2020-09-09 14:53:47.134401000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -2612,8 +2488,6 @@ rufa_2017_24h_progress_lap1:
   city:
   state_code: UT
   age: 49
-  created_at: 2017-03-28 07:24:31.338329000 Z
-  updated_at: 2020-09-09 14:53:47.160504000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -2654,8 +2528,6 @@ hardrock_2016_lavon_paucek:
   city:
   state_code:
   age: 41
-  created_at: 2017-04-18 09:43:13.944673000 Z
-  updated_at: 2020-09-09 14:53:47.188402000 Z
   created_by: 1
   updated_by: 1
   first_name: Lavon
@@ -2696,8 +2568,6 @@ hardrock_2016_vesta_borer:
   city:
   state_code: UT
   age: 21
-  created_at: 2017-04-18 09:43:17.416478000 Z
-  updated_at: 2020-09-09 14:53:47.215637000 Z
   created_by: 1
   updated_by: 1
   first_name: Vesta
@@ -2738,8 +2608,6 @@ hardrock_2016_kory_kulas:
   city:
   state_code: CA
   age: 42
-  created_at: 2017-04-18 09:43:18.615823000 Z
-  updated_at: 2020-09-09 14:53:47.246315000 Z
   created_by: 1
   updated_by: 1
   first_name: Kory
@@ -2780,8 +2648,6 @@ hardrock_2016_shad_hirthe:
   city:
   state_code: CO
   age: 40
-  created_at: 2017-04-18 09:43:20.572745000 Z
-  updated_at: 2020-09-09 14:53:47.274065000 Z
   created_by: 1
   updated_by: 1
   first_name: Shad
@@ -2822,8 +2688,6 @@ hardrock_2016_douglas_vandervort:
   city:
   state_code: CO
   age: 52
-  created_at: 2017-04-18 09:43:21.759013000 Z
-  updated_at: 2020-09-09 14:53:47.314831000 Z
   created_by: 1
   updated_by: 1
   first_name: Douglas
@@ -2864,8 +2728,6 @@ hardrock_2016_missing_telluride_out:
   city:
   state_code: AK
   age: 20
-  created_at: 2017-04-18 09:43:23.330180000 Z
-  updated_at: 2020-09-09 14:53:47.341782000 Z
   created_by: 1
   updated_by: 1
   first_name: Missing
@@ -2906,8 +2768,6 @@ hardrock_2016_junior_lesch:
   city:
   state_code: NM
   age: 49
-  created_at: 2017-04-18 09:43:24.182361000 Z
-  updated_at: 2020-09-09 14:53:47.370193000 Z
   created_by: 1
   updated_by: 1
   first_name: Junior
@@ -2948,8 +2808,6 @@ hardrock_2016_eddy_goldner:
   city:
   state_code: WA
   age: 18
-  created_at: 2017-04-18 09:43:25.135211000 Z
-  updated_at: 2020-09-09 14:53:47.397367000 Z
   created_by: 1
   updated_by: 1
   first_name: Eddy
@@ -2990,8 +2848,6 @@ hardrock_2016_progress_sherman:
   city:
   state_code: VA
   age: 33
-  created_at: 2017-04-18 09:43:28.206507000 Z
-  updated_at: 2020-09-09 14:53:47.423950000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -3032,8 +2888,6 @@ hardrock_2016_benito_moen:
   city:
   state_code: OH
   age: 52
-  created_at: 2017-04-18 09:43:30.366948000 Z
-  updated_at: 2020-09-09 14:53:47.450528000 Z
   created_by: 1
   updated_by: 1
   first_name: Benito
@@ -3074,8 +2928,6 @@ hardrock_2016_kendall_koch:
   city:
   state_code: CO
   age: 40
-  created_at: 2017-04-18 09:43:31.134522000 Z
-  updated_at: 2020-09-09 14:53:47.476060000 Z
   created_by: 1
   updated_by: 1
   first_name: Kendall
@@ -3116,8 +2968,6 @@ hardrock_2016_charlie_mueller:
   city:
   state_code: OR
   age: 27
-  created_at: 2017-04-18 09:43:31.806769000 Z
-  updated_at: 2020-09-09 14:53:47.506844000 Z
   created_by: 1
   updated_by: 1
   first_name: Charlie
@@ -3158,8 +3008,6 @@ hardrock_2016_brinda_fisher:
   city:
   state_code: SC
   age: 22
-  created_at: 2017-04-18 09:43:39.469427000 Z
-  updated_at: 2020-09-09 14:53:47.536118000 Z
   created_by: 1
   updated_by: 1
   first_name: Brinda
@@ -3200,8 +3048,6 @@ hardrock_2016_rene_mclaughlin:
   city:
   state_code: TX
   age: 32
-  created_at: 2017-04-18 09:43:40.343314000 Z
-  updated_at: 2020-09-09 14:53:47.565727000 Z
   created_by: 1
   updated_by: 1
   first_name: Rene
@@ -3242,8 +3088,6 @@ hardrock_2016_dropped_grouse:
   city:
   state_code: CO
   age: 47
-  created_at: 2017-04-18 09:43:43.290742000 Z
-  updated_at: 2020-09-09 14:53:47.596347000 Z
   created_by: 1
   updated_by: 1
   first_name: Dropped
@@ -3284,8 +3128,6 @@ hardrock_2016_mervin_smitham:
   city:
   state_code: NM
   age: 24
-  created_at: 2017-04-18 09:43:43.987125000 Z
-  updated_at: 2020-09-09 14:53:47.652475000 Z
   created_by: 1
   updated_by: 1
   first_name: Mervin
@@ -3326,8 +3168,6 @@ hardrock_2016_rhett_auer:
   city:
   state_code: CO
   age: 41
-  created_at: 2017-04-18 09:43:44.745954000 Z
-  updated_at: 2020-09-09 14:53:47.678332000 Z
   created_by: 1
   updated_by: 1
   first_name: Rhett
@@ -3368,8 +3208,6 @@ hardrock_2016_hoyt_macejkovic:
   city:
   state_code: MD
   age: 55
-  created_at: 2017-04-18 09:43:45.252368000 Z
-  updated_at: 2020-09-09 14:53:47.703989000 Z
   created_by: 1
   updated_by: 1
   first_name: Hoyt
@@ -3410,8 +3248,6 @@ hardrock_2016_start_only:
   city:
   state_code: ME
   age: 26
-  created_at: 2017-04-18 09:43:45.842843000 Z
-  updated_at: 2020-09-09 14:53:47.730783000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -3452,8 +3288,6 @@ ggd30_50k_finished_first:
   city:
   state_code:
   age: 44
-  created_at: 2017-06-09 08:26:06.148699000 Z
-  updated_at: 2019-02-21 23:11:57.311356000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3494,8 +3328,6 @@ ggd30_50k_bad_finish:
   city:
   state_code:
   age: 21
-  created_at: 2017-06-09 08:26:07.426849000 Z
-  updated_at: 2019-02-01 06:12:38.529959000 Z
   created_by: 1
   updated_by: 1
   first_name: Bad
@@ -3536,8 +3368,6 @@ ggd30_50k_progress_aid4:
   city:
   state_code:
   age: 35
-  created_at: 2017-06-09 08:26:15.208636000 Z
-  updated_at: 2019-02-01 06:18:53.333713000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -3578,8 +3408,6 @@ ggd30_50k_progress_aid3:
   city:
   state_code:
   age: 31
-  created_at: 2017-06-09 08:26:15.541579000 Z
-  updated_at: 2019-02-01 06:18:23.316870000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -3620,8 +3448,6 @@ ggd30_50k_drop_aid4:
   city:
   state_code:
   age: 18
-  created_at: 2017-06-09 08:26:16.456387000 Z
-  updated_at: 2019-02-01 06:14:59.563079000 Z
   created_by: 1
   updated_by: 1
   first_name: Drop
@@ -3662,8 +3488,6 @@ ggd30_50k_start_only:
   city:
   state_code:
   age: 31
-  created_at: 2017-06-09 08:26:18.436664000 Z
-  updated_at: 2019-02-01 06:12:38.331033000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -3704,8 +3528,6 @@ ggd30_50k_not_started:
   city:
   state_code:
   age: 31
-  created_at: 2017-06-09 08:26:18.491140000 Z
-  updated_at: 2019-02-01 06:12:38.385362000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -3746,8 +3568,6 @@ ggd30_12m_start_only:
   city: Aurora
   state_code: CO
   age: 27
-  created_at: 2017-06-09 09:52:57.315679000 Z
-  updated_at: 2020-09-09 14:53:47.756478000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -3788,8 +3608,6 @@ ggd30_12m_finished_second:
   city: Boulder
   state_code: CO
   age: 43
-  created_at: 2017-06-09 09:52:57.413084000 Z
-  updated_at: 2020-09-09 14:53:47.784373000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3830,8 +3648,6 @@ ggd30_12m_finished_first:
   city: LE VIBAL
   state_code: ARA
   age: 23
-  created_at: 2017-06-09 09:52:57.918790000 Z
-  updated_at: 2020-09-09 14:53:47.811020000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3872,8 +3688,6 @@ ggd30_12m_not_started:
   city: Greeley
   state_code: CO
   age: 22
-  created_at: 2017-06-09 09:52:58.187937000 Z
-  updated_at: 2020-09-09 14:53:47.840370000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -3914,8 +3728,6 @@ sum_55k_finished_first:
   city:
   state_code: CO
   age: 44
-  created_at: 2018-01-18 05:23:46.230111000 Z
-  updated_at: 2020-09-09 14:53:47.867325000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3956,8 +3768,6 @@ sum_55k_finished_second:
   city:
   state_code: CO
   age: 44
-  created_at: 2018-01-18 05:23:46.316440000 Z
-  updated_at: 2020-09-09 14:53:47.893185000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -3998,8 +3808,6 @@ sum_55k_not_started:
   city:
   state_code: CO
   age: 36
-  created_at: 2018-01-18 05:23:52.659025000 Z
-  updated_at: 2020-09-09 14:53:47.917249000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -4040,8 +3848,6 @@ sum_55k_progress_rolling:
   city:
   state_code: CA
   age: 55
-  created_at: 2018-01-18 05:23:52.747120000 Z
-  updated_at: 2020-09-09 14:53:47.939253000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -4082,8 +3888,6 @@ sum_55k_drop_bandera:
   city:
   state_code: CO
   age: 19
-  created_at: 2018-01-18 05:23:52.794212000 Z
-  updated_at: 2020-09-09 14:53:47.967862000 Z
   created_by: 1
   updated_by: 1
   first_name: Drop
@@ -4124,8 +3928,6 @@ sum_55k_start_only:
   city:
   state_code: CO
   age: 49
-  created_at: 2018-01-18 05:23:52.832341000 Z
-  updated_at: 2020-09-09 14:53:47.993194000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -4166,8 +3968,6 @@ sum_100k_drop_anvil:
   city: Akron
   state_code: OH
   age: 28
-  created_at: 2018-02-03 23:41:41.141488000 Z
-  updated_at: 2020-09-09 14:53:48.020672000 Z
   created_by: 1
   updated_by: 1
   first_name: Drop
@@ -4208,8 +4008,6 @@ sum_100k_progress_cascade:
   city: Provo
   state_code: UT
   age: 20
-  created_at: 2018-02-24 22:28:24.196234000 Z
-  updated_at: 2020-09-09 14:53:48.049861000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -4250,8 +4048,6 @@ rufa_2017_12h_finished_first:
   city:
   state_code: AZ
   age: 20
-  created_at: 2019-01-30 18:51:23.404239000 Z
-  updated_at: 2020-09-09 14:53:48.078151000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -4292,8 +4088,6 @@ rufa_2017_12h_finished_lap6:
   city:
   state_code: UT
   age: 53
-  created_at: 2019-01-30 18:51:23.828956000 Z
-  updated_at: 2020-09-09 14:53:48.107568000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -4334,8 +4128,6 @@ rufa_2017_12h_progress_lap5_partial:
   city:
   state_code: UT
   age: 28
-  created_at: 2019-01-30 18:51:24.461838000 Z
-  updated_at: 2020-09-09 14:53:48.136697000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -4376,8 +4168,6 @@ rufa_2017_12h_progress_lap2:
   city:
   state_code: UT
   age: 24
-  created_at: 2019-01-30 18:51:24.783335000 Z
-  updated_at: 2020-09-09 14:53:48.160574000 Z
   created_by: 1
   updated_by: 1
   first_name: Progress
@@ -4418,8 +4208,6 @@ rufa_2017_12h_start_only:
   city:
   state_code: UT
   age: 44
-  created_at: 2019-01-30 18:51:24.983794000 Z
-  updated_at: 2020-09-09 14:53:48.188176000 Z
   created_by: 1
   updated_by: 1
   first_name: Start
@@ -4460,8 +4248,6 @@ rufa_2017_12h_not_started:
   city:
   state_code: UT
   age: 49
-  created_at: 2019-01-30 18:51:25.331813000 Z
-  updated_at: 2020-09-09 14:53:48.214658000 Z
   created_by: 1
   updated_by: 1
   first_name: Not
@@ -4502,8 +4288,6 @@ sum_100k_un_started:
   city: Fort Collins
   state_code: CO
   age: 29
-  created_at: 2019-01-30 19:51:50.515411000 Z
-  updated_at: 2020-09-09 14:53:48.239975000 Z
   created_by: 1
   updated_by: 1
   first_name: Un
@@ -4544,8 +4328,6 @@ sum_100k_on_dst_change:
   city:
   state_code:
   age:
-  created_at: 2019-02-01 17:50:28.758242000 Z
-  updated_at: 2019-02-21 23:23:43.936495000 Z
   created_by: 1
   updated_by: 1
   first_name: 'On'
@@ -4586,8 +4368,6 @@ sum_100k_across_dst_change:
   city:
   state_code:
   age:
-  created_at: 2019-02-01 17:50:43.430509000 Z
-  updated_at: 2019-02-21 23:23:44.146510000 Z
   created_by: 1
   updated_by: 1
   first_name: Across
@@ -4628,8 +4408,6 @@ ggd30_50k_finished_second:
   city:
   state_code:
   age: 43
-  created_at: 2019-02-21 23:18:43.251040000 Z
-  updated_at: 2019-02-21 23:20:16.853801000 Z
   created_by: 1
   updated_by: 1
   first_name: Finished
@@ -4670,8 +4448,6 @@ ggd30_12m_series_finisher:
   city: Superior
   state_code: CO
   age: 34
-  created_at: 2019-02-21 23:44:48.768830000 Z
-  updated_at: 2020-09-09 14:53:48.292193000 Z
   created_by: 1
   updated_by: 1
   first_name: Series
@@ -4712,8 +4488,6 @@ sum_55k_series_finisher:
   city:
   state_code:
   age: 34
-  created_at: 2019-02-21 23:47:35.929007000 Z
-  updated_at: 2019-02-21 23:49:30.323839000 Z
   created_by: 1
   updated_by: 1
   first_name: Series
@@ -4754,8 +4528,6 @@ sum_55k_slow_finisher:
   city:
   state_code: UT
   age: 64
-  created_at: 2019-02-21 23:54:25.605263000 Z
-  updated_at: 2019-02-21 23:56:29.365474000 Z
   created_by: 1
   updated_by: 1
   first_name: Slow
@@ -4796,8 +4568,6 @@ ggd30_12m_slow_finisher:
   city: Orem
   state_code: UT
   age: 64
-  created_at: 2019-02-21 23:57:44.862099000 Z
-  updated_at: 2019-02-22 00:08:09.025798000 Z
   created_by: 1
   updated_by: 1
   first_name: Slow

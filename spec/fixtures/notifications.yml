@@ -5,8 +5,6 @@ notification_1:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:09.723887000 Z
-  updated_at: 2019-08-18 02:21:09.723887000 Z
   created_by:
   updated_by:
   kind:
@@ -19,8 +17,6 @@ notification_2:
   distance: 0
   bitkey: 1
   follower_ids: "{4,3}"
-  created_at: 2019-08-18 02:21:39.637953000 Z
-  updated_at: 2019-08-18 02:21:39.637953000 Z
   created_by:
   updated_by:
   kind:
@@ -33,8 +29,6 @@ notification_3:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_at: 2019-08-18 02:21:39.643227000 Z
-  updated_at: 2019-08-18 02:21:39.643227000 Z
   created_by:
   updated_by:
   kind:
@@ -47,8 +41,6 @@ notification_4:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.645936000 Z
-  updated_at: 2019-08-18 02:21:39.645936000 Z
   created_by:
   updated_by:
   kind:
@@ -61,8 +53,6 @@ notification_5:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.649192000 Z
-  updated_at: 2019-08-18 02:21:39.649192000 Z
   created_by:
   updated_by:
   kind:
@@ -75,8 +65,6 @@ notification_6:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,4}"
-  created_at: 2019-08-18 02:21:39.652401000 Z
-  updated_at: 2019-08-18 02:21:39.652401000 Z
   created_by:
   updated_by:
   kind:
@@ -89,8 +77,6 @@ notification_7:
   distance: 8690
   bitkey: 1
   follower_ids: "{11}"
-  created_at: 2019-08-18 02:21:39.656086000 Z
-  updated_at: 2019-08-18 02:21:39.656086000 Z
   created_by:
   updated_by:
   kind:
@@ -103,8 +89,6 @@ notification_8:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.659282000 Z
-  updated_at: 2019-08-18 02:21:39.659282000 Z
   created_by:
   updated_by:
   kind:
@@ -117,8 +101,6 @@ notification_9:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.662004000 Z
-  updated_at: 2019-08-18 02:21:39.662004000 Z
   created_by:
   updated_by:
   kind:
@@ -131,8 +113,6 @@ notification_10:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.665225000 Z
-  updated_at: 2019-08-18 02:21:39.665225000 Z
   created_by:
   updated_by:
   kind:
@@ -145,8 +125,6 @@ notification_11:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.669213000 Z
-  updated_at: 2019-08-18 02:21:39.669213000 Z
   created_by:
   updated_by:
   kind:
@@ -159,8 +137,6 @@ notification_12:
   distance: 0
   bitkey: 1
   follower_ids: "{1}"
-  created_at: 2019-08-18 02:21:39.672655000 Z
-  updated_at: 2019-08-18 02:21:39.672655000 Z
   created_by:
   updated_by:
   kind:
@@ -173,8 +149,6 @@ notification_13:
   distance: 4345
   bitkey: 1
   follower_ids: "{11,1}"
-  created_at: 2019-08-18 02:21:39.675640000 Z
-  updated_at: 2019-08-18 02:21:39.675640000 Z
   created_by:
   updated_by:
   kind:
@@ -187,8 +161,6 @@ notification_14:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.678523000 Z
-  updated_at: 2019-08-18 02:21:39.678523000 Z
   created_by:
   updated_by:
   kind:
@@ -201,8 +173,6 @@ notification_15:
   distance: 0
   bitkey: 1
   follower_ids: "{1,11}"
-  created_at: 2019-08-18 02:21:39.681017000 Z
-  updated_at: 2019-08-18 02:21:39.681017000 Z
   created_by:
   updated_by:
   kind:
@@ -215,8 +185,6 @@ notification_16:
   distance: 4345
   bitkey: 1
   follower_ids: "{1,11}"
-  created_at: 2019-08-18 02:21:39.683807000 Z
-  updated_at: 2019-08-18 02:21:39.683807000 Z
   created_by:
   updated_by:
   kind:
@@ -229,8 +197,6 @@ notification_17:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.686460000 Z
-  updated_at: 2019-08-18 02:21:39.686460000 Z
   created_by:
   updated_by:
   kind:
@@ -243,8 +209,6 @@ notification_18:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:21:39.688866000 Z
-  updated_at: 2019-08-18 02:21:39.688866000 Z
   created_by:
   updated_by:
   kind:
@@ -257,8 +221,6 @@ notification_19:
   distance: 8690
   bitkey: 1
   follower_ids: "{1}"
-  created_at: 2019-08-18 02:21:39.691243000 Z
-  updated_at: 2019-08-18 02:21:39.691243000 Z
   created_by:
   updated_by:
   kind:
@@ -271,8 +233,6 @@ notification_20:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,1}"
-  created_at: 2019-08-18 02:21:39.693695000 Z
-  updated_at: 2019-08-18 02:21:39.693695000 Z
   created_by:
   updated_by:
   kind:
@@ -285,8 +245,6 @@ notification_21:
   distance: 8690
   bitkey: 1
   follower_ids: "{4}"
-  created_at: 2019-08-18 02:21:39.696204000 Z
-  updated_at: 2019-08-18 02:21:39.696204000 Z
   created_by:
   updated_by:
   kind:
@@ -299,8 +257,6 @@ notification_22:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.594299000 Z
-  updated_at: 2019-08-18 02:22:00.594299000 Z
   created_by:
   updated_by:
   kind:
@@ -313,8 +269,6 @@ notification_23:
   distance: 0
   bitkey: 1
   follower_ids: "{3,1}"
-  created_at: 2019-08-18 02:22:00.597465000 Z
-  updated_at: 2019-08-18 02:22:00.597465000 Z
   created_by:
   updated_by:
   kind:
@@ -327,8 +281,6 @@ notification_24:
   distance: 8690
   bitkey: 1
   follower_ids: "{4,1}"
-  created_at: 2019-08-18 02:22:00.600768000 Z
-  updated_at: 2019-08-18 02:22:00.600768000 Z
   created_by:
   updated_by:
   kind:
@@ -341,8 +293,6 @@ notification_25:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.603909000 Z
-  updated_at: 2019-08-18 02:22:00.603909000 Z
   created_by:
   updated_by:
   kind:
@@ -355,8 +305,6 @@ notification_26:
   distance: 0
   bitkey: 1
   follower_ids: "{3,1}"
-  created_at: 2019-08-18 02:22:00.606936000 Z
-  updated_at: 2019-08-18 02:22:00.606936000 Z
   created_by:
   updated_by:
   kind:
@@ -369,8 +317,6 @@ notification_27:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.610213000 Z
-  updated_at: 2019-08-18 02:22:00.610213000 Z
   created_by:
   updated_by:
   kind:
@@ -383,8 +329,6 @@ notification_28:
   distance: 8690
   bitkey: 1
   follower_ids: "{1,11}"
-  created_at: 2019-08-18 02:22:00.613146000 Z
-  updated_at: 2019-08-18 02:22:00.613146000 Z
   created_by:
   updated_by:
   kind:
@@ -397,8 +341,6 @@ notification_29:
   distance: 4345
   bitkey: 1
   follower_ids: "{1}"
-  created_at: 2019-08-18 02:22:00.615828000 Z
-  updated_at: 2019-08-18 02:22:00.615828000 Z
   created_by:
   updated_by:
   kind:
@@ -411,8 +353,6 @@ notification_30:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,11}"
-  created_at: 2019-08-18 02:22:00.619014000 Z
-  updated_at: 2019-08-18 02:22:00.619014000 Z
   created_by:
   updated_by:
   kind:
@@ -425,8 +365,6 @@ notification_31:
   distance: 0
   bitkey: 1
   follower_ids: "{11,4}"
-  created_at: 2019-08-18 02:22:00.621946000 Z
-  updated_at: 2019-08-18 02:22:00.621946000 Z
   created_by:
   updated_by:
   kind:
@@ -439,8 +377,6 @@ notification_32:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.624788000 Z
-  updated_at: 2019-08-18 02:22:00.624788000 Z
   created_by:
   updated_by:
   kind:
@@ -453,8 +389,6 @@ notification_33:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.628353000 Z
-  updated_at: 2019-08-18 02:22:00.628353000 Z
   created_by:
   updated_by:
   kind:
@@ -467,8 +401,6 @@ notification_34:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.631874000 Z
-  updated_at: 2019-08-18 02:22:00.631874000 Z
   created_by:
   updated_by:
   kind:
@@ -481,8 +413,6 @@ notification_35:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.635056000 Z
-  updated_at: 2019-08-18 02:22:00.635056000 Z
   created_by:
   updated_by:
   kind:
@@ -495,8 +425,6 @@ notification_36:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,4}"
-  created_at: 2019-08-18 02:22:00.637998000 Z
-  updated_at: 2019-08-18 02:22:00.637998000 Z
   created_by:
   updated_by:
   kind:
@@ -509,8 +437,6 @@ notification_37:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.640948000 Z
-  updated_at: 2019-08-18 02:22:00.640948000 Z
   created_by:
   updated_by:
   kind:
@@ -523,8 +449,6 @@ notification_38:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_at: 2019-08-18 02:22:00.643630000 Z
-  updated_at: 2019-08-18 02:22:00.643630000 Z
   created_by:
   updated_by:
   kind:
@@ -537,8 +461,6 @@ notification_39:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:00.646174000 Z
-  updated_at: 2019-08-18 02:22:00.646174000 Z
   created_by:
   updated_by:
   kind:
@@ -551,8 +473,6 @@ notification_40:
   distance: 4345
   bitkey: 1
   follower_ids: "{4}"
-  created_at: 2019-08-18 02:22:00.648825000 Z
-  updated_at: 2019-08-18 02:22:00.648825000 Z
   created_by:
   updated_by:
   kind:
@@ -565,8 +485,6 @@ notification_41:
   distance: 4345
   bitkey: 1
   follower_ids: "{4,11}"
-  created_at: 2019-08-18 02:22:00.651511000 Z
-  updated_at: 2019-08-18 02:22:00.651511000 Z
   created_by:
   updated_by:
   kind:
@@ -579,8 +497,6 @@ notification_42:
   distance: 8690
   bitkey: 1
   follower_ids: "{11}"
-  created_at: 2019-08-18 02:22:03.740365000 Z
-  updated_at: 2019-08-18 02:22:03.740365000 Z
   created_by:
   updated_by:
   kind:
@@ -593,8 +509,6 @@ notification_43:
   distance: 0
   bitkey: 1
   follower_ids: "{3,4}"
-  created_at: 2019-08-18 02:22:03.743891000 Z
-  updated_at: 2019-08-18 02:22:03.743891000 Z
   created_by:
   updated_by:
   kind:
@@ -607,8 +521,6 @@ notification_44:
   distance: 0
   bitkey: 1
   follower_ids: "{4,1}"
-  created_at: 2019-08-18 02:22:03.747260000 Z
-  updated_at: 2019-08-18 02:22:03.747260000 Z
   created_by:
   updated_by:
   kind:
@@ -621,8 +533,6 @@ notification_45:
   distance: 0
   bitkey: 1
   follower_ids: "{11,1}"
-  created_at: 2019-08-18 02:22:03.750294000 Z
-  updated_at: 2019-08-18 02:22:03.750294000 Z
   created_by:
   updated_by:
   kind:
@@ -635,8 +545,6 @@ notification_46:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.753331000 Z
-  updated_at: 2019-08-18 02:22:03.753331000 Z
   created_by:
   updated_by:
   kind:
@@ -649,8 +557,6 @@ notification_47:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.756028000 Z
-  updated_at: 2019-08-18 02:22:03.756028000 Z
   created_by:
   updated_by:
   kind:
@@ -663,8 +569,6 @@ notification_48:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,1}"
-  created_at: 2019-08-18 02:22:03.758756000 Z
-  updated_at: 2019-08-18 02:22:03.758756000 Z
   created_by:
   updated_by:
   kind:
@@ -677,8 +581,6 @@ notification_49:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.761502000 Z
-  updated_at: 2019-08-18 02:22:03.761502000 Z
   created_by:
   updated_by:
   kind:
@@ -691,8 +593,6 @@ notification_50:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,1}"
-  created_at: 2019-08-18 02:22:03.764169000 Z
-  updated_at: 2019-08-18 02:22:03.764169000 Z
   created_by:
   updated_by:
   kind:
@@ -705,8 +605,6 @@ notification_51:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.767274000 Z
-  updated_at: 2019-08-18 02:22:03.767274000 Z
   created_by:
   updated_by:
   kind:
@@ -719,8 +617,6 @@ notification_52:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.769888000 Z
-  updated_at: 2019-08-18 02:22:03.769888000 Z
   created_by:
   updated_by:
   kind:
@@ -733,8 +629,6 @@ notification_53:
   distance: 4345
   bitkey: 1
   follower_ids: "{3}"
-  created_at: 2019-08-18 02:22:03.772715000 Z
-  updated_at: 2019-08-18 02:22:03.772715000 Z
   created_by:
   updated_by:
   kind:
@@ -747,8 +641,6 @@ notification_54:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_at: 2019-08-18 02:22:03.775720000 Z
-  updated_at: 2019-08-18 02:22:03.775720000 Z
   created_by:
   updated_by:
   kind:
@@ -761,8 +653,6 @@ notification_55:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:22:03.778815000 Z
-  updated_at: 2019-08-18 02:22:03.778815000 Z
   created_by:
   updated_by:
   kind:
@@ -775,8 +665,6 @@ notification_56:
   distance: 4345
   bitkey: 1
   follower_ids: "{11,3}"
-  created_at: 2019-08-18 02:22:03.781889000 Z
-  updated_at: 2019-08-18 02:22:03.781889000 Z
   created_by:
   updated_by:
   kind:
@@ -789,8 +677,6 @@ notification_57:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_at: 2019-08-18 02:22:03.784907000 Z
-  updated_at: 2019-08-18 02:22:03.784907000 Z
   created_by:
   updated_by:
   kind:
@@ -803,8 +689,6 @@ notification_58:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_at: 2019-08-18 02:22:03.787679000 Z
-  updated_at: 2019-08-18 02:22:03.787679000 Z
   created_by:
   updated_by:
   kind:
@@ -817,8 +701,6 @@ notification_59:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_at: 2019-08-18 02:22:03.790433000 Z
-  updated_at: 2019-08-18 02:22:03.790433000 Z
   created_by:
   updated_by:
   kind:
@@ -831,8 +713,6 @@ notification_60:
   distance: 0
   bitkey: 1
   follower_ids: "{11}"
-  created_at: 2019-08-18 02:22:03.793040000 Z
-  updated_at: 2019-08-18 02:22:03.793040000 Z
   created_by:
   updated_by:
   kind:
@@ -845,8 +725,6 @@ notification_61:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,11}"
-  created_at: 2019-08-18 02:22:03.795526000 Z
-  updated_at: 2019-08-18 02:22:03.795526000 Z
   created_by:
   updated_by:
   kind:
@@ -859,8 +737,6 @@ notification_62:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.703434000 Z
-  updated_at: 2019-08-18 02:23:49.703434000 Z
   created_by:
   updated_by:
   kind:
@@ -873,8 +749,6 @@ notification_63:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.706540000 Z
-  updated_at: 2019-08-18 02:23:49.706540000 Z
   created_by:
   updated_by:
   kind:
@@ -887,8 +761,6 @@ notification_64:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.710050000 Z
-  updated_at: 2019-08-18 02:23:49.710050000 Z
   created_by:
   updated_by:
   kind:
@@ -901,8 +773,6 @@ notification_65:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.712839000 Z
-  updated_at: 2019-08-18 02:23:49.712839000 Z
   created_by:
   updated_by:
   kind:
@@ -915,8 +785,6 @@ notification_66:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.715634000 Z
-  updated_at: 2019-08-18 02:23:49.715634000 Z
   created_by:
   updated_by:
   kind:
@@ -929,8 +797,6 @@ notification_67:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.718365000 Z
-  updated_at: 2019-08-18 02:23:49.718365000 Z
   created_by:
   updated_by:
   kind:
@@ -943,8 +809,6 @@ notification_68:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.721319000 Z
-  updated_at: 2019-08-18 02:23:49.721319000 Z
   created_by:
   updated_by:
   kind:
@@ -957,8 +821,6 @@ notification_69:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.724003000 Z
-  updated_at: 2019-08-18 02:23:49.724003000 Z
   created_by:
   updated_by:
   kind:
@@ -971,8 +833,6 @@ notification_70:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.727139000 Z
-  updated_at: 2019-08-18 02:23:49.727139000 Z
   created_by:
   updated_by:
   kind:
@@ -985,8 +845,6 @@ notification_71:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.730150000 Z
-  updated_at: 2019-08-18 02:23:49.730150000 Z
   created_by:
   updated_by:
   kind:
@@ -999,8 +857,6 @@ notification_72:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.732711000 Z
-  updated_at: 2019-08-18 02:23:49.732711000 Z
   created_by:
   updated_by:
   kind:
@@ -1013,8 +869,6 @@ notification_73:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.735305000 Z
-  updated_at: 2019-08-18 02:23:49.735305000 Z
   created_by:
   updated_by:
   kind:
@@ -1027,8 +881,6 @@ notification_74:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.737657000 Z
-  updated_at: 2019-08-18 02:23:49.737657000 Z
   created_by:
   updated_by:
   kind:
@@ -1041,8 +893,6 @@ notification_75:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.740214000 Z
-  updated_at: 2019-08-18 02:23:49.740214000 Z
   created_by:
   updated_by:
   kind:
@@ -1055,8 +905,6 @@ notification_76:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.742797000 Z
-  updated_at: 2019-08-18 02:23:49.742797000 Z
   created_by:
   updated_by:
   kind:
@@ -1069,8 +917,6 @@ notification_77:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.745507000 Z
-  updated_at: 2019-08-18 02:23:49.745507000 Z
   created_by:
   updated_by:
   kind:
@@ -1083,8 +929,6 @@ notification_78:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.748012000 Z
-  updated_at: 2019-08-18 02:23:49.748012000 Z
   created_by:
   updated_by:
   kind:
@@ -1097,8 +941,6 @@ notification_79:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.751010000 Z
-  updated_at: 2019-08-18 02:23:49.751010000 Z
   created_by:
   updated_by:
   kind:
@@ -1111,8 +953,6 @@ notification_80:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.753972000 Z
-  updated_at: 2019-08-18 02:23:49.753972000 Z
   created_by:
   updated_by:
   kind:
@@ -1125,8 +965,6 @@ notification_81:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_at: 2019-08-18 02:23:49.756949000 Z
-  updated_at: 2019-08-18 02:23:49.756949000 Z
   created_by:
   updated_by:
   kind:

@@ -2,29 +2,11 @@
 
 # Credit to Yi Zeng, https://yizeng.me/2017/07/16/generate-rails-test-fixtures-yaml-from-database-dump/
 
+require_relative "fixture_helper"
+
 namespace :db do
   desc "Convert development database to Rails test fixtures"
   task to_fixtures: :environment do
-    TABLES_TO_SKIP = %w[
-      active_storage_attachments
-      active_storage_blobs
-      active_storage_variant_records
-      ar_internal_metadata
-      data_migrations
-      delayed_jobs
-      effort_segments
-      export_jobs
-      friendly_id_slugs
-      import_jobs
-      locations
-      lottery_simulations
-      lottery_simulation_runs
-      schema_info
-      schema_migrations
-      shortened_urls
-      versions
-    ].freeze
-
     PRIMARY_KEY_MAP = {
       "effort_segments" => "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap"
     }.freeze
@@ -32,7 +14,7 @@ namespace :db do
     begin
       ActiveRecord::Base.establish_connection
       ActiveRecord::Base.connection.tables.each do |table_name|
-        next if table_name.in?(TABLES_TO_SKIP)
+        next unless table_name.to_sym.in?(FixtureHelper::FIXTURE_TABLES)
 
         counter = 0
         file_path = "#{Rails.root}/spec/fixtures/#{table_name}.yml"
@@ -58,6 +40,10 @@ namespace :db do
                     else
                       "#{table_name.singularize}_#{suffix}"
                     end
+            FixtureHelper::ATTRIBUTES_TO_IGNORE.each do |attr|
+              next if attr.in? FixtureHelper::ATTRIBUTES_TO_PRESERVE.fetch(table_name.to_sym, [])
+              record.delete(attr.to_s)
+            end
             hash[title] = record
           end
           puts "Writing table '#{table_name}' to '#{file_path}'"
@@ -73,38 +59,17 @@ namespace :db do
   task from_fixtures: :environment do
     process_start_time = Time.current
 
-    TABLES_TO_SKIP = %w[
-      active_storage_attachments
-      active_storage_blobs
-      active_storage_variant_records
-      ar_internal_metadata
-      data_migrations
-      delayed_jobs
-      effort_segments
-      export_jobs
-      friendly_id_slugs
-      import_jobs
-      locations
-      lottery_simulations
-      lottery_simulation_runs
-      schema_info
-      schema_migrations
-      shortened_urls
-      versions
-    ].freeze
-
     begin
       ActiveRecord::Base.establish_connection
-      table_names = ActiveRecord::Base.connection.tables - TABLES_TO_SKIP
       ENV["FIXTURES_PATH"] = "spec/fixtures"
-      ENV["FIXTURES"] = table_names.join(",")
+      ENV["FIXTURES"] = FixtureHelper::FIXTURE_TABLES.join(",")
       ENV["RAILS_ENV"] = "development"
       Rake::Task["db:fixtures:load"].invoke
     ensure
-      ActiveRecord::Base.connection.close if ActiveRecord::Base.connection
+      ActiveRecord::Base.connection&.close
     end
 
     elapsed_time = Time.current - process_start_time
-    puts "\nFinished creating records for #{to_sentence(table_names)} in #{elapsed_time} seconds"
+    puts "\nFinished creating records for #{FixtureHelper::FIXTURE_TABLES.join(', ')} in #{elapsed_time} seconds"
   end
 end

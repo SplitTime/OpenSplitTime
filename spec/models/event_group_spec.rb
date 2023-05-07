@@ -56,21 +56,12 @@ RSpec.describe EventGroup, type: :model do
 
   describe "after_save" do
     let(:event_group) { event_groups(:dirty_30) }
-    let(:events) { event_group.events }
+    let(:event_1) { event_group.events.first }
+    let(:event_2) { event_group.events.last }
 
     it "touches all events" do
-      events.each do |event|
-        event.reload
-        expect(event.updated_at > 1.minute.ago).not_to eq(true)
-      end
-
       expect(event_group).to be_available_live
-      event_group.update(available_live: false)
-
-      events.each do |event|
-        event.reload
-        expect(event.updated_at > 1.minute.ago).to eq(true)
-      end
+      expect { event_group.update(available_live: false) }.to change { event_1.reload.updated_at }.and change { event_2.reload.updated_at }
     end
 
     describe "conforms the concealed status of related records" do

@@ -40,6 +40,10 @@ Rails.application.routes.draw do
     get "api", to: "visitors#api"
   end
 
+  namespace :webhooks do
+    resources :sendgrid_events, only: [:create]
+  end
+
   namespace :user_settings do
     get :preferences
     get :password
@@ -285,7 +289,6 @@ Rails.application.routes.draw do
       end
       resources :organizations, only: [:index, :show, :create, :update, :destroy]
       resources :people, only: [:index, :show, :create, :update, :destroy]
-      resources :sendgrid_events, only: [:create]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
       resources :users, only: [:show, :create, :update, :destroy] do

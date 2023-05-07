@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Webhooks::SendgridEventsController < ::ApplicationController
+  skip_before_action :verify_authenticity_token, if: :valid_webhook_token?
+
   def create
     status = :ok
     rows = params.require(:_json)
@@ -36,5 +38,11 @@ class Webhooks::SendgridEventsController < ::ApplicationController
       :type,
       :useragent,
     ]
+  end
+
+  def valid_webhook_token?
+    Rails.logger.info request.headers
+
+    true
   end
 end

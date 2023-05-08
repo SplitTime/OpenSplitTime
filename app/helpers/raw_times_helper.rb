@@ -50,24 +50,12 @@ module RawTimesHelper
     link_to fa_icon("trash"), url, options
   end
 
-  def link_to_raw_time_match(split_time, raw_time_id, icon)
-    if split_time.persisted?
-      url = split_time_path(split_time)
-      tooltip = icon == :link ? "Match this raw time" : "Set this as the governing time"
-      method = :patch
-      split_time_params = { split_time: { matching_raw_time_id: raw_time_id } }
-    else
-      url = create_split_time_from_raw_time_effort_path(split_time.effort_id)
-      split_time_params = { split_time: { raw_time_id: raw_time_id, lap: split_time.lap } }
-      tooltip = "Create a split time from this raw time"
-      method = :post
-    end
-
+  def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:)
     html_options = {
-      id: "match-raw-time-#{raw_time_id}",
-      class: "btn btn-sm btn-outline-success m-1",
+      id: button_id,
+      class: "btn btn-sm btn-outline-#{button_type} m-1",
       method: method,
-      params: split_time_params,
+      params: params,
       data: {
         controller: "tooltip",
         bs_placement: :bottom,
@@ -79,63 +67,63 @@ module RawTimesHelper
     button_to(url, html_options) { fa_icon(icon) }
   end
 
-  def link_to_raw_time_unmatch(split_time, raw_time_id)
-    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
-    tooltip = "Un-match this raw time"
-    raw_time_params = { raw_time: { split_time_id: nil } }
-    options = {
-      id: "unmatch-raw-time-#{raw_time_id}",
-      class: "btn btn-sm btn-outline-danger m-1",
-      method: :patch,
-      params: raw_time_params,
-      data: {
-        controller: "tooltip",
-        bs_placement: :bottom,
-        bs_original_title: tooltip,
-        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-      },
-    }
+  def button_to_raw_time_match(split_time, raw_time_id, icon)
+    if split_time.persisted?
+      url = split_time_path(split_time)
+      params = { split_time: { matching_raw_time_id: raw_time_id } }
+      method = :patch
+      tooltip = icon == :link ? "Match this raw time" : "Set this as the governing time"
+    else
+      url = create_split_time_from_raw_time_effort_path(split_time.effort_id)
+      params = { split_time: { raw_time_id: raw_time_id, lap: split_time.lap } }
+      method = :post
+      tooltip = "Create a split time from this raw time"
+    end
 
-    button_to(url, options) { fa_icon(:unlink) }
+    button_to_raw_time_manage(
+      url: url,
+      params: params,
+      method: method,
+      button_id: "match-raw-time-#{raw_time_id}",
+      button_type: "success",
+      tooltip: tooltip,
+      icon: icon,
+    )
   end
 
-  def link_to_raw_time_associate(split_time, raw_time_id)
-    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
-    tooltip = "Associate this raw time with this effort"
-    raw_time_params = { raw_time: { disassociated_from_effort: false } }
-    options = {
-      id: "associate-raw-time-#{raw_time_id}",
-      class: "btn btn-sm btn-outline-success m-1",
+  def button_to_raw_time_unmatch(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { split_time_id: nil } },
       method: :patch,
-      params: raw_time_params,
-      data: {
-        controller: "tooltip",
-        bs_placement: :bottom,
-        bs_original_title: tooltip,
-        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-      },
-    }
-
-    button_to(url, options) { fa_icon(:plus_square) }
+      button_id: "unmatch-raw-time-#{raw_time_id}",
+      button_type: "danger",
+      tooltip: "Un-match this raw time",
+      icon: :unlink,
+    )
   end
 
-  def link_to_raw_time_disassociate(split_time, raw_time_id)
-    url = raw_time_path(raw_time_id, effort_id: split_time.effort_id)
-    tooltip = "Disassociate this raw time from this effort"
-    raw_time_params = { raw_time: { disassociated_from_effort: true } }
-    options = {
-      id: "disassociate-raw-time-#{raw_time_id}",
-      class: "btn btn-sm btn-outline-danger m-1",
+  def button_to_raw_time_associate(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { disassociated_from_effort: false } },
       method: :patch,
-      params: raw_time_params,
-      data: {
-        controller: "tooltip",
-        bs_placement: :bottom,
-        bs_original_title: tooltip,
-        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-      },
-    }
+      button_id: "associate-raw-time-#{raw_time_id}",
+      button_type: "success",
+      tooltip: "Associate this raw time with this effort",
+      icon: :plus_square,
+    )
+  end
 
-    button_to(url, options) { fa_icon(:minus_square) }
+  def button_to_raw_time_disassociate(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { disassociated_from_effort: true } },
+      method: :patch,
+      button_id: "disassociate-raw-time-#{raw_time_id}",
+      button_type: "danger",
+      tooltip: "Disassociate this raw time from this effort",
+      icon: :minus_square,
+    )
   end
 end

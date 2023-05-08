@@ -12,8 +12,8 @@
     <div>
       <% row.matched_raw_times.each do |rt| %>
         <div class="d-flex justify-content-center">
-          <%= link_to_raw_time_match(row.split_time, rt.id, :equals) %>
-          <%= link_to_raw_time_unmatch(row.split_time, rt.id) %>
+          <%= button_to_raw_time_match(row.split_time, rt.id, :equals) %>
+          <%= button_to_raw_time_unmatch(row.split_time, rt.id) %>
           <span class="m-1"><%= rt.military_time(presenter.home_time_zone) %></span>
         </div>
       <% end %>
@@ -23,8 +23,8 @@
   <td class="text-center">
     <% row.unmatched_raw_times.each do |rt| %>
       <div class="d-flex justify-content-center">
-        <%= link_to_raw_time_match(row.split_time, rt.id, :link) %>
-        <%= link_to_raw_time_disassociate(row.split_time, rt.id) %>
+        <%= button_to_raw_time_match(row.split_time, rt.id, :link) %>
+        <%= button_to_raw_time_disassociate(row.split_time, rt.id) %>
         <span class="m-1"><%= rt.military_time(presenter.home_time_zone) %></span>
       </div>
     <% end %>
@@ -32,7 +32,7 @@
 
   <td class="text-center">
     <% row.disassociated_raw_times.each do |rt| %>
-      <div><%= link_to_raw_time_associate(row.split_time, rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
+      <div><%= button_to_raw_time_associate(row.split_time, rt.id) %> <%= rt.military_time(presenter.home_time_zone) %></div>
     <% end %>
   </td>
 

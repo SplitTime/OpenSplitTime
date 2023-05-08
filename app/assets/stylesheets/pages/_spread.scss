@@ -1,3 +1,10 @@
 body.events.spread {
     overflow-x: visible;
+
+    tbody tr.status {
+	height: 1.5em;
+	font-size: 0.9em;
+	font-variant: small-caps;
+	background: lightgray;
+    }
 }

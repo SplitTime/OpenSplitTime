@@ -23,18 +23,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     {elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment"}
   end
 
-  def effort_times_rows
-    @effort_times_rows ||=
-      filtered_ranked_efforts.map do |effort|
-        EffortTimesRow.new(effort: effort,
-                           lap_splits: lap_splits,
-                           split_times: split_times_by_effort.fetch(effort.id, []),
-                           display_style: display_style)
+  def grouped_effort_times_rows
+    if event.laps_unlimited? && !event.finished?
+      effort_times_rows.flatten.group_by(&:started?).then do |grouped_results|
+        {"Started" => grouped_results[true].sort_by { |row| -row.effort.laps_finished },
+         "Not Started" => grouped_results[false]}
       end
-  end
-
-  def effort_times_row_ids
-    effort_times_rows.map(&:id)
+    else
+      effort_times_rows.group_by(&:effort_status)
+    end
   end
 
   def lap_splits
@@ -105,5 +102,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   def split_times_by_effort
     @split_times_by_effort ||= split_times.group_by { |st| st[:effort_id] }
+  end
+
+  def effort_times_rows
+    @effort_times_rows ||=
+      filtered_ranked_efforts.map do |effort|
+        EffortTimesRow.new(effort: effort,
+                           lap_splits: lap_splits,
+                           split_times: split_times_by_effort.fetch(effort.id, []),
+                           display_style: display_style)
+      end
   end
 end

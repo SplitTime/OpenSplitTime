@@ -1,5 +1,5 @@
-<%# locals: (effort:, presenter:) -%>
+<%# locals: (effort:) -%>
 
-<div id="<%= dom_id(effort, :check_in_button) %>" class="d-grid">
-  <%= link_to_toggle_check_in(effort) %>
+<div id="<%= dom_id(effort, :check_in_button) %>">
+  <%= button_to_toggle_check_in(effort) %>
 </div>

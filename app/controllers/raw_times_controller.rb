@@ -13,7 +13,10 @@ class RawTimesController < ApplicationController
       report_raw_times_available(@raw_time.event_group)
       respond_to do |format|
         format.html { redirect_to request.referrer || root_path }
-        format.turbo_stream { @audit_presenter = EffortAuditView.new(@effort) if @effort.present? }
+        format.turbo_stream do
+          @audit_presenter = EffortAuditView.new(@effort) if @effort.present?
+          @event_group = @raw_time.event_group
+        end
       end
     else
       message = "Raw time could not be updated.\n#{@raw_time.errors.full_messages.join("\n")}"

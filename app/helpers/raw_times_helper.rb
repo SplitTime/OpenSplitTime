@@ -17,54 +17,62 @@ module RawTimesHelper
     end
   end
 
-  def link_to_toggle_raw_time_review(raw_time)
-    if raw_time.reviewed_by? || raw_time.reviewed_at?
-      reviewed_by = nil
-      reviewed_at = nil
-      tooltip_text = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
-      button_class = "primary"
-    else
-      reviewed_at = Time.current
-      tooltip_text = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
-      button_class = "outline-secondary"
-    end
-    url = raw_time_path(raw_time, raw_time: { reviewed_by: reviewed_by, reviewed_at: reviewed_at }, referrer_path: request.params)
-    options = { method: :patch,
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip_text },
-                class: "btn btn-#{button_class} click-spinner" }
-
-    link_to fa_icon("glasses"), url, options
-  end
-
-  def link_to_raw_time_delete(raw_time)
-    url = raw_time_path(raw_time, referrer_path: request.params)
-    tooltip = "Delete raw time"
-    options = { method: :delete,
-                data: { confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?",
-                        controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip },
-                class: "btn btn-danger" }
-    link_to fa_icon("trash"), url, options
-  end
-
-  def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:)
+  def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:, confirm: nil)
     html_options = {
       id: button_id,
-      class: "btn btn-sm btn-outline-#{button_type} m-1",
+      class: "btn btn-sm btn-#{button_type} m-1",
       method: method,
       params: params,
       data: {
         controller: "tooltip",
         bs_placement: :bottom,
         bs_original_title: tooltip,
+        turbo_confirm: confirm,
         turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
       },
     }
 
     button_to(url, html_options) { fa_icon(icon) }
+  end
+
+  def link_to_toggle_raw_time_review(raw_time)
+    if raw_time.reviewed_at?
+      params = { raw_time: { reviewed_by: nil, reviewed_at: nil } }
+      tooltip = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
+      button_id = "set-unreviewed-raw-time-#{raw_time.id}"
+      button_type = "primary"
+      icon = "user-plus"
+    else
+      params = { raw_time: { reviewed_by: nil, reviewed_at: Time.current } }
+      tooltip = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
+      button_id = "set-reviewed-raw-time-#{raw_time.id}"
+      button_type = "outline-secondary"
+      icon = "user-minus"
+    end
+
+    url = raw_time_path(raw_time, referrer_path: request.params)
+    button_to_raw_time_manage(
+      url: url,
+      params: params,
+      method: :patch,
+      button_id: button_id,
+      button_type: button_type,
+      tooltip: tooltip,
+      icon: icon,
+    )
+  end
+
+  def link_to_raw_time_delete(raw_time)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time, referrer_path: request.params),
+      params: nil,
+      method: :delete,
+      button_id: "delete-raw-time-#{raw_time.id}",
+      button_type: "outline-danger",
+      tooltip: "Delete raw time",
+      icon: "trash",
+      confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?"
+    )
   end
 
   def button_to_raw_time_match(split_time, raw_time_id, icon)
@@ -85,7 +93,7 @@ module RawTimesHelper
       params: params,
       method: method,
       button_id: "match-raw-time-#{raw_time_id}",
-      button_type: "success",
+      button_type: "outline-success",
       tooltip: tooltip,
       icon: icon,
     )
@@ -97,7 +105,7 @@ module RawTimesHelper
       params: { raw_time: { split_time_id: nil } },
       method: :patch,
       button_id: "unmatch-raw-time-#{raw_time_id}",
-      button_type: "danger",
+      button_type: "outline-danger",
       tooltip: "Un-match this raw time",
       icon: :unlink,
     )
@@ -109,7 +117,7 @@ module RawTimesHelper
       params: { raw_time: { disassociated_from_effort: false } },
       method: :patch,
       button_id: "associate-raw-time-#{raw_time_id}",
-      button_type: "success",
+      button_type: "outline-success",
       tooltip: "Associate this raw time with this effort",
       icon: :plus_square,
     )
@@ -121,7 +129,7 @@ module RawTimesHelper
       params: { raw_time: { disassociated_from_effort: true } },
       method: :patch,
       button_id: "disassociate-raw-time-#{raw_time_id}",
-      button_type: "danger",
+      button_type: "outline-danger",
       tooltip: "Disassociate this raw time from this effort",
       icon: :minus_square,
     )

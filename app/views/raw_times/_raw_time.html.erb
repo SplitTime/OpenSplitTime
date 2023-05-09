@@ -23,8 +23,8 @@
   <td><%= raw_time.matched? ? "Yes" : "No" %></td>
   <td>
     <div class="d-flex justify-content-center">
-      <%= link_to_toggle_raw_time_review(raw_time) %>
-      <%= link_to_raw_time_delete(raw_time) %>
+      <%= button_to_toggle_raw_time_review(raw_time) %>
+      <%= button_to_raw_time_delete(raw_time) %>
     </div>
   </td>
 </tr>

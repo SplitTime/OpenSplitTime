@@ -35,7 +35,7 @@ module RawTimesHelper
     button_to(url, html_options) { fa_icon(icon) }
   end
 
-  def link_to_toggle_raw_time_review(raw_time)
+  def button_to_toggle_raw_time_review(raw_time)
     if raw_time.reviewed_at?
       params = { raw_time: { reviewed_by: nil, reviewed_at: nil } }
       tooltip = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
@@ -62,7 +62,7 @@ module RawTimesHelper
     )
   end
 
-  def link_to_raw_time_delete(raw_time)
+  def button_to_raw_time_delete(raw_time)
     button_to_raw_time_manage(
       url: raw_time_path(raw_time, referrer_path: request.params),
       params: nil,

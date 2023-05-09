@@ -1,10 +1,10 @@
-<%# locals: (effort:, presenter:) -%>
+<%# locals: (effort:, multiple_events, :started_efforts_present:) -%>
 
-<tr id="<%= dom_id effort, :roster_row %>">
+<tr id="<%= dom_id effort, :roster_row %>" data-controller="highlight" data-highlight-target="element" data-highlight-created-value="<%= effort.updated_at.to_i %>">
   <td class="text-center">
     <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
   </td>
-  <% if presenter.multiple_events? %>
+  <% if multiple_events %>
     <td><%= effort.event.guaranteed_short_name %></td>
   <% end %>
   <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
@@ -14,7 +14,7 @@
   <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
   <td><%= day_time_military_format(effort.actual_start_time_local) %></td>
   <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
-  <% if presenter.started_efforts.present? %>
+  <% if started_efforts_present %>
     <td><%= effort.data_status %></td>
   <% end %>
   <td>

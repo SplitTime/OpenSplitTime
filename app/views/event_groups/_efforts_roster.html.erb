@@ -1,3 +1,5 @@
+<%= turbo_stream_from @presenter.event_group %>
+
 <div data-controller="roster">
   <%= render "start_efforts_modal", resource: :event_group %>
   <aside class="ost-toolbar">
@@ -77,7 +79,10 @@
         <%= render partial: "efforts/entrant_for_roster",
                    collection: @presenter.filtered_roster_efforts,
                    as: :effort,
-                   locals: { presenter: @presenter } %>
+                   locals: {
+                     multiple_events: @presenter.multiple_events?,
+                     started_efforts_present: @presenter.started_efforts.any?
+                   } %>
         </tbody>
       </table>
 

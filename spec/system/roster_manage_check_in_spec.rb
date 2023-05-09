@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "visit an event group roster page and try various features", js: true do
+RSpec.describe "manage check-ins from the event group roster page", js: true do
   include ActionView::RecordIdentifier
 
   let(:steward) { users(:fifth_user) }

@@ -34,10 +34,20 @@ class RawTimesController < ApplicationController
   def destroy
     authorize @raw_time
 
-    @raw_time.destroy
-    respond_to do |format|
-      format.html { redirect_to request.referrer }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@raw_time) }
+    if @raw_time.destroy
+      respond_to do |format|
+        format.html { redirect_to request.referrer }
+        format.turbo_stream { render turbo_stream: turbo_stream.remove(@raw_time) }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to request.referrer || root_path }
+
+        format.turbo_stream do
+          flash.now[:danger] = "Raw time could not be deleted."
+          render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+        end
+      end
     end
   end
 

@@ -128,6 +128,7 @@ Rails.application.routes.draw do
       get :setup
       get :setup_summary
       get :split_raw_times
+      get :start_efforts_form
       get :stats
       get :sync_efforts
       get :traffic

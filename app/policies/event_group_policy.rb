@@ -132,6 +132,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def start_efforts_form?
+    start_efforts?
+  end
+
   def start_efforts?
     user.authorized_to_edit?(event_group)
   end

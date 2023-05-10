@@ -6,7 +6,11 @@
 
 <%= turbo_stream.replace dom_id(effort_presenter.effort, :roster_row),
                         partial: "entrant_for_roster",
-                        locals: { effort: effort_presenter.effort, presenter: roster_presenter } %>
+                        locals: {
+                          effort: effort_presenter.effort,
+                          multiple_events: roster_presenter.multiple_events?,
+                          started_efforts_present: roster_presenter.started_efforts.present?,
+                        } %>
 
 <%= turbo_stream.replace dom_id(effort_presenter.effort, :start_stop_buttons),
                         partial: "start_stop_buttons",

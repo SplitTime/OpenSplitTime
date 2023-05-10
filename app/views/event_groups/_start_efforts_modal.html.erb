@@ -1,58 +1,38 @@
-<!--requires local variable 'resource'-->
+<%# locals: (event_group:, effort_count:, scheduled_start_time_local:) -%>
 
-<div class="modal fade" data-roster-target="startEffortsModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><strong>Start Entrants</strong></h3>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<div class="modal-header">
+  <h3 class="modal-title"><strong><%= "Start #{pluralize effort_count, 'Entrant'}" %></strong></h3>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center" style="display:none" data-roster-target="error">
+    <div class="alert alert-info d-block" role="alert">
+      <div class="col col-login">
+        <strong>Could not start entrants.</strong>
       </div>
-      <div class="modal-body">
-        <div class="row justify-content-center" style="display:none" data-roster-target="error">
-          <div class="alert alert-info d-block" role="alert">
-            <div class="col col-login">
-              <strong>Could not start entrants.</strong>
-            </div>
-          </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col col-login">
+      <%= form_with url: start_efforts_event_group_path(event_group), method: :patch do |f| %>
+        <%= f.hidden_field "filter[ready_to_start]", value: true %>
+        <%= f.hidden_field "filter[assumed_start_time]", value: scheduled_start_time_local.in_time_zone %>
+
+        <div class="mb-3">
+          <%= f.label :scheduled_start_time %>
+          <p><%= l(scheduled_start_time_local, format: :datetime_input) %></p>
         </div>
-        <div class="row justify-content-center">
-          <div class="col col-login">
-            <%= form_with url: start_efforts_event_group_path(@presenter.event_group),
-                          method: :patch,
-                          format: :json,
-                          local: false,
-                          data: {action: 'ajax:success->roster#hideErrors ajax:error->roster#showErrors',
-                                 turbo: false} do |f| %>
 
-              <% if resource == :event_group %>
-                <%= f.hidden_field 'filter[ready_to_start]', value: true %>
-                <%= f.hidden_field 'filter[assumed_start_time]', value: nil,
-                                   data: {"roster-target" => 'assumedStartTimeFilter'} %>
-              <% end %>
-
-              <% if resource == :effort %>
-                <%= f.hidden_field 'filter[id]', value: @presenter.id %>
-              <% end %>
-
-              <div class="mb-3">
-                <%= f.label :scheduled_start_time %>
-                <p data-roster-target="scheduledStartTime"></p>
-              </div>
-
-              <div class="mb-3">
-                <%= f.label :actual_start_time %>
-                <%= f.text_field :actual_start_time, value: nil, class: 'form-control', autofocus: true,
-                                 data: {"roster-target" => 'actualStartTimeField'} %>
-              </div>
-
-              <div class="mb-3">
-                <%= f.submit 'Start', class: 'btn btn-success', data: {action: 'click->roster#reloadPage'} %>
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-              </div>
-            <% end %>
-          </div>
+        <div class="mb-3">
+          <%= f.label :actual_start_time %>
+          <%= f.text_field :actual_start_time, value: l(scheduled_start_time_local, format: :datetime_input), class: "form-control", autofocus: true %>
         </div>
-      </div>
+
+        <div class="mb-3">
+          <%= f.submit "Start", class: "btn btn-success" %>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

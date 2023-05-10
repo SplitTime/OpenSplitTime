@@ -1,0 +1,5 @@
+<%# locals: (event_group:, effort_count:, scheduled_start_time_local:) -%>
+
+<%= turbo_frame_tag "form_modal" do %>
+  <%= render "start_efforts_modal", event_group: event_group, effort_count: effort_count, scheduled_start_time_local: scheduled_start_time_local %>
+<% end %>

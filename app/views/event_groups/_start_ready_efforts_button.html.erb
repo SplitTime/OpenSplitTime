@@ -1,5 +1,11 @@
 <%# locals: (presenter:) -%>
 
-<span id="<%= dom_id(presenter.event_group, :start_ready_efforts_button) %>">
-  <%= link_to_start_ready_efforts(presenter) %>
-</span>
+<div id="<%= dom_id(presenter.event_group, :start_ready_efforts_button) %>">
+  <% if presenter.ready_efforts.present? %>
+    <%= start_entrants_dropdown_menu(presenter) %>
+  <% else %>
+  <%= link_to "Nothing to start", nil, disabled: true,
+            data: { confirm: "No entrants are ready to start. Reload the page to check again." },
+            class: "start-ready-efforts btn btn-md btn-success" %>
+  <% end %>
+</div>

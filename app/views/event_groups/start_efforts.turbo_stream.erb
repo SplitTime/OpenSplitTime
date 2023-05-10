@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
+
+<%= turbo_stream.replace dom_id(@presenter.event_group, :start_ready_efforts_button),
+                         partial: "start_ready_efforts_button",
+                         locals: { presenter: @presenter } %>

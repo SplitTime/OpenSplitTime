@@ -28,8 +28,16 @@ class EffortPolicy < ApplicationPolicy
     user.authorized_to_edit?(effort)
   end
 
-  def unstart?
+  def start_form?
+    start?
+  end
+
+  def start?
     user.authorized_to_edit?(effort)
+  end
+
+  def unstart?
+    start?
   end
 
   def rebuild?

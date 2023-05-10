@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
-  before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :associate_people, :mini_table, :subregion_options]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :subregion_options, :projections, :analyze, :place]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place]
+  before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :mini_table]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place]
 
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
@@ -142,6 +144,33 @@ class EffortsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream { @presenter = EffortAuditView.new(effort) }
+    end
+  end
+
+  # GET /efforts/1/start
+  def start_form
+    authorize @effort
+  end
+
+  # PATCH /efforts/1/start
+  def start
+    authorize @effort
+
+    start_time = params[:actual_start_time]
+    response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time, current_user_id: current_user.id)
+    set_flash_message(response)
+    @effort.reload
+
+    if response.successful?
+      respond_to do |format|
+        format.turbo_stream { redirect_to effort_path(@effort) }
+        format.html { redirect_to effort_path(@effort) }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { render :start_form, locals: { effort: @effort }, status: :unprocessable_entity, alert: response.message }
+        format.html { redirect_to effort_path(@effort), status: :unprocessable_entity, alert: response.message }
+      end
     end
   end
 

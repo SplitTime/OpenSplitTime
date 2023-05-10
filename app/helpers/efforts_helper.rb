@@ -110,12 +110,11 @@ module EffortsHelper
     end
   end
 
-  def link_to_start_effort(view_object)
-    time = view_object.assumed_start_time_local
-    button_tag "Start effort", class: "btn btn-success", data: { action: "click->roster#showModal",
-                                                                 title: "Start Effort",
-                                                                 time: time.to_s,
-                                                                 displaytime: l(time, format: :datetime_input) }
+  def link_to_start_effort(effort)
+    link_to "Start effort",
+            start_form_effort_path(effort),
+            class: "btn btn-success",
+            data: { turbo_frame: "form_modal" }
   end
 
   def effort_start_time_string(presenter)

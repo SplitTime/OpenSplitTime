@@ -113,7 +113,7 @@ module EffortsHelper
   def link_to_start_effort(effort)
     link_to "Start effort",
             start_form_effort_path(effort),
-            class: "btn btn-success",
+            class: "btn btn-success mx-1",
             data: { turbo_frame: "form_modal" }
   end
 

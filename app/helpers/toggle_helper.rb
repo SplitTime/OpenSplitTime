@@ -121,17 +121,17 @@ module ToggleHelper
 
     if existing_subscription
       url = polymorphic_path([subscribable, existing_subscription])
-      options = { method: "delete",
-                  class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
-                  data: { confirm: unsubscribe_alert } }
+      html_options = { method: :delete,
+                       class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
+                       data: { turbo_confirm: unsubscribe_alert } }
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
-      options = { method: "post",
-                  class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
-                  data: { confirm: subscribe_alert } }
+      html_options = { method: :post,
+                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
+                       data: { turbo_confirm: subscribe_alert } }
     end
 
-    link_to fa_icon(icon_name, text: protocol), url, options
+    button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
   end
 
   def link_to_sign_in(args)

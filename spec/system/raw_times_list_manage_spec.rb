@@ -42,12 +42,9 @@ RSpec.describe "manage raw times from the raw times list", js: true do
     login_as steward, scope: :user
     visit_page
 
-    row = page.find("##{dom_id(raw_time)}")
     expect do
-      within(row) do
-        button = page.find("#delete-raw-time-#{raw_time.id}")
-        button.click
-      end
+      button = page.find("#delete-raw-time-#{raw_time.id}")
+      button.click
       page.accept_confirm
       wait_for_spinner_to_stop
     end.to change { event_group.reload.raw_times.count }.by(-1)

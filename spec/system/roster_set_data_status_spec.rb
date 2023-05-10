@@ -4,6 +4,7 @@ require "rails_helper"
 
 RSpec.describe "set data status from the event group roster page", js: true do
   include ActionView::RecordIdentifier
+  include ActiveJob::TestHelper
 
   let(:steward) { users(:fifth_user) }
 
@@ -26,16 +27,16 @@ RSpec.describe "set data status from the event group roster page", js: true do
   end
 
   scenario "set data status displays the resulting data status" do
-    skip "Need to figure out how to broadcast the turbo stream synchronously in test environment."
+    perform_enqueued_jobs do
+      login_as steward, scope: :user
+      visit_page
 
-    login_as steward, scope: :user
-    visit_page
+      button = page.find_button("Set data status")
+      button.click
 
-    button = page.find_button("Set data status")
-    button.click
-
-    within("##{dom_id(effort, :roster_row)}") do
-      expect(page).to have_content("good")
+      within("##{dom_id(effort, :roster_row)}") do
+        expect(page).to have_content("good")
+      end
     end
   end
 

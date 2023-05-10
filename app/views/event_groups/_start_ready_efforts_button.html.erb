@@ -4,8 +4,6 @@
   <% if presenter.ready_efforts.present? %>
     <%= start_entrants_dropdown_menu(presenter) %>
   <% else %>
-  <%= link_to "Nothing to start", nil, disabled: true,
-            data: { confirm: "No entrants are ready to start. Reload the page to check again." },
-            class: "start-ready-efforts btn btn-md btn-success" %>
+  <%= button_tag "Nothing to start", disabled: true, class: "btn btn-success" %>
   <% end %>
 </div>

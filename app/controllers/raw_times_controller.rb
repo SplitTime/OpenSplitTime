@@ -37,7 +37,7 @@ class RawTimesController < ApplicationController
     if @raw_time.destroy
       respond_to do |format|
         format.html { redirect_to request.referrer }
-        format.turbo_stream { render turbo_stream: turbo_stream.remove(@raw_time) }
+        format.turbo_stream { flash.now[:success] = "Raw time was deleted." }
       end
     else
       respond_to do |format|

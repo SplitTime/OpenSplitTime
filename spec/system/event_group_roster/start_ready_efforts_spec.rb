@@ -43,18 +43,14 @@ RSpec.describe "start ready efforts from the event groups roster page", js: true
           click_link("(1) scheduled at Friday, July 11, 2014 06:00 (MDT)")
         end
 
-        sleep 0.5
-
         expect {
           within("#form_modal") do
-            expect(page).to have_button("Start")
+            sleep 1
             fill_in "Actual start time", with: "07/11/2014 06:02"
             click_button "Start"
           end
 
-          within("##{dom_id(effort, :roster_row)}") do
-            expect(page).to have_content("Started")
-          end
+          expect(page).to have_content("Started 1 effort")
         }.to change { effort.reload.split_times.count }.from(0).to(1)
 
         expect(effort.starting_split_time.absolute_time).to eq("2014-07-11 06:02:00".in_time_zone(event_group.home_time_zone))

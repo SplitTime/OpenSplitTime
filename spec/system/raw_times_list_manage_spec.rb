@@ -46,7 +46,7 @@ RSpec.describe "manage raw times from the raw times list", js: true do
       button = page.find("#delete-raw-time-#{raw_time.id}")
       button.click
       page.accept_confirm
-      wait_for_spinner_to_stop
+      expect(page).to have_content("Raw time was deleted")
     end.to change { event_group.reload.raw_times.count }.by(-1)
   end
 

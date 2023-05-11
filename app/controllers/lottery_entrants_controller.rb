@@ -42,7 +42,7 @@ class LotteryEntrantsController < ApplicationController
           redirect_to organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
         end
 
-        format.turbo_stream
+        format.turbo_stream { @lottery_presenter = LotteryPresenter.new(@lottery, view_context) }
       end
     else
       render :edit, status: :unprocessable_entity

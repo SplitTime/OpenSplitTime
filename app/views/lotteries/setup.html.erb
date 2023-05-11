@@ -59,8 +59,10 @@
                         class: "dropdown-item" %>
             <%= link_to "Generate entrants",
                         generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                        method: :post,
-                        data: { confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?" },
+                        data: {
+                          turbo_method: :post,
+                          turbo_confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?",
+                        },
                         class: "dropdown-item" %>
             <div class="dropdown-divider"></div>
             <%= link_to "Download template",

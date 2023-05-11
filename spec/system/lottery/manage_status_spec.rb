@@ -3,8 +3,6 @@
 require "rails_helper"
 
 RSpec.describe "manage lottery status on the lottery setup page", js: true do
-  include ActionView::RecordIdentifier
-
   let(:steward) { users(:fifth_user) }
 
   before do

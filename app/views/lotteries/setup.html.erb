@@ -15,19 +15,19 @@
           <div class="dropdown-menu">
             <%= link_to "Make public",
                         organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: false }),
-                        method: :put,
+                        data: { turbo_method: :put },
                         disabled: @presenter.lottery.visible?,
                         class: "dropdown-item" %>
             <%= link_to "Make private",
                         organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: true }),
-                        method: :put,
+                        data: { turbo_method: :put },
                         disabled: @presenter.lottery.concealed?,
                         class: "dropdown-item" %>
             <div class="dropdown-divider"></div>
             <% ::Lottery.statuses.keys.each do |status| %>
               <%= link_to "Set to #{status.titleize}",
                           organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { status: status }),
-                          method: :put,
+                          data: { turbo_method: :put },
                           disabled: @presenter.lottery.send("#{status}?"),
                           class: "dropdown-item" %>
             <% end %>

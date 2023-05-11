@@ -91,6 +91,41 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     expect(page).to have_content(entrant.full_name)
   end
 
+  scenario "The user generates entrants" do
+    login_as steward, scope: :user
+    visit_page
+
+    click_button("Entrants")
+    expect do
+      click_link("Generate entrants")
+      page.accept_confirm
+      expect(page).to have_content("Generated lottery entrants")
+    end.to change { lottery.entrants.count }
+  end
+
+  scenario "The user deletes all entrants" do
+    login_as steward, scope: :user
+    visit_page
+
+    click_button("Entrants")
+    expect do
+      click_link("Delete all entrants")
+      expect(page).to have_field("confirm")
+      fill_in "confirm", with: "DELETE ALL ENTRANTS"
+      click_button("Permanently Delete")
+      expect(page).to have_content("Deleted all lottery entrants")
+    end.to change { lottery.entrants.count }.to(0)
+  end
+
+  scenario "The user imports entrants" do
+    login_as steward, scope: :user
+    visit_page
+
+    click_button("Entrants")
+    click_link("Import entrants")
+    expect(page).to have_current_path(new_import_job_path(import_job: { format: :lottery_entrants, parent_id: lottery.id, parent_type: "Lottery" }))
+  end
+
   def visit_page
     visit setup_organization_lottery_path(organization, lottery)
   end

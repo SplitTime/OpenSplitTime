@@ -1,13 +1,13 @@
 <%# locals: (effort:) -%>
 
-<tr>
+<tr id="<%= dom_id(effort, :reconcile_row) %>" class="align-middle">
   <td><%= effort.personal_info %></td>
   <td>
     <% if effort.suggested_match %>
       <%= button_to "Same person >>",
                     associate_people_event_group_path(ids: { effort.id => effort.suggested_match.id }),
                     method: :patch,
-                    class: "btn btn-xs btn-primary" %>
+                    class: "btn btn-sm btn-outline-primary" %>
     <% end %>
   </td>
   <td>
@@ -19,6 +19,6 @@
     <%= button_to "New person",
                   create_people_event_group_path(effort_ids: [effort.id]),
                   method: :post,
-                  class: "btn btn-xs btn-success" %>
+                  class: "btn btn-sm btn-outline-success" %>
   </td>
 </tr>

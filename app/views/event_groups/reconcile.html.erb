@@ -30,19 +30,20 @@
             <%= button_to "Match #{pluralize(suggested_match_count(@presenter.unreconciled_batch), "person")}",
                           associate_people_event_group_path(ids: suggested_match_id_hash(@presenter.unreconciled_batch)),
                           method: :patch,
+                          data: { turbo_confirm: "Match #{pluralize(@presenter.unreconciled_batch.size, 'person')}?" },
                           form_class: "mx-1",
-                          class: "btn btn-primary" %>
+                          class: "btn btn-sm btn-outline-primary" %>
           <% end %>
           <%= button_to "Create #{pluralize(@presenter.unreconciled_batch.size, "person")}",
                         create_people_event_group_path(effort_ids: @presenter.unreconciled_batch.ids),
                         method: :post,
-                        data: { confirm: "Create #{pluralize(@presenter.unreconciled_batch.size, 'new person')}?" },
-                        class: "btn btn-success pull-right" %>
+                        data: { turbo_confirm: "Create #{pluralize(@presenter.unreconciled_batch.size, 'new person')}?" },
+                        class: "btn btn-sm btn-outline-success" %>
         </div>
       </div>
     </div>
 
-    <table class="table table-striped">
+    <table class="table">
 
       <thead>
       <tr>

@@ -12,6 +12,10 @@ class RawTimePolicy < ApplicationPolicy
     @raw_time = raw_time
   end
 
+  def destroy?
+    user.authorized_to_edit?(raw_time.event_group)
+  end
+
   def import?
     user.present?
   end

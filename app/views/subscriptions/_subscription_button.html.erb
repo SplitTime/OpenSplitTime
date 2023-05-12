@@ -1,5 +1,5 @@
 <%# locals: (subscribable:, protocol:) -%>
 
-<%= content_tag :span, id: dom_id(subscribable, protocol) do %>
+<%= content_tag :span, id: dom_id(subscribable, protocol), class: "mx-1" do %>
   <%= link_to_subscription(subscribable, protocol) %>
 <% end %>

@@ -59,10 +59,6 @@ const application = Application.start()
 const context = require.context("controllers", true, /.js$/)
 application.load(definitionsFromContext(context))
 
-// Rails.ujs
-import Rails from '@rails/ujs';
-Rails.start();
-
 // Bootstrap and Popper.js
 require("@popperjs/core")
 import "bootstrap"

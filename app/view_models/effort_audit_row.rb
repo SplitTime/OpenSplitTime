@@ -4,6 +4,14 @@ EffortAuditRow = Struct.new(:lap_split, :bitkey, :split_time, :home_time_zone, :
                             :disassociated_raw_times, keyword_init: true) do
   include Discrepancy
 
+  def to_key
+    [lap_split.lap, lap_split.split_id, bitkey]
+  end
+
+  def model_name
+    ActiveModel::Name.new(self.class)
+  end
+
   def name
     @name ||= lap_split.public_send(:name_without_lap, bitkey)
   end

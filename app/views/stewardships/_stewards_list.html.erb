@@ -1,32 +1,36 @@
-<table class="table table-centered table-fixed-sm table-striped">
+<table class="table">
   <thead>
   <tr>
     <th>Name</th>
     <th>Email</th>
     <th>Steward since</th>
     <th>Level</th>
-    <th></th>
   </tr>
   </thead>
   <tbody>
   <% @organization.stewardships.each do |stewardship| %>
-      <tr>
-        <td><%= stewardship.full_name %></td>
-        <td><%= stewardship.email %></td>
-        <td><%= l(stewardship.created_at, format: :full_with_weekday) %></td>
-        <td>
-          <%= form_for([@organization, stewardship]) do |f| %>
-            <%= f.select(:level, Stewardship.levels.keys.map { |level| [level.titleize, level] }, {}, class: "dropdown-select-field") %>
-            <%= f.submit "Confirm", :class => "btn btn-primary" %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to "Remove",
-                      organization_stewardship_path(@organization, stewardship),
-                      :method => :delete,
-                      :class => "btn btn-xs btn-danger" %>
-        </td>
-      </tr>
+    <tr class="align-middle">
+      <td><%= stewardship.full_name %></td>
+      <td><%= stewardship.email %></td>
+      <td><%= l(stewardship.created_at, format: :full_with_weekday) %></td>
+      <td>
+        <div class="d-inline-flex">
+          <div>
+            <%= form_for([@organization, stewardship]) do |f| %>
+              <%= f.select(:level, Stewardship.levels.keys.map { |level| [level.titleize, level] }, {}, class: "dropdown-select-field") %>
+              <%= f.submit "Confirm", :class => "btn btn-sm btn-outline-primary" %>
+            <% end %>
+          </div>
+          <div class="m-1">
+            <%= link_to "Remove",
+                        organization_stewardship_path(@organization, stewardship),
+                        data: { turbo_method: :delete },
+                        class: "btn btn-sm btn-outline-danger" %>
+          </div>
+
+        </div>
+      </td>
+    </tr>
   <% end %>
   </tbody>
 </table>

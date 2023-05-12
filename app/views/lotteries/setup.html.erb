@@ -15,19 +15,19 @@
           <div class="dropdown-menu">
             <%= link_to "Make public",
                         organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: false }),
-                        method: :put,
+                        data: { turbo_method: :put },
                         disabled: @presenter.lottery.visible?,
                         class: "dropdown-item" %>
             <%= link_to "Make private",
                         organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { concealed: true }),
-                        method: :put,
+                        data: { turbo_method: :put },
                         disabled: @presenter.lottery.concealed?,
                         class: "dropdown-item" %>
             <div class="dropdown-divider"></div>
             <% ::Lottery.statuses.keys.each do |status| %>
               <%= link_to "Set to #{status.titleize}",
                           organization_lottery_path(@presenter.organization, @presenter.lottery, lottery: { status: status }),
-                          method: :put,
+                          data: { turbo_method: :put },
                           disabled: @presenter.lottery.send("#{status}?"),
                           class: "dropdown-item" %>
             <% end %>
@@ -59,8 +59,10 @@
                         class: "dropdown-item" %>
             <%= link_to "Generate entrants",
                         generate_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                        method: :post,
-                        data: { confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?" },
+                        data: {
+                          turbo_method: :post,
+                          turbo_confirm: "This will generate between 5 and 15 random lottery entrants for each division. Proceed?",
+                        },
                         class: "dropdown-item" %>
             <div class="dropdown-divider"></div>
             <%= link_to "Download template",
@@ -82,7 +84,7 @@
                                      required_pattern: "DELETE TICKETS" %>
         <% else %>
           <%= link_to "Generate tickets", generate_tickets_organization_lottery_path(@presenter.organization, @presenter.lottery),
-                      method: :post,
+                      data: { turbo_method: :post },
                       class: "btn btn-danger" %>
         <% end %>
         <%= link_to_strong_confirm "Delete draws", delete_draws_organization_lottery_path(@presenter.organization, @presenter.lottery),
@@ -118,7 +120,7 @@
           <th></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="lottery_divisions">
         <%= render partial: "lottery_divisions/lottery_division", collection: @presenter.ordered_divisions, as: :division %>
         <tr class="fw-bold bg-light">
           <td>Totals</td>
@@ -187,28 +189,5 @@
     </div>
   </div>
 
-  <div class="card mt-4"
-       data-controller="visibility"
-       data-visibility-button-hide-class-value="btn-primary"
-       data-visibility-button-hide-text-value="Hide"
-       data-visibility-button-show-class-value="btn-outline-primary"
-       data-visibility-button-show-text-value="Reveal">
-    <div class="card-header">
-      <div class="row pt-1">
-        <div class="col">
-          <h2><strong>Pre-Selected Entrants</strong><small class="text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.pre_selected.count, 'entrant')}" %></small>
-          </h2>
-        </div>
-        <div class="col-4 col-md-2 text-end d-grid">
-          <%= button_tag nil,
-                         class: "btn d-none",
-                         "data-action": "visibility#toggleElement",
-                         "data-visibility-target": "button" %>
-        </div>
-      </div>
-    </div>
-    <div class="card-body table-responsive" data-visibility-target="element">
-      <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants.pre_selected, as: :record %>
-    </div>
-  </div>
+  <%= render "lotteries/pre_selected_entrants_card", presenter: @presenter %>
 </article>

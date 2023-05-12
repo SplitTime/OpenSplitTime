@@ -21,6 +21,7 @@ module Interactors
       @current_user_id = args[:current_user_id]
       @existing_start_time = effort.calculated_start_time
       @errors = []
+      @message = ""
       validate_setup
     end
 
@@ -34,12 +35,15 @@ module Interactors
           raise ActiveRecord::Rollback if errors.present?
         end
       end
-      Interactors::Response.new(errors, "", effort: effort)
+
+      self.message = "Rebuild completed." if errors.blank?
+      Interactors::Response.new(errors, message, effort: effort)
     end
 
     private
 
     attr_reader :effort, :current_user_id, :existing_start_time, :errors
+    attr_accessor :message
 
     delegate :event_group, :event, to: :effort
 

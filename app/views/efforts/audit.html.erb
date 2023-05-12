@@ -5,10 +5,10 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 
-<%= render 'effort_header', view_object: @presenter, title: 'Audit' %>
+<%= render "effort_header", view_object: @presenter, title: "Audit" %>
 
 <article class="ost-article container">
   <% if @presenter.lap_split_rows.present? %>
-    <%= render 'split_times/audit_list', presenter: @presenter %>
+    <%= render "split_times/audit_list", presenter: @presenter %>
   <% end %>
 </article>

@@ -1,0 +1,9 @@
+<%# locals: (effort:) %>
+
+<%= turbo_stream.replace dom_id(effort, :roster_row),
+                         partial: "efforts/entrant_for_roster",
+                         locals: {
+                           effort: effort,
+                           multiple_events: effort.event_group.multiple_events?,
+                           started_efforts_present: effort.event_group.efforts.any?(&:started?),
+                         } %>

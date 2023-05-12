@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "visit an effort show page" do
+RSpec.describe "visit an effort show page", js: true do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -180,7 +180,7 @@ RSpec.describe "visit an effort show page" do
     end
   end
 
-  context "when the effort is hidden" do
+  context "when the effort is hidden", js: false do
     let(:effort) { completed_effort }
     before { event_group.update(concealed: true) }
 
@@ -245,6 +245,7 @@ RSpec.describe "visit an effort show page" do
   end
 
   def verify_admin_links_present
+    click_button "Actions"
     expect(page).to have_link("Edit Entrant", href: edit_effort_path(effort))
     expect(page).to have_link("Audit", href: audit_effort_path(effort))
   end
@@ -252,8 +253,9 @@ RSpec.describe "visit an effort show page" do
   def verify_set_stop
     effort.reload
     expect(effort.ordered_split_times.last).not_to be_stopped_here
-    click_link "Set stop"
+    click_button "Set stop"
 
+    wait_for_spinner_to_stop
     expect(page).to have_content "Remove stop"
     effort.reload
     expect(effort.ordered_split_times.last).to be_stopped_here
@@ -262,8 +264,9 @@ RSpec.describe "visit an effort show page" do
   def verify_remove_stop
     effort.reload
     expect(effort.ordered_split_times.last).to be_stopped_here
-    click_link "Remove stop"
+    click_button "Remove stop"
 
+    wait_for_spinner_to_stop
     expect(page).to have_content "Set stop"
     effort.reload
     expect(effort.ordered_split_times.last).not_to be_stopped_here

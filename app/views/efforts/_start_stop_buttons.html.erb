@@ -1,31 +1,44 @@
 <%# locals: (presenter:) -%>
 
-<span id="<%= dom_id presenter, :start_stop_buttons %>">
+<div id="<%= dom_id presenter, :start_stop_buttons %>" class="d-inline-flex">
   <% unless presenter.has_start_time? %>
     <%= link_to_start_effort(presenter.effort) %>
   <% end %>
   <% if presenter.needs_final_stop? %>
-    <%= link_to "Set stop", stop_effort_path(presenter.effort),
-                method: :patch,
-                class: "btn btn-success",
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: "Sets a stop on the final split time" } %>
+    <%= button_to(stop_effort_path(presenter.effort),
+                  method: :patch,
+                  class: "btn btn-success",
+                  form_class: "mx-1",
+                  data: {
+                    controller: "tooltip",
+                    bs_placement: :bottom,
+                    bs_original_title: "Sets a stop on the final split time",
+                    turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+                  }) { "Set stop" } %>
   <% end %>
   <% if presenter.has_removable_stop? %>
-    <%= link_to "Remove stop", stop_effort_path(presenter.effort, status: false),
-                method: :patch,
-                class: "btn btn-success",
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: "Removes the stop from all split times" } %>
+    <%= button_to(stop_effort_path(presenter.effort),
+                  params: { status: false },
+                  method: :patch,
+                  class: "btn btn-success",
+                  form_class: "mx-1",
+                  data: {
+                    controller: "tooltip",
+                    bs_placement: :bottom,
+                    bs_original_title: "Removes the stop from all split times",
+                    turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+                  }) { "Remove stop" } %>
   <% end %>
   <% if presenter.started? %>
-    <%= link_to "Smart stop", smart_stop_effort_path(presenter.effort),
-                method: :patch,
-                class: "btn btn-success",
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time" } %>
+    <%= button_to(smart_stop_effort_path(presenter.effort),
+                  method: :patch,
+                  class: "btn btn-success",
+                  form_class: "mx-1",
+                  data: {
+                    controller: "tooltip",
+                    bs_placement: :bottom,
+                    bs_original_title: "Deletes any hanging split time, fills in a proper final split time if needed, and sets a stop on the final split time",
+                    turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+                  }) { "Smart stop" } %>
   <% end %>
-</span>
+</div>

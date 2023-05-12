@@ -1,0 +1,29 @@
+<%# locals: (presenter:) -%>
+
+<div id="<%= dom_id presenter, :effort_show_table %>">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Split</th>
+      <th class="text-end"><%= pdu('singular').titleize %></th>
+      <th class="text-center">Time of Day</th>
+      <th class="text-center">Elapsed Time</th>
+      <% unless presenter.simple? %>
+        <th class="text-center">Segment Time</th>
+      <% end %>
+      <% if presenter.multiple_sub_splits? %>
+        <th class="text-end">In Aid</th>
+      <% end %>
+      <% if presenter.multiple_laps? %>
+        <th class="text-end">Lap Time</th>
+      <% end %>
+      <% if current_user&.authorized_to_edit?(presenter.effort) %>
+        <th class="text-center">Confirm</th>
+        <th class="text-center">Delete</th>
+      <% end %>
+    </tr>
+    </thead>
+
+    <%= render "split_times/lap_split_rows_for_effort_show", presenter: presenter %>
+  </table>
+</div>

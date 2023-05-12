@@ -11,7 +11,7 @@
 </header>
 
 <article class="ost-article container">
-  <div class="card">
+  <div id="owner_card" class="card">
     <h4 class="card-header">Owner</h4>
     <div class="card-body">
       <h5><%= "#{@presenter.organization.owner_full_name} (#{@presenter.organization.owner_email})" %></h5>
@@ -19,7 +19,7 @@
   </div>
   <br/>
 
-  <div class="card">
+  <div id="stewards_card" class="card">
     <h4 class="card-header">
       <div class="row">
         <div class="col-md">Stewards</div>

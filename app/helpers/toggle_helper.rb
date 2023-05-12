@@ -1,38 +1,54 @@
 # frozen_string_literal: true
 
 module ToggleHelper
-  def link_to_toggle_check_in(effort)
+  def button_to_toggle_check_in(effort)
     if effort.beyond_start?
+      button_id = "disabled-effort-#{effort.id}"
       icon_name = "caret-square-right"
       button_text = "Beyond start"
       url = "#"
+      params = {}
       disabled = true
       button_class = "primary"
     elsif effort.started?
+      button_id = "unstart-effort-#{effort.id}"
       icon_name = "caret-square-right"
       button_text = "Started"
       url = unstart_effort_path(effort)
+      params = {}
       disabled = false
       button_class = "primary"
     elsif effort.checked_in?
+      button_id = "un-check-in-effort-#{effort.id}"
       icon_name = "check-square"
       button_text = "Checked in"
-      url = effort_path(effort, effort: { checked_in: false })
+      url = effort_path(effort)
+      params = { effort: { checked_in: false } }
       disabled = false
       button_class = "success"
     else
+      button_id = "check-in-effort-#{effort.id}"
       icon_name = "square"
       button_text = "Check in"
-      url = effort_path(effort, effort: { checked_in: true })
+      url = effort_path(effort)
+      params = { effort: { checked_in: true } }
       disabled = false
       button_class = "outline-secondary"
     end
 
-    class_string = "check-in click-spinner btn btn-#{button_class}"
-    options = { method: :patch,
-                disabled: disabled,
-                class: class_string }
-    link_to fa_icon(icon_name, text: button_text, type: :regular), url, options
+    html_options = {
+      id: button_id,
+      class: "btn btn-#{button_class}",
+      method: :patch,
+      disabled: disabled,
+      params: params,
+      form_class: "d-grid",
+      data: {
+        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+      },
+    }
+
+    button_to(url, html_options) { fa_icon(icon_name, text: button_text, type: :regular) }
   end
 
   def link_to_check_in_all(view_object)
@@ -105,17 +121,17 @@ module ToggleHelper
 
     if existing_subscription
       url = polymorphic_path([subscribable, existing_subscription])
-      options = { method: "delete",
-                  class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
-                  data: { confirm: unsubscribe_alert } }
+      html_options = { method: :delete,
+                       class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
+                       data: { turbo_confirm: unsubscribe_alert } }
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
-      options = { method: "post",
-                  class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
-                  data: { confirm: subscribe_alert } }
+      html_options = { method: :post,
+                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
+                       data: { turbo_confirm: subscribe_alert } }
     end
 
-    link_to fa_icon(icon_name, text: protocol), url, options
+    button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
   end
 
   def link_to_sign_in(args)

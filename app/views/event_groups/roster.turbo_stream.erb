@@ -2,7 +2,7 @@
                         partial: "efforts/entrant_for_roster",
                         collection: @presenter.filtered_roster_efforts,
                         as: :effort,
-                        locals: { presenter: @presenter } %>
+                        locals: { multiple_events: @presenter.multiple_events?, started_efforts_present: @presenter.started_efforts.present? } %>
 
 <%= turbo_stream.replace "pager",
                          partial: "shared/pager",

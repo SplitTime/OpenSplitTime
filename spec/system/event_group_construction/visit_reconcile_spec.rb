@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "visit the edit event group page and make changes", type: :system, js: true do
+RSpec.describe "visit the edit event group page and make changes" do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }

@@ -8,46 +8,48 @@
 <%= render "effort_header", view_object: @presenter, title: nil %>
 
 <aside class="ost-toolbar" data-controller="roster">
-  <%= render "event_groups/start_efforts_modal", resource: :effort %>
-
   <div class="container">
     <div class="row">
 
       <% if current_user&.authorized_to_edit?(@presenter.effort) %>
-        <div class="col">
+        <div class="col me-auto">
           <div class="d-inline-flex">
-            <span class="mx-1"><%= effort_actions_dropdown_menu(@presenter) %></span>
-            <span class="mx-1"><%= render "start_stop_buttons", presenter: @presenter %></span>
+            <div class="mx-1"><%= effort_actions_dropdown_menu(@presenter) %></div>
+            <%= render "start_stop_buttons", presenter: @presenter %>
             <% if @presenter.next_problem_effort %>
-              <span class="mx-1"><%= link_to "Find a problem effort",
-                                             effort_path(@presenter.next_problem_effort),
-                                             class: "btn btn-success" %></span>
+              <div class="mx-1">
+                <%= link_to "Find a problem effort",
+                            effort_path(@presenter.next_problem_effort),
+                            class: "btn btn-success" %>
+              </div>
             <% end %>
-            <span class="mx-1"><%= link_to "Raw time records (#{@presenter.raw_times_count})",
-                                           raw_times_event_group_path(@presenter.event_group,
-                                                                      filter: { bib_number: @presenter.bib_number },
-                                                                      sort: [:absolute_time, :entered_time]),
-                                           class: "btn btn-success" %></span>
+            <div class="mx-1">
+              <%= link_to "Raw time records (#{@presenter.raw_times_count})",
+                          raw_times_event_group_path(@presenter.event_group,
+                                                     filter: { bib_number: @presenter.bib_number },
+                                                     sort: [:absolute_time, :entered_time]),
+                          class: "btn btn-success" %>
+            </div>
           </div>
         </div>
       <% end %>
 
-      <div class="col text-end">
+      <div class="col-12 col-lg-4 text-lg-end mt-2 mt-lg-0">
         <div class="d-inline-flex">
           <% if current_user&.authorized_to_edit?(@presenter.effort) || current_user&.authorized_to_edit_personal?(@presenter.effort) %>
-            <span class="mx-1"><%= render partial: "check_in_button", locals: { effort: @presenter.effort } %></span>
+            <div class="mx-1"><%= render partial: "check_in_button", locals: { effort: @presenter.effort } %></div>
           <% end %>
           <% if @presenter.beacon_url %>
-          <span class="mx-1"><%= link_to effort_beacon_button_text(@presenter.beacon_url),
-                                         url_with_protocol(@presenter.beacon_url),
-                                         class: "btn btn-outline-secondary",
-                                         target: "_blank" %></span>
+            <div class="mx-1"><%= link_to effort_beacon_button_text(@presenter.beacon_url),
+                                          url_with_protocol(@presenter.beacon_url),
+                                          class: "btn btn-outline-secondary",
+                                          target: "_blank" %></div>
           <% end %>
           <% if @presenter.report_url %>
-            <span class="mx-1"><%= link_to effort_report_button_text(@presenter.report_url),
-                                           url_with_protocol(@presenter.report_url),
-                                           class: "btn btn-outline-secondary",
-                                           target: "_blank" %></span>
+            <div class="mx-1"><%= link_to effort_report_button_text(@presenter.report_url),
+                                          url_with_protocol(@presenter.report_url),
+                                          class: "btn btn-outline-secondary",
+                                          target: "_blank" %></div>
           <% end %>
         </div>
       </div>
@@ -58,6 +60,6 @@
 <article class="ost-article container">
 
   <% if @presenter.lap_split_rows.present? %>
-    <%= render "split_times/split_times_list", presenter: @presenter %>
+    <%= render "split_times/effort_show_table", presenter: @presenter %>
   <% end %>
 </article>

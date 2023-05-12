@@ -40,14 +40,18 @@ class LotteryDivisionsController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_divisions/:id
   def destroy
-    if @lottery_division.tickets.present?
-      flash[:warning] = "A lottery division cannot be deleted unless all tickets and draws have been deleted first."
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
-    elsif @lottery_division.destroy
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
-    else
-      flash[:danger] = @lottery_division.errors.full_messages.join("\n")
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
+    respond_to do |format|
+      format.turbo_stream do
+        if @lottery_division.tickets.exists?
+          flash.now[:warning] = "A lottery division cannot be deleted unless all tickets and draws have been deleted first."
+        elsif @lottery_division.destroy
+          flash.now[:success] = "The division was deleted."
+        else
+          flash.now[:danger] = @lottery_division.errors.full_messages.join("\n")
+        end
+
+        render "destroy", status: :unprocessable_entity
+      end
     end
   end
 

@@ -34,7 +34,7 @@
 
     <div class="mb-3 text-center">
       <%= f.submit "Upload files", class: "btn btn-primary", data: { turbo: false, "form-apply-target" => "submitButton" } %>
-      <%= link_to "Back to setup", setup_event_group_path(@presenter.event_group, display_style: :entrants), class: "btn btn-outline-secondary" %>
+      <%= link_to "Back to entrants", entrants_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
 
@@ -47,7 +47,10 @@
         <h4 class="fw-bold">Photos waiting to be assigned</h4>
       </div>
       <div class="col text-end">
-        <%= link_to "Assign photos", assign_entrant_photos_event_group_path(@presenter.event_group), method: :patch, class: "btn btn-primary" %>
+        <%= button_to "Assign photos",
+                      assign_entrant_photos_event_group_path(@presenter.event_group),
+                      method: :patch,
+                      class: "btn btn-primary" %>
       </div>
     </div>
     <div class="row">
@@ -55,10 +58,10 @@
         <div class="col-12 col-sm-4 col-lg-2 text-center my-2">
           <div><%= image_tag photo.variant(:small) %></div>
           <div><%= photo.filename %></div>
-          <div><%= link_to "Remove",
-                           delete_entrant_photos_event_group_path(@presenter.event_group, entrant_photo_id: photo.id),
-                           method: :delete,
-                           class: "btn btn-outline-secondary btn-sm" %>
+          <div><%= button_to "Remove",
+                             delete_entrant_photos_event_group_path(@presenter.event_group, entrant_photo_id: photo.id),
+                             method: :delete,
+                             class: "btn btn-outline-secondary btn-sm" %>
           </div>
         </div>
       <% end %>
@@ -77,11 +80,11 @@
           </h4>
         </div>
         <div class="col">
-          <%= link_to "Remove all",
-                      delete_photos_from_entrants_event_group_path(@presenter.event_group),
-                      method: :delete,
-                      data: { confirm: "This will remove photos from all entrants and cannot be undone. Proceed?" },
-                      class: "btn btn-sm btn-outline-danger" %>
+          <%= button_to "Remove all",
+                        delete_photos_from_entrants_event_group_path(@presenter.event_group),
+                        method: :delete,
+                        data: { turbo_confirm: "This will remove photos from all entrants and cannot be undone. Proceed?" },
+                        class: "btn btn-sm btn-outline-danger" %>
         </div>
       </div>
       <% @presenter.event_group.efforts.photo_assigned.with_attached_photo.order(:bib_number).each do |effort| %>
@@ -89,11 +92,12 @@
           <div class="card-body px-3 py-2">
             <div class="row">
               <div class="col-1 text-center my-auto pe-0">
-                <%= link_to fa_icon("times-circle"),
-                            delete_photo_effort_path(effort),
-                            method: :delete,
-                            data: { confirm: "This will remove the photo. Proceed?" },
-                            class: "btn btn-sm btn-outline-danger" %>
+                <%= button_to(
+                      delete_photo_effort_path(effort),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger"
+                    ) { fa_icon("times-circle") }
+                %>
               </div>
               <div class="col-2 mx-auto text-center">
                 <%= image_tag effort.photo.variant(:thumbnail) %>

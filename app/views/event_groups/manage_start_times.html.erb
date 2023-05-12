@@ -5,6 +5,12 @@
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
 <%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Manage Start Times"] %>
 
+<aside class="container ost-toolbar">
+  <%= link_to "Back to entrants",
+              entrants_event_group_path(@presenter.event_group),
+              class: "btn btn-outline-secondary ms-1" %>
+</aside>
+
 <article class="ost-article container">
   <div class="row">
     <div class="col-12">

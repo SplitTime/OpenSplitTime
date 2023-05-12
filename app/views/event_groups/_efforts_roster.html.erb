@@ -1,92 +1,94 @@
-<div data-controller="roster">
-  <%= render "start_efforts_modal", resource: :event_group %>
-  <aside class="ost-toolbar">
-    <div class="container">
-      <div class="row">
-        <div class="col d-inline-flex">
-          <%= check_in_filter_dropdown %>
-          <div>
-            <%= button_to "Set data status",
-                          set_data_status_event_group_path(@presenter.event_group),
-                          class: "btn btn-outline-success mx-1",
-                          method: :patch %>
-          </div>
-          <%= render "start_ready_efforts_button", presenter: @presenter %>
+<%= turbo_stream_from @presenter.event_group %>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col d-inline-flex">
+        <%= check_in_filter_dropdown %>
+        <div>
+          <%= button_to "Set data status",
+                        set_data_status_event_group_path(@presenter.event_group),
+                        class: "btn btn-outline-success mx-1",
+                        method: :patch %>
         </div>
-        <div class="col-12 col-md-6">
-          <%= render "effort_lookup_stage", presenter: @presenter %>
-        </div>
+        <%= render "start_ready_efforts_button", presenter: @presenter %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= render "effort_lookup_stage", presenter: @presenter %>
       </div>
     </div>
-  </aside>
+  </div>
+</aside>
 
-  <article class="ost-article container">
-    <% if @presenter.unreconciled_efforts.present? %>
-      <%= render partial: "shared/callout_with_link",
-                 locals: {
-                   callout_color: "warning",
-                   icon_color: "warning",
-                   icon_name: "exclamation-triangle",
-                   main_text: "Unreconciled efforts exist; please reconcile when you have a moment",
-                   link: link_to_reconcile_efforts(@presenter.event_group),
-                 } %>
-    <% end %>
+<article class="ost-article container">
+  <% if @presenter.unreconciled_efforts.present? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "warning",
+                 icon_color: "warning",
+                 icon_name: "exclamation-triangle",
+                 main_text: "Unreconciled efforts exist; please reconcile when you have a moment",
+                 link: link_to_reconcile_efforts(@presenter.event_group),
+               } %>
+  <% end %>
 
-    <% if @presenter.filtered_roster_efforts.present? %>
-      <div class="row">
-        <div class="col-xs-8">
-          <% if @presenter.filtered_roster_efforts_count == @presenter.roster_efforts_count %>
-            <h4><%= "#{@presenter.roster_efforts_count} efforts" %></h4>
-          <% else %>
-            <h4><%= "Showing #{@presenter.filtered_roster_efforts_total_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
-          <% end %>
-        </div>
-        <div class="col-xs-4 text-end">
-        </div>
+  <% if @presenter.filtered_roster_efforts.present? %>
+    <div class="row">
+      <div class="col-xs-8">
+        <% if @presenter.filtered_roster_efforts_count == @presenter.roster_efforts_count %>
+          <h4><%= "#{@presenter.roster_efforts_count} efforts" %></h4>
+        <% else %>
+          <h4><%= "Showing #{@presenter.filtered_roster_efforts_total_count} of #{@presenter.roster_efforts_count} efforts" %></h4>
+        <% end %>
       </div>
+      <div class="col-xs-4 text-end">
+      </div>
+    </div>
 
-      <table class="table table-centered table-fixed-sm table-striped">
-        <thead>
-        <tr>
-          <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", @presenter.existing_sort) %></th>
-          <% if @presenter.multiple_events? %>
-            <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", @presenter.existing_sort) %></th>
-          <% end %>
-          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Bib#", "bib_number", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Category", "gender,age", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("From", "state_code", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Scheduled Start", "assumed_start_time", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Actual Start", "actual_start_time", @presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", @presenter.existing_sort) %></th>
-          <% if @presenter.started_efforts.present? %>
-            <th><%= link_to_reversing_sort_heading("Status", "data_status", @presenter.existing_sort) %></th>
-          <% end %>
-          <th>
-            <div class="row">
-              <div class="col d-inline-flex">
-                <span><%= link_to_check_in_all(@presenter) %></span>
-                <span><%= link_to_check_out_all(@presenter) %></span>
-              </div>
+    <table class="table table-centered table-fixed-sm table-striped">
+      <thead>
+      <tr>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", @presenter.existing_sort) %></th>
+        <% if @presenter.multiple_events? %>
+          <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", @presenter.existing_sort) %></th>
+        <% end %>
+        <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Bib#", "bib_number", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Category", "gender,age", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("From", "state_code", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Scheduled Start", "assumed_start_time", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Actual Start", "actual_start_time", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", @presenter.existing_sort) %></th>
+        <% if @presenter.started_efforts.present? %>
+          <th><%= link_to_reversing_sort_heading("Status", "data_status", @presenter.existing_sort) %></th>
+        <% end %>
+        <th>
+          <div class="row">
+            <div class="col d-inline-flex">
+              <span><%= link_to_check_in_all(@presenter) %></span>
+              <span><%= link_to_check_out_all(@presenter) %></span>
             </div>
-          </th>
-        </tr>
-        </thead>
+          </div>
+        </th>
+      </tr>
+      </thead>
 
-        <tbody id="roster_entrants">
-        <%= render partial: "efforts/entrant_for_roster",
-                   collection: @presenter.filtered_roster_efforts,
-                   as: :effort,
-                   locals: { presenter: @presenter } %>
-        </tbody>
-      </table>
+      <tbody id="roster_entrants">
+      <%= render partial: "efforts/entrant_for_roster",
+                 collection: @presenter.filtered_roster_efforts,
+                 as: :effort,
+                 locals: {
+                   multiple_events: @presenter.multiple_events?,
+                   started_efforts_present: @presenter.started_efforts.any?
+                 } %>
+      </tbody>
+    </table>
 
-      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
+    <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 
-    <% elsif @presenter.roster_efforts.blank? %>
-      <strong>No efforts have been added to this event group.</strong>
-    <% else %>
-      <strong>No results match that search.</strong>
-    <% end %>
-  </article>
-</div>
+  <% elsif @presenter.roster_efforts.blank? %>
+    <strong>No efforts have been added to this event group.</strong>
+  <% else %>
+    <strong>No results match that search.</strong>
+  <% end %>
+</article>

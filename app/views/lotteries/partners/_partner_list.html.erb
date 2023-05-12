@@ -26,7 +26,7 @@
     </thead>
     <tbody>
     <% presenter.partners.each do |partner| %>
-      <tr>
+      <tr id="<%= dom_id(partner) %>" class="align-middle">
         <td><%= partner.name %></td>
         <td><%= image_tag partner.banner.variant(:banner_small) if partner.banner.attached? %></td>
         <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: "_blank" if partner.banner_link %></td>

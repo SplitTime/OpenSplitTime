@@ -3,6 +3,8 @@
 require "rails_helper"
 
 RSpec.describe "User subscribes to an effort's progress notifications", type: :system, js: true do
+  include ActionView::RecordIdentifier
+
   let(:user) { users(:third_user) }
   let(:effort) { efforts(:sum_100k_progress_cascade) }
 
@@ -12,7 +14,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
     login_as user, scope: :user
     visit effort_path(effort)
 
-    click_link(href: effort_subscriptions_path(effort, subscription: { protocol: :sms }))
+    within("##{dom_id(effort, :sms)}") { click_button("sms") }
     accept_confirm
     expect(page).to have_current_path(user_settings_preferences_path)
     expect(page).to have_content("Please add a mobile phone number to receive sms text notifications.")
@@ -23,7 +25,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
     login_as user, scope: :user
     visit effort_path(effort)
 
-    click_link(href: effort_subscriptions_path(effort, subscription: { protocol: :sms }))
+    within("##{dom_id(effort, :sms)}") { click_button("sms") }
     accept_confirm
     expect(page).to have_current_path(effort_path(effort))
     expect(page).to have_content("You have subscribed to sms notifications for #{effort.full_name}.")

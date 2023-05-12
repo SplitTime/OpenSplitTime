@@ -5,6 +5,7 @@ class EventGroupsController < ApplicationController
   before_action :set_event_group, except: [:index, :new, :create]
   after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :drop_list, :efforts]
 
+  # GET /event_groups
   def index
     scoped_event_groups = policy_scope(EventGroup)
                             .search(params[:search])
@@ -15,6 +16,7 @@ class EventGroupsController < ApplicationController
     session[:return_to] = event_groups_path
   end
 
+  # GET /event_groups/1
   def show
     event = @event_group.first_event
 
@@ -25,6 +27,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/new
   def new
     organization = Organization.friendly.find(params[:organization_id])
 
@@ -34,6 +37,7 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
+  # POST /organizations/1/event_groups
   def create
     @event_group = EventGroup.new(permitted_params)
     authorize @event_group
@@ -46,6 +50,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /organizations/1/event_groups/1/edit
   def edit
     organization = Organization.friendly.find(params[:organization_id])
 
@@ -55,6 +60,7 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
+  # PATCH /organizations/1/event_groups/1
   def update
     authorize @event_group
 
@@ -66,6 +72,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # DELETE /organizations/1/event_groups/1
   def destroy
     authorize @event_group
 
@@ -102,6 +109,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/efforts
   def efforts
     @efforts = policy_scope(@event_group.efforts)
                  .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
@@ -111,6 +119,7 @@ class EventGroupsController < ApplicationController
     render partial: "event_groups/finish_line_effort", locals: { efforts: @efforts }
   end
 
+  # GET /event_groups/1/raw_times
   def raw_times
     authorize @event_group
     params[:sort] ||= "-created_at"
@@ -119,6 +128,7 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupRawTimesPresenter.new(event_group, view_context)
   end
 
+  # GET /event_groups/1/split_raw_times
   def split_raw_times
     authorize @event_group
 
@@ -126,6 +136,7 @@ class EventGroupsController < ApplicationController
     @presenter = SplitRawTimesPresenter.new(event_group, prepared_params, current_user)
   end
 
+  # GET /event_groups/1/roster
   def roster
     authorize @event_group
 
@@ -133,23 +144,27 @@ class EventGroupsController < ApplicationController
     @presenter = EventGroupRosterPresenter.new(event_group, view_context)
   end
 
+  # GET /event_groups/1/stats
   def stats
     authorize @event_group
 
     @presenter = EventGroupStatsPresenter.new(@event_group)
   end
 
+  # GET /event_groups/1/drop_list
   def drop_list
     event_group = EventGroup.where(id: @event_group).includes(:organization, events: :efforts).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end
 
+  # GET /event_groups/1/finish_line
   def finish_line
     authorize @event_group
 
     @presenter = EventGroupPresenter.new(@event_group, prepared_params, current_user)
   end
 
+  # GET /event_groups/1/follow
   def follow
     @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
 
@@ -159,6 +174,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/traffic
   def traffic
     if params[:split_name]
       redirect_to request.params.merge(split_name: nil, parameterized_split_name: params[:split_name]), status: 301
@@ -177,14 +193,16 @@ class EventGroupsController < ApplicationController
     @presenter = ReconcilePresenter.new(event_group, view_context)
   end
 
+  # PATCH /event_groups/1/auto_reconcile
   def auto_reconcile
     authorize @event_group
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
     flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
-    redirect_to setup_event_group_path(@event_group)
+    redirect_to reconcile_event_group_path(@event_group)
   end
 
+  # PATCH /event_groups/1/associate_people
   def associate_people
     authorize @event_group
 
@@ -194,6 +212,7 @@ class EventGroupsController < ApplicationController
     redirect_to reconcile_event_group_path(@event_group)
   end
 
+  # POST /event_groups/1/create_people
   def create_people
     authorize @event_group
 
@@ -315,6 +334,7 @@ class EventGroupsController < ApplicationController
     }
   end
 
+  # PATCH /event_groups/1/set_data_status
   def set_data_status
     authorize @event_group
 
@@ -328,6 +348,19 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/start_efforts_form
+  def start_efforts_form
+    authorize @event_group
+
+    render "start_efforts_form",
+           locals: {
+             event_group: @event_group,
+             effort_count: params[:effort_count],
+             scheduled_start_time_local: params[:scheduled_start_time_local].in_time_zone(@event_group.home_time_zone)
+           }
+  end
+
+  # PATCH /event_groups/1/start_efforts
   def start_efforts
     authorize @event_group
 
@@ -342,22 +375,15 @@ class EventGroupsController < ApplicationController
     filtered_efforts = filtered_efforts.includes(split_times: :split)
     set_response = ::Interactors::UpdateEffortsStatus.perform!(filtered_efforts)
     response = start_response.merge(set_response)
+    set_flash_message(response)
 
     respond_to do |format|
-      format.html do
-        set_flash_message(response)
-        redirect_to request.referrer
-      end
-      format.json do
-        if response.successful?
-          render json: { success: true }, status: :created
-        else
-          render json: { success: false, errors: response.errors }
-        end
-      end
+      format.html { redirect_to request.referrer }
+      format.turbo_stream { @presenter = EventGroupRosterPresenter.new(@event_group, view_context) }
     end
   end
 
+  # PATCH /event_groups/1/update_all_efforts
   def update_all_efforts
     authorize @event_group
 
@@ -367,6 +393,7 @@ class EventGroupsController < ApplicationController
     redirect_to request.referrer
   end
 
+  # DELETE /event_groups/1/delete_all_efforts
   def delete_all_efforts
     authorize @event_group
 
@@ -375,6 +402,7 @@ class EventGroupsController < ApplicationController
     redirect_to entrants_event_group_path(@event_group)
   end
 
+  # DELETE /event_groups/1/delete_all_times
   def delete_all_times
     authorize @event_group
     response = Interactors::BulkDeleteEventGroupTimes.perform!(@event_group)
@@ -382,6 +410,7 @@ class EventGroupsController < ApplicationController
     redirect_to setup_event_group_path(@event_group)
   end
 
+  # GET /event_groups/1/export_raw_times
   def export_raw_times
     authorize @event_group
     split_name = params[:split_name].to_s.parameterize
@@ -397,6 +426,7 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # DELETE /event_groups/1/delete_duplicate_raw_times
   def delete_duplicate_raw_times
     authorize @event_group
 

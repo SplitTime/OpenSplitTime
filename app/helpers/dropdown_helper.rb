@@ -8,7 +8,8 @@ module DropdownHelper
     container_class = options[:button] ? "btn-group" : main_active
     content_tag container_tag, class: [container_class, options[:class]].join(" ") do
       toggle_tag = options[:button] ? :button : :a
-      toggle_class = (options[:button] ? "btn btn-outline-secondary" : "") + " dropdown-toggle"
+      button_type = options[:button_type] || "outline-secondary"
+      toggle_class = (options[:button] ? "btn btn-#{button_type}" : "") + " dropdown-toggle"
       concat content_tag(toggle_tag, class: toggle_class, data: { bs_toggle: "dropdown" }) {
         active_name = items.find { |item| item[:active] }&.dig(:name)
         safe_concat [title, active_name].compact.join(" / ")
@@ -29,6 +30,18 @@ module DropdownHelper
         end
       }
     end
+  end
+
+  def start_entrants_dropdown_menu(view_object)
+    dropdown_items = view_object.ready_efforts.count_by(&:assumed_start_time_local).sort.map do |time, effort_count|
+      {
+        name: "(#{effort_count}) scheduled at #{l(time, format: :full_day_military_and_zone)}",
+        link: start_efforts_form_event_group_path(view_object.event_group, effort_count: effort_count, scheduled_start_time_local: time),
+        data: { turbo_frame: "form_modal" }
+      }
+    end
+
+    build_dropdown_menu("Start Entrants", dropdown_items, button: true, button_type: "success")
   end
 
   def admin_dropdown_menu(view_object)
@@ -233,7 +246,8 @@ module DropdownHelper
         link: edit_split_times_effort_path(view_object.effort, display_style: :elapsed_time) },
       { role: :separator },
       { name: "Edit Entrant",
-        link: edit_effort_path(view_object.effort) },
+        link: edit_effort_path(view_object.effort),
+        data: { turbo_frame: "form_modal_large" } },
       { name: "Rebuild Times",
         link: rebuild_effort_path(view_object.effort),
         method: :patch,
@@ -316,9 +330,10 @@ module DropdownHelper
     dropdown_items = [
       { name: "Establish Drops",
         link: set_stops_event_path(event),
-        method: :put,
-        data: { confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
-          "at the last aid station for which times are available. Are you sure you want to proceed?" } },
+        data: {
+          turbo_method: :put,
+          turbo_confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
+            "at the last aid station for which times are available. Are you sure you want to proceed?" } },
       { name: "Shift start time",
         link: edit_start_time_event_path(event),
         visible: current_user.admin?,

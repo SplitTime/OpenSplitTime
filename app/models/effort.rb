@@ -58,22 +58,23 @@ class Effort < ApplicationRecord
   delegate :organization, :concealed?, to: :event_group
 
   validates_presence_of :event, :first_name, :last_name, :gender
-  validates :email, allow_blank: true, length: {maximum: 105}, format: {with: VALID_EMAIL_REGEX}
-  validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
-  validates :emergency_phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates :email, allow_blank: true, length: { maximum: 105 }, format: { with: VALID_EMAIL_REGEX }
+  validates :phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
+  validates :emergency_phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
   validates_with EffortAttributesValidator
   validates_with BirthdateValidator
   validates :photo,
-            content_type: { in: %w[image/png image/jpeg], message: "must be a png or jpeg file"},
-            size: {less_than: 1.megabyte, message: "must be less than 1 megabyte"}
+            content_type: { in: %w[image/png image/jpeg], message: "must be a png or jpeg file" },
+            size: { less_than: 1.megabyte, message: "must be less than 1 megabyte" }
 
   before_save :reset_age_from_birthdate
   after_save :set_performance_data
   after_touch :set_performance_data
+  after_update_commit :broadcast_update
 
-  pg_search_scope :search_bib, against: :bib_number, using: {tsearch: {any_word: true}}
+  pg_search_scope :search_bib, against: :bib_number, using: { tsearch: { any_word: true } }
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
-  scope :on_course, -> (course) { includes(:event).where(events: {course_id: course.id}) }
+  scope :on_course, -> (course) { includes(:event).where(events: { course_id: course.id }) }
   scope :unreconciled, -> { where(person_id: nil) }
   scope :finished, -> { where(finished: true) }
   scope :started, -> { where(started: true) }
@@ -233,7 +234,7 @@ class Effort < ApplicationRecord
   end
 
   def split_times_data
-    @split_times_data ||= SplitTimeQuery.time_detail(scope: {efforts: {id: id}}, home_time_zone: home_time_zone)
+    @split_times_data ||= SplitTimeQuery.time_detail(scope: { efforts: { id: id } }, home_time_zone: home_time_zone)
   end
 
   def ordered_split_times(lap_split = nil)
@@ -306,6 +307,10 @@ class Effort < ApplicationRecord
   end
 
   private
+
+  def broadcast_update
+    broadcast_render_later_to event_group, partial: "efforts/updated", locals: { effort: self }
+  end
 
   def generate_new_topic_resource?
     !finished? && progress_notifications_timely?

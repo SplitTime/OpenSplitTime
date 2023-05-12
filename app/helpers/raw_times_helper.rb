@@ -17,99 +17,121 @@ module RawTimesHelper
     end
   end
 
-  def link_to_toggle_raw_time_review(raw_time)
-    if raw_time.reviewed_by? || raw_time.reviewed_at?
-      reviewed_by = nil
-      reviewed_at = nil
-      tooltip_text = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
-      button_class = "primary"
-    else
-      reviewed_at = Time.current
-      tooltip_text = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
-      button_class = "outline-secondary"
-    end
-    url = raw_time_path(raw_time, raw_time: { reviewed_by: reviewed_by, reviewed_at: reviewed_at }, referrer_path: request.params)
-    options = { method: :patch,
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip_text },
-                class: "btn btn-#{button_class} click-spinner" }
+  def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:, confirm: nil)
+    html_options = {
+      id: button_id,
+      class: "btn btn-sm btn-#{button_type} m-1",
+      method: method,
+      params: params,
+      data: {
+        controller: "tooltip",
+        bs_placement: :bottom,
+        bs_original_title: tooltip,
+        turbo_confirm: confirm,
+        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+      },
+    }
 
-    link_to fa_icon("glasses"), url, options
+    button_to(url, html_options) { fa_icon(icon) }
   end
 
-  def link_to_raw_time_delete(raw_time)
+  def button_to_toggle_raw_time_review(raw_time)
+    if raw_time.reviewed_at?
+      params = { raw_time: { reviewed_by: nil, reviewed_at: nil } }
+      tooltip = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
+      button_id = "set-unreviewed-raw-time-#{raw_time.id}"
+      button_type = "primary"
+      icon = "user-plus"
+    else
+      params = { raw_time: { reviewed_by: nil, reviewed_at: Time.current } }
+      tooltip = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
+      button_id = "set-reviewed-raw-time-#{raw_time.id}"
+      button_type = "outline-secondary"
+      icon = "user-minus"
+    end
+
     url = raw_time_path(raw_time, referrer_path: request.params)
-    tooltip = "Delete raw time"
-    options = { method: :delete,
-                data: { confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?",
-                        controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip },
-                class: "btn btn-danger" }
-    link_to fa_icon("trash"), url, options
+    button_to_raw_time_manage(
+      url: url,
+      params: params,
+      method: :patch,
+      button_id: button_id,
+      button_type: button_type,
+      tooltip: tooltip,
+      icon: icon,
+    )
   end
 
-  def link_to_raw_time_match(split_time, raw_time_id, icon)
+  def button_to_raw_time_delete(raw_time)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time, referrer_path: request.params),
+      params: nil,
+      method: :delete,
+      button_id: "delete-raw-time-#{raw_time.id}",
+      button_type: "outline-danger",
+      tooltip: "Delete raw time",
+      icon: "trash",
+      confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?"
+    )
+  end
+
+  def button_to_raw_time_match(split_time, raw_time_id, icon)
     if split_time.persisted?
-      url = split_time_path(split_time, split_time: { matching_raw_time_id: raw_time_id })
+      url = split_time_path(split_time)
+      params = { split_time: { matching_raw_time_id: raw_time_id } }
+      method = :patch
       tooltip = icon == :link ? "Match this raw time" : "Set this as the governing time"
-      options = { method: :patch,
-                  data: { controller: :tooltip,
-                          bs_placement: :bottom,
-                          bs_original_title: tooltip },
-                  id: "match-raw-time-#{raw_time_id}",
-                  class: "btn btn-sm btn-success" }
     else
-      url = create_split_time_from_raw_time_effort_path(split_time.effort_id, raw_time_id: raw_time_id, lap: split_time.lap)
+      url = create_split_time_from_raw_time_effort_path(split_time.effort_id)
+      params = { split_time: { raw_time_id: raw_time_id, lap: split_time.lap } }
+      method = :post
       tooltip = "Create a split time from this raw time"
-      options = { method: :post,
-                  data: { controller: :tooltip,
-                          bs_placement: :bottom,
-                          bs_original_title: tooltip },
-                  id: "match-raw-time-#{raw_time_id}",
-                  class: "btn btn-sm btn-success" }
     end
 
-    link_to fa_icon(icon), url, options
+    button_to_raw_time_manage(
+      url: url,
+      params: params,
+      method: method,
+      button_id: "match-raw-time-#{raw_time_id}",
+      button_type: "outline-success",
+      tooltip: tooltip,
+      icon: icon,
+    )
   end
 
-  def link_to_raw_time_unmatch(raw_time_id)
-    url = raw_time_path(raw_time_id, raw_time: { split_time_id: nil })
-    tooltip = "Un-match this raw time"
-    options = { method: :patch,
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip },
-                id: "unmatch-raw-time-#{raw_time_id}",
-                class: "btn btn-sm btn-danger" }
-
-    link_to fa_icon(:unlink), url, options
+  def button_to_raw_time_unmatch(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { split_time_id: nil } },
+      method: :patch,
+      button_id: "unmatch-raw-time-#{raw_time_id}",
+      button_type: "outline-danger",
+      tooltip: "Un-match this raw time",
+      icon: :unlink,
+    )
   end
 
-  def link_to_raw_time_associate(raw_time_id)
-    url = raw_time_path(raw_time_id, raw_time: { disassociated_from_effort: false })
-    tooltip = "Associate this raw time with this effort"
-    options = { method: :patch,
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip },
-                id: "associate-raw-time-#{raw_time_id}",
-                class: "btn btn-sm btn-success" }
-
-    link_to fa_icon(:plus_square), url, options
+  def button_to_raw_time_associate(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { disassociated_from_effort: false } },
+      method: :patch,
+      button_id: "associate-raw-time-#{raw_time_id}",
+      button_type: "outline-success",
+      tooltip: "Associate this raw time with this effort",
+      icon: :plus_square,
+    )
   end
 
-  def link_to_raw_time_disassociate(raw_time_id)
-    url = raw_time_path(raw_time_id, raw_time: { disassociated_from_effort: true })
-    tooltip = "Disassociate this raw time from this effort"
-    options = { method: :patch,
-                data: { controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: tooltip },
-                id: "disassociate-raw-time-#{raw_time_id}",
-                class: "btn btn-sm btn-danger" }
-
-    link_to fa_icon(:minus_square), url, options
+  def button_to_raw_time_disassociate(split_time, raw_time_id)
+    button_to_raw_time_manage(
+      url: raw_time_path(raw_time_id, effort_id: split_time.effort_id),
+      params: { raw_time: { disassociated_from_effort: true } },
+      method: :patch,
+      button_id: "disassociate-raw-time-#{raw_time_id}",
+      button_type: "outline-danger",
+      tooltip: "Disassociate this raw time from this effort",
+      icon: :minus_square,
+    )
   end
 end

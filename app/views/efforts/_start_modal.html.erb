@@ -1,0 +1,41 @@
+<%# locals: (effort:) -%>
+
+<div class="modal-header">
+  <h3 class="modal-title"><strong>Start This Entrant</strong></h3>
+  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+  <% if alert.present? %>
+    <div class="row justify-content-center">
+      <div class="alert alert-info d-block" role="alert">
+        <div class="col col-login">
+          <strong><%= alert %></strong>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row justify-content-center">
+    <div class="col col-login">
+      <%= form_with url: start_effort_path(effort), method: :patch, data: { turbo_frame: "_top" } do |f| %>
+        <div class="mb-3">
+          <%= f.label :scheduled_start_time, class: "mb-1" %>
+          <p class="form-control disabled bg-light"><%= l(effort.scheduled_start_time_local, format: :datetime_input) %></p>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :actual_start_time, class: "mb-1" %>
+          <%= f.text_field :actual_start_time,
+                           value: l(effort.scheduled_start_time_local, format: :datetime_input),
+                           autofocus: true,
+                           class: "form-control" %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.submit "Start", class: "btn btn-success" %>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

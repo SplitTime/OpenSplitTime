@@ -42,7 +42,7 @@ class LotteryEntrantsController < ApplicationController
           redirect_to organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
         end
 
-        format.turbo_stream
+        format.turbo_stream { @lottery_presenter = LotteryPresenter.new(@lottery, view_context) }
       end
     else
       render :edit, status: :unprocessable_entity
@@ -51,14 +51,19 @@ class LotteryEntrantsController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
   def destroy
-    if @lottery_entrant.tickets.present?
-      flash[:warning] = "A lottery entrant cannot be deleted unless all of the entrant's tickets and draws have been deleted first."
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
-    elsif @lottery_entrant.destroy
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
-    else
-      flash[:danger] = @lottery_entrant.errors.full_messages.join("\n")
-      redirect_to setup_organization_lottery_path(@organization, @lottery)
+    respond_to do |format|
+      format.turbo_stream do
+        if @lottery_entrant.tickets.exists?
+          flash.now[:warning] = "A lottery entrant cannot be deleted unless all of the entrant's tickets and draws have been deleted first."
+          render "destroy", status: :unprocessable_entity
+        elsif @lottery_entrant.destroy
+          flash[:success] = "The entrant was deleted."
+          redirect_to setup_organization_lottery_path(@organization, @lottery)
+        else
+          flash.now[:danger] = @lottery_entrant.errors.full_messages.join("\n")
+          render "destroy", status: :unprocessable_entity
+        end
+      end
     end
   end
 

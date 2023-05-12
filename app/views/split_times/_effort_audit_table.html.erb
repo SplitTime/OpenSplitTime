@@ -1,0 +1,5 @@
+<%# locals: (presenter:) -%>
+
+<tbody id="effort_audit_table">
+  <%= render partial: "split_times/effort_audit_row", collection: presenter.audit_rows, as: :row, locals: { presenter: presenter } %>
+</tbody>

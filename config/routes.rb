@@ -83,11 +83,13 @@ Rails.application.routes.draw do
       get :place
       get :show_photo
       get :edit_split_times
+      get :start_form
       post :create_split_time_from_raw_time
       patch :update_split_times
       patch :set_data_status
       patch :rebuild
       patch :unstart
+      patch :start
       patch :stop
       patch :smart_stop
       delete :delete_photo
@@ -128,6 +130,7 @@ Rails.application.routes.draw do
       get :setup
       get :setup_summary
       get :split_raw_times
+      get :start_efforts_form
       get :stats
       get :sync_efforts
       get :traffic
@@ -231,7 +234,7 @@ Rails.application.routes.draw do
 
   resources :raw_times, only: [:update, :destroy]
   resources :results_templates, only: [:show]
-  resources :split_times, only: [:update]
+  resources :split_times, only: [:update, :destroy]
   resources :toasts, only: [:create]
 
   get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap

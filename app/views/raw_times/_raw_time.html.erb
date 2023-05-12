@@ -1,6 +1,6 @@
 <%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, monitor_pacers:, home_time_zone:) -%>
 
-<tr id="<%= dom_id(raw_time) %>" data-controller="highlight" data-highlight-target="element" data-highlight-created-value="<%= raw_time.created_at.to_i %>">
+<tr id="<%= dom_id(raw_time) %>" data-controller="highlight" data-highlight-created-value="<%= raw_time.created_at.to_i %>">
   <td><%= raw_time.bib_number %></td>
   <% if multiple_events %>
     <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>
@@ -22,9 +22,9 @@
   <td><%= raw_time.reviewed_at ? l(raw_time.reviewed_at.in_time_zone(home_time_zone), format: :short_day_and_time) : "--" %></td>
   <td><%= raw_time.matched? ? "Yes" : "No" %></td>
   <td>
-    <div class="col-xs-12 text-nowrap">
-      <%= link_to_toggle_raw_time_review(raw_time) %>
-      <%= link_to_raw_time_delete(raw_time) %>
+    <div class="d-flex justify-content-center">
+      <%= button_to_toggle_raw_time_review(raw_time) %>
+      <%= button_to_raw_time_delete(raw_time) %>
     </div>
   </td>
 </tr>

@@ -1,0 +1,16 @@
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
+
+<% if defined?(@audit_presenter) %>
+  <%= turbo_stream.replace "effort_audit_table",
+                           partial: "split_times/effort_audit_table",
+                           locals: { presenter: @audit_presenter } %>
+<% end %>
+
+<%= turbo_stream.replace @raw_time,
+                         partial: "raw_times/raw_time",
+                         locals: {
+                           raw_time: @raw_time,
+                           multiple_events: @event_group.multiple_events?,
+                           multiple_sub_splits: @event_group.multiple_sub_splits?,
+                           monitor_pacers: @event_group.monitor_pacers?,
+                           home_time_zone: @event_group.home_time_zone } %>

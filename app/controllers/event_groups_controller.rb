@@ -199,7 +199,7 @@ class EventGroupsController < ApplicationController
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
     flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
-    redirect_to setup_event_group_path(@event_group)
+    redirect_to reconcile_event_group_path(@event_group)
   end
 
   # PATCH /event_groups/1/associate_people

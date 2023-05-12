@@ -1,3 +1,5 @@
+<%# locals: (division:) -%>
+
 <div id="<%= dom_id(division, :draw_tickets_header) %>" class="min-width-3">
   <h2 class="text-center"><strong><%= division.name %></strong></h2>
   <hr/>
@@ -5,7 +7,7 @@
   <div class="d-grid">
     <div class="btn-group">
       <%= link_to "Draw a Ticket", draw_organization_lottery_path(division.organization, division.lottery, division_id: division.id),
-                  method: :post,
+                  data: { turbo_method: :post },
                   disabled: division.full? || division.all_entrants_drawn?,
                   class: "btn btn-lg btn-success fw-bold w-100" %>
       <% if division.entrants.pre_selected.present? %>
@@ -17,7 +19,7 @@
           <div class="dropdown-divider"></div>
           <% division.entrants.pre_selected.each do |entrant| %>
             <%= link_to "Draw #{entrant.full_name}", draw_organization_lottery_lottery_entrant_path(division.organization, division.lottery, entrant),
-                        method: :post,
+                        data: { turbo_method: :post },
                         disabled: entrant.drawn?,
                         class: "dropdown-item" %>
           <% end %>

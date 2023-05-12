@@ -83,7 +83,7 @@ module RawTimesHelper
       tooltip = icon == :link ? "Match this raw time" : "Set this as the governing time"
     else
       url = create_split_time_from_raw_time_effort_path(split_time.effort_id)
-      params = { split_time: { raw_time_id: raw_time_id, lap: split_time.lap } }
+      params = { raw_time_id: raw_time_id, lap: split_time.lap }
       method = :post
       tooltip = "Create a split time from this raw time"
     end

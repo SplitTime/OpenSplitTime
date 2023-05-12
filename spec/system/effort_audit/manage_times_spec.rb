@@ -67,6 +67,21 @@ RSpec.describe "manage times from an effort audit page", js: true do
     end
   end
 
+  scenario "Create a new split time from a raw time" do
+    split_time.destroy!
+
+    login_as steward, scope: :user
+    visit_page
+
+    within(page.find("##{dom_id(audit_row)}")) do
+      button = page.find("#match-raw-time-#{raw_time_1.id}")
+      expect do
+        button.click
+        expect(page).to have_content("Sat 09:10:00")
+      end.to change { effort.split_times.count }.by(1).and change { raw_time_1.reload.split_time_id }.from(nil)
+    end
+  end
+
   scenario "Disassociate and re-associate a raw time" do
     login_as steward, scope: :user
     visit_page

@@ -4,7 +4,7 @@
   <h5 class="card-header">
     <strong><%= "Notify Me of #{person.first_name}'s Future Events" %></strong>
   </h5>
-  <div class="card-body text-center">
+  <div class="card-body text-center d-inline-flex justify-content-center">
     <%= render "subscriptions/subscription_button", subscribable: person, protocol: :email %>
     <%= render "subscriptions/subscription_button", subscribable: person, protocol: :sms %>
   </div>

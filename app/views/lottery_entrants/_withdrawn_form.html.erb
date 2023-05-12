@@ -1,9 +1,11 @@
-<div class="d-flex justify-content-center">
+<%# locals: (organization:, lottery:, entrant:) -%>
+
+<div id="<%= dom_id(entrant, :withdraw_form) %>" class="d-flex justify-content-center">
   <%= form_with(model: [organization, lottery, entrant],
                 html: { method: :patch, data: { controller: "form-auto-submit" } }) do |f| %>
     <div class="form-check form-switch">
-      <label class="form-check-label" for="withdrawn-check-box-<%= dom_id(entrant) %>"></label>
-      <%= f.check_box :withdrawn, class: "form-check-input", id: "withdrawn-check-box-#{dom_id(entrant)}" %>
+      <label class="form-check-label" for="<%= dom_id(entrant, :withdraw_entrant_checkbox) %>"></label>
+      <%= f.check_box :withdrawn, class: "form-check-input", id: dom_id(entrant, :withdraw_entrant_checkbox) %>
     </div>
   <% end %>
 </div>

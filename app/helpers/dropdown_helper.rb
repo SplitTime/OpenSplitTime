@@ -330,9 +330,10 @@ module DropdownHelper
     dropdown_items = [
       { name: "Establish Drops",
         link: set_stops_event_path(event),
-        method: :put,
-        data: { confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
-          "at the last aid station for which times are available. Are you sure you want to proceed?" } },
+        data: {
+          turbo_method: :put,
+          turbo_confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
+            "at the last aid station for which times are available. Are you sure you want to proceed?" } },
       { name: "Shift start time",
         link: edit_start_time_event_path(event),
         visible: current_user.admin?,

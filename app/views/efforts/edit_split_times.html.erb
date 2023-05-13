@@ -33,6 +33,13 @@
       <%= link_to "Back", effort_path(@presenter.effort), class: "btn btn-outline-secondary" %>
     </div>
   <% else %>
+    <% if @presenter.effort.errors.present? %>
+      <div class="alert alert-danger">
+        <% @presenter.effort.errors.full_messages.each do |message| %>
+          <p><%= message %></p>
+        <% end %>
+      </div>
+    <% end %>
     <%= form_for(@presenter.effort,
                  url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
                  html: { class: "form-horizontal", role: "form" }) do |f| %>

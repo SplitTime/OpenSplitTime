@@ -31,12 +31,12 @@ module TimeZonable
             localized_time = time.to_s.in_time_zone(home_time_zone)
 
             if localized_time.nil? || localized_time < PAST_TIME_THRESHOLD || localized_time > FUTURE_TIME_THRESHOLD
-              errors.add(:"#{attribute}_local", "is not a valid datetime")
+              send("#{attribute}=", nil)
             else
               send("#{attribute}=", localized_time)
             end
           rescue ArgumentError
-            errors.add(:"#{attribute}_local", "is not a valid datetime")
+            send("#{attribute}=", nil)
           end
         else
           send("#{attribute}=", nil)

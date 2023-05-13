@@ -59,24 +59,24 @@ RSpec.describe TimeZonable do
       context "when the time provided is not a valid datetime" do
         let(:start_time_local) { "invalid" }
 
-        it "sets a validation error" do
-          expect(dummy_instance.errors[:start_time_local]).to include("is not a valid datetime")
+        it "sets the persisted attribute to nil" do
+          expect(dummy_instance.start_time).to be_nil
         end
       end
 
       context "when the time provided is an unformatted datetime" do
         let(:start_time_local) { "10072017 060000" }
 
-        it "sets a validation error" do
-          expect(dummy_instance.errors[:start_time_local]).to include("is not a valid datetime")
+        it "sets the persisted attribute to nil" do
+          expect(dummy_instance.start_time).to be_nil
         end
       end
 
       context "when the time provided is an incomplete masked datetime" do
         let(:start_time_local) { "10/07/20yy hh:mm:ss" }
 
-        it "sets a validation error" do
-          expect(dummy_instance.errors[:start_time_local]).to include("is not a valid datetime")
+        it "sets the persisted attribute to nil" do
+          expect(dummy_instance.start_time).to be_nil
         end
       end
     end

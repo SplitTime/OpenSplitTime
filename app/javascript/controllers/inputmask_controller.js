@@ -6,6 +6,7 @@ export default class extends Controller {
     "militaryTime",
     "elapsedTime",
     "elapsedTimeShort",
+    "absoluteTimeLocal",
   ];
 
   connect() {
@@ -30,6 +31,13 @@ export default class extends Controller {
       showMaskOnHover: false,
     });
 
+    const absoluteTimeLocalMask = new Inputmask("datetime", {
+      inputFormat: "mm/dd/yyyy HH:MM:ss",
+      placeholder: "mm/dd/yyyy hh:mm:ss",
+      insertMode: false,
+      showMaskOnHover: true,
+    });
+
     this.militaryTimeTargets.forEach((element) => {
       militaryMask.mask(element)
     })
@@ -42,14 +50,24 @@ export default class extends Controller {
       elapsedShortMask.mask(element)
     })
 
+    this.absoluteTimeLocalTargets.forEach((element) => {
+      absoluteTimeLocalMask.mask(element)
+    })
   }
 
   fill() {
-    const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets).concat(this.elapsedTimeShortTargets);
+    const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets).concat(this.elapsedTimeShortTargets)
+
     for (let field of fields) {
-      field.value = field.value.replace(/[^\d:]/g, '0')
+      field.value = field.value.replace(/[hms]/g, '0')
     }
 
-  }
+    for (let field of this.absoluteTimeLocalTargets) {
+      let dateFilledIn = /^[0-9:\/hms ]+$/.test(field.value)
 
+      if(dateFilledIn) {
+        field.value = field.value.replace(/[hms]/g, '0')
+      }
+    }
+  }
 }

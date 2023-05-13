@@ -9,26 +9,39 @@ export default class extends Controller {
   ];
 
   connect() {
-    $(this.militaryTimeTargets).inputmask("datetime", {
+    const militaryMask = new Inputmask("datetime", {
       inputFormat: "HH:MM:ss",
       placeholder: "hh:mm:ss",
       insertMode: false,
       showMaskOnHover: false,
-    });
+    })
 
-    $(this.elapsedTimeTargets).inputmask("datetime", {
+    const elapsedMask = new Inputmask("datetime", {
       inputFormat: "H2:MM:ss",
       placeholder: "hh:mm:ss",
       insertMode: false,
       showMaskOnHover: false,
     });
 
-    $(this.elapsedTimeShortTargets).inputmask("datetime", {
+    const elapsedShortMask = new Inputmask("datetime", {
       inputFormat: "H2:MM",
       placeholder: "hh:mm",
       insertMode: false,
       showMaskOnHover: false,
     });
+
+    this.militaryTimeTargets.forEach((element) => {
+      militaryMask.mask(element)
+    })
+
+    this.elapsedTimeTargets.forEach((element) => {
+      elapsedMask.mask(element)
+    })
+
+    this.elapsedTimeShortTargets.forEach((element) => {
+      elapsedShortMask.mask(element)
+    })
+
   }
 
   fill() {

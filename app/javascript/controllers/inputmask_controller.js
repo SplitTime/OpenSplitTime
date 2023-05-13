@@ -40,34 +40,31 @@ export default class extends Controller {
 
     this.militaryTimeTargets.forEach((element) => {
       militaryMask.mask(element)
+      element.addEventListener("blur", this.fillHandler.bind(this))
     })
 
     this.elapsedTimeTargets.forEach((element) => {
       elapsedMask.mask(element)
+      element.addEventListener("blur", this.fillHandler.bind(this))
     })
 
     this.elapsedTimeShortTargets.forEach((element) => {
       elapsedShortMask.mask(element)
+      element.addEventListener("blur", this.fillHandler.bind(this))
     })
 
     this.absoluteTimeLocalTargets.forEach((element) => {
       absoluteTimeLocalMask.mask(element)
+      element.addEventListener("blur", this.fillHandler.bind(this))
     })
   }
 
-  fill() {
-    const fields = this.militaryTimeTargets.concat(this.elapsedTimeTargets).concat(this.elapsedTimeShortTargets)
+  fillHandler(event) {
+    const field = event.target
+    let dateFilledIn = /^[0-9:\/hms ]+$/.test(field.value)
 
-    for (let field of fields) {
+    if(dateFilledIn) {
       field.value = field.value.replace(/[hms]/g, '0')
-    }
-
-    for (let field of this.absoluteTimeLocalTargets) {
-      let dateFilledIn = /^[0-9:\/hms ]+$/.test(field.value)
-
-      if(dateFilledIn) {
-        field.value = field.value.replace(/[hms]/g, '0')
-      }
     }
   }
 }

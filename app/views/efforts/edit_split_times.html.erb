@@ -65,7 +65,7 @@
                                              placeholder: @presenter.placeholder,
                                              data: {
                                                controller: "inputmask",
-                                               inputmask_type_value: "#{@presenter.working_field.to_s.camelize(:lower)}",
+                                               inputmask_type_value: @presenter.inputmask_type,
                                              },
                                              disabled: @presenter.disable_for_time_point?(time_point),
                                              autofocus: @presenter.autofocus_for_time_point?(time_point) %>

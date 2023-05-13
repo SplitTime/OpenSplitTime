@@ -3,6 +3,11 @@
 class EffortWithTimesPresenter < EffortWithLapSplitRows
   DEFAULT_DISPLAY_STYLE = "military_time"
   VALID_DISPLAY_STYLES = %w(military_time elapsed_time absolute_time_local).freeze
+  INPUTMASK_TYPES_BY_DISPLAY_STYLE = {
+      military_time: "military",
+      elapsed_time: "elapsed",
+      absolute_time_local: "datetime_us",
+  }
 
   def post_initialize(effort, args)
     ArgsValidator.validate(subject: effort, params: args, required: [:params], exclusive: [:params], class: self.class)
@@ -30,6 +35,10 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
 
   def html_value(time_point)
     date_included? ? datetime_html_value(time_point) : field_value(time_point)
+  end
+
+  def inputmask_type
+    INPUTMASK_TYPES_BY_DISPLAY_STYLE[display_style.to_sym]
   end
 
   def placeholder

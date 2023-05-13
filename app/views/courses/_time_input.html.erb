@@ -1,5 +1,4 @@
-<%= form_with url: plan_effort_organization_course_path, local: true, method: :get, role: "form",
-              data: { controller: "inputmask", action: "submit->inputmask#fill" } do |form| %>
+<%= form_with url: plan_effort_organization_course_path, local: true, method: :get, role: "form" do |form| %>
 
   <div class="mb-3 row">
     <%= form.label :start_time, "Event start time", class: "col-3 col-form-label" %>
@@ -28,7 +27,10 @@
                           placeholder: "hh:mm",
                           autofocus: true,
                           class: "form-control search-box",
-                          data: { "inputmask-target" => "elapsedTimeShort", action: "blur->inputmask#fill" } %>
+                          data: {
+                            controller: "inputmask",
+                            inputmask_type_value: "elapsed_without_seconds",
+                          } %>
     </div>
   </div>
 

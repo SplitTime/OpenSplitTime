@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   static values = {
-    type: String
+    type: String // Must be an inputmask alias; see app/javascript/packs/application.js
   }
 
   connect() {

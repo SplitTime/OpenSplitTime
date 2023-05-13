@@ -37,9 +37,41 @@ global.preferredElevationUnit = preferredElevationUnit;
 global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
+// Inputmask
+import Inputmask from "inputmask/dist/jquery.inputmask";
+Inputmask.extendAliases({
+  "militaryTime": {
+    alias: "datetime",
+    inputFormat: "HH:MM:ss",
+    placeholder: "hh:mm:ss",
+    insertMode: false,
+    showMaskOnHover: false,
+  },
+  "elapsedTime": {
+    alias: "datetime",
+    inputFormat: "H2:MM:ss",
+    placeholder: "hh:mm:ss",
+    insertMode: false,
+    showMaskOnHover: false,
+  },
+  "elapsedTimeShort": {
+    alias: "datetime",
+    inputFormat: "H2:MM",
+    placeholder: "hh:mm",
+    insertMode: false,
+    showMaskOnHover: false,
+  },
+  "absoluteTimeLocal": {
+    alias: "datetime",
+    inputFormat: "mm/dd/yyyy HH:MM:ss",
+    placeholder: "mm/dd/yyyy hh:mm:ss",
+    insertMode: false,
+    showMaskOnHover: true,
+  }
+})
+
 // Miscellaneous imports
 import "chartkick/chart.js";
-import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";
 
 // reloadWithTurbo

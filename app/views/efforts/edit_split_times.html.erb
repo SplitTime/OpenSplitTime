@@ -33,13 +33,9 @@
       <%= link_to "Back", effort_path(@presenter.effort), class: "btn btn-outline-secondary" %>
     </div>
   <% else %>
-    <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
-                 html: { class: "form-horizontal",
-                         role: "form",
-                         data: {
-                           controller: "inputmask",
-                           action: "submit->inputmask#fill",
-                         } }) do |f| %>
+    <%= form_for(@presenter.effort,
+                 url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
+                 html: { class: "form-horizontal", role: "form" }) do |f| %>
       <div class="row">
         <div class="col-8">
           <table class="table">
@@ -60,8 +56,10 @@
                                              class: "form-control",
                                              value: @presenter.html_value(time_point),
                                              placeholder: @presenter.placeholder,
-                                             data: { "inputmask-target" => "#{@presenter.working_field.to_s.camelize(:lower)}",
-                                                     action: "blur->inputmask#fill" },
+                                             data: {
+                                               controller: "inputmask",
+                                               inputmask_type_value: "#{@presenter.working_field.to_s.camelize(:lower)}",
+                                             },
                                              disabled: @presenter.disable_for_time_point?(time_point),
                                              autofocus: @presenter.autofocus_for_time_point?(time_point) %>
                       <%= builder.hidden_field :lap, { value: time_point.lap } %>

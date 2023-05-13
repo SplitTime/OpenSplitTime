@@ -39,6 +39,7 @@ global.elevationToPreferred = elevationToPreferred;
 
 // Inputmask
 import Inputmask from "inputmask/dist/jquery.inputmask";
+
 Inputmask.extendAliases({
   "military": {
     alias: "datetime",
@@ -75,6 +76,9 @@ Inputmask.extendAliases({
     insertMode: false,
     showMaskOnHover: true,
   },
+  "bib_number": {
+    regex: "[0-9|*]{0,6}"
+  },
 })
 
 // Miscellaneous imports
@@ -83,10 +87,12 @@ import "datatables.net-bs5";
 
 // reloadWithTurbo
 import { reloadWithTurbo } from "utils/reload_with_turbo"
+
 global.reloadWithTurbo = reloadWithTurbo()
 
 // jQuery
 import $ from 'jquery';
+
 global.$ = $
 global.jQuery = $
 

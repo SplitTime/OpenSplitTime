@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class EffortWithTimesPresenter < EffortWithLapSplitRows
+  DEFAULT_DISPLAY_STYLE = "military_time"
+  VALID_DISPLAY_STYLES = %w(military_time elapsed_time absolute_time_local).freeze
+
   def post_initialize(effort, args)
     ArgsValidator.validate(subject: effort, params: args, required: [:params], exclusive: [:params], class: self.class)
     @effort = effort
@@ -18,7 +21,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   end
 
   def display_style
-    params[:display_style].presence || default_display_style
+    params[:display_style].in?(VALID_DISPLAY_STYLES) ? params[:display_style] : DEFAULT_DISPLAY_STYLE
   end
 
   def guaranteed_split_time(time_point)
@@ -58,10 +61,6 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
   private
 
   attr_reader :params
-
-  def default_display_style
-    "military_time"
-  end
 
   def datetime_html_value(time_point)
     field_value = field_value(time_point)

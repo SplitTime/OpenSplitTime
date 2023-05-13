@@ -9,7 +9,7 @@
         <div class="ost-title">
           <h1><strong>Edit Times - <%= @presenter.full_name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event.event_group.organization.name, organization_path(@presenter.event.event_group.organization) %></li>
             <% if @presenter.event_group.multiple_events? %>
               <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
@@ -30,17 +30,19 @@
   <hr/>
   <% if @presenter.suppress_form? %>
     <div class="col">
-      [ <%= link_to 'Back', effort_path(@presenter.effort) %> ]
+      <%= link_to "Back", effort_path(@presenter.effort), class: "btn btn-outline-secondary" %>
     </div>
-<% else %>
+  <% else %>
     <%= form_for(@presenter.effort, url: update_split_times_effort_path(@presenter.effort, display_style: @presenter.display_style),
-                 html: {class: 'form-horizontal',
-                        role: 'form',
-                        data: {controller: 'inputmask',
-                               action: 'submit->inputmask#fill'}}) do |f| %>
+                 html: { class: "form-horizontal",
+                         role: "form",
+                         data: {
+                           controller: "inputmask",
+                           action: "submit->inputmask#fill",
+                         } }) do |f| %>
       <div class="row">
         <div class="col-8">
-          <table class="table table-striped">
+          <table class="table">
             <thead>
             <th><h4>Split</h4></th>
             <th></th>
@@ -52,20 +54,20 @@
                 <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
                 <% row.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
-                    <td><%= text_with_status_indicator('', @presenter.guaranteed_split_time(time_point).data_status) %></td>
+                    <td><%= text_with_status_indicator("", @presenter.guaranteed_split_time(time_point).data_status) %></td>
                     <td>
                       <%= builder.text_field @presenter.working_field,
-                                             class: 'form-control',
+                                             class: "form-control",
                                              value: @presenter.html_value(time_point),
                                              placeholder: @presenter.placeholder,
-                                             data: {"inputmask-target" => "#{@presenter.working_field.to_s.camelize(:lower)}",
-                                                    action: 'blur->inputmask#fill'},
+                                             data: { "inputmask-target" => "#{@presenter.working_field.to_s.camelize(:lower)}",
+                                                     action: "blur->inputmask#fill" },
                                              disabled: @presenter.disable_for_time_point?(time_point),
                                              autofocus: @presenter.autofocus_for_time_point?(time_point) %>
-                      <%= builder.hidden_field :lap, {value: time_point.lap} %>
-                      <%= builder.hidden_field :split_id, {value: time_point.split_id} %>
-                      <%= builder.hidden_field :sub_split_bitkey, {value: time_point.bitkey} %>
-                      <%= builder.hidden_field :effort_id, {value: @presenter.id} %>
+                      <%= builder.hidden_field :lap, { value: time_point.lap } %>
+                      <%= builder.hidden_field :split_id, { value: time_point.split_id } %>
+                      <%= builder.hidden_field :sub_split_bitkey, { value: time_point.bitkey } %>
+                      <%= builder.hidden_field :effort_id, { value: @presenter.id } %>
                     </td>
                   <% end %>
                 <% end %>
@@ -77,12 +79,8 @@
       </div>
 
       <div class="mb-3">
-        <div class="col">
-          <%= f.submit("Update #{@presenter.table_header}", class: 'btn btn-primary btn-large') %>
-        </div>
-      </div>
-      <div class="col">
-        [ <%= link_to 'Cancel', effort_path(@presenter.effort) %> ]
+        <%= f.submit("Update #{@presenter.table_header}", class: "btn btn-primary btn-large") %>
+        <%= link_to "Cancel", effort_path(@presenter.effort), class: "btn btn-outline-secondary" %>
       </div>
     <% end %>
   <% end %>

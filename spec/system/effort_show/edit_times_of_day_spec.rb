@@ -50,6 +50,32 @@ RSpec.describe "edit military times from an edit split times page" do
     end.to change { effort.split_times.count }.from(5).to(4)
   end
 
+  context "with javascript enabled", js: true do
+    it "enforces input mask format" do
+      login_as steward, scope: :user
+      visit_page
+
+      expected_values = {
+        "1" => "10:00:00",
+        "12" => "12:00:00",
+        "1212" => "12:12:00",
+        "920" => "09:20:00",
+        "131415" => "13:14:15",
+        "13:14:15" => "13:14:15",
+      }
+
+      input = page.find("#effort_split_times_attributes_0_military_time")
+
+      expected_values.each do |input_value, expected_value|
+        input.set("")
+        input.native.send_keys(input_value)
+        input.native.send_keys(:tab)
+
+        expect(input.value).to eq(expected_value)
+      end
+    end
+  end
+
   def visit_page
     visit edit_split_times_effort_path(effort, display_style: :military_time)
   end

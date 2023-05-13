@@ -15,6 +15,7 @@ module DatetimepickerHelper
     html_id_base = options[:date_only] ? "datepicker" : "datetimepicker"
     strftime_format = options[:date_only] ? "%m/%d/%Y" : "%m/%d/%Y %H:%M:%S"
     placeholder_format = options[:date_only] ? "mm/dd/yyyy" : "mm/dd/yyyy hh:mm:ss"
+    mask_type = options[:date_only] ? "date_us" : "datetime_us"
     html_id = "#{html_id_base}-#{method.to_s.dasherize}"
     object = options[:object] || form.object
 
@@ -22,7 +23,11 @@ module DatetimepickerHelper
                                  value: object.send(method)&.strftime(strftime_format),
                                  placeholder: placeholder_format,
                                  class: "form-control datetimepicker-input",
-                                 data: { bs_target: "##{html_id}" }
+                                 data: {
+                                   bs_target: "##{html_id}",
+                                   controller: "inputmask",
+                                   inputmask_type_value: mask_type,
+                                 }
 
     append = content_tag(:div, nil, class: "input-group-text", data: { bs_target: "##{html_id}", bs_toggle: "datetimepicker" }) do
       content_tag(:span, nil, class: "far fa-calendar-alt")

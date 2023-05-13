@@ -56,6 +56,29 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
     end
   end
 
+  scenario "Inputmask works", js: true do
+    visit_page
+
+    expected_values = {
+      "1" => "10:00",
+      "12" => "12:00",
+      "1212" => "12:12",
+      "920" => "92:00",
+      "131415" => "13:14",
+      "13:14:15" => "13:14",
+    }
+
+    input = page.find("#expected_time")
+
+    expected_values.each do |input_value, expected_value|
+      input.set("")
+      input.native.send_keys(input_value)
+      input.native.send_keys(:tab)
+
+      expect(input.value).to eq(expected_value)
+    end
+  end
+
   def verify_page_content
     verify_content_present(course)
     course.splits.each { |split| verify_content_present(split, :base_name) }

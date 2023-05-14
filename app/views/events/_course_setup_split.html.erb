@@ -4,7 +4,7 @@
     class="align-middle <%= ' bg-light fst-italic fw-light' if aid_station.blank? %>"
     data-controller="highlight"
     data-highlight-fast-value="true"
-    data-highlight-created-value="<%= split.updated_at.to_i %>"
+    data-highlight-timestamp-value="<%= split.updated_at.to_i %>"
     data-course-setup--splits-table-target="splitRow"
     data-split-id="<%= split.id %>"
 >

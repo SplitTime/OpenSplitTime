@@ -1,4 +1,10 @@
-<div id="<%= dom_id lottery_draw %>" class="card mt-3 min-width-3" data-controller="highlight" data-highlight-created-value="<%= lottery_draw.created_at.to_i %>">
+<%# locals: (lottery_draw:) %>
+
+<div id="<%= dom_id lottery_draw %>"
+     class="card mt-3 min-width-3"
+     data-controller="highlight"
+     data-highlight-timestamp-value="<%= lottery_draw.updated_at.to_i %>"
+>
   <div class="card-header fw-bold bg-primary text-white">
     <div class="row">
       <div class="col col-8">

@@ -390,7 +390,7 @@ class EventGroupsController < ApplicationController
     attributes = params.require(:efforts).permit(:checked_in).to_hash
     @event_group.efforts.update_all(attributes)
 
-    redirect_to request.referrer
+    redirect_to roster_event_group_path(@event_group)
   end
 
   # DELETE /event_groups/1/delete_all_efforts

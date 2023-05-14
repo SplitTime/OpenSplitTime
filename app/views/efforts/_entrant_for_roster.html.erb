@@ -1,6 +1,10 @@
 <%# locals: (effort:, multiple_events, :started_efforts_present:) -%>
 
-<tr id="<%= dom_id effort, :roster_row %>" data-controller="highlight" data-highlight-fast-value="true" data-highlight-created-value="<%= effort.updated_at.to_i %>">
+<tr id="<%= dom_id effort, :roster_row %>"
+    data-controller="highlight"
+    data-highlight-fast-value="true"
+    data-highlight-timestamp-value="<%= effort.updated_at.to_i %>"
+>
   <td class="text-center">
     <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
   </td>

@@ -1,6 +1,9 @@
 <%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, monitor_pacers:, home_time_zone:) -%>
 
-<tr id="<%= dom_id(raw_time) %>" data-controller="highlight" data-highlight-created-value="<%= raw_time.created_at.to_i %>">
+<tr id="<%= dom_id(raw_time) %>"
+    data-controller="highlight"
+    data-highlight-timestamp-value="<%= raw_time.updated_at.to_i %>"
+>
   <td><%= raw_time.bib_number %></td>
   <% if multiple_events %>
     <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>

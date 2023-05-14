@@ -35,7 +35,7 @@ export default class extends Controller {
   conditionalReload() {
     const reloadIndicator = this.element.querySelector("[data-reload-on-close]")
     if (reloadIndicator) {
-      window.location.reload()
+      reloadWithTurbo()
     }
   }
 }

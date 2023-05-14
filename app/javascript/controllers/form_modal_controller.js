@@ -31,4 +31,11 @@ export default class extends Controller {
       autofocusInput.focus()
     }
   }
+
+  conditionalReload() {
+    const reloadIndicator = this.element.querySelector("[data-reload-on-close]")
+    if (reloadIndicator) {
+      window.location.reload()
+    }
+  }
 }

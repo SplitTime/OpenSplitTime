@@ -1,10 +1,16 @@
+<%# locals: (turbo_frame_id:, bs_modal_modifier:) -%>
+
 <div class="modal fade"
      tabindex="-1"
      data-controller="form-modal"
-     data-action="turbo:frame-load->form-modal#open turbo:submit-end->form-modal#close shown.bs.modal->form-modal#autofocus">
-  <div class="modal-dialog">
+     data-action="turbo:frame-load->form-modal#open
+                  turbo:submit-end->form-modal#close
+                  shown.bs.modal->form-modal#autofocus
+                  hide.bs.modal->form-modal#conditionalReload"
+>
+  <div class="modal-dialog <%= bs_modal_modifier %>">
     <div class="modal-content">
-      <%= turbo_frame_tag "form_modal" %>
+      <%= turbo_frame_tag turbo_frame_id %>
     </div>
   </div>
 </div>

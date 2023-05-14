@@ -136,7 +136,7 @@ module ToggleHelper
     if existing_subscription
       url = polymorphic_path([subscribable, existing_subscription])
       html_options = { method: :delete,
-                       class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
+                       class: "#{protocol}-sub btn btn-lg btn-primary",
                        data: {
                          turbo_confirm: unsubscribe_alert,
                          turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
@@ -144,7 +144,7 @@ module ToggleHelper
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
       html_options = { method: :post,
-                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
+                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary",
                        data: {
                          turbo_confirm: subscribe_alert,
                          turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),

@@ -120,7 +120,7 @@ module ToggleHelper
       if current_user
         link_to_toggle_subscription(args)
       else
-        link_to_sign_in(args)
+        button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
       end
     end
   end
@@ -137,22 +137,33 @@ module ToggleHelper
       url = polymorphic_path([subscribable, existing_subscription])
       html_options = { method: :delete,
                        class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
-                       data: { turbo_confirm: unsubscribe_alert } }
+                       data: {
+                         turbo_confirm: unsubscribe_alert,
+                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                       } }
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
       html_options = { method: :post,
                        class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
-                       data: { turbo_confirm: subscribe_alert } }
+                       data: {
+                         turbo_confirm: subscribe_alert,
+                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                       } }
     end
 
     button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
   end
 
-  def link_to_sign_in(args)
-    icon_name = args[:icon_name]
-    protocol = args[:protocol]
-    link_to fa_icon(icon_name, text: " #{protocol}"), "#",
-            class: "btn btn-lg btn-outline-secondary",
-            data: { bs_toggle: "modal", bs_target: "#log-in-modal" }
+  def button_to_sign_in(icon:, protocol:)
+    url = "#"
+    html_options = {
+      method: :get,
+      class: "btn btn-lg btn-outline-secondary",
+      data: {
+        turbo_confirm: "You must be signed in to subscribe to notifications.",
+      }
+    }
+
+    button_to(url, html_options) { fa_icon(icon, text: "#{protocol}") }
   end
 end

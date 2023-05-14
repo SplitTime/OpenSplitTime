@@ -51,26 +51,40 @@ module ToggleHelper
     button_to(url, html_options) { fa_icon(icon_name, text: button_text, type: :regular) }
   end
 
-  def link_to_check_in_all(view_object)
-    url = update_all_efforts_event_group_path(view_object.event_group, efforts: { checked_in: true }, button: :check_in_all)
-    options = { method: "patch",
-                data: { confirm: "This will check in all entrants, making them eligible to start. Do you want to proceed?",
-                        controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: "Check in all" },
-                class: "btn btn-success click-spinner" }
-    link_to fa_icon("check-square", text: "All", type: :regular), url, options
+  def button_to_check_in_all(view_object)
+    url = update_all_efforts_event_group_path(view_object.event_group)
+    html_options = {
+      id: "check_in_all",
+      class: "btn btn-success",
+      method: "patch",
+      params: { efforts: { checked_in: true }, button: :check_in_all },
+      data: {
+        turbo_confirm: "This will check in all entrants, making them eligible to start. Do you want to proceed?",
+        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+        controller: "tooltip",
+        bs_placement: :bottom,
+        bs_original_title: "Check in all",
+      },
+    }
+    button_to(url, html_options) { fa_icon("check-square", text: "All", type: :regular) }
   end
 
-  def link_to_check_out_all(view_object)
-    url = update_all_efforts_event_group_path(view_object.event_group, efforts: { checked_in: false }, button: :check_out_all)
-    options = { method: "patch",
-                data: { confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
-                        controller: :tooltip,
-                        bs_placement: :bottom,
-                        bs_original_title: "Check out all" },
-                class: "btn btn-outline-secondary click-spinner" }
-    link_to fa_icon("square", text: "All", type: :regular), url, options
+  def button_to_check_out_all(view_object)
+    url = update_all_efforts_event_group_path(view_object.event_group)
+    html_options = {
+      id: "check_out_all",
+      class: "btn btn-outline-secondary",
+      method: "patch",
+      params: { efforts: { checked_in: false }, button: :check_out_all },
+      data: {
+        turbo_confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
+        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+        controller: "tooltip",
+        bs_placement: :bottom,
+        bs_original_title: "Check out all",
+      },
+    }
+    button_to(url, html_options) { fa_icon("square", text: "All", type: :regular) }
   end
 
   def link_to_subscription(subscribable, protocol)
@@ -106,7 +120,7 @@ module ToggleHelper
       if current_user
         link_to_toggle_subscription(args)
       else
-        link_to_sign_in(args)
+        button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
       end
     end
   end
@@ -122,23 +136,34 @@ module ToggleHelper
     if existing_subscription
       url = polymorphic_path([subscribable, existing_subscription])
       html_options = { method: :delete,
-                       class: "#{protocol}-sub btn btn-lg btn-primary click-spinner",
-                       data: { turbo_confirm: unsubscribe_alert } }
+                       class: "#{protocol}-sub btn btn-lg btn-primary",
+                       data: {
+                         turbo_confirm: unsubscribe_alert,
+                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                       } }
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
       html_options = { method: :post,
-                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary click-spinner",
-                       data: { turbo_confirm: subscribe_alert } }
+                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary",
+                       data: {
+                         turbo_confirm: subscribe_alert,
+                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                       } }
     end
 
     button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
   end
 
-  def link_to_sign_in(args)
-    icon_name = args[:icon_name]
-    protocol = args[:protocol]
-    link_to fa_icon(icon_name, text: " #{protocol}"), "#",
-            class: "btn btn-lg btn-outline-secondary",
-            data: { bs_toggle: "modal", bs_target: "#log-in-modal" }
+  def button_to_sign_in(icon:, protocol:)
+    url = "#"
+    html_options = {
+      method: :get,
+      class: "btn btn-lg btn-outline-secondary",
+      data: {
+        turbo_confirm: "You must be signed in to subscribe to notifications.",
+      }
+    }
+
+    button_to(url, html_options) { fa_icon(icon, text: "#{protocol}") }
   end
 end

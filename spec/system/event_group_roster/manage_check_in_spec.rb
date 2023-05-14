@@ -48,6 +48,46 @@ RSpec.describe "manage check-ins from the event group roster page", js: true do
     end
   end
 
+  context "bulk check in and out" do
+    let(:effort_1) do
+      efforts(:rufa_2017_12h_not_started)
+    end
+    let(:effort_2) do
+      efforts(:rufa_2017_24h_not_started)
+    end
+    let(:all_efforts) do
+      [effort_1, effort_2]
+    end
+
+    scenario "check in all" do
+      all_efforts.each { |effort| effort.update(checked_in: false) }
+
+      login_as steward, scope: :user
+      visit_page
+
+      button = page.find("#check_in_all")
+      expect do
+        button.click
+        page.accept_confirm
+        wait_for_spinner_to_stop
+      end.to change { effort_1.reload.checked_in }.from(false).to(true).and change { effort_2.reload.checked_in }.from(false).to(true)
+    end
+
+    scenario "check out all" do
+      all_efforts.each { |effort| effort.update(checked_in: true) }
+
+      login_as steward, scope: :user
+      visit_page
+
+      button = page.find("#check_out_all")
+      expect do
+        button.click
+        page.accept_confirm
+        wait_for_spinner_to_stop
+      end.to change { effort_1.reload.checked_in }.from(true).to(false).and change { effort_2.reload.checked_in }.from(true).to(false)
+    end
+  end
+
   def visit_page
     visit roster_event_group_path(event_group)
   end

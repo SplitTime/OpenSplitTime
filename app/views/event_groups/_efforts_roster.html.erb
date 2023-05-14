@@ -65,8 +65,8 @@
         <th>
           <div class="row">
             <div class="col d-inline-flex">
-              <span><%= link_to_check_in_all(@presenter) %></span>
-              <span><%= link_to_check_out_all(@presenter) %></span>
+              <div><%= button_to_check_in_all(@presenter) %></div>
+              <div class="ms-1"><%= button_to_check_out_all(@presenter) %></div>
             </div>
           </div>
         </th>

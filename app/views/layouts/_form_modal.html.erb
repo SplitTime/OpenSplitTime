@@ -5,8 +5,8 @@
      data-controller="form-modal"
      data-action="turbo:frame-load->form-modal#open
                   turbo:submit-end->form-modal#close
-                  shown.bs.modal->form-modal#autofocus
-                  hide.bs.modal->form-modal#conditionalReload"
+                  turbo:submit-end->form-modal#conditionalReload
+                  shown.bs.modal->form-modal#autofocus"
 >
   <div class="modal-dialog <%= bs_modal_modifier %>">
     <div class="modal-content">

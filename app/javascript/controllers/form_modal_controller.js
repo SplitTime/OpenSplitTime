@@ -32,9 +32,9 @@ export default class extends Controller {
     }
   }
 
-  conditionalReload() {
-    const reloadIndicator = this.element.querySelector("[data-reload-on-close]")
-    if (reloadIndicator) {
+  conditionalReload(event) {
+    const reloadIndicator = this.element.querySelector("[data-reload-on-submit]")
+    if (event.detail.success && reloadIndicator) {
       reloadWithTurbo()
     }
   }

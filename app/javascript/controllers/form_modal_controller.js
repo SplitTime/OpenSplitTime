@@ -29,7 +29,7 @@ export default class extends Controller {
   }
 
   resizeIndicatorTargetConnected(element) {
-    this.resizedElementTarget.classList.add(element.dataset.resizeClass)
+    this.resizedElementTarget.classList.add("modal-lg")
   }
 
   autofocus() {

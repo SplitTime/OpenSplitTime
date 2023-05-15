@@ -8,7 +8,7 @@
     <div class="modal-body">
       <%= form_with model: [event.course],
                     url: attach_course_gpx_event_group_event_path(event.event_group, event),
-                    data: { turbo_frame: "_top" } do |f| %>
+                    data: { controller: "form-apply", turbo_frame: "_top" } do |f| %>
         <% if current_user.errors.any? %>
           <div id="error_explanation">
             <ul>

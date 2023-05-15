@@ -23,8 +23,7 @@
 
 <%= yield %>
 
-<%= render "layouts/form_modal", bs_modal_modifier: nil, turbo_frame_id: "form_modal" %>
-<%= render "layouts/form_modal", bs_modal_modifier: "modal-lg", turbo_frame_id: "form_modal_large" %>
+<%= render "layouts/form_modal", turbo_frame_id: "form_modal" %>
 
 <%= render "layouts/footer" unless @skip_footer %>
 </body>

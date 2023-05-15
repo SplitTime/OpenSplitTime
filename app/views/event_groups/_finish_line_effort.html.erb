@@ -16,7 +16,7 @@
           <strong><%= bib_effort_name_and_event_name(effort, effort.event_group.multiple_events?) %></strong>
           <%= link_to "Details", projections_effort_path(effort, modal: true),
                       class: "btn btn-success float-end",
-                      data: { turbo_frame: "form_modal_large" } %>
+                      data: { turbo_frame: "form_modal" } %>
         </h3>
         <div class="card-body">
           <h4 class="card-text"><%= effort.bio %></h4>

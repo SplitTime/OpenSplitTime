@@ -3,8 +3,8 @@
 <% end %>
 
 <main class="container">
-  <%= turbo_frame_tag "form_modal_large" do %>
-    <div class="modal-body">
+  <%= turbo_frame_tag "form_modal" do %>
+    <div class="modal-body" data-form-modal-target="resizeIndicator">
       <%= render "splits/form", event: @event, split: @split %>
     </div>
   <% end %>

@@ -27,8 +27,8 @@
 </header>
 
 <article class="ost-article container">
-  <%= turbo_frame_tag "form_modal_large" do %>
-    <div class="modal-header">
+  <%= turbo_frame_tag "form_modal" do %>
+    <div class="modal-header" data-form-modal-target="resizeIndicator">
       <div class="modal-title h4 fw-bold">Edit Entrant - <%= @effort.full_name %></div>
     </div>
     <div class="modal-body">

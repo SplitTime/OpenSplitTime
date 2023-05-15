@@ -1,5 +1,3 @@
-<%# locals: (turbo_frame_id:, bs_modal_modifier:) -%>
-
 <div class="modal fade"
      tabindex="-1"
      data-controller="form-modal"
@@ -8,9 +6,9 @@
                   turbo:submit-end->form-modal#conditionalReload
                   shown.bs.modal->form-modal#autofocus"
 >
-  <div class="modal-dialog <%= bs_modal_modifier %>">
+  <div class="modal-dialog" data-form-modal-target="resizedElement">
     <div class="modal-content">
-      <%= turbo_frame_tag turbo_frame_id %>
+      <%= turbo_frame_tag "form_modal" %>
     </div>
   </div>
 </div>

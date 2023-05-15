@@ -58,7 +58,7 @@ module EffortsHelper
   def link_to_effort_edit(effort)
     url = edit_effort_path(effort)
     tooltip = "Edit effort"
-    options = { data: { turbo_frame: "form_modal_large",
+    options = { data: { turbo_frame: "form_modal",
                         controller: "tooltip",
                         bs_placement: :bottom,
                         bs_original_title: tooltip },

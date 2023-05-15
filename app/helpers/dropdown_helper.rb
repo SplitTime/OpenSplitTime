@@ -247,7 +247,7 @@ module DropdownHelper
       { role: :separator },
       { name: "Edit Entrant",
         link: edit_effort_path(view_object.effort),
-        data: { turbo_frame: "form_modal_large" } },
+        data: { turbo_frame: "form_modal" } },
       { name: "Rebuild Times",
         link: rebuild_effort_path(view_object.effort),
         method: :patch,

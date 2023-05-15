@@ -1,7 +1,7 @@
 <%# locals: (presenter:) -%>
 
-<%= turbo_frame_tag "form_modal_large" do %>
-  <div class="modal-header">
+<%= turbo_frame_tag "form_modal" do %>
+  <div class="modal-header" data-form-modal-target="resizeIndicator" data-resize-class="modal-lg">
     <div class="modal-title h4 fw-bold"><%= "##{presenter.bib_number} #{presenter.full_name}" %></div>
   </div>
   <div class="modal-body">

@@ -23,7 +23,7 @@
           <h4>Personal Information</h4>
         </div>
         <div class="card-body">
-          <%= form_with(model: current_user, url: user_settings_update_path, html: { method: :put, data: { controller: "form-apply" } }) do |f| %>
+          <%= form_with(model: current_user, url: user_settings_update_path, html: { method: :put, data: { controller: "form-disable-submit" } }) do |f| %>
             <div class="mb-3">
               <%= f.label :first_name, class: "mb-1 required" %>
               <%= f.text_field :first_name, class: "form-control", placeholder: "First name" %>
@@ -42,7 +42,7 @@
             <br/>
 
             <div class="mb-3">
-              <%= f.submit "Save Changes", class: "btn btn-primary", data: { turbo: false, "form-apply-target" => "submitButton" } %>
+              <%= f.submit "Save Changes", class: "btn btn-primary", data: { turbo: false } %>
             </div>
           <% end %>
         </div>

@@ -9,7 +9,7 @@
         <div class="ost-title">
           <h1><strong><%= "#{@aid_stations_display.event_name}: Aid Station Summary" %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Aid Stations</li>
@@ -21,14 +21,14 @@
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <%= render 'event_groups/event_widget', events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
+      <%= render "event_groups/event_widget", events: @aid_stations_display.ordered_events_within_group, current_event: @aid_stations_display.event %>
     </div>
   </div>
 </aside>
@@ -41,14 +41,14 @@
         <thead>
         <tr>
           <th>Name</th>
-          <th class="text-end"><%= pdu('singular').titleize %></th>
+          <th class="text-end"><%= pdu("singular").titleize %></th>
           <th class="text-center">Recorded
             <% if @aid_stations_display.multiple_sub_splits? %>
               <br/>In / Out
             <% end %></th>
           <th class="text-center">In Aid</th>
           <th class="text-center">Missed</th>
-          <th class="text-center"><%= @event.laps_unlimited? ? 'Stopped Here' : 'Dropped Here' %></th>
+          <th class="text-center"><%= @event.laps_unlimited? ? "Stopped Here" : "Dropped Here" %></th>
           <th class="text-center">Expected</th>
         </tr>
         </thead>
@@ -59,15 +59,15 @@
             <td class="text-nowrap"><%= link_to row.split_name, aid_station_detail_live_event_path(@event, parameterized_split_name: row.parameterized_split_name) %></td>
             <td class="text-end"><%= d(row.split.distance_from_start) %></td>
             <td class="text-center">
-              <%= render 'link_to_efforts', row: row, category: :recorded_in %>
+              <%= render "link_to_efforts", row: row, category: :recorded_in %>
               <% if @aid_stations_display.multiple_sub_splits? %>
-                / <%= render 'link_to_efforts', row: row, category: :recorded_out %>
+                / <%= render "link_to_efforts", row: row, category: :recorded_out %>
               <% end %>
             </td>
             <% stop_or_drop = @event.laps_unlimited? ? :stopped_here : :dropped_here %>
             <% [:in_aid, :missed, stop_or_drop, :expected].each do |category| %>
               <td class="text-center">
-                <%= render 'link_to_efforts', row: row, category: category %>
+                <%= render "link_to_efforts", row: row, category: category %>
               </td>
             <% end %>
           </tr>

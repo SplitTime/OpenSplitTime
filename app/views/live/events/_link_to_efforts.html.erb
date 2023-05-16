@@ -1,11 +1,3 @@
-<% if row.category_sizes[category] == 0 %>
-    --
-<% else %>
-    <a data-controller="popover"
-       data-popover-effort-ids-value="<%= row.category_effort_lap_keys[category].map(&:effort_id) %>"
-       data-bs-toggle="popover"
-       data-bs-title="<%= row.category_table_titles[category] %>"
-    >
-      <%= row.category_sizes[category] %>
-    </a>
-<% end %>
+<%# locals: (row:, category:) -%>
+
+<%= link_to_effort_ids_popover(row.category_effort_lap_keys[category].map(&:effort_id), row.category_table_titles[category]) %>

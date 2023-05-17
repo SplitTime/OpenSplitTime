@@ -270,11 +270,11 @@ class EffortsController < ApplicationController
   end
 
   def mini_table
-    if params[:effort_ids].present?
-      @mini_table = EffortsMiniTable.new(params[:effort_ids])
-      render partial: "efforts_mini_table"
-    else
-      render html: "No effort ids provided", status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream do
+        mini_table = EffortsMiniTable.new(params[:effort_ids])
+        render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
+      end
     end
   end
 

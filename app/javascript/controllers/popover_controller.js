@@ -1,16 +1,18 @@
 import { Controller } from "@hotwired/stimulus"
-import { FetchRequest } from "@rails/request.js"
+import { post } from "@rails/request.js"
 import { Popover } from "bootstrap"
 
 export default class extends Controller {
   static values = {
     effortIds: Array,
+    target: String,
     theme: String,
   }
 
   connect() {
     const theme = this.themeValue
     const effortIds = this.effortIdsValue
+    const target = this.targetValue
 
     this.element.style.cursor = "pointer"
 
@@ -26,33 +28,14 @@ export default class extends Controller {
       if (effortIds.length > 0) {
         popover.tip.classList.add("efforts-popover");
 
-        const request = new FetchRequest("post", "/efforts/mini_table/", {
-          body: {effortIds: effortIds},
+        post("/efforts/mini_table/", {
+          body: {
+            effortIds: effortIds,
+            target: target,
+          },
           contentType: "application/json",
-          responseKind: "html"
+          responseKind: "turbo-stream"
         })
-
-        if (!popover._config.fetched) {
-          popover._config.fetched = true
-
-          request.perform().then(function (response) {
-            if (response.ok) {
-              response.html.then(function (html) {
-                popover.setContent({
-                  ".popover-body": html
-                })
-              })
-            } else {
-              popover.setContent({
-                ".popover-body": "Error loading efforts."
-              })
-            }
-          }, function (error) {
-            popover.setContent({
-              ".popover-body": error
-            })
-          })
-        }
 
       } else {
         popover.tip.classList.add("static-popover");

@@ -9,6 +9,7 @@ RSpec.describe "visit an effort place page" do
   let(:completed_effort) { efforts(:hardrock_2014_finished_first) }
   let(:in_progress_effort) { efforts(:hardrock_2014_progress_sherman) }
   let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
+  let(:popover_effort) { efforts(:hardrock_2014_keith_metz) }
 
   context "When the effort is finished" do
     let(:effort) { completed_effort }
@@ -37,6 +38,27 @@ RSpec.describe "visit an effort place page" do
       visit place_effort_path(effort)
       verify_page_header
       expect(page).to have_text("The effort has not started")
+    end
+  end
+
+  context "when an effort has peers" do
+    let(:effort) { popover_effort }
+
+    scenario "Click a popover button", js: true do
+      split = splits(:hardrock_cw_telluride)
+
+      visit place_effort_path(effort)
+      within "#lap_1_split_#{split.id}" do
+        first("[data-controller='popover']").click
+      end
+      expect(page).to have_css(".popover-body")
+      within ".popover-body" do
+        expect(page).to have_css(".table")
+        within ".table" do
+          expect(page).to have_content("Paul Predovic")
+          expect(page).to have_content("Irvin Corkery")
+        end
+      end
     end
   end
 

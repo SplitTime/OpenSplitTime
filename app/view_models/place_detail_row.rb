@@ -5,7 +5,7 @@ class PlaceDetailRow
 
   attr_reader :split_times
 
-  delegate :distance_from_start, to: :lap_split
+  delegate :distance_from_start, :lap, :split, to: :lap_split
 
   # split_times should be an array having size == lap_split.time_points.size,
   # with nil values where no corresponding split_time exists

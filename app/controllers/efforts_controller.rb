@@ -269,15 +269,18 @@ class EffortsController < ApplicationController
     redirect_to effort_path(@effort)
   end
 
+  # This action uses POST because a GET may exceed the maximum length of a URL.
+  # POST /efforts/mini_table
   def mini_table
-    respond_to do |format|
-      format.turbo_stream do
-        mini_table = EffortsMiniTable.new(params[:effort_ids])
-        render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
-      end
+    if params[:effort_ids].present? && params[:target].present?
+      mini_table = EffortsMiniTable.new(params[:effort_ids])
+      render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
+    else
+      head :unprocessable_entity
     end
   end
 
+  # GET /efforts/1/show_photo
   def show_photo
     render partial: "show_photo"
   end

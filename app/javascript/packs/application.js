@@ -118,3 +118,4 @@ myDefaultAllowList.td = [];
 myDefaultAllowList.th = [];
 myDefaultAllowList.tbody = [];
 myDefaultAllowList.thead = [];
+myDefaultAllowList.div = [];

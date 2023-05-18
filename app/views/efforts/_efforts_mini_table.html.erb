@@ -1,4 +1,6 @@
-<table class="table table-sm table-striped">
+<%# locals: (effort_rows:) -%>
+
+<table class="table table-sm">
   <thead>
   <tr>
     <th class="text-center">Bib</th>
@@ -7,12 +9,18 @@
   </tr>
   </thead>
   <tbody>
-  <% @mini_table.effort_rows.each do |row| %>
+  <% if effort_rows.present? %>
+    <% effort_rows.each do |row| %>
       <tr>
         <td class="text-center"><%= row.bib_number %></td>
         <td class="text-nowrap"><%= link_to row.full_name, effort_path(row) %></td>
         <td class="text-nowrap"><%= row.bio_historic %></td>
       </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="3">Efforts could not be loaded.</td>
+    </tr>
   <% end %>
   </tbody>
 </table>

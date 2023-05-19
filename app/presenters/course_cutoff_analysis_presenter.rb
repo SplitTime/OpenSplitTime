@@ -6,7 +6,8 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   include TimeFormats
 
   DEFAULT_BAND_WIDTH = 30.minutes
-  DEFAULT_DISPLAY_STYLE = :absolute
+  DEFAULT_DISPLAY_STYLE = "absolute_time"
+  VALID_DISPLAY_STYLES = %w(elapsed_time absolute_time).freeze
 
   attr_reader :course
   delegate :events, :name, :organization, :simple?, to: :course
@@ -39,14 +40,14 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   end
 
   def display_style
-    @display_style ||= params[:display_style].presence&.to_sym || DEFAULT_DISPLAY_STYLE
+    params[:display_style].in?(VALID_DISPLAY_STYLES) ? params[:display_style] : DEFAULT_DISPLAY_STYLE
   end
 
   def display_style_hash
     {
-      elapsed: "Elapsed",
-      absolute: "Absolute",
-    }
+      elapsed_time: "Elapsed",
+      absolute_time: "Absolute",
+    }.with_indifferent_access.freeze
   end
 
   def distance

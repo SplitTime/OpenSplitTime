@@ -33,7 +33,11 @@ class CourseCutoffAnalysisPresenter < BasePresenter
           data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.finished_count] }
         },
         {
-          name: "Unfinished",
+          name: "Stopped Here",
+          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.stopped_here_count] }
+        },
+        {
+          name: "Continued and DNF",
           data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.total_count - isca.finished_count] }
         },
       ]
@@ -55,7 +59,7 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   end
 
   def range_string(isca)
-    if display_style == :elapsed
+    if display_style == "elapsed_time"
       "#{time_format_hhmm(isca.start_seconds)} to #{time_format_hhmm(isca.end_seconds)}"
     else
       "#{localized_time(start_time + isca.start_seconds)} to #{localized_time(start_time + isca.end_seconds)}"

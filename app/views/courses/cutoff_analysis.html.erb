@@ -37,16 +37,20 @@
 
   <% if @presenter.visible_events_exist? && @presenter.interval_split_cutoff_analyses.present? %>
     <div>
-      <%= column_chart @presenter.chart_data, stacked: true %>
+      <%= column_chart @presenter.chart_data,
+                       stacked: true,
+                       colors: ["#198754", "#f0ad4e", "#dc3545"] %>
     </div>
     <hr/>
 
-    <table class="table table-striped" style="width:80%">
+    <table class="table">
       <thead>
       <tr>
         <th><%= @presenter.display_style.titleize %></th>
-        <th class="text-center">Total Efforts</th>
-        <th class="text-center">Finished Efforts</th>
+        <th class="text-center">Total</th>
+        <th class="text-center">Finished</th>
+        <th class="text-center">Stopped Here</th>
+        <th class="text-center">Continued</br>and DNF</th>
       </tr>
       </thead>
       <tbody>
@@ -55,6 +59,8 @@
           <td><%= @presenter.range_string(isca) %></td>
           <td class="text-center"><%= isca.total_count %></td>
           <td class="text-center"><%= isca.finished_count %></td>
+          <td class="text-center"><%= isca.stopped_here_count %></td>
+          <td class="text-center"><%= isca.continued_dnf_count %></td>
         </tr>
       <% end %>
       </tbody>

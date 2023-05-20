@@ -38,7 +38,7 @@ class CourseCutoffAnalysisPresenter < BasePresenter
         },
         {
           name: "Continued and DNF",
-          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.total_count - isca.finished_count] }
+          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.continued_dnf_count] }
         },
       ]
   end

@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class IntervalSplitCutoffAnalysis < ::ApplicationQuery
+  attribute :start_seconds, :integer
   attribute :end_seconds, :integer
   attribute :finished_count, :integer
-  attribute :start_seconds, :integer
+  attribute :stopped_here_count, :integer
   attribute :total_count, :integer
 
   ROW_LIMIT = 300
@@ -53,11 +54,23 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
           where begin_split_id = (select id from course_splits where kind = #{::Split.kinds[:start]})
             and end_split_id = (select id from course_splits where kind = #{::Split.kinds[:finish]})
           ),
+
+          stopped_here_effort_ids as (
+              select distinct st.effort_id, st.lap
+              from split_times st
+              where st.split_id = #{split.id}
+                and st.stopped_here is true
+          ),
           
           all_effort_segments as (
-              select ses.effort_id, ses.lap, ses.elapsed_seconds, fes.effort_id is not null as finished
+              select ses.effort_id, 
+                     ses.lap, 
+                     ses.elapsed_seconds, 
+                     fes.effort_id is not null as finished, 
+                     she.effort_id is not null as stopped_here
               from subject_effort_segments ses
                   left join finish_effort_segments fes using (effort_id, lap)
+                  left join stopped_here_effort_ids she using (effort_id, lap)
           ),
           
           interval_starts as (
@@ -75,6 +88,7 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
       select i.start_seconds,
              i.end_seconds,
              count(case when aes.finished is true then 1 else null end) as finished_count,
+             count(case when aes.stopped_here is true then 1 else null end) as stopped_here_count,
              count(aes.effort_id) as total_count
       from all_effort_segments aes
         right join intervals i
@@ -83,5 +97,9 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
       group by i.start_seconds, i.end_seconds
       order by i.start_seconds;
     SQL
+  end
+
+  def continued_dnf_count
+    total_count - finished_count - stopped_here_count
   end
 end

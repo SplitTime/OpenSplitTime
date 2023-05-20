@@ -6,7 +6,8 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   include TimeFormats
 
   DEFAULT_BAND_WIDTH = 30.minutes
-  DEFAULT_DISPLAY_STYLE = :absolute
+  DEFAULT_DISPLAY_STYLE = "absolute_time"
+  VALID_DISPLAY_STYLES = %w(elapsed_time absolute_time).freeze
 
   attr_reader :course
   delegate :events, :name, :organization, :simple?, to: :course
@@ -32,21 +33,25 @@ class CourseCutoffAnalysisPresenter < BasePresenter
           data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.finished_count] }
         },
         {
-          name: "Unfinished",
+          name: "Stopped Here",
+          data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.stopped_here_count] }
+        },
+        {
+          name: "Continued and DNF",
           data: interval_split_cutoff_analyses.map { |isca| [range_string(isca), isca.total_count - isca.finished_count] }
         },
       ]
   end
 
   def display_style
-    @display_style ||= params[:display_style].presence&.to_sym || DEFAULT_DISPLAY_STYLE
+    params[:display_style].in?(VALID_DISPLAY_STYLES) ? params[:display_style] : DEFAULT_DISPLAY_STYLE
   end
 
   def display_style_hash
     {
-      elapsed: "Elapsed",
-      absolute: "Absolute",
-    }
+      elapsed_time: "Elapsed",
+      absolute_time: "Absolute",
+    }.with_indifferent_access.freeze
   end
 
   def distance
@@ -54,7 +59,7 @@ class CourseCutoffAnalysisPresenter < BasePresenter
   end
 
   def range_string(isca)
-    if display_style == :elapsed
+    if display_style == "elapsed_time"
       "#{time_format_hhmm(isca.start_seconds)} to #{time_format_hhmm(isca.end_seconds)}"
     else
       "#{localized_time(start_time + isca.start_seconds)} to #{localized_time(start_time + isca.end_seconds)}"

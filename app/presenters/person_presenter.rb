@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class PersonPresenter < BasePresenter
-  attr_reader :person
+  attr_reader :person, :current_user
 
   delegate :to_param, to: :person
 
-  def initialize(person, params, current_user)
+  def initialize(person, view_context)
     @person = person
-    @params = params
-    @current_user = current_user
+    @current_user = view_context.current_user
   end
 
   def efforts
@@ -27,8 +26,4 @@ class PersonPresenter < BasePresenter
   def method_missing(method)
     person.send(method)
   end
-
-  private
-
-  attr_reader :params, :current_user
 end

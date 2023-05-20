@@ -294,16 +294,27 @@ module DropdownHelper
 
   def person_actions_dropdown_menu(view_object)
     dropdown_items = [
-      { name: "Edit",
-        link: edit_person_path(view_object.person) },
-      { name: "Merge with",
-        link: merge_person_path(view_object.person) },
-      { role: :separator },
-      { name: "Delete person",
+      {
+        name: "Edit",
+        link: edit_person_path(view_object.person),
+      },
+      {
+        name: "Merge with",
+        link: merge_person_path(view_object.person),
+        visible: view_object.current_user.admin?,
+      },
+      {
+        role: :separator,
+        visible: view_object.current_user.admin?,
+      },
+      {
+        name: "Delete person",
         link: person_path(view_object.person),
+        visible: view_object.current_user.admin?,
         method: :delete,
         data: { confirm: "This action cannot be undone. Proceed?" },
-        class: "text-danger" }
+        class: "text-danger",
+      }
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end

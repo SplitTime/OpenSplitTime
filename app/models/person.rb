@@ -18,7 +18,7 @@ class Person < ApplicationRecord
   friendly_id :slug_candidates, use: [:slugged, :history]
   has_paper_trail
 
-  enum gender: [:male, :female]
+  enum gender: [:male, :female, :nonbinary]
   has_many :efforts, dependent: :nullify
   belongs_to :claimant, class_name: "User", foreign_key: "user_id", optional: true
   has_one_attached :photo do |photo|

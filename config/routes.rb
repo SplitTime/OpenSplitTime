@@ -226,8 +226,7 @@ Rails.application.routes.draw do
   resources :people, only: [:index, :show, :edit, :update, :destroy] do
     resources :subscriptions, only: [:create, :destroy], module: "people"
     collection { get :subregion_options }
-    member { get :avatar_claim }
-    member { delete :avatar_disclaim }
+    member { patch :avatar_claim }
     member { get :merge }
     member { put :combine }
   end

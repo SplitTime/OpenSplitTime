@@ -20,16 +20,20 @@ class PersonPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def edit?
+    user.admin? || user.avatar == person
+  end
+
+  def update?
+    edit?
+  end
+
   def destroy?
     user.admin?
   end
 
   def avatar_claim?
     user.authorized_to_claim?(person)
-  end
-
-  def avatar_disclaim?
-    user.admin?
   end
 
   def merge?

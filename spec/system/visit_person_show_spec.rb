@@ -9,21 +9,21 @@ RSpec.describe "visit a person show page" do
 
   context "When the person is visible" do
     scenario "Visit the page" do
-      visit person_path(person)
+      visit_page
 
       verify_content_present
     end
 
     scenario "The user is a non-admin" do
       login_as user, scope: :user
-      visit person_path(person)
+      visit_page
 
       verify_content_present
     end
 
     scenario "The user is an admin user" do
       login_as admin, scope: :user
-      visit person_path(person)
+      visit_page
 
       verify_content_present
     end
@@ -36,16 +36,43 @@ RSpec.describe "visit a person show page" do
     end
 
     scenario "The user is a non-admin" do
-      login_as user, scope: user
+      login_as user, scope: :user
 
       verify_record_not_found
     end
 
     scenario "The user is an admin user" do
       login_as admin, scope: :user
-      visit person_path(person)
+      visit_page
 
       verify_content_present
+    end
+  end
+
+  context "When the current user is authorized to claim the person", js: true do
+    before { person.update(first_name: "Third", last_name: "User") }
+
+    scenario "The user claims the person" do
+      login_as user, scope: :user
+      visit_page
+
+      expect do
+        click_button "This is me"
+        accept_confirm "Is this really you? (Please cancel if you were just kidding.)"
+        expect(page).to have_content("Hey, this is me!")
+        expect(page).to have_current_path(person_path(person))
+      end.to change { person.reload.claimant }.from(nil).to(user)
+    end
+  end
+
+  context "When the current user is not authorized to claim the person" do
+    before { person.update(first_name: "Different", last_name: "Person") }
+
+    scenario "The user cannot claim the person" do
+      login_as user, scope: :user
+      visit_page
+
+      expect(page).not_to have_button("This is me")
     end
   end
 
@@ -66,5 +93,9 @@ RSpec.describe "visit a person show page" do
 
   def verify_record_not_found
     expect { visit person_path(person) }.to raise_error ::ActiveRecord::RecordNotFound
+  end
+
+  def visit_page
+    visit person_path(person)
   end
 end

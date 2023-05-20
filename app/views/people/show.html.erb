@@ -50,11 +50,15 @@
       <div class="col d-inline-flex justify-content-between">
         <div>
           <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
-            <%= link_to "This is me", avatar_claim_person_path(@presenter.person),
-                        data: { confirm: "Is this really you? (Please cancel if you were just kidding.)" },
-                        class: "btn btn-success" %>
+            <%= button_to "This is me", avatar_claim_person_path(@presenter.person),
+                          class: "btn btn-success",
+                          method: :patch,
+                          data: {
+                            turbo_confirm: "Is this really you? (Please cancel if you were just kidding.)",
+                          }
+            %>
           <% end %>
-          <% if current_user&.admin? %>
+          <% if current_user.present? && (current_user.admin? || current_user.avatar == @presenter.person) %>
             <%= person_actions_dropdown_menu(@presenter) %>
           <% end %>
         </div>

@@ -17,7 +17,7 @@ class PeopleController < ApplicationController
   end
 
   def show
-    @presenter = PersonPresenter.new(@person, prepared_params, current_user)
+    @presenter = PersonPresenter.new(@person, view_context)
   end
 
   def edit
@@ -43,13 +43,8 @@ class PeopleController < ApplicationController
 
   def avatar_claim
     authorize @person
-    @person.update(claimant: current_user)
-    redirect_to @person
-  end
 
-  def avatar_disclaim
-    authorize @person
-    @person.update(claimant: nil)
+    @person.update(claimant: current_user)
     redirect_to @person
   end
 

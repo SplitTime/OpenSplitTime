@@ -4,6 +4,7 @@ class ResultsCategoryResource < Madmin::Resource
   attribute :name
   attribute :male
   attribute :female
+  attribute :nonbinary
   attribute :low_age
   attribute :high_age
   attribute :temp_key

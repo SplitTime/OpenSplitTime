@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_06_195322) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_21_041725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -485,6 +485,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_06_195322) do
     t.integer "updated_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "nonbinary", default: false
     t.index ["organization_id"], name: "index_results_categories_on_organization_id"
   end
 

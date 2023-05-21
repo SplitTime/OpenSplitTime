@@ -37,7 +37,7 @@ class ComputeBibAssignments
   def compute_for_hardrock
     efforts = event.efforts.select(:id, :person_id, :first_name, :last_name).to_a
     prior_hardrock = event.organization.events.where("scheduled_start_time < ?", event.scheduled_start_time).order(scheduled_start_time: :desc).first
-    ordered_prior_person_ids = prior_hardrock.efforts.finished.ranked_order.pluck(:person_id)
+    ordered_prior_person_ids = prior_hardrock ? prior_hardrock.efforts.finished.ranked_order.pluck(:person_id) : []
 
     current_bib = 1
     ordered_prior_person_ids.each do |person_id|

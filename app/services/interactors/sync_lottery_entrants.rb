@@ -6,14 +6,14 @@ module Interactors
     include ::ActionView::Helpers::TextHelper
 
     RELEVANT_ATTRIBUTES = [
-                            "first_name",
-                            "last_name",
-                            "gender",
-                            "birthdate",
-                            "city",
-                            "state_code",
-                            "country_code",
-                          ].freeze
+      "first_name",
+      "last_name",
+      "gender",
+      "birthdate",
+      "city",
+      "state_code",
+      "country_code",
+    ].freeze
 
     def self.perform!(event)
       new(event).perform!
@@ -56,7 +56,7 @@ module Interactors
 
     def find_and_create_entrants
       accepted_entrants = event.lottery.divisions.flat_map(&:accepted_entrants)
-                          .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
+                            .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
 
       accepted_entrants.each do |entrant|
         unique_key = { first_name: entrant.first_name, last_name: entrant.last_name, birthdate: entrant.birthdate }

@@ -54,3 +54,14 @@ simple:
   slug: simple
   created_by: 1
   updated_by:
+simple_with_nonbinary:
+  id: 8
+  organization_id:
+  name: Simple With Nonbinary
+  aggregation_method: 0
+  podium_size: 3
+  point_system:
+  temp_key: simple_with_nonbinary
+  slug: simple-with-nonbinary
+  created_by: 1
+  updated_by:

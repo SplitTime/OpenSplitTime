@@ -263,3 +263,21 @@ results_template_category_62:
   results_category_id: 3
   position: 2
   fixed_position:
+results_template_category_63:
+  id: 63
+  results_template_id: 8
+  results_category_id: 2
+  position: 1
+  fixed_position:
+results_template_category_64:
+  id: 64
+  results_template_id: 8
+  results_category_id: 3
+  position: 2
+  fixed_position:
+results_template_category_65:
+  id: 65
+  results_template_id: 8
+  results_category_id: 38
+  position: 3
+  fixed_position:

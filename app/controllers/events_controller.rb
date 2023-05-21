@@ -261,7 +261,7 @@ class EventsController < ApplicationController
 
     response = ::Interactors::SyncLotteryEntrants.perform!(@event)
     set_flash_message(response)
-    redirect_to entrants_event_group_path(@event.event_group)
+    redirect_to link_lotteries_event_group_path(@event.event_group)
   end
 
   # POST /events/1/sync_entrants

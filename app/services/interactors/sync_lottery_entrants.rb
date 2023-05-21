@@ -3,6 +3,7 @@
 module Interactors
   class SyncLotteryEntrants
     include ::Interactors::Errors
+    include ::ActionView::Helpers::TextHelper
 
     RELEVANT_ATTRIBUTES = [
       "first_name",
@@ -37,6 +38,7 @@ module Interactors
       find_and_create_entrants
       delete_obsolete_entrants
 
+      set_response_message
       response
     end
 
@@ -54,7 +56,7 @@ module Interactors
 
     def find_and_create_entrants
       accepted_entrants = event.lottery.divisions.flat_map(&:accepted_entrants)
-                               .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
+                            .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
 
       accepted_entrants.each do |entrant|
         unique_key = { first_name: entrant.first_name, last_name: entrant.last_name, birthdate: entrant.birthdate }
@@ -96,6 +98,18 @@ module Interactors
       resources[:updated_efforts] = []
       resources[:deleted_efforts] = []
       resources[:ignored_efforts] = []
+    end
+
+    def set_response_message
+      response.message =
+        if errors.present?
+          "Unable to sync lottery"
+        else
+          "Lottery sync was successful. Created #{pluralize(resources[:created_efforts].size, 'effort')}, " +
+            "updated #{pluralize(resources[:updated_efforts].size, 'effort')}, " +
+            "deleted #{pluralize(resources[:deleted_efforts].size, 'effort')}, " +
+            "and ignored #{pluralize(resources[:ignored_efforts].size, 'effort')}."
+        end
     end
   end
 end

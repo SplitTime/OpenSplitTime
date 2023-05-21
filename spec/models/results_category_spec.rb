@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ResultsCategory, type: :model do
+RSpec.describe ResultsCategory do
   it_behaves_like "auditable"
 
   subject(:results_category) { build(:results_category) }
@@ -13,12 +13,12 @@ RSpec.describe ResultsCategory, type: :model do
       expect { results_category.save }.to change { ResultsCategory.count }.by(1)
     end
 
-    context "when neither male nor female is true" do
-      subject(:results_category) { build(:results_category, male: false, female: false) }
+    context "when no gender is true" do
+      subject(:results_category) { build(:results_category, male: false, female: false, nonbinary: false) }
 
       it "is invalid" do
         expect(subject).not_to be_valid
-        expect(subject.errors.full_messages).to include(/must include male or female entrants/)
+        expect(subject.errors.full_messages).to include(/must include male or female or nonbinary entrants/)
       end
     end
   end
@@ -59,61 +59,65 @@ RSpec.describe ResultsCategory, type: :model do
     context "when low_age is 0 and high_age is infinite" do
       subject(:results_category) { results_categories(:overall) }
 
-      it "returns true" do
-        expect(subject.all_ages?).to eq(true)
-      end
+      it { expect(subject.all_ages?).to eq(true) }
     end
 
     context "when any age is not covered" do
       subject(:results_category) { results_categories(:masters_men_40) }
 
-      it "returns false" do
-        expect(subject.all_ages?).to eq(false)
-      end
+      it { expect(subject.all_ages?).to eq(false) }
     end
   end
 
   describe "#genders" do
-    context "when male and female are true" do
+    context "when all genders are true" do
       subject(:results_category) { results_categories(:overall) }
 
-      it "returns %w(male female)" do
-        expect(subject.genders).to eq(%w[male female])
-      end
+      it { expect(subject.genders).to eq(%w[male female nonbinary]) }
     end
 
-    context "when male is true and female is false" do
+    context "when male is true and female and nonbinary are false" do
       subject(:results_category) { results_categories(:overall_men) }
 
-      it "returns %w(male)" do
-        expect(subject.genders).to eq(%w[male])
-      end
+      it { expect(subject.genders).to eq(%w[male]) }
     end
 
-    context "when female is true and male is false" do
+    context "when female is true and male and nonbinary are false" do
       subject(:results_category) { results_categories(:overall_women) }
 
-      it "returns %w(female)" do
-        expect(subject.genders).to eq(%w[female])
-      end
+      it { expect(subject.genders).to eq(%w[female]) }
+    end
+
+    context "when nonbinary is true and male and female are false" do
+      subject(:results_category) { results_categories(:overall_nonbinary) }
+
+      it { expect(subject.genders).to eq(%w[nonbinary]) }
     end
   end
 
   describe "#all_genders?" do
-    context "when male and female are true" do
+    context "when male, female, and nonbinary are true" do
       subject(:results_category) { results_categories(:overall) }
 
-      it "returns true" do
-        expect(subject.all_genders?).to eq(true)
-      end
+      it { expect(subject.all_genders?).to eq(true) }
     end
 
-    context "when only male or female is true" do
+    context "when only male is true" do
       subject(:results_category) { results_categories(:overall_men) }
 
-      it "returns false" do
-        expect(subject.all_genders?).to eq(false)
-      end
+      it { expect(subject.all_genders?).to eq(false) }
+    end
+
+    context "when only female is true" do
+      subject(:results_category) { results_categories(:overall_women) }
+
+      it { expect(subject.all_genders?).to eq(false) }
+    end
+
+    context "when only nonbinary is true" do
+      subject(:results_category) { results_categories(:overall_nonbinary) }
+
+      it { expect(subject.all_genders?).to eq(false) }
     end
   end
 end

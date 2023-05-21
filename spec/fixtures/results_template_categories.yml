@@ -263,3 +263,63 @@ results_template_category_62:
   results_category_id: 3
   position: 2
   fixed_position:
+results_template_category_63:
+  id: 63
+  results_template_id: 8
+  results_category_id: 2
+  position: 1
+  fixed_position:
+results_template_category_64:
+  id: 64
+  results_template_id: 8
+  results_category_id: 3
+  position: 2
+  fixed_position:
+results_template_category_65:
+  id: 65
+  results_template_id: 8
+  results_category_id: 38
+  position: 3
+  fixed_position:
+results_template_category_66:
+  id: 66
+  results_template_id: 9
+  results_category_id: 2
+  position: 1
+  fixed_position:
+results_template_category_67:
+  id: 67
+  results_template_id: 9
+  results_category_id: 3
+  position: 2
+  fixed_position:
+results_template_category_68:
+  id: 68
+  results_template_id: 9
+  results_category_id: 6
+  position: 4
+  fixed_position:
+results_template_category_69:
+  id: 69
+  results_template_id: 9
+  results_category_id: 7
+  position: 5
+  fixed_position:
+results_template_category_70:
+  id: 70
+  results_template_id: 9
+  results_category_id: 8
+  position: 6
+  fixed_position:
+results_template_category_71:
+  id: 71
+  results_template_id: 9
+  results_category_id: 9
+  position: 7
+  fixed_position:
+results_template_category_72:
+  id: 72
+  results_template_id: 9
+  results_category_id: 38
+  position: 3
+  fixed_position:

@@ -10,7 +10,21 @@
     <div class="container">
       <div class="row">
         <div class="col">
-          <%= bib_number_auto_assignment_dropdown(@presenter) %>
+          <div class="btn-group">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="auto-assign-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+              Auto Assign
+            </button>
+            <div class="dropdown-menu">
+              <%= link_to "Hardrock",
+                          auto_assign_bibs_event_group_path(@presenter.event_group, strategy: :hardrock),
+                          class: "dropdown-item",
+                          data: {
+                            turbo_method: :patch,
+                            turbo_confirm: "Assign bib numbers beginning at 1 to prior-year finishers in order of finish rank, and to other entrants beginning at 100 in alphabetical name order. Proceed?",
+                          }
+              %>
+            </div>
+          </div>
         </div>
       </div>
     </div>

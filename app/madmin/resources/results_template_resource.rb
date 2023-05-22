@@ -1,6 +1,7 @@
 class ResultsTemplateResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
+  attribute :identifier
   attribute :name
   attribute :aggregation_method
   attribute :podium_size

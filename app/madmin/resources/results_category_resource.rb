@@ -1,6 +1,7 @@
 class ResultsCategoryResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
+  attribute :identifier
   attribute :name
   attribute :male
   attribute :female

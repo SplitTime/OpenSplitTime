@@ -7,7 +7,7 @@ overall:
   female: true
   low_age:
   high_age:
-  temp_key: combined_overall
+  identifier: combined_overall
   created_by: 1
   updated_by:
   nonbinary: true
@@ -19,7 +19,7 @@ overall_men:
   female: false
   low_age:
   high_age:
-  temp_key: men_overall
+  identifier: men_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -31,7 +31,7 @@ overall_women:
   female: true
   low_age:
   high_age:
-  temp_key: women_overall
+  identifier: women_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -43,7 +43,7 @@ masters_men_40:
   female: false
   low_age: 40
   high_age:
-  temp_key: men_masters
+  identifier: men_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -55,7 +55,7 @@ masters_women_40:
   female: true
   low_age: 40
   high_age:
-  temp_key: women_masters
+  identifier: women_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -67,7 +67,7 @@ masters_men_40_49:
   female: false
   low_age: 40
   high_age: 49
-  temp_key: men_40s_masters
+  identifier: men_40s_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -79,7 +79,7 @@ masters_women_40_49:
   female: true
   low_age: 40
   high_age: 49
-  temp_key: women_40s_masters
+  identifier: women_40s_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -91,7 +91,7 @@ grandmasters_men_50:
   female: false
   low_age: 50
   high_age:
-  temp_key: men_grandmasters
+  identifier: men_grandmasters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -103,7 +103,7 @@ grandmasters_women_50:
   female: true
   low_age: 50
   high_age:
-  temp_key: women_grandmasters
+  identifier: women_grandmasters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -115,7 +115,7 @@ senior_grandmasters_men_60:
   female: false
   low_age: 60
   high_age:
-  temp_key: men_seniors
+  identifier: men_seniors
   created_by: 1
   updated_by:
   nonbinary: false
@@ -127,7 +127,7 @@ senior_grandmasters_women_60:
   female: true
   low_age: 60
   high_age:
-  temp_key: women_seniors
+  identifier: women_seniors
   created_by: 1
   updated_by:
   nonbinary: false
@@ -139,7 +139,7 @@ boys_12_and_under:
   female: false
   low_age:
   high_age: 12
-  temp_key: boys_12_and_under
+  identifier: boys_12_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -151,7 +151,7 @@ girls_12_and_under:
   female: true
   low_age:
   high_age: 12
-  temp_key: girls_12_and_under
+  identifier: girls_12_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -163,7 +163,7 @@ boys_13_to_16:
   female: false
   low_age: 13
   high_age: 16
-  temp_key: boys_13_to_16
+  identifier: boys_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -175,7 +175,7 @@ girls_13_to_16:
   female: true
   low_age: 13
   high_age: 16
-  temp_key: girls_13_to_16
+  identifier: girls_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -187,7 +187,7 @@ boys_16_and_under:
   female: false
   low_age:
   high_age: 16
-  temp_key: boys_16_and_under
+  identifier: boys_16_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -199,7 +199,7 @@ girls_16_and_under:
   female: true
   low_age:
   high_age: 16
-  temp_key: girls_16_and_under
+  identifier: girls_16_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -211,7 +211,7 @@ under_20_men:
   female: false
   low_age:
   high_age: 19
-  temp_key: men_under_20
+  identifier: men_under_20
   created_by: 1
   updated_by:
   nonbinary: false
@@ -223,7 +223,7 @@ under_20_women:
   female: true
   low_age:
   high_age: 19
-  temp_key: women_under_20
+  identifier: women_under_20
   created_by: 1
   updated_by:
   nonbinary: false
@@ -235,7 +235,7 @@ under_20_women:
   female: false
   low_age: 13
   high_age: 39
-  temp_key: men_13_to_39
+  identifier: men_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -247,7 +247,7 @@ under_20_women:
   female: true
   low_age: 13
   high_age: 39
-  temp_key: women_13_to_39
+  identifier: women_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -259,7 +259,7 @@ under_20_women:
   female: false
   low_age: 17
   high_age: 39
-  temp_key: men_17_to_39
+  identifier: men_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -271,7 +271,7 @@ under_20_women:
   female: true
   low_age: 17
   high_age: 39
-  temp_key: women_17_to_39
+  identifier: women_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -283,7 +283,7 @@ under_20_women:
   female: false
   low_age: 20
   high_age: 29
-  temp_key: men_20s
+  identifier: men_20s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -295,7 +295,7 @@ under_20_women:
   female: true
   low_age: 20
   high_age: 29
-  temp_key: women_20s
+  identifier: women_20s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -307,7 +307,7 @@ under_20_women:
   female: false
   low_age: 30
   high_age: 39
-  temp_key: men_30s
+  identifier: men_30s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -319,7 +319,7 @@ under_20_women:
   female: true
   low_age: 30
   high_age: 39
-  temp_key: women_30s
+  identifier: women_30s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -331,7 +331,7 @@ under_20_women:
   female: false
   low_age: 40
   high_age: 49
-  temp_key: men_40s
+  identifier: men_40s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -343,7 +343,7 @@ under_20_women:
   female: true
   low_age: 40
   high_age: 49
-  temp_key: women_40s
+  identifier: women_40s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -355,7 +355,7 @@ under_20_women:
   female: false
   low_age: 50
   high_age: 59
-  temp_key: men_50s
+  identifier: men_50s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -367,7 +367,7 @@ under_20_women:
   female: true
   low_age: 50
   high_age: 59
-  temp_key: women_50s
+  identifier: women_50s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -379,7 +379,7 @@ under_20_women:
   female: false
   low_age: 60
   high_age: 69
-  temp_key: men_60s
+  identifier: men_60s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -391,7 +391,7 @@ under_20_women:
   female: true
   low_age: 60
   high_age: 69
-  temp_key: women_60s
+  identifier: women_60s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -403,7 +403,7 @@ under_30_men:
   female: false
   low_age:
   high_age: 29
-  temp_key: men_under_30
+  identifier: men_under_30
   created_by: 1
   updated_by:
   nonbinary: false
@@ -415,7 +415,7 @@ under_30_women:
   female: true
   low_age:
   high_age: 29
-  temp_key: women_under_30
+  identifier: women_under_30
   created_by: 1
   updated_by:
   nonbinary: false
@@ -427,7 +427,7 @@ under_40_men:
   female: false
   low_age:
   high_age: 39
-  temp_key: men_under_40
+  identifier: men_under_40
   created_by: 1
   updated_by:
   nonbinary: false
@@ -439,7 +439,7 @@ under_40_women:
   female: true
   low_age:
   high_age: 39
-  temp_key: women_under_40
+  identifier: women_under_40
   created_by: 1
   updated_by:
   nonbinary: false
@@ -451,7 +451,7 @@ overall_nonbinary:
   female: false
   low_age:
   high_age:
-  temp_key: nonbinary_overall
+  identifier: nonbinary_overall
   created_by: 1
   updated_by:
   nonbinary: true

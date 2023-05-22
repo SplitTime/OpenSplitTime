@@ -6,7 +6,7 @@ masters_and_decades:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: ramble
+  identifier: ramble
   slug: masters-and-decades
   created_by: 1
   updated_by:
@@ -17,7 +17,7 @@ overall_30s_40s_50s_seniors:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: overall_30s_40s_50s_seniors
+  identifier: overall_30s_40s_50s_seniors
   slug: overall-30s-40s-50s-seniors
   created_by: 1
   updated_by:
@@ -28,7 +28,7 @@ sub_masters_masters_and_grandmasters:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: blue_sky
+  identifier: blue_sky
   slug: sub-masters-masters-and-grandmasters
   created_by: 1
   updated_by:
@@ -39,7 +39,7 @@ masters_and_grandmasters:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: masters_and_grandmasters
+  identifier: masters_and_grandmasters
   slug: masters-and-grandmasters
   created_by: 1
   updated_by:
@@ -50,7 +50,7 @@ simple:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: simple
+  identifier: simple
   slug: simple
   created_by: 1
   updated_by:
@@ -61,7 +61,7 @@ simple_with_nonbinary:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: simple_with_nonbinary
+  identifier: simple_with_nonbinary
   slug: simple-with-nonbinary
   created_by: 1
   updated_by:
@@ -72,7 +72,7 @@ masters_and_grandmasters_with_nonbinary:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  temp_key: masters_and_grandmasters_with_nonbinary
+  identifier: masters_and_grandmasters_with_nonbinary
   slug: masters-and-grandmasters-with-nonbinary
   created_by: 1
   updated_by:

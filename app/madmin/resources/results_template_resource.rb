@@ -5,7 +5,6 @@ class ResultsTemplateResource < Madmin::Resource
   attribute :aggregation_method
   attribute :podium_size
   attribute :point_system
-  attribute :temp_key
   attribute :slug
   attribute :created_by
   attribute :updated_by

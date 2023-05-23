@@ -24,8 +24,11 @@ RSpec.describe ResultsCategory do
   end
 
   describe "callbacks" do
-    subject(:results_category) { build(:results_category, male: male, female: female, nonbinary: nonbinary, low_age: low_age, high_age: high_age) }
+    subject(:results_category) do
+      build(:results_category, organization: organization, male: male, female: female, nonbinary: nonbinary, low_age: low_age, high_age: high_age)
+    end
 
+    let(:organization) { nil }
     let(:male) { false }
     let(:female) { false }
     let(:nonbinary) { false }
@@ -92,11 +95,19 @@ RSpec.describe ResultsCategory do
 
       it { expect(subject.identifier).to eq("female_40") }
     end
+
+    context "for a group with an organization" do
+      let(:organization) { organizations(:hardrock) }
+      let(:female) { true }
+      let(:low_age) { 40 }
+
+      it { expect(subject.identifier).to eq("hardrock_female_40_and_up") }
+    end
   end
 
   describe "#age_range" do
     context "when low_age and high_age are nil" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:men_overall) }
 
       it "returns a range from 0 to infinity" do
         expect(subject.low_age).to be_nil
@@ -128,7 +139,7 @@ RSpec.describe ResultsCategory do
 
   describe "#all_ages?" do
     context "when low_age is 0 and high_age is infinite" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.all_ages?).to eq(true) }
     end
@@ -142,19 +153,19 @@ RSpec.describe ResultsCategory do
 
   describe "#genders" do
     context "when all genders are true" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.genders).to eq(%w[male female nonbinary]) }
     end
 
     context "when male is true and female and nonbinary are false" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:men_overall) }
 
       it { expect(subject.genders).to eq(%w[male]) }
     end
 
     context "when female is true and male and nonbinary are false" do
-      subject(:results_category) { results_categories(:overall_women) }
+      subject(:results_category) { results_categories(:women_overall) }
 
       it { expect(subject.genders).to eq(%w[female]) }
     end
@@ -168,19 +179,19 @@ RSpec.describe ResultsCategory do
 
   describe "#all_genders?" do
     context "when male, female, and nonbinary are true" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.all_genders?).to eq(true) }
     end
 
     context "when only male is true" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:men_overall) }
 
       it { expect(subject.all_genders?).to eq(false) }
     end
 
     context "when only female is true" do
-      subject(:results_category) { results_categories(:overall_women) }
+      subject(:results_category) { results_categories(:women_overall) }
 
       it { expect(subject.all_genders?).to eq(false) }
     end

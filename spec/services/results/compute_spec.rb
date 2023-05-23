@@ -34,9 +34,9 @@ RSpec.describe Results::Compute do
           .sort_by(&:overall_rank)
     end
 
-    let(:combined_overall) { results_categories(:overall) }
-    let(:men_overall) { results_categories(:overall_men) }
-    let(:women_overall) { results_categories(:overall_women) }
+    let(:combined_overall) { results_categories(:combined_overall) }
+    let(:men_overall) { results_categories(:men_overall) }
+    let(:women_overall) { results_categories(:women_overall) }
     let(:men_masters) { results_categories(:masters_men_40) }
     let(:women_masters) { results_categories(:masters_women_40) }
     let(:men_under_20) { results_categories(:under_20_men) }

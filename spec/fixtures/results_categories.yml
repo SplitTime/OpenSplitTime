@@ -19,7 +19,7 @@ overall_men:
   female: false
   low_age:
   high_age:
-  identifier: men_overall
+  identifier: male_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -31,7 +31,7 @@ overall_women:
   female: true
   low_age:
   high_age:
-  identifier: women_overall
+  identifier: female_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -43,7 +43,7 @@ masters_men_40:
   female: false
   low_age: 40
   high_age:
-  identifier: men_masters
+  identifier: male_40_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -55,7 +55,7 @@ masters_women_40:
   female: true
   low_age: 40
   high_age:
-  identifier: women_masters
+  identifier: female_40_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -67,7 +67,7 @@ masters_men_40_49:
   female: false
   low_age: 40
   high_age: 49
-  identifier: men_40s_masters
+  identifier: male_40_to_49
   created_by: 1
   updated_by:
   nonbinary: false
@@ -79,7 +79,7 @@ masters_women_40_49:
   female: true
   low_age: 40
   high_age: 49
-  identifier: women_40s_masters
+  identifier: female_40_to_49
   created_by: 1
   updated_by:
   nonbinary: false
@@ -91,7 +91,7 @@ grandmasters_men_50:
   female: false
   low_age: 50
   high_age:
-  identifier: men_grandmasters
+  identifier: male_50_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -103,7 +103,7 @@ grandmasters_women_50:
   female: true
   low_age: 50
   high_age:
-  identifier: women_grandmasters
+  identifier: female_50_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -115,7 +115,7 @@ senior_grandmasters_men_60:
   female: false
   low_age: 60
   high_age:
-  identifier: men_seniors
+  identifier: male_60_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -127,7 +127,7 @@ senior_grandmasters_women_60:
   female: true
   low_age: 60
   high_age:
-  identifier: women_seniors
+  identifier: female_60_and_up
   created_by: 1
   updated_by:
   nonbinary: false
@@ -139,7 +139,7 @@ boys_12_and_under:
   female: false
   low_age:
   high_age: 12
-  identifier: boys_12_and_under
+  identifier: male_up_to_12
   created_by: 1
   updated_by:
   nonbinary: false
@@ -151,7 +151,7 @@ girls_12_and_under:
   female: true
   low_age:
   high_age: 12
-  identifier: girls_12_and_under
+  identifier: female_up_to_12
   created_by: 1
   updated_by:
   nonbinary: false
@@ -163,7 +163,7 @@ boys_13_to_16:
   female: false
   low_age: 13
   high_age: 16
-  identifier: boys_13_to_16
+  identifier: male_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -175,7 +175,7 @@ girls_13_to_16:
   female: true
   low_age: 13
   high_age: 16
-  identifier: girls_13_to_16
+  identifier: female_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -187,7 +187,7 @@ boys_16_and_under:
   female: false
   low_age:
   high_age: 16
-  identifier: boys_16_and_under
+  identifier: male_up_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -199,7 +199,7 @@ girls_16_and_under:
   female: true
   low_age:
   high_age: 16
-  identifier: girls_16_and_under
+  identifier: female_up_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -211,7 +211,7 @@ under_20_men:
   female: false
   low_age:
   high_age: 19
-  identifier: men_under_20
+  identifier: male_up_to_19
   created_by: 1
   updated_by:
   nonbinary: false
@@ -223,7 +223,7 @@ under_20_women:
   female: true
   low_age:
   high_age: 19
-  identifier: women_under_20
+  identifier: female_up_to_19
   created_by: 1
   updated_by:
   nonbinary: false
@@ -235,7 +235,7 @@ under_20_women:
   female: false
   low_age: 13
   high_age: 39
-  identifier: men_13_to_39
+  identifier: male_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -247,7 +247,7 @@ under_20_women:
   female: true
   low_age: 13
   high_age: 39
-  identifier: women_13_to_39
+  identifier: female_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -259,7 +259,7 @@ under_20_women:
   female: false
   low_age: 17
   high_age: 39
-  identifier: men_17_to_39
+  identifier: male_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -271,7 +271,7 @@ under_20_women:
   female: true
   low_age: 17
   high_age: 39
-  identifier: women_17_to_39
+  identifier: female_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -283,7 +283,7 @@ under_20_women:
   female: false
   low_age: 20
   high_age: 29
-  identifier: men_20s
+  identifier: male_20_to_29
   created_by: 1
   updated_by:
   nonbinary: false
@@ -295,7 +295,7 @@ under_20_women:
   female: true
   low_age: 20
   high_age: 29
-  identifier: women_20s
+  identifier: female_20_to_29
   created_by: 1
   updated_by:
   nonbinary: false
@@ -307,7 +307,7 @@ under_20_women:
   female: false
   low_age: 30
   high_age: 39
-  identifier: men_30s
+  identifier: male_30_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -319,7 +319,7 @@ under_20_women:
   female: true
   low_age: 30
   high_age: 39
-  identifier: women_30s
+  identifier: female_30_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -331,7 +331,7 @@ under_20_women:
   female: false
   low_age: 40
   high_age: 49
-  identifier: men_40s
+  identifier: male_40_to_49
   created_by: 1
   updated_by:
   nonbinary: false
@@ -343,7 +343,7 @@ under_20_women:
   female: true
   low_age: 40
   high_age: 49
-  identifier: women_40s
+  identifier: female_40_to_49
   created_by: 1
   updated_by:
   nonbinary: false
@@ -355,7 +355,7 @@ under_20_women:
   female: false
   low_age: 50
   high_age: 59
-  identifier: men_50s
+  identifier: male_50_to_59
   created_by: 1
   updated_by:
   nonbinary: false
@@ -367,7 +367,7 @@ under_20_women:
   female: true
   low_age: 50
   high_age: 59
-  identifier: women_50s
+  identifier: female_50_to_59
   created_by: 1
   updated_by:
   nonbinary: false
@@ -379,7 +379,7 @@ under_20_women:
   female: false
   low_age: 60
   high_age: 69
-  identifier: men_60s
+  identifier: male_60_to_69
   created_by: 1
   updated_by:
   nonbinary: false
@@ -391,7 +391,7 @@ under_20_women:
   female: true
   low_age: 60
   high_age: 69
-  identifier: women_60s
+  identifier: female_60_to_69
   created_by: 1
   updated_by:
   nonbinary: false
@@ -403,7 +403,7 @@ under_30_men:
   female: false
   low_age:
   high_age: 29
-  identifier: men_under_30
+  identifier: male_up_to_29
   created_by: 1
   updated_by:
   nonbinary: false
@@ -415,7 +415,7 @@ under_30_women:
   female: true
   low_age:
   high_age: 29
-  identifier: women_under_30
+  identifier: female_up_to_29
   created_by: 1
   updated_by:
   nonbinary: false
@@ -427,7 +427,7 @@ under_40_men:
   female: false
   low_age:
   high_age: 39
-  identifier: men_under_40
+  identifier: male_up_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -439,7 +439,7 @@ under_40_women:
   female: true
   low_age:
   high_age: 39
-  identifier: women_under_40
+  identifier: female_up_to_39
   created_by: 1
   updated_by:
   nonbinary: false

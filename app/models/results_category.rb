@@ -80,8 +80,9 @@ class ResultsCategory < ApplicationRecord
   end
 
   def set_identifier
+    organization_component = organization ? [organization.name.downcase.gsub(/\s/, "_")] : []
     gender_component = all_genders? ? ["combined"] : genders
     age_component = all_ages? ? ["overall"] : [age_description]
-    self.identifier = [*gender_component, *age_component].join("_").downcase.gsub(/\s/, "_")
+    self.identifier = [*organization_component, *gender_component, *age_component].join("_").downcase.gsub(/\s/, "_")
   end
 end

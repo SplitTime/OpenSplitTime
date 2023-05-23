@@ -6,7 +6,7 @@ masters_and_decades:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  identifier: ramble
+  identifier: masters_and_decades
   slug: masters-and-decades
   created_by: 1
   updated_by:
@@ -28,7 +28,7 @@ sub_masters_masters_and_grandmasters:
   aggregation_method: 0
   podium_size: 3
   point_system:
-  identifier: blue_sky
+  identifier: sub_masters_masters_and_grandmasters
   slug: sub-masters-masters-and-grandmasters
   created_by: 1
   updated_by:

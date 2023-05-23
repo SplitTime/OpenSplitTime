@@ -16,10 +16,12 @@ class ResultsTemplate < ApplicationRecord
                          .joins(:results_categories).where(organization: nil).group(:id).order("category_count")
                    }
 
-  validates_presence_of :name, :aggregation_method
+  validates_presence_of :name, :aggregation_method, :identifier
+
+  before_validation :set_identifier
 
   def self.default
-    find_by(slug: "simple")
+    find_by(identifier: "simple")
   end
 
   def dup_with_categories
@@ -41,5 +43,9 @@ class ResultsTemplate < ApplicationRecord
       rc.position = rtc.position
       rc.fixed_position = rtc.fixed_position
     end
+  end
+
+  def set_identifier
+    self.identifier = [organization&.name&.parameterize&.underscore, name&.parameterize&.underscore].compact.join("_")
   end
 end

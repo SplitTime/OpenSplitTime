@@ -3,7 +3,7 @@ class ResultsTemplate < ApplicationRecord
   extend FriendlyId
 
   enum aggregation_method: [:inclusive, :strict]
-  friendly_id :name, use: [:slugged, :history]
+  friendly_id :organization_and_name, use: [:slugged, :history]
 
   belongs_to :organization, optional: true
   has_many :results_template_categories, -> { order(position: :asc) }, dependent: :destroy
@@ -35,6 +35,10 @@ class ResultsTemplate < ApplicationRecord
 
   private
 
+  def organization_and_name
+    [organization&.name, name].compact.join(" ")
+  end
+
   def set_category_positions
     indexed_rtcs = results_template_categories.index_by(&:results_category_id)
 
@@ -46,6 +50,6 @@ class ResultsTemplate < ApplicationRecord
   end
 
   def set_identifier
-    self.identifier = [organization&.name&.parameterize&.underscore, name&.parameterize&.underscore].compact.join("_")
+    self.identifier = slug.tr("-", "_")
   end
 end

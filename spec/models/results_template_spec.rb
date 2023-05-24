@@ -25,6 +25,10 @@ RSpec.describe ResultsTemplate, type: :model do
       it "sets the identifier based on the name" do
         expect(subject.identifier).to eq("test_template")
       end
+
+      it "sets the slug" do
+        expect(subject.slug).to eq("test-template")
+      end
     end
 
     context "when organization is present" do
@@ -32,6 +36,10 @@ RSpec.describe ResultsTemplate, type: :model do
 
       it "sets the identifier based on the name and organization" do
         expect(subject.identifier).to eq("hardrock_test_template")
+      end
+
+      it "sets the slug" do
+        expect(subject.slug).to eq("hardrock-test-template")
       end
     end
   end

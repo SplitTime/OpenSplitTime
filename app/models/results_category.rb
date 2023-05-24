@@ -11,6 +11,7 @@ class ResultsCategory < ApplicationRecord
 
   validates_presence_of :name, :identifier
   validates_uniqueness_of :name, scope: :organization
+  validate :age_range_valid?
   validate :gender_present?
 
   attr_accessor :efforts
@@ -25,7 +26,7 @@ class ResultsCategory < ApplicationRecord
   before_validation :set_identifier
 
   def self.invalid_category(attributes = {})
-    standard_attributes = {name: "Invalid Efforts", male: true, female: true, invalid_efforts: true}
+    standard_attributes = { name: "Invalid Efforts", male: true, female: true, invalid_efforts: true }
     new(standard_attributes.merge(attributes))
   end
 
@@ -74,6 +75,12 @@ class ResultsCategory < ApplicationRecord
   end
 
   private
+
+  def age_range_valid?
+    return if low_age.nil? || high_age.nil?
+
+    errors.add(:base, "low age must be less than or equal to high age") unless low_age <= high_age
+  end
 
   def gender_present?
     errors.add(:base, "must include male or female or nonbinary entrants") unless male? || female? || nonbinary?

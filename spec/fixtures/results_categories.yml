@@ -1,5 +1,5 @@
 ---
-overall:
+combined_overall:
   id: 1
   organization_id:
   name: Overall
@@ -11,7 +11,7 @@ overall:
   created_by: 1
   updated_by:
   nonbinary: true
-overall_men:
+male_overall:
   id: 2
   organization_id:
   name: Overall Men
@@ -23,7 +23,7 @@ overall_men:
   created_by: 1
   updated_by:
   nonbinary: false
-overall_women:
+female_overall:
   id: 3
   organization_id:
   name: Overall Women
@@ -443,7 +443,7 @@ under_40_women:
   created_by: 1
   updated_by:
   nonbinary: false
-overall_nonbinary:
+nonbinary_overall:
   id: 38
   organization_id:
   name: Overall Nonbinary

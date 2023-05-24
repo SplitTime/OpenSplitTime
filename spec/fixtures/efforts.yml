@@ -12,10 +12,10 @@ hardrock_2015_tuan_jacobs:
   updated_by: 1
   first_name: Tuan
   last_name: Jacobs
-  gender: 0
+  gender: male
   country_code: ES
   birthdate: '1998-03-19'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -24,7 +24,7 @@ hardrock_2015_tuan_jacobs:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Andalucía
@@ -52,10 +52,10 @@ hardrock_2015_erich_larson:
   updated_by: 1
   first_name: Erich
   last_name: Larson
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1979-07-10'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -64,7 +64,7 @@ hardrock_2015_erich_larson:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Montana
@@ -92,10 +92,10 @@ hardrock_2015_leif_carter:
   updated_by: 1
   first_name: Leif
   last_name: Carter
-  gender: 0
+  gender: male
   country_code: ES
   birthdate: '1960-02-01'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -104,7 +104,7 @@ hardrock_2015_leif_carter:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -132,10 +132,10 @@ hardrock_2015_carmine_adams:
   updated_by: 1
   first_name: Carmine
   last_name: Adams
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1997-05-25'
-  data_status: 1
+  data_status: questionable
   beacon_url:
   report_url:
   phone:
@@ -144,7 +144,7 @@ hardrock_2015_carmine_adams:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Washington
@@ -172,10 +172,10 @@ hardrock_2015_garry_kuhlman:
   updated_by: 1
   first_name: Garry
   last_name: Kuhlman
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1969-10-10'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -184,7 +184,7 @@ hardrock_2015_garry_kuhlman:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Montana
@@ -212,10 +212,10 @@ hardrock_2015_darius_jacobson:
   updated_by: 1
   first_name: Darius
   last_name: Jacobson
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1985-03-21'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -224,7 +224,7 @@ hardrock_2015_darius_jacobson:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -252,10 +252,10 @@ hardrock_2015_santa_green:
   updated_by: 1
   first_name: Santa
   last_name: Green
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1977-10-27'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -264,7 +264,7 @@ hardrock_2015_santa_green:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -292,10 +292,10 @@ hardrock_2015_gilberto_mckenzie:
   updated_by: 1
   first_name: Gilberto
   last_name: McKenzie
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1970-06-02'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -304,7 +304,7 @@ hardrock_2015_gilberto_mckenzie:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Washington
@@ -332,10 +332,10 @@ hardrock_2015_vince_willms:
   updated_by: 1
   first_name: Vince
   last_name: Willms
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1964-10-22'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -344,7 +344,7 @@ hardrock_2015_vince_willms:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -372,10 +372,10 @@ hardrock_2015_cedric_windler:
   updated_by: 1
   first_name: Cedric
   last_name: Windler
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1979-07-10'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -384,7 +384,7 @@ hardrock_2015_cedric_windler:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Tennessee
@@ -412,10 +412,10 @@ hardrock_2015_chris_rempel:
   updated_by: 1
   first_name: Chris
   last_name: Rempel
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1988-12-28'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -424,7 +424,7 @@ hardrock_2015_chris_rempel:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -452,10 +452,10 @@ hardrock_2015_robby_gerlach:
   updated_by: 1
   first_name: Robby
   last_name: Gerlach
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1970-05-18'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -464,7 +464,7 @@ hardrock_2015_robby_gerlach:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Virginia
@@ -492,10 +492,10 @@ hardrock_2015_rachelle_eichmann:
   updated_by: 1
   first_name: Rachelle
   last_name: Eichmann
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1992-01-11'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -504,7 +504,7 @@ hardrock_2015_rachelle_eichmann:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -532,10 +532,10 @@ hardrock_2015_elden_morissette:
   updated_by: 1
   first_name: Elden
   last_name: Morissette
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1972-11-21'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -544,7 +544,7 @@ hardrock_2015_elden_morissette:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Wisconsin
@@ -572,10 +572,10 @@ hardrock_2015_leroy_leffler:
   updated_by: 1
   first_name: Leroy
   last_name: Leffler
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1967-06-18'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -584,7 +584,7 @@ hardrock_2015_leroy_leffler:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: New Mexico
@@ -612,10 +612,10 @@ hardrock_2015_samara_vandervort:
   updated_by: 1
   first_name: Samara
   last_name: Vandervort
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1992-12-15'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -624,7 +624,7 @@ hardrock_2015_samara_vandervort:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: California
@@ -652,10 +652,10 @@ hardrock_2015_robt_wintheiser:
   updated_by: 1
   first_name: Robt
   last_name: Wintheiser
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1957-09-14'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -664,7 +664,7 @@ hardrock_2015_robt_wintheiser:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -692,10 +692,10 @@ hardrock_2015_demetrius_moen:
   updated_by: 1
   first_name: Demetrius
   last_name: Moen
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1975-06-06'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -704,7 +704,7 @@ hardrock_2015_demetrius_moen:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Oregon
@@ -732,10 +732,10 @@ hardrock_2015_vern_buckridge:
   updated_by: 1
   first_name: Vern
   last_name: Buckridge
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1981-10-15'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -744,7 +744,7 @@ hardrock_2015_vern_buckridge:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Texas
@@ -772,10 +772,10 @@ hardrock_2015_donte_spencer:
   updated_by: 1
   first_name: Donte
   last_name: Spencer
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1984-07-14'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -784,7 +784,7 @@ hardrock_2015_donte_spencer:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -812,10 +812,10 @@ hardrock_2015_bruno_fadel:
   updated_by: 1
   first_name: Bruno
   last_name: Fadel
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1988-05-11'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -824,7 +824,7 @@ hardrock_2015_bruno_fadel:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: California
@@ -852,10 +852,10 @@ hardrock_2015_gus_walker:
   updated_by: 1
   first_name: Gus
   last_name: Walker
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1960-11-23'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -864,7 +864,7 @@ hardrock_2015_gus_walker:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -892,10 +892,10 @@ hardrock_2015_susanna_abshire:
   updated_by: 1
   first_name: Susanna
   last_name: Abshire
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1980-08-17'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -904,7 +904,7 @@ hardrock_2015_susanna_abshire:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -932,10 +932,10 @@ hardrock_2015_leandro_cole:
   updated_by: 1
   first_name: Leandro
   last_name: Cole
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1970-06-26'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -944,7 +944,7 @@ hardrock_2015_leandro_cole:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -972,10 +972,10 @@ hardrock_2015_benedict_davis:
   updated_by: 1
   first_name: Benedict
   last_name: Davis
-  gender: 0
+  gender: male
   country_code: US
   birthdate:
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -984,7 +984,7 @@ hardrock_2015_benedict_davis:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1012,10 +1012,10 @@ hardrock_2015_raphael_swift:
   updated_by: 1
   first_name: Raphael
   last_name: Swift
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1974-07-14'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -1024,7 +1024,7 @@ hardrock_2015_raphael_swift:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Arkansas
@@ -1052,10 +1052,10 @@ hardrock_2015_bad_status:
   updated_by: 1
   first_name: Bad
   last_name: Status
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1994-04-18'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -1064,7 +1064,7 @@ hardrock_2015_bad_status:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1092,10 +1092,10 @@ hardrock_2015_irvin_harber:
   updated_by: 1
   first_name: Irvin
   last_name: Harber
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1996-07-05'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1104,7 +1104,7 @@ hardrock_2015_irvin_harber:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1132,10 +1132,10 @@ hardrock_2015_cassondra_nienow:
   updated_by: 1
   first_name: Cassondra
   last_name: Nienow
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1958-09-07'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1144,7 +1144,7 @@ hardrock_2015_cassondra_nienow:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Ohio
@@ -1172,10 +1172,10 @@ hardrock_2015_donn_mckenzie:
   updated_by: 1
   first_name: Donn
   last_name: McKenzie
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1998-12-29'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1184,7 +1184,7 @@ hardrock_2015_donn_mckenzie:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  scheduled_start_time: 2015-07-10 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Wyoming
@@ -1212,10 +1212,10 @@ ramble_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1957-02-04'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1224,7 +1224,7 @@ ramble_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  scheduled_start_time: 2006-09-16 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -1252,10 +1252,10 @@ ramble_finished_second:
   updated_by: 1
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1994-08-16'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1264,7 +1264,7 @@ ramble_finished_second:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  scheduled_start_time: 2006-09-16 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -1292,10 +1292,10 @@ ramble_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1968-07-11'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1304,7 +1304,7 @@ ramble_start_only:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  scheduled_start_time: 2006-09-16 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -1332,10 +1332,10 @@ ramble_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1989-03-22'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1344,7 +1344,7 @@ ramble_not_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  scheduled_start_time: 2006-09-16 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -1372,7 +1372,7 @@ hardrock_2014_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code: JP
   birthdate:
   data_status:
@@ -1384,7 +1384,7 @@ hardrock_2014_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Hokkaido
@@ -1412,7 +1412,7 @@ hardrock_2014_finished_with_stop:
   updated_by: 1
   first_name: Finished
   last_name: With Stop
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1974-03-03'
   data_status:
@@ -1424,7 +1424,7 @@ hardrock_2014_finished_with_stop:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -1452,7 +1452,7 @@ hardrock_2014_finished_without_stop:
   updated_by: 1
   first_name: Finished
   last_name: Without Stop
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1989-06-12'
   data_status:
@@ -1464,7 +1464,7 @@ hardrock_2014_finished_without_stop:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -1492,7 +1492,7 @@ hardrock_2014_claudio_wunsch:
   updated_by: 1
   first_name: Claudio
   last_name: Wunsch
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1981-04-17'
   data_status:
@@ -1504,7 +1504,7 @@ hardrock_2014_claudio_wunsch:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -1532,7 +1532,7 @@ hardrock_2014_paul_predovic:
   updated_by: 1
   first_name: Paul
   last_name: Predovic
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1959-06-26'
   data_status:
@@ -1544,7 +1544,7 @@ hardrock_2014_paul_predovic:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Idaho
@@ -1572,7 +1572,7 @@ hardrock_2014_keith_metz:
   updated_by: 1
   first_name: Keith
   last_name: Metz
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1971-11-06'
   data_status:
@@ -1584,7 +1584,7 @@ hardrock_2014_keith_metz:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -1612,7 +1612,7 @@ hardrock_2014_major_green:
   updated_by: 1
   first_name: Major
   last_name: Green
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1955-09-29'
   data_status:
@@ -1624,7 +1624,7 @@ hardrock_2014_major_green:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: North Carolina
@@ -1652,7 +1652,7 @@ hardrock_2014_humberto_adams:
   updated_by: 1
   first_name: Humberto
   last_name: Adams
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1990-04-25'
   data_status:
@@ -1664,7 +1664,7 @@ hardrock_2014_humberto_adams:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: New Mexico
@@ -1692,7 +1692,7 @@ hardrock_2014_omer_yundt:
   updated_by: 1
   first_name: Omer
   last_name: Yundt
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1974-06-23'
   data_status:
@@ -1704,7 +1704,7 @@ hardrock_2014_omer_yundt:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1732,10 +1732,10 @@ hardrock_2014_pat_schaden:
   updated_by: 1
   first_name: Pat
   last_name: Schaden
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1960-09-09'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1744,7 +1744,7 @@ hardrock_2014_pat_schaden:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Arizona
@@ -1772,7 +1772,7 @@ hardrock_2014_clarence_goyette:
   updated_by: 1
   first_name: Clarence
   last_name: Goyette
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1961-09-18'
   data_status:
@@ -1784,7 +1784,7 @@ hardrock_2014_clarence_goyette:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1812,7 +1812,7 @@ hardrock_2014_irvin_corkery:
   updated_by: 1
   first_name: Irvin
   last_name: Corkery
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1991-11-01'
   data_status:
@@ -1824,7 +1824,7 @@ hardrock_2014_irvin_corkery:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: District of Columbia
@@ -1852,7 +1852,7 @@ hardrock_2014_willis_murray:
   updated_by: 1
   first_name: Willis
   last_name: Murray
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1998-02-04'
   data_status:
@@ -1864,7 +1864,7 @@ hardrock_2014_willis_murray:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Georgia
@@ -1892,7 +1892,7 @@ hardrock_2014_ken_bradtke:
   updated_by: 1
   first_name: Ken
   last_name: Bradtke
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1966-07-21'
   data_status:
@@ -1904,7 +1904,7 @@ hardrock_2014_ken_bradtke:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1932,10 +1932,10 @@ hardrock_2014_progress_sherman:
   updated_by: 1
   first_name: Progress
   last_name: Sherman
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1977-12-15'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -1944,7 +1944,7 @@ hardrock_2014_progress_sherman:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -1972,7 +1972,7 @@ hardrock_2014_multiple_stops:
   updated_by: 1
   first_name: Multiple
   last_name: Stops
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1954-03-21'
   data_status:
@@ -1984,7 +1984,7 @@ hardrock_2014_multiple_stops:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Hawaii
@@ -2012,10 +2012,10 @@ hardrock_2014_without_start:
   updated_by: 1
   first_name: Without
   last_name: Start
-  gender: 0
+  gender: male
   country_code: US
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2024,7 +2024,7 @@ hardrock_2014_without_start:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Montana
@@ -2052,10 +2052,10 @@ hardrock_2014_drop_ouray:
   updated_by: 1
   first_name: Drop
   last_name: Ouray
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1974-01-05'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2064,7 +2064,7 @@ hardrock_2014_drop_ouray:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: California
@@ -2092,10 +2092,10 @@ hardrock_2014_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1986-03-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2104,7 +2104,7 @@ hardrock_2014_not_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  scheduled_start_time: 2014-07-11 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -2132,10 +2132,10 @@ rufa_2016_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1980-07-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2144,7 +2144,7 @@ rufa_2016_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
+  scheduled_start_time: 2016-02-13 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -2172,10 +2172,10 @@ rufa_2016_finished_second:
   updated_by: 1
   first_name: Finished
   last_name: Second
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1983-04-21'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2184,7 +2184,7 @@ rufa_2016_finished_second:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
+  scheduled_start_time: 2016-02-13 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -2212,10 +2212,10 @@ rufa_2016_progress_lap1:
   updated_by: 1
   first_name: Progress
   last_name: Lap1
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1991-01-16'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2224,7 +2224,7 @@ rufa_2016_progress_lap1:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
+  scheduled_start_time: 2016-02-13 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -2252,10 +2252,10 @@ rufa_2016_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1958-03-21'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2264,7 +2264,7 @@ rufa_2016_not_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-02-13 15:00:00.000000000 Z
+  scheduled_start_time: 2016-02-13 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -2292,10 +2292,10 @@ rufa_2017_24h_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1969-04-04'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2304,7 +2304,7 @@ rufa_2017_24h_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 13:10:00.000000000 Z
+  scheduled_start_time: 2017-02-11 13:10:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2332,10 +2332,10 @@ rufa_2017_24h_progress_lap6:
   updated_by: 1
   first_name: Progress
   last_name: Lap6
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1983-03-13'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2344,7 +2344,7 @@ rufa_2017_24h_progress_lap6:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2372,10 +2372,10 @@ rufa_2017_24h_multiple_stops:
   updated_by: 1
   first_name: Multiple
   last_name: Stops
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1973-11-14'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2384,7 +2384,7 @@ rufa_2017_24h_multiple_stops:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2412,10 +2412,10 @@ rufa_2017_24h_finished_last:
   updated_by: 1
   first_name: Finished
   last_name: Last
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1976-05-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2424,7 +2424,7 @@ rufa_2017_24h_finished_last:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2452,10 +2452,10 @@ rufa_2017_24h_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1986-03-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2464,7 +2464,7 @@ rufa_2017_24h_not_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-12 01:00:00.000000000 Z
+  scheduled_start_time: 2017-02-12 01:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2492,10 +2492,10 @@ rufa_2017_24h_progress_lap1:
   updated_by: 1
   first_name: Progress
   last_name: Lap1
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1967-03-21'
-  data_status: 1
+  data_status: questionable
   beacon_url:
   report_url:
   phone:
@@ -2504,7 +2504,7 @@ rufa_2017_24h_progress_lap1:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 16:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 16:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2532,10 +2532,10 @@ hardrock_2016_lavon_paucek:
   updated_by: 1
   first_name: Lavon
   last_name: Paucek
-  gender: 1
+  gender: female
   country_code: NZ
   birthdate: '1974-07-29'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2544,7 +2544,7 @@ hardrock_2016_lavon_paucek:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -2572,10 +2572,10 @@ hardrock_2016_vesta_borer:
   updated_by: 1
   first_name: Vesta
   last_name: Borer
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1995-04-24'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2584,7 +2584,7 @@ hardrock_2016_vesta_borer:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -2612,10 +2612,10 @@ hardrock_2016_kory_kulas:
   updated_by: 1
   first_name: Kory
   last_name: Kulas
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1974-01-25'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2624,7 +2624,7 @@ hardrock_2016_kory_kulas:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: California
@@ -2652,10 +2652,10 @@ hardrock_2016_shad_hirthe:
   updated_by: 1
   first_name: Shad
   last_name: Hirthe
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1975-09-05'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2664,7 +2664,7 @@ hardrock_2016_shad_hirthe:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -2692,10 +2692,10 @@ hardrock_2016_douglas_vandervort:
   updated_by: 1
   first_name: Douglas
   last_name: Vandervort
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1964-02-16'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2704,7 +2704,7 @@ hardrock_2016_douglas_vandervort:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -2732,10 +2732,10 @@ hardrock_2016_missing_telluride_out:
   updated_by: 1
   first_name: Missing
   last_name: Telluride Out
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1996-02-11'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2744,7 +2744,7 @@ hardrock_2016_missing_telluride_out:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Alaska
@@ -2772,10 +2772,10 @@ hardrock_2016_junior_lesch:
   updated_by: 1
   first_name: Junior
   last_name: Lesch
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1967-02-21'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2784,7 +2784,7 @@ hardrock_2016_junior_lesch:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: New Mexico
@@ -2812,10 +2812,10 @@ hardrock_2016_eddy_goldner:
   updated_by: 1
   first_name: Eddy
   last_name: Goldner
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1997-07-26'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2824,7 +2824,7 @@ hardrock_2016_eddy_goldner:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Washington
@@ -2852,10 +2852,10 @@ hardrock_2016_progress_sherman:
   updated_by: 1
   first_name: Progress
   last_name: Sherman
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1982-07-28'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -2864,7 +2864,7 @@ hardrock_2016_progress_sherman:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Virginia
@@ -2892,10 +2892,10 @@ hardrock_2016_benito_moen:
   updated_by: 1
   first_name: Benito
   last_name: Moen
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1964-01-16'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2904,7 +2904,7 @@ hardrock_2016_benito_moen:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Ohio
@@ -2932,10 +2932,10 @@ hardrock_2016_kendall_koch:
   updated_by: 1
   first_name: Kendall
   last_name: Koch
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1976-02-05'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2944,7 +2944,7 @@ hardrock_2016_kendall_koch:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -2972,10 +2972,10 @@ hardrock_2016_charlie_mueller:
   updated_by: 1
   first_name: Charlie
   last_name: Mueller
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1989-06-10'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -2984,7 +2984,7 @@ hardrock_2016_charlie_mueller:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Oregon
@@ -3012,10 +3012,10 @@ hardrock_2016_brinda_fisher:
   updated_by: 1
   first_name: Brinda
   last_name: Fisher
-  gender: 1
+  gender: female
   country_code: US
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3024,7 +3024,7 @@ hardrock_2016_brinda_fisher:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: South Carolina
@@ -3052,10 +3052,10 @@ hardrock_2016_rene_mclaughlin:
   updated_by: 1
   first_name: Rene
   last_name: McLaughlin
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1984-04-30'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3064,7 +3064,7 @@ hardrock_2016_rene_mclaughlin:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Texas
@@ -3092,10 +3092,10 @@ hardrock_2016_dropped_grouse:
   updated_by: 1
   first_name: Dropped
   last_name: Grouse
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1969-05-13'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3104,7 +3104,7 @@ hardrock_2016_dropped_grouse:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3132,10 +3132,10 @@ hardrock_2016_mervin_smitham:
   updated_by: 1
   first_name: Mervin
   last_name: Smitham
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1991-10-08'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3144,7 +3144,7 @@ hardrock_2016_mervin_smitham:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: New Mexico
@@ -3172,10 +3172,10 @@ hardrock_2016_rhett_auer:
   updated_by: 1
   first_name: Rhett
   last_name: Auer
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1974-11-07'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3184,7 +3184,7 @@ hardrock_2016_rhett_auer:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3212,10 +3212,10 @@ hardrock_2016_hoyt_macejkovic:
   updated_by: 1
   first_name: Hoyt
   last_name: Macejkovic
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1960-07-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3224,7 +3224,7 @@ hardrock_2016_hoyt_macejkovic:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Maryland
@@ -3252,10 +3252,10 @@ hardrock_2016_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1990-04-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3264,7 +3264,7 @@ hardrock_2016_start_only:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  scheduled_start_time: 2016-07-15 12:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Maine
@@ -3292,7 +3292,7 @@ ggd30_50k_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1973-05-25'
   data_status:
@@ -3304,7 +3304,7 @@ ggd30_50k_finished_first:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3332,10 +3332,10 @@ ggd30_50k_bad_finish:
   updated_by: 1
   first_name: Bad
   last_name: Finish
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1995-07-25'
-  data_status: 0
+  data_status: bad
   beacon_url:
   report_url:
   phone:
@@ -3344,7 +3344,7 @@ ggd30_50k_bad_finish:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3372,7 +3372,7 @@ ggd30_50k_progress_aid4:
   updated_by: 1
   first_name: Progress
   last_name: Aid4
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1982-03-29'
   data_status:
@@ -3384,7 +3384,7 @@ ggd30_50k_progress_aid4:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3412,10 +3412,10 @@ ggd30_50k_progress_aid3:
   updated_by: 1
   first_name: Progress
   last_name: Aid3
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1986-03-04'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3424,7 +3424,7 @@ ggd30_50k_progress_aid3:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3452,10 +3452,10 @@ ggd30_50k_drop_aid4:
   updated_by: 1
   first_name: Drop
   last_name: Aid4
-  gender: 0
+  gender: male
   country_code:
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3464,7 +3464,7 @@ ggd30_50k_drop_aid4:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3492,7 +3492,7 @@ ggd30_50k_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1985-11-14'
   data_status:
@@ -3504,7 +3504,7 @@ ggd30_50k_start_only:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3532,7 +3532,7 @@ ggd30_50k_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1986-03-23'
   data_status:
@@ -3544,7 +3544,7 @@ ggd30_50k_not_started:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name:
@@ -3572,7 +3572,7 @@ ggd30_12m_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1989-09-09'
   data_status:
@@ -3584,7 +3584,7 @@ ggd30_12m_start_only:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 16:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3612,7 +3612,7 @@ ggd30_12m_finished_second:
   updated_by: 1
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1973-07-23'
   data_status:
@@ -3624,7 +3624,7 @@ ggd30_12m_finished_second:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 16:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3652,7 +3652,7 @@ ggd30_12m_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code: FR
   birthdate: '1993-06-05'
   data_status:
@@ -3664,7 +3664,7 @@ ggd30_12m_finished_first:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 16:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Auvergne-Rhône-Alpes
@@ -3692,10 +3692,10 @@ ggd30_12m_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1995-03-06'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3704,7 +3704,7 @@ ggd30_12m_not_started:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  scheduled_start_time: 2017-06-03 16:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3732,10 +3732,10 @@ sum_55k_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1973-08-18'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3744,7 +3744,7 @@ sum_55k_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3772,10 +3772,10 @@ sum_55k_finished_second:
   updated_by: 1
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1973-07-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3784,7 +3784,7 @@ sum_55k_finished_second:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3812,10 +3812,10 @@ sum_55k_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 2
+  gender: nonbinary
   country_code: US
   birthdate: '1981-03-31'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3824,7 +3824,7 @@ sum_55k_not_started:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3852,10 +3852,10 @@ sum_55k_progress_rolling:
   updated_by: 1
   first_name: Progress
   last_name: Rolling
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1962-04-23'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3864,7 +3864,7 @@ sum_55k_progress_rolling:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: California
@@ -3892,10 +3892,10 @@ sum_55k_drop_bandera:
   updated_by: 1
   first_name: Drop
   last_name: Bandera
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1998-08-31'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3904,7 +3904,7 @@ sum_55k_drop_bandera:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3932,10 +3932,10 @@ sum_55k_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1967-10-27'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3944,7 +3944,7 @@ sum_55k_start_only:
   checked_in: true
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  scheduled_start_time: 2017-10-07 15:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -3972,10 +3972,10 @@ sum_100k_drop_anvil:
   updated_by: 1
   first_name: Drop
   last_name: Anvil
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1988-09-29'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -3984,7 +3984,7 @@ sum_100k_drop_anvil:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
+  scheduled_start_time: 2017-09-23 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Ohio
@@ -4012,10 +4012,10 @@ sum_100k_progress_cascade:
   updated_by: 1
   first_name: Progress
   last_name: Cascade
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1997-05-20'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4052,7 +4052,7 @@ rufa_2017_12h_finished_first:
   updated_by: 1
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1997-01-25'
   data_status:
@@ -4064,7 +4064,7 @@ rufa_2017_12h_finished_first:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Arizona
@@ -4092,7 +4092,7 @@ rufa_2017_12h_finished_lap6:
   updated_by: 1
   first_name: Finished
   last_name: Lap6
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1963-03-07'
   data_status:
@@ -4104,7 +4104,7 @@ rufa_2017_12h_finished_lap6:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -4132,10 +4132,10 @@ rufa_2017_12h_progress_lap5_partial:
   updated_by: 1
   first_name: Progress
   last_name: Lap5 Partial
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1988-09-15'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4144,7 +4144,7 @@ rufa_2017_12h_progress_lap5_partial:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -4172,10 +4172,10 @@ rufa_2017_12h_progress_lap2:
   updated_by: 1
   first_name: Progress
   last_name: Lap2
-  gender: 1
+  gender: female
   country_code: US
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4184,7 +4184,7 @@ rufa_2017_12h_progress_lap2:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -4212,10 +4212,10 @@ rufa_2017_12h_start_only:
   updated_by: 1
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1972-12-19'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4224,7 +4224,7 @@ rufa_2017_12h_start_only:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -4252,10 +4252,10 @@ rufa_2017_12h_not_started:
   updated_by: 1
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1967-05-17'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4264,7 +4264,7 @@ rufa_2017_12h_not_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  scheduled_start_time: 2017-02-11 14:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Utah
@@ -4292,7 +4292,7 @@ sum_100k_un_started:
   updated_by: 1
   first_name: Un
   last_name: Started
-  gender: 1
+  gender: female
   country_code: US
   birthdate: '1988-09-01'
   data_status:
@@ -4304,7 +4304,7 @@ sum_100k_un_started:
   checked_in: false
   emergency_contact:
   emergency_phone:
-  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
+  scheduled_start_time: 2017-09-23 13:00:00 UTC
   topic_resource_key:
   comments:
   state_name: Colorado
@@ -4332,10 +4332,10 @@ sum_100k_on_dst_change:
   updated_by: 1
   first_name: 'On'
   last_name: DST Change
-  gender: 1
+  gender: female
   country_code:
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4372,10 +4372,10 @@ sum_100k_across_dst_change:
   updated_by: 1
   first_name: Across
   last_name: DST Change
-  gender: 1
+  gender: female
   country_code:
   birthdate:
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4412,10 +4412,10 @@ ggd30_50k_finished_second:
   updated_by: 1
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   country_code:
   birthdate: '1975-07-25'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4452,10 +4452,10 @@ ggd30_12m_series_finisher:
   updated_by: 1
   first_name: Series
   last_name: Finisher
-  gender: 0
+  gender: male
   country_code: US
   birthdate: '1983-03-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4492,10 +4492,10 @@ sum_55k_series_finisher:
   updated_by: 1
   first_name: Series
   last_name: Finisher
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1983-03-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4532,10 +4532,10 @@ sum_55k_slow_finisher:
   updated_by: 1
   first_name: Slow
   last_name: Finisher
-  gender: 2
+  gender: nonbinary
   country_code:
   birthdate: '1953-03-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:
@@ -4572,10 +4572,10 @@ ggd30_12m_slow_finisher:
   updated_by: 1
   first_name: Slow
   last_name: Finisher
-  gender: 0
+  gender: male
   country_code:
   birthdate: '1953-03-03'
-  data_status: 2
+  data_status: good
   beacon_url:
   report_url:
   phone:

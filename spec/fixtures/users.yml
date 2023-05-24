@@ -3,20 +3,20 @@ admin_user:
   id: 1
   first_name: Admin
   last_name: User
-  role: 1
+  role: admin
   provider:
   uid:
   email: user@example.com
   encrypted_password: "$2a$10$jhYkzuAbTVmMbK60m85zZ.K/bEMxQ.Qfqy7nDxmWsOvno7wvWrkTq"
   sign_in_count: 222
-  current_sign_in_at: 2022-03-08 08:40:31.063076000 Z
-  last_sign_in_at: 2019-02-23 04:32:53.993206000 Z
+  current_sign_in_at: 2022-03-08 08:40:31 UTC
+  last_sign_in_at: 2019-02-23 04:32:53 UTC
   current_sign_in_ip: 127.0.0.1
   last_sign_in_ip: 127.0.0.1
-  confirmed_at: 2016-04-16 19:25:07.374438000 Z
+  confirmed_at: 2016-04-16 19:25:07 UTC
   unconfirmed_email:
-  pref_distance_unit: 0
-  pref_elevation_unit: 0
+  pref_distance_unit: miles
+  pref_elevation_unit: feet
   slug: admin-user
   phone: "+13038806481"
   http_endpoint:
@@ -29,20 +29,20 @@ third_user:
   id: 3
   first_name: Third
   last_name: User
-  role: 0
+  role: user
   provider:
   uid:
   email: thirduser@example.com
   encrypted_password: "$2a$10$/i14/9oGIR.0UWJaQYofNOeS85UAUgU0LOpd9C1mn.x4ZJxIZTSCy"
   sign_in_count: 22
-  current_sign_in_at: 2019-01-25 22:45:17.386817000 Z
-  last_sign_in_at: 2019-01-25 22:41:52.540192000 Z
+  current_sign_in_at: 2019-01-25 22:45:17 UTC
+  last_sign_in_at: 2019-01-25 22:41:52 UTC
   current_sign_in_ip: 127.0.0.1
   last_sign_in_ip: 127.0.0.1
-  confirmed_at: 2016-04-16 19:25:07.514373000 Z
+  confirmed_at: 2016-04-16 19:25:07 UTC
   unconfirmed_email:
-  pref_distance_unit: 0
-  pref_elevation_unit: 0
+  pref_distance_unit: miles
+  pref_elevation_unit: feet
   slug: third-user
   phone:
   http_endpoint:
@@ -55,7 +55,7 @@ fourth_user:
   id: 4
   first_name: Fourth
   last_name: User
-  role: 0
+  role: user
   provider:
   uid:
   email: fourthuser@example.com
@@ -65,10 +65,10 @@ fourth_user:
   last_sign_in_at:
   current_sign_in_ip:
   last_sign_in_ip:
-  confirmed_at: 2016-04-16 19:25:07.568372000 Z
+  confirmed_at: 2016-04-16 19:25:07 UTC
   unconfirmed_email:
-  pref_distance_unit: 0
-  pref_elevation_unit: 0
+  pref_distance_unit: miles
+  pref_elevation_unit: feet
   slug: fourth-user
   phone:
   http_endpoint:
@@ -81,20 +81,20 @@ fifth_user:
   id: 11
   first_name: Fifth
   last_name: User
-  role: 0
+  role: user
   provider:
   uid:
   email: fifthuser@example.com
   encrypted_password: "$2a$10$OEXtV8bNIUspArW48HCjGO86WR3aUnPqSJLClYo.kINpUvdSFBQxu"
   sign_in_count: 1
-  current_sign_in_at: 2018-01-10 06:35:01.065288000 Z
-  last_sign_in_at: 2018-01-10 06:35:01.065288000 Z
+  current_sign_in_at: 2018-01-10 06:35:01 UTC
+  last_sign_in_at: 2018-01-10 06:35:01 UTC
   current_sign_in_ip: 127.0.0.1
   last_sign_in_ip: 127.0.0.1
-  confirmed_at: 2018-01-10 06:34:50.173537000 Z
+  confirmed_at: 2018-01-10 06:34:50 UTC
   unconfirmed_email:
-  pref_distance_unit: 0
-  pref_elevation_unit: 0
+  pref_distance_unit: miles
+  pref_elevation_unit: feet
   slug: fifth-user
   phone: "+13038806481"
   http_endpoint:

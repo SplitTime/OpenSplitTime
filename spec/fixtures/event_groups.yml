@@ -8,7 +8,7 @@ ramble:
   created_by: 1
   updated_by: 1
   slug: ramble
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
 hardrock_2014:
@@ -20,7 +20,7 @@ hardrock_2014:
   created_by: 1
   updated_by: 1
   slug: hardrock-2014
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: true
   home_time_zone: Mountain Time (US & Canada)
 hardrock_2015:
@@ -32,7 +32,7 @@ hardrock_2015:
   created_by: 1
   updated_by: 1
   slug: hardrock-2015
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: true
   home_time_zone: Mountain Time (US & Canada)
 rufa_2016:
@@ -44,7 +44,7 @@ rufa_2016:
   created_by: 1
   updated_by: 1
   slug: rufa-2016
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
 dirty_30:
@@ -56,7 +56,7 @@ dirty_30:
   created_by: 1
   updated_by: 1
   slug: dirty-30
-  data_entry_grouping_strategy: 1
+  data_entry_grouping_strategy: location_grouped
   monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
 hardrock_2016:
@@ -68,7 +68,7 @@ hardrock_2016:
   created_by: 1
   updated_by: 1
   slug: hardrock-2016
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: true
   home_time_zone: Mountain Time (US & Canada)
 sum:
@@ -80,7 +80,7 @@ sum:
   created_by: 1
   updated_by: 1
   slug: sum
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
 rufa_2017:
@@ -92,6 +92,6 @@ rufa_2017:
   created_by: 1
   updated_by: 1
   slug: rufa-2017
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: ungrouped
   monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)

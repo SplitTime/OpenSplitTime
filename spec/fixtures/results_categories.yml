@@ -1,6 +1,5 @@
 ---
 combined_overall:
-  id: 1
   organization_id:
   name: Overall
   male: true
@@ -11,164 +10,7 @@ combined_overall:
   created_by: 1
   updated_by:
   nonbinary: true
-male_overall:
-  id: 2
-  organization_id:
-  name: Overall Men
-  male: true
-  female: false
-  low_age:
-  high_age:
-  identifier: male_overall
-  created_by: 1
-  updated_by:
-  nonbinary: false
-female_overall:
-  id: 3
-  organization_id:
-  name: Overall Women
-  male: false
-  female: true
-  low_age:
-  high_age:
-  identifier: female_overall
-  created_by: 1
-  updated_by:
-  nonbinary: false
-masters_men_40:
-  id: 4
-  organization_id:
-  name: Masters Men (40+)
-  male: true
-  female: false
-  low_age: 40
-  high_age:
-  identifier: male_40_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-masters_women_40:
-  id: 5
-  organization_id:
-  name: Masters Women (40+)
-  male: false
-  female: true
-  low_age: 40
-  high_age:
-  identifier: female_40_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-masters_men_40_49:
-  id: 6
-  organization_id:
-  name: Masters Men (40-49)
-  male: true
-  female: false
-  low_age: 40
-  high_age: 49
-  identifier: male_40_to_49
-  created_by: 1
-  updated_by:
-  nonbinary: false
-masters_women_40_49:
-  id: 7
-  organization_id:
-  name: Masters Women (40-49)
-  male: false
-  female: true
-  low_age: 40
-  high_age: 49
-  identifier: female_40_to_49
-  created_by: 1
-  updated_by:
-  nonbinary: false
-grandmasters_men_50:
-  id: 8
-  organization_id:
-  name: Grandmasters Men (50+)
-  male: true
-  female: false
-  low_age: 50
-  high_age:
-  identifier: male_50_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-grandmasters_women_50:
-  id: 9
-  organization_id:
-  name: Grandmasters Women (50+)
-  male: false
-  female: true
-  low_age: 50
-  high_age:
-  identifier: female_50_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-senior_grandmasters_men_60:
-  id: 10
-  organization_id:
-  name: Senior Grandmasters Men (60+)
-  male: true
-  female: false
-  low_age: 60
-  high_age:
-  identifier: male_60_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-senior_grandmasters_women_60:
-  id: 11
-  organization_id:
-  name: Senior Grandmasters Women (60+)
-  male: false
-  female: true
-  low_age: 60
-  high_age:
-  identifier: female_60_and_up
-  created_by: 1
-  updated_by:
-  nonbinary: false
-boys_12_and_under:
-  id: 12
-  organization_id:
-  name: Boys 12 and Under
-  male: true
-  female: false
-  low_age:
-  high_age: 12
-  identifier: male_up_to_12
-  created_by: 1
-  updated_by:
-  nonbinary: false
-girls_12_and_under:
-  id: 13
-  organization_id:
-  name: Girls 12 and Under
-  male: false
-  female: true
-  low_age:
-  high_age: 12
-  identifier: female_up_to_12
-  created_by: 1
-  updated_by:
-  nonbinary: false
-boys_13_to_16:
-  id: 14
-  organization_id:
-  name: Boys 13 to 16
-  male: true
-  female: false
-  low_age: 13
-  high_age: 16
-  identifier: male_13_to_16
-  created_by: 1
-  updated_by:
-  nonbinary: false
-girls_13_to_16:
-  id: 15
+female_13_to_16:
   organization_id:
   name: Girls 13 to 16
   male: false
@@ -179,68 +21,7 @@ girls_13_to_16:
   created_by: 1
   updated_by:
   nonbinary: false
-boys_16_and_under:
-  id: 16
-  organization_id:
-  name: Boys 16 and Under
-  male: true
-  female: false
-  low_age:
-  high_age: 16
-  identifier: male_up_to_16
-  created_by: 1
-  updated_by:
-  nonbinary: false
-girls_16_and_under:
-  id: 17
-  organization_id:
-  name: Girls 16 and Under
-  male: false
-  female: true
-  low_age:
-  high_age: 16
-  identifier: female_up_to_16
-  created_by: 1
-  updated_by:
-  nonbinary: false
-under_20_men:
-  id: 18
-  organization_id:
-  name: Under 20 Men
-  male: true
-  female: false
-  low_age:
-  high_age: 19
-  identifier: male_up_to_19
-  created_by: 1
-  updated_by:
-  nonbinary: false
-under_20_women:
-  id: 19
-  organization_id:
-  name: Under 20 Women
-  male: false
-  female: true
-  low_age:
-  high_age: 19
-  identifier: female_up_to_19
-  created_by: 1
-  updated_by:
-  nonbinary: false
-13_to_39_men:
-  id: 20
-  organization_id:
-  name: 13 to 39 Men
-  male: true
-  female: false
-  low_age: 13
-  high_age: 39
-  identifier: male_13_to_39
-  created_by: 1
-  updated_by:
-  nonbinary: false
-13_to_39_women:
-  id: 21
+female_13_to_39:
   organization_id:
   name: 13 to 39 Women
   male: false
@@ -251,20 +32,7 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-17_to_39_men:
-  id: 22
-  organization_id:
-  name: 17 to 39 Men
-  male: true
-  female: false
-  low_age: 17
-  high_age: 39
-  identifier: male_17_to_39
-  created_by: 1
-  updated_by:
-  nonbinary: false
-17_to_39_women:
-  id: 23
+female_17_to_39:
   organization_id:
   name: 17 to 39 Women
   male: false
@@ -275,20 +43,7 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-20_to_29_men:
-  id: 24
-  organization_id:
-  name: 20 to 29 Men
-  male: true
-  female: false
-  low_age: 20
-  high_age: 29
-  identifier: male_20_to_29
-  created_by: 1
-  updated_by:
-  nonbinary: false
-20_to_29_women:
-  id: 25
+female_20_to_29:
   organization_id:
   name: 20 to 29 Women
   male: false
@@ -299,20 +54,7 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-30_to_39_men:
-  id: 26
-  organization_id:
-  name: 30 to 39 Men
-  male: true
-  female: false
-  low_age: 30
-  high_age: 39
-  identifier: male_30_to_39
-  created_by: 1
-  updated_by:
-  nonbinary: false
-30_to_39_women:
-  id: 27
+female_30_to_39:
   organization_id:
   name: 30 to 39 Women
   male: false
@@ -323,20 +65,18 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-40_to_49_men:
-  id: 28
+female_40_and_up:
   organization_id:
-  name: 40 to 49 Men
-  male: true
-  female: false
+  name: Masters Women (40+)
+  male: false
+  female: true
   low_age: 40
-  high_age: 49
-  identifier: male_40_to_49
+  high_age:
+  identifier: female_40_and_up
   created_by: 1
   updated_by:
   nonbinary: false
-40_to_49_women:
-  id: 29
+female_40_to_49:
   organization_id:
   name: 40 to 49 Women
   male: false
@@ -347,20 +87,18 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-50_to_59_men:
-  id: 30
+female_50_and_up:
   organization_id:
-  name: 50 to 59 Men
-  male: true
-  female: false
+  name: Grandmasters Women (50+)
+  male: false
+  female: true
   low_age: 50
-  high_age: 59
-  identifier: male_50_to_59
+  high_age:
+  identifier: female_50_and_up
   created_by: 1
   updated_by:
   nonbinary: false
-50_to_59_women:
-  id: 31
+female_50_to_59:
   organization_id:
   name: 50 to 59 Women
   male: false
@@ -371,20 +109,18 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-60_to_69_men:
-  id: 32
+female_60_and_up:
   organization_id:
-  name: 60 to 69 Men
-  male: true
-  female: false
+  name: Senior Grandmasters Women (60+)
+  male: false
+  female: true
   low_age: 60
-  high_age: 69
-  identifier: male_60_to_69
+  high_age:
+  identifier: female_60_and_up
   created_by: 1
   updated_by:
   nonbinary: false
-60_to_69_women:
-  id: 33
+female_60_to_69:
   organization_id:
   name: 60 to 69 Women
   male: false
@@ -395,20 +131,51 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-under_30_men:
-  id: 34
+female_overall:
   organization_id:
-  name: Under 30 Men
-  male: true
-  female: false
+  name: Overall Women
+  male: false
+  female: true
   low_age:
-  high_age: 29
-  identifier: male_up_to_29
+  high_age:
+  identifier: female_overall
   created_by: 1
   updated_by:
   nonbinary: false
-under_30_women:
-  id: 35
+female_up_to_12:
+  organization_id:
+  name: Girls 12 and Under
+  male: false
+  female: true
+  low_age:
+  high_age: 12
+  identifier: female_up_to_12
+  created_by: 1
+  updated_by:
+  nonbinary: false
+female_up_to_16:
+  organization_id:
+  name: Girls 16 and Under
+  male: false
+  female: true
+  low_age:
+  high_age: 16
+  identifier: female_up_to_16
+  created_by: 1
+  updated_by:
+  nonbinary: false
+female_up_to_19:
+  organization_id:
+  name: Under 20 Women
+  male: false
+  female: true
+  low_age:
+  high_age: 19
+  identifier: female_up_to_19
+  created_by: 1
+  updated_by:
+  nonbinary: false
+female_up_to_29:
   organization_id:
   name: Under 30 Women
   male: false
@@ -419,20 +186,7 @@ under_30_women:
   created_by: 1
   updated_by:
   nonbinary: false
-under_40_men:
-  id: 36
-  organization_id:
-  name: Under 40 Men
-  male: true
-  female: false
-  low_age:
-  high_age: 39
-  identifier: male_up_to_39
-  created_by: 1
-  updated_by:
-  nonbinary: false
-under_40_women:
-  id: 37
+female_up_to_39:
   organization_id:
   name: Under 40 Women
   male: false
@@ -443,8 +197,194 @@ under_40_women:
   created_by: 1
   updated_by:
   nonbinary: false
+male_13_to_16:
+  organization_id:
+  name: Boys 13 to 16
+  male: true
+  female: false
+  low_age: 13
+  high_age: 16
+  identifier: male_13_to_16
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_13_to_39:
+  organization_id:
+  name: 13 to 39 Men
+  male: true
+  female: false
+  low_age: 13
+  high_age: 39
+  identifier: male_13_to_39
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_17_to_39:
+  organization_id:
+  name: 17 to 39 Men
+  male: true
+  female: false
+  low_age: 17
+  high_age: 39
+  identifier: male_17_to_39
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_20_to_29:
+  organization_id:
+  name: 20 to 29 Men
+  male: true
+  female: false
+  low_age: 20
+  high_age: 29
+  identifier: male_20_to_29
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_30_to_39:
+  organization_id:
+  name: 30 to 39 Men
+  male: true
+  female: false
+  low_age: 30
+  high_age: 39
+  identifier: male_30_to_39
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_40_and_up:
+  organization_id:
+  name: Masters Men (40+)
+  male: true
+  female: false
+  low_age: 40
+  high_age:
+  identifier: male_40_and_up
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_40_to_49:
+  organization_id:
+  name: 40 to 49 Men
+  male: true
+  female: false
+  low_age: 40
+  high_age: 49
+  identifier: male_40_to_49
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_50_and_up:
+  organization_id:
+  name: Grandmasters Men (50+)
+  male: true
+  female: false
+  low_age: 50
+  high_age:
+  identifier: male_50_and_up
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_50_to_59:
+  organization_id:
+  name: 50 to 59 Men
+  male: true
+  female: false
+  low_age: 50
+  high_age: 59
+  identifier: male_50_to_59
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_60_and_up:
+  organization_id:
+  name: Senior Grandmasters Men (60+)
+  male: true
+  female: false
+  low_age: 60
+  high_age:
+  identifier: male_60_and_up
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_60_to_69:
+  organization_id:
+  name: 60 to 69 Men
+  male: true
+  female: false
+  low_age: 60
+  high_age: 69
+  identifier: male_60_to_69
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_overall:
+  organization_id:
+  name: Overall Men
+  male: true
+  female: false
+  low_age:
+  high_age:
+  identifier: male_overall
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_up_to_12:
+  organization_id:
+  name: Boys 12 and Under
+  male: true
+  female: false
+  low_age:
+  high_age: 12
+  identifier: male_up_to_12
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_up_to_16:
+  organization_id:
+  name: Boys 16 and Under
+  male: true
+  female: false
+  low_age:
+  high_age: 16
+  identifier: male_up_to_16
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_up_to_19:
+  organization_id:
+  name: Under 20 Men
+  male: true
+  female: false
+  low_age:
+  high_age: 19
+  identifier: male_up_to_19
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_up_to_29:
+  organization_id:
+  name: Under 30 Men
+  male: true
+  female: false
+  low_age:
+  high_age: 29
+  identifier: male_up_to_29
+  created_by: 1
+  updated_by:
+  nonbinary: false
+male_up_to_39:
+  organization_id:
+  name: Under 40 Men
+  male: true
+  female: false
+  low_age:
+  high_age: 39
+  identifier: male_up_to_39
+  created_by: 1
+  updated_by:
+  nonbinary: false
 nonbinary_overall:
-  id: 38
   organization_id:
   name: Overall Nonbinary
   male: false

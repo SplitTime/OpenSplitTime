@@ -6,7 +6,6 @@ module FixtureHelper
     :course_group_courses,
     :course_groups,
     :courses,
-    :credentials,
     :efforts,
     :event_groups,
     :event_series,
@@ -43,7 +42,7 @@ module FixtureHelper
     :updated_at,
   ].freeze
 
-  ATTRIBUTES_TO_PRESERVE = {
+  ATTRIBUTES_TO_PRESERVE_BY_TABLE = {
     lottery_draws: [:created_at],
   }.freeze
 end

@@ -3,7 +3,7 @@ bruno_fadel:
   id: 10
   first_name: Bruno
   last_name: Fadel
-  gender: 0
+  gender: male
   birthdate: '1988-05-11'
   city:
   state_code: CA
@@ -22,7 +22,7 @@ robby_gerlach:
   id: 13
   first_name: Robby
   last_name: Gerlach
-  gender: 0
+  gender: male
   birthdate: '1970-05-18'
   city:
   state_code: VA
@@ -41,7 +41,7 @@ brinda_fisher:
   id: 14
   first_name: Brinda
   last_name: Fisher
-  gender: 1
+  gender: female
   birthdate: '1994-07-12'
   city:
   state_code: SC
@@ -60,7 +60,7 @@ bad_status:
   id: 18
   first_name: Bad
   last_name: Status
-  gender: 0
+  gender: male
   birthdate: '1994-04-18'
   city: Erie
   state_code: CO
@@ -79,7 +79,7 @@ willis_murray:
   id: 21
   first_name: Willis
   last_name: Murray
-  gender: 0
+  gender: male
   birthdate: '1998-02-04'
   city:
   state_code: FL
@@ -98,7 +98,7 @@ finished_with_stop:
   id: 25
   first_name: Finished
   last_name: With Stop
-  gender: 0
+  gender: male
   birthdate: '1974-03-03'
   city:
   state_code: UT
@@ -117,7 +117,7 @@ garry_kuhlman:
   id: 39
   first_name: Garry
   last_name: Kuhlman
-  gender: 0
+  gender: male
   birthdate: '1969-10-10'
   city:
   state_code: MT
@@ -136,7 +136,7 @@ donn_mckenzie:
   id: 40
   first_name: Donn
   last_name: McKenzie
-  gender: 0
+  gender: male
   birthdate: '1998-12-29'
   city:
   state_code: WY
@@ -155,7 +155,7 @@ gilberto_mckenzie:
   id: 42
   first_name: Gilberto
   last_name: McKenzie
-  gender: 0
+  gender: male
   birthdate: '1970-06-02'
   city:
   state_code: WA
@@ -174,7 +174,7 @@ benedict_davis:
   id: 43
   first_name: Benedict
   last_name: Davis
-  gender: 0
+  gender: male
   birthdate: '1983-06-28'
   city:
   state_code: CO
@@ -193,7 +193,7 @@ paul_predovic:
   id: 44
   first_name: Paul
   last_name: Predovic
-  gender: 0
+  gender: male
   birthdate: '1959-06-26'
   city:
   state_code: ID
@@ -212,7 +212,7 @@ erich_larson:
   id: 51
   first_name: Erich
   last_name: Larson
-  gender: 0
+  gender: male
   birthdate: '1979-07-10'
   city:
   state_code: MT
@@ -231,7 +231,7 @@ lavon_paucek:
   id: 53
   first_name: Lavon
   last_name: Paucek
-  gender: 1
+  gender: female
   birthdate: '1974-07-29'
   city:
   state_code:
@@ -250,7 +250,7 @@ irvin_harber:
   id: 61
   first_name: Irvin
   last_name: Harber
-  gender: 0
+  gender: male
   birthdate: '1996-07-05'
   city:
   state_code: CO
@@ -269,7 +269,7 @@ santa_green:
   id: 62
   first_name: Santa
   last_name: Green
-  gender: 1
+  gender: female
   birthdate: '1977-10-27'
   city:
   state_code: CO
@@ -288,7 +288,7 @@ carmine_adams:
   id: 69
   first_name: Carmine
   last_name: Adams
-  gender: 0
+  gender: male
   birthdate: '1997-05-25'
   city:
   state_code: WA
@@ -307,7 +307,7 @@ vesta_borer:
   id: 70
   first_name: Vesta
   last_name: Borer
-  gender: 1
+  gender: female
   birthdate: '1995-04-24'
   city:
   state_code: UT
@@ -326,7 +326,7 @@ susanna_abshire:
   id: 74
   first_name: Susanna
   last_name: Abshire
-  gender: 1
+  gender: female
   birthdate: '1980-08-17'
   city:
   state_code: CO
@@ -345,7 +345,7 @@ pat_schaden:
   id: 79
   first_name: Pat
   last_name: Schaden
-  gender: 0
+  gender: male
   birthdate: '1960-09-09'
   city:
   state_code: AZ
@@ -364,7 +364,7 @@ tuan_jacobs:
   id: 80
   first_name: Tuan
   last_name: Jacobs
-  gender: 0
+  gender: male
   birthdate: '1998-03-19'
   city:
   state_code:
@@ -383,7 +383,7 @@ rachelle_eichmann:
   id: 81
   first_name: Rachelle
   last_name: Eichmann
-  gender: 1
+  gender: female
   birthdate: '1992-01-11'
   city:
   state_code: CO
@@ -402,7 +402,7 @@ leif_carter:
   id: 83
   first_name: Leif
   last_name: Carter
-  gender: 0
+  gender: male
   birthdate: '1960-02-01'
   city:
   state_code:
@@ -421,7 +421,7 @@ leroy_leffler:
   id: 85
   first_name: Leroy
   last_name: Leffler
-  gender: 0
+  gender: male
   birthdate: '1967-06-18'
   city:
   state_code: NM
@@ -440,7 +440,7 @@ cassondra_nienow:
   id: 97
   first_name: Cassondra
   last_name: Nienow
-  gender: 1
+  gender: female
   birthdate: '1958-09-07'
   city:
   state_code: OH
@@ -459,7 +459,7 @@ gus_walker:
   id: 98
   first_name: Gus
   last_name: Walker
-  gender: 0
+  gender: male
   birthdate: '1960-11-23'
   city: Boulder
   state_code: CO
@@ -478,7 +478,7 @@ donte_spencer:
   id: 99
   first_name: Donte
   last_name: Spencer
-  gender: 0
+  gender: male
   birthdate: '1984-07-14'
   city: Eden
   state_code: UT
@@ -497,7 +497,7 @@ ken_bradtke:
   id: 101
   first_name: Ken
   last_name: Bradtke
-  gender: 0
+  gender: male
   birthdate: '1966-07-21'
   city:
   state_code: CO
@@ -516,7 +516,7 @@ darius_jacobson:
   id: 108
   first_name: Darius
   last_name: Jacobson
-  gender: 0
+  gender: male
   birthdate: '1985-03-21'
   city: Carbondale
   state_code: CO
@@ -535,7 +535,7 @@ chris_rempel:
   id: 109
   first_name: Chris
   last_name: Rempel
-  gender: 0
+  gender: male
   birthdate: '1988-12-28'
   city:
   state_code: CO
@@ -554,7 +554,7 @@ samara_vandervort:
   id: 110
   first_name: Samara
   last_name: Vandervort
-  gender: 1
+  gender: female
   birthdate: '1992-12-15'
   city: Truckee
   state_code: CA
@@ -573,7 +573,7 @@ douglas_vandervort:
   id: 113
   first_name: Douglas
   last_name: Vandervort
-  gender: 0
+  gender: male
   birthdate:
   city:
   state_code: CO
@@ -592,7 +592,7 @@ leandro_cole:
   id: 116
   first_name: Leandro
   last_name: Cole
-  gender: 0
+  gender: male
   birthdate: '1970-06-26'
   city:
   state_code: UT
@@ -611,7 +611,7 @@ elden_morissette:
   id: 119
   first_name: Elden
   last_name: Morissette
-  gender: 0
+  gender: male
   birthdate: '1972-11-21'
   city:
   state_code: WI
@@ -630,7 +630,7 @@ raphael_swift:
   id: 120
   first_name: Raphael
   last_name: Swift
-  gender: 0
+  gender: male
   birthdate: '1974-07-14'
   city:
   state_code: AR
@@ -649,7 +649,7 @@ vern_buckridge:
   id: 128
   first_name: Vern
   last_name: Buckridge
-  gender: 0
+  gender: male
   birthdate: '1981-10-15'
   city:
   state_code: TX
@@ -668,7 +668,7 @@ cedric_windler:
   id: 135
   first_name: Cedric
   last_name: Windler
-  gender: 0
+  gender: male
   birthdate: '1979-07-10'
   city:
   state_code: TN
@@ -687,7 +687,7 @@ clarence_goyette:
   id: 136
   first_name: Clarence
   last_name: Goyette
-  gender: 0
+  gender: male
   birthdate: '1961-09-18'
   city:
   state_code: CO
@@ -706,7 +706,7 @@ vince_willms:
   id: 141
   first_name: Vince
   last_name: Willms
-  gender: 0
+  gender: male
   birthdate: '1964-10-22'
   city:
   state_code: CO
@@ -725,7 +725,7 @@ eddy_goldner:
   id: 147
   first_name: Eddy
   last_name: Goldner
-  gender: 0
+  gender: male
   birthdate: '1997-07-26'
   city:
   state_code: WA
@@ -744,7 +744,7 @@ demetrius_moen:
   id: 148
   first_name: Demetrius
   last_name: Moen
-  gender: 0
+  gender: male
   birthdate: '1975-06-06'
   city:
   state_code: OR
@@ -763,7 +763,7 @@ robt_wintheiser:
   id: 152
   first_name: Robt
   last_name: Wintheiser
-  gender: 0
+  gender: male
   birthdate:
   city: Durango
   state_code: CO
@@ -782,7 +782,7 @@ mervin_smitham:
   id: 162
   first_name: Mervin
   last_name: Smitham
-  gender: 0
+  gender: male
   birthdate: '1991-10-08'
   city:
   state_code: NM
@@ -801,7 +801,7 @@ without_start:
   id: 170
   first_name: Without
   last_name: Start
-  gender: 0
+  gender: male
   birthdate: '1965-04-23'
   city:
   state_code: MT
@@ -820,7 +820,7 @@ humberto_adams:
   id: 182
   first_name: Humberto
   last_name: Adams
-  gender: 0
+  gender: male
   birthdate: '1990-04-25'
   city:
   state_code: NM
@@ -839,7 +839,7 @@ omer_yundt:
   id: 190
   first_name: Omer
   last_name: Yundt
-  gender: 0
+  gender: male
   birthdate: '1974-06-23'
   city:
   state_code: CO
@@ -858,7 +858,7 @@ drop_ouray:
   id: 195
   first_name: Drop
   last_name: Ouray
-  gender: 1
+  gender: female
   birthdate: '1974-01-05'
   city: Boulder Creek
   state_code: CA
@@ -877,7 +877,7 @@ charlie_mueller:
   id: 205
   first_name: Charlie
   last_name: Mueller
-  gender: 0
+  gender: male
   birthdate: '1989-06-10'
   city:
   state_code: OR
@@ -896,7 +896,7 @@ kendall_koch:
   id: 226
   first_name: Kendall
   last_name: Koch
-  gender: 0
+  gender: male
   birthdate: '1976-02-05'
   city: Littleton
   state_code: CO
@@ -915,7 +915,7 @@ dropped_grouse:
   id: 249
   first_name: Dropped
   last_name: Grouse
-  gender: 0
+  gender: male
   birthdate: '1969-05-13'
   city:
   state_code: CO
@@ -934,7 +934,7 @@ hoyt_macejkovic:
   id: 256
   first_name: Hoyt
   last_name: Macejkovic
-  gender: 0
+  gender: male
   birthdate: '1960-07-23'
   city:
   state_code: TX
@@ -953,7 +953,7 @@ progress_sherman_colorado_us:
   id: 289
   first_name: Progress
   last_name: Sherman
-  gender: 0
+  gender: male
   birthdate: '1977-12-15'
   city:
   state_code: CO
@@ -972,7 +972,7 @@ finished_second_montana_us:
   id: 326
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   birthdate: '1994-08-16'
   city: Bozeman
   state_code: MT
@@ -991,7 +991,7 @@ start_only_2019_02_01:
   id: 331
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   birthdate: '1968-07-11'
   city:
   state_code:
@@ -1010,7 +1010,7 @@ finished_first_2019_02_01:
   id: 369
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   birthdate: '1957-02-04'
   city:
   state_code:
@@ -1029,7 +1029,7 @@ not_started_2019_02_01:
   id: 384
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   birthdate: '1989-03-22'
   city:
   state_code:
@@ -1048,7 +1048,7 @@ shad_hirthe:
   id: 463
   first_name: Shad
   last_name: Hirthe
-  gender: 0
+  gender: male
   birthdate: '1975-09-05'
   city: Crested Butte
   state_code: CO
@@ -1067,7 +1067,7 @@ finished_without_stop:
   id: 495
   first_name: Finished
   last_name: Without Stop
-  gender: 0
+  gender: male
   birthdate:
   city: Salt Lake City
   state_code: UT
@@ -1086,7 +1086,7 @@ progress_sherman:
   id: 656
   first_name: Progress
   last_name: Sherman
-  gender: 0
+  gender: male
   birthdate: '1982-07-28'
   city:
   state_code: ID
@@ -1105,7 +1105,7 @@ finished_first_japan:
   id: 682
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   birthdate: '1995-04-25'
   city:
   state_code:
@@ -1124,7 +1124,7 @@ claudio_wunsch:
   id: 689
   first_name: Claudio
   last_name: Wunsch
-  gender: 0
+  gender: male
   birthdate:
   city:
   state_code:
@@ -1143,7 +1143,7 @@ keith_metz:
   id: 690
   first_name: Keith
   last_name: Metz
-  gender: 0
+  gender: male
   birthdate: '1971-11-06'
   city:
   state_code: UT
@@ -1162,7 +1162,7 @@ major_green:
   id: 691
   first_name: Major
   last_name: Green
-  gender: 0
+  gender: male
   birthdate: '1955-09-29'
   city:
   state_code: NC
@@ -1181,7 +1181,7 @@ irvin_corkery:
   id: 698
   first_name: Irvin
   last_name: Corkery
-  gender: 0
+  gender: male
   birthdate: '1991-11-01'
   city:
   state_code: DC
@@ -1200,7 +1200,7 @@ multiple_stops:
   id: 707
   first_name: Multiple
   last_name: Stops
-  gender: 1
+  gender: female
   birthdate: '1954-03-21'
   city:
   state_code: HI
@@ -1219,7 +1219,7 @@ not_started:
   id: 710
   first_name: Not
   last_name: Started
-  gender: 0
+  gender: male
   birthdate: '1986-03-23'
   city:
   state_code: CO
@@ -1238,7 +1238,7 @@ start_only_maine_us:
   id: 818
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   birthdate: '1990-04-23'
   city:
   state_code: ME
@@ -1257,7 +1257,7 @@ junior_lesch:
   id: 830
   first_name: Junior
   last_name: Lesch
-  gender: 0
+  gender: male
   birthdate: '1967-02-21'
   city:
   state_code: NM
@@ -1276,7 +1276,7 @@ finished_first_utah_us:
   id: 1265
   first_name: Finished
   last_name: First
-  gender: 1
+  gender: female
   birthdate: '1969-04-04'
   city:
   state_code: UT
@@ -1295,7 +1295,7 @@ progress_lap6:
   id: 1266
   first_name: Progress
   last_name: Lap6
-  gender: 0
+  gender: male
   birthdate:
   city:
   state_code: UT
@@ -1314,7 +1314,7 @@ multiple_stops_utah_us:
   id: 1305
   first_name: Multiple
   last_name: Stops
-  gender: 1
+  gender: female
   birthdate: '1973-11-14'
   city:
   state_code: UT
@@ -1333,7 +1333,7 @@ finished_last:
   id: 1324
   first_name: Finished
   last_name: Last
-  gender: 0
+  gender: male
   birthdate: '1976-05-03'
   city:
   state_code: UT
@@ -1352,7 +1352,7 @@ progress_lap1:
   id: 1344
   first_name: Progress
   last_name: Lap1
-  gender: 0
+  gender: male
   birthdate: '1967-03-21'
   city:
   state_code: UT
@@ -1371,7 +1371,7 @@ kory_kulas:
   id: 1356
   first_name: Kory
   last_name: Kulas
-  gender: 0
+  gender: male
   birthdate: '1974-01-25'
   city:
   state_code: CA
@@ -1390,7 +1390,7 @@ benito_moen:
   id: 1365
   first_name: Benito
   last_name: Moen
-  gender: 0
+  gender: male
   birthdate: '1964-01-16'
   city:
   state_code: OH
@@ -1409,7 +1409,7 @@ rene_mclaughlin:
   id: 1379
   first_name: Rene
   last_name: McLaughlin
-  gender: 0
+  gender: male
   birthdate: '1984-04-30'
   city:
   state_code: TX
@@ -1428,7 +1428,7 @@ start_only_colorado_us_2019_02_01:
   id: 1567
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   birthdate: '1967-10-27'
   city:
   state_code: CO
@@ -1447,7 +1447,7 @@ drop_bandera:
   id: 1568
   first_name: Drop
   last_name: Bandera
-  gender: 1
+  gender: female
   birthdate: '1998-08-31'
   city:
   state_code: CO
@@ -1466,7 +1466,7 @@ progress_rolling:
   id: 1569
   first_name: Progress
   last_name: Rolling
-  gender: 1
+  gender: female
   birthdate: '1962-04-23'
   city:
   state_code: CA
@@ -1485,7 +1485,7 @@ not_started_colorado_us_2019_02_01:
   id: 1571
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   birthdate: '1981-03-31'
   city:
   state_code: CO
@@ -1504,7 +1504,7 @@ finished_first_colorado_us:
   id: 1585
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   birthdate: '1973-08-18'
   city:
   state_code: CO
@@ -1523,7 +1523,7 @@ drop_aid4:
   id: 1689
   first_name: Drop
   last_name: Aid4
-  gender: 0
+  gender: male
   birthdate: '1998-11-08'
   city:
   state_code:
@@ -1542,7 +1542,7 @@ progress_aid3:
   id: 1734
   first_name: Progress
   last_name: Aid3
-  gender: 0
+  gender: male
   birthdate: '1986-03-04'
   city:
   state_code:
@@ -1561,7 +1561,7 @@ drop_anvil:
   id: 1747
   first_name: Drop
   last_name: Anvil
-  gender: 0
+  gender: male
   birthdate: '1988-09-29'
   city:
   state_code:
@@ -1580,7 +1580,7 @@ progress_cascade:
   id: 1748
   first_name: Progress
   last_name: Cascade
-  gender: 0
+  gender: male
   birthdate: '1997-05-20'
   city: Provo
   state_code: UT
@@ -1599,7 +1599,7 @@ not_started_colorado_us:
   id: 1771
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   birthdate: '1995-03-06'
   city: Greeley
   state_code: CO
@@ -1618,7 +1618,7 @@ finished_second_colorado_us:
   id: 1862
   first_name: Finished
   last_name: Second
-  gender: 1
+  gender: female
   birthdate: '1973-07-23'
   city: Boulder
   state_code: CO
@@ -1637,7 +1637,7 @@ start_only_colorado_us:
   id: 1874
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   birthdate: '1989-09-09'
   city: Aurora
   state_code: CO
@@ -1656,7 +1656,7 @@ finished_first_france:
   id: 1923
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   birthdate: '1993-06-05'
   city:
   state_code:
@@ -1675,7 +1675,7 @@ start_only_2019_02_01_07_19_53:
   id: 1926
   first_name: Start
   last_name: Only
-  gender: 1
+  gender: female
   birthdate: '1985-11-14'
   city:
   state_code:
@@ -1694,7 +1694,7 @@ progress_aid4:
   id: 2003
   first_name: Progress
   last_name: Aid4
-  gender: 1
+  gender: female
   birthdate: '1982-03-29'
   city:
   state_code:
@@ -1713,7 +1713,7 @@ bad_finish:
   id: 2104
   first_name: Bad
   last_name: Finish
-  gender: 0
+  gender: male
   birthdate: '1995-07-25'
   city:
   state_code:
@@ -1732,7 +1732,7 @@ progress_lap5_partial:
   id: 2169
   first_name: Progress
   last_name: Lap5 Partial
-  gender: 0
+  gender: male
   birthdate: '1988-09-15'
   city:
   state_code: UT
@@ -1751,7 +1751,7 @@ finished_first:
   id: 2170
   first_name: Finished
   last_name: First
-  gender: 0
+  gender: male
   birthdate: '1997-01-25'
   city:
   state_code: AZ
@@ -1770,7 +1770,7 @@ finished_lap6:
   id: 2171
   first_name: Finished
   last_name: Lap6
-  gender: 0
+  gender: male
   birthdate: '1963-03-07'
   city:
   state_code: UT
@@ -1789,7 +1789,7 @@ progress_lap2:
   id: 2174
   first_name: Progress
   last_name: Lap2
-  gender: 1
+  gender: female
   birthdate: '1992-10-06'
   city:
   state_code: UT
@@ -1808,7 +1808,7 @@ not_started_utah_us:
   id: 2175
   first_name: Not
   last_name: Started
-  gender: 1
+  gender: female
   birthdate:
   city:
   state_code: UT
@@ -1827,7 +1827,7 @@ start_only:
   id: 2176
   first_name: Start
   last_name: Only
-  gender: 0
+  gender: male
   birthdate: '1972-12-19'
   city:
   state_code: UT
@@ -1846,7 +1846,7 @@ on_dst_change:
   id: 2182
   first_name: 'On'
   last_name: DST Change
-  gender: 1
+  gender: female
   birthdate:
   city:
   state_code:
@@ -1865,7 +1865,7 @@ across_dst_change:
   id: 2183
   first_name: Across
   last_name: DST Change
-  gender: 1
+  gender: female
   birthdate:
   city:
   state_code:
@@ -1884,7 +1884,7 @@ un_started:
   id: 2184
   first_name: Un
   last_name: Started
-  gender: 1
+  gender: female
   birthdate: '1988-09-01'
   city: Fort Collins
   state_code: CO
@@ -1903,7 +1903,7 @@ series_finisher:
   id: 2185
   first_name: Series
   last_name: Finisher
-  gender: 0
+  gender: male
   birthdate: '1983-03-03'
   city: Louisville
   state_code: CO
@@ -1922,7 +1922,7 @@ slow_finisher:
   id: 2186
   first_name: Slow
   last_name: Finisher
-  gender: 0
+  gender: male
   birthdate: '1953-03-03'
   city: Orem
   state_code: UT

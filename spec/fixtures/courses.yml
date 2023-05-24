@@ -6,7 +6,7 @@ hardrock_ccw:
     to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
   created_by: 1
   updated_by: 1
-  next_start_time: 2019-07-19 06:00:00.000000000 Z
+  next_start_time: 2019-07-19 06:00:00 UTC
   slug: hardrock-ccw
   organization_id: 4
   concealed:
@@ -28,7 +28,7 @@ hardrock_cw:
   description: Clockwise Hardrock 100 course
   created_by: 1
   updated_by: 1
-  next_start_time: 2016-07-15 12:00:00.000000000 Z
+  next_start_time: 2016-07-15 12:00:00 UTC
   slug: hardrock-cw
   organization_id: 4
   concealed:
@@ -39,7 +39,7 @@ rufa_course:
   description: Bottom of Grandeur Peak to top and back
   created_by: 1
   updated_by: 1
-  next_start_time: 2019-02-09 14:00:00.000000000 Z
+  next_start_time: 2019-02-09 14:00:00 UTC
   slug: rufa-course
   organization_id: 14
   concealed:
@@ -50,7 +50,7 @@ d30_50k_course:
   description:
   created_by: 1
   updated_by: 1
-  next_start_time: 2017-11-06 06:00:00.000000000 Z
+  next_start_time: 2017-11-06 06:00:00 UTC
   slug: d30-50k-course
   organization_id: 15
   concealed:

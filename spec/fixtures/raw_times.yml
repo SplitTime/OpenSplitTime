@@ -6,13 +6,13 @@ raw_time_49:
   split_name: Pole Creek
   bitkey: 1
   bib_number: '102'
-  absolute_time: 2017-07-07 16:31:00.000000000 Z
+  absolute_time: 2017-07-07 16:31:00 UTC
   entered_time: '16:31:00'
   with_pacer:
   stopped_here:
   source: internal
   reviewed_by: 1
-  reviewed_at: 2017-07-08 22:38:12.817174000 Z
+  reviewed_at: 2017-07-08 22:38:12 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: pole-creek
@@ -29,13 +29,13 @@ raw_time_50:
   split_name: Pole Creek
   bitkey: 64
   bib_number: '103'
-  absolute_time: 2017-07-07 20:20:00.000000000 Z
+  absolute_time: 2017-07-07 20:20:00 UTC
   entered_time: '20:20:00'
   with_pacer:
   stopped_here:
   source: internal
   reviewed_by: 1
-  reviewed_at: 2017-07-08 22:38:12.817174000 Z
+  reviewed_at: 2017-07-08 22:38:12 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: pole-creek
@@ -196,7 +196,7 @@ raw_time_75:
   stopped_here:
   source: ost-live-entry
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
@@ -219,7 +219,7 @@ raw_time_76:
   stopped_here:
   source: ost-live-entry
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
@@ -403,7 +403,7 @@ raw_time_84:
   stopped_here:
   source: ost-live-entry
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
@@ -426,7 +426,7 @@ raw_time_85:
   stopped_here:
   source: ost-live-entry
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
@@ -449,7 +449,7 @@ raw_time_86:
   stopped_here:
   source: internal
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by:
   updated_by:
   parameterized_split_name: rolling-pass-aid2
@@ -472,7 +472,7 @@ raw_time_87:
   stopped_here:
   source: internal
   reviewed_by: 1
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  reviewed_at: 2018-04-30 22:46:06 UTC
   created_by:
   updated_by:
   parameterized_split_name: rolling-pass-aid2
@@ -495,7 +495,7 @@ raw_time_88:
   stopped_here:
   source: internal
   reviewed_by: 1
-  reviewed_at: 2018-07-27 03:39:21.949460000 Z
+  reviewed_at: 2018-07-27 03:39:21 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
@@ -535,13 +535,13 @@ raw_time_91:
   split_name: Start
   bitkey: 1
   bib_number: '777'
-  absolute_time: 2018-06-30 13:00:00.000000000 Z
+  absolute_time: 2018-06-30 13:00:00 UTC
   entered_time: '07:00:00'
   with_pacer: false
   stopped_here: false
   source: internal
   reviewed_by: 1
-  reviewed_at: 2018-07-27 03:40:08.987644000 Z
+  reviewed_at: 2018-07-27 03:40:08 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: start
@@ -564,7 +564,7 @@ raw_time_92:
   stopped_here: false
   source: internal
   reviewed_by: 1
-  reviewed_at: 2018-07-27 03:24:12.907737000 Z
+  reviewed_at: 2018-07-27 03:24:12 UTC
   created_by:
   updated_by:
   parameterized_split_name: start
@@ -587,7 +587,7 @@ raw_time_176:
   stopped_here: false
   source: another
   reviewed_by: 1
-  reviewed_at: 2018-11-14 05:48:02.521295000 Z
+  reviewed_at: 2018-11-14 05:48:02 UTC
   created_by:
   updated_by:
   parameterized_split_name: rolling-pass-aid2
@@ -610,13 +610,13 @@ raw_time_177:
   stopped_here: false
   source: another
   reviewed_by: 1
-  reviewed_at: 2018-11-14 05:48:25.812628000 Z
+  reviewed_at: 2018-11-14 05:48:25 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
-  data_status: 0
+  data_status: bad
   matchable_bib_number: 130
   disassociated_from_effort:
   entered_lap:
@@ -633,13 +633,13 @@ raw_time_178:
   stopped_here: false
   source: another
   reviewed_by: 1
-  reviewed_at: 2018-11-14 05:48:27.582171000 Z
+  reviewed_at: 2018-11-14 05:48:27 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
-  data_status: 0
+  data_status: bad
   matchable_bib_number: 130
   disassociated_from_effort:
   entered_lap:
@@ -656,13 +656,13 @@ raw_time_1100:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2018-11-14 05:48:22.553830000 Z
+  reviewed_at: 2018-11-14 05:48:22 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
-  data_status: 2
+  data_status: good
   matchable_bib_number: 130
   disassociated_from_effort:
   entered_lap:
@@ -679,13 +679,13 @@ raw_time_1106:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2018-12-09 02:24:15.750492000 Z
+  reviewed_at: 2018-12-09 02:24:15 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: bandera-mine-aid5
   remarks:
   sortable_bib_number: 103
-  data_status: 2
+  data_status: good
   matchable_bib_number: 103
   disassociated_from_effort:
   entered_lap:
@@ -702,13 +702,13 @@ raw_time_1110:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2018-12-09 02:25:03.158304000 Z
+  reviewed_at: 2018-12-09 02:25:03 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
-  data_status: 2
+  data_status: good
   matchable_bib_number: 103
   disassociated_from_effort:
   entered_lap:
@@ -725,13 +725,13 @@ raw_time_1111:
   stopped_here: true
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2018-12-09 02:26:54.169992000 Z
+  reviewed_at: 2018-12-09 02:26:54 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
-  data_status: 2
+  data_status: good
   matchable_bib_number: 103
   disassociated_from_effort:
   entered_lap:
@@ -748,13 +748,13 @@ raw_time_1117:
   stopped_here: true
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2018-12-15 17:29:59.171376000 Z
+  reviewed_at: 2018-12-15 17:29:59 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
-  data_status: 2
+  data_status: good
   matchable_bib_number: 103
   disassociated_from_effort:
   entered_lap:
@@ -771,13 +771,13 @@ raw_time_1122:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2019-01-25 00:23:15.068615000 Z
+  reviewed_at: 2019-01-25 00:23:15 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
-  data_status: 2
+  data_status: good
   matchable_bib_number: 101
   disassociated_from_effort:
   entered_lap:
@@ -794,13 +794,13 @@ raw_time_1123:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2019-01-25 00:23:15.075358000 Z
+  reviewed_at: 2019-01-25 00:23:15 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
-  data_status: 2
+  data_status: good
   matchable_bib_number: 101
   disassociated_from_effort:
   entered_lap:
@@ -817,13 +817,13 @@ raw_time_1124:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2019-01-25 00:23:57.468470000 Z
+  reviewed_at: 2019-01-25 00:23:57 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
-  data_status: 2
+  data_status: good
   matchable_bib_number: 101
   disassociated_from_effort:
   entered_lap:
@@ -840,13 +840,13 @@ raw_time_1125:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2019-01-25 00:23:57.472413000 Z
+  reviewed_at: 2019-01-25 00:23:57 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
-  data_status: 2
+  data_status: good
   matchable_bib_number: 101
   disassociated_from_effort:
   entered_lap:
@@ -863,13 +863,13 @@ raw_time_1126:
   stopped_here: false
   source: Live Entry (1)
   reviewed_by: 1
-  reviewed_at: 2019-01-25 00:25:12.563910000 Z
+  reviewed_at: 2019-01-25 00:25:12 UTC
   created_by: 1
   updated_by: 1
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 114
-  data_status: 2
+  data_status: good
   matchable_bib_number: 114
   disassociated_from_effort:
   entered_lap:

@@ -8,7 +8,9 @@ namespace :db do
   desc "Convert development database to Rails test fixtures"
   task to_fixtures: :environment do
     PRIMARY_KEY_MAP = {
-      "effort_segments" => "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap"
+      effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
+      results_categories: "identifier",
+      results_templates: "identifier",
     }.freeze
 
     begin
@@ -16,38 +18,58 @@ namespace :db do
       ActiveRecord::Base.connection.tables.each do |table_name|
         next unless table_name.to_sym.in?(FixtureHelper::FIXTURE_TABLES)
 
+        puts "Converting #{table_name}..."
+        klass = table_name.classify.constantize
+        belongs_to_relations = klass.reflect_on_all_associations(:belongs_to)
+
         counter = 0
         file_path = "#{Rails.root}/spec/fixtures/#{table_name}.yml"
-        File.open(file_path, "w") do |file|
-          primary_key = PRIMARY_KEY_MAP[table_name] || "id"
-          rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{primary_key}")
-          data = rows.each_with_object({}) do |record, hash|
+        File.open(file_path, "w") do |yaml|
+          primary_key = PRIMARY_KEY_MAP.fetch(table_name.to_sym, "id")
+          use_identifier = primary_key == "identifier"
+          yaml_hash = {}
+
+          records = klass.all.order(primary_key)
+          records.each do |record|
             suffix = if record["id"].blank?
                        counter += 1
                        counter.to_s.rjust(4, "0")
                      else
                        record["id"]
                      end
-            title = if record["slug"].present?
-                      record["slug"].underscore
+            title = if use_identifier
+                      record["identifier"]
+                    elsif record["slug"].present?
+                      record["slug"].tr("-", "_")
                     elsif table_name == "split_times"
                       effort = Effort.find(record["effort_id"])
                       split = Split.find(record["split_id"])
-                      "#{effort.slug.underscore}_#{split.name(record['sub_split_bitkey']).parameterize.underscore}_#{record['lap']}"
-                    elsif table_name == "results_categories"
-                      organization = record["organization_id"].present? ? Organization.find(record["organization_id"]) : nil
-                      [organization&.name, record["name"]].join(" ").parameterize.underscore
+                      "#{effort.slug.tr("-", "_")}_#{split.name(record['sub_split_bitkey']).parameterize.tr("-", "_")}_#{record['lap']}"
                     else
                       "#{table_name.singularize}_#{suffix}"
                     end
-            FixtureHelper::ATTRIBUTES_TO_IGNORE.each do |attr|
-              next if attr.in? FixtureHelper::ATTRIBUTES_TO_PRESERVE.fetch(table_name.to_sym, [])
-              record.delete(attr.to_s)
+
+            attributes_to_ignore = FixtureHelper::ATTRIBUTES_TO_IGNORE -
+              FixtureHelper::ATTRIBUTES_TO_PRESERVE_BY_TABLE.fetch(table_name.to_sym, [])
+            attributes_to_ignore << :id if use_identifier
+            attributes_to_ignore.map!(&:to_s)
+            attributes = record.attributes.except(*attributes_to_ignore).slice(*klass.column_names)
+            attributes.transform_values! { |value| value.respond_to?(:strftime) ? value.to_s : value }
+
+            belongs_to_relations.each do |relation|
+              parent_class = relation.class_name.constantize
+              next if parent_class.class == Module
+              next unless parent_class.column_names.include?("identifier")
+
+              parent_id = attributes.delete(relation.foreign_key)
+              attributes[relation.name.to_s] = parent_class.find(parent_id).identifier
             end
-            hash[title] = record
+
+            yaml_hash[title] = attributes
           end
+
           puts "Writing table '#{table_name}' to '#{file_path}'"
-          file.write(data.to_yaml)
+          yaml.puts(yaml_hash.to_yaml)
         end
       end
     ensure

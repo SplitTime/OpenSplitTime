@@ -26,7 +26,6 @@ module FixtureHelper
     :results_templates,
     :split_times,
     :splits,
-    :stewardships,
     :subscriptions,
     :syncable_relations,
     :users,

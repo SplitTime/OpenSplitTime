@@ -159,7 +159,7 @@ RSpec.describe ResultsCategory do
     end
 
     context "when low_age is provided but high_age is nil" do
-      subject(:results_category) { results_categories(:masters_men_40) }
+      subject(:results_category) { results_categories(:male_40_and_up) }
 
       it "returns a range from the low_age to infinity" do
         expect(subject.low_age).to eq(40)
@@ -169,7 +169,7 @@ RSpec.describe ResultsCategory do
     end
 
     context "when high_age is provided but low_age is nil" do
-      subject(:results_category) { results_categories(:under_20_men) }
+      subject(:results_category) { results_categories(:male_up_to_19) }
 
       it "returns a range from 0 to the high_age" do
         expect(subject.low_age).to eq(nil)
@@ -187,7 +187,7 @@ RSpec.describe ResultsCategory do
     end
 
     context "when any age is not covered" do
-      subject(:results_category) { results_categories(:masters_men_40) }
+      subject(:results_category) { results_categories(:male_40_and_up) }
 
       it { expect(subject.all_ages?).to eq(false) }
     end

@@ -35,18 +35,18 @@ RSpec.describe Results::Compute do
     end
 
     let(:combined_overall) { results_categories(:combined_overall) }
-    let(:men_overall) { results_categories(:men_overall) }
-    let(:women_overall) { results_categories(:women_overall) }
-    let(:men_masters) { results_categories(:masters_men_40) }
-    let(:women_masters) { results_categories(:masters_women_40) }
-    let(:men_under_20) { results_categories(:under_20_men) }
-    let(:women_under_20) { results_categories(:under_20_women) }
-    let(:men_20s) { results_categories("20_to_29_men") }
-    let(:women_20s) { results_categories("20_to_29_women") }
-    let(:men_30s) { results_categories("30_to_39_men") }
-    let(:women_30s) { results_categories("30_to_39_women") }
-    let(:men_40s) { results_categories("40_to_49_men") }
-    let(:women_40s) { results_categories("40_to_49_women") }
+    let(:men_overall) { results_categories(:male_overall) }
+    let(:women_overall) { results_categories(:female_overall) }
+    let(:men_masters) { results_categories(:male_40_and_up) }
+    let(:women_masters) { results_categories(:female_40_and_up) }
+    let(:men_under_20) { results_categories(:male_up_to_19) }
+    let(:women_under_20) { results_categories(:female_up_to_19) }
+    let(:men_20s) { results_categories(:male_20_to_29) }
+    let(:women_20s) { results_categories(:female_20_to_29) }
+    let(:men_30s) { results_categories(:male_30_to_39) }
+    let(:women_30s) { results_categories(:female_30_to_39) }
+    let(:men_40s) { results_categories(:male_40_to_49) }
+    let(:women_40s) { results_categories(:female_40_to_49) }
 
     before do
       efforts.each do |effort|

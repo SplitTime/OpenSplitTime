@@ -44,7 +44,7 @@ namespace :db do
                     end
             attributes_to_preserve = FixtureHelper::ATTRIBUTES_TO_PRESERVE_BY_TABLE.fetch(table_name.to_sym, [])
             attributes_to_ignore = FixtureHelper::ATTRIBUTES_TO_IGNORE - attributes_to_preserve
-            attributes_to_ignore << :id if table_name.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
+            attributes_to_ignore << :id if table_name.to_sym.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
             record.except!(*attributes_to_ignore.map(&:to_s))
 
             association_hash = {}

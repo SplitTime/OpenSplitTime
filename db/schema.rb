@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_040014) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -480,7 +480,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_040014) do
     t.boolean "female"
     t.integer "low_age"
     t.integer "high_age"
-    t.string "identifier"
     t.integer "created_by"
     t.integer "updated_by"
     t.datetime "created_at", precision: nil, null: false
@@ -507,7 +506,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_040014) do
     t.integer "aggregation_method"
     t.integer "podium_size"
     t.integer "point_system", default: [], array: true
-    t.string "identifier"
     t.string "slug", null: false
     t.integer "created_by"
     t.integer "updated_by"

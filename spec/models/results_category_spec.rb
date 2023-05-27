@@ -111,7 +111,7 @@ RSpec.describe ResultsCategory do
 
   describe "#age_range" do
     context "when low_age and high_age are nil" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:male_overall) }
 
       it "returns a range from 0 to infinity" do
         expect(subject.low_age).to be_nil
@@ -121,7 +121,7 @@ RSpec.describe ResultsCategory do
     end
 
     context "when low_age is provided but high_age is nil" do
-      subject(:results_category) { results_categories(:masters_men_40) }
+      subject(:results_category) { results_categories(:male_40_and_up) }
 
       it "returns a range from the low_age to infinity" do
         expect(subject.low_age).to eq(40)
@@ -131,7 +131,7 @@ RSpec.describe ResultsCategory do
     end
 
     context "when high_age is provided but low_age is nil" do
-      subject(:results_category) { results_categories(:under_20_men) }
+      subject(:results_category) { results_categories(:male_up_to_19) }
 
       it "returns a range from 0 to the high_age" do
         expect(subject.low_age).to eq(nil)
@@ -143,13 +143,13 @@ RSpec.describe ResultsCategory do
 
   describe "#all_ages?" do
     context "when low_age is 0 and high_age is infinite" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.all_ages?).to eq(true) }
     end
 
     context "when any age is not covered" do
-      subject(:results_category) { results_categories(:masters_men_40) }
+      subject(:results_category) { results_categories(:male_40_and_up) }
 
       it { expect(subject.all_ages?).to eq(false) }
     end
@@ -157,25 +157,25 @@ RSpec.describe ResultsCategory do
 
   describe "#genders" do
     context "when all genders are true" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.genders).to eq(%w[male female nonbinary]) }
     end
 
     context "when male is true and female and nonbinary are false" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:male_overall) }
 
       it { expect(subject.genders).to eq(%w[male]) }
     end
 
     context "when female is true and male and nonbinary are false" do
-      subject(:results_category) { results_categories(:overall_women) }
+      subject(:results_category) { results_categories(:female_overall) }
 
       it { expect(subject.genders).to eq(%w[female]) }
     end
 
     context "when nonbinary is true and male and female are false" do
-      subject(:results_category) { results_categories(:overall_nonbinary) }
+      subject(:results_category) { results_categories(:nonbinary_overall) }
 
       it { expect(subject.genders).to eq(%w[nonbinary]) }
     end
@@ -183,25 +183,25 @@ RSpec.describe ResultsCategory do
 
   describe "#all_genders?" do
     context "when male, female, and nonbinary are true" do
-      subject(:results_category) { results_categories(:overall) }
+      subject(:results_category) { results_categories(:combined_overall) }
 
       it { expect(subject.all_genders?).to eq(true) }
     end
 
     context "when only male is true" do
-      subject(:results_category) { results_categories(:overall_men) }
+      subject(:results_category) { results_categories(:male_overall) }
 
       it { expect(subject.all_genders?).to eq(false) }
     end
 
     context "when only female is true" do
-      subject(:results_category) { results_categories(:overall_women) }
+      subject(:results_category) { results_categories(:female_overall) }
 
       it { expect(subject.all_genders?).to eq(false) }
     end
 
     context "when only nonbinary is true" do
-      subject(:results_category) { results_categories(:overall_nonbinary) }
+      subject(:results_category) { results_categories(:nonbinary_overall) }
 
       it { expect(subject.all_genders?).to eq(false) }
     end

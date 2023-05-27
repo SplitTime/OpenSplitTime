@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 class ResultsTemplate < ApplicationRecord
   include Auditable
   extend FriendlyId
+
+  self.ignored_columns = %w[identifier]
 
   enum aggregation_method: [:inclusive, :strict]
   friendly_id :name, use: [:slugged, :history]

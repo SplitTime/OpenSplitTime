@@ -51,7 +51,6 @@ module ETL
 
         proto_split_time[:id] = existing_split_time.id if existing_split_time&.id
         proto_split_time[:created_by] = current_user_id unless existing_split_time
-        proto_split_time[:updated_by] = current_user_id
         proto_split_time[:_destroy] = true if proto_split_time.record_action == :destroy
       end
     end

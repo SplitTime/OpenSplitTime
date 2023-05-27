@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class SplitTimeResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :data_status
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :created_by
   attribute :sub_split_bitkey
   attribute :pacer
   attribute :remarks

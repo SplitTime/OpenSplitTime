@@ -6,8 +6,7 @@ RSpec.describe Interactors::StartEfforts do
   include BitkeyDefinitions
 
   describe ".perform!" do
-    subject { Interactors::StartEfforts.new(efforts: subject_efforts, start_time: start_time, current_user_id: current_user_id) }
-    let(:current_user_id) { rand(1..100) }
+    subject { Interactors::StartEfforts.new(efforts: subject_efforts, start_time: start_time) }
     let(:home_time_zone) { subject_efforts.first.home_time_zone }
 
     context "when all provided efforts are valid" do
@@ -17,7 +16,7 @@ RSpec.describe Interactors::StartEfforts do
         context "when start_time is provided as a string with no time zone" do
           let(:start_time) { "2017-09-23 08:00:00" }
 
-          it "creates start split_times for each effort, assigns user_id to created_by, and returns a successful response" do
+          it "creates start split_times for each effort and returns a successful response" do
             expect(subject_efforts.map(&:starting_split_time)).to all be_nil
             response = subject.perform!
 
@@ -27,7 +26,6 @@ RSpec.describe Interactors::StartEfforts do
             subject_efforts.each(&:reload)
             split_times = subject_efforts.map(&:starting_split_time)
             expect(split_times).to all be_present
-            expect(split_times.map(&:created_by)).to all eq(current_user_id)
             expect(split_times.map(&:absolute_time)).to all eq(start_time.in_time_zone(home_time_zone))
           end
         end

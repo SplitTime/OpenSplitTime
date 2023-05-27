@@ -11,12 +11,11 @@ module Interactors
 
     def initialize(args)
       ArgsValidator.validate(params: args,
-                             required: [:efforts, :current_user_id],
-                             exclusive: [:efforts, :start_time, :current_user_id],
+                             required: [:efforts],
+                             exclusive: [:efforts, :start_time],
                              class: self.class)
       @efforts = args[:efforts]
       @start_time = args[:start_time]
-      @current_user_id = args[:current_user_id]
       @errors = []
       @saved_split_times = []
       validate_setup
@@ -34,7 +33,7 @@ module Interactors
 
     private
 
-    attr_reader :efforts, :start_time, :current_user_id, :errors, :saved_split_times
+    attr_reader :efforts, :start_time, :errors, :saved_split_times
 
     def start_effort(effort)
       split_time = SplitTime.find_or_initialize_by(
@@ -45,7 +44,6 @@ module Interactors
       )
 
       split_time.absolute_time = effort_start_time(effort)
-      split_time.created_by = current_user_id
 
       if split_time.save
         saved_split_times << split_time

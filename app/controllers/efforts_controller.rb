@@ -139,7 +139,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     effort = Effort.where(id: @effort.id).includes(event: :splits).first
-    response = Interactors::RebuildEffortTimes.perform!(effort: effort, current_user_id: current_user.id)
+    response = Interactors::RebuildEffortTimes.perform!(effort: effort)
     set_flash_message(response)
 
     respond_to do |format|
@@ -157,7 +157,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     start_time = params[:actual_start_time]
-    response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time, current_user_id: current_user.id)
+    response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time)
     set_flash_message(response)
     @effort.reload
 

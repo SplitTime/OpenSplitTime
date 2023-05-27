@@ -97,7 +97,6 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
         expect(subject_split_times.map(&:split_id).sort).to eq(split_ids.cycle.first(subject_split_times.size).sort)
         expect(subject_split_times.map(&:absolute_time)).to eq([0, 2581, 6308, 9463, 13_571, 16_655, 17_736].map { |e| start_time + e })
         expect(subject_split_times.map(&:effort_id)).to all eq(effort_1.id)
-        expect(subject_split_times.map(&:created_by)).to all eq(options[:current_user_id])
       end
 
       it "returns saved parent records in the saved_records array" do

@@ -14,7 +14,6 @@ class SplitTime < ApplicationRecord
   include DelegatedConcealable
   include Delegable
   include DataStatusMethods
-  include Auditable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   has_paper_trail

@@ -50,7 +50,6 @@ module ETL
         existing_split_time = effort.split_times.find { |st| st.time_point == time_point }
 
         proto_split_time[:id] = existing_split_time.id if existing_split_time&.id
-        proto_split_time[:created_by] = current_user_id unless existing_split_time
         proto_split_time[:_destroy] = true if proto_split_time.record_action == :destroy
       end
     end

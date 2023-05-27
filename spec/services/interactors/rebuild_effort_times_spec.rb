@@ -5,9 +5,8 @@ require "rails_helper"
 RSpec.describe Interactors::RebuildEffortTimes do
   include BitkeyDefinitions
 
-  subject { described_class.new(effort: effort, current_user_id: current_user_id) }
+  subject { described_class.new(effort: effort) }
   let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
-  let(:current_user_id) { 1 }
   let(:ordered_split_times) { effort.ordered_split_times }
   let(:ordered_split_ids) { effort.event.ordered_splits.map(&:id) }
   let(:id_1) { ordered_split_ids.first }
@@ -15,7 +14,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
   let(:id_3) { ordered_split_ids.third }
 
   describe "#initialize" do
-    context "when effort and current_user_id arguments are provided" do
+    context "when effort argument is provided" do
       it "initializes" do
         expect { subject }.not_to raise_error
       end

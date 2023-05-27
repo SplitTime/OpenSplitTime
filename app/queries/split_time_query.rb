@@ -244,7 +244,7 @@ class SplitTimeQuery < BaseQuery
     SQL
   end
 
-  def self.shift_event_absolute_times(event, shift_seconds, current_user)
+  def self.shift_event_absolute_times(event, shift_seconds)
     query = <<-SQL
         with time_subquery as 
            (select st.id, st.absolute_time + (#{shift_seconds} * interval '1 second') as computed_time
@@ -254,8 +254,7 @@ class SplitTimeQuery < BaseQuery
           
         update split_times
         set absolute_time = computed_time,
-            updated_at = current_timestamp,
-            updated_by = #{current_user.id}
+            updated_at = current_timestamp
         from time_subquery
         where split_times.id = time_subquery.id
     SQL

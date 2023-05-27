@@ -13,6 +13,8 @@ class Event < ApplicationRecord
   include Syncable
   extend FriendlyId
 
+  self.ignored_columns = %w[updated_by]
+
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
   trim_time_attributes :scheduled_start_time

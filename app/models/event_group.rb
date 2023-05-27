@@ -3,6 +3,8 @@
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped], _default: :location_grouped
 
+  self.ignored_columns = %w[updated_by]
+
   include UrlAccessible
   include TimeZonable
   include SplitAnalyzable

@@ -12,6 +12,8 @@ class Person < ApplicationRecord
   include Auditable
   extend FriendlyId
 
+  self.ignored_columns = %w[updated_by]
+
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone], regex: /[^0-9|+]/
   capitalize_attributes :first_name, :last_name, :city

@@ -58,11 +58,11 @@ module Interactors
     attr_reader :event, :new_start_time, :old_start_time, :current_user, :errors
 
     def effort_query
-      EffortQuery.shift_event_scheduled_times(event, shift_seconds, current_user)
+      EffortQuery.shift_event_scheduled_times(event, shift_seconds)
     end
 
     def split_time_query
-      SplitTimeQuery.shift_event_absolute_times(event, shift_seconds, current_user)
+      SplitTimeQuery.shift_event_absolute_times(event, shift_seconds)
     end
 
     def shift_seconds

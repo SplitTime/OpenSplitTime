@@ -130,7 +130,7 @@ class EffortQuery < BaseQuery
     SQL
   end
 
-  def self.shift_event_scheduled_times(event, shift_seconds, current_user)
+  def self.shift_event_scheduled_times(event, shift_seconds)
     <<-SQL.squish
         with time_subquery as
            (select ef.id, ef.scheduled_start_time + (#{shift_seconds} * interval '1 second') as computed_time
@@ -139,8 +139,7 @@ class EffortQuery < BaseQuery
         
         update efforts
         set scheduled_start_time = computed_time,
-            updated_at = current_timestamp,
-            updated_by = #{current_user.id}
+            updated_at = current_timestamp
         from time_subquery
         where efforts.id = time_subquery.id
     SQL

@@ -9,6 +9,8 @@ class Course < ApplicationRecord
   include Auditable
   extend FriendlyId
 
+  self.ignored_columns = %w[updated_by]
+
   zonable_attribute :next_start_time
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]

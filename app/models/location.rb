@@ -4,6 +4,8 @@ Location = Struct.new(:latitude, :longitude, :distance_threshold) do
   D_TO_R = Math::PI / 180.0
   RADIUS = 6_371_000 # Earth's mean radius in meters
 
+  self.ignored_columns = %w[updated_by]
+
   def ==(other)
     distance = distance_from(other)
     !distance.nil? && distance <= distance_threshold

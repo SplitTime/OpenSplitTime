@@ -6,7 +6,7 @@ class ResultsCategory < ApplicationRecord
 
   INF = 1.0 / 0
 
-  friendly_id :organization_genders_ages, use: [:slugged, :history]
+  friendly_id :organization_genders_ages, use: [:sequentially_slugged, :history]
 
   belongs_to :organization, optional: true
   has_many :results_template_categories, dependent: :destroy
@@ -81,9 +81,9 @@ class ResultsCategory < ApplicationRecord
   end
 
   def organization_genders_ages
-    organization_component = organization ? [organization.name.parameterize.gsub("-", "_")] : []
+    organization_component = organization ? [organization.name.parameterize] : []
     gender_component = all_genders? ? ["combined"] : genders
     age_component = all_ages? ? ["overall"] : [age_description]
-    [*organization_component, *gender_component, *age_component].join("_").downcase.gsub(/\s/, "_")
+    [*organization_component, *gender_component, *age_component].join("-").parameterize
   end
 end

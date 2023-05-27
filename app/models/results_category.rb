@@ -81,7 +81,7 @@ class ResultsCategory < ApplicationRecord
   end
 
   def organization_genders_ages
-    organization_component = organization ? [organization.name.downcase.gsub(/\s/, "_")] : []
+    organization_component = organization ? [organization.name.parameterize.gsub("-", "_")] : []
     gender_component = all_genders? ? ["combined"] : genders
     age_component = all_ages? ? ["overall"] : [age_description]
     [*organization_component, *gender_component, *age_component].join("_").downcase.gsub(/\s/, "_")

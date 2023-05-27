@@ -7,7 +7,6 @@ masters_and_decades:
   podium_size: 3
   point_system:
   slug: masters-and-decades
-  created_by: 1
 overall_30s_40s_50s_seniors:
   id: 2
   organization_id:
@@ -16,7 +15,6 @@ overall_30s_40s_50s_seniors:
   podium_size: 3
   point_system:
   slug: overall-30s-40s-50s-seniors
-  created_by: 1
 sub_masters_masters_and_grandmasters:
   id: 3
   organization_id:
@@ -25,7 +23,6 @@ sub_masters_masters_and_grandmasters:
   podium_size: 3
   point_system:
   slug: sub-masters-masters-and-grandmasters
-  created_by: 1
 masters_and_grandmasters:
   id: 4
   organization_id:
@@ -34,7 +31,6 @@ masters_and_grandmasters:
   podium_size: 3
   point_system:
   slug: masters-and-grandmasters
-  created_by: 1
 simple:
   id: 7
   organization_id:
@@ -43,7 +39,6 @@ simple:
   podium_size: 3
   point_system:
   slug: simple
-  created_by: 1
 simple_with_nonbinary:
   id: 8
   organization_id:
@@ -52,7 +47,6 @@ simple_with_nonbinary:
   podium_size: 3
   point_system:
   slug: simple-with-nonbinary
-  created_by: 1
 masters_and_grandmasters_with_nonbinary:
   id: 9
   organization_id:
@@ -61,4 +55,3 @@ masters_and_grandmasters_with_nonbinary:
   podium_size: 3
   point_system:
   slug: masters-and-grandmasters-with-nonbinary
-  created_by: 1

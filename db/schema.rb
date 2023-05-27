@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_055211) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_180038) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -472,7 +472,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_055211) do
     t.boolean "female"
     t.integer "low_age"
     t.integer "high_age"
-    t.integer "created_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "nonbinary", default: false
@@ -498,7 +497,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_055211) do
     t.integer "podium_size"
     t.integer "point_system", default: [], array: true
     t.string "slug", null: false
-    t.integer "created_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_results_templates_on_organization_id"

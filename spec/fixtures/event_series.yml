@@ -1,15 +1,15 @@
 ---
 d30_50k_series:
+  results_template: simple
   id: 1
   organization_id: 15
-  results_template_id: 7
   name: D30 50K Series
   slug: d30-50k-series
   scoring_method: 0
 d30_short_series:
+  results_template: simple
   id: 2
   organization_id: 15
-  results_template_id: 7
   name: D30 Short Series
   slug: d30-short-series
   scoring_method: 0

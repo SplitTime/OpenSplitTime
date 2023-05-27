@@ -3,8 +3,6 @@
 class ResultsCategory < ApplicationRecord
   extend FriendlyId
 
-  self.ignored_columns = %w[created_by]
-
   INF = 1.0 / 0
 
   friendly_id :organization_genders_ages, use: [:sequentially_slugged, :history]

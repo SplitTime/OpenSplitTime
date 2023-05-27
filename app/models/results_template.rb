@@ -3,8 +3,6 @@
 class ResultsTemplate < ApplicationRecord
   extend FriendlyId
 
-  self.ignored_columns = %w[created_by]
-
   enum aggregation_method: [:inclusive, :strict]
   friendly_id :name, use: [:slugged, :history]
 

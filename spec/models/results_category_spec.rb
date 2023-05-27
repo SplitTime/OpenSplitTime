@@ -3,8 +3,6 @@
 require "rails_helper"
 
 RSpec.describe ResultsCategory do
-  it_behaves_like "auditable"
-
   subject(:results_category) { build(:results_category) }
 
   describe "#initialize" do

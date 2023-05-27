@@ -4,8 +4,6 @@ class SplitTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
 
-  self.ignored_columns = %w[updated_by]
-
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]].freeze
 

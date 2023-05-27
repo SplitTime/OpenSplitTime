@@ -12,8 +12,6 @@ class Split < ApplicationRecord
   include Auditable
   extend FriendlyId
 
-  self.ignored_columns = %w[updated_by]
-
   strip_attributes collapse_spaces: true
   friendly_id :course_split_name, use: [:slugged, :history]
   has_paper_trail

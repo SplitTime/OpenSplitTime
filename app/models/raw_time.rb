@@ -12,8 +12,6 @@ class RawTime < ApplicationRecord
   include DataStatusMethods
   include Auditable
 
-  self.ignored_columns = %w[updated_by]
-
   zonable_attribute :absolute_time
   has_paper_trail
 

@@ -4,8 +4,6 @@ class ResultsTemplate < ApplicationRecord
   include Auditable
   extend FriendlyId
 
-  self.ignored_columns = %w[updated_by]
-
   enum aggregation_method: [:inclusive, :strict]
   friendly_id :name, use: [:slugged, :history]
 

@@ -8,7 +8,6 @@ hardrock_ccw_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 3
-  updated_by: 1
   description: Silverton High School
   base_name: Start
   sub_split_bitmap: 1
@@ -26,7 +25,6 @@ hardrock_ccw_cunningham:
   vert_loss_from_start: 844.296
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Cunningham
   sub_split_bitmap: 65
@@ -44,7 +42,6 @@ hardrock_ccw_sherman:
   vert_loss_from_start: 2749.296
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Sherman
   sub_split_bitmap: 65
@@ -62,7 +59,6 @@ hardrock_ccw_grouse:
   vert_loss_from_start: 4025.7984
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Grouse
   sub_split_bitmap: 65
@@ -80,7 +76,6 @@ hardrock_ccw_ouray:
   vert_loss_from_start: 5792.1144
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Ouray
   sub_split_bitmap: 65
@@ -98,7 +93,6 @@ hardrock_ccw_telluride:
   vert_loss_from_start: 7144.8168
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Telluride
   sub_split_bitmap: 65
@@ -116,7 +110,6 @@ hardrock_ccw_putnam:
   vert_loss_from_start: 9276.8928
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Putnam
   sub_split_bitmap: 65
@@ -134,7 +127,6 @@ hardrock_ccw_finish:
   vert_loss_from_start: 10073.64
   kind: 1
   created_by: 1
-  updated_by: 1
   description:
   base_name: Finish
   sub_split_bitmap: 1
@@ -152,7 +144,6 @@ ramble_even_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description: Starting point for the Ramble Even-Year Course course.
   base_name: Start
   sub_split_bitmap: 1
@@ -170,7 +161,6 @@ ramble_even_course_finish:
   vert_loss_from_start: 249.935992002048
   kind: 1
   created_by: 1
-  updated_by: 1
   description: Finish point for the Ramble Even-Year Course course.
   base_name: Finish
   sub_split_bitmap: 1
@@ -188,7 +178,6 @@ hardrock_cw_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description: Starting point for the Hardrock CW course.
   base_name: Start
   sub_split_bitmap: 1
@@ -206,7 +195,6 @@ hardrock_cw_finish:
   vert_loss_from_start: 10073.64
   kind: 1
   created_by: 1
-  updated_by: 1
   description: Finish point for the Hardrock CW course.
   base_name: Finish
   sub_split_bitmap: 1
@@ -224,7 +212,6 @@ hardrock_cw_telluride:
   vert_loss_from_start: 3099.51110081564
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Telluride
   sub_split_bitmap: 65
@@ -242,7 +229,6 @@ hardrock_cw_ouray:
   vert_loss_from_start: 4778.34944709282
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Ouray
   sub_split_bitmap: 65
@@ -260,7 +246,6 @@ hardrock_cw_grouse:
   vert_loss_from_start: 5621.12142012411
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Grouse
   sub_split_bitmap: 65
@@ -278,7 +263,6 @@ hardrock_cw_sherman:
   vert_loss_from_start: 7223.75976883969
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Sherman
   sub_split_bitmap: 65
@@ -296,7 +280,6 @@ hardrock_cw_cunningham:
   vert_loss_from_start: 8903.20771509735
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Cunningham
   sub_split_bitmap: 65
@@ -314,7 +297,6 @@ rufa_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description: Starting point for the RUFA Course course.
   base_name: Start
   sub_split_bitmap: 1
@@ -332,7 +314,6 @@ rufa_course_finish:
   vert_loss_from_start: 780.288
   kind: 1
   created_by: 1
-  updated_by: 1
   description: Finish point for the RUFA Course course.
   base_name: Finish
   sub_split_bitmap: 1
@@ -350,7 +331,6 @@ rufa_course_grandeur_peak:
   vert_loss_from_start: 0.0
   kind: 2
   created_by: 1
-  updated_by: 1
   description: Top of Grander Peak
   base_name: Grandeur Peak
   sub_split_bitmap: 1
@@ -368,7 +348,6 @@ d30_50k_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description:
   base_name: Start
   sub_split_bitmap: 1
@@ -386,7 +365,6 @@ d30_50k_course_finish:
   vert_loss_from_start: 2286.0
   kind: 1
   created_by: 1
-  updated_by: 1
   description:
   base_name: Finish
   sub_split_bitmap: 1
@@ -404,7 +382,6 @@ d30_50k_course_aid_5:
   vert_loss_from_start: 2072.64
   kind: 2
   created_by: 1
-  updated_by: 1
   description: On the Burro Trail on the slopes of Windy Peak
   base_name: 'Aid #5'
   sub_split_bitmap: 1
@@ -422,7 +399,6 @@ d30_50k_course_aid_1:
   vert_loss_from_start: 243.84
   kind: 2
   created_by: 1
-  updated_by: 1
   description: In Forgotten Valley
   base_name: 'Aid #1'
   sub_split_bitmap: 1
@@ -440,7 +416,6 @@ d30_50k_course_aid_4:
   vert_loss_from_start: 1615.44
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: 'Aid #4'
   sub_split_bitmap: 1
@@ -458,7 +433,6 @@ d30_50k_course_aid_3:
   vert_loss_from_start: 1158.24
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: 'Aid #3'
   sub_split_bitmap: 1
@@ -476,7 +450,6 @@ d30_50k_course_aid_2:
   vert_loss_from_start: 701.04
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: 'Aid #2'
   sub_split_bitmap: 1
@@ -494,7 +467,6 @@ d30_12m_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description:
   base_name: Start
   sub_split_bitmap: 1
@@ -512,7 +484,6 @@ d30_12m_course_finish:
   vert_loss_from_start: 1066.7999658624
   kind: 1
   created_by: 1
-  updated_by: 1
   description:
   base_name: Finish
   sub_split_bitmap: 1
@@ -530,7 +501,6 @@ sum_100k_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description:
   base_name: Start
   sub_split_bitmap: 1
@@ -548,7 +518,6 @@ sum_100k_course_finish:
   vert_loss_from_start: 2529.84
   kind: 1
   created_by: 1
-  updated_by: 1
   description:
   base_name: Finish
   sub_split_bitmap: 1
@@ -566,7 +535,6 @@ sum_100k_course_molas_pass_aid1:
   vert_loss_from_start: 60.96
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Molas Pass (Aid1)
   sub_split_bitmap: 65
@@ -584,7 +552,6 @@ sum_100k_course_rolling_pass_aid2:
   vert_loss_from_start: 152.4
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Rolling Pass (Aid2)
   sub_split_bitmap: 65
@@ -602,7 +569,6 @@ sum_100k_course_cascade_creek_rd_aid3:
   vert_loss_from_start: 365.76
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Cascade Creek Rd (Aid3)
   sub_split_bitmap: 65
@@ -620,7 +586,6 @@ sum_100k_course_engineer_mtn_th_aid4:
   vert_loss_from_start: 1203.96
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Engineer Mtn TH (Aid4)
   sub_split_bitmap: 65
@@ -638,7 +603,6 @@ sum_100k_course_bandera_mine_aid5:
   vert_loss_from_start: 1938.528
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Bandera Mine (Aid5)
   sub_split_bitmap: 65
@@ -656,7 +620,6 @@ sum_100k_course_anvil_cg_aid6:
   vert_loss_from_start: 2328.672
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Anvil CG (Aid6)
   sub_split_bitmap: 65
@@ -674,7 +637,6 @@ sum_55k_course_start:
   vert_loss_from_start: 0.0
   kind: 0
   created_by: 1
-  updated_by: 1
   description:
   base_name: Start
   sub_split_bitmap: 1
@@ -692,7 +654,6 @@ sum_55k_course_finish:
   vert_loss_from_start: 1097.28
   kind: 1
   created_by: 1
-  updated_by: 1
   description:
   base_name: Finish
   sub_split_bitmap: 1
@@ -710,7 +671,6 @@ sum_55k_course_molas_pass_aid1:
   vert_loss_from_start: 60.96
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Molas Pass (Aid1)
   sub_split_bitmap: 65
@@ -728,7 +688,6 @@ sum_55k_course_rolling_pass_aid2:
   vert_loss_from_start: 152.4
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Rolling Pass (Aid2)
   sub_split_bitmap: 65
@@ -746,7 +705,6 @@ sum_55k_course_bandera_mine_aid5:
   vert_loss_from_start: 670.56
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Bandera Mine (Aid5)
   sub_split_bitmap: 65
@@ -764,7 +722,6 @@ sum_55k_course_anvil_cg_aid6:
   vert_loss_from_start: 1021.08
   kind: 2
   created_by: 1
-  updated_by: 1
   description:
   base_name: Anvil CG (Aid6)
   sub_split_bitmap: 65

@@ -36,7 +36,6 @@ module ETL
 
       def add_audit_attributes(record)
         record.created_by = current_user_id if record.new_record?
-        record.updated_by = current_user_id
       end
 
       def current_user_id

@@ -5,7 +5,6 @@ hardrock_2015_tuan_jacobs_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -19,7 +18,6 @@ hardrock_2015_tuan_jacobs_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -33,7 +31,6 @@ hardrock_2015_tuan_jacobs_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -47,7 +44,6 @@ hardrock_2015_tuan_jacobs_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -61,7 +57,6 @@ hardrock_2015_tuan_jacobs_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -75,7 +70,6 @@ hardrock_2015_tuan_jacobs_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -89,7 +83,6 @@ hardrock_2015_tuan_jacobs_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -103,7 +96,6 @@ hardrock_2015_tuan_jacobs_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -117,7 +109,6 @@ hardrock_2015_tuan_jacobs_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -131,7 +122,6 @@ hardrock_2015_tuan_jacobs_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -145,7 +135,6 @@ hardrock_2015_tuan_jacobs_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -159,7 +148,6 @@ hardrock_2015_tuan_jacobs_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -173,7 +161,6 @@ hardrock_2015_tuan_jacobs_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -187,7 +174,6 @@ hardrock_2015_erich_larson_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -201,7 +187,6 @@ hardrock_2015_erich_larson_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -215,7 +200,6 @@ hardrock_2015_erich_larson_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -229,7 +213,6 @@ hardrock_2015_erich_larson_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -243,7 +226,6 @@ hardrock_2015_erich_larson_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -257,7 +239,6 @@ hardrock_2015_erich_larson_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -271,7 +252,6 @@ hardrock_2015_erich_larson_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -285,7 +265,6 @@ hardrock_2015_erich_larson_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -299,7 +278,6 @@ hardrock_2015_erich_larson_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -313,7 +291,6 @@ hardrock_2015_erich_larson_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -327,7 +304,6 @@ hardrock_2015_erich_larson_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -341,7 +317,6 @@ hardrock_2015_erich_larson_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -355,7 +330,6 @@ hardrock_2015_erich_larson_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -369,7 +343,6 @@ hardrock_2015_erich_larson_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -383,7 +356,6 @@ hardrock_2015_leif_carter_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -397,7 +369,6 @@ hardrock_2015_leif_carter_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -411,7 +382,6 @@ hardrock_2015_leif_carter_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -425,7 +395,6 @@ hardrock_2015_leif_carter_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -439,7 +408,6 @@ hardrock_2015_leif_carter_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -453,7 +421,6 @@ hardrock_2015_leif_carter_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -467,7 +434,6 @@ hardrock_2015_leif_carter_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -481,7 +447,6 @@ hardrock_2015_leif_carter_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -495,7 +460,6 @@ hardrock_2015_leif_carter_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -509,7 +473,6 @@ hardrock_2015_leif_carter_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -523,7 +486,6 @@ hardrock_2015_leif_carter_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -537,7 +499,6 @@ hardrock_2015_leif_carter_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -551,7 +512,6 @@ hardrock_2015_leif_carter_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -565,7 +525,6 @@ hardrock_2015_leif_carter_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -579,7 +538,6 @@ hardrock_2015_carmine_adams_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -593,7 +551,6 @@ hardrock_2015_carmine_adams_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -607,7 +564,6 @@ hardrock_2015_carmine_adams_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -621,7 +577,6 @@ hardrock_2015_carmine_adams_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -635,7 +590,6 @@ hardrock_2015_carmine_adams_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -649,7 +603,6 @@ hardrock_2015_carmine_adams_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -663,7 +616,6 @@ hardrock_2015_carmine_adams_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -677,7 +629,6 @@ hardrock_2015_carmine_adams_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -691,7 +642,6 @@ hardrock_2015_carmine_adams_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -705,7 +655,6 @@ hardrock_2015_carmine_adams_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -719,7 +668,6 @@ hardrock_2015_carmine_adams_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -733,7 +681,6 @@ hardrock_2015_carmine_adams_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -747,7 +694,6 @@ hardrock_2015_carmine_adams_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -761,7 +707,6 @@ hardrock_2015_carmine_adams_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -775,7 +720,6 @@ hardrock_2015_garry_kuhlman_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -789,7 +733,6 @@ hardrock_2015_garry_kuhlman_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -803,7 +746,6 @@ hardrock_2015_garry_kuhlman_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -817,7 +759,6 @@ hardrock_2015_garry_kuhlman_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -831,7 +772,6 @@ hardrock_2015_garry_kuhlman_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -845,7 +785,6 @@ hardrock_2015_garry_kuhlman_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -859,7 +798,6 @@ hardrock_2015_garry_kuhlman_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -873,7 +811,6 @@ hardrock_2015_garry_kuhlman_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -887,7 +824,6 @@ hardrock_2015_garry_kuhlman_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -901,7 +837,6 @@ hardrock_2015_garry_kuhlman_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -915,7 +850,6 @@ hardrock_2015_garry_kuhlman_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -929,7 +863,6 @@ hardrock_2015_garry_kuhlman_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -943,7 +876,6 @@ hardrock_2015_garry_kuhlman_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -957,7 +889,6 @@ hardrock_2015_garry_kuhlman_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -971,7 +902,6 @@ hardrock_2015_darius_jacobson_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -985,7 +915,6 @@ hardrock_2015_darius_jacobson_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -999,7 +928,6 @@ hardrock_2015_darius_jacobson_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1013,7 +941,6 @@ hardrock_2015_darius_jacobson_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1027,7 +954,6 @@ hardrock_2015_darius_jacobson_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1041,7 +967,6 @@ hardrock_2015_darius_jacobson_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1055,7 +980,6 @@ hardrock_2015_darius_jacobson_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1069,7 +993,6 @@ hardrock_2015_darius_jacobson_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1083,7 +1006,6 @@ hardrock_2015_darius_jacobson_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1097,7 +1019,6 @@ hardrock_2015_darius_jacobson_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1111,7 +1032,6 @@ hardrock_2015_darius_jacobson_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1125,7 +1045,6 @@ hardrock_2015_darius_jacobson_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1139,7 +1058,6 @@ hardrock_2015_santa_green_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1153,7 +1071,6 @@ hardrock_2015_santa_green_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1167,7 +1084,6 @@ hardrock_2015_santa_green_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1181,7 +1097,6 @@ hardrock_2015_santa_green_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1195,7 +1110,6 @@ hardrock_2015_santa_green_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1209,7 +1123,6 @@ hardrock_2015_santa_green_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1223,7 +1136,6 @@ hardrock_2015_santa_green_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1237,7 +1149,6 @@ hardrock_2015_santa_green_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1251,7 +1162,6 @@ hardrock_2015_santa_green_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1265,7 +1175,6 @@ hardrock_2015_santa_green_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1279,7 +1188,6 @@ hardrock_2015_santa_green_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1293,7 +1201,6 @@ hardrock_2015_santa_green_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1307,7 +1214,6 @@ hardrock_2015_santa_green_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1321,7 +1227,6 @@ hardrock_2015_santa_green_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1335,7 +1240,6 @@ hardrock_2015_gilberto_mckenzie_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1349,7 +1253,6 @@ hardrock_2015_gilberto_mckenzie_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1363,7 +1266,6 @@ hardrock_2015_gilberto_mckenzie_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1377,7 +1279,6 @@ hardrock_2015_gilberto_mckenzie_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1391,7 +1292,6 @@ hardrock_2015_gilberto_mckenzie_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1405,7 +1305,6 @@ hardrock_2015_gilberto_mckenzie_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1419,7 +1318,6 @@ hardrock_2015_gilberto_mckenzie_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1433,7 +1331,6 @@ hardrock_2015_gilberto_mckenzie_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1447,7 +1344,6 @@ hardrock_2015_gilberto_mckenzie_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1461,7 +1357,6 @@ hardrock_2015_gilberto_mckenzie_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1475,7 +1370,6 @@ hardrock_2015_gilberto_mckenzie_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1489,7 +1383,6 @@ hardrock_2015_gilberto_mckenzie_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1503,7 +1396,6 @@ hardrock_2015_gilberto_mckenzie_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1517,7 +1409,6 @@ hardrock_2015_gilberto_mckenzie_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1531,7 +1422,6 @@ hardrock_2015_vince_willms_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1545,7 +1435,6 @@ hardrock_2015_vince_willms_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1559,7 +1448,6 @@ hardrock_2015_vince_willms_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1573,7 +1461,6 @@ hardrock_2015_vince_willms_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1587,7 +1474,6 @@ hardrock_2015_vince_willms_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1601,7 +1487,6 @@ hardrock_2015_vince_willms_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1615,7 +1500,6 @@ hardrock_2015_vince_willms_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1629,7 +1513,6 @@ hardrock_2015_vince_willms_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1643,7 +1526,6 @@ hardrock_2015_vince_willms_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1657,7 +1539,6 @@ hardrock_2015_vince_willms_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1671,7 +1552,6 @@ hardrock_2015_vince_willms_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1685,7 +1565,6 @@ hardrock_2015_vince_willms_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1699,7 +1578,6 @@ hardrock_2015_vince_willms_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1713,7 +1591,6 @@ hardrock_2015_vince_willms_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1727,7 +1604,6 @@ hardrock_2015_cedric_windler_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1741,7 +1617,6 @@ hardrock_2015_cedric_windler_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1755,7 +1630,6 @@ hardrock_2015_cedric_windler_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1769,7 +1643,6 @@ hardrock_2015_cedric_windler_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1783,7 +1656,6 @@ hardrock_2015_cedric_windler_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1797,7 +1669,6 @@ hardrock_2015_cedric_windler_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1811,7 +1682,6 @@ hardrock_2015_cedric_windler_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1825,7 +1695,6 @@ hardrock_2015_cedric_windler_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1839,7 +1708,6 @@ hardrock_2015_cedric_windler_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1853,7 +1721,6 @@ hardrock_2015_cedric_windler_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1867,7 +1734,6 @@ hardrock_2015_cedric_windler_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1881,7 +1747,6 @@ hardrock_2015_cedric_windler_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1895,7 +1760,6 @@ hardrock_2015_cedric_windler_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1909,7 +1773,6 @@ hardrock_2015_chris_rempel_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1923,7 +1786,6 @@ hardrock_2015_chris_rempel_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1937,7 +1799,6 @@ hardrock_2015_chris_rempel_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1951,7 +1812,6 @@ hardrock_2015_chris_rempel_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1965,7 +1825,6 @@ hardrock_2015_chris_rempel_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -1979,7 +1838,6 @@ hardrock_2015_chris_rempel_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -1993,7 +1851,6 @@ hardrock_2015_chris_rempel_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2007,7 +1864,6 @@ hardrock_2015_chris_rempel_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2021,7 +1877,6 @@ hardrock_2015_chris_rempel_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2035,7 +1890,6 @@ hardrock_2015_chris_rempel_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2049,7 +1903,6 @@ hardrock_2015_chris_rempel_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2063,7 +1916,6 @@ hardrock_2015_chris_rempel_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2077,7 +1929,6 @@ hardrock_2015_chris_rempel_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2091,7 +1942,6 @@ hardrock_2015_chris_rempel_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2105,7 +1955,6 @@ hardrock_2015_robby_gerlach_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2119,7 +1968,6 @@ hardrock_2015_robby_gerlach_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2133,7 +1981,6 @@ hardrock_2015_robby_gerlach_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2147,7 +1994,6 @@ hardrock_2015_robby_gerlach_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2161,7 +2007,6 @@ hardrock_2015_robby_gerlach_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2175,7 +2020,6 @@ hardrock_2015_robby_gerlach_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2189,7 +2033,6 @@ hardrock_2015_robby_gerlach_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2203,7 +2046,6 @@ hardrock_2015_robby_gerlach_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2217,7 +2059,6 @@ hardrock_2015_robby_gerlach_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2231,7 +2072,6 @@ hardrock_2015_robby_gerlach_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2245,7 +2085,6 @@ hardrock_2015_robby_gerlach_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2259,7 +2098,6 @@ hardrock_2015_robby_gerlach_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2273,7 +2111,6 @@ hardrock_2015_robby_gerlach_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2287,7 +2124,6 @@ hardrock_2015_robby_gerlach_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2301,7 +2137,6 @@ hardrock_2015_rachelle_eichmann_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2315,7 +2150,6 @@ hardrock_2015_rachelle_eichmann_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2329,7 +2163,6 @@ hardrock_2015_rachelle_eichmann_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2343,7 +2176,6 @@ hardrock_2015_rachelle_eichmann_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2357,7 +2189,6 @@ hardrock_2015_rachelle_eichmann_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2371,7 +2202,6 @@ hardrock_2015_rachelle_eichmann_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2385,7 +2215,6 @@ hardrock_2015_rachelle_eichmann_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2399,7 +2228,6 @@ hardrock_2015_rachelle_eichmann_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2413,7 +2241,6 @@ hardrock_2015_rachelle_eichmann_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2427,7 +2254,6 @@ hardrock_2015_rachelle_eichmann_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2441,7 +2267,6 @@ hardrock_2015_rachelle_eichmann_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2455,7 +2280,6 @@ hardrock_2015_rachelle_eichmann_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2469,7 +2293,6 @@ hardrock_2015_rachelle_eichmann_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2483,7 +2306,6 @@ hardrock_2015_rachelle_eichmann_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2497,7 +2319,6 @@ hardrock_2015_elden_morissette_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2511,7 +2332,6 @@ hardrock_2015_elden_morissette_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2525,7 +2345,6 @@ hardrock_2015_elden_morissette_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2539,7 +2358,6 @@ hardrock_2015_elden_morissette_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2553,7 +2371,6 @@ hardrock_2015_elden_morissette_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2567,7 +2384,6 @@ hardrock_2015_elden_morissette_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2581,7 +2397,6 @@ hardrock_2015_elden_morissette_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2595,7 +2410,6 @@ hardrock_2015_elden_morissette_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2609,7 +2423,6 @@ hardrock_2015_elden_morissette_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2623,7 +2436,6 @@ hardrock_2015_elden_morissette_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2637,7 +2449,6 @@ hardrock_2015_elden_morissette_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2651,7 +2462,6 @@ hardrock_2015_elden_morissette_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2665,7 +2475,6 @@ hardrock_2015_elden_morissette_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2679,7 +2488,6 @@ hardrock_2015_elden_morissette_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2693,7 +2501,6 @@ hardrock_2015_leroy_leffler_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2707,7 +2514,6 @@ hardrock_2015_leroy_leffler_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2721,7 +2527,6 @@ hardrock_2015_leroy_leffler_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2735,7 +2540,6 @@ hardrock_2015_leroy_leffler_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2749,7 +2553,6 @@ hardrock_2015_leroy_leffler_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2763,7 +2566,6 @@ hardrock_2015_leroy_leffler_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2777,7 +2579,6 @@ hardrock_2015_leroy_leffler_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2791,7 +2592,6 @@ hardrock_2015_leroy_leffler_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2805,7 +2605,6 @@ hardrock_2015_leroy_leffler_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2819,7 +2618,6 @@ hardrock_2015_leroy_leffler_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2833,7 +2631,6 @@ hardrock_2015_leroy_leffler_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2847,7 +2644,6 @@ hardrock_2015_leroy_leffler_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2861,7 +2657,6 @@ hardrock_2015_leroy_leffler_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2875,7 +2670,6 @@ hardrock_2015_leroy_leffler_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2889,7 +2683,6 @@ hardrock_2015_samara_vandervort_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2903,7 +2696,6 @@ hardrock_2015_samara_vandervort_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2917,7 +2709,6 @@ hardrock_2015_samara_vandervort_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2931,7 +2722,6 @@ hardrock_2015_samara_vandervort_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2945,7 +2735,6 @@ hardrock_2015_samara_vandervort_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2959,7 +2748,6 @@ hardrock_2015_samara_vandervort_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -2973,7 +2761,6 @@ hardrock_2015_samara_vandervort_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -2987,7 +2774,6 @@ hardrock_2015_samara_vandervort_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3001,7 +2787,6 @@ hardrock_2015_samara_vandervort_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3015,7 +2800,6 @@ hardrock_2015_samara_vandervort_telluride_in_1:
   split_id: 26
   data_status: 0
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3029,7 +2813,6 @@ hardrock_2015_samara_vandervort_telluride_out_1:
   split_id: 26
   data_status: 0
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3043,7 +2826,6 @@ hardrock_2015_samara_vandervort_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3057,7 +2839,6 @@ hardrock_2015_samara_vandervort_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3071,7 +2852,6 @@ hardrock_2015_samara_vandervort_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3085,7 +2865,6 @@ hardrock_2015_robt_wintheiser_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3099,7 +2878,6 @@ hardrock_2015_robt_wintheiser_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3113,7 +2891,6 @@ hardrock_2015_robt_wintheiser_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3127,7 +2904,6 @@ hardrock_2015_robt_wintheiser_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3141,7 +2917,6 @@ hardrock_2015_robt_wintheiser_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3155,7 +2930,6 @@ hardrock_2015_robt_wintheiser_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3169,7 +2943,6 @@ hardrock_2015_robt_wintheiser_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3183,7 +2956,6 @@ hardrock_2015_robt_wintheiser_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3197,7 +2969,6 @@ hardrock_2015_robt_wintheiser_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3211,7 +2982,6 @@ hardrock_2015_robt_wintheiser_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3225,7 +2995,6 @@ hardrock_2015_robt_wintheiser_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3239,7 +3008,6 @@ hardrock_2015_robt_wintheiser_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3253,7 +3021,6 @@ hardrock_2015_robt_wintheiser_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3267,7 +3034,6 @@ hardrock_2015_robt_wintheiser_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3281,7 +3047,6 @@ hardrock_2015_demetrius_moen_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3295,7 +3060,6 @@ hardrock_2015_demetrius_moen_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3309,7 +3073,6 @@ hardrock_2015_demetrius_moen_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3323,7 +3086,6 @@ hardrock_2015_demetrius_moen_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3337,7 +3099,6 @@ hardrock_2015_demetrius_moen_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3351,7 +3112,6 @@ hardrock_2015_demetrius_moen_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3365,7 +3125,6 @@ hardrock_2015_demetrius_moen_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3379,7 +3138,6 @@ hardrock_2015_demetrius_moen_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3393,7 +3151,6 @@ hardrock_2015_demetrius_moen_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3407,7 +3164,6 @@ hardrock_2015_demetrius_moen_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3421,7 +3177,6 @@ hardrock_2015_demetrius_moen_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3435,7 +3190,6 @@ hardrock_2015_demetrius_moen_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3449,7 +3203,6 @@ hardrock_2015_demetrius_moen_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3463,7 +3216,6 @@ hardrock_2015_demetrius_moen_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3477,7 +3229,6 @@ hardrock_2015_vern_buckridge_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3491,7 +3242,6 @@ hardrock_2015_vern_buckridge_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3505,7 +3255,6 @@ hardrock_2015_vern_buckridge_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3519,7 +3268,6 @@ hardrock_2015_vern_buckridge_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3533,7 +3281,6 @@ hardrock_2015_vern_buckridge_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3547,7 +3294,6 @@ hardrock_2015_vern_buckridge_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3561,7 +3307,6 @@ hardrock_2015_vern_buckridge_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3575,7 +3320,6 @@ hardrock_2015_vern_buckridge_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3589,7 +3333,6 @@ hardrock_2015_vern_buckridge_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3603,7 +3346,6 @@ hardrock_2015_vern_buckridge_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3617,7 +3359,6 @@ hardrock_2015_vern_buckridge_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3631,7 +3372,6 @@ hardrock_2015_vern_buckridge_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3645,7 +3385,6 @@ hardrock_2015_vern_buckridge_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3659,7 +3398,6 @@ hardrock_2015_vern_buckridge_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3673,7 +3411,6 @@ hardrock_2015_donte_spencer_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3687,7 +3424,6 @@ hardrock_2015_donte_spencer_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3701,7 +3437,6 @@ hardrock_2015_donte_spencer_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3715,7 +3450,6 @@ hardrock_2015_donte_spencer_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3729,7 +3463,6 @@ hardrock_2015_donte_spencer_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3743,7 +3476,6 @@ hardrock_2015_donte_spencer_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3757,7 +3489,6 @@ hardrock_2015_donte_spencer_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3771,7 +3502,6 @@ hardrock_2015_donte_spencer_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3785,7 +3515,6 @@ hardrock_2015_donte_spencer_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3799,7 +3528,6 @@ hardrock_2015_donte_spencer_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3813,7 +3541,6 @@ hardrock_2015_donte_spencer_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3827,7 +3554,6 @@ hardrock_2015_donte_spencer_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3841,7 +3567,6 @@ hardrock_2015_donte_spencer_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3855,7 +3580,6 @@ hardrock_2015_donte_spencer_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3869,7 +3593,6 @@ hardrock_2015_bruno_fadel_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3883,7 +3606,6 @@ hardrock_2015_bruno_fadel_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3897,7 +3619,6 @@ hardrock_2015_bruno_fadel_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3911,7 +3632,6 @@ hardrock_2015_bruno_fadel_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3925,7 +3645,6 @@ hardrock_2015_bruno_fadel_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3939,7 +3658,6 @@ hardrock_2015_bruno_fadel_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3953,7 +3671,6 @@ hardrock_2015_bruno_fadel_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3967,7 +3684,6 @@ hardrock_2015_bruno_fadel_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -3981,7 +3697,6 @@ hardrock_2015_bruno_fadel_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -3995,7 +3710,6 @@ hardrock_2015_bruno_fadel_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4009,7 +3723,6 @@ hardrock_2015_bruno_fadel_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4023,7 +3736,6 @@ hardrock_2015_bruno_fadel_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4037,7 +3749,6 @@ hardrock_2015_bruno_fadel_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4051,7 +3762,6 @@ hardrock_2015_bruno_fadel_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4065,7 +3775,6 @@ hardrock_2015_gus_walker_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4079,7 +3788,6 @@ hardrock_2015_gus_walker_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4093,7 +3801,6 @@ hardrock_2015_gus_walker_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4107,7 +3814,6 @@ hardrock_2015_gus_walker_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4121,7 +3827,6 @@ hardrock_2015_gus_walker_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4135,7 +3840,6 @@ hardrock_2015_gus_walker_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4149,7 +3853,6 @@ hardrock_2015_gus_walker_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4163,7 +3866,6 @@ hardrock_2015_gus_walker_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4177,7 +3879,6 @@ hardrock_2015_gus_walker_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4191,7 +3892,6 @@ hardrock_2015_gus_walker_telluride_in_1:
   split_id: 26
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4205,7 +3905,6 @@ hardrock_2015_gus_walker_telluride_out_1:
   split_id: 26
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4219,7 +3918,6 @@ hardrock_2015_gus_walker_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4233,7 +3931,6 @@ hardrock_2015_gus_walker_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4247,7 +3944,6 @@ hardrock_2015_gus_walker_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4261,7 +3957,6 @@ hardrock_2015_susanna_abshire_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4275,7 +3970,6 @@ hardrock_2015_susanna_abshire_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4289,7 +3983,6 @@ hardrock_2015_susanna_abshire_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4303,7 +3996,6 @@ hardrock_2015_susanna_abshire_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4317,7 +4009,6 @@ hardrock_2015_susanna_abshire_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4331,7 +4022,6 @@ hardrock_2015_susanna_abshire_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4345,7 +4035,6 @@ hardrock_2015_susanna_abshire_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4359,7 +4048,6 @@ hardrock_2015_susanna_abshire_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4373,7 +4061,6 @@ hardrock_2015_susanna_abshire_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4387,7 +4074,6 @@ hardrock_2015_susanna_abshire_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4401,7 +4087,6 @@ hardrock_2015_susanna_abshire_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4415,7 +4100,6 @@ hardrock_2015_susanna_abshire_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4429,7 +4113,6 @@ hardrock_2015_leandro_cole_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4443,7 +4126,6 @@ hardrock_2015_leandro_cole_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4457,7 +4139,6 @@ hardrock_2015_leandro_cole_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4471,7 +4152,6 @@ hardrock_2015_leandro_cole_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4485,7 +4165,6 @@ hardrock_2015_leandro_cole_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4499,7 +4178,6 @@ hardrock_2015_leandro_cole_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4513,7 +4191,6 @@ hardrock_2015_leandro_cole_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4527,7 +4204,6 @@ hardrock_2015_leandro_cole_ouray_in_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4541,7 +4217,6 @@ hardrock_2015_leandro_cole_ouray_out_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4555,7 +4230,6 @@ hardrock_2015_leandro_cole_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4569,7 +4243,6 @@ hardrock_2015_leandro_cole_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4583,7 +4256,6 @@ hardrock_2015_leandro_cole_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4597,7 +4269,6 @@ hardrock_2015_leandro_cole_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4611,7 +4282,6 @@ hardrock_2015_leandro_cole_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4625,7 +4295,6 @@ hardrock_2015_benedict_davis_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4639,7 +4308,6 @@ hardrock_2015_benedict_davis_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4653,7 +4321,6 @@ hardrock_2015_benedict_davis_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4667,7 +4334,6 @@ hardrock_2015_benedict_davis_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4681,7 +4347,6 @@ hardrock_2015_benedict_davis_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4695,7 +4360,6 @@ hardrock_2015_benedict_davis_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4709,7 +4373,6 @@ hardrock_2015_benedict_davis_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4723,7 +4386,6 @@ hardrock_2015_benedict_davis_ouray_in_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4737,7 +4399,6 @@ hardrock_2015_benedict_davis_ouray_out_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4751,7 +4412,6 @@ hardrock_2015_benedict_davis_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4765,7 +4425,6 @@ hardrock_2015_benedict_davis_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4779,7 +4438,6 @@ hardrock_2015_benedict_davis_putnam_in_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4793,7 +4451,6 @@ hardrock_2015_benedict_davis_putnam_out_1:
   split_id: 32
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4807,7 +4464,6 @@ hardrock_2015_benedict_davis_finish_1:
   split_id: 34
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4821,7 +4477,6 @@ hardrock_2015_raphael_swift_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4835,7 +4490,6 @@ hardrock_2015_raphael_swift_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4849,7 +4503,6 @@ hardrock_2015_raphael_swift_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4863,7 +4516,6 @@ hardrock_2015_raphael_swift_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4877,7 +4529,6 @@ hardrock_2015_raphael_swift_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4891,7 +4542,6 @@ hardrock_2015_raphael_swift_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4905,7 +4555,6 @@ hardrock_2015_raphael_swift_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4919,7 +4568,6 @@ hardrock_2015_raphael_swift_ouray_in_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4933,7 +4581,6 @@ hardrock_2015_raphael_swift_ouray_out_1:
   split_id: 20
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4947,7 +4594,6 @@ hardrock_2015_raphael_swift_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4961,7 +4607,6 @@ hardrock_2015_raphael_swift_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -4975,7 +4620,6 @@ hardrock_2015_bad_status_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -4989,7 +4633,6 @@ hardrock_2015_bad_status_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5003,7 +4646,6 @@ hardrock_2015_bad_status_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5017,7 +4659,6 @@ hardrock_2015_bad_status_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5031,7 +4672,6 @@ hardrock_2015_bad_status_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5045,7 +4685,6 @@ hardrock_2015_bad_status_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5059,7 +4698,6 @@ hardrock_2015_bad_status_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5073,7 +4711,6 @@ hardrock_2015_bad_status_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5087,7 +4724,6 @@ hardrock_2015_bad_status_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5101,7 +4737,6 @@ hardrock_2015_irvin_harber_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5115,7 +4750,6 @@ hardrock_2015_irvin_harber_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5129,7 +4763,6 @@ hardrock_2015_irvin_harber_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5143,7 +4776,6 @@ hardrock_2015_irvin_harber_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5157,7 +4789,6 @@ hardrock_2015_irvin_harber_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5171,7 +4802,6 @@ hardrock_2015_irvin_harber_grouse_in_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5185,7 +4815,6 @@ hardrock_2015_irvin_harber_grouse_out_1:
   split_id: 16
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5199,7 +4828,6 @@ hardrock_2015_irvin_harber_ouray_in_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5213,7 +4841,6 @@ hardrock_2015_irvin_harber_ouray_out_1:
   split_id: 20
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5227,7 +4854,6 @@ hardrock_2015_cassondra_nienow_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5241,7 +4867,6 @@ hardrock_2015_cassondra_nienow_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5255,7 +4880,6 @@ hardrock_2015_cassondra_nienow_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5269,7 +4893,6 @@ hardrock_2015_cassondra_nienow_sherman_in_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5283,7 +4906,6 @@ hardrock_2015_cassondra_nienow_sherman_out_1:
   split_id: 12
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5297,7 +4919,6 @@ hardrock_2015_donn_mckenzie_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5311,7 +4932,6 @@ hardrock_2015_donn_mckenzie_cunningham_in_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5325,7 +4945,6 @@ hardrock_2015_donn_mckenzie_cunningham_out_1:
   split_id: 6
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5339,7 +4958,6 @@ ramble_finished_first_start_1:
   split_id: 46
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5353,7 +4971,6 @@ ramble_finished_first_finish_1:
   split_id: 47
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5367,7 +4984,6 @@ ramble_finished_second_start_1:
   split_id: 46
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5381,7 +4997,6 @@ ramble_finished_second_finish_1:
   split_id: 47
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5395,7 +5010,6 @@ ramble_start_only_start_1:
   split_id: 46
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5409,7 +5023,6 @@ hardrock_2014_finished_first_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5423,7 +5036,6 @@ hardrock_2014_finished_first_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5437,7 +5049,6 @@ hardrock_2014_finished_first_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5451,7 +5062,6 @@ hardrock_2014_finished_first_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5465,7 +5075,6 @@ hardrock_2014_finished_first_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5479,7 +5088,6 @@ hardrock_2014_finished_first_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5493,7 +5101,6 @@ hardrock_2014_finished_first_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5507,7 +5114,6 @@ hardrock_2014_finished_first_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5521,7 +5127,6 @@ hardrock_2014_finished_first_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5535,7 +5140,6 @@ hardrock_2014_finished_first_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5549,7 +5153,6 @@ hardrock_2014_finished_first_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5563,7 +5166,6 @@ hardrock_2014_finished_first_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5577,7 +5179,6 @@ hardrock_2014_finished_with_stop_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5591,7 +5192,6 @@ hardrock_2014_finished_with_stop_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5605,7 +5205,6 @@ hardrock_2014_finished_with_stop_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5619,7 +5218,6 @@ hardrock_2014_finished_with_stop_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5633,7 +5231,6 @@ hardrock_2014_finished_with_stop_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5647,7 +5244,6 @@ hardrock_2014_finished_with_stop_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5661,7 +5257,6 @@ hardrock_2014_finished_with_stop_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5675,7 +5270,6 @@ hardrock_2014_finished_with_stop_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5689,7 +5283,6 @@ hardrock_2014_finished_with_stop_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5703,7 +5296,6 @@ hardrock_2014_finished_with_stop_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5717,7 +5309,6 @@ hardrock_2014_finished_with_stop_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5731,7 +5322,6 @@ hardrock_2014_finished_with_stop_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5745,7 +5335,6 @@ hardrock_2014_finished_without_stop_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5759,7 +5348,6 @@ hardrock_2014_finished_without_stop_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5773,7 +5361,6 @@ hardrock_2014_finished_without_stop_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5787,7 +5374,6 @@ hardrock_2014_finished_without_stop_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5801,7 +5387,6 @@ hardrock_2014_finished_without_stop_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5815,7 +5400,6 @@ hardrock_2014_finished_without_stop_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5829,7 +5413,6 @@ hardrock_2014_finished_without_stop_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5843,7 +5426,6 @@ hardrock_2014_finished_without_stop_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5857,7 +5439,6 @@ hardrock_2014_finished_without_stop_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5871,7 +5452,6 @@ hardrock_2014_finished_without_stop_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5885,7 +5465,6 @@ hardrock_2014_finished_without_stop_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5899,7 +5478,6 @@ hardrock_2014_finished_without_stop_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5913,7 +5491,6 @@ hardrock_2014_claudio_wunsch_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5927,7 +5504,6 @@ hardrock_2014_claudio_wunsch_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5941,7 +5517,6 @@ hardrock_2014_claudio_wunsch_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5955,7 +5530,6 @@ hardrock_2014_claudio_wunsch_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5969,7 +5543,6 @@ hardrock_2014_claudio_wunsch_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -5983,7 +5556,6 @@ hardrock_2014_claudio_wunsch_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -5997,7 +5569,6 @@ hardrock_2014_claudio_wunsch_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6011,7 +5582,6 @@ hardrock_2014_claudio_wunsch_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6025,7 +5595,6 @@ hardrock_2014_claudio_wunsch_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6039,7 +5608,6 @@ hardrock_2014_claudio_wunsch_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6053,7 +5621,6 @@ hardrock_2014_claudio_wunsch_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6067,7 +5634,6 @@ hardrock_2014_claudio_wunsch_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6081,7 +5647,6 @@ hardrock_2014_paul_predovic_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6095,7 +5660,6 @@ hardrock_2014_paul_predovic_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6109,7 +5673,6 @@ hardrock_2014_paul_predovic_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6123,7 +5686,6 @@ hardrock_2014_paul_predovic_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6137,7 +5699,6 @@ hardrock_2014_paul_predovic_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6151,7 +5712,6 @@ hardrock_2014_paul_predovic_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6165,7 +5725,6 @@ hardrock_2014_paul_predovic_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6179,7 +5738,6 @@ hardrock_2014_paul_predovic_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6193,7 +5751,6 @@ hardrock_2014_paul_predovic_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6207,7 +5764,6 @@ hardrock_2014_paul_predovic_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6221,7 +5777,6 @@ hardrock_2014_paul_predovic_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6235,7 +5790,6 @@ hardrock_2014_paul_predovic_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6249,7 +5803,6 @@ hardrock_2014_keith_metz_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6263,7 +5816,6 @@ hardrock_2014_keith_metz_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6277,7 +5829,6 @@ hardrock_2014_keith_metz_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6291,7 +5842,6 @@ hardrock_2014_keith_metz_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6305,7 +5855,6 @@ hardrock_2014_keith_metz_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6319,7 +5868,6 @@ hardrock_2014_keith_metz_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6333,7 +5881,6 @@ hardrock_2014_keith_metz_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6347,7 +5894,6 @@ hardrock_2014_keith_metz_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6361,7 +5907,6 @@ hardrock_2014_keith_metz_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6375,7 +5920,6 @@ hardrock_2014_keith_metz_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6389,7 +5933,6 @@ hardrock_2014_keith_metz_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6403,7 +5946,6 @@ hardrock_2014_keith_metz_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6417,7 +5959,6 @@ hardrock_2014_major_green_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6431,7 +5972,6 @@ hardrock_2014_major_green_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6445,7 +5985,6 @@ hardrock_2014_major_green_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6459,7 +5998,6 @@ hardrock_2014_major_green_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6473,7 +6011,6 @@ hardrock_2014_major_green_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6487,7 +6024,6 @@ hardrock_2014_major_green_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6501,7 +6037,6 @@ hardrock_2014_major_green_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6515,7 +6050,6 @@ hardrock_2014_major_green_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6529,7 +6063,6 @@ hardrock_2014_major_green_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6543,7 +6076,6 @@ hardrock_2014_major_green_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6557,7 +6089,6 @@ hardrock_2014_major_green_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6571,7 +6102,6 @@ hardrock_2014_major_green_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6585,7 +6115,6 @@ hardrock_2014_humberto_adams_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6599,7 +6128,6 @@ hardrock_2014_humberto_adams_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6613,7 +6141,6 @@ hardrock_2014_humberto_adams_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6627,7 +6154,6 @@ hardrock_2014_humberto_adams_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6641,7 +6167,6 @@ hardrock_2014_humberto_adams_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6655,7 +6180,6 @@ hardrock_2014_humberto_adams_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6669,7 +6193,6 @@ hardrock_2014_humberto_adams_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6683,7 +6206,6 @@ hardrock_2014_humberto_adams_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6697,7 +6219,6 @@ hardrock_2014_humberto_adams_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6711,7 +6232,6 @@ hardrock_2014_humberto_adams_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6725,7 +6245,6 @@ hardrock_2014_humberto_adams_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6739,7 +6258,6 @@ hardrock_2014_humberto_adams_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6753,7 +6271,6 @@ hardrock_2014_omer_yundt_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6767,7 +6284,6 @@ hardrock_2014_omer_yundt_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6781,7 +6297,6 @@ hardrock_2014_omer_yundt_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6795,7 +6310,6 @@ hardrock_2014_omer_yundt_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6809,7 +6323,6 @@ hardrock_2014_omer_yundt_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6823,7 +6336,6 @@ hardrock_2014_omer_yundt_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6837,7 +6349,6 @@ hardrock_2014_omer_yundt_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6851,7 +6362,6 @@ hardrock_2014_omer_yundt_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6865,7 +6375,6 @@ hardrock_2014_omer_yundt_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6879,7 +6388,6 @@ hardrock_2014_omer_yundt_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6893,7 +6401,6 @@ hardrock_2014_omer_yundt_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6907,7 +6414,6 @@ hardrock_2014_omer_yundt_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6921,7 +6427,6 @@ hardrock_2014_pat_schaden_start_1:
   split_id: 81
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6935,7 +6440,6 @@ hardrock_2014_pat_schaden_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6949,7 +6453,6 @@ hardrock_2014_pat_schaden_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6963,7 +6466,6 @@ hardrock_2014_pat_schaden_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -6977,7 +6479,6 @@ hardrock_2014_pat_schaden_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -6991,7 +6492,6 @@ hardrock_2014_pat_schaden_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7005,7 +6505,6 @@ hardrock_2014_pat_schaden_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7019,7 +6518,6 @@ hardrock_2014_pat_schaden_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7033,7 +6531,6 @@ hardrock_2014_pat_schaden_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7047,7 +6544,6 @@ hardrock_2014_pat_schaden_cunningham_in_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7061,7 +6557,6 @@ hardrock_2014_clarence_goyette_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7075,7 +6570,6 @@ hardrock_2014_clarence_goyette_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7089,7 +6583,6 @@ hardrock_2014_clarence_goyette_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7103,7 +6596,6 @@ hardrock_2014_clarence_goyette_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7117,7 +6609,6 @@ hardrock_2014_clarence_goyette_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7131,7 +6622,6 @@ hardrock_2014_clarence_goyette_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7145,7 +6635,6 @@ hardrock_2014_clarence_goyette_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7159,7 +6648,6 @@ hardrock_2014_clarence_goyette_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7173,7 +6661,6 @@ hardrock_2014_clarence_goyette_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7187,7 +6674,6 @@ hardrock_2014_clarence_goyette_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7201,7 +6687,6 @@ hardrock_2014_clarence_goyette_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7215,7 +6700,6 @@ hardrock_2014_clarence_goyette_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7229,7 +6713,6 @@ hardrock_2014_irvin_corkery_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7243,7 +6726,6 @@ hardrock_2014_irvin_corkery_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7257,7 +6739,6 @@ hardrock_2014_irvin_corkery_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7271,7 +6752,6 @@ hardrock_2014_irvin_corkery_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7285,7 +6765,6 @@ hardrock_2014_irvin_corkery_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7299,7 +6778,6 @@ hardrock_2014_irvin_corkery_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7313,7 +6791,6 @@ hardrock_2014_irvin_corkery_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7327,7 +6804,6 @@ hardrock_2014_irvin_corkery_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7341,7 +6817,6 @@ hardrock_2014_irvin_corkery_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7355,7 +6830,6 @@ hardrock_2014_irvin_corkery_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7369,7 +6843,6 @@ hardrock_2014_irvin_corkery_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7383,7 +6856,6 @@ hardrock_2014_irvin_corkery_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7397,7 +6869,6 @@ hardrock_2014_willis_murray_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7411,7 +6882,6 @@ hardrock_2014_willis_murray_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7425,7 +6895,6 @@ hardrock_2014_willis_murray_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7439,7 +6908,6 @@ hardrock_2014_willis_murray_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7453,7 +6921,6 @@ hardrock_2014_willis_murray_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7467,7 +6934,6 @@ hardrock_2014_willis_murray_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7481,7 +6947,6 @@ hardrock_2014_willis_murray_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7495,7 +6960,6 @@ hardrock_2014_willis_murray_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7509,7 +6973,6 @@ hardrock_2014_willis_murray_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7523,7 +6986,6 @@ hardrock_2014_willis_murray_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7537,7 +6999,6 @@ hardrock_2014_willis_murray_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7551,7 +7012,6 @@ hardrock_2014_willis_murray_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7565,7 +7025,6 @@ hardrock_2014_ken_bradtke_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7579,7 +7038,6 @@ hardrock_2014_ken_bradtke_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7593,7 +7051,6 @@ hardrock_2014_ken_bradtke_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7607,7 +7064,6 @@ hardrock_2014_ken_bradtke_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7621,7 +7077,6 @@ hardrock_2014_ken_bradtke_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7635,7 +7090,6 @@ hardrock_2014_ken_bradtke_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7649,7 +7103,6 @@ hardrock_2014_ken_bradtke_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7663,7 +7116,6 @@ hardrock_2014_ken_bradtke_sherman_in_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7677,7 +7129,6 @@ hardrock_2014_ken_bradtke_sherman_out_1:
   split_id: 101
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7691,7 +7142,6 @@ hardrock_2014_ken_bradtke_cunningham_in_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7705,7 +7155,6 @@ hardrock_2014_ken_bradtke_cunningham_out_1:
   split_id: 107
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7719,7 +7168,6 @@ hardrock_2014_ken_bradtke_finish_1:
   split_id: 82
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7733,7 +7181,6 @@ hardrock_2014_progress_sherman_start_1:
   split_id: 81
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7747,7 +7194,6 @@ hardrock_2014_progress_sherman_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7761,7 +7207,6 @@ hardrock_2014_progress_sherman_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7775,7 +7220,6 @@ hardrock_2014_progress_sherman_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7789,7 +7233,6 @@ hardrock_2014_progress_sherman_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7803,7 +7246,6 @@ hardrock_2014_progress_sherman_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7817,7 +7259,6 @@ hardrock_2014_progress_sherman_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7831,7 +7272,6 @@ hardrock_2014_progress_sherman_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7845,7 +7285,6 @@ hardrock_2014_progress_sherman_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7859,7 +7298,6 @@ hardrock_2014_multiple_stops_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7873,7 +7311,6 @@ hardrock_2014_multiple_stops_telluride_in_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7887,7 +7324,6 @@ hardrock_2014_multiple_stops_telluride_out_1:
   split_id: 87
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7901,7 +7337,6 @@ hardrock_2014_multiple_stops_ouray_in_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7915,7 +7350,6 @@ hardrock_2014_multiple_stops_ouray_out_1:
   split_id: 93
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7929,7 +7363,6 @@ hardrock_2014_multiple_stops_grouse_in_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7943,7 +7376,6 @@ hardrock_2014_multiple_stops_grouse_out_1:
   split_id: 97
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7957,7 +7389,6 @@ hardrock_2014_without_start_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7971,7 +7402,6 @@ hardrock_2014_without_start_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -7985,7 +7415,6 @@ hardrock_2014_without_start_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -7999,7 +7428,6 @@ hardrock_2014_without_start_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -8013,7 +7441,6 @@ hardrock_2014_without_start_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8027,7 +7454,6 @@ hardrock_2014_without_start_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -8041,7 +7467,6 @@ hardrock_2014_drop_ouray_start_1:
   split_id: 81
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8055,7 +7480,6 @@ hardrock_2014_drop_ouray_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8069,7 +7493,6 @@ hardrock_2014_drop_ouray_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -8083,7 +7506,6 @@ hardrock_2014_drop_ouray_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8097,7 +7519,6 @@ hardrock_2014_drop_ouray_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -8111,7 +7532,6 @@ hardrock_2015_bad_status_telluride_in_1:
   split_id: 26
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: true
   remarks:
@@ -8125,7 +7545,6 @@ hardrock_2015_bad_status_telluride_out_1:
   split_id: 26
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: true
   remarks:
@@ -8139,7 +7558,6 @@ hardrock_2015_irvin_harber_telluride_in_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: true
   remarks:
@@ -8153,7 +7571,6 @@ hardrock_2015_irvin_harber_telluride_out_1:
   split_id: 26
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: true
   remarks:
@@ -8167,7 +7584,6 @@ hardrock_2015_bad_status_putnam_in_1:
   split_id: 32
   data_status: 0
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: true
   remarks:
@@ -8181,7 +7597,6 @@ hardrock_2015_bad_status_putnam_out_1:
   split_id: 32
   data_status: 0
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: true
   remarks:
@@ -8195,7 +7610,6 @@ rufa_2016_finished_first_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8209,7 +7623,6 @@ rufa_2016_finished_first_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8223,7 +7636,6 @@ rufa_2016_finished_first_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8237,7 +7649,6 @@ rufa_2016_finished_first_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8251,7 +7662,6 @@ rufa_2016_finished_first_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8265,7 +7675,6 @@ rufa_2016_finished_first_grandeur_peak_4:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8279,7 +7688,6 @@ rufa_2016_finished_first_finish_4:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8293,7 +7701,6 @@ rufa_2016_finished_first_start_5:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8307,7 +7714,6 @@ rufa_2016_finished_first_grandeur_peak_5:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8321,7 +7727,6 @@ rufa_2016_finished_first_finish_5:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8335,7 +7740,6 @@ rufa_2016_finished_first_start_6:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8349,7 +7753,6 @@ rufa_2016_finished_first_grandeur_peak_6:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8363,7 +7766,6 @@ rufa_2016_finished_first_finish_6:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8377,7 +7779,6 @@ rufa_2016_finished_first_start_7:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8391,7 +7792,6 @@ rufa_2016_finished_first_grandeur_peak_7:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8405,7 +7805,6 @@ rufa_2016_finished_first_finish_7:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8419,7 +7818,6 @@ rufa_2016_finished_second_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8433,7 +7831,6 @@ rufa_2016_finished_second_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8447,7 +7844,6 @@ rufa_2016_finished_second_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8461,7 +7857,6 @@ rufa_2016_finished_second_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8475,7 +7870,6 @@ rufa_2016_finished_second_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8489,7 +7883,6 @@ rufa_2016_finished_second_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8503,7 +7896,6 @@ rufa_2016_finished_second_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8517,7 +7909,6 @@ rufa_2016_finished_second_finish_3:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8531,7 +7922,6 @@ rufa_2016_finished_second_start_4:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8545,7 +7935,6 @@ rufa_2016_finished_second_grandeur_peak_4:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8559,7 +7948,6 @@ rufa_2016_finished_second_finish_4:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8573,7 +7961,6 @@ rufa_2016_finished_second_grandeur_peak_5:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8587,7 +7974,6 @@ rufa_2016_finished_second_finish_5:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8601,7 +7987,6 @@ rufa_2016_finished_second_start_6:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8615,7 +8000,6 @@ rufa_2016_finished_second_grandeur_peak_6:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8629,7 +8013,6 @@ rufa_2016_finished_second_finish_6:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8643,7 +8026,6 @@ rufa_2016_progress_lap1_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8657,7 +8039,6 @@ rufa_2016_progress_lap1_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8671,7 +8052,6 @@ rufa_2017_24h_finished_first_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8685,7 +8065,6 @@ rufa_2017_24h_finished_first_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8699,7 +8078,6 @@ rufa_2017_24h_finished_first_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8713,7 +8091,6 @@ rufa_2017_24h_finished_first_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8727,7 +8104,6 @@ rufa_2017_24h_finished_first_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8741,7 +8117,6 @@ rufa_2017_24h_finished_first_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8755,7 +8130,6 @@ rufa_2017_24h_finished_first_start_3:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8769,7 +8143,6 @@ rufa_2017_24h_finished_first_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8783,7 +8156,6 @@ rufa_2017_24h_finished_first_finish_3:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8797,7 +8169,6 @@ rufa_2017_24h_finished_first_start_4:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8811,7 +8182,6 @@ rufa_2017_24h_finished_first_grandeur_peak_4:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8825,7 +8195,6 @@ rufa_2017_24h_finished_first_finish_4:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8839,7 +8208,6 @@ rufa_2017_24h_finished_first_start_5:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8853,7 +8221,6 @@ rufa_2017_24h_finished_first_grandeur_peak_5:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8867,7 +8234,6 @@ rufa_2017_24h_finished_first_finish_5:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8881,7 +8247,6 @@ rufa_2017_24h_finished_first_start_6:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8895,7 +8260,6 @@ rufa_2017_24h_finished_first_grandeur_peak_6:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8909,7 +8273,6 @@ rufa_2017_24h_finished_first_finish_6:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8923,7 +8286,6 @@ rufa_2017_24h_finished_first_start_7:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8937,7 +8299,6 @@ rufa_2017_24h_finished_first_grandeur_peak_7:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8951,7 +8312,6 @@ rufa_2017_24h_finished_first_finish_7:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8965,7 +8325,6 @@ rufa_2017_24h_progress_lap6_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8979,7 +8338,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -8993,7 +8351,6 @@ rufa_2017_24h_progress_lap6_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9007,7 +8364,6 @@ rufa_2017_24h_progress_lap6_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9021,7 +8377,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9035,7 +8390,6 @@ rufa_2017_24h_progress_lap6_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9049,7 +8403,6 @@ rufa_2017_24h_progress_lap6_start_3:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9063,7 +8416,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9077,7 +8429,6 @@ rufa_2017_24h_progress_lap6_finish_3:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9091,7 +8442,6 @@ rufa_2017_24h_progress_lap6_start_4:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9105,7 +8455,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_4:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9119,7 +8468,6 @@ rufa_2017_24h_progress_lap6_finish_4:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9133,7 +8481,6 @@ rufa_2017_24h_progress_lap6_start_5:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9147,7 +8494,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_5:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9161,7 +8507,6 @@ rufa_2017_24h_progress_lap6_finish_5:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9175,7 +8520,6 @@ rufa_2017_24h_progress_lap6_start_6:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9189,7 +8533,6 @@ rufa_2017_24h_progress_lap6_grandeur_peak_6:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9203,7 +8546,6 @@ rufa_2017_24h_progress_lap6_finish_6:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9217,7 +8559,6 @@ rufa_2017_24h_multiple_stops_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9231,7 +8572,6 @@ rufa_2017_24h_multiple_stops_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9245,7 +8585,6 @@ rufa_2017_24h_multiple_stops_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9259,7 +8598,6 @@ rufa_2017_24h_multiple_stops_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9273,7 +8611,6 @@ rufa_2017_24h_multiple_stops_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9287,7 +8624,6 @@ rufa_2017_24h_multiple_stops_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9301,7 +8637,6 @@ rufa_2017_24h_multiple_stops_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9315,7 +8650,6 @@ rufa_2017_24h_multiple_stops_finish_3:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9329,7 +8663,6 @@ rufa_2017_24h_finished_last_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9343,7 +8676,6 @@ rufa_2017_24h_finished_last_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9357,7 +8689,6 @@ rufa_2017_24h_finished_last_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9371,7 +8702,6 @@ rufa_2017_24h_finished_last_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9385,7 +8715,6 @@ rufa_2017_24h_finished_last_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9399,7 +8728,6 @@ rufa_2017_24h_finished_last_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9413,7 +8741,6 @@ rufa_2017_24h_progress_lap1_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9427,7 +8754,6 @@ rufa_2017_24h_progress_lap1_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9441,7 +8767,6 @@ rufa_2017_24h_progress_lap1_finish_1:
   split_id: 136
   data_status: 1
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9455,7 +8780,6 @@ hardrock_2016_lavon_paucek_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9469,7 +8793,6 @@ hardrock_2016_lavon_paucek_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9483,7 +8806,6 @@ hardrock_2016_lavon_paucek_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9497,7 +8819,6 @@ hardrock_2016_lavon_paucek_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9511,7 +8832,6 @@ hardrock_2016_lavon_paucek_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9525,7 +8845,6 @@ hardrock_2016_lavon_paucek_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9539,7 +8858,6 @@ hardrock_2016_lavon_paucek_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9553,7 +8871,6 @@ hardrock_2016_lavon_paucek_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9567,7 +8884,6 @@ hardrock_2016_lavon_paucek_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9581,7 +8897,6 @@ hardrock_2016_lavon_paucek_cunningham_in_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9595,7 +8910,6 @@ hardrock_2016_lavon_paucek_cunningham_out_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9609,7 +8923,6 @@ hardrock_2016_lavon_paucek_finish_1:
   split_id: 82
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9623,7 +8936,6 @@ hardrock_2016_vesta_borer_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9637,7 +8949,6 @@ hardrock_2016_vesta_borer_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9651,7 +8962,6 @@ hardrock_2016_vesta_borer_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9665,7 +8975,6 @@ hardrock_2016_vesta_borer_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9679,7 +8988,6 @@ hardrock_2016_vesta_borer_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9693,7 +9001,6 @@ hardrock_2016_vesta_borer_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9707,7 +9014,6 @@ hardrock_2016_vesta_borer_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9721,7 +9027,6 @@ hardrock_2016_vesta_borer_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9735,7 +9040,6 @@ hardrock_2016_vesta_borer_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9749,7 +9053,6 @@ hardrock_2016_vesta_borer_cunningham_in_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9763,7 +9066,6 @@ hardrock_2016_vesta_borer_cunningham_out_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9777,7 +9079,6 @@ hardrock_2016_kory_kulas_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9791,7 +9092,6 @@ hardrock_2016_kory_kulas_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9805,7 +9105,6 @@ hardrock_2016_kory_kulas_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9819,7 +9118,6 @@ hardrock_2016_kory_kulas_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9833,7 +9131,6 @@ hardrock_2016_kory_kulas_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9847,7 +9144,6 @@ hardrock_2016_kory_kulas_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9861,7 +9157,6 @@ hardrock_2016_kory_kulas_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9875,7 +9170,6 @@ hardrock_2016_kory_kulas_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9889,7 +9183,6 @@ hardrock_2016_kory_kulas_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9903,7 +9196,6 @@ hardrock_2016_kory_kulas_cunningham_in_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9917,7 +9209,6 @@ hardrock_2016_kory_kulas_cunningham_out_1:
   split_id: 107
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9931,7 +9222,6 @@ hardrock_2016_shad_hirthe_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9945,7 +9235,6 @@ hardrock_2016_shad_hirthe_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9959,7 +9248,6 @@ hardrock_2016_shad_hirthe_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -9973,7 +9261,6 @@ hardrock_2016_shad_hirthe_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -9987,7 +9274,6 @@ hardrock_2016_shad_hirthe_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10001,7 +9287,6 @@ hardrock_2016_shad_hirthe_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10015,7 +9300,6 @@ hardrock_2016_shad_hirthe_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10029,7 +9313,6 @@ hardrock_2016_shad_hirthe_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10043,7 +9326,6 @@ hardrock_2016_shad_hirthe_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10057,7 +9339,6 @@ hardrock_2016_douglas_vandervort_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10071,7 +9352,6 @@ hardrock_2016_douglas_vandervort_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10085,7 +9365,6 @@ hardrock_2016_douglas_vandervort_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10099,7 +9378,6 @@ hardrock_2016_douglas_vandervort_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10113,7 +9391,6 @@ hardrock_2016_douglas_vandervort_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10127,7 +9404,6 @@ hardrock_2016_douglas_vandervort_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10141,7 +9417,6 @@ hardrock_2016_douglas_vandervort_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10155,7 +9430,6 @@ hardrock_2016_douglas_vandervort_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10169,7 +9443,6 @@ hardrock_2016_douglas_vandervort_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10183,7 +9456,6 @@ hardrock_2016_missing_telluride_out_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10197,7 +9469,6 @@ hardrock_2016_missing_telluride_out_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10211,7 +9482,6 @@ hardrock_2016_missing_telluride_out_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10225,7 +9495,6 @@ hardrock_2016_missing_telluride_out_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10239,7 +9508,6 @@ hardrock_2016_missing_telluride_out_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10253,7 +9521,6 @@ hardrock_2016_missing_telluride_out_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10267,7 +9534,6 @@ hardrock_2016_missing_telluride_out_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10281,7 +9547,6 @@ hardrock_2016_missing_telluride_out_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10295,7 +9560,6 @@ hardrock_2016_junior_lesch_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10309,7 +9573,6 @@ hardrock_2016_junior_lesch_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10323,7 +9586,6 @@ hardrock_2016_junior_lesch_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10337,7 +9599,6 @@ hardrock_2016_junior_lesch_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10351,7 +9612,6 @@ hardrock_2016_junior_lesch_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10365,7 +9625,6 @@ hardrock_2016_junior_lesch_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10379,7 +9638,6 @@ hardrock_2016_junior_lesch_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10393,7 +9651,6 @@ hardrock_2016_junior_lesch_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10407,7 +9664,6 @@ hardrock_2016_junior_lesch_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10421,7 +9677,6 @@ hardrock_2016_eddy_goldner_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10435,7 +9690,6 @@ hardrock_2016_eddy_goldner_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10449,7 +9703,6 @@ hardrock_2016_eddy_goldner_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10463,7 +9716,6 @@ hardrock_2016_eddy_goldner_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10477,7 +9729,6 @@ hardrock_2016_eddy_goldner_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10491,7 +9742,6 @@ hardrock_2016_eddy_goldner_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10505,7 +9755,6 @@ hardrock_2016_eddy_goldner_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10519,7 +9768,6 @@ hardrock_2016_eddy_goldner_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10533,7 +9781,6 @@ hardrock_2016_eddy_goldner_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10547,7 +9794,6 @@ hardrock_2016_progress_sherman_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10561,7 +9807,6 @@ hardrock_2016_progress_sherman_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10575,7 +9820,6 @@ hardrock_2016_progress_sherman_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10589,7 +9833,6 @@ hardrock_2016_progress_sherman_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10603,7 +9846,6 @@ hardrock_2016_progress_sherman_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10617,7 +9859,6 @@ hardrock_2016_progress_sherman_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10631,7 +9872,6 @@ hardrock_2016_progress_sherman_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10645,7 +9885,6 @@ hardrock_2016_progress_sherman_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10659,7 +9898,6 @@ hardrock_2016_progress_sherman_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10673,7 +9911,6 @@ hardrock_2016_benito_moen_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10687,7 +9924,6 @@ hardrock_2016_benito_moen_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10701,7 +9937,6 @@ hardrock_2016_benito_moen_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10715,7 +9950,6 @@ hardrock_2016_benito_moen_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10729,7 +9963,6 @@ hardrock_2016_benito_moen_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10743,7 +9976,6 @@ hardrock_2016_benito_moen_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10757,7 +9989,6 @@ hardrock_2016_benito_moen_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10771,7 +10002,6 @@ hardrock_2016_benito_moen_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10785,7 +10015,6 @@ hardrock_2016_benito_moen_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10799,7 +10028,6 @@ hardrock_2016_kendall_koch_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10813,7 +10041,6 @@ hardrock_2016_kendall_koch_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10827,7 +10054,6 @@ hardrock_2016_kendall_koch_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10841,7 +10067,6 @@ hardrock_2016_kendall_koch_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10855,7 +10080,6 @@ hardrock_2016_kendall_koch_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10869,7 +10093,6 @@ hardrock_2016_kendall_koch_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10883,7 +10106,6 @@ hardrock_2016_kendall_koch_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10897,7 +10119,6 @@ hardrock_2016_kendall_koch_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10911,7 +10132,6 @@ hardrock_2016_kendall_koch_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10925,7 +10145,6 @@ hardrock_2016_charlie_mueller_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10939,7 +10158,6 @@ hardrock_2016_charlie_mueller_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10953,7 +10171,6 @@ hardrock_2016_charlie_mueller_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10967,7 +10184,6 @@ hardrock_2016_charlie_mueller_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -10981,7 +10197,6 @@ hardrock_2016_charlie_mueller_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -10995,7 +10210,6 @@ hardrock_2016_charlie_mueller_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11009,7 +10223,6 @@ hardrock_2016_charlie_mueller_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11023,7 +10236,6 @@ hardrock_2016_charlie_mueller_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11037,7 +10249,6 @@ hardrock_2016_charlie_mueller_sherman_out_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11051,7 +10262,6 @@ hardrock_2016_brinda_fisher_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11065,7 +10275,6 @@ hardrock_2016_brinda_fisher_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11079,7 +10288,6 @@ hardrock_2016_brinda_fisher_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11093,7 +10301,6 @@ hardrock_2016_brinda_fisher_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11107,7 +10314,6 @@ hardrock_2016_brinda_fisher_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11121,7 +10327,6 @@ hardrock_2016_brinda_fisher_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11135,7 +10340,6 @@ hardrock_2016_brinda_fisher_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11149,7 +10353,6 @@ hardrock_2016_rene_mclaughlin_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11163,7 +10366,6 @@ hardrock_2016_rene_mclaughlin_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11177,7 +10379,6 @@ hardrock_2016_rene_mclaughlin_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11191,7 +10392,6 @@ hardrock_2016_rene_mclaughlin_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11205,7 +10405,6 @@ hardrock_2016_rene_mclaughlin_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11219,7 +10418,6 @@ hardrock_2016_rene_mclaughlin_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11233,7 +10431,6 @@ hardrock_2016_rene_mclaughlin_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11247,7 +10444,6 @@ hardrock_2016_rene_mclaughlin_sherman_in_1:
   split_id: 101
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11261,7 +10457,6 @@ hardrock_2016_dropped_grouse_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11275,7 +10470,6 @@ hardrock_2016_dropped_grouse_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11289,7 +10483,6 @@ hardrock_2016_dropped_grouse_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11303,7 +10496,6 @@ hardrock_2016_dropped_grouse_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11317,7 +10509,6 @@ hardrock_2016_dropped_grouse_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11331,7 +10522,6 @@ hardrock_2016_dropped_grouse_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11345,7 +10535,6 @@ hardrock_2016_dropped_grouse_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11359,7 +10548,6 @@ hardrock_2016_mervin_smitham_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11373,7 +10561,6 @@ hardrock_2016_mervin_smitham_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11387,7 +10574,6 @@ hardrock_2016_mervin_smitham_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11401,7 +10587,6 @@ hardrock_2016_mervin_smitham_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11415,7 +10600,6 @@ hardrock_2016_mervin_smitham_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11429,7 +10613,6 @@ hardrock_2016_mervin_smitham_grouse_in_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11443,7 +10626,6 @@ hardrock_2016_mervin_smitham_grouse_out_1:
   split_id: 97
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11457,7 +10639,6 @@ hardrock_2016_rhett_auer_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11471,7 +10652,6 @@ hardrock_2016_rhett_auer_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11485,7 +10665,6 @@ hardrock_2016_rhett_auer_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11499,7 +10678,6 @@ hardrock_2016_rhett_auer_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11513,7 +10691,6 @@ hardrock_2016_rhett_auer_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11527,7 +10704,6 @@ hardrock_2016_hoyt_macejkovic_start_1:
   split_id: 81
   data_status: 2
   created_by:
-  updated_by:
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11541,7 +10717,6 @@ hardrock_2016_hoyt_macejkovic_telluride_in_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11555,7 +10730,6 @@ hardrock_2016_hoyt_macejkovic_telluride_out_1:
   split_id: 87
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11569,7 +10743,6 @@ hardrock_2016_hoyt_macejkovic_ouray_in_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11583,7 +10756,6 @@ hardrock_2016_hoyt_macejkovic_ouray_out_1:
   split_id: 93
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -11597,7 +10769,6 @@ ggd30_50k_finished_first_start_1:
   split_id: 164
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11611,7 +10782,6 @@ ggd30_50k_finished_first_aid_1_1:
   split_id: 167
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11625,7 +10795,6 @@ ggd30_50k_finished_first_aid_2_1:
   split_id: 171
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11639,7 +10808,6 @@ ggd30_50k_finished_first_aid_3_1:
   split_id: 170
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11653,7 +10821,6 @@ ggd30_50k_bad_finish_start_1:
   split_id: 164
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11667,7 +10834,6 @@ ggd30_50k_bad_finish_aid_1_1:
   split_id: 167
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11681,7 +10847,6 @@ ggd30_50k_bad_finish_aid_2_1:
   split_id: 171
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11695,7 +10860,6 @@ ggd30_50k_bad_finish_aid_3_1:
   split_id: 170
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11709,7 +10873,6 @@ ggd30_50k_progress_aid4_start_1:
   split_id: 164
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11723,7 +10886,6 @@ ggd30_50k_progress_aid4_aid_1_1:
   split_id: 167
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11737,7 +10899,6 @@ ggd30_50k_progress_aid4_aid_2_1:
   split_id: 171
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11751,7 +10912,6 @@ ggd30_50k_progress_aid3_start_1:
   split_id: 164
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11765,7 +10925,6 @@ ggd30_50k_progress_aid3_aid_1_1:
   split_id: 167
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11779,7 +10938,6 @@ ggd30_50k_progress_aid3_aid_2_1:
   split_id: 171
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11793,7 +10951,6 @@ ggd30_50k_drop_aid4_start_1:
   split_id: 164
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11807,7 +10964,6 @@ ggd30_50k_drop_aid4_aid_1_1:
   split_id: 167
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11821,7 +10977,6 @@ ggd30_50k_drop_aid4_aid_2_1:
   split_id: 171
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11835,7 +10990,6 @@ ggd30_50k_finished_first_aid_4_1:
   split_id: 168
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11849,7 +11003,6 @@ ggd30_50k_finished_first_aid_5_1:
   split_id: 166
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11863,7 +11016,6 @@ ggd30_50k_finished_first_finish_1:
   split_id: 165
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11877,7 +11029,6 @@ ggd30_50k_bad_finish_aid_4_1:
   split_id: 168
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11891,7 +11042,6 @@ ggd30_50k_bad_finish_aid_5_1:
   split_id: 166
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11905,7 +11055,6 @@ ggd30_50k_bad_finish_finish_1:
   split_id: 165
   data_status: 0
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11919,7 +11068,6 @@ ggd30_50k_progress_aid4_aid_3_1:
   split_id: 170
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11933,7 +11081,6 @@ ggd30_50k_progress_aid4_aid_4_1:
   split_id: 168
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11947,7 +11094,6 @@ ggd30_50k_progress_aid3_aid_3_1:
   split_id: 170
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11961,7 +11107,6 @@ ggd30_50k_drop_aid4_aid_3_1:
   split_id: 170
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11975,7 +11120,6 @@ ggd30_50k_drop_aid4_aid_4_1:
   split_id: 168
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -11989,7 +11133,6 @@ ggd30_12m_finished_first_start_1:
   split_id: 172
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12003,7 +11146,6 @@ ggd30_12m_finished_first_finish_1:
   split_id: 173
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12017,7 +11159,6 @@ ggd30_12m_finished_second_start_1:
   split_id: 172
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12031,7 +11172,6 @@ ggd30_12m_finished_second_finish_1:
   split_id: 173
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12045,7 +11185,6 @@ hardrock_2015_cedric_windler_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12059,7 +11198,6 @@ hardrock_2015_tuan_jacobs_start_1:
   split_id: 5
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12073,7 +11211,6 @@ sum_55k_finished_first_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12087,7 +11224,6 @@ sum_55k_finished_first_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12101,7 +11237,6 @@ sum_55k_finished_first_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12115,7 +11250,6 @@ sum_55k_finished_first_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12129,7 +11263,6 @@ sum_55k_finished_first_rolling_pass_aid2_out_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12143,7 +11276,6 @@ sum_55k_finished_first_bandera_mine_aid5_in_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12157,7 +11289,6 @@ sum_55k_finished_first_bandera_mine_aid5_out_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12171,7 +11302,6 @@ sum_55k_finished_first_anvil_cg_aid6_in_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12185,7 +11315,6 @@ sum_55k_finished_first_anvil_cg_aid6_out_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12199,7 +11328,6 @@ sum_55k_finished_first_finish_1:
   split_id: 213
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12213,7 +11341,6 @@ sum_55k_finished_second_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12227,7 +11354,6 @@ sum_55k_finished_second_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12241,7 +11367,6 @@ sum_55k_finished_second_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12255,7 +11380,6 @@ sum_55k_finished_second_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12269,7 +11393,6 @@ sum_55k_finished_second_rolling_pass_aid2_out_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -12283,7 +11406,6 @@ sum_55k_finished_second_bandera_mine_aid5_in_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12297,7 +11419,6 @@ sum_55k_finished_second_bandera_mine_aid5_out_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12311,7 +11432,6 @@ sum_55k_finished_second_anvil_cg_aid6_in_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12325,7 +11445,6 @@ sum_55k_finished_second_anvil_cg_aid6_out_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12339,7 +11458,6 @@ sum_55k_finished_second_finish_1:
   split_id: 213
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12353,7 +11471,6 @@ sum_55k_progress_rolling_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12367,7 +11484,6 @@ sum_55k_progress_rolling_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12381,7 +11497,6 @@ sum_55k_progress_rolling_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12395,7 +11510,6 @@ sum_55k_progress_rolling_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12409,7 +11523,6 @@ sum_55k_progress_rolling_rolling_pass_aid2_out_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12423,7 +11536,6 @@ sum_55k_drop_bandera_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12437,7 +11549,6 @@ sum_55k_drop_bandera_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12451,7 +11562,6 @@ sum_55k_drop_bandera_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12465,7 +11575,6 @@ sum_55k_drop_bandera_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12479,7 +11588,6 @@ sum_55k_drop_bandera_rolling_pass_aid2_out_1:
   split_id: 219
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12493,7 +11601,6 @@ sum_55k_drop_bandera_bandera_mine_aid5_in_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12507,7 +11614,6 @@ sum_100k_drop_anvil_anvil_cg_aid6_in_1:
   split_id: 211
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12521,7 +11627,6 @@ sum_100k_drop_anvil_anvil_cg_aid6_out_1:
   split_id: 211
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -12535,7 +11640,6 @@ sum_100k_drop_anvil_rolling_pass_aid2_in_1:
   split_id: 207
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12549,7 +11653,6 @@ sum_100k_drop_anvil_rolling_pass_aid2_out_1:
   split_id: 207
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -12563,7 +11666,6 @@ sum_100k_drop_anvil_start_1:
   split_id: 204
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12577,7 +11679,6 @@ sum_100k_drop_anvil_molas_pass_aid1_in_1:
   split_id: 206
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12591,7 +11692,6 @@ sum_100k_drop_anvil_molas_pass_aid1_out_1:
   split_id: 206
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -12605,7 +11705,6 @@ sum_100k_drop_anvil_cascade_creek_rd_aid3_in_1:
   split_id: 208
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12619,7 +11718,6 @@ sum_100k_drop_anvil_cascade_creek_rd_aid3_out_1:
   split_id: 208
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -12633,7 +11731,6 @@ sum_100k_drop_anvil_engineer_mtn_th_aid4_in_1:
   split_id: 209
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer: false
   remarks:
@@ -12647,7 +11744,6 @@ sum_100k_drop_anvil_engineer_mtn_th_aid4_out_1:
   split_id: 209
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer: false
   remarks:
@@ -12661,7 +11757,6 @@ ggd30_12m_start_only_start_1:
   split_id: 172
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12675,7 +11770,6 @@ ggd30_50k_start_only_start_1:
   split_id: 164
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12689,7 +11783,6 @@ sum_55k_start_only_start_1:
   split_id: 212
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12703,7 +11796,6 @@ rufa_2017_12h_finished_first_start_1:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12717,7 +11809,6 @@ rufa_2017_12h_finished_first_finish_1:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12731,7 +11822,6 @@ rufa_2017_12h_finished_first_start_2:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12745,7 +11835,6 @@ rufa_2017_12h_finished_first_grandeur_peak_2:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12759,7 +11848,6 @@ rufa_2017_12h_finished_first_finish_2:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12773,7 +11861,6 @@ rufa_2017_12h_finished_first_start_3:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12787,7 +11874,6 @@ rufa_2017_12h_finished_first_grandeur_peak_3:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12801,7 +11887,6 @@ rufa_2017_12h_finished_first_finish_3:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12815,7 +11900,6 @@ rufa_2017_12h_finished_first_start_4:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12829,7 +11913,6 @@ rufa_2017_12h_finished_first_grandeur_peak_4:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12843,7 +11926,6 @@ rufa_2017_12h_finished_first_finish_4:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12857,7 +11939,6 @@ rufa_2017_12h_finished_first_start_5:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12871,7 +11952,6 @@ rufa_2017_12h_finished_first_grandeur_peak_5:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12885,7 +11965,6 @@ rufa_2017_12h_finished_first_finish_5:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12899,7 +11978,6 @@ rufa_2017_12h_finished_first_start_6:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12913,7 +11991,6 @@ rufa_2017_12h_finished_first_grandeur_peak_6:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12927,7 +12004,6 @@ rufa_2017_12h_finished_first_finish_6:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12941,7 +12017,6 @@ rufa_2017_12h_finished_first_start_7:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12955,7 +12030,6 @@ rufa_2017_12h_finished_first_grandeur_peak_7:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12969,7 +12043,6 @@ rufa_2017_12h_finished_first_finish_7:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12983,7 +12056,6 @@ rufa_2017_12h_finished_lap6_start_1:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -12997,7 +12069,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_1:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13011,7 +12082,6 @@ rufa_2017_12h_finished_lap6_finish_1:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13025,7 +12095,6 @@ rufa_2017_12h_finished_lap6_start_2:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13039,7 +12108,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_2:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13053,7 +12121,6 @@ rufa_2017_12h_finished_lap6_finish_2:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13067,7 +12134,6 @@ rufa_2017_12h_finished_lap6_start_3:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13081,7 +12147,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_3:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13095,7 +12160,6 @@ rufa_2017_12h_finished_lap6_finish_3:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13109,7 +12173,6 @@ rufa_2017_12h_finished_lap6_start_4:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13123,7 +12186,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_4:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13137,7 +12199,6 @@ rufa_2017_12h_finished_lap6_finish_4:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13151,7 +12212,6 @@ rufa_2017_12h_finished_lap6_start_5:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13165,7 +12225,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_5:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13179,7 +12238,6 @@ rufa_2017_12h_finished_lap6_finish_5:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13193,7 +12251,6 @@ rufa_2017_12h_finished_lap6_start_6:
   split_id: 135
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13207,7 +12264,6 @@ rufa_2017_12h_finished_lap6_grandeur_peak_6:
   split_id: 137
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13221,7 +12277,6 @@ rufa_2017_12h_finished_lap6_finish_6:
   split_id: 136
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13235,7 +12290,6 @@ rufa_2017_12h_progress_lap5_partial_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13249,7 +12303,6 @@ rufa_2017_12h_progress_lap5_partial_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13263,7 +12316,6 @@ rufa_2017_12h_progress_lap5_partial_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13277,7 +12329,6 @@ rufa_2017_12h_progress_lap5_partial_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13291,7 +12342,6 @@ rufa_2017_12h_progress_lap5_partial_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13305,7 +12355,6 @@ rufa_2017_12h_progress_lap5_partial_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13319,7 +12368,6 @@ rufa_2017_12h_progress_lap5_partial_start_3:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13333,7 +12381,6 @@ rufa_2017_12h_progress_lap5_partial_grandeur_peak_3:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13347,7 +12394,6 @@ rufa_2017_12h_progress_lap5_partial_finish_3:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13361,7 +12407,6 @@ rufa_2017_12h_progress_lap5_partial_start_4:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13375,7 +12420,6 @@ rufa_2017_12h_progress_lap5_partial_grandeur_peak_4:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13389,7 +12433,6 @@ rufa_2017_12h_progress_lap5_partial_finish_4:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13403,7 +12446,6 @@ rufa_2017_12h_progress_lap5_partial_start_5:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13417,7 +12459,6 @@ rufa_2017_12h_progress_lap5_partial_grandeur_peak_5:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13431,7 +12472,6 @@ rufa_2017_12h_progress_lap2_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13445,7 +12485,6 @@ rufa_2017_12h_progress_lap2_grandeur_peak_1:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13459,7 +12498,6 @@ rufa_2017_12h_progress_lap2_finish_1:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13473,7 +12511,6 @@ rufa_2017_12h_progress_lap2_start_2:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13487,7 +12524,6 @@ rufa_2017_12h_progress_lap2_grandeur_peak_2:
   split_id: 137
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13501,7 +12537,6 @@ rufa_2017_12h_progress_lap2_finish_2:
   split_id: 136
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13515,7 +12550,6 @@ rufa_2017_12h_start_only_start_1:
   split_id: 135
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13529,7 +12563,6 @@ sum_100k_progress_cascade_start_1:
   split_id: 204
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13543,7 +12576,6 @@ sum_100k_progress_cascade_molas_pass_aid1_in_1:
   split_id: 206
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13557,7 +12589,6 @@ sum_100k_progress_cascade_molas_pass_aid1_out_1:
   split_id: 206
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13571,7 +12602,6 @@ sum_100k_progress_cascade_rolling_pass_aid2_in_1:
   split_id: 207
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13585,7 +12615,6 @@ sum_100k_progress_cascade_rolling_pass_aid2_out_1:
   split_id: 207
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13599,7 +12628,6 @@ sum_100k_progress_cascade_cascade_creek_rd_aid3_in_1:
   split_id: 208
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13613,7 +12641,6 @@ sum_100k_progress_cascade_cascade_creek_rd_aid3_out_1:
   split_id: 208
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13627,7 +12654,6 @@ hardrock_2016_start_only_start_1:
   split_id: 81
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13641,7 +12667,6 @@ sum_100k_on_dst_change_start_1:
   split_id: 204
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13655,7 +12680,6 @@ sum_100k_across_dst_change_start_1:
   split_id: 204
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13669,7 +12693,6 @@ sum_100k_across_dst_change_molas_pass_aid1_in_1:
   split_id: 206
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13683,7 +12706,6 @@ sum_100k_on_dst_change_molas_pass_aid1_in_1:
   split_id: 206
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13697,7 +12719,6 @@ ggd30_50k_finished_second_start_1:
   split_id: 164
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13711,7 +12732,6 @@ ggd30_50k_finished_second_aid_1_1:
   split_id: 167
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13725,7 +12745,6 @@ ggd30_50k_finished_second_aid_2_1:
   split_id: 171
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13739,7 +12758,6 @@ ggd30_50k_finished_second_aid_3_1:
   split_id: 170
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13753,7 +12771,6 @@ ggd30_50k_finished_second_aid_4_1:
   split_id: 168
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13767,7 +12784,6 @@ ggd30_50k_finished_second_aid_5_1:
   split_id: 166
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13781,7 +12797,6 @@ ggd30_50k_finished_second_finish_1:
   split_id: 165
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13795,7 +12810,6 @@ ggd30_12m_series_finisher_start_1:
   split_id: 172
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13809,7 +12823,6 @@ ggd30_12m_series_finisher_finish_1:
   split_id: 173
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13823,7 +12836,6 @@ sum_55k_series_finisher_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13837,7 +12849,6 @@ sum_55k_series_finisher_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13851,7 +12862,6 @@ sum_55k_series_finisher_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13865,7 +12875,6 @@ sum_55k_series_finisher_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13879,7 +12888,6 @@ sum_55k_series_finisher_rolling_pass_aid2_out_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13893,7 +12901,6 @@ sum_55k_series_finisher_bandera_mine_aid5_in_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13907,7 +12914,6 @@ sum_55k_series_finisher_bandera_mine_aid5_out_1:
   split_id: 220
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13921,7 +12927,6 @@ sum_55k_series_finisher_anvil_cg_aid6_in_1:
   split_id: 221
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13935,7 +12940,6 @@ sum_55k_series_finisher_anvil_cg_aid6_out_1:
   split_id: 221
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -13949,7 +12953,6 @@ sum_55k_series_finisher_finish_1:
   split_id: 213
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13963,7 +12966,6 @@ sum_55k_slow_finisher_start_1:
   split_id: 212
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13977,7 +12979,6 @@ sum_55k_slow_finisher_molas_pass_aid1_in_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -13991,7 +12992,6 @@ sum_55k_slow_finisher_molas_pass_aid1_out_1:
   split_id: 218
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -14005,7 +13005,6 @@ sum_55k_slow_finisher_rolling_pass_aid2_in_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -14019,7 +13018,6 @@ sum_55k_slow_finisher_rolling_pass_aid2_out_1:
   split_id: 219
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -14033,7 +13031,6 @@ sum_55k_slow_finisher_bandera_mine_aid5_in_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -14047,7 +13044,6 @@ sum_55k_slow_finisher_bandera_mine_aid5_out_1:
   split_id: 220
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -14061,7 +13057,6 @@ sum_55k_slow_finisher_anvil_cg_aid6_in_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -14075,7 +13070,6 @@ sum_55k_slow_finisher_anvil_cg_aid6_out_1:
   split_id: 221
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 64
   pacer:
   remarks:
@@ -14089,7 +13083,6 @@ sum_55k_slow_finisher_finish_1:
   split_id: 213
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -14103,7 +13096,6 @@ ggd30_12m_slow_finisher_start_1:
   split_id: 172
   data_status: 2
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:
@@ -14117,7 +13109,6 @@ ggd30_12m_slow_finisher_finish_1:
   split_id: 173
   data_status:
   created_by: 1
-  updated_by: 1
   sub_split_bitkey: 1
   pacer:
   remarks:

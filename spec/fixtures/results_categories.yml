@@ -8,7 +8,6 @@ combined_overall:
   low_age:
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: true
   slug: combined-overall
 male_overall:
@@ -20,7 +19,6 @@ male_overall:
   low_age:
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-overall
 female_overall:
@@ -32,7 +30,6 @@ female_overall:
   low_age:
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-overall
 male_40_and_up:
@@ -44,7 +41,6 @@ male_40_and_up:
   low_age: 40
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-40-and-up
 female_40_and_up:
@@ -56,7 +52,6 @@ female_40_and_up:
   low_age: 40
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-40-and-up
 male_40_to_49:
@@ -68,7 +63,6 @@ male_40_to_49:
   low_age: 40
   high_age: 49
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-40-to-49
 female_40_to_49:
@@ -80,7 +74,6 @@ female_40_to_49:
   low_age: 40
   high_age: 49
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-40-to-49
 male_50_and_up:
@@ -92,7 +85,6 @@ male_50_and_up:
   low_age: 50
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-50-and-up
 female_50_and_up:
@@ -104,7 +96,6 @@ female_50_and_up:
   low_age: 50
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-50-and-up
 male_60_and_up:
@@ -116,7 +107,6 @@ male_60_and_up:
   low_age: 60
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-60-and-up
 female_60_and_up:
@@ -128,7 +118,6 @@ female_60_and_up:
   low_age: 60
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-60-and-up
 male_up_to_12:
@@ -140,7 +129,6 @@ male_up_to_12:
   low_age:
   high_age: 12
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-up-to-12
 female_up_to_12:
@@ -152,7 +140,6 @@ female_up_to_12:
   low_age:
   high_age: 12
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-up-to-12
 male_13_to_16:
@@ -164,7 +151,6 @@ male_13_to_16:
   low_age: 13
   high_age: 16
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-13-to-16
 female_13_to_16:
@@ -176,7 +162,6 @@ female_13_to_16:
   low_age: 13
   high_age: 16
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-13-to-16
 male_up_to_16:
@@ -188,7 +173,6 @@ male_up_to_16:
   low_age:
   high_age: 16
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-up-to-16
 female_up_to_16:
@@ -200,7 +184,6 @@ female_up_to_16:
   low_age:
   high_age: 16
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-up-to-16
 male_up_to_19:
@@ -212,7 +195,6 @@ male_up_to_19:
   low_age:
   high_age: 19
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-up-to-19
 female_up_to_19:
@@ -224,7 +206,6 @@ female_up_to_19:
   low_age:
   high_age: 19
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-up-to-19
 male_13_to_39:
@@ -236,7 +217,6 @@ male_13_to_39:
   low_age: 13
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-13-to-39
 female_13_to_39:
@@ -248,7 +228,6 @@ female_13_to_39:
   low_age: 13
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-13-to-39
 male_17_to_39:
@@ -260,7 +239,6 @@ male_17_to_39:
   low_age: 17
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-17-to-39
 female_17_to_39:
@@ -272,7 +250,6 @@ female_17_to_39:
   low_age: 17
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-17-to-39
 male_20_to_29:
@@ -284,7 +261,6 @@ male_20_to_29:
   low_age: 20
   high_age: 29
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-20-to-29
 female_20_to_29:
@@ -296,7 +272,6 @@ female_20_to_29:
   low_age: 20
   high_age: 29
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-20-to-29
 male_30_to_39:
@@ -308,7 +283,6 @@ male_30_to_39:
   low_age: 30
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-30-to-39
 female_30_to_39:
@@ -320,7 +294,6 @@ female_30_to_39:
   low_age: 30
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-30-to-39
 male_40_to_49_2:
@@ -332,7 +305,6 @@ male_40_to_49_2:
   low_age: 40
   high_age: 49
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-40-to-49-2
 female_40_to_49_2:
@@ -344,7 +316,6 @@ female_40_to_49_2:
   low_age: 40
   high_age: 49
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-40-to-49-2
 male_50_to_59:
@@ -356,7 +327,6 @@ male_50_to_59:
   low_age: 50
   high_age: 59
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-50-to-59
 female_50_to_59:
@@ -368,7 +338,6 @@ female_50_to_59:
   low_age: 50
   high_age: 59
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-50-to-59
 male_60_to_69:
@@ -380,7 +349,6 @@ male_60_to_69:
   low_age: 60
   high_age: 69
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-60-to-69
 female_60_to_69:
@@ -392,7 +360,6 @@ female_60_to_69:
   low_age: 60
   high_age: 69
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-60-to-69
 male_up_to_29:
@@ -404,7 +371,6 @@ male_up_to_29:
   low_age:
   high_age: 29
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-up-to-29
 female_up_to_29:
@@ -416,7 +382,6 @@ female_up_to_29:
   low_age:
   high_age: 29
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-up-to-29
 male_up_to_39:
@@ -428,7 +393,6 @@ male_up_to_39:
   low_age:
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: male-up-to-39
 female_up_to_39:
@@ -440,7 +404,6 @@ female_up_to_39:
   low_age:
   high_age: 39
   created_by: 1
-  updated_by:
   nonbinary: false
   slug: female-up-to-39
 nonbinary_overall:
@@ -452,6 +415,5 @@ nonbinary_overall:
   low_age:
   high_age:
   created_by: 1
-  updated_by:
   nonbinary: true
   slug: nonbinary-overall

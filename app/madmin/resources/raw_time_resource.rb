@@ -12,7 +12,6 @@ class RawTimeResource < Madmin::Resource
   attribute :reviewed_by
   attribute :reviewed_at
   attribute :created_by
-  attribute :updated_by
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :parameterized_split_name

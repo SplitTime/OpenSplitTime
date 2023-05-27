@@ -7,7 +7,6 @@ class EventGroupResource < Madmin::Resource
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :created_by
-  attribute :updated_by
   attribute :slug
   attribute :data_entry_grouping_strategy
   attribute :monitor_pacers

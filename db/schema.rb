@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_055211) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -78,7 +78,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.datetime "next_start_time", precision: nil
     t.string "slug", null: false
     t.bigint "organization_id"
@@ -133,7 +132,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.string "first_name"
     t.string "last_name"
     t.integer "gender"
@@ -177,7 +175,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.string "slug"
     t.integer "data_entry_grouping_strategy", default: 0
     t.boolean "monitor_pacers", default: false
@@ -213,7 +210,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.datetime "scheduled_start_time", precision: nil
     t.string "beacon_url"
     t.integer "laps_required"
@@ -389,7 +385,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.integer "kind"
     t.string "topic_resource_key"
     t.string "subject"
@@ -403,7 +398,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.boolean "concealed", default: true
     t.string "slug", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
@@ -431,7 +425,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.string "country_code", limit: 2
     t.integer "user_id"
     t.boolean "concealed", default: false
@@ -458,7 +451,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.integer "reviewed_by"
     t.datetime "reviewed_at", precision: nil
     t.integer "created_by"
-    t.integer "updated_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "parameterized_split_name", null: false
@@ -481,7 +473,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.integer "low_age"
     t.integer "high_age"
     t.integer "created_by"
-    t.integer "updated_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "nonbinary", default: false
@@ -508,7 +499,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.integer "point_system", default: [], array: true
     t.string "slug", null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_results_templates_on_organization_id"
@@ -555,7 +545,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.integer "sub_split_bitkey", null: false
     t.boolean "pacer"
     t.string "remarks"
@@ -580,7 +569,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_052140) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "created_by"
-    t.integer "updated_by"
     t.string "description"
     t.string "base_name", null: false
     t.integer "sub_split_bitmap", default: 1

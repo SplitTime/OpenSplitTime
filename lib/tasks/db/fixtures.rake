@@ -29,14 +29,11 @@ namespace :db do
                        record["id"]
                      end
             title = if record["slug"].present?
-                      record["slug"].underscore
+                      record["slug"].tr("-", "_")
                     elsif table_name == "split_times"
                       effort = Effort.find(record["effort_id"])
                       split = Split.find(record["split_id"])
                       "#{effort.slug.underscore}_#{split.name(record['sub_split_bitkey']).parameterize.underscore}_#{record['lap']}"
-                    elsif table_name == "results_categories"
-                      organization = record["organization_id"].present? ? Organization.find(record["organization_id"]) : nil
-                      [organization&.name, record["name"]].join(" ").parameterize.underscore
                     else
                       "#{table_name.singularize}_#{suffix}"
                     end

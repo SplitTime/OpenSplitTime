@@ -45,34 +45,34 @@ RSpec.describe ResultsCategory do
         let(:female) { true }
         let(:nonbinary) { true }
 
-        it { expect(result).to eq("combined_overall") }
+        it { expect(result).to eq("combined-overall") }
       end
 
       context "for all ages of a single gender" do
         let(:male) { true }
 
-        it { expect(result).to eq("male_overall") }
+        it { expect(result).to eq("male-overall") }
       end
 
       context "for all ages of two genders" do
         let(:male) { true }
         let(:nonbinary) { true }
 
-        it { expect(result).to eq("male_nonbinary_overall") }
+        it { expect(result).to eq("male-nonbinary-overall") }
       end
 
       context "for a group with an upper age limit" do
         let(:male) { true }
         let(:high_age) { 19 }
 
-        it { expect(result).to eq("male_up_to_19") }
+        it { expect(result).to eq("male-up-to-19") }
       end
 
       context "for a group with a lower age limit" do
         let(:male) { true }
         let(:low_age) { 19 }
 
-        it { expect(result).to eq("male_19_and_up") }
+        it { expect(result).to eq("male-19-and-up") }
       end
 
       context "for a group with a lower and upper age limit" do
@@ -80,7 +80,7 @@ RSpec.describe ResultsCategory do
         let(:low_age) { 20 }
         let(:high_age) { 29 }
 
-        it { expect(result).to eq("male_20_to_29") }
+        it { expect(result).to eq("male-20-to-29") }
       end
 
       context "for another group with a lower and upper age limit" do
@@ -88,7 +88,7 @@ RSpec.describe ResultsCategory do
         let(:low_age) { 40 }
         let(:high_age) { 49 }
 
-        it { expect(result).to eq("female_40_to_49") }
+        it { expect(result).to eq("female-40-to-49") }
       end
 
       context "for a group with the same lower and upper age limit" do
@@ -96,7 +96,7 @@ RSpec.describe ResultsCategory do
         let(:low_age) { 40 }
         let(:high_age) { 40 }
 
-        it { expect(result).to eq("female_40") }
+        it { expect(result).to eq("female-40") }
       end
 
       context "for a group with an organization" do
@@ -104,7 +104,7 @@ RSpec.describe ResultsCategory do
         let(:female) { true }
         let(:low_age) { 40 }
 
-        it { expect(result).to eq("hardrock_female_40_and_up") }
+        it { expect(result).to eq("hardrock-female-40-and-up") }
       end
     end
   end

@@ -1,5 +1,5 @@
 ---
-lottery_entrant_4:
+lottery_entrant_0001:
   id: 4
   lottery_division_id: 1
   first_name: Emeline
@@ -16,7 +16,7 @@ lottery_entrant_4:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_5:
+lottery_entrant_0002:
   id: 5
   lottery_division_id: 1
   first_name: Norris
@@ -33,7 +33,7 @@ lottery_entrant_5:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_6:
+lottery_entrant_0003:
   id: 6
   lottery_division_id: 2
   first_name: Jerrold
@@ -50,7 +50,7 @@ lottery_entrant_6:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_7:
+lottery_entrant_0004:
   id: 7
   lottery_division_id: 1
   first_name: Jospeh
@@ -67,7 +67,7 @@ lottery_entrant_7:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_8:
+lottery_entrant_0005:
   id: 8
   lottery_division_id: 2
   first_name: Ivette
@@ -84,7 +84,7 @@ lottery_entrant_8:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_9:
+lottery_entrant_0006:
   id: 9
   lottery_division_id: 1
   first_name: Nenita
@@ -101,7 +101,7 @@ lottery_entrant_9:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_10:
+lottery_entrant_0007:
   id: 10
   lottery_division_id: 2
   first_name: Veola
@@ -118,7 +118,7 @@ lottery_entrant_10:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_11:
+lottery_entrant_0008:
   id: 11
   lottery_division_id: 1
   first_name: Modesta
@@ -135,7 +135,7 @@ lottery_entrant_11:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_12:
+lottery_entrant_0009:
   id: 12
   lottery_division_id: 2
   first_name: Blythe
@@ -152,7 +152,7 @@ lottery_entrant_12:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_13:
+lottery_entrant_0010:
   id: 13
   lottery_division_id: 1
   first_name: Mitsuko
@@ -169,7 +169,7 @@ lottery_entrant_13:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_21:
+lottery_entrant_0011:
   id: 21
   lottery_division_id: 6
   first_name: Gricelda
@@ -186,7 +186,7 @@ lottery_entrant_21:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_22:
+lottery_entrant_0012:
   id: 22
   lottery_division_id: 7
   first_name: Deb
@@ -203,7 +203,7 @@ lottery_entrant_22:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_23:
+lottery_entrant_0013:
   id: 23
   lottery_division_id: 7
   first_name: Bernetta
@@ -220,7 +220,7 @@ lottery_entrant_23:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_24:
+lottery_entrant_0014:
   id: 24
   lottery_division_id: 8
   first_name: Denisha
@@ -237,7 +237,7 @@ lottery_entrant_24:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_25:
+lottery_entrant_0015:
   id: 25
   lottery_division_id: 8
   first_name: Shenika
@@ -254,7 +254,7 @@ lottery_entrant_25:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_26:
+lottery_entrant_0016:
   id: 26
   lottery_division_id: 8
   first_name: Maud
@@ -271,7 +271,7 @@ lottery_entrant_26:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_27:
+lottery_entrant_0017:
   id: 27
   lottery_division_id: 8
   first_name: Melina
@@ -288,7 +288,7 @@ lottery_entrant_27:
   external_id:
   withdrawn:
   service_completed_date:
-lottery_entrant_28:
+lottery_entrant_0018:
   id: 28
   lottery_division_id: 8
   first_name: Abraham

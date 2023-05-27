@@ -1,19 +1,19 @@
 ---
-subscription_2:
+subscription_0001:
   id: 2
   user_id: 1
   protocol: 1
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rufa-2017-12h-not-started:c7853bd1-f4c2-44e8-bb25-e814aafdf134
   subscribable_type: Effort
   subscribable_id: 16673
-subscription_3:
+subscription_0002:
   id: 3
   user_id: 1
   protocol: 1
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest:fae4dfcc-5d19-4fc5-81d2-6d88660df480
   subscribable_type: Person
   subscribable_id: 2175
-subscription_4:
+subscription_0003:
   id: 4
   user_id: 1
   protocol: 0

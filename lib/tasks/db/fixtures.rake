@@ -16,23 +16,19 @@ namespace :db do
 
         model = table_name.classify.constantize
         model_slugged = model.columns.map(&:name).include?("slug")
-        table_portable = table_name.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
+        table_portable = table_name.to_sym.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
         belongs_to_associations = model.reflect_on_all_associations(:belongs_to)
 
         counter = 0
         file_path = "#{Rails.root}/spec/fixtures/#{table_name}.yml"
         File.open(file_path, "w") do |file|
-          default_primary_key = table_portable ? "slug" : "id"
+          default_primary_key = table_portable && model_slugged ? "slug" : "id"
           primary_key = FixtureHelper::PRIMARY_KEY_MAP[table_name.to_sym] || default_primary_key
 
           rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{primary_key}")
           data = rows.each_with_object({}) do |record, hash|
-            suffix = if record["id"].blank?
-                       counter += 1
-                       counter.to_s.rjust(4, "0")
-                     else
-                       record["id"]
-                     end
+            counter += 1
+            suffix = counter.to_s.rjust(4, "0")
             title = if model_slugged
                       record["slug"].tr("-", "_")
                     elsif table_name == "split_times"

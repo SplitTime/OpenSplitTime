@@ -8,6 +8,7 @@ RSpec.describe Interactors::SyncLotteryEntrants do
   let(:event) { create(:event, event_group: event_group, course: courses(:hardrock_cw), lottery_id: lottery_id) }
   let(:lottery_id) { nil }
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+  let(:nevers_division) { lottery.divisions.find_by(name: "Never Ever Evers") }
 
   let(:created_efforts) { response.resources[:created_efforts] }
   let(:updated_efforts) { response.resources[:updated_efforts] }
@@ -107,15 +108,15 @@ RSpec.describe Interactors::SyncLotteryEntrants do
   end
 
   shared_context "existing efforts some of which match" do
-    let(:entrant_1) { lottery_divisions(:lottery_division_1).accepted_entrants.first }
-    let(:entrant_2) { lottery_divisions(:lottery_division_1).accepted_entrants.second }
+    let(:entrant_1) { nevers_division.accepted_entrants.first }
+    let(:entrant_2) { nevers_division.accepted_entrants.second }
     let!(:effort_1) { create(:effort, event: event, first_name: entrant_1.first_name, last_name: entrant_1.last_name, birthdate: entrant_1.birthdate) }
     let!(:effort_2) { create(:effort, event: event, first_name: entrant_2.first_name, last_name: entrant_2.last_name, birthdate: entrant_2.birthdate) }
     let!(:effort_3) { create(:effort, event: event) }
   end
 
   shared_context "existing effort that does not need updating" do
-    let(:entrant_1) { lottery_divisions(:lottery_division_1).accepted_entrants.first }
+    let(:entrant_1) { nevers_division.accepted_entrants.first }
     let!(:effort_1) do
       create(
         :effort,
@@ -132,8 +133,8 @@ RSpec.describe Interactors::SyncLotteryEntrants do
   end
 
   shared_context "existing efforts of all kinds" do
-    let(:entrant_1) { lottery_divisions(:lottery_division_1).accepted_entrants.first }
-    let(:entrant_2) { lottery_divisions(:lottery_division_1).accepted_entrants.second }
+    let(:entrant_1) { nevers_division.accepted_entrants.first }
+    let(:entrant_2) { nevers_division.accepted_entrants.second }
     let!(:ignored_effort) do
       create(
         :effort,

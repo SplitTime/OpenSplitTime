@@ -4,6 +4,8 @@ class SplitTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
 
+  self.ignored_columns = %w[created_by]
+
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:confirmed]].freeze
 
@@ -14,7 +16,6 @@ class SplitTime < ApplicationRecord
   include DelegatedConcealable
   include Delegable
   include DataStatusMethods
-  include Auditable
 
   zonable_attributes :absolute_time, :absolute_estimate_early, :absolute_estimate_late
   has_paper_trail

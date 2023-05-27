@@ -16,9 +16,8 @@ module Interactors
     end
 
     def initialize(args)
-      ArgsValidator.validate(params: args, required: [:effort, :current_user_id], exclusive: [:effort, :current_user_id], class: self.class)
+      ArgsValidator.validate(params: args, required: [:effort], exclusive: [:effort], class: self.class)
       @effort = args[:effort]
-      @current_user_id = args[:current_user_id]
       @existing_start_time = effort.calculated_start_time
       @errors = []
       @message = ""
@@ -42,7 +41,7 @@ module Interactors
 
     private
 
-    attr_reader :effort, :current_user_id, :existing_start_time, :errors
+    attr_reader :effort, :existing_start_time, :errors
     attr_accessor :message
 
     delegate :event_group, :event, to: :effort
@@ -56,9 +55,7 @@ module Interactors
 
     def build_split_times
       time_points = event.cycled_time_points
-      effort.split_times.new(time_point: time_points.next,
-                             absolute_time: existing_start_time,
-                             created_by: current_user_id)
+      effort.split_times.new(time_point: time_points.next, absolute_time: existing_start_time)
 
       duplicate_raw_time_chunks.each do |chunk|
         rt = chunk.max_by(&:created_at)
@@ -66,9 +63,14 @@ module Interactors
 
         time_point = time_points.next until time_point.sub_split == rt.sub_split
 
-        effort.split_times.new(time_point: time_point, absolute_time: rt.absolute_time, pacer: rt.with_pacer,
-                               stopped_here: rt.stopped_here, remarks: rt.remarks, raw_times: chunk,
-                               created_by: current_user_id)
+        effort.split_times.new(
+          time_point: time_point,
+          absolute_time: rt.absolute_time,
+          pacer: rt.with_pacer,
+          stopped_here: rt.stopped_here,
+          remarks: rt.remarks,
+          raw_times: chunk,
+        )
       end
     end
 
@@ -90,9 +92,9 @@ module Interactors
 
     def ordered_raw_times
       @raw_times = RawTime.where(event_group_id: event_group.id, matchable_bib_number: effort.bib_number)
-                          .with_relation_ids
-                          .select(&:absolute_time)
-                          .sort_by(&:absolute_time)
+                     .with_relation_ids
+                     .select(&:absolute_time)
+                     .sort_by(&:absolute_time)
     end
 
     def validate_setup

@@ -35,6 +35,8 @@ module ETL
       end
 
       def add_audit_attributes(record)
+        return unless record.respond_to?(:created_by)
+
         record.created_by = current_user_id if record.new_record?
       end
 

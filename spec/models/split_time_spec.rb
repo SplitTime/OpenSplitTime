@@ -125,7 +125,9 @@ RSpec.describe SplitTime, kind: :model do
 
   describe "before_update" do
     subject { split_times(:sum_100k_drop_anvil_rolling_pass_aid2_out_1) }
-    let(:proposed_time) { raw_times(:raw_time_87) }
+    let(:event_group) { subject.event_group }
+    let(:other_event_group) { event_groups(:hardrock_2015) }
+    let(:proposed_time) { event_group.raw_times.find_by(bib_number: "999", entered_time: "08:30:00") }
     let(:proposed_time_id) { proposed_time.id }
 
     before { subject.matching_raw_time_id = proposed_time_id }
@@ -173,14 +175,14 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     context "when the proposed time relates to another bib number in the same event group" do
-      let(:proposed_time) { raw_times(:raw_time_76) }
+      let(:proposed_time) { event_group.raw_times.find_by(bib_number: "130", entered_time: "13:14:00") }
       before { expect(proposed_time.bib_number.to_i).not_to eq(subject.bib_number) }
       before { expect(proposed_time.event_group_id).to eq(subject.event_group_id) }
       include_examples "conforms and matches the proposed time"
     end
 
     context "when the proposed time relates to another event group" do
-      let(:proposed_time) { raw_times(:raw_time_50) }
+      let(:proposed_time) { other_event_group.raw_times.first }
       before { expect(proposed_time.event_group_id).not_to eq(subject.event_group_id) }
       include_examples "does not conform or match the proposed time"
     end

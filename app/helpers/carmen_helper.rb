@@ -12,8 +12,11 @@ module CarmenHelper
            SORTED_COUNTRIES_FOR_SELECT,
            options,
            { class: "form-control",
-             data: { "carmen-target" => "countrySelect",
-                     action: "change->carmen#getSubregions" } })
+             data: {
+               controller: "carmen",
+               carmen_model_value: model,
+               action: "change->carmen#getSubregions"
+             } })
   end
 
   def carmen_subregion_select(model, field, country, args = {})

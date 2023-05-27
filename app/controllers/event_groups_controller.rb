@@ -369,7 +369,7 @@ class EventGroupsController < ApplicationController
     filtered_efforts = Effort.from(efforts, :efforts).where(filter)
     start_time = params[:actual_start_time]
 
-    start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time, current_user_id: current_user.id)
+    start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time)
 
     # Need to pick up the new start split time before setting status
     filtered_efforts = filtered_efforts.includes(split_times: :split)

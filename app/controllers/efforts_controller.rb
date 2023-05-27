@@ -157,7 +157,7 @@ class EffortsController < ApplicationController
     authorize @effort
 
     start_time = params[:actual_start_time]
-    response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time, current_user_id: current_user.id)
+    response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time)
     set_flash_message(response)
     @effort.reload
 

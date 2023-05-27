@@ -8,7 +8,6 @@ class ResultsCategoryResource < Madmin::Resource
   attribute :nonbinary
   attribute :low_age
   attribute :high_age
-  attribute :created_by
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :invalid_efforts, index: false

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class ResultsCategory < ApplicationRecord
-  include Auditable
   extend FriendlyId
+
+  self.ignored_columns = %w[created_by]
 
   INF = 1.0 / 0
 

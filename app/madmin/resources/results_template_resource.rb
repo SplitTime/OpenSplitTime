@@ -6,7 +6,6 @@ class ResultsTemplateResource < Madmin::Resource
   attribute :aggregation_method
   attribute :podium_size
   attribute :point_system
-  attribute :created_by
   attribute :created_at, form: false
   attribute :updated_at, form: false
 

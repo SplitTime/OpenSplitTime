@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ResultsTemplateCategory < ApplicationRecord
   belongs_to :results_template, optional: false
   belongs_to :results_category, optional: false

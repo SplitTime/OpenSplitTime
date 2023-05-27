@@ -3,8 +3,6 @@
 require "rails_helper"
 
 RSpec.describe ResultsTemplate, type: :model do
-  it_behaves_like "auditable"
-
   subject(:results_template) { build(:results_template) }
 
   describe "#initialize" do

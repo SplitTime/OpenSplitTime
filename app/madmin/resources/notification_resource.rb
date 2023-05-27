@@ -7,7 +7,6 @@ class NotificationResource < Madmin::Resource
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :created_by
-  attribute :updated_by
   attribute :kind
   attribute :topic_resource_key
   attribute :subject

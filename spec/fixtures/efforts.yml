@@ -9,7 +9,6 @@ hardrock_2015_tuan_jacobs:
   state_code: AN
   age: 17
   created_by: 1
-  updated_by: 1
   first_name: Tuan
   last_name: Jacobs
   gender: 0
@@ -49,7 +48,6 @@ hardrock_2015_erich_larson:
   state_code: MT
   age: 36
   created_by: 1
-  updated_by: 1
   first_name: Erich
   last_name: Larson
   gender: 0
@@ -89,7 +87,6 @@ hardrock_2015_leif_carter:
   state_code:
   age: 55
   created_by: 1
-  updated_by: 1
   first_name: Leif
   last_name: Carter
   gender: 0
@@ -129,7 +126,6 @@ hardrock_2015_carmine_adams:
   state_code: WA
   age: 18
   created_by: 1
-  updated_by: 1
   first_name: Carmine
   last_name: Adams
   gender: 0
@@ -169,7 +165,6 @@ hardrock_2015_garry_kuhlman:
   state_code: MT
   age: 45
   created_by: 1
-  updated_by: 1
   first_name: Garry
   last_name: Kuhlman
   gender: 0
@@ -209,7 +204,6 @@ hardrock_2015_darius_jacobson:
   state_code: CO
   age: 30
   created_by: 1
-  updated_by: 1
   first_name: Darius
   last_name: Jacobson
   gender: 0
@@ -249,7 +243,6 @@ hardrock_2015_santa_green:
   state_code: CO
   age: 37
   created_by: 1
-  updated_by: 1
   first_name: Santa
   last_name: Green
   gender: 1
@@ -289,7 +282,6 @@ hardrock_2015_gilberto_mckenzie:
   state_code: WA
   age: 45
   created_by: 1
-  updated_by: 1
   first_name: Gilberto
   last_name: McKenzie
   gender: 0
@@ -329,7 +321,6 @@ hardrock_2015_vince_willms:
   state_code: CO
   age: 50
   created_by: 1
-  updated_by: 1
   first_name: Vince
   last_name: Willms
   gender: 0
@@ -369,7 +360,6 @@ hardrock_2015_cedric_windler:
   state_code: TN
   age: 36
   created_by: 1
-  updated_by: 1
   first_name: Cedric
   last_name: Windler
   gender: 0
@@ -409,7 +399,6 @@ hardrock_2015_chris_rempel:
   state_code: CO
   age: 26
   created_by: 1
-  updated_by: 1
   first_name: Chris
   last_name: Rempel
   gender: 0
@@ -449,7 +438,6 @@ hardrock_2015_robby_gerlach:
   state_code: VA
   age: 45
   created_by: 1
-  updated_by: 1
   first_name: Robby
   last_name: Gerlach
   gender: 0
@@ -489,7 +477,6 @@ hardrock_2015_rachelle_eichmann:
   state_code: CO
   age: 23
   created_by: 1
-  updated_by: 1
   first_name: Rachelle
   last_name: Eichmann
   gender: 1
@@ -529,7 +516,6 @@ hardrock_2015_elden_morissette:
   state_code: WI
   age: 42
   created_by: 1
-  updated_by: 1
   first_name: Elden
   last_name: Morissette
   gender: 0
@@ -569,7 +555,6 @@ hardrock_2015_leroy_leffler:
   state_code: NM
   age: 48
   created_by: 1
-  updated_by: 1
   first_name: Leroy
   last_name: Leffler
   gender: 0
@@ -609,7 +594,6 @@ hardrock_2015_samara_vandervort:
   state_code: CA
   age: 22
   created_by: 1
-  updated_by: 1
   first_name: Samara
   last_name: Vandervort
   gender: 1
@@ -649,7 +633,6 @@ hardrock_2015_robt_wintheiser:
   state_code: CO
   age: 57
   created_by: 1
-  updated_by: 1
   first_name: Robt
   last_name: Wintheiser
   gender: 0
@@ -689,7 +672,6 @@ hardrock_2015_demetrius_moen:
   state_code: OR
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Demetrius
   last_name: Moen
   gender: 0
@@ -729,7 +711,6 @@ hardrock_2015_vern_buckridge:
   state_code: TX
   age: 33
   created_by: 1
-  updated_by: 1
   first_name: Vern
   last_name: Buckridge
   gender: 0
@@ -769,7 +750,6 @@ hardrock_2015_donte_spencer:
   state_code: UT
   age: 30
   created_by: 1
-  updated_by: 1
   first_name: Donte
   last_name: Spencer
   gender: 0
@@ -809,7 +789,6 @@ hardrock_2015_bruno_fadel:
   state_code: CA
   age: 27
   created_by: 1
-  updated_by: 1
   first_name: Bruno
   last_name: Fadel
   gender: 0
@@ -849,7 +828,6 @@ hardrock_2015_gus_walker:
   state_code: CO
   age: 54
   created_by: 1
-  updated_by: 1
   first_name: Gus
   last_name: Walker
   gender: 0
@@ -889,7 +867,6 @@ hardrock_2015_susanna_abshire:
   state_code: CO
   age: 34
   created_by: 1
-  updated_by: 1
   first_name: Susanna
   last_name: Abshire
   gender: 1
@@ -929,7 +906,6 @@ hardrock_2015_leandro_cole:
   state_code: UT
   age: 45
   created_by: 1
-  updated_by: 1
   first_name: Leandro
   last_name: Cole
   gender: 0
@@ -969,7 +945,6 @@ hardrock_2015_benedict_davis:
   state_code: CO
   age: 32
   created_by: 1
-  updated_by: 1
   first_name: Benedict
   last_name: Davis
   gender: 0
@@ -1009,7 +984,6 @@ hardrock_2015_raphael_swift:
   state_code: AR
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Raphael
   last_name: Swift
   gender: 0
@@ -1049,7 +1023,6 @@ hardrock_2015_bad_status:
   state_code: CO
   age: 21
   created_by: 1
-  updated_by: 1
   first_name: Bad
   last_name: Status
   gender: 0
@@ -1089,7 +1062,6 @@ hardrock_2015_irvin_harber:
   state_code: CO
   age: 19
   created_by: 1
-  updated_by: 1
   first_name: Irvin
   last_name: Harber
   gender: 0
@@ -1129,7 +1101,6 @@ hardrock_2015_cassondra_nienow:
   state_code: OH
   age: 56
   created_by: 1
-  updated_by: 1
   first_name: Cassondra
   last_name: Nienow
   gender: 1
@@ -1169,7 +1140,6 @@ hardrock_2015_donn_mckenzie:
   state_code: WY
   age: 16
   created_by: 1
-  updated_by: 1
   first_name: Donn
   last_name: McKenzie
   gender: 0
@@ -1209,7 +1179,6 @@ ramble_finished_first:
   state_code:
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -1249,7 +1218,6 @@ ramble_finished_second:
   state_code:
   age: 12
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 1
@@ -1289,7 +1257,6 @@ ramble_start_only:
   state_code:
   age: 38
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 1
@@ -1329,7 +1296,6 @@ ramble_not_started:
   state_code:
   age: 17
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 0
@@ -1369,7 +1335,6 @@ hardrock_2014_finished_first:
   state_code: '01'
   age: 19
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -1409,7 +1374,6 @@ hardrock_2014_finished_with_stop:
   state_code: UT
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: With Stop
   gender: 0
@@ -1449,7 +1413,6 @@ hardrock_2014_finished_without_stop:
   state_code: UT
   age: 25
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Without Stop
   gender: 0
@@ -1489,7 +1452,6 @@ hardrock_2014_claudio_wunsch:
   state_code:
   age: 33
   created_by: 1
-  updated_by: 1
   first_name: Claudio
   last_name: Wunsch
   gender: 0
@@ -1529,7 +1491,6 @@ hardrock_2014_paul_predovic:
   state_code: ID
   age: 55
   created_by: 1
-  updated_by: 1
   first_name: Paul
   last_name: Predovic
   gender: 0
@@ -1569,7 +1530,6 @@ hardrock_2014_keith_metz:
   state_code: UT
   age: 42
   created_by: 1
-  updated_by: 1
   first_name: Keith
   last_name: Metz
   gender: 0
@@ -1609,7 +1569,6 @@ hardrock_2014_major_green:
   state_code: NC
   age: 58
   created_by: 1
-  updated_by: 1
   first_name: Major
   last_name: Green
   gender: 0
@@ -1649,7 +1608,6 @@ hardrock_2014_humberto_adams:
   state_code: NM
   age: 24
   created_by: 1
-  updated_by: 1
   first_name: Humberto
   last_name: Adams
   gender: 0
@@ -1689,7 +1647,6 @@ hardrock_2014_omer_yundt:
   state_code: CO
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Omer
   last_name: Yundt
   gender: 0
@@ -1729,7 +1686,6 @@ hardrock_2014_pat_schaden:
   state_code: AZ
   age: 53
   created_by: 1
-  updated_by: 1
   first_name: Pat
   last_name: Schaden
   gender: 0
@@ -1769,7 +1725,6 @@ hardrock_2014_clarence_goyette:
   state_code: CO
   age: 52
   created_by: 1
-  updated_by: 1
   first_name: Clarence
   last_name: Goyette
   gender: 0
@@ -1809,7 +1764,6 @@ hardrock_2014_irvin_corkery:
   state_code: DC
   age: 22
   created_by: 1
-  updated_by: 1
   first_name: Irvin
   last_name: Corkery
   gender: 0
@@ -1849,7 +1803,6 @@ hardrock_2014_willis_murray:
   state_code: GA
   age: 16
   created_by: 1
-  updated_by: 1
   first_name: Willis
   last_name: Murray
   gender: 0
@@ -1889,7 +1842,6 @@ hardrock_2014_ken_bradtke:
   state_code: CO
   age: 47
   created_by: 1
-  updated_by: 1
   first_name: Ken
   last_name: Bradtke
   gender: 0
@@ -1929,7 +1881,6 @@ hardrock_2014_progress_sherman:
   state_code: CO
   age: 36
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Sherman
   gender: 0
@@ -1969,7 +1920,6 @@ hardrock_2014_multiple_stops:
   state_code: HI
   age: 60
   created_by: 1
-  updated_by: 1
   first_name: Multiple
   last_name: Stops
   gender: 1
@@ -2009,7 +1959,6 @@ hardrock_2014_without_start:
   state_code: MT
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Without
   last_name: Start
   gender: 0
@@ -2049,7 +1998,6 @@ hardrock_2014_drop_ouray:
   state_code: CA
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Drop
   last_name: Ouray
   gender: 1
@@ -2089,7 +2037,6 @@ hardrock_2014_not_started:
   state_code: CO
   age: 28
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 0
@@ -2129,7 +2076,6 @@ rufa_2016_finished_first:
   state_code:
   age: 35
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -2169,7 +2115,6 @@ rufa_2016_finished_second:
   state_code:
   age: 32
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 0
@@ -2209,7 +2154,6 @@ rufa_2016_progress_lap1:
   state_code:
   age: 25
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Lap1
   gender: 0
@@ -2249,7 +2193,6 @@ rufa_2016_not_started:
   state_code:
   age: 57
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 1
@@ -2289,7 +2232,6 @@ rufa_2017_24h_finished_first:
   state_code: UT
   age: 47
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 1
@@ -2329,7 +2271,6 @@ rufa_2017_24h_progress_lap6:
   state_code: UT
   age: 33
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Lap6
   gender: 0
@@ -2369,7 +2310,6 @@ rufa_2017_24h_multiple_stops:
   state_code: UT
   age: 43
   created_by: 1
-  updated_by: 1
   first_name: Multiple
   last_name: Stops
   gender: 1
@@ -2409,7 +2349,6 @@ rufa_2017_24h_finished_last:
   state_code: UT
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Last
   gender: 0
@@ -2449,7 +2388,6 @@ rufa_2017_24h_not_started:
   state_code: UT
   age: 30
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 0
@@ -2489,7 +2427,6 @@ rufa_2017_24h_progress_lap1:
   state_code: UT
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Lap1
   gender: 0
@@ -2529,7 +2466,6 @@ hardrock_2016_lavon_paucek:
   state_code:
   age: 41
   created_by: 1
-  updated_by: 1
   first_name: Lavon
   last_name: Paucek
   gender: 1
@@ -2569,7 +2505,6 @@ hardrock_2016_vesta_borer:
   state_code: UT
   age: 21
   created_by: 1
-  updated_by: 1
   first_name: Vesta
   last_name: Borer
   gender: 1
@@ -2609,7 +2544,6 @@ hardrock_2016_kory_kulas:
   state_code: CA
   age: 42
   created_by: 1
-  updated_by: 1
   first_name: Kory
   last_name: Kulas
   gender: 0
@@ -2649,7 +2583,6 @@ hardrock_2016_shad_hirthe:
   state_code: CO
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Shad
   last_name: Hirthe
   gender: 0
@@ -2689,7 +2622,6 @@ hardrock_2016_douglas_vandervort:
   state_code: CO
   age: 52
   created_by: 1
-  updated_by: 1
   first_name: Douglas
   last_name: Vandervort
   gender: 0
@@ -2729,7 +2661,6 @@ hardrock_2016_missing_telluride_out:
   state_code: AK
   age: 20
   created_by: 1
-  updated_by: 1
   first_name: Missing
   last_name: Telluride Out
   gender: 0
@@ -2769,7 +2700,6 @@ hardrock_2016_junior_lesch:
   state_code: NM
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Junior
   last_name: Lesch
   gender: 0
@@ -2809,7 +2739,6 @@ hardrock_2016_eddy_goldner:
   state_code: WA
   age: 18
   created_by: 1
-  updated_by: 1
   first_name: Eddy
   last_name: Goldner
   gender: 0
@@ -2849,7 +2778,6 @@ hardrock_2016_progress_sherman:
   state_code: VA
   age: 33
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Sherman
   gender: 0
@@ -2889,7 +2817,6 @@ hardrock_2016_benito_moen:
   state_code: OH
   age: 52
   created_by: 1
-  updated_by: 1
   first_name: Benito
   last_name: Moen
   gender: 0
@@ -2929,7 +2856,6 @@ hardrock_2016_kendall_koch:
   state_code: CO
   age: 40
   created_by: 1
-  updated_by: 1
   first_name: Kendall
   last_name: Koch
   gender: 0
@@ -2969,7 +2895,6 @@ hardrock_2016_charlie_mueller:
   state_code: OR
   age: 27
   created_by: 1
-  updated_by: 1
   first_name: Charlie
   last_name: Mueller
   gender: 0
@@ -3009,7 +2934,6 @@ hardrock_2016_brinda_fisher:
   state_code: SC
   age: 22
   created_by: 1
-  updated_by: 1
   first_name: Brinda
   last_name: Fisher
   gender: 1
@@ -3049,7 +2973,6 @@ hardrock_2016_rene_mclaughlin:
   state_code: TX
   age: 32
   created_by: 1
-  updated_by: 1
   first_name: Rene
   last_name: McLaughlin
   gender: 0
@@ -3089,7 +3012,6 @@ hardrock_2016_dropped_grouse:
   state_code: CO
   age: 47
   created_by: 1
-  updated_by: 1
   first_name: Dropped
   last_name: Grouse
   gender: 0
@@ -3129,7 +3051,6 @@ hardrock_2016_mervin_smitham:
   state_code: NM
   age: 24
   created_by: 1
-  updated_by: 1
   first_name: Mervin
   last_name: Smitham
   gender: 0
@@ -3169,7 +3090,6 @@ hardrock_2016_rhett_auer:
   state_code: CO
   age: 41
   created_by: 1
-  updated_by: 1
   first_name: Rhett
   last_name: Auer
   gender: 0
@@ -3209,7 +3129,6 @@ hardrock_2016_hoyt_macejkovic:
   state_code: MD
   age: 55
   created_by: 1
-  updated_by: 1
   first_name: Hoyt
   last_name: Macejkovic
   gender: 0
@@ -3249,7 +3168,6 @@ hardrock_2016_start_only:
   state_code: ME
   age: 26
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 0
@@ -3289,7 +3207,6 @@ ggd30_50k_finished_first:
   state_code:
   age: 44
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -3329,7 +3246,6 @@ ggd30_50k_bad_finish:
   state_code:
   age: 21
   created_by: 1
-  updated_by: 1
   first_name: Bad
   last_name: Finish
   gender: 0
@@ -3369,7 +3285,6 @@ ggd30_50k_progress_aid4:
   state_code:
   age: 35
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Aid4
   gender: 1
@@ -3409,7 +3324,6 @@ ggd30_50k_progress_aid3:
   state_code:
   age: 31
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Aid3
   gender: 0
@@ -3449,7 +3363,6 @@ ggd30_50k_drop_aid4:
   state_code:
   age: 18
   created_by: 1
-  updated_by: 1
   first_name: Drop
   last_name: Aid4
   gender: 0
@@ -3489,7 +3402,6 @@ ggd30_50k_start_only:
   state_code:
   age: 31
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 1
@@ -3529,7 +3441,6 @@ ggd30_50k_not_started:
   state_code:
   age: 31
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 0
@@ -3569,7 +3480,6 @@ ggd30_12m_start_only:
   state_code: CO
   age: 27
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 1
@@ -3609,7 +3519,6 @@ ggd30_12m_finished_second:
   state_code: CO
   age: 43
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 1
@@ -3649,7 +3558,6 @@ ggd30_12m_finished_first:
   state_code: ARA
   age: 23
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -3689,7 +3597,6 @@ ggd30_12m_not_started:
   state_code: CO
   age: 22
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 1
@@ -3729,7 +3636,6 @@ sum_55k_finished_first:
   state_code: CO
   age: 44
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -3769,7 +3675,6 @@ sum_55k_finished_second:
   state_code: CO
   age: 44
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 1
@@ -3809,7 +3714,6 @@ sum_55k_not_started:
   state_code: CO
   age: 36
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 2
@@ -3849,7 +3753,6 @@ sum_55k_progress_rolling:
   state_code: CA
   age: 55
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Rolling
   gender: 1
@@ -3889,7 +3792,6 @@ sum_55k_drop_bandera:
   state_code: CO
   age: 19
   created_by: 1
-  updated_by: 1
   first_name: Drop
   last_name: Bandera
   gender: 1
@@ -3929,7 +3831,6 @@ sum_55k_start_only:
   state_code: CO
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 0
@@ -3969,7 +3870,6 @@ sum_100k_drop_anvil:
   state_code: OH
   age: 28
   created_by: 1
-  updated_by: 1
   first_name: Drop
   last_name: Anvil
   gender: 0
@@ -4009,7 +3909,6 @@ sum_100k_progress_cascade:
   state_code: UT
   age: 20
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Cascade
   gender: 0
@@ -4049,7 +3948,6 @@ rufa_2017_12h_finished_first:
   state_code: AZ
   age: 20
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: First
   gender: 0
@@ -4089,7 +3987,6 @@ rufa_2017_12h_finished_lap6:
   state_code: UT
   age: 53
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Lap6
   gender: 0
@@ -4129,7 +4026,6 @@ rufa_2017_12h_progress_lap5_partial:
   state_code: UT
   age: 28
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Lap5 Partial
   gender: 0
@@ -4169,7 +4065,6 @@ rufa_2017_12h_progress_lap2:
   state_code: UT
   age: 24
   created_by: 1
-  updated_by: 1
   first_name: Progress
   last_name: Lap2
   gender: 1
@@ -4209,7 +4104,6 @@ rufa_2017_12h_start_only:
   state_code: UT
   age: 44
   created_by: 1
-  updated_by: 1
   first_name: Start
   last_name: Only
   gender: 0
@@ -4249,7 +4143,6 @@ rufa_2017_12h_not_started:
   state_code: UT
   age: 49
   created_by: 1
-  updated_by: 1
   first_name: Not
   last_name: Started
   gender: 1
@@ -4289,7 +4182,6 @@ sum_100k_un_started:
   state_code: CO
   age: 29
   created_by: 1
-  updated_by: 1
   first_name: Un
   last_name: Started
   gender: 1
@@ -4329,7 +4221,6 @@ sum_100k_on_dst_change:
   state_code:
   age:
   created_by: 1
-  updated_by: 1
   first_name: 'On'
   last_name: DST Change
   gender: 1
@@ -4369,7 +4260,6 @@ sum_100k_across_dst_change:
   state_code:
   age:
   created_by: 1
-  updated_by: 1
   first_name: Across
   last_name: DST Change
   gender: 1
@@ -4409,7 +4299,6 @@ ggd30_50k_finished_second:
   state_code:
   age: 43
   created_by: 1
-  updated_by: 1
   first_name: Finished
   last_name: Second
   gender: 1
@@ -4449,7 +4338,6 @@ ggd30_12m_series_finisher:
   state_code: CO
   age: 34
   created_by: 1
-  updated_by: 1
   first_name: Series
   last_name: Finisher
   gender: 0
@@ -4489,7 +4377,6 @@ sum_55k_series_finisher:
   state_code:
   age: 34
   created_by: 1
-  updated_by: 1
   first_name: Series
   last_name: Finisher
   gender: 0
@@ -4529,7 +4416,6 @@ sum_55k_slow_finisher:
   state_code: UT
   age: 64
   created_by: 1
-  updated_by: 1
   first_name: Slow
   last_name: Finisher
   gender: 2
@@ -4569,7 +4455,6 @@ ggd30_12m_slow_finisher:
   state_code: UT
   age: 64
   created_by: 1
-  updated_by: 1
   first_name: Slow
   last_name: Finisher
   gender: 0

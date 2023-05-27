@@ -4,7 +4,6 @@ hardrock:
   name: Hardrock
   description: A long race
   created_by: 1
-  updated_by: 1
   concealed: false
   slug: hardrock
 rattlesnake_ramble:
@@ -12,7 +11,6 @@ rattlesnake_ramble:
   name: Rattlesnake Ramble
   description: Bill's Race to benefit Eldorado Canyon State Park
   created_by: 1
-  updated_by: 1
   concealed: false
   slug: rattlesnake-ramble
 running_up_for_air:
@@ -20,7 +18,6 @@ running_up_for_air:
   name: Running Up For Air
   description:
   created_by: 1
-  updated_by: 1
   concealed: false
   slug: running-up-for-air
 dirty_30_running:
@@ -28,6 +25,5 @@ dirty_30_running:
   name: Dirty 30 Running
   description:
   created_by: 1
-  updated_by: 1
   concealed: false
   slug: dirty-30-running

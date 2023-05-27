@@ -6,7 +6,6 @@ ramble:
   available_live: false
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: ramble
   data_entry_grouping_strategy: 0
   monitor_pacers: false
@@ -18,7 +17,6 @@ hardrock_2014:
   available_live: false
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: hardrock-2014
   data_entry_grouping_strategy: 0
   monitor_pacers: true
@@ -30,7 +28,6 @@ hardrock_2015:
   available_live: true
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: hardrock-2015
   data_entry_grouping_strategy: 0
   monitor_pacers: true
@@ -42,7 +39,6 @@ rufa_2016:
   available_live: false
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: rufa-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: false
@@ -54,7 +50,6 @@ dirty_30:
   available_live: true
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: dirty-30
   data_entry_grouping_strategy: 1
   monitor_pacers: false
@@ -66,7 +61,6 @@ hardrock_2016:
   available_live: true
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: hardrock-2016
   data_entry_grouping_strategy: 0
   monitor_pacers: true
@@ -78,7 +72,6 @@ sum:
   available_live: true
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: sum
   data_entry_grouping_strategy: 0
   monitor_pacers: false
@@ -90,7 +83,6 @@ rufa_2017:
   available_live: true
   concealed: false
   created_by: 1
-  updated_by: 1
   slug: rufa-2017
   data_entry_grouping_strategy: 0
   monitor_pacers: false

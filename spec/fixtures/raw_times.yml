@@ -14,7 +14,6 @@ raw_time_49:
   reviewed_by: 1
   reviewed_at: 2017-07-08 22:38:12.817174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: pole-creek
   remarks:
   sortable_bib_number: 102
@@ -37,7 +36,6 @@ raw_time_50:
   reviewed_by: 1
   reviewed_at: 2017-07-08 22:38:12.817174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: pole-creek
   remarks:
   sortable_bib_number: 103
@@ -60,7 +58,6 @@ raw_time_67:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 130
@@ -83,7 +80,6 @@ raw_time_68:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 130
@@ -106,7 +102,6 @@ raw_time_69:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 999
@@ -129,7 +124,6 @@ raw_time_70:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 999
@@ -152,7 +146,6 @@ raw_time_73:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -175,7 +168,6 @@ raw_time_74:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -198,7 +190,6 @@ raw_time_75:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -221,7 +212,6 @@ raw_time_76:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -244,7 +234,6 @@ raw_time_77:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 999
@@ -267,7 +256,6 @@ raw_time_78:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 999
@@ -290,7 +278,6 @@ raw_time_79:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 999
@@ -313,7 +300,6 @@ raw_time_80:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
   sortable_bib_number: 999
@@ -336,7 +322,6 @@ raw_time_81:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
   sortable_bib_number: 999
@@ -359,7 +344,6 @@ raw_time_82:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
   sortable_bib_number: 999
@@ -382,7 +366,6 @@ raw_time_83:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
   sortable_bib_number: 999
@@ -405,7 +388,6 @@ raw_time_84:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -428,7 +410,6 @@ raw_time_85:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -451,7 +432,6 @@ raw_time_86:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by:
-  updated_by:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -474,7 +454,6 @@ raw_time_87:
   reviewed_by: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
   created_by:
-  updated_by:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -497,7 +476,6 @@ raw_time_88:
   reviewed_by: 1
   reviewed_at: 2018-07-27 03:39:21.949460000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 999
@@ -520,7 +498,6 @@ raw_time_89:
   reviewed_by:
   reviewed_at:
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -543,7 +520,6 @@ raw_time_91:
   reviewed_by: 1
   reviewed_at: 2018-07-27 03:40:08.987644000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: start
   remarks: ''
   sortable_bib_number: 777
@@ -566,7 +542,6 @@ raw_time_92:
   reviewed_by: 1
   reviewed_at: 2018-07-27 03:24:12.907737000 Z
   created_by:
-  updated_by:
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 777
@@ -589,7 +564,6 @@ raw_time_176:
   reviewed_by: 1
   reviewed_at: 2018-11-14 05:48:02.521295000 Z
   created_by:
-  updated_by:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -612,7 +586,6 @@ raw_time_177:
   reviewed_by: 1
   reviewed_at: 2018-11-14 05:48:25.812628000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
@@ -635,7 +608,6 @@ raw_time_178:
   reviewed_by: 1
   reviewed_at: 2018-11-14 05:48:27.582171000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
@@ -658,7 +630,6 @@ raw_time_1100:
   reviewed_by: 1
   reviewed_at: 2018-11-14 05:48:22.553830000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -681,7 +652,6 @@ raw_time_1106:
   reviewed_by: 1
   reviewed_at: 2018-12-09 02:24:15.750492000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: bandera-mine-aid5
   remarks:
   sortable_bib_number: 103
@@ -704,7 +674,6 @@ raw_time_1110:
   reviewed_by: 1
   reviewed_at: 2018-12-09 02:25:03.158304000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -727,7 +696,6 @@ raw_time_1111:
   reviewed_by: 1
   reviewed_at: 2018-12-09 02:26:54.169992000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -750,7 +718,6 @@ raw_time_1117:
   reviewed_by: 1
   reviewed_at: 2018-12-15 17:29:59.171376000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -773,7 +740,6 @@ raw_time_1122:
   reviewed_by: 1
   reviewed_at: 2019-01-25 00:23:15.068615000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -796,7 +762,6 @@ raw_time_1123:
   reviewed_by: 1
   reviewed_at: 2019-01-25 00:23:15.075358000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -819,7 +784,6 @@ raw_time_1124:
   reviewed_by: 1
   reviewed_at: 2019-01-25 00:23:57.468470000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -842,7 +806,6 @@ raw_time_1125:
   reviewed_by: 1
   reviewed_at: 2019-01-25 00:23:57.472413000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -865,7 +828,6 @@ raw_time_1126:
   reviewed_by: 1
   reviewed_at: 2019-01-25 00:25:12.563910000 Z
   created_by: 1
-  updated_by: 1
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 114

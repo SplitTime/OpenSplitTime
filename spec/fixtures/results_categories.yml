@@ -1,6 +1,5 @@
 ---
 combined_overall:
-  id: 1
   organization_id:
   name: Overall
   male: true
@@ -10,7 +9,6 @@ combined_overall:
   nonbinary: true
   slug: combined-overall
 male_overall:
-  id: 2
   organization_id:
   name: Overall Men
   male: true
@@ -20,7 +18,6 @@ male_overall:
   nonbinary: false
   slug: male-overall
 female_overall:
-  id: 3
   organization_id:
   name: Overall Women
   male: false
@@ -30,7 +27,6 @@ female_overall:
   nonbinary: false
   slug: female-overall
 male_40_and_up:
-  id: 4
   organization_id:
   name: Masters Men (40+)
   male: true
@@ -40,7 +36,6 @@ male_40_and_up:
   nonbinary: false
   slug: male-40-and-up
 female_40_and_up:
-  id: 5
   organization_id:
   name: Masters Women (40+)
   male: false
@@ -50,7 +45,6 @@ female_40_and_up:
   nonbinary: false
   slug: female-40-and-up
 male_40_to_49:
-  id: 6
   organization_id:
   name: Masters Men (40-49)
   male: true
@@ -60,7 +54,6 @@ male_40_to_49:
   nonbinary: false
   slug: male-40-to-49
 female_40_to_49:
-  id: 7
   organization_id:
   name: Masters Women (40-49)
   male: false
@@ -70,7 +63,6 @@ female_40_to_49:
   nonbinary: false
   slug: female-40-to-49
 male_50_and_up:
-  id: 8
   organization_id:
   name: Grandmasters Men (50+)
   male: true
@@ -80,7 +72,6 @@ male_50_and_up:
   nonbinary: false
   slug: male-50-and-up
 female_50_and_up:
-  id: 9
   organization_id:
   name: Grandmasters Women (50+)
   male: false
@@ -90,7 +81,6 @@ female_50_and_up:
   nonbinary: false
   slug: female-50-and-up
 male_60_and_up:
-  id: 10
   organization_id:
   name: Senior Grandmasters Men (60+)
   male: true
@@ -100,7 +90,6 @@ male_60_and_up:
   nonbinary: false
   slug: male-60-and-up
 female_60_and_up:
-  id: 11
   organization_id:
   name: Senior Grandmasters Women (60+)
   male: false
@@ -110,7 +99,6 @@ female_60_and_up:
   nonbinary: false
   slug: female-60-and-up
 male_up_to_12:
-  id: 12
   organization_id:
   name: Boys 12 and Under
   male: true
@@ -120,7 +108,6 @@ male_up_to_12:
   nonbinary: false
   slug: male-up-to-12
 female_up_to_12:
-  id: 13
   organization_id:
   name: Girls 12 and Under
   male: false
@@ -130,7 +117,6 @@ female_up_to_12:
   nonbinary: false
   slug: female-up-to-12
 male_13_to_16:
-  id: 14
   organization_id:
   name: Boys 13 to 16
   male: true
@@ -140,7 +126,6 @@ male_13_to_16:
   nonbinary: false
   slug: male-13-to-16
 female_13_to_16:
-  id: 15
   organization_id:
   name: Girls 13 to 16
   male: false
@@ -150,7 +135,6 @@ female_13_to_16:
   nonbinary: false
   slug: female-13-to-16
 male_up_to_16:
-  id: 16
   organization_id:
   name: Boys 16 and Under
   male: true
@@ -160,7 +144,6 @@ male_up_to_16:
   nonbinary: false
   slug: male-up-to-16
 female_up_to_16:
-  id: 17
   organization_id:
   name: Girls 16 and Under
   male: false
@@ -170,7 +153,6 @@ female_up_to_16:
   nonbinary: false
   slug: female-up-to-16
 male_up_to_19:
-  id: 18
   organization_id:
   name: Under 20 Men
   male: true
@@ -180,7 +162,6 @@ male_up_to_19:
   nonbinary: false
   slug: male-up-to-19
 female_up_to_19:
-  id: 19
   organization_id:
   name: Under 20 Women
   male: false
@@ -190,7 +171,6 @@ female_up_to_19:
   nonbinary: false
   slug: female-up-to-19
 male_13_to_39:
-  id: 20
   organization_id:
   name: 13 to 39 Men
   male: true
@@ -200,7 +180,6 @@ male_13_to_39:
   nonbinary: false
   slug: male-13-to-39
 female_13_to_39:
-  id: 21
   organization_id:
   name: 13 to 39 Women
   male: false
@@ -210,7 +189,6 @@ female_13_to_39:
   nonbinary: false
   slug: female-13-to-39
 male_17_to_39:
-  id: 22
   organization_id:
   name: 17 to 39 Men
   male: true
@@ -220,7 +198,6 @@ male_17_to_39:
   nonbinary: false
   slug: male-17-to-39
 female_17_to_39:
-  id: 23
   organization_id:
   name: 17 to 39 Women
   male: false
@@ -230,7 +207,6 @@ female_17_to_39:
   nonbinary: false
   slug: female-17-to-39
 male_20_to_29:
-  id: 24
   organization_id:
   name: 20 to 29 Men
   male: true
@@ -240,7 +216,6 @@ male_20_to_29:
   nonbinary: false
   slug: male-20-to-29
 female_20_to_29:
-  id: 25
   organization_id:
   name: 20 to 29 Women
   male: false
@@ -250,7 +225,6 @@ female_20_to_29:
   nonbinary: false
   slug: female-20-to-29
 male_30_to_39:
-  id: 26
   organization_id:
   name: 30 to 39 Men
   male: true
@@ -260,7 +234,6 @@ male_30_to_39:
   nonbinary: false
   slug: male-30-to-39
 female_30_to_39:
-  id: 27
   organization_id:
   name: 30 to 39 Women
   male: false
@@ -270,7 +243,6 @@ female_30_to_39:
   nonbinary: false
   slug: female-30-to-39
 male_40_to_49_2:
-  id: 28
   organization_id:
   name: 40 to 49 Men
   male: true
@@ -280,7 +252,6 @@ male_40_to_49_2:
   nonbinary: false
   slug: male-40-to-49-2
 female_40_to_49_2:
-  id: 29
   organization_id:
   name: 40 to 49 Women
   male: false
@@ -290,7 +261,6 @@ female_40_to_49_2:
   nonbinary: false
   slug: female-40-to-49-2
 male_50_to_59:
-  id: 30
   organization_id:
   name: 50 to 59 Men
   male: true
@@ -300,7 +270,6 @@ male_50_to_59:
   nonbinary: false
   slug: male-50-to-59
 female_50_to_59:
-  id: 31
   organization_id:
   name: 50 to 59 Women
   male: false
@@ -310,7 +279,6 @@ female_50_to_59:
   nonbinary: false
   slug: female-50-to-59
 male_60_to_69:
-  id: 32
   organization_id:
   name: 60 to 69 Men
   male: true
@@ -320,7 +288,6 @@ male_60_to_69:
   nonbinary: false
   slug: male-60-to-69
 female_60_to_69:
-  id: 33
   organization_id:
   name: 60 to 69 Women
   male: false
@@ -330,7 +297,6 @@ female_60_to_69:
   nonbinary: false
   slug: female-60-to-69
 male_up_to_29:
-  id: 34
   organization_id:
   name: Under 30 Men
   male: true
@@ -340,7 +306,6 @@ male_up_to_29:
   nonbinary: false
   slug: male-up-to-29
 female_up_to_29:
-  id: 35
   organization_id:
   name: Under 30 Women
   male: false
@@ -350,7 +315,6 @@ female_up_to_29:
   nonbinary: false
   slug: female-up-to-29
 male_up_to_39:
-  id: 36
   organization_id:
   name: Under 40 Men
   male: true
@@ -360,7 +324,6 @@ male_up_to_39:
   nonbinary: false
   slug: male-up-to-39
 female_up_to_39:
-  id: 37
   organization_id:
   name: Under 40 Women
   male: false
@@ -370,7 +333,6 @@ female_up_to_39:
   nonbinary: false
   slug: female-up-to-39
 nonbinary_overall:
-  id: 38
   organization_id:
   name: Overall Nonbinary
   male: false

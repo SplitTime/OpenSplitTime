@@ -1,5 +1,6 @@
 ---
 hardrock_2015:
+  results_template: simple
   id: 4
   course_id: 4
   historical_name: Hardrock 2015
@@ -10,11 +11,11 @@ hardrock_2015:
   slug: hardrock-2015
   event_group_id: 17
   short_name:
-  results_template_id: 7
   efforts_count: 30
   notice_text:
   lottery_id:
 ramble:
+  results_template: simple
   id: 14
   course_id: 9
   historical_name: Ramble
@@ -25,11 +26,11 @@ ramble:
   slug: ramble
   event_group_id: 4
   short_name:
-  results_template_id: 7
   efforts_count: 4
   notice_text:
   lottery_id:
 hardrock_2014:
+  results_template: simple
   id: 17
   course_id: 12
   historical_name: Hardrock 2014
@@ -40,11 +41,11 @@ hardrock_2014:
   slug: hardrock-2014
   event_group_id: 7
   short_name:
-  results_template_id: 7
   efforts_count: 19
   notice_text:
   lottery_id:
 rufa_2016:
+  results_template: simple
   id: 34
   course_id: 20
   historical_name: RUFA 2016
@@ -55,11 +56,11 @@ rufa_2016:
   slug: rufa-2016
   event_group_id: 25
   short_name:
-  results_template_id: 7
   efforts_count: 4
   notice_text:
   lottery_id:
 rufa_2017_24h:
+  results_template: simple
   id: 36
   course_id: 20
   historical_name: RUFA 2017 24H
@@ -70,11 +71,11 @@ rufa_2017_24h:
   slug: rufa-2017-24h
   event_group_id: 59
   short_name: 24H
-  results_template_id: 7
   efforts_count: 6
   notice_text:
   lottery_id:
 hardrock_2016:
+  results_template: simple
   id: 37
   course_id: 12
   historical_name: Hardrock 2016
@@ -85,11 +86,11 @@ hardrock_2016:
   slug: hardrock-2016
   event_group_id: 28
   short_name:
-  results_template_id: 7
   efforts_count: 19
   notice_text:
   lottery_id:
 ggd30_50k:
+  results_template: simple
   id: 48
   course_id: 26
   historical_name: GGD30 50K
@@ -100,11 +101,11 @@ ggd30_50k:
   slug: ggd30-50k
   event_group_id: 27
   short_name: 50K
-  results_template_id: 7
   efforts_count: 8
   notice_text:
   lottery_id:
 ggd30_12m:
+  results_template: simple
   id: 49
   course_id: 27
   historical_name: GGD30 12M
@@ -115,11 +116,11 @@ ggd30_12m:
   slug: ggd30-12m
   event_group_id: 27
   short_name: 12-miler
-  results_template_id: 7
   efforts_count: 6
   notice_text:
   lottery_id:
 sum_100k:
+  results_template: simple
   id: 56
   course_id: 31
   historical_name: SUM 100K
@@ -130,11 +131,11 @@ sum_100k:
   slug: sum-100k
   event_group_id: 32
   short_name: 100K
-  results_template_id: 7
   efforts_count: 5
   notice_text:
   lottery_id:
 sum_55k:
+  results_template: sub_masters_masters_and_grandmasters
   id: 57
   course_id: 32
   historical_name: SUM 55K
@@ -145,11 +146,11 @@ sum_55k:
   slug: sum-55k
   event_group_id: 32
   short_name: 55K
-  results_template_id: 3
   efforts_count: 8
   notice_text:
   lottery_id:
 rufa_2017_12h:
+  results_template: simple
   id: 70
   course_id: 20
   historical_name: RUFA 2017 12H
@@ -160,7 +161,6 @@ rufa_2017_12h:
   slug: rufa-2017-12h
   event_group_id: 59
   short_name: 12H
-  results_template_id: 7
   efforts_count: 6
   notice_text:
   lottery_id:

@@ -33,6 +33,19 @@ module FixtureHelper
     :users,
   ].freeze
 
+  # Portable fixture tables are assigned an :id by Rails and are referenced by title
+  # rather than id in other fixture tables.
+  PORTABLE_FIXTURE_TABLES = [
+    :results_categories,
+    :results_templates,
+    :results_template_categories,
+  ].freeze
+
+  PRIMARY_KEY_MAP = {
+    effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
+  }.freeze
+
+
   ATTRIBUTES_TO_IGNORE = [
     :created_at,
     :confirmation_sent_at,
@@ -43,7 +56,7 @@ module FixtureHelper
     :updated_at,
   ].freeze
 
-  ATTRIBUTES_TO_PRESERVE = {
+  ATTRIBUTES_TO_PRESERVE_BY_TABLE = {
     lottery_draws: [:created_at],
   }.freeze
 end

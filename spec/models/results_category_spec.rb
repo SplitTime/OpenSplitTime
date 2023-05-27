@@ -23,6 +23,92 @@ RSpec.describe ResultsCategory do
     end
   end
 
+  describe "callbacks" do
+    subject(:results_category) do
+      build(:results_category, organization: organization, male: male, female: female, nonbinary: nonbinary, low_age: low_age, high_age: high_age)
+    end
+
+    let(:organization) { nil }
+    let(:male) { false }
+    let(:female) { false }
+    let(:nonbinary) { false }
+    let(:low_age) { nil }
+    let(:high_age) { nil }
+
+    describe "friendly id slug" do
+      let(:result) { subject.slug }
+
+      before { expect(subject).to be_valid }
+
+      context "for all ages and genders" do
+        let(:male) { true }
+        let(:female) { true }
+        let(:nonbinary) { true }
+
+        it { expect(result).to eq("combined_overall") }
+      end
+
+      context "for all ages of a single gender" do
+        let(:male) { true }
+
+        it { expect(result).to eq("male_overall") }
+      end
+
+      context "for all ages of two genders" do
+        let(:male) { true }
+        let(:nonbinary) { true }
+
+        it { expect(result).to eq("male_nonbinary_overall") }
+      end
+
+      context "for a group with an upper age limit" do
+        let(:male) { true }
+        let(:high_age) { 19 }
+
+        it { expect(result).to eq("male_up_to_19") }
+      end
+
+      context "for a group with a lower age limit" do
+        let(:male) { true }
+        let(:low_age) { 19 }
+
+        it { expect(result).to eq("male_19_and_up") }
+      end
+
+      context "for a group with a lower and upper age limit" do
+        let(:male) { true }
+        let(:low_age) { 20 }
+        let(:high_age) { 29 }
+
+        it { expect(result).to eq("male_20_to_29") }
+      end
+
+      context "for another group with a lower and upper age limit" do
+        let(:female) { true }
+        let(:low_age) { 40 }
+        let(:high_age) { 49 }
+
+        it { expect(result).to eq("female_40_to_49") }
+      end
+
+      context "for a group with the same lower and upper age limit" do
+        let(:female) { true }
+        let(:low_age) { 40 }
+        let(:high_age) { 40 }
+
+        it { expect(result).to eq("female_40") }
+      end
+
+      context "for a group with an organization" do
+        let(:organization) { organizations(:hardrock) }
+        let(:female) { true }
+        let(:low_age) { 40 }
+
+        it { expect(result).to eq("hardrock_female_40_and_up") }
+      end
+    end
+  end
+
   describe "#age_range" do
     context "when low_age and high_age are nil" do
       subject(:results_category) { results_categories(:overall_men) }

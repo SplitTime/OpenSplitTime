@@ -1,12 +1,11 @@
 class ResultsTemplateResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :identifier
+  attribute :slug
   attribute :name
   attribute :aggregation_method
   attribute :podium_size
   attribute :point_system
-  attribute :slug
   attribute :created_by
   attribute :updated_by
   attribute :created_at, form: false

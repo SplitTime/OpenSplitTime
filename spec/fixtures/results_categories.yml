@@ -1,5 +1,5 @@
 ---
-overall:
+combined_overall:
   id: 1
   organization_id:
   name: Overall
@@ -11,7 +11,8 @@ overall:
   created_by: 1
   updated_by:
   nonbinary: true
-overall_men:
+  slug: combined-overall
+male_overall:
   id: 2
   organization_id:
   name: Overall Men
@@ -23,7 +24,8 @@ overall_men:
   created_by: 1
   updated_by:
   nonbinary: false
-overall_women:
+  slug: male-overall
+female_overall:
   id: 3
   organization_id:
   name: Overall Women
@@ -35,7 +37,8 @@ overall_women:
   created_by: 1
   updated_by:
   nonbinary: false
-masters_men_40:
+  slug: female-overall
+male_40_and_up:
   id: 4
   organization_id:
   name: Masters Men (40+)
@@ -47,7 +50,8 @@ masters_men_40:
   created_by: 1
   updated_by:
   nonbinary: false
-masters_women_40:
+  slug: male-40-and-up
+female_40_and_up:
   id: 5
   organization_id:
   name: Masters Women (40+)
@@ -59,7 +63,8 @@ masters_women_40:
   created_by: 1
   updated_by:
   nonbinary: false
-masters_men_40_49:
+  slug: female-40-and-up
+male_40_to_49:
   id: 6
   organization_id:
   name: Masters Men (40-49)
@@ -71,7 +76,8 @@ masters_men_40_49:
   created_by: 1
   updated_by:
   nonbinary: false
-masters_women_40_49:
+  slug: male-40-to-49
+female_40_to_49:
   id: 7
   organization_id:
   name: Masters Women (40-49)
@@ -83,7 +89,8 @@ masters_women_40_49:
   created_by: 1
   updated_by:
   nonbinary: false
-grandmasters_men_50:
+  slug: female-40-to-49
+male_50_and_up:
   id: 8
   organization_id:
   name: Grandmasters Men (50+)
@@ -95,7 +102,8 @@ grandmasters_men_50:
   created_by: 1
   updated_by:
   nonbinary: false
-grandmasters_women_50:
+  slug: male-50-and-up
+female_50_and_up:
   id: 9
   organization_id:
   name: Grandmasters Women (50+)
@@ -107,7 +115,8 @@ grandmasters_women_50:
   created_by: 1
   updated_by:
   nonbinary: false
-senior_grandmasters_men_60:
+  slug: female-50-and-up
+male_60_and_up:
   id: 10
   organization_id:
   name: Senior Grandmasters Men (60+)
@@ -119,7 +128,8 @@ senior_grandmasters_men_60:
   created_by: 1
   updated_by:
   nonbinary: false
-senior_grandmasters_women_60:
+  slug: male-60-and-up
+female_60_and_up:
   id: 11
   organization_id:
   name: Senior Grandmasters Women (60+)
@@ -131,7 +141,8 @@ senior_grandmasters_women_60:
   created_by: 1
   updated_by:
   nonbinary: false
-boys_12_and_under:
+  slug: female-60-and-up
+male_up_to_12:
   id: 12
   organization_id:
   name: Boys 12 and Under
@@ -143,7 +154,8 @@ boys_12_and_under:
   created_by: 1
   updated_by:
   nonbinary: false
-girls_12_and_under:
+  slug: male-up-to-12
+female_up_to_12:
   id: 13
   organization_id:
   name: Girls 12 and Under
@@ -155,7 +167,8 @@ girls_12_and_under:
   created_by: 1
   updated_by:
   nonbinary: false
-boys_13_to_16:
+  slug: female-up-to-12
+male_13_to_16:
   id: 14
   organization_id:
   name: Boys 13 to 16
@@ -167,7 +180,8 @@ boys_13_to_16:
   created_by: 1
   updated_by:
   nonbinary: false
-girls_13_to_16:
+  slug: male-13-to-16
+female_13_to_16:
   id: 15
   organization_id:
   name: Girls 13 to 16
@@ -179,7 +193,8 @@ girls_13_to_16:
   created_by: 1
   updated_by:
   nonbinary: false
-boys_16_and_under:
+  slug: female-13-to-16
+male_up_to_16:
   id: 16
   organization_id:
   name: Boys 16 and Under
@@ -191,7 +206,8 @@ boys_16_and_under:
   created_by: 1
   updated_by:
   nonbinary: false
-girls_16_and_under:
+  slug: male-up-to-16
+female_up_to_16:
   id: 17
   organization_id:
   name: Girls 16 and Under
@@ -203,7 +219,8 @@ girls_16_and_under:
   created_by: 1
   updated_by:
   nonbinary: false
-under_20_men:
+  slug: female-up-to-16
+male_up_to_19:
   id: 18
   organization_id:
   name: Under 20 Men
@@ -215,7 +232,8 @@ under_20_men:
   created_by: 1
   updated_by:
   nonbinary: false
-under_20_women:
+  slug: male-up-to-19
+female_up_to_19:
   id: 19
   organization_id:
   name: Under 20 Women
@@ -227,7 +245,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-13_to_39_men:
+  slug: female-up-to-19
+male_13_to_39:
   id: 20
   organization_id:
   name: 13 to 39 Men
@@ -239,7 +258,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-13_to_39_women:
+  slug: male-13-to-39
+female_13_to_39:
   id: 21
   organization_id:
   name: 13 to 39 Women
@@ -251,7 +271,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-17_to_39_men:
+  slug: female-13-to-39
+male_17_to_39:
   id: 22
   organization_id:
   name: 17 to 39 Men
@@ -263,7 +284,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-17_to_39_women:
+  slug: male-17-to-39
+female_17_to_39:
   id: 23
   organization_id:
   name: 17 to 39 Women
@@ -275,7 +297,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-20_to_29_men:
+  slug: female-17-to-39
+male_20_to_29:
   id: 24
   organization_id:
   name: 20 to 29 Men
@@ -287,7 +310,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-20_to_29_women:
+  slug: male-20-to-29
+female_20_to_29:
   id: 25
   organization_id:
   name: 20 to 29 Women
@@ -299,7 +323,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-30_to_39_men:
+  slug: female-20-to-29
+male_30_to_39:
   id: 26
   organization_id:
   name: 30 to 39 Men
@@ -311,7 +336,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-30_to_39_women:
+  slug: male-30-to-39
+female_30_to_39:
   id: 27
   organization_id:
   name: 30 to 39 Women
@@ -323,7 +349,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-40_to_49_men:
+  slug: female-30-to-39
+male_40_to_49_2:
   id: 28
   organization_id:
   name: 40 to 49 Men
@@ -335,7 +362,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-40_to_49_women:
+  slug: male-40-to-49-2
+female_40_to_49_2:
   id: 29
   organization_id:
   name: 40 to 49 Women
@@ -347,7 +375,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-50_to_59_men:
+  slug: female-40-to-49-2
+male_50_to_59:
   id: 30
   organization_id:
   name: 50 to 59 Men
@@ -359,7 +388,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-50_to_59_women:
+  slug: male-50-to-59
+female_50_to_59:
   id: 31
   organization_id:
   name: 50 to 59 Women
@@ -371,7 +401,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-60_to_69_men:
+  slug: female-50-to-59
+male_60_to_69:
   id: 32
   organization_id:
   name: 60 to 69 Men
@@ -383,7 +414,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-60_to_69_women:
+  slug: male-60-to-69
+female_60_to_69:
   id: 33
   organization_id:
   name: 60 to 69 Women
@@ -395,7 +427,8 @@ under_20_women:
   created_by: 1
   updated_by:
   nonbinary: false
-under_30_men:
+  slug: female-60-to-69
+male_up_to_29:
   id: 34
   organization_id:
   name: Under 30 Men
@@ -407,7 +440,8 @@ under_30_men:
   created_by: 1
   updated_by:
   nonbinary: false
-under_30_women:
+  slug: male-up-to-29
+female_up_to_29:
   id: 35
   organization_id:
   name: Under 30 Women
@@ -419,7 +453,8 @@ under_30_women:
   created_by: 1
   updated_by:
   nonbinary: false
-under_40_men:
+  slug: female-up-to-29
+male_up_to_39:
   id: 36
   organization_id:
   name: Under 40 Men
@@ -431,7 +466,8 @@ under_40_men:
   created_by: 1
   updated_by:
   nonbinary: false
-under_40_women:
+  slug: male-up-to-39
+female_up_to_39:
   id: 37
   organization_id:
   name: Under 40 Women
@@ -443,7 +479,8 @@ under_40_women:
   created_by: 1
   updated_by:
   nonbinary: false
-overall_nonbinary:
+  slug: female-up-to-39
+nonbinary_overall:
   id: 38
   organization_id:
   name: Overall Nonbinary
@@ -455,3 +492,4 @@ overall_nonbinary:
   created_by: 1
   updated_by:
   nonbinary: true
+  slug: nonbinary-overall

@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe ResultsTemplateCategory do
-  subject(:results_template_category) { results_template_categories(:results_template_category_1) }
+  subject(:results_template_category) { ResultsTemplateCategory.first }
 
   describe "#initialize" do
     it "is valid when it has both a results category and a results template" do

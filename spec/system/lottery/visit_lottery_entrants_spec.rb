@@ -16,7 +16,7 @@ RSpec.describe "visit a lottery entrants page" do
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:organization) { lottery.organization }
   let(:all_entrants) { lottery.entrants }
-  let(:entrant_1) { lottery_entrants(:lottery_entrant_26) } # Maud Boyer
+  let(:entrant_1) { lottery.entrants.find_by(first_name: "Maud", last_name: "Boyer") }
   let(:other_entrants) { all_entrants.where.not(id: entrant_1.id) }
 
   context "when the lottery is in preview status" do

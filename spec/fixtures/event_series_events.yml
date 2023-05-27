@@ -1,17 +1,17 @@
 ---
-event_series_event_1:
+event_series_event_0001:
   id: 1
   event_id: 48
   event_series_id: 1
-event_series_event_2:
+event_series_event_0002:
   id: 2
   event_id: 57
   event_series_id: 1
-event_series_event_3:
+event_series_event_0003:
   id: 3
   event_id: 49
   event_series_id: 2
-event_series_event_4:
+event_series_event_0004:
   id: 4
   event_id: 57
   event_series_id: 2

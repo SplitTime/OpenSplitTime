@@ -1,29 +1,29 @@
 ---
-lottery_division_1:
+lottery_division_0001:
   id: 1
   lottery_id: 4
   name: Never Ever Evers
   maximum_entries: 3
   maximum_wait_list: 2
-lottery_division_2:
+lottery_division_0002:
   id: 2
   lottery_id: 4
   name: Veterans
   maximum_entries: 3
   maximum_wait_list: 3
-lottery_division_6:
+lottery_division_0003:
   id: 6
   lottery_id: 3
   name: Fast People
   maximum_entries: 5
   maximum_wait_list: 3
-lottery_division_7:
+lottery_division_0004:
   id: 7
   lottery_id: 3
   name: Slow People
   maximum_entries: 5
   maximum_wait_list: 3
-lottery_division_8:
+lottery_division_0005:
   id: 8
   lottery_id: 4
   name: Elses

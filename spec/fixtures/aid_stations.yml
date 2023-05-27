@@ -1,225 +1,225 @@
 ---
-aid_station_5:
+aid_station_0001:
   id: 5
   event_id: 4
   split_id: 5
-aid_station_6:
+aid_station_0002:
   id: 6
   event_id: 4
   split_id: 6
-aid_station_12:
+aid_station_0003:
   id: 12
   event_id: 4
   split_id: 12
-aid_station_16:
+aid_station_0004:
   id: 16
   event_id: 4
   split_id: 16
-aid_station_26:
+aid_station_0005:
   id: 26
   event_id: 4
   split_id: 26
-aid_station_32:
+aid_station_0006:
   id: 32
   event_id: 4
   split_id: 32
-aid_station_34:
+aid_station_0007:
   id: 34
   event_id: 4
   split_id: 34
-aid_station_140:
+aid_station_0008:
   id: 140
   event_id: 14
   split_id: 46
-aid_station_141:
+aid_station_0009:
   id: 141
   event_id: 14
   split_id: 47
-aid_station_202:
+aid_station_0010:
   id: 202
   event_id: 17
   split_id: 81
-aid_station_203:
+aid_station_0011:
   id: 203
   event_id: 17
   split_id: 82
-aid_station_208:
+aid_station_0012:
   id: 208
   event_id: 17
   split_id: 87
-aid_station_214:
+aid_station_0013:
   id: 214
   event_id: 17
   split_id: 93
-aid_station_218:
+aid_station_0014:
   id: 218
   event_id: 17
   split_id: 97
-aid_station_222:
+aid_station_0015:
   id: 222
   event_id: 17
   split_id: 101
-aid_station_228:
+aid_station_0016:
   id: 228
   event_id: 17
   split_id: 107
-aid_station_458:
+aid_station_0017:
   id: 458
   event_id: 34
   split_id: 135
-aid_station_459:
+aid_station_0018:
   id: 459
   event_id: 34
   split_id: 136
-aid_station_460:
+aid_station_0019:
   id: 460
   event_id: 34
   split_id: 137
-aid_station_476:
+aid_station_0020:
   id: 476
   event_id: 36
   split_id: 137
-aid_station_477:
+aid_station_0021:
   id: 477
   event_id: 36
   split_id: 135
-aid_station_478:
+aid_station_0022:
   id: 478
   event_id: 36
   split_id: 136
-aid_station_479:
+aid_station_0023:
   id: 479
   event_id: 37
   split_id: 81
-aid_station_482:
+aid_station_0024:
   id: 482
   event_id: 37
   split_id: 87
-aid_station_485:
+aid_station_0025:
   id: 485
   event_id: 37
   split_id: 93
-aid_station_487:
+aid_station_0026:
   id: 487
   event_id: 37
   split_id: 97
-aid_station_489:
+aid_station_0027:
   id: 489
   event_id: 37
   split_id: 101
-aid_station_492:
+aid_station_0028:
   id: 492
   event_id: 37
   split_id: 107
-aid_station_493:
+aid_station_0029:
   id: 493
   event_id: 37
   split_id: 82
-aid_station_513:
+aid_station_0030:
   id: 513
   event_id: 4
   split_id: 20
-aid_station_570:
+aid_station_0031:
   id: 570
   event_id: 48
   split_id: 164
-aid_station_571:
+aid_station_0032:
   id: 571
   event_id: 48
   split_id: 165
-aid_station_572:
+aid_station_0033:
   id: 572
   event_id: 48
   split_id: 167
-aid_station_574:
+aid_station_0034:
   id: 574
   event_id: 48
   split_id: 170
-aid_station_575:
+aid_station_0035:
   id: 575
   event_id: 48
   split_id: 168
-aid_station_576:
+aid_station_0036:
   id: 576
   event_id: 48
   split_id: 166
-aid_station_577:
+aid_station_0037:
   id: 577
   event_id: 48
   split_id: 171
-aid_station_578:
+aid_station_0038:
   id: 578
   event_id: 49
   split_id: 173
-aid_station_579:
+aid_station_0039:
   id: 579
   event_id: 49
   split_id: 172
-aid_station_626:
+aid_station_0040:
   id: 626
   event_id: 56
   split_id: 205
-aid_station_627:
+aid_station_0041:
   id: 627
   event_id: 56
   split_id: 204
-aid_station_629:
+aid_station_0042:
   id: 629
   event_id: 56
   split_id: 207
-aid_station_630:
+aid_station_0043:
   id: 630
   event_id: 56
   split_id: 208
-aid_station_631:
+aid_station_0044:
   id: 631
   event_id: 56
   split_id: 209
-aid_station_632:
+aid_station_0045:
   id: 632
   event_id: 56
   split_id: 210
-aid_station_634:
+aid_station_0046:
   id: 634
   event_id: 57
   split_id: 213
-aid_station_635:
+aid_station_0047:
   id: 635
   event_id: 57
   split_id: 212
-aid_station_636:
+aid_station_0048:
   id: 636
   event_id: 57
   split_id: 218
-aid_station_637:
+aid_station_0049:
   id: 637
   event_id: 57
   split_id: 219
-aid_station_638:
+aid_station_0050:
   id: 638
   event_id: 57
   split_id: 220
-aid_station_639:
+aid_station_0051:
   id: 639
   event_id: 57
   split_id: 221
-aid_station_725:
+aid_station_0052:
   id: 725
   event_id: 56
   split_id: 206
-aid_station_726:
+aid_station_0053:
   id: 726
   event_id: 56
   split_id: 211
-aid_station_753:
+aid_station_0054:
   id: 753
   event_id: 70
   split_id: 137
-aid_station_754:
+aid_station_0055:
   id: 754
   event_id: 70
   split_id: 136
-aid_station_755:
+aid_station_0056:
   id: 755
   event_id: 70
   split_id: 135

@@ -1,5 +1,5 @@
 ---
-syncable_relation_1:
+syncable_relation_0001:
   id: 1
   source_name: runsignup
   source_type: Race
@@ -7,7 +7,7 @@ syncable_relation_1:
   destination_name: internal
   destination_type: EventGroup
   destination_id: '59'
-syncable_relation_2:
+syncable_relation_0002:
   id: 2
   source_name: runsignup
   source_type: Event
@@ -15,7 +15,7 @@ syncable_relation_2:
   destination_name: internal
   destination_type: Event
   destination_id: '36'
-syncable_relation_3:
+syncable_relation_0003:
   id: 3
   source_name: runsignup
   source_type: Event

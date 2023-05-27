@@ -6,20 +6,6 @@ masters_and_decades:
   podium_size: 3
   point_system:
   slug: masters-and-decades
-overall_30s_40s_50s_seniors:
-  organization_id:
-  name: Overall, 30s, 40s, 50s, Seniors
-  aggregation_method: 0
-  podium_size: 3
-  point_system:
-  slug: overall-30s-40s-50s-seniors
-sub_masters_masters_and_grandmasters:
-  organization_id:
-  name: Sub-Masters, Masters, and Grandmasters
-  aggregation_method: 0
-  podium_size: 3
-  point_system:
-  slug: sub-masters-masters-and-grandmasters
 masters_and_grandmasters:
   organization_id:
   name: Masters and Grandmasters
@@ -27,6 +13,20 @@ masters_and_grandmasters:
   podium_size: 3
   point_system:
   slug: masters-and-grandmasters
+masters_and_grandmasters_with_nonbinary:
+  organization_id:
+  name: Masters and Grandmasters with Nonbinary
+  aggregation_method: 0
+  podium_size: 3
+  point_system:
+  slug: masters-and-grandmasters-with-nonbinary
+overall_30s_40s_50s_seniors:
+  organization_id:
+  name: Overall, 30s, 40s, 50s, Seniors
+  aggregation_method: 0
+  podium_size: 3
+  point_system:
+  slug: overall-30s-40s-50s-seniors
 simple:
   organization_id:
   name: Simple
@@ -41,10 +41,10 @@ simple_with_nonbinary:
   podium_size: 3
   point_system:
   slug: simple-with-nonbinary
-masters_and_grandmasters_with_nonbinary:
+sub_masters_masters_and_grandmasters:
   organization_id:
-  name: Masters and Grandmasters with Nonbinary
+  name: Sub-Masters, Masters, and Grandmasters
   aggregation_method: 0
   podium_size: 3
   point_system:
-  slug: masters-and-grandmasters-with-nonbinary
+  slug: sub-masters-masters-and-grandmasters

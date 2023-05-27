@@ -7,7 +7,6 @@ combined_overall:
   female: true
   low_age:
   high_age:
-  identifier: combined_overall
   created_by: 1
   updated_by:
   nonbinary: true
@@ -20,7 +19,6 @@ male_overall:
   female: false
   low_age:
   high_age:
-  identifier: men_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -33,7 +31,6 @@ female_overall:
   female: true
   low_age:
   high_age:
-  identifier: women_overall
   created_by: 1
   updated_by:
   nonbinary: false
@@ -46,7 +43,6 @@ male_40_and_up:
   female: false
   low_age: 40
   high_age:
-  identifier: men_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -59,7 +55,6 @@ female_40_and_up:
   female: true
   low_age: 40
   high_age:
-  identifier: women_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -72,7 +67,6 @@ male_40_to_49:
   female: false
   low_age: 40
   high_age: 49
-  identifier: men_40s_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -85,7 +79,6 @@ female_40_to_49:
   female: true
   low_age: 40
   high_age: 49
-  identifier: women_40s_masters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -98,7 +91,6 @@ male_50_and_up:
   female: false
   low_age: 50
   high_age:
-  identifier: men_grandmasters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -111,7 +103,6 @@ female_50_and_up:
   female: true
   low_age: 50
   high_age:
-  identifier: women_grandmasters
   created_by: 1
   updated_by:
   nonbinary: false
@@ -124,7 +115,6 @@ male_60_and_up:
   female: false
   low_age: 60
   high_age:
-  identifier: men_seniors
   created_by: 1
   updated_by:
   nonbinary: false
@@ -137,7 +127,6 @@ female_60_and_up:
   female: true
   low_age: 60
   high_age:
-  identifier: women_seniors
   created_by: 1
   updated_by:
   nonbinary: false
@@ -150,7 +139,6 @@ male_up_to_12:
   female: false
   low_age:
   high_age: 12
-  identifier: boys_12_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -163,7 +151,6 @@ female_up_to_12:
   female: true
   low_age:
   high_age: 12
-  identifier: girls_12_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -176,7 +163,6 @@ male_13_to_16:
   female: false
   low_age: 13
   high_age: 16
-  identifier: boys_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -189,7 +175,6 @@ female_13_to_16:
   female: true
   low_age: 13
   high_age: 16
-  identifier: girls_13_to_16
   created_by: 1
   updated_by:
   nonbinary: false
@@ -202,7 +187,6 @@ male_up_to_16:
   female: false
   low_age:
   high_age: 16
-  identifier: boys_16_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -215,7 +199,6 @@ female_up_to_16:
   female: true
   low_age:
   high_age: 16
-  identifier: girls_16_and_under
   created_by: 1
   updated_by:
   nonbinary: false
@@ -228,7 +211,6 @@ male_up_to_19:
   female: false
   low_age:
   high_age: 19
-  identifier: men_under_20
   created_by: 1
   updated_by:
   nonbinary: false
@@ -241,7 +223,6 @@ female_up_to_19:
   female: true
   low_age:
   high_age: 19
-  identifier: women_under_20
   created_by: 1
   updated_by:
   nonbinary: false
@@ -254,7 +235,6 @@ male_13_to_39:
   female: false
   low_age: 13
   high_age: 39
-  identifier: men_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -267,7 +247,6 @@ female_13_to_39:
   female: true
   low_age: 13
   high_age: 39
-  identifier: women_13_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -280,7 +259,6 @@ male_17_to_39:
   female: false
   low_age: 17
   high_age: 39
-  identifier: men_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -293,7 +271,6 @@ female_17_to_39:
   female: true
   low_age: 17
   high_age: 39
-  identifier: women_17_to_39
   created_by: 1
   updated_by:
   nonbinary: false
@@ -306,7 +283,6 @@ male_20_to_29:
   female: false
   low_age: 20
   high_age: 29
-  identifier: men_20s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -319,7 +295,6 @@ female_20_to_29:
   female: true
   low_age: 20
   high_age: 29
-  identifier: women_20s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -332,7 +307,6 @@ male_30_to_39:
   female: false
   low_age: 30
   high_age: 39
-  identifier: men_30s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -345,7 +319,6 @@ female_30_to_39:
   female: true
   low_age: 30
   high_age: 39
-  identifier: women_30s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -358,7 +331,6 @@ male_40_to_49_2:
   female: false
   low_age: 40
   high_age: 49
-  identifier: men_40s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -371,7 +343,6 @@ female_40_to_49_2:
   female: true
   low_age: 40
   high_age: 49
-  identifier: women_40s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -384,7 +355,6 @@ male_50_to_59:
   female: false
   low_age: 50
   high_age: 59
-  identifier: men_50s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -397,7 +367,6 @@ female_50_to_59:
   female: true
   low_age: 50
   high_age: 59
-  identifier: women_50s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -410,7 +379,6 @@ male_60_to_69:
   female: false
   low_age: 60
   high_age: 69
-  identifier: men_60s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -423,7 +391,6 @@ female_60_to_69:
   female: true
   low_age: 60
   high_age: 69
-  identifier: women_60s
   created_by: 1
   updated_by:
   nonbinary: false
@@ -436,7 +403,6 @@ male_up_to_29:
   female: false
   low_age:
   high_age: 29
-  identifier: men_under_30
   created_by: 1
   updated_by:
   nonbinary: false
@@ -449,7 +415,6 @@ female_up_to_29:
   female: true
   low_age:
   high_age: 29
-  identifier: women_under_30
   created_by: 1
   updated_by:
   nonbinary: false
@@ -462,7 +427,6 @@ male_up_to_39:
   female: false
   low_age:
   high_age: 39
-  identifier: men_under_40
   created_by: 1
   updated_by:
   nonbinary: false
@@ -475,7 +439,6 @@ female_up_to_39:
   female: true
   low_age:
   high_age: 39
-  identifier: women_under_40
   created_by: 1
   updated_by:
   nonbinary: false
@@ -488,7 +451,6 @@ nonbinary_overall:
   female: false
   low_age:
   high_age:
-  identifier: nonbinary_overall
   created_by: 1
   updated_by:
   nonbinary: true

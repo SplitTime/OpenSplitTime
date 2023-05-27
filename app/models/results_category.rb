@@ -4,8 +4,6 @@ class ResultsCategory < ApplicationRecord
   include Auditable
   extend FriendlyId
 
-  self.ignored_columns = %w[identifier]
-
   INF = 1.0 / 0
 
   friendly_id :organization_genders_ages, use: [:sequentially_slugged, :history]

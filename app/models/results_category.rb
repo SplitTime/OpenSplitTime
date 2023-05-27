@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 class ResultsCategory < ApplicationRecord
   include Auditable
+  extend FriendlyId
 
   INF = 1.0 / 0
+
+  friendly_id :organization_genders_ages, use: [:slugged, :history]
 
   belongs_to :organization, optional: true
   has_many :results_template_categories, dependent: :destroy
@@ -58,6 +63,8 @@ class ResultsCategory < ApplicationRecord
       "up to #{high_age}"
     elsif age_range.end == INF
       "#{low_age} and up"
+    elsif low_age == high_age
+      "#{low_age}"
     else
       "#{low_age} to #{high_age}"
     end
@@ -71,5 +78,12 @@ class ResultsCategory < ApplicationRecord
 
   def gender_present?
     errors.add(:base, "must include male or female or nonbinary entrants") unless male? || female? || nonbinary?
+  end
+
+  def organization_genders_ages
+    organization_component = organization ? [organization.name.downcase.gsub(/\s/, "_")] : []
+    gender_component = all_genders? ? ["combined"] : genders
+    age_component = all_ages? ? ["overall"] : [age_description]
+    [*organization_component, *gender_component, *age_component].join("_").downcase.gsub(/\s/, "_")
   end
 end

@@ -11,9 +11,9 @@ class ResultsTemplateCategoryResource < Madmin::Resource
   attribute :results_category
 
   # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    "#{record.results_template.slug}/#{record.results_category.slug}"
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

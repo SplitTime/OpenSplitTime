@@ -308,11 +308,15 @@ module DropdownHelper
   end
 
   def gender_dropdown_menu(view_object)
-    dropdown_items = %w[combined male female].map do |gender|
+    genders = view_object.event_genders
+    genders.unshift("combined")
+
+    dropdown_items = genders.map do |gender|
       { name: gender.titleize,
         link: request.params.merge(filter: { gender: gender }, page: nil),
         active: view_object.gender_text == gender }
     end
+
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 

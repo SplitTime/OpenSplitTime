@@ -315,6 +315,7 @@ module DropdownHelper
       {
         name: gender.titleize,
         link: request.params.merge(filter: { gender: gender }, page: nil),
+        active: view_object.gender_text == gender,
         disabled: view_object.gender_text == gender,
       }
     end

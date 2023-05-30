@@ -30,13 +30,15 @@ class BasePresenter
       "male"
     when [1]
       "female"
+    when [2]
+      "nonbinary"
     else
       "combined"
     end
   end
 
   def genders
-    filter_hash[:gender] || [0, 1]
+    filter_hash[:gender] || [0, 1, 2]
   end
 
   def page

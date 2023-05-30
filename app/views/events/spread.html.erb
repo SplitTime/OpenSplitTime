@@ -7,9 +7,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <% if @presenter.multiple_events? %>
               <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
@@ -18,14 +18,14 @@
             <li class="breadcrumb-item active">Full results</li>
           </ul>
         </div>
-        <%= render 'time_and_course_info' %>
+        <%= render "time_and_course_info" %>
       </div>
       <aside class="col-auto">
         <%= link_to_beacon_button(@presenter) %>
       </aside>
     </div>
     <!-- Navigation -->
-    <%= render 'view_buttons', view_object: @presenter %>
+    <%= render "view_buttons", view_object: @presenter %>
   </div>
 </header>
 
@@ -33,7 +33,7 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col d-inline-flex">
         <div>
           <%= explore_dropdown_menu(@presenter) %>
@@ -51,7 +51,7 @@
 </aside>
 
 <% if @presenter.notice_text? %>
-  <%= render 'results_notice', notice_text: @presenter.notice_text %>
+  <%= render "results_notice", notice_text: @presenter.notice_text %>
 <% end %>
 
 <% if @presenter.show_partner_banners? %>
@@ -63,11 +63,11 @@
     <table class="table table-sm table-striped">
       <thead>
       <tr>
-        <th>O/G<br/><%= link_to_reversing_sort_heading('Place', :overall_rank, @presenter.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('Bib', :bib_number, @presenter.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', @presenter.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('Category', 'gender,age', @presenter.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('From', :state_code, @presenter.existing_sort) %></th>
+        <th>O/G<br/><%= link_to_reversing_sort_heading("Place", :overall_rank, @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Bib", :bib_number, @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Category", "gender,age", @presenter.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("From", :state_code, @presenter.existing_sort) %></th>
         <th>Status</th>
         <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
           <th class="text-nowrap text-center">

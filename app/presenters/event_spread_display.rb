@@ -37,6 +37,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     effort_times_rows.map(&:id)
   end
 
+  def event_genders
+    @event_genders ||= event_efforts.distinct.pluck(:gender).sort
+  end
+
   def lap_splits
     @lap_splits ||= event.required_lap_splits.presence || event.lap_splits_through(highest_lap)
   end

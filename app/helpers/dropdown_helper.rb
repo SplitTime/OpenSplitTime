@@ -312,9 +312,11 @@ module DropdownHelper
     genders.unshift("combined")
 
     dropdown_items = genders.map do |gender|
-      { name: gender.titleize,
+      {
+        name: gender.titleize,
         link: request.params.merge(filter: { gender: gender }, page: nil),
-        active: view_object.gender_text == gender }
+        disabled: view_object.gender_text == gender,
+      }
     end
 
     build_dropdown_menu(nil, dropdown_items, button: true)

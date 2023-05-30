@@ -50,6 +50,10 @@ class CourseGroupFinishersDisplay < BasePresenter
     events.select { |event| event.scheduled_start_time < Time.now }.max_by(&:scheduled_start_time)
   end
 
+  def relevant_genders
+    all_finishers.distinct.pluck(:gender)
+  end
+
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if filtered_finishers_count == per_page
   end

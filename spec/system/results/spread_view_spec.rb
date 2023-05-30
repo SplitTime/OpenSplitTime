@@ -40,6 +40,7 @@ RSpec.describe "visit the spread page" do
 
     verify_efforts_present(subject_efforts.female)
     verify_efforts_absent(subject_efforts.male)
+    verify_efforts_absent(subject_efforts.nonbinary)
   end
 
   scenario "A user chooses different display styles" do

@@ -52,6 +52,10 @@ class CourseBestEffortsDisplay < BasePresenter
     events.select { |event| event.scheduled_start_time < Time.now }.max_by(&:scheduled_start_time)
   end
 
+  def relevant_genders
+    all_efforts.distinct.pluck(:gender)
+  end
+
   def time_header_text
     segment_is_full_course? ? "Course Time" : "Segment Time"
   end

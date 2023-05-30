@@ -308,7 +308,7 @@ module DropdownHelper
   end
 
   def gender_dropdown_menu(view_object)
-    genders = view_object.event_genders
+    genders = view_object.relevant_genders
     genders.unshift("combined")
 
     dropdown_items = genders.map do |gender|

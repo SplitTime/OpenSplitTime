@@ -37,8 +37,8 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     effort_times_rows.map(&:id)
   end
 
-  def event_genders
-    @event_genders ||= event_efforts.distinct.pluck(:gender).sort
+  def relevant_genders
+    @relevant_genders ||= event_efforts.distinct.pluck(:gender).sort
   end
 
   def lap_splits

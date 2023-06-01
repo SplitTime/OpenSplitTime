@@ -5,5 +5,5 @@
                data: { bs_toggle: "dropdown" } %>
 <div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
   <%= link_to "Edit", edit_effort_path(effort), class: "dropdown-item", data: { turbo_frame: "form_modal" } %>
-  <%= link_to "Delete", effort_path(effort), class: "dropdown-item", data: { method: :delete, confirm: "This cannot be undone. Proceed?" } %>
+  <%= link_to "Delete", effort_path(effort), class: "dropdown-item", data: { turbo_method: :delete, turbo_confirm: "This cannot be undone. Proceed?" } %>
 </div>

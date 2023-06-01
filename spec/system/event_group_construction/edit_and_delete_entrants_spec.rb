@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "reconcile entrants from the reconcile view", js: true do
+RSpec.describe "edit and delete entrants from the event group entrants view", js: true do
   include ActionView::RecordIdentifier
   include ActiveJob::TestHelper
 

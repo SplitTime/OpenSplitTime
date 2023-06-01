@@ -20,6 +20,10 @@ class EffortPolicy < ApplicationPolicy
     @effort = effort
   end
 
+  def destroy?
+    user.authorized_to_edit?(record)
+  end
+
   def delete_photo?
     user.authorized_to_edit?(effort)
   end

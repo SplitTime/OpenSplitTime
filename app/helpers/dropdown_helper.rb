@@ -351,42 +351,36 @@ module DropdownHelper
 
   def event_group_actions_dropdown(view_object)
     dropdown_items = [
-      { name: "Edit/Delete Group",
-        link: edit_organization_event_group_path(view_object.organization, view_object.event_group) },
-      { name: "Duplicate Group",
+      {
+        name: "Edit/Delete Group",
+        link: edit_organization_event_group_path(view_object.organization, view_object.event_group),
+      },
+      {
+        name: "Duplicate Group",
         link: new_duplicate_event_group_path(existing_id: view_object.event_group.id),
-        visible: view_object.events.present? },
-      { role: :separator,
-        visible: view_object.events.present? },
-      { name: "Make Public",
-        link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: false }),
         visible: view_object.events.present?,
-        data: { confirm: I18n.t("event_groups.setup.make_public_confirm", event_group_name: view_object.event_group_name) },
-        disabled: !view_object.concealed?,
-        method: :put },
-      { name: "Make Private",
-        link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { concealed: true }),
+      },
+      {
+        role: :separator,
         visible: view_object.events.present?,
-        data: { confirm: I18n.t("event_groups.setup.make_private_confirm", event_group_name: view_object.event_group_name) },
-        disabled: view_object.concealed?,
-        method: :put },
-      { role: :separator,
-        visible: view_object.events.present? },
-      { name: "Enable Live",
-        link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { available_live: true }),
+      },
+      {
+        name: "Make Public or Private",
+        link: setup_summary_event_group_path(view_object.event_group),
         visible: view_object.events.present?,
-        data: { confirm: I18n.t("event_groups.setup.enable_live_confirm", event_group_name: view_object.event_group_name) },
-        disabled: view_object.available_live?,
-        method: :put },
-      { name: "Disable Live",
-        link: organization_event_group_path(view_object.organization, view_object.event_group, event_group: { available_live: false }),
+      },
+      {
+        name: "Enable or Disable Live",
+        link: setup_summary_event_group_path(view_object.event_group),
         visible: view_object.events.present?,
-        data: { confirm: I18n.t("event_groups.setup.disable_live_confirm", event_group_name: view_object.event_group_name) },
-        disabled: !view_object.available_live?,
-        method: :put },
-      { role: :separator },
-      { name: "Add/Remove Stewards",
-        link: organization_path(view_object.organization, display_style: "stewards") }
+      },
+      {
+        role: :separator,
+      },
+      {
+        name: "Add/Remove Stewards",
+        link: organization_path(view_object.organization, display_style: "stewards"),
+      },
     ]
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end

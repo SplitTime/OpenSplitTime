@@ -108,7 +108,7 @@ module EventGroupSetupWidgetHelper
       icon_only = true
     else
       type = :regular
-      tooltip = "View a summary of your Event Group"
+      tooltip = "Change public/private status, enable and disable live entry, and see a summary of your Event Group"
       icon_only = false
     end
 

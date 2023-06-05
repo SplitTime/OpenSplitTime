@@ -6,7 +6,6 @@ class Live::EventGroupsController < Live::BaseController
   def live_entry
     @presenter = EventGroupPresenter.new(@event_group, params, current_user)
     verify_available_live(@event_group)
-    render :new_live_entry
   end
 
   # GET /live/event_groups/1/trigger_raw_times_push

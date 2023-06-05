@@ -138,7 +138,9 @@ module Api
         end
 
         if errors.empty?
-          force_submit = !!params[:force_submit]
+          force_submit = params[:force_submit] || false
+          # If params[:force_submit] is a String, convert it to boolean
+          force_submit = force_submit.to_boolean if force_submit.respond_to?(:to_boolean)
           response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
                                                              force_submit: force_submit, mark_as_reviewed: true, current_user_id: current_user.id)
           problem_rows = response.resources[:problem_rows]

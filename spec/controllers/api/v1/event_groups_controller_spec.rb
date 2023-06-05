@@ -28,7 +28,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "when a sort parameter is provided" do
-        let(:params) { {sort: "name"} }
+        let(:params) { { sort: "name" } }
 
         it "sorts properly in ascending order based on the parameter" do
           make_request
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "when a negative sort parameter is provided" do
-        let(:params) { {sort: "-name"} }
+        let(:params) { { sort: "-name" } }
 
         it "sorts properly in descending order based on the parameter" do
           make_request
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "when multiple sort parameters are provided" do
-        let(:params) { {sort: "available_live,name"} }
+        let(:params) { { sort: "available_live,name" } }
 
         it "sorts properly on multiple fields" do
           make_request
@@ -64,7 +64,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "when a filter[:available_live] param is given" do
-        let(:params) { {filter: {available_live: true}} }
+        let(:params) { { filter: { available_live: true } } }
 
         it "returns only those event_groups that are available live" do
           get :index, params: params
@@ -84,7 +84,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
     via_login_and_jwt do
       context "when an existing event_group.id is provided" do
-        let(:params) { {id: event_group} }
+        let(:params) { { id: event_group } }
         let(:data_entry_groups) do
           [
             {
@@ -178,7 +178,7 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "if the event_group does not exist" do
-        let(:params) { {id: 0} }
+        let(:params) { { id: 0 } }
 
         it "returns an error" do
           make_request
@@ -197,7 +197,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
     via_login_and_jwt do
       context "when provided data is valid" do
-        let(:params) { {data: {type: type, attributes: {name: "Test Event Group", organization_id: organization.id, home_time_zone: home_time_zone}}} }
+        let(:params) { { data: { type: type, attributes: { name: "Test Event Group", organization_id: organization.id, home_time_zone: home_time_zone } } } }
 
         it "returns a successful json response" do
           make_request
@@ -216,8 +216,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#update" do
     subject(:make_request) { put :update, params: params }
-    let(:params) { {id: event_group_id, data: {type: type, attributes: attributes}} }
-    let(:attributes) { {name: "Updated EventGroup Name"} }
+    let(:params) { { id: event_group_id, data: { type: type, attributes: attributes } } }
+    let(:attributes) { { name: "Updated EventGroup Name" } }
 
     via_login_and_jwt do
       context "when the event_group exists" do
@@ -250,7 +250,7 @@ RSpec.describe Api::V1::EventGroupsController do
   end
 
   describe "#destroy" do
-    subject(:make_request) { delete :destroy, params: {id: event_group_id} }
+    subject(:make_request) { delete :destroy, params: { id: event_group_id } }
 
     via_login_and_jwt do
       context "when the record exists" do
@@ -298,15 +298,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
     context "when provided with an array of raw_time hashes and data_format: :jsonapi_batch" do
       let(:split_name) { ordered_splits.second.base_name }
-      let(:request_params) { {id: event_group.id, data_format: "jsonapi_batch", data: data, strict: strict, unique_key: unique_key, limited_response: limited_response} }
+      let(:request_params) { { id: event_group.id, data_format: "jsonapi_batch", data: data, strict: strict, unique_key: unique_key, limited_response: limited_response } }
       let(:data) do
         [
-          {type: "raw_time",
-           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
-                        withPacer: "true", stoppedHere: "false", source: source}},
-          {type: "raw_time",
-           attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
-                        withPacer: "true", stoppedHere: "true", source: source}}
+          { type: "raw_time",
+            attributes: { bibNumber: bib_number, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
+                          withPacer: "true", stoppedHere: "false", source: source } },
+          { type: "raw_time",
+            attributes: { bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
+                          withPacer: "true", stoppedHere: "true", source: source } }
         ]
       end
       let(:source) { "ost-remote-1234" }
@@ -343,12 +343,12 @@ RSpec.describe Api::V1::EventGroupsController do
         via_login_and_jwt do
           let(:data) do
             [
-              {type: "raw_time",
-               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
-                            withPacer: "true", stoppedHere: "false", source: source}},
-              {type: "raw_time",
-               attributes: {bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
-                            withPacer: "true", stoppedHere: "true", source: source}}
+              { type: "raw_time",
+                attributes: { bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
+                              withPacer: "true", stoppedHere: "false", source: source } },
+              { type: "raw_time",
+                attributes: { bibNumber: bib_number_leading_zeros, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
+                              withPacer: "true", stoppedHere: "true", source: source } }
             ]
           end
           let(:bib_number_leading_zeros) { "00#{bib_number}" }
@@ -372,12 +372,12 @@ RSpec.describe Api::V1::EventGroupsController do
         via_login_and_jwt do
           let(:data) do
             [
-              {type: "raw_time",
-               attributes: {bibNumber: nil, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
-                            withPacer: "true", stoppedHere: "false", source: source}},
-              {type: "raw_time",
-               attributes: {bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
-                            withPacer: "true", stoppedHere: "true", source: source}}
+              { type: "raw_time",
+                attributes: { bibNumber: nil, splitName: split_name, subSplitKind: "in", enteredTime: entered_time_in,
+                              withPacer: "true", stoppedHere: "false", source: source } },
+              { type: "raw_time",
+                attributes: { bibNumber: bib_number, splitName: split_name, subSplitKind: "out", enteredTime: entered_time_out,
+                              withPacer: "true", stoppedHere: "true", source: source } }
             ]
           end
 
@@ -464,7 +464,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#pull_raw_times" do
     subject(:make_request) { patch :pull_raw_times, params: request_params }
-    let(:request_params) { {id: event_group.id} }
+    let(:request_params) { { id: event_group.id } }
 
     let(:event_group) { event_groups(:hardrock_2016) }
     let(:event) { events(:hardrock_2016) }
@@ -580,9 +580,9 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#enrich_raw_time_row" do
     subject(:make_request) { get :enrich_raw_time_row, params: request_params }
-    let(:request_params) { {id: event_group.id, data: {raw_time_row: raw_time_row}} }
-    let(:raw_time_row) { {raw_times: raw_time_attributes} }
-    let(:raw_time_attributes) { {0 => raw_time_attributes_1, 1 => raw_time_attributes_2}.compact }
+    let(:request_params) { { id: event_group.id, data: { raw_time_row: raw_time_row } } }
+    let(:raw_time_row) { { raw_times: raw_time_attributes } }
+    let(:raw_time_attributes) { { 0 => raw_time_attributes_1, 1 => raw_time_attributes_2 }.compact }
     let(:errors) { [] }
 
     let(:event_group) { event_groups(:hardrock_2016) }
@@ -591,8 +591,8 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:effort_2) { efforts(:hardrock_2016_missing_telluride_out) }
 
     context "when a valid raw_time_row is submitted" do
-      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "adds split_time_exists and correctly interprets all attributes, returning no errors" do
@@ -618,8 +618,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the bib number includes leading zeros" do
-      let(:raw_time_attributes_1) { {bib_number: "00#{effort_1.bib_number}", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: "00#{effort_1.bib_number}", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: "00#{effort_1.bib_number}", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: "00#{effort_1.bib_number}", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "does not result in an error" do
@@ -633,7 +633,7 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when only one raw_time is included" do
-      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
+      let(:raw_time_attributes_1) { { bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
       let(:raw_time_attributes_2) { nil }
 
       via_login_and_jwt do
@@ -660,8 +660,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when only one existing time is present" do
-      let(:raw_time_attributes_1) { {bib_number: effort_2.bib_number.to_s, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: effort_2.bib_number.to_s, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: effort_2.bib_number.to_s, entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: effort_2.bib_number.to_s, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "correctly computes split_time_exists" do
@@ -687,8 +687,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when a an entered_time is invalid" do
-      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: "11:22:99", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: effort_1.bib_number, entered_time: "11:22:99", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "returns the raw_time without a military_time attribute" do
@@ -714,8 +714,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the bib number is not found" do
-      let(:raw_time_attributes_1) { {bib_number: "999", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: "999", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: "999", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: "999", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "returns data without adding split_time_exists" do
@@ -741,8 +741,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the split name is not found" do
-      let(:raw_time_attributes_1) { {bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Nonexistent", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Nonexistent", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: effort_1.bib_number, entered_time: "11:22:33", split_name: "Nonexistent", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: effort_1.bib_number, entered_time: "11:23:34", split_name: "Nonexistent", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "returns data without adding split_time_exists and adds a descriptive error" do
@@ -768,8 +768,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the bib number contains an asterisk" do
-      let(:raw_time_attributes_1) { {bib_number: "9*9", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in"} }
-      let(:raw_time_attributes_2) { {bib_number: "9*9", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true"} }
+      let(:raw_time_attributes_1) { { bib_number: "9*9", entered_time: "11:22:33", split_name: "Telluride", with_pacer: "true", sub_split_kind: "in" } }
+      let(:raw_time_attributes_2) { { bib_number: "9*9", entered_time: "11:23:34", split_name: "Telluride", with_pacer: "true", sub_split_kind: "out", stopped_here: "true" } }
 
       via_login_and_jwt do
         it "returns data without adding split_time_exists" do
@@ -797,8 +797,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#submit_raw_time_rows" do
     subject(:make_request) { post :submit_raw_time_rows, params: request_params }
-    let(:request_params) { {id: event_group.id, data: raw_time_data, force_submit: force_submit} }
-    let(:raw_time_data) { {"0" => {"raw_time_row" => {"raw_times" => {"0" => raw_time_attributes_1, "1" => raw_time_attributes_2}}}} }
+    let(:request_params) { { id: event_group.id, data: raw_time_data, force_submit: force_submit } }
+    let(:raw_time_data) { [{ "raw_time_row" => { "raw_times" => [raw_time_attributes_1, raw_time_attributes_2] } }] }
 
     let(:event_group) { event_groups(:hardrock_2016) }
     let(:effort_1) { efforts(:hardrock_2016_progress_sherman) }
@@ -808,8 +808,8 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:bib_number_2) { effort_2.bib_number.to_s }
 
     context "when data is valid and force_submit is true" do
-      let(:raw_time_attributes_1) { {bib_number: bib_number_1, entered_time: "14:00:00", split_name: "Telluride", sub_split_kind: "in", source: "Live Entry (1)"} }
-      let(:raw_time_attributes_2) { {bib_number: bib_number_1, entered_time: "14:05:00", split_name: "Telluride", sub_split_kind: "out", source: "Live Entry (1)"} }
+      let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "14:00:00", split_name: "Telluride", sub_split_kind: "in", source: "Live Entry (1)" } }
+      let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "14:05:00", split_name: "Telluride", sub_split_kind: "out", source: "Live Entry (1)" } }
       let(:force_submit) { "true" }
 
       via_login_and_jwt do
@@ -828,42 +828,42 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when data is valid but duplicates exist and force_submit is false" do
-      let(:raw_time_attributes_1) { {bib_number: bib_number_1, entered_time: "14:00:00", split_name: "Telluride", sub_split_kind: "in", source: "Live Entry (1)"} }
-      let(:raw_time_attributes_2) { {bib_number: bib_number_1, entered_time: "14:05:00", split_name: "Telluride", sub_split_kind: "out", source: "Live Entry (1)"} }
-      let(:force_submit) { "false" }
+      let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "14:00:00", split_name: "Telluride", sub_split_kind: "in", source: "Live Entry (1)" } }
+      let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "14:05:00", split_name: "Telluride", sub_split_kind: "out", source: "Live Entry (1)" } }
+      let(:force_submit) { false }
       let(:expected) do
-        [{"rawTimes" =>
-                             [{"id" => nil,
-                               "splitName" => "Telluride",
-                               "bibNumber" => bib_number_1,
-                               "absoluteTime" => nil,
-                               "enteredTime" => "14:00:00",
-                               "enteredLap" => nil,
-                               "withPacer" => false,
-                               "stoppedHere" => false,
-                               "source" => "Live Entry (1)",
-                               "remarks" => nil,
-                               "dataStatus" => "good",
-                               "lap" => 1,
-                               "splitTimeExists" => true,
-                               "militaryTime" => "14:00:00",
-                               "subSplitKind" => "In"},
-                              {"id" => nil,
-                               "splitName" => "Telluride",
-                               "bibNumber" => bib_number_1,
-                               "absoluteTime" => nil,
-                               "enteredTime" => "14:05:00",
-                               "enteredLap" => nil,
-                               "withPacer" => false,
-                               "stoppedHere" => false,
-                               "source" => "Live Entry (1)",
-                               "remarks" => nil,
-                               "dataStatus" => "good",
-                               "lap" => 1,
-                               "splitTimeExists" => true,
-                               "militaryTime" => "14:05:00",
-                               "subSplitKind" => "Out"}],
-          "errors" => ["bad or duplicate time"]}]
+        [{ "rawTimes" =>
+             [{ "id" => nil,
+                "splitName" => "Telluride",
+                "bibNumber" => bib_number_1,
+                "absoluteTime" => nil,
+                "enteredTime" => "14:00:00",
+                "enteredLap" => nil,
+                "withPacer" => false,
+                "stoppedHere" => false,
+                "source" => "Live Entry (1)",
+                "remarks" => nil,
+                "dataStatus" => "good",
+                "lap" => 1,
+                "splitTimeExists" => true,
+                "militaryTime" => "14:00:00",
+                "subSplitKind" => "In" },
+              { "id" => nil,
+                "splitName" => "Telluride",
+                "bibNumber" => bib_number_1,
+                "absoluteTime" => nil,
+                "enteredTime" => "14:05:00",
+                "enteredLap" => nil,
+                "withPacer" => false,
+                "stoppedHere" => false,
+                "source" => "Live Entry (1)",
+                "remarks" => nil,
+                "dataStatus" => "good",
+                "lap" => 1,
+                "splitTimeExists" => true,
+                "militaryTime" => "14:05:00",
+                "subSplitKind" => "Out" }],
+           "errors" => ["bad or duplicate time"] }]
       end
 
       via_login_and_jwt do
@@ -881,8 +881,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the bib number does not belong at the split" do
-      let(:raw_time_attributes_1) { {bib_number: bib_number_1, entered_time: "09:00:00", split_name: "Aid 2", sub_split_kind: "in", source: "Live Entry (1)"} }
-      let(:raw_time_attributes_2) { {bib_number: bib_number_1, entered_time: "09:05:00", split_name: "Aid 2", sub_split_kind: "out", source: "Live Entry (1)"} }
+      let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "09:00:00", split_name: "Aid 2", sub_split_kind: "in", source: "Live Entry (1)" } }
+      let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "09:05:00", split_name: "Aid 2", sub_split_kind: "out", source: "Live Entry (1)" } }
       let(:force_submit) { true }
 
       via_login_and_jwt do
@@ -900,8 +900,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the bib number is invalid" do
-      let(:raw_time_attributes_1) { {bib_number: "999", entered_time: "09:00:00", split_name: "Aid 2", sub_split_kind: "in", source: "Live Entry (1)"} }
-      let(:raw_time_attributes_2) { {bib_number: "999", entered_time: "09:05:00", split_name: "Aid 2", sub_split_kind: "out", source: "Live Entry (1)"} }
+      let(:raw_time_attributes_1) { { bib_number: "999", entered_time: "09:00:00", split_name: "Aid 2", sub_split_kind: "in", source: "Live Entry (1)" } }
+      let(:raw_time_attributes_2) { { bib_number: "999", entered_time: "09:05:00", split_name: "Aid 2", sub_split_kind: "out", source: "Live Entry (1)" } }
       let(:force_submit) { true }
 
       via_login_and_jwt do
@@ -919,8 +919,8 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when the split_name is invalid" do
-      let(:raw_time_attributes_1) { {bib_number: bib_number_1, entered_time: "09:00:00", split_name: "Nonexistent", sub_split_kind: "in", source: "Live Entry (1)"} }
-      let(:raw_time_attributes_2) { {bib_number: bib_number_1, entered_time: "09:05:00", split_name: "Nonexistent", sub_split_kind: "out", source: "Live Entry (1)"} }
+      let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "09:00:00", split_name: "Nonexistent", sub_split_kind: "in", source: "Live Entry (1)" } }
+      let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "09:05:00", split_name: "Nonexistent", sub_split_kind: "out", source: "Live Entry (1)" } }
       let(:force_submit) { true }
 
       via_login_and_jwt do
@@ -941,7 +941,7 @@ RSpec.describe Api::V1::EventGroupsController do
   describe "#not_expected" do
     subject(:make_request) { get :not_expected, params: request_params }
     let(:event_group) { event_groups(:sum) }
-    let(:request_params) { {id: event_group.id, split_name: split_name} }
+    let(:request_params) { { id: event_group.id, split_name: split_name } }
 
     context "when the split_name is valid" do
       let(:split_name) { "Molas Pass (Aid1)" }

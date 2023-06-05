@@ -124,13 +124,13 @@ module Api
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first
 
-        data = params[:data] || ActionController::Parameters.new({})
+        data = params[:data] || []
         errors = []
         raw_time_rows = []
 
-        data.values.each do |raw_times_data|
+        data.each do |raw_times_data|
           if raw_times_data[:raw_time_row]
-            raw_time_rows << parse_raw_times_data(ActionController::Parameters.new(raw_times_data))
+            raw_time_rows << parse_raw_times_data(raw_times_data)
           else
             errors << { title: "Request must be in the form of {data: {0: {rawTimeRow: {...}}, 1: {rawTimeRow: {...}}}}",
                         detail: { attributes: raw_times_data } }
@@ -138,7 +138,9 @@ module Api
         end
 
         if errors.empty?
-          force_submit = !!params[:force_submit]&.to_boolean
+          force_submit = params[:force_submit] || false
+          # If params[:force_submit] is a String, convert it to boolean
+          force_submit = force_submit.to_boolean if force_submit.respond_to?(:to_boolean)
           response = Interactors::SubmitRawTimeRows.perform!(event_group: event_group, raw_time_rows: raw_time_rows,
                                                              force_submit: force_submit, mark_as_reviewed: true, current_user_id: current_user.id)
           problem_rows = response.resources[:problem_rows]
@@ -168,8 +170,11 @@ module Api
       def parse_raw_times_data(raw_times_data)
         raw_time_row_attributes = raw_times_data.require(:raw_time_row).permit(raw_times: RawTimeParameters.permitted)
         raw_times_attributes = raw_time_row_attributes[:raw_times] || {}
+        # Sometimes raw_times_attributes ends up as an Array, other times as a Hash in the form of {0: {...}, 1: {...}}
+        # This line ensures that raw_times_attributes is always an Array.
+        raw_times_attributes = raw_times_attributes.values if raw_times_attributes.respond_to?(:values)
 
-        raw_times = raw_times_attributes.values.map do |attributes|
+        raw_times = raw_times_attributes.map do |attributes|
           id = attributes[:id]
           raw_time = @resource.raw_times.find_by(id: id) if id.present?
           raw_time ||= @resource.raw_times.new

@@ -1,3 +1,3 @@
-import "./new_live_entry";
+import "./live_entry";
 import Inputmask from "inputmask/dist/jquery.inputmask";
 import "datatables.net-bs5";

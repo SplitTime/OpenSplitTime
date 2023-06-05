@@ -43,6 +43,16 @@
                 });
         },
 
+        setAjaxDefaults: function() {
+            $.ajaxSetup({
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+        },
+
         setCurrentUser: function() {
             var script_tag = document.getElementById('current_user');
             if (script_tag) {
@@ -122,9 +132,10 @@
          */
         init: function () {
             // Sets the currentEventGroupId once
-            var $div = $('#js-event-group-id');
+            const $div = $('#js-event-group-id');
             liveEntry.currentEventGroupId = $div.data('event-group-id');
             liveEntry.serverURI = $div.data('server-uri');
+            liveEntry.setAjaxDefaults();
             liveEntry.getEventLiveEntryData();
             liveEntry.setCurrentUser();
             liveEntry.importLiveWarning = $('#js-import-live-warning').hide().detach();
@@ -938,7 +949,7 @@
                     timeRows.push({rawTimeRow: timeRow});
                 });
 
-                var data = {data: timeRows, forceSubmit: forceSubmit};
+                var data = JSON.stringify({data: timeRows, forceSubmit: forceSubmit});
                 $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/submit_raw_time_rows', data, function (response) {
                     liveEntry.timeRowsTable.removeTimeRows(tableNodes);
                     liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);

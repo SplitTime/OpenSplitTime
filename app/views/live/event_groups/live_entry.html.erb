@@ -26,7 +26,11 @@
   </div>
 </header>
 
-<article id="live-entry-container" class="container" data-controller="live-entry notifications" data-live-entry-event-group-id-value="<%= @event_group.id %>">
+<article id="live-entry-container"
+         class="container"
+         data-controller="raw-times-push notifications"
+         data-raw-times-push-event-group-id-value="<%= @event_group.id %>"
+>
   <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">

@@ -39,7 +39,7 @@
   <div class="row">
     <div class="col-xs-8">
       <% if @presenter.users.present? %>
-        <%= render 'users', view_object: @presenter %>
+        <%= render "users", view_object: @presenter %>
       <% else %>
         <h4><%= "No users match this search" if params.dig(:filter, :search) %></h4>
       <% end %>

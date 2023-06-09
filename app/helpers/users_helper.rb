@@ -9,7 +9,7 @@ module UsersHelper
                         bs_placement: :bottom,
                         bs_original_title: "Delete user" },
                 id: "delete_user_#{user.id}",
-                class: "btn btn-danger" }
+                class: "btn btn-sm btn-outline-danger" }
 
     button_to(url, options) { fa_icon("trash") }
   end
@@ -21,7 +21,7 @@ module UsersHelper
                         bs_placement: :bottom,
                         bs_original_title: "Impersonate user" },
                 id: "impersonate_user_#{user.id}",
-                class: "btn btn-warning" }
+                class: "btn btn-sm btn-warning" }
 
     button_to(url, options) { fa_icon("theater-masks") }
   end

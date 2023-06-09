@@ -17,7 +17,7 @@
 
         <tbody>
         <% view_object.users.each do |user| %>
-          <tr>
+          <tr class="align-middle">
             <td><%= link_to user.full_name, user %></td>
             <td><%= user.email %></td>
             <td><%= day_time_full_format(user.confirmed_at) %></td>
@@ -25,7 +25,7 @@
             <td>
               <%= form_for(user) do |f| %>
                 <%= f.select(:role, User.roles.keys.map { |role| [role.titleize, role] }) %>
-                <%= f.submit "Change Role", :class => "btn btn-primary" %>
+                <%= f.submit "Change Role", :class => "btn btn-outline-primary ms-2" %>
               <% end %>
             </td>
             <td><%= link_to_delete_user(user) unless user == current_user %></td>

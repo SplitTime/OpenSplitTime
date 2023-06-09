@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_215940) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_09_162541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -514,7 +514,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_215940) do
     t.string "status"
     t.string "ip"
     t.string "response"
-    t.string "type"
+    t.string "event_type"
     t.string "useragent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

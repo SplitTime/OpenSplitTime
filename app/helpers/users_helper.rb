@@ -30,6 +30,7 @@ module UsersHelper
     url = admin_impersonate_stop_path
     options = { method: :post,
                 data: { controller: "tooltip",
+                        turbo: false,
                         bs_placement: :bottom,
                         bs_original_title: "Impersonate user" },
                 class: "btn btn-outline-light" }

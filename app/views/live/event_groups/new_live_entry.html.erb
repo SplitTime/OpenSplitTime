@@ -9,9 +9,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Live Entry</li>
@@ -21,11 +21,11 @@
     </div>
     <%= content_tag(:div, id: "js-event-group-id", data: { event_group_id: @event_group.id, server_uri: ::OstConfig.base_uri }) {} %>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
-<article class="container" data-controller="live-entry notifications" data-live-entry-event-group-id-value="<%= @event_group.id %>">
+<article class="container" data-controller="raw-times-push notifications" data-raw-times-push-event-group-id-value="<%= @event_group.id %>">
   <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">
@@ -130,7 +130,7 @@
             <thead>
             <tr>
               <th>Split</th>
-              <th><%= pdu('singular').titlecase %></th>
+              <th><%= pdu("singular").titlecase %></th>
               <th>Time of Day</th>
               <th>Elapsed Time</th>
               <th></th>

@@ -14,7 +14,7 @@ module UsersHelper
     button_to(url, options) { fa_icon("trash") }
   end
 
-  def link_to_become_user(user)
+  def button_to_impersonate(user)
     url = admin_impersonate_start_path(user)
     options = { method: :post,
                 data: { controller: "tooltip",
@@ -24,5 +24,16 @@ module UsersHelper
                 class: "btn btn-warning" }
 
     button_to(url, options) { fa_icon("theater-masks") }
+  end
+
+  def button_to_stop_impersonating
+    url = admin_impersonate_stop_path
+    options = { method: :post,
+                data: { controller: "tooltip",
+                        bs_placement: :bottom,
+                        bs_original_title: "Impersonate user" },
+                class: "btn btn-outline-light" }
+
+    button_to(url, options) { "Stop impersonating" }
   end
 end

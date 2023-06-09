@@ -29,7 +29,7 @@
               <% end %>
             </td>
             <td><%= link_to_delete_user(user) unless user == current_user %></td>
-            <td><%= link_to_become_user(user) unless user == current_user %></td>
+            <td><%= button_to_impersonate(user) unless user == current_user %></td>
           </tr>
         <% end %>
         </tbody>

@@ -2,19 +2,13 @@
   <% if current_user && current_user != true_user %>
     <aside class="navbar bg-warning">
       <div class="container-fluid">
-        <div class="row d-flex align-items-center">
-          <div class="col text-start">
-            <h5>
-              <%= "#{true_user.full_name} is impersonating #{current_user.full_name}. " %>
-            </h5>
-          </div>
-          <div class="col text-end">
-            <%= link_to "Stop impersonating",
-                        admin_impersonate_stop_path,
-                        method: :post,
-                        data: { turbo: false },
-                        class: "btn btn-outline-light" %>
-          </div>
+        <div class="text-start mt-2">
+          <h5>
+            <%= "#{true_user.full_name} is impersonating #{current_user.full_name}." %>
+          </h5>
+        </div>
+        <div class="text-end ms-auto">
+          <%= button_to_stop_impersonating %>
         </div>
       </div>
     </aside>

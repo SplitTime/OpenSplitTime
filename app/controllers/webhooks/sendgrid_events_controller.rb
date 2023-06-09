@@ -9,6 +9,8 @@ class Webhooks::SendgridEventsController < ::ApplicationController
 
     rows.each do |row|
       sendgrid_event = SendgridEvent.new(row.permit(*sendgrid_event_params))
+      sendgrid_event.event_type = row[:type]
+
       unless sendgrid_event.save
         Sentry.capture_message("Failed to save SendgridEvent", extra: { sendgrid_event: sendgrid_event, errors: sendgrid_event.errors.full_messages })
         status = :unprocessable_entity
@@ -37,7 +39,6 @@ class Webhooks::SendgridEventsController < ::ApplicationController
       :status,
       :ip,
       :response,
-      :type,
       :useragent,
     ]
   end

@@ -12,7 +12,7 @@ class SendgridEventResource < Madmin::Resource
   attribute :status
   attribute :ip
   attribute :response
-  attribute :type
+  attribute :event_type
   attribute :useragent
   attribute :created_at, form: false
   attribute :updated_at, form: false

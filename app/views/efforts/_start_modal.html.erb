@@ -20,13 +20,13 @@
       <%= form_with url: start_effort_path(effort), method: :patch, data: { turbo_frame: "_top" } do |f| %>
         <div class="mb-3">
           <%= f.label :scheduled_start_time, class: "mb-1" %>
-          <p class="form-control disabled bg-light"><%= l(effort.scheduled_start_time_local, format: :datetime_input) %></p>
+          <p class="form-control disabled bg-light"><%= l(effort.assumed_start_time_local, format: :datetime_input) %></p>
         </div>
 
         <div class="mb-3">
           <%= f.label :actual_start_time, class: "mb-1" %>
           <%= f.text_field :actual_start_time,
-                           value: l(effort.scheduled_start_time_local, format: :datetime_input),
+                           value: l(effort.assumed_start_time_local, format: :datetime_input),
                            autofocus: true,
                            class: "form-control" %>
         </div>

@@ -219,9 +219,9 @@ module ETL
 
     def find_country_code_by_nickname(country_string)
       return nil if country_string.blank?
+      return nil unless I18n.exists?("nicknames.#{country_string}")
 
-      country_code = I18n.t("nicknames.#{country_string}")
-      country_code.include?("translation missing") ? nil : country_code
+      I18n.t("nicknames.#{country_string}")
     end
 
     def modernize_date(date)

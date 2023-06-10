@@ -517,7 +517,16 @@ RSpec.shared_examples_for "transformable" do
       end
     end
 
-    context 'when existing gender starts with neither "M" nor "F"' do
+    context 'when existing gender starts with "N"' do
+      let(:attributes) { {first_name: "Joe", gender: "N"} }
+
+      it 'changes the value to "nonbinary"' do
+        subject.normalize_gender!
+        expect(subject[:gender]).to eq("nonbinary")
+      end
+    end
+
+    context 'when existing gender starts with an unrecognized letter' do
       let(:attributes) { {first_name: "Joe", gender: "Hello"} }
 
       it "changes the value to nil" do

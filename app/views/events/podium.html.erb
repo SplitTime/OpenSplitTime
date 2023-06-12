@@ -7,9 +7,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-        <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+        <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <% if @presenter.multiple_events? %>
               <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
@@ -18,24 +18,24 @@
             <li class="breadcrumb-item active">Podium</li>
           </ul>
         </div>
-        <%= render 'time_and_course_info' %>
+        <%= render "time_and_course_info" %>
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'view_buttons', view_object: @presenter %>
+    <%= render "view_buttons", view_object: @presenter %>
   </div>
 </header>
 
 <aside class="ost-toolbar d-print-none">
   <div class="container">
     <div class="row">
-      <%= render 'event_groups/event_widget', events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
       <div class="col d-inline-flex">
         <%= explore_dropdown_menu(@presenter) %>
       </div>
       <div class="col text-end">
         <div class="btn-group btn-group-ost">
-          <% [:category, :fastest_times].each do |sort_method| %>
+          <% [:category, :best_performance].each do |sort_method| %>
             <%= link_to sort_method.to_s.titleize,
                         request.params.merge(sort: sort_method),
                         class: "btn #{ @presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary' }" %>
@@ -50,7 +50,7 @@
   <% if @presenter.template_name %>
     <table class="table table-sm table-striped">
       <% @presenter.sorted_categories.each do |category| %>
-        <%= render 'podium_category', category: category %>
+        <%= render "podium_category", category: category %>
       <% end %>
     </table>
   <% else %>

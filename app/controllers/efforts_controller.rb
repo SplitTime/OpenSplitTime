@@ -7,7 +7,7 @@ class EffortsController < ApplicationController
 
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                                   .where(prepared_params[:filter])
+                 .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
         @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
@@ -83,12 +83,11 @@ class EffortsController < ApplicationController
       end
 
       format.turbo_stream do
-        if @effort.update(permitted_params)
-          presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
-          render :update, locals: { effort: @effort, presenter: presenter }
-        else
-          render :update, locals: { effort: @effort, presenter: presenter }, status: :unprocessable_entity
-        end
+        success = @effort.update(permitted_params)
+        presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+        status = success ? :ok : :unprocessable_entity
+
+        render :update, locals: { effort: @effort, presenter: presenter }, status: status
       end
     end
   end

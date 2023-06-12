@@ -171,7 +171,7 @@ class EventsController < ApplicationController
   # GET /events/1/podium
   def podium
     template = Results::FillEventTemplate.perform(@event)
-    @presenter = PodiumPresenter.new(@event, template, prepared_params, current_user)
+    @presenter = PodiumPresenter.new(@event, view_context, template: template)
   end
 
   # Actions related to the event/effort/split_time relationship

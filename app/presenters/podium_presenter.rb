@@ -61,7 +61,7 @@ class PodiumPresenter < BasePresenter
   def ordered_fixed_categories
     categories.select(&:fixed_position?)
         .group_by { |c| [c.low_age, c.high_age] }.values
-        .map { |category_pair| category_pair.sort_by(&:best_performance) }
+        .map { |category_pair| category_pair.sort_by(&:best_performance).reverse }
         .flatten
   end
 

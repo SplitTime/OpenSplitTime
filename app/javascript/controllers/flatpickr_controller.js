@@ -10,25 +10,31 @@ export default class extends Controller {
   }
 
   connect() {
+    const controller = this
     const selector = `#${this.element.id}`
     const dateFormat = this.enableTimeValue ? "m/d/Y H:i:S" : "m/d/Y"
     const datetime = new Date(this.element.value)
 
-    this._flatpickr = flatpickr(selector, {
+    flatpickr(selector, {
       allowInput: true,
       enableTime: this.enableTimeValue,
       dateFormat: dateFormat,
       defaultDate: datetime,
     });
 
-    this.element.addEventListener("keyup", (event) => {
-      if (event.key === "Escape") {
+    this.element.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && controller.element._flatpickr.isOpen) {
+        event.stopPropagation()
         this.hide()
       }
     })
   }
 
+  disconnect() {
+    this.element._flatpickr.destroy()
+  }
+
   hide() {
-    this._flatpickr.close()
+    this.element._flatpickr.close()
   }
 }

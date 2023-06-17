@@ -14,10 +14,21 @@ export default class extends Controller {
     const dateFormat = this.enableTimeValue ? "m/d/Y H:i:S" : "m/d/Y"
     const datetime = new Date(this.element.value)
 
-    flatpickr(selector, {
+    this._flatpickr = flatpickr(selector, {
+      allowInput: true,
       enableTime: this.enableTimeValue,
       dateFormat: dateFormat,
       defaultDate: datetime,
     });
+
+    this.element.addEventListener("keyup", (event) => {
+      if (event.key === "Escape") {
+        this.hide()
+      }
+    })
+  }
+
+  hide() {
+    this._flatpickr.close()
   }
 }

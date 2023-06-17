@@ -168,12 +168,7 @@
           <div class="row">
             <div class="mb-3 col-6">
               <%= form.label :start_time, class: "mb-1 required" %>
-              <%= form.text_field :scheduled_start_time_local,
-                                  class: "form-control",
-                                  value: presenter.event.scheduled_start_time_local&.strftime("%Y-%m-%d %H:%M"),
-                                  data: {
-                                    controller: "flatpickr",
-                                  } %>
+              <%= form.datetimepicker_field :scheduled_start_time_local %>
             </div>
           </div>
         </div>

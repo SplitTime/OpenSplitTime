@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CourseBestEffortsDisplay < BasePresenter
+  include ActionView::Helpers::TextHelper
+
   attr_reader :course, :view_context, :request
 
   delegate :name, :simple?, :ordered_splits_without_finish, :ordered_splits_without_start, :organization,
@@ -13,15 +15,14 @@ class CourseBestEffortsDisplay < BasePresenter
     @view_context = view_context
     @request = view_context.request
     @params = view_context.prepared_params
-    @current_user = view_context.current_user
   end
 
   def filtered_segments
     @filtered_segments ||= BestEffortSegment.from(ranked_segments, :best_effort_segments)
-        .where(effort_id: filtered_efforts)
-        .order(:overall_rank)
-        .paginate(page: page, per_page: per_page, total_entries: 0)
-        .to_a
+                             .where(effort_id: filtered_efforts)
+                             .order(:overall_rank)
+                             .paginate(page: page, per_page: per_page, total_entries: 0)
+                             .to_a
   end
 
   def filtered_segments_count
@@ -38,6 +39,16 @@ class CourseBestEffortsDisplay < BasePresenter
 
   def events_count
     @events_count ||= events.size
+  end
+
+  def events_searched_text
+    date_text = if events_count == 1
+                  "on #{earliest_event_date}"
+                else
+                  "from #{[earliest_event_date, most_recent_event_date].compact.join(' to ')}"
+                end
+
+    "Searched #{pluralize(events_count, 'event')} #{date_text}"
   end
 
   def earliest_event_date
@@ -86,14 +97,13 @@ class CourseBestEffortsDisplay < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params
 
   def events
-    @events ||=
-      begin
-        subquery = course.events.select("distinct on (events.id) events.id, event_group_id, course_id, events.scheduled_start_time").joins(:efforts)
-        EventPolicy::Scope.new(current_user, Event.from(subquery, :events)).viewable.order(scheduled_start_time: :desc).to_a
-      end
+    @events ||= course.events
+                  .includes(:event_group)
+                  .order(scheduled_start_time: :desc)
+                  .select(&:visible?)
   end
 
   def segment

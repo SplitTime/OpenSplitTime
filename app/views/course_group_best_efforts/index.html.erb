@@ -29,9 +29,11 @@
           <%= render "best_efforts_lookup", presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-12 col-sm-5 text-end">
+      <div class="col-12 col-sm-5 d-inline-flex justify-content-end">
         <% if user_signed_in? %>
-          <%= link_to_course_group_best_efforts_export_async(@presenter) %>
+          <div class="me-1">
+            <%= button_to_course_group_best_efforts_export_async(@presenter) %>
+          </div>
         <% end %>
         <%= gender_dropdown_menu(@presenter) %>
       </div>
@@ -42,8 +44,7 @@
 <article class="ost-article container">
   <% if @presenter.all_efforts_count.positive? %>
     <h5>
-      <%= "Searched #{pluralize(@presenter.events_count, 'event')}
-      from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
+      <%= @presenter.events_searched_text %>
     </h5>
 
     <% if @presenter.filtered_segments_count.positive? %>

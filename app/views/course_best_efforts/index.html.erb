@@ -34,8 +34,7 @@
   </h4>
   <% if @presenter.all_efforts_count.positive? %>
     <h5>
-      <%= "Searched #{pluralize(@presenter.events_count, 'event')}
-      from #{[@presenter.earliest_event_date, @presenter.most_recent_event_date].compact.join(' to ')}" %>
+      <%= @presenter.events_searched_text %>
     </h5>
 
     <% if @presenter.filtered_segments_count.positive? %>

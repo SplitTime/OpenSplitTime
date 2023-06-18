@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CourseGroupBestEffortsDisplay < BasePresenter
+  include ActionView::Helpers::TextHelper
+
   attr_reader :course_group, :view_context, :request
 
   delegate :name, :organization, :to_param, to: :course_group
@@ -10,7 +12,6 @@ class CourseGroupBestEffortsDisplay < BasePresenter
     @view_context = view_context
     @request = view_context.request
     @params = view_context.prepared_params
-    @current_user = view_context.current_user
   end
 
   def filtered_segments
@@ -21,8 +22,8 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def filtered_segments_unpaginated
     ::BestEffortSegment.from(ranked_segments, :best_effort_segments)
-                       .where(effort: filtered_efforts)
-                       .order(:overall_rank)
+      .where(effort: filtered_efforts)
+      .order(:overall_rank)
   end
 
   def filtered_segments_count
@@ -35,6 +36,16 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def events_count
     @events_count ||= events.size
+  end
+
+  def events_searched_text
+    date_text = if events_count == 1
+                  "on #{earliest_event_date}"
+                else
+                  "from #{[earliest_event_date, most_recent_event_date].compact.join(' to ')}"
+                end
+
+    "Searched #{pluralize(events_count, 'event')} #{date_text}"
   end
 
   def earliest_event_date
@@ -63,14 +74,13 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params
 
   def events
-    @events ||=
-      begin
-        subquery = course_group.events.select("distinct on (events.id) events.id, events.event_group_id, events.course_id, events.scheduled_start_time").joins(:efforts)
-        ::EventPolicy::Scope.new(current_user, ::Event.from(subquery, :events)).viewable.order(scheduled_start_time: :desc).to_a
-      end
+    @events ||= course_group.events
+                  .includes(:event_group)
+                  .order(scheduled_start_time: :desc)
+                  .select(&:visible?)
   end
 
   def all_efforts
@@ -87,6 +97,6 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def ranked_segments
     ::BestEffortSegment.from(all_segments, :best_effort_segments)
-                       .with_overall_gender_age_and_event_rank
+      .with_overall_gender_age_and_event_rank
   end
 end

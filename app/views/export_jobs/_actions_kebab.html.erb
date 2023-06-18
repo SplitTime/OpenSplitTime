@@ -1,0 +1,20 @@
+<%# locals: (export_job:) -%>
+
+<%= button_tag fa_icon("ellipsis-h"),
+               class: "dropdown-toggle no-caret btn btn-sm btn-light",
+               data: { bs_toggle: "dropdown" } %>
+<div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
+  <% if export_job.file.attached? %>
+    <%= link_to "Download", rails_blob_path(export_job.file, disposition: "attachment"), class: "dropdown-item" %>
+  <% else %>
+    <%= link_to "Nothing to download", "#",
+                class: "dropdown-item",
+                disabled: true %>
+  <% end %>
+  <%= link_to "Delete", export_job_path(export_job),
+              class: "dropdown-item",
+              data: {
+                turbo_method: :delete,
+                turbo_confirm: "This cannot be undone. Proceed?"
+              } %>
+</div>

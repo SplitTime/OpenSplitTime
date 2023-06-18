@@ -14,7 +14,6 @@ class CourseGroupFinishersDisplay < BasePresenter
     @view_context = view_context
     @request = view_context.request
     @params = view_context.prepared_params
-    @current_user = view_context.current_user
   end
 
   def filtered_finishers
@@ -72,7 +71,7 @@ class CourseGroupFinishersDisplay < BasePresenter
 
   private
 
-  attr_reader :params, :current_user
+  attr_reader :params
 
   def events
     @events ||= course_group.events

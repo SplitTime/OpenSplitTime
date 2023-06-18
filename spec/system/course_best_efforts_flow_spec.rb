@@ -66,7 +66,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
 
       visit_page
       verify_link_present(effort_1)
-      verify_link_present(hidden_effort_1)
+      verify_content_absent(hidden_effort_1)
     end
 
     scenario "The user is a steward of the organization" do
@@ -74,7 +74,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
 
       visit_page
       verify_link_present(effort_1)
-      verify_link_present(hidden_effort_1)
+      verify_content_absent(hidden_effort_1)
     end
 
     scenario "The user is an admin" do
@@ -82,7 +82,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
 
       visit_page
       verify_link_present(effort_1)
-      verify_link_present(hidden_effort_1)
+      verify_content_absent(hidden_effort_1)
     end
   end
 

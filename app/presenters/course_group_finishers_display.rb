@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CourseGroupFinishersDisplay < BasePresenter
+  include ActionView::Helpers::TextHelper
+
   DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
 
   attr_reader :course_group, :view_context, :request
@@ -38,6 +40,16 @@ class CourseGroupFinishersDisplay < BasePresenter
     @events_count ||= events.size
   end
 
+  def events_searched_text
+    date_text = if events_count == 1
+                  "on #{earliest_event_date}"
+                else
+                  "from #{[earliest_event_date, most_recent_event_date].compact.join(' to ')}"
+                end
+
+    "Searched #{pluralize(events_count, 'event')} #{date_text}"
+  end
+
   def earliest_event_date
     events.last.scheduled_start_time.to_date.to_formatted_s(:long)
   end
@@ -63,11 +75,10 @@ class CourseGroupFinishersDisplay < BasePresenter
   attr_reader :params, :current_user
 
   def events
-    @events ||=
-      begin
-        subquery = course_group.events.select("distinct on (events.id) events.id, events.event_group_id, events.course_id, events.scheduled_start_time").joins(:efforts)
-        ::EventPolicy::Scope.new(current_user, ::Event.from(subquery, :events)).viewable.order(scheduled_start_time: :desc).to_a
-      end
+    @events ||= course_group.events
+                  .includes(:event_group)
+                  .order(scheduled_start_time: :desc)
+                  .select(&:visible?)
   end
 
   def all_finishers

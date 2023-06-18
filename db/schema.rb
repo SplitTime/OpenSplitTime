@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_162541) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_18_042044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -723,29 +723,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_162541) do
   SQL
 
 
-  create_view "course_group_finishers", sql_definition: <<-SQL
-      SELECT ((cg.id || ':'::text) || p.id) AS id,
-      p.id AS person_id,
-      p.first_name,
-      p.last_name,
-      p.gender,
-      p.city,
-      p.state_code,
-      p.country_code,
-      p.state_name,
-      p.country_name,
-      p.slug,
-      cg.id AS course_group_id,
-      count(e.id) AS finish_count
-     FROM (((((course_groups cg
-       JOIN course_group_courses cgc ON ((cgc.course_group_id = cg.id)))
-       JOIN courses c ON ((c.id = cgc.course_id)))
-       JOIN events e ON ((e.course_id = c.id)))
-       JOIN efforts ef ON ((ef.event_id = e.id)))
-       JOIN people p ON ((ef.person_id = p.id)))
-    WHERE (ef.finished = true)
-    GROUP BY cg.id, p.id;
-  SQL
   create_view "best_effort_segments", sql_definition: <<-SQL
       SELECT es.effort_id,
       e.event_id,
@@ -807,5 +784,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_162541) do
      FROM entrant_list
     GROUP BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets
     ORDER BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets;
+  SQL
+  create_view "course_group_finishers", sql_definition: <<-SQL
+      SELECT ((cg.id || ':'::text) || p.id) AS id,
+      p.id AS person_id,
+      p.first_name,
+      p.last_name,
+      p.gender,
+      p.city,
+      p.state_code,
+      p.country_code,
+      p.state_name,
+      p.country_name,
+      p.slug,
+      cg.id AS course_group_id,
+      count(e.id) AS finish_count
+     FROM ((((((course_groups cg
+       JOIN course_group_courses cgc ON ((cgc.course_group_id = cg.id)))
+       JOIN courses c ON ((c.id = cgc.course_id)))
+       JOIN events e ON ((e.course_id = c.id)))
+       JOIN event_groups eg ON ((e.event_group_id = eg.id)))
+       JOIN efforts ef ON ((ef.event_id = e.id)))
+       JOIN people p ON ((ef.person_id = p.id)))
+    WHERE ((ef.finished = true) AND (eg.concealed = false))
+    GROUP BY cg.id, p.id;
   SQL
 end

@@ -1,8 +1,10 @@
-<%= turbo_frame_tag dom_id export_job do %>
+<%# locals: (export_job:) -%>
+
+<%= turbo_frame_tag dom_id(export_job) do %>
   <div class="card bg-light mt-2">
     <div class="card-header">
-      <div class="row">
-        <div class="col-12 col-md-8">
+      <div class="row align-items-center">
+        <div class="col">
           <h5 class="fw-bold">
             Filename: <%= export_job.file.filename.to_s.presence || "[No file]" %>
             <% if export_job.user.exports_viewed_at.nil? || export_job.updated_at > export_job.user.exports_viewed_at %>
@@ -11,24 +13,8 @@
           </h5>
           <h6 class="fs-6 text-muted"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
         </div>
-        <div class="col-12 col-md-4 text-md-right">
-          <span class="mx-1">
-            <% if export_job.file.attached? %>
-              <%= link_to fa_icon("download",
-                                  data: { controller: :tooltip, bs_original_title: "Download" }),
-                          rails_blob_path(export_job.file, disposition: "attachment") %>
-            <% else %>
-              <%= fa_icon("download", class: "text-muted") %>
-            <% end %>
-          </span>
-          <span class="mx-1">
-          <%= link_to fa_icon("trash",
-                              class: "text-danger",
-                              data: { controller: :tooltip, bs_original_title: "Delete" }),
-                      export_job_path(export_job),
-                      method: :delete,
-                      data: { confirm: "Delete this export?" } %>
-          </span>
+        <div class="col text-end">
+          <%= render "export_jobs/actions_kebab", export_job: export_job %>
         </div>
       </div>
     </div>

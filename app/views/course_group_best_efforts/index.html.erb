@@ -29,9 +29,11 @@
           <%= render "best_efforts_lookup", presenter: @presenter %>
         <% end %>
       </div>
-      <div class="col-12 col-sm-5 text-end">
+      <div class="col-12 col-sm-5 d-inline-flex justify-content-end">
         <% if user_signed_in? %>
-          <%= link_to_course_group_best_efforts_export_async(@presenter) %>
+          <div class="me-1">
+            <%= button_to_course_group_best_efforts_export_async(@presenter) %>
+          </div>
         <% end %>
         <%= gender_dropdown_menu(@presenter) %>
       </div>

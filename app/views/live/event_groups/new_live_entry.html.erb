@@ -9,7 +9,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
+          <h1 class="fw-bold"><%= [@presenter.name, nil].compact.join(": ") %></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -25,7 +25,14 @@
   </div>
 </header>
 
-<article class="container" data-controller="raw-times-push notifications" data-raw-times-push-event-group-id-value="<%= @event_group.id %>">
+<article
+  class="container"
+  data-controller="live-entry--main live-entry--raw-times-push notifications"
+  data-live-entry--raw-times-push-event-group-id-value="<%= @event_group.id %>"
+  data-live-entry--main-current-user-id-value="<%= current_user.id %>"
+  data-live-entry--main-event-group-id-value="<%= @event_group.id %>"
+  data-live-entry--main-server-uri-value="<%= OstConfig.base_uri %>"
+>
   <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">
@@ -194,10 +201,10 @@
   </div>
   <div class="row">
     <div class="col-12" id="js-live-messages">
-      <div class="alert alert-warning" role="alert" id="js-import-live-warning">
+      <div class="alert alert-warning d-none" role="alert" id="js-import-live-warning">
         <strong>You're up to date.</strong> No raw time data available to pull.
       </div>
-      <div class="alert alert-danger" role="alert" id="js-import-live-error">
+      <div class="alert alert-danger d-none" role="alert" id="js-import-live-error">
         <strong>Error</strong> Couldn't read data from the server.
       </div>
     </div>

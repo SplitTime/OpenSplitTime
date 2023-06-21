@@ -257,6 +257,7 @@ Rails.application.routes.draw do
     resources :event_groups, only: [] do
       member do
         get :live_entry
+        get :new_live_entry
         get :trigger_raw_times_push
       end
     end

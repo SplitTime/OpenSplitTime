@@ -12,7 +12,7 @@
         <div class="ost-title">
           <h1><strong><%= "Merge: #{@person_merge.full_name}" %></strong></h1>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+            <li class="breadcrumb-item"><%= link_to "People", people_path %></li>
             <li class="breadcrumb-item"><%= link_to @person_merge.full_name, person_path(@person_merge.person) %></li>
             <li class="breadcrumb-item active">Merge</li>
           </ul>
@@ -31,22 +31,20 @@
           <%= link_to @person_merge.person.full_name, person_path(@person_merge.person) %>
         </h4>
         <div class="card-body">
-          <%= render 'inspect', person: @person_merge.person %>
+          <%= render "inspect", person: @person_merge.person %>
         </div>
       </div>
     </div>
     <% if @person_merge.proposed_match.present? %>
       <div class="col-sm-2 text-center">
-            <%= link_to '<< Merge into',
-                        combine_person_path(@person_merge.person,
-                                            target_id: @person_merge.proposed_match),
-                        method: :put,
-                        class: 'btn btn-sm btn-success btn-margin-top' %>
-            <%= link_to 'Merge into >>',
-                        combine_person_path(@person_merge.proposed_match,
-                                            target_id: @person_merge.person),
-                        method: :put,
-                        class: 'btn btn-sm btn-success btn-margin-top' %>
+        <%= button_to "<< Merge into",
+                      combine_person_path(@person_merge.person, target_id: @person_merge.proposed_match),
+                      method: :put,
+                      class: "btn btn-sm btn-success btn-margin-top" %>
+        <%= button_to "Merge into >>",
+                      combine_person_path(@person_merge.proposed_match, target_id: @person_merge.person),
+                      method: :put,
+                      class: "btn btn-sm btn-success btn-margin-top" %>
       </div>
       <div class="col-sm-5">
         <div class="card">
@@ -54,7 +52,7 @@
             <%= link_to @person_merge.proposed_match.full_name, person_path(@person_merge.proposed_match) %>
           </h4>
           <div class="card-body">
-            <%= render 'inspect', person: @person_merge.proposed_match %>
+            <%= render "inspect", person: @person_merge.proposed_match %>
           </div>
         </div>
       </div>
@@ -70,6 +68,6 @@
   <hr>
 
   <% if @person_merge.possible_matches.present? %>
-    <%= render 'people/people_list_merge' %>
+    <%= render "people/people_list_merge" %>
   <% end %>
 </article>

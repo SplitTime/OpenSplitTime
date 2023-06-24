@@ -170,7 +170,7 @@ export default class extends Controller {
           liveEntry.indexStationMap = {};
           liveEntry.subSplitKinds = [];
           liveEntry.splitsAttributes().forEach(function (splitsAttribute, i) {
-            var stationData = {};
+            const stationData = {};
             stationData.subSplitKinds = [];
             stationData.title = splitsAttribute.title;
             stationData.splitName = splitsAttribute.entries[0].splitName;
@@ -221,7 +221,7 @@ export default class extends Controller {
           // Check table stored timeRows for highest unique ID then create a new one.
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
           let highestUniqueId = 0;
-          storedTimeRows.forEach(function (timeRow) {
+          storedTimeRows.forEach(timeRow => {
             if (timeRow.uniqueId > highestUniqueId) {
               highestUniqueId = timeRow.uniqueId
             }
@@ -277,8 +277,8 @@ export default class extends Controller {
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
           let newRow = true;
 
-          storedTimeRows.forEach(function (timeRow, index) {
-            if (timeRow.uniqueId === subjectTimeRow.uniqueId) {
+          storedTimeRows.forEach(function (storedTimeRow, index) {
+            if (storedTimeRow.uniqueId === subjectTimeRow.uniqueId) {
               storedTimeRows[index] = subjectTimeRow;
               liveEntry.timeRowsTable.updateTimeRowInTable(subjectTimeRow);
               newRow = false;
@@ -307,8 +307,8 @@ export default class extends Controller {
           const tempTimeRow = JSON.stringify(subjectTimeRow);
           let flag = false;
 
-          storedTimeRows.forEach(function (timeRow) {
-            const loopedTimeRow = JSON.stringify(timeRow);
+          storedTimeRows.forEach(storedTimeRow => {
+            const loopedTimeRow = JSON.stringify(storedTimeRow);
             if (loopedTimeRow === tempTimeRow) {
               flag = true
             }
@@ -402,27 +402,6 @@ export default class extends Controller {
           if (anySubSplitIn) document.querySelectorAll('.time-in-disabled').forEach(el => el.classList.remove('time-in-disabled'));
           if (anySubSplitOut) document.querySelectorAll('.time-out-disabled').forEach(el => el.classList.remove('time-out-disabled'));
 
-          // Styles the Dropped Here button
-          document.getElementById('js-dropped').addEventListener('change', function (_event) {
-
-            console.log("Dropped input changed")
-
-            const root = this.parentElement;
-            const icon = root.querySelector('.far');
-
-            if (this.checked) {
-              root.classList.remove('btn-outline-secondary')
-              root.classList.add('btn-warning');
-              icon.classList.remove('fa-square')
-              icon.classList.add('fa-check-square');
-            } else {
-              root.classList.add('btn-outline-secondary')
-              root.classList.remove('btn-warning');
-              icon.classList.add('fa-square')
-              icon.classList.remove('fa-check-square');
-            }
-          });
-
           // Clears the live entry form when the clear button is clicked
           document.getElementById('js-discard-entry-form').addEventListener('click', function (event) {
             event.preventDefault();
@@ -443,16 +422,10 @@ export default class extends Controller {
           });
 
           document.getElementById('js-time-in').addEventListener('blur', function () {
-            let time = this.value
-            time = liveEntry.liveEntryForm.validateTimeFields(time);
-            this.value = time || '';
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
           document.getElementById('js-time-out').addEventListener('blur', function () {
-            let time = this.value
-            time = liveEntry.liveEntryForm.validateTimeFields(time);
-            this.value = time || '';
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
@@ -765,21 +738,6 @@ export default class extends Controller {
         buttonUpdateMode: function () {
           $('#js-add-to-cache').html('Update');
           $('#js-discard-entry-form').html('Cancel');
-        },
-
-        /**
-         * Validates the time fields
-         *
-         * @param string time time format from the input mask
-         */
-        validateTimeFields: function (time) {
-          time = time.replace(/\D/g, '');
-          if (time.length == 0) return time;
-          if (time.length < 2) return false;
-          while (time.length < 6) {
-            time = time.concat('0');
-          }
-          return time;
         },
 
         updateTimeField: function ($field, rawTime) {

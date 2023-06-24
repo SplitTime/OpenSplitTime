@@ -10,15 +10,45 @@ export default class extends Controller {
   }
 
   connect() {
-    this.liveEntryInit(this)
+    this.liveEntryApp(this)
   }
 
-  liveEntryInit(controller) {
+  liveEntryApp(controller) {
+
+    const statusIcons = {
+      'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-controller="tooltip" title="Data Already Exists"></span>',
+      'good': '&nbsp;<span class="fas fa-check-circle text-success" data-controller="tooltip" title="Time Appears Good"></span>',
+      'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-controller="tooltip" title="Time Appears Questionable"></span>',
+      'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-controller="tooltip" title="Time Appears Bad"></span>'
+    };
+
     let liveEntry = {
+
+      eventGroupResponse: null,
+      // lastReportedSplitId: null,
+      // lastReportedBitkey: null,
+      currentStationIndex: null,
+      currentFormResponse: {},
+      emptyRawTimeRow: {rawTimes: []},
+      lastFormRequest: {},
+
       init: function (controller) {
         liveEntry.currentEventGroupId = controller.eventGroupIdValue;
         liveEntry.serverURI = controller.serverUriValue;
-        liveEntry.getEventGroupData();
+        liveEntry.getEventGroupData().then((json) => {
+          liveEntry.dataSetup.init(json).then((response) => {
+            if (response) {
+              liveEntry.timeRowsCache.init();
+              liveEntry.header.init();
+              liveEntry.liveEntryForm.init();
+              liveEntry.timeRowsTable.init();
+            }
+          }).catch((error) => {
+            console.error(error)
+          })
+        }).catch((error) => {
+          console.error(error)
+        })
       },
 
       getEventGroupData: async function () {
@@ -29,16 +59,69 @@ export default class extends Controller {
 
         const response = await get(url, options)
         if (response.ok) {
-          const json = await response.json
-
-          liveEntry.dataSetup.init(json)
-          liveEntry.timeRowsCache.init();
-          liveEntry.header.init();
-          // liveEntry.liveEntryForm.init();
-          // liveEntry.timeRowsTable.init();
+          return await response.json
         } else {
-          console.log("Could not load event group data:", response)
+          console.error("Could not load event group data:", response)
         }
+      },
+
+      bibStatus: function (bibNumber, splitName) {
+        const bibNotSubmitted = bibNumber.length === 0;
+        const bibNotFound = typeof liveEntry.bibEffortMap[bibNumber] === 'undefined';
+        const event = liveEntry.events[liveEntry.bibEventIdMap[bibNumber]];
+        const splitNames = (event && event.splitNames) || [];
+        const splitNotFound = !splitNames.includes(splitName);
+
+        if (bibNotSubmitted) {
+          return null
+        } else if (bibNotFound) {
+          return 'bad'
+        } else if (splitNotFound) {
+          return 'questionable'
+        } else {
+          return 'good'
+        }
+      },
+
+      containsSubSplitKind: function (entries, subSplitKind) {
+        return entries.reduce(function (p, c) {
+          return p || c.subSplitKind === subSplitKind
+        }, false)
+      },
+
+      currentRawTime: function (kind) {
+        if (!liveEntry.currentFormResponse.data) return {};
+        return liveEntry.rawTimeFromRow(liveEntry.currentFormResponse.data.rawTimeRow, kind)
+      },
+
+      currentStation: function () {
+        return liveEntry.stationIndexMap[liveEntry.currentStationIndex]
+      },
+
+      includedResources: function (resourceType) {
+        return liveEntry.eventGroupResponse.included
+          .filter(function (resource) {
+            return resource.type === resourceType;
+          })
+      },
+
+      rawTimeFromRow: function (timeRow, kind) {
+        const rawTimes = timeRow.rawTimes;
+        if (kind === 'in') {
+          return rawTimes.find(rawTime => {
+            return rawTime.subSplitKind.toLowerCase() === 'in'
+          }) || {}
+        } else if (kind === 'out') {
+          return rawTimes.find(rawTime => {
+            return rawTime.subSplitKind.toLowerCase() === 'out'
+          }) || {}
+        } else {
+          return rawTimes[0] || {}
+        }
+      },
+
+      splitsAttributes: function () {
+        return liveEntry.eventGroupAttributes.unpairedDataEntryGroups
       },
 
       /**
@@ -46,6 +129,7 @@ export default class extends Controller {
        *
        */
       dataSetup: {
+
         init: async function (eventGroupResponse) {
           liveEntry.eventGroupResponse = eventGroupResponse
           liveEntry.eventGroupAttributes = liveEntry.eventGroupResponse.data.attributes
@@ -54,6 +138,7 @@ export default class extends Controller {
           liveEntry.dataSetup.buildBibEffortMap();
           liveEntry.dataSetup.buildStationIndexMap();
           liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
+          return true
         },
 
         buildBibEventIdMap: function () {
@@ -105,6 +190,7 @@ export default class extends Controller {
             liveEntry.indexStationMap[stationData.splitName] = i
           })
         }
+
       }, // end dataSetup
 
       /**
@@ -136,7 +222,9 @@ export default class extends Controller {
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
           let highestUniqueId = 0;
           storedTimeRows.forEach(function (timeRow) {
-            if (timeRow.uniqueId > result) { highestUniqueId = timeRow.uniqueId }
+            if (timeRow.uniqueId > highestUniqueId) {
+              highestUniqueId = timeRow.uniqueId
+            }
           });
           return highestUniqueId + 1;
         },
@@ -221,11 +309,14 @@ export default class extends Controller {
 
           storedTimeRows.forEach(function (timeRow) {
             const loopedTimeRow = JSON.stringify(timeRow);
-            if (loopedTimeRow === tempTimeRow) { flag = true }
+            if (loopedTimeRow === tempTimeRow) {
+              flag = true
+            }
           });
 
           return !!flag
         },
+
       }, // end timeRowsCache
 
       /**
@@ -243,20 +334,19 @@ export default class extends Controller {
          */
         buildStationSelect: function () {
           const select = document.getElementById('js-station-select');
-          let stationItems = '';
 
-          // liveEntry.stationIndexMap.forEach(function (_station, index) {
-          //   console.log('station', _station)
-          //   console.log('index', index)
-          //   stationItems += '<option value="' + index + '">' + liveEntry.stationIndexMap[index].title + '</option>';
-          // })
-          select.html = stationItems;
+          Object.entries(liveEntry.stationIndexMap).forEach(entry => {
+            const [index, station] = entry;
+            const newOption = new Option(station.title, index);
+            select.add(newOption, undefined)
+          })
+
           // Synchronize Select with currentStationIndex
           select.selectedIndex = 0
           liveEntry.currentStationIndex = select.value
           this.changeStationSelect(liveEntry.currentStationIndex);
 
-          select.on('change', function () {
+          select.addEventListener('change', function () {
             const targetIndex = this.value
             liveEntry.header.changeStationSelect(targetIndex);
           });
@@ -270,15 +360,13 @@ export default class extends Controller {
         changeStationSelect: function (stationIndex) {
           const select = document.getElementById('js-station-select')
           select.value = stationIndex
-
           const station = liveEntry.stationIndexMap[stationIndex];
-          document.getElementById('js-time-in-label').html = station.labelIn
-          document.getElementById('js-time-out-label').html = station.labelOut
+          document.getElementById('js-time-in-label').innerHTML = station.labelIn
+          document.getElementById('js-time-out-label').innerHTML = station.labelOut
           document.getElementById('js-time-in').disabled = !station.subSplitIn
           document.getElementById('js-pacer-in').disabled = !station.subSplitIn
           document.getElementById('js-time-out').disabled = !station.subSplitOut
           document.getElementById('js-pacer-out').disabled = !station.subSplitOut
-          document.getElementById('js-file-split').text = station.title
 
           if (liveEntry.currentStationIndex !== stationIndex) {
             liveEntry.currentStationIndex = stationIndex;
@@ -286,6 +374,7 @@ export default class extends Controller {
             liveEntry.liveEntryForm.enrichTimeData();
           }
         }
+
       },  // end header
 
       /**
@@ -293,101 +382,116 @@ export default class extends Controller {
        *
        */
       liveEntryForm: {
+
         lastEnrichTimeBib: null,
         lastEffortInfoBib: null,
         lastStationIndex: null,
+
         init: function () {
-          // Apply input masks on time in / out
-          $('#js-time-in').inputmask("military");
-          $('#js-time-out').inputmask("military");
-          $('#js-bib-number').inputmask("bib_number");
-          $('#js-lap-number').inputmask({
-            alias: "integer",
-            rightAlign: false,
-            nullable: true,
-            min: 1,
-            max: liveEntry.eventGroupAttributes.maximumLaps || undefined
-          });
 
           // Enable / Disable conditional fields
-          var multiLap = liveEntry.eventGroupAttributes.multiLap;
-          var multiGroup = liveEntry.eventGroupResponse.data.relationships.events.data.length > 1;
-          var pacers = liveEntry.eventGroupAttributes.monitorPacers;
-          var anySubSplitIn = liveEntry.subSplitKinds.includes('in');
-          var anySubSplitOut = liveEntry.subSplitKinds.includes('out');
+          const multiLap = liveEntry.eventGroupAttributes.multiLap;
+          const multiGroup = liveEntry.eventGroupResponse.data.relationships.events.data.length > 1;
+          const pacers = liveEntry.eventGroupAttributes.monitorPacers;
+          const anySubSplitIn = liveEntry.subSplitKinds.includes('in');
+          const anySubSplitOut = liveEntry.subSplitKinds.includes('out');
 
-          if (multiLap) $('.lap-disabled').removeClass('lap-disabled');
-          if (multiGroup) $('.group-disabled').removeClass('group-disabled');
-          if (pacers) $('.pacer-disabled').removeClass('pacer-disabled');
-          if (anySubSplitIn) $('.time-in-disabled').removeClass('time-in-disabled');
-          if (anySubSplitOut) $('.time-out-disabled').removeClass('time-out-disabled');
+          if (multiLap) document.querySelectorAll('.lap-disabled').forEach(el => el.classList.remove('lap-disabled'));
+          if (multiGroup) document.querySelectorAll('.group-disabled').forEach(el => el.classList.remove('group-disabled'));
+          if (pacers) document.querySelectorAll('.pacer-disabled').forEach(el => el.classList.remove('pacer-disabled'));
+          if (anySubSplitIn) document.querySelectorAll('.time-in-disabled').forEach(el => el.classList.remove('time-in-disabled'));
+          if (anySubSplitOut) document.querySelectorAll('.time-out-disabled').forEach(el => el.classList.remove('time-out-disabled'));
 
           // Styles the Dropped Here button
-          $('#js-dropped').on('change', function (event) {
-            var $root = $(this).parent();
-            if ($(this).prop('checked')) {
-              $root.addClass('btn-warning').removeClass('btn-outline-secondary');
-              $('.far', $root).addClass('fa-check-square').removeClass('fa-square');
+          document.getElementById('js-dropped').addEventListener('change', function (_event) {
+
+            console.log("Dropped input changed")
+
+            const root = this.parentElement;
+            const icon = root.querySelector('.far');
+
+            if (this.checked) {
+              root.classList.remove('btn-outline-secondary')
+              root.classList.add('btn-warning');
+              icon.classList.remove('fa-square')
+              icon.classList.add('fa-check-square');
             } else {
-              $root.addClass('btn-outline-secondary').removeClass('btn-warning');
-              $('.far', $root).addClass('fa-square').removeClass('fa-check-square');
+              root.classList.add('btn-outline-secondary')
+              root.classList.remove('btn-warning');
+              icon.classList.add('fa-square')
+              icon.classList.remove('fa-check-square');
             }
           });
 
           // Clears the live entry form when the clear button is clicked
-          $('#js-discard-entry-form').on('click', function (event) {
+          document.getElementById('js-discard-entry-form').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.liveEntryForm.clear();
-            $('#js-bib-number').focus();
+            document.getElementById('js-bib-number').focus();
             return false;
           });
 
-          $('#js-bib-number').on('blur', function () {
+          document.getElementById('js-bib-number').addEventListener('blur', function () {
             liveEntry.liveEntryForm.stripBibLeadingZeros();
             liveEntry.liveEntryForm.updateEffortInfo();
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
-          $('#js-lap-number').on('blur', function () {
+          document.getElementById('js-lap-number').addEventListener('blur', function () {
             liveEntry.liveEntryForm.updateEffortInfo();
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
-          $('#js-time-in').on('blur', function () {
-            var timeIn = $(this).val();
-            timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-            if (timeIn === false) {
-              $(this).val('');
-            } else {
-              $(this).val(timeIn);
-            }
+          document.getElementById('js-time-in').addEventListener('blur', function () {
+            let time = this.value
+            time = liveEntry.liveEntryForm.validateTimeFields(time);
+            this.value = time || '';
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
-          $('#js-time-out').on('blur', function () {
-            var timeIn = $(this).val();
-            timeIn = liveEntry.liveEntryForm.validateTimeFields(timeIn);
-            if (timeIn === false) {
-              $(this).val('');
-            } else {
-              $(this).val(timeIn);
-            }
+          document.getElementById('js-time-out').addEventListener('blur', function () {
+            let time = this.value
+            time = liveEntry.liveEntryForm.validateTimeFields(time);
+            this.value = time || '';
             liveEntry.liveEntryForm.enrichTimeData();
           });
 
-          var $droppedHereButton = $('#js-dropped-button');
-          $droppedHereButton.on('click', function (event) {
+          const droppedHereButton = document.getElementById('js-dropped-button');
+          droppedHereButton.addEventListener('click', function (event) {
             event.preventDefault();
-            $('#js-dropped').prop('checked', !$('#js-dropped').prop('checked')).change();
+
+            // Toggle the checkbox
+            const input = document.getElementById('js-dropped');
+            input.checked = !input.checked;
+            liveEntry.liveEntryForm.setDroppedButtonStyling();
             return false;
           });
-          $droppedHereButton.keypress(function (event) {
-            if (event.which === 13) {
+
+          droppedHereButton.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
               event.preventDefault();
-              $('#js-add-to-cache').click()
+              document.getElementById('js-add-to-cache').click()
             }
             return false;
           });
+        }, // end init
+
+        setDroppedButtonStyling: function () {
+          const button = document.getElementById('js-dropped-button');
+          const input = document.getElementById('js-dropped');
+          const icon = button.querySelector('.far');
+
+          if (input.checked) {
+            button.classList.remove('btn-outline-secondary')
+            button.classList.add('btn-warning');
+            icon.classList.remove('fa-square')
+            icon.classList.add('fa-check-square');
+          } else {
+            button.classList.add('btn-outline-secondary')
+            button.classList.remove('btn-warning');
+            icon.classList.add('fa-square')
+            icon.classList.remove('fa-check-square');
+          }
         },
 
         /**
@@ -465,7 +569,7 @@ export default class extends Controller {
                       var hours = ('0' + d.getHours()).slice(-2);
                       var minutes = ('0' + d.getMinutes()).slice(-2);
                       var seconds = ('0' + d.getSeconds()).slice(-2);
-                      var status = timeDataStatuses[i] == 'good' ? '' : timeIcons[timeDataStatuses[i]] || '';
+                      var status = timeDataStatuses[i] == 'good' ? '' : statusIcons[timeDataStatuses[i]] || '';
                       return days[d.getDay()] + ' ' + hours + ':' + minutes + ':' + seconds + status;
                     }).join(' / ') + '</td>\
                                         <td>' + elapsedTimes.map(function (time) {
@@ -527,14 +631,14 @@ export default class extends Controller {
          * Adds dataStatus and splitTimeExists to rawTimes in the form.
          */
         enrichTimeData: function () {
-          var bibNumber = $('#js-bib-number').val();
-          var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
-          var splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
+          const bibNumber = document.getElementById('js-bib-number').value;
+          const bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
+          const splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
           liveEntry.liveEntryForm.lastEnrichTimeBib = bibNumber;
           liveEntry.liveEntryForm.lastStationIndex = liveEntry.currentStationIndex;
 
-          var currentFormComp = liveEntry.rawTimeRow.compData(liveEntry.liveEntryForm.getTimeRow());
-          var lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.lastFormRequest);
+          const currentFormComp = liveEntry.rawTimeRow.compData(liveEntry.liveEntryForm.getTimeRow());
+          const lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.lastFormRequest);
 
           if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
             return $.Deferred().resolve(); // We already have the information for this data.
@@ -650,6 +754,7 @@ export default class extends Controller {
           liveEntry.liveEntryForm.buttonAddMode();
           liveEntry.liveEntryForm.updateEffortInfo();
           liveEntry.liveEntryForm.enrichTimeData();
+          liveEntry.liveEntryForm.setDroppedButtonStyling();
         },
 
         buttonAddMode: function () {
@@ -684,7 +789,7 @@ export default class extends Controller {
             .attr('data-time-status', rawTime.dataStatus)
             .attr('data-split-time-exists', rawTime.splitTimeExists)
         }
-      }, // END liveEntryForm form
+      }, // END liveEntryForm
 
       /**
        * Contains functionality for times data cache table
@@ -890,10 +995,10 @@ export default class extends Controller {
 
           var bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
           var bibIcon = bibIcons[bibStatus];
-          var timeInIcon = timeIcons[inRawTime.dataStatus] || '';
-          timeInIcon += (inRawTime.splitTimeExists ? timeIcons['exists'] : '');
-          var timeOutIcon = timeIcons[outRawTime.dataStatus] || '';
-          timeOutIcon += (outRawTime.splitTimeExists ? timeIcons['exists'] : '');
+          var timeInIcon = statusIcons[inRawTime.dataStatus] || '';
+          timeInIcon += (inRawTime.splitTimeExists ? statusIcons['exists'] : '');
+          var timeOutIcon = statusIcons[outRawTime.dataStatus] || '';
+          timeOutIcon += (outRawTime.splitTimeExists ? statusIcons['exists'] : '');
 
           // Base64 encode the stringified timeRow to add to the timeRow
           var base64encodedTimeRow = btoa(JSON.stringify(rawTimeRow));
@@ -1061,25 +1166,38 @@ export default class extends Controller {
         }
       }, // END timeRowsTable
 
+      rawTimeRow: {
+        compData: function (row) {
+          return {
+            rawTimes: row['rawTimes'].map(rawTime => {
+              return {
+                bibNumber: rawTime.bibNumber,
+                enteredTime: rawTime.enteredTime,
+                militaryTime: rawTime.militaryTime,
+                lap: rawTime.enteredLap,
+                splitName: rawTime.splitName,
+                subSplitKind: rawTime.subSplitKind,
+                stoppedHere: rawTime.stoppedHere
+              }
+            })
+          }
+        },
 
-      includedResources: function (resourceType) {
-        return liveEntry.eventGroupResponse.included
-          .filter(function (resource) {
-            return resource.type === resourceType;
-          })
-      },
+        empty: function(row) {
+          const rawTimeIn = liveEntry.rawTimeFromRow(row, 'in');
+          const rawTimeOut = liveEntry.rawTimeFromRow(row, 'out');
 
-      splitsAttributes: function () {
-        return liveEntry.eventGroupAttributes.unpairedDataEntryGroups
-      },
+          const emptyIn = (rawTimeIn.bibNumber === undefined && rawTimeIn.enteredTime === undefined) ||
+            (rawTimeIn.bibNumber === '' && rawTimeIn.enteredTime === '');
+          const emptyOut = (rawTimeOut.bibNumber === undefined && rawTimeOut.enteredTime === undefined) ||
+            (rawTimeOut.bibNumber === '' && rawTimeOut.enteredTime === '');
 
-      containsSubSplitKind: function (entries, subSplitKind) {
-        return entries.reduce(function (p, c) {
-          return p || c.subSplitKind === subSplitKind
-        }, false)
-      }
+          return emptyIn && emptyOut
+        }
+      }, // END rawTimeRow
+
     } // end liveEntry
 
     liveEntry.init(controller)
-  } // end liveEntryInit()
+  } // end liveEntryApp()
 }

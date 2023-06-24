@@ -47,7 +47,9 @@
           <label class="col-4" for="js-bib-number">Bib</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+              <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="bib_number">
               <span class="input-group-text time-status">
               <span class="fas fa-check-circle good text-success" title="Bib found" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-question-circle questionable text-warning" title="Bib in wrong event" data-controller="tooltip" data-bs-placement="right"></span>
@@ -60,7 +62,9 @@
           <label class="col-4" for="js-lap-number">Lap</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+              <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="lap_number">
             </div>
           </div>
         </div>
@@ -68,7 +72,9 @@
           <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="military">
               <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
@@ -82,7 +88,9 @@
           <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="military">
               <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
@@ -96,10 +104,10 @@
           <label class="col-4" for="pacer">Pacer</label>
           <div class="col-8">
             <label class="checkbox-inline" for="js-pacer-in">
-              <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
+              <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true" class="me-1"> In
             </label>
             <label class="checkbox-inline" for="js-pacer-out">
-              <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true"> Out
+              <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true" class="ms-3 me-1"> Out
             </label>
           </div>
         </div>

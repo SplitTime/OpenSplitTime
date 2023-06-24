@@ -79,6 +79,13 @@ Inputmask.extendAliases({
   "bib_number": {
     regex: "[0-9|*]{0,6}"
   },
+  "lap_number": {
+    alias: "integer",
+    rightAlign: false,
+    nullable: true,
+    min: 1,
+    max: undefined
+  }
 })
 
 // Miscellaneous imports

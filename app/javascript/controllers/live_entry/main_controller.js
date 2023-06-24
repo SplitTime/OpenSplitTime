@@ -470,21 +470,20 @@ export default class extends Controller {
         /**
          * Updates local effort data from memory and, if bib has changed, makes a request to the server.
          */
-
         updateEffortInfo: function () {
-          var fullName = '';
-          var effortId = '';
-          var eventId = '';
-          var eventName = '';
-          var url = '#';
-          var splitName = liveEntry.currentStation().splitName;
-          var bibNumber = $('#js-bib-number').val();
-          var lapNumber = $('#js-lap-number').val();
-          var bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
-          var effort = liveEntry.bibEffortMap[bibNumber];
+          let fullName = '';
+          let effortId = '';
+          let eventId = '';
+          let eventName = '';
+          let url = '#';
+          const splitName = liveEntry.currentStation().splitName;
+          const bibNumber = document.getElementById('js-bib-number').value;
+          const lapNumber = document.getElementById('js-lap-number').value;
+          const bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
+          const effort = liveEntry.bibEffortMap[bibNumber];
 
-          if (bibNumber.length > 0) {
-            if (effort !== null && typeof effort === 'object') {
+          if (bibNumber) {
+            if (effort) {
               fullName = effort.attributes.fullName;
               effortId = effort.id;
               eventId = effort.attributes.eventId;
@@ -496,99 +495,37 @@ export default class extends Controller {
             }
           }
 
-          $('#js-effort-name').html(fullName).attr('data-effort-id', effortId).attr('data-event-id', eventId);
-          $('#js-effort-name').attr("href", url);
-          $('#js-effort-event-name').html(eventName);
-          var bibStatus = liveEntry.bibStatus(bibNumber, splitName);
-          $('#js-bib-number')
-            .removeClass('null bad questionable good')
-            .addClass(bibStatus)
-            .attr('data-bib-status', bibStatus);
+          const effortNameElement = document.getElementById('js-effort-name');
+          const eventNameElement = document.getElementById('js-effort-event-name');
+          const bibNumberElement = document.getElementById('js-bib-number');
+          const bibStatus = liveEntry.bibStatus(bibNumber, splitName);
 
-          function highlightSplit() {
-            var $rows = $('#js-effort-table tr').removeClass('active');
-            $rows = $rows.filter('[data-title="' + splitName + '"]');
-            $rows = (lapNumber) ? $rows.filter('[data-lap="' + lapNumber + '"]') : $rows;
-            $rows.addClass('active');
-            if ($rows.length > 0) {
-              var $wrapper = $('#js-effort-table').parents('.table-wrapper');
-              var offset = $wrapper.height() / 2 - $wrapper.scrollTop();
-              $wrapper.animate({
-                scrollTop: $rows.first().position().top - offset
-              }, 500);
-            }
-          }
+          effortNameElement.innerHTML = fullName;
+          effortNameElement.setAttribute('data-effort-id', effortId);
+          effortNameElement.setAttribute('data-event-id', eventId);
+          effortNameElement.href = url;
+          eventNameElement.innerHTML = eventName;
+          bibNumberElement.classList.remove('null', 'bad', 'questionable', 'good');
+          bibNumberElement.classList.add(bibStatus)
+          bibNumberElement.setAttribute('data-bib-status', bibStatus);
 
           if (bibChanged) {
-            if (effort !== null && typeof effort === 'object') {
-              return $.get('/api/v1/efforts/' + effort.id + '/with_times_row', function (response) {
-                liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
-                var attributes = response.included[0].attributes;
-                $('#js-effort-table').empty();
-                $.each(response.data.attributes.eventSplitHeaderData, function (i, split) {
-                  var elapsedTimes = attributes.elapsedTimes[i];
-                  var absoluteTimes = attributes.absoluteTimes[i];
-                  var timeDataStatuses = attributes.timeDataStatuses[i];
-                  var stopped = attributes.stoppedHereFlags[i];
-                  var pacers = attributes.pacerFlags[i];
-                  $('#js-effort-table').append('\
-                                    <tr data-title="' + split.splitName + '" data-lap="' + split.lap + '">\
-                                        <td>' + split.title + '</td>\
-                                        <td>' + distanceToPreferred(split.distance).toFixed(1) + '</td>\
-                                        <td>' + absoluteTimes.map(function (time, i) {
-                      if (time === null) return '--- --:--';
-                      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'];
-                      var d = new Date(time);
-                      var hours = ('0' + d.getHours()).slice(-2);
-                      var minutes = ('0' + d.getMinutes()).slice(-2);
-                      var seconds = ('0' + d.getSeconds()).slice(-2);
-                      var status = timeDataStatuses[i] == 'good' ? '' : statusIcons[timeDataStatuses[i]] || '';
-                      return days[d.getDay()] + ' ' + hours + ':' + minutes + ':' + seconds + status;
-                    }).join(' / ') + '</td>\
-                                        <td>' + elapsedTimes.map(function (time) {
-                      if (time === null) return '--:--';
-                      var hours = Math.floor(time / (60 * 60));
-                      var minutes = Math.floor((time / 60) % 60);
-                      var seconds = Math.floor(time % 60);
-                      return hours + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
-                    }).join(' / ') + '</td>\
-                                        <td>' + (stopped.some(function (b) {
-                      return b;
-                    }) ? '<i class="icon-stopped"></i>' : '') + '</td>\
-                                        <td class="pacer-only">\
-                                            <div class="d-flex flex-row text-center">\
-                                                <span class="flex-1">' +
-                    (pacers[0] ?
-                      '<i class="icon-pacer"></i>' :
-                      (pacers[1] ?
-                        '<i class="fas fa-share"></i>' :
-                        '')) +
-                    '</span>' +
-                    (pacers.length == 2 ?
-                      '<span class="flex-1">' +
-                      (pacers[1] ?
-                        (pacers[0] ?
-                          '<i class="fas fa-long-arrow-right"></i>' :
-                          '<i class="icon-pacer"></i>') :
-                        (pacers[1] === false && pacers[0] ?
-                          '<i class="fas fa-share fa-rotate-90"></i>' :
-                          '')) +
-                      '</span>' :
-                      '') +
-                    '</div>\
-                </td>\
-            </tr>\
-        ');
-                });
-                highlightSplit();
+            if (effort) {
+              // Populate effort table
+              liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
+              const table_url = `/efforts/${effortId}/live_entry_table`;
+              const options = { responseKind: "turbo-stream" }
+              get(table_url, options).then(function (response) {
+                if (response.ok) {
+                  const text = response.text();
+                }
               })
             } else {
+              // Clear effort table
               liveEntry.liveEntryForm.lastEffortInfoBib = null;
-              $('#js-effort-table').empty();
-              // Clear effort detail
+              document.getElementById('lap_split_rows_for_live_entry').innerHTML = '';
             }
           }
-          highlightSplit();
         },
 
         stripBibLeadingZeros: function () {
@@ -1141,7 +1078,7 @@ export default class extends Controller {
           }
         },
 
-        empty: function(row) {
+        empty: function (row) {
           const rawTimeIn = liveEntry.rawTimeFromRow(row, 'in');
           const rawTimeOut = liveEntry.rawTimeFromRow(row, 'out');
 

@@ -1,0 +1,5 @@
+<%# locals: (presenter:) %>
+
+<%= turbo_stream.replace("lap_split_rows_for_live_entry",
+                         partial: "split_times/lap_split_rows_for_live_entry",
+                         locals: { presenter: presenter }) %>

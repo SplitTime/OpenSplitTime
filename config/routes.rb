@@ -84,6 +84,7 @@ Rails.application.routes.draw do
       get :show_photo
       get :edit_split_times
       get :start_form
+      get :live_entry_table
       post :create_split_time_from_raw_time
       patch :update_split_times
       patch :set_data_status

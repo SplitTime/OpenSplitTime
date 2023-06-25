@@ -275,7 +275,7 @@ Rails.application.routes.draw do
       end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
-          get :enrich_raw_time_row
+          post :enrich_raw_time_row
           get :not_expected
           post :import
           post :import_csv_raw_times

@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { get } from "@rails/request.js"
+import { get, post } from "@rails/request.js"
 
 export default class extends Controller {
 
@@ -31,6 +31,7 @@ export default class extends Controller {
       currentFormResponse: {},
       emptyRawTimeRow: {rawTimes: []},
       lastFormRequest: {},
+      currentUser: controller.currentUserIdValue,
 
       init: function (controller) {
         liveEntry.currentEventGroupId = controller.eventGroupIdValue;
@@ -314,7 +315,7 @@ export default class extends Controller {
             }
           });
 
-          return !!flag
+          return flag
         },
 
       }, // end timeRowsCache
@@ -402,6 +403,8 @@ export default class extends Controller {
           if (pacers) document.querySelectorAll('.pacer-disabled').forEach(el => el.classList.remove('pacer-disabled'));
           if (anySubSplitIn) document.querySelectorAll('.time-in-disabled').forEach(el => el.classList.remove('time-in-disabled'));
           if (anySubSplitOut) document.querySelectorAll('.time-out-disabled').forEach(el => el.classList.remove('time-out-disabled'));
+
+          liveEntry.liveEntryForm.clear()
 
           // Clears the live entry form when the clear button is clicked
           document.getElementById('js-discard-entry-form').addEventListener('click', function (event) {
@@ -518,7 +521,7 @@ export default class extends Controller {
               // Populate effort table
               liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
               const table_url = `/efforts/${effortId}/live_entry_table`;
-              const options = { responseKind: "turbo-stream" }
+              const options = {responseKind: "turbo-stream"}
               get(table_url, options)
             } else {
               // Clear effort table
@@ -558,7 +561,7 @@ export default class extends Controller {
         /**
          * Adds dataStatus and splitTimeExists to rawTimes in the form.
          */
-        enrichTimeData: function () {
+        enrichTimeData: async function () {
           const bibNumber = document.getElementById('js-bib-number').value;
           const bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
           const splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -573,31 +576,34 @@ export default class extends Controller {
           }
 
           // Clear out dataStatus and splitTimeExists from the last request
-          liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), {dataStatus: null, splitTimeExists: null});
-          liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), {dataStatus: null, splitTimeExists: null});
+          liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-in'), {dataStatus: null, splitTimeExists: null});
+          liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-out'), {dataStatus: null, splitTimeExists: null});
 
-          var requestData = {
-            data: {
-              rawTimeRow: liveEntry.liveEntryForm.getTimeRow()
-            }
-          };
+          const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/enrich_raw_time_row`;
+          const rawTimeRow = liveEntry.liveEntryForm.getTimeRow()
+          const requestData = {data: {rawTimeRow: rawTimeRow}}
+          const options = {
+            responseKind: "json",
+            body: requestData,
+          }
 
-          return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', requestData, function (response) {
-            liveEntry.currentFormResponse = response;
+          const response = await post(url, options)
+          if (response.ok) {
+            liveEntry.currentFormResponse = await response.json;
             liveEntry.lastFormRequest = requestData.data.rawTimeRow;
 
-            var rawTime = liveEntry.currentRawTime();
-            var inRawTime = liveEntry.currentRawTime('in');
-            var outRawTime = liveEntry.currentRawTime('out');
+            const rawTime = liveEntry.currentRawTime();
+            const inRawTime = liveEntry.currentRawTime('in');
+            const outRawTime = liveEntry.currentRawTime('out');
 
-            if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-              $('#js-lap-number').val(rawTime.enteredLap);
-              $('#js-lap-number:focus').select();
+            if (!document.getElementById('js-lap-number').value || bibChanged || splitChanged) {
+              document.getElementById('js-lap-number').value = rawTime.enteredLap
+              // $('#js-lap-number:focus').select();
             }
 
-            liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), inRawTime);
-            liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), outRawTime);
-          })
+            liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-in'), inRawTime);
+            liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-out'), outRawTime);
+          }
         },
 
         /**
@@ -605,27 +611,28 @@ export default class extends Controller {
          * @return object a single rawTimeRow
          */
         getTimeRow: function () {
-          var subSplitKinds = liveEntry.currentStation().subSplitKinds;
-          var uniqueId = parseInt($('#js-unique-id').val());
+          const subSplitKinds = liveEntry.currentStation().subSplitKinds;
+          let uniqueId = parseInt(document.getElementById('js-unique-id').value)
           if (isNaN(uniqueId)) uniqueId = null;
 
           return {
             uniqueId: uniqueId,
             rawTimes: subSplitKinds.map(function (kind) {
-                var $timeField = $('#js-time-' + kind);
+                const timeField = document.getElementById(`js-time-${kind}`);
+                const dataStatus = timeField.dataset.dataStatus === 'null' ? null : timeField.dataset.dataStatus;
                 return {
                   eventGroupId: liveEntry.currentEventGroupId,
-                  bibNumber: $('#js-bib-number').val(),
-                  enteredTime: $timeField.val(),
-                  militaryTime: $timeField.val(),
-                  enteredLap: $('#js-lap-number').val(),
+                  bibNumber: document.getElementById('js-bib-number').value,
+                  enteredTime: timeField.value,
+                  militaryTime: timeField.value,
+                  enteredLap: document.getElementById('js-lap-number').value,
                   splitName: liveEntry.currentStation().title,
                   subSplitKind: kind,
-                  stoppedHere: $('#js-dropped').prop('checked'),
-                  withPacer: $('#js-pacer-' + kind).prop('checked'),
-                  dataStatus: $timeField.attr('data-time-status'),
-                  splitTimeExists: ($timeField.attr('data-split-time-exists') === 'true'),
-                  source: 'Live Entry (' + liveEntry.currentUser + ')'
+                  stoppedHere: document.getElementById('js-dropped').checked,
+                  withPacer: document.getElementById(`js-pacer-${kind}`).checked,
+                  dataStatus: dataStatus,
+                  splitTimeExists: (timeField.dataset.splitTimeExists === 'true'),
+                  source: `Live Entry (${liveEntry.currentUser})`
                 }
               }
             )
@@ -662,23 +669,24 @@ export default class extends Controller {
          */
         clear: function () {
           liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
-          var $uniqueId = $('#js-unique-id');
-          if ($uniqueId.val() !== '') {
-            var $row = $('#workspace-' + $uniqueId.val());
-            $row.removeClass('bg-highlight');
-            $uniqueId.val('');
+          const uniqueIdElement = document.getElementById('js-unique-id')
+          if (uniqueIdElement.value !== '') {
+            const row = document.getElementById(`workspace-${uniqueIdElement.value}`);
+            row.classList.remove('bg-highlight');
+            uniqueIdElement.value = '';
           }
-          $('#js-effort-name').html('').removeAttr('href');
-          $('#js-effort-event-name').html('');
-          $('#js-time-in').removeClass('exists null bad good questionable');
-          $('#js-time-out').removeClass('exists null bad good questionable');
-          $('#js-time-in').val('');
-          $('#js-time-out').val('');
-          $('#js-bib-number').val('');
-          $('#js-lap-number').val('');
-          $('#js-pacer-in').prop('checked', false);
-          $('#js-pacer-out').prop('checked', false);
-          $('#js-dropped').prop('checked', false).change();
+          document.getElementById('js-effort-name').innerHTML = ''
+          document.getElementById('js-effort-name').removeAttribute('href')
+          document.getElementById('js-effort-event-name').innerHTML = ''
+          document.getElementById('js-time-in').classList.remove('exists', 'null', 'bad', 'good', 'questionable');
+          document.getElementById('js-time-out').classList.remove('exists', 'null', 'bad', 'good', 'questionable');
+          document.getElementById('js-time-in').value = ''
+          document.getElementById('js-time-out').value = ''
+          document.getElementById('js-bib-number').value = ''
+          document.getElementById('js-lap-number').value = '1'
+          document.getElementById('js-pacer-in').checked = false
+          document.getElementById('js-pacer-out').checked = false
+          document.getElementById('js-dropped').checked = false
           liveEntry.liveEntryForm.buttonAddMode();
           liveEntry.liveEntryForm.updateEffortInfo();
           liveEntry.liveEntryForm.enrichTimeData();
@@ -686,21 +694,21 @@ export default class extends Controller {
         },
 
         buttonAddMode: function () {
-          $('#js-add-to-cache').html('Add');
-          $('#js-discard-entry-form').html('Discard');
+          document.getElementById('js-add-to-cache').innerHTML = 'Add'
+          document.getElementById('js-discard-entry-form').innerHTML = 'Discard'
         },
 
         buttonUpdateMode: function () {
-          $('#js-add-to-cache').html('Update');
-          $('#js-discard-entry-form').html('Cancel');
+          document.getElementById('js-add-to-cache').innerHTML = 'Update'
+          document.getElementById('js-discard-entry-form').innerHTML = 'Cancel'
         },
 
-        updateTimeField: function ($field, rawTime) {
-          $field.removeClass('exists null bad good questionable')
-            .addClass(rawTime.splitTimeExists ? 'exists' : '')
-            .addClass(rawTime.dataStatus)
-            .attr('data-time-status', rawTime.dataStatus)
-            .attr('data-split-time-exists', rawTime.splitTimeExists)
+        updateTimeField: function (field, rawTime) {
+          field.classList.remove('exists', 'null', 'bad', 'good', 'questionable');
+          if (rawTime.splitTimeExists) field.classList.add('exists')
+          field.classList.add(rawTime.dataStatus)
+          field.setAttribute('data-time-status', rawTime.dataStatus);
+          field.setAttribute('data-split-time-exists', rawTime.splitTimeExists)
         }
       }, // END liveEntryForm
 
@@ -773,7 +781,7 @@ export default class extends Controller {
         addTimeRowFromForm: function () {
           // Retrieve form data
           liveEntry.liveEntryForm.enrichTimeData().always(function () {
-            var rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
+            const rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
             if (liveEntry.rawTimeRow.empty(rawTimeRow)) return;
             if (rawTimeRow.uniqueId === null) rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -782,7 +790,7 @@ export default class extends Controller {
 
             // Clear data and put focus on bibNumber field once we've collected all the data
             liveEntry.liveEntryForm.clear();
-            $('#js-bib-number').focus();
+            document.getElementById('js-bib-number').focus();
           });
         },
 

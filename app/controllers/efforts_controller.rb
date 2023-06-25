@@ -60,34 +60,34 @@ class EffortsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        effort = effort_with_splits
-        new_event_id = permitted_params.delete(:event_id)&.to_i
-
-        if effort.update(permitted_params)
+        if @effort.update(permitted_params)
           case params[:button]&.to_sym
           when :disassociate
             redirect_to request.referrer
           else
             redirect_to entrants_event_group_path(effort.event_group)
           end
-
-          if new_event_id && new_event_id != effort.event_id
-            new_event = Event.find(new_event_id)
-            response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
-            set_flash_message(response)
-          end
         else
-          @effort = effort
           render :edit, status: :unprocessable_entity
         end
       end
 
       format.turbo_stream do
-        success = @effort.update(permitted_params)
-        presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
+        effort = effort_with_splits
+        new_event_id = permitted_params.delete(:event_id)&.to_i
+        success = effort.update(permitted_params)
+
+        if success && new_event_id && new_event_id != effort.event_id
+          new_event = Event.find(new_event_id)
+          response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
+          success = response.successful?
+          set_flash_message_now(response)
+        end
+
+        presenter = ::EventGroupRosterPresenter.new(effort.event_group, view_context)
         status = success ? :ok : :unprocessable_entity
 
-        render :update, locals: { effort: @effort, presenter: presenter }, status: status
+        render :update, locals: { effort: effort, presenter: presenter }, status: status
       end
     end
   end

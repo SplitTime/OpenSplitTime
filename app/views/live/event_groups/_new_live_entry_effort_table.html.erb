@@ -1,6 +1,6 @@
 <%# locals: (event_group:, distance_unit:, presenter:) %>
 
-<table class="table table-striped table-condensed">
+<table class="table table-dark table-striped">
   <thead>
   <tr>
     <th>Split</th>
@@ -9,7 +9,9 @@
     <th class="text-center">Elapsed Time</th>
   </tr>
   </thead>
-  <tbody>
-  <%= render "split_times/lap_split_rows_for_live_entry", presenter: presenter %>
+  <tbody id="lap_split_rows_for_live_entry">
+  <% if presenter.present? %>
+    <%= render "split_times/lap_split_rows_for_live_entry", presenter: presenter %>
+  <% end %>
   </tbody>
 </table>

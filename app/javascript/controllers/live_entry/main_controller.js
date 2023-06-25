@@ -372,6 +372,7 @@ export default class extends Controller {
             liveEntry.currentStationIndex = stationIndex;
             liveEntry.liveEntryForm.updateEffortInfo();
             liveEntry.liveEntryForm.enrichTimeData();
+            liveEntry.liveEntryForm.highlightEffortTableRow();
           }
         }
 
@@ -417,8 +418,8 @@ export default class extends Controller {
           });
 
           document.getElementById('js-lap-number').addEventListener('blur', function () {
-            liveEntry.liveEntryForm.updateEffortInfo();
             liveEntry.liveEntryForm.enrichTimeData();
+            liveEntry.liveEntryForm.highlightEffortTableRow();
           });
 
           document.getElementById('js-time-in').addEventListener('blur', function () {
@@ -427,6 +428,10 @@ export default class extends Controller {
 
           document.getElementById('js-time-out').addEventListener('blur', function () {
             liveEntry.liveEntryForm.enrichTimeData();
+          });
+
+          controller.element.addEventListener('live-entry--effort-table:loaded', function () {
+            liveEntry.liveEntryForm.highlightEffortTableRow();
           });
 
           const droppedHereButton = document.getElementById('js-dropped-button');
@@ -478,7 +483,6 @@ export default class extends Controller {
           let url = '#';
           const splitName = liveEntry.currentStation().splitName;
           const bibNumber = document.getElementById('js-bib-number').value;
-          const lapNumber = document.getElementById('js-lap-number').value;
           const bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEffortInfoBib);
           const effort = liveEntry.bibEffortMap[bibNumber];
 
@@ -515,16 +519,30 @@ export default class extends Controller {
               liveEntry.liveEntryForm.lastEffortInfoBib = bibNumber;
               const table_url = `/efforts/${effortId}/live_entry_table`;
               const options = { responseKind: "turbo-stream" }
-              get(table_url, options).then(function (response) {
-                if (response.ok) {
-                  const text = response.text();
-                }
-              })
+              get(table_url, options)
             } else {
               // Clear effort table
               liveEntry.liveEntryForm.lastEffortInfoBib = null;
               document.getElementById('lap_split_rows_for_live_entry').innerHTML = '';
             }
+          }
+        },
+
+        highlightEffortTableRow: function () {
+          const splitName = liveEntry.currentStation().splitName;
+          let lapNumber = document.getElementById('js-lap-number').value;
+          lapNumber = parseInt(lapNumber) || 1;
+
+          const rows = [...document.querySelectorAll('#lap_split_rows_for_live_entry tr')]
+          rows.forEach(row => row.classList.remove('table-primary'))
+
+          const currentRow = rows.find(row => {
+            return row.dataset.splitName === splitName && parseInt(row.dataset.lapNumber) === lapNumber
+          })
+
+          if (currentRow) {
+            currentRow.classList.add('table-primary')
+            currentRow.scrollIntoView(false);
           }
         },
 

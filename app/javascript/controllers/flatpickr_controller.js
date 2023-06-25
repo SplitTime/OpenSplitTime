@@ -13,7 +13,7 @@ export default class extends Controller {
     const controller = this
     const selector = `#${this.element.id}`
     const dateFormat = this.enableTimeValue ? "m/d/Y H:i:S" : "m/d/Y"
-    const datetime = new Date(this.element.value)
+    const datetime = this.element.value ? new Date(this.element.value) : null
 
     flatpickr(selector, {
       allowInput: true,

@@ -88,7 +88,7 @@ RSpec.describe Interactors::ChangeEventCourse do
         expect(event.aid_stations).to match_array(existing_aid_stations)
         expect(event.splits).to match_array(existing_splits)
         expect(response).not_to be_successful
-        expect(response.errors.first[:detail][:messages]).to include(/names do not coincide/)
+        expect(response.errors.first[:detail][:messages]).to include(/split times corresponding to split names that do not coincide/)
       end
 
       it "makes no changes and raises an error if sub_splits do not coincide" do

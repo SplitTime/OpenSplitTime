@@ -140,7 +140,7 @@ module Interactors
 
     def split_name_mismatch_error(child, new_parent)
       {title: "Split names do not match",
-       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because split names do not coincide"]}}
+       detail: {messages: ["#{child} cannot be assigned to #{new_parent} because #{child} has split times corresponding to split names that do not coincide with splits for #{new_parent}"]}}
     end
 
     def sub_split_mismatch_error(child, new_parent)

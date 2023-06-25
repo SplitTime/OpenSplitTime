@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe ETL::Transformers::GenericResourcesStrategy do
@@ -42,13 +44,14 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
 
     context "when transforming efforts" do
       let(:effort_1) { temp_efforts.first }
+      let(:effort_2) { temp_efforts.second }
 
       let(:options) { {parent: event, model: :effort} }
-      let(:temp_efforts) { build_stubbed_list(:effort, 2) }
+      let(:temp_efforts) { build_stubbed_list(:effort, 2, :with_birthdate) }
       let(:parsed_structs) do
         [
-          OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, State: "Colorado"),
-          OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, State: "New York")
+          OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, birthdate: effort_1.birthdate, State: "Colorado"),
+          OpenStruct.new(first: effort_2.first_name, last: effort_2.last_name, sex: effort_2.gender, birthdate: effort_2.birthdate, State: "New York")
         ]
       end
 
@@ -59,11 +62,24 @@ RSpec.describe ETL::Transformers::GenericResourcesStrategy do
 
       it "returns rows with effort headers transformed to match the database" do
         expect(first_proto_record.to_h.keys)
-            .to match_array(%i[first_name last_name gender state_code country_code event_id scheduled_start_time])
+            .to match_array(%i[first_name last_name gender birthdate state_code country_code event_id scheduled_start_time])
       end
 
       it "assigns event.id to :event_id" do
         expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+      end
+
+      context "when age is provided instead of birthdate" do
+        let(:parsed_structs) do
+          [
+            OpenStruct.new(first: effort_1.first_name, last: effort_1.last_name, sex: effort_1.gender, age: 30, State: "Colorado"),
+            OpenStruct.new(first: effort_2.first_name, last: effort_2.last_name, sex: effort_2.gender, age: 42, State: "New York")
+          ]
+        end
+
+        it "assigns age to :age" do
+          expect(proto_records.map { |pr| pr[:age] }).to match_array([30, 42])
+        end
       end
     end
 

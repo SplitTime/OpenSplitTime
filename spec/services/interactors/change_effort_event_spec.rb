@@ -75,7 +75,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         new_event.reload
         response = subject.perform!
         expect(response).not_to be_successful
-        expect(response.errors.first[:detail][:messages]).to include(/split names do not coincide/)
+        expect(response.errors.first[:detail][:messages]).to include(/split times corresponding to split names that do not coincide/)
       end
 
       it "raises an error if sub_splits do not coincide" do

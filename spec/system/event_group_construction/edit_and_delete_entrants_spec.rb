@@ -25,7 +25,7 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
     end
 
     expect(page).to have_content("Edit Entrant - #{entrant.full_name}")
-    fill_in "effort_last_name", with: "New Last Name"
+    fill_in "effort_last_name", with: "New Last Name", fill_options: { clear: :backspace }
     expect do
       click_button "Update Entrant"
       # Wait for the update to complete
@@ -46,13 +46,13 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
     end
 
     expect(page).to have_content("Edit Entrant - #{entrant.full_name}")
-    fill_in "effort_last_name", with: "New Last Name"
-    fill_in "effort_birthdate", with: "1/1/3000"
+    fill_in "effort_last_name", with: "New Last Name", fill_options: { clear: :backspace }
+    fill_in "effort_birthdate", with: "1/1/3000", fill_options: { clear: :backspace }
     click_button "Update Entrant"
     # Wait for the update to complete
     expect(page).to have_content("Birthdate can't be today or in the future")
 
-    fill_in "effort_birthdate", with: "1/1/2000"
+    fill_in "effort_birthdate", with: "1/1/2000", fill_options: { clear: :backspace }
 
     expect do
       click_button "Update Entrant"

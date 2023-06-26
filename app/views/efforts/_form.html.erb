@@ -5,7 +5,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(effort, html: { class: "form-horizontal", role: "form" }) do |f| %>
+      <%= form_with(model: effort, url: effort.new_record? ? efforts_path : effort_path(effort.id)) do |f| %>
         <div class="row">
           <div class="col-md-6 mb-3">
             <%= f.label :event, class: "required" %>

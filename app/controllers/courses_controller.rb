@@ -80,7 +80,7 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       format.html do
-        session[:return_to] = plan_effort_organization_course_path(@organization, @course)
+        flash[:warning] = "Please enter your expected finish time." if params.key?(:expected_time) && params[:expected_time].blank?
       end
       format.csv do
         csv_stream = render_to_string(partial: "plan", formats: :csv)

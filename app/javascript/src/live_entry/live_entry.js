@@ -663,21 +663,26 @@
                     }
                 };
 
-                return $.get('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', requestData, function (response) {
-                    liveEntry.currentFormResponse = response;
-                    liveEntry.lastFormRequest = requestData.data.rawTimeRow;
+                return $.post({
+                    url: '/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row',
+                    data: JSON.stringify(requestData),
+                    contentType: 'application/json',
+                    success: function (response) {
+                        liveEntry.currentFormResponse = response;
+                        liveEntry.lastFormRequest = requestData.data.rawTimeRow;
 
-                    var rawTime = liveEntry.currentRawTime();
-                    var inRawTime = liveEntry.currentRawTime('in');
-                    var outRawTime = liveEntry.currentRawTime('out');
+                        var rawTime = liveEntry.currentRawTime();
+                        var inRawTime = liveEntry.currentRawTime('in');
+                        var outRawTime = liveEntry.currentRawTime('out');
 
-                    if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
-                        $('#js-lap-number').val(rawTime.enteredLap);
-                        $('#js-lap-number:focus').select();
+                        if (!$('#js-lap-number').val() || bibChanged || splitChanged) {
+                            $('#js-lap-number').val(rawTime.enteredLap);
+                            $('#js-lap-number:focus').select();
+                        }
+
+                        liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), inRawTime);
+                        liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), outRawTime);
                     }
-
-                    liveEntry.liveEntryForm.updateTimeField($('#js-time-in'), inRawTime);
-                    liveEntry.liveEntryForm.updateTimeField($('#js-time-out'), outRawTime);
                 })
             },
 

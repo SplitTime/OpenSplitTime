@@ -1,14 +1,16 @@
-<%= render "shared/errors", obj: @effort %>
+<%# locals: (effort:) %>
+
+<%= render "shared/errors", obj: effort %>
 
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <%= form_for(@effort, html: { class: "form-horizontal", role: "form" }) do |f| %>
+      <%= form_with(model: effort, url: effort.new_record? ? efforts_path : effort_path(effort.id)) do |f| %>
         <div class="row">
           <div class="col-md-6 mb-3">
             <%= f.label :event, class: "required" %>
             <%= f.select :event_id,
-                         @effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
+                         effort.events_within_group.map { |event| [event.guaranteed_short_name, event.id] },
                          { prompt: true },
                          { class: "form-control dropdown-select-field" } %>
           </div>
@@ -118,7 +120,7 @@
         <br/>
         <div class="row mb-3">
           <div class="col">
-            <%= f.submit(@effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>
+            <%= f.submit(effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>
             <%= button_tag "Cancel",
                            type: :button,
                            data: { action: "click->form-modal#hide" },

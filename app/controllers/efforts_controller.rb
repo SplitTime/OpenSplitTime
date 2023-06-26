@@ -35,28 +35,39 @@ class EffortsController < ApplicationController
   # GET /efforts/new
   def new
     event = Event.find(params[:event_id])
-    @effort = event.efforts.new
-    authorize @effort
+    effort = event.efforts.new
+    authorize effort
+
+    render :new, locals: { effort: effort }
   end
 
   # GET /efforts/1/edit
   def edit
     authorize @effort
     @effort = Effort.where(id: @effort).includes(event: { event_group: :events }).first
+
+    render :edit, locals: { effort: @effort }
   end
 
   # POST /efforts
   def create
-    @effort = Effort.new(permitted_params)
-    authorize @effort
+    effort = Effort.new(permitted_params)
+    authorize effort
 
-    if @effort.save
+    if effort.save
       respond_to do |format|
-        format.html { redirect_to entrants_event_group_path(@effort.event_group) }
-        format.turbo_stream { @presenter = EventGroupSetupPresenter.new(@effort.event_group, view_context) }
+        format.html { redirect_to entrants_event_group_path(effort.event_group) }
+        format.turbo_stream do
+          render :create, locals: { effort: effort, presenter: EventGroupSetupPresenter.new(effort.event_group, view_context) }
+        end
       end
     else
-      render "new", status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/new_modal", locals: { effort: effort }), status: :unprocessable_entity
+        end
+      end
     end
   end
 
@@ -66,34 +77,36 @@ class EffortsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        effort = effort_with_splits
-        new_event_id = permitted_params.delete(:event_id)&.to_i
-
-        if effort.update(permitted_params)
+        if @effort.update(permitted_params)
           case params[:button]&.to_sym
           when :disassociate
             redirect_to request.referrer
           else
             redirect_to entrants_event_group_path(effort.event_group)
           end
-
-          if new_event_id && new_event_id != effort.event_id
-            new_event = Event.find(new_event_id)
-            response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
-            set_flash_message(response)
-          end
         else
-          @effort = effort
           render :edit, status: :unprocessable_entity
         end
       end
 
       format.turbo_stream do
-        success = @effort.update(permitted_params)
-        presenter = ::EventGroupRosterPresenter.new(@effort.event_group, view_context)
-        status = success ? :ok : :unprocessable_entity
+        effort = effort_with_splits
+        new_event_id = permitted_params.delete(:event_id)&.to_i
+        success = effort.update(permitted_params)
 
-        render :update, locals: { effort: @effort, presenter: presenter }, status: status
+        if success && new_event_id && (new_event_id != effort.event_id)
+          new_event = effort.event_group.events.find(new_event_id)
+          response = Interactors::ChangeEffortEvent.perform!(effort: effort, new_event: new_event)
+          success = response.successful?
+          effort.errors.add(:event_id, response.error_report) unless success
+        end
+
+        if success
+          presenter = ::EventGroupRosterPresenter.new(effort.event_group, view_context)
+          render :update, locals: { effort: effort, presenter: presenter }
+        else
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/edit_modal", locals: { effort: effort }), status: :unprocessable_entity
+        end
       end
     end
   end

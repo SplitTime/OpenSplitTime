@@ -531,6 +531,9 @@ export default class extends Controller {
           }
         },
 
+        /**
+         * Highlights the row in the effort table that corresponds to the current station and lap number.
+         */
         highlightEffortTableRow: function () {
           const splitName = liveEntry.currentStation().splitName;
           let lapNumber = document.getElementById('js-lap-number').value;
@@ -550,18 +553,18 @@ export default class extends Controller {
         },
 
         stripBibLeadingZeros: function () {
-          let $element = $('#js-bib-number');
-          let str = $element.val();
+          let element = document.getElementById('js-bib-number');
+          let str = element.value;
 
           if (str !== '0') {
-            $element.val(str.replace(/^0+/, ''))
+            element.value = str.replace(/^0+/, '');
           }
         },
 
         /**
          * Adds dataStatus and splitTimeExists to rawTimes in the form.
          */
-        enrichTimeData: async function () {
+        enrichTimeData: function () {
           const bibNumber = document.getElementById('js-bib-number').value;
           const bibChanged = (bibNumber !== liveEntry.liveEntryForm.lastEnrichTimeBib);
           const splitChanged = (liveEntry.currentStationIndex !== liveEntry.liveEntryForm.lastStationIndex);
@@ -572,38 +575,47 @@ export default class extends Controller {
           const lastRequestComp = liveEntry.rawTimeRow.compData(liveEntry.lastFormRequest);
 
           if (JSON.stringify(currentFormComp) === JSON.stringify(lastRequestComp)) {
-            return $.Deferred().resolve(); // We already have the information for this data.
+            return Promise.resolve(); // We already have the information for this data.
           }
 
           // Clear out dataStatus and splitTimeExists from the last request
           liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-in'), {dataStatus: null, splitTimeExists: null});
           liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-out'), {dataStatus: null, splitTimeExists: null});
 
-          const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/enrich_raw_time_row`;
-          const rawTimeRow = liveEntry.liveEntryForm.getTimeRow()
-          const requestData = {data: {rawTimeRow: rawTimeRow}}
-          const options = {
-            responseKind: "json",
-            body: requestData,
-          }
+          const requestData = {
+            data: {
+              rawTimeRow: liveEntry.liveEntryForm.getTimeRow()
+            }
+          };
 
-          const response = await post(url, options)
-          if (response.ok) {
-            liveEntry.currentFormResponse = await response.json;
+          return post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+          }).then(function (response) {
+            if (response.ok) {
+              return response.json
+            } else {
+              console.error('time row enrichment failed', response)
+            }
+          }).then(function (json) {
+            liveEntry.currentFormResponse = json;
             liveEntry.lastFormRequest = requestData.data.rawTimeRow;
 
             const rawTime = liveEntry.currentRawTime();
             const inRawTime = liveEntry.currentRawTime('in');
             const outRawTime = liveEntry.currentRawTime('out');
 
-            if (!document.getElementById('js-lap-number').value || bibChanged || splitChanged) {
-              document.getElementById('js-lap-number').value = rawTime.enteredLap
-              // $('#js-lap-number:focus').select();
+            const lapNumberInput = document.getElementById('js-lap-number');
+            if (!lapNumberInput.value || bibChanged || splitChanged) {
+              if (rawTime.enteredLap) lapNumberInput.value = rawTime.enteredLap;
+              document.querySelector('#js-lap-number:focus')?.select();
             }
 
             liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-in'), inRawTime);
             liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-out'), outRawTime);
-          }
+          });
         },
 
         /**
@@ -742,8 +754,12 @@ export default class extends Controller {
           liveEntry.timeRowsTable.populateTableFromCache();
           liveEntry.timeRowsTable.timeRowControls();
 
+          const deleteWarning = document.getElementById('js-delete-all-warning');
+          deleteWarning.style.display = 'none';
+          deleteWarning.parentNode.removeChild(deleteWarning);
+
           // Attach add listener
-          $('#js-add-to-cache').on('click', function (event) {
+          document.getElementById('js-add-to-cache').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.liveEntryForm.buttonAddMode();
             liveEntry.timeRowsTable.addTimeRowFromForm();
@@ -780,7 +796,7 @@ export default class extends Controller {
 
         addTimeRowFromForm: function () {
           // Retrieve form data
-          liveEntry.liveEntryForm.enrichTimeData().always(function () {
+          liveEntry.liveEntryForm.enrichTimeData().then(function () {
             const rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
             if (liveEntry.rawTimeRow.empty(rawTimeRow)) return;
@@ -962,44 +978,75 @@ export default class extends Controller {
 
         /**
          * Toggles the current state of the discard all button
-         * @param  boolean forceClose The button is forced to close without discarding.
          */
         toggleDiscardAll: (function () {
-          var $deleteWarning = null;
-          var callback = function () {
+          const callback = function () {
             liveEntry.timeRowsTable.toggleDiscardAll(false);
           };
-          document.addEventListener("turbo:load", function () {
-            $deleteWarning = $('#js-delete-all-warning').hide().detach();
-          });
+
+          const deleteWarning = document.getElementById('js-delete-all-warning');
+
           return function (canDelete) {
-            var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
-            var $deleteButton = $('#js-delete-all-time-rows');
-            $deleteButton.prop('disabled', true);
-            $(document).off('click', callback);
-            $deleteWarning.insertAfter($deleteButton).animate({
+            const nodes = Array.from(liveEntry.timeRowsTable.$dataTable.rows().nodes());
+            const deleteButton = document.getElementById('js-delete-all-time-rows');
+            deleteButton.disabled = true;
+            document.removeEventListener('click', callback);
+            deleteButton.parentNode.insertBefore(deleteWarning, deleteButton.nextSibling);
+            deleteWarning.style.display = 'block';
+            const animationProps = {
               width: 'toggle',
               paddingLeft: 'toggle',
               paddingRight: 'toggle'
-            }, {
+            };
+            const animationOptions = {
               duration: 350,
               done: function () {
-                $deleteButton.prop('disabled', false);
-                if ($deleteButton.hasClass('confirm')) {
+                deleteButton.disabled = false;
+                if (deleteButton.classList.contains('confirm')) {
                   if (canDelete) {
                     liveEntry.timeRowsTable.removeTimeRows(nodes);
-                    $('#js-station-select').focus();
+                    document.querySelector('#js-station-select').focus();
                   }
-                  $deleteButton.removeClass('confirm');
-                  $deleteWarning = $('#js-delete-all-warning').hide().detach();
+                  deleteButton.classList.remove('confirm');
+                  deleteWarning.style.display = 'none';
+                  deleteWarning.parentNode.removeChild(deleteWarning);
                 } else {
-                  $deleteButton.addClass('confirm');
-                  $(document).one('click', callback);
+                  deleteButton.classList.add('confirm');
+                  document.addEventListener('click', callback);
                 }
               }
-            });
+            };
+            this.animate(deleteWarning, animationProps, animationOptions);
           }
         })(),
+
+        animate: (function (element, properties, options) {
+          let start = null;
+          const from = {};
+          const to = {};
+          for (let property in properties) {
+            from[property] = parseInt(getComputedStyle(element)[property]);
+            to[property] = parseInt(properties[property]);
+          }
+
+          function step(timestamp) {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            for (let property in properties) {
+              const value = from[property] + (to[property] - from[property]) * (progress / options.duration);
+              element.style[property] = value + 'px';
+            }
+            if (progress < options.duration) {
+              window.requestAnimationFrame(step);
+            } else {
+              if (typeof options.done === 'function') {
+                options.done();
+              }
+            }
+          }
+
+          window.requestAnimationFrame(step);
+        }),
 
         /**
          * Move a "cached" table row to "top form" section for editing.
@@ -1115,7 +1162,7 @@ export default class extends Controller {
 
           return emptyIn && emptyOut
         }
-      }, // END rawTimeRow
+      } // END rawTimeRow
 
     } // end liveEntry
 

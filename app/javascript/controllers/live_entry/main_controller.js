@@ -253,8 +253,8 @@ export default class extends Controller {
         /**
          * Delete the matching timeRow
          *
-         * @param object    subjectTimeRow    Pass in the object/timeRow we want to delete.
          * @return null
+         * @param subjectTimeRow
          */
         deleteStoredTimeRow: function (subjectTimeRow) {
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
@@ -300,8 +300,8 @@ export default class extends Controller {
         /**
          * Compare timeRow to all timeRows in local storage. Add if it doesn't already exist, or throw an error message.
          *
-         * @param  object subjectTimeRow Pass in Object of the timeRow to check it against the stored objects         *
          * @return boolean    True if match found, False if no match found
+         * @param subjectTimeRow Pass in Object of the subjectTimeRow to check it against the stored objects         *
          */
         isMatchedTimeRow: function (subjectTimeRow) {
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
@@ -539,7 +539,7 @@ export default class extends Controller {
           let lapNumber = document.getElementById('js-lap-number').value;
           lapNumber = parseInt(lapNumber) || 1;
 
-          const rows = [...document.querySelectorAll('#lap_split_rows_for_live_entry tr')]
+          const rows = Array.from(document.querySelectorAll('#lap_split_rows_for_live_entry tr'))
           rows.forEach(row => row.classList.remove('table-primary'))
 
           const currentRow = rows.find(row => {
@@ -655,23 +655,24 @@ export default class extends Controller {
           liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
           liveEntry.currentFormResponse = rawTimeRow;
 
-          var rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
-          var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
-          var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
-          var stationIndex = liveEntry.indexStationMap[rawTime.splitName];
-          var $inTimeField = $('#js-time-in');
-          var $outTimeField = $('#js-time-out');
+          const rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
+          const inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
+          const outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
+          const stationIndex = liveEntry.indexStationMap[rawTime.splitName];
 
-          $('#js-unique-id').val(rawTimeRow.uniqueId);
-          $('#js-bib-number').val(rawTime.bibNumber).focus();
-          $('#js-lap-number').val(rawTime.enteredLap);
-          $inTimeField.val(inRawTime.militaryTime);
-          $outTimeField.val(outRawTime.militaryTime);
-          $('#js-pacer-in').prop('checked', inRawTime.withPacer);
-          $('#js-pacer-out').prop('checked', outRawTime.withPacer);
-          $('#js-dropped').prop('checked', inRawTime.stoppedHere || outRawTime.stoppedHere).change();
-          liveEntry.liveEntryForm.updateTimeField($inTimeField, inRawTime);
-          liveEntry.liveEntryForm.updateTimeField($outTimeField, outRawTime);
+          const inTimeField = document.getElementById('js-time-in');
+          const outTimeField = document.getElementById('js-time-out');
+
+          document.getElementById('js-unique-id').value = rawTimeRow.uniqueId;
+          document.getElementById('js-bib-number').value = rawTime.bibNumber;
+          document.getElementById('js-lap-number').value = rawTime.enteredLap;
+          inTimeField.value = inRawTime.militaryTime;
+          outTimeField.value = outRawTime.militaryTime;
+          document.getElementById('js-pacer-in').checked = inRawTime.withPacer;
+          document.getElementById('js-pacer-out').checked = outRawTime.withPacer;
+          document.getElementById('js-dropped').checked = inRawTime.stoppedHere || outRawTime.stoppedHere;
+          liveEntry.liveEntryForm.updateTimeField(inTimeField, inRawTime);
+          liveEntry.liveEntryForm.updateTimeField(outTimeField, outRawTime);
           liveEntry.header.changeStationSelect(stationIndex);
         },
 

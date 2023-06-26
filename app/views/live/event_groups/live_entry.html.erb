@@ -5,6 +5,16 @@
 <%= javascript_pack_tag "live_entry" %>
 <%= turbo_stream_from @event_group, :live_times %>
 
+<aside class="bg-warning p-3">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col text-start">
+        <h5>Old Live Entry</h5>
+      </div>
+    </div>
+  </div>
+</aside>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">

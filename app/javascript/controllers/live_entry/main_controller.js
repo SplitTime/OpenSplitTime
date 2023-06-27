@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { get, post } from "@rails/request.js"
+import { DataTable } from "simple-datatables"
 
 export default class extends Controller {
 
@@ -16,10 +17,16 @@ export default class extends Controller {
   liveEntryApp(controller) {
 
     const statusIcons = {
-      'exists': '&nbsp;<span class="fas fa-exclamation-circle" data-controller="tooltip" title="Data Already Exists"></span>',
-      'good': '&nbsp;<span class="fas fa-check-circle text-success" data-controller="tooltip" title="Time Appears Good"></span>',
-      'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-controller="tooltip" title="Time Appears Questionable"></span>',
-      'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-controller="tooltip" title="Time Appears Bad"></span>'
+      'exists': '<span class="fas fa-exclamation-circle ms-1" data-controller="tooltip" title="Data Already Exists"></span>',
+      'good': '<span class="fas fa-check-circle text-success ms-1" data-controller="tooltip" title="Time Appears Good"></span>',
+      'questionable': '<span class="fas fa-question-circle text-warning ms-1" data-controller="tooltip" title="Time Appears Questionable"></span>',
+      'bad': '<span class="fas fa-times-circle text-danger ms-1" data-controller="tooltip" title="Time Appears Bad"></span>'
+    };
+
+    const bibIcons = {
+      'good': '<span class="fas fa-check-circle text-success ms-1" data-controller="tooltip" title="Bib Found"></span>',
+      'questionable': '<span class="fas fa-question-circle text-warning ms-1" data-controller="tooltip" title="Bib In Wrong Event"></span>',
+      'bad': '<span class="fas fa-times-circle text-danger ms-1" data-controller="tooltip" title="Bib Not Found"></span>'
     };
 
     let liveEntry = {
@@ -631,7 +638,7 @@ export default class extends Controller {
             uniqueId: uniqueId,
             rawTimes: subSplitKinds.map(function (kind) {
                 const timeField = document.getElementById(`js-time-${kind}`);
-                const dataStatus = timeField.dataset.dataStatus === 'null' ? null : timeField.dataset.dataStatus;
+                const dataStatus = timeField.dataset.timeStatus === 'null' ? null : timeField.dataset.timeStatus;
                 return {
                   eventGroupId: liveEntry.currentEventGroupId,
                   bibNumber: document.getElementById('js-bib-number').value,
@@ -735,7 +742,7 @@ export default class extends Controller {
          *
          * @type object
          */
-        $dataTable: null,
+        dataTable: null,
         busy: false,
 
         /**
@@ -744,20 +751,33 @@ export default class extends Controller {
          */
         init: function () {
 
-          // Initiate DataTable Plugin
-          liveEntry.timeRowsTable.$dataTable = $('#js-local-workspace-table').DataTable({
-            pageLength: 50,
-            oLanguage: {
-              'sSearch': 'Filter:&nbsp;'
-            }
-          });
-          liveEntry.timeRowsTable.$dataTable.clear().draw();
-          liveEntry.timeRowsTable.populateTableFromCache();
-          liveEntry.timeRowsTable.timeRowControls();
-
+          // Set up the Delete All button
           const deleteWarning = document.getElementById('js-delete-all-warning');
           deleteWarning.style.display = 'none';
           deleteWarning.parentNode.removeChild(deleteWarning);
+
+          // Initiate DataTable object
+          this.dataTable = new DataTable('#js-local-workspace-table', {
+            perPage: -1,
+            perPageSelect: [10, 25, 50, ["All", -1]],
+            classes: {
+              table: "datatable-table table table-striped",
+            },
+            rowRender: (row, tr, _index) => {
+              tr.attributes.id = `workspace-${row[0].text}`;
+            },
+            columns: [
+              {
+                select: [0, 1],
+                sortable: false,
+                hidden: true,
+              },
+            ],
+          })
+          this.dataTable.refresh()
+
+          liveEntry.timeRowsTable.populateTableFromCache();
+          this.timeRowControls();
 
           // Attach add listener
           document.getElementById('js-add-to-cache').addEventListener('click', function (event) {
@@ -766,33 +786,14 @@ export default class extends Controller {
             liveEntry.timeRowsTable.addTimeRowFromForm();
             return false;
           });
-
-          // Wrap search field with clear button
-          $('#js-local-workspace-table_filter input')
-            .wrap('<div class="mb-3 has-feedback"></div>')
-            .on('change keyup', function () {
-              var value = $(this).val() || '';
-              if (value.length > 0) {
-                $('#js-filter-clear').show();
-              } else {
-                $('#js-filter-clear').hide();
-              }
-            });
-          $('#js-local-workspace-table_filter .input-group').append(
-            '<span id="js-filter-clear" class="fas fa-times-circle dataTables_filter-clear form-control-feedback" aria-hidden="true"></span>'
-          );
-          $('#js-filter-clear').on('click', function () {
-            liveEntry.timeRowsTable.$dataTable.search('').draw();
-            $(this).hide();
-          });
         },
 
         populateTableFromCache: function () {
-          var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-          $.each(storedTimeRows, function () {
-            liveEntry.timeRowsTable.addTimeRowToTable(this, false);
+          const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+          Array.from(storedTimeRows).forEach(storedTimeRow => {
+            liveEntry.timeRowsTable.addTimeRowToTable(storedTimeRow, false);
           });
-          liveEntry.timeRowsTable.$dataTable.draw();
+          liveEntry.timeRowsTable.dataTable.refresh();
         },
 
         addTimeRowFromForm: function () {
@@ -801,7 +802,7 @@ export default class extends Controller {
             const rawTimeRow = liveEntry.liveEntryForm.getTimeRow();
 
             if (liveEntry.rawTimeRow.empty(rawTimeRow)) return;
-            if (rawTimeRow.uniqueId === null) rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+            if (!rawTimeRow.uniqueId) rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
             liveEntry.timeRowsCache.upsertTimeRow(rawTimeRow);
 
@@ -819,36 +820,35 @@ export default class extends Controller {
          */
         addTimeRowToTable: function (rawTimeRow, highlight) {
           highlight = (typeof highlight == 'undefined') || highlight;
-          liveEntry.timeRowsTable.$dataTable.search('');
-          $('#js-filter-clear').hide();
+          liveEntry.timeRowsTable.dataTable.search('')
 
-          var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
+          const timeRowTableObject = liveEntry.timeRowsTable.buildRowObject(rawTimeRow);
+          liveEntry.timeRowsTable.dataTable.insert([timeRowTableObject])
 
-          var node = liveEntry.timeRowsTable.$dataTable.row.add($(trHtml)).draw('full-hold');
-          if (highlight) {
-            // Find page that the row was added to
-            var pageInfo = liveEntry.timeRowsTable.$dataTable.page.info();
-            var index = liveEntry.timeRowsTable.$dataTable.rows().indexes().indexOf(node.index());
-            var pageIndex = Math.floor(index / pageInfo.length);
-            liveEntry.timeRowsTable.$dataTable.page(pageIndex).draw('full-hold');
-            node.node().classList.add("bg-highlight")
-
-            setTimeout(function () {
-              node.node().classList.remove("bg-highlight");
-              node.node().classList.add("bg-highlight-faded-fast");
-            }, 200);
-          }
+          // if (highlight) {
+          //   // Find page that the row was added to
+          //   const pageInfo = liveEntry.timeRowsTable.dataTable.page.info();
+          //   const index = liveEntry.timeRowsTable.dataTable.rows().indexes().indexOf(node.index());
+          //   const pageIndex = Math.floor(index / pageInfo.length);
+          //   liveEntry.timeRowsTable.dataTable.page(pageIndex)
+          //   node.node().classList.add('bg-highlight');
+          //
+          //   setTimeout(() => {
+          //     node.node().classList.remove('bg-highlight');
+          //     node.node().classList.add('bg-highlight-faded-fast');
+          //   }, 200);
+          // }
         },
 
         updateTimeRowInTable: function (rawTimeRow) {
-          liveEntry.timeRowsTable.$dataTable.search('');
+          liveEntry.timeRowsTable.dataTable.search('');
           $('#js-filter-clear').hide();
 
           var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
           var rowData = liveEntry.timeRowsTable.trToData(trHtml);
           var $row = $('#workspace-' + rawTimeRow.uniqueId);
           $row.removeClass('bg-highlight');
-          liveEntry.timeRowsTable.$dataTable.row($row).data(rowData).draw
+          liveEntry.timeRowsTable.dataTable.row($row).data(rowData).draw
           $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
         },
 
@@ -862,7 +862,7 @@ export default class extends Controller {
 
             // remove table row
             $row.fadeOut('fast', function () {
-              liveEntry.timeRowsTable.$dataTable.row($row).remove().draw('full-hold');
+              liveEntry.timeRowsTable.dataTable.row($row).remove().draw('full-hold');
             });
           });
         },
@@ -882,7 +882,7 @@ export default class extends Controller {
           var data = JSON.stringify({data: timeRows, forceSubmit: forceSubmit});
           $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/submit_raw_time_rows', data, function (response) {
             liveEntry.timeRowsTable.removeTimeRows(tableNodes);
-            liveEntry.timeRowsTable.$dataTable.rows().nodes().to$().stop(true, true);
+            liveEntry.timeRowsTable.dataTable.rows().nodes().to$().stop(true, true);
             var returnedRows = response.data.rawTimeRows;
             for (var i = 0; i < returnedRows.length; i++) {
               var timeRow = returnedRows[i];
@@ -921,12 +921,30 @@ export default class extends Controller {
           });
         },
 
+        buildRowObject: function (rawTimeRow) {
+          const inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
+          const outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
+          const rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
+          const event = liveEntry.events[liveEntry.bibEventIdMap[rawTime.bibNumber]] || {name: '--'};
+          const effort = liveEntry.bibEffortMap[rawTime.bibNumber];
+          const bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
+
+          return {
+            "ID": rawTimeRow.uniqueId,
+            "Encoded": btoa(JSON.stringify(rawTimeRow)),
+            "Aid Station": rawTime.splitName,
+            "Event": event.name,
+            "Bib": rawTime.bibNumber + bibIcons[bibStatus],
+            "Name": (effort ? `<a href="/efforts/${effort.id}">${effort.attributes.fullName}</a>` : '[Bib not found]'),
+            "Lap": rawTime.enteredLap,
+            "Time In": (inRawTime.militaryTime || '') + (statusIcons[inRawTime.dataStatus] || ''),
+            "Time Out": (outRawTime.militaryTime || '') + (statusIcons[outRawTime.dataStatus] || ''),
+            "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
+            "Dropped": (inRawTime.stoppedHere || outRawTime.stoppedHere ? 'Yes' : 'No'),
+          }
+        },
+
         buildTrHtml: function (rawTimeRow) {
-          var bibIcons = {
-            'good': '&nbsp;<span class="fas fa-check-circle text-success" data-controller="tooltip" title="Bib Found"></span>',
-            'questionable': '&nbsp;<span class="fas fa-question-circle text-warning" data-controller="tooltip" title="Bib In Wrong Event"></span>',
-            'bad': '&nbsp;<span class="fas fa-times-circle text-danger" data-controller="tooltip" title="Bib Not Found"></span>'
-          };
           var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
           var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
           var rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
@@ -988,7 +1006,7 @@ export default class extends Controller {
           const deleteWarning = document.getElementById('js-delete-all-warning');
 
           return function (canDelete) {
-            const nodes = Array.from(liveEntry.timeRowsTable.$dataTable.rows().nodes());
+            const nodes = Array.from(liveEntry.timeRowsTable.dataTable.rows().nodes());
             const deleteButton = document.getElementById('js-delete-all-time-rows');
             deleteButton.disabled = true;
             document.removeEventListener('click', callback);
@@ -1084,7 +1102,7 @@ export default class extends Controller {
 
           $('#js-submit-all-time-rows').on('click', function (event) {
             event.preventDefault();
-            var nodes = liveEntry.timeRowsTable.$dataTable.rows().nodes();
+            var nodes = liveEntry.timeRowsTable.dataTable.rows().nodes();
             liveEntry.timeRowsTable.submitTimeRows(nodes, false);
             return false;
           });

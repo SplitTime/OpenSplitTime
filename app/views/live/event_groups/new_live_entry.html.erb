@@ -170,41 +170,25 @@
 
 <article class="ost-article container">
   <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-    <div class="col-12">
-      <div class="provisional-table-wrapper">
-        <table id="js-local-workspace-table" class="table provisional-data-table">
-          <thead>
-          <tr>
-            <th>Aid Station</th>
-            <th class="group-only">Event</th>
-            <th>Bib</th>
-            <th>Name</th>
-            <th class="lap-only">Lap</th>
-            <th class="time-in-only">Time In</th>
-            <th class="time-out-only">Time Out</th>
-            <th class="pacer-only">Pacer</th>
-            <th>Dropped</th>
-            <th data-orderable="false">&nbsp;</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr style="display: none">
-            <td data-order="0"></td>
-            <td class="group-only"></td>
-            <td></td>
-            <td></td>
-            <td class="lap-only"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table id="js-local-workspace-table">
+      <thead>
+      <tr>
+        <th data-type="html">ID</th>
+        <th data-type="html">Encoded</th>
+        <th data-type="html">Aid Station</th>
+        <th data-type="html">Event</th>
+        <th data-type="html">Bib</th>
+        <th data-type="html">Name</th>
+        <th data-type="html">Lap</th>
+        <th data-type="html">Time In</th>
+        <th data-type="html">Time Out</th>
+        <th data-type="html">Pacer</th>
+        <th data-type="html">Dropped</th>
+      </tr>
+      </thead>
+    </table>
   </div>
+
   <div class="row">
     <div class="col-12" id="js-live-messages">
       <div class="alert alert-warning d-none" role="alert" id="js-import-live-warning">
@@ -215,7 +199,8 @@
       </div>
     </div>
   </div>
-  <div class="row provisional-data">
+
+  <div class="row provisional-data mt-4">
     <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper d-flex-inline">
       <%= render "pull_times_button", event_group: @event_group %>
       <%= render "force_pull_times_button", event_group: @event_group %>
@@ -224,9 +209,6 @@
         <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
       </div>
       <button id="js-submit-all-time-rows" class="btn btn-success">Submit All</button>
-    </div>
-
-    <div id="debug">
     </div>
   </div>
 </article>

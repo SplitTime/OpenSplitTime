@@ -774,6 +774,7 @@ export default class extends Controller {
             },
             rowRender: (row, tr, _index) => {
               tr.attributes.id = `workspace-${row[0].text}`;
+              tr.attributes['data-unique-id'] = row[0].text;
               tr.attributes['data-controller'] = 'highlight';
               tr.attributes['data-highlight-timestamp-value'] = row[2].text;
               tr.attributes['data-highlight-fast-value'] = true;
@@ -812,6 +813,9 @@ export default class extends Controller {
             ],
           })
           this.dataTable.refresh()
+
+          // TODO: Remove this dev tool
+          // window.dataTable = this.dataTable;
 
           liveEntry.timeRowsTable.populateTableFromCache();
           this.timeRowControls();
@@ -865,18 +869,26 @@ export default class extends Controller {
           $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
         },
 
-        removeTimeRows: function (timeRows) {
-          $.each(timeRows, function () {
-            var $row = $(this).closest('tr');
-            var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
+        removeTimeRows: function (uniqueIds) {
+          uniqueIds.forEach(uniqueId => {
+            const row = document.getElementById('workspace-' + uniqueId);
+            const dataTableIndex = parseInt(row.dataset.index);
+            const encodedData = liveEntry.timeRowsTable.dataTable.data.data[dataTableIndex][1].text
+            const rawTimeRow = JSON.parse(atob(encodedData));
 
             // remove timeRow from cache
-            liveEntry.timeRowsCache.deleteStoredTimeRow(timeRow);
+            liveEntry.timeRowsCache.deleteStoredTimeRow(rawTimeRow);
 
             // remove table row
-            $row.fadeOut('fast', function () {
-              liveEntry.timeRowsTable.dataTable.row($row).remove().draw('full-hold');
-            });
+            row.style.opacity = '1';
+            row.style.transition = 'opacity 0.2s';
+
+            setTimeout(function () {
+              row.style.opacity = 0;
+              setTimeout(function () {
+                liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
+              }, 200);
+            }, 10);
           });
         },
 
@@ -1020,7 +1032,7 @@ export default class extends Controller {
           const deleteWarning = document.getElementById('js-delete-all-warning');
 
           return function (canDelete) {
-            const nodes = Array.from(liveEntry.timeRowsTable.dataTable.rows().nodes());
+            const allUniqueIds = liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {return dataRow[0].text})
             const deleteButton = document.getElementById('js-delete-all-time-rows');
             deleteButton.disabled = true;
             document.removeEventListener('click', callback);
@@ -1037,7 +1049,7 @@ export default class extends Controller {
                 deleteButton.disabled = false;
                 if (deleteButton.classList.contains('confirm')) {
                   if (canDelete) {
-                    liveEntry.timeRowsTable.removeTimeRows(nodes);
+                    liveEntry.timeRowsTable.removeTimeRows(allUniqueIds);
                     document.querySelector('#js-station-select').focus();
                   }
                   deleteButton.classList.remove('confirm');
@@ -1099,16 +1111,21 @@ export default class extends Controller {
             liveEntry.liveEntryForm.updateEffortInfo();
           });
 
-          $(document).on('click', '.js-delete-effort', function () {
-            liveEntry.timeRowsTable.removeTimeRows($(this));
+          Array.from(document.querySelectorAll('.js-delete-effort')).forEach(element => {
+            element.addEventListener('click', function () {
+              const uniqueId = this.closest('tr').dataset.uniqueId
+              liveEntry.timeRowsTable.removeTimeRows([uniqueId]);
+            })
           });
 
-          $(document).on('click', '.js-submit-effort', function () {
-            liveEntry.timeRowsTable.submitTimeRows([$(this).closest('tr')], true);
+          Array.from(document.querySelectorAll('.js-submit-effort')).forEach(element => {
+            element.addEventListener('click', function () {
+              const uniqueId = this.closest('tr').dataset.uniqueId
+              liveEntry.timeRowsTable.submitTimeRows([uniqueId]);
+            })
           });
 
-
-          $('#js-delete-all-time-rows').on('click', function (event) {
+          document.getElementById('js-delete-all-time-rows').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.timeRowsTable.toggleDiscardAll(true);
             return false;

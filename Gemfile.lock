@@ -166,7 +166,7 @@ GEM
       rexml
     crass (1.0.6)
     dalli (3.2.4)
-    data_migrate (10.0.0)
+    data_migrate (9.0.0)
       activerecord (>= 6.0)
       railties (>= 6.0)
     date (3.3.3)
@@ -582,7 +582,7 @@ DEPENDENCIES
   chartkick
   coverband
   dalli
-  data_migrate
+  data_migrate (~> 9.0)
   derailed_benchmarks
   devise
   devise-bootstrap5

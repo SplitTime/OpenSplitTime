@@ -43,7 +43,7 @@
   data-live-entry--main-event-group-id-value="<%= @event_group.id %>"
   data-live-entry--main-server-uri-value="<%= OstConfig.base_uri %>"
 >
-  <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+  <div class="row lap-disabled group-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">
         <input type="hidden" id="js-unique-id" value=""/>
@@ -169,7 +169,7 @@
 </header>
 
 <article class="ost-article container">
-  <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+  <div class="row provisional-data">
     <table id="js-local-workspace-table">
       <thead>
       <tr>
@@ -183,7 +183,6 @@
         <th data-type="html">Time In</th>
         <th data-type="html">Time Out</th>
         <th data-type="html">Pacer</th>
-        <th data-type="html">Dropped</th>
       </tr>
       </thead>
     </table>

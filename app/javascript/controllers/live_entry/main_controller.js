@@ -29,9 +29,15 @@ export default class extends Controller {
       'bad': '<span class="fas fa-times-circle text-danger ms-1" data-controller="tooltip" title="Bib Not Found"></span>'
     };
 
+    const stoppedIcon = '<span class="fas fa-hand-paper text-danger ms-1" data-controller="tooltip" title="Stopped Here"></span>';
+
     let liveEntry = {
 
       eventGroupResponse: null,
+      multiLap: null,
+      multiEvent: null,
+      monitorPacers: null,
+      anySubSplitOut: null,
       // lastReportedSplitId: null,
       // lastReportedBitkey: null,
       currentStationIndex: null,
@@ -141,11 +147,16 @@ export default class extends Controller {
         init: async function (eventGroupResponse) {
           liveEntry.eventGroupResponse = eventGroupResponse
           liveEntry.eventGroupAttributes = liveEntry.eventGroupResponse.data.attributes
+          liveEntry.multiLap = liveEntry.eventGroupAttributes.multiLap;
+          liveEntry.multiEvent = liveEntry.eventGroupResponse.data.relationships.events.data.length > 1;
+          liveEntry.monitorPacers = liveEntry.eventGroupAttributes.monitorPacers;
+
           liveEntry.dataSetup.buildBibEventIdMap();
           liveEntry.dataSetup.buildEvents();
           liveEntry.dataSetup.buildBibEffortMap();
           liveEntry.dataSetup.buildStationIndexMap();
           liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
+          liveEntry.anySubSplitOut = liveEntry.subSplitKinds.includes('out');
           return true
         },
 
@@ -399,17 +410,10 @@ export default class extends Controller {
         init: function () {
 
           // Enable / Disable conditional fields
-          const multiLap = liveEntry.eventGroupAttributes.multiLap;
-          const multiGroup = liveEntry.eventGroupResponse.data.relationships.events.data.length > 1;
-          const pacers = liveEntry.eventGroupAttributes.monitorPacers;
-          const anySubSplitIn = liveEntry.subSplitKinds.includes('in');
-          const anySubSplitOut = liveEntry.subSplitKinds.includes('out');
-
-          if (multiLap) document.querySelectorAll('.lap-disabled').forEach(el => el.classList.remove('lap-disabled'));
-          if (multiGroup) document.querySelectorAll('.group-disabled').forEach(el => el.classList.remove('group-disabled'));
-          if (pacers) document.querySelectorAll('.pacer-disabled').forEach(el => el.classList.remove('pacer-disabled'));
-          if (anySubSplitIn) document.querySelectorAll('.time-in-disabled').forEach(el => el.classList.remove('time-in-disabled'));
-          if (anySubSplitOut) document.querySelectorAll('.time-out-disabled').forEach(el => el.classList.remove('time-out-disabled'));
+          if (liveEntry.multiLap) document.querySelectorAll('.lap-disabled').forEach(el => el.classList.remove('lap-disabled'));
+          if (liveEntry.multiEvent) document.querySelectorAll('.group-disabled').forEach(el => el.classList.remove('group-disabled'));
+          if (liveEntry.monitorPacers) document.querySelectorAll('.pacer-disabled').forEach(el => el.classList.remove('pacer-disabled'));
+          if (liveEntry.anySubSplitOut) document.querySelectorAll('.time-out-disabled').forEach(el => el.classList.remove('time-out-disabled'));
 
           liveEntry.liveEntryForm.clear()
 
@@ -631,6 +635,7 @@ export default class extends Controller {
          */
         getTimeRow: function () {
           const subSplitKinds = liveEntry.currentStation().subSplitKinds;
+          const subSplitKindForStop = document.getElementById('js-time-out').value ? 'out' : 'in';
           let uniqueId = parseInt(document.getElementById('js-unique-id').value)
           if (isNaN(uniqueId)) uniqueId = null;
 
@@ -647,7 +652,7 @@ export default class extends Controller {
                   enteredLap: document.getElementById('js-lap-number').value,
                   splitName: liveEntry.currentStation().title,
                   subSplitKind: kind,
-                  stoppedHere: document.getElementById('js-dropped').checked,
+                  stoppedHere: timeField.value && (kind === subSplitKindForStop) && document.getElementById('js-dropped').checked,
                   withPacer: document.getElementById(`js-pacer-${kind}`).checked,
                   dataStatus: dataStatus,
                   splitTimeExists: (timeField.dataset.splitTimeExists === 'true'),
@@ -771,6 +776,22 @@ export default class extends Controller {
                 select: [0, 1],
                 sortable: false,
                 hidden: true,
+              },
+              {
+                select: 3,
+                hidden: !liveEntry.multiEvent,
+              },
+              {
+                select: 6,
+                hidden: !liveEntry.multiLap,
+              },
+              {
+                select: 8,
+                hidden: !liveEntry.anySubSplitOut,
+              },
+              {
+                select: 9,
+                hidden: !liveEntry.monitorPacers,
               },
             ],
           })
@@ -937,10 +958,9 @@ export default class extends Controller {
             "Bib": rawTime.bibNumber + bibIcons[bibStatus],
             "Name": (effort ? `<a href="/efforts/${effort.id}">${effort.attributes.fullName}</a>` : '[Bib not found]'),
             "Lap": rawTime.enteredLap,
-            "Time In": (inRawTime.militaryTime || '') + (statusIcons[inRawTime.dataStatus] || ''),
-            "Time Out": (outRawTime.militaryTime || '') + (statusIcons[outRawTime.dataStatus] || ''),
+            "Time In": (inRawTime.militaryTime || '') + (statusIcons[inRawTime.dataStatus] || '') + (inRawTime.stoppedHere ? stoppedIcon : ''),
+            "Time Out": (outRawTime.militaryTime || '') + (statusIcons[outRawTime.dataStatus] || '') + (outRawTime.stoppedHere ? stoppedIcon : ''),
             "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
-            "Dropped": (inRawTime.stoppedHere || outRawTime.stoppedHere ? 'Yes' : 'No'),
           }
         },
 

@@ -750,6 +750,9 @@ export default class extends Controller {
          */
         dataTable: null,
         busy: false,
+        editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>',
+        deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>',
+        submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
 
         /**
          * Inits the provisional data table
@@ -797,6 +800,15 @@ export default class extends Controller {
                 select: 10,
                 hidden: !liveEntry.monitorPacers,
               },
+              {
+                select: 11,
+                sortable: false,
+                render: (_data, cell, _row) => {
+                  cell.attributes = {
+                    class: "row-edit-btns"
+                  }
+                }
+              },
             ],
           })
           this.dataTable.refresh()
@@ -837,11 +849,6 @@ export default class extends Controller {
           });
         },
 
-        /**
-         * Add a new row to the table (with js dataTables enabled)
-         *
-         * @param object timeRow Pass in the object of the timeRow to add
-         */
         addTimeRowToTable: function (rawTimeRow) {
           liveEntry.timeRowsTable.dataTable.search('')
 
@@ -851,12 +858,9 @@ export default class extends Controller {
 
         updateTimeRowInTable: function (rawTimeRow) {
           liveEntry.timeRowsTable.dataTable.search('');
-          $('#js-filter-clear').hide();
 
-          var trHtml = liveEntry.timeRowsTable.buildTrHtml(rawTimeRow);
-          var rowData = liveEntry.timeRowsTable.trToData(trHtml);
-          var $row = $('#workspace-' + rawTimeRow.uniqueId);
-          $row.removeClass('bg-highlight');
+          const timeRowTableObject = liveEntry.timeRowsTable.buildRowObject(rawTimeRow);
+          const row = document.getElementById('#workspace-' + rawTimeRow.uniqueId);
           liveEntry.timeRowsTable.dataTable.row($row).data(rowData).draw
           $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
         },
@@ -950,6 +954,7 @@ export default class extends Controller {
             "Time In": (inRawTime.militaryTime || '') + (statusIcons[inRawTime.dataStatus] || '') + (inRawTime.stoppedHere ? stoppedIcon : ''),
             "Time Out": (outRawTime.militaryTime || '') + (statusIcons[outRawTime.dataStatus] || '') + (outRawTime.stoppedHere ? stoppedIcon : ''),
             "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
+            "Actions": liveEntry.timeRowsTable.editButton + liveEntry.timeRowsTable.deleteButton + liveEntry.timeRowsTable.submitButton
           }
         },
 

@@ -44,7 +44,7 @@ export default class extends Controller {
       currentFormResponse: {},
       emptyRawTimeRow: {rawTimes: []},
       lastFormRequest: {},
-      currentUser: controller.currentUserIdValue,
+      currentUserId: controller.currentUserIdValue,
 
       init: function (controller) {
         liveEntry.currentEventGroupId = controller.eventGroupIdValue;
@@ -656,7 +656,7 @@ export default class extends Controller {
                   withPacer: document.getElementById(`js-pacer-${kind}`).checked,
                   dataStatus: dataStatus,
                   splitTimeExists: (timeField.dataset.splitTimeExists === 'true'),
-                  source: `Live Entry (${liveEntry.currentUser})`
+                  source: `Live Entry (${liveEntry.currentUserId})`
                 }
               }
             )

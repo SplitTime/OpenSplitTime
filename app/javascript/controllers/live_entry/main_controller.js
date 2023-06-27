@@ -44,11 +44,12 @@ export default class extends Controller {
       currentFormResponse: {},
       emptyRawTimeRow: {rawTimes: []},
       lastFormRequest: {},
+      container: controller.element,
       currentUserId: controller.currentUserIdValue,
+      currentEventGroupId: controller.eventGroupIdValue,
+      serverURI: controller.serverUriValue,
 
       init: function (controller) {
-        liveEntry.currentEventGroupId = controller.eventGroupIdValue;
-        liveEntry.serverURI = controller.serverUriValue;
         liveEntry.getEventGroupData().then((json) => {
           liveEntry.dataSetup.init(json).then((response) => {
             if (response) {
@@ -117,6 +118,33 @@ export default class extends Controller {
           .filter(function (resource) {
             return resource.type === resourceType;
           })
+      },
+
+      populateRows: function (rawTimeRows) {
+        rawTimeRows.forEach(rawTimeRow => {
+          rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+
+          const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+          if (!liveEntry.timeRowsCache.isMatchedTimeRow(rawTimeRow)) {
+            storedTimeRows.push(rawTimeRow);
+            liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+            liveEntry.timeRowsTable.addTimeRowToTable(rawTimeRow);
+          }
+        })
+      },
+
+      sendNotice: function (object) {
+        const options = {
+          detail: {
+            title: object.title,
+            body: object.body,
+            type: object.type,
+          },
+          bubbles: true,
+        }
+
+        const showToastEvent = new CustomEvent("show-toast", options)
+        liveEntry.container.dispatchEvent(showToastEvent)
       },
 
       rawTimeFromRow: function (timeRow, kind) {
@@ -233,19 +261,10 @@ export default class extends Controller {
         },
 
         /**
-         * Check table stored timeRows for highest unique ID, then return a new one.
          * @return number Unique Time Row Id
          */
         getUniqueId: function () {
-          // Check table stored timeRows for highest unique ID then create a new one.
-          const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-          let highestUniqueId = 0;
-          storedTimeRows.forEach(timeRow => {
-            if (timeRow.uniqueId > highestUniqueId) {
-              highestUniqueId = timeRow.uniqueId
-            }
-          });
-          return highestUniqueId + 1;
+          return Math.floor(Math.random() * Date.now())
         },
 
         /**
@@ -599,7 +618,7 @@ export default class extends Controller {
             }
           };
 
-          return post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/enrich_raw_time_row', {
+          return post(`/api/v1/event_groups/${liveEntry.currentEventGroupId}/enrich_raw_time_row`, {
             headers: {
               'Content-Type': 'application/json'
             },
@@ -815,7 +834,7 @@ export default class extends Controller {
           this.dataTable.refresh()
 
           // TODO: Remove this dev tool
-          // window.dataTable = this.dataTable;
+          window.dataTable = this.dataTable;
 
           liveEntry.timeRowsTable.populateTableFromCache();
           this.timeRowControls();
@@ -869,22 +888,37 @@ export default class extends Controller {
           $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
         },
 
+        trFromUniqueId: function (uniqueId) {
+          return document.getElementById('workspace-' + uniqueId);
+        },
+
+        indexFromUniqueId: function (uniqueId) {
+          const trElement = this.trFromUniqueId(uniqueId);
+          return parseInt(trElement.dataset.index);
+        },
+
+        rawTimeRowFromUniqueId: function (uniqueId) {
+          const trElement = this.trFromUniqueId(uniqueId);
+          const dataTableIndex = parseInt(trElement.dataset.index);
+          const encodedData = liveEntry.timeRowsTable.dataTable.data.data[dataTableIndex][1].text
+          return JSON.parse(atob(encodedData));
+        },
+
         removeTimeRows: function (uniqueIds) {
           uniqueIds.forEach(uniqueId => {
-            const row = document.getElementById('workspace-' + uniqueId);
-            const dataTableIndex = parseInt(row.dataset.index);
-            const encodedData = liveEntry.timeRowsTable.dataTable.data.data[dataTableIndex][1].text
-            const rawTimeRow = JSON.parse(atob(encodedData));
+            const trElement = this.trFromUniqueId(uniqueId);
+            const dataTableIndex = this.indexFromUniqueId(uniqueId);
+            const rawTimeRow = this.rawTimeRowFromUniqueId(uniqueId);
 
             // remove timeRow from cache
             liveEntry.timeRowsCache.deleteStoredTimeRow(rawTimeRow);
 
             // remove table row
-            row.style.opacity = '1';
-            row.style.transition = 'opacity 0.2s';
+            trElement.style.opacity = '1';
+            trElement.style.transition = 'opacity 0.2s';
 
             setTimeout(function () {
-              row.style.opacity = 0;
+              trElement.style.opacity = '0';
               setTimeout(function () {
                 liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
               }, 200);
@@ -892,56 +926,71 @@ export default class extends Controller {
           });
         },
 
-        submitTimeRows: function (tableNodes, forceSubmit) {
+        submitTimeRows: function (uniqueIds, forceSubmit) {
           if (liveEntry.timeRowsTable.busy) return;
           liveEntry.timeRowsTable.busy = true;
 
-          var timeRows = [];
+          const rawTimeRows = [];
 
-          $.each(tableNodes, function () {
-            var $row = $(this).closest('tr');
-            var timeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
-            timeRows.push({rawTimeRow: timeRow});
+          uniqueIds.forEach(uniqueId => {
+            const rawTimeRow = this.rawTimeRowFromUniqueId(uniqueId);
+            rawTimeRows.push({rawTimeRow: rawTimeRow});
           });
 
-          var data = JSON.stringify({data: timeRows, forceSubmit: forceSubmit});
-          $.post('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/submit_raw_time_rows', data, function (response) {
-            liveEntry.timeRowsTable.removeTimeRows(tableNodes);
-            liveEntry.timeRowsTable.dataTable.rows().nodes().to$().stop(true, true);
-            var returnedRows = response.data.rawTimeRows;
-            for (var i = 0; i < returnedRows.length; i++) {
-              var timeRow = returnedRows[i];
-              timeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-
-              var storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-              if (!liveEntry.timeRowsCache.isMatchedTimeRow(timeRow)) {
-                storedTimeRows.push(timeRow);
-                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
-                liveEntry.timeRowsTable.addTimeRowToTable(timeRow);
-              }
+          const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/submit_raw_time_rows`
+          const data = JSON.stringify({data: rawTimeRows, forceSubmit: forceSubmit});
+          const options = {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: data,
+          }
+          post(url, options).then(function (response) {
+            if (response.ok) {
+              return response.json
+            } else {
+              console.error('time row submit failed', response)
             }
+          }).then(function (json) {
+            liveEntry.timeRowsTable.removeTimeRows(uniqueIds);
+            // liveEntry.timeRowsTable.dataTable.rows().nodes().to$().stop(true, true);
+            const returnedTimeRows = json.data.rawTimeRows;
+            returnedTimeRows.forEach(returnedTimeRow => {
+              returnedTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
+              returnedTimeRow.timestamp = Math.round(Date.now() / 1000);
+
+              const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
+              if (!liveEntry.timeRowsCache.isMatchedTimeRow(returnedTimeRow)) {
+                storedTimeRows.push(returnedTimeRow);
+                liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
+                liveEntry.timeRowsTable.addTimeRowToTable(returnedTimeRow);
+              }
+            })
+
             // If any time rows were bounced back...
-            if (returnedRows.length >= 1) {
+            if (returnedTimeRows.length >= 1) {
               // If submitting one node...
-              if (tableNodes.length <= 1) {
+              if (uniqueIds.length <= 1) {
                 liveEntry.sendNotice({
                   title: 'Failed to submit time row',
-                  body: returnedRows[0].errors.join(', ')
+                  body: returnedTimeRows[0].errors.join(', ')
                 }, {
                   type: 'danger'
                 });
                 // If submitting multiple nodes...
               } else {
                 liveEntry.sendNotice({
-                  title: 'Failed to submit ' + returnedRows.length +
-                    ' of ' + tableNodes.length + ' time rows',
+                  title: 'Failed to submit ' + returnedTimeRows.length +
+                    ' of ' + uniqueIds.length + ' time rows',
                   body: ''
                 }, {
                   type: 'danger'
                 });
               }
             }
-          }).always(function () {
+          }).catch(function (error) {
+            console.error(error)
+          }).finally(function () {
             liveEntry.timeRowsTable.busy = false;
           });
         },
@@ -1032,7 +1081,9 @@ export default class extends Controller {
           const deleteWarning = document.getElementById('js-delete-all-warning');
 
           return function (canDelete) {
-            const allUniqueIds = liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {return dataRow[0].text})
+            const allUniqueIds = liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {
+              return dataRow[0].text
+            })
             const deleteButton = document.getElementById('js-delete-all-time-rows');
             deleteButton.disabled = true;
             document.removeEventListener('click', callback);

@@ -641,6 +641,7 @@ export default class extends Controller {
 
           return {
             uniqueId: uniqueId,
+            timestamp: Math.round(Date.now() / 1000),
             rawTimes: subSplitKinds.map(function (kind) {
                 const timeField = document.getElementById(`js-time-${kind}`);
                 const dataStatus = timeField.dataset.timeStatus === 'null' ? null : timeField.dataset.timeStatus;
@@ -770,27 +771,30 @@ export default class extends Controller {
             },
             rowRender: (row, tr, _index) => {
               tr.attributes.id = `workspace-${row[0].text}`;
+              tr.attributes['data-controller'] = 'highlight';
+              tr.attributes['data-highlight-timestamp-value'] = row[2].text;
+              tr.attributes['data-highlight-fast-value'] = true;
             },
             columns: [
               {
-                select: [0, 1],
+                select: [0, 1, 2],
                 sortable: false,
                 hidden: true,
               },
               {
-                select: 3,
+                select: 4,
                 hidden: !liveEntry.multiEvent,
               },
               {
-                select: 6,
+                select: 7,
                 hidden: !liveEntry.multiLap,
               },
               {
-                select: 8,
+                select: 9,
                 hidden: !liveEntry.anySubSplitOut,
               },
               {
-                select: 9,
+                select: 10,
                 hidden: !liveEntry.monitorPacers,
               },
             ],
@@ -837,28 +841,12 @@ export default class extends Controller {
          * Add a new row to the table (with js dataTables enabled)
          *
          * @param object timeRow Pass in the object of the timeRow to add
-         * @param boolean highlight If true, the new row will flash when it is added.
          */
-        addTimeRowToTable: function (rawTimeRow, highlight) {
-          highlight = (typeof highlight == 'undefined') || highlight;
+        addTimeRowToTable: function (rawTimeRow) {
           liveEntry.timeRowsTable.dataTable.search('')
 
           const timeRowTableObject = liveEntry.timeRowsTable.buildRowObject(rawTimeRow);
           liveEntry.timeRowsTable.dataTable.insert([timeRowTableObject])
-
-          // if (highlight) {
-          //   // Find page that the row was added to
-          //   const pageInfo = liveEntry.timeRowsTable.dataTable.page.info();
-          //   const index = liveEntry.timeRowsTable.dataTable.rows().indexes().indexOf(node.index());
-          //   const pageIndex = Math.floor(index / pageInfo.length);
-          //   liveEntry.timeRowsTable.dataTable.page(pageIndex)
-          //   node.node().classList.add('bg-highlight');
-          //
-          //   setTimeout(() => {
-          //     node.node().classList.remove('bg-highlight');
-          //     node.node().classList.add('bg-highlight-faded-fast');
-          //   }, 200);
-          // }
         },
 
         updateTimeRowInTable: function (rawTimeRow) {
@@ -953,6 +941,7 @@ export default class extends Controller {
           return {
             "ID": rawTimeRow.uniqueId,
             "Encoded": btoa(JSON.stringify(rawTimeRow)),
+            "Timestamp": rawTimeRow.timestamp,
             "Aid Station": rawTime.splitName,
             "Event": event.name,
             "Bib": rawTime.bibNumber + bibIcons[bibStatus],

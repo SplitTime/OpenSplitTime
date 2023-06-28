@@ -795,8 +795,8 @@ export default class extends Controller {
               table: "datatable-table table",
             },
             rowRender: (row, tr, _index) => {
-              tr.attributes.id = `workspace-${row[0].text}`;
-              tr.attributes['data-unique-id'] = row[0].text;
+              tr.attributes.id = `workspace-${row[9].text}`;
+              tr.attributes['data-unique-id'] = row[9].text;
               tr.attributes['data-controller'] = 'highlight';
               tr.attributes['data-highlight-timestamp-value'] = row[11].text;
               tr.attributes['data-highlight-fast-value'] = true;
@@ -861,14 +861,11 @@ export default class extends Controller {
             ],
           })
 
-          this.dataTable.on('datatable.refresh', function() {
-            liveEntry.timeRowsTable.timeRowControls()
-          })
-
           // TODO: Remove this dev tool
           window.dataTable = this.dataTable;
 
           liveEntry.timeRowsTable.populateTableFromCache();
+          liveEntry.timeRowsTable.timeRowControls()
 
           // Attach add listener
           document.getElementById('js-add-to-cache').addEventListener('click', function (event) {
@@ -909,6 +906,7 @@ export default class extends Controller {
           const timeRowTableObject = this.buildRowObject(rawTimeRow);
           this.dataTable.insert([timeRowTableObject])
           this.dataTable.refresh()
+          this.addListenersToRowControls(rawTimeRow.uniqueId)
         },
 
         updateTimeRowInTable: function (rawTimeRow) {
@@ -1063,7 +1061,7 @@ export default class extends Controller {
 
           return function (canDelete) {
             const allUniqueIds = liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {
-              return dataRow[0].text
+              return dataRow[9].text
             })
             const deleteButton = document.getElementById('js-delete-all-time-rows');
             deleteButton.disabled = true;
@@ -1130,36 +1128,6 @@ export default class extends Controller {
          *
          */
         timeRowControls: function () {
-
-          Array.from(document.querySelectorAll('.js-edit-effort')).forEach(element => {
-            element.addEventListener('click', function() {
-              event.preventDefault();
-              const uniqueId = this.closest('tr').dataset.uniqueId
-              const trElement = liveEntry.timeRowsTable.trFromUniqueId(uniqueId)
-              const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
-
-              trElement.classList.add(liveEntry.timeRowsTable.editIndicatorClass);
-              liveEntry.liveEntryForm.buttonUpdateMode();
-              liveEntry.liveEntryForm.loadTimeRow(rawTimeRow);
-              liveEntry.liveEntryForm.enrichTimeData();
-              liveEntry.liveEntryForm.updateEffortInfo();
-            })
-          });
-
-          Array.from(document.querySelectorAll('.js-delete-effort')).forEach(element => {
-            element.addEventListener('click', function () {
-              const uniqueId = this.closest('tr').dataset.uniqueId
-              liveEntry.timeRowsTable.removeTimeRows([uniqueId]);
-            })
-          });
-
-          Array.from(document.querySelectorAll('.js-submit-effort')).forEach(element => {
-            element.addEventListener('click', function () {
-              const uniqueId = this.closest('tr').dataset.uniqueId
-              liveEntry.timeRowsTable.submitTimeRows([uniqueId], true);
-            })
-          });
-
           document.getElementById('js-delete-all-time-rows').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.timeRowsTable.toggleDiscardAll(true);
@@ -1214,6 +1182,29 @@ export default class extends Controller {
             return false;
           });
         },
+
+        addListenersToRowControls: function (uniqueId) {
+          const element = this.trFromUniqueId(uniqueId)
+
+          element.querySelector('.js-edit-effort').addEventListener('click', function () {
+            const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
+
+            element.classList.add(liveEntry.timeRowsTable.editIndicatorClass);
+            liveEntry.liveEntryForm.buttonUpdateMode();
+            liveEntry.liveEntryForm.loadTimeRow(rawTimeRow);
+            liveEntry.liveEntryForm.enrichTimeData();
+            liveEntry.liveEntryForm.updateEffortInfo();
+          })
+
+          element.querySelector('.js-delete-effort').addEventListener('click', function () {
+            liveEntry.timeRowsTable.removeTimeRows([uniqueId]);
+          })
+
+          element.querySelector('.js-submit-effort').addEventListener('click', function () {
+              liveEntry.timeRowsTable.submitTimeRows([uniqueId], true);
+            })
+        },
+
         importLiveError: function (obj, error) {
           liveEntry.displayAndHideMessage(liveEntry.importLiveError, '#js-import-live-error');
         }

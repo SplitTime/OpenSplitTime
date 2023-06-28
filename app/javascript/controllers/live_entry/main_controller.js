@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { get, post } from "@rails/request.js"
+import { get, patch, post } from "@rails/request.js"
 import { DataTable } from "simple-datatables"
 
 export default class extends Controller {
@@ -696,11 +696,12 @@ export default class extends Controller {
           const outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
           const stationIndex = liveEntry.indexStationMap[rawTime.splitName];
 
+          const bibField = document.getElementById('js-bib-number');
           const inTimeField = document.getElementById('js-time-in');
           const outTimeField = document.getElementById('js-time-out');
 
           document.getElementById('js-unique-id').value = rawTimeRow.uniqueId;
-          document.getElementById('js-bib-number').value = rawTime.bibNumber;
+          bibField.value = rawTime.bibNumber;
           document.getElementById('js-lap-number').value = rawTime.enteredLap;
           inTimeField.value = inRawTime.militaryTime;
           outTimeField.value = outRawTime.militaryTime;
@@ -710,6 +711,8 @@ export default class extends Controller {
           liveEntry.liveEntryForm.updateTimeField(inTimeField, inRawTime);
           liveEntry.liveEntryForm.updateTimeField(outTimeField, outRawTime);
           liveEntry.header.changeStationSelect(stationIndex);
+          liveEntry.liveEntryForm.setDroppedButtonStyling();
+          bibField.focus()
         },
 
         /**
@@ -954,7 +957,6 @@ export default class extends Controller {
             }
           }).then(function (json) {
             liveEntry.timeRowsTable.removeTimeRows(uniqueIds);
-            // liveEntry.timeRowsTable.dataTable.rows().nodes().to$().stop(true, true);
             const returnedTimeRows = json.data.rawTimeRows;
             returnedTimeRows.forEach(returnedTimeRow => {
               returnedTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -1049,6 +1051,12 @@ export default class extends Controller {
           })
         },
 
+        getAllUniqueIds: function() {
+          return liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {
+            return dataRow[9].text
+          })
+        },
+
         /**
          * Toggles the current state of the discard all button
          */
@@ -1060,9 +1068,7 @@ export default class extends Controller {
           const deleteWarning = document.getElementById('js-delete-all-warning');
 
           return function (canDelete) {
-            const allUniqueIds = liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {
-              return dataRow[9].text
-            })
+            const allUniqueIds = liveEntry.timeRowsTable.getAllUniqueIds()
             const deleteButton = document.getElementById('js-delete-all-time-rows');
             deleteButton.disabled = true;
             document.removeEventListener('click', callback);
@@ -1134,40 +1140,48 @@ export default class extends Controller {
             return false;
           });
 
-          $('#js-submit-all-time-rows').on('click', function (event) {
+          document.getElementById('js-submit-all-time-rows').addEventListener('click', function (event) {
             event.preventDefault();
-            var nodes = liveEntry.timeRowsTable.dataTable.rows().nodes();
-            liveEntry.timeRowsTable.submitTimeRows(nodes, false);
+            const allUniqueIds = liveEntry.timeRowsTable.getAllUniqueIds()
+            liveEntry.timeRowsTable.submitTimeRows(allUniqueIds, false);
             return false;
           });
 
-          $(document).on('keydown', function (event) {
-            if (event.keyCode === 16) {
-              $('#js-pull-times').hide();
-              $('#js-force-pull-times').show()
+          document.addEventListener('keydown', function (event) {
+            if (event.key === 'Shift') {
+              document.getElementById('js-pull-times').classList.add('d-none')
+              document.getElementById('js-force-pull-times').classList.remove('d-none')
             }
           });
-          $(document).on('keyup', function (event) {
-            if (event.keyCode === 16) {
-              $('#js-force-pull-times').hide();
-              $('#js-pull-times').show()
+
+          document.addEventListener('keyup', function (event) {
+            if (event.key === 'Shift') {
+              document.getElementById('js-pull-times').classList.remove('d-none')
+              document.getElementById('js-force-pull-times').classList.add('d-none')
             }
           });
-          $('#js-pull-times, #js-force-pull-times').on('click', function (event) {
-            event.preventDefault();
-            if (liveEntry.importAsyncBusy) {
-              return;
-            }
-            liveEntry.importAsyncBusy = true;
-            var forceParam = (this.id === 'js-force-pull-times') ? '?forcePull=true' : '';
-            $.ajax('/api/v1/event_groups/' + liveEntry.currentEventGroupId + '/pull_raw_times' + forceParam, {
-              error: function (obj, error) {
-                liveEntry.importAsyncBusy = false;
-                liveEntry.timeRowsTable.importLiveError(obj, error);
-              },
-              dataType: 'json',
-              success: function (response) {
-                var rawTimeRows = response.data.rawTimeRows;
+
+          Array.from(document.querySelectorAll('#js-pull-times, #js-force-pull-times')).forEach(element => {
+            element.addEventListener('click', function (event) {
+              event.preventDefault();
+              if (liveEntry.importAsyncBusy) return;
+              liveEntry.importAsyncBusy = true;
+
+              const force = (this.id === 'js-force-pull-times')
+              const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/pull_raw_times`
+              const options = {
+                query: {
+                  forcePull: force,
+                },
+              }
+              patch(url, options).then(function (response) {
+                  if (response.ok) {
+                    return response.json
+                  } else {
+                    console.error('time row enrichment failed', response)
+                  }
+                }).then(function (json) {
+                const rawTimeRows = json.data.rawTimeRows;
                 if (rawTimeRows.length === 0) {
                   liveEntry.displayAndHideMessage(
                     liveEntry.importLiveWarning,
@@ -1175,11 +1189,13 @@ export default class extends Controller {
                   return;
                 }
                 liveEntry.populateRows(rawTimeRows);
+              }).catch(function (error) {
+                liveEntry.timeRowsTable.importLiveError(obj, error);
+              }).finally(function () {
                 liveEntry.importAsyncBusy = false;
-              },
-              type: 'PATCH'
+              })
+              return false;
             });
-            return false;
           });
         },
 

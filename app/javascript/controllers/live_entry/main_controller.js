@@ -800,6 +800,8 @@ export default class extends Controller {
               tr.attributes['data-controller'] = 'highlight';
               tr.attributes['data-highlight-timestamp-value'] = row[2].text;
               tr.attributes['data-highlight-fast-value'] = true;
+              if (!tr.attributes.class) tr.attributes.class = '';
+              tr.attributes.class += ' align-middle'
             },
             columns: [
               {
@@ -821,6 +823,7 @@ export default class extends Controller {
               },
               {
                 select: 10,
+                sortable: false,
                 hidden: !liveEntry.monitorPacers,
               },
               {
@@ -989,8 +992,14 @@ export default class extends Controller {
             "Bib": rawTime.bibNumber + bibIcons[bibStatus],
             "Name": (effort ? `<a href="/efforts/${effort.id}">${effort.attributes.fullName}</a>` : '[Bib not found]'),
             "Lap": rawTime.enteredLap,
-            "Time In": (inRawTime.militaryTime || '') + (statusIcons[inRawTime.dataStatus] || '') + (inRawTime.stoppedHere ? stoppedIcon : ''),
-            "Time Out": (outRawTime.militaryTime || '') + (statusIcons[outRawTime.dataStatus] || '') + (outRawTime.stoppedHere ? stoppedIcon : ''),
+            "Time In": (inRawTime.militaryTime || '') +
+                (inRawTime.splitTimeExists ? statusIcons['exists'] : '') +
+                (statusIcons[inRawTime.dataStatus] || '') +
+                (inRawTime.stoppedHere ? stoppedIcon : ''),
+            "Time Out": (outRawTime.militaryTime || '') +
+                (outRawTime.splitTimeExists ? statusIcons['exists'] : '') +
+                (statusIcons[outRawTime.dataStatus] || '') +
+                (outRawTime.stoppedHere ? stoppedIcon : ''),
             "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
             "Actions": liveEntry.timeRowsTable.editButton + liveEntry.timeRowsTable.deleteButton + liveEntry.timeRowsTable.submitButton
           }
@@ -1094,7 +1103,7 @@ export default class extends Controller {
         }),
 
         /**
-         * Move a "cached" table row to "top form" section for editing.
+         * Set event listeners on time row controls
          *
          */
         timeRowControls: function () {

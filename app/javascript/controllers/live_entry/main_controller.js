@@ -806,6 +806,7 @@ export default class extends Controller {
               {
                 select: 1,
                 hidden: !liveEntry.multiEvent,
+                searchable: liveEntry.multiEvent,
               },
               {
                 select: 2,
@@ -819,6 +820,7 @@ export default class extends Controller {
               {
                 select: 4,
                 hidden: !liveEntry.multiLap,
+                searchable: false,
               },
               {
                 select: 6,
@@ -827,6 +829,7 @@ export default class extends Controller {
               {
                 select: 7,
                 sortable: false,
+                searchable: false,
                 hidden: !liveEntry.monitorPacers,
                 headerClass: 'text-center',
                 render: (_data, cell, _row) => {
@@ -837,6 +840,7 @@ export default class extends Controller {
               },
               {
                 select: 8,
+                searchable: false,
                 sortable: false,
                 headerClass: 'text-end',
                 render: (_data, cell, _row) => {

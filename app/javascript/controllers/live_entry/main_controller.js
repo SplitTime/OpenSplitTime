@@ -1124,7 +1124,7 @@ export default class extends Controller {
           Array.from(document.querySelectorAll('.js-submit-effort')).forEach(element => {
             element.addEventListener('click', function () {
               const uniqueId = this.closest('tr').dataset.uniqueId
-              liveEntry.timeRowsTable.submitTimeRows([uniqueId]);
+              liveEntry.timeRowsTable.submitTimeRows([uniqueId], true);
             })
           });
 

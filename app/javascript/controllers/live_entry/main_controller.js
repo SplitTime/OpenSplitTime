@@ -1040,7 +1040,7 @@ export default class extends Controller {
         rawTimeRowFromUniqueId: function (uniqueId) {
           const trElement = this.trFromUniqueId(uniqueId);
           const dataTableIndex = parseInt(trElement.dataset.index);
-          const encodedData = this.dataTable.data.data[dataTableIndex][1].text
+          const encodedData = this.dataTable.data.data[dataTableIndex][10].text
           return JSON.parse(atob(encodedData));
         },
 

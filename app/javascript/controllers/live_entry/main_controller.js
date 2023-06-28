@@ -38,8 +38,6 @@ export default class extends Controller {
       multiEvent: null,
       monitorPacers: null,
       anySubSplitOut: null,
-      // lastReportedSplitId: null,
-      // lastReportedBitkey: null,
       currentStationIndex: null,
       currentFormResponse: {},
       emptyRawTimeRow: {rawTimes: []},
@@ -49,7 +47,7 @@ export default class extends Controller {
       currentEventGroupId: controller.eventGroupIdValue,
       serverURI: controller.serverUriValue,
 
-      init: function (controller) {
+      init: function () {
         liveEntry.getEventGroupData().then((json) => {
           liveEntry.dataSetup.init(json).then((response) => {
             if (response) {
@@ -133,6 +131,21 @@ export default class extends Controller {
         })
       },
 
+      rawTimeFromRow: function (timeRow, kind) {
+        const rawTimes = timeRow.rawTimes;
+        if (kind === 'in') {
+          return rawTimes.find(rawTime => {
+            return rawTime.subSplitKind.toLowerCase() === 'in'
+          }) || {}
+        } else if (kind === 'out') {
+          return rawTimes.find(rawTime => {
+            return rawTime.subSplitKind.toLowerCase() === 'out'
+          }) || {}
+        } else {
+          return rawTimes[0] || {}
+        }
+      },
+
       sendNotice: function (object) {
         const options = {
           detail: {
@@ -147,19 +160,8 @@ export default class extends Controller {
         liveEntry.container.dispatchEvent(showToastEvent)
       },
 
-      rawTimeFromRow: function (timeRow, kind) {
-        const rawTimes = timeRow.rawTimes;
-        if (kind === 'in') {
-          return rawTimes.find(rawTime => {
-            return rawTime.subSplitKind.toLowerCase() === 'in'
-          }) || {}
-        } else if (kind === 'out') {
-          return rawTimes.find(rawTime => {
-            return rawTime.subSplitKind.toLowerCase() === 'out'
-          }) || {}
-        } else {
-          return rawTimes[0] || {}
-        }
+      setCurrentTimestamp: function (rawTimeRow) {
+        rawTimeRow.timestamp = Math.round(Date.now() / 1000)
       },
 
       splitsAttributes: function () {
@@ -440,6 +442,7 @@ export default class extends Controller {
           document.getElementById('js-discard-entry-form').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.liveEntryForm.clear();
+            liveEntry.timeRowsTable.clearEditIndicator();
             document.getElementById('js-bib-number').focus();
             return false;
           });
@@ -658,9 +661,8 @@ export default class extends Controller {
           let uniqueId = parseInt(document.getElementById('js-unique-id').value)
           if (isNaN(uniqueId)) uniqueId = null;
 
-          return {
+          const rawTimeRow = {
             uniqueId: uniqueId,
-            timestamp: Math.round(Date.now() / 1000),
             rawTimes: subSplitKinds.map(function (kind) {
                 const timeField = document.getElementById(`js-time-${kind}`);
                 const dataStatus = timeField.dataset.timeStatus === 'null' ? null : timeField.dataset.timeStatus;
@@ -681,6 +683,8 @@ export default class extends Controller {
               }
             )
           }
+          liveEntry.setCurrentTimestamp(rawTimeRow)
+          return rawTimeRow
         },
 
         loadTimeRow: function (rawTimeRow) {
@@ -710,7 +714,6 @@ export default class extends Controller {
 
         /**
          * Clears out the entry form and effort detail data fields
-         * @param  {Boolean} clearForm Determines if the form is cleared as well.
          */
         clear: function () {
           liveEntry.lastFormRequest = liveEntry.emptyRawTimeRow;
@@ -769,6 +772,7 @@ export default class extends Controller {
          */
         dataTable: null,
         busy: false,
+        editIndicatorClass: 'bg-light',
         editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>',
         deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>',
         submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
@@ -786,10 +790,9 @@ export default class extends Controller {
 
           // Initiate DataTable object
           this.dataTable = new DataTable('#js-local-workspace-table', {
-            perPage: -1,
-            perPageSelect: [10, 25, 50, ["All", -1]],
+            paging: false,
             classes: {
-              table: "datatable-table table table-striped",
+              table: "datatable-table table",
             },
             rowRender: (row, tr, _index) => {
               tr.attributes.id = `workspace-${row[0].text}`;
@@ -831,13 +834,15 @@ export default class extends Controller {
               },
             ],
           })
-          this.dataTable.refresh()
+
+          this.dataTable.on('datatable.refresh', function() {
+            liveEntry.timeRowsTable.timeRowControls()
+          })
 
           // TODO: Remove this dev tool
           window.dataTable = this.dataTable;
 
           liveEntry.timeRowsTable.populateTableFromCache();
-          this.timeRowControls();
 
           // Attach add listener
           document.getElementById('js-add-to-cache').addEventListener('click', function (event) {
@@ -873,57 +878,29 @@ export default class extends Controller {
         },
 
         addTimeRowToTable: function (rawTimeRow) {
-          liveEntry.timeRowsTable.dataTable.search('')
+          this.dataTable.search('')
 
-          const timeRowTableObject = liveEntry.timeRowsTable.buildRowObject(rawTimeRow);
-          liveEntry.timeRowsTable.dataTable.insert([timeRowTableObject])
+          const timeRowTableObject = this.buildRowObject(rawTimeRow);
+          this.dataTable.insert([timeRowTableObject])
+          this.dataTable.refresh()
         },
 
         updateTimeRowInTable: function (rawTimeRow) {
           liveEntry.timeRowsTable.dataTable.search('');
-
-          const timeRowTableObject = liveEntry.timeRowsTable.buildRowObject(rawTimeRow);
-          const row = document.getElementById('#workspace-' + rawTimeRow.uniqueId);
-          liveEntry.timeRowsTable.dataTable.row($row).data(rowData).draw
-          $row.attr('data-encoded-raw-time-row', btoa(JSON.stringify(rawTimeRow)))
-        },
-
-        trFromUniqueId: function (uniqueId) {
-          return document.getElementById('workspace-' + uniqueId);
-        },
-
-        indexFromUniqueId: function (uniqueId) {
-          const trElement = this.trFromUniqueId(uniqueId);
-          return parseInt(trElement.dataset.index);
-        },
-
-        rawTimeRowFromUniqueId: function (uniqueId) {
-          const trElement = this.trFromUniqueId(uniqueId);
-          const dataTableIndex = parseInt(trElement.dataset.index);
-          const encodedData = liveEntry.timeRowsTable.dataTable.data.data[dataTableIndex][1].text
-          return JSON.parse(atob(encodedData));
+          liveEntry.setCurrentTimestamp(rawTimeRow)
+          this.removeTimeRows([rawTimeRow.uniqueId])
+          this.addTimeRowToTable(rawTimeRow)
         },
 
         removeTimeRows: function (uniqueIds) {
           uniqueIds.forEach(uniqueId => {
-            const trElement = this.trFromUniqueId(uniqueId);
             const dataTableIndex = this.indexFromUniqueId(uniqueId);
             const rawTimeRow = this.rawTimeRowFromUniqueId(uniqueId);
 
             // remove timeRow from cache
             liveEntry.timeRowsCache.deleteStoredTimeRow(rawTimeRow);
-
-            // remove table row
-            trElement.style.opacity = '1';
-            trElement.style.transition = 'opacity 0.2s';
-
-            setTimeout(function () {
-              trElement.style.opacity = '0';
-              setTimeout(function () {
-                liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
-              }, 200);
-            }, 10);
-          });
+            liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
+          })
         },
 
         submitTimeRows: function (uniqueIds, forceSubmit) {
@@ -957,7 +934,7 @@ export default class extends Controller {
             const returnedTimeRows = json.data.rawTimeRows;
             returnedTimeRows.forEach(returnedTimeRow => {
               returnedTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
-              returnedTimeRow.timestamp = Math.round(Date.now() / 1000);
+              liveEntry.setCurrentTimestamp(returnedTimeRow)
 
               const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
               if (!liveEntry.timeRowsCache.isMatchedTimeRow(returnedTimeRow)) {
@@ -1019,55 +996,27 @@ export default class extends Controller {
           }
         },
 
-        buildTrHtml: function (rawTimeRow) {
-          var inRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'in');
-          var outRawTime = liveEntry.rawTimeFromRow(rawTimeRow, 'out');
-          var rawTime = liveEntry.rawTimeFromRow(rawTimeRow);
-
-          var bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
-          var bibIcon = bibIcons[bibStatus];
-          var timeInIcon = statusIcons[inRawTime.dataStatus] || '';
-          timeInIcon += (inRawTime.splitTimeExists ? statusIcons['exists'] : '');
-          var timeOutIcon = statusIcons[outRawTime.dataStatus] || '';
-          timeOutIcon += (outRawTime.splitTimeExists ? statusIcons['exists'] : '');
-
-          // Base64 encode the stringified timeRow to add to the timeRow
-          var base64encodedTimeRow = btoa(JSON.stringify(rawTimeRow));
-          var event = liveEntry.events[liveEntry.bibEventIdMap[rawTime.bibNumber]] || {name: '--'};
-          var effort = liveEntry.bibEffortMap[rawTime.bibNumber];
-          var trHtml = '\
-                    <tr id="workspace-' + rawTimeRow.uniqueId + '" class="effort-station-row js-effort-station-row" data-encoded-raw-time-row="' + base64encodedTimeRow + '">\
-                        <td class="station-title js-station-title" data-order="' + rawTime.splitName + '">' + rawTime.splitName + '</td>\
-                        <td class="event-name js-event-name group-only">' + event.name + '</td>\
-                        <td class="bib-number js-bib-number ' + bibStatus + '">' + (rawTime.bibNumber || '') + bibIcon + '</td>\
-                        <td class="effort-name js-effort-name text-nowrap">' + (effort ? '<a href="/efforts/' + effort.id + '">' + effort.attributes.fullName + '</a>' : '[Bib not found]') + '</td>\
-                        <td class="lap-number js-lap-number lap-only">' + rawTime.enteredLap + '</td>\
-                        <td class="time-in js-time-in text-nowrap time-in-only ' + inRawTime.dataStatus + '">' + (inRawTime.militaryTime || '') + timeInIcon + '</td>\
-                        <td class="time-out js-time-out text-nowrap time-out-only ' + outRawTime.dataStatus + '">' + (outRawTime.militaryTime || '') + timeOutIcon + '</td>\
-                        <td class="pacer-inout js-pacer-inout pacer-only">' + (inRawTime.withPacer ? 'Yes' : 'No') + ' / ' + (outRawTime.withPacer ? 'Yes' : 'No') + '</td>\
-                        <td class="dropped-here js-dropped-here">' + (inRawTime.stoppedHere || outRawTime.stoppedHere ? '<span class="btn btn-warning btn-xs disabled">Done</span>' : '') + '</td>\
-                        <td class="row-edit-btns">\
-                            <button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>\
-                            <button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>\
-                            <button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>\
-                        </td>\
-                    </tr>';
-          return trHtml
+        trFromUniqueId: function (uniqueId) {
+          return document.getElementById('workspace-' + uniqueId);
         },
 
-        trToData: function (row) {
-          var rowData = {};
-          $(row).find('td').each(function (i, el) {
-            if (i === 0) {
-              rowData[i] = {
-                display: el.innerHTML,
-                '@data-order': el.innerHTML
-              }
-            } else {
-              rowData[i] = el.innerHTML
-            }
-          });
-          return rowData
+        indexFromUniqueId: function (uniqueId) {
+          const trElement = this.trFromUniqueId(uniqueId);
+          return parseInt(trElement.dataset.index);
+        },
+
+        rawTimeRowFromUniqueId: function (uniqueId) {
+          const trElement = this.trFromUniqueId(uniqueId);
+          const dataTableIndex = parseInt(trElement.dataset.index);
+          const encodedData = this.dataTable.data.data[dataTableIndex][1].text
+          return JSON.parse(atob(encodedData));
+        },
+
+        clearEditIndicator: function () {
+          const trElements = this.dataTable.containerDOM.querySelectorAll(`tr.${this.editIndicatorClass}`);
+          Array.from(trElements).forEach(trElement => {
+            trElement.classList.remove(this.editIndicatorClass)
+          })
         },
 
         /**
@@ -1150,16 +1099,19 @@ export default class extends Controller {
          */
         timeRowControls: function () {
 
-          $(document).on('click', '.js-edit-effort', function (event) {
-            event.preventDefault();
-            var $row = $(this).closest('tr');
-            var clickedTimeRow = JSON.parse(atob($row.attr('data-encoded-raw-time-row')));
+          Array.from(document.querySelectorAll('.js-edit-effort')).forEach(element => {
+            element.addEventListener('click', function() {
+              event.preventDefault();
+              const uniqueId = this.closest('tr').dataset.uniqueId
+              const trElement = liveEntry.timeRowsTable.trFromUniqueId(uniqueId)
+              const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
 
-            $row.addClass('bg-highlight');
-            liveEntry.liveEntryForm.buttonUpdateMode();
-            liveEntry.liveEntryForm.loadTimeRow(clickedTimeRow);
-            liveEntry.liveEntryForm.enrichTimeData();
-            liveEntry.liveEntryForm.updateEffortInfo();
+              trElement.classList.add(liveEntry.timeRowsTable.editIndicatorClass);
+              liveEntry.liveEntryForm.buttonUpdateMode();
+              liveEntry.liveEntryForm.loadTimeRow(rawTimeRow);
+              liveEntry.liveEntryForm.enrichTimeData();
+              liveEntry.liveEntryForm.updateEffortInfo();
+            })
           });
 
           Array.from(document.querySelectorAll('.js-delete-effort')).forEach(element => {
@@ -1267,6 +1219,6 @@ export default class extends Controller {
 
     } // end liveEntry
 
-    liveEntry.init(controller)
+    liveEntry.init()
   } // end liveEntryApp()
 }

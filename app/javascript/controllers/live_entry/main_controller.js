@@ -798,42 +798,61 @@ export default class extends Controller {
               tr.attributes.id = `workspace-${row[0].text}`;
               tr.attributes['data-unique-id'] = row[0].text;
               tr.attributes['data-controller'] = 'highlight';
-              tr.attributes['data-highlight-timestamp-value'] = row[2].text;
+              tr.attributes['data-highlight-timestamp-value'] = row[11].text;
               tr.attributes['data-highlight-fast-value'] = true;
-              if (!tr.attributes.class) tr.attributes.class = '';
-              tr.attributes.class += ' align-middle'
+              tr.attributes.class = 'align-middle'
             },
             columns: [
               {
-                select: [0, 1, 2],
-                sortable: false,
-                hidden: true,
-              },
-              {
-                select: 4,
+                select: 1,
                 hidden: !liveEntry.multiEvent,
               },
               {
-                select: 7,
+                select: 2,
+                headerClass: 'text-center',
+                render: (_data, cell, _row) => {
+                  cell.attributes = {
+                    class: 'text-center'
+                  }
+                }
+              },
+              {
+                select: 4,
                 hidden: !liveEntry.multiLap,
               },
               {
-                select: 9,
+                select: 6,
                 hidden: !liveEntry.anySubSplitOut,
               },
               {
-                select: 10,
+                select: 7,
                 sortable: false,
                 hidden: !liveEntry.monitorPacers,
+                headerClass: 'text-center',
+                render: (_data, cell, _row) => {
+                  cell.attributes = {
+                    class: 'text-center'
+                  }
+                }
+              },
+              {
+                select: 8,
+                sortable: false,
+                headerClass: 'text-end',
+                render: (_data, cell, _row) => {
+                  cell.attributes = {
+                    class: 'row-edit-btns'
+                  }
+                }
+              },
+              {
+                select: [9, 10, 11, 12],
+                hidden: true,
+                searchable: false,
               },
               {
                 select: 11,
-                sortable: false,
-                render: (_data, cell, _row) => {
-                  cell.attributes = {
-                    class: "row-edit-btns"
-                  }
-                }
+                sort: "desc",
               },
             ],
           })
@@ -897,8 +916,8 @@ export default class extends Controller {
 
         removeTimeRows: function (uniqueIds) {
           uniqueIds.forEach(uniqueId => {
-            const dataTableIndex = this.indexFromUniqueId(uniqueId);
-            const rawTimeRow = this.rawTimeRowFromUniqueId(uniqueId);
+            const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);
+            const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
 
             // remove timeRow from cache
             liveEntry.timeRowsCache.deleteStoredTimeRow(rawTimeRow);
@@ -913,7 +932,7 @@ export default class extends Controller {
           const rawTimeRows = [];
 
           uniqueIds.forEach(uniqueId => {
-            const rawTimeRow = this.rawTimeRowFromUniqueId(uniqueId);
+            const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
             rawTimeRows.push({rawTimeRow: rawTimeRow});
           });
 
@@ -984,9 +1003,6 @@ export default class extends Controller {
           const bibStatus = liveEntry.bibStatus(rawTime.bibNumber, rawTime.splitName);
 
           return {
-            "ID": rawTimeRow.uniqueId,
-            "Encoded": btoa(JSON.stringify(rawTimeRow)),
-            "Timestamp": rawTimeRow.timestamp,
             "Aid Station": rawTime.splitName,
             "Event": event.name,
             "Bib": rawTime.bibNumber + bibIcons[bibStatus],
@@ -1001,7 +1017,10 @@ export default class extends Controller {
                 (statusIcons[outRawTime.dataStatus] || '') +
                 (outRawTime.stoppedHere ? stoppedIcon : ''),
             "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
-            "Actions": liveEntry.timeRowsTable.editButton + liveEntry.timeRowsTable.deleteButton + liveEntry.timeRowsTable.submitButton
+            "Actions": liveEntry.timeRowsTable.editButton + liveEntry.timeRowsTable.deleteButton + liveEntry.timeRowsTable.submitButton,
+            "ID": rawTimeRow.uniqueId,
+            "Encoded": btoa(JSON.stringify(rawTimeRow)),
+            "Timestamp": rawTimeRow.timestamp,
           }
         },
 

@@ -918,46 +918,6 @@ export default class extends Controller {
           this.addTimeRowToTable(rawTimeRow)
         },
 
-        pullTimeRows: function (force) {
-          if (liveEntry.importAsyncBusy) return;
-          liveEntry.importAsyncBusy = true;
-
-          const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/pull_raw_times`
-          const options = {
-            query: {
-              forcePull: force,
-            },
-          }
-
-          patch(url, options).then(function (response) {
-            if (response.ok) {
-              return response.json
-            } else {
-              console.error('time row enrichment failed', response)
-            }
-          }).then(function (json) {
-            const rawTimeRows = json.data.rawTimeRows;
-            if (rawTimeRows.length === 0) {
-              liveEntry.sendNotice({
-                title: "You are up to date",
-                body: "There are no raw times available to pull",
-                type: "success",
-              })
-              return;
-            }
-            liveEntry.populateRows(rawTimeRows);
-          }).catch(function (error) {
-            liveEntry.sendNotice({
-              title: "Pull times failed",
-              body: error,
-              type: "alert",
-            })
-          }).finally(function () {
-            liveEntry.importAsyncBusy = false;
-          })
-          return false;
-        },
-
         removeTimeRows: function (uniqueIds) {
           uniqueIds.forEach(uniqueId => {
             const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);

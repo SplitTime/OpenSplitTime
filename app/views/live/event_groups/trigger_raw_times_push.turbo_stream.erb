@@ -1,5 +1,6 @@
 <%= render partial: "raw_times/live_times_available",
            locals: {
+             event_group: @event_group,
              unreviewed_count: @event_group.raw_times.unreviewed.size,
              unmatched_count: @event_group.raw_times.unmatched.size
            } %>

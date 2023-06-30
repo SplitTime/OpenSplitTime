@@ -1,13 +1,15 @@
-<%# locals: (count:) -%>
+<%# locals: (count:, event_group:) -%>
 
 <% count ||= nil %>
 
 <button id="pull_times_button"
         class="btn btn-primary"
         data-controller="live-entry--pull-times"
+        data-live-entry--pull-times-event-group-id-value="<%= event_group.id %>"
         data-live-entry--pull-times-force-value="false"
         data-action="keydown@document->live-entry--pull-times#keydown
-                     keyup@document->live-entry--pull-times#keyup"
+                     keyup@document->live-entry--pull-times#keyup
+                     click->live-entry--pull-times#pull"
 >
   Pull Times
   <span class="badge bg-danger ms-1"><%= count if count&.positive? %></span>

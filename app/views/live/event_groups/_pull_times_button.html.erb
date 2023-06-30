@@ -2,7 +2,13 @@
 
 <% count ||= nil %>
 
-<button id="js-pull-times" class="btn btn-primary">
+<button id="pull_times_button"
+        class="btn btn-primary"
+        data-controller="live-entry--pull-times"
+        data-live-entry--pull-times-force-value="false"
+        data-action="keydown@document->live-entry--pull-times#keydown
+                     keyup@document->live-entry--pull-times#keyup"
+>
   Pull Times
   <span class="badge bg-danger ms-1"><%= count if count&.positive? %></span>
 </button>

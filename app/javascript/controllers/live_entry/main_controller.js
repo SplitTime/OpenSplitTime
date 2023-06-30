@@ -786,11 +786,6 @@ export default class extends Controller {
          */
         init: function () {
 
-          // Set up the Delete All button
-          const deleteWarning = document.getElementById('js-delete-all-warning');
-          deleteWarning.style.display = 'none';
-          deleteWarning.parentNode.removeChild(deleteWarning);
-
           // Initiate DataTable object
           this.dataTable = new DataTable('#js-local-workspace-table', {
             paging: false,
@@ -867,7 +862,12 @@ export default class extends Controller {
           })
 
           liveEntry.timeRowsTable.populateTableFromCache();
-          liveEntry.timeRowsTable.timeRowControls()
+          liveEntry.timeRowsTable.addListenersToTableControls();
+
+          // Set up the Delete All button
+          const deleteWarning = document.getElementById('js-delete-all-warning');
+          deleteWarning.style.display = 'none';
+          deleteWarning.parentNode.removeChild(deleteWarning);
 
           // Attach add listener
           document.getElementById('js-add-to-cache').addEventListener('click', function (event) {
@@ -916,6 +916,46 @@ export default class extends Controller {
           liveEntry.setCurrentTimestamp(rawTimeRow)
           this.removeTimeRows([rawTimeRow.uniqueId])
           this.addTimeRowToTable(rawTimeRow)
+        },
+
+        pullTimeRows: function (force) {
+          if (liveEntry.importAsyncBusy) return;
+          liveEntry.importAsyncBusy = true;
+
+          const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/pull_raw_times`
+          const options = {
+            query: {
+              forcePull: force,
+            },
+          }
+
+          patch(url, options).then(function (response) {
+            if (response.ok) {
+              return response.json
+            } else {
+              console.error('time row enrichment failed', response)
+            }
+          }).then(function (json) {
+            const rawTimeRows = json.data.rawTimeRows;
+            if (rawTimeRows.length === 0) {
+              liveEntry.sendNotice({
+                title: "You are up to date",
+                body: "There are no raw times available to pull",
+                type: "success",
+              })
+              return;
+            }
+            liveEntry.populateRows(rawTimeRows);
+          }).catch(function (error) {
+            liveEntry.sendNotice({
+              title: "Pull times failed",
+              body: error,
+              type: "alert",
+            })
+          }).finally(function () {
+            liveEntry.importAsyncBusy = false;
+          })
+          return false;
         },
 
         removeTimeRows: function (uniqueIds) {
@@ -1012,13 +1052,13 @@ export default class extends Controller {
             "Name": (effort ? `<a href="/efforts/${effort.id}">${effort.attributes.fullName}</a>` : '[Bib not found]'),
             "Lap": rawTime.enteredLap,
             "Time In": (inRawTime.militaryTime || '') +
-                (inRawTime.splitTimeExists ? statusIcons['exists'] : '') +
-                (statusIcons[inRawTime.dataStatus] || '') +
-                (inRawTime.stoppedHere ? stoppedIcon : ''),
+              (inRawTime.splitTimeExists ? statusIcons['exists'] : '') +
+              (statusIcons[inRawTime.dataStatus] || '') +
+              (inRawTime.stoppedHere ? stoppedIcon : ''),
             "Time Out": (outRawTime.militaryTime || '') +
-                (outRawTime.splitTimeExists ? statusIcons['exists'] : '') +
-                (statusIcons[outRawTime.dataStatus] || '') +
-                (outRawTime.stoppedHere ? stoppedIcon : ''),
+              (outRawTime.splitTimeExists ? statusIcons['exists'] : '') +
+              (statusIcons[outRawTime.dataStatus] || '') +
+              (outRawTime.stoppedHere ? stoppedIcon : ''),
             "Pacer": `${(inRawTime.withPacer ? 'Yes' : 'No')} / ${(outRawTime.withPacer ? 'Yes' : 'No')}`,
             "Actions": liveEntry.timeRowsTable.editButton + liveEntry.timeRowsTable.deleteButton + liveEntry.timeRowsTable.submitButton,
             "ID": rawTimeRow.uniqueId,
@@ -1050,7 +1090,7 @@ export default class extends Controller {
           })
         },
 
-        getAllUniqueIds: function() {
+        getAllUniqueIds: function () {
           return liveEntry.timeRowsTable.dataTable.data.data.map(dataRow => {
             return dataRow[9].text
           })
@@ -1132,7 +1172,7 @@ export default class extends Controller {
          * Set event listeners on time row controls
          *
          */
-        timeRowControls: function () {
+        addListenersToTableControls: function () {
           document.getElementById('js-delete-all-time-rows').addEventListener('click', function (event) {
             event.preventDefault();
             liveEntry.timeRowsTable.toggleDiscardAll(true);
@@ -1144,57 +1184,6 @@ export default class extends Controller {
             const allUniqueIds = liveEntry.timeRowsTable.getAllUniqueIds()
             liveEntry.timeRowsTable.submitTimeRows(allUniqueIds, false);
             return false;
-          });
-
-          document.addEventListener('keydown', function (event) {
-            if (event.key === 'Shift') {
-              document.getElementById('js-pull-times').classList.add('d-none')
-              document.getElementById('js-force-pull-times').classList.remove('d-none')
-            }
-          });
-
-          document.addEventListener('keyup', function (event) {
-            if (event.key === 'Shift') {
-              document.getElementById('js-pull-times').classList.remove('d-none')
-              document.getElementById('js-force-pull-times').classList.add('d-none')
-            }
-          });
-
-          Array.from(document.querySelectorAll('#js-pull-times, #js-force-pull-times')).forEach(element => {
-            element.addEventListener('click', function (event) {
-              event.preventDefault();
-              if (liveEntry.importAsyncBusy) return;
-              liveEntry.importAsyncBusy = true;
-
-              const force = (this.id === 'js-force-pull-times')
-              const url = `/api/v1/event_groups/${liveEntry.currentEventGroupId}/pull_raw_times`
-              const options = {
-                query: {
-                  forcePull: force,
-                },
-              }
-              patch(url, options).then(function (response) {
-                  if (response.ok) {
-                    return response.json
-                  } else {
-                    console.error('time row enrichment failed', response)
-                  }
-                }).then(function (json) {
-                const rawTimeRows = json.data.rawTimeRows;
-                if (rawTimeRows.length === 0) {
-                  liveEntry.displayAndHideMessage(
-                    liveEntry.importLiveWarning,
-                    '#js-import-live-warning');
-                  return;
-                }
-                liveEntry.populateRows(rawTimeRows);
-              }).catch(function (error) {
-                liveEntry.timeRowsTable.importLiveError(obj, error);
-              }).finally(function () {
-                liveEntry.importAsyncBusy = false;
-              })
-              return false;
-            });
           });
         },
 
@@ -1216,8 +1205,8 @@ export default class extends Controller {
           })
 
           element.querySelector('.js-submit-effort').addEventListener('click', function () {
-              liveEntry.timeRowsTable.submitTimeRows([uniqueId], true);
-            })
+            liveEntry.timeRowsTable.submitTimeRows([uniqueId], true);
+          })
         },
 
         importLiveError: function (obj, error) {

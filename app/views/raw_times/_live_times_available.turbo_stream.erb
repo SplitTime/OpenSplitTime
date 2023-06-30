@@ -1,7 +1,7 @@
 <%# locals: (unreviewed_count:, unmatched_count:) -%>
 
-<%= turbo_stream.replace "js-pull-times", partial: "live/event_groups/pull_times_button", locals: { count: unreviewed_count } %>
-<%= turbo_stream.replace "js-force-pull-times", partial: "live/event_groups/force_pull_times_button", locals: { count: unmatched_count } %>
+<%= turbo_stream.replace "pull_times_button", partial: "live/event_groups/pull_times_button", locals: { count: unreviewed_count } %>
+<%= turbo_stream.replace "force_pull_times_button", partial: "live/event_groups/force_pull_times_button", locals: { count: unmatched_count } %>
 <% if unreviewed_count.positive? %>
   <%= turbo_stream.prepend "toasts",
                            partial: "toasts/toast",

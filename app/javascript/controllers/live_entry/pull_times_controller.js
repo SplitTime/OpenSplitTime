@@ -5,15 +5,15 @@ import { dispatchNotificationEvent } from "../../helpers"
 export default class extends Controller {
   static values = {
     eventGroupId: Number,
-    force: Boolean,
     importAsyncBusy: {
       type: Boolean,
       default: false,
     }
   }
 
-  pull() {
+  pull(event) {
     const controller = this;
+    const force = event.target.dataset.pullTimesForce
 
     if (controller.importAsyncBusyValue) return;
     controller.importAsyncBusyValue = true;
@@ -21,7 +21,7 @@ export default class extends Controller {
     const url = `/api/v1/event_groups/${controller.eventGroupIdValue}/pull_raw_times`
     const options = {
       query: {
-        forcePull: this.forceValue,
+        forcePull: force,
       },
     }
 
@@ -55,25 +55,5 @@ export default class extends Controller {
     }).finally(function () {
       controller.importAsyncBusyValue = false;
     })
-  }
-
-  keydown(event) {
-    if (event.key === 'Shift') {
-      this.toggleButton(this.forceValue)
-    }
-  }
-
-  keyup(event) {
-    if (event.key === 'Shift') {
-      this.toggleButton(!this.forceValue)
-    }
-  }
-
-  toggleButton(boolean) {
-    if (boolean) {
-      this.element.classList.remove('d-none')
-    } else {
-      this.element.classList.add('d-none')
-    }
   }
 }

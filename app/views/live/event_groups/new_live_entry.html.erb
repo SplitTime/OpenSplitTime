@@ -192,7 +192,10 @@
   </div>
 
   <div class="row provisional-data mt-4">
-    <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper d-flex-inline">
+    <div class="col-12 table-submit-wrapper d-flex-inline"
+         data-controller="live-entry--pull-times"
+         data-live-entry--pull-times-event-group-id-value="<%= @event_group.id %>"
+    >
       <%= render "pull_times_button", event_group: @event_group %>
       <%= render "force_pull_times_button", event_group: @event_group %>
       <div class="btn-group" role="group">

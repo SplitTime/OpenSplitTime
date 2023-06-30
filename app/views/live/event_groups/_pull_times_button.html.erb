@@ -4,11 +4,11 @@
 
 <button id="pull_times_button"
         class="btn btn-primary"
-        data-controller="live-entry--pull-times"
-        data-live-entry--pull-times-event-group-id-value="<%= event_group.id %>"
-        data-live-entry--pull-times-force-value="false"
-        data-action="keydown@document->live-entry--pull-times#keydown
-                     keyup@document->live-entry--pull-times#keyup
+        data-pull-times-force="false"
+        data-controller="shift-toggle"
+        data-shift-toggle-show-when-pressed-value="false"
+        data-action="keydown@document->shift-toggle#keydown
+                     keyup@document->shift-toggle#keyup
                      click->live-entry--pull-times#pull"
 >
   Pull Times

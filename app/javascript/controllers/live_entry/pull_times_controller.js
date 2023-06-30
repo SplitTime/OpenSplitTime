@@ -40,7 +40,7 @@ export default class extends Controller {
           type: "success",
         })
       } else {
-        this.dispatch("pulled", {
+        controller.dispatch("pulled", {
           detail: {
             rawTimeRows: rawTimeRows,
           }

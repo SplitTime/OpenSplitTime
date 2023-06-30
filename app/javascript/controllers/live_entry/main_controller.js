@@ -863,6 +863,10 @@ export default class extends Controller {
             liveEntry.timeRowsTable.addTimeRowFromForm();
             return false;
           });
+
+          document.addEventListener('live-entry--pull-times:pulled', function (event) {
+            liveEntry.populateRows(event.detail.rawTimeRows);
+          })
         },
 
         populateTableFromCache: function () {

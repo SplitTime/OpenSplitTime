@@ -781,7 +781,7 @@ export default class extends Controller {
         submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
 
         /**
-         * Inits the provisional data table
+         * Inits the Local Workspace
          *
          */
         init: function () {
@@ -795,6 +795,8 @@ export default class extends Controller {
           this.dataTable = new DataTable('#js-local-workspace-table', {
             paging: false,
             classes: {
+              top: "datatable-top mb-4",
+              input: "form-control",
               table: "datatable-table table",
             },
             rowRender: (row, tr, _index) => {
@@ -863,9 +865,6 @@ export default class extends Controller {
               },
             ],
           })
-
-          // TODO: Remove this dev tool
-          window.dataTable = this.dataTable;
 
           liveEntry.timeRowsTable.populateTableFromCache();
           liveEntry.timeRowsTable.timeRowControls()

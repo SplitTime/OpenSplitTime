@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { patch } from "@rails/request.js";
+import { dispatchNotificationEvent } from "../../helpers"
 
 export default class extends Controller {
   static values = {
@@ -33,24 +34,27 @@ export default class extends Controller {
     }).then(function (json) {
       const rawTimeRows = json.data.rawTimeRows;
       if (rawTimeRows.length === 0) {
-        this.sendNotice({
+        dispatchNotificationEvent({
           title: "You are up to date",
           body: "There are no raw times available to pull",
           type: "success",
         })
-        return;
+      } else {
+        this.dispatch("pulled", {
+          detail: {
+            rawTimeRows: rawTimeRows,
+          }
+        })
       }
-      // liveEntry.populateRows(rawTimeRows);
     }).catch(function (error) {
-      sendNotice({
-        title: "Pull times failed",
-        body: error,
+      dispatchNotificationEvent({
+        title: "Raw times pull failed",
+        body: error.message,
         type: "alert",
       })
     }).finally(function () {
       controller.importAsyncBusyValue = false;
     })
-    return false;
   }
 
   keydown(event) {

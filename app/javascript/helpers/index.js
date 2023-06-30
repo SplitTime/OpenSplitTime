@@ -22,3 +22,17 @@ export function removeElement(el) {
 export function insertAfter(el, referenceNode) {
     return referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
 }
+
+export function dispatchNotificationEvent(object) {
+    const options = {
+        detail: {
+            title: object.title,
+            body: object.body,
+            type: object.type,
+        },
+        bubbles: true,
+    }
+
+    const showToastEvent = new CustomEvent("show-toast", options)
+    document.dispatchEvent(showToastEvent)
+}

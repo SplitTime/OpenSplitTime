@@ -3,7 +3,7 @@ import { post } from "@rails/request.js"
 
 export default class extends Controller {
   connect() {
-    this.element.addEventListener("show-toast", this.showToast)
+    document.addEventListener("show-toast", this.showToast)
   }
 
   showToast(event) {

@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-import { get, patch, post } from "@rails/request.js"
+import { get, post } from "@rails/request.js"
 import { DataTable } from "simple-datatables"
+import { dispatchNotificationEvent } from "../../helpers"
 
 export default class extends Controller {
 
@@ -144,20 +145,6 @@ export default class extends Controller {
         } else {
           return rawTimes[0] || {}
         }
-      },
-
-      sendNotice: function (object) {
-        const options = {
-          detail: {
-            title: object.title,
-            body: object.body,
-            type: object.type,
-          },
-          bubbles: true,
-        }
-
-        const showToastEvent = new CustomEvent("show-toast", options)
-        liveEntry.container.dispatchEvent(showToastEvent)
       },
 
       setCurrentTimestamp: function (rawTimeRow) {
@@ -971,21 +958,19 @@ export default class extends Controller {
 
             // If any time rows were bounced back...
             if (returnedTimeRows.length >= 1) {
-              // If submitting one node...
+              // If submitting one rawTimeRow...
               if (uniqueIds.length <= 1) {
-                liveEntry.sendNotice({
+                dispatchNotificationEvent({
                   title: 'Failed to submit time row',
-                  body: returnedTimeRows[0].errors.join(', ')
-                }, {
+                  body: returnedTimeRows[0].errors.join(', '),
                   type: 'danger'
                 });
-                // If submitting multiple nodes...
+                // If submitting multiple rawTimeRows...
               } else {
-                liveEntry.sendNotice({
+                dispatchNotificationEvent({
                   title: 'Failed to submit ' + returnedTimeRows.length +
                     ' of ' + uniqueIds.length + ' time rows',
-                  body: ''
-                }, {
+                  body: '',
                   type: 'danger'
                 });
               }

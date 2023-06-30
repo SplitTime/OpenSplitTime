@@ -1235,7 +1235,7 @@
             }
 
             const showToastEvent = new CustomEvent("show-toast", options)
-            liveEntry.container.dispatchEvent(showToastEvent)
+            document.dispatchEvent(showToastEvent)
         },
 
         populateRows: function (rawTimeRows) {

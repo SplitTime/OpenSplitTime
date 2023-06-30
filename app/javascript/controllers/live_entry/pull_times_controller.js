@@ -36,8 +36,8 @@ export default class extends Controller {
       if (rawTimeRows.length === 0) {
         dispatchNotificationEvent({
           title: "You are up to date",
-          body: "There are no raw times available to pull",
-          type: "success",
+          body: "There are no raw times available to pull.",
+          type: "info",
         })
       } else {
         controller.dispatch("pulled", {
@@ -50,7 +50,7 @@ export default class extends Controller {
       dispatchNotificationEvent({
         title: "Raw times pull failed",
         body: error.message,
-        type: "alert",
+        type: "warning",
       })
     }).finally(function () {
       controller.importAsyncBusyValue = false;

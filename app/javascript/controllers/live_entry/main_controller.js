@@ -227,7 +227,7 @@ export default class extends Controller {
           })
         }
 
-      }, // end dataSetup
+      }, // END dataSetup
 
       /**
        * Contains functionality for the times data cache
@@ -344,7 +344,7 @@ export default class extends Controller {
           return flag
         },
 
-      }, // end timeRowsCache
+      }, // END timeRowsCache
 
       /**
        * Functionality to build header lives here
@@ -403,7 +403,7 @@ export default class extends Controller {
           }
         }
 
-      },  // end header
+      },  // END header
 
       /**
        * Contains functionality for the timeRow form
@@ -475,7 +475,7 @@ export default class extends Controller {
             }
             return false;
           });
-        }, // end init
+        }, // END init
 
         setDroppedButtonStyling: function () {
           const button = document.getElementById('js-dropped-button');
@@ -966,7 +966,7 @@ export default class extends Controller {
               if (uniqueIds.length <= 1) {
                 dispatchNotificationEvent({
                   title: 'Failed to submit time row',
-                  body: returnedTimeRows[0].errors.join(', '),
+                  body: returnedTimeRows[0].errors.join(', ') + '.',
                   type: 'danger'
                 });
                 // If submitting multiple rawTimeRows...
@@ -974,8 +974,8 @@ export default class extends Controller {
                 dispatchNotificationEvent({
                   title: 'Failed to submit ' + returnedTimeRows.length +
                     ' of ' + uniqueIds.length + ' time rows',
-                  body: '',
-                  type: 'danger'
+                  body: 'Failed rows have been returned to the Local Workspace.',
+                  type: 'warning'
                 });
               }
             }
@@ -1193,8 +1193,8 @@ export default class extends Controller {
         }
       } // END rawTimeRow
 
-    } // end liveEntry
+    } // END liveEntry
 
     liveEntry.init()
-  } // end liveEntryApp()
+  } // END liveEntryApp()
 }

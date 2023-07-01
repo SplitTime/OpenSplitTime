@@ -40,6 +40,10 @@ export default class extends Controller {
           type: "info",
         })
       } else {
+        rawTimeRows.forEach(rawTimeRow => {
+          rawTimeRow.timestamp = Math.round(Date.now() / 1000)
+        })
+
         controller.dispatch("pulled", {
           detail: {
             rawTimeRows: rawTimeRows,

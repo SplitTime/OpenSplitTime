@@ -120,16 +120,29 @@ export default class extends Controller {
       },
 
       populateRows: function (rawTimeRows) {
+        let matchedRowCount = 0;
+
         rawTimeRows.forEach(rawTimeRow => {
           rawTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
 
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-          if (!liveEntry.timeRowsCache.isMatchedTimeRow(rawTimeRow)) {
+
+          if (liveEntry.timeRowsCache.isMatchedTimeRow(rawTimeRow)) {
+            matchedRowCount += 1
+          } else {
             storedTimeRows.push(rawTimeRow);
             liveEntry.timeRowsCache.setStoredTimeRows(storedTimeRows);
             liveEntry.timeRowsTable.addTimeRowToTable(rawTimeRow);
           }
         })
+
+        if (matchedRowCount > 0) {
+          dispatchNotificationEvent({
+            title: 'Some rows not added',
+            body: `${matchedRowCount} rows were not added to the Local Workspace because they matched with existing rows.`,
+            type: 'warning',
+          })
+        }
       },
 
       rawTimeFromRow: function (timeRow, kind) {
@@ -331,11 +344,11 @@ export default class extends Controller {
          */
         isMatchedTimeRow: function (subjectTimeRow) {
           const storedTimeRows = liveEntry.timeRowsCache.getStoredTimeRows();
-          const tempTimeRow = JSON.stringify(subjectTimeRow);
+          const tempTimeRow = JSON.stringify(liveEntry.rawTimeRow.compData(subjectTimeRow));
           let flag = false;
 
           storedTimeRows.forEach(storedTimeRow => {
-            const loopedTimeRow = JSON.stringify(storedTimeRow);
+            const loopedTimeRow = JSON.stringify(liveEntry.rawTimeRow.compData(storedTimeRow));
             if (loopedTimeRow === tempTimeRow) {
               flag = true
             }

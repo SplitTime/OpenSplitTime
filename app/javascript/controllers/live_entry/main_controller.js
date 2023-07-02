@@ -643,7 +643,8 @@ export default class extends Controller {
             const lapNumberInput = document.getElementById('js-lap-number');
             if (!lapNumberInput.value || bibChanged || splitChanged) {
               if (rawTime.enteredLap) lapNumberInput.value = rawTime.enteredLap;
-              document.querySelector('#js-lap-number:focus')?.select();
+              const focusedLapInput = document.querySelector('#js-lap-number:focus');
+              if (focusedLapInput) focusedLapInput.select();
             }
 
             liveEntry.liveEntryForm.updateTimeField(document.getElementById('js-time-in'), inRawTime);

@@ -16,7 +16,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
   let(:start_time_2) { event_2.start_time }
 
   let(:add_efforts_form) { find_by_id("js-add-effort-form") }
-  let(:local_workspace) { find_by_id("js-local-workspace-table_wrapper") }
+  let(:local_workspace) { find(:css, ".datatable-wrapper") }
 
   let(:bib_number_field) { "js-bib-number" }
   let(:time_in_field) { "js-time-in" }
@@ -145,7 +145,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
   def login_and_check_setup
     login_as user
     visit live_entry_live_event_group_path(event_group)
-    wait_for_ajax
 
     check_setup
   end
@@ -183,6 +182,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
   end
 
   def verify_workspace_is_empty
-    expect(local_workspace).to have_content("No data available in table")
+    expect(local_workspace).to have_content("No entries found")
   end
 end

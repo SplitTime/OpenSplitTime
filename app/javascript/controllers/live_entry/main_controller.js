@@ -776,6 +776,7 @@ export default class extends Controller {
         dataTable: null,
         busy: false,
         editIndicatorClass: 'bg-light',
+        uniqueIdsToRemove: [],
         editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>',
         deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>',
         submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
@@ -923,7 +924,11 @@ export default class extends Controller {
         },
 
         removeTimeRows: function (uniqueIds, options = {}) {
+          if (liveEntry.timeRowsTable.uniqueIdsToRemove.length > 0) return // Don't allow multiple deletes at once
+
+          const dataTableIndexes = uniqueIds.map(uniqueId => liveEntry.timeRowsTable.indexFromUniqueId(uniqueId));
           const fade = options.fade || false;
+          if (fade) liveEntry.timeRowsTable.uniqueIdsToRemove = uniqueIds;
 
           uniqueIds.forEach(uniqueId => {
             const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
@@ -935,15 +940,20 @@ export default class extends Controller {
               trElement.addEventListener('animationend', function (event) {
                 // The tr and each td will fire an animationend event, so we need to make sure we only remove the row once
                 if (event.target === trElement) {
-                  liveEntry.timeRowsTable.dataTable.rows.remove(trElement.dataset.index);
+                  liveEntry.timeRowsTable.uniqueIdsToRemove = liveEntry.timeRowsTable.uniqueIdsToRemove.filter(item => item !== uniqueId)
+                  liveEntry.timeRowsTable.removeTimeRowsIfReady(dataTableIndexes);
                 }
               })
               trElement.classList.add('fade');
-            } else {
-              const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);
-              liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
             }
           })
+          liveEntry.timeRowsTable.removeTimeRowsIfReady(dataTableIndexes);
+        },
+
+        removeTimeRowsIfReady: function (dataTableIndexes) {
+          if (liveEntry.timeRowsTable.uniqueIdsToRemove.length === 0) {
+            liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndexes);
+          }
         },
 
         submitTimeRows: function (uniqueIds, forceSubmit) {
@@ -972,7 +982,7 @@ export default class extends Controller {
               console.error('time row submit failed', response)
             }
           }).then(function (json) {
-            liveEntry.timeRowsTable.removeTimeRows(uniqueIds, { fade: true });
+            liveEntry.timeRowsTable.removeTimeRows(uniqueIds, { fade: false });
             const returnedTimeRows = json.data.rawTimeRows;
             returnedTimeRows.forEach(returnedTimeRow => {
               returnedTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();

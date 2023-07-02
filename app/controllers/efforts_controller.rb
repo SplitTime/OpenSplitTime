@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place]
+  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
   before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :mini_table]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place]
+  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
 
+  # GET /efforts
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
                  .where(prepared_params[:filter])
@@ -25,11 +26,13 @@ class EffortsController < ApplicationController
     end
   end
 
+  # GET /efforts/1
   def show
     @presenter = EffortShowView.new(@effort)
     session[:return_to] = effort_path(@effort)
   end
 
+  # GET /efforts/new
   def new
     event = Event.find(params[:event_id])
     effort = event.efforts.new
@@ -38,6 +41,7 @@ class EffortsController < ApplicationController
     render :new, locals: { effort: effort }
   end
 
+  # GET /efforts/1/edit
   def edit
     authorize @effort
     @effort = Effort.where(id: @effort).includes(event: { event_group: :events }).first
@@ -45,6 +49,7 @@ class EffortsController < ApplicationController
     render :edit, locals: { effort: @effort }
   end
 
+  # POST /efforts
   def create
     effort = Effort.new(permitted_params)
     authorize effort
@@ -66,6 +71,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # PATCH/PUT /efforts/1
   def update
     authorize @effort
 
@@ -105,6 +111,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # DELETE /efforts/1
   def destroy
     authorize @effort
 
@@ -123,6 +130,7 @@ class EffortsController < ApplicationController
     redirect_to manage_entrant_photos_event_group_path(@effort.event_group)
   end
 
+  # GET /efforts/1/projections
   def projections
     @presenter = EffortProjectionsView.new(@effort)
 
@@ -133,20 +141,24 @@ class EffortsController < ApplicationController
     end
   end
 
+  # GET /efforts/1/analyze
   def analyze
     @presenter = EffortAnalysisView.new(@effort)
   end
 
+  # GET /efforts/1/audit
   def audit
     authorize @effort
 
     @presenter = EffortAuditView.new(@effort)
   end
 
+  # GET /efforts/1/place
   def place
     @presenter = EffortPlaceView.new(@effort)
   end
 
+  # PATCH /efforts/1/rebuild
   def rebuild
     authorize @effort
 
@@ -159,7 +171,7 @@ class EffortsController < ApplicationController
     end
   end
 
-  # GET /efforts/1/start
+  # GET /efforts/1/start_form
   def start_form
     authorize @effort
   end
@@ -186,6 +198,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # PATCH /efforts/1/unstart
   def unstart
     authorize @effort
 
@@ -205,6 +218,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # PATCH /efforts/1/stop
   def stop
     authorize @effort
     effort = effort_with_splits
@@ -216,6 +230,7 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  # PATCH /efforts/1/smart_stop
   def smart_stop
     authorize @effort
     effort = effort_with_splits
@@ -225,6 +240,7 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  # POST /efforts/1/create_split_time_from_raw_time
   def create_split_time_from_raw_time
     @effort = policy_scope(Effort).friendly.find(params[:id])
     authorize @effort
@@ -243,6 +259,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # GET /efforts/1/edit_split_times
   def edit_split_times
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(:event, split_times: :split).first
@@ -250,6 +267,7 @@ class EffortsController < ApplicationController
     @presenter = EffortWithTimesPresenter.new(effort, params: params)
   end
 
+  # PATCH /efforts/1/update_split_times
   def update_split_times
     authorize @effort
     effort = effort_with_splits
@@ -265,6 +283,7 @@ class EffortsController < ApplicationController
     end
   end
 
+  # DELETE /efforts/1/delete_split_times
   def delete_split_times
     authorize @effort
     effort = Effort.where(id: @effort.id).includes(split_times: { split: :course }).first
@@ -275,6 +294,7 @@ class EffortsController < ApplicationController
     redirect_to effort_path(effort)
   end
 
+  # PATCH /efforts/1/set_data_status
   def set_data_status
     authorize @effort
     Interactors::UpdateEffortsStatus.perform!(@effort)
@@ -289,6 +309,20 @@ class EffortsController < ApplicationController
       render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
     else
       head :unprocessable_entity
+    end
+  end
+
+  # GET /efforts/1/live_entry_table
+  def live_entry_table
+    respond_to do |format|
+      format.turbo_stream do
+        effort = Effort.where(id: @effort).includes(event: :splits, split_times: :split).first
+        effort.ordered_split_times.each_cons(2) do |begin_st, end_st|
+          end_st.segment_time ||= end_st.absolute_time - begin_st.absolute_time
+        end
+        presenter = EffortWithTimesRowPresenter.new(effort)
+        render "efforts/live_entry_table", locals: { presenter: presenter }
+      end
     end
   end
 

@@ -7,7 +7,7 @@ class ToastsController < ApplicationController
   def create
     respond_to do |format|
       format.turbo_stream do
-        render "toasts/create", locals: { title: params[:title], body: params[:body] }
+        render "toasts/create", locals: { title: params[:title], body: params[:body], type: params[:type] }
       end
     end
   end

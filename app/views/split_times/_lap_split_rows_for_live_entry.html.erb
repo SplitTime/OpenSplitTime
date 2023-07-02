@@ -1,0 +1,8 @@
+<%# locals: (presenter:) -%>
+
+<%= render partial: "split_times/lap_split_row_for_live_entry",
+           collection: presenter.lap_split_rows,
+           as: :row,
+           locals: { presenter: presenter } %>
+
+<div data-controller="live-entry--effort-table"></div>

@@ -96,7 +96,7 @@ module Api
       # This endpoint accepts a single raw_time_row and returns an identical raw_time_row
       # with data_status, split_time_exists, lap, and other attributes set
 
-      # GET /api/v1/event_groups/1/enrich_raw_time_row
+      # POST /api/v1/event_groups/1/enrich_raw_time_row
       def enrich_raw_time_row
         authorize @resource
         event_group = EventGroup.where(id: @resource.id).includes(:events).first

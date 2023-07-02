@@ -1,0 +1,8 @@
+<%# locals: (row:, presenter:) %>
+
+<tr class="align-middle" data-split-name="<%= row.base_name %>" data-lap-number="<%= row.lap %>">
+  <td><%= row.name %></td>
+  <td class="text-end"><%= d(row.distance_from_start) %></td>
+  <td class="text-center"><%= time_cluster_display_data(row.time_cluster, :military, with_status: true) %></td>
+  <td class="text-center"><%= time_cluster_display_data(row.time_cluster, :elapsed, with_status: true) %></td>
+</tr>

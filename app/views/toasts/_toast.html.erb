@@ -1,11 +1,9 @@
-<%# locals: (title:, body:) %>
+<%# locals: (title:, body:, type:) %>
 
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-controller="toast">
-  <div class="toast-header">
-    <svg class="rounded me-2" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <rect width="100%" height="100%" fill="#3a9dd1"></rect>
-    </svg>
-    <strong class="me-auto"><%= title %></strong>
+  <div class="toast-header h5">
+    <span class="text-<%= type %> me-2"><%= fa_icon(toast_icon_from_type(type)) %></span>
+    <span class="fw-bold me-auto"><%= title %></span>
     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
   <div class="toast-body">

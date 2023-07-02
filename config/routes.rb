@@ -84,6 +84,7 @@ Rails.application.routes.draw do
       get :show_photo
       get :edit_split_times
       get :start_form
+      get :live_entry_table
       post :create_split_time_from_raw_time
       patch :update_split_times
       patch :set_data_status
@@ -273,7 +274,7 @@ Rails.application.routes.draw do
       end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
         member do
-          get :enrich_raw_time_row
+          post :enrich_raw_time_row
           get :not_expected
           post :import
           post :import_csv_raw_times

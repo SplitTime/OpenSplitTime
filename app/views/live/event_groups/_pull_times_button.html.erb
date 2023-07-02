@@ -1,8 +1,16 @@
-<%# locals: (count:) -%>
+<%# locals: (count:, event_group:) -%>
 
 <% count ||= nil %>
 
-<button id="js-pull-times" class="btn btn-primary">
+<button id="pull_times_button"
+        class="btn btn-primary"
+        data-pull-times-force="false"
+        data-controller="shift-toggle"
+        data-shift-toggle-show-when-pressed-value="false"
+        data-action="keydown@document->shift-toggle#keydown
+                     keyup@document->shift-toggle#keyup
+                     click->live-entry--pull-times#pull"
+>
   Pull Times
   <span class="badge bg-danger ms-1"><%= count if count&.positive? %></span>
 </button>

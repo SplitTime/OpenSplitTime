@@ -38,7 +38,7 @@ global.distanceToPreferred = distanceToPreferred;
 global.elevationToPreferred = elevationToPreferred;
 
 // Inputmask
-import Inputmask from "inputmask/dist/jquery.inputmask";
+import Inputmask from "inputmask/dist/inputmask";
 
 Inputmask.extendAliases({
   "military": {
@@ -79,22 +79,22 @@ Inputmask.extendAliases({
   "bib_number": {
     regex: "[0-9|*]{0,6}"
   },
+  "lap_number": {
+    alias: "integer",
+    rightAlign: false,
+    nullable: true,
+    min: 1,
+    max: undefined
+  }
 })
 
 // Miscellaneous imports
 import "chartkick/chart.js";
-import "datatables.net-bs5";
 
 // reloadWithTurbo
 import { reloadWithTurbo } from "utils/reload_with_turbo"
 
 global.reloadWithTurbo = reloadWithTurbo()
-
-// jQuery
-import $ from 'jquery';
-
-global.$ = $
-global.jQuery = $
 
 // Stimulus
 import { Application } from "@hotwired/stimulus"

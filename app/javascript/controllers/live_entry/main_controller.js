@@ -702,7 +702,7 @@ export default class extends Controller {
 
           document.getElementById('js-unique-id').value = rawTimeRow.uniqueId;
           bibField.value = rawTime.bibNumber;
-          document.getElementById('js-lap-number').value = rawTime.enteredLap;
+          document.getElementById('js-lap-number').value = rawTime.enteredLap || 1;
           inTimeField.value = inRawTime.militaryTime;
           outTimeField.value = outRawTime.militaryTime;
           document.getElementById('js-pacer-in').checked = inRawTime.withPacer;

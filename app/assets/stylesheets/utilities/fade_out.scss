@@ -16,4 +16,5 @@ tr.faded td button {
 tr.faded {
   animation: fade .1s .1s forwards;
   opacity: 0;
+  border-bottom: 0 transparent;
 }

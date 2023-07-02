@@ -41,7 +41,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in time_in_field, with: "08:00"
       expect(slider_effort_name).to have_content(effort_1.full_name)
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -49,17 +48,14 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_2.bib_number
       fill_in time_in_field, with: "09:00"
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)
 
       submit_all_efforts
 
-      reload_all_efforts
-
-      expect(effort_1.split_times.size).to eq(1)
-      expect(effort_2.split_times.size).to eq(1)
+      expect(effort_1.reload.split_times.size).to eq(1)
+      expect(effort_2.reload.split_times.size).to eq(1)
 
       verify_workspace_is_empty
     end
@@ -82,7 +78,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_1.bib_number
       fill_in time_in_field, with: "19:00:00"
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -91,17 +86,14 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in time_in_field, with: "13:00:00"
       fill_in time_out_field, with: "13:20:00"
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)
 
       submit_all_efforts
 
-      reload_all_efforts
-
-      expect(effort_1.split_times.size).to eq(8)
-      expect(effort_2.split_times.size).to eq(7)
+      expect(effort_1.reload.split_times.size).to eq(8)
+      expect(effort_2.reload.split_times.size).to eq(7)
 
       verify_workspace_is_empty
     end
@@ -118,7 +110,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_1.bib_number
       fill_in time_in_field, with: "08:45:45"
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -126,17 +117,14 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_2.bib_number
       fill_in time_in_field, with: "09:00:00"
       add_button.click
-      wait_for_css
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)
 
       discard_all_efforts
 
-      reload_all_efforts
-
-      expect(effort_1.split_times.size).to eq(7)
-      expect(effort_2.split_times.size).to eq(5)
+      expect(effort_1.reload.split_times.size).to eq(7)
+      expect(effort_2.reload.split_times.size).to eq(5)
 
       verify_workspace_is_empty
     end
@@ -159,13 +147,11 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
   end
 
   def submit_all_efforts
-    sleep(2.5)
     submit_all_button.click
     sleep(1)
   end
 
   def submit_time_row(index)
-    sleep(2.5)
     local_workspace.find("tbody").all("tr")[index].find(".submit-effort").click
     sleep(1)
   end
@@ -175,10 +161,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
     expect(page).to have_button("js-delete-all-warning", disabled: true)
     wait_for_css
     discard_all_button.click
-  end
-
-  def reload_all_efforts
-    subject_efforts.each(&:reload)
   end
 
   def verify_workspace_is_empty

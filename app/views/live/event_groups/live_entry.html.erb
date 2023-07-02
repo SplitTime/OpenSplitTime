@@ -1,28 +1,17 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Live entry - #{@event_group.name}" %>
+  <% "OpenSplitTime: Live entry (Stimulus) - #{@event_group.name}" %>
 <% end %>
 
-<%= javascript_pack_tag "live_entry" %>
 <%= turbo_stream_from @event_group, :live_times %>
-
-<aside class="bg-warning p-3">
-  <div class="container">
-    <div class="row d-flex align-items-center">
-      <div class="col text-start">
-        <h5>Old Live Entry</h5>
-      </div>
-    </div>
-  </div>
-</aside>
 
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= [@presenter.name, nil].compact.join(': ') %></strong></h1>
+          <h1 class="fw-bold"><%= [@presenter.name, nil].compact.join(": ") %></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Live Entry</li>
@@ -32,16 +21,19 @@
     </div>
     <%= content_tag(:div, id: "js-event-group-id", data: { event_group_id: @event_group.id, server_uri: ::OstConfig.base_uri }) {} %>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
-<article id="live-entry-container"
-         class="container"
-         data-controller="raw-times-push notifications"
-         data-raw-times-push-event-group-id-value="<%= @event_group.id %>"
+<article
+  class="container"
+  data-controller="live-entry--main live-entry--raw-times-push notifications"
+  data-live-entry--raw-times-push-event-group-id-value="<%= @event_group.id %>"
+  data-live-entry--main-current-user-id-value="<%= current_user.id %>"
+  data-live-entry--main-event-group-id-value="<%= @event_group.id %>"
+  data-live-entry--main-server-uri-value="<%= OstConfig.base_uri %>"
 >
-  <div class="row lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
+  <div class="row lap-disabled group-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">
         <input type="hidden" id="js-unique-id" value=""/>
@@ -55,7 +47,9 @@
           <label class="col-4" for="js-bib-number">Bib</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+              <input id="js-bib-number" type="tel" name="bibNumber" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="bib_number">
               <span class="input-group-text time-status">
               <span class="fas fa-check-circle good text-success" title="Bib found" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-question-circle questionable text-warning" title="Bib in wrong event" data-controller="tooltip" data-bs-placement="right"></span>
@@ -68,7 +62,9 @@
           <label class="col-4" for="js-lap-number">Lap</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;">
+              <input id="js-lap-number" type="tel" name="lap" class="form-control form-control-sm" autocomplete="off" value="" style="text-align: left;"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="lap_number">
             </div>
           </div>
         </div>
@@ -76,7 +72,9 @@
           <label id="js-time-in-label" class="col-4" for="js-time-in">&nbsp;</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="military">
               <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
@@ -90,7 +88,9 @@
           <label id="js-time-out-label" class="col-4" for="js-time-out">&nbsp;</label>
           <div class="col-8">
             <div class="input-group">
-              <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)">
+              <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     data-controller="inputmask"
+                     data-inputmask-type-value="military">
               <span class="input-group-text time-status">
               <span class="fas fa-exclamation-circle exists" title="Time for this bib already exists at this station" data-controller="tooltip" data-bs-placement="right"></span>
               <span class="fas fa-check-circle good text-success" title="Time appears good" data-controller="tooltip" data-bs-placement="right"></span>
@@ -104,10 +104,10 @@
           <label class="col-4" for="pacer">Pacer</label>
           <div class="col-8">
             <label class="checkbox-inline" for="js-pacer-in">
-              <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true"> In
+              <input id="js-pacer-in" type="checkbox" name="pacerIn" value="true" class="me-1"> In
             </label>
             <label class="checkbox-inline" for="js-pacer-out">
-              <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true"> Out
+              <input id="js-pacer-out" type="checkbox" name="pacerOut" value="true" class="ms-3 me-1"> Out
             </label>
           </div>
         </div>
@@ -141,19 +141,7 @@
           <span class="group-only">&nbsp;(<span id="js-effort-event-name"></span>)</span>
         </h4>
         <div class="table-wrapper">
-          <table class="table table-striped table-condensed">
-            <thead>
-            <tr>
-              <th>Split</th>
-              <th><%= pdu('singular').titlecase %></th>
-              <th>Time of Day</th>
-              <th>Elapsed Time</th>
-              <th></th>
-              <th class="pacer-only text-center" colspan="2">Pacer</th>
-            </tr>
-            </thead>
-            <tbody id="js-effort-table"></tbody>
-          </table>
+          <%= render "new_live_entry_effort_table", event_group: @event_group, distance_unit: pdu("singular").titleize, presenter: nil %>
         </div>
       </div>
     </div>
@@ -164,61 +152,50 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <h3><strong>Local Data Workspace</strong></h3>
+        <h3><strong>Local Workspace</strong></h3>
       </div>
     </div>
   </div>
 </header>
 
 <article class="ost-article container">
-  <div class="row provisional-data lap-disabled group-disabled time-in-disabled time-out-disabled pacer-disabled">
-    <div class="col-12">
-      <div class="provisional-table-wrapper">
-        <table id="js-local-workspace-table" class="table provisional-data-table">
-          <thead>
-          <tr>
-            <th>Aid Station</th>
-            <th class="group-only">Event</th>
-            <th>Bib</th>
-            <th>Name</th>
-            <th class="lap-only">Lap</th>
-            <th class="time-in-only">Time In</th>
-            <th class="time-out-only">Time Out</th>
-            <th class="pacer-only">Pacer</th>
-            <th>Dropped</th>
-            <th data-orderable="false">&nbsp;</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr style="display: none">
-            <td data-order="0"></td>
-            <td class="group-only"></td>
-            <td></td>
-            <td></td>
-            <td class="lap-only"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="row provisional-data">
+    <table id="js-local-workspace-table">
+      <thead>
+      <tr>
+        <th data-type="html">Aid Station</th>
+        <th data-type="html">Event</th>
+        <th data-type="html">Bib</th>
+        <th data-type="html">Name</th>
+        <th data-type="html">Lap</th>
+        <th data-type="html">Time In</th>
+        <th data-type="html">Time Out</th>
+        <th data-type="html">Pacer</th>
+        <th data-type="html">Actions</th>
+        <th data-type="html">ID</th>
+        <th data-type="html">Encoded</th>
+        <th data-type="html">Timestamp</th>
+      </tr>
+      </thead>
+    </table>
   </div>
+
   <div class="row">
     <div class="col-12" id="js-live-messages">
-      <div class="alert alert-warning" role="alert" id="js-import-live-warning">
+      <div class="alert alert-warning d-none" role="alert" id="js-import-live-warning">
         <strong>You're up to date.</strong> No raw time data available to pull.
       </div>
-      <div class="alert alert-danger" role="alert" id="js-import-live-error">
+      <div class="alert alert-danger d-none" role="alert" id="js-import-live-error">
         <strong>Error</strong> Couldn't read data from the server.
       </div>
     </div>
   </div>
-  <div class="row provisional-data">
-    <div id="js-table-submit-buttons" class="col-12 table-submit-wrapper d-flex-inline">
+
+  <div class="row provisional-data mt-4">
+    <div class="col-12 table-submit-wrapper d-flex-inline"
+         data-controller="live-entry--pull-times"
+         data-live-entry--pull-times-event-group-id-value="<%= @event_group.id %>"
+    >
       <%= render "pull_times_button", event_group: @event_group %>
       <%= render "force_pull_times_button", event_group: @event_group %>
       <div class="btn-group" role="group">
@@ -226,9 +203,6 @@
         <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>
       </div>
       <button id="js-submit-all-time-rows" class="btn btn-success">Submit All</button>
-    </div>
-
-    <div id="debug">
     </div>
   </div>
 </article>

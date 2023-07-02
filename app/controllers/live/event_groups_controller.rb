@@ -8,12 +8,6 @@ class Live::EventGroupsController < Live::BaseController
     verify_available_live(@event_group)
   end
 
-  # GET /live/event_groups/1/new_live_entry
-  def new_live_entry
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    verify_available_live(@event_group)
-  end
-
   # GET /live/event_groups/1/trigger_raw_times_push
   def trigger_raw_times_push
     respond_to do |format|

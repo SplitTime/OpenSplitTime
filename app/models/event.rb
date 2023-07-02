@@ -10,6 +10,7 @@ class Event < ApplicationRecord
   include DelegatedConcealable
   include Delegable
   include Auditable
+  include Subscribable
   include Syncable
   extend FriendlyId
 
@@ -166,6 +167,10 @@ class Event < ApplicationRecord
 
   def add_all_course_splits
     splits << course.splits if splits.empty?
+  end
+
+  def generate_new_topic_resource?
+    true
   end
 
   def validate_event_group

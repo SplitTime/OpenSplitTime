@@ -6,6 +6,7 @@ RSpec.describe Event, type: :model do
   include BitkeyDefinitions
 
   it_behaves_like "auditable"
+  it_behaves_like "subscribable"
   it { is_expected.to strip_attribute(:short_name).collapse_spaces }
   it { is_expected.to localize_time_attribute(:scheduled_start_time) }
   it { is_expected.to trim_time_attribute(:scheduled_start_time) }

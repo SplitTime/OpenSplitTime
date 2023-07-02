@@ -938,7 +938,7 @@ export default class extends Controller {
                   liveEntry.timeRowsTable.dataTable.rows.remove(trElement.dataset.index);
                 }
               })
-              trElement.classList.add('faded');
+              trElement.classList.add('fade');
             } else {
               const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);
               liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);

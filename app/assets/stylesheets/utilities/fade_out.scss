@@ -1,0 +1,19 @@
+@keyframes fade {
+  to {
+    font-size: 0;
+    padding: 0;
+  }
+}
+
+tr.faded td {
+  animation: fade .1s .1s forwards;
+}
+
+tr.faded td button {
+  display: none !important;
+}
+
+tr.faded {
+  animation: fade .1s .1s forwards;
+  opacity: 0;
+}

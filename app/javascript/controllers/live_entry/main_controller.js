@@ -918,18 +918,31 @@ export default class extends Controller {
         updateTimeRowInTable: function (rawTimeRow) {
           liveEntry.timeRowsTable.dataTable.search('');
           liveEntry.setCurrentTimestamp(rawTimeRow)
-          this.removeTimeRows([rawTimeRow.uniqueId])
+          this.removeTimeRows([rawTimeRow.uniqueId], { fade: false });
           this.addTimeRowToTable(rawTimeRow)
         },
 
-        removeTimeRows: function (uniqueIds) {
+        removeTimeRows: function (uniqueIds, options = {}) {
+          const fade = options.fade || false;
+
           uniqueIds.forEach(uniqueId => {
-            const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);
             const rawTimeRow = liveEntry.timeRowsTable.rawTimeRowFromUniqueId(uniqueId);
 
             // remove timeRow from cache
             liveEntry.timeRowsCache.deleteStoredTimeRow(rawTimeRow);
-            liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
+            if (fade) {
+              const trElement = liveEntry.timeRowsTable.trFromUniqueId(uniqueId);
+              trElement.addEventListener('animationend', function (event) {
+                // The tr and each td will fire an animationend event, so we need to make sure we only remove the row once
+                if (event.target === trElement) {
+                  liveEntry.timeRowsTable.dataTable.rows.remove(trElement.dataset.index);
+                }
+              })
+              trElement.classList.add('faded');
+            } else {
+              const dataTableIndex = liveEntry.timeRowsTable.indexFromUniqueId(uniqueId);
+              liveEntry.timeRowsTable.dataTable.rows.remove(dataTableIndex);
+            }
           })
         },
 
@@ -959,7 +972,7 @@ export default class extends Controller {
               console.error('time row submit failed', response)
             }
           }).then(function (json) {
-            liveEntry.timeRowsTable.removeTimeRows(uniqueIds);
+            liveEntry.timeRowsTable.removeTimeRows(uniqueIds, { fade: true });
             const returnedTimeRows = json.data.rawTimeRows;
             returnedTimeRows.forEach(returnedTimeRow => {
               returnedTimeRow.uniqueId = liveEntry.timeRowsCache.getUniqueId();
@@ -1086,7 +1099,7 @@ export default class extends Controller {
                 deleteButton.disabled = false;
                 if (deleteButton.classList.contains('confirm')) {
                   if (canDelete) {
-                    liveEntry.timeRowsTable.removeTimeRows(allUniqueIds);
+                    liveEntry.timeRowsTable.removeTimeRows(allUniqueIds, { fade: true });
                     document.querySelector('#js-station-select').focus();
                   }
                   deleteButton.classList.remove('confirm');
@@ -1163,7 +1176,7 @@ export default class extends Controller {
           })
 
           element.querySelector('.js-delete-effort').addEventListener('click', function () {
-            liveEntry.timeRowsTable.removeTimeRows([uniqueId]);
+            liveEntry.timeRowsTable.removeTimeRows([uniqueId], { fade: true });
           })
 
           element.querySelector('.js-submit-effort').addEventListener('click', function () {

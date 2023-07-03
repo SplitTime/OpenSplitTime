@@ -4,21 +4,23 @@ require "aws-sdk-sns"
 
 class SnsTopicManager
   def self.generate(args)
-    new(args).generate
+    new(**args).generate
   end
 
   def self.delete(args)
-    new(args).delete
+    new(**args).delete
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args, required: :resource, exclusive: [:resource, :sns_client], class: self.class)
-    @resource = args[:resource]
-    @sns_client = args[:sns_client] || SnsClientFactory.client
+  def initialize(resource:, sns_client: SnsClientFactory.client)
+    @resource = resource
+    @sns_client = sns_client
+
+    raise "Resource must be provided" if resource.blank?
   end
 
   def generate
-    response = sns_client.create_topic(name: "#{environment_prefix}follow_#{resource.slug}")
+    name = [environment_prefix, "follow", resource.slug].compact.join("-")
+    response = sns_client.create_topic(name: name)
 
     if response.successful?
       Rails.logger.info "  Created SNS topic for #{resource.slug}"
@@ -66,6 +68,6 @@ class SnsTopicManager
   end
 
   def environment_prefix
-    @environment_prefix ||= Rails.env.production? ? "" : "#{Rails.env.first}-"
+    @environment_prefix ||= Rails.env.production? ? nil : "#{Rails.env.first}"
   end
 end

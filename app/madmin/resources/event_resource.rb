@@ -12,6 +12,7 @@ class EventResource < Madmin::Resource
   attribute :short_name
   attribute :efforts_count, form: false
   attribute :notice_text
+  attribute :topic_resource_key
 
   # Associations
   attribute :slugs

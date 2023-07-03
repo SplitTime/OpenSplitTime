@@ -30,7 +30,7 @@ class EventUpdateNotifier < BaseNotifier
       default: "#{event.name} has been updated as of #{event.updated_at}.",
       http: http_message,
       https: http_message,
-    }
+    }.to_json
   end
 
   def http_message

@@ -18,7 +18,8 @@ class SnsTopicManager
   end
 
   def generate
-    response = sns_client.create_topic(name: "#{environment_prefix}follow_#{resource.slug}")
+    name = [environment_prefix, "follow", resource.slug].compact.join("-")
+    response = sns_client.create_topic(name: name)
 
     if response.successful?
       Rails.logger.info "  Created SNS topic for #{resource.slug}"
@@ -66,6 +67,6 @@ class SnsTopicManager
   end
 
   def environment_prefix
-    @environment_prefix ||= Rails.env.production? ? "" : "#{Rails.env.first}-"
+    @environment_prefix ||= Rails.env.production? ? nil : "#{Rails.env.first}"
   end
 end

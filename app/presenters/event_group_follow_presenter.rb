@@ -6,10 +6,10 @@ class EventGroupFollowPresenter < BasePresenter
   delegate :name, :organization, :organization_name, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
            :multiple_events?, to: :event_group
 
-  def initialize(event_group, params, current_user)
+  def initialize(event_group, view_context)
     @event_group = event_group
-    @params = params
-    @current_user = current_user
+    @params = view_context.params
+    @current_user = view_context.current_user
   end
 
   def event

@@ -156,6 +156,7 @@ Rails.application.routes.draw do
 
   resources :events, only: [:show] do
     resources :aid_stations, only: [:create, :destroy]
+    resources :subscriptions, only: [:new, :create, :destroy], module: "events"
     member do
       get :admin
       get :edit_start_time

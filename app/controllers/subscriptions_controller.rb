@@ -3,8 +3,13 @@
 class SubscriptionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_subscribable
-  before_action :set_subscription, except: [:create]
+  before_action :set_subscription, except: [:new, :create]
   after_action :verify_authorized
+
+  def new
+    @subscription = @subscribable.subscriptions.new(user: current_user)
+    authorize @subscription
+  end
 
   def create
     @subscription = @subscribable.subscriptions.new(permitted_params)
@@ -13,7 +18,7 @@ class SubscriptionsController < ApplicationController
     @subscription.endpoint = case protocol
                              when "email" then current_user.email
                              when "sms" then current_user.sms
-                             else params[:endpoint]
+                             else params.dig(:subscription, :endpoint)
                              end
     authorize @subscription
 
@@ -21,7 +26,7 @@ class SubscriptionsController < ApplicationController
       flash[:warning] = "Please add a mobile phone number to receive sms text notifications."
       redirect_to user_settings_preferences_path
     elsif @subscription.save
-      flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.full_name}. " +
+      flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.name}. " +
         "Messages will be sent to #{@subscription[:endpoint]}."
       render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
     else

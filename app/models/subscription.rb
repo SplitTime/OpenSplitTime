@@ -16,6 +16,8 @@ class Subscription < ApplicationRecord
 
   validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol, :resource_key
 
+  scope :for_user, -> (user) { where(user: user) }
+
   def set_resource_key
     if should_generate_resource?
       self.resource_key = SnsSubscriptionManager.generate(subscription: self)

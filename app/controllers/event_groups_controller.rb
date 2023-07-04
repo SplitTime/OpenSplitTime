@@ -167,7 +167,7 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups/1/follow
   def follow
-    @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = EventGroupFollowPresenter.new(@event_group, view_context)
 
     if @presenter.event_group_finished?
       flash[:success] = "#{@presenter.name} is completed."
@@ -190,7 +190,7 @@ class EventGroupsController < ApplicationController
   def webhooks
     authorize @event_group
 
-    # @presenter = EventGroupWebhooksPresenter.new(@event_group)
+    @presenter = EventGroupFollowPresenter.new(@event_group, view_context)
   end
 
   # GET /event_groups/1/reconcile

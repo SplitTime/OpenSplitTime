@@ -1,0 +1,69 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event group webhooks - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item">Webhooks</li>
+          </ul>
+        </div>
+        <%= render "events/time_and_course_info" %>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <%= render "events/view_buttons", view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <h4 class="fw-bold">Subscribe to Webhooks for <%= @presenter.event_group.name %></h4>
+  <hr/>
+  <% @presenter.events.each do |event| %>
+    <div class="card">
+      <div class="card-header">
+        <div class="row pt-1">
+          <div class="col">
+            <h4>
+              <span class="fw-bold"><%= event.name %></span>
+              <span class="h5 text-muted"><%= "#{pluralize_with_delimiter(event.subscriptions.for_user(current_user).count, 'subscription')}" %></span>
+            </h4>
+          </div>
+          <div class="col-4 col-md-2 text-end d-grid">
+            <%= link_to fa_icon("plus", text: "Add Subscription"),
+                        new_event_subscription_path(event),
+                        id: dom_id(event, "new_subscription"),
+                        class: "btn btn-outline-success",
+                        data: { turbo_frame: "form_modal" }
+            %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Endpoint</th>
+            <th class="text-center">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% event.subscriptions.for_user(current_user).each do |subscription| %>
+            <tr class="align-middle">
+              <td class="font-monospace"><%= subscription.endpoint %></td>
+              <td class="text-center"><%= render "subscriptions/actions_kebab", subscription: subscription %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</article>

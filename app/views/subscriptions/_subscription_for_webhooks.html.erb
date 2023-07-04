@@ -1,7 +1,8 @@
 <%# locals: (subscription:) %>
 
 <tr id="<%= dom_id(subscription) %>" class="align-middle">
-  <td><%= badge_with_text(subscription.protocol, color: subscription.protocol == "http" ? "warning" : "success") %></td>
+  <td><%= badge_with_text(subscription.protocol, color: subscription.protocol == "http" ? "info" : "primary") %></td>
   <td class="font-monospace"><%= subscription.endpoint %></td>
+  <td><%= subscription_status_badge(subscription) %></td>
   <td class="text-center"><%= render "subscriptions/actions_kebab", subscription: subscription %></td>
 </tr>

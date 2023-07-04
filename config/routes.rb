@@ -156,7 +156,9 @@ Rails.application.routes.draw do
 
   resources :events, only: [:show] do
     resources :aid_stations, only: [:create, :destroy]
-    resources :subscriptions, only: [:new, :create, :destroy], module: "events"
+    resources :subscriptions, only: [:new, :create, :destroy], module: "events" do
+      member { patch :refresh }
+    end
     member do
       get :admin
       get :edit_start_time

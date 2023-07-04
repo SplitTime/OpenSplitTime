@@ -4,5 +4,6 @@
                class: "dropdown-toggle no-caret btn btn-sm btn-light",
                data: { bs_toggle: "dropdown" } %>
 <div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
+  <%= link_to "Refresh", refresh_event_subscription_path(subscription.subscribable, subscription), class: "dropdown-item", data: { turbo_method: :patch } %>
   <%= link_to "Delete", event_subscription_path(subscription.subscribable, subscription), class: "dropdown-item", data: { turbo_method: :delete, turbo_confirm: "This cannot be undone. Proceed?" } %>
 </div>

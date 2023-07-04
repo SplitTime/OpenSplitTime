@@ -23,4 +23,8 @@ class SubscriptionPolicy < ApplicationPolicy
   def destroy?
     new?
   end
+
+  def refresh?
+    new?
+  end
 end

@@ -1,0 +1,7 @@
+<%# locals: (subscription:) %>
+
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>
+
+<%= turbo_stream.replace(dom_id(subscription),
+                         partial: "subscriptions/subscription_for_webhooks",
+                         locals: { subscription: subscription }) %>

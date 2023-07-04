@@ -8,11 +8,13 @@ class SubscriptionsController < ApplicationController
   before_action :set_subscription, except: [:new, :create]
   after_action :verify_authorized
 
+  # GET /subscribable/:subscribable_id/subscriptions/new
   def new
     @subscription = @subscribable.subscriptions.new(user: current_user)
     authorize @subscription
   end
 
+  # POST /subscribable/:subscribable_id/subscriptions
   def create
     @subscription = @subscribable.subscriptions.new(permitted_params)
     @subscription.user = current_user
@@ -47,10 +49,10 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  # DELETE /subscribable/:subscribable_id/subscriptions/:id
   def destroy
-    @subscription = @subscribable.subscriptions.find(params[:id])
-    protocol = @subscription.protocol
     authorize @subscription
+    protocol = @subscription.protocol
 
     @subscription.destroy
 
@@ -59,6 +61,19 @@ class SubscriptionsController < ApplicationController
     else
       render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
     end
+  end
+
+  # PATCH /subscribable/:subscribable_id/subscriptions/:id/refresh
+  def refresh
+    authorize @subscription
+
+    if @subscription.save
+      flash.now[:success] = "Subscription was refreshed."
+    else
+      flash.now[:danger] = "Subscription could not be refreshed." + @subscription.errors.full_messages.to_sentence
+    end
+
+    render :refresh, locals: { subscription: @subscription }
   end
 
   private

@@ -38,8 +38,12 @@ class SubscriptionsController < ApplicationController
         render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
       end
     else
-      flash.now[:danger] = @subscription.errors.full_messages.to_sentence
-      render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+      if @subscription.subscribable.is_a?(Event)
+        render :new, status: :unprocessable_entity
+      else
+        flash.now[:danger] = @subscription.errors.full_messages.to_sentence
+        render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
+      end
     end
   end
 

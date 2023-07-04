@@ -38,11 +38,11 @@ class Subscription < ApplicationRecord
   end
 
   def pending?
-    resource_key && resource_key.include?("pending")
+    resource_key.present? && resource_key.include?("pending")
   end
 
   def confirmed?
-    resource_key && resource_key.include?("arn:aws:sns")
+    resource_key.present? && resource_key.include?("arn:aws:sns")
   end
 
   def to_s

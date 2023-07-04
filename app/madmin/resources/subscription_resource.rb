@@ -4,6 +4,7 @@ class SubscriptionResource < Madmin::Resource
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :protocol
+  attribute :endpoint
   attribute :resource_key
 
   # Associations

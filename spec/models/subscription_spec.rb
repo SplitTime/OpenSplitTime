@@ -36,8 +36,13 @@ RSpec.describe Subscription, type: :model do
 
   context "when created with ids instead of user and subscribable objects" do
     subject(:subscription) do
-      Subscription.new(user_id: user_id, subscribable_type: subscribable_type,
-                       subscribable_id: subscribable_id, protocol: protocol)
+      Subscription.new(
+        user_id: user_id,
+        subscribable_type: subscribable_type,
+        subscribable_id: subscribable_id,
+        protocol: protocol,
+        endpoint: endpoint,
+      )
     end
     let(:user_id) { user.id }
     let(:subscribable_type) { "Person" }

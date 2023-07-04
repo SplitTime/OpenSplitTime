@@ -44,7 +44,7 @@ class Subscription < ApplicationRecord
   end
 
   def to_s
-    "Subscription for #{user.slug} following #{subscribable.slug} by #{protocol}"
+    "Subscription for #{user&.slug} following #{subscribable&.slug} by #{protocol}"
   end
 
   private

@@ -14,8 +14,7 @@ class Subscription < ApplicationRecord
   after_save :attempt_person_subscription, if: :effort_has_person?
   after_save :attempt_effort_subscriptions, if: :type_is_person?
 
-  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :user, :subscribable, :protocol, :resource_key
-  validates :protocol, inclusion: {in: Subscription.protocols.keys}
+  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol, :resource_key
 
   def set_resource_key
     if should_generate_resource?
@@ -45,7 +44,7 @@ class Subscription < ApplicationRecord
   end
 
   def to_s
-    "Subscription for #{user.slug} following #{subscribable.slug} by #{protocol}"
+    "Subscription for #{user&.slug} following #{subscribable&.slug} by #{protocol}"
   end
 
   private
@@ -63,7 +62,7 @@ class Subscription < ApplicationRecord
   end
 
   def required_data_present?
-    subscribable&.topic_resource_key.present? && user&.send(protocol).present?
+    subscribable&.topic_resource_key.present? && endpoint.present?
   end
 
   def attempt_person_subscription

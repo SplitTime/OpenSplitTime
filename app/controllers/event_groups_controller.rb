@@ -186,6 +186,13 @@ class EventGroupsController < ApplicationController
     end
   end
 
+  # GET /event_groups/1/webhooks
+  def webhooks
+    authorize @event_group
+
+    # @presenter = EventGroupWebhooksPresenter.new(@event_group)
+  end
+
   # GET /event_groups/1/reconcile
   def reconcile
     authorize @event_group

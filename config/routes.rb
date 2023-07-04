@@ -135,6 +135,7 @@ Rails.application.routes.draw do
       get :stats
       get :sync_efforts
       get :traffic
+      get :webhooks
       post :create_people
       patch :set_data_status
       patch :assign_entrant_photos

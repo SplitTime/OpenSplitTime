@@ -9,13 +9,24 @@ class Subscription < ApplicationRecord
   belongs_to :user
   belongs_to :subscribable, polymorphic: true
 
+  before_validation :set_endpoint
   before_validation :set_resource_key
   before_destroy :delete_resource_key
   after_save :attempt_person_subscription, if: :effort_has_person?
   after_save :attempt_effort_subscriptions, if: :type_is_person?
 
   validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol, :resource_key
-  validates :protocol, inclusion: {in: Subscription.protocols.keys}
+  validates :protocol, inclusion: { in: Subscription.protocols.keys }
+
+  def set_endpoint
+    return unless user.present?
+
+    if protocol == "email"
+      self.endpoint = user.email
+    elsif protocol == "sms"
+      self.endpoint = user.sms
+    end
+  end
 
   def set_resource_key
     if should_generate_resource?

@@ -3,12 +3,13 @@
 require "rails_helper"
 
 RSpec.describe Subscription, type: :model do
-  subject(:subscription) { Subscription.new(user: user, subscribable: subscribable, protocol: protocol) }
+  subject(:subscription) { Subscription.new(user: user, subscribable: subscribable, protocol: protocol, endpoint: endpoint) }
   let(:user) { users(:admin_user) }
   let(:subscribable) { people(:tuan_jacobs) }
   let(:protocol) { :email }
+  let(:endpoint) { user&.email }
 
-  context "when created with a user, a subscribable, and a protocol" do
+  context "when created with a user, a subscribable, a protocol, and an endpoint" do
     it "is valid" do
       expect(subscription).to be_valid
       expect { subscription.save }.to change { Subscription.count }.by(1)

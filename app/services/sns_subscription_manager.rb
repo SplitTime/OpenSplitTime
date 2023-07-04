@@ -74,7 +74,7 @@ class SnsSubscriptionManager
   def update
     response = sns_client.get_subscription_attributes(subscription_arn: subscription_arn)
 
-    attributes = response.attributes.deep_transform_keys(&:underscore)
+    attributes = response.attributes.deep_transform_keys(&:underscore).with_indifferent_access
     if (attributes[:endpoint] == endpoint) && (attributes[:protocol] == protocol)
       subscription_arn
     else

@@ -2,6 +2,6 @@
 
 class SubscriptionParameters < BaseParameters
   def self.permitted
-    [:id, :user_id, :subscribable_type, :subscribable_id, :protocol, :resource_key]
+    [:id, :user_id, :subscribable_type, :subscribable_id, :endpoint, :protocol, :resource_key]
   end
 end

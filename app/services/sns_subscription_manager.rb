@@ -87,11 +87,7 @@ class SnsSubscriptionManager
 
   attr_reader :subscription, :sns_client
 
-  delegate :subscribable, :user, :protocol, :resource_key, to: :subscription
-
-  def endpoint
-    @endpoint ||= user.send(protocol)
-  end
+  delegate :endpoint, :subscribable, :user, :protocol, :resource_key, to: :subscription
 
   def topic_arn
     @topic_arn ||= subscribable.topic_resource_key

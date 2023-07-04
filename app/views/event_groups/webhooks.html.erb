@@ -54,13 +54,8 @@
             <th class="text-center">Actions</th>
           </tr>
           </thead>
-          <tbody>
-          <% event.subscriptions.for_user(current_user).each do |subscription| %>
-            <tr class="align-middle">
-              <td class="font-monospace"><%= subscription.endpoint %></td>
-              <td class="text-center"><%= render "subscriptions/actions_kebab", subscription: subscription %></td>
-            </tr>
-          <% end %>
+          <tbody id="<%= dom_id(event, :subscriptions) %>">
+          <%= render partial: "subscriptions/subscription_for_webhooks", collection: event.subscriptions.for_user(current_user), as: :subscription %>
           </tbody>
         </table>
       </div>

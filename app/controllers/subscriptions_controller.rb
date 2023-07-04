@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SubscriptionsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   before_action :authenticate_user!
   before_action :set_subscribable
   before_action :set_subscription, except: [:new, :create]
@@ -28,7 +30,13 @@ class SubscriptionsController < ApplicationController
     elsif @subscription.save
       flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.name}. " +
         "Messages will be sent to #{@subscription[:endpoint]}."
-      render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+      if @subscription.subscribable.is_a?(Event)
+        render turbo_stream: turbo_stream.append(dom_id(@subscription.subscribable, :subscriptions),
+                                                 partial: "subscriptions/subscription_for_webhooks",
+                                                 locals: { subscription: @subscription })
+      else
+        render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+      end
     else
       flash.now[:danger] = @subscription.errors.full_messages.to_sentence
       render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
@@ -41,7 +49,12 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     @subscription.destroy
-    render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+
+    if @subscribable.is_a?(Event)
+      render turbo_stream: turbo_stream.remove(@subscription)
+    else
+      render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
+    end
   end
 
   private

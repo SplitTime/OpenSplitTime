@@ -1,0 +1,6 @@
+<%# locals: (subscription:) %>
+
+<tr id="<%= dom_id(subscription) %>" class="align-middle">
+  <td class="font-monospace"><%= subscription.endpoint %></td>
+  <td class="text-center"><%= render "subscriptions/actions_kebab", subscription: subscription %></td>
+</tr>

@@ -3,89 +3,119 @@
 require "aws-sdk-sns"
 
 class SnsSubscriptionManager
-  def self.generate(args)
-    new(args).generate
-  end
-
-  def self.delete(args)
-    new(args).delete
-  end
-
-  def self.locate(args)
-    new(args).locate
-  end
-
-  def self.update(args)
-    new(args).update
-  end
-
-  def initialize(args)
-    ArgsValidator.validate(params: args, required: :subscription, exclusive: [:subscription, :sns_client], class: self.class)
-    @subscription = args[:subscription]
-    @sns_client = args[:sns_client] || SnsClientFactory.client
-  end
-
-  def generate
-    response = sns_client.subscribe(topic_arn: topic_arn, protocol: protocol, endpoint: endpoint)
-
-    if response.successful?
-      Rails.logger.info "  Generated #{subscription}"
-      confirmed_arn?(response.subscription_arn) ? response.subscription_arn : "#{response.subscription_arn}:#{SecureRandom.uuid}"
-    else
-      Rails.logger.warn "  Unable to generate #{subscription}"
-      nil
+  Response = Struct.new(:error_message, :subscription_arn, keyword_init: true) do
+    def successful?
+      error_message.blank?
     end
-  rescue Aws::SNS::Errors::ServiceError => e
-    Rails.logger.warn "  Topic could not be generated: #{e.message}"
-    nil
   end
 
+  # @return [SnsSubscriptionManager::Response]
+  def self.generate(args)
+    new(**args).generate
+  end
+
+  # @return [SnsSubscriptionManager::Response]
+  def self.delete(args)
+    new(**args).delete
+  end
+
+  # @return [SnsSubscriptionManager::Response]
+  def self.locate(args)
+    new(**args).locate
+  end
+
+  # @return [SnsSubscriptionManager::Response]
+  def self.update(args)
+    new(**args).update
+  end
+
+  # @param [Subscription] subscription
+  # @param [Aws::Sns::Client] sns_client
+  def initialize(subscription:, sns_client: SnsClientFactory.client)
+    @subscription = subscription
+    @sns_client = sns_client
+    @response = Response.new
+  end
+
+  # @return [SnsSubscriptionManager::Response]
+  def generate
+    sns_response = sns_client.subscribe(topic_arn: topic_arn, protocol: protocol, endpoint: endpoint)
+
+    if sns_response.successful?
+      response.subscription_arn = sns_response.subscription_arn
+    else
+      response.error_message = sns_response.error_message
+    end
+  rescue Aws::SNS::Errors::ServiceError => error
+    response.error_message = "#{subscription} could not be generated: #{error.message}"
+  ensure
+    return response
+  end
+
+  # @return [SnsSubscriptionManager::Response]
   def delete
     if subscription.confirmed?
-      begin
-        response = sns_client.unsubscribe(subscription_arn: subscription_arn)
-        if response.successful?
-          Rails.logger.info "  Deleted SNS subscription #{subscription_arn}"
-          subscription_arn
-        else
-          Rails.logger.warn "  Unable to delete #{subscription}"
-          nil
-        end
-      rescue Aws::SNS::Errors::ServiceError => e
-        Rails.logger.warn "  #{subscription} could not be deleted: #{e.message}"
+      sns_response = sns_client.unsubscribe(subscription_arn: subscription_arn)
+      if sns_response.successful?
+        response.subscription_arn = subscription_arn
+      else
+        response.error_message = sns_response.error_message
       end
     else
-      Rails.logger.warn "  #{subscription} is unconfirmed or does not exist"
+      response.error_message = "#{subscription} is unconfirmed or does not exist"
     end
+  rescue Aws::SNS::Errors::ServiceError => error
+    response.error_message = "#{subscription} could not be deleted: #{error.message}"
+  ensure
+    return response
   end
 
+  # @return [SnsSubscriptionManager::Response]
   def locate
     next_token = ""
     found_subscription = nil
     while next_token && !found_subscription
-      response = sns_client.list_subscriptions_by_topic(topic_arn: topic_arn)
-      subs_by_topic = response.subscriptions
-      next_token = response.next_token
+      sns_response = sns_client.list_subscriptions_by_topic(topic_arn: topic_arn)
+      subs_by_topic = sns_response.subscriptions
+      next_token = sns_response.next_token
       found_subscription = subs_by_topic.find { |sub| sub.endpoint == endpoint }
     end
-    found_subscription.subscription_arn if found_subscription && confirmed_arn?(found_subscription.subscription_arn)
+
+    if found_subscription.present?
+      if confirmed_arn?(found_subscription.subscription_arn)
+        response.subscription_arn = found_subscription.subscription_arn
+      else
+        response.error_message = "#{subscription} is unconfirmed"
+      end
+    else
+      response.error_message = "#{subscription} does not exist"
+    end
+  rescue Aws::SNS::Errors::ServiceError => error
+    response.error_message = "#{subscription} could not be located: #{error.message}"
+  ensure
+    return response
   end
 
+  # @return [SnsSubscriptionManager::Response]
   def update
-    response = sns_client.get_subscription_attributes(subscription_arn: subscription_arn)
+    sns_response = sns_client.get_subscription_attributes(subscription_arn: subscription_arn)
 
-    attributes = response.attributes.deep_transform_keys(&:underscore).with_indifferent_access
+    attributes = sns_response.attributes.deep_transform_keys(&:underscore).with_indifferent_access
     if (attributes[:endpoint] == endpoint) && (attributes[:protocol] == protocol)
-      subscription_arn
+      response.subscription_arn = subscription_arn
     else
-      delete
-      generate
+      delete_response = delete
+      if delete_response.successful?
+        generate
+      else
+        delete_response
+      end
     end
   end
 
   private
 
-  attr_reader :subscription, :sns_client
+  attr_reader :subscription, :sns_client, :response
 
   delegate :endpoint, :subscribable, :user, :protocol, :resource_key, to: :subscription
 

@@ -9,31 +9,28 @@ class Subscription < ApplicationRecord
   belongs_to :user
   belongs_to :subscribable, polymorphic: true
 
-  before_validation :set_resource_key
   before_destroy :delete_resource_key
   after_save :attempt_person_subscription, if: :effort_has_person?
   after_save :attempt_effort_subscriptions, if: :type_is_person?
 
-  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol, :resource_key
+  validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol
+  validates_with ResourceKeyValidator
 
   scope :for_user, -> (user) { where(user: user) }
 
-  def set_resource_key
-    if should_generate_resource?
-      self.resource_key = SnsSubscriptionManager.generate(subscription: self)
-    elsif should_locate_resource?
-      key = SnsSubscriptionManager.locate(subscription: self)
-      self.resource_key = key if key
-    elsif should_update_resource?
-      self.resource_key = SnsSubscriptionManager.update(subscription: self)
-    end
-  end
-
   def delete_resource_key
-    self.resource_key = SnsSubscriptionManager.locate(subscription: self) if should_locate_resource?
+    if should_locate_resource?
+      locate_response = SnsSubscriptionManager.locate(subscription: self)
+      self.resource_key = locate_response.subscription_arn
+    end
     if confirmed?
-      SnsSubscriptionManager.delete(subscription: self)
-      self.resource_key = nil
+      delete_response = SnsSubscriptionManager.delete(subscription: self)
+      if delete_response.successful?
+        self.resource_key = nil
+      else
+        errors.add(:base, "Could not delete subscription: #{delete_response.error_message}")
+        throw(:abort)
+      end
     end
   end
 
@@ -51,16 +48,8 @@ class Subscription < ApplicationRecord
 
   private
 
-  def should_generate_resource?
-    resource_key.nil? && required_data_present?
-  end
-
   def should_locate_resource?
     pending? && required_data_present?
-  end
-
-  def should_update_resource?
-    confirmed? && required_data_present?
   end
 
   def required_data_present?

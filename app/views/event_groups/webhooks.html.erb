@@ -53,12 +53,23 @@
             </h4>
           </div>
           <div class="col-4 col-md-2 text-end d-grid">
-            <%= link_to fa_icon("plus", text: "Add Subscription"),
-                        new_event_subscription_path(event),
-                        id: dom_id(event, "new_subscription"),
-                        class: "btn btn-outline-success",
-                        data: { turbo_frame: "form_modal" }
-            %>
+            <% if event.topic_resource_key? %>
+              <%= link_to fa_icon("plus", text: "Add Subscription"),
+                          new_event_subscription_path(event),
+                          id: dom_id(event, "new_subscription"),
+                          class: "btn btn-outline-success",
+                          data: { turbo_frame: "form_modal" }
+              %>
+            <% else %>
+            <span class="d-grid" data-controller="tooltip" data-bs-original-title="<%= t('event_groups.webhooks.no_webhooks_available') %>">
+              <%= link_to fa_icon("plus", text: "Add Subscription"),
+                          "#",
+                          class: "btn btn-outline-success",
+                          disabled: true,
+                          style: "pointer-events: none;"
+              %>
+            </span>
+            <% end %>
           </div>
         </div>
       </div>

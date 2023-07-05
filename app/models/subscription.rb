@@ -15,6 +15,11 @@ class Subscription < ApplicationRecord
 
   validates_presence_of :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol
   validates_with ResourceKeyValidator
+  validates_uniqueness_of :endpoint,
+                          scope: [:user_id, :subscribable_type, :subscribable_id, :protocol],
+                          message: ->(object, data) do
+                            "#{data[:value]} is already subscribed to #{object.subscribable.slug} by #{object.protocol}"
+                          end
 
   scope :for_user, -> (user) { where(user: user) }
 

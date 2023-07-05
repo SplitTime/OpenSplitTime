@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EventGroupFollowPresenter < BasePresenter
+class EventGroupWebhooksPresenter < BasePresenter
   attr_reader :event_group, :current_user
 
   delegate :name, :organization, :organization_name, :events, :home_time_zone, :scheduled_start_time_local, :available_live,
@@ -10,39 +10,28 @@ class EventGroupFollowPresenter < BasePresenter
     @event_group = event_group
     @params = view_context.params
     @current_user = view_context.current_user
+    refresh_pending_subscriptions
   end
 
   def event
     event_group.first_event
   end
 
-  def courses
-    events.map(&:course).uniq
-  end
-
-  def effort_planning_available?
-    complex_events_included? && complex_precedents_available?
-  end
-
   def event_group_finished?
     event_group.finished?
   end
 
-  def multiple_courses?
-    courses.many?
-  end
-
-  def other_events_available?
-    organization.event_groups.visible.many?
+  def subscriptions_pending?
+    current_user.subscriptions.where(subscribable: events).pending.any?
   end
 
   private
 
-  def complex_events_included?
-    events.any? { |event| !event.simple? }
-  end
-
-  def complex_precedents_available?
-    courses.any? { |course| course.events.any? { |event| event.finished? && !event.simple? } }
+  def refresh_pending_subscriptions
+    event_group.events.each do |event|
+      event.subscriptions.for_user(current_user).pending.each do |subscription|
+        subscription.save
+      end
+    end
   end
 end

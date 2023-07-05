@@ -183,4 +183,8 @@ class EventGroupPolicy < ApplicationPolicy
   def not_expected?
     user.authorized_to_edit?(event_group)
   end
+
+  def webhooks?
+    user.present?
+  end
 end

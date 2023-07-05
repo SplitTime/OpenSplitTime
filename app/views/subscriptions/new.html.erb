@@ -1,0 +1,9 @@
+<%# locals: (subscription:) %>
+
+<% content_for :title do %>
+  <% "OpenSplitTime: New subscription" %>
+<% end %>
+
+<article class="ost-article container">
+  <%= render "new_modal", subscription: @subscription %>
+</article>

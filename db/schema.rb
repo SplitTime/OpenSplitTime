@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_175713) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_05_150009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -605,7 +605,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_175713) do
     t.string "endpoint"
     t.index ["resource_key"], name: "index_subscriptions_on_resource_key"
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
-    t.index ["user_id", "subscribable_type", "subscribable_id", "protocol"], name: "index_subscriptions_on_unique_fields", unique: true
+    t.index ["user_id", "subscribable_type", "subscribable_id", "protocol", "endpoint"], name: "index_subscriptions_on_unique_fields_with_endpoint", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 

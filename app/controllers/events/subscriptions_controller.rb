@@ -5,7 +5,7 @@ module Events
     private
 
     def set_subscribable
-      @subscribable = ::Event.friendly.find(params[:person_id])
+      @subscribable = ::Event.friendly.find(params[:event_id])
     end
   end
 end

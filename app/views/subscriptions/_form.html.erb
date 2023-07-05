@@ -1,0 +1,37 @@
+<%# locals: (subscription:) %>
+
+<%= render "shared/errors", obj: subscription %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <%= form_with(model: [subscription.subscribable, subscription]) do |f| %>
+        <div class="row">
+          <div class="col mb-3">
+            <%= f.label :protocol, class: "required" %>
+            <%= f.select :protocol,
+                         ["https", "http"].map { |protocol| [protocol, protocol] },
+                         { class: "form-control dropdown-select-field" } %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col mb-3">
+            <%= f.label :endpoint, class: "mb-1 required" %>
+            <%= f.text_field :endpoint, class: "form-control", placeholder: "https://my.endpoint.com", autofocus: true %>
+          </div>
+        </div>
+        <br/>
+        <div class="row mb-3">
+          <div class="col">
+            <%= f.submit(class: "btn btn-outline-primary") %>
+            <%= button_tag "Cancel",
+                           type: :button,
+                           data: { action: "click->form-modal#hide" },
+                           class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

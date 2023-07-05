@@ -18,3 +18,7 @@ en:
 
       gpx_is_attached: "A GPX file has been added for this course"
       gpx_is_not_attached: "Add a GPX file to see your course on the map below"
+    webhooks:
+      subscription_instructions_1: "Webhooks are a way for you to receive notifications when certain updates occur in OpenSplitTime. OpenSplitTime uses Amazon SNS to send webhook requests. "
+      subscription_instructions_2: "You can subscribe to webhooks for any Event in your Organization. When an Event is updated, OpenSplitTime will instruct Amazon SNS to send an HTTP POST request to the endpoint you specify. The request will contain a JSON payload with information about the update. You can use this information to take action within your own systems."
+      pending_subscription_warning: "If a webhook subscription is pending, you will not receive notifications until you confirm the subscription. You can confirm the subscription by following the link in the subscription confirmation that was sent to your endpoint when you created the subscription."

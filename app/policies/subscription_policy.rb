@@ -12,11 +12,19 @@ class SubscriptionPolicy < ApplicationPolicy
     @subscription = subscription
   end
 
-  def create?
+  def new?
     user.admin? || subscription.user_id == user.id
   end
 
+  def create?
+    new?
+  end
+
   def destroy?
-    user.admin? || subscription.user_id == user.id
+    new?
+  end
+
+  def refresh?
+    new?
   end
 end

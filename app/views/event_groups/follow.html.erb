@@ -59,9 +59,7 @@
     <div class="card">
       <h4 class="card-header">Live Text and Email Updates</h4>
       <div class="card-body">
-        <p>You can also subscribe to receive free live updates via email or text message. To subscribe, follow these
-          easy
-          steps:</p>
+        <p>You can also subscribe to receive free live updates via email or text message. To subscribe, follow these easy steps:</p>
         <ol>
           <% unless @presenter.current_user.present? %>
             <li>Sign up for an account or log in to your existing account</li>
@@ -73,6 +71,20 @@
           <li>Click the person's name</li>
           <li>Locate the box that says "Notify me" and click the email or text button</li>
         </ol>
+      </div>
+    </div>
+    <br/>
+
+    <div class="card">
+      <h4 class="card-header">Webhook Notifications</h4>
+      <div class="card-body">
+        <p>If you have a website with a URL that can accept an http or https POST request, you can subscribe to
+          webhook notifications that are fired when new data for this event is available.</p>
+        <% if @presenter.current_user.present? %>
+          <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
+        <% else %>
+          <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
+        <% end %>
       </div>
     </div>
     <br/>

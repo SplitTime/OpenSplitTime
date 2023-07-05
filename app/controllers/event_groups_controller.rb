@@ -167,7 +167,7 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups/1/follow
   def follow
-    @presenter = EventGroupFollowPresenter.new(@event_group, prepared_params, current_user)
+    @presenter = EventGroupFollowPresenter.new(@event_group, view_context)
 
     if @presenter.event_group_finished?
       flash[:success] = "#{@presenter.name} is completed."
@@ -184,6 +184,13 @@ class EventGroupsController < ApplicationController
       event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
       @presenter = EventGroupTrafficPresenter.new(event_group, prepared_params, band_width)
     end
+  end
+
+  # GET /event_groups/1/webhooks
+  def webhooks
+    authorize @event_group
+
+    @presenter = EventGroupWebhooksPresenter.new(@event_group, view_context)
   end
 
   # GET /event_groups/1/reconcile

@@ -103,6 +103,7 @@ class SnsSubscriptionManager
     attributes = sns_response.attributes.deep_transform_keys(&:underscore).with_indifferent_access
     if (attributes[:endpoint] == endpoint) && (attributes[:protocol] == protocol)
       response.subscription_arn = subscription_arn
+      response
     else
       delete_response = delete
       if delete_response.successful?

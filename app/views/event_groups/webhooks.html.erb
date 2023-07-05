@@ -33,7 +33,7 @@
           <div class="col">
             <h4>
               <span class="fw-bold"><%= event.name %></span>
-              <span class="h5 text-muted"><%= "#{pluralize_with_delimiter(event.subscriptions.for_user(current_user).count, 'subscription')}" %></span>
+              <%= render "subscriptions/subscriptions_count", subscribable: event, current_user: current_user %>
             </h4>
           </div>
           <div class="col-4 col-md-2 text-end d-grid">

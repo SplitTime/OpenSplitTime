@@ -32,13 +32,7 @@ class SubscriptionsController < ApplicationController
     elsif @subscription.save
       flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.name}. " +
         "Messages will be sent to #{@subscription[:endpoint]}."
-      if @subscription.subscribable.is_a?(Event)
-        render turbo_stream: turbo_stream.append(dom_id(@subscription.subscribable, :subscriptions),
-                                                 partial: "subscriptions/subscription_for_webhooks",
-                                                 locals: { subscription: @subscription })
-      else
-        render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
-      end
+      render :create, locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
     else
       if @subscription.subscribable.is_a?(Event)
         render :new, status: :unprocessable_entity
@@ -56,11 +50,7 @@ class SubscriptionsController < ApplicationController
 
     @subscription.destroy
 
-    if @subscribable.is_a?(Event)
-      render turbo_stream: turbo_stream.remove(@subscription)
-    else
-      render "replace_button", locals: { subscribable: @subscribable, protocol: protocol }
-    end
+    render "destroy", locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
   end
 
   # PATCH /subscribable/:subscribable_id/subscriptions/:id/refresh

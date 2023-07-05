@@ -1,0 +1,17 @@
+<%# locals: (subscription:, subscribable:, protocol:) %>
+
+<% if subscribable.is_a?(Event) %>
+  <%= turbo_stream.append(dom_id(subscribable, :subscriptions),
+                          partial: "subscriptions/subscription_for_webhooks",
+                          locals: { subscription: subscription }) %>
+
+  <%= turbo_stream.replace(dom_id(subscribable, :subscriptions_count),
+                           partial: "subscriptions/subscriptions_count",
+                           locals: { subscribable: subscribable, current_user: current_user }) %>
+<% else %>
+  <%= turbo_stream.replace("flash", partial: "layouts/flash") %>
+
+  <%= turbo_stream.replace dom_id(subscribable, protocol),
+                           partial: "subscription_button",
+                           locals: { subscribable: subscribable, protocol: protocol } %>
+<% end %>

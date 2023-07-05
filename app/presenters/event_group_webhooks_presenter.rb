@@ -25,6 +25,10 @@ class EventGroupWebhooksPresenter < BasePresenter
     current_user.subscriptions.where(subscribable: events).pending.any?
   end
 
+  def webhooks_available?
+    events.having_topic_resource_key.any?
+  end
+
   private
 
   def refresh_pending_subscriptions

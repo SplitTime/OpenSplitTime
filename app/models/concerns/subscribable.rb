@@ -13,6 +13,8 @@ module Subscribable
 
     after_commit :set_topic_resource_job, on: :create
     after_commit :delete_topic_resource_job, on: :destroy
+
+    scope :having_topic_resource_key, -> { where.not(topic_resource_key: nil) }
   end
 
   def assign_topic_resource(force: false)

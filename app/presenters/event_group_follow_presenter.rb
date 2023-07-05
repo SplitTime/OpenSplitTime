@@ -36,6 +36,10 @@ class EventGroupFollowPresenter < BasePresenter
     organization.event_groups.visible.many?
   end
 
+  def webhooks_available?
+    events.having_topic_resource_key.any?
+  end
+
   private
 
   def complex_events_included?

@@ -30,8 +30,8 @@
   <% else %>
     <h3><strong>How to Follow <%= @presenter.name %></strong></h3>
     <hr>
-    <p><%= @presenter.organization_name %> is pleased to bring you live results and updates from OpenSplitTime!
-      OpenSplitTime provides us with helpful tools for <%= @presenter.effort_planning_available? ? 'planning, predicting, and ' : '' %>tracking runners.</p>
+    <p><%= @presenter.organization_name %> is pleased to bring you live results and updates from OpenSplitTime! OpenSplitTime provides us with
+      helpful tools for <%= @presenter.effort_planning_available? ? 'planning, predicting, and ' : '' %>tracking runners.</p>
     <% if @presenter.other_events_available? %>
       <p>You can explore data from other <%= @presenter.organization_name %> events at
         our <%= link_to 'home page', organization_path(@presenter.organization) %>.</p>
@@ -75,19 +75,21 @@
     </div>
     <br/>
 
-    <div class="card">
-      <h4 class="card-header">Webhook Notifications</h4>
-      <div class="card-body">
-        <p>If you have a website with a URL that can accept an http or https POST request, you can subscribe to
-          webhook notifications that are fired when new data for this event is available.</p>
-        <% if @presenter.current_user.present? %>
-          <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
-        <% else %>
-          <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
-        <% end %>
+    <% if @presenter.webhooks_available? %>
+      <div class="card">
+        <h4 class="card-header">Webhook Notifications</h4>
+        <div class="card-body">
+          <p>If you have a website with a URL that can accept an http or https POST request, you can subscribe to
+            webhook notifications that are fired when new data for this event is available.</p>
+          <% if @presenter.current_user.present? %>
+            <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
+          <% else %>
+            <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
+          <% end %>
+        </div>
       </div>
-    </div>
-    <br/>
+      <br/>
+    <% end %>
 
     <% if @presenter.effort_planning_available? %>
       <div class="card">

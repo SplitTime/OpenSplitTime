@@ -1,10 +1,10 @@
-<%# locals: (callout_color:, icon_color:, icon_name:, main_text:, detail_text:, link: -%>
+<%# locals: (callout_color:, icon_color:, icon_name:, main_text:, detail_paragraphs:, link: -%>
 
 <% callout_color ||= "success" %>
 <% icon_color ||= "success" %>
 <% icon_name ||= nil %>
 <% main_text ||= nil %>
-<% detail_text ||= nil %>
+<% detail_paragraphs ||= [] %>
 <% link ||= nil %>
 
 <div class="callout callout-<%= callout_color %>">
@@ -20,8 +20,8 @@
           <% if main_text.present? %>
             <div class="h5 fw-bold text-center text-md-start"><%= main_text %></div>
           <% end %>
-          <% if detail_text.present? %>
-            <p class="text-center text-md-start"><%= detail_text %></p>
+          <% detail_paragraphs.each do |text| %>
+            <p class="text-center text-md-start"><%= text %></p>
           <% end %>
         </div>
       </div>

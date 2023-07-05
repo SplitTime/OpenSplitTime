@@ -36,6 +36,10 @@ class EventGroupFollowPresenter < BasePresenter
     organization.event_groups.visible.many?
   end
 
+  def subscriptions_pending?
+    current_user.subscriptions.where(subscribable: events).pending.any?
+  end
+
   private
 
   def complex_events_included?

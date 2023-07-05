@@ -5,7 +5,7 @@ module BadgeHelper
     color = options[:color] || "primary"
     tooltip_text = options[:tooltip_text]
     css_class = "badge bg-#{color} align-top"
-    tooltip_data = tooltip_text.present? ? { controller: :tooltip, bs_original_title: tooltip_text } : {}
+    tooltip_data = tooltip_text.present? ? { controller: "tooltip", bs_original_title: tooltip_text } : {}
 
     content_tag(:span,
                 text,

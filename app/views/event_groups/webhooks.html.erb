@@ -25,6 +25,22 @@
 
 <article class="ost-article container">
   <h4 class="fw-bold">Subscribe to Webhooks for <%= @presenter.event_group.name %></h4>
+  <%= render partial: "shared/callout_with_link",
+             locals: {
+               callout_color: "info",
+               icon_color: "info",
+               icon_name: "info-circle",
+               detail_paragraphs: [t("event_groups.webhooks.subscription_instructions_1"), t("event_groups.webhooks.subscription_instructions_2")],
+             } %>
+  <% if @presenter.subscriptions_pending? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "warning",
+                 icon_color: "warning",
+                 icon_name: "exclamation-triangle",
+                 detail_paragraphs: [t("event_groups.webhooks.pending_subscription_warning")],
+               } %>
+  <% end %>
   <hr/>
   <% @presenter.events.each do |event| %>
     <div class="card">

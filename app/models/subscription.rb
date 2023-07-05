@@ -22,6 +22,7 @@ class Subscription < ApplicationRecord
                           end
 
   scope :for_user, -> (user) { where(user: user) }
+  scope :pending, -> { where("resource_key like 'pending%'") }
 
   def delete_resource_key
     if should_locate_resource?

@@ -58,6 +58,7 @@ class SubscriptionsController < ApplicationController
     authorize @subscription
 
     if @subscription.save
+      @subscription.touch
       flash.now[:success] = "Subscription was refreshed."
     else
       flash.now[:danger] = "Subscription could not be refreshed." + @subscription.errors.full_messages.to_sentence

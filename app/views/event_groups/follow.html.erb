@@ -118,6 +118,8 @@
             webhook notifications that are fired when new data for this event is available.</p>
           <% if @presenter.current_user.present? %>
             <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
+            <p>Full documentation for the OpenSplitTime webhook service can be found at
+              <%= link_to "this link", docs_api_path(topic: "webhooks") %>.</p>
           <% else %>
             <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
           <% end %>

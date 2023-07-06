@@ -31,6 +31,7 @@
                icon_color: "info",
                icon_name: "info-circle",
                detail_paragraphs: [t("event_groups.webhooks.subscription_instructions_1"), t("event_groups.webhooks.subscription_instructions_2")],
+               link: link_to("Full Documentation", docs_api_path(topic: "webhooks"), class: "btn btn-outline-info")
              } %>
   <% if @presenter.subscriptions_pending? %>
     <%= render partial: "shared/callout_with_link",

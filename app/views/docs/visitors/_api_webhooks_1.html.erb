@@ -55,6 +55,8 @@
     <p>Your subscription will initially be in a "Pending Confirmation" state. At the time you create your subscription, Amazon SNS will immediately
       send a confirmation POST request to your endpoint. The request will contain a JSON payload with a "SubscribeURL" property.</p>
     <p><strong>You must make a GET request to this URL to confirm your subscription.</strong></p>
+    <p>If you did not receive the subscription confirmation, you can always delete your pending subscription and create a new one. This will
+    trigger a new confirmation request to be sent.</p>
   </div>
 </div>
 <br/>

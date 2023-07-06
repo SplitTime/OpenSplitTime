@@ -75,22 +75,6 @@
     </div>
     <br/>
 
-    <% if @presenter.webhooks_available? %>
-      <div class="card">
-        <h4 class="card-header">Webhook Notifications</h4>
-        <div class="card-body">
-          <p>If you have a website with a URL that can accept an http or https POST request, you can subscribe to
-            webhook notifications that are fired when new data for this event is available.</p>
-          <% if @presenter.current_user.present? %>
-            <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
-          <% else %>
-            <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
-          <% end %>
-        </div>
-      </div>
-      <br/>
-    <% end %>
-
     <% if @presenter.effort_planning_available? %>
       <div class="card">
         <h4 class="card-header">Live Time Projections</h4>
@@ -121,6 +105,22 @@
           <p>You can export your plan to a CSV file (readable by Excel or Google Sheets) by clicking "Export Plan."
             Enter
             different finish times to create as many alternate plans as you like.</p>
+        </div>
+      </div>
+      <br/>
+    <% end %>
+
+    <% if @presenter.webhooks_available? %>
+      <div class="card">
+        <h4 class="card-header">Webhook Notifications</h4>
+        <div class="card-body">
+          <p>If you have a website with a URL that can accept an http or https POST request, you can subscribe to
+            webhook notifications that are fired when new data for this event is available.</p>
+          <% if @presenter.current_user.present? %>
+            <p><%= link_to "Click here", webhooks_event_group_path(@presenter.event_group) %> to subscribe to webhook updates.</p>
+          <% else %>
+            <p>Sign up for an account or log in to your existing account, then return to this page for further instructions.</p>
+          <% end %>
         </div>
       </div>
       <br/>

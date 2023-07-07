@@ -19,23 +19,25 @@ RSpec.describe EventUpdateNotifier do
     let(:stubbed_response) { OpenStruct.new(successful?: true) }
     let(:expected_message) do
       {
-        default: "Hardrock 2015 has been updated as of #{event.updated_at}.",
+        default: "#{event.slug} (#{event.id}) was updated at #{event.updated_at}",
         http: {
           data: {
-            event: {
-              id: event.id,
+            type: "events",
+            id: event.id,
+            attributes: {
               updated_at: event.updated_at,
             }
           }
-        },
+        }.to_json,
         https: {
           data: {
-            event: {
-              id: event.id,
+            type: "events",
+            id: event.id,
+            attributes: {
               updated_at: event.updated_at,
             }
           }
-        },
+        }.to_json,
       }.to_json
     end
     let(:expected_args) do

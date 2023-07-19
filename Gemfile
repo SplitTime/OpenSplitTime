@@ -83,7 +83,7 @@ group :test do
   gem "factory_bot_rails", "~> 5.2", ">= 5.2.0", require: false
   gem "pry"
   gem "vcr", "~> 4.0"
-  gem "webdrivers", ">= 4.5.0"
+  gem "selenium-webdriver"
   gem "webmock", "~> 3.5"
 end
 

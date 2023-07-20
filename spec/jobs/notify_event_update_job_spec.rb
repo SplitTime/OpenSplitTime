@@ -7,7 +7,11 @@ RSpec.describe NotifyEventUpdateJob do
 
   let(:event_id) { event.id }
   let(:event) { events(:rufa_2017_24h) }
-  before { event.update(topic_resource_key: "aws_mock_key") }
+
+  before do
+    event.assign_topic_resource
+    event.save!
+  end
 
   describe "#perform" do
     let(:perform_notification) { subject.perform(event_id) }
@@ -17,7 +21,7 @@ RSpec.describe NotifyEventUpdateJob do
     before { allow(EventUpdateNotifier).to receive(:publish).and_return(successful_response) }
 
     it "sends a message to EventUpdateNotifier" do
-      expect(EventUpdateNotifier).to receive(:publish).with(topic_arn: "aws_mock_key", event: event)
+      expect(EventUpdateNotifier).to receive(:publish).with(topic_arn: event.topic_resource_key, event: event)
       perform_notification
     end
   end

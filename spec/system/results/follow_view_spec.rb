@@ -38,7 +38,8 @@ RSpec.describe "visit the follow page" do
   end
 
   scenario "The event group has an event with a topic resource key" do
-    event.update!(topic_resource_key: "aws_mock_key")
+    event.assign_topic_resource
+    event.save!
     login_as user, scope: :user
 
     visit_page

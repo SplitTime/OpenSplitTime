@@ -77,8 +77,9 @@ class Effort < ApplicationRecord
   scope :on_course, -> (course) { includes(:event).where(events: { course_id: course.id }) }
   scope :unreconciled, -> { where(person_id: nil) }
   scope :finished, -> { where(finished: true) }
+  scope :unfinished, -> { where(finished: [false, nil]) }
   scope :started, -> { where(started: true) }
-  scope :unstarted, -> { where(started: false) }
+  scope :unstarted, -> { where(started: [false, nil]) }
   scope :checked_in, -> { where(checked_in: true) }
   scope :photo_assigned, -> { joins("join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id") }
   scope :no_photo_assigned, -> { joins("left join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id").where("asa.id is null") }

@@ -14,9 +14,9 @@ RSpec.describe NotifyProgressJob do
   let(:splits) { event.splits }
 
   describe "#perform" do
-    let(:split_time_ids) { notification_split_times.map(&:id) }
-    let(:successful_response) { OpenStruct.new(successful?: true, resources: {}) }
-    let(:unsuccessful_response) { OpenStruct.new(successful?: false, resources: {}) }
+    let(:split_time_ids) { notification_split_times.pluck(:id) }
+    let(:successful_response) { Interactors::Response.new(errors: [], resources: {}) }
+    let(:unsuccessful_response) { Interactors::Response.new(errors: ["An error happened"], resources: {}) }
     let(:notification_split_times) { effort.ordered_split_times.last(2) }
     let(:split_time_total_distance) { notification_split_times.last.total_distance }
 
@@ -97,7 +97,8 @@ RSpec.describe NotifyProgressJob do
 
     context "when the effort is notifiable but the notification is not timely" do
       before do
-        effort.update(topic_resource_key: "aws_mock_key")
+        effort.assign_topic_resource
+        effort.save!
         travel_to(notification_split_times.last.absolute_time + 24.hours)
       end
 
@@ -113,7 +114,7 @@ RSpec.describe NotifyProgressJob do
       end
     end
 
-    context "when the  notification is timely but the effort is not notifiable" do
+    context "when the notification is timely but the effort is not notifiable" do
       before do
         effort.update(topic_resource_key: nil)
         travel_to(notification_split_times.last.absolute_time + 1.hour)

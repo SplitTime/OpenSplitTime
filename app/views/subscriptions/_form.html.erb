@@ -10,7 +10,8 @@
           <div class="col mb-3">
             <%= f.label :protocol, class: "required" %>
             <%= f.select :protocol,
-                         ["https", "http"].map { |protocol| [protocol, protocol] },
+                         ["https", "http"],
+                         {},
                          { class: "form-control dropdown-select-field" } %>
           </div>
         </div>

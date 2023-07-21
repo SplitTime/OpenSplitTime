@@ -1066,7 +1066,13 @@ export default class extends Controller {
           const trElement = this.trFromUniqueId(uniqueId);
           const dataTableIndex = parseInt(trElement.dataset.index);
           const encodedData = this.dataTable.data.data[dataTableIndex][10].text
-          return JSON.parse(atob(encodedData));
+          const object = JSON.parse(atob(encodedData));
+
+          object.rawTimes.forEach(rawTime => {
+            if (rawTime.dataStatus === 'undefined' || rawTime.dataStatus === undefined) { rawTime.dataStatus = null }
+          })
+
+          return object;
         },
 
         clearEditIndicator: function () {

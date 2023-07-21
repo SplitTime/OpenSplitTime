@@ -42,7 +42,7 @@ class Event < ApplicationRecord
   before_validation :conform_changed_course
   before_save :add_all_course_splits
   after_save :validate_event_group
-  after_touch :notify_event_update
+  after_touch :notify_event_update, if: :topic_resource_key?
 
   scope :name_search, -> (search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
   scope :select_with_params, lambda { |search_param|

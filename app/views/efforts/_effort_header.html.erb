@@ -29,7 +29,7 @@
         <div class="col-12 col-lg-2">
           <% if view_object.photo.attached? %>
             <div class="text-center py-2 py-lg-0">
-              <%= link_to image_tag(view_object.photo.variant(:small)), { action: :show_photo } %>
+              <%= link_to image_tag(view_object.photo.variant(:small)), { action: :show_photo }, data: { turbo_frame: "form_modal" } %>
             </div>
           <% end %>
         </div>

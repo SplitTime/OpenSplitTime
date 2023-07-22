@@ -1,1 +1,5 @@
-<%= link_to image_tag(@effort.photo.variant(:medium)), { action: :show } %>
+<%= turbo_frame_tag "form_modal" do %>
+  <div class="text-center m-3">
+    <%= image_tag(@effort.photo.variant(:medium)) %>
+  </div>
+<% end %>

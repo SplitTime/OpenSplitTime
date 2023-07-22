@@ -178,6 +178,11 @@ module Api
           id = attributes[:id]
           raw_time = @resource.raw_times.find_by(id: id) if id.present?
           raw_time ||= @resource.raw_times.new
+          # If data_status contains an invalid attribute, don't fail
+          unless attributes[:data_status].in? RawTime.data_statuses.keys
+            Sentry.capture_message("Invalid data_status in raw_times_data: #{attributes[:data_status]}")
+            attributes[:data_status] = nil
+          end
           # :id is already assigned if it is valid; :event_group_id is already assigned by
           # @resource.raw_times.find_by or @resource.raw_times.new
           raw_time.assign_attributes(attributes.except(:id, :event_group_id))

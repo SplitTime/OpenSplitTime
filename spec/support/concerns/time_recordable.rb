@@ -41,34 +41,52 @@ RSpec.shared_examples_for "time_recordable" do
   end
 
   describe "#military_time" do
+    let(:result) { resource.military_time(zone) }
+    let(:zone) { nil }
+
     context "when absolute_time exists and a zone string argument is passed" do
+      let(:resource) { build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "0123") }
+      let(:zone) { "Eastern Time (US & Canada)" }
+
       it "returns the time component in hh:mm:ss format in the specified time zone" do
-        resource = build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "0123")
-        zone = "Eastern Time (US & Canada)"
-        expect(resource.military_time(zone)).to eq("05:30:45")
+        expect(result).to eq("05:30:45")
       end
     end
 
     context "when absolute_time exists and a TimeZone object argument is passed" do
+      let(:resource) { build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "0123") }
+      let(:zone) { ActiveSupport::TimeZone["Eastern Time (US & Canada)"] }
+
       it "returns the time component in hh:mm:ss format in the specified time zone" do
-        resource = build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "0123")
-        zone = ActiveSupport::TimeZone["Eastern Time (US & Canada)"]
-        expect(resource.military_time(zone)).to eq("05:30:45")
+        expect(result).to eq("05:30:45")
       end
     end
 
-    context "when absolute_time exists but zone does not exist" do
+    context "when absolute_time exists, zone is not passed as an argument, and zone does not exist for the including class object" do
+      let(:resource) { build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "01:23") }
+
+      before { allow(resource).to receive(:home_time_zone).and_return(nil) }
+
       it "returns the entered_time in hh:mm:ss format" do
-        resource = build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "01:23")
-        zone = nil
-        expect(resource.military_time(zone)).to eq("01:23:00")
+        expect(result).to eq("01:23:00")
+      end
+    end
+
+    context "when absolute_time exists, zone is not passed as an argument, and zone exists for the including class object" do
+      let(:resource) { build_stubbed(model_name, absolute_time: "2017-07-31 09:30:45 -0000", entered_time: "01:23") }
+
+      before { allow(resource).to receive(:home_time_zone).and_return("Eastern Time (US & Canada)") }
+
+      it "returns the time component in hh:mm:ss format in the specified time zone" do
+        expect(result).to eq("05:30:45")
       end
     end
 
     context "when no absolute_time exists" do
+      let(:resource) { build_stubbed(model_name, absolute_time: nil, entered_time: "16:30:45") }
+
       it "returns the entered_time in hh:mm:ss format" do
-        resource = build_stubbed(model_name, absolute_time: nil, entered_time: "16:30:45")
-        expect(resource.military_time).to eq("16:30:45")
+        expect(result).to eq("16:30:45")
       end
     end
   end

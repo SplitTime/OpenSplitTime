@@ -140,6 +140,6 @@ class RawTime < ApplicationRecord
   end
 
   def home_time_zone
-    @home_time_zone ||= attributes["home_time_zone"] || event_group.home_time_zone
+    @home_time_zone ||= attributes["home_time_zone"] || event_group&.home_time_zone
   end
 end

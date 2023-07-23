@@ -42,6 +42,8 @@ module TimeRecordable
   end
 
   def military_time(zone = nil)
+    zone ||= home_time_zone
+
     if absolute_time && zone
       TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone))
     else

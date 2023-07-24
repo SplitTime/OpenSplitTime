@@ -202,6 +202,17 @@
         <div class="card card-body bg-light border-0">
           <div class="row">
             <div class="mb-3 col">
+              <%= form.label "Notice Text", class: "mb-1" %>
+              <span tabindex="-1"
+                    data-controller="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="Text entered here will appear as a notice on your event results page. Leave this field blank if you do not need to show a message."><i class="fas fa-question-circle"></i></span>
+              <%= form.text_field :notice_text, class: "form-control", placeholder: "My results page notice" %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col">
               <%= form.label "Tracking site URL", class: "mb-1" %>
               <span tabindex="-1"
                     data-controller="tooltip"

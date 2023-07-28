@@ -1,23 +1,28 @@
 {
   "dependencies": {
     "@babel/plugin-proposal-private-methods": "^7.18.6",
-    "@hotwired/stimulus": "^3.0.1",
-    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
+    "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.0.1",
-    "@popperjs/core": "^2.11.7",
+    "@popperjs/core": "^2.11.8",
     "@rails/actioncable": "^7.0.2-2",
     "@rails/activestorage": "^6.0.5",
     "@rails/request.js": "^0.0.8",
-    "@rails/webpacker": "^5.4.3",
     "@sentry/browser": "^7.46.0",
-    "bootstrap": "^5.2.3",
+    "autoprefixer": "^10.4.14",
+    "bootstrap": "^5.3.1",
+    "bootstrap-icons": "^1.10.5",
     "chart.js": "^3.8.0",
     "chartkick": "^4.2.0",
     "coffeescript": "1.12.7",
     "dropzone": "^6.0.0-beta.2",
+    "esbuild": "^0.18.17",
     "flatpickr": "^4.6.13",
     "inputmask": "^5.0.8",
     "masonry-layout": "^4.2.2",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.27",
+    "postcss-cli": "^10.1.0",
+    "sass": "^1.64.1",
     "simple-datatables": "^7.2.0",
     "stimulus-use": "^0.51.1",
     "underscore": "^1.13.6"
@@ -28,5 +33,15 @@
   },
   "engines": {
     "node": "16.x"
-  }
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets",
+    "build:css:compile": "sass ./app/assets/stylesheets/application.bootstrap.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules",
+    "build:css:prefix": "postcss ./app/assets/builds/application.css --use=autoprefixer --output=./app/assets/builds/application.css",
+    "build:css": "yarn build:css:compile && yarn build:css:prefix",
+    "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\""
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

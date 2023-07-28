@@ -72,7 +72,6 @@ import { reloadWithTurbo } from "./src/utils/reload_with_turbo"
 global.reloadWithTurbo = reloadWithTurbo()
 
 // Bootstrap and Popper.js
-import "@popperjs/core"
 import "bootstrap"
 import { Tooltip } from "bootstrap"
 

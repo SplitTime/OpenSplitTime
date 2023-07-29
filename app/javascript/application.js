@@ -10,10 +10,10 @@ ActiveStorage.start()
 // Preferred units
 import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from "./src/utils/units";
 
-global.preferredDistanceUnit = preferredDistanceUnit;
-global.preferredElevationUnit = preferredElevationUnit;
-global.distanceToPreferred = distanceToPreferred;
-global.elevationToPreferred = elevationToPreferred;
+window.preferredDistanceUnit = preferredDistanceUnit;
+window.preferredElevationUnit = preferredElevationUnit;
+window.distanceToPreferred = distanceToPreferred;
+window.elevationToPreferred = elevationToPreferred;
 
 // Inputmask
 import Inputmask from "inputmask/dist/inputmask";
@@ -69,7 +69,7 @@ Inputmask.extendAliases({
 // reloadWithTurbo
 import { reloadWithTurbo } from "./src/utils/reload_with_turbo"
 
-global.reloadWithTurbo = reloadWithTurbo()
+window.reloadWithTurbo = reloadWithTurbo()
 
 // Bootstrap and Popper.js
 import "bootstrap"

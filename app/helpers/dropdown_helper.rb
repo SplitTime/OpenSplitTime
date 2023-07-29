@@ -346,7 +346,7 @@ module DropdownHelper
       { name: "Export to Ultrasignup",
         link: export_event_path(event, format: :csv, export_format: :ultrasignup) }
     ]
-    build_dropdown_menu(fa_icon("cog"), dropdown_items, button: true)
+    build_dropdown_menu(fa_icon("gear"), dropdown_items, button: true)
   end
 
   def event_group_actions_dropdown(view_object)

@@ -35,7 +35,7 @@ Help Tooltip Icon
 	position: relative;
     margin-top: -1px;
     
-	& > .fa.fa-question-circle {
+	& > .fa.fa-circle-question {
         // Break this out into its own class? It just creates a background for circular icons
         background: $white;
         border-radius: 50%;

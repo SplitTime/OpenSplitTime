@@ -1,5 +1,5 @@
 <%= content_tag(:div, id: dom_id(entrant, :service_completed_indicator)) do %>
   <%= entrant.service_completed_date? ?
-        fa_icon("check-circle", type: :solid, class: "text-success") :
-        fa_icon("times-circle", type: :regular, class: "text-danger") %>
+        fa_icon("circle-check", type: :solid, class: "text-success") :
+        fa_icon("circle-xmark", type: :regular, class: "text-danger") %>
 <% end %>

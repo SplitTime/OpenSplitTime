@@ -7,7 +7,7 @@ module TooltipHelper
                         bs_placement: placement,
                         bs_original_title: text } }
     content_tag(:span, text, options) do
-      fa_icon("question-circle")
+      fa_icon("circle-question")
     end
   end
 end

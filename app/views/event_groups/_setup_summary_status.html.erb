@@ -6,7 +6,7 @@
       <%= render partial: "shared/callout_with_link",
                  locals: {
                    icon_color: "success",
-                   icon_name: "check-circle",
+                   icon_name: "circle-check",
                    main_text: t("event_groups.setup.group_is_public_main"),
                    detail_paragraphs: [t("event_groups.setup.group_is_public_detail")],
                    link: button_to_event_group_make_private(presenter)
@@ -15,7 +15,7 @@
       <%= render partial: "shared/callout_with_link",
                  locals: {
                    icon_color: "warning",
-                   icon_name: "exclamation-circle",
+                   icon_name: "circle-exclamation",
                    main_text: t("event_groups.setup.group_is_private_main"),
                    detail_paragraphs: [t("event_groups.setup.group_is_private_detail")],
                    link: button_to_event_group_make_public(presenter)
@@ -35,7 +35,7 @@
       <%= render partial: "shared/callout_with_link",
                  locals: {
                    icon_color: "warning",
-                   icon_name: "exclamation-circle",
+                   icon_name: "circle-exclamation",
                    main_text: t("event_groups.setup.group_is_not_live_main"),
                    detail_paragraphs: [t("event_groups.setup.group_is_not_live_detail")],
                    link: button_to_event_group_enable_live(presenter)

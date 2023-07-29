@@ -1,5 +1,5 @@
 <li><%= "#{entrant.name} (#{entrant.flexible_geolocation})" %>
   <% if !entrant.withdrawn? && entrant.service_completed_date? %>
-    <span class="text-success px-2"><%= fa_icon("check-circle", text: "Service Form Received", type: :solid, class: "text-success") %></span>
+    <span class="text-success px-2"><%= fa_icon("circle-check", text: "Service Form Received", type: :solid, class: "text-success") %></span>
   <% end %>
 </li>

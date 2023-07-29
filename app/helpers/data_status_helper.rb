@@ -2,8 +2,8 @@
 
 module DataStatusHelper
   STATUS_INDICATOR_ATTRIBUTES = {
-    bad: { icon: "times-circle", class: "text-danger" },
-    questionable: { icon: "question-circle", class: "text-warning" }
+    bad: { icon: "circle-xmark", class: "text-danger" },
+    questionable: { icon: "circle-question", class: "text-warning" }
   }.with_indifferent_access
 
   def text_with_status_indicator(time, status, options = {})

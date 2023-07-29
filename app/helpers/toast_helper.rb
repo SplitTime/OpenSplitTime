@@ -4,9 +4,9 @@ module ToastHelper
   def toast_icon_from_type(type)
     case type
     when "success"
-      "check-circle"
+      "circle-check"
     when "danger"
-      "exclamation-circle"
+      "circle-exclamation"
     when "warning"
       "exclamation-triangle"
     when "info"

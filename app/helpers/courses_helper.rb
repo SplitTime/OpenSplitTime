@@ -8,7 +8,7 @@ module CoursesHelper
                         bs_placement: :top,
                         bs_original_title: tooltip },
                 class: "btn btn-outline-primary btn-sm" }
-    link_to fa_icon("pencil-alt"), url, options
+    link_to fa_icon("user"), url, options
   end
 
   def link_to_add_course_gpx(event)

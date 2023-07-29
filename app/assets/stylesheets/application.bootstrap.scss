@@ -8,10 +8,11 @@
 @import "./vendor/animate";
 @import "./vendor/simple-sidebar";
 
-//@import "font_awesome5_webfont";
-
 // Custom bootstrap variables must be set or imported *before* bootstrap.
 @import "bootstrap/scss/bootstrap";
+
+@import "./vendor/fontawesome/fontawesome";
+@import "./vendor/fontawesome/solid";
 
 @import "./pages/errors";
 @import "./pages/finish_line";

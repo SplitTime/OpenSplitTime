@@ -518,6 +518,8 @@
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
 readers do not read off random characters that represent icons */
 .fa-add::before { content: "\2b"; }
+.fa-arrow-alt-circle-down::before { content: "\f358"; }
+.fa-arrow-alt-circle-up::before { content: "\f35b"; }
 .fa-arrow-down::before { content: "\f063"; }
 .fa-arrow-down-long::before { content: "\f175"; }
 .fa-arrow-left::before { content: "\f060"; }
@@ -529,6 +531,10 @@ readers do not read off random characters that represent icons */
 .fa-caret-down::before { content: "\f0d7"; }
 .fa-caret-left::before { content: "\f0d9"; }
 .fa-caret-right::before { content: "\f0da"; }
+.fa-caret-square-down::before { content: "\f150"; }
+.fa-caret-square-left::before { content: "\f191"; }
+.fa-caret-square-right::before { content: "\f152"; }
+.fa-caret-square-up::before { content: "\f151"; }
 .fa-caret-up::before { content: "\f0d8"; }
 .fa-check::before { content: "\f00c"; }
 .fa-check-circle::before { content: "\f058"; }
@@ -536,9 +542,12 @@ readers do not read off random characters that represent icons */
 .fa-circle::before { content: "\f111"; }
 .fa-circle-check::before { content: "\f058"; }
 .fa-circle-dot::before { content: "\f192"; }
+.fa-circle-down::before { content: "\f358"; }
 .fa-circle-exclamation::before { content: "\f06a"; }
 .fa-circle-info::before { content: "\f05a"; }
 .fa-circle-question::before { content: "\f059"; }
+.fa-circle-up::before { content: "\f35b"; }
+.fa-circle-user::before { content: "\f2bd"; }
 .fa-circle-xmark::before { content: "\f057"; }
 .fa-cog::before { content: "\f013"; }
 .fa-dot-circle::before { content: "\f192"; }
@@ -579,6 +588,11 @@ readers do not read off random characters that represent icons */
 .fa-sign-in-alt::before { content: "\f2f6"; }
 .fa-sign-out-alt::before { content: "\f2f5"; }
 .fa-spinner::before { content: "\f110"; }
+.fa-square::before { content: "\f0c8"; }
+.fa-square-caret-down::before { content: "\f150"; }
+.fa-square-caret-left::before { content: "\f191"; }
+.fa-square-caret-right::before { content: "\f152"; }
+.fa-square-caret-up::before { content: "\f151"; }
 .fa-square-check::before { content: "\f14a"; }
 .fa-square-plus::before { content: "\f0fe"; }
 .fa-stopwatch::before { content: "\f2f2"; }
@@ -589,6 +603,7 @@ readers do not read off random characters that represent icons */
 .fa-trash::before { content: "\f1f8"; }
 .fa-triangle-exclamation::before { content: "\f071"; }
 .fa-user::before { content: "\f007"; }
+.fa-user-circle::before { content: "\f2bd"; }
 .fa-warning::before { content: "\f071"; }
 .fa-xmark-circle::before { content: "\f057"; }
 

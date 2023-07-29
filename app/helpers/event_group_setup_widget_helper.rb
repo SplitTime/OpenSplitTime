@@ -82,7 +82,7 @@ module EventGroupSetupWidgetHelper
       icon_only = false
     end
 
-    icon = fa_icon("plus-square",
+    icon = fa_icon("square-plus",
                    type: type,
                    size: "2x",
                    class: icon_only ? "text-black" : "",

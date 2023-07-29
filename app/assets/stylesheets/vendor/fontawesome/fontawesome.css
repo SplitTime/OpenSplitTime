@@ -558,8 +558,10 @@ readers do not read off random characters that represent icons */
 .fa-exclamation-triangle::before { content: "\f071"; }
 .fa-eye::before { content: "\f06e"; }
 .fa-eye-slash::before { content: "\f070"; }
+.fa-facebook-square::before { content: "\f082"; }
 .fa-file-csv::before { content: "\f6dd"; }
 .fa-gear::before { content: "\f013"; }
+.fa-google::before { content: "\f1a0"; }
 .fa-hand::before { content: "\f256"; }
 .fa-hand-paper::before { content: "\f256"; }
 .fa-image::before { content: "\f03e"; }
@@ -594,6 +596,7 @@ readers do not read off random characters that represent icons */
 .fa-square-caret-right::before { content: "\f152"; }
 .fa-square-caret-up::before { content: "\f151"; }
 .fa-square-check::before { content: "\f14a"; }
+.fa-square-facebook::before { content: "\f082"; }
 .fa-square-plus::before { content: "\f0fe"; }
 .fa-stopwatch::before { content: "\f2f2"; }
 .fa-theater-masks::before { content: "\f630"; }

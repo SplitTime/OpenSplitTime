@@ -1,0 +1,19 @@
+.fab,
+.fa-brands {
+  font-weight: 400;
+}
+
+:root, :host {
+  --fa-style-family-brands: 'Font Awesome 6 Brands';
+  --fa-font-brands: normal 400 1em/1 'Font Awesome 6 Brands'; }
+
+@font-face {
+  font-family: 'Font Awesome 6 Brands';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("fa-brands-400.woff2") format("woff2"), url("fa-brands-400.ttf") format("truetype"); }
+
+.fa-facebook-square::before { content: "\f082"; }
+.fa-google::before { content: "\f1a0"; }
+.fa-square-facebook::before { content: "\f082"; }

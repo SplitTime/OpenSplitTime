@@ -4,7 +4,6 @@ require "rails_helper"
 
 RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: true do
   include ActionView::RecordIdentifier
-  include FontAwesome5::Rails::IconHelper
 
   let(:steward) { users(:fifth_user) }
 

@@ -46,7 +46,7 @@ $fa-stack-width         : ($fa-fw-width * 2) !default;
 $fa-stack-z-index       : auto !default;
 
 $fa-font-display        : block !default;
-$fa-font-path           : "" !default;
+$fa-font-path           : "../webfonts" !default;
 
 $fa-var-arrow-down: \f063;
 $fa-var-arrow-down-long: \f175;
@@ -140,6 +140,11 @@ $fa-var-triangle-exclamation: \f071;
 $fa-var-exclamation-triangle: \f071;
 $fa-var-warning: \f071;
 $fa-var-user: \f007;
+$fa-var-xmark: \f00d;
+$fa-var-close: \f00d;
+$fa-var-multiply: \f00d;
+$fa-var-remove: \f00d;
+$fa-var-times: \f00d;
 
 $fa-var-google: \f1a0;
 $fa-var-square-facebook: \f082;
@@ -238,6 +243,11 @@ $fa-icons: (
   "exclamation-triangle": $fa-var-exclamation-triangle,
   "warning": $fa-var-warning,
   "user": $fa-var-user,
+  "xmark": $fa-var-xmark,
+  "close": $fa-var-close,
+  "multiply": $fa-var-multiply,
+  "remove": $fa-var-remove,
+  "times": $fa-var-times,
 );
 
 $fa-brand-icons: (

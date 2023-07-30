@@ -212,9 +212,6 @@ GEM
     faraday-net_http (3.0.2)
     ffaker (2.21.0)
     ffi (1.15.5)
-    font_awesome5_rails (1.5.0)
-      nokogiri (>= 1.11.3)
-      railties (>= 4.2)
     friendly_id (5.5.0)
       activerecord (>= 4.0.0)
     fugit (1.8.1)
@@ -576,7 +573,6 @@ DEPENDENCIES
   devise-i18n
   factory_bot_rails (~> 5.2, >= 5.2.0)
   ffaker
-  font_awesome5_rails (>= 1.4.0)
   friendly_id
   fx (>= 0.6.2)
   image_processing

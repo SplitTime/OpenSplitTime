@@ -1,0 +1,250 @@
+// variables
+// --------------------------
+
+$fa-css-prefix          : fa !default;
+$fa-style               : 900 !default;
+$fa-style-family        : "" !default;
+
+$fa-display             : inline-block !default;
+
+$fa-fw-width            : fa-divide(20em, 16) !default;
+$fa-inverse             : #fff !default;
+
+$fa-border-color        : #eee !default;
+$fa-border-padding      : .2em .25em .15em !default;
+$fa-border-radius       : .1em !default;
+$fa-border-style        : solid !default;
+$fa-border-width        : .08em !default;
+
+$fa-size-scale-2xs      : 10 !default;
+$fa-size-scale-xs       : 12 !default;
+$fa-size-scale-sm       : 14 !default;
+$fa-size-scale-base     : 16 !default;
+$fa-size-scale-lg       : 20 !default;
+$fa-size-scale-xl       : 24 !default;
+$fa-size-scale-2xl      : 32 !default;
+
+$fa-sizes: (
+  "2xs"                 : $fa-size-scale-2xs,
+  "xs"                  : $fa-size-scale-xs,
+  "sm"                  : $fa-size-scale-sm,
+  "lg"                  : $fa-size-scale-lg,
+  "xl"                  : $fa-size-scale-xl,
+  "2xl"                 : $fa-size-scale-2xl
+) !default;
+
+$fa-li-width            : 2em !default;
+$fa-li-margin           : $fa-li-width * fa-divide(5, 4) !default;
+
+$fa-pull-margin         : .3em !default;
+
+$fa-primary-opacity     : 1 !default;
+$fa-secondary-opacity   : .4 !default;
+
+$fa-stack-vertical-align: middle !default;
+$fa-stack-width         : ($fa-fw-width * 2) !default;
+$fa-stack-z-index       : auto !default;
+
+$fa-font-display        : block !default;
+$fa-font-path           : "" !default;
+
+$fa-var-arrow-down: \f063;
+$fa-var-arrow-down-long: \f175;
+$fa-var-long-arrow-down: \f175;
+$fa-var-arrow-left: \f060;
+$fa-var-arrow-left-long: \f177;
+$fa-var-long-arrow-left: \f177;
+$fa-var-arrow-right: \f061;
+$fa-var-arrow-right-long: \f178;
+$fa-var-long-arrow-right: \f178;
+$fa-var-arrow-up: \f062;
+$fa-var-arrow-up-long: \f176;
+$fa-var-long-arrow-up: \f176;
+$fa-var-caret-down: \f0d7;
+$fa-var-caret-left: \f0d9;
+$fa-var-caret-right: \f0da;
+$fa-var-caret-up: \f0d8;
+$fa-var-check: \f00c;
+$fa-var-circle: \f111;
+$fa-var-circle-check: \f058;
+$fa-var-check-circle: \f058;
+$fa-var-circle-dot: \f192;
+$fa-var-dot-circle: \f192;
+$fa-var-circle-down: \f358;
+$fa-var-arrow-alt-circle-down: \f358;
+$fa-var-circle-exclamation: \f06a;
+$fa-var-exclamation-circle: \f06a;
+$fa-var-circle-info: \f05a;
+$fa-var-info-circle: \f05a;
+$fa-var-circle-question: \f059;
+$fa-var-question-circle: \f059;
+$fa-var-circle-up: \f35b;
+$fa-var-arrow-alt-circle-up: \f35b;
+$fa-var-circle-user: \f2bd;
+$fa-var-user-circle: \f2bd;
+$fa-var-circle-xmark: \f057;
+$fa-var-times-circle: \f057;
+$fa-var-xmark-circle: \f057;
+$fa-var-download: \f019;
+$fa-var-ellipsis: \f141;
+$fa-var-ellipsis-h: \f141;
+$fa-var-eye: \f06e;
+$fa-var-eye-slash: \f070;
+$fa-var-file-csv: \f6dd;
+$fa-var-gear: \f013;
+$fa-var-cog: \f013;
+$fa-var-google: \f1a0;
+$fa-var-hand: \f256;
+$fa-var-hand-paper: \f256;
+$fa-var-image: \f03e;
+$fa-var-location-dot: \f3c5;
+$fa-var-map-marker-alt: \f3c5;
+$fa-var-magnifying-glass: \f002;
+$fa-var-search: \f002;
+$fa-var-map-location-dot: \f5a0;
+$fa-var-map-marked-alt: \f5a0;
+$fa-var-masks-theater: \f630;
+$fa-var-theater-masks: \f630;
+$fa-var-pencil: \f303;
+$fa-var-pencil-alt: \f303;
+$fa-var-plus: \2b;
+$fa-var-add: \2b;
+$fa-var-right-from-bracket: \f2f5;
+$fa-var-sign-out-alt: \f2f5;
+$fa-var-right-to-bracket: \f2f6;
+$fa-var-sign-in-alt: \f2f6;
+$fa-var-rotate-right: \f2f9;
+$fa-var-redo-alt: \f2f9;
+$fa-var-rotate-forward: \f2f9;
+$fa-var-spinner: \f110;
+$fa-var-square: \f0c8;
+$fa-var-square-caret-down: \f150;
+$fa-var-caret-square-down: \f150;
+$fa-var-square-caret-left: \f191;
+$fa-var-caret-square-left: \f191;
+$fa-var-square-caret-right: \f152;
+$fa-var-caret-square-right: \f152;
+$fa-var-square-caret-up: \f151;
+$fa-var-caret-square-up: \f151;
+$fa-var-square-check: \f14a;
+$fa-var-check-square: \f14a;
+$fa-var-square-facebook: \f082;
+$fa-var-facebook-square: \f082;
+$fa-var-square-plus: \f0fe;
+$fa-var-plus-square: \f0fe;
+$fa-var-stopwatch: \f2f2;
+$fa-var-thumbs-down: \f165;
+$fa-var-thumbs-up: \f164;
+$fa-var-trash: \f1f8;
+$fa-var-triangle-exclamation: \f071;
+$fa-var-exclamation-triangle: \f071;
+$fa-var-warning: \f071;
+$fa-var-user: \f007;
+
+$fa-var-google: \f1a0;
+$fa-var-square-facebook: \f082;
+$fa-var-facebook-square: \f082;
+
+$fa-icons: (
+  "arrow-down": $fa-var-arrow-down,
+  "arrow-down-long": $fa-var-arrow-down-long,
+  "long-arrow-down": $fa-var-long-arrow-down,
+  "arrow-left": $fa-var-arrow-left,
+  "arrow-left-long": $fa-var-arrow-left-long,
+  "long-arrow-left": $fa-var-long-arrow-left,
+  "arrow-right": $fa-var-arrow-right,
+  "arrow-right-long": $fa-var-arrow-right-long,
+  "long-arrow-right": $fa-var-long-arrow-right,
+  "arrow-up": $fa-var-arrow-up,
+  "arrow-up-long": $fa-var-arrow-up-long,
+  "long-arrow-up": $fa-var-long-arrow-up,
+  "caret-down": $fa-var-caret-down,
+  "caret-left": $fa-var-caret-left,
+  "caret-right": $fa-var-caret-right,
+  "caret-up": $fa-var-caret-up,
+  "check": $fa-var-check,
+  "circle": $fa-var-circle,
+  "circle-check": $fa-var-circle-check,
+  "check-circle": $fa-var-check-circle,
+  "circle-dot": $fa-var-circle-dot,
+  "dot-circle": $fa-var-dot-circle,
+  "circle-down": $fa-var-circle-down,
+  "arrow-alt-circle-down": $fa-var-arrow-alt-circle-down,
+  "circle-exclamation": $fa-var-circle-exclamation,
+  "exclamation-circle": $fa-var-exclamation-circle,
+  "circle-info": $fa-var-circle-info,
+  "info-circle": $fa-var-info-circle,
+  "circle-question": $fa-var-circle-question,
+  "question-circle": $fa-var-question-circle,
+  "circle-up": $fa-var-circle-up,
+  "arrow-alt-circle-up": $fa-var-arrow-alt-circle-up,
+  "circle-user": $fa-var-circle-user,
+  "user-circle": $fa-var-user-circle,
+  "circle-xmark": $fa-var-circle-xmark,
+  "times-circle": $fa-var-times-circle,
+  "xmark-circle": $fa-var-xmark-circle,
+  "download": $fa-var-download,
+  "ellipsis": $fa-var-ellipsis,
+  "ellipsis-h": $fa-var-ellipsis-h,
+  "eye": $fa-var-eye,
+  "eye-slash": $fa-var-eye-slash,
+  "file-csv": $fa-var-file-csv,
+  "gear": $fa-var-gear,
+  "cog": $fa-var-cog,
+  "google": $fa-var-google,
+  "hand": $fa-var-hand,
+  "hand-paper": $fa-var-hand-paper,
+  "image": $fa-var-image,
+  "location-dot": $fa-var-location-dot,
+  "map-marker-alt": $fa-var-map-marker-alt,
+  "magnifying-glass": $fa-var-magnifying-glass,
+  "search": $fa-var-search,
+  "map-location-dot": $fa-var-map-location-dot,
+  "map-marked-alt": $fa-var-map-marked-alt,
+  "masks-theater": $fa-var-masks-theater,
+  "theater-masks": $fa-var-theater-masks,
+  "pencil": $fa-var-pencil,
+  "pencil-alt": $fa-var-pencil-alt,
+  "plus": $fa-var-plus,
+  "add": $fa-var-add,
+  "right-from-bracket": $fa-var-right-from-bracket,
+  "sign-out-alt": $fa-var-sign-out-alt,
+  "right-to-bracket": $fa-var-right-to-bracket,
+  "sign-in-alt": $fa-var-sign-in-alt,
+  "rotate-right": $fa-var-rotate-right,
+  "redo-alt": $fa-var-redo-alt,
+  "rotate-forward": $fa-var-rotate-forward,
+  "spinner": $fa-var-spinner,
+  "square": $fa-var-square,
+  "square-caret-down": $fa-var-square-caret-down,
+  "caret-square-down": $fa-var-caret-square-down,
+  "square-caret-left": $fa-var-square-caret-left,
+  "caret-square-left": $fa-var-caret-square-left,
+  "square-caret-right": $fa-var-square-caret-right,
+  "caret-square-right": $fa-var-caret-square-right,
+  "square-caret-up": $fa-var-square-caret-up,
+  "caret-square-up": $fa-var-caret-square-up,
+  "square-check": $fa-var-square-check,
+  "check-square": $fa-var-check-square,
+  "square-facebook": $fa-var-square-facebook,
+  "facebook-square": $fa-var-facebook-square,
+  "square-plus": $fa-var-square-plus,
+  "plus-square": $fa-var-plus-square,
+  "stopwatch": $fa-var-stopwatch,
+  "thumbs-down": $fa-var-thumbs-down,
+  "thumbs-up": $fa-var-thumbs-up,
+  "trash": $fa-var-trash,
+  "triangle-exclamation": $fa-var-triangle-exclamation,
+  "exclamation-triangle": $fa-var-exclamation-triangle,
+  "warning": $fa-var-warning,
+  "user": $fa-var-user,
+);
+
+$fa-brand-icons: (
+  "google": $fa-var-google,
+  "square-facebook": $fa-var-square-facebook,
+  "facebook-square": $fa-var-facebook-square,
+);
+
+$fa-custom-icons: (
+);

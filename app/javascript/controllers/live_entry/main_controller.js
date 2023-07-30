@@ -778,8 +778,8 @@ export default class extends Controller {
         busy: false,
         editIndicatorClass: 'bg-light',
         uniqueIdsToRemove: [],
-        editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>',
-        deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>',
+        editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil"></i></button>',
+        deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-xmark"></i></button>',
         submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
 
         /**

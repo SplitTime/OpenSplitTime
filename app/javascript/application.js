@@ -6,14 +6,6 @@ import "./controllers"
 import * as ActiveStorage from "@rails/activestorage"
 ActiveStorage.start()
 
-// Preferred units
-// import { preferredDistanceUnit, preferredElevationUnit, distanceToPreferred, elevationToPreferred } from "./src/utils/units";
-//
-// window.preferredDistanceUnit = preferredDistanceUnit;
-// window.preferredElevationUnit = preferredElevationUnit;
-// window.distanceToPreferred = distanceToPreferred;
-// window.elevationToPreferred = elevationToPreferred;
-
 // Inputmask
 import Inputmask from "inputmask/dist/inputmask";
 

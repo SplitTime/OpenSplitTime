@@ -11,12 +11,12 @@ module FontAwesome6
 
       def initialize(icon_name, options = {})
         @icon_name = icon_name
-        @options = options
         @type = options[:type]
+        @css_class = options[:class]
         @text = options[:text]
         @right = options[:right] == true
         @size = options[:size]
-        @attrs = options.except(:text, :type, :class, :icon, :animation, :size, :right)
+        @attrs = options.except(:type, :class, :text, :right, :size)
       end
 
       def render
@@ -27,7 +27,7 @@ module FontAwesome6
 
       private
 
-      attr_reader :icon_name, :type, :options, :text, :right, :size, :attrs
+      attr_reader :icon_name, :type, :css_class, :text, :right, :size, :attrs
 
       def classes
         @classes ||= parse_classes
@@ -41,6 +41,7 @@ module FontAwesome6
         tmp = []
         tmp << icon_type(type)
         tmp += arr_with_fa(icon_name)
+        tmp += css_class.split(" ") if css_class.present?
         tmp += arr_with_fa(size) if size.present?
         tmp.uniq.compact.join(" ")
       end

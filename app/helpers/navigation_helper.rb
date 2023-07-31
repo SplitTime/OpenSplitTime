@@ -3,7 +3,7 @@
 module NavigationHelper
   def link_to_refresh
     tooltip_title = "Refresh [Ctrl-R]"
-    link_to fa_icon(:redo),
+    link_to fa_icon(:rotate_right),
             request.params,
             id: "refresh-button",
             class: "btn btn-primary",

@@ -4,9 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= content_for?(:title) ? yield(:title) : "OpenSplitTime" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "OpenSplitTime" %>">
-  <% if @current_user %>
-    <script id="current_user" type="text/json"><%= raw(::Api::V1::UserSerializer.new(@current_user).to_json) %></script>
-  <% end %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
   <%= render "layouts/google_maps_api_js" %>

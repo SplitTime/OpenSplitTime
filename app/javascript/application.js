@@ -4,7 +4,6 @@ import "./controllers"
 
 // ActiveStorage
 import * as ActiveStorage from "@rails/activestorage"
-
 ActiveStorage.start()
 
 // Preferred units
@@ -85,4 +84,3 @@ myDefaultAllowList.th = [];
 myDefaultAllowList.tbody = [];
 myDefaultAllowList.thead = [];
 myDefaultAllowList.div = [];
-import * as bootstrap from "bootstrap"

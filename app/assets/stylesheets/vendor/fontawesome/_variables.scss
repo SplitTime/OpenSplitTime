@@ -60,6 +60,11 @@ $fa-var-long-arrow-right: \f178;
 $fa-var-arrow-up: \f062;
 $fa-var-arrow-up-long: \f176;
 $fa-var-long-arrow-up: \f176;
+$fa-var-calendar: \f133;
+$fa-var-calendar-check: \f274;
+$fa-var-calendar-circle-plus: \e470;
+$fa-var-calendar-pen: \f333;
+$fa-var-calendar-edit: \f333;
 $fa-var-caret-down: \f0d7;
 $fa-var-caret-left: \f0d9;
 $fa-var-caret-right: \f0da;
@@ -99,6 +104,8 @@ $fa-var-hand-paper: \f256;
 $fa-var-image: \f03e;
 $fa-var-location-dot: \f3c5;
 $fa-var-map-marker-alt: \f3c5;
+$fa-var-location-pen: \f607;
+$fa-var-map-marker-edit: \f607;
 $fa-var-magnifying-glass: \f002;
 $fa-var-search: \f002;
 $fa-var-map-location-dot: \f5a0;
@@ -163,6 +170,11 @@ $fa-icons: (
   "arrow-up": $fa-var-arrow-up,
   "arrow-up-long": $fa-var-arrow-up-long,
   "long-arrow-up": $fa-var-long-arrow-up,
+  "calendar": $fa-var-calendar,
+  "calendar-check": $fa-var-calendar-check,
+  "calendar-circle-plus": $fa-var-calendar-circle-plus,
+  "calendar-pen": $fa-var-calendar-pen,
+  "calendar-edit": $fa-var-calendar-edit,
   "caret-down": $fa-var-caret-down,
   "caret-left": $fa-var-caret-left,
   "caret-right": $fa-var-caret-right,
@@ -202,6 +214,8 @@ $fa-icons: (
   "image": $fa-var-image,
   "location-dot": $fa-var-location-dot,
   "map-marker-alt": $fa-var-map-marker-alt,
+  "location-pen": $fa-var-location-pen,
+  "map-marker-edit": $fa-var-map-marker-edit,
   "magnifying-glass": $fa-var-magnifying-glass,
   "search": $fa-var-search,
   "map-location-dot": $fa-var-map-location-dot,

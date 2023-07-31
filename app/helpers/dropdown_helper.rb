@@ -127,8 +127,8 @@ module DropdownHelper
   end
 
   def check_in_filter_dropdown
-    items = [{ icon_name: "exclamation-circle", type: :solid, text: "Problems", problem: true },
-             { icon_name: "question-circle", type: :solid, text: "Unreconciled", unreconciled: true },
+    items = [{ icon_name: "circle-exclamation", type: :solid, text: "Problems", problem: true },
+             { icon_name: "circle-question", type: :solid, text: "Unreconciled", unreconciled: true },
              { icon_name: "square", type: :regular, text: "Not checked", checked_in: false, started: false },
              { icon_name: "check-square", type: :regular, text: "Checked in", checked_in: true, started: false },
              { icon_name: "caret-square-right", type: :regular, text: "Started", started: true },
@@ -346,7 +346,7 @@ module DropdownHelper
       { name: "Export to Ultrasignup",
         link: export_event_path(event, format: :csv, export_format: :ultrasignup) }
     ]
-    build_dropdown_menu(fa_icon("cog"), dropdown_items, button: true)
+    build_dropdown_menu(fa_icon("gear"), dropdown_items, button: true)
   end
 
   def event_group_actions_dropdown(view_object)

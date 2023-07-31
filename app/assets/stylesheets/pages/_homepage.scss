@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'Gibson-SemiBold';
-  src: font_url('Gibson-SemiBold.eot');
-  src: font_url('Gibson-SemiBold.woff2') format('woff2'),
-  font_url('Gibson-SemiBold.woff') format('woff'),
-  font_url('Gibson-SemiBold.ttf') format('truetype'),
-  font_url('Gibson-SemiBold.svg#Gibson-SemiBold') format('svg'),
-  font_url('Gibson-SemiBold.eot?#iefix') format('embedded-opentype');
+  src: url('Gibson-SemiBold.eot');
+  src: url('Gibson-SemiBold.woff2') format('woff2'),
+  url('Gibson-SemiBold.woff') format('woff'),
+  url('Gibson-SemiBold.ttf') format('truetype'),
+  url('Gibson-SemiBold.svg#Gibson-SemiBold') format('svg'),
+  url('Gibson-SemiBold.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -113,7 +113,7 @@
       width: 100%;
     }
     .gradient {
-      background: asset-url('gradient.png') 0 0 repeat-x;
+      background: url('gradient.png') 0 0 repeat-x;
       bottom: 0;
       position: absolute;
       left: 0;
@@ -134,22 +134,19 @@
       }
     }
     &.first {
-       background: #000 asset-url('home-top.jpg') top center no-repeat;
+       background: #000 url('home-top.jpg') top center no-repeat;
        background-size: cover;
-       //background-attachment: fixed;
      }
      &.third {
-       background: #000 asset-url('home-middle.jpg') top center no-repeat;
+       background: #000 url('home-middle.jpg') top center no-repeat;
        background-size: cover;
-       //background-attachment: fixed;
        .over-text {
          margin-top: -25px;
        }
      }
      &.fifth {
-       background: #000 asset-url('home-bottom.jpg') top center no-repeat;
+       background: #000 url('home-bottom.jpg') top center no-repeat;
        background-size: cover;
-       //background-attachment: fixed;
     }
     &.first {
       @media only screen and (min-width: 768px ) {

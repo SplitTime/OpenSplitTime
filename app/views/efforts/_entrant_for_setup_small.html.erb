@@ -2,7 +2,7 @@
 
 <tr>
   <td class="text-center">
-    <%= effort.unreconciled? ? fa_icon("check-circle", type: :regular, class: "text-danger") : fa_icon("check-circle", type: :solid, class: "text-success") %>
+    <%= effort.unreconciled? ? fa_icon("circle-check", type: :regular, class: "text-danger") : fa_icon("circle-check", type: :solid, class: "text-success") %>
   </td>
   <% if presenter.multiple_events? %>
     <td><%= effort.event.guaranteed_short_name %></td>

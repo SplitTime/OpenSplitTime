@@ -14,10 +14,10 @@
       <div class="col-12 col-md-5 text-end">
         <br/>
         <%= button_tag type: "submit", class: "btn btn-outline-primary align-top" do %>
-          <%= fa_icon("check-circle") %>
+          <%= fa_icon("circle-check") %>
         <% end %>
 
-        <%= link_to fa_icon("times-circle"), manage_start_times_event_group_path(@event_group), class: "btn btn-outline-secondary" %>
+        <%= link_to fa_icon("circle-xmark"), manage_start_times_event_group_path(@event_group), class: "btn btn-outline-secondary" %>
       </div>
     </div>
   <% end %>

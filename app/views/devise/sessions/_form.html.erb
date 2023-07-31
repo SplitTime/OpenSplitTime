@@ -10,7 +10,7 @@
                     id: "facebook-log-in-button",
                     form: { class: "d-grid", data: { turbo: false } },
                     class: "btn btn-lg btn-facebook") do %>
-        <%= fab_icon("facebook-square", text: " Log in with Facebook") %>
+        <%= fa_icon("square-facebook", type: "brand", text: " Log in with Facebook") %>
       <% end %>
       <br/>
       <%= button_to(user_google_oauth2_omniauth_authorize_path,
@@ -18,7 +18,7 @@
                     id: "google-log-in-button",
                     form: { class: "d-grid", data: { turbo: false } },
                     class: "btn btn-lg btn-google") do %>
-        <%= fab_icon("google", text: " Log in with Google") %>
+        <%= fa_icon("google", type: "brand", text: " Log in with Google") %>
       <% end %>
       <hr class="hr-text" data-content="or">
       <p class="text-center">Log in with Email</p>

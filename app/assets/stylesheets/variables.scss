@@ -2,8 +2,7 @@
 Variables
 ************/
 
-$font-size-base: (14px / 16px) * 1rem;
-// $font-family-sans-serif: "Gibson-Semibold";
+$font-size-base: calc(14 / 16) * 1rem;
 
 // Theme Color Overrides
 $primary: #3A9DD1;

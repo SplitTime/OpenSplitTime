@@ -259,8 +259,8 @@
             display: block;
             top: 50%;
             left: 50%;
-            margin-left: -($image-width / 2);
-            margin-top: -($image-height / 2);
+            margin-left: calc($image-width / -2);
+            margin-top: calc($image-height / -2);
 
             background: $overlay-bg-color;
             border-radius: 50%;
@@ -359,7 +359,7 @@
                 content: '';
                 position: absolute;
                 top: -6px;
-                left: ($width / 2) - 6px;
+                left: calc($width / 2) - 6px;
                 width: 0;
                 height: 0;
                 border-left: 6px solid transparent;
@@ -420,7 +420,7 @@
             width: 54px;
             height: 58px;
             left: 50%;
-            margin-left: -(54px / 2);
+            margin-left: calc(54px / -2);
         }
 
 

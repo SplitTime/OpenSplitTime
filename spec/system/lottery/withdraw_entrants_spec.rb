@@ -4,7 +4,6 @@ require "rails_helper"
 
 RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: true do
   include ActionView::RecordIdentifier
-  include FontAwesome5::Rails::IconHelper
 
   let(:steward) { users(:fifth_user) }
 
@@ -50,7 +49,7 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
       input.set("05/15/2023")
       input.native.send_keys(:tab)
       within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
-        expect(page).to have_css("i.fa-check-circle")
+        expect(page).to have_css("i.fa-circle-check")
       end
     end.to change { entrant.reload.service_completed_date }.from(nil).to("2023-05-15".to_date)
   end
@@ -65,7 +64,7 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
       input.set("")
       input.native.send_keys(:tab)
       within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
-        expect(page).to have_css("i.fa-times-circle")
+        expect(page).to have_css("i.fa-circle-xmark")
       end
     end.to change { entrant.reload.service_completed_date }.from("2023-05-15".to_date).to(nil)
   end

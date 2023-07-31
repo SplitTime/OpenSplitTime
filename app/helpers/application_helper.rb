@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require "font_awesome6/rails/icon_helper"
+
 module ApplicationHelper
   include TimeFormats
   include MeasurementFormats
+  include FontAwesome6::Rails::IconHelper
 
   def day_time_current_military_full(zone)
     l(Time.current.in_time_zone(zone), format: :full_day_military_and_zone)

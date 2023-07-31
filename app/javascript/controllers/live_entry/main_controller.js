@@ -18,16 +18,16 @@ export default class extends Controller {
   liveEntryApp(controller) {
 
     const statusIcons = {
-      'exists': '<span class="fas fa-exclamation-circle ms-1" data-controller="tooltip" title="Data Already Exists"></span>',
-      'good': '<span class="fas fa-check-circle text-success ms-1" data-controller="tooltip" title="Time Appears Good"></span>',
-      'questionable': '<span class="fas fa-question-circle text-warning ms-1" data-controller="tooltip" title="Time Appears Questionable"></span>',
-      'bad': '<span class="fas fa-times-circle text-danger ms-1" data-controller="tooltip" title="Time Appears Bad"></span>'
+      'exists': '<span class="fas fa-circle-exclamation ms-1" data-controller="tooltip" title="Data Already Exists"></span>',
+      'good': '<span class="fas fa-circle-check text-success ms-1" data-controller="tooltip" title="Time Appears Good"></span>',
+      'questionable': '<span class="fas fa-circle-question text-warning ms-1" data-controller="tooltip" title="Time Appears Questionable"></span>',
+      'bad': '<span class="fas fa-circle-xmark text-danger ms-1" data-controller="tooltip" title="Time Appears Bad"></span>'
     };
 
     const bibIcons = {
-      'good': '<span class="fas fa-check-circle text-success ms-1" data-controller="tooltip" title="Bib Found"></span>',
-      'questionable': '<span class="fas fa-question-circle text-warning ms-1" data-controller="tooltip" title="Bib In Wrong Event"></span>',
-      'bad': '<span class="fas fa-times-circle text-danger ms-1" data-controller="tooltip" title="Bib Not Found"></span>'
+      'good': '<span class="fas fa-circle-check text-success ms-1" data-controller="tooltip" title="Bib Found"></span>',
+      'questionable': '<span class="fas fa-circle-question text-warning ms-1" data-controller="tooltip" title="Bib In Wrong Event"></span>',
+      'bad': '<span class="fas fa-circle-xmark text-danger ms-1" data-controller="tooltip" title="Bib Not Found"></span>'
     };
 
     const stoppedIcon = '<span class="fas fa-hand-paper text-danger ms-1" data-controller="tooltip" title="Stopped Here"></span>';
@@ -778,8 +778,8 @@ export default class extends Controller {
         busy: false,
         editIndicatorClass: 'bg-light',
         uniqueIdsToRemove: [],
-        editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil-alt"></i></button>',
-        deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-times"></i></button>',
+        editButton: '<button class="effort-row-btn edit-effort js-edit-effort btn btn-primary"><i class="fas fa-pencil"></i></button>',
+        deleteButton: '<button class="effort-row-btn delete-effort js-delete-effort btn btn-danger"><i class="fas fa-xmark"></i></button>',
         submitButton: '<button class="effort-row-btn submit-effort js-submit-effort btn btn-success"><i class="fas fa-check"></i></button>',
 
         /**

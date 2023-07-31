@@ -113,6 +113,28 @@ manager for Linux or Windows. You will also need to have Chrome installed on you
 Heroku CI and Github Actions are both used to ensure tests are passing. The status of your branch will be indicated in github. 
 Please ensure your branch is passing before making a pull request.
 
+**Fontawesome 6**
+
+OpenSplitTime uses Fontawesome 6 Pro for icons. Fontawesome icons are self-hosted. CSS is found in the repository at 
+`app/assets/stylesheets/vendor/fontawesome`, and the font files are found at `app/assets/fonts` (all fonts beginning with `fa-` 
+are Fontawesome fonts).
+
+To update Fontawesome, you will need credentials. Contact the repository maintainers to obtain credentials. Select the OpenSplitTime Kit and add the 
+needed icons from the "Solid," "Regular," or "Brands" collections using the Kit update tool, then download the kit. 
+
+Copy only the following files from the downloaded kit:
+
+```
+scss/_variables.scss -> app/assets/stylesheets/vendor/fontawesome/_variables.scss
+webfonts/*.* -> app/assets/fonts
+```
+
+If you need to add icons from another collection (such as "Light"), you will need to add the corresponding stylesheet (such as `light.scss`) to the
+`app/assets/stylesheets/vendor/fontawesome` directory and `@include` that stylesheet from the `app/assets/stylesheets/application.bootstrap.scss` file.
+
+In addition, note that the new css file (`light.scss` in our example) will have an incorrect URL for the font files. You will need to edit the URL to
+match the URLs used in the other Fontawesome stylesheets.
+
 Support
 -------------------------
 

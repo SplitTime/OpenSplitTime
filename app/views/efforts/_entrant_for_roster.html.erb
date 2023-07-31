@@ -19,7 +19,7 @@
   <td><%= day_time_military_format(effort.actual_start_time_local) %></td>
   <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>
   <% if started_efforts_present %>
-    <td><%= effort.data_status %></td>
+    <td class="text-center"><%= effort.data_status %></td>
   <% end %>
   <td>
     <%= render partial: "efforts/check_in_button", locals: { effort: effort } %>

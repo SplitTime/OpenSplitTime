@@ -60,7 +60,7 @@
         <th><%= link_to_reversing_sort_heading("Actual Start", "actual_start_time", @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", @presenter.existing_sort) %></th>
         <% if @presenter.started_efforts.present? %>
-          <th><%= link_to_reversing_sort_heading("Status", "data_status", @presenter.existing_sort) %></th>
+          <th class="text-center"><%= link_to_reversing_sort_heading("Status", "data_status", @presenter.existing_sort) %></th>
         <% end %>
         <th>
           <div class="row">

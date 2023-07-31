@@ -10,7 +10,7 @@ module StrongConfirmHelper
 
     link_to name, strong_confirm_path(params),
             class: options[:class],
-            data: { turbo_frame: "form_modal" }
+            data: { turbo_frame: "form_modal" }.merge(options[:data] || {})
   end
 
   def link_to_delete_resource(name, path_on_confirm, options)

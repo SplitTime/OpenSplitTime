@@ -84,6 +84,7 @@ class EventsController < ApplicationController
   # GET /event_groups/1/events/1/setup_course
   def setup_course
     authorize @event
+    enable_google_maps
 
     @presenter = EventSetupCoursePresenter.new(@event, view_context)
   end

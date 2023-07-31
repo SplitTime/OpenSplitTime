@@ -21,7 +21,7 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <h5><%= fa_icon("stopwatch") %> <%= l event.scheduled_start_time_local, format: :full_day_time_and_zone %></h5>
+      <h5><%= fa_icon("calendar", text: l(event.scheduled_start_time_local, format: :full_day_time_and_zone)) %></h5>
       <div class="col-md-6">
         <span class="h5 me-2"><%= fa_icon("map-marked-alt") %> <%= event.course.name %></span>
         <span class="h6 text-muted"><%= " #{pluralize(event.course.splits.count, 'split')}" %></span>

@@ -11,6 +11,7 @@ class CoursesController < ApplicationController
   end
 
   def show
+    enable_google_maps
     course = @organization.courses.where(id: @course).includes(:splits).first
 
     respond_to do |format|

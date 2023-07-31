@@ -11,12 +11,16 @@ class ApplicationController < ActionController::Base
   before_action :set_sentry_context
   before_action :sample_requests_for_scout_apm
   after_action :store_user_location!, if: :storable_location?
-  helper_method :prepared_params
+  helper_method :prepared_params, :google_maps_enabled?
 
   rescue_from ::Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ::ActionController::UnknownFormat, with: :not_acceptable_head
 
   impersonates :user
+
+  def google_maps_enabled?
+    @google_maps_enabled == true
+  end
 
   def process_action(*args)
     super
@@ -46,6 +50,10 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name, :email])
     devise_parameter_sanitizer.permit(:account_update, keys: [:first_name, :last_name, :email])
+  end
+
+  def enable_google_maps
+    @google_maps_enabled = true
   end
 
   # It's important that the location is NOT stored if:

@@ -32,17 +32,17 @@ Getting Started
 2. Install rbenv:
 
 > ### Using Homebrew on MacOS
-> 1. Install Homebrew http://brew.sh/
-> 2. `$ brew update`
-> 3. `$ brew install rbenv`
+> - Install Homebrew http://brew.sh/
+> - `$ brew update`
+> - `$ brew install rbenv`
 
 > ### Using Debian/Ubuntu (Instructions from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04))
-> 1. Install dependancies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm5 libgdbm-dev`
-> 2. Clone the rbenv repository `$ git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
-> 3. Add to path `$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
-> 4. Enable automatic loading `$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc`
-> 5. Apply changes to current terminal `$ source ~/.bashrc`
-> 6. Add ruby-build plugin `$ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build`
+> - Install dependencies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm5 libgdbm-dev`
+> - Clone the rbenv repository `$ git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
+> - Add to path `$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
+> - Enable automatic loading `$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc`
+> - Apply changes to current terminal `$ source ~/.bashrc`
+> - Add ruby-build plugin `$ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build`
 
 3. `$ cd` into your local `OpenSplitTime` directory
 4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
@@ -52,16 +52,16 @@ Getting Started
 **Rails, Gems, Databases**
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
-2. Install Postgres:
+2. Install Postgres and Redis
 
 > ### Using Homebrew on MacOS
 > `$ brew install postgres redis`
 
 > ### Using Debian/Ubuntu
-> 1. `$ sudo apt install postgresql libpq-dev redis-server`
-> 2. Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
+>  - `$ sudo apt install postgresql libpq-dev redis-server`
+>  - Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
 
-4. `$ bundle install`
+3. `$ bundle install`
 
 *if running into weird errors first try `$ rbenv rehash` and restart your terminal*
 
@@ -105,11 +105,13 @@ You'll know you did it right when you see the awesome ASCII art.
 
 **ChromeDriver**
 
-Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew cask install chromedriver` or your preferred package manager for Linux or Windows.
+Some integration tests rely on Google ChromeDriver. You can install it in Mac OS X with `brew cask install chromedriver` or your preferred package 
+manager for Linux or Windows. You will also need to have Chrome installed on your system.
 
 **Continuous Integration**
 
-Heroku CI is used to ensure tests are passing. The status of your branch will be indicated in github. Please ensure your branch is passing before making a pull request.
+Heroku CI and Github Actions are both used to ensure tests are passing. The status of your branch will be indicated in github. 
+Please ensure your branch is passing before making a pull request.
 
 Support
 -------------------------

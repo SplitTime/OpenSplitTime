@@ -29,7 +29,7 @@ module EventGroupSetupWidgetHelper
       icon_only = false
     end
 
-    icon = fa_icon("circle-check",
+    icon = fa_icon("people-group",
                    type: type,
                    size: "2x",
                    class: icon_only ? "text-black" : "",
@@ -47,7 +47,7 @@ module EventGroupSetupWidgetHelper
   def link_to_setup_widget_event_group(presenter)
     type = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w(setup new)) ? :solid : :regular
     path = presenter.event_group.new_record? ? new_organization_event_group_path(presenter.organization) : setup_event_group_path(presenter.event_group)
-    icon_name = presenter.event_group.new_record? ? "circle-dot" : "circle-check"
+    icon_name = "calendars"
     icon = fa_icon(icon_name,
                    type: type,
                    size: "2x")
@@ -112,7 +112,7 @@ module EventGroupSetupWidgetHelper
       icon_only = false
     end
 
-    icon = fa_icon("circle-check",
+    icon = fa_icon("clipboard-list-check",
                    type: type,
                    size: "2x",
                    class: icon_only ? "text-black" : "",

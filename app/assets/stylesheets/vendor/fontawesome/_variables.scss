@@ -65,6 +65,7 @@ $fa-var-calendar-check: \f274;
 $fa-var-calendar-circle-plus: \e470;
 $fa-var-calendar-pen: \f333;
 $fa-var-calendar-edit: \f333;
+$fa-var-calendars: \e0d7;
 $fa-var-caret-down: \f0d7;
 $fa-var-caret-left: \f0d9;
 $fa-var-caret-right: \f0da;
@@ -90,6 +91,7 @@ $fa-var-user-circle: \f2bd;
 $fa-var-circle-xmark: \f057;
 $fa-var-times-circle: \f057;
 $fa-var-xmark-circle: \f057;
+$fa-var-clipboard-list-check: \f737;
 $fa-var-download: \f019;
 $fa-var-ellipsis: \f141;
 $fa-var-ellipsis-h: \f141;
@@ -109,6 +111,8 @@ $fa-var-link-slash: \f127;
 $fa-var-chain-broken: \f127;
 $fa-var-chain-slash: \f127;
 $fa-var-unlink: \f127;
+$fa-var-list-check: \f0ae;
+$fa-var-tasks: \f0ae;
 $fa-var-location-dot: \f3c5;
 $fa-var-map-marker-alt: \f3c5;
 $fa-var-location-pen: \f607;
@@ -124,6 +128,7 @@ $fa-var-subtract: \f068;
 $fa-var-not-equal: \f53e;
 $fa-var-pencil: \f303;
 $fa-var-pencil-alt: \f303;
+$fa-var-people-group: \e533;
 $fa-var-plus: \2b;
 $fa-var-add: \2b;
 $fa-var-right-from-bracket: \f2f5;
@@ -188,6 +193,7 @@ $fa-icons: (
   "calendar-circle-plus": $fa-var-calendar-circle-plus,
   "calendar-pen": $fa-var-calendar-pen,
   "calendar-edit": $fa-var-calendar-edit,
+  "calendars": $fa-var-calendars,
   "caret-down": $fa-var-caret-down,
   "caret-left": $fa-var-caret-left,
   "caret-right": $fa-var-caret-right,
@@ -213,6 +219,7 @@ $fa-icons: (
   "circle-xmark": $fa-var-circle-xmark,
   "times-circle": $fa-var-times-circle,
   "xmark-circle": $fa-var-xmark-circle,
+  "clipboard-list-check": $fa-var-clipboard-list-check,
   "download": $fa-var-download,
   "ellipsis": $fa-var-ellipsis,
   "ellipsis-h": $fa-var-ellipsis-h,
@@ -232,6 +239,8 @@ $fa-icons: (
   "chain-broken": $fa-var-chain-broken,
   "chain-slash": $fa-var-chain-slash,
   "unlink": $fa-var-unlink,
+  "list-check": $fa-var-list-check,
+  "tasks": $fa-var-tasks,
   "location-dot": $fa-var-location-dot,
   "map-marker-alt": $fa-var-map-marker-alt,
   "location-pen": $fa-var-location-pen,
@@ -247,6 +256,7 @@ $fa-icons: (
   "not-equal": $fa-var-not-equal,
   "pencil": $fa-var-pencil,
   "pencil-alt": $fa-var-pencil-alt,
+  "people-group": $fa-var-people-group,
   "plus": $fa-var-plus,
   "add": $fa-var-add,
   "right-from-bracket": $fa-var-right-from-bracket,

@@ -5,7 +5,7 @@ module EventGroupSetupWidgetHelper
     type = presenter.controller_name == "events" && presenter.action_name == "setup_course" && presenter.event == event ? :solid : :regular
     path = setup_course_event_group_event_path(event.event_group, event)
     tooltip = event.course.name
-    icon = fa_icon("circle-dot",
+    icon = fa_icon("map-marked-alt",
                    type: type,
                    size: "2x",
                    data: { controller: "tooltip", bs_original_title: tooltip })
@@ -59,7 +59,7 @@ module EventGroupSetupWidgetHelper
     type = presenter.controller_name == "events" && presenter.action_name == "edit" && presenter.event == event ? :solid : :regular
     path = edit_event_group_event_path(event.event_group, event)
     tooltip = event.guaranteed_short_name
-    icon = fa_icon("circle-check",
+    icon = fa_icon("calendar-check",
                    type: type,
                    size: "2x",
                    data: { controller: "tooltip", bs_original_title: tooltip })
@@ -82,7 +82,7 @@ module EventGroupSetupWidgetHelper
       icon_only = false
     end
 
-    icon = fa_icon("square-plus",
+    icon = fa_icon("calendar-circle-plus",
                    type: type,
                    size: "2x",
                    class: icon_only ? "text-black" : "",

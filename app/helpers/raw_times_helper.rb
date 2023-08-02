@@ -36,18 +36,18 @@ module RawTimesHelper
   end
 
   def button_to_toggle_raw_time_review(raw_time)
+    icon = "user-magnifying-glass"
+
     if raw_time.reviewed_at?
       params = { raw_time: { reviewed_by: nil, reviewed_at: nil } }
       tooltip = "This raw time has been reviewed by a human. Click to mark it as not reviewed."
       button_id = "set-unreviewed-raw-time-#{raw_time.id}"
       button_type = "primary"
-      icon = "user-plus"
     else
       params = { raw_time: { reviewed_by: nil, reviewed_at: Time.current } }
       tooltip = "This raw time has not been reviewed by a human. Click to mark it as having been reviewed."
       button_id = "set-reviewed-raw-time-#{raw_time.id}"
       button_type = "outline-secondary"
-      icon = "user-minus"
     end
 
     url = raw_time_path(raw_time, referrer_path: request.params)
@@ -119,7 +119,7 @@ module RawTimesHelper
       button_id: "associate-raw-time-#{raw_time_id}",
       button_type: "outline-success",
       tooltip: "Associate this raw time with this effort",
-      icon: :plus_square,
+      icon: "plus",
     )
   end
 
@@ -131,7 +131,7 @@ module RawTimesHelper
       button_id: "disassociate-raw-time-#{raw_time_id}",
       button_type: "outline-danger",
       tooltip: "Disassociate this raw time from this effort",
-      icon: :minus_square,
+      icon: "minus",
     )
   end
 end

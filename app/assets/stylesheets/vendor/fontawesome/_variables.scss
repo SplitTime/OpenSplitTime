@@ -65,6 +65,7 @@ $fa-var-calendar-check: \f274;
 $fa-var-calendar-circle-plus: \e470;
 $fa-var-calendar-pen: \f333;
 $fa-var-calendar-edit: \f333;
+$fa-var-calendars: \e0d7;
 $fa-var-caret-down: \f0d7;
 $fa-var-caret-left: \f0d9;
 $fa-var-caret-right: \f0da;
@@ -90,9 +91,11 @@ $fa-var-user-circle: \f2bd;
 $fa-var-circle-xmark: \f057;
 $fa-var-times-circle: \f057;
 $fa-var-xmark-circle: \f057;
+$fa-var-clipboard-list-check: \f737;
 $fa-var-download: \f019;
 $fa-var-ellipsis: \f141;
 $fa-var-ellipsis-h: \f141;
+$fa-var-equals: \3d;
 $fa-var-eye: \f06e;
 $fa-var-eye-slash: \f070;
 $fa-var-file-csv: \f6dd;
@@ -102,6 +105,14 @@ $fa-var-google: \f1a0;
 $fa-var-hand: \f256;
 $fa-var-hand-paper: \f256;
 $fa-var-image: \f03e;
+$fa-var-link: \f0c1;
+$fa-var-chain: \f0c1;
+$fa-var-link-slash: \f127;
+$fa-var-chain-broken: \f127;
+$fa-var-chain-slash: \f127;
+$fa-var-unlink: \f127;
+$fa-var-list-check: \f0ae;
+$fa-var-tasks: \f0ae;
 $fa-var-location-dot: \f3c5;
 $fa-var-map-marker-alt: \f3c5;
 $fa-var-location-pen: \f607;
@@ -112,8 +123,12 @@ $fa-var-map-location-dot: \f5a0;
 $fa-var-map-marked-alt: \f5a0;
 $fa-var-masks-theater: \f630;
 $fa-var-theater-masks: \f630;
+$fa-var-minus: \f068;
+$fa-var-subtract: \f068;
+$fa-var-not-equal: \f53e;
 $fa-var-pencil: \f303;
 $fa-var-pencil-alt: \f303;
+$fa-var-people-group: \e533;
 $fa-var-plus: \2b;
 $fa-var-add: \2b;
 $fa-var-right-from-bracket: \f2f5;
@@ -137,6 +152,8 @@ $fa-var-square-check: \f14a;
 $fa-var-check-square: \f14a;
 $fa-var-square-facebook: \f082;
 $fa-var-facebook-square: \f082;
+$fa-var-square-minus: \f146;
+$fa-var-minus-square: \f146;
 $fa-var-square-plus: \f0fe;
 $fa-var-plus-square: \f0fe;
 $fa-var-stopwatch: \f2f2;
@@ -147,6 +164,7 @@ $fa-var-triangle-exclamation: \f071;
 $fa-var-exclamation-triangle: \f071;
 $fa-var-warning: \f071;
 $fa-var-user: \f007;
+$fa-var-user-magnifying-glass: \e5c5;
 $fa-var-xmark: \f00d;
 $fa-var-close: \f00d;
 $fa-var-multiply: \f00d;
@@ -175,6 +193,7 @@ $fa-icons: (
   "calendar-circle-plus": $fa-var-calendar-circle-plus,
   "calendar-pen": $fa-var-calendar-pen,
   "calendar-edit": $fa-var-calendar-edit,
+  "calendars": $fa-var-calendars,
   "caret-down": $fa-var-caret-down,
   "caret-left": $fa-var-caret-left,
   "caret-right": $fa-var-caret-right,
@@ -200,9 +219,11 @@ $fa-icons: (
   "circle-xmark": $fa-var-circle-xmark,
   "times-circle": $fa-var-times-circle,
   "xmark-circle": $fa-var-xmark-circle,
+  "clipboard-list-check": $fa-var-clipboard-list-check,
   "download": $fa-var-download,
   "ellipsis": $fa-var-ellipsis,
   "ellipsis-h": $fa-var-ellipsis-h,
+  "equals": $fa-var-equals,
   "eye": $fa-var-eye,
   "eye-slash": $fa-var-eye-slash,
   "file-csv": $fa-var-file-csv,
@@ -212,6 +233,14 @@ $fa-icons: (
   "hand": $fa-var-hand,
   "hand-paper": $fa-var-hand-paper,
   "image": $fa-var-image,
+  "link": $fa-var-link,
+  "chain": $fa-var-chain,
+  "link-slash": $fa-var-link-slash,
+  "chain-broken": $fa-var-chain-broken,
+  "chain-slash": $fa-var-chain-slash,
+  "unlink": $fa-var-unlink,
+  "list-check": $fa-var-list-check,
+  "tasks": $fa-var-tasks,
   "location-dot": $fa-var-location-dot,
   "map-marker-alt": $fa-var-map-marker-alt,
   "location-pen": $fa-var-location-pen,
@@ -222,8 +251,12 @@ $fa-icons: (
   "map-marked-alt": $fa-var-map-marked-alt,
   "masks-theater": $fa-var-masks-theater,
   "theater-masks": $fa-var-theater-masks,
+  "minus": $fa-var-minus,
+  "subtract": $fa-var-subtract,
+  "not-equal": $fa-var-not-equal,
   "pencil": $fa-var-pencil,
   "pencil-alt": $fa-var-pencil-alt,
+  "people-group": $fa-var-people-group,
   "plus": $fa-var-plus,
   "add": $fa-var-add,
   "right-from-bracket": $fa-var-right-from-bracket,
@@ -247,6 +280,8 @@ $fa-icons: (
   "check-square": $fa-var-check-square,
   "square-facebook": $fa-var-square-facebook,
   "facebook-square": $fa-var-facebook-square,
+  "square-minus": $fa-var-square-minus,
+  "minus-square": $fa-var-minus-square,
   "square-plus": $fa-var-square-plus,
   "plus-square": $fa-var-plus-square,
   "stopwatch": $fa-var-stopwatch,
@@ -257,6 +292,7 @@ $fa-icons: (
   "exclamation-triangle": $fa-var-exclamation-triangle,
   "warning": $fa-var-warning,
   "user": $fa-var-user,
+  "user-magnifying-glass": $fa-var-user-magnifying-glass,
   "xmark": $fa-var-xmark,
   "close": $fa-var-close,
   "multiply": $fa-var-multiply,

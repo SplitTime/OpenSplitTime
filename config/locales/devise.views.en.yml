@@ -3,8 +3,8 @@ en:
     confirmations:
       new:
         resend_confirmation_instructions: "Resend confirmation instructions"
-      confirmed: "Your account was confirmed."
-      send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."
+      confirmed: "Your account was confirmed. Please log in to continue."
+      send_instructions: "You will soon receive an email with instructions about how to confirm your account."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions about how to confirm your account in a few minutes."
     failure:
       already_authenticated: "You are already signed in."

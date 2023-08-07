@@ -45,14 +45,14 @@ RSpec.describe String do
   end
 
   describe "#to_boolean" do
-    it "returns the TrueClass object when called on a true-ish string value" do
+    it "returns true when called on a true-ish string value" do
       true_strings = %w[1 t T true TRUE on ON].to_set
       true_strings.each do |string|
         expect(string.to_boolean).to eq(true)
       end
     end
 
-    it "returns the FalseClass object when called on a false-ish string value" do
+    it "returns false when called on a false-ish string value" do
       false_strings = %w[0 f F false FALSE off OFF].to_set
       false_strings.each do |string|
         expect(string.to_boolean).to eq(false)
@@ -63,7 +63,7 @@ RSpec.describe String do
       expect("".to_boolean).to eq(nil)
     end
 
-    it "returns false when called on an unknown string value" do
+    it "returns true when called on an unknown string value" do
       expect("hello".to_boolean).to eq(true)
     end
   end

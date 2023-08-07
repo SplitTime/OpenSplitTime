@@ -6,6 +6,8 @@ RSpec.describe Webhooks::SendgridEventsController do
   describe "#create" do
     subject(:make_request) { post :create, params: params }
 
+    before { allow_any_instance_of(described_class).to receive(:valid_webhook_token?).and_return(true) }
+
     context "when the request is valid" do
       let(:params) do
         {

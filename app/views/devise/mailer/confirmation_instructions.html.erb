@@ -4,7 +4,7 @@
 
 <p><%= link_to t('.action', :default => "Confirm my account"),
                Rails.application.routes.url_helpers.user_confirmation_url(
-                 host: OstConfig.base_uri,
+                 host: OstConfig.full_uri,
                  :confirmation_token => @token,
                  locale: I18n.locale) %>
 </p>

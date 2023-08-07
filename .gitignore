@@ -117,3 +117,6 @@ storage/
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Sentry Auth Token
+.env.sentry-build-plugin

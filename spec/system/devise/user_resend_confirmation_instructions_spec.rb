@@ -18,7 +18,7 @@ RSpec.describe "User requests resend confirmation instructions" do
     fill_in "Email", with: user.email
     click_button "Resend confirmation instructions"
 
-    expect(page).to have_content("You will receive an email with instructions about how to confirm your account in a few minutes.")
+    expect(page).to have_content("You will soon receive an email with instructions about how to confirm your account.")
   end
 
   scenario "sign up" do

@@ -44,8 +44,14 @@ class Webhooks::SendgridEventsController < ::ApplicationController
   end
 
   def valid_webhook_token?
-    Rails.logger.info request.headers
+    event_webhook = SendGrid::EventWebhook.new
 
-    true
+    public_key = OstConfig.sendgrid_webhook_verification_key
+    ec_public_key = event_webhook.convert_public_key_to_ecdsa(public_key)
+    payload = request.body.read
+    signature = request.headers[SendGrid::EventWebhookHeader::SIGNATURE]
+    timestamp = request.headers[SendGrid::EventWebhookHeader::TIMESTAMP]
+
+    event_webhook.verify_signature(ec_public_key, payload, signature, timestamp)
   end
 end

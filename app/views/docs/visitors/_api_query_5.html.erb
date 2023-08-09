@@ -2,7 +2,8 @@
   <h4 class="card-header">Posting Raw Times</h4>
   <div class="card-body">
     <p>You can post raw time data in real time to your events using the OpenSplitTime API. This is how OST Remote communicates time data to
-      OpenSplitTime. To post raw times in bulk, you will need to post to the endpoint `/api/v1/event_groups/:id/import`.</p>
+      OpenSplitTime. To post raw times in bulk, you will need to post to the endpoint
+      <span class="font-monospace">/api/v1/event_groups/:id/import</span>.</p>
   </div>
 </div>
 <br/>
@@ -10,7 +11,7 @@
 <div class="card">
   <h4 class="card-header">Raw Time Data Format</h4>
   <div class="card-body">
-    <p>Here is a sample query for posting Raw Time data:</p>
+    <p>The body of your POST should look something like this:</p>
     <div class="card">
       <div class="card-body">
         <pre class="font-monospace">
@@ -64,7 +65,7 @@
 <br/>
 
 <div class="card">
-  <h4 class="card-header">Required and optional fields</h4>
+  <h4 class="card-header">Attributes</h4>
   <div class="card-body">
     <p>The <span class="font-monospace">limited_response</span> field is optional. If set to <span class="font-monospace">"true"</span>, the response
       will include no body. Otherwise, the response will include a body with the posted Raw Time records.</p>

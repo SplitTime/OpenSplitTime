@@ -1,0 +1,125 @@
+<div class="card">
+  <h4 class="card-header">Posting Raw Times</h4>
+  <div class="card-body">
+    <p>You can post raw time data in real time to your events using the OpenSplitTime API. This is how OST Remote communicates time data to
+      OpenSplitTime. To post raw times in bulk, you will need to post to the endpoint `/api/v1/event_groups/:id/import`.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Raw Time Data Format</h4>
+  <div class="card-body">
+    <p>Here is a sample query for posting Raw Time data:</p>
+    <div class="card">
+      <div class="card-body">
+        <pre class="font-monospace">
+    {
+      "data": [
+        {
+          "type": "raw_time",
+          "attributes": {
+            "source": "my-source-device-with-unique-id",
+            "sub_split_kind": "in",
+            "with_pacer": "false",
+            "entered_time": "2023-08-09 09:16:01-6:00",
+            "split_name": "Telluride",
+            "bib_number": "4",
+            "stopped_here": "false"
+          }
+        },
+        {
+          "type": "raw_time",
+          "attributes": {
+            "source": "my-source-device-with-unique-id",
+            "sub_split_kind": "out",
+            "with_pacer": "false",
+            "entered_time": "2023-08-09 09:16:06-6:00",
+            "split_name": "Telluride",
+            "bib_number": "4",
+            "stopped_here": "false"
+          }
+        },
+        {
+          "type": "raw_time",
+          "attributes": {
+            "source": "my-source-device-with-unique-id",
+            "sub_split_kind": "in",
+            "with_pacer": "false",
+            "entered_time": "2023-08-09 09:16:16-6:00",
+            "split_name": "Telluride",
+            "bib_number": "1",
+            "stopped_here": "false"
+          }
+        }
+      ],
+      "data_format": "jsonapi_batch",
+      "limited_response": "true"
+    }
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Required and optional fields</h4>
+  <div class="card-body">
+    <p>The <span class="font-monospace">limited_response</span> field is optional. If set to <span class="font-monospace">"true"</span>, the response
+      will include no body. Otherwise, the response will include a body with the posted Raw Time records.</p>
+    <p>The <span class="font-monospace">data_format</span> field must be set to <span class="font-monospace">"jsonapi_batch"</span>.</p>
+    <p>For the attributes, the following rules apply:</p>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Field</th>
+        <th>Required?</th>
+        <th>Notes</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="font-monospace">source</td>
+        <td>Yes</td>
+        <td>Must be a string. Highly recommended that this be unique to the device posting the data as this will help you diagnose any data issues.</td>
+      </tr>
+      <tr>
+        <td class="font-monospace">sub_split_kind</td>
+        <td>Yes</td>
+        <td>Must be one of <span class="font-monospace">"in"</span> or <span class="font-monospace">"out"</span>. If the split is set to record only
+          "In" times, then this must always be <span class="font-monospace">"in"</span>.</td>
+      </tr>
+      <tr>
+        <td class="font-monospace">with_pacer</td>
+        <td>No</td>
+        <td>Must be one of <span class="font-monospace">"true"</span> or <span class="font-monospace">"false"</span>.</td>
+      </tr>
+      <tr>
+        <td class="font-monospace">entered_time</td>
+        <td>Yes</td>
+        <td>Must be a string in the format <span class="font-monospace">"YYYY-MM-DD HH:MM:SS-6:00"</span>. The time zone offset must be
+          included. The time zone offset must be in the format <span class="font-monospace">"+HH:MM"</span> or <span class="font-monospace">"-HH:MM"</span>.
+        </td>
+      </tr>
+      <tr>
+        <td class="font-monospace">split_name</td>
+        <td>Yes</td>
+        <td>Must be a string. Must exactly match the name of a split that is used in the Event Group.</td>
+      </tr>
+      <tr>
+        <td class="font-monospace">bib_number</td>
+        <td>Yes</td>
+        <td>Must be a string. This should match the bib number of an existing participant in the event_group, but any number will be accepted.
+          May include only digits 0-9 or "*".</td>
+      </tr>
+      <tr>
+        <td class="font-monospace">stopped_here</td>
+        <td>No</td>
+        <td>Must be one of <span class="font-monospace">"true"</span> or <span class="font-monospace">"false"</span>.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br/>

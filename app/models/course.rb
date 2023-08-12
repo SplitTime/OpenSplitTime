@@ -44,34 +44,52 @@ class Course < ApplicationRecord
     self
   end
 
+  # @return [Integer, nil]
+  def average_finish_seconds
+    starting_split_id = start_split.id
+    finish_split_id = finish_split.id
+    segments = EffortSegment.where(begin_split_id: starting_split_id, end_split_id: finish_split_id)
+    return nil if segments.empty?
+
+    segments.average(:elapsed_seconds).to_i
+  end
+
+  # @return [ActiveSupport::TimeWithZone, nil]
   def earliest_event_date
     events.earliest&.scheduled_start_time
   end
 
+  # @return [ActiveSupport::TimeWithZone, nil]
   def most_recent_event_date
     events.most_recent&.scheduled_start_time
   end
 
+  # @return [Event::ActiveRecord_AssociationRelation]
   def visible_events
     events.visible
   end
 
+  # @return [String, nil]
   def home_time_zone
     events.latest&.home_time_zone
   end
 
+  # @return [Integer, nil]
   def distance
     @distance ||= finish_split.distance_from_start if finish_split.present?
   end
 
+  # @return [Integer, nil]
   def vert_gain
     @vert_gain ||= finish_split.vert_gain_from_start if finish_split.present?
   end
 
+  # @return [Integer, nil]
   def vert_loss
     @vert_loss ||= finish_split.vert_loss_from_start if finish_split.present?
   end
 
+  # @return [Boolean]
   def simple?
     splits_count < 3
   end

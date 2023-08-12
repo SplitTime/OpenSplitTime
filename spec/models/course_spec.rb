@@ -52,6 +52,17 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe "#average_finish_seconds" do
+    let(:result) { course.average_finish_seconds }
+    let(:course) { courses(:hardrock_ccw) }
+
+    before { EffortSegment.set_all }
+
+    it "returns the average finish time in seconds for the course" do
+      expect(result).to eq(139039)
+    end
+  end
+
   describe "methods that produce lap_splits" do
     let(:course) { courses(:rufa_course) }
     let(:splits) { course.ordered_splits }

@@ -25,7 +25,7 @@ module DatetimepickerHelper
                                    flatpickr_enable_time_value: options[:enable_time],
                                  }
 
-    icon = content_tag(:span, nil, class: "input-group-text far fa-calendar-alt")
+    icon = fa_icon("calendar", class: "input-group-text")
 
     content_tag(:div, nil, class: "input-group") do
       text_field + icon

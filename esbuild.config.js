@@ -11,8 +11,11 @@ require("esbuild").context({
   plugins: [
     sentryEsbuildPlugin({
       authToken: process.env.SENTRY_AUTH_TOKEN,
-      org: "opensplittime",
-      project: "opensplittime",
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      release: {
+        name: process.env.SENTRY_RELEASE,
+      }
     }),
   ],
   minify: process.argv.includes("--minify")

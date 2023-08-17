@@ -6,6 +6,10 @@ export default class extends Controller {
 
     toggle(e) {
         e.preventDefault();
-        $(this.wrapperTarget).toggleClass("toggled");
+        if (this.wrapperTarget.classList.contains("toggled")) {
+            this.wrapperTarget.classList.remove("toggled");
+        } else {
+            this.wrapperTarget.classList.add("toggled");
+        }
     }
 }

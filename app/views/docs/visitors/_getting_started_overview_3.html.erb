@@ -3,12 +3,35 @@
   <div class="card-body">
     <p><strong><%= link_to 'Raw Time:', docs_getting_started_path(topic: :terms, page: 8) %></strong> A single time at which
       a bib number is recorded live at a given Split while an Event is ongoing. Raw Times are viewable by Organization
-      personnel and stewards, but <strong>not by the general public</strong>. Raw Times are recorded using the Live
-      Entry screen in opensplittime.org or <%= link_to 'OST Remote', ost_remote_path %>, the easy-to-use iOS
-      client app for live time recording.</p>
+      personnel and stewards, but <strong>not by the general public</strong>. Any number of Raw Times may exist for an entrant
+      at a particular point on the Course. This allows multiple devices or methods to be used to input Raw Times.</p>
     <p><strong><%= link_to 'Split Time:', docs_getting_started_path(topic: :terms, page: 9) %></strong> A
       <strong>publicly viewable</strong> time at which an Entrant is deemed to have been recorded at a given Split. When
-      Raw Time records are available, as is the case when times are recorded live using OST Remote, Split Times will
-      ideally represent the best possible interpretation of the complete Raw Time record.</p>
+      Raw Time records are available, Split Times will ideally represent the best possible interpretation of the complete
+      Raw Time record. Only one Split Time may exist for an entrant at a particular point on the Course.</p>
   </div>
 </div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Creating Raw Times</h4>
+  <div class="card-body">
+    <p>Raw Times are created using the Live Entry screen in opensplittime.org, or via <%= link_to 'OST Remote', ost_remote_path %>,
+      the easy-to-use iOS client app for live time recording, or by
+      <%= link_to "posting time data to the OpenSplitTime API", docs_api_path(topic: :query, page: 5) %>.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Creating Split Times</h4>
+  <div class="card-body">
+    <p>Split Times will normally be created automatically from Raw Times that OpenSplitTime has analyzed and categorized as either
+      "good" or "questionable." Raw Times that are categorized as "bad" do not result in automatic Split Time creation.</p>
+    <p>If a Split Time already exists for a given Entrant at a particular point on the Course, any Raw Times for that Entrant
+      at that point on the Course will be captured as Raw Time records but will not automatically change the existing Split Time.</p>
+    <p>Split Times may also be created using the <strong>Effort > Audit</strong> view or the
+      <strong>Effort > Actions > Edit Times</strong> views.</p>
+  </div>
+</div>
+<br/>

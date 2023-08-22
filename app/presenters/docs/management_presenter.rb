@@ -26,7 +26,8 @@ module Docs
             "Obtaining Equipment",
             "Caring for Equipment",
             "Training Crews",
-            "Predicting Traffic"
+            "Predicting Traffic",
+            "Notice Text",
           ]
         },
         start: {

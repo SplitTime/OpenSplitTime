@@ -23,8 +23,12 @@
   </div>
 
   <div class="col-12 col-lg-6 col-lg-pull-6">
+    <h3 class="fw-bold">
+      <%= split.persisted? ? "Update #{split.base_name}" : "New Split" %>
+    </h3>
+
     <%= form_with model: [event.event_group, event, split],
-                  data: { action: "turbo:submit-end->course-setup--split-location#dispatchSplitTableModified"} do |form| %>
+                  data: { action: "turbo:submit-end->course-setup--split-location#dispatchSplitTableModified" } do |form| %>
       <hr/>
       <div class="row">
         <div class="mb-3 col-6">
@@ -59,12 +63,12 @@
           <%= tooltip("Choose 'Time In' if times will be recorded here only once. Choose 'Time In and Out' if times will be recorded twice, once coming in and once coming out") %>
           <div class="split-time-recording-wrap">
             <label class="custom-radio">
-              <%= form.radio_button :sub_split_bitmap, 1 %>
+              <%= form.radio_button :sub_split_bitmap, SubSplit::IN_BITKEY %>
               <span class="custom-radio-indicator"></span>
               <span class="custom-radio-label">Time In</span>
             </label>
             <label class="custom-radio ms-3">
-              <%= form.radio_button :sub_split_bitmap, 64 %>
+              <%= form.radio_button :sub_split_bitmap, (SubSplit::IN_BITKEY | SubSplit::OUT_BITKEY) %>
               <span class="custom-radio-indicator"></span>
               <span class="custom-radio-label">Time In and Out</span>
             </label>

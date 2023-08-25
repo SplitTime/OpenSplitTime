@@ -52,7 +52,7 @@ class CourseGroupsController < ApplicationController
       flash[:danger] = @course_group.errors.full_messages.join("\n")
     end
 
-    redirect_to organization_path(@organization, display_style: :courses)
+    redirect_to organization_courses_path(@organization)
   end
 
   private

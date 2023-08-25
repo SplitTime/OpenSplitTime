@@ -10,8 +10,8 @@
           <h1><strong><%= link_to @presenter.full_name, @presenter.person %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization, display_style: :courses) %></li>
-            <li class="breadcrumb-item"><%= link_to "Course Groups", organization_path(@presenter.organization, display_style: :courses) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_courses_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Course Groups", organization_courses_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.course_group.name, organization_course_group_path(@presenter.organization, @presenter.course_group) %></li>
             <li class="breadcrumb-item"><%= link_to "Finishers", organization_course_group_finishers_path(@presenter.organization, @presenter.course_group) %></li>
             <li class="breadcrumb-item active"><%= @presenter.full_name %></li>

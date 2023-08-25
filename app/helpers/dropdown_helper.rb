@@ -253,8 +253,10 @@ module DropdownHelper
       { role: :separator },
       { name: "Delete event series",
         link: organization_event_series_path(view_object.organization, view_object.event_series),
-        method: :delete,
-        data: { confirm: "This action cannot be undone. Proceed?" },
+        data: {
+          turbo_confirm: "This action cannot be undone. Proceed?",
+          turbo_method: :delete,
+        },
         class: "text-danger" }
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
@@ -267,8 +269,10 @@ module DropdownHelper
       { role: :separator },
       { name: "Delete course group",
         link: organization_course_group_path(view_object.organization, view_object.course_group),
-        method: :delete,
-        data: { confirm: "This action cannot be undone. Proceed?" },
+        data: {
+          turbo_confirm: "This action cannot be undone. Proceed?",
+          turbo_method: :delete,
+        },
         class: "text-danger" }
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)

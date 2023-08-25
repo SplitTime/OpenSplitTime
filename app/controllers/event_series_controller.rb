@@ -71,7 +71,7 @@ class EventSeriesController < ApplicationController
   end
 
   def redirect_to_organization
-    redirect_to organization_event_series_index_path(@organization)
+    redirect_to organization_path(@organization)
   end
 
   def set_event_series

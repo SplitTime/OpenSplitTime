@@ -15,6 +15,7 @@
   <td><%= "#{e(split.vert_loss_from_start)} #{peu}" if split.vert_loss_from_start.present? %></td>
   <td><%= "#{e(split.elevation)} #{peu}" if split.elevation.present? %></td>
   <td><%= "#{split.latitude} / #{split.longitude}" if split.latitude.present? && split.longitude.present? %></td>
+  <td class="text-center"><%= split.sub_split_kinds.map { |kind| badge_with_text(kind, color: :secondary) }.join(" / ").html_safe %></td>
   <td class="text-end">
     <%= link_to_event_split_edit(event, split) %>
     <%= link_to_event_split_delete(event, split) %>

@@ -25,6 +25,10 @@ en:
       pending_subscription_warning: "If a webhook subscription is pending, you will not receive notifications until you confirm the subscription. You can confirm the subscription by following the link in the subscription confirmation that was sent to your endpoint when you created the subscription."
       no_webhooks_available: "Webhooks are not available for this event at this time because it has no assigned topic resource. Please contact support for assistance."
 
+  import_jobs:
+    new:
+      callout_detail_paragraph: 'Import Jobs run in the background, allowing you to do other work while the import is ongoing. You can check the status of any of your import jobs at any time by clicking "Imports" on the top menu bar.'
+
   subscriptions:
     tooltips:
       confirmed: "This subscription is confirmed."

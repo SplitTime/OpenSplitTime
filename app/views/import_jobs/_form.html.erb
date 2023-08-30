@@ -1,23 +1,36 @@
-<%= render "shared/errors", obj: @import_job %>
+<%# locals: (import_job:) %>
+
+<%= render "shared/errors", obj: import_job %>
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: @import_job, local: true, html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <%= f.label :file_name %>
-          <%= f.file_field :files, class: "form-control", autofocus: true %>
+    <%= form_with(model: import_job, local: true, html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
+      <div class="row text-center">
+
+        <div class="mb-3 text-center">
+          <div class="dropzone dropzone-default dz-clickable"
+               data-controller="dropzone"
+               data-dropzone-max-file-size="1"
+               data-dropzone-max-files="1"
+               data-dropzone-accepted-files=".csv"
+               data-action="dropzone:success->form-disable-submit#enableSubmitButton"
+          >
+            <%= f.file_field :files, direct_upload: true, data: { "dropzone-target" => "input" } %>
+            <div class="dropzone-msg dz-message needsclick text-muted">
+              <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
+              <span class="dropzone-msg-desc text-sm">0.5 MB file size maximum. File must be a csv file.</span>
+            </div>
+          </div>
         </div>
+
         <%= f.hidden_field :parent_type %>
         <%= f.hidden_field :parent_id %>
         <%= f.hidden_field :format %>
       </div>
 
-      <div class="row mb-3">
-        <div class="col">
-          <%= f.submit("Import", class: "btn btn-primary") %>
-          <%= link_to "Cancel", request.referrer || import_jobs_path, class: "btn btn-outline-secondary" %>
-        </div>
+      <div class="mb-3 text-center">
+        <%= f.submit("Import", class: "btn btn-primary") %>
+        <%= link_to "Cancel", request.referrer || import_jobs_path, class: "btn btn-outline-secondary" %>
       </div>
     <% end %>
   </div>

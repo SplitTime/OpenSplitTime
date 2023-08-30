@@ -5,6 +5,7 @@
 <% icon_name ||= nil %>
 <% main_text ||= nil %>
 <% detail_paragraphs ||= [] %>
+<% detail_paragraphs = Array.wrap(detail_paragraphs) %>
 <% link ||= nil %>
 
 <div class="callout callout-<%= callout_color %>">

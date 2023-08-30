@@ -20,5 +20,23 @@
 </header>
 
 <article class="ost-article container">
-  <%= render "form" %>
+  <%= render partial: "shared/callout_with_link",
+             locals: {
+               icon_name: "info-circle",
+               icon_color: "info",
+               callout_color: "info",
+               detail_paragraphs: [t(".callout_detail_paragraph")]
+             } %>
+
+  <div class="card my-3">
+    <div class="card-header">
+      <h4 class="h4 fw-bold">New Import Job</h4>
+    </div>
+    <div class="card-body">
+      <div><span class="fw-bold">Importing into: </span><span><%= "#{@import_job.parent_type.titleize} #{@import_job.parent_name}" %></span></div>
+      <div><span class="fw-bold">Using format: </span><span class="font-monospace"><%= @import_job.format %></span></div>
+    </div>
+  </div>
+
+  <%= render partial: "form", locals: { import_job: @import_job } %>
 </article>

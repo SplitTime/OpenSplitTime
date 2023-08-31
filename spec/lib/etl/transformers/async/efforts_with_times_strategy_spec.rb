@@ -23,40 +23,42 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
       let(:event) { events(:ggd30_50k) }
 
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
-                        Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
-                        Dry_Fork_Inbound_In: "19:18:39",
-                        Finish: "22:24:07"),
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
+                         Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
+                         Dry_Fork_Inbound_In: "19:18:39",
+                         Finish: "22:24:07"),
 
-         OpenStruct.new(Overall_rank: 2, Gender_rank: 2, First_name: "Patrick", Last_name: "McGlade", Gender: "male", Age: 25, State_code: "CO", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Dry_Fork_Outbound_In: "", Dry_Fork_Outbound_Out: "",
-                        Jaws_In: "09:40:24", Jaws_Out: "09:50:46",
-                        Dry_Fork_Inbound_In: "16:48:36",
-                        Finish: "19:39:02"),
+          OpenStruct.new(Overall_rank: 2, Gender_rank: 2, First_name: "Patrick", Last_name: "McGlade", Gender: "male", Age: 25, State_code: "CO", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Dry_Fork_Outbound_In: "", Dry_Fork_Outbound_Out: "",
+                         Jaws_In: "09:40:24", Jaws_Out: "09:50:46",
+                         Dry_Fork_Inbound_In: "16:48:36",
+                         Finish: "19:39:02"),
 
-         OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start_Offset: "-00:30:00",
-                        Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
-                        Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
-                        Dry_Fork_Inbound_In: "19:18:39",
-                        Finish: "22:24:07"),
+          OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start_Offset: "-00:30:00",
+                         Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
+                         Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
+                         Dry_Fork_Inbound_In: "19:18:39",
+                         Finish: "22:24:07"),
 
-         OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Dry_Fork_Outbound_In: "02:46:23", Dry_Fork_Outbound_Out: "02:47:44",
-                        Jaws_In: "", Jaws_Out: "",
-                        Dry_Fork_Inbound_In: "",
-                        Finish: ""),
+          OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Dry_Fork_Outbound_In: "02:46:23", Dry_Fork_Outbound_Out: "02:47:44",
+                         Jaws_In: "", Jaws_Out: "",
+                         Dry_Fork_Inbound_In: "",
+                         Finish: ""),
 
-         OpenStruct.new(Overall_rank: 255, Gender_rank: 214, First_name: "Michael", Last_name: "Vasti", Gender: "male", Age: 38, State_code: "NY", Country_code: "US",
-                        Start_Offset: "",
-                        Dry_Fork_Outbound_In: "", Dry_Fork_Outbound_Out: "",
-                        Jaws_In: "", Jaws_Out: "",
-                        Dry_Fork_Inbound_In: "",
-                        Finish: "")]
+          OpenStruct.new(Overall_rank: 255, Gender_rank: 214, First_name: "Michael", Last_name: "Vasti", Gender: "male", Age: 38, State_code: "NY", Country_code: "US",
+                         Start_Offset: "",
+                         Dry_Fork_Outbound_In: "", Dry_Fork_Outbound_Out: "",
+                         Jaws_In: "", Jaws_Out: "",
+                         Dry_Fork_Inbound_In: "",
+                         Finish: ""),
+        ]
       end
 
       it "returns proto_records, assigns event_id, and returns correct keys" do
@@ -128,32 +130,34 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
     context "when given valid data using military times" do
       let(:event) { events(:rufa_2016) }
       before { event.update(laps_required: 1) }
-      let(:options) { {parent: event, time_format: :military} }
+      let(:options) { { parent: event, time_format: :military } }
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start: "10:00:00",
-                        Jaws_In: "20:34:03",
-                        Finish: "08:24:07"),
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start: "10:00:00",
+                         Jaws_In: "20:34:03",
+                         Finish: "08:24:07"),
 
-         OpenStruct.new(Overall_rank: 2, Gender_rank: 2, First_name: "Patrick", Last_name: "McGlade", Gender: "male", Age: 25, State_code: "CO", Country_code: "US",
-                        Start: "10:00:00",
-                        Jaws_In: "19:40:24",
-                        Finish: "05:39:02"),
+          OpenStruct.new(Overall_rank: 2, Gender_rank: 2, First_name: "Patrick", Last_name: "McGlade", Gender: "male", Age: 25, State_code: "CO", Country_code: "US",
+                         Start: "10:00:00",
+                         Jaws_In: "19:40:24",
+                         Finish: "05:39:02"),
 
-         OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start: "09:30:00",
-                        Jaws_In: "20:34:03",
-                        Finish: "22:24:07"),
+          OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start: "09:30:00",
+                         Jaws_In: "20:34:03",
+                         Finish: "22:24:07"),
 
-         OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
-                        Start: "10:00:00",
-                        Jaws_In: "",
-                        Finish: ""),
+          OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
+                         Start: "10:00:00",
+                         Jaws_In: "",
+                         Finish: ""),
 
-         OpenStruct.new(Overall_rank: 255, Gender_rank: 214, First_name: "Michael", Last_name: "Vasti", Gender: "male", Age: 38, State_code: "NY", Country_code: "US",
-                        Start: "",
-                        Jaws_In: "",
-                        Finish: "")]
+          OpenStruct.new(Overall_rank: 255, Gender_rank: 214, First_name: "Michael", Last_name: "Vasti", Gender: "male", Age: 38, State_code: "NY", Country_code: "US",
+                         Start: "",
+                         Jaws_In: "",
+                         Finish: ""),
+        ]
       end
 
       it "returns proto_records, assigns event_id, and returns correct keys" do
@@ -186,14 +190,16 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
 
     context "when given only finish times" do
       let(:event) { events(:ramble) }
-      let(:options) { {parent: event, time_format: :elapsed} }
+      let(:options) { { parent: event, time_format: :elapsed } }
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Finish: "0:20:05"),
-         OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Finish: "1:00:10"),
-         OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
-                        Finish: "")]
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Finish: "0:20:05"),
+          OpenStruct.new(Overall_rank: 99, Gender_rank: 99, First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Finish: "1:00:10"),
+          OpenStruct.new(Overall_rank: 254, Gender_rank: 213, First_name: "Michael", Last_name: "O'Connor", Gender: "male", Age: 40, State_code: "IL", Country_code: "US",
+                         Finish: ""),
+        ]
       end
 
       it "does not raise an error" do
@@ -251,7 +257,7 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
     end
 
     context "when an event has unlimited laps" do
-      let(:options) { {parent: event} }
+      let(:options) { { parent: event } }
       let(:event) { events(:rufa_2016) }
       let(:structs) do
         [
@@ -265,7 +271,7 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
 
           OpenStruct.new(First_name: "Bob", Last_name: "Cratchett", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
                          Start_lap_1: "01:00:00", Aid_lap_1: "08:40:24", Finish_lap_1: "13:39:02",
-                         Start_lap_2: "14:00:00", Aid_lap_2: "18:00:00", Finish_lap_2: "")
+                         Start_lap_2: "14:00:00", Aid_lap_2: "18:00:00", Finish_lap_2: ""),
         ]
       end
 
@@ -329,11 +335,13 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
 
     context "when an unpermitted time_format is provided" do
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Finish: "22:24:07")]
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Finish: "22:24:07"),
+        ]
       end
-      let(:options) { {parent: event, time_format: :random_format} }
+      let(:options) { { parent: event, time_format: :random_format } }
       let(:event) { events(:ramble) }
 
       it "returns an error" do
@@ -344,7 +352,7 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
 
     context "when no structs are provided" do
       let(:structs) { [] }
-      let(:options) { {parent: event} }
+      let(:options) { { parent: event } }
       let(:event) { events(:ramble) }
 
       it "returns an empty array of proto_records without returning an error" do
@@ -356,12 +364,14 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
     context "when an event is not provided" do
       let(:event) { nil }
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
-                        Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
-                        Dry_Fork_Inbound_In: "19:18:39", Dry_Fork_Inbound_Out: "19:28:24",
-                        Finish: "22:24:07")]
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
+                         Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
+                         Dry_Fork_Inbound_In: "19:18:39", Dry_Fork_Inbound_Out: "19:28:24",
+                         Finish: "22:24:07"),
+        ]
       end
 
       it "adds an error" do
@@ -373,12 +383,14 @@ RSpec.describe ETL::Transformers::Async::EffortsWithTimesStrategy do
     context "when time_points for a fixed-lap event do not match the provided times" do
       let(:event) { events(:ramble) }
       let(:structs) do
-        [OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
-                        Start_Offset: "00:00:00",
-                        Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
-                        Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
-                        Dry_Fork_Inbound_In: "19:18:39", Dry_Fork_Inbound_Out: "19:28:24",
-                        Finish: "22:24:07")]
+        [
+          OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
+                         Start_Offset: "00:00:00",
+                         Dry_Fork_Outbound_In: "02:48:54", Dry_Fork_Outbound_Out: "02:50:19",
+                         Jaws_In: "10:34:03", Jaws_Out: "10:43:20",
+                         Dry_Fork_Inbound_In: "19:18:39", Dry_Fork_Inbound_Out: "19:28:24",
+                         Finish: "22:24:07"),
+        ]
       end
 
       it "adds an error" do

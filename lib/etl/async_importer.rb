@@ -49,6 +49,7 @@ module ETL
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::EffortsWithTimesStrategy
         self.load_strategy = Loaders::AsyncInsertStrategy
+        self.custom_options = { time_format: :military }
       when :lottery_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::LotteryEntrantsStrategy

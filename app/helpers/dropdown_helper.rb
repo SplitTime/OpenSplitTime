@@ -401,13 +401,23 @@ module DropdownHelper
   end
 
   def setup_entrants_import_dropdown(view_object)
+    military_time_event_items = view_object.events.map do |event|
+      {
+        name: "Entrants with military times for #{event.guaranteed_short_name}",
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id, format: :event_entrants_with_military_times }),
+      }
+    end
+
     dropdown_items = [
-      { name: "Import from CSV file",
+      { name: "Entrants for the Event Group",
         link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants }) },
+      { role: :separator },
+      *military_time_event_items,
       { role: :separator },
       { name: "Download CSV template",
         link: efforts_path(filter: { id: 0 }, format: :csv) },
     ]
+
     build_dropdown_menu("Import", dropdown_items, button: true)
   end
 

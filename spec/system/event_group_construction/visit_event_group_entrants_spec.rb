@@ -181,7 +181,7 @@ RSpec.describe "Visit an event group entrants page and try various features", ty
   def verify_import_link_present
     expect(page).to have_button("Import")
     click_button "Import"
-    expect(page).to have_link("Import from CSV file")
+    expect(page).to have_link("Entrants for the Event Group")
   end
 
   def verify_all_entrants_present

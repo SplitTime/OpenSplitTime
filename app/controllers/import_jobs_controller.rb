@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require "etl/etl"
+
 class ImportJobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_import_job, only: [:show, :destroy]
@@ -51,6 +55,23 @@ class ImportJobsController < ApplicationController
     end
 
     redirect_to import_jobs_path(user_id: @user.id)
+  end
+
+  def csv_templates
+    skip_authorization
+
+    respond_to do |format|
+      format.csv do
+        parent = params[:parent_type].constantize.find(params[:parent_id])
+        import_job_format = params[:import_job_format].to_sym
+        csv_template_headers = ::ETL::CsvTemplates.headers(import_job_format, parent)
+        csv_template = csv_template_headers.join(",") + "\n"
+        filename_components = [import_job_format, parent.class.name.underscore, parent.id, "template.csv"]
+        filename = filename_components.join("_")
+
+        send_data csv_template, type: "text/csv", filename: filename
+      end
+    end
   end
 
   private

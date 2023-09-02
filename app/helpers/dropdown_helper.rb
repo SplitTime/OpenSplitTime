@@ -389,33 +389,31 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
-  def event_setup_course_import_dropdown(view_object)
-    dropdown_items = [
-      { name: "Import from CSV file",
-        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: view_object.event.id, format: :event_course_splits }) },
-      { role: :separator },
-      { name: "Download CSV template",
-        link: event_group_event_splits_path(view_object.event_group, view_object.event, filter: { id: 0 }, format: :csv) },
-    ]
-    build_dropdown_menu("Import", dropdown_items, button: true)
-  end
-
   def setup_entrants_import_dropdown(view_object)
-    military_time_event_items = view_object.events.map do |event|
+    elapsed_time_event_items = view_object.events.map do |event|
+      event_suffix = view_object.events.many? ? "for #{event.guaranteed_short_name}" : nil
+
       {
-        name: "Entrants with military times for #{event.guaranteed_short_name}",
+        name: ["Entrants with elapsed times", event_suffix].compact.join(" "),
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id, format: :event_entrants_with_elapsed_times }),
+      }
+    end
+    military_time_event_items = view_object.events.map do |event|
+      event_suffix = view_object.events.many? ? "for #{event.guaranteed_short_name}" : nil
+
+      {
+        name: ["Entrants with military times", event_suffix].compact.join(" "),
         link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id, format: :event_entrants_with_military_times }),
       }
     end
 
     dropdown_items = [
-      { name: "Entrants for the Event Group",
+      { name: "Event Group Entrants",
         link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants }) },
       { role: :separator },
-      *military_time_event_items,
+      *elapsed_time_event_items,
       { role: :separator },
-      { name: "Download CSV template",
-        link: efforts_path(filter: { id: 0 }, format: :csv) },
+      *military_time_event_items,
     ]
 
     build_dropdown_menu("Import", dropdown_items, button: true)

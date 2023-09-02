@@ -65,5 +65,56 @@ RSpec.describe ETL::CsvTemplates do
         expect(result).to eq(expected)
       end
     end
+
+    context "for event_group_entrants" do
+      let(:format) { :event_group_entrants }
+      let(:parent) { event_groups(:hardrock_2015) }
+
+      context "when the event_group has only one event" do
+        let(:expected) do
+          [
+            "First Name",
+            "Last Name",
+            "Gender",
+            "Birthdate",
+            "Age",
+            "Email",
+            "Phone",
+            "City",
+            "State",
+            "Country",
+            "Bib Number",
+          ]
+        end
+
+        it "returns the effort headers" do
+          expect(result).to eq(expected)
+        end
+      end
+
+      context "when the event group has multiple events" do
+        let(:parent) { event_groups(:sum) }
+        let(:expected) do
+          [
+            "First Name",
+            "Last Name",
+            "Gender",
+            "Birthdate",
+            "Age",
+            "Email",
+            "Phone",
+            "City",
+            "State",
+            "Country",
+            "Bib Number",
+            "Event Name",
+          ]
+        end
+
+        it "returns the effort headers plus Event Name" do
+          expect(result).to eq(expected)
+        end
+      end
+    end
   end
 end

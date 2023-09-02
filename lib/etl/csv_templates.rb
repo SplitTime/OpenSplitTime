@@ -64,6 +64,8 @@ module ETL
         split_names_for_event(parent)
       when :event_entrants_with_military_times
         split_names_for_event(parent)
+      when :event_group_entrants
+        parent.multiple_events? ? ["Event Name"] : []
       else
         []
       end

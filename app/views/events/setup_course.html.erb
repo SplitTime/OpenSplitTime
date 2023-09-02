@@ -53,7 +53,9 @@
                   class: "btn btn-success",
                   data: { turbo_frame: "form_modal" }
       %>
-      <%= event_setup_course_import_dropdown(@presenter) %>
+      <%= link_to "Import",
+                  new_import_job_path(import_job: { parent_type: "Event", parent_id: @presenter.event.id, format: :event_course_splits }),
+                  class: "btn btn-outline-secondary" %>
       <%= link_to "Export",
                   event_group_event_splits_path(@presenter.event_group, @presenter.event, format: :csv),
                   class: "btn btn-outline-secondary" %>

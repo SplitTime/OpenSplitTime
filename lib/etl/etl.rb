@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "csv_templates"
 require_relative "errors"
 require_relative "extractor"
 require_relative "transformer"

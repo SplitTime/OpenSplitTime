@@ -17,7 +17,6 @@ class UserSettingsController < ApplicationController
 
   # GET /user_settings/credentials
   def credentials
-    @user = current_user
   end
 
   def update

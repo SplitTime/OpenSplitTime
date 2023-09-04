@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 module Connectors
-  Service = Struct.new(:identifier, :name, :credentials, keyword_init: true) do
+  Service = Struct.new(:identifier, :name, :credential_keys, keyword_init: true) do
     def self.all
       [
         new(
+          identifier: "rattlesnake_ramble",
+          name: "Rattlesnake Ramble",
+          credential_keys: %w[email password]
+        ),
+        new(
           identifier: "runsignup",
           name: "RunSignup",
-          credentials: %w[api_key api_secret]
-        )
+          credential_keys: %w[api_key api_secret]
+        ),
       ]
     end
 

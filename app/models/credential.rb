@@ -28,7 +28,7 @@ class Credential < ApplicationRecord
             if: :key?,
             inclusion: {
               in: ->(record) do
-                Connectors::Service::BY_IDENTIFIER[record.service_identifier]&.credentials || []
+                Connectors::Service::BY_IDENTIFIER[record.service_identifier]&.credential_keys || []
               end,
               message: ->(record, _) do
                 "Invalid key #{record.key} for service_identifier #{record.service_identifier}"

@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     get :preferences
     get :password
     get :credentials
+    get :credentials_new_service
     put :update
   end
 

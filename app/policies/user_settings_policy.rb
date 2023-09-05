@@ -18,6 +18,10 @@ class UserSettingsPolicy < ApplicationPolicy
     user.present?
   end
 
+  def credentials_new_service?
+    credentials?
+  end
+
   def update?
     preferences?
   end

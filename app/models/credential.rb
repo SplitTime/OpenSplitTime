@@ -28,7 +28,7 @@ class Credential < ApplicationRecord
             if: :key?,
             inclusion: {
               in: ->(record) do
-                Connectors::Service::BY_IDENTIFIER[record.service_identifier]&.credentials || []
+                Connectors::Service::BY_IDENTIFIER[record.service_identifier]&.credential_keys || []
               end,
               message: ->(record, _) do
                 "Invalid key #{record.key} for service_identifier #{record.service_identifier}"
@@ -45,5 +45,11 @@ class Credential < ApplicationRecord
     raise ActiveRecord::RecordNotUnique, "Multiple records found for service_identifier #{service_identifier} and key #{key}" if records.many?
 
     records.first&.value
+  end
+
+  # Allows us to use a Credential object in dom_id, for example,
+  # dom_id(Credential.new(service_identifier: "foo", key: "bar")) => "credential_foo_bar"
+  def to_key
+    [service_identifier, key]
   end
 end

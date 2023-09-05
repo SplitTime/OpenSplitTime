@@ -6,42 +6,50 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-    static targets = ["button", "element"]
-    static values = {
-        buttonHideClass: String,
-        buttonHideText: String,
-        buttonShowClass: String,
-        buttonShowText: String,
+  static targets = ["button", "element"]
+  static values = {
+    buttonHideClass: String,
+    buttonHideText: String,
+    buttonShowClass: String,
+    buttonShowText: String,
+    initialStateVisible: {
+      type: Boolean,
+      default: false,
     }
+  }
 
-    connect() {
-        this.showButton()
-        this.hideElement()
+  connect() {
+    this.showButton()
+    if (this.initialStateVisibleValue) {
+      this.showElement()
+    } else {
+      this.hideElement()
     }
+  }
 
-    toggleElement() {
-        if (this.elementTarget.classList.contains("d-none")) {
-            this.showElement();
-        } else {
-            this.hideElement();
-        }
+  toggleElement() {
+    if (this.elementTarget.classList.contains("d-none")) {
+      this.showElement();
+    } else {
+      this.hideElement();
     }
+  }
 
-    showButton() {
-        this.buttonTarget.classList.remove("d-none")
-    }
+  showButton() {
+    this.buttonTarget.classList.remove("d-none")
+  }
 
-    hideElement() {
-        this.elementTarget.classList.add("d-none")
-        this.buttonTarget.innerText = this.buttonShowTextValue
-        this.buttonTarget.classList.remove(this.buttonHideClassValue)
-        this.buttonTarget.classList.add(this.buttonShowClassValue)
-    }
+  hideElement() {
+    this.elementTarget.classList.add("d-none")
+    this.buttonTarget.innerText = this.buttonShowTextValue
+    this.buttonTarget.classList.remove(this.buttonHideClassValue)
+    this.buttonTarget.classList.add(this.buttonShowClassValue)
+  }
 
-    showElement() {
-        this.elementTarget.classList.remove("d-none")
-        this.buttonTarget.innerText = this.buttonHideTextValue
-        this.buttonTarget.classList.remove(this.buttonShowClassValue)
-        this.buttonTarget.classList.add(this.buttonHideClassValue)
-    }
+  showElement() {
+    this.elementTarget.classList.remove("d-none")
+    this.buttonTarget.innerText = this.buttonHideTextValue
+    this.buttonTarget.classList.remove(this.buttonShowClassValue)
+    this.buttonTarget.classList.add(this.buttonHideClassValue)
+  }
 }

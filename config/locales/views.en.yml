@@ -34,3 +34,10 @@ en:
       confirmed: "This subscription is confirmed."
       no_topic: "This subscription does not have a resource key. Click Actions > Refresh to attempt to generate one, or delete this subscription and create a new one."
       pending: "This subscription is pending confirmation. If you have confirmed the endpoint, click Actions > Refresh to change its status here."
+
+  user_settings:
+    credentials:
+      credentials_callout:
+        detail_paragraph_1: "Credentials are used to connect your OpenSplitTime resource (such as an Event Group or an Event) with an external service, like Runsignup. This makes it easy to sync data from the external service into OpenSplitTime."
+        detail_paragraph_2: "Credentials are stored securely and are only used to access the external service. They are not used for any other purpose."
+        main_text: "Using Credentials in OpenSplitTime"

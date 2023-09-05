@@ -17,7 +17,17 @@ class UserSettingsController < ApplicationController
 
   # GET /user_settings/credentials
   def credentials
-    @user = current_user
+    @presenter = UserSettings::CredentialsPresenter.new(current_user)
+  end
+
+  # GET /user_settings/credentials_new_service
+  def credentials_new_service
+    respond_to do |format|
+      format.turbo_stream do
+        service = Connectors::Service::BY_IDENTIFIER[params[:service_identifier]]
+        render :credentials_new_service, locals: { service: service, user: current_user }
+      end
+    end
   end
 
   def update
@@ -42,13 +52,13 @@ class UserSettingsController < ApplicationController
 
   def settings_update_params
     params.require(:user)
-          .permit(
-            :first_name,
-            :last_name,
-            :email,
-            :phone,
-            :pref_distance_unit,
-            :pref_elevation_unit,
-          )
+      .permit(
+        :first_name,
+        :last_name,
+        :email,
+        :phone,
+        :pref_distance_unit,
+        :pref_elevation_unit,
+      )
   end
 end

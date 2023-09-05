@@ -24,13 +24,8 @@ class UserSettingsController < ApplicationController
   def credentials_new_service
     respond_to do |format|
       format.turbo_stream do
-        service_identifier = params[:service_identifier]
-        render turbo_stream: turbo_stream.prepend("credentials_list",
-                                                  partial: "user_settings/credentials_service_card",
-                                                  locals: {
-                                                    service: Connectors::Service::BY_IDENTIFIER[service_identifier],
-                                                    user: current_user
-                                                  })
+        service = Connectors::Service::BY_IDENTIFIER[params[:service_identifier]]
+        render :credentials_new_service, locals: { service: service, user: current_user }
       end
     end
   end

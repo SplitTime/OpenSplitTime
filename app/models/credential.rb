@@ -46,4 +46,10 @@ class Credential < ApplicationRecord
 
     records.first&.value
   end
+
+  # Allows us to use a Credential object in dom_id, for example,
+  # dom_id(Credential.new(service_identifier: "foo", key: "bar")) => "credential_foo_bar"
+  def to_key
+    [service_identifier, key]
+  end
 end

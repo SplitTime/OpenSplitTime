@@ -117,6 +117,7 @@ Rails.application.routes.draw do
 
     member do
       get :assign_bibs
+      get :connect
       get :drop_list
       get :efforts
       get :entrants

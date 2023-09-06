@@ -236,8 +236,8 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
-  # GET /event_groups/1/connect
-  def connect
+  # GET /event_groups/1/connections
+  def connections
     authorize @event_group
 
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)

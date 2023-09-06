@@ -60,7 +60,7 @@ class EventGroupPolicy < ApplicationPolicy
     setup?
   end
 
-  def connect?
+  def connections?
     setup?
   end
 

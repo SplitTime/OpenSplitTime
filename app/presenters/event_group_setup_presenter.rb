@@ -105,7 +105,7 @@ class EventGroupSetupPresenter < BasePresenter
   def runsignup_race_id
     return @runsignup_race_id if defined?(@runsignup_race_id)
 
-    @runsignup_race_id = event_group.syncable_sources(:runsignup).where(source_type: "Race").first&.source_id
+    @runsignup_race_id = event_group.syncable_sources.from_source(:runsignup).where(source_type: "Race").first&.source_id
   end
 
   def status

@@ -4,7 +4,7 @@ class SyncableRelationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_syncable
   before_action :authorize_organization
-  before_action :set_syncable_relation, except: [:create]
+  before_action :set_syncable_relation, except: [:new, :create]
   after_action :verify_authorized
 
   def create

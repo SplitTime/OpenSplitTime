@@ -1,5 +1,10 @@
 en:
   event_groups:
+    connections:
+      callout:
+        main_text: "Using Connections in OpenSplitTime"
+        detail_paragraph_1: "Connections provide a simple way to keep your data synchronized with an outside source (like Runsignup) or an internal source (like an OpenSplitTime Lottery)."
+        detail_paragraph_2: "You can manage connections for your Event Group from this page."
     setup:
       enable_live_confirm: "NOTE: This will enable live entry actions for %{event_group_name}, and will also enable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"
       disable_live_confirm: "NOTE: This will suspend all live entry actions for %{event_group_name}, including any that may be in process, and will disable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"

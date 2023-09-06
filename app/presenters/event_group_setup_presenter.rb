@@ -12,6 +12,7 @@ class EventGroupSetupPresenter < BasePresenter
            :name,
            :organization,
            :partners,
+           :syncable_sources,
            :to_param,
            :unreconciled_efforts,
            to: :event_group
@@ -83,6 +84,10 @@ class EventGroupSetupPresenter < BasePresenter
 
   def organization_name
     organization.name
+  end
+
+  def available_connection_services
+    Connectors::Service.all
   end
 
   def runsignup_events(event)

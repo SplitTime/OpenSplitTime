@@ -206,7 +206,7 @@ Rails.application.routes.draw do
 
     resources :event_groups, except: [:index, :show] do
       resources :partners, except: [:show], module: "event_groups"
-      resources :syncable_relations, only: [:create, :destroy], module: "event_groups"
+      resources :syncable_relations, only: [:new, :create, :destroy], module: "event_groups"
     end
 
     resources :event_series, except: [:index]

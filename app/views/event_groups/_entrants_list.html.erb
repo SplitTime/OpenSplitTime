@@ -33,7 +33,7 @@
             <% if @presenter.event_group.organization.lotteries.exists? %>
               <%= link_to "Sync with Lottery", link_lotteries_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
             <% end %>
-            <%= link_to "Connections", connect_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
+            <%= link_to "Connections", connections_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
             <% if @presenter.event_group.syncable_sources.exists? %>
               <%= link_to "External Sync", sync_efforts_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
             <% end %>

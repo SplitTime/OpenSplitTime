@@ -1,0 +1,53 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Connections - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "setup_header", presenter: @presenter, breadcrumbs: ["Connections"] %>
+
+<article class="ost-article container">
+  <div class="row flex-nowrap">
+    <div class="col">
+      <%= render partial: "shared/callout_with_link", locals: {
+        main_text: t(".callout.main_text"),
+        detail_paragraphs: [t(".callout.detail_paragraph_1"), t(".callout.detail_paragraph_2")],
+        callout_color: "info",
+        icon_color: "info",
+        icon_name: "info-circle",
+      } %>
+
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title fw-bold mt-1">Add a Connection</h4>
+        </div>
+        <div class="card-body">
+          <p>Choose the service you want to connect this Event Group to:</p>
+
+          <%= form_with url: new_organization_event_group_syncable_relation_path(@presenter.organization, @presenter.event_group),
+                        method: :get,
+                        data: { controller: "form-disable-submit", turbo_stream: true } do |form| %>
+            <div class="row">
+              <div class="col">
+                <%= form.select :service_identifier,
+                                @presenter.available_connection_services.map { |service| [service.name, service.identifier] },
+                                { prompt: true },
+                                class: "form-control form-select"
+                %>
+              </div>
+              <div class="col-2">
+                <%= form.submit "Add", class: "btn btn-outline-success form-control" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="<%= dom_id(@presenter.event_group, :connections_list) %>">
+        <%= render partial: "event_groups/syncable_relations/connection_card",
+                   collection: @presenter.syncable_sources,
+                   as: :syncable_relation,
+                   locals: { presenter: @presenter } %>
+      </div>
+    </div>
+  </div>
+</article>

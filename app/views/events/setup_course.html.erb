@@ -3,7 +3,7 @@
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, "#{@presenter.course_name} Course Setup"] %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: [@presenter.event_name, @presenter.course_name, "Course Setup"] %>
 
 <%= render "shared/errors", obj: @presenter.course %>
 

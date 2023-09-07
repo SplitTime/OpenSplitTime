@@ -64,6 +64,10 @@ class EventGroupPolicy < ApplicationPolicy
     setup?
   end
 
+  def connect_service?
+    setup?
+  end
+
   def sync_efforts?
     setup?
   end

@@ -1,26 +1,19 @@
 <%# locals: (syncable_relation:) %>
 
 <div class="card mt-4"
+     id="<%= dom_id(syncable_relation) %>"
      data-controller="highlight"
-     data-highlight-timestamp-value="<%= syncable_relation.persisted? ? nil : Time.current.to_i %>"
+     data-highlight-timestamp-value="<%= syncable_relation.persisted? ? syncable_relation.updated_at.to_i : Time.current.to_i %>"
      data-highlight-fast-value="true"
      data-visibility-button-hide-class-value="btn-primary"
      data-visibility-button-hide-text-value="Hide"
      data-visibility-button-show-class-value="btn-outline-primary"
      data-visibility-button-show-text-value="Reveal">
   <div class="card-header">
-    <div class="row pt-1">
-      <div class="col">
-        <h4 class="pt-1"><strong><%= syncable_relation.source_name.titleize %></strong></h4>
-      </div>
-      <div class="col-4 col-lg-2 text-end d-grid">
-        <%= button_tag nil,
-                       class: "btn d-none",
-                       "data-action": "visibility#toggleElement",
-                       "data-visibility-target": "button" %>
-      </div>
-    </div>
+    <h4 class="pt-1"><strong><%= syncable_relation.source_name.titleize %></strong></h4>
   </div>
   <div class="card-body table-responsive">
+    <%= render partial: "event_groups/syncable_relations/form",
+               locals: { syncable_relation: syncable_relation } %>
   </div>
 </div>

@@ -1,0 +1,8 @@
+<%# locals: (event_group:, service_identifier:) %>
+
+<div id="<%= dom_id(event_group, :connect_service_button) %>">
+  <%= link_to "Connect",
+              service_identifier.blank? ? "#" : event_group_connect_service_path(event_group, service_identifier),
+              disabled: service_identifier.blank?,
+              class: "btn btn-outline-success form-control" %>
+</div>

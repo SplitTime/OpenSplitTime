@@ -90,6 +90,10 @@ class EventGroupSetupPresenter < BasePresenter
     Connectors::Service.all
   end
 
+  def service_identifier
+    params[:service_identifier]
+  end
+
   def runsignup_events(event)
     all_runsignup_events.reject do |event_struct|
       (event_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs > CANDIDATE_SEPARATION_LIMIT

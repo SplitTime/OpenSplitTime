@@ -103,6 +103,13 @@ Rails.application.routes.draw do
   resources :duplicate_event_groups, only: [:new, :create]
 
   resources :event_groups, only: [:index, :show] do
+    resources :connect_service, only: [:show], module: "event_groups" do
+      member do
+        get :connect_new
+      end
+    end
+    resources :syncable_relations, only: [:new, :create, :destroy], module: "event_groups"
+
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
       member do
@@ -206,7 +213,6 @@ Rails.application.routes.draw do
 
     resources :event_groups, except: [:index, :show] do
       resources :partners, except: [:show], module: "event_groups"
-      resources :syncable_relations, only: [:new, :create, :destroy], module: "event_groups"
     end
 
     resources :event_series, except: [:index]

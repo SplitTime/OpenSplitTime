@@ -1,0 +1,27 @@
+<%# locals: (syncable_relation:) -%>
+
+<div id="<%= dom_id(syncable_relation) %>" class="px-3">
+
+  <%= form_with model: [syncable_relation.destination, syncable_relation], data: { controller: "form-disable-submit" } do |form| %>
+    <%= form.hidden_field :source_name %>
+    <div class="row">
+      <div class="col-12 col-lg">
+        <div class="input-group my-2 font-monospace">
+          <div class="input-group-text w-50 border border-secondary">Source ID</div>
+          <%= form.text_field :source_id, class: "px-2 px-lg-3 w-50 border border-secondary" %>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 my-2 text-lg-end">
+        <%= form.submit "Save", class: "btn btn-primary" %>
+        <% if syncable_relation.persisted? %>
+          <%= link_to "Remove",
+                      event_group_syncable_relation_path(syncable_relation.destination, syncable_relation),
+                      data: { turbo_method: :delete },
+                      class: "btn btn-outline-danger" %>
+        <% else %>
+          <%= link_to "Remove", "#", class: "btn btn-outline-danger", disabled: true %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

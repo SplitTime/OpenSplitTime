@@ -1,0 +1,55 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Connections - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "setup_header", presenter: @presenter, breadcrumbs: ["Connections"] %>
+
+<article class="ost-article container">
+  <div class="row flex-nowrap">
+    <div class="col">
+      <%= render partial: "shared/callout_with_link", locals: {
+        main_text: t(".callout.main_text"),
+        detail_paragraphs: [t(".callout.detail_paragraph_1"), t(".callout.detail_paragraph_2")],
+        callout_color: "info",
+        icon_color: "info",
+        icon_name: "info-circle",
+      } %>
+
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title fw-bold mt-1">Connect to a Service</h4>
+        </div>
+        <div class="card-body">
+          <p>Choose the service you want to connect this Event Group to:</p>
+
+          <div class="row"
+               data-controller="select-get"
+               data-select-get-url-prefix-value="/event_groups/<%= @presenter.event_group.id %>/connect_service/"
+               data-select-get-url-suffix-value="/connect_new"
+               data-select-get-default-value="not_selected"
+          >
+            <div class="col">
+              <%= select_tag "connections",
+                             options_for_select(@presenter.available_connection_services.map { |service| [service.name, service.identifier] }),
+                             {
+                               prompt: "Select a service",
+                               class: "form-control form-select",
+                               data: { action: "select-get#getUrl" }
+                             }
+              %>
+            </div>
+            <div class="col-2">
+              <%= render partial: "event_groups/connect_service/connect_button",
+                         locals: { event_group: @presenter.event_group, service_identifier: nil } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="<%= dom_id(@presenter.event_group, :connections_list) %>">
+
+      </div>
+    </div>
+  </div>
+</article>

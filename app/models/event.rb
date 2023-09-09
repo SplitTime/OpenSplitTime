@@ -11,7 +11,7 @@ class Event < ApplicationRecord
   include Delegable
   include Auditable
   include Subscribable
-  include Syncable
+  include Connectable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

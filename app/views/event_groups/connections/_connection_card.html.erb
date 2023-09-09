@@ -1,0 +1,19 @@
+<%# locals: (connection:) %>
+
+<div class="card mt-4"
+     id="<%= dom_id(connection) %>"
+     data-controller="highlight"
+     data-highlight-timestamp-value="<%= connection.persisted? ? connection.updated_at.to_i : Time.current.to_i %>"
+     data-highlight-fast-value="true"
+     data-visibility-button-hide-class-value="btn-primary"
+     data-visibility-button-hide-text-value="Hide"
+     data-visibility-button-show-class-value="btn-outline-primary"
+     data-visibility-button-show-text-value="Reveal">
+  <div class="card-header">
+    <h4 class="pt-1"><strong><%= connection.service_identifier.titleize %></strong></h4>
+  </div>
+  <div class="card-body table-responsive">
+    <%= render partial: "event_groups/connections/form",
+               locals: { connection: connection } %>
+  </div>
+</div>

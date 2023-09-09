@@ -1,0 +1,22 @@
+---
+connection_0001:
+  id: 1
+  service_identifier: runsignup
+  source_type: Race
+  source_id: '123'
+  destination_type: EventGroup
+  destination_id: 59
+connection_0002:
+  id: 2
+  service_identifier: runsignup
+  source_type: Event
+  source_id: '24'
+  destination_type: Event
+  destination_id: 36
+connection_0003:
+  id: 3
+  service_identifier: runsignup
+  source_type: Event
+  source_id: '12'
+  destination_type: Event
+  destination_id: 70

@@ -1,8 +1,8 @@
 <%# locals: (event_group:, event:, external_id:, external_name:) -%>
 
 <div id='<%= "toggle_event_#{event.id}_external_id_#{external_id}" %>' class="custom-control custom-switch">
-  <% if event.syncable_sources(:runsignup).where(source_id: external_id).exists? %>
-    <%= form_with(model: [event_group, event, event.syncable_sources(:runsignup).find_by(source_id: external_id)],
+  <% if event.connections.from_service(:runsignup).where(source_id: external_id).exists? %>
+    <%= form_with(model: [event_group, event, event.connections.from_service(:runsignup).find_by(source_id: external_id)],
                   html: { method: :delete, data: { controller: "form-auto-submit" } }) do |f| %>
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>
@@ -10,8 +10,8 @@
       <label class="custom-control-label" for='<%= "delete_toggle_event_#{event.id}_external_id_#{external_id}" %>'><%= external_name %></label>
     <% end %>
   <% else %>
-    <%= form_with(model: [event_group, event, ::SyncableRelation.new], html: { method: :post, data: { controller: "form-auto-submit" } }) do |f| %>
-      <%= f.hidden_field :source_name, value: "runsignup" %>
+    <%= form_with(model: [event_group, event, ::Connection.new], html: { method: :post, data: { controller: "form-auto-submit" } }) do |f| %>
+      <%= f.hidden_field :service_identifier, value: "runsignup" %>
       <%= f.hidden_field :source_type, value: "Event" %>
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>

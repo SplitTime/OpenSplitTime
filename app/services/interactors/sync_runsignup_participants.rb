@@ -78,13 +78,13 @@ module Interactors
 
     def runsignup_event_ids
       @runsignup_event_ids ||=
-        event.syncable_sources(:runsignup).where(source_type: "Event").pluck(:source_id)
+        event.connections.from_service(:runsignup).where(source_type: "Event").pluck(:source_id)
     end
 
     def runsignup_race_id
       return @runsignup_race_id if defined?(@runsignup_race_id)
 
-      ids = event_group.syncable_sources(:runsignup).where(source_type: "Race").pluck(:source_id)
+      ids = event_group.connections.from_service(:runsignup).where(source_type: "Race").pluck(:source_id)
 
       if ids.many?
         errors << multiple_runsignup_race_ids_error(ids, event_group.id)
@@ -123,7 +123,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_not_linked_error unless event.syncable_sources(:runsignup).where(source_type: "Event").exists?
+      errors << event_not_linked_error unless event.connections.from_service(:runsignup).where(source_type: "Event").exists?
     end
 
     def set_response_resource_keys

@@ -103,6 +103,13 @@ Rails.application.routes.draw do
   resources :duplicate_event_groups, only: [:new, :create]
 
   resources :event_groups, only: [:index, :show] do
+    resources :connect_service, only: [:show], module: "event_groups" do
+      member do
+        get :connect_new
+      end
+    end
+    resources :connections, only: [:new, :create, :destroy], module: "event_groups"
+
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
       member do
@@ -112,11 +119,12 @@ Rails.application.routes.draw do
         patch :attach_course_gpx
         delete :remove_course_gpx
       end
-      resources :syncable_relations, only: [:create, :destroy], module: "events"
+      resources :connections, only: [:create, :destroy], module: "events"
     end
 
     member do
       get :assign_bibs
+      get :connections
       get :drop_list
       get :efforts
       get :entrants
@@ -135,7 +143,6 @@ Rails.application.routes.draw do
       get :split_raw_times
       get :start_efforts_form
       get :stats
-      get :sync_efforts
       get :traffic
       get :webhooks
       post :create_people
@@ -205,7 +212,6 @@ Rails.application.routes.draw do
 
     resources :event_groups, except: [:index, :show] do
       resources :partners, except: [:show], module: "event_groups"
-      resources :syncable_relations, only: [:create, :destroy], module: "event_groups"
     end
 
     resources :event_series, except: [:index]

@@ -1,24 +1,24 @@
 <%# locals: (presenter:, event:) -%>
 
 <%= content_tag(:div, id: dom_id(event, :sync_efforts_card)) do %>
-  <div class="card mb-3">
+  <div class="card my-3">
     <div class="card-header">
-      <h3><%= event.name %></h3>
+      <h4 class="mt-1"><%= event.name %></h4>
     </div>
     <div class="card-body">
       <label>Select corresponding external events</label>
-      <% presenter.runsignup_events(event).each do |runsignup_event| %>
-        <%= render partial: "events/syncable_switch",
+      <% presenter.external_events(event).each do |external_event| %>
+        <%= render partial: "events/connections/syncable_switch",
                    locals: {
                      event_group: presenter.event_group,
                      event: event,
-                     external_id: runsignup_event.id,
-                     external_name: runsignup_event.name,
+                     external_id: external_event.id,
+                     external_name: external_event.name,
                    } %>
       <% end %>
       <div class="row mt-3">
         <div class="col">
-          <%= render partial: "events/preview_sync_button", locals: { event: event } %>
+          <%= render partial: "events/connections/preview_sync_button", locals: { event: event } %>
         </div>
       </div>
     </div>

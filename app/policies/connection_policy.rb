@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SyncableRelationPolicy < ApplicationPolicy
+class ConnectionPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize
     end
@@ -9,7 +9,7 @@ class SyncableRelationPolicy < ApplicationPolicy
   attr_reader :organization
 
   def post_initialize(organization)
-    verify_authorization_was_delegated(organization, ::SyncableRelation)
+    verify_authorization_was_delegated(organization, ::Connection)
     @organization = organization
   end
 

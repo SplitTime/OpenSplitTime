@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_05_150009) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_09_182902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -52,6 +52,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_150009) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["event_id"], name: "index_aid_stations_on_event_id"
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.string "service_identifier", null: false
+    t.string "source_type", null: false
+    t.string "source_id", null: false
+    t.string "destination_type", null: false
+    t.bigint "destination_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destination_type", "destination_id"], name: "index_connections_on_destination"
+    t.index ["service_identifier", "source_type", "source_id", "destination_type", "destination_id"], name: "index_connections_on_service_source_and_destination", unique: true
   end
 
   create_table "course_group_courses", force: :cascade do |t|

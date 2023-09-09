@@ -147,8 +147,8 @@ class User < ApplicationRecord
     avatar.present?
   end
 
-  def has_credentials_for?(source_name)
-    credentials.for_service(source_name).exists?
+  def has_credentials_for?(service_identifier)
+    credentials.for_service(service_identifier).exists?
   end
 
   def from_omniauth?

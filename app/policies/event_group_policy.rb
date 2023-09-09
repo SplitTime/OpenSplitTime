@@ -41,67 +41,71 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def reconcile?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def auto_reconcile?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def associate_people?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def create_people?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def link_lotteries?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
-  def sync_efforts?
-    user.authorized_to_edit?(event_group)
+  def connections?
+    setup?
+  end
+
+  def connect_service?
+    setup?
   end
 
   def assign_bibs?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def auto_assign_bibs?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def update_bibs?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def assign_entrant_photos?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def manage_entrant_photos?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def update_entrant_photos?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def delete_entrant_photos?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def delete_photos_from_entrants?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def manage_start_times?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def manage_start_times_edit_actual?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def roster?
@@ -109,11 +113,11 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def stats?
-    user.authorized_to_edit?(event_group)
+    roster?
   end
 
   def finish_line?
-    user.authorized_to_edit?(event_group)
+    roster?
   end
 
   def delete_all_efforts?
@@ -129,7 +133,7 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def set_data_status?
-    user.authorized_to_edit?(event_group)
+    roster?
   end
 
   def start_efforts_form?
@@ -137,7 +141,7 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def start_efforts?
-    user.authorized_to_edit?(event_group)
+    roster?
   end
 
   def update_all_efforts?
@@ -157,11 +161,11 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def import?
-    user.authorized_to_edit?(event_group)
+    setup?
   end
 
   def pull_raw_times?
-    user.authorized_to_edit?(event_group)
+    live_entry?
   end
 
   def enrich_raw_time_row?

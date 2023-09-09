@@ -1,0 +1,26 @@
+<%# locals: (connection:, service:) -%>
+
+<div id="<%= dom_id(connection) %>" class="px-3">
+
+  <%= form_with model: [connection.destination, connection], data: { controller: "form-disable-submit" } do |form| %>
+    <%= form.hidden_field :service_identifier %>
+    <div class="row">
+      <div class="col-12 col-lg">
+        <div class="input-group my-2 font-monospace">
+          <div class="input-group-text w-50 border border-secondary"><%= "#{service.name} #{connection.source_type} ID" %></div>
+          <%= form.text_field :source_id, class: "px-2 px-lg-3 w-50 border border-secondary", disabled: connection.persisted? %>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 my-2 text-lg-end">
+        <% if connection.new_record? %>
+          <%= form.submit "Save", class: "btn btn-primary" %>
+        <% else %>
+          <%= link_to "Remove",
+                      event_group_connection_path(connection.destination, connection),
+                      data: { turbo_method: :delete },
+                      class: "btn btn-outline-danger" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

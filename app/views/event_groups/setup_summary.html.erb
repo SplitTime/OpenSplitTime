@@ -3,7 +3,7 @@
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "setup_header", presenter: @presenter, breadcrumbs: [] %>
+<%= render "setup_header", presenter: @presenter, breadcrumbs: ["Status"] %>
 
 <article class="ost-article container">
   <%= render "setup_summary_status", presenter: @presenter %>

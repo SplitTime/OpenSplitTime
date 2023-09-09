@@ -13,6 +13,10 @@ class ConnectServicePresenter < BasePresenter
     service&.identifier
   end
 
+  def service_name
+    service&.name
+  end
+
   def syncable_source
     @syncable_source ||= event_group.syncable_sources.find_or_initialize_by(source_name: service_identifier) do |syncable_source|
       syncable_source.destination_name = "internal"

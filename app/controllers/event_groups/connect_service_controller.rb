@@ -9,7 +9,7 @@ module EventGroups
     def show
       head :route_not_found and return if @service.blank?
 
-      render "event_groups/connect_service/#{@service.identifier}/show",
+      render "event_groups/connect_service/show",
              locals: {
                event_group_setup_presenter: EventGroupSetupPresenter.new(@event_group, view_context),
                connect_service_presenter: ConnectServicePresenter.new(@event_group, @service, view_context),

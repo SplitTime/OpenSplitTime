@@ -5,7 +5,7 @@ module Events
     private
 
     def render_syncable_create_view
-      render "events/replace_syncable_switch",
+      render "events/syncable_sources/create",
              locals: {
                event_group: @syncable.event_group,
                event: @syncable,

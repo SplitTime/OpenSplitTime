@@ -1,0 +1,37 @@
+<%# locals: (event_group_setup_presenter:, connect_service_presenter:) %>
+
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group - Connect Service - #{connect_service_presenter.service_name} - #{event_group_setup_presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: event_group_setup_presenter.event_group %>
+<%= render "event_groups/setup_header",
+           presenter: event_group_setup_presenter,
+           breadcrumbs: [
+             link_to("Connections", connections_event_group_path(event_group_setup_presenter.event_group)),
+             connect_service_presenter.service_name,
+           ] %>
+
+<article class="ost-article container">
+  <h3 class="h3 fw-bold mb-3"><%= "Connect to #{connect_service_presenter.service_name}" %></h3>
+
+  <%= render partial: "event_groups/connect_service/#{connect_service_presenter.service_identifier}/event_group_card",
+             locals: {
+               event_group_setup_presenter: event_group_setup_presenter,
+               connect_service_presenter: connect_service_presenter
+             } %>
+
+  <hr/>
+  <h4 class="fw-bold">Events</h4>
+  <%= render partial: "event_groups/connect_service/#{connect_service_presenter.service_identifier}/event_cards",
+             locals: { event_group_setup_presenter: event_group_setup_presenter } %>
+
+  <hr/>
+  <div class="row mb-3">
+    <div class="col">
+      <%= link_to "Back to connections",
+                  connections_event_group_path(event_group_setup_presenter.event_group),
+                  class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+</article>

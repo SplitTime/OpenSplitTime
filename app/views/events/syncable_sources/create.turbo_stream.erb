@@ -1,7 +1,7 @@
 <%# locals: (event_group:, event:, external_id:, external_name:) -%>
 
 <%= turbo_stream.replace "toggle_event_#{event.id}_external_id_#{external_id}",
-                         partial: "events/syncable_switch",
+                         partial: "event_groups/connect_service/syncable_switch",
                          locals: {
                            event_group: event_group,
                            event: event,
@@ -10,5 +10,5 @@
                          } %>
 
 <%= turbo_stream.replace dom_id(event, :preview_sync),
-                         partial: "events/preview_sync_button",
+                         partial: "event_groups/connect_service/preview_sync_button",
                          locals: { event: event } %>

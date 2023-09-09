@@ -8,7 +8,7 @@
     <div class="card-body">
       <label>Select corresponding external events</label>
       <% presenter.external_events(event).each do |external_event| %>
-        <%= render partial: "event_groups/connect_service/syncable_switch",
+        <%= render partial: "events/connections/syncable_switch",
                    locals: {
                      event_group: presenter.event_group,
                      event: event,
@@ -18,7 +18,7 @@
       <% end %>
       <div class="row mt-3">
         <div class="col">
-          <%= render partial: "event_groups/connect_service/preview_sync_button", locals: { event: event } %>
+          <%= render partial: "events/connections/preview_sync_button", locals: { event: event } %>
         </div>
       </div>
     </div>

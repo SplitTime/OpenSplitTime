@@ -2,6 +2,18 @@
 
 module EventGroups
   class SyncableRelationsController < ::SyncableRelationsController
+    def destroy
+      @syncable_source.destroy
+
+      event_syncable_sources = SyncableRelation.where(
+        destination_type: "Event",
+        destination_id: @syncable.events.ids.map(&:to_s),
+        source_name: @syncable_source.source_name
+      )
+      event_syncable_sources.destroy_all
+
+      render_syncable_destroy_view
+    end
 
     private
 

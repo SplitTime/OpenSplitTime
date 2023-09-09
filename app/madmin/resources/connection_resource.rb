@@ -8,7 +8,7 @@ class ConnectionResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  association :destination
+  attribute :destination
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

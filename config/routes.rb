@@ -285,7 +285,6 @@ Rails.application.routes.draw do
           post :enrich_raw_time_row
           get :not_expected
           post :import
-          post :import_csv_raw_times
           post :submit_raw_time_rows
           patch :pull_raw_times
         end

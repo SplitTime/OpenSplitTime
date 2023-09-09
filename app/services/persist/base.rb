@@ -31,7 +31,7 @@ module Persist
 
     private
 
-    attr_reader :model, :connections, :update_fields, :errors
+    attr_reader :model, :resources, :update_fields, :errors
 
     def message
       if errors.present?

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  Response = Struct.new(:errors, :message, :connections) do
+  Response = Struct.new(:errors, :message, :resources) do
     def successful?
       errors.blank?
     end

@@ -22,7 +22,7 @@ module Interactors
     attr_reader :id_hash
     attr_accessor :response
 
-    delegate :errors, :connections, to: :response
+    delegate :errors, :resources, to: :response
 
     def response_message
       if errors.present?

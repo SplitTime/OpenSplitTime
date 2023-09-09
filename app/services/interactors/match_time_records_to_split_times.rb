@@ -27,7 +27,7 @@ module Interactors
 
     private
 
-    attr_reader :time_records, :split_times, :tolerance, :errors, :connections
+    attr_reader :time_records, :split_times, :tolerance, :errors, :resources
 
     def match_time_record_to_split_time(time_record)
       split_time = matching_split_time(time_record)

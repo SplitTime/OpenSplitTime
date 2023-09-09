@@ -55,7 +55,7 @@ module Interactors
 
     attr_reader :event, :current_user, :response, :time
     attr_accessor :preview_only
-    delegate :errors, :connections, to: :response, private: true
+    delegate :errors, :resources, to: :response, private: true
     delegate :event_group, to: :event, private: true
 
     def find_and_create_entrants

@@ -8,7 +8,7 @@
 <%= render "event_groups/setup_header",
            presenter: event_group_setup_presenter,
            breadcrumbs: [
-             link_to("Connections", connections_event_group_path(event_group_setup_presenter.event_group)),
+             link_to("Connections", event_group_connections_path(event_group_setup_presenter.event_group)),
              connect_service_presenter.service_name,
            ] %>
 
@@ -33,7 +33,7 @@
   <div class="row mb-3">
     <div class="col">
       <%= link_to "Back to connections",
-                  connections_event_group_path(event_group_setup_presenter.event_group),
+                  event_group_connections_path(event_group_setup_presenter.event_group),
                   class: "btn btn-outline-secondary" %>
     </div>
   </div>

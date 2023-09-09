@@ -108,7 +108,7 @@ Rails.application.routes.draw do
         get :connect_new
       end
     end
-    resources :connections, only: [:new, :create, :destroy], module: "event_groups"
+    resources :connections, only: [:index, :new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
@@ -124,7 +124,6 @@ Rails.application.routes.draw do
 
     member do
       get :assign_bibs
-      get :connections
       get :drop_list
       get :efforts
       get :entrants

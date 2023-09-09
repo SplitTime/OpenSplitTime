@@ -1,7 +1,0 @@
-<%# locals: (syncable_relation) %>
-
-<%= turbo_stream.prepend(dom_id(syncable_relation.destination, :connections_list),
-                         partial: "event_groups/syncable_relations/connection_card",
-                         locals: {
-                           syncable_relation: syncable_relation
-                         }) %>

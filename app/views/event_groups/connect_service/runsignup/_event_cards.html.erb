@@ -1,0 +1,8 @@
+<%# locals: (event_group_setup_presenter:) %>
+
+<div id="event_cards">
+  <%= render partial: "events/sync_efforts_card",
+             locals: { presenter: event_group_setup_presenter },
+             collection: event_group_setup_presenter.event_group.events.order(:scheduled_start_time),
+             as: :event %>
+</div>

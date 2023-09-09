@@ -143,7 +143,6 @@ Rails.application.routes.draw do
       get :split_raw_times
       get :start_efforts_form
       get :stats
-      get :sync_efforts
       get :traffic
       get :webhooks
       post :create_people

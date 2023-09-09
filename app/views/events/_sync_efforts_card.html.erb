@@ -1,9 +1,9 @@
 <%# locals: (presenter:, event:) -%>
 
 <%= content_tag(:div, id: dom_id(event, :sync_efforts_card)) do %>
-  <div class="card mb-3">
+  <div class="card my-3">
     <div class="card-header">
-      <h3><%= event.name %></h3>
+      <h4 class="mt-1"><%= event.name %></h4>
     </div>
     <div class="card-body">
       <label>Select corresponding external events</label>

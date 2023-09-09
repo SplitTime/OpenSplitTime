@@ -5,16 +5,12 @@ module EventGroups
 
     private
 
-    def render_syncable_new_view
-      render :new, locals: { syncable_relation: @syncable_relation }
-    end
-
     def render_syncable_create_view
-      super
+      render :create, locals: { event_group: @syncable, syncable_source: @syncable_source, view_context: view_context }
     end
 
     def render_syncable_destroy_view
-      super
+      render :destroy, locals: { event_group: @syncable, syncable_source: @syncable_source, view_context: view_context }
     end
 
     def new_syncable_source_params

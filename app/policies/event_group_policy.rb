@@ -68,10 +68,6 @@ class EventGroupPolicy < ApplicationPolicy
     setup?
   end
 
-  def sync_efforts?
-    setup?
-  end
-
   def assign_bibs?
     setup?
   end

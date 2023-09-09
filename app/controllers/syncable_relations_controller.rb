@@ -6,14 +6,14 @@ class SyncableRelationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_syncable
   before_action :authorize_organization
-  before_action :set_syncable_relation, except: [:new, :create]
+  before_action :set_syncable_source, except: [:new, :create]
   after_action :verify_authorized
 
   def new
     respond_to do |format|
       format.turbo_stream do
-        @syncable_relation = @syncable.syncable_sources.new
-        set_syncable_relation_attributes
+        @syncable_source = @syncable.syncable_sources.new
+        set_syncable_source_attributes
 
         render_syncable_new_view
       end
@@ -24,15 +24,15 @@ class SyncableRelationsController < ApplicationController
     head :route_not_found and return if service.blank?
     head :unprocessable_entity and return if source_type.blank?
 
-    @syncable_relation = @syncable.syncable_relations.new(permitted_params)
-    set_syncable_relation_attributes
-    @syncable_relation.save
+    @syncable_source = @syncable.syncable_sources.new(permitted_params)
+    set_syncable_source_attributes
+    @syncable_source.save
 
     render_syncable_create_view
   end
 
   def destroy
-    @syncable_relation.destroy
+    @syncable_source.destroy
     render_syncable_destroy_view
   end
 
@@ -70,15 +70,15 @@ class SyncableRelationsController < ApplicationController
     raise NotImplementedError, "set_syncable must be implemented"
   end
 
-  def set_syncable_relation
-    @syncable_relation = ::SyncableRelation.where(destination_name: "internal", destination_type: @syncable.class.name, destination_id: @syncable.id)
+  def set_syncable_source
+    @syncable_source = ::SyncableRelation.where(destination_name: "internal", destination_type: @syncable.class.name, destination_id: @syncable.id)
                                            .find(params[:id])
   end
 
-  def set_syncable_relation_attributes
-    @syncable_relation.destination_name = "internal"
-    @syncable_relation.destination_type = @syncable.class.name
-    @syncable_relation.destination_id = @syncable.id
-    @syncable_relation.source_type = source_type
+  def set_syncable_source_attributes
+    @syncable_source.destination_name = "internal"
+    @syncable_source.destination_type = @syncable.class.name
+    @syncable_source.destination_id = @syncable.id
+    @syncable_source.source_type = source_type
   end
 end

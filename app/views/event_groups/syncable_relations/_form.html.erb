@@ -1,4 +1,4 @@
-<%# locals: (syncable_relation:) -%>
+<%# locals: (syncable_relation:, service:) -%>
 
 <div id="<%= dom_id(syncable_relation) %>" class="px-3">
 
@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-12 col-lg">
         <div class="input-group my-2 font-monospace">
-          <div class="input-group-text w-50 border border-secondary">Source ID</div>
+          <div class="input-group-text w-50 border border-secondary"><%= "#{service.name} #{syncable_relation.source_type} ID" %></div>
           <%= form.text_field :source_id, class: "px-2 px-lg-3 w-50 border border-secondary" %>
         </div>
       </div>

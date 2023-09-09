@@ -48,10 +48,7 @@
       </div>
 
       <div id="<%= dom_id(@presenter.event_group, :connections_list) %>">
-        <%= render partial: "event_groups/syncable_relations/connection_card",
-                   collection: @presenter.syncable_sources,
-                   as: :syncable_relation,
-                   locals: { presenter: @presenter } %>
+
       </div>
     </div>
   </div>

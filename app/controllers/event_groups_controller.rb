@@ -249,13 +249,6 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
   end
 
-  # GET /event_groups/1/sync_efforts
-  def sync_efforts
-    authorize @event_group
-
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
-  end
-
   # GET /event_groups/1/assign_bibs
   def assign_bibs
     authorize @event_group

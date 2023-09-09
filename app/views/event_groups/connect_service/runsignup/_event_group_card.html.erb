@@ -1,0 +1,14 @@
+<%# locals: (event_group_setup_presenter:, connect_service_presenter:) %>
+
+<div class="card" id="event_group_card">
+  <div class="card-header">
+    <h4 class="card-title mt-1"><%= "Event Group: #{event_group_setup_presenter.event_group_name}" %></h4>
+  </div>
+  <div class="card-body">
+    <%= render partial: "event_groups/syncable_relations/form",
+               locals: {
+                 syncable_relation: connect_service_presenter.syncable_source,
+                 service: connect_service_presenter.service,
+               } %>
+  </div>
+</div>

@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   include Delegable
   include Auditable
   include Subscribable
+  include Connectable
   include Syncable
   extend FriendlyId
 

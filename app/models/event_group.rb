@@ -12,6 +12,7 @@ class EventGroup < ApplicationRecord
   include Concealable
   include Auditable
   include Partnerable
+  include Connectable
   include Syncable
   extend FriendlyId
 

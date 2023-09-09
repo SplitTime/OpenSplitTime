@@ -3,6 +3,7 @@
 module FixtureHelper
   FIXTURE_TABLES = [
     :aid_stations,
+    :connections,
     :course_group_courses,
     :course_groups,
     :courses,
@@ -29,7 +30,6 @@ module FixtureHelper
     :splits,
     :stewardships,
     :subscriptions,
-    :connections,
     :users,
   ].freeze
 

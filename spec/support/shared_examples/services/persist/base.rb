@@ -1,5 +1,5 @@
 RSpec.shared_examples "initializes with model and resources" do
-  let(:connections) { build_stubbed_list(:user, 3) }
+  let(:resources) { build_stubbed_list(:user, 3) }
 
   context "when provided with a model and resources" do
     it "initializes without error" do
@@ -16,7 +16,7 @@ RSpec.shared_examples "initializes with model and resources" do
   end
 
   context "when no resources argument is given" do
-    let(:connections) { nil }
+    let(:resources) { nil }
 
     it "raises an error" do
       expect { subject }.to raise_error(/resources must be provided/)
@@ -24,7 +24,7 @@ RSpec.shared_examples "initializes with model and resources" do
   end
 
   context "when any resource is not a member of the model class" do
-    let(:connections) { [Effort.new] }
+    let(:resources) { [Effort.new] }
 
     it "raises an error" do
       expect(resources.first.class).not_to eq(model)

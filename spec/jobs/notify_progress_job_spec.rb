@@ -15,8 +15,8 @@ RSpec.describe NotifyProgressJob do
 
   describe "#perform" do
     let(:split_time_ids) { notification_split_times.pluck(:id) }
-    let(:successful_response) { Interactors::Response.new(errors: [], connections: {}) }
-    let(:unsuccessful_response) { Interactors::Response.new(errors: ["An error happened"], connections: {}) }
+    let(:successful_response) { Interactors::Response.new(errors: [], resources: {}) }
+    let(:unsuccessful_response) { Interactors::Response.new(errors: ["An error happened"], resources: {}) }
     let(:notification_split_times) { effort.ordered_split_times.last(2) }
     let(:split_time_total_distance) { notification_split_times.last.total_distance }
 

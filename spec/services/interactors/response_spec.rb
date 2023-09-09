@@ -1,7 +1,7 @@
 RSpec.describe Interactors::Response do
   subject { Interactors::Response.new(errors, message, resources) }
   let(:message) { "" }
-  let(:connections) { [] }
+  let(:resources) { [] }
 
   describe "#successful?" do
     context "when errors are present" do

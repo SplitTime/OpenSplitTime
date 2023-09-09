@@ -25,7 +25,7 @@ module Interactors
 
     private
 
-    attr_reader :id_hash, :errors, :resources
+    attr_reader :id_hash, :errors, :connections
 
     def find_and_pull_attributes(effort_id, person_id)
       person = person_id ? people[person_id] : Person.new

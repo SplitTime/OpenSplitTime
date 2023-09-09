@@ -25,7 +25,7 @@ module Interactors
     attr_reader :efforts, :stop_status, :errors
 
     def changed_split_times
-      @changed_split_times ||= stop_responses.flat_map(&:resources)
+      @changed_split_times ||= stop_responses.flat_map(&:connections)
     end
 
     def stop_responses

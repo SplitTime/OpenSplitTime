@@ -23,7 +23,7 @@ class CsvBuilder
 
   private
 
-  attr_reader :model_class, :resources
+  attr_reader :model_class, :connections
 
   def serialize_resource(resource)
     export_attributes.map do |attribute|

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Persist::BulkUpdateAll do
   subject { Persist::BulkUpdateAll.new(model, resources, update_fields: update_fields) }
   let(:model) { User }
-  let(:resources) { build_stubbed_list(:user, 3) }
+  let(:connections) { build_stubbed_list(:user, 3) }
   let(:update_fields) { [:pref_distance_unit, :pref_elevation_unit] }
 
   describe "#initialize" do
@@ -19,7 +19,7 @@ RSpec.describe Persist::BulkUpdateAll do
   end
 
   describe "#perform!" do
-    let(:resources) { create_list(:user, 3) }
+    let(:connections) { create_list(:user, 3) }
     before { expect(resources.pluck(:pref_distance_unit, :pref_elevation_unit)).to all eq(%w[miles feet]) }
 
     context "when multiple attributes of all records have changed" do

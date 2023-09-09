@@ -12,7 +12,7 @@ class EventGroupSetupPresenter < BasePresenter
            :name,
            :organization,
            :partners,
-           :syncable_sources,
+           :connections,
            :to_param,
            :unreconciled_efforts,
            to: :event_group

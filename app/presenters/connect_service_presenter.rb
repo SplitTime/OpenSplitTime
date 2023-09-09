@@ -29,10 +29,9 @@ class ConnectServicePresenter < BasePresenter
     service&.name
   end
 
-  def syncable_source
-    @syncable_source ||= event_group.syncable_sources.find_or_initialize_by(source_name: service_identifier) do |syncable_source|
-      syncable_source.destination_name = "internal"
-      syncable_source.source_type = source_type
+  def connection
+    @connection ||= event_group.connections.find_or_initialize_by(service_identifier: service_identifier) do |connection|
+      connection.source_type = source_type
     end
   end
 
@@ -68,7 +67,7 @@ class ConnectServicePresenter < BasePresenter
   def runsignup_race_id
     return @runsignup_race_id if defined?(@runsignup_race_id)
 
-    @runsignup_race_id = event_group.syncable_sources.from_source(:runsignup).where(source_type: "Race").first&.source_id
+    @runsignup_race_id = event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
   end
 
   def source_type

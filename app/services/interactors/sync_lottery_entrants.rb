@@ -52,7 +52,7 @@ module Interactors
 
     attr_reader :event, :response, :time
     attr_accessor :preview_only
-    delegate :errors, :resources, to: :response, private: true
+    delegate :errors, :connections, to: :response, private: true
 
     def find_and_create_entrants
       accepted_entrants = event.lottery.divisions.flat_map(&:accepted_entrants)

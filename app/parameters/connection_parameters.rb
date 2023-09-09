@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class SyncableRelationParameters < BaseParameters
+class ConnectionParameters < BaseParameters
   def self.permitted
     [
-      :source_name,
+      :service_identifier,
       :source_id,
     ]
   end

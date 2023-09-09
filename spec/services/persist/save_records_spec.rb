@@ -9,7 +9,7 @@ RSpec.describe Persist::SaveRecords do
   end
 
   describe "#perform!" do
-    let(:resources) { build_list(:user, 3) }
+    let(:connections) { build_list(:user, 3) }
 
     context "when all records are valid" do
       it "saves all records and returns a successful response" do

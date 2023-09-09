@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe ::Exporter::ExportService do
   subject { described_class.new(resource_class, resources, export_attributes) }
   let(:resource_class) { ::Organization }
-  let(:resources) { ::Organization.all.order(:name) }
+  let(:connections) { ::Organization.all.order(:name) }
   let(:export_attributes) { [:name, :slug, :concealed] }
 
   describe "#csv_to_file" do
@@ -76,7 +76,7 @@ RSpec.describe ::Exporter::ExportService do
 
     context "when provided with a number of resources that is greater than the batch size" do
       let(:resource_class) { ::Effort }
-      let(:resources) { ::Effort.order(:last_name) }
+      let(:connections) { ::Effort.order(:last_name) }
       let(:export_attributes) { [:id, :first_name, :last_name, :state_code] }
       let(:expected_header) { "Id,First name,Last name,State code" }
       let(:stubbed_batch_size) { 25 }

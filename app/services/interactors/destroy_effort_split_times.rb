@@ -32,7 +32,7 @@ module Interactors
       self.response = Interactors::Response.new(errors, message, targeted_split_times).merge(stop_response)
     end
 
-    attr_reader :effort, :split_time_ids, :errors, :resources
+    attr_reader :effort, :split_time_ids, :errors, :connections
     attr_accessor :response
 
     def targeted_split_times

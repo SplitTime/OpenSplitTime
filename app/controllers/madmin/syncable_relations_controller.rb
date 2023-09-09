@@ -1,4 +1,4 @@
 module Madmin
-  class SyncableRelationsController < Madmin::ResourceController
+  class ConnectionsController < Madmin::ResourceController
   end
 end

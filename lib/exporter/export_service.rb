@@ -32,7 +32,7 @@ module Exporter
 
     private
 
-    attr_reader :resource_class, :resources, :export_attributes
+    attr_reader :resource_class, :connections, :export_attributes
 
     def csv_header
       humanized_attributes = export_attributes.map { |attribute| attribute.to_s.humanize }

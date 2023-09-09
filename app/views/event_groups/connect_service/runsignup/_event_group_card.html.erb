@@ -5,9 +5,9 @@
     <h4 class="card-title mt-1"><%= "Event Group: #{connect_service_presenter.event_group_name}" %></h4>
   </div>
   <div class="card-body">
-    <%= render partial: "event_groups/syncable_relations/form",
+    <%= render partial: "event_groups/connections/form",
                locals: {
-                 syncable_relation: connect_service_presenter.syncable_source,
+                 connection: connect_service_presenter.connection,
                  service: connect_service_presenter.service,
                } %>
   </div>

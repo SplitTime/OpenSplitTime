@@ -29,7 +29,7 @@ module FixtureHelper
     :splits,
     :stewardships,
     :subscriptions,
-    :syncable_relations,
+    :connections,
     :users,
   ].freeze
 

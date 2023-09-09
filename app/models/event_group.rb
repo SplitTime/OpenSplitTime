@@ -13,7 +13,6 @@ class EventGroup < ApplicationRecord
   include Auditable
   include Partnerable
   include Connectable
-  include Syncable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

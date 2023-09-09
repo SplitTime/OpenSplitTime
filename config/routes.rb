@@ -108,7 +108,7 @@ Rails.application.routes.draw do
         get :connect_new
       end
     end
-    resources :syncable_relations, only: [:new, :create, :destroy], module: "event_groups"
+    resources :connections, only: [:new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
@@ -119,7 +119,7 @@ Rails.application.routes.draw do
         patch :attach_course_gpx
         delete :remove_course_gpx
       end
-      resources :syncable_relations, only: [:create, :destroy], module: "events"
+      resources :connections, only: [:create, :destroy], module: "events"
     end
 
     member do

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe CsvBuilder do
   subject { CsvBuilder.new(model_class, resources) }
   let(:model_class) { Split }
-  let(:resources) { courses(:hardrock_ccw).ordered_splits.first(2) }
+  let(:connections) { courses(:hardrock_ccw).ordered_splits.first(2) }
   before { FactoryBot.reload }
 
   describe "#initialize" do
@@ -43,7 +43,7 @@ RSpec.describe CsvBuilder do
     end
 
     context "when resources is an empty array" do
-      let(:resources) { [] }
+      let(:connections) { [] }
 
       it "returns headers only" do
         expect(subject.full_string).to eq("Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\n")
@@ -51,7 +51,7 @@ RSpec.describe CsvBuilder do
     end
 
     context "when resources is nil" do
-      let(:resources) { nil }
+      let(:connections) { nil }
 
       it "returns headers only" do
         expect(subject.full_string).to eq("Base name,Distance,Kind,Vert gain,Vert loss,Latitude,Longitude,Elevation,Sub split kinds\n")

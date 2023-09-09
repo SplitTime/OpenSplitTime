@@ -1,16 +1,14 @@
-class SyncableRelationResource < Madmin::Resource
+class ConnectionResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :source_name
+  attribute :service_identifier
   attribute :source_type
   attribute :source_id
-  attribute :destination_name
-  attribute :destination_type
-  attribute :destination_id
   attribute :created_at, form: false
   attribute :updated_at, form: false
 
   # Associations
+  association :destination
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

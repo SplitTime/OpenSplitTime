@@ -1,11 +1,11 @@
-<%# locals: (event_group:, syncable_source:, view_context:) %>
+<%# locals: (event_group:, connection:, view_context:) %>
 
-<% service = Connectors::Service::BY_IDENTIFIER[syncable_source.source_name] %>
+<% service = Connectors::Service::BY_IDENTIFIER[connection.service_identifier] %>
 <% event_group_setup_presenter = EventGroupSetupPresenter.new(event_group, view_context) %>
 <% connect_service_presenter = ConnectServicePresenter.new(event_group, service, view_context) %>
 
 <%= turbo_stream.replace("event_group_card",
-                         partial: "event_groups/connect_service/#{syncable_source.source_name}/event_group_card",
+                         partial: "event_groups/connect_service/#{connection.service_identifier}/event_group_card",
                          locals: {
                            event_group_setup_presenter: event_group_setup_presenter,
                            connect_service_presenter: connect_service_presenter,

@@ -7,13 +7,13 @@
     </div>
     <div class="card-body">
       <label>Select corresponding external events</label>
-      <% presenter.runsignup_events(event).each do |runsignup_event| %>
+      <% presenter.external_events(event).each do |external_event| %>
         <%= render partial: "event_groups/connect_service/syncable_switch",
                    locals: {
                      event_group: presenter.event_group,
                      event: event,
-                     external_id: runsignup_event.id,
-                     external_name: runsignup_event.name,
+                     external_id: external_event.id,
+                     external_name: external_event.name,
                    } %>
       <% end %>
       <div class="row mt-3">

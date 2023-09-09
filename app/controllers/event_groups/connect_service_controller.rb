@@ -7,8 +7,6 @@ module EventGroups
     before_action :set_service
 
     def show
-      head :route_not_found and return if @service.blank?
-
       render "event_groups/connect_service/show",
              locals: {
                event_group_setup_presenter: EventGroupSetupPresenter.new(@event_group, view_context),
@@ -17,7 +15,7 @@ module EventGroups
     end
 
     def connect_new
-      render :connect_new, locals: { event_group: @event_group, service_identifier: @service&.identifier }
+      render :connect_new, locals: { event_group: @event_group, service_identifier: @service.identifier }
     end
 
     private
@@ -28,6 +26,7 @@ module EventGroups
 
     def set_service
       @service = Connectors::Service::BY_IDENTIFIER[params[:id]]
+      raise ActiveRecord::RecordNotFound if @service.blank?
     end
   end
 end

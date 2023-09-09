@@ -23,8 +23,11 @@
 
   <hr/>
   <h4 class="fw-bold">Events</h4>
-  <%= render partial: "event_groups/connect_service/#{connect_service_presenter.service_identifier}/event_cards",
-             locals: { event_group_setup_presenter: event_group_setup_presenter } %>
+  <%= render partial: "event_groups/connect_service/event_cards",
+             locals: {
+               event_group_setup_presenter: event_group_setup_presenter,
+               connect_service_presenter: connect_service_presenter
+             } %>
 
   <hr/>
   <div class="row mb-3">

@@ -94,24 +94,6 @@ class EventGroupSetupPresenter < BasePresenter
     params[:service_identifier]
   end
 
-  def runsignup_events(event)
-    all_runsignup_events.reject do |event_struct|
-      (event_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs > CANDIDATE_SEPARATION_LIMIT
-    end
-  end
-
-  def all_runsignup_events
-    return [] unless runsignup_race_id.present? && current_user.has_credentials_for?(:runsignup)
-
-    @all_runsignup_events ||= ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: runsignup_race_id, user: current_user)
-  end
-
-  def runsignup_race_id
-    return @runsignup_race_id if defined?(@runsignup_race_id)
-
-    @runsignup_race_id = event_group.syncable_sources.from_source(:runsignup).where(source_type: "Race").first&.source_id
-  end
-
   def status
     available_live? ? "live" : "not_live"
   end

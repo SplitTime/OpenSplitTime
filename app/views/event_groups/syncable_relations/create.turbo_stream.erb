@@ -12,7 +12,7 @@
                          }) %>
 
 <%= turbo_stream.replace("event_cards",
-                         partial: "event_groups/connect_service/#{syncable_source.source_name}/event_cards",
+                         partial: "event_groups/connect_service/event_cards",
                          locals: {
-                           event_group_setup_presenter: event_group_setup_presenter,
+                           connect_service_presenter: connect_service_presenter,
                          }) %>

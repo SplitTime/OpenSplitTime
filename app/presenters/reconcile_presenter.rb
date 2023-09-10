@@ -20,6 +20,10 @@ class ReconcilePresenter < BasePresenter
     unreconciled_batch.each(&:suggest_close_match)
   end
 
+  def active_widget_card
+    :entrants
+  end
+
   def event_group_name
     event_group.name
   end

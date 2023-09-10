@@ -12,6 +12,10 @@ class EventSetupCoursePresenter < BasePresenter
   delegate :description, :name, :ordered_splits, :organization, to: :course
   delegate :concealed?, :status, to: :event_group
 
+  def active_widget_card
+    :events_and_courses
+  end
+
   def aid_stations_by_split_id
     @aid_stations_by_split_id ||= event.aid_stations.index_by(&:split_id)
   end

@@ -103,6 +103,18 @@ class EventGroupSetupPresenter < BasePresenter
     params[:service_identifier]
   end
 
+  def active_widget_card
+    if controller_name == "event_groups" && action_name.in?(%w(setup new))
+      :overview
+    elsif action_name == "setup_summary"
+      :status
+    elsif controller_name == "events"
+      :events_and_courses
+    else
+      :entrants
+    end
+  end
+
   def status
     available_live? ? "live" : "not_live"
   end

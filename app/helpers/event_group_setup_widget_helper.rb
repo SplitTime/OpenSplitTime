@@ -14,15 +14,14 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_entrants(presenter)
-    if (presenter.controller_name == "event_groups" && presenter.action_name == "entrants") ||
-      presenter.action_name.in?(%w(assign_bibs connections manage_entrant_photos manage_start_times reconcile))
-      type = :solid
-      tooltip = "Manage your Entrants"
-      icon_only = false
-    elsif presenter.event_group.new_record? || presenter.no_persisted_events?
+    if presenter.event_group.new_record? || presenter.no_persisted_events?
       type = :regular
       tooltip = "You'll be able to add Entrants after your Event Group and Events are created"
       icon_only = true
+    elsif presenter.active_widget_card == :entrants
+      type = :solid
+      tooltip = "Manage your Entrants"
+      icon_only = false
     else
       type = :regular
       tooltip = "Manage your Entrants"

@@ -2,6 +2,14 @@
 
 module EventGroups
   class ConnectionsController < ::ConnectionsController
+    # GET /event_groups/1/connections
+    def index
+      authorize @destination
+
+      render :index, locals: { presenter: ::EventGroupSetupPresenter.new(@destination, view_context) }
+    end
+
+    # DELETE /event_groups/1/connections/1
     def destroy
       @connection.destroy
 

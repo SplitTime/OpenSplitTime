@@ -1,5 +1,0 @@
-<%# locals: (event:) -%>
-
-<%= turbo_frame_tag(:preview_sync, event) do %>
-  <%= link_to "Preview sync", preview_sync_event_path(event), class: "btn btn-primary" %>
-<% end %>

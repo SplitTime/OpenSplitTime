@@ -1,9 +1,11 @@
+<%# locals: (presenter:) %>
+
 <% content_for :title do %>
-  <% "OpenSplitTime: Event Group Connections - #{@presenter.event_group.name}" %>
+  <% "OpenSplitTime: Event Group Connections - #{presenter.event_group.name}" %>
 <% end %>
 
-<%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "setup_header", presenter: @presenter, breadcrumbs: ["Connections"] %>
+<%= render "shared/mode_widget", event_group: presenter.event_group %>
+<%= render "event_groups/setup_header", presenter: presenter, breadcrumbs: ["Connections"] %>
 
 <article class="ost-article container">
   <div class="row flex-nowrap">
@@ -25,13 +27,13 @@
 
           <div class="row"
                data-controller="select-get"
-               data-select-get-url-prefix-value="/event_groups/<%= @presenter.event_group.id %>/connect_service/"
+               data-select-get-url-prefix-value="/event_groups/<%= presenter.event_group.id %>/connect_service/"
                data-select-get-url-suffix-value="/connect_new"
                data-select-get-default-value="not_selected"
           >
             <div class="col">
               <%= select_tag "connections",
-                             options_for_select(@presenter.available_connection_services.map { |service| [service.name, service.identifier] }),
+                             options_for_select(presenter.available_connection_services.map { |service| [service.name, service.identifier] }),
                              {
                                prompt: "Select a service",
                                class: "form-control form-select",
@@ -41,13 +43,13 @@
             </div>
             <div class="col-2">
               <%= render partial: "event_groups/connect_service/connect_button",
-                         locals: { event_group: @presenter.event_group, service_identifier: nil } %>
+                         locals: { event_group: presenter.event_group, service_identifier: nil } %>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="<%= dom_id(@presenter.event_group, :connections_list) %>">
+      <div id="<%= dom_id(presenter.event_group, :connections_list) %>">
 
       </div>
     </div>

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interactors
-  class SyncRunsignupParticipants
+  class SyncRattlesnakeRambleEntries
     include ::Interactors::Errors
 
     RELEVANT_ATTRIBUTES = [
@@ -12,10 +12,8 @@ module Interactors
       "bib_number",
       "city",
       "state_code",
-      "country_code",
       "email",
-      "phone",
-      "scheduled_start_time_local",
+      "scheduled_start_time",
     ].freeze
 
     def self.perform!(event, current_user)
@@ -60,42 +58,26 @@ module Interactors
     delegate :event_group, to: :event, private: true
 
     def find_and_create_entrants
-      participants = runsignup_event_ids.flat_map do |runsignup_event_id|
-        ::Connectors::Runsignup::FetchEventParticipants.perform(race_id: runsignup_race_id, event_id: runsignup_event_id, user: current_user)
+      race_entries = race_edition_ids.flat_map do |race_edition_id|
+        ::Connectors::RattlesnakeRamble::FetchRaceEntries.perform(race_edition_id: race_edition_id, user: current_user)
       end
 
-      participants.sort_by! { |participant| [participant.last_name, participant.first_name] }
+      race_entries.sort_by! { |race_entry| [race_entry.racer.last_name, race_entry.racer.first_name] }
 
-      participants.each do |participant|
-        effort = event.efforts.where("first_name ilike ? and last_name ilike ?", participant.first_name, participant.last_name)
-                      .where(birthdate: participant.birthdate)
+      race_entries.each do |race_entry|
+        effort = event.efforts.where("first_name ilike ? and last_name ilike ?", race_entry.racer.first_name, race_entry.racer.last_name)
+                      .where(birthdate: race_entry.racer.birth_date)
                       .first_or_initialize
-        RELEVANT_ATTRIBUTES.each { |attr| effort.send("#{attr}=", participant.send(attr)) }
+        RELEVANT_ATTRIBUTES.each { |attr| effort.send("#{attr}=", race_entry.send(attr)) }
 
         add_effort_to_response(effort)
         update_effort(effort) unless preview_only
       end
     end
 
-    def runsignup_event_ids
-      @runsignup_event_ids ||=
-        event.connections.from_service(:runsignup).where(source_type: "Event").pluck(:source_id)
-    end
-
-    def runsignup_race_id
-      return @runsignup_race_id if defined?(@runsignup_race_id)
-
-      ids = event_group.connections.from_service(:runsignup).where(source_type: "Race").pluck(:source_id)
-
-      if ids.many?
-        errors << multiple_runsignup_race_ids_error(ids, event_group.id)
-        @runsignup_race_id = nil
-      elsif ids.blank?
-        errors << no_runsignup_race_id_error(event_group.id)
-        @runsignup_race_id = nil
-      else
-        @runsignup_race_id = ids.first
-      end
+    def race_edition_ids
+      @race_edition_ids ||=
+        event.connections.from_service(:rattlesnake_ramble).where(source_type: "RaceEdition").pluck(:source_id)
     end
 
     def add_effort_to_response(effort)
@@ -124,7 +106,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_not_linked_error unless event.connections.from_service(:runsignup).where(source_type: "Event").exists?
+      errors << event_not_linked_error unless event.connections.from_service(:rattlesnake_ramble).where(source_type: "RaceEdition").exists?
     end
 
     def set_response_message

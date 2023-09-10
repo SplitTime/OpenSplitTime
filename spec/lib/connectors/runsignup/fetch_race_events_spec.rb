@@ -6,7 +6,7 @@ RSpec.describe ::Connectors::Runsignup::FetchRaceEvents do
   subject { described_class.new(race_id: race_id, user: user) }
   let(:race_id) { 85675 }
 
-  include_context "user_with_runsignup_credentials"
+  include_context "user_with_credentials"
 
   describe "#perform" do
     let(:result) { subject.perform }

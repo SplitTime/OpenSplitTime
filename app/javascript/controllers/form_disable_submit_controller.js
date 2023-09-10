@@ -6,6 +6,8 @@ export default class extends Controller {
     const controller = this
     const form = this.element
     this._submitButton = form.querySelector("input[type='submit']")
+    if (!this._submitButton) { return }
+
     this.disableSubmitButton()
 
     Array.from(form).forEach(function (el) {

@@ -6,7 +6,7 @@ class ConnectionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_destination
   before_action :authorize_organization
-  before_action :set_connection, except: [:new, :create]
+  before_action :set_connection, except: [:index, :new, :create]
   after_action :verify_authorized
 
   def new

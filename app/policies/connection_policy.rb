@@ -13,11 +13,19 @@ class ConnectionPolicy < ApplicationPolicy
     @organization = organization
   end
 
-  def create?
+  def index?
     user.authorized_to_edit?(organization) || user.authorized_for_lotteries?(organization)
   end
 
+  def new?
+    index?
+  end
+
+  def create?
+    index?
+  end
+
   def destroy?
-    create?
+    index?
   end
 end

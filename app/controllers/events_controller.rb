@@ -244,15 +244,7 @@ class EventsController < ApplicationController
     authorize @event
 
     presenter = ::LotterySyncPreviewPresenter.new(@event, view_context)
-    render partial: "events/connections/preview_lottery_sync", locals: { presenter: presenter }
-  end
-
-  # GET /events/1/preview_sync
-  def preview_sync
-    authorize @event
-
-    presenter = ::EventSyncPreviewPresenter.new(@event, view_context, previewer: Interactors::SyncRunsignupParticipants)
-    render partial: "events/connections/preview_sync", locals: { presenter: presenter }
+    render partial: "events/connectors/services/preview_lottery_sync", locals: { presenter: presenter }
   end
 
   # POST /events/1/sync_lottery_entrants
@@ -262,15 +254,6 @@ class EventsController < ApplicationController
     response = ::Interactors::SyncLotteryEntrants.perform!(@event)
     set_flash_message(response)
     redirect_to link_lotteries_event_group_path(@event.event_group)
-  end
-
-  # POST /events/1/sync_entrants
-  def sync_entrants
-    authorize @event
-
-    response = ::Interactors::SyncRunsignupParticipants.perform!(@event, current_user)
-    set_flash_message(response)
-    redirect_to entrants_event_group_path(@event.event_group)
   end
 
   private

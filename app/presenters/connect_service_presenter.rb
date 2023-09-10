@@ -52,10 +52,9 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def all_rattlesnake_ramble_events
-    []
-    # return [] unless current_user.has_credentials_for?(:rattlesnake_ramble)
+    return [] unless current_user.has_credentials_for?(:rattlesnake_ramble)
 
-    # @all_rattlesnake_ramble_events ||= ::Connectors::RattlesnakeRamble::FetchRaceEditions.perform(user: current_user)
+    @all_rattlesnake_ramble_events ||= ::Connectors::RattlesnakeRamble::FetchRaceEditions.perform(user: current_user)
   end
 
   def all_runsignup_events

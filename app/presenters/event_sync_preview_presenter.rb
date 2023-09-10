@@ -9,6 +9,10 @@ class EventSyncPreviewPresenter
 
   attr_reader :event
 
+  def service_identifier
+    view_context.params[:service_identifier]
+  end
+
   def syncable?
     created_efforts.present? || deleted_efforts.present? || updated_efforts.present?
   end

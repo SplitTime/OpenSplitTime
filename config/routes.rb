@@ -108,7 +108,7 @@ Rails.application.routes.draw do
         get :connect_new
       end
     end
-    resources :connections, only: [:new, :create, :destroy], module: "event_groups"
+    resources :connections, only: [:index, :new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do
       resources :splits, except: [:show]
@@ -124,7 +124,6 @@ Rails.application.routes.draw do
 
     member do
       get :assign_bibs
-      get :connections
       get :drop_list
       get :efforts
       get :entrants
@@ -164,21 +163,28 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:show] do
+    resources :connector_services, only: [], module: "events/connectors", controller: "services", param: "service_identifier" do
+      member do
+        get :preview_sync
+        post :sync
+      end
+    end
+
     resources :aid_stations, only: [:create, :destroy]
+
     resources :subscriptions, only: [:new, :create, :destroy], module: "events" do
       member { patch :refresh }
     end
+
     member do
       get :admin
       get :edit_start_time
       get :export
       get :podium
       get :preview_lottery_sync
-      get :preview_sync
       get :spread
       get :summary
       put :set_stops
-      post :sync_entrants
       post :sync_lottery_entrants
       patch :update_start_time
     end

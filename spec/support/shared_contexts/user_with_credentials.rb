@@ -5,6 +5,6 @@ RSpec.shared_context "user_without_credentials" do
   before { user.credentials.destroy_all }
 end
 
-RSpec.shared_context "user_with_runsignup_credentials" do
+RSpec.shared_context "user_with_credentials" do
   let(:user) { users(:third_user) }
 end

@@ -31,62 +31,64 @@
         </div>
       </div>
 
-      <hr class="mt-5">
-      <h4 class="fw-bold">Existing Service Connections</h4>
-      <div>
-        <% presenter.existing_connection_services.each do |service| %>
-          <div class="card my-3">
-            <div class="card-header">
-              <div class="row">
-                <div class="col">
-                  <h4 class="card-title mt-1"><%= service.name %></h4>
-                </div>
-                <div class="col text-end">
-                  <%= link_to "Manage",
-                              event_group_connect_service_path(presenter.event_group, service.identifier),
-                              class: "btn btn-outline-primary" %>
+      <% if presenter.existing_connection_services.any? %>
+        <hr class="mt-5">
+        <h4 class="fw-bold">Existing Service Connections</h4>
+        <div>
+          <% presenter.existing_connection_services.each do |service| %>
+            <div class="card my-3">
+              <div class="card-header">
+                <div class="row">
+                  <div class="col">
+                    <h4 class="card-title mt-1"><%= service.name %></h4>
+                  </div>
+                  <div class="col text-end">
+                    <%= link_to "Manage",
+                                event_group_connect_service_path(presenter.event_group, service.identifier),
+                                class: "btn btn-outline-primary" %>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="card-body">
-              <table class="table table-bordered text-center">
-                <thead>
-                <tr>
-                  <th colspan="2" class="border-end"><%= "Source (#{service.name})" %></th>
-                  <th colspan="2">Destination</th>
-                </tr>
-                <tr>
-                  <th>Resource Type</th>
-                  <th class="border-end">Resource ID</th>
-                  <th>Resource Type</th>
-                  <th>Resource Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% presenter.event_group.connections.from_service(service.identifier).each do |connection| %>
+              <div class="card-body">
+                <table class="table table-bordered text-center">
+                  <thead>
                   <tr>
-                    <td><%= connection.source_type %></td>
-                    <td class="border-end"><%= connection.source_id %></td>
-                    <td><%= connection.destination_type %></td>
-                    <td><%= connection.destination.name %></td>
+                    <th colspan="2" class="border-end"><%= "Source (#{service.name})" %></th>
+                    <th colspan="2">Destination</th>
                   </tr>
-                <% end %>
-                <% presenter.event_group.events.order(:scheduled_start_time).each do |event| %>
-                  <% event.connections.from_service(service.identifier).each do |connection| %>
+                  <tr>
+                    <th>Resource Type</th>
+                    <th class="border-end">Resource ID</th>
+                    <th>Resource Type</th>
+                    <th>Resource Name</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% presenter.event_group.connections.from_service(service.identifier).each do |connection| %>
                     <tr>
                       <td><%= connection.source_type %></td>
                       <td class="border-end"><%= connection.source_id %></td>
                       <td><%= connection.destination_type %></td>
-                      <td><%= connection.destination.guaranteed_short_name %></td>
+                      <td><%= connection.destination.name %></td>
                     </tr>
                   <% end %>
-                <% end %>
-                </tbody>
-              </table>
+                  <% presenter.event_group.events.order(:scheduled_start_time).each do |event| %>
+                    <% event.connections.from_service(service.identifier).each do |connection| %>
+                      <tr>
+                        <td><%= connection.source_type %></td>
+                        <td class="border-end"><%= connection.source_id %></td>
+                        <td><%= connection.destination_type %></td>
+                        <td><%= connection.destination.guaranteed_short_name %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        <% end %>
-      </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </article>

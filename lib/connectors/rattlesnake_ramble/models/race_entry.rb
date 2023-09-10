@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Connectors::Runsignup::Models
+module Connectors::RattlesnakeRamble::Models
   RaceEntry = Struct.new(
     :bib_number,
     :scheduled_start_time,

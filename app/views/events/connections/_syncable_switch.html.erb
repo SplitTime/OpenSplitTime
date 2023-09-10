@@ -1,8 +1,8 @@
-<%# locals: (event_group:, event:, external_id:, external_name:) -%>
+<%# locals: (event_group:, event:, external_id:, external_name:, service:) -%>
 
 <div id='<%= "toggle_event_#{event.id}_external_id_#{external_id}" %>' class="custom-control custom-switch">
-  <% if event.connections.from_service(:runsignup).where(source_id: external_id).exists? %>
-    <%= form_with(model: [event_group, event, event.connections.from_service(:runsignup).find_by(source_id: external_id)],
+  <% if event.connections.from_service(service.identifier).where(source_id: external_id).exists? %>
+    <%= form_with(model: [event_group, event, event.connections.from_service(service.identifier).find_by(source_id: external_id)],
                   html: { method: :delete, data: { controller: "form-auto-submit" } }) do |f| %>
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>
@@ -11,8 +11,8 @@
     <% end %>
   <% else %>
     <%= form_with(model: [event_group, event, ::Connection.new], html: { method: :post, data: { controller: "form-auto-submit" } }) do |f| %>
-      <%= f.hidden_field :service_identifier, value: "runsignup" %>
-      <%= f.hidden_field :source_type, value: "Event" %>
+      <%= f.hidden_field :service_identifier, value: service.identifier %>
+      <%= f.hidden_field :source_type, value: service.resource_map[Event] %>
       <%= f.hidden_field :source_id, value: external_id %>
       <%= f.hidden_field :external_name, value: external_name %>
 

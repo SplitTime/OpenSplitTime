@@ -7,6 +7,7 @@
                            event: event,
                            external_id: external_id,
                            external_name: external_name,
+                           service: ::Connectors::Service::BY_IDENTIFIER[service_identifier]
                          } %>
 
 <%= turbo_stream.replace dom_id(event, :preview_sync),

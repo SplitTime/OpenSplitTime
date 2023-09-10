@@ -28,7 +28,7 @@ module Connectors
     self::IDENTIFIERS = self::BY_IDENTIFIER.keys
 
     self::SYNCING_INTERACTORS = {
-      # "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleParticipants,
+      "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleEntries,
       "runsignup" => Interactors::SyncRunsignupParticipants,
     }
   end

@@ -36,10 +36,11 @@ class Connectors::RattlesnakeRamble::FetchRaceEntries
 
   # @param [Hash] raw_race_entry
   # @return [::Connectors::RattlesnakeRamble::Models::Event]
-  def event_from_raw(raw_race_entry)
+  def race_entry_from_raw(raw_race_entry)
     raw_racer = raw_race_entry.delete("racer")
 
     race_entry = ::Connectors::RattlesnakeRamble::Models::RaceEntry.new(raw_race_entry)
-    race_entry.racer = ::Connectors::RaceRoster::Models::Racer.new(raw_racer)
+    race_entry.racer = ::Connectors::RattlesnakeRamble::Models::Racer.new(raw_racer)
+    race_entry
   end
 end

@@ -14,10 +14,6 @@ module EventGroups
              }
     end
 
-    def connect_new
-      render :connect_new, locals: { event_group: @event_group, service_identifier: @service.identifier }
-    end
-
     private
 
     def set_event_group

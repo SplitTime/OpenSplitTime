@@ -1,8 +1,0 @@
-<%# locals: (event_group:, service_identifier:) %>
-
-<%= turbo_stream.replace(dom_id(event_group, :connect_service_button),
-                         partial: "event_groups/connect_service/connect_button",
-                         locals: {
-                           event_group: event_group,
-                           service_identifier: service_identifier,
-                         }) %>

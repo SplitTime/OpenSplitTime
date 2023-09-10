@@ -13,44 +13,79 @@
       <%= render partial: "shared/callout_with_link", locals: {
         main_text: t(".callout.main_text"),
         detail_paragraphs: [t(".callout.detail_paragraph_1"), t(".callout.detail_paragraph_2")],
-        callout_color: "info",
-        icon_color: "info",
+        callout_color: "success",
+        icon_color: "success",
         icon_name: "info-circle",
       } %>
 
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title fw-bold mt-1">Connect to a Service</h4>
-        </div>
-        <div class="card-body">
-          <p>Choose the service you want to connect this Event Group to:</p>
-
-          <div class="row"
-               data-controller="select-get"
-               data-select-get-url-prefix-value="/event_groups/<%= presenter.event_group.id %>/connect_service/"
-               data-select-get-url-suffix-value="/connect_new"
-               data-select-get-default-value="not_selected"
-          >
+          <div class="row">
             <div class="col">
-              <%= select_tag "connections",
-                             options_for_select(presenter.available_connection_services.map { |service| [service.name, service.identifier] }),
-                             {
-                               prompt: "Select a service",
-                               class: "form-control form-select",
-                               data: { action: "select-get#getUrl" }
-                             }
-              %>
+              <h4 class="card-title fw-bold mt-1">Connect to a Service</h4>
             </div>
-            <div class="col-2">
-              <%= render partial: "event_groups/connect_service/connect_button",
-                         locals: { event_group: presenter.event_group, service_identifier: nil } %>
+            <div class="col text-end">
+              <%= connection_services_dropdown_menu(presenter) %>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="<%= dom_id(presenter.event_group, :connections_list) %>">
-
+      <hr class="mt-5">
+      <h4 class="fw-bold">Existing Service Connections</h4>
+      <div>
+        <% presenter.existing_connection_services.each do |service| %>
+          <div class="card my-3">
+            <div class="card-header">
+              <div class="row">
+                <div class="col">
+                  <h4 class="card-title mt-1"><%= service.name %></h4>
+                </div>
+                <div class="col text-end">
+                  <%= link_to "Manage",
+                              event_group_connect_service_path(presenter.event_group, service.identifier),
+                              class: "btn btn-outline-primary" %>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                  <th colspan="2" class="border-end"><%= "Source (#{service.name})" %></th>
+                  <th colspan="2">Destination</th>
+                </tr>
+                <tr>
+                  <th>Resource Type</th>
+                  <th class="border-end">Resource ID</th>
+                  <th>Resource Type</th>
+                  <th>Resource Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% presenter.event_group.connections.from_service(service.identifier).each do |connection| %>
+                  <tr>
+                    <td><%= connection.source_type %></td>
+                    <td class="border-end"><%= connection.source_id %></td>
+                    <td><%= connection.destination_type %></td>
+                    <td><%= connection.destination.name %></td>
+                  </tr>
+                <% end %>
+                <% presenter.event_group.events.order(:scheduled_start_time).each do |event| %>
+                  <% event.connections.from_service(service.identifier).each do |connection| %>
+                    <tr>
+                      <td><%= connection.source_type %></td>
+                      <td class="border-end"><%= connection.source_id %></td>
+                      <td><%= connection.destination_type %></td>
+                      <td><%= connection.destination.guaranteed_short_name %></td>
+                    </tr>
+                  <% end %>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

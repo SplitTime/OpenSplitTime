@@ -38,7 +38,7 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
     context "when credentials are invalid" do
       it "returns an error and unauthorized status" do
         VCR.use_cassette("rattlesnake_ramble/get_race_editions/not_authorized") do
-          expect { result }.to raise_error(Connectors::Errors::NotAuthorized)
+          expect { result }.to raise_error(Connectors::Errors::NotAuthenticated)
         end
       end
     end
@@ -82,7 +82,7 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
     context "when credentials are invalid" do
       it "raises NotAuthorized" do
         VCR.use_cassette("rattlesnake_ramble/get_race_edition/not_authorized") do
-          expect { result }.to raise_error(Connectors::Errors::NotAuthorized)
+          expect { result }.to raise_error(Connectors::Errors::NotAuthenticated)
         end
       end
     end

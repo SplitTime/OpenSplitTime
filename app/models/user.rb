@@ -151,6 +151,13 @@ class User < ApplicationRecord
     credentials.for_service(service_identifier).exists?
   end
 
+  def all_credentials_for?(service_identifier)
+    service = Connectors::Service::BY_IDENTIFIER[service_identifier]
+    return false if service.blank?
+
+    credentials.for_service(service_identifier).pluck(:key).sort == service.credential_keys.sort
+  end
+
   def from_omniauth?
     provider? && uid?
   end

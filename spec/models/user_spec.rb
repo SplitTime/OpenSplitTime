@@ -176,4 +176,32 @@ RSpec.describe User, type: :model do
       it { expect(result).to eq(false) }
     end
   end
+
+  describe "#all_credentials_for?" do
+    let(:user) { users(:third_user) }
+    let(:result) { user.all_credentials_for?(service_identifier) }
+    let(:service_identifier) { "runsignup" }
+
+    context "when all credentials exist for the requested service" do
+      it { expect(result).to eq(true) }
+    end
+
+    context "when one credential is missing" do
+      before { user.credentials.for_service(service_identifier).first.destroy! }
+
+      it { expect(result).to eq(false) }
+    end
+
+    context "when the user has no credentials" do
+      before { user.credentials.delete_all }
+
+      it { expect(result).to eq(false) }
+    end
+
+    context "when the user has credentials but not for the requested service" do
+      let(:service_identifier) { "another_service" }
+
+      it { expect(result).to eq(false) }
+    end
+  end
 end

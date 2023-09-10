@@ -2,8 +2,20 @@
 
 <div class="card" id="event_group_card">
   <div class="card-header">
-    <h4 class="card-title mt-1"><%= "Event Group: #{connect_service_presenter.event_group_name}" %></h4>
+    <div class="row">
+      <div class="col">
+        <h4 class="card-title mt-1"><%= "Event Group: #{connect_service_presenter.event_group_name}" %></h4>
+      </div>
+      <div class="col text-end">
+        <% if connect_service_presenter.all_credentials_present? %>
+          <%= fa_icon("circle-check", type: :regular, text: "Credentials are present", class: "text-success") %>
+        <% else %>
+          <%= fa_icon("circle-xmark", type: :regular, text: "Credentials are missing", class: "text-danger") %>
+        <% end %>
+      </div>
+    </div>
   </div>
+
   <div class="card-body">
     <%= render partial: "event_groups/connections/form",
                locals: {

@@ -7,9 +7,27 @@ class ConnectServicePresenter < BasePresenter
     @event_group = event_group
     @service = service
     @view_context = view_context
+    @error_message = nil
+    set_all_events
   end
 
-  attr_reader :event_group, :service
+  attr_reader :event_group, :service, :error_message
+
+  def all_credentials_present?
+    current_user.all_credentials_for?(service_identifier)
+  end
+
+  def connection_invalid?
+    !all_credentials_present? || error_message.present?
+  end
+
+  def no_events_found?
+    all_events.empty?
+  end
+
+  def no_events_in_time_frame?
+    event_group.events.flat_map { |event| external_events(event) }.none?
+  end
 
   def event_group_name
     event_group.name
@@ -37,36 +55,37 @@ class ConnectServicePresenter < BasePresenter
 
   private
 
-  attr_reader :view_context
+  attr_reader :view_context, :all_events
   delegate :current_user, to: :view_context, private: true
 
-  def all_events
-    case service_identifier.to_sym
-    when :runsignup
-      all_runsignup_events
-    when :rattlesnake_ramble
-      all_rattlesnake_ramble_events
-    else
-      []
-    end
+  def set_all_events
+    @all_events = [] and return unless some_credentials_present?
+
+    @all_events = case service_identifier.to_sym
+                  when :rattlesnake_ramble
+                    all_rattlesnake_ramble_events
+                  when :runsignup
+                    all_runsignup_events
+                  else
+                    []
+                  end
+  rescue ::Connectors::Errors::Base => error
+    @error_message = error.message
+  ensure
+    @all_events ||= []
+  end
+
+  def some_credentials_present?
+    current_user.has_credentials_for?(service_identifier)
   end
 
   def all_rattlesnake_ramble_events
-    return [] unless current_user.has_credentials_for?(:rattlesnake_ramble)
-
-    @all_rattlesnake_ramble_events ||= ::Connectors::RattlesnakeRamble::FetchRaceEditions.perform(user: current_user)
+    ::Connectors::RattlesnakeRamble::FetchRaceEditions.perform(user: current_user)
   end
 
   def all_runsignup_events
-    return [] unless runsignup_race_id.present? && current_user.has_credentials_for?(:runsignup)
-
-    @all_runsignup_events ||= ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: runsignup_race_id, user: current_user)
-  end
-
-  def runsignup_race_id
-    return @runsignup_race_id if defined?(@runsignup_race_id)
-
-    @runsignup_race_id = event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+    race_id = event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+    ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: race_id, user: current_user)
   end
 
   def source_type

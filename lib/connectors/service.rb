@@ -26,5 +26,10 @@ module Connectors
 
     self::BY_IDENTIFIER = all.index_by(&:identifier).with_indifferent_access
     self::IDENTIFIERS = self::BY_IDENTIFIER.keys
+
+    self::SYNCING_INTERACTORS = {
+      # "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleParticipants,
+      "runsignup" => Interactors::SyncRunsignupParticipants,
+    }
   end
 end

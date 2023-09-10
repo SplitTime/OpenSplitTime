@@ -11,6 +11,7 @@ module Events
                event: @destination,
                external_id: params.dig(:connection, :source_id),
                external_name: params.dig(:connection, :external_name),
+               service_identifier: @connection.service_identifier,
              }
     end
 

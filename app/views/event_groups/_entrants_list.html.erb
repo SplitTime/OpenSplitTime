@@ -1,3 +1,5 @@
+<%# locals: (presenter:) %>
+
 <div data-controller="roster">
   <aside class="ost-toolbar">
     <div class="container">
@@ -9,35 +11,35 @@
                         data: { turbo_frame: "form_modal" },
                         id: "add-entrant",
                         class: "btn btn-success" %>
-            <% if @presenter.event_group_efforts_count.positive? %>
+            <% if presenter.event_group_efforts_count.positive? %>
               <div class="btn-group">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
                   Actions
                 </button>
                 <div class="dropdown-menu">
-                  <%= link_to "Reconcile", reconcile_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                  <%= link_to "Assign Bibs", assign_bibs_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                  <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(@presenter.event_group), class: "dropdown-item" %>
-                  <%= link_to "Manage Start Times", manage_start_times_event_group_path(@presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Reconcile", reconcile_event_group_path(presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Assign Bibs", assign_bibs_event_group_path(presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(presenter.event_group), class: "dropdown-item" %>
+                  <%= link_to "Manage Start Times", manage_start_times_event_group_path(presenter.event_group), class: "dropdown-item" %>
                   <div class="dropdown-divider"></div>
-                  <%= link_to "Export", efforts_path(filter: { event_id: @presenter.events.ids }, format: :csv), class: "dropdown-item" %>
+                  <%= link_to "Export", efforts_path(filter: { event_id: presenter.events.ids }, format: :csv), class: "dropdown-item" %>
                   <div class="dropdown-divider"></div>
-                  <%= link_to_strong_confirm "Delete all entrants", delete_all_efforts_event_group_path(@presenter.event_group),
+                  <%= link_to_strong_confirm "Delete all entrants", delete_all_efforts_event_group_path(presenter.event_group),
                                              class: "dropdown-item text-danger",
-                                             message: "This action will permanently delete all entrants and split times from the #{@presenter.event_group_name} event group.",
+                                             message: "This action will permanently delete all entrants and split times from the #{presenter.event_group_name} event group.",
                                              required_pattern: "DELETE ALL ENTRANTS" %>
                 </div>
               </div>
             <% end %>
-            <%= setup_entrants_import_dropdown(@presenter) %>
-            <% if @presenter.event_group.organization.lotteries.exists? %>
-              <%= link_to "Sync with Lottery", link_lotteries_event_group_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
+            <%= setup_entrants_import_dropdown(presenter) %>
+            <% if presenter.event_group.organization.lotteries.exists? %>
+              <%= link_to "Sync with Lottery", link_lotteries_event_group_path(presenter.event_group), class: "btn btn-outline-secondary" %>
             <% end %>
-            <%= link_to "Connections", event_group_connections_path(@presenter.event_group), class: "btn btn-outline-secondary" %>
+            <%= link_to "Connections", event_group_connections_path(presenter.event_group), class: "btn btn-outline-secondary" %>
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <%= render "entrants_lookup", presenter: @presenter %>
+          <%= render "entrants_lookup", presenter: presenter %>
         </div>
       </div>
     </div>
@@ -88,7 +90,7 @@
         </tbody>
       </table>
 
-      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
+      <%= render "shared/pager", next_page_url: presenter.next_page_url %>
 
     <% elsif presenter.event_group_efforts.exists? %>
       <div class="callout callout-info">

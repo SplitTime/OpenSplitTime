@@ -41,6 +41,7 @@ module Interactors
 
       find_and_create_entrants
       delete_obsolete_entrants
+      set_response_message
 
       response
     end
@@ -124,6 +125,16 @@ module Interactors
 
     def validate_setup
       errors << event_not_linked_error unless event.connections.from_service(:runsignup).where(source_type: "Event").exists?
+    end
+
+    def set_response_message
+      response.message = if errors.present?
+                            "Sync completed with errors"
+                          elsif preview_only
+                            "Sync preview completed successfully"
+                          else
+                            "Sync completed successfully"
+                         end
     end
 
     def set_response_resource_keys

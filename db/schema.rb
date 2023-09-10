@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_09_182902) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_10_042627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -619,17 +619,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_09_182902) do
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
     t.index ["user_id", "subscribable_type", "subscribable_id", "protocol", "endpoint"], name: "index_subscriptions_on_unique_fields_with_endpoint", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
-  end
-
-  create_table "syncable_relations", force: :cascade do |t|
-    t.string "source_name"
-    t.string "source_type"
-    t.string "source_id"
-    t.string "destination_name"
-    t.string "destination_type"
-    t.string "destination_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

@@ -244,7 +244,7 @@ class EventsController < ApplicationController
     authorize @event
 
     presenter = ::LotterySyncPreviewPresenter.new(@event, view_context)
-    render partial: "events/connections/preview_lottery_sync", locals: { presenter: presenter }
+    render partial: "events/connectors/services/preview_lottery_sync", locals: { presenter: presenter }
   end
 
   # POST /events/1/sync_lottery_entrants

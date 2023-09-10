@@ -1,0 +1,76 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions?format=json&user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:20:15 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"0f0910a4256ef73683c6408b217b0ea3"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 8b95aaf6-d14a-4f0a-a878-a863cf47c68d
+      X-Runtime:
+      - '0.232354'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '[{"id":1,"date":"2017-09-09","race_name":"Rattlesnake Ramble Trail
+        Race - Odd Years"},{"id":2,"date":"2017-09-09","race_name":"Rattlesnake Ramble
+        Kids Race"},{"id":3,"date":"2018-09-15","race_name":"Rattlesnake Ramble Trail
+        Race - Even Years"},{"id":4,"date":"2018-09-15","race_name":"Rattlesnake Ramble
+        Kids Race"},{"id":5,"date":"2019-09-14","race_name":"Rattlesnake Ramble Trail
+        Race - Odd Years"},{"id":6,"date":"2019-09-14","race_name":"Rattlesnake Ramble
+        Kids Race"},{"id":7,"date":"2020-09-12","race_name":"Rattlesnake Ramble Trail
+        Race - Even Years"},{"id":8,"date":"2020-09-12","race_name":"Rattlesnake Ramble
+        Kids Race"},{"id":9,"date":"2021-09-11","race_name":"Rattlesnake Ramble Trail
+        Race - Odd Years"},{"id":10,"date":"2021-09-11","race_name":"Rattlesnake Ramble
+        Kids Race"},{"id":11,"date":"2022-09-17","race_name":"Rattlesnake Ramble Trail
+        Race - Even Years"},{"id":12,"date":"2022-09-17","race_name":"Rattlesnake
+        Ramble Kids Race"},{"id":13,"date":"2023-09-16","race_name":"Rattlesnake Ramble
+        Trail Race - Odd Years"},{"id":14,"date":"2023-09-16","race_name":"Rattlesnake
+        Ramble Kids Race"}]'
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:20:15 GMT
+recorded_with: VCR 4.0.0

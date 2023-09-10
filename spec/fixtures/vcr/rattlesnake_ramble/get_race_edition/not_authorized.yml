@@ -1,0 +1,119 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions/1?format=json&user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:55:52 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Location:
+      - https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user%40example.com&user%5Bpassword%5D=password
+      Content-Type:
+      - text/html; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 4198084e-ef89-4ca6-996e-b66d94e0eb6e
+      X-Runtime:
+      - '0.007300'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: <html><body>You are being <a href="https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user%40example.com&amp;user%5Bpassword%5D=password">redirected</a>.</body></html>
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:55:53 GMT
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:55:53 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - f92bb178-4133-489e-9a5b-c29dc5e6dd5d
+      X-Runtime:
+      - '0.013676'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"errors":["Invalid email or password"]}'
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:55:53 GMT
+recorded_with: VCR 4.0.0

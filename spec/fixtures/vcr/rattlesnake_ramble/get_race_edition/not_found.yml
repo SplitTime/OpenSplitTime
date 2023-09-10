@@ -1,0 +1,46 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions/9999999?format=json&user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:38:09 GMT
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=UTF-8
+      X-Request-Id:
+      - 054c522a-521f-4749-9f08-599fdd0914bd
+      X-Runtime:
+      - '0.007051'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Content-Length:
+      - '34'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"status":404,"error":"Not Found"}'
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:38:09 GMT
+recorded_with: VCR 4.0.0

@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe ::Connectors::Runsignup::Client do
   subject { described_class.new(user) }
 
-  include_context "user_with_runsignup_credentials"
+  include_context "user_with_credentials"
 
   describe "initialize" do
     context "when runsignup credentials are present" do

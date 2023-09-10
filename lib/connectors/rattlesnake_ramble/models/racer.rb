@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 module Connectors::Runsignup::Models
-  Participant = Struct.new(
+  Racer = Struct.new(
     :first_name,
     :last_name,
-    :birthdate,
     :gender,
-    :bib_number,
-    :city,
-    :state_code,
-    :country_code,
+    :birth_date,
     :email,
-    :phone,
-    :scheduled_start_time_local,
+    :city,
+    :state,
     keyword_init: true
   )
 end

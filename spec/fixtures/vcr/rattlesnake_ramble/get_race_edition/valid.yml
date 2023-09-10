@@ -1,0 +1,158 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions/1?format=json&user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 301
+      message: Moved Permanently
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:34:19 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Location:
+      - https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=mark.oveson%40gmail.com&user%5Bpassword%5D=YY%2AaZoDdtPkG6WhG
+      Content-Type:
+      - text/html; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - ad0ef272-696c-4adb-b48a-240ba0272b51
+      X-Runtime:
+      - '0.009481'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: <html><body>You are being <a href="https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=mark.oveson%40gmail.com&amp;user%5Bpassword%5D=YY%2AaZoDdtPkG6WhG">redirected</a>.</body></html>
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:34:19 GMT
+- request:
+    method: get
+    uri: https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=mark.oveson@gmail.com&user%5Bpassword%5D=YY*aZoDdtPkG6WhG
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      User-Agent:
+      - rest-client/2.1.0 (darwin22 arm64) ruby/3.2.2p53
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Host:
+      - www.rattlesnakeramble.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Date:
+      - Sun, 10 Sep 2023 02:34:20 GMT
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"480726d093b787ab74487e4480921cde"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - d8d2f59e-a169-4a9b-bd1a-e929b6b6c9a0
+      X-Runtime:
+      - '0.254909'
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{
+        "date":"2023-09-16",
+        "default_start_time_male":"2023-09-16T13:47:00.000Z",
+        "default_start_time_female":"2023-09-16T13:52:00.000Z",
+        "entry_fee":25,
+        "created_at":"2023-08-14T14:31:00.575Z",
+        "updated_at":"2023-08-07T19:23:48.976Z",
+        "race":{"name":"Rattlesnake Ramble Trail Race - Odd Years"},
+        "race_entries":
+          [
+            {
+              "bib_number":3,
+              "scheduled_start_time":null,
+              "racer":{
+                "first_name":"Bubba",
+                "last_name":"Gump",
+                "gender":"male",
+                "birth_date":"1971-04-24",
+                "email":"bubba@gump.com",
+                "city":"Atlanta",
+                "state":"GA"
+              }
+            },
+            {
+              "bib_number":19,
+              "scheduled_start_time":null,
+              "racer":{
+                "first_name":"Jenny",
+                "last_name":"Gump",
+                "gender":"female",
+                "birth_date":"1998-01-22",
+                "email":"jenny@bubba.com",
+                "city":"Los Angeles",
+                "state":"CA"
+              }
+            }
+          ]
+        }'
+    http_version:
+  recorded_at: Sun, 10 Sep 2023 02:34:20 GMT
+recorded_with: VCR 4.0.0

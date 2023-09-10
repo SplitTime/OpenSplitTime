@@ -5,6 +5,7 @@ class EventGroupSetupPresenter < BasePresenter
 
   attr_reader :event_group
   delegate :available_live?,
+           :connections,
            :concealed?,
            :first_event,
            :home_time_zone,
@@ -12,7 +13,6 @@ class EventGroupSetupPresenter < BasePresenter
            :name,
            :organization,
            :partners,
-           :connections,
            :to_param,
            :unreconciled_efforts,
            to: :event_group
@@ -54,7 +54,7 @@ class EventGroupSetupPresenter < BasePresenter
     @filtered_efforts ||= event_group_efforts
                             .where(filter_hash)
                             .search(search_text)
-                            .order(sort_hash.presence || {bib_number: :asc})
+                            .order(sort_hash.presence || { bib_number: :asc })
                             .paginate(page: page, per_page: per_page)
   end
 
@@ -88,6 +88,15 @@ class EventGroupSetupPresenter < BasePresenter
 
   def available_connection_services
     Connectors::Service.all
+  end
+
+  def existing_connection_services
+    existing_service_identifiers.map { |service_identifier| Connectors::Service::BY_IDENTIFIER[service_identifier] }
+  end
+
+  def existing_service_identifiers
+    @existing_service_identifiers ||=
+      Connection.where(destination: event_group).or(Connection.where(destination: event_group.events)).distinct.pluck(:service_identifier)
   end
 
   def service_identifier

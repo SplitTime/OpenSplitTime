@@ -16,20 +16,8 @@
         callout_color: "success",
         icon_color: "success",
         icon_name: "info-circle",
+        link: connection_services_dropdown_menu(presenter),
       } %>
-
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col">
-              <h4 class="card-title fw-bold mt-1">Connect to a Service</h4>
-            </div>
-            <div class="col text-end">
-              <%= connection_services_dropdown_menu(presenter) %>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <% if presenter.existing_connection_services.any? %>
         <hr class="mt-5">
@@ -43,7 +31,7 @@
                     <h4 class="card-title mt-1"><%= service.name %></h4>
                   </div>
                   <div class="col text-end">
-                    <%= link_to "Manage",
+                    <%= link_to fa_icon("list-check", type: :regular, text: "Manage Connection"),
                                 event_group_connect_service_path(presenter.event_group, service.identifier),
                                 class: "btn btn-outline-primary" %>
                   </div>

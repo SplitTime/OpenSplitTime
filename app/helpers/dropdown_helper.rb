@@ -39,7 +39,12 @@ module DropdownHelper
         disabled: service.identifier.in?(view_object.existing_service_identifiers) }
     end
 
-    build_dropdown_menu("Select a service to connect", dropdown_items, button: true)
+    build_dropdown_menu(
+      fa_icon("plug-circle-plus", type: :regular, class: "text-success", text: "Select a service to connect"),
+      dropdown_items,
+      button: true,
+      button_type: "outline-success"
+    )
   end
 
   def start_entrants_dropdown_menu(view_object)

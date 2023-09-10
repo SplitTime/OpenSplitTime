@@ -8,10 +8,9 @@ class ConnectServicePresenter < BasePresenter
     @service = service
     @view_context = view_context
     @error_message = nil
-    set_all_events
   end
 
-  attr_reader :event_group, :service, :error_message
+  attr_reader :event_group, :service
 
   def all_credentials_present?
     current_user.all_credentials_for?(service_identifier)
@@ -19,6 +18,12 @@ class ConnectServicePresenter < BasePresenter
 
   def connection_invalid?
     !all_credentials_present? || error_message.present?
+  end
+
+  def error_message
+    # Ensure that all_events has been called so that @error_message is set.
+    set_all_events
+    @error_message
   end
 
   def no_events_found?
@@ -55,10 +60,18 @@ class ConnectServicePresenter < BasePresenter
 
   private
 
-  attr_reader :view_context, :all_events
+  attr_reader :view_context
   delegate :current_user, to: :view_context, private: true
 
+  def all_events
+    # Ensure that set_all_events has been called so that @all_events is set.
+    set_all_events
+    @all_events
+  end
+
   def set_all_events
+    return @all_events if defined?(@all_events)
+
     @all_events = [] and return unless some_credentials_present?
 
     @all_events = case service_identifier.to_sym

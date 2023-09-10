@@ -3,8 +3,8 @@
 module Connectors::RattlesnakeRamble::Models
   RaceEdition = Struct.new(
     :id,
-    :name,
     :date,
+    :race_name,
     keyword_init: true
   )
 end

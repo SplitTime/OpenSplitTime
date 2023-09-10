@@ -22,18 +22,22 @@
     </div>
   </div>
 
-  <div class="card-body">
+  <div class="card-body d-flex align-items-center">
     <% if connect_service_presenter.connection_invalid? %>
-      <p>There is a problem with the connection. Please check that your <%= link_to "credentials", user_settings_credentials_path %>
-        are entered and accurate and try again.</p>
+      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
+      <span class="fw-bold">There is a problem with the connection. Please check that your <%= link_to "credentials", user_settings_credentials_path %>
+        are entered and accurate and try again.</span>
     <% elsif connect_service_presenter.no_events_found? %>
-      <p>No external events were returned. Please check with the owner of <%= connect_service_presenter.service_name %> for further
-        assistance.</p>
+      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
+      <span class="fw-bold">No external events were returned. Please check with the owner of <%= connect_service_presenter.service_name %> for further
+        assistance.</span>
     <% elsif connect_service_presenter.no_events_in_time_frame? %>
-      <p>External events were returned, but none were within the timeframe of <%= connect_service_presenter.event_group_name %>.
-        Please check with the owner of <%= connect_service_presenter.service_name %> for further assistance.</p>
+      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
+      <span class="fw-bold">External events were returned, but none were within the timeframe of <%= connect_service_presenter.event_group_name %>.
+        Please check with the owner of <%= connect_service_presenter.service_name %> for further assistance.</span>
     <% else %>
-      <p>Connect the Events below to the corresponding Race Editions.</p>
+      <span class="me-1"><%= fa_icon("circle-check", type: :regular, class: "text-success", size: "2x") %></span>
+      <span class="fw-bold">Connect the Events below to the corresponding Race Editions.</span>
     <% end %>
   </div>
 </div>

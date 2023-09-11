@@ -1,0 +1,15 @@
+<%# locals: (presenter:) -%>
+
+<% if presenter.syncable? %>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <%= render partial: "events/connectors/services/preview_sync_detail_card", locals: { efforts: presenter.created_efforts, verb: "created" } %>
+    </div>
+    <div class="col-12 col-lg-4">
+      <%= render partial: "events/connectors/services/preview_sync_detail_card", locals: { efforts: presenter.updated_efforts, verb: "updated" } %>
+    </div>
+    <div class="col-12 col-lg-4">
+      <%= render partial: "events/connectors/services/preview_sync_detail_card", locals: { efforts: presenter.deleted_efforts, verb: "deleted" } %>
+    </div>
+  </div>
+<% end %>

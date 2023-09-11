@@ -1,0 +1,54 @@
+<%# locals: (presenter:, event:, interactor_response:) -%>
+
+<% interactor_response ||= nil %>
+
+<%= content_tag(:div, id: dom_id(event, :sync_efforts_card)) do %>
+  <div class="card my-3">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <h4 class="mt-1"><%= event.name %></h4>
+        </div>
+        <div class="col">
+          <% if interactor_response.present? %>
+            <div class="text-end">
+              <% if interactor_response.successful? %>
+                <%= fa_icon("circle-check", type: :regular, class: "text-success", text: interactor_response.message) %>
+              <% else %>
+                <%= fa_icon("triangle-xmark", type: :solid, class: "text-warning", text: interactor_response.message_with_error_report) %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <label>Select corresponding external events</label>
+          <% presenter.external_events(event).each do |external_event| %>
+            <%= render partial: "events/connections/syncable_switch",
+                       locals: {
+                         event_group: presenter.event_group,
+                         event: event,
+                         external_id: external_event.id,
+                         external_name: external_event.name,
+                         service: presenter.service,
+                       } %>
+          <% end %>
+        </div>
+        <div class="col text-end" id="<%= dom_id(event, :sync_or_preview_button) %>">
+          <%= render partial: "events/connectors/services/preview_sync_button",
+                     locals: {
+                       event: event,
+                       service_identifier: presenter.service_identifier,
+                     } %>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-body">
+      <div id="<%= dom_id(event, :sync_preview) %>">
+      </div>
+    </div>
+  </div>
+<% end %>

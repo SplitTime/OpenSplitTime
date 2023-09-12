@@ -6,7 +6,7 @@ module Events
     # GET /events/1/connector_services/:service_identifier/preview_sync
     def preview_sync
       presenter = ::EventSyncPreviewPresenter.new(@connectable, view_context, previewer: event_syncing_interactor)
-      render partial: "events/connectors/services/preview_sync", locals: { presenter: presenter }
+      render :preview_sync, locals: { event: @connectable, presenter: presenter }
     end
 
     # POST /events/1/connector_services/:service_identifier/sync
@@ -17,7 +17,7 @@ module Events
         event: @connectable,
         service: @service,
         view_context: view_context,
-        message: response.message,
+        interactor_response: response,
       }
     end
 

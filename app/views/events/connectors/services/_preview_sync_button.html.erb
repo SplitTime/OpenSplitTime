@@ -1,10 +1,9 @@
 <%# locals: (event:, service_identifier:) -%>
 
-<%= turbo_frame_tag(:preview_sync, event) do %>
-  <%= button_to(preview_sync_event_connector_service_path(event, service_identifier),
-                data: {
-                  turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: "Requesting"),
-                },
-                method: :get,
-                class: "btn btn-primary") { "Preview sync" } %>
-<% end %>
+<%= button_to(preview_sync_event_connector_service_path(event, service_identifier),
+              data: {
+                turbo_stream: true,
+                turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: "Requesting"),
+              },
+              method: :get,
+              class: "btn btn-outline-primary") { "Preview sync" } %>

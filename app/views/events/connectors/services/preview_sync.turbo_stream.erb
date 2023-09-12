@@ -1,0 +1,13 @@
+<%# locals: (event:, presenter:) %>
+
+<%= turbo_stream.update(dom_id(event, :sync_preview),
+                        partial: "events/connectors/services/sync_preview",
+                        locals: {
+                          presenter: presenter,
+                        }) %>
+
+<%= turbo_stream.update(dom_id(event, :sync_or_preview_button),
+                        partial: "events/connectors/services/sync_button",
+                        locals: {
+                          presenter: presenter,
+                        }) %>

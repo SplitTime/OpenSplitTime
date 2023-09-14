@@ -27,7 +27,7 @@
         <div class="col">
           <label class="fw-bold mb-2">Select corresponding external events</label>
           <% presenter.connections_with_blanks(event).each do |connection| %>
-            <%= render partial: "events/connections/syncable_switch",
+            <%= render partial: "events/connections/toggle_switch",
                        locals: {
                          event: event,
                          connection: connection,

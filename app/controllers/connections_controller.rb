@@ -26,6 +26,9 @@ class ConnectionsController < ApplicationController
 
     @connection = @destination.connections.new(permitted_params)
     set_connection_attributes
+    # source_name is passed in as a param because it is not persisted in the database.
+    # It is needed to re-render the switch.
+    @connection.source_name = source_name
     @connection.save
 
     render_destination_create_view

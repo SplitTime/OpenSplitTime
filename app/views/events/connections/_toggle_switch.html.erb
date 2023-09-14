@@ -1,11 +1,11 @@
 <%# locals: (event:, connection:) -%>
 
-<div class="d-flex" id='<%= dom_id(connection, "switch_wrapper_#{connection.service_identifier}") %>'>
+<div class="d-flex" id='<%= dom_id(event, "switch_wrapper_#{connection.source_id}") %>'>
   <div class="form-check form-switch">
-    <label class="form-check-label" for='<%= dom_id(connection, "switch_#{connection.service_identifier}") %>'><%= connection.source_name %></label>
+    <label class="form-check-label" for='<%= dom_id(event, "switch_#{connection.source_id}") %>'><%= connection.source_name %></label>
     <input class="form-check-input"
            type="checkbox"
-           id="<%= dom_id(connection, "switch_#{connection.service_identifier}") %>"
+           id="<%= dom_id(event, "switch_#{connection.source_id}") %>"
            data-controller="event-connections--switch tooltip"
            data-bs-placement="top"
            data-bs-original-title="<%= connection.persisted? ? 'Remove this connection' : 'Create this connection' %>"

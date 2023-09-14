@@ -1,7 +1,7 @@
 <%# locals: (event:, connection:, service_identifier:) -%>
 
-<%= turbo_stream.replace dom_id(connection, "switch_wrapper_#{connection.service_identifier}"),
-                         partial: "events/connections/syncable_switch",
+<%= turbo_stream.replace dom_id(event, "switch_wrapper_#{connection.source_id}"),
+                         partial: "events/connections/toggle_switch",
                          locals: {
                            event: event,
                            connection: connection,

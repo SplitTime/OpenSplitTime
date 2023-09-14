@@ -1,6 +1,10 @@
 <%# locals: (event:, connection:) -%>
 
-<div class="d-flex" id='<%= dom_id(event, "switch_wrapper_#{connection.source_id}") %>'>
+<div class="d-flex"
+     data-controller="highlight"
+     data-highlight-timestamp-value="<%= connection.updated_at.to_i %>"
+     data-highlight-fast-value="true"
+     id='<%= dom_id(event, "switch_wrapper_#{connection.source_id}") %>'>
   <div class="form-check form-switch">
     <label class="form-check-label" for='<%= dom_id(event, "switch_#{connection.source_id}") %>'><%= connection.source_name %></label>
     <input class="form-check-input"

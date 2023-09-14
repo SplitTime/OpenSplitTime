@@ -7,10 +7,8 @@ module Events
     def render_destination_create_view
       render "events/connections/create",
              locals: {
-               event_group: @destination.event_group,
                event: @destination,
-               external_id: params.dig(:connection, :source_id),
-               external_name: params.dig(:connection, :external_name),
+               connection: @connection,
                service_identifier: @connection.service_identifier,
              }
     end

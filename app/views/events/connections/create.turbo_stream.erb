@@ -1,15 +1,15 @@
-<%# locals: (event_group:, event:, external_id:, external_name:, service_identifier:) -%>
+<%# locals: (event:, connection:, service_identifier:) -%>
 
-<%= turbo_stream.replace "toggle_event_#{event.id}_external_id_#{external_id}",
+<%= turbo_stream.replace dom_id(connection, "switch_wrapper_#{connection.service_identifier}"),
                          partial: "events/connections/syncable_switch",
                          locals: {
-                           event_group: event_group,
                            event: event,
-                           external_id: external_id,
-                           external_name: external_name,
-                           service: ::Connectors::Service::BY_IDENTIFIER[service_identifier]
+                           connection: connection,
                          } %>
 
 <%= turbo_stream.replace dom_id(event, :preview_sync),
                          partial: "events/connectors/services/preview_sync_button",
-                         locals: { event: event, service_identifier: service_identifier } %>
+                         locals: {
+                           event: event,
+                           service_identifier: service_identifier,
+                         } %>

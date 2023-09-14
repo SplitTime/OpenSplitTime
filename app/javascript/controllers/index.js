@@ -34,6 +34,9 @@ application.register("course-setup--splits-table", CourseSetup__SplitsTableContr
 import DropzoneController from "./dropzone_controller"
 application.register("dropzone", DropzoneController)
 
+import EventConnections__SwitchController from "./event_connections/switch_controller"
+application.register("event-connections--switch", EventConnections__SwitchController)
+
 import EventSetupController from "./event_setup_controller"
 application.register("event-setup", EventSetupController)
 

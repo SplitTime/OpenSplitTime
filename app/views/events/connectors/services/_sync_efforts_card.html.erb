@@ -25,15 +25,12 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <label>Select corresponding external events</label>
-          <% presenter.external_events(event).each do |external_event| %>
+          <label class="fw-bold mb-2">Select corresponding external events</label>
+          <% presenter.connections_with_blanks(event).each do |connection| %>
             <%= render partial: "events/connections/syncable_switch",
                        locals: {
-                         event_group: presenter.event_group,
                          event: event,
-                         external_id: external_event.id,
-                         external_name: external_event.name,
-                         service: presenter.service,
+                         connection: connection,
                        } %>
           <% end %>
         </div>

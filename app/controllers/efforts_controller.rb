@@ -82,7 +82,7 @@ class EffortsController < ApplicationController
           when :disassociate
             redirect_to request.referrer
           else
-            redirect_to entrants_event_group_path(effort.event_group)
+            redirect_to entrants_event_group_path(@effort.event_group)
           end
         else
           render :edit, status: :unprocessable_entity

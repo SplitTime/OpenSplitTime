@@ -2,7 +2,7 @@
 
 <div class="d-flex"
      data-controller="highlight"
-     data-highlight-timestamp-value="<%= connection.updated_at.to_i %>"
+     data-highlight-timestamp-value="<%= connection.destroyed? ? Time.current.to_i : connection.updated_at.to_i %>"
      data-highlight-fast-value="true"
      id='<%= dom_id(event, "switch_wrapper_#{connection.source_id}") %>'>
   <div class="form-check form-switch">

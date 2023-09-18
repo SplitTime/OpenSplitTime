@@ -26,14 +26,19 @@ class Connectors::Runsignup::Client
   private
 
   attr_reader :user
-  attr_accessor :request, :response
+  attr_accessor :request, :response, :response_code, :raw_error_message
 
   # @return [String]
   def make_request
     self.response = ::RestClient.get(url, { params: params })
-    check_response_validity!
+    self.response_code = response.code
 
     response.body
+  rescue RestClient::Exception => e
+    self.response_code = e.http_code
+    self.raw_error_message = e.message
+  ensure
+    check_response_validity!
   end
 
   # @return [Hash]
@@ -66,13 +71,13 @@ class Connectors::Runsignup::Client
   end
 
   def check_response_validity!
-    case response.code
+    case response_code
     when 401
-      raise Connectors::Errors::NotAuthenticated
+      raise Connectors::Errors::NotAuthenticated, "Credentials were not accepted"
     when 403
-      raise Connectors::Errors::NotAuthorized
+      raise Connectors::Errors::NotAuthorized, "Access is not authorized"
     when 404
-      raise Connectors::Errors::NotFound
+      raise Connectors::Errors::NotFound, "Resource not found"
     when 200
       if runsignup_error_code.present?
         if RUNSIGNUP_ERROR_MAPPING[runsignup_error_code].present?

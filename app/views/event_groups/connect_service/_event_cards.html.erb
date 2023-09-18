@@ -1,8 +1,0 @@
-<%# locals: (connect_service_presenter:) %>
-
-<div id="event_cards">
-  <%= render partial: "events/connectors/services/sync_efforts_card",
-             locals: { presenter: connect_service_presenter },
-             collection: connect_service_presenter.event_group.events.order(:scheduled_start_time),
-             as: :event %>
-</div>

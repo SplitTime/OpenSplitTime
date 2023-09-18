@@ -11,3 +11,9 @@
                         locals: {
                           presenter: presenter,
                         }) %>
+
+<%= turbo_stream.update(dom_id(event, :sync_efforts_response),
+                        partial: "events/connectors/services/sync_efforts_response",
+                        locals: {
+                          interactor_response: presenter.preview_response,
+                        }) %>

@@ -63,6 +63,10 @@ class ConnectServicePresenter < BasePresenter
     service&.name
   end
 
+  def successful_connection?
+    all_credentials_present? && error_message.blank?
+  end
+
   def connection
     @connection ||= event_group.connections.find_or_initialize_by(service_identifier: service_identifier) do |connection|
       connection.source_type = event_group_source_type

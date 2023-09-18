@@ -5,8 +5,8 @@ module Events
 
     # GET /events/1/connector_services/:service_identifier/preview_sync
     def preview_sync
-      presenter = ::EventSyncPreviewPresenter.new(@connectable, view_context, previewer: event_syncing_interactor)
-      render :preview_sync, locals: { event: @connectable, presenter: presenter }
+      preview_presenter = ::EventSyncPreviewPresenter.new(@connectable, view_context, previewer: event_syncing_interactor)
+      render :preview_sync, locals: { event: @connectable, presenter: preview_presenter }
     end
 
     # POST /events/1/connector_services/:service_identifier/sync

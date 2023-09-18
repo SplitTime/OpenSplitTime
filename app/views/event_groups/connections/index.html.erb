@@ -31,7 +31,7 @@
                     <h4 class="card-title mt-1"><%= service.name %></h4>
                   </div>
                   <div class="col text-end">
-                    <%= link_to fa_icon("list-check", type: :regular, text: "Manage Connection"),
+                    <%= link_to fa_icon("list-check", type: :regular, text: "Manage and Sync"),
                                 event_group_connect_service_path(presenter.event_group, service.identifier),
                                 class: "btn btn-outline-primary" %>
                   </div>

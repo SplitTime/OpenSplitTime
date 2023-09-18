@@ -38,9 +38,20 @@ class ConnectServicePresenter < BasePresenter
     event_group.name
   end
 
+  # This method returns an array of Structs that will respond (at minimum) to #id and #name.
   def external_events(event)
     all_events.reject do |event_struct|
       (event_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs > CANDIDATE_SEPARATION_LIMIT
+    end
+  end
+
+  def connections_with_blanks(event)
+    external_events(event).map do |event_struct|
+      connection = event.connections.find_or_initialize_by(service_identifier: service_identifier, source_id: event_struct.id) do |connection|
+        connection.source_type = event_source_type
+      end
+      connection.source_name = event_struct.name
+      connection
     end
   end
 
@@ -54,7 +65,7 @@ class ConnectServicePresenter < BasePresenter
 
   def connection
     @connection ||= event_group.connections.find_or_initialize_by(service_identifier: service_identifier) do |connection|
-      connection.source_type = source_type
+      connection.source_type = event_group_source_type
     end
   end
 
@@ -101,7 +112,11 @@ class ConnectServicePresenter < BasePresenter
     ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: race_id, user: current_user)
   end
 
-  def source_type
+  def event_group_source_type
     service.resource_map[EventGroup]
+  end
+
+  def event_source_type
+    service.resource_map[Event]
   end
 end

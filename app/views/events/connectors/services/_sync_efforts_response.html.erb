@@ -1,0 +1,13 @@
+<%# locals: (interactor_response:) -%>
+
+<% if interactor_response.present? %>
+  <div class="text-end">
+    <% if interactor_response.successful? %>
+      <%= fa_icon("circle-check", type: :regular, class: "text-success", text: interactor_response.message) %>
+    <% else %>
+      <% interactor_response.errors.each do |error| %>
+        <%= fa_icon("circle-xmark", type: :solid, class: "text-danger", text: [error.dig(:title), error.dig(:detail, :exception)].compact.join(": ")) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -29,12 +29,12 @@ class EventSyncPreviewPresenter
     preview_response.resources[:updated_efforts]
   end
 
+  def preview_response
+    @preview_response ||= previewer.preview(event, current_user)
+  end
+
   private
 
   attr_reader :previewer, :view_context
   delegate :current_user, to: :view_context, private: true
-
-  def preview_response
-    @preview_response ||= previewer.preview(event, current_user)
-  end
 end

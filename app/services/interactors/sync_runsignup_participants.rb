@@ -61,12 +61,18 @@ module Interactors
 
     def find_and_create_entrants
       participants = runsignup_event_ids.flat_map do |runsignup_event_id|
+        next if errors.present?
+
         ::Connectors::Runsignup::FetchEventParticipants.perform(
           race_id: runsignup_race_id,
           event_id: runsignup_event_id,
           user: current_user,
         )
+      rescue ::Connectors::Errors::Base => error
+        errors << connectors_base_error(error)
       end
+
+      return if errors.present?
 
       participants.sort_by! { |participant| [participant.last_name, participant.first_name] }
 
@@ -135,7 +141,7 @@ module Interactors
       response.message = if errors.present?
                             "Sync completed with errors"
                           elsif preview_only
-                            "Sync preview completed successfully"
+                            "Preview completed successfully"
                           else
                             "Sync completed successfully"
                          end

@@ -22,6 +22,11 @@ module Interactors
        detail: {error_message: "Bib number #{bib_number} for filename #{filename} was not found"}}
     end
 
+    def connectors_base_error(exception)
+      {title: "A connection error occurred",
+       detail: {exception: exception.message}}
+    end
+
     def database_error(error_message)
       {title: "A database error occurred",
        detail: {error_message: error_message}}

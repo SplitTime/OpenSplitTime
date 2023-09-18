@@ -9,16 +9,8 @@
         <div class="col">
           <h4 class="mt-1"><%= event.name %></h4>
         </div>
-        <div class="col">
-          <% if interactor_response.present? %>
-            <div class="text-end">
-              <% if interactor_response.successful? %>
-                <%= fa_icon("circle-check", type: :regular, class: "text-success", text: interactor_response.message) %>
-              <% else %>
-                <%= fa_icon("triangle-xmark", type: :solid, class: "text-warning", text: interactor_response.message_with_error_report) %>
-              <% end %>
-            </div>
-          <% end %>
+        <div class="col" id="<%= dom_id(event, :sync_efforts_response) %>">
+          <%= render partial: "events/connectors/services/sync_efforts_response", locals: { interactor_response: interactor_response } %>
         </div>
       </div>
     </div>

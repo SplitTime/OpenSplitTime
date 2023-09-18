@@ -11,8 +11,8 @@
                            connect_service_presenter: connect_service_presenter,
                          }) %>
 
-<%= turbo_stream.replace("event_cards",
-                         partial: "event_groups/connect_service/event_cards",
-                         locals: {
-                           connect_service_presenter: connect_service_presenter,
-                         }) %>
+<%= turbo_stream.update(dom_id(event_group, :connect_service_events_list),
+                        partial: "event_groups/connect_service/events_list",
+                        locals: {
+                          connect_service_presenter: connect_service_presenter,
+                        }) %>

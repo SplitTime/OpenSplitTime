@@ -1,0 +1,19 @@
+<%# locals: (connect_service_presenter:) %>
+
+<% if connect_service_presenter.successful_connection? %>
+  <hr/>
+  <h4 class="fw-bold">Events</h4>
+  <%= render partial: "events/connectors/services/sync_efforts_card",
+             locals: { presenter: connect_service_presenter },
+             collection: connect_service_presenter.event_group.events.order(:scheduled_start_time),
+             as: :event %>
+
+  <hr/>
+  <div class="row mb-3">
+    <div class="col">
+      <%= link_to "Back to connections",
+                  event_group_connections_path(connect_service_presenter.event_group),
+                  class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+<% end %>

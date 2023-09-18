@@ -113,7 +113,7 @@ module Interactors
       response.message = if errors.present?
                             "Sync completed with errors"
                           elsif preview_only
-                            "Sync preview completed successfully"
+                            "Preview completed successfully"
                           else
                             "Sync completed successfully"
                          end

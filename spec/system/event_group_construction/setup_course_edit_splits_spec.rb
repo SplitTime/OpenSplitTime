@@ -25,7 +25,7 @@ RSpec.describe "create and edit splits from the events setup_course view", js: t
       fill_in "split_distance_in_preferred_units", with: "25"
 
       # Wait for things to settle
-      sleep 0.2
+      sleep 0.3
 
       click_button "Create Split"
 
@@ -50,7 +50,7 @@ RSpec.describe "create and edit splits from the events setup_course view", js: t
       fill_in "split_distance_in_preferred_units", with: "12.5"
 
       # Wait for things to settle
-      sleep 0.2
+      sleep 0.3
 
       click_button "Update Split"
 

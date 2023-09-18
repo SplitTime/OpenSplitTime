@@ -21,20 +21,22 @@
                connect_service_presenter: connect_service_presenter
              } %>
 
-  <hr/>
-  <h4 class="fw-bold">Events</h4>
-  <%= render partial: "event_groups/connect_service/event_cards",
-             locals: {
-               event_group_setup_presenter: event_group_setup_presenter,
-               connect_service_presenter: connect_service_presenter
-             } %>
+  <% if connect_service_presenter.successful_connection? %>
+    <hr/>
+    <h4 class="fw-bold">Events</h4>
+    <%= render partial: "event_groups/connect_service/event_cards",
+               locals: {
+                 event_group_setup_presenter: event_group_setup_presenter,
+                 connect_service_presenter: connect_service_presenter
+               } %>
 
-  <hr/>
-  <div class="row mb-3">
-    <div class="col">
-      <%= link_to "Back to connections",
-                  event_group_connections_path(event_group_setup_presenter.event_group),
-                  class: "btn btn-outline-secondary" %>
+    <hr/>
+    <div class="row mb-3">
+      <div class="col">
+        <%= link_to "Back to connections",
+                    event_group_connections_path(event_group_setup_presenter.event_group),
+                    class: "btn btn-outline-secondary" %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </article>

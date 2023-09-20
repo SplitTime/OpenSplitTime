@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_10_042627) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_20_165528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -231,12 +231,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_042627) do
     t.bigint "results_template_id", null: false
     t.integer "efforts_count", default: 0
     t.string "notice_text"
-    t.bigint "lottery_id"
     t.string "topic_resource_key"
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"
-    t.index ["lottery_id"], name: "index_events_on_lottery_id"
     t.index ["results_template_id"], name: "index_events_on_results_template_id"
     t.index ["slug"], name: "index_events_on_slug", unique: true
   end
@@ -688,7 +686,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_10_042627) do
   add_foreign_key "event_series_events", "events"
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
-  add_foreign_key "events", "lotteries"
   add_foreign_key "export_jobs", "users"
   add_foreign_key "import_jobs", "users"
   add_foreign_key "lotteries", "organizations"

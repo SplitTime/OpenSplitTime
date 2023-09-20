@@ -19,7 +19,6 @@ class EventResource < Madmin::Resource
   attribute :versions
   attribute :course
   attribute :event_group
-  attribute :lottery
   attribute :results_template
   attribute :event_series_events
   attribute :event_series

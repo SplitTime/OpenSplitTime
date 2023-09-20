@@ -15,15 +15,15 @@ module Interactors
       "country_code",
     ].freeze
 
-    def self.perform!(event)
-      new(event).perform!
+    def self.perform!(event, _current_user)
+      new(event, _current_user).perform!
     end
 
-    def self.preview(event)
-      new(event).preview
+    def self.preview(event, _current_user)
+      new(event, _current_user).preview
     end
 
-    def initialize(event)
+    def initialize(event, _current_user)
       @event = event
       @response = ::Interactors::Response.new([], nil, {})
       @time = Time.current
@@ -55,7 +55,9 @@ module Interactors
     delegate :errors, :resources, to: :response, private: true
 
     def find_and_create_entrants
-      accepted_entrants = event.lottery.divisions.flat_map(&:accepted_entrants)
+      lottery_connections = event.connections.from_service(:internal_lottery).where(source_type: "Lottery")
+      connected_lotteries = Lottery.where(id: lottery_connections.map(&:source_id))
+      accepted_entrants = connected_lotteries.flat_map(&:divisions).flat_map(&:accepted_entrants)
                             .sort_by { |entrant| [entrant.last_name, entrant.first_name] }
 
       accepted_entrants.each do |entrant|
@@ -90,7 +92,7 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_not_linked_error unless event.lottery.present?
+      errors << event_not_linked_error unless event.connections.from_service(:internal_lottery).where(source_type: "Lottery").exists?
     end
 
     def set_response_resource_keys
@@ -103,12 +105,11 @@ module Interactors
     def set_response_message
       response.message =
         if errors.present?
-          "Unable to sync lottery"
+          "Sync resulted in errors"
+        elsif preview_only
+          "Preview was successful"
         else
-          "Lottery sync was successful. Created #{pluralize(resources[:created_efforts].size, 'effort')}, " +
-            "updated #{pluralize(resources[:updated_efforts].size, 'effort')}, " +
-            "deleted #{pluralize(resources[:deleted_efforts].size, 'effort')}, " +
-            "and ignored #{pluralize(resources[:ignored_efforts].size, 'effort')}."
+          "Sync was successful"
         end
     end
   end

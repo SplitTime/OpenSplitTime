@@ -72,16 +72,8 @@ class EventPolicy < ApplicationPolicy
     user.authorized_to_edit?(event)
   end
 
-  def preview_lottery_sync?
-    user.authorized_to_edit?(event)
-  end
-
   def preview_sync?
     user.authorized_to_edit?(event)
-  end
-
-  def sync_lottery_entrants?
-    preview_lottery_sync?
   end
 
   def sync_entrants?

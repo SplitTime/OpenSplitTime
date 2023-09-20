@@ -229,13 +229,6 @@ class EventGroupsController < ApplicationController
     redirect_to reconcile_event_group_path(@event_group)
   end
 
-  # GET /event_groups/1/link_lotteries
-  def link_lotteries
-    authorize @event_group
-
-    @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
-  end
-
   def connect_service
     authorize @event_group
 

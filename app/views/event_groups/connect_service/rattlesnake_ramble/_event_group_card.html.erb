@@ -27,11 +27,11 @@
       <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
       <span class="fw-bold">There is a problem with the connection. Please check that your <%= link_to "credentials", user_settings_credentials_path %>
         are entered and accurate and try again.</span>
-    <% elsif connect_service_presenter.no_events_found? %>
+    <% elsif connect_service_presenter.no_sources_found? %>
       <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
       <span class="fw-bold">No external events were returned. Please check with the owner of <%= connect_service_presenter.service_name %> for further
         assistance.</span>
-    <% elsif connect_service_presenter.no_events_in_time_frame? %>
+    <% elsif connect_service_presenter.no_sources_in_time_frame? %>
       <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
       <span class="fw-bold">External events were returned, but none were within the timeframe of <%= connect_service_presenter.event_group_name %>.
         Please check with the owner of <%= connect_service_presenter.service_name %> for further assistance.</span>

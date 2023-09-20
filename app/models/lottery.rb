@@ -91,4 +91,8 @@ class Lottery < ApplicationRecord
     ticket_hashes = generate_ticket_hashes(beginning_reference_number: beginning_reference_number)
     LotteryTicket.insert_all(ticket_hashes)
   end
+
+  def start_time
+    scheduled_start_date&.in_time_zone("UTC")
+  end
 end

@@ -3,10 +3,10 @@
 require "rails_helper"
 
 RSpec.describe Interactors::SyncLotteryEntrants do
-  subject { described_class.new(event) }
+  subject { described_class.new(event, current_user) }
   let(:event_group) { create(:event_group, organization: organizations(:hardrock)) }
-  let(:event) { create(:event, event_group: event_group, course: courses(:hardrock_cw), lottery_id: lottery_id) }
-  let(:lottery_id) { nil }
+  let(:event) { create(:event, event_group: event_group, course: courses(:hardrock_cw)) }
+  let(:current_user) { users(:admin_user) }
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:nevers_division) { lottery.divisions.find_by(name: "Never Ever Evers") }
 
@@ -169,8 +169,11 @@ RSpec.describe Interactors::SyncLotteryEntrants do
     end
 
     context "when the event is linked to a lottery" do
-      let(:lottery_id) { lottery.id }
       let(:resulting_effort_ids) { event.reload.efforts.pluck(:id) }
+
+      before do
+        event.connections.create!(service_identifier: "internal_lottery", source_id: lottery.id, source_type: "Lottery")
+      end
 
       context "when the event has no existing efforts" do
         it "adds all accepted lottery entrants to the event" do
@@ -253,7 +256,9 @@ RSpec.describe Interactors::SyncLotteryEntrants do
     end
 
     context "when the event is linked to a lottery" do
-      let(:lottery_id) { lottery.id }
+      before do
+        event.connections.create!(service_identifier: "internal_lottery", source_id: lottery.id, source_type: "Lottery")
+      end
 
       context "when the event has no existing efforts" do
         include_examples "makes no changes to the database"

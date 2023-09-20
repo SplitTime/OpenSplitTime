@@ -13,7 +13,6 @@ hardrock_2015:
   short_name:
   efforts_count: 30
   notice_text:
-  lottery_id:
 ramble:
   results_template: simple
   id: 14
@@ -28,7 +27,6 @@ ramble:
   short_name:
   efforts_count: 4
   notice_text:
-  lottery_id:
 hardrock_2014:
   results_template: simple
   id: 17
@@ -43,7 +41,6 @@ hardrock_2014:
   short_name:
   efforts_count: 19
   notice_text:
-  lottery_id:
 rufa_2016:
   results_template: simple
   id: 34
@@ -58,7 +55,6 @@ rufa_2016:
   short_name:
   efforts_count: 4
   notice_text:
-  lottery_id:
 rufa_2017_24h:
   results_template: simple
   id: 36
@@ -73,7 +69,6 @@ rufa_2017_24h:
   short_name: 24H
   efforts_count: 6
   notice_text:
-  lottery_id:
 hardrock_2016:
   results_template: simple
   id: 37
@@ -88,7 +83,6 @@ hardrock_2016:
   short_name:
   efforts_count: 19
   notice_text:
-  lottery_id:
 ggd30_50k:
   results_template: simple
   id: 48
@@ -103,7 +97,6 @@ ggd30_50k:
   short_name: 50K
   efforts_count: 8
   notice_text:
-  lottery_id:
 ggd30_12m:
   results_template: simple
   id: 49
@@ -118,7 +111,6 @@ ggd30_12m:
   short_name: 12-miler
   efforts_count: 6
   notice_text:
-  lottery_id:
 sum_100k:
   results_template: simple
   id: 56
@@ -133,7 +125,6 @@ sum_100k:
   short_name: 100K
   efforts_count: 5
   notice_text:
-  lottery_id:
 sum_55k:
   results_template: sub_masters_masters_and_grandmasters
   id: 57
@@ -148,7 +139,6 @@ sum_55k:
   short_name: 55K
   efforts_count: 8
   notice_text:
-  lottery_id:
 rufa_2017_12h:
   results_template: simple
   id: 70
@@ -163,4 +153,3 @@ rufa_2017_12h:
   short_name: 12H
   efforts_count: 6
   notice_text:
-  lottery_id:

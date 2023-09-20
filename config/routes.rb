@@ -126,7 +126,6 @@ Rails.application.routes.draw do
       get :export_raw_times
       get :finish_line
       get :follow
-      get :link_lotteries
       get :manage_entrant_photos
       get :manage_start_times
       get :manage_start_times_edit_actual
@@ -177,11 +176,9 @@ Rails.application.routes.draw do
       get :edit_start_time
       get :export
       get :podium
-      get :preview_lottery_sync
       get :spread
       get :summary
       put :set_stops
-      post :sync_lottery_entrants
       patch :update_start_time
     end
   end

@@ -56,10 +56,6 @@ class EventGroupPolicy < ApplicationPolicy
     setup?
   end
 
-  def link_lotteries?
-    setup?
-  end
-
   def connections?
     setup?
   end

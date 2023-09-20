@@ -1,6 +1,6 @@
 <%# locals: (connect_service_presenter:) %>
 
-<% if connect_service_presenter.successful_connection? %>
+<% if connect_service_presenter.successful_connection? && connect_service_presenter.sources_available? %>
   <hr/>
   <h4 class="fw-bold">Events</h4>
   <%= render partial: "events/connectors/services/sync_efforts_card",

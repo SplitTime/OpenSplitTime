@@ -32,9 +32,6 @@
               </div>
             <% end %>
             <%= setup_entrants_import_dropdown(presenter) %>
-            <% if presenter.event_group.organization.lotteries.exists? %>
-              <%= link_to "Sync with Lottery", link_lotteries_event_group_path(presenter.event_group), class: "btn btn-outline-secondary" %>
-            <% end %>
             <%= link_to "Connections", event_group_connections_path(presenter.event_group), class: "btn btn-outline-secondary" %>
           </div>
         </div>

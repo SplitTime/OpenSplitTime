@@ -1,0 +1,32 @@
+<%# locals: (connect_service_presenter:) %>
+
+<div class="card" id="event_group_card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <h4 class="card-title mt-1"><%= "Event Group: #{connect_service_presenter.event_group_name}" %></h4>
+      </div>
+      <div class="col text-end">
+        <%= fa_icon("circle-check", type: :regular, text: "Credentials not required", class: "text-success") %>
+        <br/>
+        <% if connect_service_presenter.error_message.present? %>
+          <%= fa_icon("circle-xmark", type: :regular, text: connect_service_presenter.error_message, class: "text-danger") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body d-flex align-items-center">
+    <% if connect_service_presenter.no_sources_found? %>
+      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
+      <span class="fw-bold">No OpenSplitTime Lotteries are available. Please create a Lottery first.</span>
+    <% elsif connect_service_presenter.no_sources_in_time_frame? %>
+      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
+      <span class="fw-bold">Lotteries were found, but none were within the timeframe of <%= connect_service_presenter.event_group_name %>.
+        Please check the Event date and Lottery date and try again.</span>
+    <% else %>
+      <span class="me-1"><%= fa_icon("circle-check", type: :regular, class: "text-success", size: "2x") %></span>
+      <span class="fw-bold">Connect the Events below to the corresponding Lotteries.</span>
+    <% end %>
+  </div>
+</div>

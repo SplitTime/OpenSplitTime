@@ -5,6 +5,14 @@ module Connectors
     def self.all
       [
         new(
+          identifier: "internal_lottery",
+          name: "OpenSplitTime Lottery",
+          credential_keys: %w[],
+          resource_map: {
+            Event => "Lottery",
+          }
+        ),
+        new(
           identifier: "rattlesnake_ramble",
           name: "Rattlesnake Ramble",
           credential_keys: %w[email password],
@@ -28,6 +36,7 @@ module Connectors
     self::IDENTIFIERS = self::BY_IDENTIFIER.keys
 
     self::SYNCING_INTERACTORS = {
+      "internal_lottery" => Interactors::SyncLotteryEntrants,
       "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleEntries,
       "runsignup" => Interactors::SyncRunsignupParticipants,
     }

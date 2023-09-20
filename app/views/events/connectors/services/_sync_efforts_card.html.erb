@@ -17,7 +17,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <label class="fw-bold mb-2">Select corresponding external events</label>
+          <label class="fw-bold mb-2">Select the corresponding connection sources</label>
           <% presenter.connections_with_blanks(event).each do |connection| %>
             <%= render partial: "events/connections/toggle_switch",
                        locals: {

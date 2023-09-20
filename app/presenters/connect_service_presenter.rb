@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ConnectServicePresenter < BasePresenter
-  CANDIDATE_SEPARATION_LIMIT = 7.days
+  DEFAULT_CANDIDATE_SEPARATION_LIMIT = 7.days
+  INTERNAL_SERVICES = [
+    "internal_lottery",
+  ]
 
   def initialize(event_group, service, view_context)
     @event_group = event_group
@@ -13,7 +16,7 @@ class ConnectServicePresenter < BasePresenter
   attr_reader :event_group, :service
 
   def all_credentials_present?
-    current_user.all_credentials_for?(service_identifier)
+    internal_service? || current_user.all_credentials_for?(service_identifier)
   end
 
   def connection_invalid?
@@ -21,36 +24,42 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def error_message
-    # Ensure that all_events has been called so that @error_message is set.
-    set_all_events
+    # Ensure that all_sources has been called so that @error_message is set.
+    set_all_sources
     @error_message
   end
 
-  def no_events_found?
-    all_events.empty?
+  def no_sources_found?
+    all_sources.empty?
   end
 
-  def no_events_in_time_frame?
-    event_group.events.flat_map { |event| external_events(event) }.none?
+  def no_sources_in_time_frame?
+    event_group.events.flat_map { |event| sources_for_event(event) }.none?
+  end
+
+  def sources_available?
+    !no_sources_found? && !no_sources_in_time_frame?
   end
 
   def event_group_name
     event_group.name
   end
 
-  # This method returns an array of Structs that will respond (at minimum) to #id and #name.
-  def external_events(event)
-    all_events.reject do |event_struct|
-      (event_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs > CANDIDATE_SEPARATION_LIMIT
+  # This method returns an array of Structs that will respond (at minimum) to #id, #name, and #start_time.
+  def sources_for_event(event)
+    all_sources.reject do |source_struct|
+      separation = (source_struct.start_time.in_time_zone(event_group.home_time_zone) - event.scheduled_start_time).abs
+      separation > candidate_separation_limit
     end
   end
 
   def connections_with_blanks(event)
-    external_events(event).map do |event_struct|
-      connection = event.connections.find_or_initialize_by(service_identifier: service_identifier, source_id: event_struct.id) do |connection|
+    sources_for_event(event).map do |source_struct|
+      connection = event.connections.find_or_initialize_by(service_identifier: service_identifier, source_id: source_struct.id) do |connection|
         connection.source_type = event_source_type
       end
-      connection.source_name = event_struct.name
+
+      connection.source_name = source_struct.name
       connection
     end
   end
@@ -77,19 +86,22 @@ class ConnectServicePresenter < BasePresenter
 
   attr_reader :view_context
   delegate :current_user, to: :view_context, private: true
+  delegate :organization, to: :event_group, private: true
 
-  def all_events
-    # Ensure that set_all_events has been called so that @all_events is set.
-    set_all_events
-    @all_events
+  def all_sources
+    # Ensure that set_all_sources has been called so that @all_sources is set.
+    set_all_sources
+    @all_sources
   end
 
-  def set_all_events
-    return @all_events if defined?(@all_events)
+  def set_all_sources
+    return @all_sources if defined?(@all_sources)
 
-    @all_events = [] and return unless some_credentials_present?
+    @all_sources = [] and return unless some_credentials_present?
 
-    @all_events = case service_identifier.to_sym
+    @all_sources = case service_identifier.to_sym
+                  when :internal_lottery
+                    all_internal_lotteries
                   when :rattlesnake_ramble
                     all_rattlesnake_ramble_events
                   when :runsignup
@@ -100,11 +112,28 @@ class ConnectServicePresenter < BasePresenter
   rescue ::Connectors::Errors::Base => error
     @error_message = error.message
   ensure
-    @all_events ||= []
+    @all_sources ||= []
+  end
+
+  def candidate_separation_limit
+    case service_identifier.to_sym
+    when :internal_lottery
+      1.year
+    else
+      DEFAULT_CANDIDATE_SEPARATION_LIMIT
+    end
   end
 
   def some_credentials_present?
-    current_user.has_credentials_for?(service_identifier)
+    internal_service? || current_user.has_credentials_for?(service_identifier)
+  end
+
+  def internal_service?
+    service_identifier.in?(INTERNAL_SERVICES)
+  end
+
+  def all_internal_lotteries
+    organization.lotteries.order(:scheduled_start_date).to_a
   end
 
   def all_rattlesnake_ramble_events

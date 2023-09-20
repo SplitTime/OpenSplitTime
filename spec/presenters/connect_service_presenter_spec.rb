@@ -74,8 +74,8 @@ RSpec.describe ConnectServicePresenter do
     end
   end
 
-  describe "#no_events_found?" do
-    let(:result) { presenter.no_events_found? }
+  describe "#no_sources_found?" do
+    let(:result) { presenter.no_sources_found? }
 
     context "when events are returned" do
       it { expect(result).to eq(false) }
@@ -88,8 +88,8 @@ RSpec.describe ConnectServicePresenter do
     end
   end
 
-  describe "#no_events_in_time_frame?" do
-    let(:result) { presenter.no_events_in_time_frame? }
+  describe "#no_sources_in_time_frame?" do
+    let(:result) { presenter.no_sources_in_time_frame? }
 
     context "when any external event dates are close to the date of any event" do
       before { event_group.events.first.update(scheduled_start_time: "2023-09-05") }
@@ -102,14 +102,14 @@ RSpec.describe ConnectServicePresenter do
     end
   end
 
-  describe "#external_events" do
-    let(:result) { presenter.external_events(event) }
+  describe "#sources_for_event" do
+    let(:result) { presenter.sources_for_event(event) }
     let(:event) { event_group.events.first }
 
     it "caches the call to the relevant connector" do
       expect(::Connectors::RattlesnakeRamble::FetchRaceEditions).to receive(:perform).with(user: user).once
       expect(::Connectors::Runsignup::FetchRaceEvents).not_to receive(:perform)
-      2.times { presenter.external_events(event) }
+      2.times { presenter.sources_for_event(event) }
     end
 
     context "when the event start time is close to the external event date" do

@@ -3,9 +3,10 @@
 require "rails_helper"
 
 RSpec.describe Interactors::SyncLotteryEntrants do
-  subject { described_class.new(event) }
+  subject { described_class.new(event, current_user) }
   let(:event_group) { create(:event_group, organization: organizations(:hardrock)) }
   let(:event) { create(:event, event_group: event_group, course: courses(:hardrock_cw), lottery_id: lottery_id) }
+  let(:current_user) { users(:admin) }
   let(:lottery_id) { nil }
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:nevers_division) { lottery.divisions.find_by(name: "Never Ever Evers") }

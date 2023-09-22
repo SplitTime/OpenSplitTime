@@ -30,15 +30,28 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-xs-8">
-      <% if view_object.filtered_raw_times_count == view_object.raw_times_count %>
-        <h4><%= "#{view_object.raw_times_count} raw times" %></h4>
-      <% else %>
-        <h4><%= "Showing #{view_object.filtered_raw_times_unpaginated_count} of #{view_object.raw_times_count} raw times" %></h4>
-      <% end %>
+  <% if view_object.raw_times.none? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "info",
+                 icon_color: "info",
+                 icon_name: "circle-info",
+                 main_text: t("raw_times.index.no_raw_times_main"),
+                 detail_paragraphs: [t("raw_times.index.no_raw_times_detail_1"), t("raw_times.index.no_raw_times_detail_2")],
+                 link: link_to("Enable or Disable Live", setup_summary_event_group_path(view_object.event_group), class: "btn btn-outline-info"),
+               } %>
+    <br/>
+  <% else %>
+    <div class="row">
+      <div class="col-xs-8">
+        <% if view_object.filtered_raw_times_count == view_object.raw_times_count %>
+          <h4><%= "#{view_object.raw_times_count} raw times" %></h4>
+        <% else %>
+          <h4><%= "Showing #{view_object.filtered_raw_times_unpaginated_count} of #{view_object.raw_times_count} raw times" %></h4>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <table class="table table-striped">
     <thead>
@@ -78,13 +91,13 @@
                    home_time_zone: view_object.home_time_zone,
                  }
       %>
-    <% else %>
+      </tbody>
+    <% elsif view_object.raw_times.exists? %>
       <tr class="fw-bold">
         <td colspan="100">No results match that search.</td>
       </tr>
     <% end %>
-    </tbody>
-  </table>
+    </table>
 
   <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
 </article>

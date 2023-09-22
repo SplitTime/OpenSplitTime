@@ -78,10 +78,13 @@ class Connectors::Runsignup::FetchEventParticipants
   # @param [String] string
   # @return [String (frozen)]
   def convert_gender(string)
-    if string.first.downcase == "m"
+    case string&.first&.downcase
+    when "m"
       "male"
-    else
+    when "f"
       "female"
+    else
+      "nonbinary"
     end
   end
 end

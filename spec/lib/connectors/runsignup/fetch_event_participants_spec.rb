@@ -214,6 +214,109 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
       it "returns participant structs" do
         expect(result).to eq(expected_result)
       end
+
+      context "when gender is blank for a participant" do
+        let(:participants_response_body_page_1) do
+          '[{
+        "event":{"event_id":661702,"participants":[]},
+        "participants":[
+          {
+            "user":{
+              "user_id":18423667,
+              "first_name":"Bubba",
+              "middle_name":null,
+              "last_name":"Gump",
+              "email":"bubba@msn.com",
+              "address":{"street":"123 Main Street","city":"Atlanta","state":"GA","zipcode":"34343","country_code":"US"},
+              "dob":"1958-01-01",
+              "gender":null,
+              "phone":"404-583-3514"
+              },
+            "event_id":661702,
+            "bib_num":3,
+            "age":64
+          },
+          {
+            "user":{
+              "user_id":55389794,
+              "first_name":"Jenny",
+              "middle_name":null,
+              "last_name":"Gump",
+              "email":"jenny@gmail.com",
+              "address":{"street":"234 Disco Trip Circle","city":"Los Angeles","state":"CA","zipcode":"90028","country_code":"US"},
+              "dob":"1959-06-02",
+              "gender":"F",
+              "phone":"213-528-7078"
+            },
+            "event_id":661702,
+            "bib_num":5,
+            "age":63
+          }
+        ]
+      }]'
+        end
+
+        let(:expected_result) do
+          [
+            ::Connectors::Runsignup::Models::Participant.new(
+              first_name: "Bubba",
+              last_name: "Gump",
+              birthdate: "1958-01-01",
+              gender: "nonbinary",
+              bib_number: 3,
+              city: "Atlanta",
+              state_code: "GA",
+              country_code: "US",
+              email: "bubba@msn.com",
+              phone: "404-583-3514",
+              scheduled_start_time_local: "2/10/2023 18:00"
+            ),
+            ::Connectors::Runsignup::Models::Participant.new(
+              first_name: "Jenny",
+              last_name: "Gump",
+              birthdate: "1959-06-02",
+              gender: "female",
+              bib_number: 5,
+              city: "Los Angeles",
+              state_code: "CA",
+              country_code: "US",
+              email: "jenny@gmail.com",
+              phone: "213-528-7078",
+              scheduled_start_time_local: "2/10/2023 18:00"
+            ),
+            ::Connectors::Runsignup::Models::Participant.new(
+              first_name: "Gilford",
+              last_name: "Granger",
+              birthdate: "1998-01-01",
+              gender: "male",
+              bib_number: 13,
+              city: "Boston",
+              state_code: "MA",
+              country_code: "US",
+              email: "gilford@gmail.com",
+              phone: "776-583-3514",
+              scheduled_start_time_local: "2/10/2023 18:00"
+            ),
+            ::Connectors::Runsignup::Models::Participant.new(
+              first_name: "Yolanda",
+              last_name: "Yorgenson",
+              birthdate: "1988-11-11",
+              gender: "female",
+              bib_number: 15,
+              city: "Golan Heights",
+              state_code: "MI",
+              country_code: "US",
+              email: "yolanda@hotmail.com",
+              phone: "535-528-7078",
+              scheduled_start_time_local: "2/10/2023 18:00"
+            ),
+          ]
+        end
+
+        it "returns participant structs with nonbinary gender" do
+          expect(result).to eq(expected_result)
+        end
+      end
     end
 
     context "when the race id or event id is not valid" do

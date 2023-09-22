@@ -35,6 +35,12 @@ en:
     new:
       callout_detail_paragraph: 'Import Jobs run in the background, allowing you to do other work while the import is ongoing. You can check the status of any of your import jobs at any time by clicking "Imports" on the top menu bar.'
 
+  raw_times:
+    index:
+      no_raw_times_main: "No raw times have been recorded for this Event Group"
+      no_raw_times_detail_1: "When Raw Times are submitted, whether or not they are valid and whether or not they are converted to Split Times for display to the public, they will appear here."
+      no_raw_times_detail_2: "When your Event Group has Live Entry enabled, you can use OST Remote to submit Raw Times from your iOS device or the Live Entry view to submit Raw Times from the website. If Live Entry is enabled for your Event Group, you will see the \"Live Updating\" indicator at the top of the page, meaning that Raw Times will appear here without a page refresh."
+
   subscriptions:
     tooltips:
       confirmed: "This subscription is confirmed."

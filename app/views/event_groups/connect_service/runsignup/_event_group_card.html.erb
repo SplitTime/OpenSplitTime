@@ -8,9 +8,9 @@
       </div>
       <div class="col text-end">
         <% if connect_service_presenter.all_credentials_present? %>
-          <%= fa_icon("circle-check", type: :regular, text: "Credentials are present", class: "text-success") %>
+          <%= fa_icon("circle-check", type: :regular, text: t(".credentials_present"), class: "text-success") %>
         <% else %>
-          <%= fa_icon("circle-xmark", type: :regular, text: "Credentials are missing", class: "text-danger") %>
+          <%= fa_icon("circle-xmark", type: :regular, text: t(".credentials_missing"), class: "text-danger") %>
         <% end %>
         <% if connect_service_presenter.error_message.present? %>
           <br/>

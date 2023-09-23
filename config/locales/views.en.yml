@@ -9,6 +9,8 @@ en:
     connect_service:
       runsignup:
         event_group_card:
+          credentials_present: "Credentials are present"
+          credentials_missing: "Credentials are missing"
           no_events_returned: "No RunSignup events were returned. Please check the Race ID and ensure your credentials are valid."
           connect_to_events: "Connect your OpenSplitTime Events below to the corresponding RunSignup Events."
           no_events_in_timeframe: "External events were returned, but none were within the timeframe of %{event_group_name}. Please check the RunSignup Race ID, the date of your Event in OpenSplitTime, and the date of the Race in RunSignup and try again."

@@ -22,22 +22,33 @@
     </div>
   </div>
 
-  <div class="card-body d-flex align-items-center">
-    <% if connect_service_presenter.connection_invalid? %>
-      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
-      <span class="fw-bold">There is a problem with the connection. Please check that your <%= link_to "credentials", user_settings_credentials_path %>
-        are entered and accurate and try again.</span>
-    <% elsif connect_service_presenter.no_sources_found? %>
-      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
-      <span class="fw-bold">No external events were returned. Please check with the owner of <%= connect_service_presenter.service_name %> for further
-        assistance.</span>
-    <% elsif connect_service_presenter.no_sources_in_time_frame? %>
-      <span class="me-1"><%= fa_icon("triangle-exclamation", type: :regular, class: "text-warning", size: "2x") %></span>
-      <span class="fw-bold">External events were returned, but none were within the timeframe of <%= connect_service_presenter.event_group_name %>.
-        Please check with the owner of <%= connect_service_presenter.service_name %> for further assistance.</span>
-    <% else %>
-      <span class="me-1"><%= fa_icon("circle-check", type: :regular, class: "text-success", size: "2x") %></span>
-      <span class="fw-bold">Connect the Events below to the corresponding Race Editions.</span>
+  <div class="card-body">
+    <% if connect_service_presenter.error_message.blank? %>
+      <div class="px-3">
+        <% if connect_service_presenter.no_sources_found? %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       callout_color: "warning",
+                       icon_name: "triangle-exclamation",
+                       icon_color: "warning",
+                       detail_paragraphs: t(".no_events_returned")
+                     } %>
+        <% elsif connect_service_presenter.no_sources_in_time_frame? %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       callout_color: "warning",
+                       icon_name: "triangle-exclamation",
+                       icon_color: "warning",
+                       detail_paragraphs: t(".no_events_in_timeframe", event_group_name: connect_service_presenter.event_group_name)
+                     } %>
+        <% else %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       icon_name: "circle-check",
+                       detail_paragraphs: t(".connect_to_events")
+                     } %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

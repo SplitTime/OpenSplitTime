@@ -37,6 +37,8 @@ class Connectors::Runsignup::Client
   rescue RestClient::Exception => e
     self.response_code = e.http_code
     self.raw_error_message = e.message
+  rescue SocketError
+    self.raw_error_message = "The service did not respond; please check your internet connection"
   ensure
     check_response_validity!
   end
@@ -71,8 +73,6 @@ class Connectors::Runsignup::Client
   end
 
   def check_response_validity!
-    raise Connectors::Errors::BadConnection, "The service did not respond; please check your internet connection" if response.nil?
-
     case response_code
     when 401
       raise Connectors::Errors::NotAuthenticated, "Credentials were not accepted"
@@ -89,7 +89,7 @@ class Connectors::Runsignup::Client
         end
       end
     else
-      raise Connectors::Errors::BadRequest, "#{response_code}: #{response.body}"
+      raise Connectors::Errors::BadRequest, [response_code, raw_error_message].compact.join(": ")
     end
   end
 

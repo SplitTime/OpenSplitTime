@@ -7,6 +7,13 @@ en:
           detail_paragraph_1: "Connections provide a simple way to keep your data synchronized with an outside source (like Runsignup) or an internal source (like an OpenSplitTime Lottery)."
           detail_paragraph_2: "You can manage connections for your Event Group from this page."
     connect_service:
+      rattlesnake_ramble:
+        event_group_card:
+          credentials_present: "Credentials are present"
+          credentials_missing: "Credentials are missing"
+          no_events_returned: "No Rattlesnake Ramble race editions were returned. Please check with the owner of Rattlesnake Ramble for further assistance."
+          connect_to_events: "Connect your OpenSplitTime Events below to the corresponding Rattlesnake Ramble race editions."
+          no_events_in_timeframe: "Race editions were returned, but none were within the timeframe of %{event_group_name}. Please check the date of your Event in OpenSplitTime and the date of the Race Edition on the Rattlesnake Ramble site and try again."
       runsignup:
         event_group_card:
           credentials_present: "Credentials are present"

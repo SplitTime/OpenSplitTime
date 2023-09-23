@@ -12,6 +12,10 @@
         <% else %>
           <%= fa_icon("circle-xmark", type: :regular, text: "Credentials are missing", class: "text-danger") %>
         <% end %>
+        <% if connect_service_presenter.error_message.present? %>
+          <br/>
+          <%= fa_icon("circle-xmark", type: :regular, text: connect_service_presenter.error_message, class: "text-danger") %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -22,5 +26,32 @@
                  connection: connect_service_presenter.connection,
                  service: connect_service_presenter.service,
                } %>
+    <% if connect_service_presenter.error_message.blank? %>
+      <div class="px-3">
+        <% if connect_service_presenter.no_sources_found? %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       callout_color: "warning",
+                       icon_name: "triangle-exclamation",
+                       icon_color: "warning",
+                       detail_paragraphs: t(".no_events_returned")
+                     } %>
+        <% elsif connect_service_presenter.no_sources_in_time_frame? %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       callout_color: "warning",
+                       icon_name: "triangle-exclamation",
+                       icon_color: "warning",
+                       detail_paragraphs: t(".no_events_in_timeframe", event_group_name: connect_service_presenter.event_group_name)
+                     } %>
+        <% else %>
+          <%= render partial: "shared/callout_with_link",
+                     locals: {
+                       icon_name: "circle-check",
+                       detail_paragraphs: t(".connect_to_events")
+                     } %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

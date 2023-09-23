@@ -71,6 +71,8 @@ class Connectors::Runsignup::Client
   end
 
   def check_response_validity!
+    raise Connectors::Errors::BadConnection, "The service did not respond; please check your internet connection" if response.nil?
+
     case response_code
     when 401
       raise Connectors::Errors::NotAuthenticated, "Credentials were not accepted"
@@ -87,7 +89,7 @@ class Connectors::Runsignup::Client
         end
       end
     else
-      raise Connectors::Errors::BadRequest, "#{response.code}: #{response.body}"
+      raise Connectors::Errors::BadRequest, "#{response_code}: #{response.body}"
     end
   end
 

@@ -14,7 +14,7 @@ class EventSyncPreviewPresenter
   end
 
   def syncable?
-    created_efforts.present? || deleted_efforts.present? || updated_efforts.present?
+    preview_response.successful? && (created_efforts.present? || deleted_efforts.present? || updated_efforts.present?)
   end
 
   def created_efforts

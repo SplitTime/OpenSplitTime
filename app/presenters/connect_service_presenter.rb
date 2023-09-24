@@ -141,8 +141,16 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def all_runsignup_events
-    race_id = event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
-    ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: race_id, user: current_user)
+    if runsignup_race_id.blank?
+      @error_message = "RunSignup Race ID is required"
+      return []
+    end
+
+    ::Connectors::Runsignup::FetchRaceEvents.perform(race_id: runsignup_race_id, user: current_user)
+  end
+
+  def runsignup_race_id
+    event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
   end
 
   def event_group_source_type

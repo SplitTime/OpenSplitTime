@@ -13,7 +13,11 @@
       </div>
       <div class="col-12 col-lg-3 my-2 text-lg-end">
         <% if connection.new_record? %>
-          <%= form.submit "Save", class: "btn btn-primary" %>
+          <%= form.submit "Save",
+                          data: {
+                            turbo_submits_with: "Saving...",
+                          },
+                          class: "btn btn-primary" %>
         <% else %>
           <%= link_to "Remove",
                       event_group_connection_path(connection.destination, connection),

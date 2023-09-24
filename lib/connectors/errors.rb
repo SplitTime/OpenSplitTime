@@ -7,4 +7,5 @@ module Connectors::Errors
   class NotAuthorized < Base; end
   class NotFound < Base; end
   class BadRequest < Base; end
+  class BadConnection < Base; end
 end

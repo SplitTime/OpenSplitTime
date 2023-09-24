@@ -32,6 +32,8 @@ class Connectors::RattlesnakeRamble::Client
   rescue RestClient::Exception => e
     self.response_code = e.http_code
     self.raw_error_message = e.message
+  rescue SocketError
+    self.raw_error_message = "The service did not respond; please check your internet connection"
   ensure
     check_response_validity!
   end
@@ -77,7 +79,7 @@ class Connectors::RattlesnakeRamble::Client
       raise Connectors::Errors::NotFound, "Resource not found"
     when 200
     else
-      raise Connectors::Errors::BadRequest, "#{response_code}: #{raw_error_message}"
+      raise Connectors::Errors::BadRequest, [response_code, raw_error_message].compact.join(": ")
     end
   end
 

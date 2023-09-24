@@ -7,12 +7,24 @@ en:
           detail_paragraph_1: "Connections provide a simple way to keep your data synchronized with an outside source (like Runsignup) or an internal source (like an OpenSplitTime Lottery)."
           detail_paragraph_2: "You can manage connections for your Event Group from this page."
     connect_service:
+      internal_lottery:
+        event_group_card:
+          connect_events: "Connect the Events below to the corresponding Lotteries."
+          no_events_returned: "No OpenSplitTime Lotteries are available. Please create a Lottery first."
+          no_events_in_timeframe: "Lotteries were found, but none were within the timeframe of %{event_group_name}. Please check the Event date and Lottery date and try again."
+      rattlesnake_ramble:
+        event_group_card:
+          credentials_present: "Credentials are present"
+          credentials_missing: "Credentials are missing"
+          no_events_returned: "No Rattlesnake Ramble race editions were returned. Please check with the owner of Rattlesnake Ramble for further assistance."
+          connect_events: "Connect your OpenSplitTime Events below to the corresponding Rattlesnake Ramble race editions."
+          no_events_in_timeframe: "Race editions were returned, but none were within the timeframe of %{event_group_name}. Please check the date of your Event in OpenSplitTime and the date of the Race Edition on the Rattlesnake Ramble site and try again."
       runsignup:
         event_group_card:
           credentials_present: "Credentials are present"
           credentials_missing: "Credentials are missing"
           no_events_returned: "No RunSignup events were returned. Please check the Race ID and ensure your credentials are valid."
-          connect_to_events: "Connect your OpenSplitTime Events below to the corresponding RunSignup Events."
+          connect_events: "Connect your OpenSplitTime Events below to the corresponding RunSignup Events."
           no_events_in_timeframe: "External events were returned, but none were within the timeframe of %{event_group_name}. Please check the RunSignup Race ID, the date of your Event in OpenSplitTime, and the date of the Race in RunSignup and try again."
     setup:
       enable_live_confirm: "NOTE: This will enable live entry actions for %{event_group_name}, and will also enable live follower notifications by email and SMS text when new times are added. Are you sure you want to proceed?"

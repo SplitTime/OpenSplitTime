@@ -19,10 +19,6 @@ class ConnectServicePresenter < BasePresenter
     internal_service? || current_user.all_credentials_for?(service_identifier)
   end
 
-  def connection_invalid?
-    !all_credentials_present? || error_message.present?
-  end
-
   def error_message
     # Ensure that all_sources has been called so that @error_message is set.
     set_all_sources

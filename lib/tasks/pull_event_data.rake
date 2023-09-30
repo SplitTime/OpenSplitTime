@@ -27,7 +27,7 @@ namespace :pull_event do
     start_time = Time.current
     begin_id = args[:begin_adilas_id]&.to_i
     end_id = args[:end_adilas_id]&.to_i
-    unless begin_id && end_id && begin_id&.positive? && end_id >= begin_id
+    unless begin_id.present? && end_id.present? && begin_id.positive? && end_id >= begin_id
       abort("Aborted: combination of begin adilas id #{begin_id} and end adilas id #{end_id} is invalid")
     end
 

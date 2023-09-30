@@ -23,10 +23,12 @@ namespace :pull_event do
   end
 
   desc "Pulls and imports effort and time data from adilas.biz/bear100 into an event"
-  task :adilas_bear_times, [:event_id, :begin_adilas_id, :end_adilas_id] => :environment do |_, args|
+  task :adilas_bear_times, [:event_id, :begin_adilas_id, :end_adilas_id, :update_only] => :environment do |_, args|
     start_time = Time.current
     begin_id = args[:begin_adilas_id]&.to_i
     end_id = args[:end_adilas_id]&.to_i
+    import_format = args[:update_only] == "true" ? :adilas_bear_times_update : :adilas_bear_times
+
     unless begin_id.present? && end_id.present? && begin_id.positive? && end_id >= begin_id
       abort("Aborted: combination of begin adilas id #{begin_id} and end adilas id #{end_id} is invalid")
     end
@@ -34,9 +36,10 @@ namespace :pull_event do
     puts "Processing #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')}\n"
     (begin_id..end_id).each do |adilas_id|
       source_uri = "https://data0.adilas.biz//bear100/runner_details.cfm?id=#{adilas_id}"
-      Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, :adilas_bear_times)
+      Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, import_format)
       Rake::Task["pull_event:from_uri"].reenable
     end
+
     elapsed_time = (Time.current - start_time).round(2)
     puts "\nProcessed #{ActionController::Base.helpers.pluralize(end_id - begin_id + 1, 'effort')} in #{elapsed_time} seconds\n"
   end

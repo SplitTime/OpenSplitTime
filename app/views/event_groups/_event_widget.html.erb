@@ -1,7 +1,7 @@
 <%# locals: (events:, current_event:) %>
 
 <% if events&.many? %>
-  <div class="col-12 col-md mb-2 mb-md-0">
+  <div class="col-12 col-md-auto mb-2 mb-md-0">
     <div class="btn-group btn-group-ost">
       <% events.each do |event| %>
         <%= link_to event.guaranteed_short_name,

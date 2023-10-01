@@ -9,7 +9,7 @@ module EventGroups
     private
 
     def partnerable_path
-      organization_event_group_partners_path(@partner.partnerable)
+      organization_event_group_partners_path(@partnerable.organization, @partnerable)
     end
 
     def set_partnerable

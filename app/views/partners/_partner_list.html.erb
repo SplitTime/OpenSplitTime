@@ -1,0 +1,40 @@
+<%# locals: (presenter:, partnerable:) -%>
+
+<% class_name = partnerable.class.name.underscore.titleize %>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <%= link_to fa_icon("plus", text: "Add a partner"),
+                    [:new, partnerable.organization, partnerable, :partner],
+                    id: "add-partner",
+                    class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<% if presenter.partners.present? %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Banner</th>
+      <th>Banner Link</th>
+      <th class="text-center">Weight</th>
+      <th class="text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render partial: "partners/partner", collection: presenter.partners %>
+    </tbody>
+  </table>
+
+<% else %>
+  <br/>
+  <div class="callout callout-info">
+    <h5>Use this tab to add sponsor Partners to your <%= class_name %></h5>
+    <p>Partners are sponsors of your <%= class_name %>. They will be displayed on the Results page while your <%= class_name %> is live.</p>
+  </div>
+<% end %>

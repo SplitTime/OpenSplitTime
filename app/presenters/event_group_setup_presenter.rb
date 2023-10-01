@@ -110,6 +110,8 @@ class EventGroupSetupPresenter < BasePresenter
       :status
     elsif controller_name == "events"
       :events_and_courses
+    elsif controller_name == "partners"
+      :partners
     else
       :entrants
     end

@@ -5,5 +5,5 @@
 <%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Partners"] %>
 
 <article class="ost-article container">
-  <%= render "partner_list", presenter: @presenter %>
+  <%= render "partners/partner_list", presenter: @presenter, partnerable: @presenter.lottery %>
 </article>

@@ -25,21 +25,14 @@
     </tr>
     </thead>
     <tbody>
-    <% presenter.partners.each do |partner| %>
-      <tr id="<%= dom_id(partner) %>" class="align-middle">
-        <td><%= partner.name %></td>
-        <td><%= image_tag partner.banner.variant(:banner_small) if partner.banner.attached? %></td>
-        <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: "_blank" if partner.banner_link %></td>
-        <td class="text-center"><%= partner.weight %></td>
-        <td class="text-center">
-          <%= render "partners/actions_kebab", partnerable: presenter.lottery, partner: partner %>
-        </td>
-      </tr>
-    <% end %>
+    <%= render partial: "partners/partner", collection: presenter.partners %>
     </tbody>
   </table>
 
 <% else %>
   <br/>
-  <h5>No partners have been added yet.</h5>
+  <div class="callout callout-info">
+    <h5>Use this tab to add sponsor Partners to your Lottery</h5>
+    <p>Partners are sponsors of your Lottery. They will be displayed on the Results page while your Lottery is live.</p>
+  </div>
 <% end %>

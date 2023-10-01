@@ -2,9 +2,9 @@
 
 class PartnersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_partner, except: [:index, :new, :create]
   before_action :set_partnerable
   before_action :authorize_organization
+  before_action :set_partner, except: [:index, :new, :create]
   after_action :verify_authorized
 
   def new
@@ -53,6 +53,6 @@ class PartnersController < ApplicationController
   end
 
   def set_partner
-    @partner = ::Partner.find(params[:id])
+    @partner = @partnerable.partners.find(params[:id])
   end
 end

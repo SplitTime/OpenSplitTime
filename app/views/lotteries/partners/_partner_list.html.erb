@@ -20,8 +20,8 @@
       <th>Name</th>
       <th>Banner</th>
       <th>Banner Link</th>
-      <th>Weight</th>
-      <th></th>
+      <th class="text-center">Weight</th>
+      <th class="text-center">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -30,10 +30,9 @@
         <td><%= partner.name %></td>
         <td><%= image_tag partner.banner.variant(:banner_small) if partner.banner.attached? %></td>
         <td><%= link_to partner.banner_link, url_with_protocol(partner.banner_link), target: "_blank" if partner.banner_link %></td>
-        <td><%= partner.weight %></td>
-        <td>
-          <%= link_to_lottery_partner_edit(partner) %>
-          <%= link_to_lottery_partner_delete(partner) %>
+        <td class="text-center"><%= partner.weight %></td>
+        <td class="text-center">
+          <%= render "partners/actions_kebab", partnerable: presenter.lottery, partner: partner %>
         </td>
       </tr>
     <% end %>

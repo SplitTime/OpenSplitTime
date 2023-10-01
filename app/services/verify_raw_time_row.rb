@@ -94,7 +94,7 @@ class VerifyRawTimeRow
       end
       errors << "missing lap attribute" unless raw_times_laps.all?
       errors << "mismatched laps" if raw_times_laps.uniq.many?
-      errors << "lap exceeds event limit" if event.maximum_laps && raw_times_laps.first > event.maximum_laps
+      errors << "lap exceeds event limit" if event.maximum_laps && raw_times_laps.first.present? && raw_times_laps.first > event.maximum_laps
       errors << "mismatched split names" if raw_times_split_names.uniq.many?
       errors << "invalid split name" unless event_split_names.include?(raw_times_split_names.first.parameterize)
       errors << "duplicate sub-split kinds" unless raw_times.map(&:bitkey) == raw_times.map(&:bitkey).uniq

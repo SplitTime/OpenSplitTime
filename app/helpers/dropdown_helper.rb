@@ -239,7 +239,7 @@ module DropdownHelper
     dropdown_items = [
       { name: "Set Data Status",
         link: set_data_status_effort_path(view_object.effort),
-        method: :patch },
+        data: { turbo_method: :patch } },
       { role: :separator },
       { name: "Edit Times of Day",
         link: edit_split_times_effort_path(view_object.effort, display_style: :military_time) },
@@ -251,12 +251,6 @@ module DropdownHelper
       { name: "Edit Entrant",
         link: edit_effort_path(view_object.effort),
         data: { turbo_frame: "form_modal" } },
-      { name: "Rebuild Times",
-        link: rebuild_effort_path(view_object.effort),
-        method: :patch,
-        data: { confirm: "This will delete all split times and attempt to rebuild them from the " +
-          "#{pluralize(view_object.raw_times_count, 'raw time')} related to this effort. This action cannot be undone. Proceed?" },
-        visible: view_object.multiple_laps? && view_object.raw_times_count.positive? },
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end

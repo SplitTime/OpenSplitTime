@@ -99,7 +99,11 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_partners(presenter)
-    if presenter.active_widget_card == :partners
+    if presenter.event_group.new_record?
+      type = :regular
+      tooltip = "You'll be able to add Partners after your Event Group is created"
+      icon_only = true
+    elsif presenter.active_widget_card == :partners
       type = :solid
       tooltip = "Manage your Partners"
       icon_only = false

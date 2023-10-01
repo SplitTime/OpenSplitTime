@@ -78,13 +78,13 @@ class LapSplit
   end
 
   def vert_gain_from_start
-    return nil if split.vert_gain_from_start.nil?
+    return if split.vert_gain_from_start.blank? || course.vert_gain.blank?
 
     lap == 1 ? split.vert_gain_from_start : (lap - 1) * course.vert_gain + split.vert_gain_from_start
   end
 
   def vert_loss_from_start
-    return nil if split.vert_loss_from_start.nil?
+    return if split.vert_loss_from_start.blank? || course.vert_loss.blank?
 
     lap == 1 ? split.vert_loss_from_start : (lap - 1) * course.vert_loss + split.vert_loss_from_start
   end

@@ -162,7 +162,7 @@ class EffortsController < ApplicationController
   def rebuild
     authorize @effort
 
-    effort = Effort.where(id: @effort.id).includes(event: :splits).first
+    effort = Effort.includes(event: :splits).find_by(id: @effort.id)
     response = Interactors::RebuildEffortTimes.perform!(effort: effort)
     set_flash_message(response)
 

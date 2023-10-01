@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# This Interactor will delete all start_times from an effort and attempt to rebuild start_times
-# using only the rt records.
+# This Interactor will delete all split_times from an effort and attempt to rebuild split_times
+# using only the raw_time records.
 
 # Note: This tool is destructive and will not be beneficial unless a fairly complete
 # record of raw_times exists!
@@ -11,16 +11,15 @@ module Interactors
     include Interactors::Errors
     THRESHOLD_TIME = 5.minutes
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(effort:)
+      new(effort: effort).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args, required: [:effort], exclusive: [:effort], class: self.class)
-      @effort = args[:effort]
+    def initialize(effort:)
+      @effort = effort
       @existing_start_time = effort.calculated_start_time
       @errors = []
-      @message = ""
+      @response = Interactors::Response.new([], "", {})
       validate_setup
     end
 
@@ -35,16 +34,16 @@ module Interactors
         end
       end
 
-      self.message = "Rebuild completed." if errors.blank?
-      Interactors::Response.new(errors, message, effort: effort)
+      response.message = "Rebuild completed." if errors.blank?
+      response.resources = { effort: effort }
+      response
     end
 
     private
 
-    attr_reader :effort, :existing_start_time, :errors
-    attr_accessor :message
-
+    attr_reader :effort, :existing_start_time, :response
     delegate :event_group, :event, to: :effort
+    delegate :errors, to: :response, private: true
 
     def destroy_split_times
       effort.split_times.each do |st|

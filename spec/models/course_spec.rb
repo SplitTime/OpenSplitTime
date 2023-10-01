@@ -174,7 +174,7 @@ RSpec.describe Course, type: :model do
     end
 
     it "returns nil if no finish split exists on the course" do
-      allow(course).to receive(:finish_split).and_return([])
+      allow(course).to receive(:finish_split).and_return(nil)
       expect(course.distance).to be_nil
     end
   end
@@ -207,7 +207,7 @@ RSpec.describe Course, type: :model do
     end
 
     it "returns nil if no finish split exists on the course" do
-      allow(course).to receive(:finish_split).and_return([])
+      allow(course).to receive(:finish_split).and_return(nil)
       expect(course.vert_gain).to be_nil
     end
   end
@@ -221,7 +221,7 @@ RSpec.describe Course, type: :model do
     end
 
     it "returns nil if no finish split exists on the course" do
-      allow(course).to receive(:finish_split).and_return([])
+      allow(course).to receive(:finish_split).and_return(nil)
       expect(course.vert_loss).to be_nil
     end
   end

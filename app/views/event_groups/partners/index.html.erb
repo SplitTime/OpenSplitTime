@@ -8,7 +8,7 @@
 <article class="ost-article container">
   <div class="row flex-nowrap">
     <div class="col px-md-4 py-3">
-      <%= render "partner_list", presenter: @presenter %>
+      <%= render "partners/partner_list", presenter: @presenter, partnerable: @presenter.event_group %>
     </div>
   </div>
 </article>

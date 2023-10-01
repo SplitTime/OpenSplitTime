@@ -21,6 +21,9 @@ RSpec.describe "create and edit splits from the events setup_course view", js: t
       click_link "Add", href: new_event_group_event_split_path(event_group, event)
       expect(page).to have_content("New Split")
 
+      # Wait for things to settle
+      sleep 0.3
+
       fill_in "split_base_name", with: "Another Aid Station"
       fill_in "split_distance_in_preferred_units", with: "25"
 
@@ -46,6 +49,9 @@ RSpec.describe "create and edit splits from the events setup_course view", js: t
     expect do
       click_link href: edit_event_group_event_split_path(event_group, event, existing_split)
       expect(page).to have_content("Update Molas Pass (Aid1)")
+
+      # Wait for things to settle
+      sleep 0.3
 
       fill_in "split_distance_in_preferred_units", with: "12.5"
 

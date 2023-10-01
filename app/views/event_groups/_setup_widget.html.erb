@@ -10,7 +10,7 @@
     </div>
 
     <!-- Events Card-->
-    <div class="col-7 border-end">
+    <div class="col-6 border-end">
       <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
       <% if presenter.event_group.new_record? %>
         <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>
@@ -23,6 +23,12 @@
     <div class="col border-end">
       <%= render "event_groups/setup_widget_header", title: "Entrants" %>
       <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_entrants(presenter) %>
+    </div>
+
+    <!-- Partners Card-->
+    <div class="col border-end">
+      <%= render "event_groups/setup_widget_header", title: "Partners" %>
+      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_partners(presenter) %>
     </div>
 
     <!-- Summary Card-->

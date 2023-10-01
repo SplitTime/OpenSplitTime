@@ -98,6 +98,32 @@ module EventGroupSetupWidgetHelper
     end
   end
 
+  def link_to_setup_widget_partners(presenter)
+    if presenter.active_widget_card == :partners
+      type = :solid
+      tooltip = "Manage your Partners"
+      icon_only = false
+    else
+      type = :regular
+      tooltip = "Manage your Partners"
+      icon_only = false
+    end
+
+    icon = fa_icon("handshake",
+                   type: type,
+                   size: "2x",
+                   class: icon_only ? "text-black" : "",
+                   style: icon_only ? "opacity: 0.4;" : "",
+                   data: { controller: "tooltip", bs_original_title: tooltip })
+
+    if icon_only
+      icon
+    else
+      path = organization_event_group_partners_path(presenter.organization, presenter.event_group)
+      link_to icon, path
+    end
+  end
+
   def link_to_setup_widget_summary(presenter)
     if presenter.controller_name == "event_groups" && presenter.action_name == "setup_summary"
       type = :solid

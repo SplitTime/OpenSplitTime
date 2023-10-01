@@ -76,17 +76,17 @@ class Course < ApplicationRecord
 
   # @return [Integer, nil]
   def distance
-    @distance ||= finish_split.distance_from_start if finish_split.present?
+    @distance ||= finish_split&.distance_from_start
   end
 
-  # @return [Integer, nil]
+  # @return [Float, nil]
   def vert_gain
-    @vert_gain ||= finish_split.vert_gain_from_start if finish_split.present?
+    @vert_gain ||= finish_split&.vert_gain_from_start
   end
 
-  # @return [Integer, nil]
+  # @return [Float, nil]
   def vert_loss
-    @vert_loss ||= finish_split.vert_loss_from_start if finish_split.present?
+    @vert_loss ||= finish_split&.vert_loss_from_start
   end
 
   # @return [Boolean]

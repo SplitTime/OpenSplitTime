@@ -529,6 +529,17 @@ RSpec.describe LapSplit, type: :model do
         expect(subject.vert_gain_from_start).to be_nil
       end
     end
+
+    context "when course.vert_gain is nil" do
+      let(:lap) { 3 }
+      let(:split) { splits.second }
+      before { finish_split.update(vert_gain_from_start: nil) }
+
+      it "returns nil" do
+        expect(course.vert_gain).to be_nil
+        expect(subject.vert_gain_from_start).to be_nil
+      end
+    end
   end
 
   describe "#vert_loss_from_start" do
@@ -590,6 +601,17 @@ RSpec.describe LapSplit, type: :model do
       before { split.update(vert_loss_from_start: nil) }
 
       it "returns nil" do
+        expect(subject.vert_loss_from_start).to be_nil
+      end
+    end
+
+    context "when course.vert_loss is nil" do
+      let(:lap) { 3 }
+      let(:split) { splits.second }
+      before { finish_split.update(vert_loss_from_start: nil) }
+
+      it "returns nil" do
+        expect(course.vert_loss).to be_nil
         expect(subject.vert_loss_from_start).to be_nil
       end
     end

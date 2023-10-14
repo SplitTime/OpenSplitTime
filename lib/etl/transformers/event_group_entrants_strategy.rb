@@ -14,8 +14,10 @@ module ETL
       def transform
         return proto_records if errors.present?
 
+        map_and_validate_keys!
+        return proto_records if errors.present?
+
         proto_records.each.with_index(1) do |proto_record, row_index|
-          proto_record.underscore_keys!
           event = single_event
 
           if event.nil?
@@ -56,11 +58,18 @@ module ETL
       def validate_setup
         errors << missing_parent_error("EventGroup") unless event_group.present?
         errors << missing_records_error unless proto_records.present?
+      end
+
+      def map_and_validate_keys!
+        proto_records.each do |proto_record|
+          proto_record.underscore_keys!
+          proto_record.map_event_name_key!
+        end
 
         return if errors.present? || single_event.present?
 
         unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("event_name")
-          errors << missing_key_error("Event name")
+          errors << missing_key_error("Event name OR Distance")
         end
       end
     end

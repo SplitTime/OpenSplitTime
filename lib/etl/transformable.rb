@@ -99,6 +99,10 @@ module ETL
       self[utc_key] = parsed_time if parsed_time
     end
 
+    def map_event_name_key!
+      self[:event_name] = delete_field(:distance) if attributes.respond_to?(:distance) && !attributes.respond_to?(:event_name)
+    end
+
     def map_keys!(map)
       map.each do |old_key, new_key|
         self[new_key] = delete_field(old_key) if attributes.respond_to?(old_key)

@@ -59,6 +59,7 @@ class ProtoRecord
     case model
     when :effort
       event = options[:event]
+      transfer_identified_gender!
       normalize_gender!
       normalize_country_code!
       normalize_state_code!

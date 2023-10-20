@@ -49,10 +49,6 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
 
         record = raw_data.first.to_h
         expect(record.keys).to match_array(expected_array)
-
-        raw_data.each do |record|
-          pp record.to_h
-        end
       end
     end
 

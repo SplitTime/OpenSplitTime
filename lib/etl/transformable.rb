@@ -144,6 +144,8 @@ module ETL
                           "male"
                         when "f"
                           "female"
+                        when "x"
+                          "nonbinary"
                         when "n"
                           "nonbinary"
                         end
@@ -210,6 +212,12 @@ module ETL
 
         self[k] = v.strip.presence || v.presence
       end
+    end
+
+    def transfer_identified_gender!
+      return unless self[:identified_gender].present?
+
+      self[:gender] = delete_field(:identified_gender)
     end
 
     def underscore_keys!

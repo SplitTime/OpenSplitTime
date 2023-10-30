@@ -19,10 +19,12 @@ class ResultsTemplate < ApplicationRecord
 
   validates_presence_of :name, :aggregation_method
 
+  # @return [ResultsTemplate]
   def self.default
     find_by(slug: "simple")
   end
 
+  # @return [ResultsTemplate]
   def dup_with_categories
     # This must be done first or relations will be lost
     set_category_positions
@@ -30,6 +32,11 @@ class ResultsTemplate < ApplicationRecord
     template = dup
     template.results_categories = results_categories.map(&:dup)
     template
+  end
+
+  # @return [Boolean]
+  def includes_nonbinary?
+    results_categories.where(nonbinary: true).exists?
   end
 
   private

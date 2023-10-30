@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-        <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
+          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
@@ -35,10 +35,12 @@
       </div>
       <div class="col text-end">
         <div class="btn-group btn-group-ost">
-          <% [:category, :best_performance].each do |sort_method| %>
-            <%= link_to sort_method.to_s.titleize,
-                        request.params.merge(sort: sort_method),
-                        class: "btn #{ @presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary' }" %>
+          <% if @presenter.sort_methods.many? %>
+            <% @presenter.sort_methods.each do |sort_method| %>
+              <%= link_to sort_method.to_s.titleize,
+                          request.params.merge(sort: sort_method),
+                          class: "btn #{ @presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary' }" %>
+            <% end %>
           <% end %>
         </div>
       </div>

@@ -31,6 +31,9 @@ Sentry.init({
 import * as ActiveStorage from "@rails/activestorage"
 ActiveStorage.start()
 
+// Chartkick
+import "chartkick/chart.js"
+
 // Inputmask
 import Inputmask from "inputmask/dist/inputmask";
 

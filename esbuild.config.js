@@ -1,5 +1,4 @@
 const path = require("path");
-const { sentryEsbuildPlugin } = require("@sentry/esbuild-plugin");
 
 require("esbuild").context({
   entryPoints: ["application.js"],
@@ -9,17 +8,6 @@ require("esbuild").context({
   outdir: path.join(process.cwd(), "app/assets/builds"),
   absWorkingDir: path.join(process.cwd(), "app/javascript"),
   plugins: [
-    sentryEsbuildPlugin({
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      org: "opensplittime",
-      project: "opensplittime",
-      release: {
-        name: process.env.SENTRY_RELEASE,
-        deploy: {
-          env: process.env.CREDENTIALS_ENV || "development"
-        }
-      }
-    }),
   ],
   minify: process.argv.includes("--minify")
 }).then(context => {

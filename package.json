@@ -7,8 +7,6 @@
     "@rails/actioncable": "^7.0.2-2",
     "@rails/activestorage": "^6.0.5",
     "@rails/request.js": "^0.0.8",
-    "@sentry/browser": "^7.61.0",
-    "@sentry/esbuild-plugin": "^2.6.2",
     "autoprefixer": "^10.4.14",
     "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.10.5",

@@ -11,7 +11,6 @@ module Devise
 
         env["devise.skip_trackable"] = true
         user = User.find(payload["sub"])
-        user.has_json_web_token = true
         success! user
       rescue JWT::ExpiredSignature
         fail! "Auth token has expired"

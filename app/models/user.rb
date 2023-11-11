@@ -81,8 +81,6 @@ class User < ApplicationRecord
           "#{search_param}%", "#{search_param}%", "%#{search_param}%")
   end
 
-  attr_accessor :has_json_web_token
-
   def to_s
     slug
   end

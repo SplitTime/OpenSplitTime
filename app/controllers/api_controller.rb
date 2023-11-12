@@ -3,7 +3,6 @@
 class ApiController < ::ApplicationController
   include Rails::Pagination
   skip_forgery_protection
-  skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
   after_action :verify_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found_json

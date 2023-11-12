@@ -2,7 +2,7 @@
 
 class ApiController < ::ApplicationController
   include Rails::Pagination
-  protect_from_forgery with: :null_session
+  skip_forgery_protection
   skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
   after_action :verify_authorized

@@ -63,7 +63,8 @@ class LotteryDivision < ApplicationRecord
   private
 
   def broadcast_lottery_draw_header
-    broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: {division: self}
+    broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: { division: self }
+    broadcast_replace_to self, :lottery_header, target: "lottery_header_lottery_division_#{id}", partial: "lottery_divisions/tickets_progress_bars", locals: { division: self, show_pre_selected: false }
   end
 
   def ordered_drawn_entrants

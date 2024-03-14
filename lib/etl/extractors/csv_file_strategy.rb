@@ -11,11 +11,12 @@ module ETL
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding("UTF-8").freeze
       IMPORT_OPTIONS = {
         downcase_header: false,
+        duplicate_header_suffix: nil,
         force_utf8: true,
         remove_empty_values: false,
         row_sep: :auto,
         strip_chars_from_headers: BYTE_ORDER_MARK,
-        strings_as_keys: true
+        strings_as_keys: true,
       }.freeze
 
       attr_reader :errors

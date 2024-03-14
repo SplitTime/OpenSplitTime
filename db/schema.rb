@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_20_165528) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_13_132913) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -448,6 +448,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_165528) do
     t.index ["user_id"], name: "index_people_on_user_id"
   end
 
+  create_table "projection_assessment_runs", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.integer "completed_lap", null: false
+    t.integer "completed_split_id", null: false
+    t.integer "completed_bitkey", null: false
+    t.integer "projected_lap", null: false
+    t.integer "projected_split_id", null: false
+    t.integer "projected_bitkey", null: false
+    t.integer "status"
+    t.string "error_message"
+    t.integer "success_count"
+    t.integer "failure_count"
+    t.datetime "started_at"
+    t.integer "elapsed_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_projection_assessment_runs_on_event_id"
+  end
+
+  create_table "projection_assessments", force: :cascade do |t|
+    t.bigint "projection_assessment_run_id", null: false
+    t.bigint "effort_id", null: false
+    t.datetime "projected_early"
+    t.datetime "projected_best"
+    t.datetime "projected_late"
+    t.datetime "actual"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["effort_id"], name: "index_projection_assessments_on_effort_id"
+    t.index ["projection_assessment_run_id"], name: "index_projection_assessments_on_projection_assessment_run_id"
+  end
+
   create_table "raw_times", force: :cascade do |t|
     t.bigint "event_group_id", null: false
     t.bigint "split_time_id"
@@ -699,6 +731,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_20_165528) do
   add_foreign_key "lottery_tickets", "lottery_entrants"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
+  add_foreign_key "projection_assessment_runs", "events"
+  add_foreign_key "projection_assessments", "efforts"
+  add_foreign_key "projection_assessments", "projection_assessment_runs"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"
   add_foreign_key "results_categories", "organizations"

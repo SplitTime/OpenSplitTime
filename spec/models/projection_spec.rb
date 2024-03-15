@@ -10,7 +10,8 @@ RSpec.describe ::Projection, type: :model do
       described_class.execute_query(
         split_time: split_time,
         starting_time_point: starting_time_point,
-        subject_time_points: subject_time_points
+        subject_time_points: subject_time_points,
+        ignore_times_beyond: ignore_times_beyond,
       )
     end
     let(:split_time) { effort.ordered_split_times.last }
@@ -18,6 +19,7 @@ RSpec.describe ::Projection, type: :model do
     let(:time_points) { effort.event.required_time_points }
     let(:starting_time_point) { time_points.first }
     let(:subject_time_points) { time_points.last(2) }
+    let(:ignore_times_beyond) { nil }
 
     context "when given valid arguments" do
       it "returns rows containing projected ratios and seconds" do
@@ -31,6 +33,28 @@ RSpec.describe ::Projection, type: :model do
         expect(projection.low_seconds).to be_within(100).of(35_300)
         expect(projection.average_seconds).to be_within(100).of(39_700)
         expect(projection.high_seconds).to be_within(100).of(44_200)
+      end
+
+      context "when ignore_times_beyond is provided and no times are before" do
+        let(:ignore_times_beyond) { "2000-01-01 05:00:00" }
+
+        it "ignores all times" do
+          expect(subject).to eq([])
+        end
+      end
+
+      context "when ignore_times_beyond is provided and some times are before" do
+        let(:ignore_times_beyond) { "2016-07-15 00:00:00" }
+
+        it "ignores times beyond the provided time" do
+          expect(subject.size).to eq(2)
+
+          projection = subject.first
+          expect(projection.time_point).to eq(subject_time_points.first)
+          expect(projection.low_seconds).to be_within(100).of(35_500)
+          expect(projection.average_seconds).to be_within(100).of(40_100)
+          expect(projection.high_seconds).to be_within(100).of(44_700)
+        end
       end
     end
 

@@ -29,6 +29,7 @@ class Event < ApplicationRecord
   has_many :aid_stations, dependent: :destroy
   has_many :splits, through: :aid_stations
   has_many :partners, through: :event_group
+  has_many :projection_assessment_runs
 
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :permit_notifications?, :home_time_zone, to: :event_group

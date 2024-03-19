@@ -19,14 +19,15 @@ class Projection < ::ApplicationQuery
 
   alias_attribute :bitkey, :sub_split_bitkey
 
-  def self.sql(split_time:, starting_time_point:, subject_time_points:)
+  def self.sql(split_time:, starting_time_point:, subject_time_points:, ignore_times_beyond: nil)
     unless split_time && starting_time_point && subject_time_points
       raise ArgumentError, "Projection.sql requires a split_time, starting_time_point, and subject_time_points"
     end
 
+    completed_seconds = split_time.time_from_start
     completed_lap, completed_split_id, completed_bitkey = split_time.time_point.values
     starting_lap, starting_split_id, starting_bitkey = starting_time_point.values
-    completed_seconds = split_time.time_from_start
+    ignore_timestamp = ApplicationRecord.connection.quote(ignore_times_beyond.presence)
 
     return NULL_QUERY if completed_seconds == 0 || subject_time_points.empty?
 
@@ -66,8 +67,6 @@ class Projection < ::ApplicationQuery
             and cst.split_id = #{completed_split_id}
             and cst.sub_split_bitkey = #{completed_bitkey}
             and e.event_id in (select event_id from relevant_event_ids)
-          order by difference
-          limit #{OVERALL_EFFORT_LIMIT}
         ),
 
         main_subquery as (
@@ -82,6 +81,9 @@ class Projection < ::ApplicationQuery
             inner join split_times pst on pst.effort_id = cst.effort_id
           where (#{projected_where_clause})
             and difference / #{completed_seconds} < #{SIMILARITY_THRESHOLD}
+            and (#{ignore_timestamp} is null or pst.absolute_time <= #{ignore_timestamp})
+          order by difference
+          limit #{OVERALL_EFFORT_LIMIT}
         ),
 
         ratio_subquery as (

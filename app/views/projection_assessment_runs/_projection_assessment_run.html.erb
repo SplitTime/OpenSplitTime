@@ -1,0 +1,10 @@
+<%# locals: (organization:, event:, projection_assessment_run:) %>
+
+<tr id=<%= dom_id projection_assessment_run %>>
+  <td><%= projection_assessment_run.id %></td>
+  <td><%= "#{time_ago_in_words(projection_assessment_run.created_at)} ago" %></td>
+  <td class="text-center"><%= event.efforts_count %></td>
+  <td class="text-center"><%= "#{projection_assessment_run.success_count || 0}/#{projection_assessment_run.failure_count || 0}" %></td>
+  <td class="text-center"><%= pretty_duration(projection_assessment_run.elapsed_time) %></td>
+  <td><%= progress_monitorable_status_component(projection_assessment_run) %></td>
+</tr>

@@ -69,6 +69,14 @@ class Projection < ::ApplicationQuery
             and e.event_id in (select event_id from relevant_event_ids)
         ),
 
+        closest_effort_ids as (
+          select cst.effort_id
+          from completed_split_times cst
+          where difference / #{completed_seconds} < #{SIMILARITY_THRESHOLD}
+          order by difference
+          limit #{OVERALL_EFFORT_LIMIT}
+        ),
+
         main_subquery as (
           select pst.effort_id, 
               lap,
@@ -80,10 +88,8 @@ class Projection < ::ApplicationQuery
           from completed_split_times cst
             inner join split_times pst on pst.effort_id = cst.effort_id
           where (#{projected_where_clause})
-            and difference / #{completed_seconds} < #{SIMILARITY_THRESHOLD}
+            and cst.effort_id in (select effort_id from closest_effort_ids)
             and (#{ignore_timestamp} is null or pst.absolute_time <= #{ignore_timestamp})
-          order by difference
-          limit #{OVERALL_EFFORT_LIMIT}
         ),
 
         ratio_subquery as (

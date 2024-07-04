@@ -73,6 +73,7 @@ class Effort < ApplicationRecord
   after_update_commit :broadcast_update
 
   pg_search_scope :search_bib, against: :bib_number, using: { tsearch: { any_word: true } }
+  scope :bib_not_hardcoded, -> { where(bib_number_hardcoded: [false, nil]) }
   scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
   scope :on_course, -> (course) { includes(:event).where(events: { course_id: course.id }) }
   scope :unreconciled, -> { where(person_id: nil) }

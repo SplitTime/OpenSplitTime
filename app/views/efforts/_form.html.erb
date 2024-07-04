@@ -65,6 +65,10 @@
           <div class="col-md-2 mb-3">
             <%= f.label :bib_number, class: "mb-1" %>
             <%= f.number_field :bib_number, class: "form-control", placeholder: "Bib #" %>
+            <div class="form-check form-switch mt-2">
+              <label class="form-check-label" for="<%= dom_id(f.object, :bib_number_hardcoded_checkbox) %>">Hardcoded bib?</label>
+              <%= f.check_box :bib_number_hardcoded, class: "form-check-input", id: dom_id(f.object, :bib_number_hardcoded_checkbox) %>
+            </div>
           </div>
           <div class="col-md-6 mb-3">
             <%= f.label "Tracking Beacon URL", class: "mb-1" %>

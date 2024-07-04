@@ -40,8 +40,8 @@ class EffortParameters < BaseParameters
   end
 
   def self.permitted
-    [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :age, :birthdate,
-     :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
+    [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :bib_number_hardcoded,
+     :age, :birthdate, :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
      :scheduled_start_offset, :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
      :comments, { split_times_attributes: [*SplitTimeParameters.permitted] }]
   end

@@ -49,11 +49,32 @@ RSpec.describe ComputeBibAssignments do
             effort_1.id => 1,
             effort_2.id => 2,
             effort_3.id => 100,
-            effort_4.id => 101
+            effort_4.id => 101,
           }
         end
 
         it "computes bibs of prior year finishers starting at 1 and other bibs alphabetically starting at 100" do
+          expect(result).to eq(expected_result)
+        end
+      end
+
+      context "when an entrant has a hardcoded bib number" do
+        let(:prior_event) { events(:hardrock_2015) }
+
+        before do
+          event.efforts.ranked_order.last(15).each(&:destroy)
+          effort_1.update(bib_number: "85", bib_number_hardcoded: true)
+        end
+
+        let(:expected_result) do
+          {
+            effort_2.id => 100,
+            effort_3.id => 101,
+            effort_4.id => 102,
+          }
+        end
+
+        it "ignores hardcoded bib numbers" do
           expect(result).to eq(expected_result)
         end
       end

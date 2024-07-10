@@ -17,6 +17,10 @@ class EffortRow < SimpleDelegator
     ::NormalizeCountry.convert(country_code, to: :ioc)
   end
 
+  def effort
+    __getobj__
+  end
+
   def final_lap_split_name
     multiple_laps? ? "#{final_split_name} Lap #{final_lap}" : final_split_name
   end

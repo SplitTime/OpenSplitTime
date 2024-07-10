@@ -175,6 +175,7 @@ Rails.application.routes.draw do
       get :admin
       get :edit_start_time
       get :export
+      get :finish_history
       get :podium
       get :spread
       get :summary

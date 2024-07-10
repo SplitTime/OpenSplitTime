@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class EventsController < ApplicationController
-  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium]
+  before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :finish_history]
   before_action :set_event, except: [:new, :edit, :create, :update, :destroy, :reassign]
   before_action :set_event_group, only: [:new, :create]
   before_action :set_event_group_and_event, only: [:edit, :update, :destroy, :reassign]
   before_action :redirect_to_friendly, only: [:podium, :spread, :summary]
-  after_action :verify_authorized, except: [:show, :spread, :summary, :podium]
+  after_action :verify_authorized, except: [:show, :spread, :summary, :podium, :finish_history]
 
   MAX_SUMMARY_EFFORTS = 1000
   FINISHERS_ONLY_EXPORT_FORMATS = [:finishers, :itra].freeze
@@ -172,6 +172,11 @@ class EventsController < ApplicationController
   def podium
     template = Results::FillEventTemplate.perform(@event)
     @presenter = PodiumPresenter.new(@event, view_context, template: template)
+  end
+
+  # GET /events/1/finish_history
+  def finish_history
+    @presenter = FinishHistoryPresenter.new(event: @event, view_context: view_context)
   end
 
   # Actions related to the event/effort/split_time relationship

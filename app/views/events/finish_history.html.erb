@@ -1,0 +1,71 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Finish history - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <% if @presenter.multiple_events? %>
+              <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <% end %>
+            <li class="breadcrumb-item"><%= @presenter.event.guaranteed_short_name %></li>
+            <li class="breadcrumb-item active">Finish history</li>
+          </ul>
+        </div>
+        <%= render "time_and_course_info" %>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <%= render "view_buttons", view_object: @presenter %>
+  </div>
+</header>
+
+<% if @presenter.multiple_events? %>
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      </div>
+    </div>
+  </aside>
+<% end %>
+
+<article class="ost-article container">
+  <table class="table table-sm table-striped mx-sm-4">
+    <thead>
+    <tr>
+      <th>O/G<br/>Place</th>
+      <th>Bib</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>From</th>
+      <th class="text-center">Finish Time</th>
+      <th class="text-center"># of Finishes</th>
+      <th class="text-center">Fastest Time</th>
+      <th class="text-center">Fastest Year</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @presenter.effort_rows.each do |row| %>
+      <tr id="<%= "effort_#{row.id}" %>">
+        <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
+        <td><%= row.bib_number %></td>
+        <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.id) %></strong></td>
+        <td class="text-nowrap"><%= row.bio_historic %></td>
+        <td class="text-nowrap"><%= row.flexible_geolocation %></td>
+        <td class="text-nowrap text-center"><%= TimeConversion.seconds_to_hms((@presenter.history_for(row).current_time_seconds || 0), blank_zero: true) %></td>
+        <td class="text-nowrap text-center"><%= @presenter.history_for(row).number_of_finishes || 0 %></td>
+        <td class="text-nowrap text-center"><%= TimeConversion.seconds_to_hms((@presenter.history_for(row).best_time_seconds || 0), blank_zero: true) %></td>
+        <td class="text-nowrap text-center"><%= @presenter.history_for(row).begin_time&.year || "--" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</article>

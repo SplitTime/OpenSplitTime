@@ -26,16 +26,17 @@
   </div>
 </header>
 
-
-<aside class="ost-toolbar">
-  <div class="container">
-    <div class="row">
-      <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+<% if @presenter.multiple_events? %>
+  <aside class="ost-toolbar">
+    <div class="container">
+      <div class="row">
+        <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
+      </div>
     </div>
-  </div>
-</aside>
+  </aside>
+<% end %>
 
-<article class="ost-article">
+<article class="ost-article container">
   <table class="table table-sm table-striped mx-sm-4">
     <thead>
     <tr>

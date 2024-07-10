@@ -18,7 +18,7 @@ with
 	  left join course_group_courses on course_group_courses.course_id = events.course_id
 	  left join course_groups on course_groups.id = course_group_courses.course_group_id
 	  left join course_group_courses all_cgc on all_cgc.course_group_id = course_groups.id
-	  join events relevant_events on (relevant_events.course_id = all_cgc.course_id or relevant_events.course_id = events.course_id) 
+	  join events relevant_events on (relevant_events.course_id = coalesce(all_cgc.course_id, events.course_id)) 
 	  join efforts on efforts.event_id = relevant_events.id
 	  join people on people.id = efforts.person_id
 	  join effort_segments on effort_segments.effort_id = efforts.id 

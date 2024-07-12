@@ -6,6 +6,6 @@
   </h5>
   <div class="card-body text-center d-inline-flex justify-content-center">
     <%= render "subscriptions/subscription_button", subscribable: effort, protocol: :email %>
-    <%= render "subscriptions/subscription_button", subscribable: effort, protocol: :sms %>
+    <span class="mx-3">SMS temporarily out of service.<br/>Please use email.</span>
   </div>
 </div>

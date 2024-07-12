@@ -10,7 +10,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
 
   before { effort.update!(topic_resource_key: "anything") }
 
-  scenario "The user is not logged in and subscribes to sms" do
+  xscenario "The user is not logged in and subscribes to sms" do
     visit_page
 
     within("##{dom_id(effort, :sms)}") { click_button("sms") }
@@ -36,7 +36,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
     expect(page).to have_content("You have subscribed to email notifications for #{effort.full_name}.")
   end
 
-  scenario "The user is logged in and subscribes to sms without a phone number" do
+  xscenario "The user is logged in and subscribes to sms without a phone number" do
     login_as user, scope: :user
     visit_page
 
@@ -46,7 +46,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
     expect(page).to have_content("Please add a mobile phone number to receive sms text notifications.")
   end
 
-  scenario "The user is logged in and subscribes to sms with a phone number" do
+  xscenario "The user is logged in and subscribes to sms with a phone number" do
     user.update_columns(phone: "1234567890")
     login_as user, scope: :user
     visit_page

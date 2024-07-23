@@ -135,6 +135,15 @@ If you need to add icons from another collection (such as "Light"), you will nee
 In addition, note that the new css file (`light.scss` in our example) will have an incorrect URL for the font files. You will need to edit the URL to
 match the URLs used in the other Fontawesome stylesheets.
 
+Starting the Server
+-------------------------
+
+To start the development server and workers, and to compile JavaScript and CSS files (and start watchers that will recompile them as they change), 
+navigate to the OpenSplitTime directory and type:
+```
+$ bin/dev
+```
+
 Support
 -------------------------
 

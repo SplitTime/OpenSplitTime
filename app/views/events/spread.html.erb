@@ -86,7 +86,11 @@
       <% @presenter.effort_times_rows.each do |row| %>
         <tr id="<%= "effort_#{row.id}" %>">
           <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
-          <td><%= row.bib_number %></td>
+          <td class="fw-bold">
+            <span class="cursor-pointer">
+              <%= row.bib_number %>
+            </span>
+          </td>
           <td class="text-nowrap"><strong><%= link_to row.full_name, effort_path(row.effort) %></strong></td>
           <td class="text-nowrap"><%= row.bio_historic %></td>
           <td class="text-nowrap"><%= row.flexible_geolocation %></td>

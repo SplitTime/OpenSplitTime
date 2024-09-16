@@ -16,6 +16,10 @@
           "url": "heroku/ruby"
         }
       ],
+      "env": {
+        "GOOGLE_CHROME_CHANNEL": "stable",
+        "WD_CHROME_PATH": "/app/.chrome-for-testing/chrome-linux64/chrome"
+      },
       "formation": {
         "test": {
           "quantity": 1,

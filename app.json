@@ -7,18 +7,18 @@
       ],
       "buildpacks": [
         {
+          "url": "heroku-community/chrome-for-testing"
+        },
+        {
           "url": "heroku/nodejs"
         },
         {
           "url": "heroku/ruby"
-        },
-        {
-          "url": "https://github.com/heroku/heroku-buildpack-google-chrome"
         }
       ],
       "env": {
         "GOOGLE_CHROME_CHANNEL": "stable",
-        "WD_CHROME_PATH": "/app/.apt/usr/bin/google-chrome-stable"
+        "WD_CHROME_PATH": "/app/.chrome-for-testing/chrome-linux64/chrome"
       },
       "formation": {
         "test": {

@@ -5,7 +5,7 @@ end
 # chrome_headless is the default driver for system tests
 Capybara.register_driver :chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new(
-    args: %w[headless disable-gpu no-sandbox window-size=1536,1152],
+    args: %w[headless disable-gpu no-sandbox window-size=1536,1152 disable-dev-shm-usage],
   )
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
@@ -19,7 +19,7 @@ end
 # :chrome_headless to :chrome_visible
 Capybara.register_driver :chrome_visible do |app|
   options = Selenium::WebDriver::Chrome::Options.new(
-    args: %w[disable-gpu no-sandbox window-size=1536,1152],
+    args: %w[disable-gpu no-sandbox window-size=1536,1152 disable-dev-shm-usage],
   )
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,

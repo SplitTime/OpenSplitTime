@@ -167,7 +167,7 @@ Be detailed. They only person who knows the bug you are experiencing or feature 
 Credits
 -------
 
-This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
+This application was originally generated back in 2015 with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
 provided by the [RailsApps Project](http://railsapps.github.io/).
 
 Rails Composer is supported by developers who purchase the RailsApps tutorials.

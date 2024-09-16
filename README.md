@@ -180,4 +180,4 @@ License
 Copyright
 ---------
 
-Copyright (c) 2015-2023 OpenSplitTime Company. See license for details.
+Copyright (c) 2015-2024 OpenSplitTime Company. See license for details.

@@ -16,10 +16,6 @@
           "url": "heroku/ruby"
         }
       ],
-      "env": {
-        "GOOGLE_CHROME_CHANNEL": "stable",
-        "WD_CHROME_PATH": "/app/.apt/usr/bin/google-chrome-stable"
-      },
       "formation": {
         "test": {
           "quantity": 1,

@@ -14,7 +14,7 @@
         },
         {
           "url": "heroku/ruby"
-        },
+        }
       ],
       "env": {
         "GOOGLE_CHROME_CHANNEL": "stable",

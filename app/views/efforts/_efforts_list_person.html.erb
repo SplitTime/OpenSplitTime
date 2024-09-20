@@ -23,7 +23,7 @@
       <td><%= l(effort.event.scheduled_start_time.to_date, format: :full_with_weekday) %></td>
       <td class="text-end"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>
-        <td class="text-end"><%= link_to "Disassociate",
+        <td class="text-end"><%= button_to "Disassociate",
                                            effort_path(effort,
                                                        effort: { person_id: nil },
                                                        button: :disassociate,

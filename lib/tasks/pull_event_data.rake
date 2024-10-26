@@ -4,21 +4,21 @@ namespace :pull_event do
   desc "Pulls and imports full event data including effort information from my.raceresult.com into an event"
   task :race_result_full, [:event_id, :rr_event_id, :rr_contest_id, :rr_format] => :environment do |_, args|
     source_uri = ETL::Helpers::RaceResultUriBuilder
-        .new(args[:rr_event_id], args[:rr_contest_id], args[:rr_format]).full_uri
+                   .new(args[:rr_event_id], args[:rr_contest_id], args[:rr_format]).full_uri
     Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, :race_result_full)
   end
 
   desc "Pulls and imports entrant data (without times) from my.raceresult.com into an event"
   task :race_result_entrants, [:event_id, :rr_event_id, :rr_contest_id, :rr_format] => :environment do |_, args|
     source_uri = ETL::Helpers::RaceResultUriBuilder
-        .new(args[:rr_event_id], args[:rr_contest_id], args[:rr_format]).full_uri
+                   .new(args[:rr_event_id], args[:rr_contest_id], args[:rr_format]).full_uri
     Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, :race_result_entrants)
   end
 
   desc "Pulls and imports time data from my.raceresult.com into an event having existing efforts"
   task :race_result_api_times, [:event_id, :rr_event_id, :rr_api_key] => :environment do |_, args|
     source_uri = ETL::Helpers::RaceResultApiUriBuilder
-        .new(args[:rr_event_id], args[:rr_api_key]).full_uri
+                   .new(args[:rr_event_id], args[:rr_api_key]).full_uri
     Rake::Task["pull_event:from_uri"].invoke(args[:event_id], source_uri, :race_result_api_times)
   end
 
@@ -93,10 +93,10 @@ namespace :pull_event do
     # Upload source data to OpenSplitTime /import endpoint
 
     user_id = args[:user_id] || 1
-    auth_token = JsonWebToken.encode({sub: user_id})
+    auth_token = JsonWebToken.encode({ sub: user_id })
     upload_url = "#{::OstConfig.full_uri}/api/v1/events/#{args[:event_id]}/import"
-    upload_params = {data: source_response.body, data_format: args[:format]}
-    upload_headers = {authorization: auth_token, accept: "application/json"}
+    upload_params = { data: source_response.body, data_format: args[:format] }
+    upload_headers = { authorization: auth_token, accept: "application/json" }
     puts "Uploading data to #{upload_url}"
 
     begin
@@ -115,8 +115,12 @@ namespace :pull_event do
       puts "ERROR during pull_event:from_uri for event: #{event.name} from #{source_uri}\n"
       parsed_upload_response["errors"]&.each do |error|
         puts "Error: #{error['title']}"
-        error["detail"].each do |detail_key, detail_value|
-          puts "  #{detail_key.titlecase}: #{detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value}"
+        if error["detail"].present?
+          error["detail"].each do |detail_key, detail_value|
+            puts "  #{detail_key.titlecase}: #{detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value}"
+          end
+        else
+          puts "  No error detail available."
         end
       end
       puts "Completed with errors in #{elapsed_time} seconds"

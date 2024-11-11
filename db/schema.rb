@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_26_175838) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_11_174117) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -289,6 +289,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_26_175838) do
     t.string "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "created_by"
     t.index ["event_id"], name: "index_historical_facts_on_event_id"
     t.index ["person_id"], name: "index_historical_facts_on_person_id"
   end

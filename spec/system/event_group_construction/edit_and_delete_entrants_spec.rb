@@ -50,6 +50,7 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
     fill_in "effort_birthdate", with: "1/1/3000", fill_options: { clear: :backspace }
     click_button "Update Entrant"
     # Wait for the update to complete
+    sleep 0.5
     expect(page).to have_content("Birthdate can't be today or in the future")
 
     fill_in "effort_birthdate", with: "1/1/2000", fill_options: { clear: :backspace }

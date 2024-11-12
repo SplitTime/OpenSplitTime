@@ -10,7 +10,7 @@ ActiveStorage.start()
 import "chartkick/chart.js"
 
 // Inputmask
-import Inputmask from "inputmask/dist/inputmask";
+import Inputmask from "inputmask";
 
 Inputmask.extendAliases({
   "military": {

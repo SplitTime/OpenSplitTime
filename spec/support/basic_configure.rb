@@ -9,5 +9,6 @@ RSpec.configure do |config|
   # use chrome_visible for debugging
   config.before(:each, type: :system, js: true) do
     driven_by :chrome_headless
+    # driven_by :chrome_visible
   end
 end

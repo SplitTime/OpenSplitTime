@@ -66,7 +66,10 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
 
     click_link("Delete tickets")
     fill_in "confirm", with: "DELETE TICKETS"
-    expect { click_button "Permanently Delete" }.to change(lottery.draws, :count).to(0).and change(lottery.tickets, :count).to(0)
+    expect do
+      click_button "Permanently Delete"
+      sleep 1
+    end.to change(lottery.draws, :count).to(0).and change(lottery.tickets, :count).to(0)
 
     fill_in "filter_search", with: entrant.last_name
     click_on "lottery-entrant-admin-lookup-submit"

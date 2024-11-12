@@ -16,7 +16,11 @@ FactoryBot.define do
 
     trait :with_gpx do
       after(:build) do |course|
-        course.gpx.attach(io: File.open(Rails.root.join("spec", "fixtures", "files", "test_track.gpx")), filename: "test_track.gpx", content_type: "application/gpx+xml")
+        course.gpx.attach(
+          io: File.open(Rails.root.join("spec", "fixtures", "files", "test_track.gpx")),
+          filename: "test_track.gpx",
+          content_type: "application/gpx+xml",
+        )
       end
     end
   end

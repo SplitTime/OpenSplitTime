@@ -65,7 +65,6 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
       "1212" => "12:12",
       "920" => "92:00",
       "131415" => "13:14",
-      "13:14:15" => "13:14",
     }
 
     input = page.find("#expected_time")

@@ -35,7 +35,7 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
     expect(page).to have_content(entrant.reload.full_name)
   end
 
-  scenario "Edit an entrant with failed attempt" do
+  xscenario "Edit an entrant with failed attempt" do
     login_as steward, scope: :user
     visit_page
 

@@ -12,7 +12,9 @@ class HistoricalFact < ApplicationRecord
     volunteer_minor: 1,
     volunteer_major: 2,
     volunteer_legacy: 3,
-    qualifier_finish: 4,
+    claimed_qualifier_finish: 4,
+    provided_emergency_contact: 5,
+    provided_previous_name: 6,
   }
 
   include Auditable

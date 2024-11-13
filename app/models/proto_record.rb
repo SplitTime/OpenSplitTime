@@ -74,6 +74,12 @@ class ProtoRecord
       # If no scheduled_start_time can be determined, set it to the event scheduled start time
       self[:scheduled_start_time] ||= event.scheduled_start_time
 
+    when :historical_fact
+      normalize_gender!
+      normalize_country_code!
+      normalize_state_code!
+      normalize_date!(:birthdate)
+
     when :lottery_entrant
       division = options[:division]
       normalize_gender!

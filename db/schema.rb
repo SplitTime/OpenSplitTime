@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_11_174117) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_13_141434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -272,7 +272,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_11_174117) do
     t.bigint "person_id"
     t.string "first_name", null: false
     t.string "last_name", null: false
-    t.date "birthdate", null: false
+    t.date "birthdate"
     t.integer "gender", null: false
     t.string "address"
     t.string "city"
@@ -290,7 +290,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_11_174117) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "created_by"
+    t.bigint "organization_id", null: false
     t.index ["event_id"], name: "index_historical_facts_on_event_id"
+    t.index ["organization_id"], name: "index_historical_facts_on_organization_id"
     t.index ["person_id"], name: "index_historical_facts_on_person_id"
   end
 
@@ -748,6 +750,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_11_174117) do
   add_foreign_key "events", "event_groups"
   add_foreign_key "export_jobs", "users"
   add_foreign_key "historical_facts", "events"
+  add_foreign_key "historical_facts", "organizations"
   add_foreign_key "historical_facts", "people"
   add_foreign_key "import_jobs", "users"
   add_foreign_key "lotteries", "organizations"

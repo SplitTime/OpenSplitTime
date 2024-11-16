@@ -23,6 +23,8 @@ module ETL::Transformers::Async
         record_2024_qualifier(struct)
         record_emergency_contact(struct)
         record_previous_names(struct)
+        record_legacy_ticket_count(struct)
+        record_legacy_division(struct)
       rescue StandardError => e
         import_job.increment!(:failed_count)
         errors << transform_failed_error(e, row_index)
@@ -100,6 +102,24 @@ module ETL::Transformers::Async
         proto_record[:comments] = previous_names
         proto_records << proto_record
       end
+    end
+
+    def record_legacy_ticket_count(struct)
+      legacy_count = struct[:Total_tickets]
+
+      proto_record = base_proto_record.deep_dup
+      proto_record[:kind] = :lottery_ticket_count_legacy
+      proto_record[:quantity] = legacy_count
+      proto_records << proto_record
+    end
+
+    def record_legacy_division(struct)
+      legacy_division = struct[:Which_Lottery?]
+
+      proto_record = base_proto_record.deep_dup
+      proto_record[:kind] = :lottery_division_legacy
+      proto_record[:comments] = legacy_division
+      proto_records << proto_record
     end
   end
 end

@@ -494,6 +494,18 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         expect(previous_name_proto_records.count).to eq(1)
         expect(previous_name_proto_records.first[:comments]).to eq("Theresa Burley")
       end
+
+      it "returns one proto_record per struct for legacy ticket count" do
+        legacy_ticket_count_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :lottery_ticket_count_legacy }
+        expect(legacy_ticket_count_proto_records.count).to eq(structs.count)
+        expect(legacy_ticket_count_proto_records.map { |pr| pr[:quantity] }).to eq([2, 16, 4, 8])
+      end
+
+      it "returns one proto_record per struct for legacy division" do
+        legacy_division_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :lottery_division_legacy }
+        expect(legacy_division_proto_records.count).to eq(structs.count)
+        expect(legacy_division_proto_records.map { |pr| pr[:comments] }).to eq(["Never", "Never", "Never", "Else"])
+      end
     end
 
     context "when no structs are provided" do

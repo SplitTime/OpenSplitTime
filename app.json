@@ -28,7 +28,7 @@
       },
       "scripts": {
         "test-setup": "bin/rails assets:precompile",
-        "test": "bin/rspec"
+        "test": "bin/rspec spec --tag ~@js"
       }
     }
   }

@@ -3,13 +3,62 @@
 require "rails_helper"
 
 RSpec.describe ImportJob, type: :model do
-  subject { build(:import_job, started_at: started_at) }
+  subject { build(:import_job, parent: parent, format: format, started_at: started_at) }
+  let(:parent) { lotteries(:lottery_without_tickets) }
+  let(:format) { :lottery_entrants }
   let(:started_at) { nil }
+  let(:test_start_time) { Time.current }
 
   before { travel_to test_start_time }
 
+  describe "#parent_path" do
+    let(:result) { subject.parent_path }
+
+    context "when parent is an organization" do
+      let(:parent) { organizations(:hardrock) }
+
+      it "returns an organization path" do
+        expect(result).to eq("/organizations/hardrock")
+      end
+    end
+
+    context "when parent is a lottery" do
+      let(:parent) { lotteries(:lottery_without_tickets) }
+
+      it "returns a lottery setup path" do
+        expect(result).to eq("/organizations/hardrock/lotteries/lottery-without-tickets/setup")
+      end
+    end
+
+    context "when parent is an event group" do
+      let(:parent) { event_groups(:hardrock_2016) }
+
+      it "returns an event group setup path" do
+        expect(result).to eq("/event_groups/hardrock-2016/entrants")
+      end
+    end
+
+    context "when parent is an event" do
+      let(:parent) { events(:hardrock_2016) }
+
+      context "when the format is event_course_splits" do
+        let(:format) { "event_course_splits" }
+
+        it "returns a course setup path" do
+          expect(result).to eq("/event_groups/hardrock-2016/events/hardrock-2016/setup_course")
+        end
+
+      end
+
+      context "when the format is not course_group_splits" do
+        it "returns an event group setup path" do
+          expect(result).to eq("/event_groups/hardrock-2016/entrants")
+        end
+      end
+    end
+  end
+
   describe "#set_elapsed_time!" do
-    let(:test_start_time) { Time.current }
     context "when the record has not been persisted" do
       context "when started at time has not been set" do
         it "does not set elapsed time" do

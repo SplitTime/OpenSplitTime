@@ -33,6 +33,55 @@ module BadgeHelper
                 data: { controller: :tooltip, bs_original_title: tooltip_text })
   end
 
+  def historical_fact_kind_badge(kind)
+    case kind
+    when "dns"
+      title = "DNS"
+      color = :primary
+      tooltip_text = "Did not start"
+    when "volunteer_minor"
+      title = "VMinor"
+      color = :secondary
+      tooltip_text = "Minor volunteer work for a specific event"
+    when "volunteer_major"
+      title = "VMajor"
+      color = :secondary
+      tooltip_text = "Major volunteer work for a specific event"
+    when "volunteer_legacy"
+      title = "VLegacy"
+      color = :secondary
+      tooltip_text = "Years of legacy volunteer work (no event specified)"
+    when "reported_qualifier_finish"
+      title = "Qualifier"
+      color = :success
+      tooltip_text = "Reported qualifier finished"
+    when "provided_emergency_contact"
+      title = "Contact"
+      color = :success
+      tooltip_text = "Provided emergency contact"
+    when "provided_previous_name"
+      title = "PrevName"
+      color = :success
+      tooltip_text = "Provided previous name"
+    when "lottery_ticket_count_legacy"
+      title = "Tickets"
+      color = :dark
+      tooltip_text = "Legacy ticket count calculation"
+    when "lottery_division_legacy"
+      title = "Division"
+      color = :dark
+      tooltip_text = "Legacy division determination"
+    else
+      raise ArgumentError, "Can't build a badge; unknown status: #{kind}"
+    end
+
+    content_tag(:span,
+                title,
+                style: "font-size:0.8rem;",
+                class: "badge rounded-pill bg-#{color} align-top",
+                data: { controller: :tooltip, bs_original_title: tooltip_text })
+  end
+
   def lottery_status_badge(status)
     case status
     when "preview"

@@ -4,7 +4,7 @@
   <thead>
   <tr>
     <th>Kind</th>
-    <th>Quantity</th>
+    <th class="text-center">Quantity</th>
     <th>Comments</th>
     <th>Name</th>
     <th>Gender</th>
@@ -14,8 +14,8 @@
   <tbody>
   <% historical_facts.each do |fact| %>
     <tr class="align-middle">
-      <td><%= fact.kind %></td>
-      <td><%= fact.quantity %></td>
+      <td><%= historical_fact_kind_badge(fact.kind) %></td>
+      <td class="text-center"><%= fact.quantity %></td>
       <td><%= fact.comments %></td>
       <td><%= fact.full_name %></td>
       <td><%= fact.gender %></td>

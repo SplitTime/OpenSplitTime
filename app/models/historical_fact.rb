@@ -21,6 +21,7 @@ class HistoricalFact < ApplicationRecord
 
   include Auditable
   include CapitalizeAttributes
+  include PersonalInfo
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/

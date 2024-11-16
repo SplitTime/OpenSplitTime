@@ -401,6 +401,17 @@ module DropdownHelper
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
   end
 
+  def historical_facts_import_dropdown(view_object)
+    dropdown_items = [
+      { name: "Standard format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :historical_facts }) },
+      { name: "Hardrock legacy format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hardrock_historical_facts }) },
+    ]
+
+    build_dropdown_menu("Import", dropdown_items, button: true)
+  end
+
   def setup_entrants_import_dropdown(view_object)
     elapsed_time_event_items = view_object.events.map do |event|
       event_suffix = view_object.events.many? ? "for #{event.guaranteed_short_name}" : nil

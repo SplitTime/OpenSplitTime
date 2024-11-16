@@ -45,6 +45,10 @@ class OrganizationPresenter < BasePresenter
     @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, organization.course_groups).viewable
   end
 
+  def historical_facts
+    @historical_facts ||= organization.historical_facts
+  end
+
   def display_style
     PERMITTED_DISPLAY_STYLES.include?(params[:display_style]) ? params[:display_style] : default_display_style
   end

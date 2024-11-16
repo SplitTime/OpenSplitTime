@@ -216,6 +216,8 @@ Rails.application.routes.draw do
 
     resources :event_series, except: [:index]
 
+    resources :historical_facts
+
     resources :lotteries do
       member { get :draw_tickets }
       member { get :setup }

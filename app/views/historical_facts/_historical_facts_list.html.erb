@@ -1,0 +1,26 @@
+<%# locals: (historical_facts:) -%>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Kind</th>
+    <th>Quantity</th>
+    <th>Comments</th>
+    <th>Name</th>
+    <th>Gender</th>
+    <th>Birthdate</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% historical_facts.each do |fact| %>
+    <tr class="align-middle">
+      <td><%= fact.kind %></td>
+      <td><%= fact.quantity %></td>
+      <td><%= fact.comments %></td>
+      <td><%= fact.full_name %></td>
+      <td><%= fact.gender %></td>
+      <td><%= fact.birthdate %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

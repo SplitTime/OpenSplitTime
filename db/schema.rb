@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_13_141434) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_16_191431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -282,8 +282,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_13_141434) do
     t.string "country_name"
     t.string "email"
     t.string "phone"
-    t.string "emergency_contact"
-    t.string "emergency_phone"
     t.integer "kind", null: false
     t.integer "quantity"
     t.string "comments"

@@ -2,6 +2,7 @@
 
 class ImportJob < ApplicationRecord
   belongs_to :user
+  belongs_to :parent, polymorphic: true
   broadcasts_to :user, inserts_by: :prepend
 
   has_many_attached :files
@@ -30,10 +31,6 @@ class ImportJob < ApplicationRecord
 
   alias_attribute :owner_id, :user_id
 
-  def parent
-    @parent ||= parent_type.constantize.find_by(id: parent_id)
-  end
-
   def parent_name
     parent.name
   end
@@ -42,6 +39,8 @@ class ImportJob < ApplicationRecord
     return unless parent.present?
 
     case parent_type
+    when "Organization"
+      ::Rails.application.routes.url_helpers.organization_path(parent)
     when "Lottery"
       ::Rails.application.routes.url_helpers.setup_organization_lottery_path(parent.organization, parent)
     when "EventGroup"

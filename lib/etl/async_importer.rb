@@ -33,7 +33,7 @@ module ETL
     attr_writer :errors
     attr_accessor :extract_strategy, :transform_strategy, :load_strategy, :custom_options, :extracted_structs, :transformed_protos
 
-    delegate :files, :format, :parent_type, :parent_id, to: :import_job
+    delegate :files, :format, :parent, to: :import_job
 
     def set_etl_strategies
       case format.to_sym
@@ -100,16 +100,8 @@ module ETL
       end
     end
 
-    def parent
-      @parent ||= parent_class.find_by(id: parent_id)
-    end
-
-    def parent_class
-      @parent_class ||= parent_type.constantize
-    end
-
     def validate_setup
-      errors << missing_parent_error(parent_type) unless parent.present?
+      errors << missing_parent_error unless parent.present?
     end
   end
 end

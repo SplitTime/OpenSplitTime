@@ -13,8 +13,6 @@ class HistoricalFactParameters < BaseParameters
       :country_code,
       :phone,
       :email,
-      :emergency_contact,
-      :emergency_phone,
     ]
   end
 

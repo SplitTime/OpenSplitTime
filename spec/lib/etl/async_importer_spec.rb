@@ -9,8 +9,7 @@ RSpec.describe ETL::AsyncImporter do
       :import_job,
       :with_files,
       file_params_array: file_params_array,
-      parent_type: parent_type,
-      parent_id: parent_id,
+      parent: parent,
       format: format,
     )
   end
@@ -24,8 +23,7 @@ RSpec.describe ETL::AsyncImporter do
       }
     ]
   end
-  let(:parent_type) { "Lottery" }
-  let(:parent_id) { lottery.id }
+  let(:parent) { lottery }
   let(:lottery) { lotteries(:lottery_without_tickets) }
   let(:format) { :lottery_entrants }
   let(:fast_division) { lottery.divisions.find_by(name: "Fast People") }
@@ -103,8 +101,7 @@ RSpec.describe ETL::AsyncImporter do
   end
 
   context "when an event group entrant import file is valid and format is recognized" do
-    let(:parent_type) { "EventGroup" }
-    let(:parent_id) { event_group.id }
+    let(:parent) { event_group }
     let(:event_group) { event_groups(:sum) }
     let(:format) { :event_group_entrants }
     let(:event_55k) { events(:sum_55k) }
@@ -143,8 +140,7 @@ RSpec.describe ETL::AsyncImporter do
   end
 
   context "when a historical_facts import file is valid and format is recognized" do
-    let(:parent_type) { "Organization" }
-    let(:parent_id) { organization.id }
+    let(:parent) { organization }
     let(:organization) { organizations(:hardrock) }
     let(:format) { :hardrock_historical_facts }
     let(:event_2015) { events(:hardrock_2015) }
@@ -183,7 +179,8 @@ RSpec.describe ETL::AsyncImporter do
   end
 
   context "when the parent cannot be found" do
-    let(:parent_id) { 0 }
+    let(:import_job) { build(:import_job, parent: nil) }
+
     it "does not import any records" do
       expect { subject.import! }.not_to change { ::LotteryEntrant.count }
     end

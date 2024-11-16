@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :import_job do
     user
-    parent_type { "Lottery" }
-    parent_id { 1 }
+    association :parent, factory: :lottery
     format { :lottery_entrants }
 
     trait :with_files do

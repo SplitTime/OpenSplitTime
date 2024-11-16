@@ -458,6 +458,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
+        expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
 
         %i[first_name last_name gender birthdate address state_code country_code email emergency_contact emergency_phone].each do |expected_key|
           expect(keys).to include(expected_key)

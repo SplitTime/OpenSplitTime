@@ -41,8 +41,7 @@ module ETL::Transformers::Async
     def set_base_proto_record(struct)
       self.base_proto_record = ProtoRecord.new(**struct.to_h)
 
-      base_proto_record.transform_as(:historical_fact)
-      base_proto_record.slice_permitted!
+      base_proto_record.transform_as(:historical_fact, organization: organization)
     end
 
     def record_dns_years(struct)

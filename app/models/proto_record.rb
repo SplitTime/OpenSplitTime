@@ -96,11 +96,14 @@ class ProtoRecord
       self[:scheduled_start_time] ||= event.scheduled_start_time
 
     when :historical_fact
+      organization = options[:organization]
       normalize_gender!
       normalize_country_code!
       normalize_state_code!
       create_country_from_state!
       normalize_date!(:birthdate)
+      slice_permitted!
+      self[:organization_id] = organization.id
 
     when :lottery_entrant
       division = options[:division]

@@ -31,10 +31,6 @@ class ImportJob < ApplicationRecord
 
   alias_attribute :owner_id, :user_id
 
-  def parent
-    @parent ||= parent_type.constantize.find_by(id: parent_id)
-  end
-
   def parent_name
     parent.name
   end

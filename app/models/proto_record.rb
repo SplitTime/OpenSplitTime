@@ -22,6 +22,27 @@ class ProtoRecord
     key.nil? ? nil : attributes[key]
   end
 
+  def ==(other)
+    record_type == other.record_type &&
+      record_action == other.record_action &&
+      attributes == other.attributes &&
+      children == other.children
+  end
+
+  def deep_dup
+    new_proto_record = ProtoRecord.new(record_type: record_type, record_action: record_action)
+
+    attributes.to_h.each do |key, value|
+      new_proto_record[key] = value.deep_dup
+    end
+
+    children.each do |child|
+      new_proto_record.children << child.deep_dup
+    end
+
+    new_proto_record
+  end
+
   def has_key?(key)
     attributes.to_h.has_key?(key)
   end

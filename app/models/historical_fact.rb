@@ -25,4 +25,8 @@ class HistoricalFact < ApplicationRecord
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
   capitalize_attributes :first_name, :last_name, :city, :emergency_contact
+
+  belongs_to :organization
+  belongs_to :person, optional: true
+  belongs_to :event, optional: true
 end

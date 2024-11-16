@@ -18,6 +18,10 @@ module ETL
         parent if parent.is_a?(EventGroup)
       end
 
+      def organization
+        parent if parent.is_a?(Organization)
+      end
+
       def parent
         options[:parent]
       end

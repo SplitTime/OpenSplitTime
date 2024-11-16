@@ -52,6 +52,35 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       end
     end
 
+    context "when a hardrock historical facts file is provided" do
+      let(:file) { file_fixture("hardrock_historical_facts.csv") }
+      let(:expected_array) do
+        [:First, :Last, :Gender,
+         :"1992", :"1993", :"1994", :"1996", :"1997", :"1998", :"1999", :"2000", :"2001", :"2003", :"2004", :"2005", :"2006", :"2007", :"2008",
+         :"2009", :"2010", :"2011", :"2012", :"2013", :"2014", :"2015", :"2016", :"2017", :"2018", :"2019", :"2021", :"2022", :"2023", :"2024",
+         :Which_Lottery?, :Total_DNFs, :DNFs_before_2021, :Total_Finishes, :"#_F_tickets",
+         :DNS_since_1992, :DNS_since_1993, :DNS_since_1994, :DNS_since_1996, :DNS_since_1997, :DNS_since_1998, :DNS_since_1999, :DNS_since_2000,
+         :DNS_since_2001, :DNS_since_2003, :DNS_since_2004, :DNS_since_2005, :DNS_since_2006, :DNS_since_2007, :DNS_since_2008, :DNS_since_2009,
+         :DNS_since_2010, :DNS_since_2011, :DNS_since_2012, :DNS_since_2013, :DNS_since_2014, :DNS_since_2015, :DNS_since_2016, :DNS_since_2017,
+         :DNS_since_2018, :DNS_since_2019, :DNS_since_2021, :DNS_since_2022, :DNS_since_2023, :DNS_since_2024,
+         :"#_DNS_since_last_start", :"#_DNS_ever", :"Tickets_for_#_DNS_(and_Service_if_Never)", :"#_Trail_work/Course_Sweep/AS_captain_ticks",
+         :"#_Service_tickets", :Total_tickets, :"1_=_entered", :First_time_entrant, :"1_=_Selected", :Wait_List_Order, :"2024_Qualifier",
+         :Years_Volunteering, :Total_Finished_Tickets, :Total_Never_tickets, :Male_Finished_Tickets, :Male_Never_Tickets, :Female_Finished_Tickets,
+         :Female_Never_Tickets, :DOB, :email_address, :Street_Address, :City, :State, :Country, :"Phone_#", :Previous_names_applied_under,
+         :Emergency_Contact, :Emergency_Phone, :"#_Years_Vol_Claimed", :Vol_Diff, :"#_Years_Claimed_Applied_in_Past", :Have_you_ever_finished_Hardrock?,
+         :"Diff_#DNS", :Already_in_the_spread_sheet, :Removed?, :Description_of_service]
+      end
+
+      it "returns raw data in OpenStruct format with expected keys" do
+        expect(subject.errors).to be_empty
+        expect(raw_data.size).to eq(11)
+        expect(raw_data).to all be_a(OpenStruct)
+
+        record = raw_data.first.to_h
+        expect(record.keys).to match_array(expected_array)
+      end
+    end
+
     context "when file has extra empty lines" do
       let(:file) { file_fixture("test_efforts_empty_lines.csv") }
 

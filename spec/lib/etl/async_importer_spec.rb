@@ -142,6 +142,46 @@ RSpec.describe ETL::AsyncImporter do
     end
   end
 
+  context "when a historical_facts import file is valid and format is recognized" do
+    let(:parent_type) { "Organization" }
+    let(:parent_id) { organization.id }
+    let(:organization) { organizations(:hardrock) }
+    let(:format) { :hardrock_historical_facts }
+    let(:event_2015) { events(:hardrock_2015) }
+    let(:event_2016) { events(:hardrock_2016) }
+    let(:source_data) { file_fixture("hardrock_historical_facts.csv") }
+
+    it "does not result in errors" do
+      subject.import!
+      expect(subject.errors).to be_empty
+    end
+
+    it "creates new historical_facts" do
+      expect { subject.import! }.to change { ::HistoricalFact.count }.by(73)
+    end
+
+    it "assigns expected attributes" do
+      subject.import!
+      expect(::HistoricalFact.pluck(:organization_id)).to all eq(organization.id)
+      hf_1 = ::HistoricalFact.find_by(first_name: "Antony", last_name: "Grady", kind: :dns)
+
+      expect(hf_1).to be_present
+      expect(hf_1.gender).to eq("male")
+      expect(hf_1.comments).to eq("2019")
+    end
+
+    it "sets import job attributes properly" do
+      subject.import!
+      expect(import_job.row_count).to eq(11)
+      expect(import_job.succeeded_count).to eq(73)
+      expect(import_job.failed_count).to eq(0)
+      expect(import_job.status).to eq("finished")
+      expect(import_job.started_at).to be_present
+      expect(import_job.elapsed_time).to be_present
+      expect(import_job.error_message).to be_blank
+    end
+  end
+
   context "when the parent cannot be found" do
     let(:parent_id) { 0 }
     it "does not import any records" do

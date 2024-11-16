@@ -1,5 +1,6 @@
 # Below are the routes for madmin
 namespace :madmin do
+  resources :historical_facts
   resources :sendgrid_events
   resources :connections
   namespace :active_storage do

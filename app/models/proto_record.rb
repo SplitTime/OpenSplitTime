@@ -22,6 +22,27 @@ class ProtoRecord
     key.nil? ? nil : attributes[key]
   end
 
+  def ==(other)
+    record_type == other.record_type &&
+      record_action == other.record_action &&
+      attributes == other.attributes &&
+      children == other.children
+  end
+
+  def deep_dup
+    new_proto_record = ProtoRecord.new(record_type: record_type, record_action: record_action)
+
+    attributes.to_h.each do |key, value|
+      new_proto_record[key] = value.deep_dup
+    end
+
+    children.each do |child|
+      new_proto_record.children << child.deep_dup
+    end
+
+    new_proto_record
+  end
+
   def has_key?(key)
     attributes.to_h.has_key?(key)
   end
@@ -73,6 +94,16 @@ class ProtoRecord
 
       # If no scheduled_start_time can be determined, set it to the event scheduled start time
       self[:scheduled_start_time] ||= event.scheduled_start_time
+
+    when :historical_fact
+      organization = options[:organization]
+      normalize_gender!
+      normalize_country_code!
+      normalize_state_code!
+      create_country_from_state!
+      normalize_date!(:birthdate)
+      slice_permitted!
+      self[:organization_id] = organization.id
 
     when :lottery_entrant
       division = options[:division]

@@ -99,6 +99,7 @@ class ProtoRecord
       normalize_gender!
       normalize_country_code!
       normalize_state_code!
+      create_country_from_state!
       normalize_date!(:birthdate)
 
     when :lottery_entrant

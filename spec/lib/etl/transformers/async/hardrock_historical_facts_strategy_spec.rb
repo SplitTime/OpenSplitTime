@@ -99,7 +99,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :First_time_entrant => "",
             :"1_=_Selected" => "",
             :Wait_List_Order => "",
-            :"2024_Qualifier" => "",
+            :"2024_Qualifier" => "2023 SEPT: Grindstone 100 Mile",
             :Years_Volunteering => "",
             :Total_Finished_Tickets => 0,
             :Total_Never_tickets => 0,
@@ -114,9 +114,9 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :State => "VA",
             :Country => "USA",
             :"Phone_#" => 7797152514,
-            :Previous_names_applied_under => "",
-            :Emergency_Contact => "Dominque Corkery",
-            :Emergency_Phone => 2236531216,
+            :Previous_names_applied_under => "No",
+            :Emergency_Contact => nil,
+            :Emergency_Phone => nil,
             :"#_Years_Vol_Claimed" => 0,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => "",
@@ -205,7 +205,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :First_time_entrant => "",
             :"1_=_Selected" => "",
             :Wait_List_Order => "",
-            :"2024_Qualifier" => "",
+            :"2024_Qualifier" => "2023 SEPT: Bear 100",
             :Years_Volunteering => 0,
             :Total_Finished_Tickets => 0,
             :Total_Never_tickets => 0,
@@ -220,7 +220,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :State => "NOR",
             :Country => "NOR",
             :"Phone_#" => 4747239760,
-            :Previous_names_applied_under => "",
+            :Previous_names_applied_under => "N/A",
             :Emergency_Contact => "Shellie Krajcik",
             :Emergency_Phone => 4747239722,
             :"#_Years_Vol_Claimed" => 0,
@@ -326,7 +326,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :State => "WA",
             :Country => "USA",
             :"Phone_#" => 8952939469,
-            :Previous_names_applied_under => "",
+            :Previous_names_applied_under => "NA",
             :Emergency_Contact => "Sonja Christiansen",
             :Emergency_Phone => 8615039757,
             :"#_Years_Vol_Claimed" => 0,
@@ -434,9 +434,9 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :State => "IA",
             :Country => "USA",
             :"Phone_#" => "776-426-2796",
-            :Previous_names_applied_under => "",
-            :Emergency_Contact => "Winnifred Yost",
-            :Emergency_Phone => "982-416-8561",
+            :Previous_names_applied_under => "Theresa Burley",
+            :Emergency_Contact => "",
+            :Emergency_Phone => "",
             :"#_Years_Vol_Claimed" => 1,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => "",
@@ -444,30 +444,55 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :"Diff_#DNS" => "",
             :Already_in_the_spread_sheet => 1,
             :Removed? => "",
-            :Description_of_service => "",
+            :Description_of_service => "Trail work in 2021",
             :column_105 => nil,
             :column_106 => nil
           )
         ]
       end
 
+      it "does not report errors" do
+        expect(subject.errors).to be_empty
+      end
+
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
 
-        %i[first last gender dob state country].each do |expected_key|
+        %i[first_name last_name gender birthdate address state_code country_code email emergency_contact emergency_phone].each do |expected_key|
           expect(keys).to include(expected_key)
         end
       end
 
       it "returns one proto_record for each DNS" do
-        record = proto_records.first
-
-        pp record
-
-
         dns_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns }
         expect(dns_proto_records.count).to eq(12)
+      end
+
+      it "returns one proto_record for each legacy volunteer fact" do
+        legacy_volunteer_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_legacy }
+        expect(legacy_volunteer_proto_records.count).to eq(1)
+        proto_record = legacy_volunteer_proto_records.first
+        expect(proto_record[:quantity]).to eq(1)
+        expect(proto_record[:comments]).to eq("Trail work in 2021")
+      end
+
+      it "returns one proto_record for each reported 2024 qualifier" do
+        reported_qualifier_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :reported_qualifier_finish }
+        expect(reported_qualifier_proto_records.count).to eq(2)
+        expect(reported_qualifier_proto_records.map { |pr| pr[:comments] }).to match_array(["2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100"])
+      end
+
+      it "returns one proto_record for each provided emergency contact" do
+        emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_emergency_contact }
+        expect(emergency_contact_proto_records.count).to eq(2)
+        expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757"])
+      end
+
+      it "returns one proto_record for each provided previous name" do
+        previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_previous_name }
+        expect(previous_name_proto_records.count).to eq(1)
+        expect(previous_name_proto_records.first[:comments]).to eq("Theresa Burley")
       end
     end
 

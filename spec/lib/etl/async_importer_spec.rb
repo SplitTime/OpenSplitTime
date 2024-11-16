@@ -149,7 +149,7 @@ RSpec.describe ETL::AsyncImporter do
     let(:format) { :hardrock_historical_facts }
     let(:event_2015) { events(:hardrock_2015) }
     let(:event_2016) { events(:hardrock_2016) }
-    let(:source_data) { file_fixture("historical_facts.csv") }
+    let(:source_data) { file_fixture("hardrock_historical_facts.csv") }
 
     it "creates new historical_facts" do
       expect { subject.import! }.to change { ::HistoricalFact.count }.by(3)

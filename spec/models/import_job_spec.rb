@@ -17,8 +17,8 @@ RSpec.describe ImportJob, type: :model do
     context "when parent is an organization" do
       let(:parent) { organizations(:hardrock) }
 
-      it "returns an organization path" do
-        expect(result).to eq("/organizations/hardrock")
+      it "returns an organization historical fact path" do
+        expect(result).to eq("/organizations/hardrock/historical_facts")
       end
     end
 

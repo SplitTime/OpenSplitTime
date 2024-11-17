@@ -40,7 +40,7 @@ class ImportJob < ApplicationRecord
 
     case parent_type
     when "Organization"
-      ::Rails.application.routes.url_helpers.organization_path(parent)
+      ::Rails.application.routes.url_helpers.organization_historical_facts_path(parent)
     when "Lottery"
       ::Rails.application.routes.url_helpers.setup_organization_lottery_path(parent.organization, parent)
     when "EventGroup"

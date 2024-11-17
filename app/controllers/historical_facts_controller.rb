@@ -8,7 +8,7 @@ class HistoricalFactsController < ApplicationController
   after_action :verify_authorized
 
   def index
-    @presenter = ::OrganizationPresenter.new(@organization, view_context)
+    @presenter = ::OrganizationHistoricalFactsPresenter.new(@organization, view_context)
   end
 
   def new

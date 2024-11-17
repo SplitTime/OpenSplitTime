@@ -1,0 +1,9 @@
+<%= turbo_stream.append "historical_facts",
+                        partial: "historical_fact",
+                        collection: @presenter.filtered_historical_facts,
+                        as: :fact
+                        %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

@@ -4,9 +4,9 @@
 
 <header class="ost-header">
   <div class="container">
-    <%= render "organizations/organization_heading" %>
+    <%= render "organizations/organization_heading", presenter: @presenter %>
     <!-- Navigation -->
-    <%= render "organizations/organization_tabs" %>
+    <%= render "organizations/organization_tabs", presenter: @presenter %>
   </div>
 </header>
 
@@ -22,9 +22,5 @@
 </aside>
 
 <article class="ost-article container">
-  <% if @presenter.historical_facts.present? %>
-    <%= render "historical_facts_list", historical_facts: @presenter.historical_facts %>
-  <% else %>
-    <h5>No historical facts have been added to this organization.</h5>
-  <% end %>
+  <%= render "historical_facts_list", presenter: @presenter %>
 </article>

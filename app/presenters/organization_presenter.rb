@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-  PERMITTED_DISPLAY_STYLES = %w[courses course_groups stewards events event_series lotteries].freeze
+  PERMITTED_DISPLAY_STYLES = %w[courses stewards events lotteries historical_facts].freeze
 
   attr_reader :organization
 
@@ -43,10 +43,6 @@ class OrganizationPresenter < BasePresenter
 
   def course_groups
     @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, organization.course_groups).viewable
-  end
-
-  def historical_facts
-    @historical_facts ||= organization.historical_facts
   end
 
   def display_style

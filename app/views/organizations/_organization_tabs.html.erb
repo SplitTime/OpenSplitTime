@@ -1,18 +1,20 @@
+<%# locals: (presenter) -%>
+
 <ul class="nav nav-tabs nav-tabs-ost">
-  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'organizations'}" do %>
-    <%= link_to "Events", organization_path(@presenter.organization) %>
+  <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'organizations'}" do %>
+    <%= link_to "Events", organization_path(presenter.organization) %>
   <% end %>
-  <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'courses'}" do %>
-    <%= link_to "Courses", organization_courses_path(@presenter.organization) %>
+  <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'courses'}" do %>
+    <%= link_to "Courses", organization_courses_path(presenter.organization) %>
   <% end %>
-  <% if @presenter.lotteries.present? || current_user&.authorized_for_lotteries?(@presenter.organization) %>
-    <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'lotteries'}" do %>
-      <%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %>
+  <% if presenter.lotteries.present? || current_user&.authorized_for_lotteries?(presenter.organization) %>
+    <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'lotteries'}" do %>
+      <%= link_to "Lotteries", organization_lotteries_path(presenter.organization) %>
     <% end %>
   <% end %>
-  <% if current_user&.authorized_fully?(@presenter.organization) %>
-    <%= content_tag :li, class: "nav-item #{'active' if @presenter.controller_name == 'stewardships'}" do %>
-      <%= link_to "Stewards", organization_stewardships_path(@presenter.organization) %>
+  <% if current_user&.authorized_fully?(presenter.organization) %>
+    <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'stewardships'}" do %>
+      <%= link_to "Stewards", organization_stewardships_path(presenter.organization) %>
     <% end %>
   <% end %>
 </ul>

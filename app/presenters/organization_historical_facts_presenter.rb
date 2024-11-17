@@ -71,6 +71,6 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   def matches_criteria?(fact)
     return true unless params[:kind].present?
 
-    params[:kind] == fact.kind
+    fact.kind.in?(params[:kind])
   end
 end

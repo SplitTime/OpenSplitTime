@@ -1,0 +1,34 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Historical Facts - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading", presenter: @presenter %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs", presenter: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <%= link_to fa_icon("plus", text: "Add"), new_organization_historical_fact_path(@presenter.organization), id: "add-historical-fact", class: "btn btn-success" %>
+        <%= historical_facts_import_dropdown(@presenter) %>
+      </div>
+      <!-- Filter Widget -->
+      <div class="col">
+        <%= historical_facts_filter_dropdown %>
+      </div>
+      <!-- Search Widget -->
+      <div class="col">
+        <%= render "historical_facts_search", presenter: @presenter %>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <%= render "historical_facts_list", presenter: @presenter %>
+</article>

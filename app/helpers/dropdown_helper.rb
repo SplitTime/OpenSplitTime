@@ -209,6 +209,24 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
+  def historical_facts_filter_dropdown
+    items = [
+      { text: "All", kinds: [] },
+      { text: "DNS", kinds: [:dns] },
+      { text: "Volunteer", kinds: [:volunteer_minor, :volunteer_major, :volunteer_legacy] },
+      { text: "Provided", kinds: [:reported_qualifier_finish, :provided_emergency_contact, :provided_previous_names] },
+      { text: "Legacy", kinds: [:lottery_ticket_count_legacy, :lottery_division_legacy] },
+    ]
+
+    dropdown_items = items.map do |item|
+      { name: item[:text],
+        link: request.params.merge(kind: item[:kinds], page: nil),
+        active: params[:kind] == item[:kinds] }
+    end
+
+    build_dropdown_menu("Kind", dropdown_items, button: true)
+  end
+
   def explore_dropdown_menu(view_object)
     dropdown_items = [
       { name: "All-time best (#{view_object.course.name})",
@@ -399,6 +417,17 @@ module DropdownHelper
       },
     ]
     build_dropdown_menu("Group Actions", dropdown_items, button: true)
+  end
+
+  def historical_facts_import_dropdown(view_object)
+    dropdown_items = [
+      { name: "Standard format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :historical_facts }) },
+      { name: "Hardrock legacy format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hardrock_historical_facts }) },
+    ]
+
+    build_dropdown_menu("Import", dropdown_items, button: true)
   end
 
   def setup_entrants_import_dropdown(view_object)

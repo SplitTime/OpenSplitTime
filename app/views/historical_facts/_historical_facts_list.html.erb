@@ -1,0 +1,41 @@
+<%# locals: (presenter:) -%>
+
+<% if presenter.historical_facts.none? %>
+  <%= render partial: "shared/callout_with_link",
+             locals: {
+               callout_color: "info",
+               icon_color: "info",
+               icon_name: "circle-info",
+               main_text: "No historical facts exist for this organization",
+               detail_paragraphs: ["Imported historical facts will appear here."],
+             } %>
+  <br/>
+<% else %>
+  <div class="row">
+    <div class="col-xs-8">
+      <% if presenter.filtered_historical_facts_unpaginated_count == presenter.historical_facts_count %>
+        <h4><%= "#{presenter.historical_facts_count} historical facts" %></h4>
+      <% else %>
+        <h4><%= "Showing #{presenter.filtered_historical_facts_unpaginated_count} of #{presenter.historical_facts_count} historical facts" %></h4>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Kind</th>
+    <th class="text-center">Quantity</th>
+    <th>Comments</th>
+    <th>Name</th>
+    <th>Gender</th>
+    <th>Birthdate</th>
+  </tr>
+  </thead>
+  <tbody id="historical_facts">
+  <%= render partial: "historical_fact", collection: presenter.filtered_historical_facts, as: :fact %>
+  </tbody>
+</table>
+
+<%= render "shared/pager", next_page_url: presenter.next_page_url %>

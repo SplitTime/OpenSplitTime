@@ -1,16 +1,18 @@
+<%# locals: (presenter) -%>
+
 <div class="ost-heading row">
   <div class="col">
     <div class="ost-title">
-      <h1><strong><%= [@presenter.name, nil].compact.join(": ") %></strong></h1>
+      <h1><strong><%= [presenter.name, nil].compact.join(": ") %></strong></h1>
       <ul class="breadcrumb">
         <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-        <li class="breadcrumb-item active"><%= @presenter.organization.name %></li>
+        <li class="breadcrumb-item active"><%= presenter.organization.name %></li>
       </ul>
     </div>
   </div>
   <aside class="col-auto">
-    <% if current_user&.authorized_fully?(@presenter.organization) %>
-      <%= link_to "Edit this organization", edit_organization_path(@presenter.organization), class: "btn btn-outline-secondary" %>
+    <% if current_user&.authorized_fully?(presenter.organization) %>
+      <%= link_to "Edit this organization", edit_organization_path(presenter.organization), class: "btn btn-outline-secondary" %>
     <% end %>
   </aside>
 </div>

@@ -21,6 +21,8 @@ class HistoricalFact < ApplicationRecord
 
   include Auditable
   include CapitalizeAttributes
+  include PersonalInfo
+  include Searchable
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/
@@ -29,4 +31,18 @@ class HistoricalFact < ApplicationRecord
   belongs_to :organization
   belongs_to :person, optional: true
   belongs_to :event, optional: true
+
+  attr_writer :creator
+
+  def self.search(search_text)
+    return all unless search_text.present?
+
+    search_names_and_locations(search_text)
+  end
+
+  def creator
+    return @creator if defined?(@creator)
+
+    @creator = User.find_by(id: created_by) if created_by?
+  end
 end

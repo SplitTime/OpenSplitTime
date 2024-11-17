@@ -1,0 +1,15 @@
+<%# locals: (presenter:) -%>
+
+<%= form_tag organization_historical_facts_path(presenter.organization), method: :get do %>
+  <div class="input-group">
+    <%= text_field_tag "filter[search]",
+                       presenter.search_text,
+                       placeholder: "Name",
+                       autofocus: true,
+                       class: "form-control search-box" %>
+    <%= hidden_field_tag :kind, request.params[:kind] %>
+    <%= button_tag(type: :submit, id: "historical-facts-search-submit", class: "btn btn-primary input-group-text") do %>
+      <i class="fas fa-search"></i>
+    <% end %>
+  </div>
+<% end %>

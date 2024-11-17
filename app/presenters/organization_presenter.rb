@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-  PERMITTED_DISPLAY_STYLES = %w[courses course_groups stewards events event_series lotteries].freeze
+  PERMITTED_DISPLAY_STYLES = %w[courses stewards events lotteries historical_facts].freeze
 
   attr_reader :organization
 

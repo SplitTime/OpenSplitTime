@@ -44,7 +44,7 @@
   <% else %>
     <div class="row">
       <div class="col-xs-8">
-        <% if view_object.filtered_raw_times_count == view_object.raw_times_count %>
+        <% if view_object.filtered_raw_times_unpaginated_count == view_object.raw_times_count %>
           <h4><%= "#{view_object.raw_times_count} raw times" %></h4>
         <% else %>
           <h4><%= "Showing #{view_object.filtered_raw_times_unpaginated_count} of #{view_object.raw_times_count} raw times" %></h4>

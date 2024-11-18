@@ -37,8 +37,16 @@ module BadgeHelper
     case kind
     when "dns"
       title = "DNS"
-      color = :primary
+      color = :info
       tooltip_text = "Did not start"
+    when "dnf"
+      title = "DNF"
+      color = :warning
+      tooltip_text = "Started but did not finish"
+    when "finished"
+      title = "Finish"
+      color = :primary
+      tooltip_text = "Finished"
     when "volunteer_minor"
       title = "VMinor"
       color = :secondary

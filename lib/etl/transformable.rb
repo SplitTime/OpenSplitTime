@@ -44,6 +44,15 @@ module ETL
       self[:scheduled_start_time] ||= event_start_time + seconds
     end
 
+    def clear_zero_values!(*attributes)
+      attributes.each do |attribute|
+        return unless has_key?(attribute)
+        return unless self[attribute] == "0" || self[attribute] == 0
+
+        self[attribute] = nil
+      end
+    end
+
     def convert_split_distance!
       return unless self[:distance].present?
 

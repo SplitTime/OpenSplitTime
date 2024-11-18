@@ -88,8 +88,8 @@ module ETL::Transformers::Async
     end
 
     def record_emergency_contact(struct)
-      emergency_contact = struct[:Emergency_Contact]
-      emergency_phone = struct[:Emergency_Phone]
+      emergency_contact = struct[:Emergency_Contact].to_s == "0" ? nil : struct[:Emergency_Contact]
+      emergency_phone = struct[:Emergency_Phone].to_s == "0" ? nil : struct[:Emergency_Phone]
 
       if emergency_contact.present? || emergency_phone.present?
         proto_record = base_proto_record.deep_dup

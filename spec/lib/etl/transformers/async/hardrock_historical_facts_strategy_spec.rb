@@ -435,8 +435,8 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :Country => "USA",
             :"Phone_#" => "776-426-2796",
             :Previous_names_applied_under => "Theresa Burley",
-            :Emergency_Contact => "",
-            :Emergency_Phone => "",
+            :Emergency_Contact => "0",
+            :Emergency_Phone => 0,
             :"#_Years_Vol_Claimed" => 1,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => "",
@@ -494,7 +494,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         expect(reported_qualifier_proto_records.map { |pr| pr[:comments] }).to match_array(["2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100"])
       end
 
-      it "returns one proto_record for each provided emergency contact" do
+      it "returns one proto_record for each provided emergency contact, ignoring '0'" do
         emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_emergency_contact }
         expect(emergency_contact_proto_records.count).to eq(2)
         expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757"])

@@ -428,12 +428,12 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :Female_Finished_Tickets => 0,
             :Female_Never_Tickets => 0,
             :DOB => "09/10/1997",
-            :email_address => "woodrow@runte.ca",
-            :Street_Address => "028 Kunze Freeway",
-            :City => "Tamartown",
-            :State => "IA",
-            :Country => "USA",
-            :"Phone_#" => "776-426-2796",
+            :email_address => "0",
+            :Street_Address => "0",
+            :City => "0",
+            :State => "0",
+            :Country => "0",
+            :"Phone_#" => 0,
             :Previous_names_applied_under => "Theresa Burley",
             :Emergency_Contact => "0",
             :Emergency_Phone => 0,
@@ -462,6 +462,16 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
 
         %i[first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)
+        end
+      end
+
+      it "ignores zero values in affected fields" do
+        valid_address_proto_record = proto_records.find { |pr| pr[:first_name] == "Antony" }
+        invalid_address_proto_record = proto_records.find { |pr| pr[:first_name] == "Theresa" }
+
+        %i[address city state_code country_code email phone].each do |key|
+          expect(valid_address_proto_record[key]).to be_present
+          expect(invalid_address_proto_record[key]).to be_nil
         end
       end
 

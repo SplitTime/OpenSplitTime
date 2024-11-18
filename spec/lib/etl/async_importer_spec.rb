@@ -153,7 +153,7 @@ RSpec.describe ETL::AsyncImporter do
     end
 
     it "creates new historical_facts" do
-      expect { subject.import! }.to change { ::HistoricalFact.count }.by(73)
+      expect { subject.import! }.to change { ::HistoricalFact.count }.by(83)
     end
 
     it "assigns expected attributes" do
@@ -169,7 +169,7 @@ RSpec.describe ETL::AsyncImporter do
     it "sets import job attributes properly" do
       subject.import!
       expect(import_job.row_count).to eq(11)
-      expect(import_job.succeeded_count).to eq(73)
+      expect(import_job.succeeded_count).to eq(83)
       expect(import_job.failed_count).to eq(0)
       expect(import_job.status).to eq("finished")
       expect(import_job.started_at).to be_present

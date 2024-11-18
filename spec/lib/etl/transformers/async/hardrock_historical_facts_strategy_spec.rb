@@ -428,15 +428,15 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
             :Female_Finished_Tickets => 0,
             :Female_Never_Tickets => 0,
             :DOB => "09/10/1997",
-            :email_address => "woodrow@runte.ca",
-            :Street_Address => "028 Kunze Freeway",
-            :City => "Tamartown",
-            :State => "IA",
-            :Country => "USA",
-            :"Phone_#" => "776-426-2796",
+            :email_address => "0",
+            :Street_Address => "0",
+            :City => "0",
+            :State => "0",
+            :Country => "0",
+            :"Phone_#" => 0,
             :Previous_names_applied_under => "Theresa Burley",
-            :Emergency_Contact => "",
-            :Emergency_Phone => "",
+            :Emergency_Contact => "0",
+            :Emergency_Phone => 0,
             :"#_Years_Vol_Claimed" => 1,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => "",
@@ -465,9 +465,29 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         end
       end
 
+      it "ignores zero values in affected fields" do
+        valid_address_proto_record = proto_records.find { |pr| pr[:first_name] == "Antony" }
+        invalid_address_proto_record = proto_records.find { |pr| pr[:first_name] == "Theresa" }
+
+        %i[address city state_code country_code email phone].each do |key|
+          expect(valid_address_proto_record[key]).to be_present
+          expect(invalid_address_proto_record[key]).to be_nil
+        end
+      end
+
       it "returns one proto_record for each DNS" do
         dns_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns }
         expect(dns_proto_records.count).to eq(12)
+      end
+
+      it "returns one proto_record for each DNF" do
+        dnf_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dnf }
+        expect(dnf_proto_records.count).to eq(1)
+      end
+
+      it "returns one proto_record for each finish" do
+        finished_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :finished }
+        expect(finished_proto_records.count).to eq(2)
       end
 
       it "returns one proto_record for each legacy volunteer fact" do
@@ -484,7 +504,7 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         expect(reported_qualifier_proto_records.map { |pr| pr[:comments] }).to match_array(["2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100"])
       end
 
-      it "returns one proto_record for each provided emergency contact" do
+      it "returns one proto_record for each provided emergency contact, ignoring '0'" do
         emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_emergency_contact }
         expect(emergency_contact_proto_records.count).to eq(2)
         expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757"])

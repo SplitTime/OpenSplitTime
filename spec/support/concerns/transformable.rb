@@ -90,6 +90,39 @@ RSpec.shared_examples_for "transformable" do
     end
   end
 
+  describe "#clear_zero_values!" do
+    context "when values are zero strings" do
+      let(:attributes) { { email: "0", city: "0", finishes: "0" } }
+
+      it "removes the values from only the provided keys" do
+        subject.clear_zero_values!(:email, :city)
+        expect(subject[:email]).to be_nil
+        expect(subject[:city]).to be_nil
+        expect(subject[:finishes]).to eq("0")
+      end
+    end
+
+    context "when values are zero integers" do
+      let(:attributes) { { email: 0, city: 0, finishes: 0 } }
+
+      it "removes the values from only the provided keys" do
+        subject.clear_zero_values!(:email, :city)
+        expect(subject[:email]).to be_nil
+        expect(subject[:city]).to be_nil
+        expect(subject[:finishes]).to eq(0)
+      end
+    end
+
+    context "when provided attribute does not exist" do
+      let(:attributes) { { email: "0", city: "0", finishes: "0" } }
+
+      it "ignores the attribute" do
+        subject.clear_zero_values!(:phone)
+        expect(subject).not_to have_key(:phone)
+      end
+    end
+  end
+
   describe "#convert_split_distance!" do
     context "when the provided attributes include distance" do
       let(:attributes) { {distance: 10} }

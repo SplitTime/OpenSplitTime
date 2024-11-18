@@ -212,7 +212,7 @@ module DropdownHelper
   def historical_facts_filter_dropdown
     items = [
       { text: "All", kinds: [] },
-      { text: "DNS", kinds: [:dns] },
+      { text: "Outcome", kinds: [:dns, :dnf, :finished] },
       { text: "Volunteer", kinds: [:volunteer_minor, :volunteer_major, :volunteer_legacy] },
       { text: "Provided", kinds: [:reported_qualifier_finish, :provided_emergency_contact, :provided_previous_names] },
       { text: "Legacy", kinds: [:lottery_ticket_count_legacy, :lottery_division_legacy] },

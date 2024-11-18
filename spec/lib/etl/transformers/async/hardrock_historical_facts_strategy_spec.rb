@@ -470,6 +470,16 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         expect(dns_proto_records.count).to eq(12)
       end
 
+      it "returns one proto_record for each DNF" do
+        dnf_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dnf }
+        expect(dnf_proto_records.count).to eq(1)
+      end
+
+      it "returns one proto_record for each finish" do
+        finished_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :finished }
+        expect(finished_proto_records.count).to eq(2)
+      end
+
       it "returns one proto_record for each legacy volunteer fact" do
         legacy_volunteer_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_legacy }
         expect(legacy_volunteer_proto_records.count).to eq(1)

@@ -4,6 +4,11 @@ module ETL::Transformers::Async
   class HardrockHistoricalFactsStrategy < ETL::Transformers::BaseTransformer
     JUNK_PREVIOUS_NAMES = ["no", "n", "n/a", "na", "none"].freeze
     PRIOR_YEARS = (1992..2024).to_a.map { |year| year.to_s.to_sym }.freeze
+    PRIOR_YEAR_OUTCOMES = {
+      dns: :dns,
+      dnf: :dnf,
+      f: :finished,
+    }.with_indifferent_access.freeze
 
     def initialize(parsed_structs, options)
       @parsed_structs = parsed_structs
@@ -18,7 +23,7 @@ module ETL::Transformers::Async
 
       parsed_structs.each.with_index(1) do |struct, row_index|
         set_base_proto_record(struct)
-        record_dns_years(struct)
+        record_prior_year_outcomes(struct)
         record_volunteer_legacy(struct)
         record_2024_qualifier(struct)
         record_emergency_contact(struct)
@@ -44,14 +49,18 @@ module ETL::Transformers::Async
       base_proto_record.transform_as(:historical_fact, organization: organization)
     end
 
-    def record_dns_years(struct)
-      dns_years = struct.to_h.slice(*PRIOR_YEARS).select { |_, val| val == "DNS" }.keys.map(&:to_s)
+    def record_prior_year_outcomes(struct)
+      years_hash = struct.to_h.slice(*PRIOR_YEARS)
 
-      dns_years.each do |year|
-        proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :dns
-        proto_record[:comments] = year
-        proto_records << proto_record
+      years_hash.each do |year, outcome|
+        year_outcome = PRIOR_YEAR_OUTCOMES[outcome.downcase]
+
+        if year_outcome.present?
+          proto_record = base_proto_record.deep_dup
+          proto_record[:kind] = year_outcome
+          proto_record[:comments] = year
+          proto_records << proto_record
+        end
       end
     end
 

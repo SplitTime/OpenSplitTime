@@ -69,8 +69,15 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   end
 
   def matches_criteria?(fact)
-    return true unless params[:kind].present?
+    matches_kind_criteria?(fact) &&
+      matches_reconciled_criteria?(fact)
+  end
 
-    fact.kind.in?(params[:kind])
+  def matches_kind_criteria?(fact)
+    params[:kind].blank? || fact.kind.in?(params[:kind])
+  end
+
+  def matches_reconciled_criteria?(fact)
+    params[:reconciled].blank? || fact.reconciled? == params[:reconciled].to_boolean
   end
 end

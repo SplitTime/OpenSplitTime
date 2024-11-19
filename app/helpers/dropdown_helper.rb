@@ -209,22 +209,45 @@ module DropdownHelper
     build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
-  def historical_facts_filter_dropdown
+  def historical_facts_kinds_filter_dropdown
     items = [
-      { text: "All", kinds: [] },
-      { text: "Outcome", kinds: [:dns, :dnf, :finished] },
-      { text: "Volunteer", kinds: [:volunteer_minor, :volunteer_major, :volunteer_legacy] },
-      { text: "Provided", kinds: [:reported_qualifier_finish, :provided_emergency_contact, :provided_previous_names] },
-      { text: "Legacy", kinds: [:lottery_ticket_count_legacy, :lottery_division_legacy] },
+      { text: "All kinds", kinds: [] },
+      { text: "Outcome", kinds: %w[dns dnf finished] },
+      { text: "Volunteer", kinds: %w[volunteer_minor volunteer_major volunteer_legacy] },
+      { text: "Provided", kinds: %w[reported_qualifier_finish provided_emergency_contact provided_previous_names] },
+      { text: "Legacy", kinds: %w[lottery_ticket_count_legacy lottery_division_legacy] },
     ]
 
     dropdown_items = items.map do |item|
-      { name: item[:text],
+      {
+        name: item[:text],
         link: request.params.merge(kind: item[:kinds], page: nil),
-        active: params[:kind] == item[:kinds] }
+        active: (params[:kind].presence == item[:kinds].presence)
+      }
     end
 
-    build_dropdown_menu("Kind", dropdown_items, button: true)
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
+  def historical_facts_reconciled_filter_dropdown
+    items = [
+      { icon_name: "circle", type: :regular, color: :secondary, text: "All", reconciled: nil },
+      { icon_name: "circle-minus", type: :solid, color: :warning, text: "Unreconciled", reconciled: false },
+      { icon_name: "circle-check", type: :regular, color: :success, text: "Reconciled", reconciled: true },
+    ]
+
+    dropdown_items = items.map do |item|
+      {
+        name: fa_icon(item[:icon_name], text: item[:text], type: item[:type], color: item[:color]),
+        link: request.params.merge(
+          reconciled: item[:reconciled],
+          page: nil
+        ),
+        active: params[:reconciled]&.to_boolean == item[:reconciled]
+      }
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
   end
 
   def explore_dropdown_menu(view_object)

@@ -23,6 +23,7 @@ class HistoricalFact < ApplicationRecord
 
   include Auditable
   include CapitalizeAttributes
+  include Matchable
   include PersonalInfo
   include Searchable
 
@@ -36,6 +37,8 @@ class HistoricalFact < ApplicationRecord
 
   attr_writer :creator
 
+  scope :unreconciled, -> { where(person_id: nil) }
+
   def self.search(search_text)
     return all unless search_text.present?
 
@@ -46,5 +49,13 @@ class HistoricalFact < ApplicationRecord
     return @creator if defined?(@creator)
 
     @creator = User.find_by(id: created_by) if created_by?
+  end
+
+  def reconciled?
+    person_id.present?
+  end
+
+  def unreconciled?
+    !reconciled?
   end
 end

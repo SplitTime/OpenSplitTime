@@ -1,19 +1,32 @@
 # frozen_string_literal: true
 
 module Matchable
+  # @return [ActiveRecord::Relation<Person>]
   def possible_matching_people
     people_with_same_name
-        .or(people_changed_last_name)
-        .or(people_changed_first_name)
-        .or(people_same_full_name)
-        .where.not(id: id)
+      .or(people_changed_last_name)
+      .or(people_changed_first_name)
+      .or(people_same_full_name)
+      .where.not(id: id)
   end
 
+  # @return [Person, nil]
+  def definitive_matching_person
+    return unless birthdate.present?
+
+    definitive_matches = Person.last_name_matches_exact(last_name)
+                           .first_name_matches_exact(first_name)
+                           .where(gender: gender, birthdate: birthdate)
+                           .where.not(id: id)
+    definitive_matches.one? ? definitive_matches.first : nil
+  end
+
+  # @return [Person, nil]
   def exact_matching_person # Suitable for automated matcher
     potential_matches = Person.last_name_matches_exact(last_name)
-        .first_name_matches_exact(first_name)
-        .gender_matches(gender)
-        .where.not(id: id)
+                          .first_name_matches_exact(first_name)
+                          .gender_matches(gender)
+                          .where.not(id: id)
     name_gender_age_match = potential_matches.age_matches(current_age)
     exact_match = if name_gender_age_match.present?
                     name_gender_age_match
@@ -23,6 +36,7 @@ module Matchable
     exact_match.one? ? exact_match.first : nil # Convert single match to object; return nil if more than one match
   end
 
+  # @return [Person, nil]
   def suggest_close_match
     self.suggested_match = exact_matching_person || possible_matching_people.first
   end

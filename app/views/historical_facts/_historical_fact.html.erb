@@ -1,6 +1,11 @@
 <%# locals: (fact:) %>
 
 <tr class="align-middle">
+  <td class="text-center">
+    <%= fact.unreconciled? ?
+          fa_icon("circle-minus", type: :solid, class: "text-warning", data: { controller: "tooltip" }, title: "Unreconciled") :
+          fa_icon("circle-check", type: :regular, class: "text-success", data: { controller: "tooltip" }, title: "Reconciled") %>
+  </td>
   <td><%= historical_fact_kind_badge(fact.kind) %></td>
   <td class="text-center"><%= fact.quantity %></td>
   <td><%= fact.comments %></td>

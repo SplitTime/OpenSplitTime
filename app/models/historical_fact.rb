@@ -58,4 +58,11 @@ class HistoricalFact < ApplicationRecord
   def unreconciled?
     !reconciled?
   end
+
+  private
+
+  # Needed to keep PersonalInfo#bio from breaking
+  def current_age_approximate
+    nil
+  end
 end

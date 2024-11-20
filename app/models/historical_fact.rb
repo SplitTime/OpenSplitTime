@@ -39,6 +39,7 @@ class HistoricalFact < ApplicationRecord
 
   before_save :fill_personal_info_hash
 
+  scope :reconciled, -> { where.not(person_id: nil) }
   scope :unreconciled, -> { where(person_id: nil) }
 
   def self.search(search_text)
@@ -51,6 +52,10 @@ class HistoricalFact < ApplicationRecord
     return @creator if defined?(@creator)
 
     @creator = User.find_by(id: created_by) if created_by?
+  end
+
+  def related_facts
+    organization.historical_facts.where(personal_info_hash: personal_info_hash)
   end
 
   def reconciled?

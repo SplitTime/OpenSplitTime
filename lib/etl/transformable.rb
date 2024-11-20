@@ -192,6 +192,18 @@ module ETL
         end
     end
 
+    def remove_redundant_state_code!
+      state_data = self[:state_code].to_s.strip
+      return unless state_data.present?
+
+      country_data = self[:country_code].to_s.strip
+      country = Carmen::Country.coded(country_data)
+
+      if country.present? && state_data == country_data
+        self[:state_code] = nil
+      end
+    end
+
     def set_split_time_stop!
       stopped_child_record = children.reverse.find { |pr| pr[:absolute_time].present? }
       (stopped_child_record[:stopped_here] = true) if stopped_child_record

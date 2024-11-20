@@ -3,11 +3,16 @@
 module Matchable
   # @return [ActiveRecord::Relation<Person>]
   def possible_matching_people
-    people_with_same_name
-      .or(people_changed_last_name)
-      .or(people_changed_first_name)
-      .or(people_same_full_name)
-      .where.not(id: id)
+    result = people_with_same_name
+               .or(people_changed_last_name)
+               .or(people_changed_first_name)
+               .or(people_same_full_name)
+
+    result = result.where.not(id: id) if self.is_a?(Person)
+    result = result.email_matches_or_nil(email) if email.present?
+    result = result.phone_matches_or_nil(phone) if phone.present?
+
+    result
   end
 
   # @return [Person, nil]
@@ -15,13 +20,13 @@ module Matchable
     return unless birthdate.present? || email.present? || phone.present?
 
     potential_matches = Person.last_name_matches_exact(last_name)
-                           .first_name_matches_exact(first_name)
-                           .gender_matches(gender)
+                          .first_name_matches_exact(first_name)
+                          .gender_matches(gender)
     potential_matches = potential_matches.where.not(id: id) if self.is_a?(Person)
 
     definitive_matches = potential_matches.where.not(birthdate: nil).where(birthdate: birthdate)
-                           .or(potential_matches.where.not(email: nil).where(email: email))
-                           .or(potential_matches.where.not(phone: nil).where(phone: phone))
+                           .or(potential_matches.where.not(email: nil).email_matches(email))
+                           .or(potential_matches.where.not(phone: nil).phone_matches(phone))
                            .distinct
     definitive_matches.one? ? definitive_matches.first : nil
   end

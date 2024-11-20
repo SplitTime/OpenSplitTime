@@ -5,7 +5,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#add_country_from_state_code!" do
     context "when the state_code attribute is a US state" do
-      let(:attributes) { {state_code: "NY"} }
+      let(:attributes) { { state_code: "NY" } }
 
       it "adds a US country code" do
         subject.add_country_from_state_code!
@@ -14,7 +14,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when the state_code attribute is a Canadian province" do
-      let(:attributes) { {state_code: "BC"} }
+      let(:attributes) { { state_code: "BC" } }
 
       it "adds a CA country code" do
         subject.add_country_from_state_code!
@@ -23,7 +23,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when the state_code attribute is not a US state or Canadian province" do
-      let(:attributes) { {state_code: "XX"} }
+      let(:attributes) { { state_code: "XX" } }
 
       it "Does not add a country code" do
         subject.add_country_from_state_code!
@@ -35,15 +35,15 @@ RSpec.shared_examples_for "transformable" do
   describe "#add_date_to_time!" do
     examples =
       [
-        {time_string: "08:30:30", date: "2020-07-15", expected: "2020-07-15 08:30:30"},
-        {time_string: "08:30:30", date: "2020-07-15 10:00:00", expected: "2020-07-15 08:30:30"},
-        {time_string: "08:30:30", date: "2020-07-15 10:00:00".to_datetime, expected: "2020-07-15 08:30:30"},
-        {time_string: "08:30:30", date: "2020-07-15".to_date, expected: "2020-07-15 08:30:30"},
-        {time_string: "08:30:30", date: "2020-07-15".to_datetime, expected: "2020-07-15 08:30:30"},
-        {time_string: "2020-07-10 08:00:00", date: "2020-07-15", expected: "2020-07-10 08:00:00"},
-        {time_string: "hello", date: "2020-07-15", expected: "hello"},
-        {time_string: "", date: "2020-07-15", expected: ""},
-        {time_string: nil, date: "2020-07-15", expected: nil}
+        { time_string: "08:30:30", date: "2020-07-15", expected: "2020-07-15 08:30:30" },
+        { time_string: "08:30:30", date: "2020-07-15 10:00:00", expected: "2020-07-15 08:30:30" },
+        { time_string: "08:30:30", date: "2020-07-15 10:00:00".to_datetime, expected: "2020-07-15 08:30:30" },
+        { time_string: "08:30:30", date: "2020-07-15".to_date, expected: "2020-07-15 08:30:30" },
+        { time_string: "08:30:30", date: "2020-07-15".to_datetime, expected: "2020-07-15 08:30:30" },
+        { time_string: "2020-07-10 08:00:00", date: "2020-07-15", expected: "2020-07-10 08:00:00" },
+        { time_string: "hello", date: "2020-07-15", expected: "hello" },
+        { time_string: "", date: "2020-07-15", expected: "" },
+        { time_string: nil, date: "2020-07-15", expected: nil }
       ]
 
     examples.each do |example|
@@ -52,7 +52,7 @@ RSpec.shared_examples_for "transformable" do
       expected = example[:expected]
 
       context "when time string is #{time_string} and date is #{date}" do
-        let(:attributes) { {scheduled_start_time_local: time_string} }
+        let(:attributes) { { scheduled_start_time_local: time_string } }
         before { subject.add_date_to_time!(:scheduled_start_time_local, date) }
         it { expect(subject[:scheduled_start_time_local]).to eq(expected) }
       end
@@ -63,7 +63,7 @@ RSpec.shared_examples_for "transformable" do
     let!(:course_distances) { [0, 3000, 6000, 9000] }
 
     context "when distance_from_start attribute aligns exactly with a provided distance" do
-      let(:attributes) { {distance_from_start: 3000} }
+      let(:attributes) { { distance_from_start: 3000 } }
 
       it "makes no change to distance_from_start attribute" do
         subject.align_split_distance!(course_distances)
@@ -72,7 +72,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when distance_from_start attribute is within 10 meters of a provided distance" do
-      let(:attributes) { {distance_from_start: 2991} }
+      let(:attributes) { { distance_from_start: 2991 } }
 
       it "changes the distance_from_start attribute to that distance" do
         subject.align_split_distance!(course_distances)
@@ -81,7 +81,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when distance_from_start attribute is not within 10 meters of a provided distance" do
-      let(:attributes) { {distance_from_start: 2900} }
+      let(:attributes) { { distance_from_start: 2900 } }
 
       it "makes no change to distance_from_start attribute" do
         subject.align_split_distance!(course_distances)
@@ -125,7 +125,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#convert_split_distance!" do
     context "when the provided attributes include distance" do
-      let(:attributes) { {distance: 10} }
+      let(:attributes) { { distance: 10 } }
 
       it "converts to meters, deletes the distance field, and creates a distance_from_start field" do
         subject.convert_split_distance!
@@ -135,7 +135,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when the provided attributes do not include distance" do
-      let(:attributes) { {distance_from_start: 5000} }
+      let(:attributes) { { distance_from_start: 5000 } }
 
       it "makes no change to the distance_from_start field" do
         subject.convert_split_distance!
@@ -145,7 +145,7 @@ RSpec.shared_examples_for "transformable" do
   end
 
   describe "#convert_start_offset!" do
-    let(:attributes) { {start_offset: start_offset} }
+    let(:attributes) { { start_offset: start_offset } }
     let(:event_start_time) { "2018-06-30 08:00:00".in_time_zone("UTC") }
     before { subject.convert_start_offset!(event_start_time) }
 
@@ -224,7 +224,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#create_country_from_state!" do
     context "when a state code from the United States exists but no country_code exists" do
-      let(:attributes) { {state_code: "NY"} }
+      let(:attributes) { { state_code: "NY" } }
 
       it "adds country_code for the US" do
         subject.create_country_from_state!
@@ -233,7 +233,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when a state code from Canada exists but no country_code exists" do
-      let(:attributes) { {state_code: "BC"} }
+      let(:attributes) { { state_code: "BC" } }
 
       it "adds country_code for the US" do
         subject.create_country_from_state!
@@ -242,10 +242,80 @@ RSpec.shared_examples_for "transformable" do
     end
   end
 
+  describe "#delete_nil_keys!" do
+    context "when a single key exists and value is nil" do
+      let(:attributes) { { first_name: "Joe", start_time: nil, gender: nil } }
+
+      it "deletes the keys" do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:gender)
+        expect(subject.to_h).to eq({ first_name: "Joe", start_time: nil })
+      end
+    end
+
+    context "when multiple keys exist and values are nil" do
+      let(:attributes) { { first_name: "Joe", start_time: nil, gender: nil } }
+
+      it "deletes the keys" do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:start_time, :gender)
+        expect(subject.to_h).to eq({ first_name: "Joe" })
+      end
+    end
+
+    context "when any value is not nil" do
+      let(:attributes) { { first_name: "Joe", start_time: nil, gender: nil } }
+
+      it "deletes the keys" do
+        expect(subject.to_h).to eq(attributes)
+        subject.delete_nil_keys!(:first_name, :gender)
+        expect(subject.to_h).to eq({ first_name: "Joe", start_time: nil })
+      end
+    end
+  end
+
+  describe "#fill_blank_values!" do
+    context "when keys exist and are nil" do
+      let(:attributes) { { first_name: "Joe", start_time: nil, gender: nil } }
+
+      it "sets the keys to the given values" do
+        subject.fill_blank_values!(start_time: "", gender: "male")
+        expect(subject.to_h).to eq({ first_name: "Joe", start_time: "", gender: "male" })
+      end
+    end
+
+    context "when keys exist and are blank" do
+      let(:attributes) { { first_name: "Joe", start_time: "", gender: "" } }
+
+      it "sets the keys to the given values" do
+        subject.fill_blank_values!(start_time: "", gender: "male")
+        expect(subject.to_h).to eq({ first_name: "Joe", start_time: "", gender: "male" })
+      end
+    end
+
+    context "when keys exist and are present" do
+      let(:attributes) { { first_name: "Joe", start_time: "2017-07-01 06:00:00", gender: "male" } }
+
+      it "does not change the keys" do
+        subject.fill_blank_values!(start_time: "", gender: "female")
+        expect(subject.to_h).to eq({ first_name: "Joe", start_time: "2017-07-01 06:00:00", gender: "male" })
+      end
+    end
+
+    context "when keys do not exist" do
+      let(:attributes) { { first_name: "Joe" } }
+
+      it "does not add the keys" do
+        subject.fill_blank_values!(start_time: "", gender: "male")
+        expect(subject.to_h).to eq({ first_name: "Joe" })
+      end
+    end
+  end
+
   describe "#localize_datetime!" do
     let(:local_key) { :scheduled_start_time_local }
     let(:utc_key) { :scheduled_start_time }
-    let(:attributes) { {local_key => local_time, time_zone_name: time_zone_name} }
+    let(:attributes) { { local_key => local_time, time_zone_name: time_zone_name } }
     let(:local_time) { "2018-06-30 08:00:00" }
     let(:time_zone_name) { "Mountain Time (US & Canada)" }
 
@@ -253,7 +323,7 @@ RSpec.shared_examples_for "transformable" do
 
     context "when local time and time zone are present" do
       it "deletes the local time key and adds the utc time key with converted datetime" do
-        expect(subject.to_h).to eq({utc_key => "2018-06-30 14:00:00", time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ utc_key => "2018-06-30 14:00:00", time_zone_name: time_zone_name })
       end
     end
 
@@ -261,7 +331,7 @@ RSpec.shared_examples_for "transformable" do
       let(:local_time) { "hello" }
 
       it "deletes the local time key and does not set a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
 
@@ -269,7 +339,7 @@ RSpec.shared_examples_for "transformable" do
       let(:local_time) { "" }
 
       it "deletes the local time key and does not set a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
 
@@ -277,7 +347,7 @@ RSpec.shared_examples_for "transformable" do
       let(:local_time) { nil }
 
       it "deletes the local time key and does not set a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
 
@@ -285,7 +355,7 @@ RSpec.shared_examples_for "transformable" do
       let(:time_zone_name) { "hello" }
 
       it "deletes the local time key and does not create a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
 
@@ -293,7 +363,7 @@ RSpec.shared_examples_for "transformable" do
       let(:time_zone_name) { "" }
 
       it "deletes the local time key and does not create a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
 
@@ -301,15 +371,15 @@ RSpec.shared_examples_for "transformable" do
       let(:time_zone_name) { nil }
 
       it "deletes the local time key and does not create a utc time key" do
-        expect(subject.to_h).to eq({time_zone_name: time_zone_name})
+        expect(subject.to_h).to eq({ time_zone_name: time_zone_name })
       end
     end
   end
 
   describe "#map_keys!" do
     context "when all keys are in the object" do
-      let(:attributes) { {name: "Joe Hardman", sex: "male"} }
-      let(:map) { {name: :full_name, sex: :gender} }
+      let(:attributes) { { name: "Joe Hardman", sex: "male" } }
+      let(:map) { { name: :full_name, sex: :gender } }
 
       it "changes keys according to the provided map" do
         subject.map_keys!(map)
@@ -318,8 +388,8 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when some keys are not in the object" do
-      let(:attributes) { {name: "Joe Hardman", age: 29} }
-      let(:map) { {name: :full_name, sex: :gender} }
+      let(:attributes) { { name: "Joe Hardman", age: 29 } }
+      let(:map) { { name: :full_name, sex: :gender } }
 
       it "ignores keys that are not found" do
         subject.map_keys!(map)
@@ -328,8 +398,8 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when mapped keys have nil values" do
-      let(:attributes) { {name: nil, age: 29} }
-      let(:map) { {name: :full_name} }
+      let(:attributes) { { name: nil, age: 29 } }
+      let(:map) { { name: :full_name } }
 
       it "maps the headings correctly" do
         subject.map_keys!(map)
@@ -339,29 +409,29 @@ RSpec.shared_examples_for "transformable" do
   end
 
   describe "#merge_attributes!" do
-    let(:attributes) { {first_name: "Joe", gender: "male"} }
+    let(:attributes) { { first_name: "Joe", gender: "male" } }
 
     context "when merging attributes are disjoint from existing attributes" do
-      let(:merging_attributes) { {last_name: "Hardman", age: 55} }
+      let(:merging_attributes) { { last_name: "Hardman", age: 55 } }
 
       it "merges existing attributes with merging attributes" do
         subject.merge_attributes!(merging_attributes)
-        expect(subject.to_h).to eq({first_name: "Joe", last_name: "Hardman", gender: "male", age: 55})
+        expect(subject.to_h).to eq({ first_name: "Joe", last_name: "Hardman", gender: "male", age: 55 })
       end
     end
 
     context "when merging attributes overlap with existing attributes" do
-      let(:merging_attributes) { {first_name: "Joseph", age: 55} }
+      let(:merging_attributes) { { first_name: "Joseph", age: 55 } }
 
       it "gives precedence to merging attributes" do
         subject.merge_attributes!(merging_attributes)
-        expect(subject.to_h).to eq({first_name: "Joseph", gender: "male", age: 55})
+        expect(subject.to_h).to eq({ first_name: "Joseph", gender: "male", age: 55 })
       end
     end
   end
 
   describe "#normalize_date!" do
-    let(:attributes) { {birthdate: birthdate} }
+    let(:attributes) { { birthdate: birthdate } }
 
     context "when provided with an American mm/dd/yy format" do
       let(:birthdate) { "09/29/67" }
@@ -423,7 +493,7 @@ RSpec.shared_examples_for "transformable" do
   end
 
   describe "#normalize_datetime!" do
-    let(:attributes) { {start_time: start_time} }
+    let(:attributes) { { start_time: start_time } }
 
     context "when provided with an American mm/dd/yy hh:mm:ss format" do
       let(:start_time) { "09/29/67 06:30:00" }
@@ -486,7 +556,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#normalize_country_code!" do
     context "when provided with ISO 3166 2-character code" do
-      let(:attributes) { {country_code: "US"} }
+      let(:attributes) { { country_code: "US" } }
 
       it "does nothing to the value" do
         subject.normalize_country_code!
@@ -495,7 +565,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with ISO 3166 3-character country codes" do
-      let(:attributes) { {country_code: "JPN"} }
+      let(:attributes) { { country_code: "JPN" } }
 
       it "converts it to ISO 3166 2-character codes" do
         subject.normalize_country_code!
@@ -504,7 +574,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with an official name" do
-      let(:attributes) { {country_code: "United States"} }
+      let(:attributes) { { country_code: "United States" } }
 
       it "converts it to ISO 3166 2-character codes" do
         subject.normalize_country_code!
@@ -513,7 +583,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with a nickname listed in /config/locales/en.yml:en:nicknames" do
-      let(:attributes) { {country_code: "England"} }
+      let(:attributes) { { country_code: "England" } }
 
       it "converts it to ISO 3166 2-character codes" do
         subject.normalize_country_code!
@@ -522,7 +592,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with invalid country data" do
-      let(:attributes) { {country_code: "Neverland"} }
+      let(:attributes) { { country_code: "Neverland" } }
 
       it "sets the value to nil" do
         subject.normalize_country_code!
@@ -533,7 +603,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#normalize_gender!" do
     context 'when existing gender starts with "M"' do
-      let(:attributes) { {first_name: "Joe", gender: "M"} }
+      let(:attributes) { { first_name: "Joe", gender: "M" } }
 
       it 'changes the value to "male"' do
         subject.normalize_gender!
@@ -542,7 +612,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context 'when existing gender starts with "F"' do
-      let(:attributes) { {first_name: "Joe", gender: "F"} }
+      let(:attributes) { { first_name: "Joe", gender: "F" } }
 
       it 'changes the value to "female"' do
         subject.normalize_gender!
@@ -551,7 +621,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context 'when existing gender starts with "N"' do
-      let(:attributes) { {first_name: "Joe", gender: "N"} }
+      let(:attributes) { { first_name: "Joe", gender: "N" } }
 
       it 'changes the value to "nonbinary"' do
         subject.normalize_gender!
@@ -560,7 +630,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context 'when existing gender starts with an unrecognized letter' do
-      let(:attributes) { {first_name: "Joe", gender: "Hello"} }
+      let(:attributes) { { first_name: "Joe", gender: "Hello" } }
 
       it "changes the value to nil" do
         subject.normalize_gender!
@@ -569,7 +639,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when existing gender is not a string" do
-      let(:attributes) { {first_name: "Joe", gender: 1} }
+      let(:attributes) { { first_name: "Joe", gender: 1 } }
 
       it "changes the value to nil" do
         subject.normalize_gender!
@@ -578,7 +648,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when existing gender is an empty string" do
-      let(:attributes) { {first_name: "Joe", gender: ""} }
+      let(:attributes) { { first_name: "Joe", gender: "" } }
 
       it "changes the value to nil" do
         subject.normalize_gender!
@@ -587,7 +657,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when existing gender does not exist" do
-      let(:attributes) { {first_name: "Joe", age: 55} }
+      let(:attributes) { { first_name: "Joe", age: 55 } }
 
       it "does not set a value" do
         subject.normalize_gender!
@@ -598,7 +668,7 @@ RSpec.shared_examples_for "transformable" do
 
   describe "#normalize_state_code" do
     context "when no country is provided for context" do
-      let(:attributes) { {state_code: "State Of Confusion"} }
+      let(:attributes) { { state_code: "State Of Confusion" } }
 
       it "does nothing to the value" do
         subject.normalize_state_code!
@@ -607,7 +677,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with a country and an ISO 3166 2-character code" do
-      let(:attributes) { {country_code: "CA", state_code: "BC"} }
+      let(:attributes) { { country_code: "CA", state_code: "BC" } }
 
       it "does nothing to the value" do
         subject.normalize_state_code!
@@ -616,7 +686,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with a country and a named state within that country" do
-      let(:attributes) { {country_code: "US", state_code: "Colorado"} }
+      let(:attributes) { { country_code: "US", state_code: "Colorado" } }
 
       it "converts the value to a 2-character ISO 3166 code" do
         subject.normalize_state_code!
@@ -625,7 +695,7 @@ RSpec.shared_examples_for "transformable" do
     end
 
     context "when provided with a country that has subregions but the state_code does not resolve" do
-      let(:attributes) { {country_code: "US", state_code: "Private Island of Joe"} }
+      let(:attributes) { { country_code: "US", state_code: "Private Island of Joe" } }
 
       it "does nothing to the value" do
         subject.normalize_state_code!
@@ -634,100 +704,60 @@ RSpec.shared_examples_for "transformable" do
     end
   end
 
-  describe "#delete_nil_keys!" do
-    context "when a single key exists and value is nil" do
-      let(:attributes) { {first_name: "Joe", start_time: nil, gender: nil} }
+  describe "#remove_redundant_state_code" do
+    context "when no state_code is provided" do
+      let(:attributes) { { country_code: "USA", state_code: nil } }
 
-      it "deletes the keys" do
-        expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:gender)
-        expect(subject.to_h).to eq({first_name: "Joe", start_time: nil})
+      it "does nothing to the value" do
+        subject.remove_redundant_state_code!
+        expect(subject[:state_code]).to be_nil
       end
     end
 
-    context "when multiple keys exist and values are nil" do
-      let(:attributes) { {first_name: "Joe", start_time: nil, gender: nil} }
+    context "when state_code is different from country_code" do
+      let(:attributes) { { country_code: "USA", state_code: "CO" } }
 
-      it "deletes the keys" do
-        expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:start_time, :gender)
-        expect(subject.to_h).to eq({first_name: "Joe"})
+      it "does nothing to the value" do
+        subject.remove_redundant_state_code!
+        expect(subject[:state_code]).to eq("CO")
       end
     end
 
-    context "when any value is not nil" do
-      let(:attributes) { {first_name: "Joe", start_time: nil, gender: nil} }
+    context "when state_code is the same as country_code" do
+      let(:attributes) { { country_code: "NOR", state_code: "NOR" } }
 
-      it "deletes the keys" do
-        expect(subject.to_h).to eq(attributes)
-        subject.delete_nil_keys!(:first_name, :gender)
-        expect(subject.to_h).to eq({first_name: "Joe", start_time: nil})
-      end
-    end
-  end
-
-  describe "#fill_blank_values!" do
-    context "when keys exist and are nil" do
-      let(:attributes) { {first_name: "Joe", start_time: nil, gender: nil} }
-
-      it "sets the keys to the given values" do
-        subject.fill_blank_values!(start_time: "", gender: "male")
-        expect(subject.to_h).to eq({first_name: "Joe", start_time: "", gender: "male"})
-      end
-    end
-
-    context "when keys exist and are blank" do
-      let(:attributes) { {first_name: "Joe", start_time: "", gender: ""} }
-
-      it "sets the keys to the given values" do
-        subject.fill_blank_values!(start_time: "", gender: "male")
-        expect(subject.to_h).to eq({first_name: "Joe", start_time: "", gender: "male"})
-      end
-    end
-
-    context "when keys exist and are present" do
-      let(:attributes) { {first_name: "Joe", start_time: "2017-07-01 06:00:00", gender: "male"} }
-
-      it "does not change the keys" do
-        subject.fill_blank_values!(start_time: "", gender: "female")
-        expect(subject.to_h).to eq({first_name: "Joe", start_time: "2017-07-01 06:00:00", gender: "male"})
-      end
-    end
-
-    context "when keys do not exist" do
-      let(:attributes) { {first_name: "Joe"} }
-
-      it "does not add the keys" do
-        subject.fill_blank_values!(start_time: "", gender: "male")
-        expect(subject.to_h).to eq({first_name: "Joe"})
+      it "removes the state_code and does not change the country_code" do
+        subject.remove_redundant_state_code!
+        expect(subject[:state_code]).to be_nil
+        expect(subject[:country_code]).to eq("NOR")
       end
     end
   end
 
   describe "#slice_permitted!" do
     context "when provided with a set of permitted parameters" do
-      let(:attributes) { {first_name: "Joe", age: 55, role: "admin"} }
+      let(:attributes) { { first_name: "Joe", age: 55, role: "admin" } }
       let(:permitted) { [:first_name, :last_name, :age] }
 
       it "removes attributes that are not in the provided permitted parameters" do
         subject.slice_permitted!(permitted)
-        expect(subject.to_h).to eq({first_name: "Joe", age: 55})
+        expect(subject.to_h).to eq({ first_name: "Joe", age: 55 })
       end
     end
 
     context "when not provided with a set of permitted parameters" do
-      let(:attributes) { {record_type: :effort, first_name: "Joe", age: 55, role: "admin"} }
+      let(:attributes) { { record_type: :effort, first_name: "Joe", age: 55, role: "admin" } }
 
       it "removes attributes that are not found in the params class for the record_type" do
         allow(EffortParameters).to receive(:permitted).and_return([:first_name, :last_name, :age])
         subject.slice_permitted!
-        expect(subject.to_h).to eq({first_name: "Joe", age: 55})
+        expect(subject.to_h).to eq({ first_name: "Joe", age: 55 })
       end
     end
   end
 
   describe "#split_field!" do
-    let(:attributes) { {full_name: full_name} }
+    let(:attributes) { { full_name: full_name } }
 
     context "when full_name key contains a two-word name" do
       let(:full_name) { "Joe Hardman" }
@@ -787,7 +817,7 @@ RSpec.shared_examples_for "transformable" do
   end
 
   describe "#strip_white_space!" do
-    let(:attributes) { {"time_in" => " 09:22 ", "time_out" => "  10:12  "} }
+    let(:attributes) { { "time_in" => " 09:22 ", "time_out" => "  10:12  " } }
 
     it "removes white space from attribute values" do
       subject.strip_white_space!
@@ -797,7 +827,7 @@ RSpec.shared_examples_for "transformable" do
   end
 
   describe "#underscore_keys!" do
-    let(:attributes) { {firstName: "Joe", lastName: "Hardman"} }
+    let(:attributes) { { firstName: "Joe", lastName: "Hardman" } }
 
     it "changes keys according to the provided map" do
       subject.underscore_keys!

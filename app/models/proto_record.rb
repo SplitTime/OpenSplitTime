@@ -99,6 +99,7 @@ class ProtoRecord
       organization = options[:organization]
       normalize_gender!
       clear_zero_values!(:email, :phone, :address, :city, :state_code, :country_code)
+      remove_redundant_state_code!
       normalize_country_code!
       normalize_state_code!
       create_country_from_state!

@@ -16,4 +16,20 @@ RSpec.describe HistoricalFact, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
   it { is_expected.to strip_attribute(:comments).collapse_spaces }
+
+  describe "callbacks" do
+    subject { build(:historical_fact) }
+
+    it "creates a personal_info_hash when a new record is created" do
+      expect(subject.personal_info_hash).to be_nil
+      subject.save!
+      expect(subject.personal_info_hash).not_to be_nil
+    end
+
+    it "updates the personal_info_hash when an existing record is updated" do
+      subject.save!
+      subject.first_name = subject.first_name + "(updated)"
+      expect { subject.save! }.to change { subject.personal_info_hash }
+    end
+  end
 end

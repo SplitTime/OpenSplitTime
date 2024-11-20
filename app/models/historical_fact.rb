@@ -37,6 +37,8 @@ class HistoricalFact < ApplicationRecord
 
   attr_writer :creator
 
+  before_save :fill_personal_info_hash
+
   scope :unreconciled, -> { where(person_id: nil) }
 
   def self.search(search_text)
@@ -64,5 +66,10 @@ class HistoricalFact < ApplicationRecord
   # Needed to keep PersonalInfo#bio from breaking
   def current_age_approximate
     nil
+  end
+
+  def fill_personal_info_hash
+    string = [first_name, last_name, gender, birthdate, state_code].compact.join(",")
+    self.personal_info_hash = Digest::MD5.hexdigest(string)
   end
 end

@@ -7,8 +7,35 @@ RSpec.describe HistoricalFactAutoReconciler do
   let(:parent) { organizations(:hardrock) }
   let(:person_1) { people(:bruno_fadel) }
   let(:person_2) { people(:robby_gerlach) }
+  let(:effort_1) { efforts(:hardrock_2016_vesta_borer) }
+  let(:effort_2) { efforts(:hardrock_2016_lavon_paucek) }
 
   describe "#reconcile" do
+    context "for historical facts that match with a result in an organization effort" do
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: effort_1.first_name, last_name: effort_1.last_name, gender: effort_1.gender, kind: :dnf, comments: "2016") }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: effort_2.first_name, last_name: effort_2.last_name, gender: effort_2.gender, kind: :finished, comments: "2016") }
+
+      it "assigns the fact to the person_id in the effort" do
+        subject.reconcile
+
+        expect(fact_1.reload.person_id).to eq(effort_1.person_id)
+        expect(fact_2.reload.person_id).to eq(effort_2.person_id)
+      end
+    end
+
+    context "for historical facts where a related fact is reconciled" do
+      let!(:reconciled_fact) { create(:historical_fact, organization: parent, person: person, first_name: "Bruno", last_name: "Fadel", gender: "male", kind: :dnf, comments: "2016") }
+      let!(:unreconciled_fact) { create(:historical_fact, organization: parent, person: nil, first_name: "Bruno", last_name: "Fadel", gender: "male", kind: :dnf, comments: "2017") }
+      let(:person) { people(:bruno_fadel) }
+
+      it "assigns the fact to the person_id of the related fact" do
+        subject.reconcile
+
+        expect(reconciled_fact.reload.person_id).to eq(person.id)
+        expect(unreconciled_fact.reload.person_id).to eq(person.id)
+      end
+    end
+
     context "for historical facts that are definitive matches with a person" do
       let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, birthdate: person_1.birthdate, kind: :dns, comments: "2018") }
       let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, birthdate: person_2.birthdate, kind: :dns, comments: "2019") }

@@ -12,12 +12,17 @@ module Matchable
 
   # @return [Person, nil]
   def definitive_matching_person
-    return unless birthdate.present?
+    return unless birthdate.present? || email.present? || phone.present?
 
-    definitive_matches = Person.last_name_matches_exact(last_name)
+    potential_matches = Person.last_name_matches_exact(last_name)
                            .first_name_matches_exact(first_name)
-                           .where(gender: gender, birthdate: birthdate)
-                           .where.not(id: id)
+                           .gender_matches(gender)
+    potential_matches = potential_matches.where.not(id: id) if self.is_a?(Person)
+
+    definitive_matches = potential_matches.where.not(birthdate: nil).where(birthdate: birthdate)
+                           .or(potential_matches.where.not(email: nil).where(email: email))
+                           .or(potential_matches.where.not(phone: nil).where(phone: phone))
+                           .distinct
     definitive_matches.one? ? definitive_matches.first : nil
   end
 
@@ -26,7 +31,8 @@ module Matchable
     potential_matches = Person.last_name_matches_exact(last_name)
                           .first_name_matches_exact(first_name)
                           .gender_matches(gender)
-                          .where.not(id: id)
+    potential_matches = potential_matches.where.not(id: id) if self.is_a?(Person)
+
     name_gender_age_match = potential_matches.age_matches(current_age)
     exact_match = if name_gender_age_match.present?
                     name_gender_age_match

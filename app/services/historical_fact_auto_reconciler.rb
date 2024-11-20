@@ -12,7 +12,7 @@ class HistoricalFactAutoReconciler
   end
 
   def reconcile
-    historical_facts.unreconciled.find_each do |fact|
+    historical_facts.unreconciled.find_each(batch_size: 100) do |fact|
       # In case a race condition in which a fact is reconciled by another process
       next if fact.reconciled?
 

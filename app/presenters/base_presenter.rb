@@ -42,11 +42,13 @@ class BasePresenter
   end
 
   def page
-    params[:page]&.to_i || FIRST_PAGE
+    result = params[:page]&.to_i || FIRST_PAGE
+    result == 0 ? FIRST_PAGE : result
   end
 
   def per_page
-    params[:per_page]&.to_i || DEFAULT_PER_PAGE
+    result = params[:per_page]&.to_i || DEFAULT_PER_PAGE
+    result == 0 ? DEFAULT_PER_PAGE : result
   end
 
   def request_params_digest

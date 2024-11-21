@@ -15,8 +15,6 @@ module StateCountrySyncable
   private
 
   def sync_state_and_country
-    return unless will_save_change_to_state_code? || will_save_change_to_country_code?
-
     sync_state
     sync_country
   end

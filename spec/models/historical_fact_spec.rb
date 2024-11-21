@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe HistoricalFact, type: :model do
   it_behaves_like "auditable"
   it_behaves_like "matchable"
+  it_behaves_like "state_country_syncable"
 
   it { is_expected.to capitalize_attribute(:first_name) }
   it { is_expected.to capitalize_attribute(:last_name) }

@@ -26,6 +26,7 @@ class HistoricalFact < ApplicationRecord
   include Matchable
   include PersonalInfo
   include Searchable
+  include StateCountrySyncable
 
   strip_attributes collapse_spaces: true
   strip_attributes only: [:phone, :emergency_phone], regex: /[^0-9|+]/

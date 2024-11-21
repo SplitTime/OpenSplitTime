@@ -13,9 +13,16 @@
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <div class="col">
+      <div class="col d-inline-flex">
+        <span class="pe-1">
         <%= link_to fa_icon("plus", text: "Add"), new_organization_historical_fact_path(@presenter.organization), id: "add-historical-fact", class: "btn btn-success" %>
+        </span>
+        <span class="pe-1">
         <%= historical_facts_import_dropdown(@presenter) %>
+        </span>
+        <span class="pe-1">
+        <%= button_to "Auto reconcile", auto_reconcile_organization_historical_facts_path(@presenter.organization), method: :patch, class: "btn btn-warning" %>
+        </span>
       </div>
       <!-- Filter Widget -->
       <div class="col">

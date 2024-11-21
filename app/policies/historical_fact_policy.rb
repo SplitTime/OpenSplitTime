@@ -44,4 +44,8 @@ class HistoricalFactPolicy < ApplicationPolicy
   def destroy?
     index?
   end
+
+  def auto_reconcile?
+    index?
+  end
 end

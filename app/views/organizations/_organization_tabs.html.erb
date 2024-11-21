@@ -17,4 +17,9 @@
       <%= link_to "Stewards", organization_stewardships_path(presenter.organization) %>
     <% end %>
   <% end %>
+  <% if current_user&.authorized_for_lotteries?(presenter.organization) %>
+    <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'historical_facts'}" do %>
+      <%= link_to "Historical facts", organization_historical_facts_path(presenter.organization) %>
+    <% end %>
+  <% end %>
 </ul>

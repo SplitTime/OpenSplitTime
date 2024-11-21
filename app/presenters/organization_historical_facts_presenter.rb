@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationHistoricalFactsPresenter < OrganizationPresenter
+  DEFAULT_ORDER = { last_name: :asc, first_name: :asc, state_code: :asc }
 
   attr_reader :request
 
@@ -20,9 +21,12 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   def filtered_historical_facts
     return @filtered_historical_facts if defined?(@filtered_historical_facts)
 
-    @filtered_historical_facts = historical_facts.where(filter_hash).search(search_text)
-        .select { |fact| matches_criteria?(fact) }
-        .paginate(page: page, per_page: per_page)
+    @filtered_historical_facts = historical_facts
+      .where(filter_hash)
+      .search(search_text)
+      .order(sort_hash.presence || DEFAULT_ORDER)
+      .select { |fact| matches_criteria?(fact) }
+      .paginate(page: page, per_page: per_page)
     @filtered_historical_facts.each do |fact|
       fact.person = fact.person_id? ? indexed_people[fact.person_id] : nil
       fact.event = fact.event_id? ? indexed_events[fact.event_id] : nil

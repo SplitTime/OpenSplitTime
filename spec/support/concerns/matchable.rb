@@ -90,14 +90,13 @@ RSpec.shared_examples_for "matchable" do
       verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
     end
 
-    it "returns a record for which first and last names and gender and email match" do
+    it "returns a record for which last name and gender and email match" do
       subject_attributes =
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", email: "jane@jetson.com", phone: "3035551212" }
       matching_attributes =
-        { first_name: "Jane", last_name: "Jetson", gender: "female", email: "jane@jetson.com" }
+        { first_name: "Janey", last_name: "Jetson", gender: "female", email: "jane@jetson.com" }
 
       differing_attributes = [
-        { first_name: "Jeanie", last_name: "Jetson", gender: "female", email: "jane@jetson.com" },
         { first_name: "Jane", last_name: "Gleason", gender: "female", email: "jane@jetson.com" },
         { first_name: "Jane", last_name: "Jetson", gender: "male", email: "jane@jetson.com" },
         { first_name: "Jane", last_name: "Jetson", gender: "female", email: "jane@gmail.com" },
@@ -105,14 +104,13 @@ RSpec.shared_examples_for "matchable" do
       verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
     end
 
-    it "returns a record for which first and last names and gender and phone match" do
+    it "returns a record for which last name and gender and phone match" do
       subject_attributes =
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", email: "jane@jetson.com", phone: "3035551212" }
       matching_attributes =
-        { first_name: "Jane", last_name: "Jetson", gender: "female", phone: "+13035551212" }
+        { first_name: "Janey", last_name: "Jetson", gender: "female", phone: "+13035551212" }
 
       differing_attributes = [
-        { first_name: "Jeanie", last_name: "Jetson", gender: "female", phone: "3035551212" },
         { first_name: "Jane", last_name: "Gleason", gender: "female", phone: "3035551212" },
         { first_name: "Jane", last_name: "Jetson", gender: "male", phone: "3035551212" },
         { first_name: "Jane", last_name: "Jetson", gender: "female", phone: "8887776666" },

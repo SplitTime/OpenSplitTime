@@ -218,6 +218,7 @@ Rails.application.routes.draw do
 
     resources :historical_facts do
       collection { patch :auto_reconcile }
+      collection { get :reconcile }
     end
 
     resources :lotteries do

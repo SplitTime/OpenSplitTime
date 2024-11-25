@@ -4,7 +4,7 @@ class HistoricalFactsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
   before_action :authorize_organization, policy: :historical_fact
-  before_action :set_historical_fact, except: [:index, :new, :create, :auto_reconcile]
+  before_action :set_historical_fact, except: [:index, :new, :create, :auto_reconcile, :reconcile]
   after_action :verify_authorized
 
   # GET /organizations/1/historical_facts
@@ -53,6 +53,11 @@ class HistoricalFactsController < ApplicationController
   def auto_reconcile
     HistoricalFactsAutoReconcileJob.perform_later(@organization, current_user: current_user)
     flash[:success] = "Auto reconcile has started."
+  end
+
+  # GET /organizations/1/historical_facts/reconcile
+  def reconcile
+    @presenter = OrganizationHistoricalFactsReconcilePresenter.new(@organization, view_context)
   end
 
   private

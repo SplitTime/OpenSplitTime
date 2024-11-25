@@ -1,0 +1,35 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Reconcile Historical Facts - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading", presenter: @presenter %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs", presenter: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col d-inline-flex">
+        <span class="pe-1">
+        <%= link_to fa_icon("caret-right", text: "Find unreconciled facts"),
+                    reconcile_organization_historical_facts_path(@presenter.organization, personal_info_hash: @presenter.next_personal_info_hash),
+                    class: "btn btn-outline-success" %>
+        </span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <h3>Reconcile Historical Facts</h3>
+
+  <div class="card">
+    <div class="card-header">
+      <%= @presenter.full_name %>
+    </div>
+  </div>
+</article>

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class LotteryEntrant < ApplicationRecord
-  include Structpluck
   include StateCountrySyncable
   include Searchable
   include PersonalInfo

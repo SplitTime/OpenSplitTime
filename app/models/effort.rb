@@ -22,7 +22,6 @@ class Effort < ApplicationRecord
   include DataStatusMethods
   include CapitalizeAttributes
   include Auditable
-  include Structpluck
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

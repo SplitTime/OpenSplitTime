@@ -32,11 +32,47 @@
 </aside>
 
 <article class="ost-article container">
-  <h3>Reconcile Historical Facts</h3>
 
-  <div class="card">
-    <div class="card-header">
-      <%= @presenter.full_name %>
+  <div class="row">
+    <div class="col">
+      <div class="h3 pb-3">Historical Facts</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col h5 fw-bold">
+              <span><%= @presenter.full_name %></span>
+              <span><%= "(#{@presenter.bio})" %></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <%= @presenter.flexible_geolocation %>
+            </div>
+            <div class="col text-end">
+              <%= "#{@presenter.email}, #{@presenter.phone}" %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Kind</th>
+              <th class="text-center">Quantity</th>
+              <th>Comments</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= render partial: "reconcile_row", collection: @presenter.relevant_historical_facts, as: :fact %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="h3 pb-3">Potential Matching People</div>
+      <%= render partial: "possible_matching_person", collection: @presenter.possible_matching_people, as: :person %>
     </div>
   </div>
 </article>

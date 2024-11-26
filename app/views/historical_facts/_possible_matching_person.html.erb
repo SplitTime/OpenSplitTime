@@ -1,0 +1,43 @@
+<%# locals: (person:) %>
+
+<div class="card mb-3">
+  <div class="card-header">
+    <div class="row">
+      <div class="col h5 fw-bold">
+        <span><%= person.full_name %></span>
+        <span><%= "(#{person.bio})" %></span>
+      </div>
+      <div class="col text-end">
+        <%= button_to "Match #{person_counter + 1}", nil, class: "btn btn-sm btn-outline-primary" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <%= person.flexible_geolocation %>
+      </div>
+      <div class="col text-end">
+        <%= "#{person.email}, #{person.phone}" %>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Kind</th>
+        <th class="text-center">Quantity</th>
+        <th>Comments</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% if person.efforts.present? %>
+        <%= render partial: "efforts/reconcile_row", collection: person.efforts.includes(:event), as: :effort %>
+      <% else %>
+        <tr>
+          <td colspan="3">No Efforts</td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

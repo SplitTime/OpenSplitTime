@@ -60,7 +60,7 @@ class HistoricalFactsController < ApplicationController
     redirect_hash = params[:redirect_hash]
     personal_info_hash = params[:personal_info_hash]
     person_id = params[:person_id]
-    person = Person.find(person_id)
+    person = person_id == "new" ? Person.new : Person.find(person_id)
 
     if personal_info_hash.present? && person.present?
       HistoricalFactsReconcileJob.perform_later(
@@ -71,12 +71,12 @@ class HistoricalFactsController < ApplicationController
       )
 
       if redirect_hash.present?
-        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), success: "Matching facts with #{person.full_name}"
+        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), flash: { success: "Matching facts with #{person.full_name.presence || 'new Person'}" }
       else
-        redirect_to organization_historical_facts_path(@organization), notice: "Nothing to reconcile."
+        redirect_to organization_historical_facts_path(@organization), flash: { warning: "Nothing to reconcile." }
       end
     else
-      redirect_to reconcile_organization_historical_facts_path(@organization), warning: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}"
+      redirect_to reconcile_organization_historical_facts_path(@organization), flash: { danger: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}" }
     end
   end
 

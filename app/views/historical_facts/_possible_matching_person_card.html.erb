@@ -3,9 +3,9 @@
 <div class="card mb-3">
   <div class="card-header">
     <div class="row">
-      <div class="col h5 fw-bold">
+    <div class="col-auto">
         <span><%= badge_with_text(person.id, color: :secondary) %></span>
-        <span><%= person.full_name %></span>
+        <span class="h5 fw-bold"><%= person.full_name %></span>
         <span><%= "(#{person.bio})" %></span>
       </div>
       <div class="col text-end">
@@ -17,11 +17,12 @@
                         redirect_hash: presenter.next_personal_info_hash || presenter.previous_personal_info_hash,
                       ),
                       method: :patch,
+                      data: { turbo: false},
                       class: "btn btn-sm btn-outline-primary" %>
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col-auto">
         <%= person.flexible_geolocation %>
       </div>
       <div class="col text-end">

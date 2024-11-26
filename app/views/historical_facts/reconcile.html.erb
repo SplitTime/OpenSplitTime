@@ -36,55 +36,50 @@
   <div class="row">
     <% if @presenter.personal_info_hash %>
 
-    <div class="col">
-      <div class="h3 pb-3">Historical Facts</div>
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col h5 fw-bold">
-              <span><%= @presenter.full_name %></span>
-              <span><%= "(#{@presenter.bio})" %></span>
-            </div>
+      <div class="col">
+        <div class="h3 pb-3">Historical Facts</div>
+        <%= render partial: "reconcile_card", locals: { presenter: @presenter } %>
+      </div>
+
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="h3 pb-3">Possible Matching People</div>
           </div>
-          <div class="row">
-            <div class="col">
-              <%= @presenter.flexible_geolocation %>
-            </div>
-            <div class="col text-end">
-              <%= "#{@presenter.email}, #{@presenter.phone}" %>
-            </div>
+          <div class="col text-end">
+            <%= button_to "Create new person",
+                          match_organization_historical_facts_path(
+                            @presenter.organization,
+                            personal_info_hash: @presenter.personal_info_hash,
+                            person_id: "new",
+                            redirect_hash: @presenter.next_personal_info_hash || @presenter.previous_personal_info_hash,
+                            ),
+                          method: :patch,
+                          data: { turbo: false},
+                          class: "btn btn-sm btn-outline-primary" %>
           </div>
         </div>
-        <div class="card-body">
-          <table class="table">
-            <thead>
-            <tr>
-              <th></th>
-              <th>Kind</th>
-              <th class="text-center">Quantity</th>
-              <th>Comments</th>
-              <th class="text-end">Person</th>
-            </tr>
-            </thead>
-            <tbody>
-            <%= render partial: "reconcile_row", collection: @presenter.relevant_historical_facts, as: :fact %>
-            </tbody>
-          </table>
+        <div class="row">
+          <div class="col">
+            <%= render partial: "possible_matching_person_card",
+                       collection: @presenter.possible_matching_people.order(:id),
+                       as: :person,
+                       locals: { presenter: @presenter } %>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="col">
-      <div class="h3 pb-3">Possible Matching People</div>
-      <%= render partial: "possible_matching_person",
-                 collection: @presenter.possible_matching_people.order(:id),
-                 as: :person,
-                 locals: { presenter: @presenter } %>
-    </div>
-  <% else %>
-<div class="col">
-  <div class="h3 pb-3">Nothing to reconcile</div>
-</div>
-  <% end %>
+    <% else %>
+      <div class="col">
+        <%= render partial: "shared/callout_with_link",
+                   locals: {
+                     callout_color: "info",
+                     icon_color: "info",
+                     icon_name: "circle-info",
+                     main_text: "All historical facts have been reconciled",
+                     detail_paragraphs: ["If any historical facts need to be reconciled, they will appear here."],
+                     link: link_to("Back", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-primary"),
+                   } %>
+      </div>
+    <% end %>
   </div>
 </article>

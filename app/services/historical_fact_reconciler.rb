@@ -14,7 +14,8 @@ class HistoricalFactReconciler
   end
 
   def reconcile
-    person = Person.find_by(id: person_id)
+    person = Person.new if person_id == "new"
+    person ||= Person.find_by(id: person_id)
     return if person.nil?
 
     historical_facts.each do |fact|

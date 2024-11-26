@@ -1,4 +1,4 @@
-<%# locals: (presenter) -%>
+<%# locals: (presenter:) -%>
 
 <div class="ost-heading row">
   <div class="col">
@@ -6,7 +6,12 @@
       <h1><strong><%= [presenter.name, nil].compact.join(": ") %></strong></h1>
       <ul class="breadcrumb">
         <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
-        <li class="breadcrumb-item active"><%= presenter.organization.name %></li>
+        <% if presenter.tab_name == "events" %>
+          <li class="breadcrumb-item"><%= presenter.name %></li>
+        <% else %>
+          <li class="breadcrumb-item"><%= link_to presenter.name, organization_path(presenter.organization) %></li>
+          <li class="breadcrumb-item"><%= presenter.tab_name.titleize %></li>
+        <% end %>
       </ul>
     </div>
   </div>

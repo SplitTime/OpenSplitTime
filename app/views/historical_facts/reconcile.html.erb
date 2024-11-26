@@ -1,0 +1,90 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization Reconcile Historical Facts - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <%= render "organizations/organization_heading", presenter: @presenter %>
+    <!-- Navigation -->
+    <%= render "organizations/organization_tabs", presenter: @presenter %>
+  </div>
+</header>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col d-inline-flex">
+        <span class="pe-1">
+        <%= link_to fa_icon("caret-left", text: "Previous"),
+                    reconcile_organization_historical_facts_path(@presenter.organization, personal_info_hash: @presenter.previous_personal_info_hash),
+                    class: "btn btn-outline-success",
+                    disabled: @presenter.previous_personal_info_hash.blank? %>
+        </span>
+        <span class="pe-1">
+        <%= link_to fa_icon("caret-right", text: "Next", right: true),
+                    reconcile_organization_historical_facts_path(@presenter.organization, personal_info_hash: @presenter.next_personal_info_hash),
+                    class: "btn btn-outline-success",
+                    disabled: @presenter.next_personal_info_hash.blank? %>
+        </span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<article class="ost-article container">
+
+  <div class="row">
+    <% if @presenter.personal_info_hash %>
+
+    <div class="col">
+      <div class="h3 pb-3">Historical Facts</div>
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col h5 fw-bold">
+              <span><%= @presenter.full_name %></span>
+              <span><%= "(#{@presenter.bio})" %></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <%= @presenter.flexible_geolocation %>
+            </div>
+            <div class="col text-end">
+              <%= "#{@presenter.email}, #{@presenter.phone}" %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th></th>
+              <th>Kind</th>
+              <th class="text-center">Quantity</th>
+              <th>Comments</th>
+              <th class="text-end">Person</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= render partial: "reconcile_row", collection: @presenter.relevant_historical_facts, as: :fact %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="h3 pb-3">Possible Matching People</div>
+      <%= render partial: "possible_matching_person",
+                 collection: @presenter.possible_matching_people.order(:id),
+                 as: :person,
+                 locals: { presenter: @presenter } %>
+    </div>
+  <% else %>
+<div class="col">
+  <div class="h3 pb-3">Nothing to reconcile</div>
+</div>
+  <% end %>
+  </div>
+</article>

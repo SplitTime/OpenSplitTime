@@ -48,4 +48,12 @@ class HistoricalFactPolicy < ApplicationPolicy
   def auto_reconcile?
     index?
   end
+
+  def match?
+    index?
+  end
+
+  def reconcile?
+    index?
+  end
 end

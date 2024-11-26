@@ -4,7 +4,7 @@ class HistoricalFactsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
   before_action :authorize_organization, policy: :historical_fact
-  before_action :set_historical_fact, except: [:index, :new, :create, :auto_reconcile]
+  before_action :set_historical_fact, only: %i[edit update destroy]
   after_action :verify_authorized
 
   # GET /organizations/1/historical_facts
@@ -53,6 +53,37 @@ class HistoricalFactsController < ApplicationController
   def auto_reconcile
     HistoricalFactsAutoReconcileJob.perform_later(@organization, current_user: current_user)
     flash[:success] = "Auto reconcile has started."
+  end
+
+  # PATCH /organizations/1/historical_facts/match?personal_info_hash=abc123&person_id=1&redirect_hash=abc123
+  def match
+    redirect_hash = params[:redirect_hash]
+    personal_info_hash = params[:personal_info_hash]
+    person_id = params[:person_id]
+    person = Person.find(person_id)
+
+    if personal_info_hash.present? && person.present?
+      HistoricalFactsReconcileJob.perform_later(
+        @organization,
+        current_user: current_user,
+        personal_info_hash: personal_info_hash,
+        person_id: person_id,
+      )
+
+      if redirect_hash.present?
+        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), success: "Matching facts with #{person.full_name}"
+      else
+        redirect_to organization_historical_facts_path(@organization), notice: "Nothing to reconcile."
+      end
+    else
+      redirect_to reconcile_organization_historical_facts_path(@organization), warning: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}"
+    end
+  end
+
+  # GET /organizations/1/historical_facts/reconcile?personal_info_hash=abc123
+  def reconcile
+    params[:personal_info_hash] ||= @organization.historical_facts.unreconciled.order(:id).first&.personal_info_hash
+    @presenter = OrganizationHistoricalFactsReconcilePresenter.new(@organization, view_context)
   end
 
   private

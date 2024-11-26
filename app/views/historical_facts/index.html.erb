@@ -21,7 +21,18 @@
         <%= historical_facts_import_dropdown(@presenter) %>
         </span>
         <span class="pe-1">
-        <%= button_to "Auto reconcile", auto_reconcile_organization_historical_facts_path(@presenter.organization), method: :patch, class: "btn btn-outline-success" %>
+        <%= button_to "Auto reconcile",
+                      auto_reconcile_organization_historical_facts_path(@presenter.organization),
+                      method: :patch,
+                      disabled: @presenter.all_reconciled?,
+                      class: "btn btn-outline-success" %>
+        </span>
+        <span class="pe-1">
+        <%= button_to "Reconcile",
+                      reconcile_organization_historical_facts_path(@presenter.organization),
+                      method: :get,
+                      disabled: @presenter.all_reconciled?,
+                      class: "btn btn-outline-success" %>
         </span>
       </div>
       <!-- Filter Widget -->

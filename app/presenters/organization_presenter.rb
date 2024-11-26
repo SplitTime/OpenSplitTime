@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class OrganizationPresenter < BasePresenter
-  PERMITTED_DISPLAY_STYLES = %w[courses stewards events lotteries historical_facts].freeze
-
   attr_reader :organization
 
   delegate :id, :name, :description, :stewards, :event_series, :to_param, to: :organization
@@ -31,6 +29,10 @@ class OrganizationPresenter < BasePresenter
     organization.event_series.includes(events: :event_group).sort_by(&:scheduled_start_time).reverse
   end
 
+  def tab_name
+    controller_name == "organizations" ? "events" : controller_name
+  end
+
   def event_date_range(series)
     dates = event_dates(series)
     [dates.first, dates.last].uniq.join(" to ")
@@ -43,14 +45,6 @@ class OrganizationPresenter < BasePresenter
 
   def course_groups
     @course_groups ||= ::CourseGroupPolicy::Scope.new(current_user, organization.course_groups).viewable
-  end
-
-  def display_style
-    PERMITTED_DISPLAY_STYLES.include?(params[:display_style]) ? params[:display_style] : default_display_style
-  end
-
-  def default_display_style
-    "events"
   end
 
   def show_visibility_columns?

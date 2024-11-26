@@ -10,6 +10,11 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
     @request = view_context.request
   end
 
+  # @return [Boolean]
+  def all_reconciled?
+    historical_facts.unreconciled.blank?
+  end
+
   def historical_facts
     organization.historical_facts
   end

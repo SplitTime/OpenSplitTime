@@ -9,10 +9,5 @@
   <td><%= historical_fact_kind_badge(fact.kind) %></td>
   <td class="text-center"><%= fact.quantity %></td>
   <td><%= fact.comments %></td>
-  <td><%= fact.full_name %></td>
-  <td><%= fact.gender.titleize %></td>
-  <td><%= fact.flexible_geolocation %></td>
-  <td><%= fact.birthdate %></td>
-  <td><%= fact.email %></td>
-  <td><%= fact.phone %></td>
+  <td class="text-end"><%= badge_with_text(fact.person_id, color: :secondary) %></td>
 </tr>

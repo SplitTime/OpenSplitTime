@@ -55,7 +55,34 @@ class HistoricalFactsController < ApplicationController
     flash[:success] = "Auto reconcile has started."
   end
 
-  # GET /organizations/1/historical_facts/reconcile
+  # PATCH /organizations/1/historical_facts/match?personal_info_hash=abc123&person_id=1
+  def match
+    redirect_hash = params[:redirect_hash]
+    personal_info_hash = params[:personal_info_hash]
+    person_id = params[:person_id]
+    person = Person.find(person_id)
+
+    if personal_info_hash.present? && person.present?
+      HistoricalFactsReconcileJob.perform_later(
+        @organization,
+        current_user: current_user,
+        personal_info_hash: personal_info_hash,
+        person_id: person_id,
+      )
+
+      flash[:success] = "Matching facts with #{person.full_name}"
+
+      if redirect_hash.present?
+        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), notice: "Matching facts with #{person.full_name}"
+      else
+        redirect_to :index, notice: "Nothing to reconcile."
+      end
+    else
+      redirect_to :reconcile, notice: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}"
+    end
+  end
+
+  # GET /organizations/1/historical_facts/reconcile?personal_info_hash=abc123
   def reconcile
     params[:personal_info_hash] ||= @organization.historical_facts.unreconciled.first&.personal_info_hash
     @presenter = OrganizationHistoricalFactsReconcilePresenter.new(@organization, view_context)

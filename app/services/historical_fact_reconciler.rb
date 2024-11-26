@@ -23,7 +23,7 @@ class HistoricalFactReconciler
       ::Interactors::PullGeoAttributes.perform(fact, person)
 
       person.historical_facts << fact
-      person.save
+      person.save!
     end
   end
 

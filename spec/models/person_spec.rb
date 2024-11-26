@@ -60,8 +60,8 @@ RSpec.describe Person, type: :model do
     end
 
     it "rejects implausible birthdates" do
-      bad_birthdates = {"1880-01-01" => "can't be before 1900",
-                        1.day.from_now => "can't be today or in the future"}
+      bad_birthdates = { "1880-01-01" => "can't be before 1900",
+                         1.day.from_now => "can't be today or in the future" }
       bad_birthdates.each do |birthdate, error_message|
         person = Person.new(birthdate: birthdate)
         expect(person).not_to be_valid
@@ -72,6 +72,25 @@ RSpec.describe Person, type: :model do
     it "permits plausible birthdates" do
       person = build_stubbed(:person, birthdate: "1977-01-01")
       expect(person).to be_valid
+    end
+
+    it "rejects invalid phone numbers" do
+      bad_phone_numbers = %w[0+0 +++123 555+333]
+
+      bad_phone_numbers.each do |phone|
+        person = build_stubbed(:person, phone: phone)
+        expect(person).not_to be_valid
+        expect(person.errors[:phone]).to include("is invalid")
+      end
+    end
+
+    it "accepts valid phone numbers" do
+      good_phone_numbers = %w[3035551212 13035551212 +13035551212 ++442345678]
+
+      good_phone_numbers.each do |phone|
+        person = build_stubbed(:person, phone: phone)
+        expect(person).to be_valid
+      end
     end
   end
 end

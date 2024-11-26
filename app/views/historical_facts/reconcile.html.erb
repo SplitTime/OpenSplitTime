@@ -15,9 +15,16 @@
     <div class="row">
       <div class="col d-inline-flex">
         <span class="pe-1">
-        <%= link_to fa_icon("caret-right", text: "Find unreconciled facts"),
+        <%= link_to fa_icon("caret-left", text: "Previous"),
+                    reconcile_organization_historical_facts_path(@presenter.organization, personal_info_hash: @presenter.previous_personal_info_hash),
+                    class: "btn btn-outline-success",
+                    disabled: @presenter.previous_personal_info_hash.blank? %>
+        </span>
+        <span class="pe-1">
+        <%= link_to fa_icon("caret-right", text: "Next", right: true),
                     reconcile_organization_historical_facts_path(@presenter.organization, personal_info_hash: @presenter.next_personal_info_hash),
-                    class: "btn btn-outline-success" %>
+                    class: "btn btn-outline-success",
+                    disabled: @presenter.next_personal_info_hash.blank? %>
         </span>
       </div>
     </div>

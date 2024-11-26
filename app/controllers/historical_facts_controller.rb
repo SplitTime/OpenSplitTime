@@ -57,6 +57,7 @@ class HistoricalFactsController < ApplicationController
 
   # GET /organizations/1/historical_facts/reconcile
   def reconcile
+    params[:personal_info_hash] ||= @organization.historical_facts.unreconciled.first&.personal_info_hash
     @presenter = OrganizationHistoricalFactsReconcilePresenter.new(@organization, view_context)
   end
 

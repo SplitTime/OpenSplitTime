@@ -23,6 +23,9 @@
         <span class="pe-1">
         <%= button_to "Auto reconcile", auto_reconcile_organization_historical_facts_path(@presenter.organization), method: :patch, class: "btn btn-outline-success" %>
         </span>
+        <span class="pe-1">
+        <%= button_to "Reconcile", reconcile_organization_historical_facts_path(@presenter.organization), method: :get, class: "btn btn-outline-success" %>
+        </span>
       </div>
       <!-- Filter Widget -->
       <div class="col">

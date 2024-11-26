@@ -49,6 +49,10 @@ class HistoricalFactPolicy < ApplicationPolicy
     index?
   end
 
+  def match?
+    index?
+  end
+
   def reconcile?
     index?
   end

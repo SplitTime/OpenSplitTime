@@ -4,7 +4,7 @@ class HistoricalFactsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
   before_action :authorize_organization, policy: :historical_fact
-  before_action :set_historical_fact, except: [:index, :new, :create, :auto_reconcile, :reconcile]
+  before_action :set_historical_fact, only: %i[edit update destroy]
   after_action :verify_authorized
 
   # GET /organizations/1/historical_facts
@@ -55,7 +55,7 @@ class HistoricalFactsController < ApplicationController
     flash[:success] = "Auto reconcile has started."
   end
 
-  # PATCH /organizations/1/historical_facts/match?personal_info_hash=abc123&person_id=1
+  # PATCH /organizations/1/historical_facts/match?personal_info_hash=abc123&person_id=1&redirect_hash=abc123
   def match
     redirect_hash = params[:redirect_hash]
     personal_info_hash = params[:personal_info_hash]
@@ -70,21 +70,19 @@ class HistoricalFactsController < ApplicationController
         person_id: person_id,
       )
 
-      flash[:success] = "Matching facts with #{person.full_name}"
-
       if redirect_hash.present?
-        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), notice: "Matching facts with #{person.full_name}"
+        redirect_to reconcile_organization_historical_facts_path(@organization, personal_info_hash: redirect_hash), success: "Matching facts with #{person.full_name}"
       else
-        redirect_to :index, notice: "Nothing to reconcile."
+        redirect_to organization_historical_facts_path(@organization), notice: "Nothing to reconcile."
       end
     else
-      redirect_to :reconcile, notice: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}"
+      redirect_to reconcile_organization_historical_facts_path(@organization), warning: "Unable to match person_id: #{person_id || '[missing]'} and personal_info_hash: #{personal_info_hash || '[missing'}"
     end
   end
 
   # GET /organizations/1/historical_facts/reconcile?personal_info_hash=abc123
   def reconcile
-    params[:personal_info_hash] ||= @organization.historical_facts.unreconciled.first&.personal_info_hash
+    params[:personal_info_hash] ||= @organization.historical_facts.unreconciled.order(:id).first&.personal_info_hash
     @presenter = OrganizationHistoricalFactsReconcilePresenter.new(@organization, view_context)
   end
 

@@ -34,6 +34,8 @@
 <article class="ost-article container">
 
   <div class="row">
+    <% if @presenter.personal_info_hash %>
+
     <div class="col">
       <div class="h3 pb-3">Historical Facts</div>
       <div class="card">
@@ -57,9 +59,11 @@
           <table class="table">
             <thead>
             <tr>
+              <th></th>
               <th>Kind</th>
               <th class="text-center">Quantity</th>
               <th>Comments</th>
+              <th class="text-end">Person</th>
             </tr>
             </thead>
             <tbody>
@@ -71,8 +75,16 @@
     </div>
 
     <div class="col">
-      <div class="h3 pb-3">Potential Matching People</div>
-      <%= render partial: "possible_matching_person", collection: @presenter.possible_matching_people, as: :person %>
+      <div class="h3 pb-3">Possible Matching People</div>
+      <%= render partial: "possible_matching_person",
+                 collection: @presenter.possible_matching_people.order(:id),
+                 as: :person,
+                 locals: { presenter: @presenter } %>
     </div>
+  <% else %>
+<div class="col">
+  <div class="h3 pb-3">Nothing to reconcile</div>
+</div>
+  <% end %>
   </div>
 </article>

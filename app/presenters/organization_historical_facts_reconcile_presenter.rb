@@ -8,6 +8,7 @@ class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
     @personal_info_hash = view_context.params[:personal_info_hash]
   end
 
+  attr_reader :personal_info_hash
   delegate :bio, :email, :flexible_geolocation, :full_name, :phone, :possible_matching_people, to: :master_fact, allow_nil: true
 
   # @return [ActiveRecord::Relation<HistoricalFact>]
@@ -27,7 +28,6 @@ class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
 
   private
 
-  attr_reader :personal_info_hash
   delegate :historical_facts, to: :organization, private: true
 
   # @return [Integer, nil]

@@ -1,14 +1,23 @@
-<%# locals: (person:) %>
+<%# locals: (person:, presenter:) %>
 
 <div class="card mb-3">
   <div class="card-header">
     <div class="row">
       <div class="col h5 fw-bold">
+        <span><%= badge_with_text(person.id, color: :secondary) %></span>
         <span><%= person.full_name %></span>
         <span><%= "(#{person.bio})" %></span>
       </div>
       <div class="col text-end">
-        <%= button_to "Match #{person_counter + 1}", nil, class: "btn btn-sm btn-outline-primary" %>
+        <%= button_to "Match #{person_counter + 1}",
+                      match_organization_historical_facts_path(
+                        presenter.organization,
+                        personal_info_hash: presenter.personal_info_hash,
+                        person_id: person.id,
+                        redirect_hash: presenter.next_personal_info_hash || presenter.previous_personal_info_hash,
+                      ),
+                      method: :patch,
+                      class: "btn btn-sm btn-outline-primary" %>
       </div>
     </div>
     <div class="row">

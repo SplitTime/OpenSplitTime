@@ -10,7 +10,12 @@
           <li class="breadcrumb-item"><%= presenter.name %></li>
         <% else %>
           <li class="breadcrumb-item"><%= link_to presenter.name, organization_path(presenter.organization) %></li>
-          <li class="breadcrumb-item"><%= presenter.tab_name.titleize %></li>
+          <% if presenter.action_name == "reconcile" %>
+            <li class="breadcrumb-item"><%= link_to presenter.tab_name.titleize, organization_historical_facts_path(presenter.organization) %></li>
+            <li class="breadcrumb-item">Reconcile</li>
+          <% else %>
+            <li class="breadcrumb-item"><%= presenter.tab_name.titleize %></li>
+          <% end %>
         <% end %>
       </ul>
     </div>

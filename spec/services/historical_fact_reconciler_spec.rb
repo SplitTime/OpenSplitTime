@@ -45,5 +45,15 @@ RSpec.describe HistoricalFactReconciler do
         expect(fact_2.reload.person_id).to be_nil
       end
     end
+
+    context "when the person_id is 'new'" do
+      let(:person_id) { "new" }
+      # New person slug is colliding with existing person slug and causing the spec to fail
+      before { person.update(slug: "bruno-fadel-1") }
+
+      it "creates a new Person record and backfills information from historical facts" do
+        expect { subject.reconcile }.to change(Person, :count).by(1)
+      end
+    end
   end
 end

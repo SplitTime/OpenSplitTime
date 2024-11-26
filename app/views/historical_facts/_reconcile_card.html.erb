@@ -29,7 +29,7 @@
       </tr>
       </thead>
       <tbody>
-      <%= render partial: "reconcile_row", collection: presenter.relevant_historical_facts, as: :fact %>
+      <%= render partial: "reconcile_row", collection: presenter.relevant_historical_facts.order(:kind, :comments), as: :fact %>
       </tbody>
     </table>
   </div>

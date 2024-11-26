@@ -41,7 +41,7 @@
       </thead>
       <tbody>
       <% if person.efforts.present? %>
-        <%= render partial: "efforts/reconcile_row", collection: person.efforts.includes(:event), as: :effort %>
+        <%= render partial: "efforts/reconcile_row", collection: person.efforts.joins(:event).includes(:event).order("events.scheduled_start_time"), as: :effort %>
       <% else %>
         <tr>
           <td colspan="3">No Efforts</td>

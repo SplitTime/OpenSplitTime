@@ -34,14 +34,14 @@
     <table class="table">
       <thead>
       <tr>
-        <th>Kind</th>
-        <th class="text-center">Quantity</th>
-        <th>Comments</th>
+        <th>Event</th>
+        <th class="text-center">Year</th>
+        <th>Finished?</th>
       </tr>
       </thead>
       <tbody>
       <% if person.efforts.present? %>
-        <%= render partial: "efforts/reconcile_row", collection: person.efforts.includes(:event), as: :effort %>
+        <%= render partial: "efforts/reconcile_row", collection: person.efforts.joins(:event).includes(:event).order("events.scheduled_start_time"), as: :effort %>
       <% else %>
         <tr>
           <td colspan="3">No Efforts</td>

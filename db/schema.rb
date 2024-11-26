@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_20_153912) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_26_003420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -291,6 +291,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_20_153912) do
     t.bigint "organization_id", null: false
     t.string "personal_info_hash"
     t.index ["event_id"], name: "index_historical_facts_on_event_id"
+    t.index ["organization_id", "personal_info_hash", "person_id"], name: "index_hf_on_organization_and_hash_and_person"
+    t.index ["organization_id", "personal_info_hash"], name: "index_hf_on_organization_and_hash"
     t.index ["organization_id"], name: "index_historical_facts_on_organization_id"
     t.index ["person_id"], name: "index_historical_facts_on_person_id"
     t.index ["personal_info_hash"], name: "index_historical_facts_on_personal_info_hash"

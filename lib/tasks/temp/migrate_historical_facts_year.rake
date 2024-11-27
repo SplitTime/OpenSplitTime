@@ -7,7 +7,7 @@ namespace :temp do
 
     relevant_kinds = %w[dns dnf finished]
 
-    historical_facts = HistoricalFact.where(kind: relevant_kinds).count
+    historical_facts = HistoricalFact.where(kind: relevant_kinds)
     hf_count = historical_facts.count
 
     puts "Found #{hf_count} historical facts needing migration"

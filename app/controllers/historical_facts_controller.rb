@@ -45,8 +45,6 @@ class HistoricalFactsController < ApplicationController
   # DELETE /organizations/1/historical_facts/1/destroy
   def destroy
     @historical_fact.destroy
-    flash[:success] = "Historical fact deleted."
-    redirect_to :index
   end
 
   # PATCH /organizations/1/historical_facts/auto_reconcile

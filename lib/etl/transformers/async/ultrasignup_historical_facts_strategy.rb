@@ -27,6 +27,8 @@ module ETL::Transformers::Async
         record_current_qualifier(struct)
         record_emergency_contact(struct)
         record_previous_names(struct)
+        record_ever_finished(struct)
+        record_dns_since_finish(struct)
       rescue StandardError => e
         import_job.increment!(:failed_count)
         errors << transform_failed_error(e, row_index)
@@ -110,6 +112,32 @@ module ETL::Transformers::Async
 
           proto_records << proto_record
         end
+      end
+    end
+
+    def record_ever_finished(struct)
+      reported_ever_finished = struct[:Ever_finished]
+
+      unless reported_ever_finished.blank?
+        proto_record = base_proto_record.deep_dup
+        proto_record[:kind] = :ever_finished
+        proto_record[:year] = Date.current.year
+        proto_record[:comments] = reported_ever_finished.to_s.downcase
+
+        proto_records << proto_record
+      end
+    end
+
+    def record_dns_since_finish(struct)
+      reported_dns_since_finish = struct[:DNS_since_finish]
+
+      if reported_dns_since_finish.present? && reported_dns_since_finish.to_s.numeric?
+        proto_record = base_proto_record.deep_dup
+        proto_record[:kind] = :dns_since_finish
+        proto_record[:year] = Date.current.year
+        proto_record[:quantity] = reported_dns_since_finish
+
+        proto_records << proto_record
       end
     end
 

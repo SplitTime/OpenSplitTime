@@ -160,6 +160,18 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
         expect(previous_name_proto_records.count).to eq(3)
         expect(previous_name_proto_records.map { |pr| pr[:comments] }).to match_array(["David Conroy", "Marie Antoinette", "Maria Sanjust"])
       end
+
+      it "returns one proto_record per struct for ever finished" do
+        previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :ever_finished }
+        expect(previous_name_proto_records.count).to eq(4)
+        expect(previous_name_proto_records.map { |pr| pr[:comments] }).to match_array(["no", "no", "no", "yes"])
+      end
+
+      it "returns one proto_record per struct for DNS since finish" do
+        previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns_since_finish }
+        expect(previous_name_proto_records.count).to eq(4)
+        expect(previous_name_proto_records.map { |pr| pr[:quantity] }).to match_array([0,0,1,3])
+      end
     end
 
     context "when no structs are provided" do

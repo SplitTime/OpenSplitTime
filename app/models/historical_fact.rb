@@ -21,7 +21,7 @@ class HistoricalFact < ApplicationRecord
     finished: 10,
     lottery_application: 11,
     ever_finished: 12,
-    dns_since_finished: 13,
+    dns_since_finish: 13,
   }
 
   include Auditable

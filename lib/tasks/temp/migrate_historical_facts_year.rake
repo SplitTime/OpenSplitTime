@@ -14,7 +14,7 @@ namespace :temp do
 
     progress_bar = ::ProgressBar.new(hf_count)
 
-    historical_facts.each do |fact|
+    historical_facts.find_each do |fact|
       progress_bar.increment!
 
       abort "Comments are not numeric for HistoricalFact id: #{fact.id}" unless fact.comments.numeric?

@@ -213,8 +213,8 @@ module DropdownHelper
     items = [
       { text: "All kinds", kinds: [] },
       { text: "Outcome", kinds: %w[dns dnf finished] },
-      { text: "Volunteer", kinds: %w[volunteer_minor volunteer_major volunteer_legacy] },
-      { text: "Provided", kinds: %w[reported_qualifier_finish provided_emergency_contact provided_previous_names] },
+      { text: "Volunteer", kinds: %w[volunteer_year volunteer_year_major volunteer_multi] },
+      { text: "Provided", kinds: %w[qualifier_finish emergency_contact previous_names] },
       { text: "Legacy", kinds: %w[lottery_ticket_count_legacy lottery_division_legacy] },
     ]
 
@@ -448,6 +448,8 @@ module DropdownHelper
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :historical_facts }) },
       { name: "Hardrock legacy format",
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hardrock_historical_facts }) },
+      { name: "Ultrasignup format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_historical_facts }) },
     ]
 
     build_dropdown_menu("Import", dropdown_items, button: true)

@@ -24,7 +24,7 @@ module ETL::Transformers::Async
       parsed_structs.each.with_index(1) do |struct, row_index|
         set_base_proto_record(struct)
         record_prior_year_outcomes(struct)
-        record_volunteer_legacy(struct)
+        record_volunteer_multi(struct)
         record_2024_qualifier(struct)
         record_emergency_contact(struct)
         record_previous_names(struct)
@@ -58,20 +58,22 @@ module ETL::Transformers::Async
         if year_outcome.present?
           proto_record = base_proto_record.deep_dup
           proto_record[:kind] = year_outcome
-          proto_record[:comments] = year
+          proto_record[:year] = year.to_s.to_i
+
           proto_records << proto_record
         end
       end
     end
 
-    def record_volunteer_legacy(struct)
-      volunteer_legacy_count = struct[:Years_Volunteering]
+    def record_volunteer_multi(struct)
+      year_count = struct[:Years_Volunteering]
 
-      if volunteer_legacy_count.present? && volunteer_legacy_count.positive?
+      if year_count.present? && year_count.positive?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :volunteer_legacy
-        proto_record[:quantity] = volunteer_legacy_count
+        proto_record[:kind] = :volunteer_multi
+        proto_record[:quantity] = year_count
         proto_record[:comments] = struct[:Description_of_service]
+
         proto_records << proto_record
       end
     end
@@ -81,8 +83,9 @@ module ETL::Transformers::Async
 
       if reported_qualifier.present?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :reported_qualifier_finish
+        proto_record[:kind] = :qualifier_finish
         proto_record[:comments] = reported_qualifier
+
         proto_records << proto_record
       end
     end
@@ -93,8 +96,9 @@ module ETL::Transformers::Async
 
       if emergency_contact.present? || emergency_phone.present?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :provided_emergency_contact
+        proto_record[:kind] = :emergency_contact
         proto_record[:comments] = [emergency_contact.presence, emergency_phone.presence].compact.join(", ")
+
         proto_records << proto_record
       end
     end
@@ -106,8 +110,9 @@ module ETL::Transformers::Async
         return if previous_names.downcase.strip.in? JUNK_PREVIOUS_NAMES
 
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :provided_previous_name
+        proto_record[:kind] = :previous_name
         proto_record[:comments] = previous_names
+
         proto_records << proto_record
       end
     end
@@ -118,6 +123,7 @@ module ETL::Transformers::Async
       proto_record = base_proto_record.deep_dup
       proto_record[:kind] = :lottery_ticket_count_legacy
       proto_record[:quantity] = legacy_count
+
       proto_records << proto_record
     end
 
@@ -127,6 +133,7 @@ module ETL::Transformers::Async
       proto_record = base_proto_record.deep_dup
       proto_record[:kind] = :lottery_division_legacy
       proto_record[:comments] = legacy_division
+
       proto_records << proto_record
     end
   end

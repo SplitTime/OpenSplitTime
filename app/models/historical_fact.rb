@@ -9,16 +9,19 @@ class HistoricalFact < ApplicationRecord
 
   enum kind: {
     dns: 0,
-    volunteer_minor: 1,
-    volunteer_major: 2,
-    volunteer_legacy: 3,
-    reported_qualifier_finish: 4,
-    provided_emergency_contact: 5,
-    provided_previous_name: 6,
+    volunteer_year: 1,
+    volunteer_year_major: 2,
+    volunteer_multi: 3,
+    qualifier_finish: 4,
+    emergency_contact: 5,
+    previous_name: 6,
     lottery_ticket_count_legacy: 7,
     lottery_division_legacy: 8,
     dnf: 9,
     finished: 10,
+    lottery_application: 11,
+    ever_finished: 12,
+    dns_since_finish: 13,
   }
 
   include Auditable
@@ -50,6 +53,7 @@ class HistoricalFact < ApplicationRecord
       all
     end
   end
+  scope :ordered, -> { order(:last_name, :first_name, :state_code, :year, :kind) }
   scope :reconciled, -> { where.not(person_id: nil) }
   scope :unreconciled, -> { where(person_id: nil) }
 

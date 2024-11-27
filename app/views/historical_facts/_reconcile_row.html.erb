@@ -7,6 +7,7 @@
           fa_icon("circle-check", type: :regular, class: "text-success", data: { controller: "tooltip" }, title: "Reconciled") %>
   </td>
   <td><%= historical_fact_kind_badge(fact.kind) %></td>
+  <td class="text-center"><%= fact.year %></td>
   <td class="text-center"><%= fact.quantity %></td>
   <td><%= fact.comments %></td>
   <td class="text-end"><%= badge_with_text(fact.person_id, color: :secondary) %></td>

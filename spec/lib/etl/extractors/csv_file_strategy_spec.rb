@@ -29,7 +29,7 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       end
     end
 
-    context "when an ultrasignup file is provided" do
+    context "when an ultrasignup efforts file is provided" do
       let(:file) { file_fixture("ultrasignup_efforts.csv") }
       let(:expected_array) do
         [:Order_ID, :Registration_Date, :distance, :Quantity, :Price, :Price_Option, :order_type, :Coupon, :First_Name, :Last_Name, :gender,
@@ -74,6 +74,25 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       it "returns raw data in OpenStruct format with expected keys" do
         expect(subject.errors).to be_empty
         expect(raw_data.size).to eq(11)
+        expect(raw_data).to all be_a(OpenStruct)
+
+        record = raw_data.first.to_h
+        expect(record.keys).to match_array(expected_array)
+      end
+    end
+
+    context "when an ultrasignup historical facts file is provided" do
+      let(:file) { file_fixture("ultrasignup_historical_facts.csv") }
+      let(:expected_array) do
+        [
+          :Order_ID, :First_Name, :Last_Name, :gender, :DOB, :Email, :Address, :City, :State, :Country, :Phone, :emergency_name, :emergency_phone,
+          :Volunteer_description, :Ever_finished, :Previous_names_1, :Previous_names_2, :DNS_since_finish, :Qualifier, :Years_volunteered,
+        ]
+      end
+
+      it "returns raw data in OpenStruct format with expected keys" do
+        expect(subject.errors).to be_empty
+        expect(raw_data.size).to eq(8)
         expect(raw_data).to all be_a(OpenStruct)
 
         record = raw_data.first.to_h

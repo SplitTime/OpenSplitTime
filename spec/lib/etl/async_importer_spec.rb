@@ -163,7 +163,7 @@ RSpec.describe ETL::AsyncImporter do
 
       expect(hf_1).to be_present
       expect(hf_1.gender).to eq("male")
-      expect(hf_1.comments).to eq("2019")
+      expect(hf_1.year).to eq(2019)
     end
 
     it "sets import job attributes properly" do

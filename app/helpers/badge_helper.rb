@@ -79,6 +79,18 @@ module BadgeHelper
       title = "Division"
       color = :dark
       tooltip_text = "Legacy division determination"
+    when "lottery_application"
+      title = "LotApp"
+      color = :success
+      tooltip_text = "Applied for a lottery"
+    when "ever_finished"
+      title = "EverFin"
+      color = :success
+      tooltip_text = "Reported if person has any prior finish"
+    when "dns_since_finish"
+      title = "DNSSncFin"
+      color = :success
+      tooltip_text = "Reported how many DNS since last finish"
     else
       raise ArgumentError, "Can't build a badge; unknown status: #{kind}"
     end

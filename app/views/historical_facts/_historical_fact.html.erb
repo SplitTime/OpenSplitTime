@@ -7,12 +7,12 @@
           fa_icon("circle-check", type: :regular, class: "text-success", data: { controller: "tooltip" }, title: "Reconciled") %>
   </td>
   <td><%= historical_fact_kind_badge(fact.kind) %></td>
+  <td class="text-center"><%= fact.year %></td>
   <td class="text-center"><%= fact.quantity %></td>
-  <td><%= fact.comments %></td>
+  <td><%= fact.comments&.truncate(20) %></td>
   <td><%= fact.full_name %></td>
   <td><%= fact.gender.titleize %></td>
   <td><%= fact.flexible_geolocation %></td>
-  <td><%= fact.birthdate %></td>
   <td><%= fact.email %></td>
   <td><%= fact.phone %></td>
 </tr>

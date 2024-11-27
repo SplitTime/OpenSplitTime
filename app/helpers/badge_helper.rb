@@ -47,27 +47,27 @@ module BadgeHelper
       title = "Finish"
       color = :primary
       tooltip_text = "Finished"
-    when "volunteer_minor"
-      title = "VMinor"
+    when "volunteer_year"
+      title = "VYear"
       color = :secondary
-      tooltip_text = "Minor volunteer work for a specific event"
-    when "volunteer_major"
-      title = "VMajor"
+      tooltip_text = "Volunteer work for a specific year"
+    when "volunteer_year_major"
+      title = "VYearMaj"
       color = :secondary
-      tooltip_text = "Major volunteer work for a specific event"
-    when "volunteer_legacy"
-      title = "VLegacy"
+      tooltip_text = "Major volunteer work for a specific year"
+    when "volunteer_multi"
+      title = "VMulti"
       color = :secondary
-      tooltip_text = "Years of legacy volunteer work (no event specified)"
-    when "reported_qualifier_finish"
+      tooltip_text = "Multiple years of volunteer work (as reported in a specific year)"
+    when "qualifier_finish"
       title = "Qualifier"
       color = :success
       tooltip_text = "Reported qualifier finished"
-    when "provided_emergency_contact"
+    when "emergency_contact"
       title = "Contact"
       color = :success
       tooltip_text = "Provided emergency contact"
-    when "provided_previous_name"
+    when "previous_name"
       title = "PrevName"
       color = :success
       tooltip_text = "Provided previous name"

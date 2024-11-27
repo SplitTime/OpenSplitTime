@@ -490,8 +490,8 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         expect(finished_proto_records.count).to eq(2)
       end
 
-      it "returns one proto_record for each legacy volunteer fact" do
-        legacy_volunteer_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_legacy }
+      it "returns one proto_record for each multi-year volunteer fact" do
+        legacy_volunteer_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_multi }
         expect(legacy_volunteer_proto_records.count).to eq(1)
         proto_record = legacy_volunteer_proto_records.first
         expect(proto_record[:quantity]).to eq(1)
@@ -499,19 +499,19 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
       end
 
       it "returns one proto_record for each reported 2024 qualifier" do
-        reported_qualifier_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :reported_qualifier_finish }
+        reported_qualifier_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :qualifier_finish }
         expect(reported_qualifier_proto_records.count).to eq(2)
         expect(reported_qualifier_proto_records.map { |pr| pr[:comments] }).to match_array(["2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100"])
       end
 
       it "returns one proto_record for each provided emergency contact, ignoring '0'" do
-        emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_emergency_contact }
+        emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :emergency_contact }
         expect(emergency_contact_proto_records.count).to eq(2)
         expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757"])
       end
 
       it "returns one proto_record for each provided previous name" do
-        previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :provided_previous_name }
+        previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :previous_name }
         expect(previous_name_proto_records.count).to eq(1)
         expect(previous_name_proto_records.first[:comments]).to eq("Theresa Burley")
       end

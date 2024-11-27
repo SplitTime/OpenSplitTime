@@ -213,8 +213,8 @@ module DropdownHelper
     items = [
       { text: "All kinds", kinds: [] },
       { text: "Outcome", kinds: %w[dns dnf finished] },
-      { text: "Volunteer", kinds: %w[volunteer_minor volunteer_major volunteer_legacy] },
-      { text: "Provided", kinds: %w[reported_qualifier_finish provided_emergency_contact provided_previous_names] },
+      { text: "Volunteer", kinds: %w[volunteer_year volunteer_year_major volunteer_multi] },
+      { text: "Provided", kinds: %w[qualifier_finish emergency_contact previous_names] },
       { text: "Legacy", kinds: %w[lottery_ticket_count_legacy lottery_division_legacy] },
     ]
 

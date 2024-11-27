@@ -23,7 +23,6 @@ class HistoricalFactResource < Madmin::Resource
   # Associations
   attribute :organization
   attribute :person
-  attribute :event
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

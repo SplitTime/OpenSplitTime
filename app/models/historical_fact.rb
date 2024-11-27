@@ -37,7 +37,6 @@ class HistoricalFact < ApplicationRecord
 
   belongs_to :organization
   belongs_to :person, optional: true
-  belongs_to :event, optional: true
 
   attr_writer :creator
 

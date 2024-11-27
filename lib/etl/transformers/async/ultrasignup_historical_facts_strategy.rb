@@ -22,8 +22,9 @@ module ETL::Transformers::Async
 
       parsed_structs.each.with_index(1) do |struct, row_index|
         set_base_proto_record(struct)
+        record_lottery_application(struct)
         record_volunteer_reported(struct)
-        record_2025_qualifier(struct)
+        record_current_qualifier(struct)
         record_emergency_contact(struct)
         record_previous_names(struct)
       rescue StandardError => e
@@ -45,70 +46,75 @@ module ETL::Transformers::Async
       base_proto_record.transform_as(:historical_fact, organization: organization)
     end
 
-    def record_volunteer_legacy(struct)
-      volunteer_legacy_count = struct[:Years_Volunteering]
+    def record_lottery_application(struct)
+      proto_record = base_proto_record.deep_dup
+      proto_record[:kind] = :lottery_application
+      proto_record[:year] = lottery_year
+      proto_record[:comments] = "Ultrasignup order id: #{struct[:Order_ID]}"
 
-      if volunteer_legacy_count.present? && volunteer_legacy_count.positive?
+      proto_records << proto_record
+    end
+
+    def record_volunteer_reported(struct)
+      years_count = struct[:Years_volunteered]
+
+      if years_count.present? && years_count.positive?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :volunteer_legacy
-        proto_record[:quantity] = volunteer_legacy_count
-        proto_record[:comments] = struct[:Description_of_service]
+        proto_record[:kind] = :volunteer_multi
+        proto_record[:year] = Date.current.year
+        proto_record[:quantity] = years_count
+        proto_record[:comments] = struct[:Volunteer_description]
+
         proto_records << proto_record
       end
     end
 
-    def record_2024_qualifier(struct)
-      reported_qualifier = struct[:"2024_Qualifier"]
+    def record_current_qualifier(struct)
+      reported_qualifier = struct[:Qualifier]
 
       if reported_qualifier.present?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :reported_qualifier_finish
+        proto_record[:kind] = :qualifier_finish
+        proto_record[:year] = Date.current.year
         proto_record[:comments] = reported_qualifier
+
         proto_records << proto_record
       end
     end
 
     def record_emergency_contact(struct)
-      emergency_contact = struct[:Emergency_Contact].to_s == "0" ? nil : struct[:Emergency_Contact]
-      emergency_phone = struct[:Emergency_Phone].to_s == "0" ? nil : struct[:Emergency_Phone]
+      emergency_contact = struct[:emergency_name].to_s.downcase.in?(JUNK_VALUES) ? nil : struct[:emergency_name]
+      emergency_phone = struct[:emergency_phone].to_s.downcase.in?(JUNK_VALUES) ? nil : struct[:emergency_phone]
 
       if emergency_contact.present? || emergency_phone.present?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :provided_emergency_contact
+        proto_record[:kind] = :emergency_contact
+        proto_record[:year] = Date.current.year
         proto_record[:comments] = [emergency_contact.presence, emergency_phone.presence].compact.join(", ")
+
         proto_records << proto_record
       end
     end
 
     def record_previous_names(struct)
-      previous_names = struct[:Previous_names_applied_under]
+      previous_names_array = [struct[:Previous_names_1], struct[:Previous_names_2]]
 
-      if previous_names.present?
-        return if previous_names.downcase.strip.in? JUNK_PREVIOUS_NAMES
+      previous_names_array.each do |previous_names|
+        if previous_names.present?
+          next if previous_names.downcase.strip.in? JUNK_VALUES
 
-        proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :provided_previous_name
-        proto_record[:comments] = previous_names
-        proto_records << proto_record
+          proto_record = base_proto_record.deep_dup
+          proto_record[:kind] = :previous_name
+          proto_record[:year] = Date.current.year
+          proto_record[:comments] = previous_names
+
+          proto_records << proto_record
+        end
       end
     end
 
-    def record_legacy_ticket_count(struct)
-      legacy_count = struct[:Total_tickets]
-
-      proto_record = base_proto_record.deep_dup
-      proto_record[:kind] = :lottery_ticket_count_legacy
-      proto_record[:quantity] = legacy_count
-      proto_records << proto_record
-    end
-
-    def record_legacy_division(struct)
-      legacy_division = struct[:Which_Lottery?]
-
-      proto_record = base_proto_record.deep_dup
-      proto_record[:kind] = :lottery_division_legacy
-      proto_record[:comments] = legacy_division
-      proto_records << proto_record
+    def lottery_year
+      @lottery_year ||= Date.current.year + 1
     end
   end
 end

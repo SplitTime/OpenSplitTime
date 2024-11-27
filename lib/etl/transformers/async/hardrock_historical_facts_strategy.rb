@@ -58,7 +58,7 @@ module ETL::Transformers::Async
         if year_outcome.present?
           proto_record = base_proto_record.deep_dup
           proto_record[:kind] = year_outcome
-          proto_record[:comments] = year
+          proto_record[:year] = year
           proto_records << proto_record
         end
       end

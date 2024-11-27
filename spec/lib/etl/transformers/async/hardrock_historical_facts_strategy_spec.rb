@@ -475,19 +475,22 @@ RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
         end
       end
 
-      it "returns one proto_record for each DNS" do
+      it "returns one proto_record for each DNS with the year set" do
         dns_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns }
         expect(dns_proto_records.count).to eq(12)
+        expect(dns_proto_records.map { |pr| pr[:year] }).to match_array([2015, 2016, 2016, 2017, 2017, 2018, 2018, 2019, 2019, 2019, 2021, 2022])
       end
 
       it "returns one proto_record for each DNF" do
         dnf_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dnf }
         expect(dnf_proto_records.count).to eq(1)
+        expect(dnf_proto_records.first[:year]).to eq(2014)
       end
 
       it "returns one proto_record for each finish" do
         finished_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :finished }
         expect(finished_proto_records.count).to eq(2)
+        expect(finished_proto_records.map { |pr| pr[:year] }).to match_array([2015, 2016])
       end
 
       it "returns one proto_record for each multi-year volunteer fact" do

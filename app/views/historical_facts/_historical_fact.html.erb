@@ -1,6 +1,6 @@
-<%# locals: (fact:) %>
+<%# locals: (fact:, presenter:) %>
 
-<tr class="align-middle">
+<tr class="align-middle" id="<%= dom_id(fact) %>">
   <td class="text-center">
     <%= fact.unreconciled? ?
           fa_icon("circle-minus", type: :solid, class: "text-warning", data: { controller: "tooltip" }, title: "Unreconciled") :
@@ -15,4 +15,5 @@
   <td><%= fact.flexible_geolocation %></td>
   <td><%= fact.email %></td>
   <td><%= fact.phone %></td>
+  <td><%= render partial: "actions_kebab", locals: { fact: fact, presenter: presenter } %></td>
 </tr>

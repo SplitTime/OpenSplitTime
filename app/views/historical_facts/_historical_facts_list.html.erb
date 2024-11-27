@@ -35,10 +35,11 @@
     <th>From</th>
     <th>Email</th>
     <th>Phone</th>
+    <th></th>
   </tr>
   </thead>
   <tbody id="historical_facts">
-  <%= render partial: "historical_fact", collection: presenter.filtered_historical_facts, as: :fact %>
+  <%= render partial: "historical_fact", collection: presenter.filtered_historical_facts, as: :fact, locals: { presenter: presenter} %>
   </tbody>
 </table>
 

@@ -96,11 +96,14 @@ module ETL::Transformers::Async
     end
 
     def record_previous_names(struct)
-      previous_names_array = [struct[:Previous_names_1], struct[:Previous_names_2]]
+      names_1 = struct[:Previous_names_1]
+      names_2 = struct[:Previous_names_2]
+      names_2 = nil if names_2.downcase.strip == names_1.downcase.strip
+      previous_names_array = [names_1, names_2]
 
       previous_names_array.each do |previous_names|
         if previous_names.present?
-          next if previous_names.downcase.strip.in? JUNK_VALUES
+          next if name_is_junk(previous_names) || name_is_identical(previous_names, struct)
 
           proto_record = base_proto_record.deep_dup
           proto_record[:kind] = :previous_name
@@ -109,6 +112,14 @@ module ETL::Transformers::Async
           proto_records << proto_record
         end
       end
+    end
+
+    def name_is_junk(previous_names)
+      previous_names.downcase.strip.in? JUNK_VALUES
+    end
+
+    def name_is_identical(previous_names, struct)
+      previous_names.downcase.strip == "#{struct[:First_Name]} #{struct[:Last_Name]}".downcase.strip
     end
 
     def record_ever_finished(struct)

@@ -59,7 +59,7 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Volunteer_description => "",
             :Ever_finished => "No",
             :Previous_names_1 => "David Conroy",
-            :Previous_names_2 => "",
+            :Previous_names_2 => "david conroy",
             :DNS_since_finish => 1,
             :Qualifier => "2023 AUG: Bigfoot 200",
             :Years_volunteered => 0
@@ -80,7 +80,7 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :emergency_phone => 33682847631,
             :Volunteer_description => "",
             :Ever_finished => "No",
-            :Previous_names_1 => "N/A",
+            :Previous_names_1 => "louis benoit",
             :Previous_names_2 => "",
             :DNS_since_finish => 0,
             :Qualifier => "2023 SEPT: Tor de Geants (Italy)",
@@ -155,7 +155,7 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
         expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Carleen Paucek", "Françoise Benoit, 33682847631", "Promo, 27724373177"])
       end
 
-      it "returns one proto_record for each provided previous name" do
+      it "returns one proto_record for each provided previous name, ignoring junk and identical names" do
         previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :previous_name }
         expect(previous_name_proto_records.count).to eq(3)
         expect(previous_name_proto_records.map { |pr| pr[:comments] }).to match_array(["David Conroy", "Marie Antoinette", "Maria Sanjust"])

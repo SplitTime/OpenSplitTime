@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationHistoricalFactsPresenter < OrganizationPresenter
-  DEFAULT_ORDER = { last_name: :asc, first_name: :asc, state_code: :asc }
+  DEFAULT_ORDER = { last_name: :asc, first_name: :asc, state_code: :asc, year: :asc }
 
   attr_reader :request
 

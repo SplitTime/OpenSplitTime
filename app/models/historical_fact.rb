@@ -40,6 +40,16 @@ class HistoricalFact < ApplicationRecord
 
   before_save :fill_personal_info_hash
 
+  scope :by_kind, ->(kinds) { where(kind: kinds) if kinds.present? }
+  scope :by_reconciled, ->(reconciled_boolean) do
+    if reconciled_boolean == true
+      where.not(person_id: nil)
+    elsif reconciled_boolean == false
+      where(person_id: nil)
+    else
+      all
+    end
+  end
   scope :reconciled, -> { where.not(person_id: nil) }
   scope :unreconciled, -> { where(person_id: nil) }
 

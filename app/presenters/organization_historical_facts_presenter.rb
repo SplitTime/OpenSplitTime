@@ -28,15 +28,11 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
 
     @filtered_historical_facts = historical_facts
       .where(filter_hash)
+      .by_kind(param_kinds)
+      .by_reconciled(param_reconciled)
       .search(search_text)
       .order(sort_hash.presence || DEFAULT_ORDER)
-      .select { |fact| matches_criteria?(fact) }
       .paginate(page: page, per_page: per_page)
-    @filtered_historical_facts.each do |fact|
-      fact.person = fact.person_id? ? indexed_people[fact.person_id] : nil
-      fact.event = fact.event_id? ? indexed_events[fact.event_id] : nil
-      fact.creator = fact.created_by? ? indexed_users[fact.created_by] : nil
-    end
   end
 
   def filtered_historical_facts_count
@@ -57,36 +53,13 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
 
   private
 
-  def indexed_people
-    @indexed_efforts ||= Person.where(id: person_ids).index_by(&:id)
+  # @return [Array<String>]
+  def param_kinds
+    params[:kind].presence || []
   end
 
-  def indexed_events
-    @indexed_events ||= organization.events.index_by(&:id)
-  end
-
-  def indexed_users
-    @indexed_users ||= User.where(id: user_ids).index_by(&:id)
-  end
-
-  def person_ids
-    @person_ids ||= filtered_historical_facts.map(&:person_id).compact.uniq
-  end
-
-  def user_ids
-    @user_ids ||= filtered_historical_facts.map(&:created_by).compact.uniq
-  end
-
-  def matches_criteria?(fact)
-    matches_kind_criteria?(fact) &&
-      matches_reconciled_criteria?(fact)
-  end
-
-  def matches_kind_criteria?(fact)
-    params[:kind].blank? || fact.kind.in?(params[:kind])
-  end
-
-  def matches_reconciled_criteria?(fact)
-    params[:reconciled].blank? || fact.reconciled? == params[:reconciled].to_boolean
+  # @return [Boolean, nil]
+  def param_reconciled
+    params[:reconciled].present? ? params[:reconciled].to_boolean : nil
   end
 end

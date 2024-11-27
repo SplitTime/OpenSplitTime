@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_27_010628) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_27_064733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -268,7 +268,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_010628) do
   end
 
   create_table "historical_facts", force: :cascade do |t|
-    t.bigint "event_id"
     t.bigint "person_id"
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -291,7 +290,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_010628) do
     t.bigint "organization_id", null: false
     t.string "personal_info_hash"
     t.integer "year"
-    t.index ["event_id"], name: "index_historical_facts_on_event_id"
     t.index ["last_name", "first_name", "state_code"], name: "index_historical_facts_on_names_and_state_code"
     t.index ["organization_id", "personal_info_hash", "person_id"], name: "index_hf_on_organization_and_hash_and_person"
     t.index ["organization_id", "personal_info_hash"], name: "index_hf_on_organization_and_hash"
@@ -753,7 +751,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_010628) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "export_jobs", "users"
-  add_foreign_key "historical_facts", "events"
   add_foreign_key "historical_facts", "organizations"
   add_foreign_key "historical_facts", "people"
   add_foreign_key "import_jobs", "users"

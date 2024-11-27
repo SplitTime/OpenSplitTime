@@ -46,12 +46,12 @@ module ETL::Transformers::Async
       self.base_proto_record = ProtoRecord.new(**struct.to_h)
 
       base_proto_record.transform_as(:historical_fact, organization: organization)
+      base_proto_record[:year] = Date.current.year
     end
 
     def record_lottery_application(struct)
       proto_record = base_proto_record.deep_dup
       proto_record[:kind] = :lottery_application
-      proto_record[:year] = lottery_year
       proto_record[:comments] = "Ultrasignup order id: #{struct[:Order_ID]}"
 
       proto_records << proto_record
@@ -63,7 +63,6 @@ module ETL::Transformers::Async
       if years_count.present? && years_count.positive?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :volunteer_multi
-        proto_record[:year] = Date.current.year
         proto_record[:quantity] = years_count
         proto_record[:comments] = struct[:Volunteer_description]
 
@@ -77,7 +76,6 @@ module ETL::Transformers::Async
       if reported_qualifier.present?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :qualifier_finish
-        proto_record[:year] = Date.current.year
         proto_record[:comments] = reported_qualifier
 
         proto_records << proto_record
@@ -91,7 +89,6 @@ module ETL::Transformers::Async
       if emergency_contact.present? || emergency_phone.present?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :emergency_contact
-        proto_record[:year] = Date.current.year
         proto_record[:comments] = [emergency_contact.presence, emergency_phone.presence].compact.join(", ")
 
         proto_records << proto_record
@@ -107,7 +104,6 @@ module ETL::Transformers::Async
 
           proto_record = base_proto_record.deep_dup
           proto_record[:kind] = :previous_name
-          proto_record[:year] = Date.current.year
           proto_record[:comments] = previous_names
 
           proto_records << proto_record
@@ -121,7 +117,6 @@ module ETL::Transformers::Async
       unless reported_ever_finished.blank?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :ever_finished
-        proto_record[:year] = Date.current.year
         proto_record[:comments] = reported_ever_finished.to_s.downcase
 
         proto_records << proto_record
@@ -134,15 +129,10 @@ module ETL::Transformers::Async
       if reported_dns_since_finish.present? && reported_dns_since_finish.to_s.numeric?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :dns_since_finish
-        proto_record[:year] = Date.current.year
         proto_record[:quantity] = reported_dns_since_finish
 
         proto_records << proto_record
       end
-    end
-
-    def lottery_year
-      @lottery_year ||= Date.current.year + 1
     end
   end
 end

@@ -30,7 +30,7 @@
       </tr>
       </thead>
       <tbody>
-      <%= render partial: "reconcile_row", collection: presenter.relevant_historical_facts.order(:year, :kind), as: :fact %>
+      <%= render partial: "reconcile_row", collection: presenter.relevant_historical_facts.ordered, as: :fact %>
       </tbody>
     </table>
   </div>

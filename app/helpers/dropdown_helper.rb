@@ -448,6 +448,8 @@ module DropdownHelper
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :historical_facts }) },
       { name: "Hardrock legacy format",
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hardrock_historical_facts }) },
+      { name: "Ultrasignup format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_historical_facts }) },
     ]
 
     build_dropdown_menu("Import", dropdown_items, button: true)

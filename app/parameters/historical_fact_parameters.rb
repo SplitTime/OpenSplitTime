@@ -13,6 +13,10 @@ class HistoricalFactParameters < BaseParameters
       :country_code,
       :phone,
       :email,
+      :kind,
+      :year,
+      :quantity,
+      :comments,
     ]
   end
 

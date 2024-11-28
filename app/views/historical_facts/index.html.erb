@@ -15,7 +15,11 @@
     <div class="row">
       <div class="col d-inline-flex">
         <span class="pe-1">
-        <%= link_to fa_icon("plus", text: "Add"), new_organization_historical_fact_path(@presenter.organization), id: "add-historical-fact", class: "btn btn-success" %>
+        <%= link_to fa_icon("plus", text: "Add"),
+                    new_organization_historical_fact_path(@presenter.organization),
+                    id: "add-historical-fact",
+                    class: "btn btn-success",
+                    data: { turbo_frame: "form_modal" } %>
         </span>
         <span class="pe-1">
         <%= historical_facts_import_dropdown(@presenter) %>

@@ -15,11 +15,15 @@ class HistoricalFactsController < ApplicationController
   # GET /organizations/1/historical_facts/new
   def new
     @historical_fact = @organization.historical_facts.new
+
+    render :new, locals: { fact: @historical_fact }
   end
 
   # GET /organizations/1/historical_facts/1/edit
   def edit
     @historical_fact = @organization.historical_facts.find(params[:id])
+
+    render :edit, locals: { fact: @historical_fact }
   end
 
   # POST /organizations/1/historical_facts/create
@@ -27,18 +31,28 @@ class HistoricalFactsController < ApplicationController
     @historical_fact = @organization.historical_facts.new(permitted_params)
 
     if @historical_fact.save
-      redirect_to :index
+      presenter = ::OrganizationHistoricalFactsPresenter.new(@organization, view_context)
+      render :create, locals: { fact: @historical_fact, presenter: presenter }
     else
-      render "new", status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(
+        "form_modal",
+        partial: "historical_facts/new_modal",
+        locals: { fact: @historical_fact }),
+             status: :unprocessable_entity
     end
   end
 
   # PATCH /organizations/1/historical_facts/1/update
   def update
     if @historical_fact.update(permitted_params)
-      redirect_to :index
+      presenter = ::OrganizationHistoricalFactsPresenter.new(@organization, view_context)
+      render :update, locals: { fact: @historical_fact, presenter: presenter }
     else
-      render "edit", status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace(
+        "form_modal",
+        partial: "historical_facts/edit_modal",
+        locals: { fact: @historical_fact }),
+             status: :unprocessable_entity
     end
   end
 

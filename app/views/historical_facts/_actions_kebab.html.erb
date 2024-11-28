@@ -4,6 +4,8 @@
                class: "dropdown-toggle no-caret btn btn-sm btn-light",
                data: { bs_toggle: "dropdown" } %>
 <div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
+  <%= link_to "Reconcile", reconcile_organization_historical_facts_path(presenter.organization, personal_info_hash: fact.personal_info_hash),
+              class: "dropdown-item" %>
   <%= link_to "Delete", organization_historical_fact_path(presenter.organization, fact),
               class: "dropdown-item",
               data: {

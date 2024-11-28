@@ -1,0 +1,10 @@
+<%# locals: (fact:) %>
+
+<%= turbo_frame_tag "form_modal" do %>
+  <div class="modal-header" data-form-modal-target="resizeIndicator">
+    <div class="modal-title h4 fw-bold">Edit Fact - <%= fact.id %></div>
+  </div>
+  <div class="modal-body">
+    <%= render "form", fact: fact %>
+  </div>
+<% end %>

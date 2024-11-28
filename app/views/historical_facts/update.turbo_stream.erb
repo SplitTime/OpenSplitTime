@@ -1,0 +1,7 @@
+<%# locals: (fact:, presenter:) -%>
+
+<%= turbo_stream.replace dom_id(fact),
+                         partial: "historical_fact",
+                         locals: { fact: fact, presenter: presenter } %>
+
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>

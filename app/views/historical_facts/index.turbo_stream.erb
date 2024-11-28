@@ -1,7 +1,8 @@
 <%= turbo_stream.append "historical_facts",
                         partial: "historical_fact",
                         collection: @presenter.filtered_historical_facts,
-                        as: :fact
+                        as: :fact,
+                        locals: { presenter: @presenter }
                         %>
 
 <%= turbo_stream.replace "pager",

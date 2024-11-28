@@ -1,6 +1,10 @@
 <%# locals: (fact:, presenter:) %>
 
-<tr class="align-middle" id="<%= dom_id(fact) %>">
+<tr class="align-middle"
+    id="<%= dom_id(fact) %>"
+    data-controller="highlight"
+    data-highlight-fast-value="true"
+    data-highlight-timestamp-value="<%= fact.updated_at.to_i %>">
   <td class="text-center">
     <%= fact.unreconciled? ?
           fa_icon("circle-minus", type: :solid, class: "text-warning", data: { controller: "tooltip" }, title: "Unreconciled") :

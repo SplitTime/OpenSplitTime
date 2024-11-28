@@ -1,0 +1,7 @@
+<%# locals: (fact:, presenter:) -%>
+
+<%= turbo_stream.prepend "historical_facts",
+                         partial: "historical_fact",
+                         locals: { fact: fact, presenter: presenter } %>
+
+<%= turbo_stream.replace "flash", partial: "layouts/flash" %>

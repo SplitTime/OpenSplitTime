@@ -1,0 +1,104 @@
+<%# locals: (fact:) %>
+
+<%= render "shared/errors", obj: fact %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_with(
+            model: fact,
+            url: fact.new_record? ?
+              organization_historical_facts_path(fact.organization) :
+              organization_historical_fact_path(fact.organization, fact)
+          ) do |f| %>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <%= f.label :kind, class: "mb-1 required" %>
+            <%= f.select :kind,
+                         HistoricalFact.kinds.keys.map { |kind| [kind.titleize, kind] },
+                         { prompt: true },
+                         { class: "form-control", autofocus: true } %>
+          </div>
+          <div class="col-md-2 mb-3">
+            <%= f.label :year, class: "mb-1" %>
+            <%= f.text_field :year, class: "form-control" %>
+          </div>
+          <div class="col-md-2 mb-3">
+            <%= f.label :quantity, class: "mb-1" %>
+            <%= f.text_field :quantity, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8 mb-3">
+            <%= f.label :comments, class: "mb-1" %>
+            <%= f.text_field :comments, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <%= f.label :first_name, class: "mb-1 required" %>
+            <%= f.text_field :first_name, class: "form-control", placeholder: "First name" %>
+          </div>
+          <div class="col-md-4 mb-3">
+            <%= f.label :last_name, class: "mb-1 required" %>
+            <%= f.text_field :last_name, class: "form-control", placeholder: "Last name" %>
+          </div>
+          <div class="col-md-2 mb-3">
+            <%= f.label :gender, class: "mb-1 required" %>
+            <%= f.select :gender,
+                         HistoricalFact.genders.keys.map { |gender| [gender.titleize, gender] },
+                         { prompt: true },
+                         { class: "form-control" } %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <%= f.label :birthdate, class: "mb-1" %>
+            <%= f.datepicker_field :birthdate %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <%= f.label :country_code, "Country", class: "mb-1" %>
+            <%= carmen_country_select :fact, :country_code %>
+          </div>
+          <div class="col-md-3 mb-3">
+            <%= f.label :state_code, "State", class: "mb-1" %><br/>
+            <%= render partial: "carmen/subregion_select",
+                       locals: { model: :fact, parent_region: f.object.country_code } %>
+          </div>
+          <div class="col-md-3 mb-3">
+            <%= f.label :city, class: "mb-1" %>
+            <%= f.text_field :city, class: "form-control", placeholder: "City" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            <%= f.label :email, class: "mb-1" %>
+            <%= f.text_field :email, class: "form-control", placeholder: "example@gmail.com" %>
+          </div>
+          <div class="col-md-3 mb-3">
+            <%= f.label :phone, class: "mb-1" %>
+            <%= f.text_field :phone, class: "form-control", placeholder: "Phone number" %>
+          </div>
+        </div>
+
+        <br/>
+        <div class="row mb-3">
+          <div class="col">
+            <%= f.submit(fact.new_record? ? "Create Fact" : "Update Fact", class: "btn btn-primary btn-large") %>
+            <%= button_tag "Cancel",
+                           type: :button,
+                           data: { action: "click->form-modal#hide" },
+                           class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

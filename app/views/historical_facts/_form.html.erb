@@ -64,12 +64,12 @@
         <div class="row">
           <div class="col-md-4 mb-3">
             <%= f.label :country_code, "Country", class: "mb-1" %>
-            <%= carmen_country_select :fact, :country_code %>
+            <%= carmen_country_select :historical_fact, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :state_code, "State", class: "mb-1" %><br/>
             <%= render partial: "carmen/subregion_select",
-                       locals: { model: :fact, parent_region: f.object.country_code } %>
+                       locals: { model: :historical_fact, parent_region: f.object.country_code } %>
           </div>
           <div class="col-md-3 mb-3">
             <%= f.label :city, class: "mb-1" %>

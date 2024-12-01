@@ -1519,34 +1519,34 @@ hardrock_2014_claudio_wunsch:
   synced_at:
   completed_laps: 1
   bib_number_hardcoded:
-hardrock_2014_paul_predovic:
+hardrock_2014_rachelle_eichmann:
   id: 4199
   event_id: 17
-  person_id: 44
+  person_id: 81
   wave:
   bib_number: 123
   city:
-  state_code: ID
-  age: 55
+  state_code: CO
+  age: 22
   created_by: 1
-  first_name: Paul
-  last_name: Predovic
-  gender: 0
+  first_name: Rachelle
+  last_name: Eichmann
+  gender: 1
   country_code: US
-  birthdate: '1959-06-26'
+  birthdate: '1992-01-11'
   data_status:
   beacon_url:
   report_url:
   phone:
   email:
-  slug: hardrock-2014-paul-predovic
+  slug: hardrock-2014-rachelle-eichmann
   checked_in: false
   emergency_contact:
   emergency_phone:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
   topic_resource_key:
   comments:
-  state_name: Idaho
+  state_name: Colorado
   country_name: United States
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111010111001000001110111'
   stopped_split_time_id: 92042
@@ -1748,13 +1748,13 @@ hardrock_2014_pat_schaden:
   comments:
   state_name: Arizona
   country_name: United States
-  overall_performance: '100000000000001000000000000100011110101010100000000111111111111111110111010111011110101010111111'
-  stopped_split_time_id:
+  overall_performance: '000000000000001000000000000100011110101010100000000111111111111111110111010111011110101010111111'
+  stopped_split_time_id: 93384
   final_split_time_id: 93384
   started: true
   beyond_start: true
-  stopped: false
-  dropped: false
+  stopped: true
+  dropped: true
   finished: false
   synced_at:
   completed_laps: 0

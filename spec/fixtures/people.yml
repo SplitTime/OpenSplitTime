@@ -179,24 +179,6 @@ benedict_davis:
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bogie-dumitrescu
   state_name: Colorado
   country_name: United States
-paul_predovic:
-  id: 44
-  first_name: Paul
-  last_name: Predovic
-  gender: 0
-  birthdate: '1959-06-26'
-  city:
-  state_code: ID
-  email:
-  phone:
-  created_by: 1
-  country_code: US
-  user_id:
-  concealed: false
-  slug: paul-predovic
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-ehredt
-  state_name: Idaho
-  country_name: United States
 erich_larson:
   id: 51
   first_name: Erich
@@ -221,17 +203,17 @@ lavon_paucek:
   last_name: Paucek
   gender: 1
   birthdate: '1974-07-29'
-  city:
-  state_code:
-  email:
-  phone:
+  city: West Ariel
+  state_code: AR
+  email: lashunda@koelpin.co.uk
+  phone: '6919767666'
   created_by: 1
   country_code: US
   user_id:
   concealed: false
   slug: lavon-paucek
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_anna-frost
-  state_name:
+  state_name: Arkansas
   country_name: United States
 irvin_harber:
   id: 61
@@ -275,10 +257,10 @@ carmine_adams:
   last_name: Adams
   gender: 0
   birthdate: '1997-05-25'
-  city:
+  city: Kassulkemouth
   state_code: WA
-  email:
-  phone:
+  email: jarod@millermoore.com
+  phone: '9526029499'
   created_by: 1
   country_code: US
   user_id:
@@ -365,10 +347,10 @@ rachelle_eichmann:
   last_name: Eichmann
   gender: 1
   birthdate: '1992-01-11'
-  city:
+  city: Tamartown
   state_code: CO
-  email:
-  phone:
+  email: woodrow@runte.ca
+  phone: '7764262796'
   created_by: 1
   country_code: US
   user_id:
@@ -1925,60 +1907,6 @@ freddy_maggio:
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-freddy-maggio
   state_name: Alberta
   country_name: Canada
-christian_sipes:
-  id: 2192
-  first_name: Christian
-  last_name: Sipes
-  gender: 0
-  birthdate:
-  city: Kassulkemouth
-  state_code: LA
-  email: jarod@millermoore.com
-  phone: '9526029499'
-  created_by: 1
-  country_code: US
-  user_id:
-  concealed: false
-  slug: christian-sipes
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-christian-sipes
-  state_name: Louisiana
-  country_name: United States
-cornelius_white:
-  id: 2193
-  first_name: Cornelius
-  last_name: White
-  gender: 0
-  birthdate:
-  city:
-  state_code:
-  email:
-  phone:
-  created_by: 1
-  country_code:
-  user_id:
-  concealed: false
-  slug: cornelius-white
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-cornelius-white
-  state_name:
-  country_name:
-theresa_o_connell:
-  id: 2194
-  first_name: Theresa
-  last_name: O'Connell
-  gender: 1
-  birthdate: '1997-09-10'
-  city: Tamartown
-  state_code: IA
-  email: woodrow@runte.ca
-  phone: '7764262796'
-  created_by: 1
-  country_code: US
-  user_id:
-  concealed: false
-  slug: theresa-o-connell
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-theresa-o-connell
-  state_name: Iowa
-  country_name: United States
 fredrick_wiza:
   id: 2195
   first_name: Fredrick
@@ -2014,22 +1942,4 @@ alfreda_cruickshank:
   slug: alfreda-cruickshank
   topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-alfreda-cruickshank
   state_name: Colorado
-  country_name: United States
-gaston_bashirian:
-  id: 2197
-  first_name: Gaston
-  last_name: Bashirian
-  gender: 0
-  birthdate:
-  city: West Ariel
-  state_code: AR
-  email: lashunda@koelpin.co.uk
-  phone: '6919767666'
-  created_by: 1
-  country_code: US
-  user_id:
-  concealed: false
-  slug: gaston-bashirian
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-gaston-bashirian
-  state_name: Arkansas
   country_name: United States

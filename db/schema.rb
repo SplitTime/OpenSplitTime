@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_01_163355) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_01_203604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -878,7 +878,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_163355) do
     WHERE ((ef.finished = true) AND (eg.concealed = false))
     GROUP BY cg.id, p.id;
   SQL
-  create_view "lottery_ticket_calc_hardrock_2025s", sql_definition: <<-SQL
+  create_view "lotteries_calculations_hardrock_2025s", sql_definition: <<-SQL
       WITH applicants AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_01_203604) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -291,6 +291,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_203604) do
     t.string "personal_info_hash"
     t.integer "year"
     t.index ["last_name", "first_name", "state_code"], name: "index_historical_facts_on_names_and_state_code"
+    t.index ["organization_id", "person_id", "kind"], name: "index_historical_facts_uniq_kind", where: "(kind = 3)"
+    t.index ["organization_id", "person_id", "year", "kind"], name: "index_historical_facts_uniq_kind_year", where: "(kind = ANY (ARRAY[0, 1, 2, 7, 8, 9, 10, 11]))"
     t.index ["organization_id", "personal_info_hash", "person_id"], name: "index_hf_on_organization_and_hash_and_person"
     t.index ["organization_id", "personal_info_hash"], name: "index_hf_on_organization_and_hash"
     t.index ["organization_id"], name: "index_historical_facts_on_organization_id"

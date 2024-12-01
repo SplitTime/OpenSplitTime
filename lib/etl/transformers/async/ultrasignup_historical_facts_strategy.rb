@@ -62,7 +62,7 @@ module ETL::Transformers::Async
 
       if years_count.present? && years_count.positive?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :volunteer_multi
+        proto_record[:kind] = :volunteer_multi_reported
         proto_record[:quantity] = years_count
         proto_record[:comments] = struct[:Volunteer_description]
 

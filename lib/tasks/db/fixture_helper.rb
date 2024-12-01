@@ -13,6 +13,7 @@ module FixtureHelper
     :event_series,
     :event_series_events,
     :events,
+    :historical_facts,
     :lotteries,
     :lottery_divisions,
     :lottery_draws,

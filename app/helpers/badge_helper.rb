@@ -49,27 +49,27 @@ module BadgeHelper
       tooltip_text = "Finished"
     when "volunteer_year"
       title = "VYear"
-      color = :secondary
+      color = :success
       tooltip_text = "Volunteer work for a specific year"
     when "volunteer_year_major"
       title = "VYearMaj"
-      color = :secondary
+      color = :success
       tooltip_text = "Major volunteer work for a specific year"
     when "volunteer_multi"
       title = "VMulti"
-      color = :secondary
+      color = :success
       tooltip_text = "Multiple years of volunteer work (as reported in a specific year)"
     when "qualifier_finish"
       title = "Qualifier"
-      color = :success
+      color = :secondary
       tooltip_text = "Reported qualifier finished"
     when "emergency_contact"
       title = "Contact"
-      color = :success
+      color = :secondary
       tooltip_text = "Provided emergency contact"
     when "previous_name"
       title = "PrevName"
-      color = :success
+      color = :secondary
       tooltip_text = "Provided previous name"
     when "lottery_ticket_count_legacy"
       title = "Tickets"
@@ -80,17 +80,21 @@ module BadgeHelper
       color = :dark
       tooltip_text = "Legacy division determination"
     when "lottery_application"
-      title = "LotApp"
-      color = :success
+      title = "LottApp"
+      color = :danger
       tooltip_text = "Applied for a lottery"
     when "ever_finished"
       title = "EverFin"
-      color = :success
+      color = :secondary
       tooltip_text = "Reported if person has any prior finish"
     when "dns_since_finish"
       title = "DNSSncFin"
-      color = :success
+      color = :secondary
       tooltip_text = "Reported how many DNS since last finish"
+    when "volunteer_multi_reported"
+      title = "VMultiRep"
+      color = :secondary
+      tooltip_text = "Reported how many years of volunteer service"
     else
       raise ArgumentError, "Can't build a badge; unknown status: #{kind}"
     end

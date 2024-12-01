@@ -122,7 +122,6 @@ select applicants.organization_id,
                     coalesce(major_volunteer_year_count, 0)
                 )
            end as ticket_count
-
 from applicants
          natural left join dns_since_last_start_count
          natural left join dns_since_last_reset_count

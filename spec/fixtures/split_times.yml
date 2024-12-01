@@ -5207,7 +5207,7 @@ hardrock_2014_claudio_wunsch_finish_1:
   stopped_here: true
   absolute_time: 2014-07-12 23:58:21.000000000 Z
   elapsed_seconds: 129501.0
-hardrock_2014_paul_predovic_start_1:
+hardrock_2014_rachelle_eichmann_start_1:
   id: 92015
   effort_id: 4199
   split_id: 81
@@ -5219,7 +5219,7 @@ hardrock_2014_paul_predovic_start_1:
   stopped_here: false
   absolute_time: 2014-07-11 12:00:00.000000000 Z
   elapsed_seconds: 0.0
-hardrock_2014_paul_predovic_telluride_in_1:
+hardrock_2014_rachelle_eichmann_telluride_in_1:
   id: 92020
   effort_id: 4199
   split_id: 87
@@ -5231,7 +5231,7 @@ hardrock_2014_paul_predovic_telluride_in_1:
   stopped_here: false
   absolute_time: 2014-07-11 20:26:59.000000000 Z
   elapsed_seconds: 30419.0
-hardrock_2014_paul_predovic_telluride_out_1:
+hardrock_2014_rachelle_eichmann_telluride_out_1:
   id: 92021
   effort_id: 4199
   split_id: 87
@@ -5243,7 +5243,7 @@ hardrock_2014_paul_predovic_telluride_out_1:
   stopped_here: false
   absolute_time: 2014-07-11 20:39:00.000000000 Z
   elapsed_seconds: 31140.0
-hardrock_2014_paul_predovic_ouray_in_1:
+hardrock_2014_rachelle_eichmann_ouray_in_1:
   id: 92026
   effort_id: 4199
   split_id: 93
@@ -5255,7 +5255,7 @@ hardrock_2014_paul_predovic_ouray_in_1:
   stopped_here: false
   absolute_time: 2014-07-12 01:23:00.000000000 Z
   elapsed_seconds: 48180.0
-hardrock_2014_paul_predovic_ouray_out_1:
+hardrock_2014_rachelle_eichmann_ouray_out_1:
   id: 92027
   effort_id: 4199
   split_id: 93
@@ -5267,7 +5267,7 @@ hardrock_2014_paul_predovic_ouray_out_1:
   stopped_here: false
   absolute_time: 2014-07-12 01:33:00.000000000 Z
   elapsed_seconds: 48780.0
-hardrock_2014_paul_predovic_grouse_in_1:
+hardrock_2014_rachelle_eichmann_grouse_in_1:
   id: 92030
   effort_id: 4199
   split_id: 97
@@ -5279,7 +5279,7 @@ hardrock_2014_paul_predovic_grouse_in_1:
   stopped_here: false
   absolute_time: 2014-07-12 07:25:00.000000000 Z
   elapsed_seconds: 69900.0
-hardrock_2014_paul_predovic_grouse_out_1:
+hardrock_2014_rachelle_eichmann_grouse_out_1:
   id: 92031
   effort_id: 4199
   split_id: 97
@@ -5291,7 +5291,7 @@ hardrock_2014_paul_predovic_grouse_out_1:
   stopped_here: false
   absolute_time: 2014-07-12 07:49:00.000000000 Z
   elapsed_seconds: 71340.0
-hardrock_2014_paul_predovic_sherman_in_1:
+hardrock_2014_rachelle_eichmann_sherman_in_1:
   id: 92034
   effort_id: 4199
   split_id: 101
@@ -5303,7 +5303,7 @@ hardrock_2014_paul_predovic_sherman_in_1:
   stopped_here: false
   absolute_time: 2014-07-12 13:30:00.000000000 Z
   elapsed_seconds: 91800.0
-hardrock_2014_paul_predovic_sherman_out_1:
+hardrock_2014_rachelle_eichmann_sherman_out_1:
   id: 92035
   effort_id: 4199
   split_id: 101
@@ -5315,7 +5315,7 @@ hardrock_2014_paul_predovic_sherman_out_1:
   stopped_here: false
   absolute_time: 2014-07-12 13:49:00.000000000 Z
   elapsed_seconds: 92940.0
-hardrock_2014_paul_predovic_cunningham_in_1:
+hardrock_2014_rachelle_eichmann_cunningham_in_1:
   id: 92040
   effort_id: 4199
   split_id: 107
@@ -5327,7 +5327,7 @@ hardrock_2014_paul_predovic_cunningham_in_1:
   stopped_here: false
   absolute_time: 2014-07-12 21:53:00.000000000 Z
   elapsed_seconds: 121980.0
-hardrock_2014_paul_predovic_cunningham_out_1:
+hardrock_2014_rachelle_eichmann_cunningham_out_1:
   id: 92041
   effort_id: 4199
   split_id: 107
@@ -5339,7 +5339,7 @@ hardrock_2014_paul_predovic_cunningham_out_1:
   stopped_here: false
   absolute_time: 2014-07-12 21:58:00.000000000 Z
   elapsed_seconds: 122280.0
-hardrock_2014_paul_predovic_finish_1:
+hardrock_2014_rachelle_eichmann_finish_1:
   id: 92042
   effort_id: 4199
   split_id: 82
@@ -6044,7 +6044,7 @@ hardrock_2014_pat_schaden_cunningham_in_1:
   pacer:
   remarks:
   lap: 1
-  stopped_here: false
+  stopped_here: true
   absolute_time: 2014-07-13 04:14:00.000000000 Z
   elapsed_seconds: 144840.0
 hardrock_2014_clarence_goyette_start_1:

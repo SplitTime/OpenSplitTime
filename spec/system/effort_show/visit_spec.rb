@@ -72,8 +72,8 @@ RSpec.describe "visit an effort show page", js: true do
 
   context "When the effort is in progress" do
     let(:effort) { in_progress_effort }
-    let(:prior_effort) { efforts(:hardrock_2014_pat_schaden) }
-    let(:next_effort) { efforts(:hardrock_2014_multiple_stops) }
+    let(:prior_effort) { efforts(:hardrock_2014_ken_bradtke) }
+    let(:next_effort) { efforts(:hardrock_2014_pat_schaden) }
 
     scenario "The user is a visitor" do
       visit effort_path(effort)

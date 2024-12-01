@@ -55,7 +55,7 @@ RSpec.describe "visit an effort place page" do
       within ".popover-body" do
         expect(page).to have_css(".table")
         within ".table" do
-          expect(page).to have_content("Paul Predovic")
+          expect(page).to have_content("Rachelle Eichmann")
           expect(page).to have_content("Irvin Corkery")
         end
       end

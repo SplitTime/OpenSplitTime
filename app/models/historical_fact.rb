@@ -22,6 +22,7 @@ class HistoricalFact < ApplicationRecord
     lottery_application: 11,
     ever_finished: 12,
     dns_since_finish: 13,
+    volunteer_multi_reported: 14,
   }
 
   include Auditable

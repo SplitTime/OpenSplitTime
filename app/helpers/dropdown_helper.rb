@@ -213,9 +213,10 @@ module DropdownHelper
     items = [
       { text: "All kinds", kinds: [] },
       { text: "Outcome", kinds: %w[dns dnf finished] },
-      { text: "Volunteer", kinds: %w[volunteer_year volunteer_year_major volunteer_multi] },
-      { text: "Provided", kinds: %w[qualifier_finish emergency_contact previous_names] },
+      { text: "Volunteer", kinds: %w[volunteer_year volunteer_year_major volunteer_multi volunteer_multi_reported] },
+      { text: "Reported", kinds: %w[qualifier_finish emergency_contact previous_names volunteer_multi_reported] },
       { text: "Legacy", kinds: %w[lottery_ticket_count_legacy lottery_division_legacy] },
+      { text: "Lottery Application", kinds: %w[lottery_application] },
     ]
 
     dropdown_items = items.map do |item|

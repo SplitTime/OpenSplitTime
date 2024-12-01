@@ -134,7 +134,7 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
       end
 
       it "returns one proto_record for each multi-year volunteer fact" do
-        volunteer_multi_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_multi }
+        volunteer_multi_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_multi_reported }
         expect(volunteer_multi_proto_records.count).to eq(1)
         proto_record = volunteer_multi_proto_records.first
         expect(proto_record[:quantity]).to eq(3)

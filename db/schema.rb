@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_27_064733) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_01_163355) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -843,16 +843,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_064733) do
                LEFT JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
             ORDER BY lottery_entrants.id, lottery_draws.id
           )
-   SELECT entrant_list.lottery_id,
-      entrant_list.division_id,
-      entrant_list.division_name,
-      entrant_list.number_of_tickets,
-      count(*) FILTER (WHERE entrant_list.accepted) AS accepted_entrants_count,
-      count(*) FILTER (WHERE entrant_list.waitlisted) AS waitlisted_entrants_count,
+   SELECT lottery_id,
+      division_id,
+      division_name,
+      number_of_tickets,
+      count(*) FILTER (WHERE accepted) AS accepted_entrants_count,
+      count(*) FILTER (WHERE waitlisted) AS waitlisted_entrants_count,
       count(*) AS entrants_count
      FROM entrant_list
-    GROUP BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets
-    ORDER BY entrant_list.lottery_id, entrant_list.division_id, entrant_list.division_name, entrant_list.number_of_tickets;
+    GROUP BY lottery_id, division_id, division_name, number_of_tickets
+    ORDER BY lottery_id, division_id, division_name, number_of_tickets;
   SQL
   create_view "course_group_finishers", sql_definition: <<-SQL
       SELECT ((cg.id || ':'::text) || p.id) AS id,
@@ -877,5 +877,109 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_27_064733) do
        JOIN people p ON ((ef.person_id = p.id)))
     WHERE ((ef.finished = true) AND (eg.concealed = false))
     GROUP BY cg.id, p.id;
+  SQL
+  create_view "lottery_ticket_calc_hardrock_2025s", sql_definition: <<-SQL
+      WITH applicants AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              any_value(historical_facts.gender) AS gender,
+              COALESCE(bool_or(((event_groups.organization_id = historical_facts.organization_id) AND (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) < (2021)::numeric))))), false) AS finisher
+             FROM (((historical_facts
+               LEFT JOIN efforts ON ((efforts.person_id = historical_facts.person_id)))
+               LEFT JOIN events ON ((events.id = efforts.event_id)))
+               LEFT JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2024))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), last_start_year AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              max(EXTRACT(year FROM events.scheduled_start_time)) AS year
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE efforts.started
+            GROUP BY event_groups.organization_id, efforts.person_id
+            ORDER BY efforts.person_id
+          ), dns_since_last_start_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS dns_since_last_start_count
+             FROM (historical_facts
+               LEFT JOIN last_start_year USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 0) AND (historical_facts.year < 2025) AND ((historical_facts.year)::numeric > COALESCE(last_start_year.year, (0)::numeric)))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), last_reset_year AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              max(EXTRACT(year FROM events.scheduled_start_time)) AS year
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) > (2023)::numeric)))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), dns_since_last_reset_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS dns_since_last_reset_count
+             FROM (historical_facts
+               LEFT JOIN last_reset_year USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 0) AND (historical_facts.year < 2025) AND ((historical_facts.year)::numeric > COALESCE(last_reset_year.year, (0)::numeric)))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), finish_year_count AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              count(*) AS finish_year_count
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.finished AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), latest_vmulti AS (
+           SELECT ranked_vmultis.organization_id,
+              ranked_vmultis.person_id,
+              ranked_vmultis.year AS latest_vmulti_year,
+              ranked_vmultis.quantity AS latest_vmulti_year_count
+             FROM ( SELECT historical_facts.organization_id,
+                      historical_facts.person_id,
+                      historical_facts.year,
+                      historical_facts.quantity,
+                      row_number() OVER (PARTITION BY historical_facts.organization_id, historical_facts.person_id ORDER BY historical_facts.year DESC) AS rank
+                     FROM historical_facts
+                    WHERE ((historical_facts.kind = 3) AND (historical_facts.year < 2024))) ranked_vmultis
+            WHERE (ranked_vmultis.rank = 1)
+          ), volunteer_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS volunteer_year_count
+             FROM (historical_facts
+               LEFT JOIN latest_vmulti latest_vmulti_1 USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 1) AND (historical_facts.year < 2025) AND (historical_facts.year > latest_vmulti_1.latest_vmulti_year))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), major_volunteer_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              1 AS major_volunteer_year_count
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 2) AND (historical_facts.year = 2024))
+          )
+   SELECT applicants.organization_id,
+      applicants.person_id,
+          CASE
+              WHEN ((applicants.gender = 0) AND applicants.finisher) THEN 'Male Finishers'::text
+              WHEN (applicants.gender = 0) THEN 'Male Nevers'::text
+              WHEN applicants.finisher THEN 'Female Finishers'::text
+              ELSE 'Female Nevers'::text
+          END AS division,
+          CASE
+              WHEN applicants.finisher THEN (((((COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(latest_vmulti.latest_vmulti_year_count, 0)) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)) + 1))::double precision
+              ELSE pow((2)::double precision, ((((COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(latest_vmulti.latest_vmulti_year_count, 0)) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)))::double precision)
+          END AS ticket_count
+     FROM ((((((applicants
+       LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
+       LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))
+       LEFT JOIN finish_year_count USING (organization_id, person_id))
+       LEFT JOIN latest_vmulti USING (organization_id, person_id))
+       LEFT JOIN volunteer_year_count USING (organization_id, person_id))
+       LEFT JOIN major_volunteer_year_count USING (organization_id, person_id));
   SQL
 end

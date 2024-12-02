@@ -36,89 +36,11 @@
 <article class="ost-article container">
   <div class="row">
     <div class="col">
-      <div class="card mt-4">
-        <div class="card-header">
-          <div class="row">
-            <div class="col">
-              <h2 class="fw-bold">By Division</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body table-responsive">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th class="text-center">Entrants</th>
-              <th class="text-center">%</th>
-              <th class="text-center">Tickets</th>
-              <th class="text-center">%</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @presenter.division_calculations.each do |calc| %>
-              <tr>
-                <td><%= calc.name %></td>
-                <td class="text-center"><%= calc.entrants_count %></td>
-                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.division_entrants_count.to_f * 100).round(1)}%" %></th>
-                <td class="text-center"><%= calc.tickets_count %></td>
-                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.division_tickets_count.to_f * 100).round(1)}%" %></th>
-              </tr>
-            <% end %>
-            <tr class="fw-bold bg-light">
-              <td>Totals</td>
-              <td class="text-center"><%= @presenter.division_entrants_count %></td>
-              <th class="text-center">100.0%</th>
-              <td class="text-center"><%= @presenter.division_tickets_count %></td>
-              <th class="text-center">100.0%</th>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render partial: "calculations_division_card", locals: { presenter: @presenter } %>
     </div>
 
     <div class="col">
-      <div class="card mt-4">
-        <div class="card-header">
-          <div class="row">
-            <div class="col">
-              <h2 class="fw-bold">By Gender</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body table-responsive">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th class="text-center">Entrants</th>
-              <th class="text-center">%</th>
-              <th class="text-center">Tickets</th>
-              <th class="text-center">%</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @presenter.gender_calculations.each do |calc| %>
-              <tr>
-                <td><%= calc.name.titleize %></td>
-                <td class="text-center"><%= calc.entrants_count %></td>
-                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.gender_entrants_count.to_f * 100).round(1)}%" %></th>
-                <td class="text-center"><%= calc.tickets_count %></td>
-                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.gender_tickets_count.to_f * 100).round(1)}%" %></th>
-              </tr>
-            <% end %>
-            <tr class="fw-bold bg-light">
-              <td>Totals</td>
-              <td class="text-center"><%= @presenter.gender_entrants_count %></td>
-              <th class="text-center">100.0%</th>
-              <td class="text-center"><%= @presenter.gender_tickets_count %></td>
-              <th class="text-center">100.0%</th>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render partial: "calculations_gender_card", locals: { presenter: @presenter } %>
     </div>
   </div>
 </article>

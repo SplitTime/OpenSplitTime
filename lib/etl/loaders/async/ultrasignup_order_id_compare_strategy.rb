@@ -3,6 +3,8 @@
 module ETL::Loaders::Async
   # This loader does not attempt to persist records in the database.
   # It merely compares order ids and creates errors when differences exist.
+
+  # TODO: This is a hack and should be replaced by a proper sync strategy
   class UltrasignupOrderIdCompareStrategy
     include ETL::Errors
 

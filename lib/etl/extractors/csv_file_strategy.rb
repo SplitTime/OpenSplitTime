@@ -10,6 +10,7 @@ module ETL
       MAX_FILE_SIZE = 1.megabyte
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding("UTF-8").freeze
       IMPORT_OPTIONS = {
+        col_sep: ",",
         downcase_header: false,
         duplicate_header_suffix: nil,
         force_utf8: true,

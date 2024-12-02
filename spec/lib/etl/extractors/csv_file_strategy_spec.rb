@@ -119,6 +119,24 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       end
     end
 
+    context "when the file has a single column" do
+      let(:file) { file_fixture("single_column.csv") }
+
+      it "does not return errors" do
+        subject.extract
+
+        expect(subject.errors).to be_empty
+      end
+
+      it "returns headers converted to symbols" do
+        expect(raw_data.first.to_h.keys).to eq([:Order_ID])
+      end
+
+      it "returns expected parsed structs" do
+        expect(raw_data.map { |struct| struct[:Order_ID] }).to match_array([123, 456, 789])
+      end
+    end
+
     context "when the file has non-standard characters in headers" do
       let(:file) { file_fixture("test_efforts_header_formats.csv") }
 

@@ -51,6 +51,28 @@ RSpec.describe ETL::Loaders::Async::UltrasignupOrderIdCompareStrategy do
       end
     end
 
+    context "when some order ids are duplicates" do
+      let(:proto_records) do
+        [
+          ProtoRecord.new(
+            Order_ID: "123",
+            ),
+          ProtoRecord.new(
+            Order_ID: "456",
+            ),
+          ProtoRecord.new(
+            Order_ID: "456",
+            ),
+        ]
+      end
+
+      it "adds an order id duplicated error" do
+        subject.load_records
+        expect(subject.errors).to be_present
+        expect(subject.errors.first.dig(:detail, :messages).first).to include("456")
+      end
+    end
+
     context "when some order ids are missing from OST" do
       let(:proto_records) do
         [

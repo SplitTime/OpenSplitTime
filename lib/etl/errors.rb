@@ -96,6 +96,11 @@ module ETL
         detail: { messages: ["A required table was not found in the provided source data"] } }
     end
 
+    def orders_duplicated_error(ids)
+      { title: "Orders are duplicated",
+        detail: { messages: ["Order ids are duplicated in Ultrasignup: #{ids}"] } }
+    end
+
     def orders_missing_error(ids)
       { title: "Orders are missing",
         detail: { messages: ["Orders exist in Ultrasignup but are missing in OST: #{ids}"] } }

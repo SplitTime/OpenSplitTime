@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Loaders::AsyncInsertStrategy do
+RSpec.describe ETL::Loaders::Async::InsertStrategy do
   subject { described_class.new(proto_records, options) }
   let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.scheduled_start_time }

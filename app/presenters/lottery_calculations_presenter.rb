@@ -10,6 +10,12 @@ class LotteryCalculationsPresenter < LotteryPresenter
     validate_setup
   end
 
+  def calculation_applicants_default_none
+    lottery_calculation
+      .joins(:person)
+      .search_default_none(search_text)
+  end
+
   def division_calculations
     @division_calculations ||=
       lottery_calculation.group(:division).pluck(Arel.sql("division, count(*), sum(ticket_count)")).map do |row|

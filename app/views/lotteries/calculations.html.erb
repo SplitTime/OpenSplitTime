@@ -36,6 +36,29 @@
 <article class="ost-article container">
   <div class="row">
     <div class="col">
+      <%= render "lotteries/calculations_applicant_lookup", presenter: @presenter %>
+    </div>
+  </div>
+
+  <% if @presenter.calculation_applicants_default_none.present? %>
+    <%= render partial: "lotteries/calculations_applicant", collection: @presenter.calculation_applicants_default_none, as: :record %>
+  <% else %>
+    <div class="card bg-light mt-2">
+      <div class="card-body">
+        <h6 class="fw-bold">
+          <% if @presenter.params[:search].blank? %>
+            Find someone by entering a name, state, or country
+          <% elsif @presenter.params[:search].length < 3 %>
+            Search parameter is too short
+          <% else %>
+            No applicants match this search
+          <% end %>
+        </h6>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col">
       <%= render partial: "calculations_division_card", locals: { presenter: @presenter } %>
     </div>
 

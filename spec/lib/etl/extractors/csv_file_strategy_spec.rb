@@ -100,6 +100,29 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       end
     end
 
+    context "when a raw ultrasignup participants file is provided" do
+      let(:file) { file_fixture("ultrasignup_raw_participant_export.csv") }
+      let(:expected_array) do
+        [:Order_ID, :Registration_Date, :distance, :Quantity, :Price, :Price_Option, :order_type, :Coupon, :First_Name, :Last_Name, :gender,
+         :Identified_Gender, :Age, :AgeGroup, :DOB, :Email, :Address, :City, :State, :Zip, :Country, :Phone, :Removed, :Bib, :Captain,
+         :team_name, :emergency_name, :emergency_phone, :statement_id, :item_discount, :order_tax, :ultrasignup_fee, :order_total,
+         :Donation_10, :Donation_100, :Donation_25, :Donation_250, :Donation_50, :Description_of_Hardrock_volunteering, :Have_you_ever_finished_the_Hardrock_100,
+         :Livestream_Consent, :Name_verification, :Name_Verification_for_Hardrock, :Name_Verification_for_Qualifier,
+         :Past_applications_since_running_Hardrock, :Please_select_the_qualifier_you_finished_duplicate,
+         :"Please_select_the_qualifier_you_finished.", :"Please_select_the_qualifier_you_finished._2",
+         :Refund_Policy, :Service_Requirement, :Shirt_Size, :Years_volunteered]
+      end
+
+      it "returns raw data in OpenStruct format with expected keys" do
+        expect(subject.errors).to be_empty
+        expect(raw_data.size).to eq(2)
+        expect(raw_data).to all be_a(OpenStruct)
+
+        record = raw_data.first.to_h
+        expect(record.keys).to match_array(expected_array)
+      end
+    end
+
     context "when file has extra empty lines" do
       let(:file) { file_fixture("test_efforts_empty_lines.csv") }
 

@@ -1,3 +1,5 @@
+<%# locals: (presenter:) %>
+
 <ul class="nav nav-tabs nav-tabs-ost" data-turbo="false">
   <%= content_tag :li, class: "nav-item #{'active' if presenter.action_name == 'setup'}" do %>
     <%= link_to "Setup", setup_organization_lottery_path(presenter.organization, presenter.lottery) %>
@@ -10,5 +12,10 @@
   <% end %>
   <%= content_tag :li, class: "nav-item #{'active' if presenter.controller_name == 'partners'}" do %>
     <%= link_to "Partners", organization_lottery_partners_path(presenter.organization, presenter.lottery) %>
+  <% end %>
+  <% if presenter.lottery.calculation_class? %>
+    <%= content_tag :li, class: "nav-item #{'active' if presenter.action_name == 'calculations'}" do %>
+      <%= link_to "Preview Calculations", calculations_organization_lottery_path(presenter.organization, presenter.lottery) %>
+    <% end %>
   <% end %>
 </ul>

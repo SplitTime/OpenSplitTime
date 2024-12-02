@@ -37,11 +37,7 @@ RSpec.describe HistoricalFact, type: :model do
   describe "scopes" do
     describe ".by_kind" do
       subject { described_class.by_kind(kinds) }
-
       let(:kinds) { [] }
-      let!(:fact_1) { create(:historical_fact, kind: :dns) }
-      let!(:fact_2) { create(:historical_fact, kind: :dnf) }
-      let!(:fact_3) { create(:historical_fact, kind: :finished) }
 
       context "when kinds is an empty array" do
         it "returns all historical facts" do
@@ -61,8 +57,7 @@ RSpec.describe HistoricalFact, type: :model do
         let(:kinds) { [:dns] }
 
         it "returns historical facts having that kind" do
-          expect(subject.count).to eq(1)
-          expect(subject.first.kind).to eq("dns")
+          expect(subject.pluck(:kind).uniq).to eq(%w[dns])
         end
       end
 
@@ -70,8 +65,7 @@ RSpec.describe HistoricalFact, type: :model do
         let(:kinds) { [:dns, :dnf] }
 
         it "returns historical facts having those kinds" do
-          expect(subject.count).to eq(2)
-          expect(subject.pluck(:kind)).to match_array %w[dns dnf]
+          expect(subject.pluck(:kind).uniq).to match_array(%w[dns dnf])
         end
       end
 
@@ -79,19 +73,17 @@ RSpec.describe HistoricalFact, type: :model do
         let(:kinds) { [:dns, :dnf, :finished] }
 
         it "returns all historical facts" do
-          expect(subject.count).to eq(3)
-          expect(subject.pluck(:kind)).to match_array %w[dns dnf finished]
+          expect(subject.pluck(:kind).uniq).to match_array %w[dns dnf finished]
         end
       end
     end
 
     describe ".by_reconciled" do
       subject { described_class.by_reconciled(reconciled_booleans) }
-
       let(:reconciled_booleans) { nil }
-      let!(:fact_1) { create(:historical_fact, person: person) }
-      let!(:fact_2) { create(:historical_fact, person: nil) }
-      let(:person) { people(:bruno_fadel) }
+      let(:unreconciled_historical_fact) { historical_facts(:historical_fact_0001) }
+
+      before { unreconciled_historical_fact.update(person_id: nil) }
 
       context "when reconciled_booleans is nil" do
         it "returns all historical facts" do
@@ -103,8 +95,8 @@ RSpec.describe HistoricalFact, type: :model do
         let(:reconciled_booleans) { false }
 
         it "returns historical facts that are not reconciled" do
-          expect(subject.count).to eq(1)
-          expect(subject.first).to eq(fact_2)
+          expect(subject).to be_present
+          expect(subject.pluck(:person_id).uniq).to eq([nil])
         end
       end
 
@@ -112,8 +104,8 @@ RSpec.describe HistoricalFact, type: :model do
         let(:reconciled_booleans) { true }
 
         it "returns historical facts that are reconciled" do
-          expect(subject.count).to eq(1)
-          expect(subject.first).to eq(fact_1)
+          expect(subject.count).not_to eq(HistoricalFact.count)
+          expect(subject.pluck(:person_id)).to all be_present
         end
       end
 

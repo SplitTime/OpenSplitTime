@@ -58,7 +58,7 @@ module BadgeHelper
     when "volunteer_multi"
       title = "VMulti"
       color = :success
-      tooltip_text = "Multiple years of volunteer work (as reported in a specific year)"
+      tooltip_text = "Multiple years of volunteer work (as of the year shown)"
     when "qualifier_finish"
       title = "Qualifier"
       color = :secondary

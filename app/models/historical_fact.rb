@@ -55,6 +55,7 @@ class HistoricalFact < ApplicationRecord
     end
   end
   scope :ordered, -> { order(:last_name, :first_name, :state_code, :year, :kind) }
+  scope :ordered_within_person, -> { order(:year, :kind) }
   scope :reconciled, -> { where.not(person_id: nil) }
   scope :unreconciled, -> { where(person_id: nil) }
 

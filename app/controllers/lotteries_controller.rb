@@ -63,6 +63,11 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # GET /organizations/:organization_id/lotteries/:id/calculations
+  def calculations
+    @presenter = LotteryCalculationsPresenter.new(@lottery, view_context)
+  end
+
   # GET /organizations/:organization_id/lotteries/:id/draw_tickets
   def draw_tickets
     @presenter = LotteryPresenter.new(@lottery, view_context)

@@ -1,0 +1,124 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Lottery Calculations - #{@presenter.name}" %>
+<% end %>
+
+<%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Calculations"] %>
+
+<aside class="ost-toolbar">
+  <div class="container">
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: :info,
+                 icon_color: :info,
+                 icon_name: "info-circle",
+                 main_text: "This is the Lottery Calculations Preview Page",
+                 detail_paragraphs: [
+                   "Information shown here is based on Historical Facts that have been entered or imported for your organization, which are used as inputs for the query set up for this Lottery (Query class name: #{@presenter.calculation_class}).",
+                   "To view Historical Facts, click the button to the right.",
+                   "This page shows a summary of tickets and divisions that are currently being calculated for this Lottery, together with a detailed list view showing calculations for each applicant.",
+                 ],
+                 link: (button_to "Historical facts", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-secondary")
+               } %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: :warning,
+                 icon_color: :warning,
+                 icon_name: "exclamation-circle",
+                 main_text: "Note: These are not the actual Divisions and ticket counts for your Lottery",
+                 detail_paragraphs: [
+                   "Click on the Setup tab to see the Divisions and Tickets that have been set up for your Lottery. To transfer the Divisions and tickets from this Preview page to your lottery, click the button to the right.",
+                 ],
+                 link: (button_to "Accept calculations", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-danger")
+               } %>
+  </div>
+</aside>
+
+<article class="ost-article container">
+  <div class="row">
+    <div class="col">
+      <div class="card mt-4">
+        <div class="card-header">
+          <div class="row">
+            <div class="col">
+              <h2 class="fw-bold">By Division</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th class="text-center">Entrants</th>
+              <th class="text-center">%</th>
+              <th class="text-center">Tickets</th>
+              <th class="text-center">%</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @presenter.division_calculations.each do |calc| %>
+              <tr>
+                <td><%= calc.name %></td>
+                <td class="text-center"><%= calc.entrants_count %></td>
+                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.division_entrants_count.to_f * 100).round(1)}%" %></th>
+                <td class="text-center"><%= calc.tickets_count %></td>
+                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.division_tickets_count.to_f * 100).round(1)}%" %></th>
+              </tr>
+            <% end %>
+            <tr class="fw-bold bg-light">
+              <td>Totals</td>
+              <td class="text-center"><%= @presenter.division_entrants_count %></td>
+              <th class="text-center">100.0%</th>
+              <td class="text-center"><%= @presenter.division_tickets_count %></td>
+              <th class="text-center">100.0%</th>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card mt-4">
+        <div class="card-header">
+          <div class="row">
+            <div class="col">
+              <h2 class="fw-bold">By Gender</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th class="text-center">Entrants</th>
+              <th class="text-center">%</th>
+              <th class="text-center">Tickets</th>
+              <th class="text-center">%</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @presenter.gender_calculations.each do |calc| %>
+              <tr>
+                <td><%= calc.name.titleize %></td>
+                <td class="text-center"><%= calc.entrants_count %></td>
+                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.gender_entrants_count.to_f * 100).round(1)}%" %></th>
+                <td class="text-center"><%= calc.tickets_count %></td>
+                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.gender_tickets_count.to_f * 100).round(1)}%" %></th>
+              </tr>
+            <% end %>
+            <tr class="fw-bold bg-light">
+              <td>Totals</td>
+              <td class="text-center"><%= @presenter.gender_entrants_count %></td>
+              <th class="text-center">100.0%</th>
+              <td class="text-center"><%= @presenter.gender_tickets_count %></td>
+              <th class="text-center">100.0%</th>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

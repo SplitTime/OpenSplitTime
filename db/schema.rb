@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_02_033758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -340,6 +340,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
     t.datetime "updated_at", null: false
     t.boolean "concealed"
     t.integer "status"
+    t.string "calculation_class"
     t.index ["organization_id"], name: "index_lotteries_on_organization_id"
   end
 
@@ -936,26 +937,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
                JOIN event_groups ON ((event_groups.id = events.event_group_id)))
             WHERE (efforts.finished AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
             GROUP BY event_groups.organization_id, efforts.person_id
-          ), latest_vmulti AS (
-           SELECT ranked_vmultis.organization_id,
-              ranked_vmultis.person_id,
-              ranked_vmultis.year AS latest_vmulti_year,
-              ranked_vmultis.quantity AS latest_vmulti_year_count
-             FROM ( SELECT historical_facts.organization_id,
-                      historical_facts.person_id,
-                      historical_facts.year,
-                      historical_facts.quantity,
-                      row_number() OVER (PARTITION BY historical_facts.organization_id, historical_facts.person_id ORDER BY historical_facts.year DESC) AS rank
-                     FROM historical_facts
-                    WHERE ((historical_facts.kind = 3) AND (historical_facts.year < 2024))) ranked_vmultis
-            WHERE (ranked_vmultis.rank = 1)
+          ), vmulti_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              historical_facts.quantity AS vmulti_year_count
+             FROM historical_facts
+            WHERE (historical_facts.kind = 3)
           ), volunteer_year_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
               count(*) AS volunteer_year_count
-             FROM (historical_facts
-               LEFT JOIN latest_vmulti latest_vmulti_1 USING (organization_id, person_id))
-            WHERE ((historical_facts.kind = 1) AND (historical_facts.year < 2025) AND (historical_facts.year > latest_vmulti_1.latest_vmulti_year))
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 1) AND (historical_facts.year < 2025))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), major_volunteer_year_count AS (
            SELECT historical_facts.organization_id,
@@ -966,21 +959,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
           )
    SELECT applicants.organization_id,
       applicants.person_id,
+      applicants.gender,
           CASE
               WHEN ((applicants.gender = 0) AND applicants.finisher) THEN 'Male Finishers'::text
               WHEN (applicants.gender = 0) THEN 'Male Nevers'::text
               WHEN applicants.finisher THEN 'Female Finishers'::text
               ELSE 'Female Nevers'::text
           END AS division,
+      (
           CASE
-              WHEN applicants.finisher THEN (((((COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(latest_vmulti.latest_vmulti_year_count, 0)) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)) + 1))::double precision
-              ELSE pow((2)::double precision, ((((COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(latest_vmulti.latest_vmulti_year_count, 0)) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)))::double precision)
-          END AS ticket_count
+              WHEN applicants.finisher THEN ((((((COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint)) + (COALESCE(vmulti_year_count.vmulti_year_count, 0) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)) + 1))::double precision
+              ELSE pow((2)::double precision, (((((COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint)) + (COALESCE(vmulti_year_count.vmulti_year_count, 0) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)))::double precision)
+          END)::integer AS ticket_count
      FROM ((((((applicants
        LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
        LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))
        LEFT JOIN finish_year_count USING (organization_id, person_id))
-       LEFT JOIN latest_vmulti USING (organization_id, person_id))
+       LEFT JOIN vmulti_year_count USING (organization_id, person_id))
        LEFT JOIN volunteer_year_count USING (organization_id, person_id))
        LEFT JOIN major_volunteer_year_count USING (organization_id, person_id));
   SQL

@@ -57,6 +57,10 @@ class LotteryPolicy < ApplicationPolicy
     user.authorized_for_lotteries?(organization)
   end
 
+  def calculations?
+    user.authorized_for_lotteries?(organization)
+  end
+
   def draw?
     user.authorized_for_lotteries?(organization)
   end

@@ -223,6 +223,7 @@ Rails.application.routes.draw do
     end
 
     resources :lotteries do
+      member { get :calculations }
       member { get :draw_tickets }
       member { get :setup }
       member { get :withdraw_entrants }

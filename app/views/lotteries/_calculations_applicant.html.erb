@@ -27,7 +27,7 @@
         </tr>
         </thead>
         <tbody>
-        <%= render partial: "historical_facts/calculations_row", collection: record.person.historical_facts.ordered, as: :fact %>
+        <%= render partial: "historical_facts/calculations_row", collection: record.person.historical_facts.ordered_within_person, as: :fact %>
         </tbody>
       </table>
     </div>

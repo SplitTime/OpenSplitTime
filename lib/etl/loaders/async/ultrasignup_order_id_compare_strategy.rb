@@ -43,9 +43,11 @@ module ETL::Loaders::Async
       lottery_application_facts = organization.historical_facts.where(kind: :lottery_application)
       existing_order_ids = lottery_application_facts.pluck(:comments).compact.map { |comment| comment.split(": ").last }.compact
 
+      duplicate_order_ids = ultrasignup_order_ids.count_by { |id| id }.keep_if { |_, count| count > 1 }
       missing_order_ids = ultrasignup_order_ids - existing_order_ids
       outdated_order_ids = existing_order_ids - ultrasignup_order_ids
 
+      errors << orders_duplicated_error(duplicate_order_ids) if duplicate_order_ids.present?
       errors << orders_missing_error(missing_order_ids) if missing_order_ids.any?
       errors << orders_outdated_error(outdated_order_ids) if outdated_order_ids.any?
     end

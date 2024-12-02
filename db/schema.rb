@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_02_021951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -340,6 +340,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_01_224133) do
     t.datetime "updated_at", null: false
     t.boolean "concealed"
     t.integer "status"
+    t.string "calculation_class"
     t.index ["organization_id"], name: "index_lotteries_on_organization_id"
   end
 

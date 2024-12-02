@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: [@lottery.organization, @lottery], local: true, html: {class: "form-horizontal", data: {turbo: false}}) do |f| %>
+    <%= form_with(model: [@lottery.organization, @lottery], local: true, html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
       <div class="mb-3">
         <div class="control-label col">
           <%= f.label :name %>
@@ -29,7 +29,19 @@
           <%= f.select :status,
                        options_for_select(::Lottery.statuses.map { |key, value| [key.titleize, ::Lottery.statuses.key(value)] }, selected: @lottery.status),
                        {},
-                       {class: "form-control dropdown-select-field"} %>
+                       { class: "form-control dropdown-select-field" } %>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="control-label col-sm-2">
+          <%= f.label :calculation_class %>
+        </div>
+        <div class="col-sm-8">
+          <%= f.select :calculation_class,
+                       options_for_calculation_class(@lottery),
+                       {},
+                       { class: "form-control dropdown-select-field" } %>
         </div>
       </div>
 
@@ -52,5 +64,5 @@
         <span class="brackets"><%= link_to 'Cancel', @lottery.new_record? ? organization_lotteries_path(@lottery.organization) : setup_organization_lottery_path(@lottery.organization, @lottery) %></span>
       </div>
     <% end %>
-  </div>
+    </div>
 </div>

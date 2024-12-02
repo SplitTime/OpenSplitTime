@@ -47,6 +47,13 @@ module LotteryHelper
     link_to fa_icon("pencil-alt"), url, options
   end
 
+  def options_for_calculation_class(lottery)
+    directory_path = Rails.root.join("app", "models", "lotteries", "calculations")
+    files = Dir.glob("#{directory_path}/*")
+    class_names = files.map { |file| file.split("/").last.split(".").first.classify }
+    options_for_select(class_names, selected: lottery.calculation_class)
+  end
+
   def pre_selected_badge_with_label(entrant, tag: :h5)
     content_tag(tag) do
       concat "Pre-selected: "

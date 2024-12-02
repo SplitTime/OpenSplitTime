@@ -17,7 +17,7 @@
                    "To view Historical Facts, click the button to the right.",
                    "This page shows a summary of tickets and divisions that are currently being calculated for this Lottery, together with a detailed list view showing calculations for each applicant.",
                  ],
-                 link: (button_to "Historical facts", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-secondary")
+                 link: (link_to "Historical facts", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-secondary")
                } %>
     <%= render partial: "shared/callout_with_link",
                locals: {
@@ -28,7 +28,7 @@
                  detail_paragraphs: [
                    "Click on the Setup tab to see the Divisions and Tickets that have been set up for your Lottery. To transfer the Divisions and tickets from this Preview page to your lottery, click the button to the right.",
                  ],
-                 link: (button_to "Accept calculations", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-danger")
+                 link: (link_to "Accept calculations", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-danger")
                } %>
   </div>
 </aside>

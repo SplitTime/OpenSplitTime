@@ -58,10 +58,10 @@ module ETL
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::UltrasignupHistoricalFactsStrategy
         self.load_strategy = Loaders::Async::InsertStrategy
-      when :ultrasignup_historical_facts_compare_order_ids
+      when :ultrasignup_order_id_compare
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::NullStrategy
-        self.load_strategy = Loaders::Async::UltrasignupOrderIDCompareStrategy
+        self.load_strategy = Loaders::Async::UltrasignupOrderIdCompareStrategy
       when :lottery_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::LotteryEntrantsStrategy

@@ -40,28 +40,32 @@ module ETL
       when :event_course_splits
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::EventCourseSplitsStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       when :event_group_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::EventGroupEntrantsStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       when :event_entrants_with_military_times
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::EffortsWithTimesStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
         self.custom_options = { time_format: :military }
       when :hardrock_historical_facts
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::HardrockHistoricalFactsStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       when :ultrasignup_historical_facts
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::UltrasignupHistoricalFactsStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
+      when :ultrasignup_order_id_compare
+        self.extract_strategy = Extractors::CsvFileStrategy
+        self.transform_strategy = Transformers::Async::NullStrategy
+        self.load_strategy = Loaders::Async::UltrasignupOrderIdCompareStrategy
       when :lottery_entrants
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::LotteryEntrantsStrategy
-        self.load_strategy = Loaders::AsyncInsertStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       else
         errors << format_not_recognized_error(format)
       end

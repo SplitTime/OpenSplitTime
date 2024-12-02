@@ -1798,7 +1798,7 @@ historical_fact_0082:
   phone: '7797152514'
   kind: 11
   quantity:
-  comments:
+  comments: 'Ultrasignup order id: 123'
   created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
@@ -1820,7 +1820,7 @@ historical_fact_0083:
   phone: '4747239760'
   kind: 11
   quantity:
-  comments:
+  comments: 'Ultrasignup order id: 456'
   created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
@@ -1842,7 +1842,7 @@ historical_fact_0084:
   phone: '8952939469'
   kind: 11
   quantity:
-  comments:
+  comments: 'Ultrasignup order id: 789'
   created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c

@@ -8,6 +8,7 @@ class LotteryResource < Madmin::Resource
   attribute :updated_at, form: false
   attribute :concealed
   attribute :status
+  attribute :calculation_class
 
   # Associations
   attribute :partners

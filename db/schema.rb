@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_02_033758) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_02_055907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -957,7 +957,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_033758) do
              FROM historical_facts
             WHERE ((historical_facts.kind = 2) AND (historical_facts.year = 2024))
           )
-   SELECT applicants.organization_id,
+   SELECT row_number() OVER () AS id,
+      applicants.organization_id,
       applicants.person_id,
       applicants.gender,
           CASE

@@ -17,7 +17,7 @@
                    "To view Historical Facts, click the button to the right.",
                    "This page shows a summary of tickets and divisions that are currently being calculated for this Lottery, together with a detailed list view showing calculations for each applicant.",
                  ],
-                 link: (button_to "Historical facts", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-secondary")
+                 link: (link_to "Historical facts", organization_historical_facts_path(@presenter.organization), class: "btn btn-outline-secondary")
                } %>
     <%= render partial: "shared/callout_with_link",
                locals: {
@@ -28,7 +28,7 @@
                  detail_paragraphs: [
                    "Click on the Setup tab to see the Divisions and Tickets that have been set up for your Lottery. To transfer the Divisions and tickets from this Preview page to your lottery, click the button to the right.",
                  ],
-                 link: (button_to "Accept calculations", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-danger")
+                 link: (link_to "Accept calculations", setup_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "btn btn-outline-danger")
                } %>
   </div>
 </aside>
@@ -36,89 +36,34 @@
 <article class="ost-article container">
   <div class="row">
     <div class="col">
-      <div class="card mt-4">
-        <div class="card-header">
-          <div class="row">
-            <div class="col">
-              <h2 class="fw-bold">By Division</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body table-responsive">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th class="text-center">Entrants</th>
-              <th class="text-center">%</th>
-              <th class="text-center">Tickets</th>
-              <th class="text-center">%</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @presenter.division_calculations.each do |calc| %>
-              <tr>
-                <td><%= calc.name %></td>
-                <td class="text-center"><%= calc.entrants_count %></td>
-                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.division_entrants_count.to_f * 100).round(1)}%" %></th>
-                <td class="text-center"><%= calc.tickets_count %></td>
-                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.division_tickets_count.to_f * 100).round(1)}%" %></th>
-              </tr>
-            <% end %>
-            <tr class="fw-bold bg-light">
-              <td>Totals</td>
-              <td class="text-center"><%= @presenter.division_entrants_count %></td>
-              <th class="text-center">100.0%</th>
-              <td class="text-center"><%= @presenter.division_tickets_count %></td>
-              <th class="text-center">100.0%</th>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+      <%= render "lotteries/calculations_applicant_lookup", presenter: @presenter %>
+    </div>
+  </div>
+
+  <% if @presenter.calculation_applicants_default_none.present? %>
+    <%= render partial: "lotteries/calculations_applicant", collection: @presenter.calculation_applicants_default_none, as: :record %>
+  <% else %>
+    <div class="card bg-light mt-2">
+      <div class="card-body">
+        <h6 class="fw-bold">
+          <% if @presenter.params[:search].blank? %>
+            Find someone by entering a name, state, or country
+          <% elsif @presenter.params[:search].length < 3 %>
+            Search parameter is too short
+          <% else %>
+            No applicants match this search
+          <% end %>
+        </h6>
       </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col">
+      <%= render partial: "calculations_division_card", locals: { presenter: @presenter } %>
     </div>
 
     <div class="col">
-      <div class="card mt-4">
-        <div class="card-header">
-          <div class="row">
-            <div class="col">
-              <h2 class="fw-bold">By Gender</h2>
-            </div>
-          </div>
-        </div>
-        <div class="card-body table-responsive">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>Name</th>
-              <th class="text-center">Entrants</th>
-              <th class="text-center">%</th>
-              <th class="text-center">Tickets</th>
-              <th class="text-center">%</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @presenter.gender_calculations.each do |calc| %>
-              <tr>
-                <td><%= calc.name.titleize %></td>
-                <td class="text-center"><%= calc.entrants_count %></td>
-                <th class="text-center"><%= "#{(calc.entrants_count / @presenter.gender_entrants_count.to_f * 100).round(1)}%" %></th>
-                <td class="text-center"><%= calc.tickets_count %></td>
-                <th class="text-center"><%= "#{(calc.tickets_count / @presenter.gender_tickets_count.to_f * 100).round(1)}%" %></th>
-              </tr>
-            <% end %>
-            <tr class="fw-bold bg-light">
-              <td>Totals</td>
-              <td class="text-center"><%= @presenter.gender_entrants_count %></td>
-              <th class="text-center">100.0%</th>
-              <td class="text-center"><%= @presenter.gender_tickets_count %></td>
-              <th class="text-center">100.0%</th>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render partial: "calculations_gender_card", locals: { presenter: @presenter } %>
     </div>
   </div>
 </article>

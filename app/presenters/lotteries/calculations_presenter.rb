@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LotteryCalculationsPresenter < LotteryPresenter
+class Lotteries::CalculationsPresenter < LotteryPresenter
   CalculatedGroup = Struct.new(:name, :entrants_count, :tickets_count)
 
   delegate :calculation_class, to: :lottery

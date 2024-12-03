@@ -6,7 +6,7 @@ class LotteryPresenter < BasePresenter
   attr_reader :lottery, :params
   delegate :action_name, :controller_name, to: :view_context
 
-  delegate :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
+  delegate :calculation_class?, :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
            :tickets, :to_param, to: :lottery
   delegate :draws, :entrants, :tickets, to: :lottery, prefix: true
 

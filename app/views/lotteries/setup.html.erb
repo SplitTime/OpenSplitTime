@@ -54,7 +54,12 @@
             Entrants
           </button>
           <div class="dropdown-menu">
-            <%= link_to "Import entrants",
+            <%= link_to "Sync entrants from Preview",
+                        sync_calculations_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                        data: { turbo_method: :post },
+                        disabled: !@presenter.calculation_class?,
+                        class: "dropdown-item" %>
+            <%= link_to "Import entrants from CSV",
                         new_import_job_path(import_job: { parent_type: "Lottery", parent_id: @presenter.lottery.id, format: :lottery_entrants }),
                         class: "dropdown-item" %>
             <%= link_to "Generate entrants",

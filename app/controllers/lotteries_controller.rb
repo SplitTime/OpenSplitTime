@@ -65,7 +65,17 @@ class LotteriesController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:id/calculations
   def calculations
-    @presenter = LotteryCalculationsPresenter.new(@lottery, view_context)
+    @presenter = Lotteries::CalculationsPresenter.new(@lottery, view_context)
+  end
+
+  # POST /organizations/:organization_id/lotteries/:id/sync_calculations
+  def sync_calculations
+    if @lottery.calculation_class?
+      Lotteries::SyncCalculationsJob.perform_later(@lottery)
+      redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Sync in progress"
+    else
+      redirect_to setup_organization_lottery_path(@organization, @lottery), alert: "Lottery does not have a calculations_class"
+    end
   end
 
   # GET /organizations/:organization_id/lotteries/:id/draw_tickets
@@ -93,22 +103,22 @@ class LotteriesController < ApplicationController
         when :ultrasignup
           entrants = @lottery.divisions.flat_map(&:accepted_entrants)
           filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "ultrasignup", formats: :csv, locals: {records: entrants})
+          csv_stream = render_to_string(partial: "ultrasignup", formats: :csv, locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         when :results
           filename = "#{@lottery.name}-results-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "results", formats: :csv, locals: {lottery: @lottery})
+          csv_stream = render_to_string(partial: "results", formats: :csv, locals: { lottery: @lottery })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         else
           entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
           builder = ::CsvBuilder.new(::LotteryEntrant, entrants)
-          filename = if prepared_params[:filter] == {"id" => "0"}
-                       "lottery-entrants-template.csv"
-                     else
-                       "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
-                     end
+          filename = if prepared_params[:filter] == { "id" => "0" }
+            "lottery-entrants-template.csv"
+          else
+            "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          end
 
           send_data(builder.full_string, type: "text/csv", filename: filename)
         end
@@ -143,8 +153,8 @@ class LotteriesController < ApplicationController
   def delete_entrants
     begin
       if @lottery.draws.delete_all &&
-         @lottery.tickets.delete_all &&
-         @lottery.divisions.each { |division| division.entrants.delete_all }
+        @lottery.tickets.delete_all &&
+        @lottery.divisions.each { |division| division.entrants.delete_all }
         flash[:success] = "Deleted all lottery entrants, tickets, and draws"
       else
         flash[:danger] = "Unable to delete all lottery entrants, tickets, and draws"

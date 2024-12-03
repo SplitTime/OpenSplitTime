@@ -228,6 +228,7 @@ Rails.application.routes.draw do
       member { get :setup }
       member { get :withdraw_entrants }
       member { get :export_entrants }
+      member { post :sync_calculations }
       member { post :draw }
       member { post :generate_entrants }
       member { post :generate_tickets }

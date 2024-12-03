@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_02_055907) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -382,8 +382,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_055907) do
     t.string "external_id"
     t.boolean "withdrawn"
     t.date "service_completed_date"
+    t.bigint "person_id"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
+    t.index ["person_id"], name: "index_lottery_entrants_on_person_id"
   end
 
   create_table "lottery_simulation_runs", force: :cascade do |t|
@@ -762,6 +764,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_055907) do
   add_foreign_key "lottery_draws", "lotteries"
   add_foreign_key "lottery_draws", "lottery_tickets"
   add_foreign_key "lottery_entrants", "lottery_divisions"
+  add_foreign_key "lottery_entrants", "people"
   add_foreign_key "lottery_simulation_runs", "lotteries"
   add_foreign_key "lottery_simulations", "lottery_simulation_runs"
   add_foreign_key "lottery_tickets", "lotteries"

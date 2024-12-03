@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require "smarter_csv"
+require "csv"
 
 module ETL
   module Extractors
     class CsvFileStrategy
       include ETL::Errors
 
-      MAX_FILE_SIZE = 1.megabyte
+      MAX_FILE_SIZE = 2.megabytes
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding("UTF-8").freeze
       IMPORT_OPTIONS = {
         col_sep: ",",
@@ -33,8 +34,12 @@ module ETL
         return if errors.present?
 
         rows = SmarterCSV.process(file, IMPORT_OPTIONS)
-        rows.map { |row| OpenStruct.new(row) if row.compact.present? }.compact
-      rescue SmarterCSV::SmarterCSVException, CSV::MalformedCSVError => e
+        rows.map do |row|
+          if valid_csv_row?(row)
+            OpenStruct.new(row)
+          end
+        end.compact
+      rescue SmarterCSV::SmarterCSVException, ::CSV::MalformedCSVError => e
         errors << smarter_csv_error(e)
         []
       end
@@ -58,6 +63,17 @@ module ETL
               errors << invalid_file_error(source_data)
             end
           end
+      end
+
+      # @param [Hash] row
+      # @return [Boolean]
+      def valid_csv_row?(row)
+        return false unless row.present?
+        # Reject HTML rows
+        first_value = row.first.last.to_s
+        return false if first_value.start_with?("<") && first_value.end_with?(">")
+
+        true
       end
 
       def validate_setup

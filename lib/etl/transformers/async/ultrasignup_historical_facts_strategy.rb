@@ -64,14 +64,14 @@ module ETL::Transformers::Async
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :volunteer_multi_reported
         proto_record[:quantity] = years_count
-        proto_record[:comments] = struct[:Volunteer_description]
+        proto_record[:comments] = struct[:Description_of_Hardrock_volunteering]
 
         proto_records << proto_record
       end
     end
 
     def record_current_qualifier(struct)
-      reported_qualifier = struct[:Qualifier]
+      reported_qualifier = struct[:"Please_select_the_qualifier_you_finished."]
 
       if reported_qualifier.present?
         proto_record = base_proto_record.deep_dup
@@ -96,9 +96,9 @@ module ETL::Transformers::Async
     end
 
     def record_previous_names(struct)
-      names_1 = struct[:Previous_names_1]
-      names_2 = struct[:Previous_names_2]
-      names_2 = nil if names_2.downcase.strip == names_1.downcase.strip
+      names_1 = struct[:Name_Verification_for_Hardrock]
+      names_2 = struct[:Name_Verification_for_Qualifier]
+      names_2 = nil if names_2.to_s.downcase.strip == names_1.to_s.downcase.strip
       previous_names_array = [names_1, names_2]
 
       previous_names_array.each do |previous_names|
@@ -123,7 +123,7 @@ module ETL::Transformers::Async
     end
 
     def record_ever_finished(struct)
-      reported_ever_finished = struct[:Ever_finished]
+      reported_ever_finished = struct[:Have_you_ever_finished_the_Hardrock_100]
 
       unless reported_ever_finished.blank?
         proto_record = base_proto_record.deep_dup
@@ -135,7 +135,7 @@ module ETL::Transformers::Async
     end
 
     def record_dns_since_finish(struct)
-      reported_dns_since_finish = struct[:DNS_since_finish]
+      reported_dns_since_finish = struct[:Past_applications_since_running_Hardrock]
 
       if reported_dns_since_finish.present? && reported_dns_since_finish.to_s.numeric?
         proto_record = base_proto_record.deep_dup

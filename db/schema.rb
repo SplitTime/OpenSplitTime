@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_03_214417) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_03_221822) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -969,12 +969,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_214417) do
               applicants.external_id,
               applicants.finisher,
               applicants.gender,
+              (
                   CASE
                       WHEN applicants.finisher THEN COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint)
                       ELSE COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint)
-                  END AS dns_ticket_count,
-              COALESCE(finish_year_count.finish_year_count, (0)::bigint) AS finish_ticket_count,
-              ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(vmulti_year_count.vmulti_year_count, 0)) / 5) AS volunteer_ticket_count,
+                  END)::integer AS dns_ticket_count,
+              (COALESCE(finish_year_count.finish_year_count, (0)::bigint))::integer AS finish_ticket_count,
+              (((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(vmulti_year_count.vmulti_year_count, 0)) / 5))::integer AS volunteer_ticket_count,
               COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0) AS volunteer_major_ticket_count
              FROM ((((((applicants
                LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
@@ -1000,10 +1001,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_214417) do
       finish_ticket_count,
       volunteer_ticket_count,
       volunteer_major_ticket_count,
+      (
           CASE
-              WHEN finisher THEN ((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision
-              ELSE pow((2)::double precision, ((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision)
-          END AS ticket_count
+              WHEN finisher THEN (((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count) + 1))::double precision
+              ELSE pow((2)::double precision, (((dns_ticket_count + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision)
+          END)::integer AS ticket_count
      FROM all_counts;
   SQL
 end

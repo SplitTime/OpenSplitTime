@@ -52,7 +52,7 @@ module ETL::Transformers::Async
     def record_lottery_application(struct)
       proto_record = base_proto_record.deep_dup
       proto_record[:kind] = :lottery_application
-      proto_record[:comments] = "Ultrasignup order id: #{struct[:Order_ID]}"
+      proto_record[:comments] = "Ultrasignup"
 
       proto_records << proto_record
     end

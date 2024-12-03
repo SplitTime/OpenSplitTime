@@ -249,7 +249,7 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
         expect(proto_records).to all be_a(ProtoRecord)
         expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
 
-        %i[first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
+        %i[external_id first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)
         end
       end
@@ -258,7 +258,8 @@ RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
         lottery_application_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :lottery_application }
         expect(lottery_application_proto_records.size).to eq(structs.size)
         proto_record = lottery_application_proto_records.first
-        expect(proto_record[:comments]).to eq("Ultrasignup order id: 26861")
+        expect(proto_record[:comments]).to eq("Ultrasignup")
+        expect(proto_record[:external_id]).to eq(26861)
       end
 
       it "returns one proto_record for each multi-year volunteer fact" do

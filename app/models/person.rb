@@ -21,6 +21,7 @@ class Person < ApplicationRecord
   enum gender: [:male, :female, :nonbinary]
   has_many :efforts, dependent: :nullify
   has_many :historical_facts, dependent: :nullify
+  has_many :lottery_entrants, dependent: :nullify
   belongs_to :claimant, class_name: "User", foreign_key: "user_id", optional: true
   has_one_attached :photo do |photo|
     photo.variant :thumbnail, resize_to_limit: [50, 50]

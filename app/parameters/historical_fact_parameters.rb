@@ -17,6 +17,7 @@ class HistoricalFactParameters < BaseParameters
       :year,
       :quantity,
       :comments,
+      :external_id,
     ]
   end
 
@@ -30,6 +31,7 @@ class HistoricalFactParameters < BaseParameters
       dob: :birthdate,
       "phone_#": :phone,
       email_address: :email,
+      order_id: :external_id,
     }
   end
 end

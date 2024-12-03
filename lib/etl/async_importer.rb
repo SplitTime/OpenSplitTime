@@ -50,6 +50,10 @@ module ETL
         self.transform_strategy = Transformers::Async::EffortsWithTimesStrategy
         self.load_strategy = Loaders::Async::InsertStrategy
         self.custom_options = { time_format: :military }
+      when :historical_facts
+        self.extract_strategy = Extractors::CsvFileStrategy
+        self.transform_strategy = Transformers::Async::HistoricalFactsStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       when :hardrock_historical_facts
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::HardrockHistoricalFactsStrategy

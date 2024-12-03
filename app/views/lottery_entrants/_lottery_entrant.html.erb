@@ -10,7 +10,10 @@
         </div>
         <div class="col">
           <h4 class="text-end"><span class="badge bg-secondary"><%= record.division_name %></span></h4>
-          <h6 class="text-end fw-bold"><%= link_to "#{pluralize(record.number_of_tickets, 'ticket')}", organization_lottery_lottery_entrant_path(record.organization, record.lottery, record) %></h6>
+          <h6 class="text-end fw-bold">
+            <%= link_to "#{pluralize(record.number_of_tickets, 'ticket')}",
+                        organization_lottery_lottery_entrant_path(record.organization, record.lottery, record) %>
+          </h6>
         </div>
       </div>
     </div>

@@ -1,19 +1,70 @@
-<%= turbo_frame_tag dom_id(record) do %>
+<%# locals: (record:) %>
+
+<% presenter = LotteryEntrantPresenter.new(record) %>
+
+<%= turbo_frame_tag dom_id(presenter) do %>
   <div class="card bg-light mt-2">
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <h5 class="fw-bold"><%= record.name %></h5>
-          <h6><%= record.flexible_geolocation %></h6>
+          <h5 class="fw-bold"><%= presenter.name %></h5>
+          <h6><%= presenter.flexible_geolocation %></h6>
         </div>
         <div class="col">
-          <h4 class="text-end"><span class="badge bg-secondary"><%= record.division_name %></span></h4>
-          <h6 class="text-end fw-bold"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
+          <h4 class="text-end"><span class="badge bg-secondary"><%= presenter.division_name %></span></h4>
+          <h6 class="text-end fw-bold"><%= "#{pluralize(presenter.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
+      <% if current_user.present? && (current_user.admin? || current_user.email == presenter.email) %>
+        <hr/>
+        <div class="row">
+          <div class="col">
+            <% if presenter.finisher? %>
+              <p><span class="fw-bold">You are in a Finishers lottery.</span> Your tickets are calculated as follows:</p>
+
+              <ul>
+                <li>Number of finishes</li>
+                <li>Plus number of DNS since your last start</li>
+                <li>Plus years of volunteering at Hardrock / 5 (rounded down)</li>
+                <li>Plus one-time service tickets for trail work, shown here as "VMajor"</li>
+                <li>Plus 1</li>
+              </ul>
+            <% else %>
+              <p><span class="fw-bold">You are in a Nevers lottery.</span> Your exponent is calculated as follows:</p>
+
+              <ul>
+                <li>Number of DNS since your last start</li>
+                <li>Plus years of volunteering at Hardrock / 5 (rounded down)</li>
+                <li>Plus one-time service tickets for trail work, shown here as "VMajor"</li>
+              </ul>
+
+              <p><span class="fw-bold">Your tickets are equal to 2 to the power of your exponent component.</span></p>
+              <p>For example, if your exponent component is 3, then your ticket count is 2 ^ 3 = 8.</p>
+              <p>If your exponent component is 0, then your ticket count is 2 ^ 0 = 1.</p>
+            <% end %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <table class="table">
+              <thead>
+              <tr>
+                <th></th>
+                <th class="text-center">Year</th>
+                <th class="text-center">Quantity</th>
+                <th>Comments</th>
+              </tr>
+              </thead>
+              <tbody>
+              <%= render partial: "historical_facts/calculations_row", collection: presenter.relevant_historical_facts, as: :fact %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
       <hr/>
       <div class="row">
-        <% record.tickets.each do |ticket| %>
+        <% presenter.tickets.each do |ticket| %>
           <div class="col-6 col-sm-3 col-md-2 text-center">
             <h4><span class="badge bg-primary text-center font-monospace p-3"><%= "##{ticket.reference_number}" %></span></h4>
           </div>

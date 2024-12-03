@@ -4,6 +4,7 @@ class HistoricalFactResource < Madmin::Resource
   attribute :kind
   attribute :quantity
   attribute :comments
+  attribute :external_id
   attribute :first_name
   attribute :last_name
   attribute :birthdate

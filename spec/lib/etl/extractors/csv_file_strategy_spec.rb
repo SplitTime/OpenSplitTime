@@ -164,7 +164,8 @@ RSpec.describe ETL::Extractors::CsvFileStrategy do
       let(:file) { file_fixture("test_efforts_header_formats.csv") }
 
       it "returns headers converted to symbols" do
-        expect(raw_data.first.to_h.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :'bib_#'])
+        record = raw_data.first.to_h
+        expect(record.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :'bib_#'])
       end
     end
 

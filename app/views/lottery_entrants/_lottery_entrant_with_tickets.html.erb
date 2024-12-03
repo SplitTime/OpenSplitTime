@@ -1,4 +1,4 @@
-<%# locals: (record:) %>
+<%# locals: (record:, calculation:) %>
 
 <% presenter = LotteryEntrantPresenter.new(record) %>
 
@@ -17,50 +17,11 @@
       </div>
       <% if current_user.present? && (current_user.admin? || current_user.email == presenter.email) %>
         <hr/>
-        <div class="row">
-          <div class="col">
-            <% if presenter.finisher? %>
-              <p><span class="fw-bold">You are in a Finishers lottery.</span> Your tickets are calculated as follows:</p>
-
-              <ul>
-                <li>Number of finishes</li>
-                <li>Plus number of DNS since your last start</li>
-                <li>Plus years of volunteering at Hardrock / 5 (rounded down)</li>
-                <li>Plus one-time service tickets for trail work, shown here as "VMajor"</li>
-                <li>Plus 1</li>
-              </ul>
-            <% else %>
-              <p><span class="fw-bold">You are in a Nevers lottery.</span> Your exponent is calculated as follows:</p>
-
-              <ul>
-                <li>Number of DNS since your last start</li>
-                <li>Plus years of volunteering at Hardrock / 5 (rounded down)</li>
-                <li>Plus one-time service tickets for trail work, shown here as "VMajor"</li>
-              </ul>
-
-              <p><span class="fw-bold">Your tickets are equal to 2 to the power of your exponent component.</span></p>
-              <p>For example, if your exponent component is 3, then your ticket count is 2 ^ 3 = 8.</p>
-              <p>If your exponent component is 0, then your ticket count is 2 ^ 0 = 1.</p>
-            <% end %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <table class="table">
-              <thead>
-              <tr>
-                <th></th>
-                <th class="text-center">Year</th>
-                <th class="text-center">Quantity</th>
-                <th>Comments</th>
-              </tr>
-              </thead>
-              <tbody>
-              <%= render partial: "historical_facts/calculations_row", collection: presenter.relevant_historical_facts, as: :fact %>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <% if presenter.calculation.present? %>
+          <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
+          <hr/>
+        <% end %>
+          <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
       <% end %>
       <hr/>
       <div class="row">

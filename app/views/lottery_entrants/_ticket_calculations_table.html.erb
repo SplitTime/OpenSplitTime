@@ -1,0 +1,65 @@
+<%# locals: (presenter:) %>
+
+<% if presenter.finisher? %>
+  <p><span class="fw-bold">You are in a Finishers lottery.</span> Your tickets are calculated as follows:</p>
+
+  <div class="mx-4">
+    <table class="table table-sm">
+      <tbody>
+      <tr>
+        <td><%= presenter.calculation.finish_ticket_count %></td>
+        <td>Number of finishes</td>
+      </tr>
+      <tr>
+        <td><%= presenter.calculation.dns_ticket_count %></td>
+        <td>Number of DNS since your last start</td>
+      </tr>
+      <tr>
+        <td><%= presenter.calculation.volunteer_ticket_count %></td>
+        <td>Years volunteering at Hardrock / 5 (rounded down)</td>
+      </tr>
+      <tr>
+        <td><%= presenter.calculation.volunteer_major_ticket_count %></td>
+        <td>One-time service tickets (shown as VMajor)</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Plus 1 for being in a Finishers lottery</td>
+      </tr>
+      <tr class="fw-bold">
+        <td><%= presenter.calculation.ticket_count %></td>
+        <td>Total</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p><span class="fw-bold">You are in a Nevers lottery.</span> Your exponent is calculated as follows:</p>
+
+  <div class="mx-4">
+    <table class="table table-sm">
+      <tbody>
+      <tr>
+        <td><%= presenter.calculation.dns_ticket_count %></td>
+        <td>Number of DNS since your last start</td>
+      </tr>
+      <tr>
+        <td><%= presenter.calculation.volunteer_ticket_count %></td>
+        <td>Years volunteering at Hardrock / 5 (rounded down)</td>
+      </tr>
+      <tr>
+        <td><%= presenter.calculation.volunteer_major_ticket_count %></td>
+        <td>One-time service tickets (shown as VMajor)</td>
+      </tr>
+      <tr class="fw-bold">
+        <td><%= presenter.calculation.ticket_count %></td>
+        <td>Total</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><span class="fw-bold">Your tickets are equal to 2 to the power of your exponent component.</span></p>
+  <p>For example, if your exponent component is 3, then your ticket count is 2 ^ 3 = 8. If your exponent component is 0, then your ticket
+    count is 2 ^ 0 = 1.</p>
+<% end %>

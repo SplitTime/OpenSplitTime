@@ -95,4 +95,18 @@ class Lottery < ApplicationRecord
   def start_time
     scheduled_start_date&.in_time_zone("UTC")
   end
+
+  def ticket_calculations
+    return unless calculations_available?
+
+    calculation_class_full.all
+  end
+
+  def calculations_available?
+    calculation_class_full.present?
+  end
+
+  def calculation_class_full
+    "Lotteries::Calculations::#{calculation_class}".safe_constantize
+  end
 end

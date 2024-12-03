@@ -97,9 +97,13 @@ class Lottery < ApplicationRecord
   end
 
   def ticket_calculations
-    return [] unless calculation_class_full.present?
+    return unless calculations_available?
 
     calculation_class_full.all
+  end
+
+  def calculations_available?
+    calculation_class_full.present?
   end
 
   def calculation_class_full

@@ -17,9 +17,11 @@
       </div>
       <% if current_user.present? && (current_user.admin? || current_user.email == presenter.email) %>
         <hr/>
-        <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
-        <hr/>
-        <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
+        <% if presenter.calculation.present? %>
+          <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
+          <hr/>
+        <% end %>
+          <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
       <% end %>
       <hr/>
       <div class="row">

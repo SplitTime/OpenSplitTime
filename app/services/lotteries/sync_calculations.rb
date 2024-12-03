@@ -36,9 +36,9 @@ class Lotteries::SyncCalculations
         city: calc.person.city,
         state_code: calc.person.state_code,
         country_code: calc.person.country_code,
-      # external_id: calc.external_id,
-      # email: calc.person.email,
-      # phone: calc.person.phone,
+        external_id: calc.external_id,
+        email: calc.person.email,
+        phone: calc.person.phone,
       )
 
       entrant.save!

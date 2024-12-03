@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_03_050408) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_03_214417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -963,29 +963,47 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_050408) do
               1 AS major_volunteer_year_count
              FROM historical_facts
             WHERE ((historical_facts.kind = 2) AND (historical_facts.year = 2024))
+          ), all_counts AS (
+           SELECT applicants.organization_id,
+              applicants.person_id,
+              applicants.external_id,
+              applicants.finisher,
+              applicants.gender,
+                  CASE
+                      WHEN applicants.finisher THEN COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint)
+                      ELSE COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint)
+                  END AS dns_ticket_count,
+              COALESCE(finish_year_count.finish_year_count, (0)::bigint) AS finish_ticket_count,
+              ((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(vmulti_year_count.vmulti_year_count, 0)) / 5) AS volunteer_ticket_count,
+              COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0) AS volunteer_major_ticket_count
+             FROM ((((((applicants
+               LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
+               LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))
+               LEFT JOIN finish_year_count USING (organization_id, person_id))
+               LEFT JOIN vmulti_year_count USING (organization_id, person_id))
+               LEFT JOIN volunteer_year_count USING (organization_id, person_id))
+               LEFT JOIN major_volunteer_year_count USING (organization_id, person_id))
           )
    SELECT row_number() OVER () AS id,
-      applicants.organization_id,
-      applicants.person_id,
-      applicants.external_id,
-      applicants.gender,
+      organization_id,
+      person_id,
+      external_id,
+      gender,
+      finisher,
           CASE
-              WHEN ((applicants.gender = 0) AND applicants.finisher) THEN 'Male Finishers'::text
-              WHEN (applicants.gender = 0) THEN 'Male Nevers'::text
-              WHEN applicants.finisher THEN 'Female Finishers'::text
+              WHEN ((gender = 0) AND finisher) THEN 'Male Finishers'::text
+              WHEN (gender = 0) THEN 'Male Nevers'::text
+              WHEN finisher THEN 'Female Finishers'::text
               ELSE 'Female Nevers'::text
           END AS division,
-      (
+      dns_ticket_count,
+      finish_ticket_count,
+      volunteer_ticket_count,
+      volunteer_major_ticket_count,
           CASE
-              WHEN applicants.finisher THEN ((((((COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint)) + (COALESCE(vmulti_year_count.vmulti_year_count, 0) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)) + 1))::double precision
-              ELSE pow((2)::double precision, (((((COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint) + COALESCE(finish_year_count.finish_year_count, (0)::bigint)) + COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint)) + (COALESCE(vmulti_year_count.vmulti_year_count, 0) / 5)) + COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0)))::double precision)
-          END)::integer AS ticket_count
-     FROM ((((((applicants
-       LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
-       LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))
-       LEFT JOIN finish_year_count USING (organization_id, person_id))
-       LEFT JOIN vmulti_year_count USING (organization_id, person_id))
-       LEFT JOIN volunteer_year_count USING (organization_id, person_id))
-       LEFT JOIN major_volunteer_year_count USING (organization_id, person_id));
+              WHEN finisher THEN ((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision
+              ELSE pow((2)::double precision, ((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision)
+          END AS ticket_count
+     FROM all_counts;
   SQL
 end

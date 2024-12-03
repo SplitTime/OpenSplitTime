@@ -71,7 +71,7 @@ class LotteriesController < ApplicationController
   # POST /organizations/:organization_id/lotteries/:id/sync_calculations
   def sync_calculations
     if @lottery.calculation_class?
-      Lotteries::SyncCalculationsJob.perform_later(@lottery)
+      Lotteries::SyncCalculationsJob.perform_later(@lottery, current_user: current_user)
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Sync in progress"
     else
       redirect_to setup_organization_lottery_path(@organization, @lottery), alert: "Lottery does not have a calculations_class"

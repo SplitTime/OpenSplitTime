@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_03_050408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -290,6 +290,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
     t.bigint "organization_id", null: false
     t.string "personal_info_hash"
     t.integer "year"
+    t.string "external_id"
     t.index ["last_name", "first_name", "state_code"], name: "index_historical_facts_on_names_and_state_code"
     t.index ["organization_id", "person_id", "kind"], name: "index_historical_facts_uniq_kind", where: "(kind = 3)"
     t.index ["organization_id", "person_id", "year", "kind"], name: "index_historical_facts_uniq_kind_year", where: "(kind = ANY (ARRAY[0, 1, 2, 7, 8, 9, 10, 11]))"
@@ -383,6 +384,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
     t.boolean "withdrawn"
     t.date "service_completed_date"
     t.bigint "person_id"
+    t.string "email"
+    t.string "phone"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
     t.index ["person_id"], name: "index_lottery_entrants_on_person_id"
@@ -888,6 +891,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
       WITH applicants AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
+              any_value(historical_facts.external_id) AS external_id,
               any_value(historical_facts.gender) AS gender,
               COALESCE(bool_or(((event_groups.organization_id = historical_facts.organization_id) AND (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) < (2021)::numeric))))), false) AS finisher
              FROM (((historical_facts
@@ -963,6 +967,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_010741) do
    SELECT row_number() OVER () AS id,
       applicants.organization_id,
       applicants.person_id,
+      applicants.external_id,
       applicants.gender,
           CASE
               WHEN ((applicants.gender = 0) AND applicants.finisher) THEN 'Male Finishers'::text

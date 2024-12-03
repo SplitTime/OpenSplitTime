@@ -13,6 +13,7 @@ class LotteryEntrant < ApplicationRecord
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
+  has_many :historical_facts, through: :person
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city

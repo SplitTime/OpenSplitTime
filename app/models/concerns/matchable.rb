@@ -9,8 +9,12 @@ module Matchable
       .or(people_same_full_name)
 
     result = result.where.not(id: id) if self.is_a?(Person)
-    result = result.email_matches_or_nil(email) if email.present?
-    result = result.phone_matches_or_nil(phone) if phone.present?
+
+    if email.present?
+      result = result.email_matches_or_nil(email)
+    elsif phone.present?
+      result = result.phone_matches_or_nil(phone)
+    end
 
     result
   end

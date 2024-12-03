@@ -1,0 +1,17 @@
+<%# locals: (presenter:) %>
+
+<div class="mx-4">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Details</th>
+      <th class="text-center">Year</th>
+      <th class="text-center">Quantity</th>
+      <th>Comments</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%= render partial: "historical_facts/calculations_row", collection: presenter.relevant_historical_facts, as: :fact %>
+    </tbody>
+  </table>
+</div>

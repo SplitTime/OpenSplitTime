@@ -90,5 +90,9 @@ class Lotteries::SyncCalculations
     if non_existent_names.present?
       raise ArgumentError, "Calculated division names were not all found in the lottery: #{non_existent_names}"
     end
+
+    if lottery_calculation.where(person_id: nil).any?
+      raise ArgumentError, "Some historical facts underlying the lottery calculation are not reconciled."
+    end
   end
 end

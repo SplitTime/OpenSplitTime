@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_04_000725) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_04_152435) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -925,7 +925,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_04_000725) do
              FROM ((efforts
                JOIN events ON ((events.id = efforts.event_id)))
                JOIN event_groups ON ((event_groups.id = events.event_group_id)))
-            WHERE (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) > (2023)::numeric)))
+            WHERE (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) > (2022)::numeric)))
             GROUP BY event_groups.organization_id, efforts.person_id
           ), dns_since_last_reset_count AS (
            SELECT historical_facts.organization_id,

@@ -15,13 +15,17 @@
           <h6 class="text-end fw-bold"><%= "#{pluralize(presenter.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
+      <hr/>
       <% if current_user.present? && (current_user.admin? || current_user.steward_of?(presenter.organization) || current_user.email == presenter.email) %>
-        <hr/>
         <% if presenter.calculation.present? %>
           <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
           <hr/>
         <% end %>
-          <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
+        <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
+      <% else %>
+        <p class="fw-bold">If this entrant is you, please log in to see calculation details, or sign up if you don't have an OpenSplitTime
+          account.</p>
+        <p>You will need to use the same email that you used to apply to the lottery in Ultrasignup.</p>
       <% end %>
       <hr/>
       <div class="row">

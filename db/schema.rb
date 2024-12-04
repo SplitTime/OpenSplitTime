@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_03_221822) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_04_000725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -960,9 +960,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_221822) do
           ), major_volunteer_year_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
-              1 AS major_volunteer_year_count
+              count(*) AS major_volunteer_year_count
              FROM historical_facts
             WHERE ((historical_facts.kind = 2) AND (historical_facts.year = 2024))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), all_counts AS (
            SELECT applicants.organization_id,
               applicants.person_id,
@@ -976,7 +977,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_03_221822) do
                   END)::integer AS dns_ticket_count,
               (COALESCE(finish_year_count.finish_year_count, (0)::bigint))::integer AS finish_ticket_count,
               (((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(vmulti_year_count.vmulti_year_count, 0)) / 5))::integer AS volunteer_ticket_count,
-              COALESCE(major_volunteer_year_count.major_volunteer_year_count, 0) AS volunteer_major_ticket_count
+              (COALESCE(major_volunteer_year_count.major_volunteer_year_count, (0)::bigint))::integer AS volunteer_major_ticket_count
              FROM ((((((applicants
                LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
                LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))

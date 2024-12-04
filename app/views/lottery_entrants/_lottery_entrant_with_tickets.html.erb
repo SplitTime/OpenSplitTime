@@ -15,7 +15,7 @@
           <h6 class="text-end fw-bold"><%= "#{pluralize(presenter.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
-      <% if current_user.present? && (current_user.admin? || current_user.email == presenter.email) %>
+      <% if current_user.present? && (current_user.admin? || current_user.steward_of?(presenter.organization) || current_user.email == presenter.email) %>
         <hr/>
         <% if presenter.calculation.present? %>
           <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>

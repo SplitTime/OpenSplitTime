@@ -22,6 +22,7 @@ class LotteryEntrantResource < Madmin::Resource
   # Associations
   attribute :division
   attribute :tickets
+  attribute :person
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

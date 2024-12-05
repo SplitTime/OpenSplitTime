@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_04_152435) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_05_180628) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -953,9 +953,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_04_152435) do
           ), volunteer_year_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
-              count(*) AS volunteer_year_count
+              count(DISTINCT historical_facts.year) AS volunteer_year_count
              FROM historical_facts
-            WHERE ((historical_facts.kind = 1) AND (historical_facts.year < 2025))
+            WHERE ((historical_facts.kind = ANY (ARRAY[1, 2])) AND (historical_facts.year < 2025))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), major_volunteer_year_count AS (
            SELECT historical_facts.organization_id,

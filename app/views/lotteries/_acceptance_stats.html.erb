@@ -1,0 +1,46 @@
+<%# locals: (presenter:) %>
+
+<% presenter.stats.each do |division_name, division_stats| %>
+  <div class="card">
+    <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division_name}" %></h4>
+    <div class="card-body">
+      <%= column_chart presenter.stats_chart_data(division_stats),
+                       stacked: true,
+                       xtitle: "Number of Tickets",
+                       ytitle: "Entrants",
+                       colors: ["#28a745", "#3A9DD1", "#bbb"] %>
+
+      <hr/>
+
+      <table class="table table-striped" style="width:80%">
+        <thead>
+        <tr class="fw-bold">
+          <th></th>
+          <th class="text-center">Entrants</th>
+          <th class="text-center">Accepted</th>
+          <th class="text-center">%</th>
+          <th class="text-center">Waitlisted</th>
+          <th class="text-center">%</th>
+          <th class="text-center">Not Drawn</th>
+          <th class="text-center">%</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% division_stats.each do |division_stat| %>
+          <tr>
+            <td class="fw-bold"><%= pluralize(division_stat.number_of_tickets, "Ticket") %></td>
+            <td class="text-center border-end"><%= division_stat.entrants_count %></td>
+            <td class="text-center"><%= division_stat.accepted_entrants_count %></td>
+            <td class="text-center border-end"><%= (division_stat.accepted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+            <td class="text-center"><%= division_stat.waitlisted_entrants_count %></td>
+            <td class="text-center border-end"><%= (division_stat.waitlisted_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+            <td class="text-center"><%= division_stat.undrawn_entrants_count %></td>
+            <td class="text-center"><%= (division_stat.undrawn_entrants_count.to_f / division_stat.entrants_count * 100).round(1) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br/>
+<% end %>

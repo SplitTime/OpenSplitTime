@@ -27,7 +27,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
-      verify_ticket_link_works
+      verify_ticket_link_preview_works
     end
 
     scenario "The user is the owner of the organization" do
@@ -35,7 +35,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
-      verify_ticket_link_works
+      verify_ticket_link_preview_works
     end
 
     scenario "The user is a lottery manager of the organization" do
@@ -46,7 +46,7 @@ RSpec.describe "visit a lottery entrants page" do
 
       visit_page
       verify_all_links_present
-      verify_ticket_link_works
+      verify_ticket_link_preview_works
     end
 
     scenario "The user is a steward who is not a lottery manager of the organization" do
@@ -57,7 +57,7 @@ RSpec.describe "visit a lottery entrants page" do
       verify_public_links_present
       verify_live_links_absent
       verify_admin_links_absent
-      verify_ticket_link_works
+      verify_ticket_link_preview_works
     end
 
     scenario "The user is a visitor" do
@@ -66,7 +66,7 @@ RSpec.describe "visit a lottery entrants page" do
       verify_public_links_present
       verify_live_links_absent
       verify_admin_links_absent
-      verify_ticket_link_works
+      verify_ticket_link_preview_works
     end
   end
 
@@ -179,6 +179,19 @@ RSpec.describe "visit a lottery entrants page" do
   def verify_single_name_present
     verify_content_present(entrant_1, :full_name)
     other_entrants.each { |entrant| verify_content_absent(entrant, :full_name) }
+  end
+
+  def verify_ticket_link_preview_works
+    entrant_id = 6
+    entrant = ::LotteryEntrant.find(entrant_id)
+    entrant_card = find("#lottery_entrant_#{entrant_id}")
+    expect(entrant_card).to have_link("3 tickets")
+    ticket_numbers = entrant.tickets.pluck(:reference_number)
+    ticket_numbers.each { |ticket_number| expect(entrant_card).not_to have_content(ticket_number) }
+
+    entrant_card.click_link("3 tickets")
+
+    expect(entrant_card).to have_content("Tickets will appear here once the lottery is live")
   end
 
   def verify_ticket_link_works

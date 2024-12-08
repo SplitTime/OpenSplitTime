@@ -1018,7 +1018,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_08_160937) do
                JOIN lottery_entrants lottery_entrants_1 ON ((lottery_entrants_1.id = lottery_tickets.lottery_entrant_id)))
             WINDOW division_window AS (PARTITION BY lottery_entrants_1.lottery_division_id ORDER BY lottery_draws.created_at)
           )
-   SELECT lottery_entrants.id,
+   SELECT lottery_entrants.id AS lottery_entrant_id,
       lottery_divisions.name AS division_name,
       ranked_draws.division_rank,
           CASE

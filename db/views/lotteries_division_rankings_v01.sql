@@ -7,7 +7,7 @@ with ranked_draws as (
                      window division_window as (partition by lottery_entrants.lottery_division_id order by lottery_draws.created_at)
                      )
 
-select lottery_entrants.id,
+select lottery_entrants.id as lottery_entrant_id,
        lottery_divisions.name as division_name,
        division_rank,
        case

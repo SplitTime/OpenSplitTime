@@ -1022,9 +1022,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_08_160937) do
       lottery_divisions.name AS division_name,
       ranked_draws.division_rank,
           CASE
-              WHEN (ranked_draws.division_rank <= lottery_divisions.maximum_entries) THEN 'accepted'::text
-              WHEN (ranked_draws.division_rank <= (lottery_divisions.maximum_entries + lottery_divisions.maximum_wait_list)) THEN 'waitlisted'::text
-              ELSE 'not_drawn'::text
+              WHEN (ranked_draws.division_rank <= lottery_divisions.maximum_entries) THEN 0
+              WHEN (ranked_draws.division_rank <= (lottery_divisions.maximum_entries + lottery_divisions.maximum_wait_list)) THEN 1
+              WHEN (ranked_draws.division_rank IS NOT NULL) THEN 2
+              ELSE 3
           END AS draw_status
      FROM ((lottery_entrants
        LEFT JOIN ranked_draws ON ((ranked_draws.lottery_entrant_id = lottery_entrants.id)))

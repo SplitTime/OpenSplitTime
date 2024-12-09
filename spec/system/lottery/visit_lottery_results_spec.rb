@@ -112,7 +112,7 @@ RSpec.describe "visit a lottery results page" do
   def verify_public_content_present
     lottery.divisions.each { |division| verify_content_present(division) }
     lottery.entrants.drawn.each { |entrant| verify_content_present(entrant, :full_name) }
-    lottery.entrants.undrawn.each { |entrant| verify_content_absent(entrant, :full_name) }
+    lottery.entrants.not_drawn.each { |entrant| verify_content_absent(entrant, :full_name) }
 
     verify_public_links_present
     verify_live_links_present

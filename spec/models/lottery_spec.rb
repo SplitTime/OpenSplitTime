@@ -13,7 +13,7 @@ RSpec.describe Lottery, type: :model do
     let(:result) { subject.create_draw_for_ticket!(ticket) }
 
     context "when the ticket exists and has not been drawn" do
-      let(:ticket) { subject.tickets.undrawn.first }
+      let(:ticket) { subject.tickets.not_drawn.first }
       it "creates a draw" do
         expect { result }.to change { LotteryDraw.count }.by(1)
       end

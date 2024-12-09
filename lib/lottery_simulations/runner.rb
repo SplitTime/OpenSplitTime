@@ -94,7 +94,7 @@ module LotterySimulations
     def draw_random_tickets
       divisions.each do |division|
         slots_available = division.maximum_slots - division.draws.count
-        undrawn_entrant_count = division.entrants.undrawn.count
+        undrawn_entrant_count = division.entrants.not_drawn.count
         ticket_count_needed = [slots_available, undrawn_entrant_count].min
 
         ticket_count_needed.times do |i|

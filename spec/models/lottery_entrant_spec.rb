@@ -12,9 +12,68 @@ RSpec.describe LotteryEntrant, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
-  describe "drawn and undrawn scopes" do
+  describe "scopes related to draw status" do
     let(:existing_scope) { division.entrants }
     let(:division) { LotteryDivision.find_by(name: division_name) }
+
+    describe ".accepted" do
+      let(:result) { existing_scope.accepted }
+
+      context "when the existing scope includes entrants who have been accepted" do
+        let(:division_name) { "Elses" }
+        it "returns a collection of all accepted entrants" do
+          expect(result.count).to eq(2)
+          expect(result.map(&:first_name)).to match_array(%w[Denisha Melina])
+        end
+      end
+
+      context "when the existing scope does not include entrants who have been accepted" do
+        let(:division_name) { "Veterans" }
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
+      end
+    end
+
+    describe ".waitlisted" do
+      let(:result) { existing_scope.waitlisted }
+
+      context "when the existing scope includes entrants who have been waitlisted" do
+        let(:division_name) { "Never Ever Evers" }
+        it "returns a collection of all waitlisted entrants" do
+          expect(result.count).to eq(2)
+          expect(result.map(&:first_name)).to match_array(%w[Modesta Emeline])
+        end
+      end
+
+      context "when the existing scope does not include entrants who have been waitlisted" do
+        let(:division_name) { "Elses" }
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
+      end
+    end
+
+    describe ".drawn_beyond_waitlist" do
+      let(:result) { existing_scope.drawn_beyond_waitlist }
+
+      context "when the existing scope includes entrants who have been drawn beyond the waitlist maximum" do
+        let(:division_name) { "Never Ever Evers" }
+        before { division.draw_ticket! }
+
+        it "returns a collection of all drawn_beyond_waitlist entrants" do
+          expect(result.count).to eq(1)
+          expect(result.map(&:first_name)).to eq(%w[Norris])
+        end
+      end
+
+      context "when the existing scope does not include entrants who have been drawn beyond the waitlist maximum" do
+        let(:division_name) { "Elses" }
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
+      end
+    end
 
     describe ".drawn" do
       let(:result) { existing_scope.drawn }
@@ -35,8 +94,8 @@ RSpec.describe LotteryEntrant, type: :model do
       end
     end
 
-    describe ".undrawn" do
-      let(:result) { existing_scope.undrawn }
+    describe ".not_drawn" do
+      let(:result) { existing_scope.not_drawn }
 
       context "when the existing scope includes entrants who have not been drawn" do
         let(:division_name) { "Elses" }
@@ -47,8 +106,8 @@ RSpec.describe LotteryEntrant, type: :model do
       end
 
       context "when the existing scope entrants have all been drawn" do
-        before { division.draw_ticket! }
         let(:division_name) { "Never Ever Evers" }
+        before { division.draw_ticket! }
 
         it "returns an empty collection" do
           expect(result).to be_empty

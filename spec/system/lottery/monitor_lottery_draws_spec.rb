@@ -8,7 +8,7 @@ RSpec.describe "monitor lottery draws", js: true do
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:division) { lottery.divisions.find_by(name: "Veterans") }
   let(:organization) { lottery.organization }
-  let(:entrant) { division.entrants.undrawn.first }
+  let(:entrant) { division.entrants.not_drawn.first }
 
   before do
     lottery.update(status: :live)

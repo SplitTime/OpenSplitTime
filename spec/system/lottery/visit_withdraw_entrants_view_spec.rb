@@ -61,6 +61,6 @@ RSpec.describe "visit a lottery withdraw entrants page" do
   def verify_all_content_present
     lottery.divisions.each { |division| verify_content_present(division) }
     lottery.entrants.drawn.each { |entrant| verify_content_present(entrant, :full_name) }
-    lottery.entrants.undrawn.each { |entrant| verify_content_absent(entrant, :full_name) }
+    lottery.entrants.not_drawn.each { |entrant| verify_content_absent(entrant, :full_name) }
   end
 end

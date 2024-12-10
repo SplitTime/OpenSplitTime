@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_05_180628) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_08_160937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -1008,5 +1008,27 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_05_180628) do
               ELSE pow((2)::double precision, (((dns_ticket_count + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision)
           END)::integer AS ticket_count
      FROM all_counts;
+  SQL
+  create_view "lotteries_division_rankings", sql_definition: <<-SQL
+      WITH ranked_draws AS (
+           SELECT lottery_tickets.lottery_entrant_id,
+              rank() OVER division_window AS division_rank
+             FROM ((lottery_tickets
+               JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
+               JOIN lottery_entrants lottery_entrants_1 ON ((lottery_entrants_1.id = lottery_tickets.lottery_entrant_id)))
+            WINDOW division_window AS (PARTITION BY lottery_entrants_1.lottery_division_id ORDER BY lottery_draws.created_at)
+          )
+   SELECT lottery_entrants.id AS lottery_entrant_id,
+      lottery_divisions.name AS division_name,
+      ranked_draws.division_rank,
+          CASE
+              WHEN (ranked_draws.division_rank <= lottery_divisions.maximum_entries) THEN 0
+              WHEN (ranked_draws.division_rank <= (lottery_divisions.maximum_entries + lottery_divisions.maximum_wait_list)) THEN 1
+              WHEN (ranked_draws.division_rank IS NOT NULL) THEN 2
+              ELSE 3
+          END AS draw_status
+     FROM ((lottery_entrants
+       LEFT JOIN ranked_draws ON ((ranked_draws.lottery_entrant_id = lottery_entrants.id)))
+       JOIN lottery_divisions ON ((lottery_entrants.lottery_division_id = lottery_divisions.id)));
   SQL
 end

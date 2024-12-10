@@ -18,7 +18,6 @@ class Person < ApplicationRecord
   friendly_id :slug_candidates, use: [:slugged, :history]
   has_paper_trail
 
-  enum gender: [:male, :female, :nonbinary]
   has_many :efforts, dependent: :nullify
   has_many :historical_facts, dependent: :nullify
   has_many :lottery_entrants, dependent: :nullify

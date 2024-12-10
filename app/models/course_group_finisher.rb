@@ -6,7 +6,6 @@ class CourseGroupFinisher < ::ApplicationRecord
 
   self.primary_key = :id
 
-  enum gender: [:male, :female, :nonbinary]
   belongs_to :person
   belongs_to :course_group
 

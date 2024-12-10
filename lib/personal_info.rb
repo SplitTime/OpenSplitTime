@@ -1,5 +1,17 @@
+# frozen_string_literal: true
+
 module PersonalInfo
   extend ActiveSupport::Concern
+
+  included do
+    has_person_name
+
+    enum gender: {
+      male: 0,
+      female: 1,
+      nonbinary: 2,
+    }
+  end
 
   def bio
     [gender&.titlecase, current_age&.to_i].compact.join(", ")
@@ -14,13 +26,13 @@ module PersonalInfo
     return nil unless days.present?
 
     text = case days
-           when 0
-             "today"
-           when 1
-             "tomorrow"
-           when -1
-             "yesterday"
-           end
+    when 0
+      "today"
+    when 1
+      "tomorrow"
+    when -1
+      "yesterday"
+    end
 
     text ||= days.positive? ? "#{days} days from now" : "#{days.abs} days ago"
 
@@ -32,11 +44,12 @@ module PersonalInfo
   end
 
   def current_age
-    current_age_from_birthdate || (if has_attribute?("current_age_from_efforts")
-                                     attributes["current_age_from_efforts"]&.round
-                                   else
-                                     current_age_approximate
-                                   end)
+    current_age_from_birthdate || (
+      if has_attribute?("current_age_from_efforts")
+        attributes["current_age_from_efforts"]&.round
+      else
+        current_age_approximate
+      end)
   end
 
   def current_age_from_birthdate
@@ -62,6 +75,7 @@ module PersonalInfo
   def full_name
     [first_name, last_name].select(&:present?).join(" ")
   end
+
   alias name full_name
 
   def personal_info
@@ -79,7 +93,7 @@ module PersonalInfo
   private
 
   def country_abbreviations
-    {"United States" => "US"}
+    { "United States" => "US" }
   end
 
   def country_name_or_code

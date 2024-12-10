@@ -7,9 +7,6 @@ class LotteryEntrant < ApplicationRecord
   include Delegable
   include CapitalizeAttributes
 
-  has_person_name
-  enum gender: [:male, :female, :nonbinary]
-
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy

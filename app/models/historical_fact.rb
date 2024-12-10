@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class HistoricalFact < ApplicationRecord
-  enum gender: {
-    male: 0,
-    female: 1,
-    nonbinary: 2,
-  }
-
   enum kind: {
     dns: 0,
     volunteer_year: 1,

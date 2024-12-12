@@ -40,7 +40,7 @@ class LotteryEntrantsController < ApplicationController
     if @lottery_entrant.update(permitted_params)
       respond_to do |format|
         format.html do
-          redirect_to organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
+          redirect_to manage_service_organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Entrant was updated."
         end
 
         format.turbo_stream { @lottery_presenter = LotteryPresenter.new(@lottery, view_context) }
@@ -81,6 +81,7 @@ class LotteryEntrantsController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/manage_service
   def manage_service
+    @presenter = LotteryEntrantPresenter.new(@lottery_entrant)
   end
 
   private

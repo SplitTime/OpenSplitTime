@@ -1,0 +1,56 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Manage Service - #{@presenter.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.lottery.name, organization_lottery_path(@presenter.organization, @presenter.lottery) %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <% if @presenter.completed_service_form.attached? %>
+    <h4><strong>Your service form has been received</strong></h4>
+  <% else %>
+    <h4><strong>Upload your completed service form</strong></h4>
+    <p>File must be less than 2 megabytes and must be PNG or JPEG type.</p>
+
+    <%= form_with(model: @presenter.__getobj__,
+                  url: organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery, @presenter),
+                  html: { method: :patch, data: { controller: "form-disable-submit" } }) do |f| %>
+      <div class="mb-3 text-center">
+        <div class="dropzone dropzone-default dz-clickable"
+             data-controller="dropzone"
+             data-dropzone-max-file-size="2"
+             data-dropzone-max-files="1"
+             data-dropzone-accepted-files="image/*"
+             data-action="dropzone:success->form-disable-submit#enableSubmitButton">
+          <%= f.file_field :completed_service_form, direct_upload: true, data: { "dropzone-target" => "input" } %>
+          <div class="dropzone-msg dz-message needsclick text-muted">
+            <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
+            <span class="dropzone-msg-desc text-sm">2 MB file size maximum. Allowed file types png, jpg.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3 text-center">
+        <%= f.submit "Upload file", class: "btn btn-primary", data: { turbo: false } %>
+        <%= link_to "Back to lottery entrants",
+                    organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants),
+                    class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
+  <% end %>
+</article>

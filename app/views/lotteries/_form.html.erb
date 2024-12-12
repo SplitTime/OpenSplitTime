@@ -40,7 +40,7 @@
         <div class="col-sm-8">
           <%= f.select :calculation_class,
                        options_for_calculation_class(@lottery),
-                       {},
+                       { prompt: "None" },
                        { class: "form-control dropdown-select-field" } %>
         </div>
       </div>
@@ -64,5 +64,5 @@
         <span class="brackets"><%= link_to 'Cancel', @lottery.new_record? ? organization_lotteries_path(@lottery.organization) : setup_organization_lottery_path(@lottery.organization, @lottery) %></span>
       </div>
     <% end %>
-    </div>
+  </div>
 </div>

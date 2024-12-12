@@ -26,7 +26,10 @@
               <% end %>
             </div>
             <div class="col text-end">
-              <%= link_to "Manage service", manage_service_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter), class: "btn btn-outline-success" %>
+              <%= link_to "Manage service",
+                          manage_service_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter),
+                          data: { turbo: false },
+                          class: "btn btn-outline-success" %>
             </div>
           </div>
         <% end %>

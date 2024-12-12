@@ -1,52 +1,55 @@
 // variables
 // --------------------------
 
-$fa-css-prefix          : fa !default;
-$fa-style               : 900 !default;
-$fa-style-family        : "" !default;
+$fa-css-prefix            : fa !default;
+$fa-style                 : 900 !default;
+$fa-style-family          : "Font Awesome 6 Pro" !default;
 
-$fa-display             : inline-block !default;
+$fa-icon-property         : --fa;
+$fa-duotone-icon-property : --fa--fa;
 
-$fa-fw-width            : fa-divide(20em, 16) !default;
-$fa-inverse             : #fff !default;
+$fa-display               : inline-block !default;
 
-$fa-border-color        : #eee !default;
-$fa-border-padding      : .2em .25em .15em !default;
-$fa-border-radius       : .1em !default;
-$fa-border-style        : solid !default;
-$fa-border-width        : .08em !default;
+$fa-fw-width              : fa-divide(20em, 16) !default;
+$fa-inverse               : #fff !default;
 
-$fa-size-scale-2xs      : 10 !default;
-$fa-size-scale-xs       : 12 !default;
-$fa-size-scale-sm       : 14 !default;
-$fa-size-scale-base     : 16 !default;
-$fa-size-scale-lg       : 20 !default;
-$fa-size-scale-xl       : 24 !default;
-$fa-size-scale-2xl      : 32 !default;
+$fa-border-color          : #eee !default;
+$fa-border-padding        : .2em .25em .15em !default;
+$fa-border-radius         : .1em !default;
+$fa-border-style          : solid !default;
+$fa-border-width          : .08em !default;
+
+$fa-size-scale-2xs        : 10 !default;
+$fa-size-scale-xs         : 12 !default;
+$fa-size-scale-sm         : 14 !default;
+$fa-size-scale-base       : 16 !default;
+$fa-size-scale-lg         : 20 !default;
+$fa-size-scale-xl         : 24 !default;
+$fa-size-scale-2xl        : 32 !default;
 
 $fa-sizes: (
-  "2xs"                 : $fa-size-scale-2xs,
-  "xs"                  : $fa-size-scale-xs,
-  "sm"                  : $fa-size-scale-sm,
-  "lg"                  : $fa-size-scale-lg,
-  "xl"                  : $fa-size-scale-xl,
-  "2xl"                 : $fa-size-scale-2xl
+  "2xs"                   : $fa-size-scale-2xs,
+  "xs"                    : $fa-size-scale-xs,
+  "sm"                    : $fa-size-scale-sm,
+  "lg"                    : $fa-size-scale-lg,
+  "xl"                    : $fa-size-scale-xl,
+  "2xl"                   : $fa-size-scale-2xl
 ) !default;
 
-$fa-li-width            : 2em !default;
-$fa-li-margin           : $fa-li-width * fa-divide(5, 4) !default;
+$fa-li-width              : 2em !default;
+$fa-li-margin             : $fa-li-width * fa-divide(5, 4) !default;
 
-$fa-pull-margin         : .3em !default;
+$fa-pull-margin           : .3em !default;
 
-$fa-primary-opacity     : 1 !default;
-$fa-secondary-opacity   : .4 !default;
+$fa-primary-opacity       : 1 !default;
+$fa-secondary-opacity     : .4 !default;
 
-$fa-stack-vertical-align: middle !default;
-$fa-stack-width         : ($fa-fw-width * 2) !default;
-$fa-stack-z-index       : auto !default;
+$fa-stack-vertical-align  : middle !default;
+$fa-stack-width           : ($fa-fw-width * 2) !default;
+$fa-stack-z-index         : auto !default;
 
-$fa-font-display        : block !default;
-$fa-font-path           : "../webfonts" !default;
+$fa-font-display          : block !default;
+$fa-font-path             : "../webfonts" !default;
 
 $fa-var-arrow-down: \f063;
 $fa-var-arrow-down-long: \f175;
@@ -104,7 +107,6 @@ $fa-var-eye-slash: \f070;
 $fa-var-file-csv: \f6dd;
 $fa-var-gear: \f013;
 $fa-var-cog: \f013;
-$fa-var-google: \f1a0;
 $fa-var-hand: \f256;
 $fa-var-hand-paper: \f256;
 $fa-var-handshake: \f2b5;
@@ -155,8 +157,6 @@ $fa-var-square-caret-up: \f151;
 $fa-var-caret-square-up: \f151;
 $fa-var-square-check: \f14a;
 $fa-var-check-square: \f14a;
-$fa-var-square-facebook: \f082;
-$fa-var-facebook-square: \f082;
 $fa-var-square-minus: \f146;
 $fa-var-minus-square: \f146;
 $fa-var-square-plus: \f0fe;
@@ -237,7 +237,6 @@ $fa-icons: (
   "file-csv": $fa-var-file-csv,
   "gear": $fa-var-gear,
   "cog": $fa-var-cog,
-  "google": $fa-var-google,
   "hand": $fa-var-hand,
   "hand-paper": $fa-var-hand-paper,
   "handshake": $fa-var-handshake,
@@ -288,8 +287,6 @@ $fa-icons: (
   "caret-square-up": $fa-var-caret-square-up,
   "square-check": $fa-var-square-check,
   "check-square": $fa-var-check-square,
-  "square-facebook": $fa-var-square-facebook,
-  "facebook-square": $fa-var-facebook-square,
   "square-minus": $fa-var-square-minus,
   "minus-square": $fa-var-minus-square,
   "square-plus": $fa-var-square-plus,

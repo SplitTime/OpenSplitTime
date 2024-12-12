@@ -43,97 +43,47 @@
 
 // sets a specific icon family to use alongside style + icon mixins
 @mixin fa-family-classic() {
-  font-family: 'Font Awesome 6 Pro';
+  @extend .fa-classic;
 }
-
+@mixin fa-family-duotone() {
+  @extend .fa-duotone;
+}
 @mixin fa-family-sharp() {
-  font-family: 'Font Awesome 6 Sharp';
+  @extend .fa-sharp;
+}
+@mixin fa-family-sharp-duotone() {
+  @extend .fa-sharp-duotone;
 }
 
 // convenience mixins for declaring pseudo-elements by CSS variable,
-// including all style-specific font properties, and both the ::before
-// and ::after elements in the duotone case.
+// including all style-specific font properties
 @mixin fa-icon-solid($fa-var) {
-  @extend %fa-icon;
   @extend .fa-solid;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-
 @mixin fa-icon-regular($fa-var) {
-  @extend %fa-icon;
   @extend .fa-regular;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-
 @mixin fa-icon-light($fa-var) {
-  @extend %fa-icon;
   @extend .fa-light;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-
 @mixin fa-icon-thin($fa-var) {
-  @extend %fa-icon;
   @extend .fa-thin;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-
 @mixin fa-icon-duotone($fa-var) {
-  @extend %fa-icon;
   @extend .fa-duotone;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
-  &::after {
-    content: unquote("\"#{ $fa-var }#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-
-@mixin fa-icon-sharp-solid($fa-var) {
-  @extend %fa-icon;
-  @extend .fa-sharp-solid;
-
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
-}
-
-@mixin fa-icon-sharp-regular($fa-var) {
-  @extend %fa-icon;
-  @extend .fa-sharp-regular;
-
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
-}
-
-@mixin fa-icon-sharp-light($fa-var) {
-  @extend %fa-icon;
-  @extend .fa-sharp-light;
-
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
-}
-
 @mixin fa-icon-brands($fa-var) {
-  @extend %fa-icon;
   @extend .fa-brands;
 
-  &::before {
-    content: unquote("\"#{ $fa-var }\"");
-  }
+  & { #{$fa-icon-property}: unquote("\"#{ $fa-var }\""); #{$fa-duotone-icon-property}: unquote("\"#{ $fa-var }#{ $fa-var }\""); }
 }
-

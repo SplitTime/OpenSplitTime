@@ -124,7 +124,7 @@ class LotteryPresenter < BasePresenter
 
   def lottery_entrants_filtered
     lottery_entrants
-      .includes(division: { lottery: :organization })
+      .includes([:division_ranking, division: { lottery: :organization }])
       .search(search_text)
       .order(:last_name)
   end

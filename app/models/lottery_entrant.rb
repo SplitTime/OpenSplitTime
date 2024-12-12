@@ -50,6 +50,7 @@ class LotteryEntrant < ApplicationRecord
 
   delegate :lottery, to: :division
   delegate :organization, to: :lottery
+  delegate :draw_status, :accepted?, :waitlisted?, to: :division_ranking
 
   def division_name
     if attributes.key?("division_name")

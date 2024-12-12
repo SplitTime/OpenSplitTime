@@ -13,6 +13,8 @@ class LotteryEntrant < ApplicationRecord
   has_many :historical_facts, through: :person
   has_one :division_ranking, class_name: "Lotteries::DivisionRanking"
 
+  has_one_attached :service_form
+
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
@@ -34,6 +36,9 @@ class LotteryEntrant < ApplicationRecord
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
   validates_with ::LotteryEntrantUniqueValidator
+  validates :service_form,
+            content_type: { in: %w[image/png image/jpeg], message: "must be a png or jpeg file" },
+            size: { less_than: 2.megabytes, message: "must be less than 2 megabytes" }
 
   def self.search(param)
     return all unless param.present?

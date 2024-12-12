@@ -237,6 +237,7 @@ Rails.application.routes.draw do
       member { delete :delete_tickets }
       resources :lottery_divisions, except: [:index, :show]
       resources :lottery_entrants, except: [:index] do
+        member { get :manage_service }
         member { post :draw }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]

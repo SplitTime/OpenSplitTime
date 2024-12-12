@@ -3,9 +3,10 @@
 class LotteryEntrantsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_organization
-  before_action :authorize_organization, except: [:show]
+  before_action :authorize_organization, except: [:show, :manage_service]
   before_action :set_lottery
   before_action :set_lottery_entrant, except: [:new, :create]
+  before_action :authorize_lottery_entrant, only: [:manage_service]
   after_action :verify_authorized, except: [:show]
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
@@ -78,7 +79,15 @@ class LotteryEntrantsController < ApplicationController
     end
   end
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/manage_service
+  def manage_service
+  end
+
   private
+
+  def authorize_lottery_entrant
+    authorize @lottery_entrant, policy_class: ::LotteryEntrantSpecialPolicy
+  end
 
   def authorize_organization
     authorize @organization, policy_class: ::LotteryEntrantPolicy

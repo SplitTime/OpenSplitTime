@@ -3,10 +3,10 @@
 class LotteryEntrantsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_organization
-  before_action :authorize_organization, except: [:show, :manage_service]
+  before_action :authorize_organization, except: [:show, :delete_service_form, :manage_service]
   before_action :set_lottery
   before_action :set_lottery_entrant, except: [:new, :create]
-  before_action :authorize_lottery_entrant, only: [:manage_service]
+  before_action :authorize_lottery_entrant, only: [:delete_service_form, :manage_service]
   after_action :verify_authorized, except: [:show]
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
@@ -82,6 +82,13 @@ class LotteryEntrantsController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/manage_service
   def manage_service
     @presenter = LotteryEntrantPresenter.new(@lottery_entrant)
+  end
+
+  # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/delete_service_form
+  def delete_service_form
+    @lottery_entrant.completed_service_form.purge_later
+
+    redirect_to manage_service_organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant), notice: "Service form was deleted."
   end
 
   private

@@ -238,6 +238,7 @@ Rails.application.routes.draw do
       resources :lottery_divisions, except: [:index, :show]
       resources :lottery_entrants, except: [:index] do
         member { get :manage_service }
+        member { delete :delete_service_form }
         member { post :draw }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]

@@ -11,4 +11,8 @@ class LotteryEntrantSpecialPolicy < ApplicationPolicy
   def manage_service?
     user.email == @lottery_entrant.email || user.authorized_for_lotteries?(@organization)
   end
+
+  def delete_service_form?
+    manage_service?
+  end
 end

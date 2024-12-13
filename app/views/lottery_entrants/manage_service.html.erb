@@ -23,6 +23,12 @@
 <article class="ost-article container">
   <% if @presenter.completed_service_form.attached? %>
     <h4><strong>Your service form has been received</strong></h4>
+    <div><%= image_tag @presenter.__getobj__.completed_service_form.variant(:medium) %></div>
+    <div><%= button_to "Remove",
+                       delete_service_form_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery, @presenter.__getobj__),
+                       method: :delete,
+                       class: "btn btn-outline-secondary btn-sm" %>
+    </div>
   <% else %>
     <h4><strong>Upload your completed service form</strong></h4>
     <p>File must be less than 2 megabytes and must be PNG or JPEG type.</p>

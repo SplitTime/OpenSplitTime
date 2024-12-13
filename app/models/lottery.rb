@@ -25,9 +25,6 @@ class Lottery < ApplicationRecord
 
   validates_presence_of :name, :scheduled_start_date
   validates_uniqueness_of :name, case_sensitive: false, scope: :organization
-  validates :service_form,
-            content_type: { in: %w[application/pdf], message: "must be a pdf file" },
-            size: { less_than: 2.megabytes, message: "must be less than 2 megabytes" }
 
   scope :with_policy_scope_attributes, -> { all }
 

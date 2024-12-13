@@ -21,11 +21,38 @@
 </header>
 
 <article class="ost-article container">
+  <div class="card">
+    <div class="card-header">
+      <div class="fs-4 fw-bold">
+        Service Form Download
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="fs-5">
+            <% if @presenter.lottery.service_form.attached? %>
+              Download the service form by clicking the button to the right
+            <% else %>
+              The service form is not yet available for download. Please check back later.
+            <% end %>
+          </div>
+        </div>
+        <% if @presenter.lottery.service_form.attached? %>
+          <div class="col text-end">
+            <%= button_to "Download",
+                          download_service_form_organization_lottery_path(@presenter.organization, @presenter.lottery),
+                          class: "btn btn-outline-success" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
   <% if @presenter.completed_service_form.attached? %>
     <h4><strong>Your service form has been received</strong></h4>
     <div><%= image_tag @presenter.__getobj__.completed_service_form.variant(:medium) %></div>
     <div><%= button_to "Remove",
-                       delete_service_form_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery, @presenter.__getobj__),
+                       remove_service_form_organization_lottery_lottery_entrant_path(@presenter.organization, @presenter.lottery, @presenter.__getobj__),
                        method: :delete,
                        class: "btn btn-outline-secondary btn-sm" %>
     </div>

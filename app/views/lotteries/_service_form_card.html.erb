@@ -19,10 +19,11 @@
                           remove_service_form_organization_lottery_path(@lottery.organization, @lottery),
                           method: :delete,
                           class: "btn btn-outline-danger" %>
-            <%= button_to "Download",
-                          download_service_form_organization_lottery_path(@lottery.organization, @lottery),
-                          method: :get,
-                          class: "btn btn-outline-success" %>
+            <%= link_to "Download",
+                        download_service_form_organization_lottery_path(@lottery.organization, @lottery),
+                        target: "_blank",
+                        rel: "noopener",
+                        class: "btn btn-outline-success" %>
           </div>
         <% else %>
           <%= form_with(

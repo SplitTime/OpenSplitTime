@@ -10,9 +10,10 @@
     <div class="card-header">
       <div class="row pt-1">
         <div class="col">
-          <h2><strong>Pre-Selected Entrants</strong>
-            <small class="text-muted"><%= " #{pluralize_with_delimiter(presenter.lottery_entrants.pre_selected.count, 'entrant')}" %></small>
-          </h2>
+          <div>
+            <span class="h3 fw-bold me-2">Pre-Selected Entrants</span>
+            <span class="h5 text-muted"><%= pluralize_with_delimiter(presenter.lottery_entrants.pre_selected.count, 'entrant') %></span>
+          </div>
         </div>
         <div class="col-4 col-md-2 text-end d-grid">
           <%= button_tag nil,

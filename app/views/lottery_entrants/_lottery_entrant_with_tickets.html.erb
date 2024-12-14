@@ -18,7 +18,7 @@
       <% if current_user.present? && (current_user.admin? || current_user.steward_of?(presenter.organization) || current_user.email == presenter.email) %>
         <% if presenter.accepted? || presenter.waitlisted? %>
           <div class="row">
-            <div class="col">
+            <div class="col-auto">
               <% if presenter.accepted? %>
                 <span class="fs-5"><%= "Congratulations on being accepted to the #{presenter.lottery.name}!" %></span>
               <% elsif presenter.waitlisted? %>

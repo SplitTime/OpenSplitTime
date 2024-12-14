@@ -7,7 +7,7 @@ class LotteryPresenter < BasePresenter
   delegate :action_name, :controller_name, to: :view_context
 
   delegate :calculation_class?, :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
-           :tickets, :to_param, to: :lottery
+           :tickets, :to_param, :service_form, to: :lottery
   delegate :draws, :entrants, :tickets, to: :lottery, prefix: true
 
   def initialize(lottery, view_context)

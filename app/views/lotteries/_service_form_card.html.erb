@@ -7,6 +7,19 @@
         <div class="col">
           <div class="h2 fw-bold">Service Form</div>
         </div>
+        <div class="col text-end">
+          <div class="d-flex justify-content-end gap-2">
+            <%= link_to fa_icon("download", text: "Download"),
+                        download_service_form_organization_lottery_path(@lottery.organization, @lottery),
+                        target: "_blank",
+                        rel: "noopener",
+                        class: "btn btn-outline-success" %>
+            <%= button_to "Remove",
+                          remove_service_form_organization_lottery_path(@lottery.organization, @lottery),
+                          method: :delete,
+                          class: "btn btn-outline-danger" %>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card-body">
@@ -14,17 +27,6 @@
         <% if @lottery.service_form.attached? %>
           <div class="fs-4">Service form has been uploaded</div>
           <div><%= image_tag @lottery.service_form %></div>
-          <div class="d-flex mt-3 justify-content-center gap-2">
-            <%= button_to "Remove",
-                          remove_service_form_organization_lottery_path(@lottery.organization, @lottery),
-                          method: :delete,
-                          class: "btn btn-outline-danger" %>
-            <%= link_to "Download",
-                        download_service_form_organization_lottery_path(@lottery.organization, @lottery),
-                        target: "_blank",
-                        rel: "noopener",
-                        class: "btn btn-outline-success" %>
-          </div>
         <% else %>
           <%= form_with(
                 model: [@lottery.organization, @lottery],

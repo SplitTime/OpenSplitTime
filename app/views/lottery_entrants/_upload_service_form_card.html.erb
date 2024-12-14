@@ -1,0 +1,71 @@
+<%# locals: (presenter:) %>
+
+<div class="card mt-4">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <div class="fs-3 fw-bold">Upload Completed Service Form</div>
+      </div>
+      <div class="col text-end">
+        <div class="d-flex justify-content-end gap-2">
+          <% if presenter.completed_service_form.attached? %>
+            <%= link_to fa_icon("download", text: "Download"),
+                        download_service_form_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+                        target: "_blank",
+                        rel: "noopener",
+                        class: "btn btn-outline-success" %>
+            <%= button_to "Remove",
+                          remove_service_form_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+                          method: :delete,
+                          class: "btn btn-outline-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row text-center">
+      <% if presenter.completed_service_form.attached? %>
+        <div class="fs-4">Service form has been uploaded</div>
+        <div><%= image_tag presenter.completed_service_form %></div>
+      <% else %>
+        <%= form_with(
+              model: [presenter.organization, presenter.lottery, presenter.__getobj__],
+              url: attach_service_form_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+              local: true,
+              html: { class: "form-horizontal",
+                      data: {
+                        turbo: false,
+                        controller: "form-disable-submit",
+                      }
+              },
+              ) do |f| %>
+
+          <div class="mb-3 text-center">
+            <div class="dropzone dropzone-default dz-clickable"
+                 data-controller="dropzone"
+                 data-dropzone-max-file-size="2"
+                 data-dropzone-max-files="1"
+                 data-dropzone-accepted-files="image/*,.pdf"
+                 data-action="dropzone:success->form-disable-submit#enableSubmitButton"
+            >
+              <%= f.file_field :completed_service_form, direct_upload: true, data: { "dropzone-target" => "input" } %>
+              <div class="dropzone-msg dz-message needsclick text-muted">
+                <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
+                <span class="dropzone-msg-desc text-sm">2 MB file size maximum. File must be a pdf, jpeg, or png file.</span>
+              </div>
+            </div>
+          </div>
+
+          <%= f.hidden_field :parent_type %>
+          <%= f.hidden_field :parent_id %>
+          <%= f.hidden_field :format %>
+
+          <div class="mb-3 text-center">
+            <%= f.submit("Attach", class: "btn btn-primary") %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

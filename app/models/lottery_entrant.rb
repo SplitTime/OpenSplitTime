@@ -41,7 +41,7 @@ class LotteryEntrant < ApplicationRecord
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
   validates_with ::LotteryEntrantUniqueValidator
   validates :completed_service_form,
-            content_type: { in: %w[image/png image/jpeg], message: "must be a png or jpeg file" },
+            content_type: { in: %w[image/png image/jpeg application/pdf], message: "must be a pdf, png, or jpeg file" },
             size: { less_than: 2.megabytes, message: "must be less than 2 megabytes" }
 
   def self.search(param)

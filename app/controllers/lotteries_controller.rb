@@ -171,11 +171,16 @@ class LotteriesController < ApplicationController
     service_form = params.dig(:lottery, :service_form)
 
     if service_form.present?
-      @lottery.service_form.attach(service_form)
-      flash[:success] = "Service form was attached"
+      if @lottery.service_form.attach(service_form)
+        flash[:success] = "Service form was attached"
+      else
+        flash[:danger] = "An error occurred while attaching service form: #{@lottery_entrant.errors.full_messages}"
+      end
+
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "No service form was specified"
+      redirect_to setup_organization_lottery_path(@organization, @lottery),
+                  notice: "No service form was specified"
     end
   end
 

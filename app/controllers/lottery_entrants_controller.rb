@@ -3,10 +3,10 @@
 class LotteryEntrantsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_organization
-  before_action :authorize_organization, except: [:show, :remove_service_form, :manage_service]
+  before_action :authorize_organization, except: [:show, :attach_service_form, :download_service_form, :remove_service_form, :manage_service]
   before_action :set_lottery
   before_action :set_lottery_entrant, except: [:new, :create]
-  before_action :authorize_lottery_entrant, only: [:remove_service_form, :manage_service]
+  before_action :authorize_lottery_entrant, only: [:attach_service_form, :download_service_form, :remove_service_form, :manage_service]
   after_action :verify_authorized, except: [:show]
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id
@@ -82,6 +82,34 @@ class LotteryEntrantsController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/manage_service
   def manage_service
     @presenter = LotteryEntrantPresenter.new(@lottery_entrant)
+  end
+
+  # PATCH /organizations/:organization_id/lotteries/:id/lottery_entrants/:id/attach_service_form
+  def attach_service_form
+    service_form = params.dig(:lottery_entrant, :completed_service_form)
+
+    if service_form.present?
+      if @lottery_entrant.completed_service_form.attach(service_form)
+        flash[:success] = "Completed service form was attached"
+      else
+        flash[:danger] = "An error occurred while attaching service form: #{@lottery_entrant.errors.full_messages}"
+      end
+
+      redirect_to manage_service_organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant)
+    else
+      redirect_to manage_service_organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant),
+                  notice: "No completed service form was specified"
+    end
+  end
+
+  # GET /organizations/:organization_id/lotteries/:id/lottery_entrants/:id/download_service_form
+  def download_service_form
+    if @lottery_entrant.completed_service_form.attached?
+      redirect_to @lottery_entrant.completed_service_form.url(disposition: :attachment), allow_other_host: true
+    else
+      redirect_to manage_service_organization_lottery_lottery_entrant_path(@organization, @lottery, @lottery_entrant),
+                  notice: "No completed service form is attached"
+    end
   end
 
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lottery_entrants/:id/remove_service_form

@@ -13,6 +13,8 @@
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.lottery.name, organization_lottery_path(@presenter.organization, @presenter.lottery) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.__getobj__.full_name, organization_lottery_path(@presenter.organization, @presenter.lottery, display_style: :entrants, filter: { search: "#{@presenter.__getobj__.first_name}+#{@presenter.__getobj__.last_name}" })  %></li>
+            <li class="breadcrumb-item">Manage service</li>
           </ul>
         </div>
       </div>

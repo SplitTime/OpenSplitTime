@@ -23,6 +23,7 @@
 </header>
 
 <article class="ost-article container">
+  <%= render partial: "service_form_status_card", locals: { presenter: @presenter } %>
   <%= render partial: "blank_service_form_card", locals: { presenter: @presenter } %>
   <%= render partial: "upload_service_form_card", locals: { presenter: @presenter } %>
 </article>

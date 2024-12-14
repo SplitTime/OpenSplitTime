@@ -1,0 +1,33 @@
+<%# locals: (presenter:) %>
+
+<div class="card mt-4">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <div class="fs-3 fw-bold">Service Form Status</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table table-responsive">
+      <tbody>
+      <tr>
+        <td class="text-center">
+          <% if presenter.completed_service_form.attached? %>
+            <%= fa_icon("circle-check", type: :solid, class: "text-success") %>
+          <% else %>
+            <%= fa_icon("circle-minus", type: :regular, class: "text-warning") %>
+          <% end %>
+        </td>
+        <td>Uploaded</td>
+        <td><%= l(presenter.completed_service_form.created_at) if presenter.completed_service_form.attached? %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Accepted</td>
+        <td><%= l(presenter.service_completed_date) if presenter.service_completed_date? %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

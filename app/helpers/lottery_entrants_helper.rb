@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 module LotteryEntrantsHelper
+  def button_to_remove_completed_service_form(presenter)
+    url = remove_service_form_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter.__getobj__)
+    options = {
+      method: :delete,
+      class: "btn btn-outline-danger",
+    }
+
+    button_to(url, options) { fa_icon("file-xmark", text: "Remove") }
+  end
+
   def service_form_status_with_icon(lottery_entrant)
     status = lottery_entrant.service_form_status
     uploaded = lottery_entrant.completed_service_form.attached?

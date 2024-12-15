@@ -4,7 +4,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col">
-        <div class="fs-3 fw-bold">Service Form Status</div>
+        <div class="fs-3 fw-bold">Status</div>
       </div>
       <div class="col text-end pt-1">
         <%= service_form_status_with_icon(presenter.__getobj__) %>
@@ -22,13 +22,27 @@
             <%= fa_icon("circle-minus", type: :regular, class: "text-warning") %>
           <% end %>
         </td>
-        <td>Uploaded</td>
+        <td><%= presenter.completed_service_form.attached? ? "Uploaded" : "No file uploaded" %></td>
         <td><%= l(presenter.completed_service_form.created_at) if presenter.completed_service_form.attached? %></td>
+        <td><%= presenter.completed_service_form.filename %></td>
       </tr>
       <tr>
-        <td></td>
-        <td>Accepted</td>
-        <td><%= l(presenter.service_completed_date) if presenter.service_completed_date? %></td>
+        <% if presenter.service_form_status == "rejected" %>
+          <td class="text-center"><%= fa_icon("circle-xmark", type: :solid, class: "text-danger") %></td>
+          <td>Rejected</td>
+          <td><%= l(presenter.service_form_rejected_at) %></td>
+          <td><%= presenter.service_form_rejected_comments %></td>
+        <% elsif presenter.service_form_status == "accepted" %>
+          <td class="text-center"><%= fa_icon("circle-check", type: :solid, class: "text-success") %></td>
+          <td>Accepted</td>
+          <td><%= l(presenter.service_form_accepted_at) %></td>
+          <td><%= presenter.service_form_accepted_comments %></td>
+        <% elsif presenter.completed_service_form.attached? %>
+          <td class="text-center"><%= fa_icon("file-magnifying-glass", type: :solid, class: "text-secondary") %></td>
+          <td>Under review</td>
+          <td></td>
+          <td></td>
+        <% end %>
       </tr>
       </tbody>
     </table>

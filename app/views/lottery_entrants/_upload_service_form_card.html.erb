@@ -14,10 +14,7 @@
                         target: "_blank",
                         rel: "noopener",
                         class: "btn btn-outline-success" %>
-            <%= button_to "Remove",
-                          remove_service_form_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery, presenter.__getobj__),
-                          method: :delete,
-                          class: "btn btn-outline-danger" %>
+            <%= button_to_remove_completed_service_form(presenter) %>
           <% end %>
         </div>
       </div>

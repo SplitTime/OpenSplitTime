@@ -7,6 +7,11 @@ class LotteryEntrant < ApplicationRecord
   include Delegable
   include CapitalizeAttributes
 
+  enum service_form_status: {
+    rejected: 0,
+    accepted: 1,
+  }
+
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy

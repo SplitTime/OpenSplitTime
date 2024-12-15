@@ -105,7 +105,17 @@ $fa-var-ellipsis-h: \f141;
 $fa-var-equals: \3d;
 $fa-var-eye: \f06e;
 $fa-var-eye-slash: \f070;
+$fa-var-file: \f15b;
+$fa-var-file-check: \f316;
+$fa-var-file-circle-check: \e5a0;
+$fa-var-file-circle-question: \e4ef;
+$fa-var-file-circle-xmark: \e5a1;
 $fa-var-file-csv: \f6dd;
+$fa-var-file-magnifying-glass: \f865;
+$fa-var-file-search: \f865;
+$fa-var-file-slash: \e3a7;
+$fa-var-file-xmark: \f317;
+$fa-var-file-times: \f317;
 $fa-var-gear: \f013;
 $fa-var-cog: \f013;
 $fa-var-hand: \f256;
@@ -130,6 +140,7 @@ $fa-var-map-location-dot: \f5a0;
 $fa-var-map-marked-alt: \f5a0;
 $fa-var-masks-theater: \f630;
 $fa-var-theater-masks: \f630;
+$fa-var-memo-circle-check: \e1d9;
 $fa-var-minus: \f068;
 $fa-var-subtract: \f068;
 $fa-var-not-equal: \f53e;
@@ -237,7 +248,17 @@ $fa-icons: (
   "equals": $fa-var-equals,
   "eye": $fa-var-eye,
   "eye-slash": $fa-var-eye-slash,
+  "file": $fa-var-file,
+  "file-check": $fa-var-file-check,
+  "file-circle-check": $fa-var-file-circle-check,
+  "file-circle-question": $fa-var-file-circle-question,
+  "file-circle-xmark": $fa-var-file-circle-xmark,
   "file-csv": $fa-var-file-csv,
+  "file-magnifying-glass": $fa-var-file-magnifying-glass,
+  "file-search": $fa-var-file-search,
+  "file-slash": $fa-var-file-slash,
+  "file-xmark": $fa-var-file-xmark,
+  "file-times": $fa-var-file-times,
   "gear": $fa-var-gear,
   "cog": $fa-var-cog,
   "hand": $fa-var-hand,
@@ -262,6 +283,7 @@ $fa-icons: (
   "map-marked-alt": $fa-var-map-marked-alt,
   "masks-theater": $fa-var-masks-theater,
   "theater-masks": $fa-var-theater-masks,
+  "memo-circle-check": $fa-var-memo-circle-check,
   "minus": $fa-var-minus,
   "subtract": $fa-var-subtract,
   "not-equal": $fa-var-not-equal,

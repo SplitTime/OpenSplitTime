@@ -32,7 +32,6 @@ class LotteryEntrantParameters < BaseParameters
     [
       :birthdate,
       :city,
-      :completed_service_form,
       :country_code,
       :division,
       :external_id,

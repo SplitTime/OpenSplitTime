@@ -41,7 +41,7 @@
         <% if presenter.relevant_historical_facts.any? %>
           <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
         <% end %>
-      <% elsif presenter.calculation.present? %>
+      <% else %>
         <p class="fw-bold">If this entrant is you, please log in to see details, or sign up if you don't have an OpenSplitTime
           account.</p>
         <p>You will need to use the same email that you used to apply to the lottery in Ultrasignup.</p>

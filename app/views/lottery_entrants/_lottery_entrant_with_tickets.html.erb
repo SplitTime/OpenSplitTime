@@ -14,9 +14,9 @@
           <h6 class="text-end fw-bold"><%= "#{pluralize(presenter.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
-      <hr/>
       <% if current_user.present? && (current_user.admin? || current_user.steward_of?(presenter.organization) || current_user.email == presenter.email) %>
         <% if presenter.accepted? || presenter.waitlisted? %>
+          <hr/>
           <div class="row">
             <div class="col-auto">
               <% if presenter.accepted? %>
@@ -26,10 +26,12 @@
               <% end %>
             </div>
             <div class="col text-end">
-              <%= link_to "Manage service",
-                          organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter),
-                          data: { turbo: false },
-                          class: "btn btn-outline-success" %>
+              <% if current_user&.admin? %>
+                <%= link_to "Manage service",
+                            organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter),
+                            data: { turbo: false },
+                            class: "btn btn-outline-success" %>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -41,7 +43,8 @@
         <% if presenter.relevant_historical_facts.any? %>
           <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
         <% end %>
-      <% else %>
+      <% elsif current_user.nil? %>
+        <hr/>
         <p class="fw-bold">If this entrant is you, please log in to see details, or sign up if you don't have an OpenSplitTime
           account.</p>
         <p>You will need to use the same email that you used to apply to the lottery in Ultrasignup.</p>

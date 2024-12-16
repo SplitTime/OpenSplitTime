@@ -37,10 +37,11 @@
         <% end %>
 
         <% if presenter.calculation.present? %>
-          <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
           <hr/>
+          <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
         <% end %>
         <% if presenter.relevant_historical_facts.any? %>
+          <hr/>
           <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
         <% end %>
       <% elsif current_user.nil? %>

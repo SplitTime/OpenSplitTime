@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
-  attr_reader :lottery_entrant
-
   def post_initialize(service_detail)
     @lottery_entrant = service_detail.entrant
   end
 
   def show?
-    user.email == @lottery_entrant.email || user.authorized_for_lotteries?(@organization)
+    user.email == lottery_entrant.email || user.authorized_for_lotteries?(organization)
   end
 
   def attach_completed_form?
@@ -25,5 +23,6 @@ class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
 
   private
 
+  attr_reader :lottery_entrant
   delegate :organization, to: :lottery_entrant, private: true
 end

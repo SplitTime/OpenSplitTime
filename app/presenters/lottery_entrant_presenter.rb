@@ -30,6 +30,4 @@ class LotteryEntrantPresenter < SimpleDelegator
   def finisher?
     division.name.include?("Finishers")
   end
-
-  private
 end

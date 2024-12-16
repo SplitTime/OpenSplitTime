@@ -14,12 +14,7 @@ class LotteryEntrant < ApplicationRecord
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :historical_facts, through: :person
   has_one :division_ranking, class_name: "Lotteries::DivisionRanking"
-
-  has_one_attached :completed_service_form do |form|
-    form.variant :small, resize_to_limit: [150, 150]
-    form.variant :medium, resize_to_limit: [500, 500]
-    form.variant :large, resize_to_limit: [1000, 1000]
-  end
+  has_one :service_detail, class_name: "Lotteries::EntrantServiceDetail"
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
@@ -42,9 +37,6 @@ class LotteryEntrant < ApplicationRecord
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
   validates_with ::LotteryEntrantUniqueValidator
-  validates :completed_service_form,
-            content_type: { in: %w[image/png image/jpeg application/pdf], message: "must be a pdf, png, or jpeg file" },
-            size: { less_than: 2.megabytes, message: "must be less than 2 megabytes" }
 
   def self.search(param)
     return all unless param.present?

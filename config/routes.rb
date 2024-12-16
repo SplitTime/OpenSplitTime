@@ -240,11 +240,12 @@ Rails.application.routes.draw do
       member { delete :delete_tickets }
       resources :lottery_divisions, except: [:index, :show]
       resources :lottery_entrants, except: [:index] do
-        member { get :download_service_form }
-        member { get :manage_service }
         member { post :draw }
-        member { patch :attach_service_form }
-        member { delete :remove_service_form }
+      end
+      resources :entrant_service_details, only: [:show], module: :lotteries do
+        member { get :download_completed_form }
+        member { patch :attach_completed_form }
+        member { delete :remove_completed_form }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
       resources :partners, except: [:show], module: "lotteries"

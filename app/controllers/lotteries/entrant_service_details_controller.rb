@@ -51,7 +51,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
   private
 
   def authorize_service_detail
-    authorize @service_detail, policy_class: ::Lotteries::EntrantServiceDetailPolicy
+    authorize @service_detail
   end
 
   def set_organization

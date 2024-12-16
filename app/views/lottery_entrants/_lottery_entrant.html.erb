@@ -5,8 +5,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <div class="h5 fw-bold"><%= record.name %></div>
-          <div class="h6"><%= record.flexible_geolocation %></div>
+          <%= render partial: "lottery_entrants/name_and_geolocation_with_icon", locals: { record: record } %>
         </div>
         <div class="col">
           <h4 class="text-end"><span class="badge bg-secondary"><%= record.division_name %></span></h4>

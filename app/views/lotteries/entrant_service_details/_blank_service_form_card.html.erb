@@ -1,0 +1,32 @@
+<%# locals: (presenter:) %>
+
+<div class="card mt-4">
+  <div class="card-header">
+    <div class="row">
+      <div class="col">
+        <div class="fs-3 fw-bold">Download Blank Service Form</div>
+      </div>
+      <div class="col text-end">
+        <div class="d-flex justify-content-end gap-2">
+          <% if presenter.lottery.service_form.attached? %>
+            <%= link_to fa_icon("download", text: "Download"),
+                        download_service_form_organization_lottery_path(presenter.organization, presenter.lottery),
+                        target: "_blank",
+                        rel: "noopener",
+                        class: "btn btn-outline-success" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="fs-6">
+      <% if presenter.lottery.service_form.attached? %>
+        <span>Download a blank service form by clicking the button at the top right of this card. </span>
+        <span class="fw-bold">Please read the instructions carefully and fill out the entire form before uploading the completed form.</span>
+      <% else %>
+        <span>The service form is not yet available for download. Please check back later.</span>
+      <% end %>
+    </div>
+  </div>
+</div>

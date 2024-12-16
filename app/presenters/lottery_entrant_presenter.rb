@@ -12,9 +12,13 @@ class LotteryEntrantPresenter < SimpleDelegator
 
   # @return [Object, nil]
   def calculation
-    return nil unless lottery.calculations_available? && person_id.present?
+    return @calculation if defined?(@calculation)
 
-    lottery.ticket_calculations.find_by(person_id: person_id)
+    @calculation = if lottery.calculations_available? && person_id.present?
+      lottery.ticket_calculations.find_by(person_id: person_id)
+    else
+      nil
+    end
   end
 
   # @return [ActiveRecord::Relation<HistoricalFact>]
@@ -26,6 +30,4 @@ class LotteryEntrantPresenter < SimpleDelegator
   def finisher?
     division.name.include?("Finishers")
   end
-
-  private
 end

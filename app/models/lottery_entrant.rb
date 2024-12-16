@@ -12,6 +12,7 @@ class LotteryEntrant < ApplicationRecord
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :historical_facts, through: :person
   has_one :division_ranking, class_name: "Lotteries::DivisionRanking"
+  has_one :service_detail, class_name: "Lotteries::EntrantServiceDetail"
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
@@ -50,6 +51,7 @@ class LotteryEntrant < ApplicationRecord
 
   delegate :lottery, to: :division
   delegate :organization, to: :lottery
+  delegate :draw_status, :accepted?, :waitlisted?, to: :division_ranking
 
   def division_name
     if attributes.key?("division_name")

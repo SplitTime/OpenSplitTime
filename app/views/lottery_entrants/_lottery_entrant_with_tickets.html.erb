@@ -7,23 +7,45 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <div class="h5 fw-bold"><%= presenter.name %></div>
-          <div class="h6"><%= presenter.flexible_geolocation %></div>
+          <%= render partial: "lottery_entrants/name_and_geolocation_with_icon", locals: { record: record } %>
         </div>
         <div class="col">
           <h4 class="text-end"><span class="badge bg-secondary"><%= presenter.division_name %></span></h4>
           <h6 class="text-end fw-bold"><%= "#{pluralize(presenter.number_of_tickets, 'ticket')}" %></h6>
         </div>
       </div>
-      <hr/>
       <% if current_user.present? && (current_user.admin? || current_user.steward_of?(presenter.organization) || current_user.email == presenter.email) %>
+        <% if presenter.accepted? || presenter.waitlisted? %>
+          <hr/>
+          <div class="row">
+            <div class="col-auto">
+              <% if presenter.accepted? %>
+                <span class="fs-5"><%= "Congratulations on being accepted to the #{presenter.lottery.name}!" %></span>
+              <% elsif presenter.waitlisted? %>
+                <span class="fs-5"><%= "You have been placed on the waitlist for the #{presenter.lottery.name}." %></span>
+              <% end %>
+            </div>
+            <div class="col text-end">
+              <% if current_user&.admin? %>
+                <%= link_to "Manage service",
+                            organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter),
+                            data: { turbo: false },
+                            class: "btn btn-outline-success" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <% if presenter.calculation.present? %>
           <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
           <hr/>
         <% end %>
-        <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
-      <% else %>
-        <p class="fw-bold">If this entrant is you, please log in to see calculation details, or sign up if you don't have an OpenSplitTime
+        <% if presenter.relevant_historical_facts.any? %>
+          <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>
+        <% end %>
+      <% elsif current_user.nil? %>
+        <hr/>
+        <p class="fw-bold">If this entrant is you, please log in to see details, or sign up if you don't have an OpenSplitTime
           account.</p>
         <p>You will need to use the same email that you used to apply to the lottery in Ultrasignup.</p>
       <% end %>

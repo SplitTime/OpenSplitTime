@@ -10,9 +10,12 @@ class Lottery < ApplicationRecord
   belongs_to :organization
   has_many :divisions, class_name: "LotteryDivision", dependent: :destroy
   has_many :entrants, through: :divisions
+  has_many :entrant_service_details, through: :entrants, class_name: "Lotteries::EntrantServiceDetail", source: :service_detail
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :draws, class_name: "LotteryDraw", dependent: :destroy
   has_many :simulation_runs, class_name: "LotterySimulationRun", dependent: :destroy
+
+  has_one_attached :service_form
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :name

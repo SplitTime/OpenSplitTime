@@ -26,66 +26,74 @@ class LotteryPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def create?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def update?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def destroy?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def draw_tickets?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def setup?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def withdraw_entrants?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def export_entrants?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def calculations?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def sync_calculations?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def draw?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def delete_draws?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def delete_entrants?
-    user.authorized_for_lotteries?(organization)
+    new?
+  end
+
+  def attach_service_form?
+    new?
+  end
+
+  def remove_service_form?
+    new?
   end
 
   def delete_tickets?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def generate_entrants?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 
   def generate_tickets?
-    user.authorized_for_lotteries?(organization)
+    new?
   end
 end

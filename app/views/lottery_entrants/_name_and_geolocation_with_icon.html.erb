@@ -1,0 +1,31 @@
+<%# locals: (record:) %>
+
+<div class="row g-2">
+  <div class="col-auto d-flex pt-1">
+    <% if record.accepted? %>
+                <span class="text-success">
+                  <%= fa_icon("badge-check",
+                              size: "2x",
+                              data: {
+                                controller: :tooltip,
+                                bs_original_title: "Accepted"
+                              }) %>
+                </span>
+    <% elsif record.waitlisted? %>
+                <span class="text-success">
+                  <%= fa_icon("list-check",
+                              size: "2x",
+                              data: {
+                                controller: :tooltip,
+                                bs_original_title: "Waitlisted"
+                              }) %>
+                </span>
+    <% end %>
+  </div>
+  <div class="col">
+    <div class="d-flex flex-column h-100">
+      <span class="fs-5 fw-bold"><%= record.name %></span>
+      <span class="text-muted"><%= record.flexible_geolocation %></span>
+    </div>
+  </div>
+</div>

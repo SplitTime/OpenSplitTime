@@ -224,20 +224,28 @@ Rails.application.routes.draw do
 
     resources :lotteries do
       member { get :calculations }
+      member { get :download_service_form }
       member { get :draw_tickets }
+      member { get :export_entrants }
       member { get :setup }
       member { get :withdraw_entrants }
-      member { get :export_entrants }
       member { post :sync_calculations }
       member { post :draw }
       member { post :generate_entrants }
       member { post :generate_tickets }
+      member { patch :attach_service_form }
       member { delete :delete_draws }
       member { delete :delete_entrants }
+      member { delete :remove_service_form }
       member { delete :delete_tickets }
       resources :lottery_divisions, except: [:index, :show]
       resources :lottery_entrants, except: [:index] do
         member { post :draw }
+      end
+      resources :entrant_service_details, only: [:show], module: :lotteries do
+        member { get :download_completed_form }
+        member { patch :attach_completed_form }
+        member { delete :remove_completed_form }
       end
       resources :lottery_simulation_runs, only: [:index, :show, :new, :create, :destroy]
       resources :partners, except: [:show], module: "lotteries"

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 class LotteriesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show, :download_service_form]
   before_action :set_organization
-  before_action :authorize_organization, except: [:index, :show]
+  before_action :authorize_organization, except: [:index, :show, :download_service_form]
   before_action :set_lottery, except: [:index, :new, :create]
-  after_action :verify_authorized, except: [:index, :show]
+  after_action :verify_authorized, except: [:index, :show, :download_service_form]
 
   # GET /organizations/:organization_id/lotteries
   def index
@@ -164,6 +164,40 @@ class LotteriesController < ApplicationController
     end
 
     redirect_to setup_organization_lottery_path(@organization, @lottery)
+  end
+
+  # PATCH /organizations/:organization_id/lotteries/:id/attach_service_form
+  def attach_service_form
+    service_form = params.dig(:lottery, :service_form)
+
+    if service_form.present?
+      if @lottery.service_form.attach(service_form)
+        flash[:success] = "Service form was attached"
+      else
+        flash[:danger] = "An error occurred while attaching service form: #{@lottery_entrant.errors.full_messages}"
+      end
+
+      redirect_to setup_organization_lottery_path(@organization, @lottery)
+    else
+      redirect_to setup_organization_lottery_path(@organization, @lottery),
+                  notice: "No service form was specified"
+    end
+  end
+
+  # GET /organizations/:organization_id/lotteries/:id/download_service_form
+  def download_service_form
+    if @lottery.service_form.attached?
+      redirect_to @lottery.service_form.url(disposition: :attachment), allow_other_host: true
+    else
+      redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "No service form is attached"
+    end
+  end
+
+  # DELETE /organizations/:organization_id/lotteries/:id/remove_service_form
+  def remove_service_form
+    @lottery.service_form.purge_later
+
+    redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Service form was removed"
   end
 
   # DELETE /organizations/:organization_id/lotteries/:id/delete_tickets

@@ -7,8 +7,9 @@ class LotteryParameters < BaseParameters
       :id,
       :name,
       :scheduled_start_date,
+      :service_form,
       :slug,
-      :status
+      :status,
     ]
   end
 

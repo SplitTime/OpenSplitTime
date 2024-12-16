@@ -1,0 +1,34 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Lottery Entrant Service Details - #{@presenter.full_name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1><strong><%= @presenter.full_name %></strong></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to "Lotteries", organization_lotteries_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.lottery.name, organization_lottery_path(@presenter.organization, @presenter.lottery) %></li>
+            <li class="breadcrumb-item">
+              <%= link_to @presenter.full_name,
+                          organization_lottery_path(@presenter.organization, @presenter.lottery,
+                                                    display_style: :entrants,
+                                                    filter: { search: "#{@presenter.__getobj__.first_name}+#{@presenter.__getobj__.last_name}" }) %>
+            </li>
+            <li class="breadcrumb-item">Manage service</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <%= render partial: "service_form_status_card", locals: { presenter: @presenter } %>
+  <%= render partial: "blank_service_form_card", locals: { presenter: @presenter } %>
+  <%= render partial: "upload_service_form_card", locals: { presenter: @presenter } %>
+</article>

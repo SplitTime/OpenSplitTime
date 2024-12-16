@@ -1,13 +1,11 @@
-<%# locals: (record:, calculation:) %>
-
-<% presenter = LotteryEntrantPresenter.new(record) %>
+<%# locals: (presenter:) %>
 
 <%= turbo_frame_tag dom_id(presenter) do %>
   <div class="card bg-light mt-2">
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <%= render partial: "lottery_entrants/name_and_geolocation_with_icon", locals: { record: record } %>
+          <%= render partial: "lottery_entrants/name_and_geolocation_with_icon", locals: { record: presenter.__getobj__ } %>
         </div>
         <div class="col">
           <h4 class="text-end"><span class="badge bg-secondary"><%= presenter.division_name %></span></h4>

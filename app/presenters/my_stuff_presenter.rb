@@ -25,8 +25,9 @@ class MyStuffPresenter < BasePresenter
     EventSeries.includes(:events).where(organization: organizations)
   end
 
-  def lottery_entrants
+  def drawn_lottery_entrants
     LotteryEntrant.belonging_to_user(current_user)
+      .drawn
       .includes(:service_detail, division: { lottery: :organization })
   end
 

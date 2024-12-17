@@ -1,7 +1,7 @@
 <%# locals: (presenter:) %>
 
 <turbo-frame id="my_stuff_service_requirements_card">
-  <% presenter.lottery_entrants.each do |lottery_entrant| %>
+  <% presenter.drawn_lottery_entrants.each do |lottery_entrant| %>
     <h4 class="card-text fw-bold">
       <%= link_to lottery_entrant.lottery.name, organization_lottery_entrant_service_detail_path(lottery_entrant.organization, lottery_entrant.lottery, lottery_entrant) %>
     </h4>

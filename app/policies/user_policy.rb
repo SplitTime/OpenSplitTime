@@ -39,4 +39,8 @@ class UserPolicy < ApplicationPolicy
   def destroy?
     current_user.admin? && (current_user != user_record)
   end
+
+  def current?
+    current_user.present?
+  end
 end

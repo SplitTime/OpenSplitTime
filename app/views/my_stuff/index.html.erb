@@ -21,6 +21,20 @@
   </div>
 </header>
 
+<% if @presenter.person_not_assigned? %>
+  <aside class="container">
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 icon_name: "info-circle",
+                 icon_color: "info",
+                 callout_color: "info",
+                 main_text: "Your User account is not yet linked to a Person",
+                 detail_paragraphs: "If you are not seeing your results and service requirements here, it may be because your User account is not yet linked to a Person. Search for your name in the People view, then click on your name and click 'This is me' to link your User account to that Person.",
+                 link: link_to("People search", people_path, class: "btn btn-outline-secondary")
+               } %>
+  </aside>
+<% end %>
+
 <article class="ost-article container">
   <div class="row"
        data-controller="masonry"

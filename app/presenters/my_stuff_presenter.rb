@@ -39,6 +39,10 @@ class MyStuffPresenter < BasePresenter
     Organization.where(created_by: current_user.id).order(:name)
   end
 
+  def person_not_assigned?
+    Person.where(user_id: current_user.id).none?
+  end
+
   def steward_organizations
     current_user.organizations.where.not(created_by: current_user.id).order(:name)
   end

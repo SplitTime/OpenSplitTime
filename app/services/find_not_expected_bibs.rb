@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ostruct"
+
 class FindNotExpectedBibs
   include Interactors::Errors
   include SplitAnalyzable

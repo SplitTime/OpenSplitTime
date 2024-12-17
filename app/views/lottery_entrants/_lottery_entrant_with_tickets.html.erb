@@ -24,12 +24,10 @@
               <% end %>
             </div>
             <div class="col text-end">
-              <% if current_user&.admin? %>
-                <%= link_to "Manage service",
-                            organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter),
-                            data: { turbo: false },
-                            class: "btn btn-outline-success" %>
-              <% end %>
+              <%= link_to "Manage service",
+                          organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter),
+                          data: { turbo: false },
+                          class: "btn btn-outline-success" %>
             </div>
           </div>
         <% end %>
@@ -38,6 +36,7 @@
           <hr/>
           <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
         <% end %>
+
         <% if presenter.relevant_historical_facts.any? %>
           <hr/>
           <%= render partial: "historical_facts_table", locals: { presenter: presenter } %>

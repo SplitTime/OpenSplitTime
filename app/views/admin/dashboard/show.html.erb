@@ -7,9 +7,10 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>OpenSplitTime Dashboard</strong></h1>
+          <div class="h1 fw-bold">OpenSplitTime Dashboard</div>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item active"><%= link_to 'Dashboard', admin_dashboard_path %></li>
+            <li class="breadcrumb-item active"><%= current_user.full_name %></li>
+            <li class="breadcrumb-item">Dashboard</li>
           </ul>
         </div>
       </div>

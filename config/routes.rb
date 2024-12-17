@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     get :live_updates
     get :organizations
     get :results
+    get :service_requirements
   end
 
   namespace :webhooks do

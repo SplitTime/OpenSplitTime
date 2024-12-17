@@ -27,6 +27,18 @@
        data-controller="masonry"
        data-masonry='{"percentPosition": true }'
        style="position: relative">
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card mb-3">
+        <h3 class="card-header"><strong>My Service Requirements</strong></h3>
+        <div class="card-body">
+          <turbo-frame id="my_stuff_service_requirements_card" src="<%= my_stuff_service_requirements_path %>" target="_top">
+            <%= render partial: "shared/loading" %>
+          </turbo-frame>
+        </div>
+      </div>
+    </div>
+
     <div class="col-md-6 col-lg-4">
       <div class="card mb-3">
         <h3 class="card-header"><strong>My Results</strong></h3>

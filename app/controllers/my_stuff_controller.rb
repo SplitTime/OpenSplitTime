@@ -31,6 +31,10 @@ class MyStuffController < ApplicationController
     render partial: "results", locals: { presenter: @presenter }
   end
 
+  def service_requirements
+    render partial: "service_requirements", locals: { presenter: @presenter }
+  end
+
   private
 
   def set_presenter

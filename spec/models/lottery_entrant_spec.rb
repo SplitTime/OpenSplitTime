@@ -12,9 +12,61 @@ RSpec.describe LotteryEntrant, type: :model do
   it { is_expected.to strip_attribute(:state_code).collapse_spaces }
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
 
-  describe "scopes related to draw status" do
+  describe "scopes" do
     let(:existing_scope) { division.entrants }
     let(:division) { LotteryDivision.find_by(name: division_name) }
+
+    describe ".belonging_to_user" do
+      let(:result) { existing_scope.belonging_to_user(user) }
+      let(:user) { users(:fifth_user) }
+      let(:division) { lottery_divisions(:lottery_division_0001) }
+      let(:entrant_1) { lottery_entrants(:lottery_entrant_0001) }
+      let(:entrant_2) { lottery_entrants(:lottery_entrant_0002) }
+      let(:person) { people(:bruno_fadel) }
+
+      context "when the user's avatar is the lottery entrant's person" do
+        before do
+          user.update(avatar: person)
+          entrant_1.update(person: person)
+        end
+
+        it "returns a collection including that lottery entrant" do
+          expect(result.count).to eq(1)
+          expect(result).to include(entrant_1)
+        end
+      end
+
+      context "when the user's email is the same as the lottery entrant's email" do
+        before do
+          entrant_1.update(email: user.email)
+        end
+
+        it "returns a collection including that lottery entrant" do
+          expect(result.count).to eq(1)
+          expect(result).to include(entrant_1)
+        end
+      end
+
+      context "when email matches one entrant and person matches another" do
+        before do
+          user.update(avatar: person)
+          entrant_1.update(person: person)
+          entrant_2.update(email: user.email)
+        end
+
+        it "returns a collection including both entrants" do
+          expect(result.count).to eq(2)
+          expect(result).to include(entrant_1)
+          expect(result).to include(entrant_2)
+        end
+      end
+
+      context "when no matches are found" do
+        it "returns an empty collection" do
+          expect(result).to be_empty
+        end
+      end
+    end
 
     describe ".accepted" do
       let(:result) { existing_scope.accepted }

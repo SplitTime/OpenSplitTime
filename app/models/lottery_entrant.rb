@@ -17,6 +17,7 @@ class LotteryEntrant < ApplicationRecord
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name, :city
 
+  scope :belonging_to_user, ->(user) { where(email: user.email).or(where.not(person: nil).where(person: user.avatar)) }
   scope :accepted, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :accepted }) }
   scope :waitlisted, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :waitlisted }) }
   scope :drawn_beyond_waitlist, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :drawn_beyond_waitlist }) }

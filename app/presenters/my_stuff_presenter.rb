@@ -25,6 +25,11 @@ class MyStuffPresenter < BasePresenter
     EventSeries.includes(:events).where(organization: organizations)
   end
 
+  def lottery_entrants
+    LotteryEntrant.belonging_to_user(current_user)
+      .includes(:service_detail, division: { lottery: :organization })
+  end
+
   def organizations
     owned_organizations | steward_organizations
   end
@@ -42,9 +47,9 @@ class MyStuffPresenter < BasePresenter
   end
 
   def user_efforts
-    return nil unless avatar
+    return Effort.none unless avatar
 
-    @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
+    @user_efforts ||= avatar.efforts.joins(:event).includes(event: :event_group).order("events.scheduled_start_time desc")
   end
 
   def interests

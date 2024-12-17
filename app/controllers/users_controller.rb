@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, except: :index
+  before_action :set_user, only: [:update, :destroy]
+  before_action :authorize_user, only: [:update, :destroy]
   after_action :verify_authorized
 
   def index
     authorize User
+
     users = User.with_avatar_names.includes(:avatar)
         .where(prepared_params[:filter])
         .search(prepared_params[:search])
@@ -22,7 +26,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    authorize @user
     if @user.update(secure_params)
       redirect_to users_path, notice: "User updated."
     else
@@ -31,17 +34,15 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    authorize @user
     @user.destroy
     redirect_to users_path, notice: "User deleted."
   end
 
-  def my_stuff
-    authorize @user
-    @presenter = MyStuffPresenter.new(@user)
-  end
-
   private
+
+  def authorize_user
+    authorize @user
+  end
 
   def secure_params
     params.require(:user).permit(:role)

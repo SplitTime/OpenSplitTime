@@ -2,6 +2,7 @@
 
 require "smarter_csv"
 require "csv"
+require "ostruct"
 
 module ETL
   module Extractors

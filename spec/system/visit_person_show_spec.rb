@@ -58,7 +58,7 @@ RSpec.describe "visit a person show page" do
 
       expect do
         click_button "This is me"
-        accept_confirm "Is this really you? (Please cancel if you were just kidding.)"
+        accept_confirm
         expect(page).to have_content("Hey, this is me!")
         expect(page).to have_current_path(person_path(person))
       end.to change { person.reload.claimant }.from(nil).to(user)

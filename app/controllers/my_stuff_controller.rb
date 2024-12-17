@@ -3,7 +3,6 @@
 class MyStuffController < ApplicationController
   before_action :authenticate_user!
   before_action :set_presenter
-  before_action :test_sleep, except: :index
 
   def index
   end
@@ -34,12 +33,7 @@ class MyStuffController < ApplicationController
 
   private
 
-  def test_sleep
-    sleep rand(3)
-  end
-
   def set_presenter
     @presenter = MyStuffPresenter.new(current_user)
   end
-
 end

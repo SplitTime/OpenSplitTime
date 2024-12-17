@@ -42,7 +42,7 @@ class MyStuffPresenter < BasePresenter
   end
 
   def user_efforts
-    return nil unless avatar
+    return [] unless avatar
 
     @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
   end

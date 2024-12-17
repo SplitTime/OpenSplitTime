@@ -33,18 +33,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    current_user.admin?
+    index?
   end
 
   def destroy?
     current_user.admin? && (current_user != user_record)
-  end
-
-  def current?
-    current_user.present?
-  end
-
-  def my_stuff?
-    current_user.admin? || (current_user == user_record)
   end
 end

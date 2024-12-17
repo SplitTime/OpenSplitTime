@@ -1,0 +1,9 @@
+<%# locals: (presenter:) %>
+
+<turbo-frame id="my_stuff_results_card">
+  <% presenter.recent_user_efforts(20).each do |effort| %>
+    <h4 class="card-text">
+      <strong><%= link_to effort.event_name, effort_path(effort) %></strong>
+    </h4>
+  <% end %>
+</turbo-frame>

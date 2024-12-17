@@ -40,6 +40,16 @@ Rails.application.routes.draw do
     get "api", to: "visitors#api"
   end
 
+  scope :my_stuff, controller: :my_stuff, as: :my_stuff do
+    get '/', action: :index
+    get :events
+    get :event_series
+    get :interests
+    get :live_updates
+    get :organizations
+    get :results
+  end
+
   namespace :webhooks do
     resources :sendgrid_events, only: [:create]
   end
@@ -64,11 +74,7 @@ Rails.application.routes.draw do
     get "/users/auth/failure" => "users/omniauth_callbacks#failure"
   end
 
-  resources :users, only: [:index, :update, :destroy] do
-    member do
-      get :my_stuff
-    end
-  end
+  resources :users, only: [:index, :update, :destroy]
 
   resources :credentials, only: [:create, :update, :destroy]
 

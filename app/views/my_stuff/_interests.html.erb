@@ -1,0 +1,9 @@
+<%# locals: (presenter:) %>
+
+<turbo-frame id="my_stuff_interests_card">
+  <% presenter.interests.each do |person| %>
+    <h4 class="card-text">
+      <strong><%= link_to person.full_name, person_path(person) %></strong>
+    </h4>
+  <% end %>
+</turbo-frame>

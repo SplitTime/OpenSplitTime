@@ -1,0 +1,9 @@
+<%# locals: (presenter:) %>
+
+<turbo-frame id="my_stuff_event_series_card">
+  <% presenter.recent_event_series(10).each do |series| %>
+    <h4 class="card-text">
+      <strong><%= link_to series.name, organization_event_series_path(series.organization, series) %></strong>
+    </h4>
+  <% end %>
+</turbo-frame>

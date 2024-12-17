@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Visit the My Stuff page" do
+RSpec.describe "Visit the My Stuff page", js: true do
   let(:steward) { users(:third_user) }
   let(:admin) { users(:admin_user) }
   let(:organization_1) { organizations(:hardrock) }
@@ -15,31 +15,20 @@ RSpec.describe "Visit the My Stuff page" do
 
   scenario "The user is a non-admin user that is a steward of an organization" do
     login_as steward, scope: :user
-    visit my_stuff_user_path(steward)
+    visit_my_stuff_path
 
     verify_org_links_present(organization_1)
   end
 
-  scenario "The user is a non-admin user that attempts to reach the my_stuff page of another user" do
-    login_as steward, scope: :user
-    visit my_stuff_user_path(admin)
-
-    expect(page).not_to have_content("My Events")
-    expect(page).not_to have_content("My Organizations")
-  end
-
-  scenario "The user is an admin user signing into his own page" do
+  scenario "The user is an admin user" do
     login_as admin, scope: :user
-    visit my_stuff_user_path(admin)
+    visit_my_stuff_path
 
     verify_org_links_present(organization_2)
   end
 
-  scenario "The user is an admin user signing into another user page" do
-    login_as admin, scope: :user
-    visit my_stuff_user_path(steward)
-
-    verify_org_links_present(organization_1)
+  def visit_my_stuff_path
+    visit my_stuff_path
   end
 
   def verify_org_links_present(organization)

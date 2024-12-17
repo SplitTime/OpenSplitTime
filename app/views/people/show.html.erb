@@ -49,12 +49,12 @@
     <div class="row">
       <div class="col d-inline-flex justify-content-between">
         <div>
-          <% if @presenter.unclaimed? && current_user&.authorized_to_claim?(@presenter.person) %>
+          <% if @presenter.unclaimed? && user_signed_in? && current_user.authorized_to_claim?(@presenter.person) %>
             <%= button_to "This is me", avatar_claim_person_path(@presenter.person),
-                          class: "btn btn-success",
+                          class: "btn btn-outline-success",
                           method: :patch,
                           data: {
-                            turbo_confirm: "Is this really you? (Please cancel if you were just kidding.)",
+                            turbo_confirm: t(".confirm_person_claimed", user_email: current_user.email, person_full_name: @presenter.full_name),
                           }
             %>
           <% end %>

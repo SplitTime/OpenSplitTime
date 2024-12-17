@@ -330,7 +330,7 @@ Rails.application.routes.draw do
       resources :people, only: [:index, :show, :create, :update, :destroy]
       resources :split_times, only: [:show, :create, :update, :destroy]
       resources :splits, only: [:show, :create, :update, :destroy]
-      resources :users, only: [:show, :create, :update, :destroy] do
+      resources :users, only: [] do
         collection { get :current }
       end
       post "auth", to: "authentication#create"

@@ -10,10 +10,9 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= @presenter.full_name %></strong></h1>
+          <div class="h1 fw-bold">My Stuff</div>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><%= current_user&.admin? ? (link_to 'Users', users_path) : 'Users' %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.full_name, user_path(@presenter.current_user) %></li>
+            <li class="breadcrumb-item active"><%= current_user.full_name %></li>
             <li class="breadcrumb-item active">My Stuff</li>
           </ul>
         </div>
@@ -21,6 +20,20 @@
     </div>
   </div>
 </header>
+
+<% if @presenter.person_not_assigned? %>
+  <aside class="container">
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 icon_name: "info-circle",
+                 icon_color: "info",
+                 callout_color: "info",
+                 main_text: "Your User account is not yet linked to a Person",
+                 detail_paragraphs: "If you are not seeing your results and service requirements here, it may be because your User account is not yet linked to a Person. Search for your name in the People view, then click on your name and click 'This is me' to link your User account to that Person.",
+                 link: link_to("People search", people_path, class: "btn btn-outline-secondary")
+               } %>
+  </aside>
+<% end %>
 
 <article class="ost-article container">
   <div class="row"

@@ -13,10 +13,6 @@ class VisitorIndexPresenter < BasePresenter
     Course.where("next_start_time > ?", Time.current).order(:next_start_time).limit(number)
   end
 
-  def recent_user_efforts
-    @recent_user_efforts ||= avatar ? avatar.efforts.joins(:event).includes(event: :event_group).order("events.scheduled_start_time desc") : []
-  end
-
   private
 
   attr_reader :current_user

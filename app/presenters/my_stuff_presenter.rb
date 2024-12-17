@@ -42,9 +42,9 @@ class MyStuffPresenter < BasePresenter
   end
 
   def user_efforts
-    return [] unless avatar
+    return Effort.none unless avatar
 
-    @user_efforts ||= avatar.efforts.includes(:split_times).sort_by(&:calculated_start_time).reverse
+    @user_efforts ||= avatar.efforts.joins(:event).includes(event: :event_group).order("events.scheduled_start_time desc")
   end
 
   def interests

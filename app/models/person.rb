@@ -41,6 +41,7 @@ class Person < ApplicationRecord
   validates :email, allow_blank: true, length: {maximum: 105},
                     format: {with: VALID_EMAIL_REGEX}
   validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates :user_id, uniqueness: true, allow_blank: true
   validates_with BirthdateValidator
 
   # This method needs to extract ids and run a new search to remain compatible

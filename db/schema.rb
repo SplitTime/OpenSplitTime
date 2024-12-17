@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_16_054507) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_17_161720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -494,7 +494,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_16_054507) do
     t.string "country_name"
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["topic_resource_key"], name: "index_people_on_topic_resource_key", unique: true
-    t.index ["user_id"], name: "index_people_on_user_id"
+    t.index ["user_id"], name: "index_people_on_user_id", unique: true
   end
 
   create_table "projection_assessment_runs", force: :cascade do |t|

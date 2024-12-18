@@ -187,6 +187,7 @@ class LotteriesController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:id/download_service_form
   def download_service_form
     if @lottery.service_form.attached?
+      @lottery.increment!(:service_form_download_count)
       redirect_to @lottery.service_form.url(disposition: :attachment), allow_other_host: true
     else
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "No service form is attached"

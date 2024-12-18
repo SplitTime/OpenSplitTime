@@ -1,9 +1,13 @@
 <%# locals: (presenter:) %>
 
 <turbo-frame id="my_stuff_results_card">
-  <% presenter.recent_user_efforts(20).each do |effort| %>
-    <h4 class="card-text">
-      <strong><%= link_to effort.event_name, effort_path(effort) %></strong>
-    </h4>
+  <% if presenter.recent_user_efforts(1).any? %>
+    <% presenter.recent_user_efforts(20).each do |effort| %>
+      <h4 class="card-text">
+        <strong><%= link_to effort.event_name, effort_path(effort) %></strong>
+      </h4>
+    <% end %>
+  <% else %>
+    <div class="card-text h5">None found</div>
   <% end %>
 </turbo-frame>

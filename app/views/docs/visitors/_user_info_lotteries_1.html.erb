@@ -1,0 +1,100 @@
+<div class="card">
+  <h4 class="card-header">Service Requirements</h4>
+  <div class="card-body">
+    <p>For entrants who are accepted or placed on a waitlist, OpenSplitTime provides organizers with a way of keeping track of service requirements.
+      Once a Lottery is finished and the organizer has uploaded a service form, entrants can download that form, fill it out, complete it, and then
+      upload a completed form.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Downloading a Service Form</h4>
+  <div class="card-body">
+    <p>If you have been accepted or waitlisted, and you need to download a service form, <span class="fw-bold">here are the steps:</span></p>
+    <ol>
+      <li>If you already have an OpenSplitTime account,
+        <span class="fw-bold">
+          <%= user_signed_in? ?
+                "log in to OpenSplitTime" :
+                link_to("log in to OpenSplitTime", new_user_session_path, data: { turbo_frame: :form_modal })
+          %>.
+        </span>
+        The email address you use for your OpenSplitTime User account will need to be the same as the email address you used to sign up for the event.
+      </li>
+      <li>If you do not already have an OpenSplitTime account, or if you have an OpenSplitTime account under a different email address, you will
+        need to
+        <span class="fw-bold">
+          <%= user_signed_in? ?
+                "sign up to OpenSplitTime" :
+                link_to("sign up to OpenSplitTime", new_user_registration_path)
+          %>.
+        </span>
+      </li>
+      <li>Click on the <span class="fw-bold"><%= user_signed_in? ? link_to("My Stuff", my_stuff_path) : "My Stuff" %></span> link in the navigation
+        bar at the top of the page.
+      </li>
+      <li>Under the "Manage Service" card, click the appropriate link. This will take you to your Manage Service page.</li>
+      <li>Alternatively, you can search for your name in the Lottery Entrants page, click to expand the card to show details, and click the "Manage
+        Service" button that appears on that card.
+      </li>
+      <li>Click the "Download" link to download a blank service form.</li>
+      <li>The form information may be filled out electronically, but <span class="fw-bold">all signatures must be manually obtained.</span> Electronic
+        signatures are not supported.
+      </li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Uploading a Completed Service Form</h4>
+  <div class="card-body">
+    <p>Once you have your service form completed and signed by all appropriate parties,
+      <span class="fw-bold">here are the steps to upload the completed form:</span></p>
+    <ol>
+      <li>Scan or take a photo of your completed form. <span class="fw-bold">The format must be jpeg, png, or pdf, and the file size must be less than 2 MB.</span></li>
+      <li>
+        <span class="fw-bold">
+          <%= user_signed_in? ?
+                "Log in to OpenSplitTime" :
+                link_to("Log in to OpenSplitTime", new_user_session_path, data: { turbo_frame: :form_modal })
+          %>
+        </span>
+        using the same account you used to download the form.</li>
+      <li>Navigate to your Manage Service page as described above, and find the card with the heading that says, "Upload Completed Service Form".</li>
+      <li>Drag your completed service form to the dropzone area, or click/tap the area and browse to find your file.</li>
+      <li><span class="fw-bold">Click/tap the "Attach" button</span> at the bottom of the card.</li>
+      <li>The page will reload, and you should see "Under Review" in the Status card at the top of the page.</li>
+    </ol>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Service Form Review</h4>
+  <div class="card-body">
+    <p>Your form will be reviewed and either approved or rejected. It may take several days for the review process to be complete.
+      <span class="fw-bold">Please submit your form early to allow plenty of time for review and to provide any needed corrections.</span></p>
+    <p>If the form is rejected, you will see comments giving a description of the reason for the rejection.
+      <span class="fw-bold">If your form is rejected, you will need to click "Remove" to delete the form,</span> fix the problems,
+      and then <span class="fw-bold">upload a corrected form.</span></p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">How to Get Your Form Accepted the First Time</h4>
+  <div class="card-body">
+    <p>Here are some things to keep in mind before submitting your service form:</p>
+    <ol>
+      <li><span class="fw-bold">Don't use an outdated form.</span> Make sure you download the current form from the "Manage Service" page. Don't use a
+        form from a previous year. It will be rejected.
+      </li>
+      <li><span class="fw-bold">Fill out the form completely.</span> A form will be rejected if all the necessary information is not provided.</li>
+      <li><span class="fw-bold">Get all your signatures.</span> A form will be rejected if it is not fully signed.</li>
+      <li><span class="fw-bold">Submit your form on time.</span> Forms submitted after the deadline will be rejected.</li>
+    </ol>
+  </div>
+</div>
+<br/>

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     get "management", to: "visitors#management"
     get "ost_remote", to: "visitors#ost_remote"
     get "api", to: "visitors#api"
+    get "user_info", to: "visitors#user_info"
   end
 
   scope :my_stuff, controller: :my_stuff, as: :my_stuff do

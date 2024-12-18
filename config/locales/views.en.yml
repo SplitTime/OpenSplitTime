@@ -55,6 +55,11 @@ en:
     new:
       callout_detail_paragraph: 'Import Jobs run in the background, allowing you to do other work while the import is ongoing. You can check the status of any of your import jobs at any time by clicking "Imports" on the top menu bar.'
 
+  lotteries:
+    show:
+      callout_main_text: "Service form is now available for download"
+      callout_detail_paragraph_1: "For those accepted to the lottery or waitlisted, the service form is now available for download from your Manage Service page. When the form is complete with all signatures in place, you will upload the form from the same Manage Service page."
+
   people:
     show:
       confirm_person_claimed: "This action will associate your user (%{user_email}) with %{person_full_name}. This will allow you to quickly access your results, lottery service requirements, and other information from the My Stuff view. Please ensure this is really you before claiming this Person. This action can be undone only by a site administrator.\n\nClick OK to complete the assignment or Cancel to return without assigning."

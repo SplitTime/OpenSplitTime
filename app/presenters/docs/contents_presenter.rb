@@ -12,7 +12,7 @@ module Docs
 
     def items
       {
-        contents: {display_topic: "Contents", pages: ["Categories"]}
+        contents: { display_topic: "Contents", pages: ["Categories"] }
       }
     end
   end

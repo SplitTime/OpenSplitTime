@@ -93,6 +93,10 @@ class User < ApplicationRecord
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  def associated_with_entrant?(lottery_entrant)
+    ::LotteryEntrant.belonging_to_user(self).include?(lottery_entrant)
+  end
+
   def authorized_for_lotteries?(resource)
     admin? || owner_of?(resource) || lottery_steward_of?(resource)
   end

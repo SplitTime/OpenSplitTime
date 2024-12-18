@@ -6,7 +6,7 @@ class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
   end
 
   def show?
-    user.email == lottery_entrant.email || user.authorized_for_lotteries?(organization)
+    user.admin? || user.associated_with_entrant?(lottery_entrant) || user.steward_of?(organization)
   end
 
   def attach_completed_form?

@@ -1,0 +1,21 @@
+<%# locals: (presenter:) %>
+
+<% if presenter.lottery_entrants_paginated.present? %>
+  <div>
+    <div id="lottery_entrants">
+      <%= render partial: "lottery_entrants/lottery_entrant", collection: presenter.lottery_entrants_paginated, as: :record %>
+    </div>
+    <hr/>
+
+    <%= render "shared/pager", next_page_url: presenter.next_page_url %>
+  </div>
+<% else %>
+  <br/>
+  <% if presenter.params[:search].blank? %>
+    <p><strong>No entrants have been added yet</strong></p>
+  <% elsif presenter.params[:search].present? && presenter.params[:search].length < 3 %>
+    <p><strong>Search parameter is too short</strong></p>
+  <% else %>
+    <p><strong>No lottery entrants match this search</strong></p>
+  <% end %>
+<% end %>

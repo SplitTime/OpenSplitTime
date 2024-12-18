@@ -58,7 +58,7 @@ en:
   lotteries:
     show:
       callout_main_text: "Service form is now available for download"
-      callout_detail_paragraph_1: "For those accepted to the lottery or waitlisted, the service form is now available for download from your Manage Service page. When the form is complete with all signatures in place, you will upload the form from the same Manage Service page."
+      callout_detail_1: "For those accepted to the lottery or waitlisted, the service form is now available for download from your Manage Service page. When the form is complete with all signatures in place, you will upload the form from the same Manage Service page."
 
   people:
     show:

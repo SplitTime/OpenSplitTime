@@ -64,6 +64,7 @@
 <article class="ost-article container">
   <% case @presenter.display_style %>
   <% when "entrants" %>
+    <%= render partial: "service_form_callout", locals: { presenter: @presenter } %>
     <h4 class="mt-5">
       <span class="fw-bold"><%= "Lottery Entrants" %></span><span class="px-1 h5 fw-light text-muted"><%= " #{pluralize_with_delimiter(@presenter.lottery_entrants.count, 'total entrant')}" %></span>
     </h4>
@@ -130,17 +131,7 @@
     <% end %>
 
   <% when "results" %>
-    <% if @presenter.lottery.finished? && @presenter.lottery.service_form.attached? %>
-      <%= render partial: "shared/callout_with_link",
-                 locals: {
-                   icon_name: "info-circle",
-                   icon_color: "info",
-                   callout_color: "info",
-                   main_text: t(".callout_main_text"),
-                   detail_paragraphs: t(".callout_detail_paragraph_1"),
-                   link: link_to("Learn more", docs_user_info_path, class: "btn btn-outline-primary")
-                 } %>
-    <% end %>
+    <%= render partial: "service_form_callout", locals: { presenter: @presenter } %>
     <h4 class="mt-5">
       <span class="fw-bold">Lottery Results</span><span class="px-1 h5 fw-light text-muted"><%= " Last updated #{time_ago_in_words(@presenter.lottery.updated_at)} ago" %></span>
     </h4>

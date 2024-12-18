@@ -21,6 +21,10 @@ class Docs::VisitorsController < ApplicationController
     render_using_presenter(Docs::ApiPresenter)
   end
 
+  def user_info
+    render_using_presenter(Docs::UserInfoPresenter)
+  end
+
   private
 
   def render_using_presenter(presenter)

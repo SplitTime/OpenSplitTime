@@ -1,16 +1,20 @@
 <%# locals: (presenter:) %>
 
 <turbo-frame id="my_stuff_organizations_card">
-  <% presenter.owned_organizations.each do |organization| %>
-    <h4 class="card-text">
-      <strong><%= link_to organization.name, organization_path(organization) %></strong>
-      <span class="badge bg-secondary">Owner</span>
-    </h4>
-  <% end %>
-  <% presenter.steward_organizations.each do |organization| %>
-    <h4 class="card-text">
-      <strong><%= link_to organization.name, organization_path(organization) %></strong>
-      <span class="badge bg-secondary">Steward</span>
-    </h4>
+  <% if presenter.owned_organizations.any? || presenter.steward_organizations.any? %>
+    <% presenter.owned_organizations.each do |organization| %>
+      <h4 class="card-text">
+        <strong><%= link_to organization.name, organization_path(organization) %></strong>
+        <span class="badge bg-secondary">Owner</span>
+      </h4>
+    <% end %>
+    <% presenter.steward_organizations.each do |organization| %>
+      <h4 class="card-text">
+        <strong><%= link_to organization.name, organization_path(organization) %></strong>
+        <span class="badge bg-secondary">Steward</span>
+      </h4>
+    <% end %>
+  <% else %>
+    <div class="card-text h5">None found</div>
   <% end %>
 </turbo-frame>

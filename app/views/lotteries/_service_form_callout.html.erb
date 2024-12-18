@@ -1,0 +1,13 @@
+<%# locals: (presenter:) %>
+
+<% if presenter.lottery.finished? && presenter.lottery.service_form.attached? %>
+  <%= render partial: "shared/callout_with_link",
+             locals: {
+               icon_name: "info-circle",
+               icon_color: "info",
+               callout_color: "info",
+               main_text: t("lotteries.show.callout_main_text"),
+               detail_paragraphs: t("lotteries.show.callout_detail_1"),
+               link: link_to("Learn more", docs_user_info_path, class: "btn btn-outline-primary")
+             } %>
+<% end %>

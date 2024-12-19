@@ -117,13 +117,13 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bin/rspec
 
-      - name: List downloaded files
+      - name: Show contents of tmp directory
         if: always()
-        run: ls -al tmp/downloads
+        run: ls -al tmp
 
-      - name: Save tmp/downloads as artifact
-        if: always()
-        uses: actions/upload-artifact@v3
+      - name: Save capybara screenshots as artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          name: downloaded-files
-          path: tmp/downloads
+          name: dist-without-markdown
+          path: tmp/screenshots/*.png

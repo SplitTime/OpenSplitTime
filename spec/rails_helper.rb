@@ -134,5 +134,7 @@ RSpec.configure do |config|
 
   config.run_all_when_everything_filtered = true
 
+  config.filter_run_excluding :local_only if ENV["CI"]
+
   Aws.config.update(stub_responses: true)
 end

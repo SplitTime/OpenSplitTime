@@ -39,7 +39,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
       )
     end
 
-    scenario "user downloads the service form" do
+    scenario "user downloads the service form", :local_only do
       login_as steward, scope: :user
       visit_page
 

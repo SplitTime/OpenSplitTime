@@ -34,7 +34,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       )
     end
 
-    scenario "user downloads the service form" do
+    scenario "user downloads the service form", :local_only do
       login_as user, scope: :user
       visit_page
 

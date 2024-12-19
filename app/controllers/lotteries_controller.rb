@@ -91,8 +91,8 @@ class LotteriesController < ApplicationController
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 
-  # GET /organizations/:organization_id/lotteries/:id/withdraw_entrants
-  def withdraw_entrants
+  # GET /organizations/:organization_id/lotteries/:id/manage_entrants
+  def manage_entrants
     @presenter = LotteryPresenter.new(@lottery, view_context)
   end
 

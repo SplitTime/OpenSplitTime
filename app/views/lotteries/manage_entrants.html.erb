@@ -2,7 +2,7 @@
   <% "OpenSplitTime: Withdraw Lottery Entrants - #{@presenter.name}" %>
 <% end %>
 
-<%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Withdraw Entrants"] %>
+<%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Manage Entrants"] %>
 
 <article class="ost-article container">
   <% if @presenter.lottery_draws.present? %>
@@ -11,16 +11,16 @@
         <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
         <div class="card-body">
           <h5>Accepted</h5>
-          <%= render partial: "withdraw_entrants_table", locals: { entrants: division.accepted_entrants } %>
+          <%= render partial: "manage_entrants_table", locals: { entrants: division.accepted_entrants } %>
 
           <% if division.wait_list_entrants.present? %>
             <h5>Wait List</h5>
-            <%= render partial: "withdraw_entrants_table", locals: { entrants: division.wait_list_entrants } %>
+            <%= render partial: "manage_entrants_table", locals: { entrants: division.wait_list_entrants } %>
           <% end %>
 
           <% if division.withdrawn_entrants.present? %>
             <h5>Withdrawn</h5>
-            <%= render partial: "withdraw_entrants_table", locals: { entrants: division.withdrawn_entrants } %>
+            <%= render partial: "manage_entrants_table", locals: { entrants: division.withdrawn_entrants } %>
           <% end %>
         </div>
       </div>

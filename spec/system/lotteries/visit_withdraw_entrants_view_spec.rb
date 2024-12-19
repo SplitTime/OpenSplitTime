@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "visit a lottery withdraw entrants page" do
+RSpec.describe "visit a lottery manage entrants page" do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
@@ -55,7 +55,7 @@ RSpec.describe "visit a lottery withdraw entrants page" do
   end
 
   def visit_page
-    visit withdraw_entrants_organization_lottery_path(organization, lottery)
+    visit manage_entrants_organization_lottery_path(organization, lottery)
   end
 
   def verify_all_content_present

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: true do
+RSpec.describe "withdraw entrants and review service from the lottery manage_entrants page", js: true do
   include ActionView::RecordIdentifier
 
   let(:steward) { users(:fifth_user) }
@@ -75,6 +75,6 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
   end
 
   def visit_page
-    visit withdraw_entrants_organization_lottery_path(organization, lottery)
+    visit manage_entrants_organization_lottery_path(organization, lottery)
   end
 end

@@ -106,6 +106,10 @@ class ApplicationController < ActionController::Base
     redirect_to(request.referrer || root_path)
   end
 
+  def set_current_url_options
+    ::ActiveStorage::Current.url_options = { host: OstConfig.full_uri } if Rails.env.development?
+  end
+
   def set_current_user
     User.current = current_user
   end

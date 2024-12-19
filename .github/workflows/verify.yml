@@ -118,4 +118,12 @@ jobs:
         run: bin/rspec
 
       - name: List downloaded files
+        if: always()
         run: ls -al tmp/downloads
+
+      - name: Save tmp/downloads as artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: downloaded-files
+          path: tmp/downloads

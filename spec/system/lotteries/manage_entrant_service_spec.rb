@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "manage lottery service", js: true do
+RSpec.describe "manage entrant service form upload and download", js: true do
   let(:user) { users(:fourth_user) }
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }

@@ -7,10 +7,11 @@ class Lotteries::EntrantServiceDetailResource < Madmin::Resource
   attribute :form_rejected_comments
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :completed_form, index: false
+  attribute :completed_date
 
   # Associations
   attribute :entrant
+  attribute :completed_form, index: false
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

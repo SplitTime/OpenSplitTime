@@ -1,7 +1,11 @@
 # Below are the routes for madmin
 namespace :madmin do
+  namespace :lotteries do
+    resources :entrant_service_details
+  end
   resources :historical_facts
   namespace :analytics do
+    resources :file_downloads
     resources :sendgrid_events
   end
   resources :connections

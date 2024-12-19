@@ -106,9 +106,6 @@ jobs:
         run: |
           bin/rails db:setup
 
-      - name: Set up download directory
-        run: mkdir -p tmp/downloads && chmod -R 777 tmp/downloads && ls -al tmp/downloads
-
       - name: Run tests
         env:
           RAILS_ENV: test
@@ -117,13 +114,9 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bin/rspec
 
-      - name: Show contents of tmp directory
-        if: always()
-        run: ls -al tmp/capybara
-
       - name: Save capybara screenshots as artifact
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: dist-without-markdown
+          name: capybara-failure-screenshots
           path: tmp/capybara/*.png

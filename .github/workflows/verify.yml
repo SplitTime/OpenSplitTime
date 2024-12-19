@@ -113,3 +113,10 @@ jobs:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bin/rspec
+
+      - name: Save capybara screenshots as artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capybara-failure-screenshots
+          path: tmp/capybara/*.png

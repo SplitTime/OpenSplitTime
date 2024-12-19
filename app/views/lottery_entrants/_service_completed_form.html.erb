@@ -3,6 +3,6 @@
     <%= f.text_field :service_completed_date,
                      placeholder: "mm/dd/yyyy",
                      id: dom_id(entrant, :service_completed_date_input),
-                     value: (l(entrant.service_completed_date, format: :default_full_year) if entrant.service_completed_date?) %>
+                     value: (l(entrant.service_completed_date, format: :default_full_year) if entrant.service_completed?) %>
   </div>
 <% end %>

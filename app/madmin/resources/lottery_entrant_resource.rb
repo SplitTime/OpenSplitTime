@@ -17,7 +17,6 @@ class LotteryEntrantResource < Madmin::Resource
   attribute :pre_selected
   attribute :external_id
   attribute :withdrawn
-  attribute :service_completed_date
 
   # Associations
   attribute :division

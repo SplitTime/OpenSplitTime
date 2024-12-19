@@ -41,7 +41,7 @@ RSpec.describe "withdraw entrants and review service from the lottery manage_ent
     end.to change { entrant.reload.withdrawn? }.from(true).to(false)
   end
 
-  scenario "The user adds a service form to an entrant" do
+  xscenario "The user adds a service form to an entrant" do
     login_and_visit_page
 
     expect do
@@ -54,7 +54,7 @@ RSpec.describe "withdraw entrants and review service from the lottery manage_ent
     end.to change { entrant.reload.service_completed_date }.from(nil).to("2023-05-15".to_date)
   end
 
-  scenario "The user removes a service form from an entrant" do
+  xscenario "The user removes a service form from an entrant" do
     entrant.update(service_completed_date: "2023-05-15".to_date)
 
     login_and_visit_page

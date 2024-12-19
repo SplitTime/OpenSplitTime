@@ -15,7 +15,6 @@ lottery_entrant_0001:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0002:
   id: 5
   lottery_division_id: 1
@@ -32,7 +31,6 @@ lottery_entrant_0002:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0003:
   id: 6
   lottery_division_id: 2
@@ -49,7 +47,6 @@ lottery_entrant_0003:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0004:
   id: 7
   lottery_division_id: 1
@@ -66,7 +63,6 @@ lottery_entrant_0004:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0005:
   id: 8
   lottery_division_id: 2
@@ -83,7 +79,6 @@ lottery_entrant_0005:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0006:
   id: 9
   lottery_division_id: 1
@@ -100,7 +95,6 @@ lottery_entrant_0006:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0007:
   id: 10
   lottery_division_id: 2
@@ -117,7 +111,6 @@ lottery_entrant_0007:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0008:
   id: 11
   lottery_division_id: 1
@@ -134,7 +127,6 @@ lottery_entrant_0008:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0009:
   id: 12
   lottery_division_id: 2
@@ -151,7 +143,6 @@ lottery_entrant_0009:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0010:
   id: 13
   lottery_division_id: 1
@@ -168,7 +159,6 @@ lottery_entrant_0010:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0011:
   id: 21
   lottery_division_id: 6
@@ -185,7 +175,6 @@ lottery_entrant_0011:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0012:
   id: 22
   lottery_division_id: 7
@@ -202,7 +191,6 @@ lottery_entrant_0012:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0013:
   id: 23
   lottery_division_id: 7
@@ -219,7 +207,6 @@ lottery_entrant_0013:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0014:
   id: 24
   lottery_division_id: 8
@@ -236,7 +223,6 @@ lottery_entrant_0014:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0015:
   id: 25
   lottery_division_id: 8
@@ -253,7 +239,6 @@ lottery_entrant_0015:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0016:
   id: 26
   lottery_division_id: 8
@@ -270,7 +255,6 @@ lottery_entrant_0016:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0017:
   id: 27
   lottery_division_id: 8
@@ -287,7 +271,6 @@ lottery_entrant_0017:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:
 lottery_entrant_0018:
   id: 28
   lottery_division_id: 8
@@ -304,4 +287,3 @@ lottery_entrant_0018:
   pre_selected: false
   external_id:
   withdrawn:
-  service_completed_date:

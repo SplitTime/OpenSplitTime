@@ -25,13 +25,13 @@
           <% if presenter.rejected? %>
             <td class="text-center"><%= fa_icon("circle-xmark", type: :solid, class: "text-danger") %></td>
             <td>Rejected</td>
-            <td><%= l(presenter.service_form_rejected_at) %></td>
-            <td><%= presenter.service_form_rejected_comments %></td>
+            <td><%= l(presenter.form_rejected_at) %></td>
+            <td><%= presenter.form_rejected_comments %></td>
           <% elsif presenter.accepted? %>
             <td class="text-center"><%= fa_icon("circle-check", type: :solid, class: "text-success") %></td>
             <td>Accepted</td>
-            <td><%= l(presenter.service_form_accepted_at) %></td>
-            <td><%= presenter.service_form_accepted_comments %></td>
+            <td><%= l(presenter.form_accepted_at) %></td>
+            <td><%= presenter.form_accepted_comments %></td>
           <% elsif presenter.completed_form.attached? %>
             <td class="text-center"><%= fa_icon("file-magnifying-glass", type: :solid, class: "text-secondary") %></td>
             <td>Under review</td>

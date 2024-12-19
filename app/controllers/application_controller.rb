@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_url_options
-    ::ActiveStorage::Current.url_options = { host: OstConfig.full_uri } if Rails.env.development?
+    ::ActiveStorage::Current.url_options = { host: OstConfig.full_uri } if Rails.env.development? || Rails.env.test?
   end
 
   def set_current_user

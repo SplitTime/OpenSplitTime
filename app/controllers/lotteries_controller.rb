@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class LotteriesController < ApplicationController
+  # Rails 7.0 is unable to generate a local URL for ActiveStorage using Disk service
+  # unless ActiveStorage::Current.url_options is set
+  before_action :set_current_url_options, only: [:download_service_form]
   before_action :authenticate_user!, except: [:index, :show, :download_service_form]
   before_action :set_organization
   before_action :authorize_organization, except: [:index, :show, :download_service_form]
@@ -187,8 +190,8 @@ class LotteriesController < ApplicationController
   # GET /organizations/:organization_id/lotteries/:id/download_service_form
   def download_service_form
     if @lottery.service_form.attached?
-      @lottery.increment!(:service_form_download_count)
       redirect_to @lottery.service_form.url(disposition: :attachment), allow_other_host: true
+      record_file_download(@lottery.service_form)
     else
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "No service form is attached"
     end

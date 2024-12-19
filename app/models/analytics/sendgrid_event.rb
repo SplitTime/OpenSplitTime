@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SendgridEvent < ApplicationRecord
+class ::Analytics::SendgridEvent < ApplicationRecord
   validates_presence_of :email, :event, :timestamp
 
   def timestamp=(timestamp)

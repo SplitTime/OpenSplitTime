@@ -1,16 +1,14 @@
 # Below are the routes for madmin
 namespace :madmin do
   resources :historical_facts
-  resources :sendgrid_events
+  namespace :analytics do
+    resources :sendgrid_events
+  end
   resources :connections
   namespace :active_storage do
-    resources :variant_records
-  end
-  namespace :active_storage do
-    resources :blobs
-  end
-  namespace :active_storage do
     resources :attachments
+    resources :blobs
+    resources :variant_records
   end
   namespace :shortener do
     resources :shortened_urls

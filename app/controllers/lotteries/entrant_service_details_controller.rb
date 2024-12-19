@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Lotteries::EntrantServiceDetailsController < ApplicationController
+  # Rails 7.0 is unable to generate a local URL for ActiveStorage using Disk service
+  # unless ActiveStorage::Current.url_options is set
+  before_action :set_current_url_options, only: [:download_completed_form]
   before_action :authenticate_user!
   before_action :set_organization
   before_action :set_lottery
@@ -35,6 +38,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
   def download_completed_form
     if @service_detail.completed_form.attached?
       redirect_to @service_detail.completed_form.url(disposition: :attachment), allow_other_host: true
+      record_file_download(@service_detail.completed_form)
     else
       redirect_to organization_lottery_entrant_service_detail_path(@organization, @lottery, @service_detail),
                   notice: "No completed service form is attached"

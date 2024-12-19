@@ -7,7 +7,7 @@ class LotteryEntrant < ApplicationRecord
   include Delegable
   include CapitalizeAttributes
 
-  # self.ignored_columns = %w[service_completed_date]
+  self.ignored_columns = %w[service_completed_date]
 
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true

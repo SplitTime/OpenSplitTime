@@ -48,7 +48,7 @@ RSpec.describe "withdraw entrants and review service from the lottery manage_ent
       input = page.find("##{dom_id(entrant, :service_completed_date_input)}")
       input.set("05/15/2023")
       input.native.send_keys(:tab)
-      within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
+      within(page.find("##{dom_id(entrant, :service_status_indicator)}")) do
         expect(page).to have_css("i.fa-circle-check")
       end
     end.to change { entrant.reload.service_completed_date }.from(nil).to("2023-05-15".to_date)
@@ -63,7 +63,7 @@ RSpec.describe "withdraw entrants and review service from the lottery manage_ent
       input = page.find("##{dom_id(entrant, :service_completed_date_input)}")
       input.set("")
       input.native.send_keys(:tab)
-      within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
+      within(page.find("##{dom_id(entrant, :service_status_indicator)}")) do
         expect(page).to have_css("i.fa-circle-xmark")
       end
     end.to change { entrant.reload.service_completed_date }.from("2023-05-15".to_date).to(nil)

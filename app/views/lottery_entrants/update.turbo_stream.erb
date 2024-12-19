@@ -1,5 +1,5 @@
-<%= turbo_stream.replace dom_id(@lottery_entrant, :service_completed_indicator),
-                         partial: "service_completed_indicator",
+<%= turbo_stream.replace dom_id(@lottery_entrant, :service_status_indicator),
+                         partial: "service_status_indicator",
                          locals: { entrant: @lottery_entrant } %>
 
 <%= turbo_stream.replace dom_id(@lottery_entrant),

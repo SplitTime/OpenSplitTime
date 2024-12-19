@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_19_031810) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_19_195819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -366,6 +366,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_031810) do
     t.string "form_rejected_comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "completed_date"
   end
 
   create_table "lottery_divisions", force: :cascade do |t|

@@ -24,6 +24,16 @@ class ApplicationController < ActionController::Base
     head :not_acceptable
   end
 
+  def record_file_download(attachment)
+    ::Analytics::FileDownload.create(
+      user: current_user,
+      record: attachment.record,
+      name: attachment.name,
+      filename: attachment.filename,
+      byte_size: attachment.byte_size,
+    )
+  end
+
   def route_not_found
     raise ::ActionController::RoutingError, "Route does not exist"
   end

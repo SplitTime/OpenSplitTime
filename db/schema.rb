@@ -260,6 +260,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.string "name", null: false
+    t.string "filename", null: false
+    t.string "byte_size", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["record_type", "record_id"], name: "index_file_downloads_on_record"

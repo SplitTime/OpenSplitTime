@@ -43,7 +43,6 @@ RSpec.describe "manage entrant service form upload and download", js: true do
 
       click_link "Download"
       downloaded_file = download_path.join("service_form.pdf")
-      Timeout.timeout(2) { loop until File.exist?(downloaded_file) }
 
       expect(File.exist?(downloaded_file)).to be true
       expect(page).to have_current_path(page_path)

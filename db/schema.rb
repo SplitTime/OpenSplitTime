@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_19_031810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -52,6 +52,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["event_id"], name: "index_aid_stations_on_event_id"
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
+  end
+
+  create_table "analytics_file_downloads", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.string "name", null: false
+    t.string "filename", null: false
+    t.string "byte_size", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_file_downloads_on_record"
+    t.index ["user_id"], name: "index_analytics_file_downloads_on_user_id"
   end
 
   create_table "connections", force: :cascade do |t|
@@ -253,19 +266,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
     t.string "sql_string"
     t.string "error_message"
     t.index ["user_id"], name: "index_export_jobs_on_user_id"
-  end
-
-  create_table "file_downloads", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.string "name", null: false
-    t.string "filename", null: false
-    t.string "byte_size", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["record_type", "record_id"], name: "index_file_downloads_on_record"
-    t.index ["user_id"], name: "index_file_downloads_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -767,6 +767,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "aid_stations", "events"
   add_foreign_key "aid_stations", "splits"
+  add_foreign_key "analytics_file_downloads", "users"
   add_foreign_key "course_group_courses", "course_groups"
   add_foreign_key "course_group_courses", "courses"
   add_foreign_key "course_groups", "organizations"
@@ -782,7 +783,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "export_jobs", "users"
-  add_foreign_key "file_downloads", "users"
   add_foreign_key "historical_facts", "organizations"
   add_foreign_key "historical_facts", "people"
   add_foreign_key "import_jobs", "users"

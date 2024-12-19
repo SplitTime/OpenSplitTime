@@ -106,6 +106,9 @@ jobs:
         run: |
           bin/rails db:setup
 
+      - name: Set permissions for tmp folder
+        run: chmod -R 777 tmp
+
       - name: Run tests
         env:
           RAILS_ENV: test

@@ -106,8 +106,8 @@ jobs:
         run: |
           bin/rails db:setup
 
-      - name: Set permissions for tmp folder
-        run: chmod -R 777 tmp
+      - name: Set up download directory
+        run: mkdir -p tmp/downloads && chmod -R 777 tmp/downloads && ls -al tmp/downloads
 
       - name: Run tests
         env:
@@ -116,3 +116,6 @@ jobs:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
         run: bin/rspec
+
+      - name: List downloaded files
+        run: ls -al tmp/downloads

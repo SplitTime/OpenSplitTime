@@ -33,12 +33,12 @@ RSpec.describe Webhooks::SendgridEventsController do
       end
 
       it "creates a new event for each row" do
-        expect { make_request }.to change { SendgridEvent.count }.by(11)
+        expect { make_request }.to change { Analytics::SendgridEvent.count }.by(11)
       end
 
       it "saves type as the event type" do
         make_request
-        sendgrid_event = SendgridEvent.find_by(event: "bounce")
+        sendgrid_event = Analytics::SendgridEvent.find_by(event: "bounce")
         expect(sendgrid_event.event_type).to eq("bounced")
       end
     end
@@ -58,7 +58,7 @@ RSpec.describe Webhooks::SendgridEventsController do
       end
 
       it "does not create a new record" do
-        expect { make_request }.to_not change { SendgridEvent.count }
+        expect { make_request }.to_not change { Analytics::SendgridEvent.count }
       end
     end
 

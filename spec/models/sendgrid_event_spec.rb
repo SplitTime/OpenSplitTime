@@ -2,9 +2,9 @@
 
 require "rails_helper"
 
-RSpec.describe SendgridEvent do
+RSpec.describe ::Analytics::SendgridEvent do
   describe "#timestamp=" do
-    let(:sendgrid_event) { SendgridEvent.new(timestamp: timestamp) }
+    let(:sendgrid_event) { described_class.new(timestamp: timestamp) }
 
     context "when provided an integer" do
       let(:timestamp) { 1683409840 }

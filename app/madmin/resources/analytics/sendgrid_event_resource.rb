@@ -1,4 +1,4 @@
-class SendgridEventResource < Madmin::Resource
+class Analytics::SendgridEventResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :email

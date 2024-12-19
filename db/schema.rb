@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_18_183211) do
+ActiveRecord::Schema[7.0].define(version: 2024_12_19_004057) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -253,6 +253,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_18_183211) do
     t.string "sql_string"
     t.string "error_message"
     t.index ["user_id"], name: "index_export_jobs_on_user_id"
+  end
+
+  create_table "file_downloads", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_file_downloads_on_record"
+    t.index ["user_id"], name: "index_file_downloads_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -769,6 +780,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_18_183211) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "export_jobs", "users"
+  add_foreign_key "file_downloads", "users"
   add_foreign_key "historical_facts", "organizations"
   add_foreign_key "historical_facts", "people"
   add_foreign_key "import_jobs", "users"

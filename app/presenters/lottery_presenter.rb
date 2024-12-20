@@ -30,7 +30,7 @@ class LotteryPresenter < BasePresenter
   def lottery_entrants_default_none
     unfiltered_entrants = lottery.entrants
                                  .with_division_name
-                                 .includes(:division)
+                                 .includes(:division, :division_ranking)
     entrant_id = params[:entrant_id]
 
     if entrant_id.present?
@@ -41,7 +41,7 @@ class LotteryPresenter < BasePresenter
   end
 
   def lottery_entrants_paginated
-    @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page).to_a
+    @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page)
   end
 
   def next_page_url
@@ -124,7 +124,7 @@ class LotteryPresenter < BasePresenter
 
   def lottery_entrants_filtered
     lottery_entrants
-      .includes([:division_ranking, division: { lottery: :organization }])
+      .includes([:division_ranking, :service_detail, division: { lottery: :organization }])
       .search(search_text)
       .order(:last_name)
   end

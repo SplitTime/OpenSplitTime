@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="card-body table-responsive" data-visibility-target="element">
-      <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: presenter.lottery_entrants.pre_selected, as: :record %>
+      <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: presenter.lottery_entrants.pre_selected.includes(:division_ranking), as: :record %>
     </div>
   </div>
 </div>

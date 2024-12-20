@@ -12,6 +12,7 @@ class Lotteries::DivisionRanking < ApplicationRecord
          waitlisted: 1,
          drawn_beyond_waitlist: 2,
          not_drawn: 3,
+         withdrawn: 4,
        }
 
 end

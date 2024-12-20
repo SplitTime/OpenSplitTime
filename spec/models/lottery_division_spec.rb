@@ -143,6 +143,15 @@ RSpec.describe LotteryDivision, type: :model do
         expect(result.count).to eq(subject.maximum_entries)
         expect(result).to all be_a(LotteryEntrant)
       end
+
+      context "when one of the entrants has withdrawn" do
+        let(:withdrawn_entrant) { subject.entrants.accepted.first }
+        before { withdrawn_entrant.update(withdrawn: true) }
+
+        it "does not include the withdrawn entrant" do
+          expect(result).not_to include(withdrawn_entrant)
+        end
+      end
     end
 
     context "when some accepted entrants have been drawn" do

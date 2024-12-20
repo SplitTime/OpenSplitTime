@@ -5,22 +5,22 @@
 <%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Manage Entrants"] %>
 
 <article class="ost-article container">
-  <% if @presenter.lottery_draws.present? %>
+  <% if @presenter.lottery_draws.any? %>
     <% @presenter.ordered_divisions.each do |division| %>
       <div class="card">
         <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
         <div class="card-body">
           <h5>Accepted</h5>
-          <%= render partial: "manage_entrants_table", locals: { entrants: division.accepted_entrants } %>
+          <%= render partial: "manage_entrants_table", locals: { entrants: division.accepted_entrants.includes(:service_detail) } %>
 
-          <% if division.waitlisted_entrants.present? %>
+          <% if division.waitlisted_entrants.any? %>
             <h5>Wait List</h5>
-            <%= render partial: "manage_entrants_table", locals: { entrants: division.waitlisted_entrants } %>
+            <%= render partial: "manage_entrants_table", locals: { entrants: division.waitlisted_entrants.includes(:service_detail) } %>
           <% end %>
 
-          <% if division.withdrawn_entrants.present? %>
+          <% if division.withdrawn_entrants.any? %>
             <h5>Withdrawn</h5>
-            <%= render partial: "manage_entrants_table", locals: { entrants: division.withdrawn_entrants } %>
+            <%= render partial: "manage_entrants_table", locals: { entrants: division.withdrawn_entrants.includes(:service_detail) } %>
           <% end %>
         </div>
       </div>

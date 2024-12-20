@@ -16,10 +16,12 @@ class LotteryPresenter < BasePresenter
     @params = view_context.prepared_params
   end
 
+  # @return [ActiveRecord::Relation<LotteryDivision>]
   def ordered_divisions
     @ordered_divisions ||= divisions.ordered_by_name
   end
 
+  # @return [ActiveRecord::Relation<LotteryDraw>]
   def lottery_draws_ordered
     lottery_draws
       .with_sortable_entrant_attributes
@@ -27,10 +29,11 @@ class LotteryPresenter < BasePresenter
       .most_recent_first
   end
 
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_default_none
     unfiltered_entrants = lottery.entrants
                                  .with_division_name
-                                 .includes(:division)
+                                 .includes(:division, :division_ranking)
     entrant_id = params[:entrant_id]
 
     if entrant_id.present?
@@ -40,18 +43,22 @@ class LotteryPresenter < BasePresenter
     end
   end
 
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_paginated
-    @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page).to_a
+    @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page)
   end
 
+  # @return [String, nil]
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
   end
 
+  # @return [ActiveRecord::Relation<Partner>]
   def partners
     @partners ||= lottery.partners.order(:name)
   end
 
+  # @return [ActiveRecord::Relation<LotteryEntrant>, ActiveRecord::Relation<LotteryDraw>]
   def records_from_context
     case display_style
     when "entrants"
@@ -59,14 +66,16 @@ class LotteryPresenter < BasePresenter
     when "draws"
       lottery_draws
     else
-      []
+      lottery_draws.none
     end
   end
 
+  # @return [Integer]
   def records_from_context_count
     @records_from_context_count ||= records_from_context.size
   end
 
+  # @return [Hash{String->Array<LotteryDivisionTicketStat>}]
   def stats
     @stats ||= ::LotteryDivisionTicketStat.where(lottery: lottery).order(:division_name, :number_of_tickets).group_by(&:division_name)
   end
@@ -88,14 +97,17 @@ class LotteryPresenter < BasePresenter
     ]
   end
 
+  # @return [Boolean]
   def viewable_results?
     lottery.live? || lottery.finished? || current_user&.authorized_for_lotteries?(lottery)
   end
 
+  # @return [String (frozen)]
   def display_style
     params[:display_style].presence || default_display_style
   end
 
+  # @return [String (frozen)]
   def default_display_style
     case status
     when "preview" then "entrants"
@@ -105,14 +117,17 @@ class LotteryPresenter < BasePresenter
     end
   end
 
+  # @return [Partner, nil]
   def partner_with_banner
     @partner_with_banner ||= lottery.pick_partner_with_banner
   end
 
+  # @return [Boolean]
   def show_partner_banners?
     lottery.live? && partner_with_banner.present?
   end
 
+  # @return [Boolean]
   def tickets_not_generated?
     @tickets_not_generated ||= lottery_tickets.empty?
   end
@@ -122,9 +137,10 @@ class LotteryPresenter < BasePresenter
   attr_reader :view_context
   delegate :current_user, :request, to: :view_context, private: true
 
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_filtered
     lottery_entrants
-      .includes([:division_ranking, division: { lottery: :organization }])
+      .includes([:division_ranking, :service_detail, division: { lottery: :organization }])
       .search(search_text)
       .order(:last_name)
   end

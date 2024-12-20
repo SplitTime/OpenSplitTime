@@ -165,7 +165,9 @@
 
       <div class="container">
         <% if @presenter.lottery_entrants_default_none.present? %>
-          <%= render partial: "lottery_entrants/lottery_entrant_admin", collection: @presenter.lottery_entrants_default_none, as: :record %>
+          <%= render partial: "lottery_entrants/lottery_entrant_admin",
+                     collection: @presenter.lottery_entrants_default_none,
+                     as: :record %>
         <% else %>
           <div class="card bg-light mt-2">
             <div class="card-body">

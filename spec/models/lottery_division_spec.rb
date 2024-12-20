@@ -108,8 +108,8 @@ RSpec.describe LotteryDivision, type: :model do
     end
   end
 
-  describe "#wait_list_entrants" do
-    let(:result) { subject.wait_list_entrants }
+  describe "#waitlisted_entrants" do
+    let(:result) { subject.waitlisted_entrants }
 
     context "when draws have spilled over into the wait list" do
       let(:division_name) { "Never Ever Evers" }
@@ -142,6 +142,15 @@ RSpec.describe LotteryDivision, type: :model do
       it "returns accepted entries equal in number to the maximum entries for the division" do
         expect(result.count).to eq(subject.maximum_entries)
         expect(result).to all be_a(LotteryEntrant)
+      end
+
+      context "when one of the entrants has withdrawn" do
+        let(:withdrawn_entrant) { subject.entrants.accepted.first }
+        before { withdrawn_entrant.update(withdrawn: true) }
+
+        it "does not include the withdrawn entrant" do
+          expect(result).not_to include(withdrawn_entrant)
+        end
       end
     end
 

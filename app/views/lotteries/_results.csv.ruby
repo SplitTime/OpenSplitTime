@@ -24,7 +24,7 @@ if lottery.entrants.exists?
       end
 
       csv << ["Wait List"]
-      division.wait_list_entrants.each.with_index(1) do |entrant, i|
+      division.waitlisted_entrants.each.with_index(1) do |entrant, i|
         csv << [
           i,
           entrant.first_name,

@@ -18,11 +18,11 @@
         <h6 class="fw-bold">Wait List</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{division.wait_list_entrants.count}/#{division.maximum_wait_list})" %></h6>
+        <h6 class="text-end"><%= "(#{division.waitlisted_entrants.count}/#{division.maximum_wait_list})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_wait_list, current_value: division.wait_list_entrants.count, color: "warning") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_wait_list, current_value: division.waitlisted_entrants.count, color: "warning") %>
     </div>
     <% if show_pre_selected %>
       <div class="row mt-2">

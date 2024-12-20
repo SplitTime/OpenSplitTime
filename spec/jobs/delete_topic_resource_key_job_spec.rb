@@ -9,7 +9,7 @@ RSpec.describe DeleteTopicResourceKeyJob do
 
   describe "#perform" do
     let(:perform_job) { subject.perform(topic_resource_key) }
-    let(:expected_mock_resource) { OpenStruct.new(topic_resource_key: topic_resource_key, slug: topic_resource_key) }
+    let(:expected_mock_resource) { described_class::MockResource.new(topic_resource_key: topic_resource_key, slug: topic_resource_key) }
 
     before { allow(SnsTopicManager).to receive(:delete) }
 

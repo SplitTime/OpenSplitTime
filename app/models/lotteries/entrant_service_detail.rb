@@ -7,8 +7,8 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
   has_one_attached :completed_form
 
   validates :completed_form,
-            content_type: { in: %w[image/png image/jpeg application/pdf], message: "must be a pdf, png, or jpeg file" },
-            size: { less_than: 2.megabytes, message: "must be less than 2 megabytes" }
+            content_type: { in: %w[image/png image/jpeg application/pdf], message: "must be a pdf, jpeg, or png file" },
+            size: { less_than: 5.megabytes, message: "must be less than 5 megabytes" }
 
   delegate :first_name, :last_name, :full_name, :organization, :lottery, to: :entrant
 

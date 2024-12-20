@@ -40,6 +40,9 @@
       </li>
       <li>Click the "Download" link to download a blank service form.</li>
     </ol>
+    <p>The most efficient way to do this is to <span class="fw-bold">keep the PDF in electronic format</span>, fill it out on your phone or
+      computer, sign it electronically, and then forward it on to the other person or people for their required signatures.</p>
+    <p>Alternatively, you may print the form, fill it out and sign it manually, and forward it on for other required signatures.</p>
   </div>
 </div>
 <br/>
@@ -50,7 +53,10 @@
     <p>Once you have your service form completed and signed by all appropriate parties,
       <span class="fw-bold">here are the steps to upload the completed form:</span></p>
     <ol>
-      <li>Scan or take a photo of your completed form. <span class="fw-bold">The format must be jpeg, png, or pdf, and the file size must be less than 2 MB.</span></li>
+      <li>If your form is on paper, scan or take a photo of your completed form. If you've kept it in electronic format, then it should already be
+        good to go. In either case, <span class="fw-bold">the format must be pdf, jpeg, or png, and the file size must be less than 5 MB.</span> PDF
+        is preferred because of the smaller file size.
+      </li>
       <li>
         <span class="fw-bold">
           <%= user_signed_in? ?
@@ -58,7 +64,8 @@
                 link_to("Log in to OpenSplitTime", new_user_session_path, data: { turbo_frame: :form_modal })
           %>
         </span>
-        using the same account you used to download the form.</li>
+        using the same account you used to download the form.
+      </li>
       <li>Navigate to your Manage Service page as described above, and find the card with the heading that says, "Upload Completed Service Form".</li>
       <li>Drag your completed service form to the dropzone area, or click/tap the area and browse to find your file.</li>
       <li><span class="fw-bold">Click/tap the "Attach" button</span> at the bottom of the card.</li>

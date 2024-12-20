@@ -39,6 +39,8 @@ class LotteryEntrant < ApplicationRecord
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets
   validates_with ::LotteryEntrantUniqueValidator
 
+  # @param [String] param
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
   def self.search(param)
     return all unless param.present?
     return none unless param.size > 2
@@ -46,6 +48,8 @@ class LotteryEntrant < ApplicationRecord
     search_names_and_locations(param)
   end
 
+  # @param [String] param
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
   def self.search_default_none(param)
     return none unless param && param.size > 2
 
@@ -56,6 +60,7 @@ class LotteryEntrant < ApplicationRecord
   delegate :organization, to: :lottery
   delegate :draw_status, :accepted?, :waitlisted?, to: :division_ranking
 
+  # @return [String]
   def division_name
     if attributes.key?("division_name")
       attributes["division_name"]
@@ -73,14 +78,17 @@ class LotteryEntrant < ApplicationRecord
     lottery.create_draw_for_ticket!(selected_ticket)
   end
 
+  # @return [Boolean]
   def drawn?
     tickets.joins(:draw).exists?
   end
 
+  # @return [Boolean]
   def service_completed?
     service_detail.present? && service_detail.completed_date?
   end
 
+  # @return [String]
   def to_s
     full_name
   end
@@ -88,6 +96,7 @@ class LotteryEntrant < ApplicationRecord
   private
 
   # Needed to keep PersonalInfo#bio from breaking
+  # @return [nil]
   def current_age_approximate
     nil
   end

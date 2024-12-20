@@ -22,9 +22,9 @@ select lottery_entrants.id    as lottery_entrant_id,
 --        not_drawn: 3
 --        withdrawn: 4
        case
+           when lottery_entrants.withdrawn then 4
            when division_rank <= maximum_entries then 0
            when division_rank <= maximum_entries + maximum_wait_list then 1
-           when lottery_entrants.withdrawn then 4
            when division_rank is not null then 2
            else 3 end         as draw_status
 from lottery_entrants

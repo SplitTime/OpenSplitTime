@@ -5,6 +5,12 @@ class Lotteries::Calculations::Base < ApplicationRecord
 
   self.abstract_class = true
 
+  enum gender: {
+    male: 0,
+    female: 1,
+    nonbinary: 2,
+  }
+
   pg_search_scope :person_search,
                   associated_against: {
                     person: [:first_name, :last_name, :city, :state_name, :country_name]

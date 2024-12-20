@@ -3,6 +3,7 @@
 class LotteryParameters < BaseParameters
   def self.permitted
     [
+      :calculation_class,
       :concealed,
       :id,
       :name,

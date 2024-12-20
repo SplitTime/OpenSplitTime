@@ -13,9 +13,9 @@
           <h5>Accepted</h5>
           <%= render partial: "manage_entrants_table", locals: { entrants: division.accepted_entrants } %>
 
-          <% if division.wait_list_entrants.present? %>
+          <% if division.waitlisted_entrants.present? %>
             <h5>Wait List</h5>
-            <%= render partial: "manage_entrants_table", locals: { entrants: division.wait_list_entrants } %>
+            <%= render partial: "manage_entrants_table", locals: { entrants: division.waitlisted_entrants } %>
           <% end %>
 
           <% if division.withdrawn_entrants.present? %>

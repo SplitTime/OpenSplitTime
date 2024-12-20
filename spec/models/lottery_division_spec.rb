@@ -108,8 +108,8 @@ RSpec.describe LotteryDivision, type: :model do
     end
   end
 
-  describe "#wait_list_entrants" do
-    let(:result) { subject.wait_list_entrants }
+  describe "#waitlisted_entrants" do
+    let(:result) { subject.waitlisted_entrants }
 
     context "when draws have spilled over into the wait list" do
       let(:division_name) { "Never Ever Evers" }

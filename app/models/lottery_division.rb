@@ -24,7 +24,7 @@ class LotteryDivision < ApplicationRecord
   delegate :organization, to: :lottery
 
   def accepted_entrants
-    ordered_drawn_entrants.limit(maximum_entries)
+    entrants.accepted.ordered
   end
 
   def all_entrants_drawn?
@@ -52,8 +52,8 @@ class LotteryDivision < ApplicationRecord
     maximum_entries + maximum_wait_list
   end
 
-  def wait_list_entrants
-    ordered_drawn_entrants.offset(maximum_entries).limit(maximum_wait_list)
+  def waitlisted_entrants
+    entrants.waitlisted.ordered
   end
 
   def withdrawn_entrants
@@ -65,9 +65,5 @@ class LotteryDivision < ApplicationRecord
   def broadcast_lottery_draw_header
     broadcast_replace_to self, :lottery_draw_header, target: "draw_tickets_header_lottery_division_#{id}", partial: "lottery_divisions/draw_tickets_header", locals: { division: self }
     broadcast_replace_to self, :lottery_header, target: "lottery_header_lottery_division_#{id}", partial: "lottery_divisions/tickets_progress_bars", locals: { division: self, show_pre_selected: false }
-  end
-
-  def ordered_drawn_entrants
-    entrants.drawn.not_withdrawn.ordered
   end
 end

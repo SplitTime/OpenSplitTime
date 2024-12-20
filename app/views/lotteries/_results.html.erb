@@ -15,10 +15,10 @@
             <p>No entrants have been drawn yet</p>
           <% end %>
 
-          <% if division.wait_list_entrants.present? %>
+          <% if division.waitlisted_entrants.present? %>
             <h5>Wait List</h5>
             <ol>
-              <%= render partial: "entrant_for_results", collection: division.wait_list_entrants, as: :entrant %>
+              <%= render partial: "entrant_for_results", collection: division.waitlisted_entrants, as: :entrant %>
             </ol>
           <% end %>
 

@@ -13,7 +13,7 @@ module Lotteries::EntrantServiceDetailsHelper
 
   def service_form_status_with_icon(entrant_service_detail)
     case
-    when entrant_service_detail.completed_form.blank?
+    when entrant_service_detail.nil? || entrant_service_detail.completed_form.blank?
       title = "Not received"
       icon = "file-slash"
       color = "warning"
@@ -31,6 +31,6 @@ module Lotteries::EntrantServiceDetailsHelper
       color = "secondary"
     end
 
-    content_tag :span, fa_icon(icon, type: :regular, text: title, class: "fs-4 text-#{color}"), class: "fw-bold fs-5"
+    content_tag :span, fa_icon(icon, type: :regular, text: title, class: "text-#{color}")
   end
 end

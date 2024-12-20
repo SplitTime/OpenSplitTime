@@ -49,7 +49,7 @@ class LotteryPolicy < ApplicationPolicy
     new?
   end
 
-  def withdraw_entrants?
+  def manage_entrants?
     new?
   end
 

@@ -7,6 +7,8 @@ class LotteryEntrant < ApplicationRecord
   include Delegable
   include CapitalizeAttributes
 
+  self.ignored_columns = %w[service_completed_date]
+
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
@@ -73,6 +75,10 @@ class LotteryEntrant < ApplicationRecord
 
   def drawn?
     tickets.joins(:draw).exists?
+  end
+
+  def service_completed?
+    service_detail.present? && service_detail.completed_date?
   end
 
   def to_s

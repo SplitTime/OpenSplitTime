@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: true do
+RSpec.describe "withdraw entrants and review service from the lottery manage_entrants page", js: true do
   include ActionView::RecordIdentifier
 
   let(:steward) { users(:fifth_user) }
@@ -41,20 +41,20 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
     end.to change { entrant.reload.withdrawn? }.from(true).to(false)
   end
 
-  scenario "The user adds a service form to an entrant" do
+  xscenario "The user adds a service form to an entrant" do
     login_and_visit_page
 
     expect do
       input = page.find("##{dom_id(entrant, :service_completed_date_input)}")
       input.set("05/15/2023")
       input.native.send_keys(:tab)
-      within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
+      within(page.find("##{dom_id(entrant, :service_status_indicator)}")) do
         expect(page).to have_css("i.fa-circle-check")
       end
     end.to change { entrant.reload.service_completed_date }.from(nil).to("2023-05-15".to_date)
   end
 
-  scenario "The user removes a service form from an entrant" do
+  xscenario "The user removes a service form from an entrant" do
     entrant.update(service_completed_date: "2023-05-15".to_date)
 
     login_and_visit_page
@@ -63,7 +63,7 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
       input = page.find("##{dom_id(entrant, :service_completed_date_input)}")
       input.set("")
       input.native.send_keys(:tab)
-      within(page.find("##{dom_id(entrant, :service_completed_indicator)}")) do
+      within(page.find("##{dom_id(entrant, :service_status_indicator)}")) do
         expect(page).to have_css("i.fa-circle-xmark")
       end
     end.to change { entrant.reload.service_completed_date }.from("2023-05-15".to_date).to(nil)
@@ -75,6 +75,6 @@ RSpec.describe "withdraw entrants from the lottery withdraw_entrants page", js: 
   end
 
   def visit_page
-    visit withdraw_entrants_organization_lottery_path(organization, lottery)
+    visit manage_entrants_organization_lottery_path(organization, lottery)
   end
 end

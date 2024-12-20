@@ -8,8 +8,7 @@
     <th>Gender</th>
     <th>From</th>
     <th class="text-center">Withdrawn?</th>
-    <th class="text-center">Service Form Received</th>
-    <th class="text-center">Completed?</th>
+    <th class="text-center">Service Status</th>
   </tr>
   </thead>
   <tbody>
@@ -20,8 +19,7 @@
       <td><%= entrant.gender.titleize %></td>
       <td><%= entrant.flexible_geolocation %></td>
       <td class="text-center"><%= render partial: "lottery_entrants/withdrawn_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
-      <td class="text-center"><%= render partial: "lottery_entrants/service_completed_form", locals: { organization: @presenter.organization, lottery: @presenter.lottery, entrant: entrant } %></td>
-      <td class="text-center"><%= render partial: "lottery_entrants/service_completed_indicator", locals: { entrant: entrant } %></td>
+      <td class="text-center"><%= render partial: "lottery_entrants/service_status_indicator", locals: { entrant: entrant } %></td>
     </tr>
   <% end %>
   </tbody>

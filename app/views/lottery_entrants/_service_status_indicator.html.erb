@@ -1,5 +1,7 @@
 <%# locals: (entrant:) %>
 
 <%= content_tag(:div, id: dom_id(entrant, :service_status_indicator)) do %>
-  <%= service_form_status_with_icon(entrant.service_detail) %>
+  <% unless entrant.withdrawn? %>
+    <%= service_form_status_with_icon(entrant.service_detail) %>
+  <% end %>
 <% end %>

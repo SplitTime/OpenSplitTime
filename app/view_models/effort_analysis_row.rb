@@ -74,13 +74,16 @@ class EffortAnalysisRow
   end
 
   def combined_time_over_under(round_to: 1.second)
-    return nil unless segment_time_over_under && time_in_aid_over_under
+    return nil unless segment_time_over_under.present? && time_in_aid_over_under.present?
 
     segment_time_over_under.round_to_nearest(round_to) + time_in_aid_over_under.round_to_nearest(round_to)
   end
 
+  # @return [Float, nil]
   def segment_over_under_percent
-    segment_time_over_under && segment_time_typical && segment_time_over_under / segment_time_typical
+    return nil unless segment_time_over_under.present? && segment_time_typical.present?
+
+    segment_time_over_under.to_f / segment_time_typical.to_f
   end
 
   private

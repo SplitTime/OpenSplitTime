@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Extractors
     class RaceResultApiStrategy
       NAME_WITHOUT_BIB_REGEX = /[^ #0-9\.].*/
 
-      include ETL::Errors
+      include Etl::Errors
       attr_reader :errors
 
       def initialize(raw_data, options)

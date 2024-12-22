@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Transformers
     class BaseTransformer
-      include ETL::Errors
+      include Etl::Errors
       attr_reader :errors
 
       private

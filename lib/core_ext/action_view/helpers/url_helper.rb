@@ -2,7 +2,6 @@
 
 module CoreExt
   module UrlHelper
-    alias original_link_to link_to
     # Monkey Patch link_to to translate the boolean attribute "disabled" into a class
     # Using the signature (*args, &blocks) makes this patch resistant to API changes
     # since all args are captured as is
@@ -23,6 +22,8 @@ module ActionView
   module Helpers
     module UrlHelper
       include CoreExt::UrlHelper
+
+      alias original_link_to link_to
     end
   end
 end

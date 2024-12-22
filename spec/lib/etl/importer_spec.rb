@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Importer do
-  subject { ETL::Importer.new(source_data, data_format, options) }
+RSpec.describe Etl::Importer do
+  subject { Etl::Importer.new(source_data, data_format, options) }
 
   context "when importing efforts using :csv_efforts" do
     let(:source_data) { file_fixture("test_efforts_utf_8.csv") }

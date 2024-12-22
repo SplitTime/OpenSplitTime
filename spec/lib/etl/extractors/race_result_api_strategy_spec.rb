@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Extractors::RaceResultApiStrategy do
-  subject { ETL::Extractors::RaceResultApiStrategy.new(raw_data, options) }
+RSpec.describe Etl::Extractors::RaceResultApiStrategy do
+  subject { Etl::Extractors::RaceResultApiStrategy.new(raw_data, options) }
   let(:raw_data) do
     {"list" => {"last_change" => "2016-06-04 21:58:25",
                 "orders" => [],

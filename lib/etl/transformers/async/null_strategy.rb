@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module ETL::Transformers::Async
-  class NullStrategy < ETL::Transformers::BaseTransformer
+module Etl::Transformers::Async
+  class NullStrategy < Etl::Transformers::BaseTransformer
     def initialize(parsed_structs, options)
       @parsed_structs = parsed_structs
       @options = options

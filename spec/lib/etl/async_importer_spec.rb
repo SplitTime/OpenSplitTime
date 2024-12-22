@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::AsyncImporter do
-  subject { ETL::AsyncImporter.new(import_job) }
+RSpec.describe Etl::AsyncImporter do
+  subject { Etl::AsyncImporter.new(import_job) }
   let(:import_job) do
     create(
       :import_job,

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module ETL::Loaders::Async
+module Etl::Loaders::Async
   # This loader does not attempt to persist records in the database.
   # It merely compares order ids and creates errors when differences exist.
 
   # TODO: This is a hack and should be replaced by a proper sync strategy
   class UltrasignupOrderIdCompareStrategy
-    include ETL::Errors
+    include Etl::Errors
 
     CHUNK_SIZE = 20
 

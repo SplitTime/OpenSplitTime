@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class Transformer
     def initialize(parsed_structs, transform_strategy_class, options = {})
       @parsed_structs = parsed_structs

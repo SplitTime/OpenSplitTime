@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class Extractor
     def initialize(source_data, extract_strategy_class, options = {})
       @source_data = source_data

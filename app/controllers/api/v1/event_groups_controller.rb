@@ -19,14 +19,14 @@ module Api
         authorize @resource
 
         limited_response = params[:limited_response]&.to_boolean
-        importer = ::ETL::ImporterFromContext.build(@resource, params, current_user)
+        importer = ::Etl::ImporterFromContext.build(@resource, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
           render json: { errors: errors }, status: :unprocessable_entity
         else
-          ::ETL::EventGroupImportProcess.perform!(@resource, importer)
+          ::Etl::EventGroupImportProcess.perform!(@resource, importer)
           if limited_response
             render json: {}, status: :created
           else

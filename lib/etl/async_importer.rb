@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "errors"
-
-module ETL
+module Etl
   class AsyncImporter
-    include ETL::Errors
+    include Etl::Errors
 
     def self.import!(import_job)
       new(import_job).import!
@@ -81,7 +79,7 @@ module ETL
       import_job.extracting!
       files.each do |file|
         import_job.set_elapsed_time!
-        extractor = ::ETL::Extractor.new(file, extract_strategy)
+        extractor = ::Etl::Extractor.new(file, extract_strategy)
         self.extracted_structs += extractor.extract
         self.errors += extractor.errors
         import_job.update(row_count: extracted_structs.size)
@@ -92,7 +90,7 @@ module ETL
       import_job.transforming!
       import_job.set_elapsed_time!
       options = { parent: parent, import_job: import_job }.merge(custom_options)
-      transformer = ::ETL::Transformer.new(extracted_structs, transform_strategy, options)
+      transformer = ::Etl::Transformer.new(extracted_structs, transform_strategy, options)
       self.transformed_protos = transformer.transform
       self.errors += transformer.errors
     end
@@ -101,7 +99,7 @@ module ETL
       import_job.loading!
       import_job.set_elapsed_time!
       options = { import_job: import_job }.merge(custom_options)
-      loader = ::ETL::Loader.new(transformed_protos, load_strategy, options)
+      loader = ::Etl::Loader.new(transformed_protos, load_strategy, options)
       loader.load_records
       self.errors += loader.errors
     end

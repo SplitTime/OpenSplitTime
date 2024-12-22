@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::ElapsedIncrementalAidStrategy do
-  subject { ETL::Transformers::ElapsedIncrementalAidStrategy.new(struct, options) }
+RSpec.describe Etl::Transformers::ElapsedIncrementalAidStrategy do
+  subject { Etl::Transformers::ElapsedIncrementalAidStrategy.new(struct, options) }
 
   let(:struct) { OpenStruct.new(attributes) }
   let(:attributes) { {full_name: "William Abel", gender: "male", age: "41", city: "Byron", state_code: "IL", times: times} }

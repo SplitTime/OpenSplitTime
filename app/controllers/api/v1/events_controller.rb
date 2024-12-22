@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "etl/etl"
+require "etl"
 
 module Api
   module V1
@@ -53,14 +53,14 @@ module Api
       end
 
       def import
-        importer = ::ETL::ImporterFromContext.build(@event, params, current_user)
+        importer = ::Etl::ImporterFromContext.build(@event, params, current_user)
         importer.import
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
           render json: {errors: errors}, status: :unprocessable_entity
         else
-          ::ETL::EventImportProcess.perform!(@event, importer)
+          ::Etl::EventImportProcess.perform!(@event, importer)
           render json: {}, status: :created
         end
       end

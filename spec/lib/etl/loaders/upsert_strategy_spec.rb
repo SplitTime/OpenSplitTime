@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Loaders::UpsertStrategy do
-  subject { ETL::Loaders::UpsertStrategy.new(proto_records, options) }
+RSpec.describe Etl::Loaders::UpsertStrategy do
+  subject { Etl::Loaders::UpsertStrategy.new(proto_records, options) }
 
   let(:course) { create(:course, id: 10) }
   let(:event) { create(:event, id: 1, course: course) }

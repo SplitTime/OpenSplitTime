@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL::Loaders::Async
+module Etl::Loaders::Async
   # If no unique_key is provided, this is a plain insert loader that will
   # keep track of errors if validations are violated at the model or database
   # level.
@@ -8,7 +8,7 @@ module ETL::Loaders::Async
   # If a unique_key is provided, records having the same unique key as an existing
   # database record will be ignored.
   class InsertStrategy
-    include ETL::Errors
+    include Etl::Errors
 
     CHUNK_SIZE = 20
 

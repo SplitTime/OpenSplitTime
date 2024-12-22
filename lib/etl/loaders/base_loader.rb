@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Loaders
     class BaseLoader
-      include ETL::Errors
+      include Etl::Errors
       attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
 
       def initialize(proto_records, options)

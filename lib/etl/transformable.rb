@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Transformable
     def add_country_from_state_code!
       state_code = self[:state_code]

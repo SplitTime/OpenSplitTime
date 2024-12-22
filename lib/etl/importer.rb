@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class Importer
-    include ETL::Errors
+    include Etl::Errors
 
     REPORT_ARRAYS = [:saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors].freeze
     attr_reader(*REPORT_ARRAYS)
@@ -27,11 +27,11 @@ module ETL
       when :race_result_api_times
         import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, { delete_blank_times: true }.merge(options))
       when :adilas_bear_times
-        import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
+        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
       when :adilas_bear_times_update
-        import_with(source_data, Extractors::AdilasBearHTMLStrategy, Transformers::AdilasBearStrategy, Loaders::SplitTimeUpsertStrategy, options)
+        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy, Loaders::SplitTimeUpsertStrategy, options)
       when :its_your_race_times
-        import_with(source_data, Extractors::ItsYourRaceHTMLStrategy, Transformers::ElapsedIncrementalAidStrategy, Loaders::InsertStrategy, options)
+        import_with(source_data, Extractors::ItsYourRaceHtmlStrategy, Transformers::ElapsedIncrementalAidStrategy, Loaders::InsertStrategy, options)
       when :csv_splits
         import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, { model: :split }.merge(default_unique_key(:split)).merge(options))
       when :csv_raw_times
@@ -55,17 +55,17 @@ module ETL
     attr_writer(*REPORT_ARRAYS)
 
     def import_with(source_data, extract_strategy, transform_strategy, load_strategy, options)
-      extractor = ETL::Extractor.new(source_data, extract_strategy, options)
+      extractor = Etl::Extractor.new(source_data, extract_strategy, options)
       extracted_data = extractor.extract
       self.errors += extractor.errors and return if extractor.errors.present?
 
-      transformer = ETL::Transformer.new(extracted_data, transform_strategy, options)
+      transformer = Etl::Transformer.new(extracted_data, transform_strategy, options)
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
 
       proto_record_groups = strict? ? [proto_records] : proto_records.map { |record| [record] }
       proto_record_groups.each do |proto_record_group|
-        loader = ETL::Loader.new(proto_record_group, load_strategy, options)
+        loader = Etl::Loader.new(proto_record_group, load_strategy, options)
         loader.load_records
         REPORT_ARRAYS.each do |report_array|
           loader.send(report_array).each { |report_element| send(report_array) << report_element }

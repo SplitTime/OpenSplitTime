@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ::ETL::Transformers::LotteryEntrantsStrategy do
+RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
   subject { described_class.new(parsed_structs, options) }
 
   let(:lottery) { lotteries(:lottery_without_tickets) }

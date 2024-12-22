@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
+RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
   let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.scheduled_start_time }
   let(:subject_splits) { event.ordered_splits }
@@ -77,7 +77,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
 
   describe "#load_records" do
     context "when no matching parent records exist" do
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it "does not import any records and places all parent records into ignored_records" do
         expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)
@@ -86,7 +86,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
     end
 
     context "when matching parent records exist for proto_records" do
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
       let!(:effort_1) { create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number]) }
       let!(:effort_3) { create(:effort, event: event, bib_number: valid_proto_records.third[:bib_number]) }
 
@@ -131,7 +131,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000)
       end
 
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it "finds existing records based on a unique key and updates provided fields" do
         existing_effort.reload
@@ -173,7 +173,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
                             bitkey: fifth_child[:sub_split_bitkey], absolute_time: start_time + 4000)
       end
 
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it "finds existing records based on a unique key and deletes times where blanks exist" do
         existing_effort.reload
@@ -197,7 +197,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000, stopped_here: true)
       end
 
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(valid_proto_records, options) }
 
       it "sets the stop on the last split_time" do
         existing_effort.reload
@@ -224,7 +224,7 @@ RSpec.describe ETL::Loaders::SplitTimeUpsertStrategy do
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000)
       end
 
-      subject { ETL::Loaders::SplitTimeUpsertStrategy.new(proto_with_invalid_child, options) }
+      subject { Etl::Loaders::SplitTimeUpsertStrategy.new(proto_with_invalid_child, options) }
 
       it "does not create any child records for the related parent record" do
         expect { subject.load_records }.to change { Effort.count }.by(0).and change { SplitTime.count }.by(0)

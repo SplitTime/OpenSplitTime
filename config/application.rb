@@ -38,5 +38,7 @@ module OpenSplitTime
     # in config/environments, which are processed later.
     #
     # config.eager_load_paths << Rails.root.join("extras")
+
+    Dir[Rails.root.join('lib/core_ext/**/*.rb')].each { |file| require file }
   end
 end

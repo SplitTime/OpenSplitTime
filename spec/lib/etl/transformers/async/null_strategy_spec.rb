@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::Async::NullStrategy do
+RSpec.describe Etl::Transformers::Async::NullStrategy do
   subject { described_class.new(structs, options) }
 
   let(:options) do

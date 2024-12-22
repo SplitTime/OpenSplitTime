@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "etl/etl"
+require "etl"
 require "ostruct"
 
 class ProtoRecord
-  include ETL::Transformable
+  include Etl::Transformable
 
   attr_accessor :record_type, :record_action
   attr_reader :children, :attributes

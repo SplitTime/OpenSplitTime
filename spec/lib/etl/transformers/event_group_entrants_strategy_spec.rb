@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ::ETL::Transformers::EventGroupEntrantsStrategy do
+RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
   subject { described_class.new(parsed_structs, options) }
 
   let(:proto_records) { subject.transform }

@@ -22,7 +22,6 @@ require "webmock/rspec"
 require "aws-sdk-s3"
 require "aws-sdk-sns"
 require "paper_trail/frameworks/rspec"
-require "etl/etl"
 require "open-uri"
 
 WebMock.disable_net_connect!(allow_localhost: true)

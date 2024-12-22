@@ -2,7 +2,6 @@
 hardrock_ccw_start:
   id: 5
   course_id: 4
-  location_id: 17
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -19,7 +18,6 @@ hardrock_ccw_start:
 hardrock_ccw_cunningham:
   id: 6
   course_id: 4
-  location_id:
   distance_from_start: 14966
   vert_gain_from_start: 1170.432
   vert_loss_from_start: 844.296
@@ -36,7 +34,6 @@ hardrock_ccw_cunningham:
 hardrock_ccw_sherman:
   id: 12
   course_id: 4
-  location_id:
   distance_from_start: 46349
   vert_gain_from_start: 3084.576
   vert_loss_from_start: 2749.296
@@ -53,7 +50,6 @@ hardrock_ccw_sherman:
 hardrock_ccw_grouse:
   id: 16
   course_id: 4
-  location_id:
   distance_from_start: 67914
   vert_gain_from_start: 4452.5184
   vert_loss_from_start: 4025.7984
@@ -70,7 +66,6 @@ hardrock_ccw_grouse:
 hardrock_ccw_ouray:
   id: 20
   course_id: 4
-  location_id:
   distance_from_start: 91088
   vert_gain_from_start: 5295.2904
   vert_loss_from_start: 5792.1144
@@ -87,7 +82,6 @@ hardrock_ccw_ouray:
 hardrock_ccw_telluride:
   id: 26
   course_id: 4
-  location_id:
   distance_from_start: 117160
   vert_gain_from_start: 6961.9368
   vert_loss_from_start: 7144.8168
@@ -104,7 +98,6 @@ hardrock_ccw_telluride:
 hardrock_ccw_putnam:
   id: 32
   course_id: 4
-  location_id:
   distance_from_start: 152404
   vert_gain_from_start: 9974.8848
   vert_loss_from_start: 9276.8928
@@ -121,7 +114,6 @@ hardrock_ccw_putnam:
 hardrock_ccw_finish:
   id: 34
   course_id: 4
-  location_id:
   distance_from_start: 161739
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
@@ -138,7 +130,6 @@ hardrock_ccw_finish:
 ramble_even_course_start:
   id: 46
   course_id: 9
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -155,7 +146,6 @@ ramble_even_course_start:
 ramble_even_course_finish:
   id: 47
   course_id: 9
-  location_id:
   distance_from_start: 6759
   vert_gain_from_start: 249.935992002048
   vert_loss_from_start: 249.935992002048
@@ -172,7 +162,6 @@ ramble_even_course_finish:
 hardrock_cw_start:
   id: 81
   course_id: 12
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -189,7 +178,6 @@ hardrock_cw_start:
 hardrock_cw_finish:
   id: 82
   course_id: 12
-  location_id:
   distance_from_start: 161739
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
@@ -206,7 +194,6 @@ hardrock_cw_finish:
 hardrock_cw_telluride:
   id: 87
   course_id: 12
-  location_id:
   distance_from_start: 44578
   vert_gain_from_start: 2928.82310627766
   vert_loss_from_start: 3099.51110081564
@@ -223,7 +210,6 @@ hardrock_cw_telluride:
 hardrock_cw_ouray:
   id: 93
   course_id: 12
-  location_id:
   distance_from_start: 70650
   vert_gain_from_start: 4281.52546299119
   vert_loss_from_start: 4778.34944709282
@@ -240,7 +226,6 @@ hardrock_cw_ouray:
 hardrock_cw_grouse:
   id: 97
   course_id: 12
-  location_id:
   distance_from_start: 93824
   vert_gain_from_start: 6047.84140646908
   vert_loss_from_start: 5621.12142012411
@@ -257,7 +242,6 @@ hardrock_cw_grouse:
 hardrock_cw_sherman:
   id: 101
   course_id: 12
-  location_id:
   distance_from_start: 115389
   vert_gain_from_start: 7324.343765621
   vert_loss_from_start: 7223.75976883969
@@ -274,7 +258,6 @@ hardrock_cw_sherman:
 hardrock_cw_cunningham:
   id: 107
   course_id: 12
-  location_id:
   distance_from_start: 146772
   vert_gain_from_start: 9229.343704661
   vert_loss_from_start: 8903.20771509735
@@ -291,7 +274,6 @@ hardrock_cw_cunningham:
 rufa_course_start:
   id: 135
   course_id: 20
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -308,7 +290,6 @@ rufa_course_start:
 rufa_course_finish:
   id: 136
   course_id: 20
-  location_id:
   distance_from_start: 8690
   vert_gain_from_start: 780.288
   vert_loss_from_start: 780.288
@@ -325,7 +306,6 @@ rufa_course_finish:
 rufa_course_grandeur_peak:
   id: 137
   course_id: 20
-  location_id:
   distance_from_start: 4345
   vert_gain_from_start: 780.288
   vert_loss_from_start: 0.0
@@ -342,7 +322,6 @@ rufa_course_grandeur_peak:
 d30_50k_course_start:
   id: 164
   course_id: 26
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -359,7 +338,6 @@ d30_50k_course_start:
 d30_50k_course_finish:
   id: 165
   course_id: 26
-  location_id:
   distance_from_start: 49889
   vert_gain_from_start: 2286.0
   vert_loss_from_start: 2286.0
@@ -376,7 +354,6 @@ d30_50k_course_finish:
 d30_50k_course_aid_5:
   id: 166
   course_id: 26
-  location_id:
   distance_from_start: 47475
   vert_gain_from_start: 2164.08
   vert_loss_from_start: 2072.64
@@ -393,7 +370,6 @@ d30_50k_course_aid_5:
 d30_50k_course_aid_1:
   id: 167
   course_id: 26
-  location_id:
   distance_from_start: 8046
   vert_gain_from_start: 487.68
   vert_loss_from_start: 243.84
@@ -410,7 +386,6 @@ d30_50k_course_aid_1:
 d30_50k_course_aid_4:
   id: 168
   course_id: 26
-  location_id:
   distance_from_start: 39428
   vert_gain_from_start: 1798.32
   vert_loss_from_start: 1615.44
@@ -427,7 +402,6 @@ d30_50k_course_aid_4:
 d30_50k_course_aid_3:
   id: 170
   course_id: 26
-  location_id:
   distance_from_start: 27680
   vert_gain_from_start: 1310.64
   vert_loss_from_start: 1158.24
@@ -444,7 +418,6 @@ d30_50k_course_aid_3:
 d30_50k_course_aid_2:
   id: 171
   course_id: 26
-  location_id:
   distance_from_start: 19473
   vert_gain_from_start: 1036.32
   vert_loss_from_start: 701.04
@@ -461,7 +434,6 @@ d30_50k_course_aid_2:
 d30_12m_course_start:
   id: 172
   course_id: 27
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -478,7 +450,6 @@ d30_12m_course_start:
 d30_12m_course_finish:
   id: 173
   course_id: 27
-  location_id:
   distance_from_start: 19473
   vert_gain_from_start: 1066.7999658624
   vert_loss_from_start: 1066.7999658624
@@ -495,7 +466,6 @@ d30_12m_course_finish:
 sum_100k_course_start:
   id: 204
   course_id: 31
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -512,7 +482,6 @@ sum_100k_course_start:
 sum_100k_course_finish:
   id: 205
   course_id: 31
-  location_id:
   distance_from_start: 99779
   vert_gain_from_start: 2676.144
   vert_loss_from_start: 2529.84
@@ -529,7 +498,6 @@ sum_100k_course_finish:
 sum_100k_course_molas_pass_aid1:
   id: 206
   course_id: 31
-  location_id:
   distance_from_start: 18347
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
@@ -546,7 +514,6 @@ sum_100k_course_molas_pass_aid1:
 sum_100k_course_rolling_pass_aid2:
   id: 207
   course_id: 31
-  location_id:
   distance_from_start: 35293
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
@@ -563,7 +530,6 @@ sum_100k_course_rolling_pass_aid2:
 sum_100k_course_cascade_creek_rd_aid3:
   id: 208
   course_id: 31
-  location_id:
   distance_from_start: 46317
   vert_gain_from_start: 1112.52
   vert_loss_from_start: 365.76
@@ -580,7 +546,6 @@ sum_100k_course_cascade_creek_rd_aid3:
 sum_100k_course_engineer_mtn_th_aid4:
   id: 209
   course_id: 31
-  location_id:
   distance_from_start: 59642
   vert_gain_from_start: 1271.016
   vert_loss_from_start: 1203.96
@@ -597,7 +562,6 @@ sum_100k_course_engineer_mtn_th_aid4:
 sum_100k_course_bandera_mine_aid5:
   id: 210
   course_id: 31
-  location_id:
   distance_from_start: 80741
   vert_gain_from_start: 2496.312
   vert_loss_from_start: 1938.528
@@ -614,7 +578,6 @@ sum_100k_course_bandera_mine_aid5:
 sum_100k_course_anvil_cg_aid6:
   id: 211
   course_id: 31
-  location_id:
   distance_from_start: 90268
   vert_gain_from_start: 2542.032
   vert_loss_from_start: 2328.672
@@ -631,7 +594,6 @@ sum_100k_course_anvil_cg_aid6:
 sum_55k_course_start:
   id: 212
   course_id: 32
-  location_id:
   distance_from_start: 0
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
@@ -648,7 +610,6 @@ sum_55k_course_start:
 sum_55k_course_finish:
   id: 213
   course_id: 32
-  location_id:
   distance_from_start: 57277
   vert_gain_from_start: 1097.28
   vert_loss_from_start: 1097.28
@@ -665,7 +626,6 @@ sum_55k_course_finish:
 sum_55k_course_molas_pass_aid1:
   id: 218
   course_id: 32
-  location_id:
   distance_from_start: 18347
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
@@ -682,7 +642,6 @@ sum_55k_course_molas_pass_aid1:
 sum_55k_course_rolling_pass_aid2:
   id: 219
   course_id: 32
-  location_id:
   distance_from_start: 35293
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
@@ -699,7 +658,6 @@ sum_55k_course_rolling_pass_aid2:
 sum_55k_course_bandera_mine_aid5:
   id: 220
   course_id: 32
-  location_id:
   distance_from_start: 40765
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 670.56
@@ -716,7 +674,6 @@ sum_55k_course_bandera_mine_aid5:
 sum_55k_course_anvil_cg_aid6:
   id: 221
   course_id: 32
-  location_id:
   distance_from_start: 50292
   vert_gain_from_start: 1051.56
   vert_loss_from_start: 1021.08

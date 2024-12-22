@@ -185,8 +185,9 @@
          data-controller="live-entry--pull-times"
          data-live-entry--pull-times-event-group-id-value="<%= @event_group.id %>"
     >
-      <%= render "pull_times_button", event_group: @event_group %>
-      <%= render "force_pull_times_button", event_group: @event_group %>
+      <%= render partial: "pull_times_button", locals: { event_group: @event_group } %>
+      <%= render partial: "force_pull_times_button", locals: { event_group: @event_group } %>
+
       <div class="btn-group" role="group">
         <button id="js-delete-all-time-rows" class="btn btn-danger">Discard All</button>
         <button id="js-delete-all-warning" class="btn btn-danger" disabled>Cannot Be Undone</button>

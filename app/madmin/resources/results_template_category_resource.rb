@@ -7,8 +7,8 @@ class ResultsTemplateCategoryResource < Madmin::Resource
   attribute :fixed_position
 
   # Associations
-  attribute :results_template
-  attribute :results_category
+  attribute :template
+  attribute :category
 
   # Uncomment this to customize the display name of records in the admin area.
   def self.display_name(record)

@@ -16,7 +16,7 @@ class PodiumPresenter < BasePresenter
 
   # @return [Array<Results::Category>]
   def categories
-    template&.results_categories || []
+    template&.categories || []
   end
 
   # @return [Array<Symbol>]

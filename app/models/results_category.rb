@@ -8,8 +8,8 @@ class ResultsCategory < ApplicationRecord
   friendly_id :organization_genders_ages, use: [:sequentially_slugged, :history]
 
   belongs_to :organization, optional: true
-  has_many :results_template_categories, dependent: :destroy
-  has_many :results_templates, through: :results_template_categories
+  has_many :template_categories, dependent: :destroy, class_name: "ResultsTemplateCategory"
+  has_many :templates, through: :template_categories, class_name: "ResultsTemplate"
 
   validates_presence_of :name
   validates_uniqueness_of :name, scope: :organization

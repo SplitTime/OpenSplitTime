@@ -9,10 +9,10 @@ class EventGroupsController < ApplicationController
   # GET /event_groups
   def index
     scoped_event_groups = policy_scope(EventGroup)
-                            .search(params[:search])
-                            .by_group_start_time
-                            .preload(:events)
-                            .paginate(page: params[:page], per_page: 25)
+      .search(params[:search])
+      .by_group_start_time
+      .preload(:events)
+      .paginate(page: params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end
@@ -113,9 +113,9 @@ class EventGroupsController < ApplicationController
   # GET /event_groups/1/efforts
   def efforts
     @efforts = policy_scope(@event_group.efforts)
-                 .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                 .where(prepared_params[:filter])
-                 .finish_info_subquery
+      .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+      .where(prepared_params[:filter])
+      .finish_info_subquery
 
     render partial: "event_groups/finish_line_effort", locals: { efforts: @efforts }
   end
@@ -437,9 +437,10 @@ class EventGroupsController < ApplicationController
 
   private
 
-  def bib_assignment_hash(params_hash)
-    params_hash.select { |key, _| key.include?("bib_for") }
-               .transform_keys { |key| key.delete("^0-9").to_i }
+  def bib_assignment_hash(event_group_params)
+    event_group_params.to_unsafe_h
+      .select { |key, _| key.include?("bib_for") }
+      .transform_keys { |key| key.delete("^0-9").to_i }
   end
 
   def redirect_if_no_events

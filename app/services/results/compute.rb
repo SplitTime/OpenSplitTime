@@ -38,7 +38,7 @@ module Results
     end
 
     def categories
-      template.results_categories
+      template.categories
     end
 
     def fill(category)

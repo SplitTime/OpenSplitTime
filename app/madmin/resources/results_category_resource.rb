@@ -16,8 +16,8 @@ class ResultsCategoryResource < Madmin::Resource
 
   # Associations
   attribute :organization
-  attribute :results_template_categories
-  attribute :results_templates
+  attribute :template_categories
+  attribute :templates
 
   # Uncomment this to customize the display name of records in the admin area.
   def self.display_name(record)

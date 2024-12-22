@@ -1,4 +1,4 @@
-<%# locals: (presenter:, breadcrumbs:) -%>
+<%# locals: (presenter:, breadcrumbs: []) -%>
 
 <header class="ost-header">
   <div class="container">
@@ -25,7 +25,7 @@
   </div>
   <div class="container w-75">
     <div class="ost-heading">
-      <%= render "event_groups/setup_widget", presenter: presenter %>
+      <%= render partial: "event_groups/setup_widget", locals: { presenter: presenter } %>
     </div>
   </div>
 </header>

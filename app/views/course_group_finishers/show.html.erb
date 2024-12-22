@@ -27,6 +27,6 @@
 
 <article class="ost-article container">
   <% if @presenter.course_group_best_efforts.present? %>
-    <%= render partial: "best_efforts_list", best_efforts: @presenter.course_group_best_efforts %>
+    <%= render partial: "best_efforts_list", locals: { presenter: @presenter } %>
   <% end %>
 </article>

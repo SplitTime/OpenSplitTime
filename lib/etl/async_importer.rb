@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "etl/etl"
+
 module ETL
   class AsyncImporter
     include ETL::Errors

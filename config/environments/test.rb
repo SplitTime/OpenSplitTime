@@ -10,7 +10,7 @@ Rails.application.configure do
 
   # While tests run files are not watched, reloading is not necessary.
   config.cache_classes = false
-  config.enable_reloading = false
+  config.enable_reloading = true
   config.action_view.cache_template_loading = true
 
   # Eager loading loads your entire application. When running a single test locally,

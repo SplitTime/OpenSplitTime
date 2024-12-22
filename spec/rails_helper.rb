@@ -54,6 +54,7 @@ RSpec.configure do |config|
   config.global_fixtures = [
     :aid_stations,
     :course_groups,
+    :course_group_courses,
     :courses,
     :credentials,
     :efforts,

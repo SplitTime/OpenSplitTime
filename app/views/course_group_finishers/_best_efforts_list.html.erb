@@ -1,3 +1,5 @@
+<%# locals: (presenter:) %>
+
 <table class="table table-striped">
   <thead>
   <tr>
@@ -11,7 +13,7 @@
   </tr>
   </thead>
   <tbody>
-  <%= render partial: "best_effort_segment", collection: @presenter.course_group_best_efforts %>
+  <%= render partial: "best_effort_segment", collection: presenter.course_group_best_efforts %>
   </tbody>
 </table>
 

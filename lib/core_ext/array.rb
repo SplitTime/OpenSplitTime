@@ -1,37 +1,45 @@
+# frozen_string_literal: true
+
+module CoreExt
+  module ArrayExtensions
+    def average
+      sum / size.to_f
+    end
+
+    def elements_before(index_element, inclusive: false)
+      i = index(index_element)
+      return [] unless i
+
+      i += 1 if inclusive
+      self[0, i]
+    end
+
+    def elements_after(index_element, inclusive: false)
+      i = index(index_element)
+      return [] unless i
+
+      i -= 1 if inclusive
+      self[(i + 1)..-1]
+    end
+
+    def element_before(index_element)
+      elements_before(index_element).last
+    end
+
+    def element_after(index_element)
+      elements_after(index_element).first
+    end
+
+    def included_before?(index_element, subject_element)
+      elements_before(index_element).include?(subject_element)
+    end
+
+    def included_after?(index_element, subject_element)
+      elements_after(index_element).include?(subject_element)
+    end
+  end
+end
+
 class Array
-  def average
-    sum / size.to_f
-  end
-
-  def elements_before(index_element, inclusive: false)
-    i = index(index_element)
-    return [] unless i
-
-    i += 1 if inclusive
-    self[0, i]
-  end
-
-  def elements_after(index_element, inclusive: false)
-    i = index(index_element)
-    return [] unless i
-
-    i -= 1 if inclusive
-    self[(i + 1)..-1]
-  end
-
-  def element_before(index_element)
-    elements_before(index_element).last
-  end
-
-  def element_after(index_element)
-    elements_after(index_element).first
-  end
-
-  def included_before?(index_element, subject_element)
-    elements_before(index_element).include?(subject_element)
-  end
-
-  def included_after?(index_element, subject_element)
-    elements_after(index_element).include?(subject_element)
-  end
+  include CoreExt::ArrayExtensions
 end

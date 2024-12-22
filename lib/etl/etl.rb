@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+module ETL
+end
+
 require_relative "csv_templates"
 require_relative "errors"
 require_relative "extractor"

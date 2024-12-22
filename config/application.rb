@@ -25,7 +25,6 @@ module OpenSplitTime
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.active_storage.variant_processor = :mini_magick
-    config.active_support.remove_deprecated_time_with_zone_name = true
 
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path

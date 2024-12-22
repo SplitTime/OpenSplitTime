@@ -75,16 +75,18 @@ RSpec.describe SplitTime, kind: :model do
     end
 
     context "for validations that rely on existing records in the database" do
-      let(:course) { create(:course) }
-      let(:start_split) { create(:split, :start, course: course) }
-      let(:intermediate_split) { create(:split, course: course) }
-      let(:event) { create(:event, course: course) }
-      let(:effort) { build(:effort, event: event) }
-
-      before { create(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.scheduled_start_time + 1.hour) }
+      let(:existing_split_time) { split_times(:hardrock_2015_tuan_jacobs_cunningham_in_1) }
+      let(:effort) { existing_split_time.effort }
 
       context "when more than one of a given time_point exists within an effort" do
-        let(:split_time) { build_stubbed(:split_time, effort: effort, lap: 1, split: intermediate_split, bitkey: in_bitkey, absolute_time: event.scheduled_start_time + 2.hours) }
+        let(:split_time) do
+          effort.split_times.new(
+            lap: existing_split_time.lap,
+            split: existing_split_time.split,
+            bitkey: existing_split_time.bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
 
         it "is invalid" do
           expect(split_time).not_to be_valid
@@ -92,33 +94,53 @@ RSpec.describe SplitTime, kind: :model do
         end
       end
 
-      it "allows within an effort one of a given split_id/lap combination for each sub_split" do
-        build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time = build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: out_bitkey, lap: 1)
-        expect(split_time).to be_valid
+      context "when sub_split bitkey is different" do
+        let(:split_time) do
+          effort.split_times.new(
+            lap: existing_split_time.lap,
+            split: existing_split_time.split,
+            bitkey: out_bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
+
+        before { split_times(:hardrock_2015_tuan_jacobs_cunningham_out_1).destroy }
+
+        it { expect(split_time).to be_valid }
       end
 
-      it "allows multiple of a given split_id/sub_split/lap combination within different efforts" do
-        efforts = build_stubbed_list(:effort, 3, event: event)
-        build_stubbed(:split_time, effort: effort, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time_1 = build_stubbed(:split_time, effort: efforts.first, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time_2 = build_stubbed(:split_time, effort: efforts.second, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        split_time_3 = build_stubbed(:split_time, effort: efforts.third, split: intermediate_split, bitkey: in_bitkey, lap: 1)
-        expect(split_time_1).to be_valid
-        expect(split_time_2).to be_valid
-        expect(split_time_3).to be_valid
+      context "when effort is different" do
+        let(:other_effort) { efforts(:hardrock_2015_erich_larson) }
+        let(:split_time) do
+          other_effort.split_times.new(
+            lap: existing_split_time.lap,
+            split: existing_split_time.split,
+            bitkey: existing_split_time.bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
+
+        before { split_times(:hardrock_2015_erich_larson_cunningham_in_1).destroy }
+
+        it { expect(split_time).to be_valid }
       end
 
-      it "ensures that effort.event.course_id is the same as split.course_id" do
-        course_1 = build_stubbed(:course)
-        course_2 = build_stubbed(:course)
-        event = build_stubbed(:event, course: course_1)
-        effort = build_stubbed(:effort, event: event)
-        split = build_stubbed(:split, course: course_2)
-        split_time = build(:split_time, effort: effort, split: split)
-        expect(split_time).not_to be_valid
-        expect(split_time.errors[:effort_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
-        expect(split_time.errors[:split_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
+      context "when effort.event.course_id is different from split.course_id" do
+        let(:split_from_different_course) { splits(:hardrock_cw_cunningham) }
+        let(:split_time) do
+          effort.split_times.new(
+            lap: existing_split_time.lap,
+            split: split_from_different_course,
+            bitkey: existing_split_time.bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
+
+        it "is not valid" do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:effort_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
+          expect(split_time.errors[:split_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
+        end
       end
     end
   end

@@ -1,28 +1,28 @@
-<%# locals: (division:, show_pre_selected:) -%>
+<%# locals: (lottery_division:, show_pre_selected:) %>
 
-<div id="<%= dom_id(division, :lottery_header) %>" class="card mt-3">
+<div id="<%= dom_id(lottery_division, :lottery_header) %>" class="card mt-3">
   <div class="card-body">
     <div class="row">
       <div class="col-8">
         <h6 class="fw-bold">Accepted</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{division.accepted_entrants.count}/#{division.maximum_entries})" %></h6>
+        <h6 class="text-end"><%= "(#{lottery_division.accepted_entrants.count}/#{lottery_division.maximum_entries})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_entries, current_value: division.accepted_entrants.count, color: "success") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: lottery_division.maximum_entries, current_value: lottery_division.accepted_entrants.count, color: "success") %>
     </div>
     <div class="row mt-2">
       <div class="col-8">
         <h6 class="fw-bold">Wait List</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{division.waitlisted_entrants.count}/#{division.maximum_wait_list})" %></h6>
+        <h6 class="text-end"><%= "(#{lottery_division.waitlisted_entrants.count}/#{lottery_division.maximum_wait_list})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: division.maximum_wait_list, current_value: division.waitlisted_entrants.count, color: "warning") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: lottery_division.maximum_wait_list, current_value: lottery_division.waitlisted_entrants.count, color: "warning") %>
     </div>
     <% if show_pre_selected %>
       <div class="row mt-2">
@@ -30,11 +30,11 @@
           <h6 class="fw-bold">Pre-selected</h6>
         </div>
         <div class="col-4">
-          <h6 class="text-end"><%= "(#{division.entrants.pre_selected.drawn.count}/#{division.entrants.pre_selected.count})" %></h6>
+          <h6 class="text-end"><%= "(#{lottery_division.entrants.pre_selected.drawn.count}/#{lottery_division.entrants.pre_selected.count})" %></h6>
         </div>
       </div>
       <div class="progress">
-        <%= bootstrap_progress_bar(min_value: 0, max_value: division.entrants.pre_selected.count, current_value: division.entrants.pre_selected.drawn.count, color: "secondary") %>
+        <%= bootstrap_progress_bar(min_value: 0, max_value: lottery_division.entrants.pre_selected.count, current_value: lottery_division.entrants.pre_selected.drawn.count, color: "secondary") %>
       </div>
     <% end %>
   </div>

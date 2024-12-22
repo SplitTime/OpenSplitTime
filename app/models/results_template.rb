@@ -10,7 +10,7 @@ class ResultsTemplate < ApplicationRecord
   has_many :results_template_categories, -> { order(position: :asc) }, dependent: :destroy
   has_many :results_categories, through: :results_template_categories
 
-  alias_attribute :categories, :results_categories
+  alias_method :categories, :results_categories
 
   scope :standard, lambda {
                      select("results_templates.*, count(results_categories.id) as category_count")

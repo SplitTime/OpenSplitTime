@@ -18,7 +18,7 @@
             <li class="breadcrumb-item active">Full results</li>
           </ul>
         </div>
-        <%= render "time_and_course_info" %>
+        <%= render partial: "events/time_and_course_info", locals: { presenter: @presenter } %>
       </div>
       <aside class="col-auto">
         <%= link_to_beacon_button(@presenter) %>

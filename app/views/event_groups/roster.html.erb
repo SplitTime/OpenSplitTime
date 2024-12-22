@@ -20,7 +20,7 @@
             <li class="breadcrumb-item active">Roster</li>
           </ul>
         </div>
-        <%= render "events/time_and_course_info" %>
+        <%= render partial: "events/time_and_course_info", locals: { presenter: @presenter } %>
       </div>
     </div>
     <!-- Navigation -->

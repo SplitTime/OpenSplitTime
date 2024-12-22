@@ -5,5 +5,5 @@
 <% end %>
 
 <article class="ost-article container">
-  <%= render "new_modal", subscription: @subscription %>
+  <%= render partial: "new_modal", locals: { subscription: subscription } %>
 </article>

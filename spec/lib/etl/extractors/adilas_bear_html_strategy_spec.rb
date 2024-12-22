@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ::ETL::Extractors::AdilasBearHTMLStrategy do
+RSpec.describe ::Etl::Extractors::AdilasBearHtmlStrategy do
   subject { described_class.new(source_data, options) }
   let(:source_data) do
     ::VCR.use_cassette("adilas/#{url.split('?').last}") do

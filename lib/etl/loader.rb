@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class Loader
     def initialize(proto_records, load_strategy_class, options)
       @proto_records = proto_records

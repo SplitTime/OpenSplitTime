@@ -1,5 +1,5 @@
-RSpec.describe ETL::Extractors::PassThroughStrategy do
-  subject { ETL::Extractors::PassThroughStrategy.new(raw_data, options) }
+RSpec.describe Etl::Extractors::PassThroughStrategy do
+  subject { Etl::Extractors::PassThroughStrategy.new(raw_data, options) }
   let(:options) { {model: :effort} }
 
   describe "#extract" do

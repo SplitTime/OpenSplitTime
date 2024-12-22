@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::AdilasBearStrategy do
-  subject { ETL::Transformers::AdilasBearStrategy.new(struct, options) }
+RSpec.describe Etl::Transformers::AdilasBearStrategy do
+  subject { Etl::Transformers::AdilasBearStrategy.new(struct, options) }
 
   let(:struct) { OpenStruct.new(attributes) }
   let(:attributes) { {full_name: "Linda McFadden", bib_number: "187", gender: "F", age: "54", city: "Modesto", state_code: "CA", times: times, dnf: dnf} }

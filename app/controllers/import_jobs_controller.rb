@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "etl/etl"
+require "etl"
 
 class ImportJobsController < ApplicationController
   before_action :authenticate_user!
@@ -64,7 +64,7 @@ class ImportJobsController < ApplicationController
       format.csv do
         parent = params[:parent_type].constantize.find(params[:parent_id])
         import_job_format = params[:import_job_format].to_sym
-        csv_template_headers = ::ETL::CsvTemplates.headers(import_job_format, parent)
+        csv_template_headers = ::Etl::CsvTemplates.headers(import_job_format, parent)
         csv_template = csv_template_headers.join(",") + "\n"
         filename_components = [import_job_format, parent.class.name.underscore, parent.id, "template.csv"]
         filename = filename_components.join("_")

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class CsvTemplates
     PERSON_ATTRIBUTES = [
       "First Name",

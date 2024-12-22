@@ -4,7 +4,7 @@ class EventSeriesPresenter < BasePresenter
   attr_reader :event_series
 
   delegate :name, :organization, :scoring_method, to: :event_series
-  delegate :results_categories, to: :completed_template
+  delegate :categories, to: :completed_template
 
   def initialize(event_series, view_context)
     @event_series = event_series || []

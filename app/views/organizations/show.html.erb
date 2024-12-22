@@ -7,9 +7,9 @@
 
 <header class="ost-header">
   <div class="container">
-    <%= render "organizations/organization_heading", presenter: @presenter %>
+    <%= render partial: "organizations/organization_heading", locals: { presenter: @presenter } %>
     <!-- Navigation -->
-    <%= render "organizations/organization_tabs", presenter: @presenter %>
+    <%= render partial: "organizations/organization_tabs", locals: { presenter: @presenter } %>
   </div>
 </header>
 

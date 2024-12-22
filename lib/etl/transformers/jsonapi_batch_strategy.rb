@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Transformers
     class JsonapiBatchStrategy < BaseTransformer
       def initialize(parsed_structs, options)

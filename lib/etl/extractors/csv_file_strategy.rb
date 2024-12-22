@@ -4,10 +4,10 @@ require "smarter_csv"
 require "csv"
 require "ostruct"
 
-module ETL
+module Etl
   module Extractors
     class CsvFileStrategy
-      include ETL::Errors
+      include Etl::Errors
 
       MAX_FILE_SIZE = 2.megabytes
       BYTE_ORDER_MARK = String.new("\xEF\xBB\xBF").force_encoding("UTF-8").freeze

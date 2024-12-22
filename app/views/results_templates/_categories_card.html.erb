@@ -4,7 +4,7 @@
   <h5><%= "#{template.podium_size ? pluralize(template.podium_size, 'Participant') : 'Unlimited Participants'} Per Category" %></h5>
   <table>
     <tbody>
-    <% template.results_template_categories.includes(:results_category).each do |rtc| %>
+    <% template.template_categories.includes(:category).each do |rtc| %>
       <tr>
         <td class="text-danger"><%= "#{'*' if rtc.fixed_position}" %></td>
         <td><%= "#{rtc.position}." %></td>
@@ -12,7 +12,7 @@
       </tr>
     <% end %>
 
-    <% if template.results_template_categories.any?(&:fixed_position?) %>
+    <% if template.template_categories.any?(&:fixed_position?) %>
       <tr>
         <td colspan="3" class="text-danger">* Position is fixed</td>
       </tr>

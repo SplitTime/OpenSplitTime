@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Transformers
     class EventCourseSplitsStrategy < BaseTransformer
       def initialize(parsed_structs, options)

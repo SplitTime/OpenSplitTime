@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Loaders::Async::UltrasignupOrderIdCompareStrategy do
+RSpec.describe Etl::Loaders::Async::UltrasignupOrderIdCompareStrategy do
   subject { described_class.new(proto_records, options) }
   let(:options) { { import_job: import_job } }
   let!(:import_job) { create(:import_job, parent: organization, format: :test_format) }

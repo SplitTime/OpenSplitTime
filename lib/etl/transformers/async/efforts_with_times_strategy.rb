@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module ETL::Transformers::Async
-  class EffortsWithTimesStrategy < ETL::Transformers::BaseTransformer
+module Etl::Transformers::Async
+  class EffortsWithTimesStrategy < Etl::Transformers::BaseTransformer
     DEFAULT_START_KEY = "start"
     DEFAULT_TIME_FORMAT = :elapsed
     TIME_ATTRIBUTE_MAP = {

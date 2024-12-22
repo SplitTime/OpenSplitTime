@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class ImporterFromContext
     def self.build(parent, params, current_user)
       new(parent, params, current_user).build
@@ -13,7 +13,7 @@ module ETL
     end
 
     def build
-      ETL::Importer.new(data, data_format, options)
+      Etl::Importer.new(data, data_format, options)
     end
 
     private

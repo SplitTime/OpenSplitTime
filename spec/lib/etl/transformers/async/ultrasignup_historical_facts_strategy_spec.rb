@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::Async::UltrasignupHistoricalFactsStrategy do
+RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
   subject { described_class.new(structs, options) }
 
   let(:options) do

@@ -1,271 +1,271 @@
 ---
 results_template_category_0001:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: female_40_to_49
+  template: masters_and_grandmasters_with_nonbinary
+  category: female_40_to_49
   position: 5
   fixed_position:
 results_template_category_0002:
-  results_template: masters_and_decades
-  results_category: male_up_to_19
+  template: masters_and_decades
+  category: male_up_to_19
   position: 5
   fixed_position:
 results_template_category_0003:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: female_50_and_up
+  template: masters_and_grandmasters_with_nonbinary
+  category: female_50_and_up
   position: 7
   fixed_position:
 results_template_category_0004:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_40_to_49_2
+  template: overall_30s_40s_50s_seniors
+  category: male_40_to_49_2
   position: 7
   fixed_position:
 results_template_category_0005:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_up_to_29
+  template: overall_30s_40s_50s_seniors
+  category: male_up_to_29
   position: 3
   fixed_position:
 results_template_category_0006:
-  results_template: masters_and_decades
-  results_category: male_20_to_29
+  template: masters_and_decades
+  category: male_20_to_29
   position: 7
   fixed_position:
 results_template_category_0007:
-  results_template: masters_and_decades
-  results_category: male_50_to_59
+  template: masters_and_decades
+  category: male_50_to_59
   position: 13
   fixed_position:
 results_template_category_0008:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_50_to_59
+  template: overall_30s_40s_50s_seniors
+  category: female_50_to_59
   position: 10
   fixed_position:
 results_template_category_0009:
-  results_template: masters_and_grandmasters
-  results_category: female_50_and_up
+  template: masters_and_grandmasters
+  category: female_50_and_up
   position: 6
   fixed_position:
 results_template_category_0010:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_overall
+  template: overall_30s_40s_50s_seniors
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0011:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_40_to_49_2
+  template: overall_30s_40s_50s_seniors
+  category: female_40_to_49_2
   position: 8
   fixed_position:
 results_template_category_0012:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: female_up_to_39
+  template: sub_masters_masters_and_grandmasters
+  category: female_up_to_39
   position: 4
   fixed_position:
 results_template_category_0013:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: nonbinary_overall
+  template: masters_and_grandmasters_with_nonbinary
+  category: nonbinary_overall
   position: 3
   fixed_position:
 results_template_category_0014:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: male_overall
+  template: masters_and_grandmasters_with_nonbinary
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0015:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_50_to_59
+  template: overall_30s_40s_50s_seniors
+  category: male_50_to_59
   position: 9
   fixed_position:
 results_template_category_0016:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: male_up_to_39
+  template: sub_masters_masters_and_grandmasters
+  category: male_up_to_39
   position: 3
   fixed_position:
 results_template_category_0017:
-  results_template: masters_and_decades
-  results_category: male_30_to_39
+  template: masters_and_decades
+  category: male_30_to_39
   position: 9
   fixed_position:
 results_template_category_0018:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: male_40_to_49
+  template: masters_and_grandmasters_with_nonbinary
+  category: male_40_to_49
   position: 4
   fixed_position:
 results_template_category_0019:
-  results_template: simple_with_nonbinary
-  results_category: female_overall
+  template: simple_with_nonbinary
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0020:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: male_40_to_49
+  template: sub_masters_masters_and_grandmasters
+  category: male_40_to_49
   position: 5
   fixed_position:
 results_template_category_0021:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_overall
+  template: overall_30s_40s_50s_seniors
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0022:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: female_40_to_49
+  template: sub_masters_masters_and_grandmasters
+  category: female_40_to_49
   position: 6
   fixed_position:
 results_template_category_0023:
-  results_template: simple_with_nonbinary
-  results_category: male_overall
+  template: simple_with_nonbinary
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0024:
-  results_template: masters_and_decades
-  results_category: female_40_and_up
+  template: masters_and_decades
+  category: female_40_and_up
   position: 4
   fixed_position: true
 results_template_category_0025:
-  results_template: masters_and_grandmasters
-  results_category: female_overall
+  template: masters_and_grandmasters
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0026:
-  results_template: masters_and_decades
-  results_category: male_40_and_up
+  template: masters_and_decades
+  category: male_40_and_up
   position: 3
   fixed_position: true
 results_template_category_0027:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_up_to_29
+  template: overall_30s_40s_50s_seniors
+  category: female_up_to_29
   position: 4
   fixed_position:
 results_template_category_0028:
-  results_template: masters_and_decades
-  results_category: female_up_to_19
+  template: masters_and_decades
+  category: female_up_to_19
   position: 6
   fixed_position:
 results_template_category_0029:
-  results_template: masters_and_decades
-  results_category: male_overall
+  template: masters_and_decades
+  category: male_overall
   position: 1
   fixed_position: true
 results_template_category_0030:
-  results_template: masters_and_grandmasters
-  results_category: male_50_and_up
+  template: masters_and_grandmasters
+  category: male_50_and_up
   position: 5
   fixed_position:
 results_template_category_0031:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_30_to_39
+  template: overall_30s_40s_50s_seniors
+  category: female_30_to_39
   position: 6
   fixed_position:
 results_template_category_0032:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: female_overall
+  template: masters_and_grandmasters_with_nonbinary
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0033:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: female_60_and_up
+  template: overall_30s_40s_50s_seniors
+  category: female_60_and_up
   position: 12
   fixed_position:
 results_template_category_0034:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: female_50_and_up
+  template: sub_masters_masters_and_grandmasters
+  category: female_50_and_up
   position: 8
   fixed_position:
 results_template_category_0035:
-  results_template: simple
-  results_category: male_overall
+  template: simple
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0036:
-  results_template: masters_and_decades
-  results_category: female_40_to_49_2
+  template: masters_and_decades
+  category: female_40_to_49_2
   position: 12
   fixed_position:
 results_template_category_0037:
-  results_template: masters_and_decades
-  results_category: male_60_to_69
+  template: masters_and_decades
+  category: male_60_to_69
   position: 15
   fixed_position:
 results_template_category_0038:
-  results_template: masters_and_grandmasters
-  results_category: female_40_to_49
+  template: masters_and_grandmasters
+  category: female_40_to_49
   position: 4
   fixed_position:
 results_template_category_0039:
-  results_template: masters_and_grandmasters_with_nonbinary
-  results_category: male_50_and_up
+  template: masters_and_grandmasters_with_nonbinary
+  category: male_50_and_up
   position: 6
   fixed_position:
 results_template_category_0040:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_60_and_up
+  template: overall_30s_40s_50s_seniors
+  category: male_60_and_up
   position: 11
   fixed_position:
 results_template_category_0041:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: female_overall
+  template: sub_masters_masters_and_grandmasters
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0042:
-  results_template: masters_and_decades
-  results_category: female_20_to_29
+  template: masters_and_decades
+  category: female_20_to_29
   position: 8
   fixed_position:
 results_template_category_0043:
-  results_template: simple
-  results_category: female_overall
+  template: simple
+  category: female_overall
   position: 2
   fixed_position:
 results_template_category_0044:
-  results_template: masters_and_decades
-  results_category: female_50_to_59
+  template: masters_and_decades
+  category: female_50_to_59
   position: 14
   fixed_position:
 results_template_category_0045:
-  results_template: masters_and_decades
-  results_category: male_40_to_49_2
+  template: masters_and_decades
+  category: male_40_to_49_2
   position: 11
   fixed_position:
 results_template_category_0046:
-  results_template: simple_with_nonbinary
-  results_category: nonbinary_overall
+  template: simple_with_nonbinary
+  category: nonbinary_overall
   position: 3
   fixed_position:
 results_template_category_0047:
-  results_template: masters_and_grandmasters
-  results_category: male_overall
+  template: masters_and_grandmasters
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0048:
-  results_template: overall_30s_40s_50s_seniors
-  results_category: male_30_to_39
+  template: overall_30s_40s_50s_seniors
+  category: male_30_to_39
   position: 5
   fixed_position:
 results_template_category_0049:
-  results_template: masters_and_decades
-  results_category: female_30_to_39
+  template: masters_and_decades
+  category: female_30_to_39
   position: 10
   fixed_position:
 results_template_category_0050:
-  results_template: masters_and_grandmasters
-  results_category: male_40_to_49
+  template: masters_and_grandmasters
+  category: male_40_to_49
   position: 3
   fixed_position:
 results_template_category_0051:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: male_50_and_up
+  template: sub_masters_masters_and_grandmasters
+  category: male_50_and_up
   position: 7
   fixed_position:
 results_template_category_0052:
-  results_template: sub_masters_masters_and_grandmasters
-  results_category: male_overall
+  template: sub_masters_masters_and_grandmasters
+  category: male_overall
   position: 1
   fixed_position:
 results_template_category_0053:
-  results_template: masters_and_decades
-  results_category: female_60_to_69
+  template: masters_and_decades
+  category: female_60_to_69
   position: 16
   fixed_position:
 results_template_category_0054:
-  results_template: masters_and_decades
-  results_category: female_overall
+  template: masters_and_decades
+  category: female_overall
   position: 2
   fixed_position: true

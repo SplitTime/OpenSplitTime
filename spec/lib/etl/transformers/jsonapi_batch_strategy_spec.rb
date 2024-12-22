@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::JsonapiBatchStrategy do
-  subject { ETL::Transformers::JsonapiBatchStrategy.new(parsed_structs, options) }
+RSpec.describe Etl::Transformers::JsonapiBatchStrategy do
+  subject { Etl::Transformers::JsonapiBatchStrategy.new(parsed_structs, options) }
 
   let(:course) { build_stubbed(:course, id: 10) }
   let(:event) { build_stubbed(:event, id: 1, course: course) }

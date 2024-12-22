@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::GenericResourcesStrategy do
-  subject { ETL::Transformers::GenericResourcesStrategy.new(parsed_structs, options) }
+RSpec.describe Etl::Transformers::GenericResourcesStrategy do
+  subject { Etl::Transformers::GenericResourcesStrategy.new(parsed_structs, options) }
 
   let(:course) { build_stubbed(:course, id: 10) }
   let(:event) { build_stubbed(:event, id: 1, course: course) }

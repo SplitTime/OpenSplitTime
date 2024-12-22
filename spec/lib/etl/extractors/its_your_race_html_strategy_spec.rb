@@ -3,7 +3,7 @@
 require "rails_helper"
 require "open-uri"
 
-RSpec.describe ::ETL::Extractors::ItsYourRaceHTMLStrategy do
+RSpec.describe ::Etl::Extractors::ItsYourRaceHtmlStrategy do
   subject { described_class.new(source_data, options) }
   let(:source_data) do
     ::VCR.use_cassette("itsyourrace/#{url.split('/').last}") do

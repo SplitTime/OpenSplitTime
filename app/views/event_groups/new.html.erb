@@ -2,8 +2,8 @@
   <% "OpenSplitTime: New Event Group" %>
 <% end %>
 
-<%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "setup_header", presenter: @presenter %>
+<%= render partial: "shared/mode_widget", locals: { event_group: @presenter.event_group } %>
+<%= render partial: "setup_header", locals: { presenter: @presenter } %>
 
 <article class="ost-article container">
   <h4>We will first need some basic information about your Event Group</h4>

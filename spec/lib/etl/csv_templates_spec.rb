@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::CsvTemplates do
+RSpec.describe Etl::CsvTemplates do
   subject { described_class.new(format, parent) }
 
   let(:format) { :event_course_splits }

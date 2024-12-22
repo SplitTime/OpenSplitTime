@@ -22,7 +22,6 @@ require "webmock/rspec"
 require "aws-sdk-s3"
 require "aws-sdk-sns"
 require "paper_trail/frameworks/rspec"
-require "etl/etl"
 require "open-uri"
 
 WebMock.disable_net_connect!(allow_localhost: true)
@@ -82,7 +81,7 @@ RSpec.configure do |config|
     :users,
   ]
 
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = ["#{::Rails.root}/spec/fixtures"]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

@@ -3,24 +3,24 @@
 require "rails_helper"
 
 RSpec.describe ResultsTemplateCategory do
-  subject(:results_template_category) { ResultsTemplateCategory.first }
+  subject(:template_category) { ResultsTemplateCategory.first }
 
   describe "#initialize" do
     it "is valid when it has both a results category and a results template" do
-      expect(results_template_category).to be_valid
+      expect(template_category).to be_valid
     end
   end
 
   describe "methods" do
     describe "#category_description" do
       it "returns the description of the associated results_category" do
-        expect(results_template_category.category_description).to eq(results_template_category.results_category.description)
+        expect(template_category.category_description).to eq(template_category.category.description)
       end
     end
 
     describe "#category_name" do
       it "returns the name of the associated results_category" do
-        expect(results_template_category.category_name).to eq(results_template_category.results_category.name)
+        expect(template_category.category_name).to eq(template_category.category.name)
       end
     end
   end

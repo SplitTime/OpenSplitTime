@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-RSpec.describe ETL::Extractors::RaceResultStrategy do
-  subject { ETL::Extractors::RaceResultStrategy.new(raw_data, options) }
+RSpec.describe Etl::Extractors::RaceResultStrategy do
+  subject { Etl::Extractors::RaceResultStrategy.new(raw_data, options) }
   let(:raw_data) do
     {"list" => {"last_change" => "2016-06-04 21:58:25",
                 "orders" => [],

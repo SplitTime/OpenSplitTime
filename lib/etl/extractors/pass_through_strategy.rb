@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Extractors
     class PassThroughStrategy
-      include ETL::Errors
+      include Etl::Errors
       attr_reader :errors
 
       def initialize(raw_data, options)

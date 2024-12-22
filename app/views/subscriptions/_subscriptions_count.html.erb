@@ -1,3 +1,5 @@
 <%# locals: (subscribable:, current_user:) %>
 
-<span id="<%= dom_id(subscribable, :subscriptions_count) %>" class="h5 text-muted"><%= "#{pluralize_with_delimiter(subscribable.subscriptions.for_user(current_user).count, 'subscription')}" %></span>
+<span id="<%= dom_id(subscribable, :subscriptions_count) %>" class="h5 text-muted">
+  <%= "#{pluralize_with_delimiter(subscribable.subscriptions.for_user(current_user).count, 'subscription')}" %>
+</span>

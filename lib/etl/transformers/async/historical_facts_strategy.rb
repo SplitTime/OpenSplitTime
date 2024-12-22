@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module ETL::Transformers::Async
-  class HistoricalFactsStrategy < ETL::Transformers::BaseTransformer
+module Etl::Transformers::Async
+  class HistoricalFactsStrategy < Etl::Transformers::BaseTransformer
     def initialize(parsed_structs, options)
       @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
       @options = options

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Extractors
-    class ItsYourRaceHTMLStrategy
-      include ETL::Errors
+    class ItsYourRaceHtmlStrategy
+      include Etl::Errors
       attr_reader :errors
 
       def initialize(source_data, options)

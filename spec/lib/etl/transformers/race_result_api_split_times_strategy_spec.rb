@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::RaceResultApiSplitTimesStrategy do
+RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
   subject { described_class.new(parsed_structs, options) }
   let(:options) { {parent: event}.merge(delete_blank_times_option).merge(ignore_time_indices_option) }
   let(:delete_blank_times_option) { {} }

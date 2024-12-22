@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Errors
     def bad_url_error(url, error)
       { title: "Bad URL", detail: { messages: ["#{url} reported an error: #{error}"] } }

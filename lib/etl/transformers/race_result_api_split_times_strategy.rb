@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Transformers
     # The RaceResult API is ideal for importing times, because it provides
     # absolute times, avoiding the calculation complexity required when

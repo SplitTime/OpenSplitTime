@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module ETL::Transformers::Async
-  class HardrockHistoricalFactsStrategy < ETL::Transformers::BaseTransformer
+module Etl::Transformers::Async
+  class HardrockHistoricalFactsStrategy < Etl::Transformers::BaseTransformer
     JUNK_PREVIOUS_NAMES = ["no", "n", "n/a", "na", "none"].freeze
     PRIOR_YEARS = (1992..2024).to_a.map { |year| year.to_s.to_sym }.freeze
     PRIOR_YEAR_OUTCOMES = {

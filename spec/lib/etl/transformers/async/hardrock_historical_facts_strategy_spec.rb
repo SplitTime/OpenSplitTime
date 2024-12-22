@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::Async::HardrockHistoricalFactsStrategy do
+RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
   subject { described_class.new(structs, options) }
 
   let(:options) do

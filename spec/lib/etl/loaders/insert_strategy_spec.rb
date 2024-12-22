@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Loaders::InsertStrategy do
-  subject { ETL::Loaders::InsertStrategy.new(proto_records, options) }
+RSpec.describe Etl::Loaders::InsertStrategy do
+  subject { Etl::Loaders::InsertStrategy.new(proto_records, options) }
   let(:event) { events(:ggd30_50k) }
   let(:start_time) { event.scheduled_start_time }
   let(:subject_splits) { event.ordered_splits }

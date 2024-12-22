@@ -3,7 +3,7 @@
 # This strategy looks for existing efforts only and creates, updates, or deletes
 # split_times for those existing efforts. This strategy does not create any new efforts.
 
-module ETL
+module Etl
   module Loaders
     class SplitTimeUpsertStrategy < BaseLoader
       def post_initialize(_options)

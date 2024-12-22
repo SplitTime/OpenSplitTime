@@ -23,7 +23,8 @@ RSpec.describe PreparedParams do
       let(:data_params) { {id: 123, attributes: {name: "John Doe", age: 50}} }
 
       it "returns a hash containing the attributes" do
-        expected = {"name" => "John Doe", "age" => 50}
+        expected = ActionController::Parameters.new("name" => "John Doe", "age" => 50)
+        expected.permit!
         validate_param("data", expected)
       end
 
@@ -37,7 +38,8 @@ RSpec.describe PreparedParams do
       let(:data_params) { {id: 123, attributes: {name: "John Doe", age: 50, role: "admin"}} }
 
       it "returns a hash containing only the permitted attributes" do
-        expected = {"name" => "John Doe", "age" => 50}
+        expected = ActionController::Parameters.new("name" => "John Doe", "age" => 50)
+        expected.permit!
         validate_param("data", expected)
       end
     end

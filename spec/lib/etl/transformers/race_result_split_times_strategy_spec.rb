@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Transformers::RaceResultSplitTimesStrategy do
-  subject { ETL::Transformers::RaceResultSplitTimesStrategy.new(parsed_structs, options) }
+RSpec.describe Etl::Transformers::RaceResultSplitTimesStrategy do
+  subject { Etl::Transformers::RaceResultSplitTimesStrategy.new(parsed_structs, options) }
   let(:options) { {parent: event} }
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }

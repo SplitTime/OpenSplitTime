@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   class EventGroupImportProcess
     def self.perform!(event_group, importer)
       new(event_group, importer).perform!

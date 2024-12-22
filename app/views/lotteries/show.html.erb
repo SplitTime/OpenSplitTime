@@ -99,7 +99,7 @@
           <%= turbo_stream_from division, :lottery_header, class: "d-none" %>
           <div class="col-12 col-md-6 col-lg-4 col-xl pb-3">
             <h5 class="fw-bold"><%= division.name %></h5>
-            <%= render partial: "lottery_divisions/tickets_progress_bars", locals: { division: division, show_pre_selected: false } %>
+            <%= render partial: "lottery_divisions/tickets_progress_bars", locals: { lottery_division: division, show_pre_selected: false } %>
           </div>
         <% end %>
       </div>

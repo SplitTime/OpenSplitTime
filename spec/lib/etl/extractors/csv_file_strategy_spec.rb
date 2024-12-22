@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-RSpec.describe ETL::Extractors::CsvFileStrategy do
-  subject { ETL::Extractors::CsvFileStrategy.new(file, options) }
+RSpec.describe Etl::Extractors::CsvFileStrategy do
+  subject { Etl::Extractors::CsvFileStrategy.new(file, options) }
   let(:options) { {} }
 
   describe "#extract" do

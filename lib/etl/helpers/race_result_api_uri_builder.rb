@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Helpers
     class RaceResultApiUriBuilder
       def initialize(rr_event_id, rr_api_key)

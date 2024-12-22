@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module ETL
+module Etl
   module Loaders
     class InsertStrategy < BaseLoader
       def post_initialize(options)

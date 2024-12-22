@@ -15,11 +15,11 @@
             <li class="breadcrumb-item">Webhooks</li>
           </ul>
         </div>
-        <%= render "events/time_and_course_info" %>
+        <%= render partial: "events/time_and_course_info", locals: { presenter: @presenter } %>
       </div>
     </div>
     <!-- Navigation -->
-    <%= render "events/view_buttons", view_object: @presenter %>
+    <%= render partial: "events/view_buttons", locals: { view_object: @presenter } %>
   </div>
 </header>
 
@@ -50,7 +50,7 @@
           <div class="col">
             <h4>
               <span class="fw-bold"><%= event.name %></span>
-              <%= render "subscriptions/subscriptions_count", subscribable: event, current_user: current_user %>
+              <%= render partial: "subscriptions/subscriptions_count", locals: { subscribable: event, current_user: current_user } %>
             </h4>
           </div>
           <div class="col-4 col-md-2 text-end d-grid">

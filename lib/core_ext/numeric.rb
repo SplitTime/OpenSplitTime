@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CoreExt
-  module NumericExtensions
+  module Numeric
     def round_to_nearest(rounding_quotient = 0)
       if rounding_quotient.zero?
         round
@@ -17,5 +17,5 @@ module CoreExt
 end
 
 class Numeric
-  include CoreExt::NumericExtensions
+  include CoreExt::Numeric
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CoreExt
-  module EnumerableExtensions
+  module Enumerable
     def count_by(&block)
       Hash[group_by(&block).map { |k, v| [k, v.size] }]
     end
@@ -38,5 +38,5 @@ module CoreExt
 end
 
 module Enumerable
-  include CoreExt::EnumerableExtensions
+  include CoreExt::Enumerable
 end

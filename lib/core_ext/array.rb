@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CoreExt
-  module ArrayExtensions
+  module Array
     def average
       sum / size.to_f
     end
@@ -41,5 +41,5 @@ module CoreExt
 end
 
 class Array
-  include CoreExt::ArrayExtensions
+  include CoreExt::Array
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module CoreExt
-  module StringExtensions
+  module String
     def numeric?
       true if Float(self)
     rescue StandardError
@@ -21,5 +21,5 @@ module CoreExt
 end
 
 class String
-  include CoreExt::StringExtensions
+  include CoreExt::String
 end

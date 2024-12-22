@@ -8,6 +8,7 @@ RSpec.describe "Visit the course group best efforts page", js: true do
   let(:organization) { course_group.organization }
   # Expected count is the number of finished efforts + 1 for the header row
   let(:expected_count) { ::Effort.where(event: course_group_events).finished.count + 1 }
+  let(:half_of_expected) { expected_count / 2 }
 
   before { EffortSegment.set_all }
   after { EffortSegment.delete_all }
@@ -21,12 +22,17 @@ RSpec.describe "Visit the course group best efforts page", js: true do
   end
 
   scenario "Visitor visits the page and uses auto pagination" do
-    visit_page_with_pagination(20)
+    visit_page_with_pagination(half_of_expected)
+    scroll_to_bottom_of_page
     expect(page).not_to have_link("Show More")
     expect(page).to have_text("End of List")
   end
 
   def visit_page_with_pagination(per_page)
     visit organization_course_group_best_efforts_path(course_group.organization, course_group, per_page: per_page)
+  end
+
+  def scroll_to_bottom_of_page
+    execute_script('window.scrollTo(0, document.body.scrollHeight)')
   end
 end

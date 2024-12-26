@@ -37,6 +37,9 @@ module CoreExt
   end
 end
 
-module Enumerable
-  include CoreExt::Enumerable
+Enumerable.include(CoreExt::Enumerable)
+
+# Re-include Enumerable in classes that include it to ensure core extension methods are included
+[Array, Hash, Range, Set].each do |klass|
+  klass.include Enumerable
 end

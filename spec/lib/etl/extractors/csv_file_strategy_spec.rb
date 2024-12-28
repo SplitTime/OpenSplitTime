@@ -186,7 +186,7 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
 
         error = subject.errors.first
         expect(error[:title]).to eq("CSV error")
-        expect(error[:detail][:messages]).to include('Duplicate Headers in CSV: {"country"=>2}')
+        expect(error[:detail][:messages]).to include('Duplicate Headers in CSV: {"country" => 2}')
       end
     end
   end

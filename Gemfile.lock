@@ -328,10 +328,6 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-linux-gnu)
-      racc (~> 1.4)
     normalize_country (0.3.2)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -603,13 +599,7 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
-  arm64-darwin-21
-  arm64-darwin-22
-  arm64-darwin-23
   arm64-darwin-24
-  x86_64-darwin-21
-  x86_64-darwin-22
-  x86_64-linux
 
 DEPENDENCIES
   active_storage_validations (>= 0.9.2)
@@ -701,4 +691,4 @@ RUBY VERSION
    ruby 3.4.1p0
 
 BUNDLED WITH
-   2.3.18
+   2.6.2

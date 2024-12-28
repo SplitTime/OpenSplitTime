@@ -82,7 +82,7 @@ end
 
 group :test do
   gem "capybara"
-  gem "factory_bot_rails", "~> 5.2", ">= 5.2.0", require: false
+  gem "factory_bot_rails", require: false
   gem "pry"
   gem "vcr", "~> 4.0"
   gem "selenium-webdriver"

@@ -328,6 +328,8 @@ GEM
     nio4r (2.7.4)
     nokogiri (1.18.0-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.0-x86_64-linux-gnu)
+      racc (~> 1.4)
     normalize_country (0.3.2)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -600,6 +602,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-24
+  x86_64-linux
 
 DEPENDENCIES
   active_storage_validations (>= 0.9.2)

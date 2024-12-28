@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "3.3.6"
+ruby "3.4.1"
 
 source "https://rubygems.org"
 
@@ -89,7 +89,6 @@ group :test do
 end
 
 group :development, :test do
-  gem "active_record_query_trace"
   gem "brakeman"
   gem "bundler-audit"
   gem "rspec"

@@ -14,8 +14,8 @@ Ruby on Rails
 
 This application requires:
 
-- Ruby 3.2
-- Rails 7.0
+- Ruby 3.4
+- Rails 7.1
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
@@ -180,4 +180,4 @@ License
 Copyright
 ---------
 
-Copyright (c) 2015-2024 OpenSplitTime Company. See license for details.
+Copyright (c) 2015-2025 OpenSplitTime Company. See license for details.

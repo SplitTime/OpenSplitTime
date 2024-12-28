@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby "3.3.6"
+ruby "3.4.1"
 
 source "https://rubygems.org"
 
@@ -20,6 +20,7 @@ gem "carmen"
 gem "chartkick"
 gem "coverband"
 gem "cssbundling-rails"
+gem "csv"
 gem "dalli"
 gem "data_migrate", "~> 9.0"
 gem "devise"
@@ -81,7 +82,7 @@ end
 
 group :test do
   gem "capybara"
-  gem "factory_bot_rails", "~> 5.2", ">= 5.2.0", require: false
+  gem "factory_bot_rails", require: false
   gem "pry"
   gem "vcr", "~> 4.0"
   gem "selenium-webdriver"
@@ -89,7 +90,6 @@ group :test do
 end
 
 group :development, :test do
-  gem "active_record_query_trace"
   gem "brakeman"
   gem "bundler-audit"
   gem "rspec"

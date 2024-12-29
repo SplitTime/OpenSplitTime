@@ -4,7 +4,10 @@
   <div class="card-header">
     <div class="row">
       <div class="col">
-        <div class="fs-3 fw-bold">Upload Completed Service Form</div>
+        <span class="fs-3 fw-bold">Upload Completed Service Form</span>
+        <% if presenter.completed_form.attached? %>
+          <span class="fs-5 text-muted ps-2"><%= fa_icon("circle-check", class: "text-success", text: "Attached") %></span>
+        <% end %>
       </div>
       <div class="col text-end">
         <div class="d-flex justify-content-end gap-2">
@@ -23,8 +26,7 @@
   <div class="card-body">
     <div class="row text-center">
       <% if presenter.completed_form.attached? %>
-        <div class="fs-4">Service form has been uploaded</div>
-        <div><%= image_tag presenter.completed_form %></div>
+        <%= render partial: "shared/attachment_preview_or_link", locals: { attachment: presenter.completed_form } %>
       <% else %>
         <%= form_with(
               model: [presenter.organization, presenter.lottery, presenter.__getobj__],

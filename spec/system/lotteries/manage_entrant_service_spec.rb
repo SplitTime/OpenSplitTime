@@ -12,7 +12,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
 
   before do
     entrant.update!(email: user.email)
-    lottery.update(status: :finished)
+    lottery.update!(status: :finished)
   end
 
   context "service form not available" do
@@ -69,7 +69,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       end
 
       context "and has been accepted" do
-        before { entrant.service_detail.update(form_accepted_at: Time.zone.now, form_accepted_comments: "Thank you for your service") }
+        before { entrant.service_detail.update!(form_accepted_at: Time.zone.now, form_accepted_comments: "Thank you for your service", completed_date: 2.days.ago) }
 
         scenario "user sees feedback" do
           login_as user, scope: :user
@@ -82,7 +82,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       end
 
       context "and has been rejected" do
-        before { entrant.service_detail.update(form_rejected_at: Time.zone.now, form_rejected_comments: "This is a potato") }
+        before { entrant.service_detail.update!(form_rejected_at: Time.zone.now, form_rejected_comments: "This is a potato") }
 
         scenario "user sees feedback and removes the form" do
           login_as user, scope: :user

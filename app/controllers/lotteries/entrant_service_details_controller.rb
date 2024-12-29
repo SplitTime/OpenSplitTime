@@ -48,6 +48,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id/remove_completed_form
   def remove_completed_form
     @service_detail.completed_form.purge_later
+    @service_detail.update(form_accepted_at: nil, form_rejected_at: nil, form_accepted_comments: nil, form_rejected_comments: nil)
 
     redirect_to organization_lottery_entrant_service_detail_path(@organization, @lottery, @service_detail), notice: "Service form was deleted."
   end

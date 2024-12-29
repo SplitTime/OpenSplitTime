@@ -9,6 +9,14 @@ class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
     user.admin? || user.associated_with_entrant?(lottery_entrant) || user.steward_of?(organization)
   end
 
+  def edit?
+    user.authorized_for_lotteries?(organization)
+  end
+
+  def update?
+    edit?
+  end
+
   def attach_completed_form?
     show?
   end

@@ -48,6 +48,10 @@ class LotteryPresenter < BasePresenter
     @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page)
   end
 
+  def pre_selected_entrant_count
+    @pre_selected_entrant_count ||= lottery_entrants.pre_selected.count
+  end
+
   # @return [String, nil]
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page

@@ -1,0 +1,12 @@
+<%# locals: (service_detail:, status: "under_review") %>
+
+<div id="<%= dom_id(service_detail, :modal_form) %>">
+  <% case status %>
+  <% when "accepted" %>
+    <%= render "accepted_form", service_detail: service_detail %>
+  <% when "rejected" %>
+    <%= render "rejected_form", service_detail: service_detail %>
+  <% else %>
+    <%= render "under_review_form", service_detail: service_detail %>
+  <% end %>
+</div>

@@ -1,0 +1,42 @@
+<%# locals: (service_detail:) %>
+
+<%= render "shared/errors", obj: service_detail %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <%= form_with model: service_detail,
+                    url: organization_lottery_entrant_service_detail_path(service_detail.organization, service_detail.lottery, service_detail) do |f| %>
+
+        <div class="row">
+          <div class="col">
+            <%= f.label :completed_date, class: "mb-1 required" %>
+            <%= f.date_field :completed_date, class: "form-control", placeholder: "Date service was performed", autofocus: true %>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <%= f.label :form_accepted_comments, class: "mb-1" %>
+            <%= f.text_field :form_accepted_comments, class: "form-control", placeholder: "Comments" %>
+          </div>
+        </div>
+
+        <br/>
+
+        <%= f.hidden_field :form_accepted_at, value: Time.current %>
+        <%= f.hidden_field :form_rejected_at, value: nil %>
+        <%= f.hidden_field :form_rejected_comments, value: nil %>
+
+        <div class="row mb-3">
+          <div class="col text-center">
+            <%= f.submit("Accept", class: "btn btn-primary") %>
+            <%= button_tag "Cancel",
+                           type: :button,
+                           data: { action: "click->form-modal#hide" },
+                           class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
   end
 
   def permitted_params
-    @permitted_params ||= params_class.strong_params(controller_class_name, params)
+    @permitted_params ||= params_class.strong_params(controller_class.model_name.param_key, params)
   end
 
   def params_class
@@ -88,11 +88,15 @@ class ApplicationController < ActionController::Base
   end
 
   def controller_class
-    controller_class_name.camelcase.safe_constantize
+    controller_class_name.camelcase.safe_constantize || controller_class_full_name.camelcase.safe_constantize
   end
 
   def controller_class_name
     params[:controller].split("/").last.to_s.singularize
+  end
+
+  def controller_class_full_name
+    params[:controller].to_s.singularize
   end
 
   def internal_server_error_json

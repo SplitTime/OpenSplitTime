@@ -1,0 +1,7 @@
+<%= turbo_stream.replace dom_id(@service_detail, :modal_form),
+                         partial: "lotteries/entrant_service_details/modal_form",
+                         locals: { service_detail: @service_detail, status: params[:status] } %>
+
+<%= turbo_stream.replace "review_status_dropdown",
+                         partial: "lotteries/entrant_service_details/review_status_dropdown",
+                         locals: { status: params[:status] } %>

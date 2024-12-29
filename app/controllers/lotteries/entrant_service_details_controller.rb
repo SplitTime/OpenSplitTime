@@ -16,6 +16,26 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
     @presenter = Lotteries::EntrantServiceDetailPresenter.new(@service_detail)
   end
 
+  # GET /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id/edit
+  def edit
+    params[:status] ||= @service_detail.status
+  end
+
+  # PUT /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id
+  # PATCH /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id
+  def update
+    respond_to do |format|
+      format.turbo_stream do
+        if @service_detail.update(permitted_params)
+          presenter = Lotteries::EntrantServiceDetailPresenter.new(@service_detail)
+          render :update, locals: { presenter: presenter }
+        else
+          render :update_failed, locals: { service_detail: @service_detail }, status: :unprocessable_entity
+        end
+      end
+    end
+  end
+
   # PATCH /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id/attach_completed_form
   def attach_completed_form
     completed_form = params.dig(:lotteries_entrant_service_detail, :completed_form)
@@ -48,6 +68,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
   # DELETE /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id/remove_completed_form
   def remove_completed_form
     @service_detail.completed_form.purge_later
+    @service_detail.update(form_accepted_at: nil, form_rejected_at: nil, form_accepted_comments: nil, form_rejected_comments: nil, completed_date: nil)
 
     redirect_to organization_lottery_entrant_service_detail_path(@organization, @lottery, @service_detail), notice: "Service form was deleted."
   end

@@ -1,0 +1,9 @@
+<%# locals: (attachment:, size: 400) %>
+
+<% if attachment.previewable? %>
+  <%= link_to url_for(attachment), target: :_blank do %>
+    <%= image_tag url_for(attachment.preview(resize_to_limit: [size, size])) %>
+  <% end %>
+<% else %>
+  <%= link_to attachment.filename, url_for(attachment), target: :_blank %>
+<% end %>

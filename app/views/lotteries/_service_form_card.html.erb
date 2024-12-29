@@ -3,9 +3,12 @@
 <div id="<%= dom_id(presenter.lottery, :service_form_card) %>">
   <div class="card mt-4">
     <div class="card-header">
-      <div class="row pt-1">
+      <div class="row">
         <div class="col">
-          <div class="h3 fw-bold">Service Form</div>
+          <span class="fs-3 fw-bold">Service Form</span>
+          <% if presenter.service_form.attached? %>
+            <span class="fs-5 text-muted ps-2"><%= fa_icon("circle-check", class: "text-success", text: "Attached") %></span>
+          <% end %>
         </div>
         <div class="col text-end">
           <div class="d-flex justify-content-end gap-2">
@@ -27,8 +30,7 @@
     <div class="card-body">
       <div class="row text-center">
         <% if presenter.service_form.attached? %>
-          <div class="fs-4">Service form has been uploaded</div>
-          <div><%= image_tag presenter.service_form %></div>
+          <%= render partial: "shared/attachment_preview_or_link", locals: { attachment: presenter.service_form } %>
         <% else %>
           <%= form_with(
                 model: [presenter.organization, presenter.lottery],

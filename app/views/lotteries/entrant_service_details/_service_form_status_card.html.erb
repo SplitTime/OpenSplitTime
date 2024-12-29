@@ -1,6 +1,6 @@
 <%# locals: (presenter:) %>
 
-<div class="card mt-4">
+<div id="<%= dom_id(presenter.__getobj__, :status_card) %>" class="card mt-4">
   <div class="card-header">
     <div class="row">
       <div class="col">
@@ -22,6 +22,9 @@
           <td>Uploaded</td>
           <td><%= l(presenter.completed_form.created_at) %></td>
           <td><%= presenter.completed_form.filename %></td>
+          <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
+            <td></td>
+          <% end %>
         </tr>
         <tr>
           <% if presenter.rejected? %>
@@ -29,16 +32,49 @@
             <td>Rejected</td>
             <td><%= l(presenter.form_rejected_at) %></td>
             <td><%= presenter.form_rejected_comments %></td>
+            <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
+              <td>
+                <%= link_to "Review",
+                            edit_organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+                            class: "btn btn-sm btn-outline-secondary",
+                            data: {
+                              turbo_frame: "form_modal",
+                            }
+                %>
+              </td>
+            <% end %>
           <% elsif presenter.accepted? %>
             <td class="text-center"><%= fa_icon("circle-check", type: :solid, class: "text-success") %></td>
             <td>Accepted</td>
             <td><%= l(presenter.form_accepted_at) %></td>
             <td><%= presenter.form_accepted_comments %></td>
+            <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
+              <td>
+                <%= link_to "Review",
+                            edit_organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+                            class: "btn btn-sm btn-outline-secondary",
+                            data: {
+                              turbo_frame: "form_modal",
+                            }
+                %>
+              </td>
+            <% end %>
           <% elsif presenter.completed_form.attached? %>
             <td class="text-center"><%= fa_icon("file-magnifying-glass", type: :solid, class: "text-secondary") %></td>
             <td>Under review</td>
             <td></td>
             <td></td>
+            <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
+              <td>
+                <%= link_to "Review",
+                            edit_organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.__getobj__),
+                            class: "btn btn-sm btn-outline-secondary",
+                            data: {
+                              turbo_frame: "form_modal",
+                            }
+                %>
+              </td>
+            <% end %>
           <% end %>
         </tr>
         </tbody>

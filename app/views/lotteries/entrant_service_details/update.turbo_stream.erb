@@ -1,0 +1,5 @@
+<%# locals: (presenter:) -%>
+
+<%= turbo_stream.replace dom_id(presenter.__getobj__, :status_card),
+                         partial: "lotteries/entrant_service_details/service_form_status_card",
+                         locals: { presenter: presenter } %>

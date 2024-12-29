@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "form_modal" do %>
+  <div class="modal-body" data-form-modal-target="resizeIndicator">
+    <%= render "form", service_detail: @service_detail %>
+  </div>
+<% end %>

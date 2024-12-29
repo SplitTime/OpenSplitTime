@@ -250,7 +250,7 @@ Rails.application.routes.draw do
       resources :lottery_entrants, except: [:index] do
         member { post :draw }
       end
-      resources :entrant_service_details, only: [:show], module: :lotteries do
+      resources :entrant_service_details, only: [:show, :edit, :update], module: :lotteries do
         member { get :download_completed_form }
         member { patch :attach_completed_form }
         member { delete :remove_completed_form }

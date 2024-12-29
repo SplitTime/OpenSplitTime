@@ -1,0 +1,5 @@
+<%# locals: (service_detail:) -%>
+
+<%= turbo_stream.replace dom_id(service_detail, :modal_form),
+                         partial: "lotteries/entrant_service_details/modal_form",
+                         locals: { service_detail: service_detail, status: service_detail.status } %>

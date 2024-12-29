@@ -5,7 +5,7 @@ class Lotteries::EntrantServiceDetailParameters < BaseParameters
       :form_accepted_comments,
       :form_rejected_at,
       :form_rejected_comments,
-      :service_completed_date,
+      :completed_date,
     ]
   end
 end

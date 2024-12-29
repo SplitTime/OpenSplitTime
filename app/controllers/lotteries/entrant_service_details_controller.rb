@@ -30,7 +30,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
           presenter = Lotteries::EntrantServiceDetailPresenter.new(@service_detail)
           render :update, locals: { presenter: presenter }
         else
-          render turbo_stream: turbo_stream.replace("form_modal", partial: "lotteries/entrant_service_details/edit", locals: { service_detail: @service_detail }), status: :unprocessable_entity
+          render :update_failed, locals: { service_detail: @service_detail }, status: :unprocessable_entity
         end
       end
     end

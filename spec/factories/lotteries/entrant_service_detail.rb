@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :lotteries_entrant_service_detail, class: Lotteries::EntrantServiceDetail do
+    association :entrant, factory: :lottery_entrant
+
     trait :accepted do
       form_accepted_at { Time.zone.now }
       form_accepted_comments { "Thank you for your service" }

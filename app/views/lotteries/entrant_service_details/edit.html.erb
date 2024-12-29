@@ -1,5 +1,18 @@
 <%= turbo_frame_tag "form_modal" do %>
-  <div class="modal-body" data-form-modal-target="resizeIndicator">
-    <%= render "form", service_detail: @service_detail %>
+  <div class="modal-header">
+    <div class="modal-title fs-5 fw-bold"><%= "Review Service Form: #{@service_detail.full_name}" %></div>
+    <div class="ms-auto">
+      <%= render partial: "review_status_dropdown", locals: { status: params[:status] } %>
+    </div>
+  </div>
+  <div class="modal-body">
+    <%= render partial: "modal_form", locals: { service_detail: @service_detail, status: params[:status] } %>
+    <br/>
+
+    <div class="row">
+      <div class="col text-center">
+        <%= render partial: "shared/attachment_preview_or_link", locals: { attachment: @service_detail.completed_form, size: 800 } %>
+      </div>
+    </div>
   </div>
 <% end %>

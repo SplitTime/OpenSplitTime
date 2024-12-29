@@ -144,6 +144,26 @@ module DropdownHelper
     build_dropdown_menu("Raw Times", dropdown_items, class: "nav-item")
   end
 
+  def lottery_entrant_service_review_dropdown(status: "under_review")
+    items = [
+      { text: "Under review", status: "under_review" },
+      { text: "Accepted", status: "accepted" },
+      { text: "Rejected", status: "rejected" },
+    ]
+
+    dropdown_items = items.map do |item|
+      { name: item[:text],
+        link: request.params.merge(status: item[:status]),
+        data: {
+          turbo_stream: true,
+          turbo_method: :get,
+        },
+        active: item[:status] == status }
+    end
+
+    build_dropdown_menu(nil, dropdown_items, button: true)
+  end
+
   def check_in_filter_dropdown
     items = [{ icon_name: "circle-exclamation", type: :solid, text: "Problems", problem: true },
              { icon_name: "circle-question", type: :solid, text: "Unreconciled", unreconciled: true },

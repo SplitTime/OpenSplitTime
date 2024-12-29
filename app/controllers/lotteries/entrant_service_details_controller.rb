@@ -18,6 +18,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
 
   # GET /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id/edit
   def edit
+    params[:status] ||= @service_detail.status
   end
 
   # PUT /organizations/:organization_id/lotteries/:lottery_id/lotteries_entrant_service_details/:id

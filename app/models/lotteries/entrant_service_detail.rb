@@ -19,4 +19,15 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
   def rejected?
     form_rejected_at?
   end
+
+  def status
+    case
+    when accepted?
+      "accepted"
+    when rejected?
+      "rejected"
+    else
+      "under_review"
+    end
+  end
 end

@@ -9,20 +9,27 @@
                     url: organization_lottery_entrant_service_detail_path(service_detail.organization, service_detail.lottery, service_detail) do |f| %>
 
         <div class="row">
-          <div class="col-md-4 mb-3">
-            <%= f.label :form_accepted_at, class: "mb-1" %>
-            <%= f.text_field :form_accepted_at, class: "form-control", placeholder: "Date", autofocus: true %>
+          <div class="col">
+            <%= f.label :completed_date, class: "mb-1 required" %>
+            <%= f.date_field :completed_date, class: "form-control", placeholder: "Date service was performed", autofocus: true %>
           </div>
-          <div class="col-md-4 mb-3">
+        </div>
+        <div class="row mt-2">
+          <div class="col">
             <%= f.label :form_accepted_comments, class: "mb-1" %>
             <%= f.text_field :form_accepted_comments, class: "form-control", placeholder: "Comments" %>
           </div>
         </div>
 
         <br/>
+
+        <%= f.hidden_field :form_accepted_at, value: Time.current %>
+        <%= f.hidden_field :form_rejected_at, value: nil %>
+        <%= f.hidden_field :form_rejected_comments, value: nil %>
+
         <div class="row mb-3">
-          <div class="col">
-            <%= f.submit("Submit", class: "btn btn-primary") %>
+          <div class="col text-center">
+            <%= f.submit("Accept", class: "btn btn-primary") %>
             <%= button_tag "Cancel",
                            type: :button,
                            data: { action: "click->form-modal#hide" },

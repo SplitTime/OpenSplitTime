@@ -40,7 +40,7 @@ class OrganizationPresenter < BasePresenter
 
   def courses
     scoped_courses = CoursePolicy::Scope.new(current_user, Course).viewable
-    @courses ||= organization.courses.includes(:splits, :events).where(id: scoped_courses)
+    @courses ||= organization.courses.includes(:splits, :events).where(id: scoped_courses).order(:name)
   end
 
   def course_groups

@@ -20,7 +20,7 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
   end
 
   def under_review?
-    !accepted? && !rejected?
+    !accepted? && !rejected? && completed_form.attached?
   end
 
   def status

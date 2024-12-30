@@ -1,13 +1,9 @@
-# frozen_string_literal: true
-
 class LotteryEntrant < ApplicationRecord
   include StateCountrySyncable
   include Searchable
   include PersonalInfo
   include Delegable
   include CapitalizeAttributes
-
-  self.ignored_columns = %w[service_completed_date]
 
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
@@ -85,7 +81,7 @@ class LotteryEntrant < ApplicationRecord
 
   # @return [Boolean]
   def service_completed?
-    service_detail.present? && service_detail.completed_date?
+    service_detail.present? && service_detail.accepted?
   end
 
   # @return [String]

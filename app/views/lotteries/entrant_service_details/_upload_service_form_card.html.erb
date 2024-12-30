@@ -3,24 +3,26 @@
 <div class="card mt-4">
   <div class="card-header">
     <div class="row">
-      <div class="col">
-        <span class="fs-3 fw-bold">Upload Completed Service Form</span>
-        <% if presenter.completed_form.attached? %>
+      <% if presenter.completed_form.attached? %>
+        <div class="col">
+          <span class="fs-3 fw-bold">Completed Service Form</span>
           <span class="fs-5 text-muted ps-2"><%= fa_icon("circle-check", class: "text-success", text: "Attached") %></span>
-        <% end %>
-      </div>
-      <div class="col text-end">
-        <div class="d-flex justify-content-end gap-2">
-          <% if presenter.completed_form.attached? %>
+        </div>
+        <div class="col text-end">
+          <div class="d-flex justify-content-end gap-2">
             <%= link_to fa_icon("download", text: "Download"),
                         download_completed_form_organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.__getobj__),
                         target: "_blank",
                         rel: "noopener",
                         class: "btn btn-outline-success" %>
             <%= button_to_remove_completed_service_form(presenter) %>
-          <% end %>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <div class="col">
+          <span class="fs-3 fw-bold">Upload Completed Service Form</span>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="card-body">
@@ -38,7 +40,7 @@
                         controller: "form-disable-submit",
                       }
               },
-              ) do |f| %>
+            ) do |f| %>
 
           <div class="mb-3 text-center">
             <div class="dropzone dropzone-default dz-clickable"

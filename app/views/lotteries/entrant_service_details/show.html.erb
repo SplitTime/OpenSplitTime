@@ -27,6 +27,10 @@
   </div>
 </header>
 
+<% if current_user.authorized_for_lotteries?(@presenter.organization) %>
+  <%= render partial: "review_toolbar", locals: { presenter: @presenter } %>
+<% end %>
+
 <article class="ost-article container">
   <%= render partial: "service_form_status_card", locals: { presenter: @presenter } %>
   <%= render partial: "blank_service_form_card", locals: { presenter: @presenter } %>

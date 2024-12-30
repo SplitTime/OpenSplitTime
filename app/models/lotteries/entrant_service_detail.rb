@@ -1,7 +1,7 @@
 class Lotteries::EntrantServiceDetail < ApplicationRecord
   self.table_name = "lotteries_entrant_service_details"
 
-  belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id"
+  belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id", touch: true
   has_one_attached :completed_form
 
   validates_with Lotteries::EntrantServiceDetailValidator

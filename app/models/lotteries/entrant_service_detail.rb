@@ -29,8 +29,10 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
       "accepted"
     when rejected?
       "rejected"
-    else
+    when completed_form.attached?
       "under_review"
+    else
+      "not_received"
     end
   end
 end

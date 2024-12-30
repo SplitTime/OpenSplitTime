@@ -12,7 +12,7 @@ class Lotteries::EntrantServiceDetailValidator < ActiveModel::Validator
   delegate :errors, to: :service_detail, private: true
 
   def validate_accepted
-    return unless service_detail.accepted?
+    return unless service_detail.form_accepted_at?
 
     errors.add(:completed_date, "must be present") if service_detail.completed_date.blank?
     errors.add(:form_rejected_at, "may not be present") if service_detail.form_rejected_at.present?
@@ -20,7 +20,7 @@ class Lotteries::EntrantServiceDetailValidator < ActiveModel::Validator
   end
 
   def validate_rejected
-    return unless service_detail.rejected?
+    return unless service_detail.form_rejected_at?
 
     errors.add(:form_rejected_comments, "must be present") if service_detail.form_rejected_comments.blank?
     errors.add(:form_accepted_at, "may not be present") if service_detail.form_accepted_at.present?
@@ -29,7 +29,7 @@ class Lotteries::EntrantServiceDetailValidator < ActiveModel::Validator
   end
 
   def validate_under_review
-    return unless service_detail.under_review?
+    return if service_detail.form_accepted_at? || service_detail.form_rejected_at?
 
     errors.add(:form_accepted_comments, "may not be present") if service_detail.form_accepted_comments.present?
     errors.add(:form_rejected_comments, "may not be present") if service_detail.form_rejected_comments.present?

@@ -52,6 +52,12 @@ class LotteryPresenter < BasePresenter
     @pre_selected_entrant_count ||= lottery_entrants.pre_selected.count
   end
 
+  def first_service_detail_for_review
+    return @first_service_detail_for_review if defined?(@first_service_detail_for_review)
+
+    @first_service_detail_for_review = lottery_entrants.pending_completed_form_review.order(:id).first
+  end
+
   # @return [String, nil]
   def next_page_url
     view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page

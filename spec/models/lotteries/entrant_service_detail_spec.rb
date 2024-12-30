@@ -1,10 +1,13 @@
 require "rails_helper"
 
 RSpec.describe Lotteries::EntrantServiceDetail do
+  let(:entrant) { lottery_entrants(:lottery_entrant_0001) }
+
   describe "validations" do
     subject do
       build_stubbed(
         :lotteries_entrant_service_detail,
+        entrant: entrant,
         form_accepted_at: form_accepted_at,
         form_accepted_comments: form_accepted_comments,
         form_rejected_at: form_rejected_at,
@@ -115,19 +118,29 @@ RSpec.describe Lotteries::EntrantServiceDetail do
   describe "#under_review?" do
     let(:result) { subject.under_review? }
 
-    context "when form_accepted_at is present" do
-      subject { build_stubbed(:lotteries_entrant_service_detail, :accepted) }
+    context "when completed form is not attached" do
+      subject { build(:lotteries_entrant_service_detail, entrant: entrant) }
       it { expect(result).to eq(false) }
     end
 
-    context "when form_rejected_at is present" do
-      subject { build_stubbed(:lotteries_entrant_service_detail, :rejected) }
-      it { expect(result).to eq(false) }
-    end
+    context "when completed form is attached" do
+      context "when form_accepted_at is present" do
+        subject { build(:lotteries_entrant_service_detail, :accepted, :with_completed_form, entrant: entrant) }
+        it { expect(result).to eq(false) }
+      end
 
-    context "when form_accepted_at and form_rejected_at are not present" do
-      subject { build_stubbed(:lotteries_entrant_service_detail) }
-      it { expect(result).to eq(true) }
+      context "when form_rejected_at is present" do
+        subject { build(:lotteries_entrant_service_detail, :rejected, :with_completed_form, entrant: entrant) }
+        it { expect(result).to eq(false) }
+      end
+
+      context "when form_accepted_at and form_rejected_at are not present" do
+        subject { build(:lotteries_entrant_service_detail, :with_completed_form, entrant: entrant) }
+        it do
+          expect(subject.completed_form.attached?).to eq(true)
+          expect(result).to eq(true)
+        end
+      end
     end
   end
 
@@ -135,21 +148,27 @@ RSpec.describe Lotteries::EntrantServiceDetail do
     let(:result) { subject.status }
 
     context "when the form has been accepted" do
-      subject { build_stubbed(:lotteries_entrant_service_detail, :accepted) }
+      subject { build(:lotteries_entrant_service_detail, :accepted, :with_completed_form, entrant: entrant) }
 
       it { expect(result).to eq("accepted") }
     end
 
     context "when the form has been rejected" do
-      subject { build_stubbed(:lotteries_entrant_service_detail, :rejected) }
+      subject { build(:lotteries_entrant_service_detail, :rejected, :with_completed_form, entrant: entrant) }
 
       it { expect(result).to eq("rejected") }
     end
 
     context "when the form has not been accepted or rejected" do
-      subject { build_stubbed(:lotteries_entrant_service_detail) }
+      subject { build(:lotteries_entrant_service_detail, :with_completed_form, entrant: entrant) }
 
       it { expect(result).to eq("under_review") }
+    end
+
+    context "when no form is attached" do
+      subject { build(:lotteries_entrant_service_detail, entrant: entrant) }
+
+      it { expect(result).to eq("not_received") }
     end
   end
 end

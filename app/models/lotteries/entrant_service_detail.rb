@@ -1,7 +1,7 @@
 class Lotteries::EntrantServiceDetail < ApplicationRecord
   self.table_name = "lotteries_entrant_service_details"
 
-  belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id"
+  belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id", touch: true
   has_one_attached :completed_form
 
   validates_with Lotteries::EntrantServiceDetailValidator
@@ -20,7 +20,7 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
   end
 
   def under_review?
-    !accepted? && !rejected?
+    !accepted? && !rejected? && completed_form.attached?
   end
 
   def status
@@ -29,8 +29,10 @@ class Lotteries::EntrantServiceDetail < ApplicationRecord
       "accepted"
     when rejected?
       "rejected"
-    else
+    when completed_form.attached?
       "under_review"
+    else
+      "not_received"
     end
   end
 end

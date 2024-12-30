@@ -22,9 +22,6 @@
           <td>Uploaded</td>
           <td><%= l(presenter.completed_form.created_at) %></td>
           <td><%= presenter.completed_form.filename %></td>
-          <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
-            <td></td>
-          <% end %>
         </tr>
         <tr class="align-middle">
           <% if presenter.rejected? %>
@@ -42,17 +39,6 @@
             <td>Under review</td>
             <td></td>
             <td></td>
-          <% end %>
-          <% if current_user.authorized_for_lotteries?(presenter.lottery) %>
-            <td>
-              <%= link_to "Review",
-                          edit_organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.__getobj__),
-                          class: "btn btn-sm btn-outline-secondary",
-                          data: {
-                            turbo_frame: "form_modal",
-                          }
-              %>
-            </td>
           <% end %>
         </tr>
         </tbody>

@@ -4,6 +4,20 @@
 
 <%= render "lotteries/header", presenter: @presenter, breadcrumbs: ["Manage Entrants"] %>
 
+<aside class="ost-toolbar">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <% if @presenter.first_service_detail_for_review.present? %>
+          <%= link_to "Review service forms",
+                      organization_lottery_entrant_service_detail_path(@presenter.organization, @presenter.lottery, @presenter.first_service_detail_for_review),
+                      class: "btn btn-outline-secondary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</aside>
+
 <article class="ost-article container">
   <% if @presenter.lottery_draws.any? %>
     <% @presenter.ordered_divisions.each do |division| %>

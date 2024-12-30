@@ -8,8 +8,7 @@
     <%= link_to "Download", rails_blob_path(export_job.file, disposition: "attachment"), class: "dropdown-item" %>
   <% else %>
     <%= link_to "Nothing to download", "#",
-                class: "dropdown-item",
-                disabled: true %>
+                class: "dropdown-item disabled" %>
   <% end %>
   <%= link_to "Delete", export_job_path(export_job),
               class: "dropdown-item",

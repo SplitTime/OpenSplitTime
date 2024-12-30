@@ -7,7 +7,7 @@
     <th>Splits</th>
     <th>Events</th>
     <th class="text-center">GPX</th>
-    <th class="text-end">Average Finish Time</th>
+    <th class="text-center">Average Finish Time</th>
   </tr>
   </thead>
   <tbody>
@@ -17,7 +17,7 @@
         <td><%= pluralize(course.splits.size, "split") %></td>
         <td><%= pluralize(course.events.size, "event") %></td>
         <td class="text-center"><%= fa_icon("circle-check", class: "text-success") if course.gpx.attached? %></td>
-        <td class="text-end"><%= TimeConversion.seconds_to_hms(course.average_finish_seconds) %></td>
+        <td class="text-center"><%= TimeConversion.seconds_to_hms(course.average_finish_seconds) %></td>
       </tr>
   <% end %>
   </tbody>

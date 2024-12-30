@@ -41,9 +41,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
     completed_form = params.dig(:lotteries_entrant_service_detail, :completed_form)
 
     if completed_form.present?
-      if @service_detail.completed_form.attach(completed_form)
-        flash[:success] = "Completed service form was attached"
-      else
+      unless @service_detail.completed_form.attach(completed_form)
         flash[:danger] = "An error occurred while attaching service form: #{@service_detail.errors.full_messages}"
       end
 

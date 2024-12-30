@@ -24,6 +24,11 @@ class LotteryEntrant < ApplicationRecord
   scope :not_withdrawn, -> { where(withdrawn: [false, nil]) }
   scope :withdrawn, -> { where(withdrawn: true) }
 
+  scope :pending_completed_form_review, -> do
+    joins(service_detail: :completed_form_attachment)
+      .not_withdrawn
+      .where(lotteries_entrant_service_details: { form_accepted_at: nil, form_rejected_at: nil })
+  end
   scope :ordered, -> { joins(:division_ranking).order("lotteries_division_rankings.division_rank") }
   scope :ordered_for_export, -> { with_division_name.order("division_name, last_name") }
   scope :pre_selected, -> { where(pre_selected: true) }

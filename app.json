@@ -31,5 +31,6 @@
         "test": "bin/rspec spec --tag ~@js"
       }
     }
-  }
+  },
+  "stack": "heroku-24"
 }

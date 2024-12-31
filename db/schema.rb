@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_20_002632) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_31_035631) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -1061,5 +1061,27 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_20_002632) do
      FROM ((lottery_entrants
        LEFT JOIN ranked_draws ON ((ranked_draws.lottery_entrant_id = lottery_entrants.id)))
        JOIN lottery_divisions ON ((lottery_entrants.lottery_division_id = lottery_divisions.id)));
+  SQL
+  create_view "lotteries_calculations_single_ticket_2025s", sql_definition: <<-SQL
+      WITH applicants AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              any_value(historical_facts.external_id) AS external_id,
+              any_value(historical_facts.gender) AS gender
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2024))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          )
+   SELECT row_number() OVER () AS id,
+      organization_id,
+      person_id,
+      external_id,
+      gender,
+          CASE
+              WHEN (gender = 0) THEN 'Male'::text
+              ELSE 'Female'::text
+          END AS division,
+      1 AS ticket_count
+     FROM applicants;
   SQL
 end

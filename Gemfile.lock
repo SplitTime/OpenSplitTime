@@ -190,7 +190,7 @@ GEM
       railties (>= 6.0.0)
     csv (3.3.2)
     dalli (3.2.8)
-    data_migrate (9.4.2)
+    data_migrate (11.2.0)
       activerecord (>= 6.1)
       railties (>= 6.1)
     date (3.4.1)
@@ -326,9 +326,9 @@ GEM
     net-smtp (0.5.0)
     netrc (0.11.0)
     nio4r (2.7.4)
-    nokogiri (1.18.0-arm64-darwin)
+    nokogiri (1.18.1-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.0-x86_64-linux-gnu)
+    nokogiri (1.18.1-x86_64-linux-gnu)
       racc (~> 1.4)
     normalize_country (0.3.2)
     oauth2 (2.0.9)
@@ -627,7 +627,7 @@ DEPENDENCIES
   cssbundling-rails
   csv
   dalli
-  data_migrate (~> 9.0)
+  data_migrate
   derailed_benchmarks
   devise
   devise-bootstrap5

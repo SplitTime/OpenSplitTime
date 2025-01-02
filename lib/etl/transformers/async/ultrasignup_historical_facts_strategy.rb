@@ -44,10 +44,10 @@ module Etl::Transformers::Async
       self.base_proto_record = ProtoRecord.new(**struct.to_h)
 
       base_proto_record.transform_as(:historical_fact, organization: organization)
-      base_proto_record[:year] = Date.current.year
+      base_proto_record[:year] = struct[:Registration_Date].to_date.year
     end
 
-    def record_lottery_application(struct)
+    def record_lottery_application(_struct)
       proto_record = base_proto_record.deep_dup
       proto_record[:kind] = :lottery_application
       proto_record[:comments] = "Ultrasignup"

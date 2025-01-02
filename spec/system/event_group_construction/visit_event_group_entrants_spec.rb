@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe "Visit an event group entrants page and try various features", type: :system, js: true do

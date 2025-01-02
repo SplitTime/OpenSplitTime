@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "type/integer_array_from_string"
 require "type/string_array_from_string"
 

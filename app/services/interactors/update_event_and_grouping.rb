@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Interactors
   class UpdateEventAndGrouping
     include Interactors::Errors

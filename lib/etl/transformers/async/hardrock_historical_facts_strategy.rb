@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Transformers::Async
   class HardrockHistoricalFactsStrategy < Etl::Transformers::BaseTransformer
     JUNK_PREVIOUS_NAMES = ["no", "n", "n/a", "na", "none"].freeze

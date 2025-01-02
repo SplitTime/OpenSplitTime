@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Assigns people to users where name and email exactly match"
   task assign_people_to_users: :environment do

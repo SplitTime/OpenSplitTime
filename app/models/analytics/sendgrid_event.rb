@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ::Analytics::SendgridEvent < ApplicationRecord
   validates_presence_of :email, :event, :timestamp
 

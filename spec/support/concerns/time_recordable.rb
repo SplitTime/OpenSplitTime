@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "support/bitkey_definitions"
 
 RSpec.shared_examples_for "time_recordable" do

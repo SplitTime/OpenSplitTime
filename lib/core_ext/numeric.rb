@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CoreExt
   module Numeric
     def round_to_nearest(rounding_quotient = 0)

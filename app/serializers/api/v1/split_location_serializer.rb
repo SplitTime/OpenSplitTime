@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # TODO: This serializer should be removed and clients should
 # instead use splits endpoints.
 module Api

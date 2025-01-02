@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module LotterySimulations
   class RunnerJob < ApplicationJob
     def perform(lottery_simulation_run_id)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Inspired by and largely copied from the font_awesome5_rails gem
 module FontAwesome6
   module Rails

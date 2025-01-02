@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LotteryTicket < ApplicationRecord
   include PgSearch::Model
 

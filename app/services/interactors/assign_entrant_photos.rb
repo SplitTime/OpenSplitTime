@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Interactors
   class AssignEntrantPhotos
     include Interactors::Errors

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   class ImporterFromContext
     def self.build(parent, params, current_user)

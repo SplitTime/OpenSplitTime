@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ButtonHelper
   def build_button_group(items, options = {})
     content_tag :div, class: ["btn-group", options[:class]].join(" ") do

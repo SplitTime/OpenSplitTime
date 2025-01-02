@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
   before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :mini_table]

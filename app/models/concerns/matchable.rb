@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Matchable
   # @return [ActiveRecord::Relation<Person>]
   def possible_matching_people

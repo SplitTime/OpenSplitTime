@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Loaders::Async
   # This loader does not attempt to persist records in the database.
   # It merely compares order ids and creates errors when differences exist.

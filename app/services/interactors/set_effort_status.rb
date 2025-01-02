@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Interactors
   class SetEffortStatus
     # This class expects to be given an effort loaded with split_times: :splits, or in the alternative, it expects

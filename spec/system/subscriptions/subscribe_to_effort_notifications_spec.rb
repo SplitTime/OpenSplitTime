@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe "User subscribes to an effort's progress notifications", type: :system, js: true do

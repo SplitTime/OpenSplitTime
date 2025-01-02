@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EventGroups
   class ConnectionsController < ::ConnectionsController
     # GET /event_groups/1/connections

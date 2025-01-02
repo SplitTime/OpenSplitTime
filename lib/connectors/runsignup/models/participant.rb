@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Connectors::Runsignup::Models
   Participant = Struct.new(
     :first_name,

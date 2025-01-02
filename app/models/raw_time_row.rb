@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RawTimeRow = Struct.new(:raw_times, :effort, :event, :split, :errors) do
   include ActiveModel::Serializers::JSON
 

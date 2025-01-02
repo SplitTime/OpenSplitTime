@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AssignSegmentTimes
   def self.perform(ordered_split_times, source_attribute = :absolute_time)
     ordered_split_times.each_cons(2) do |previous_split_time, split_time|

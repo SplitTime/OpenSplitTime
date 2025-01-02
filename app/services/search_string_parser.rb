@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SearchStringParser
   def initialize(search_string)
     @search_string = search_string&.downcase

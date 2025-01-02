@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "action_view/helpers/text_helper"
 include ActionView::Helpers::TextHelper
 

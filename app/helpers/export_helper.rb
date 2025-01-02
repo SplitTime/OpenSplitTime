@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ExportHelper
   def button_to_course_group_best_efforts_export_async(view_object)
     path = export_async_organization_course_group_best_efforts_path(

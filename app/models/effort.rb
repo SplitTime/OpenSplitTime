@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Effort < ApplicationRecord
   enum data_status: [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
 

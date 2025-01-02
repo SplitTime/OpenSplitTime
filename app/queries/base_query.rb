@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class BaseQuery
   def self.full_sql_for_existing_scope(scope)
     scope.connection.unprepared_statement { scope.reorder(nil).to_sql }

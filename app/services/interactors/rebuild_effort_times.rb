@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This Interactor will delete all split_times from an effort and attempt to rebuild split_times
 # using only the raw_time records.
 

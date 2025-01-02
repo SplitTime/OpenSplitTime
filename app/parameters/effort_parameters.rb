@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortParameters < BaseParameters
   def self.csv_export_attributes
     %w[

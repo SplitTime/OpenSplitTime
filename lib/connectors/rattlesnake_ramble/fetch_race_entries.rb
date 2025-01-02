@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::RattlesnakeRamble::FetchRaceEntries
   # @param [String] race_edition_id
   # @param [User] user

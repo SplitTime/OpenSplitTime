@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
   def post_initialize(service_detail)
     @lottery_entrant = service_detail.entrant

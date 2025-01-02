@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   module Transformers
     # The RaceResult API is ideal for importing times, because it provides

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProjectedArrivalsAtSplit < ::ApplicationQuery
   attribute :effort_id, :integer
   attribute :first_name, :string

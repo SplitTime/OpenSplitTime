@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ToggleHelper
   def button_to_toggle_check_in(effort)
     if effort.beyond_start?

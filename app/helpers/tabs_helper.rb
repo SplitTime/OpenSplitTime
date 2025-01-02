@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module TabsHelper
   def effort_view_tabs(view_object)
     if !view_object.simple? || current_user&.authorized_to_edit?(view_object.effort)

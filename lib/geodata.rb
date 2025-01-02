@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Geodata
   ALL_COUNTRIES = ::Carmen::Country.all.freeze
   PRIORITY_COUNTRY_CODES = %w[US CA].freeze

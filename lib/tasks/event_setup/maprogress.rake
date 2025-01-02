@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :event_setup do
   desc "creates links to maprogress for an event and its efforts"
   task :maprogress, [:event_id, :maprogress_id] => :environment do |_, args|

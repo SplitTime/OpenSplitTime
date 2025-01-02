@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::RattlesnakeRamble::FetchRaceEditions
   # @param [User] user
   # @param [::Connectors::RattlesnakeRamble::Client, nil] client

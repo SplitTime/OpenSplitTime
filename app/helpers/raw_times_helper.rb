@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RawTimesHelper
   def link_to_raw_time_effort(raw_time)
     if raw_time.effort

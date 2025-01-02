@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DuplicateEventGroupPolicy < ApplicationPolicy
   attr_reader :event_group
 

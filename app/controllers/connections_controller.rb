@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ConnectionsController < ApplicationController
   respond_to :turbo_stream
 

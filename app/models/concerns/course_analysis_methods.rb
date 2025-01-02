@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CourseAnalysisMethods
   def event
     @event ||= course.visible_events.latest

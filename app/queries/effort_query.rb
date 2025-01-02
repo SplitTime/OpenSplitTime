@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortQuery < BaseQuery
   def self.ranking_subquery(existing_scope)
     existing_scope_subquery = full_sql_for_existing_scope(existing_scope)

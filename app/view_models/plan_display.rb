@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PlanDisplay < EffortWithLapSplitRows
   MINIMUM_EFFORT_COUNT = 4
 

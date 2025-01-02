@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PersonMergeView
   attr_reader :person, :proposed_match, :possible_matches
   attr_accessor :effort_counts

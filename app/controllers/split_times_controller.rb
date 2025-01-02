@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SplitTimesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_split_time_and_effort

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   class EventGroupImportProcess
     def self.perform!(event_group, importer)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "csv"
 
 if lottery.entrants.exists?

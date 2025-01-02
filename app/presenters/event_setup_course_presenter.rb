@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventSetupCoursePresenter < BasePresenter
   def initialize(event, view_context)
     @event = event

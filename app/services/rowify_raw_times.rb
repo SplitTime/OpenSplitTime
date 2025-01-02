@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # event_group should include events: :splits
 # raw_times must include effort_ids (e.g., by using RawTime.with_relation_ids)
 

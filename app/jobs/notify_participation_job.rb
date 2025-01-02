@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class NotifyParticipationJob < ApplicationJob
   def perform(effort_id)
     @effort_id = effort_id

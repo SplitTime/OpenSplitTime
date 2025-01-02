@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RawTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good]
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:questionable]].freeze

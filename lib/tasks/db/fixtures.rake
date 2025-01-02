@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Credit to Yi Zeng, https://yizeng.me/2017/07/16/generate-rails-test-fixtures-yaml-from-database-dump/
 
 require_relative "fixture_helper"

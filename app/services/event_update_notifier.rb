@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventUpdateNotifier < BaseNotifier
   def post_initialize(args)
     @event = args[:event]

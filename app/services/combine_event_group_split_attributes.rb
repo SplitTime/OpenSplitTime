@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CombineEventGroupSplitAttributes
   # The event_group should be loaded with includes(events: :splits)
   def self.perform(event_group, options = {})

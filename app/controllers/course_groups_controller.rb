@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:show]
   before_action :set_course_group, except: [:new, :create]

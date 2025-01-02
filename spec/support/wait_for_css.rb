@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module WaitMethods
   def wait_for_css
     sleep(1.5)

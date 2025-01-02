@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :temp do
   desc "Migrates year information from comments to year in historical_facts table"
   task migrate_historical_facts_year: :environment do

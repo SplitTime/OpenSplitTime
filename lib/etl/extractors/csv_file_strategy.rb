@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "smarter_csv"
 require "csv"
 require "ostruct"

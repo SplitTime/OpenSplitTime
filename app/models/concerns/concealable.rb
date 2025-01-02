@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Used for models with a 'concealed' attribute.
 
 # Not used on the Event or Effort models, which need custom logic based on the

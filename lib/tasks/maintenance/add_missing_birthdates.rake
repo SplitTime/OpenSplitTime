@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Adds birthdate information to efforts based on person and other effort data"
   task add_missing_birthdates: :environment do

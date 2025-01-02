@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Loaders::Async
   # If no unique_key is provided, this is a plain insert loader that will
   # keep track of errors if validations are violated at the model or database

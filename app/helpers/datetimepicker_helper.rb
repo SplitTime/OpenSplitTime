@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DatetimepickerHelper
   def datepicker_field(form, method, options = {})
     picker_field(form, method, options.merge(enable_time: false))

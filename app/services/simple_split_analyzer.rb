@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SimpleSplitAnalyzer
   def initialize(split_analyzable)
     @split_analyzable = split_analyzable

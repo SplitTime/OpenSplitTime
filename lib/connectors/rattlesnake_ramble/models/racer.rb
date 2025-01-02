@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Connectors::RattlesnakeRamble::Models
   Racer = Struct.new(
     :first_name,

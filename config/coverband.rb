@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Coverband.configure do |config|
   redis_params = {
     url: OstConfig.redis_url,

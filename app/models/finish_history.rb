@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class FinishHistory < ::ApplicationQuery
   attribute :person_id, type: Integer
   attribute :begin_time, type: Integer

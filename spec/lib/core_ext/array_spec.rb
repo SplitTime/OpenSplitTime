@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "../../../lib/core_ext/array"
 
 RSpec.describe Array do

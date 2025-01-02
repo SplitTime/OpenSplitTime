@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This module requires the including model to have four columns:
 # state_code, country_code, state_name, and country_name.
 # It adds a callback to keep state_name and country_name in sync

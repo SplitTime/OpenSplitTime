@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ProjectionAssessments
   class RunnerJob < ApplicationJob
     def perform(projection_assessment_run_id)

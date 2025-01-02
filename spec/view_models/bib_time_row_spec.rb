@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe BibTimeRow do
   subject { BibTimeRow.new(query_result_row) }
   let(:query_result_row) do

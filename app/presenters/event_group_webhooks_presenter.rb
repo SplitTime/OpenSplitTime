@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupWebhooksPresenter < BasePresenter
   attr_reader :event_group, :current_user
 

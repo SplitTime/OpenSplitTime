@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IntervalSplitTraffic < ::ApplicationQuery
   attribute :end_time, :datetime
   attribute :event_ids, :integer_array_from_string

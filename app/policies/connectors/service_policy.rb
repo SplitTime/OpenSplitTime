@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Connectors
   class ServicePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope

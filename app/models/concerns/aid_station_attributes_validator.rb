@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AidStationAttributesValidator < ActiveModel::Validator
   def validate(aid_station)
     @aid_station = aid_station

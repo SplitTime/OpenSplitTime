@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class HistoricalFact < ApplicationRecord
   enum kind: {
     dns: 0,

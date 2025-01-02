@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Persist
   class Base
     include Interactors::Errors

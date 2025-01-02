@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortAutoReconciler
   def self.reconcile(parent, options = {})
     reconciler = new(parent, options)

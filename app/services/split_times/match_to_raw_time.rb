@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SplitTimes
   class MatchToRawTime
     def self.perform!(split_time, raw_time_id)

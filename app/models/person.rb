@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Person < ApplicationRecord
   include UrlAccessible
   include Matchable

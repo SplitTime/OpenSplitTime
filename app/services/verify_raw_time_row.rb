@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # raw_time_row.effort should be loaded with {split_times: :split}
 # raw_time_row.event should be loaded with :splits
 

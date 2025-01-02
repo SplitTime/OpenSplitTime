@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   module Transformers
     class EventGroupEntrantsStrategy < BaseTransformer

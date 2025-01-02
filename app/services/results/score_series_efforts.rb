@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Results
   class ScoreSeriesEfforts
     def self.perform(series_efforts, scoring_method, event_series)

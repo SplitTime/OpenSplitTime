@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IntervalSplitCutoffAnalysis < ::ApplicationQuery
   attribute :start_seconds, :integer
   attribute :end_seconds, :integer

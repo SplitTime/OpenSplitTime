@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Inherit from ::ApplicationQuery when you have a class
 # that is dedicated to receiving the results of a specific
 # raw SQL query.

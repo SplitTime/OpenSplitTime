@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # The including class must contain an `organization_id` attribute and a
 # `concealed` attribute *or* must override the :with_policy_scope_attributes
 # scope using joins to put an `organization_id` attribute and a `concealed`

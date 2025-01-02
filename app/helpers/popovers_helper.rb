@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module PopoversHelper
   def link_to_effort_ids_popover(effort_ids, title)
     return "--" if effort_ids.empty?

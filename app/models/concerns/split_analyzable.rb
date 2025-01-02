@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This module provides tools to build and analyze split names
 # and to build a split_name_dropdown menu.
 

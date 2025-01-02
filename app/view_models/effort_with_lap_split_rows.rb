@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortWithLapSplitRows
   attr_reader :effort
 

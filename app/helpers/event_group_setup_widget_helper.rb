@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EventGroupSetupWidgetHelper
   def link_to_setup_widget_course(presenter, event)
     type = presenter.controller_name == "events" && presenter.action_name == "setup_course" && presenter.event == event ? :solid : :regular

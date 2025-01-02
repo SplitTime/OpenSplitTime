@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe EffortSplitData, type: :model do
   subject { EffortSplitData.new(absolute_times_local: absolute_times_local) }
   let(:other) { EffortSplitData.new(absolute_times_local: days_and_times_other) }

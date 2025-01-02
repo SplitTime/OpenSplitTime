@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupRosterPresenter < BasePresenter
   attr_reader :event_group
   delegate :available_live, :concealed?, :multiple_events?, :name, :organization, :scheduled_start_time_local,

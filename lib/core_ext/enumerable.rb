@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CoreExt
   module Enumerable
     def count_by(&block)

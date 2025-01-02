@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class NotifyEventUpdateJob < ApplicationJob
   def perform(event_id)
     @event_id = event_id

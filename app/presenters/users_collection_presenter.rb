@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class UsersCollectionPresenter < BasePresenter
   attr_reader :users
 

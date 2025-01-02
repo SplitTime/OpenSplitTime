@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Stewardship < ApplicationRecord
   has_paper_trail
 

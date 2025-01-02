@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FilterHelper
   def filter_count_text(filtered_count, total_count, resource_name)
     resource_type_with_count = pluralize(total_count, resource_name)

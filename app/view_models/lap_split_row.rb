@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LapSplitRow
   attr_reader :not_in_event
 

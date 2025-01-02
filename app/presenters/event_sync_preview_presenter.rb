@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventSyncPreviewPresenter
   def initialize(event, view_context, previewer:)
     @event = event

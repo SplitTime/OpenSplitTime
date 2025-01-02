@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseGroupPresenter < BasePresenter
   attr_reader :course_group
 

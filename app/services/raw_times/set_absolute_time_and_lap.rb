@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module RawTimes
   class SetAbsoluteTimeAndLap
     MILITARY_TIME_REGEX = /\A\d{1,2}:\d{2}(:\d{2})?\z/.freeze

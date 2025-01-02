@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class VisitorIndexPresenter < BasePresenter
   def initialize(current_user)
     @current_user = current_user

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FixtureHelper
   FIXTURE_TABLES = [
     :aid_stations,

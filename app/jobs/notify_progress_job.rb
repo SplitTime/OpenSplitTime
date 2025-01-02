@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class NotifyProgressJob < ApplicationJob
   def perform(effort_id, split_time_ids)
     @effort_id = effort_id

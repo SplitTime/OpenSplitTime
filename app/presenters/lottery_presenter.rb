@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LotteryPresenter < BasePresenter
   DEFAULT_SORT_HASH = { division_name: :asc, last_name: :asc }.freeze
 

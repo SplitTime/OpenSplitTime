@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "support/concerns/locatable"
 
 RSpec.describe DataEntryNode do

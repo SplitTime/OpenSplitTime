@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Monkey patch to get StripAttributes working with Titleizable module
 module StripAttributes
   module Matchers

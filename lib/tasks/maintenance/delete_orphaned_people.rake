@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Deletes people who have no efforts"
   task delete_orphaned_people: :environment do

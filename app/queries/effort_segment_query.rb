@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortSegmentQuery < BaseQuery
   def self.set_for_effort(effort)
     set(effort.id)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Split < ApplicationRecord
   DISTANCE_THRESHOLD = 10 # Distance (in meters) below which split locations are deemed equivalent
 

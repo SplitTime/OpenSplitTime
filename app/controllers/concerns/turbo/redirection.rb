@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # As recommended per https://github.com/hotwired/turbo-rails/blob/main/UPGRADING.md
 module Turbo
   module Redirection

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SummaryPresenter < EventWithEffortsPresenter
   def filtered_ranked_efforts
     @filtered_ranked_efforts ||=

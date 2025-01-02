@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Persist
   # This class uses save to save any number of records in a single transaction, returning
   # a single Interactors::Response. This allows all callbacks and database constraints

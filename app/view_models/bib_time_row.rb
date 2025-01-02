@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sortable_bib_number, :raw_times_attributes,
                         :sortable_time, :split_times_attributes, :single_lap, keyword_init: true) do
   include Discrepancy

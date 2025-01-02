@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe SearchStringParser, type: :model do
   subject { described_class.new(search_string) }
   let(:search_string) { nil }

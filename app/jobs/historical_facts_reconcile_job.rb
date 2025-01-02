@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class HistoricalFactsReconcileJob < ApplicationJob
   queue_as :default
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class BestEffortSegmentQuery < BaseQuery
   # @param [ActiveRecord::ActiveRecordRelation] existing_scope
   # @return [String]

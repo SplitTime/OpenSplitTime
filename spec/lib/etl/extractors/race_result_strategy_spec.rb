@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Etl::Extractors::RaceResultStrategy do
   subject { Etl::Extractors::RaceResultStrategy.new(raw_data, options) }
   let(:raw_data) do

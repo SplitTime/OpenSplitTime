@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ExportJobPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def authorized_to_edit_records

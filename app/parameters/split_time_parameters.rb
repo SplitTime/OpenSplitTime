@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SplitTimeParameters < BaseParameters
   def self.permitted
     [:id, :effort_id, :lap, :split_id, :bitkey, :sub_split_bitkey, :time_from_start, :absolute_time, :absolute_time_local,

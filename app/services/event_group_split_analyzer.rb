@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupSplitAnalyzer
   def initialize(event_group)
     @event_group = event_group

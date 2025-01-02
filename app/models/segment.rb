@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Segment
   attr_reader :begin_point, :end_point
 

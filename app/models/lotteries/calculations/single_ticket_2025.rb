@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::Calculations::SingleTicket2025 < Lotteries::Calculations::Base
   # self.table_name must be set for a Lotteries::Calculations class to work
   self.table_name = :lotteries_calculations_single_ticket_2025s

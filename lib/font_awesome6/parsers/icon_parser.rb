@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "parse_methods"
 
 # Inspired by and largely copied from the font_awesome5_rails gem

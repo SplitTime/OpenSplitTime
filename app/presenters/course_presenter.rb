@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CoursePresenter < BasePresenter
   attr_reader :course
   delegate :id, :name, :description, :ordered_splits, :organization, :simple?, to: :course

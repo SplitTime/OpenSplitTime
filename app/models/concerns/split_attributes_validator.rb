@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SplitAttributesValidator < ActiveModel::Validator
   def validate(split)
     @split = split

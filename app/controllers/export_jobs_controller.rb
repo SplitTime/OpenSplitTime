@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ExportJobsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_export_job, only: [:show, :destroy]

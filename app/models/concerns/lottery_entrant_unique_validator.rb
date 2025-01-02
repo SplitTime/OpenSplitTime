@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LotteryEntrantUniqueValidator < ActiveModel::Validator
   def validate(entrant)
     return unless entrant.division.present? && entrant.lottery.present?

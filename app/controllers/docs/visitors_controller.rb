@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Docs::VisitorsController < ApplicationController
   def contents
     render_using_presenter(Docs::ContentsPresenter)

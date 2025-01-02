@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::SyncCalculationsJob < ApplicationJob
   queue_as :default
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupSetupPresenter < BasePresenter
   CANDIDATE_SEPARATION_LIMIT = 7.days
 

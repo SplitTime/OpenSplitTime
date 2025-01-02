@@ -101,15 +101,21 @@ class LotteriesController < ApplicationController
         export_format = params[:export_format]&.to_sym
 
         case export_format
+        when :all_entrants
+          entrants = @lottery.entrants.includes(:division_ranking)
+          filename = "#{@lottery.name}-export-all-entrants-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/all_entrants", formats: :csv, locals: { records: entrants })
+
+          send_data(csv_stream, type: "text/csv", filename: filename)
+        when :in_divisions
+          filename = "#{@lottery.name}-export-in-divisions-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/in_divisions", formats: :csv, locals: { lottery: @lottery })
+
+          send_data(csv_stream, type: "text/csv", filename: filename)
         when :ultrasignup
           entrants = @lottery.divisions.flat_map(&:accepted_entrants)
           filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "ultrasignup", formats: :csv, locals: { records: entrants })
-
-          send_data(csv_stream, type: "text/csv", filename: filename)
-        when :results
-          filename = "#{@lottery.name}-results-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "results", formats: :csv, locals: { lottery: @lottery })
+          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup", formats: :csv, locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         else

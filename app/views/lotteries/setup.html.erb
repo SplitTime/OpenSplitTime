@@ -39,16 +39,10 @@
                         organization_lottery_lottery_simulation_runs_path(@presenter.organization, @presenter.lottery),
                         class: "dropdown-item " %>
             <div class="dropdown-divider"></div>
-            <%= link_to "Export results",
-                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :results),
-                        class: "dropdown-item" %>
-            <%= link_to "Export to ultrasignup",
-                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
-                        class: "dropdown-item" %>
-            <div class="dropdown-divider"></div>
             <%= link_to "Edit lottery details", edit_organization_lottery_path(@presenter.organization, @presenter.lottery), class: "dropdown-item" %>
           </div>
         </div>
+
         <div class="btn-group">
           <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
             Entrants
@@ -74,6 +68,23 @@
                                        class: "dropdown-item text-danger",
                                        message: "This action will permanently delete all entrants, tickets, and draws from the #{@presenter.name} lottery.",
                                        required_pattern: "DELETE ALL ENTRANTS" %>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="import-dropdown-button" data-bs-toggle="dropdown" aria-expanded="false">
+            Results
+          </button>
+          <div class="dropdown-menu">
+            <%= link_to "Export in divisions",
+                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :in_divisions),
+                        class: "dropdown-item" %>
+            <%= link_to "Export to ultrasignup",
+                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :ultrasignup),
+                        class: "dropdown-item" %>
+            <%= link_to "Export with non-drawn entrants",
+                        export_entrants_organization_lottery_path(@presenter.organization, @presenter.lottery, format: :csv, export_format: :all_entrants),
+                        class: "dropdown-item" %>
           </div>
         </div>
 

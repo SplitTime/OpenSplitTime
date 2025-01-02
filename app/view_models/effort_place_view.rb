@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortPlaceView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, :event_group, to: :event
 

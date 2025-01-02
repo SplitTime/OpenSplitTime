@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module BadgeHelper
   def badge_with_text(text, options = {})
     color = options[:color] || "primary"

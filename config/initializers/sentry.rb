@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # https://docs.sentry.io/clients/ruby/config/
 Sentry.init do |config|
   config.dsn = ::OstConfig.sentry_dsn

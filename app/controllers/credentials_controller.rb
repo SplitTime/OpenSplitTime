@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CredentialsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_action

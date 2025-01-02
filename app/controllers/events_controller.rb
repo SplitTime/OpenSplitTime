@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:show, :spread, :summary, :podium, :finish_history]
   before_action :set_event, except: [:new, :edit, :create, :update, :destroy, :reassign]

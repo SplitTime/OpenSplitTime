@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupRawTimesPresenter < BasePresenter
   attr_reader :event_group, :request
 

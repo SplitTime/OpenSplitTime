@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module NavigationHelper
   def link_to_refresh
     tooltip_title = "Refresh [Ctrl-R]"

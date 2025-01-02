@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This module provides ranking methods for presenters.
 # An implementing class must respond to overall_rank, gender_rank,
 # and the various status booleans (started?, in_progress?, dropped?)

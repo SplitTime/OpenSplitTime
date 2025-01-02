@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module FormatHelper
   def pretty_duration(seconds)
     return "--:--" unless seconds.present?

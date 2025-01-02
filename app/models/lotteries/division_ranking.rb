@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::DivisionRanking < ApplicationRecord
   self.primary_key = :lottery_entrant_id
   self.table_name = "lotteries_division_rankings"

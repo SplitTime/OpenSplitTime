@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AdminMailer < ApplicationMailer
   def job_report(job, report_text)
     @report_text = report_text

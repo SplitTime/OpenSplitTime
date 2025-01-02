@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SetTopicResourceKeyJob < ApplicationJob
   queue_as :default
 

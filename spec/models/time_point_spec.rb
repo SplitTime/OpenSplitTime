@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "support/bitkey_definitions"
 
 RSpec.describe TimePoint, type: :model do

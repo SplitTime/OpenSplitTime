@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :course do
     name { "#{FFaker::Product.product} #{rand(1000)}" }

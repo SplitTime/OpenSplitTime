@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::RattlesnakeRamble::Request::GetRaceEdition
   # @param [String] race_edition_id
   def initialize(race_edition_id:)

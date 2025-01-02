@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::CalculationsPresenter < LotteryPresenter
   CalculatedGroup = Struct.new(:name, :entrants_count, :tickets_count)
 

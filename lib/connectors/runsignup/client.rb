@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::Runsignup::Client
   BASE_URL = "https://runsignup.com/Rest"
   RUNSIGNUP_ERROR_MAPPING = {

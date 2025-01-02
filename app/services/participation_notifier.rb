@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ParticipationNotifier < BaseNotifier
   VERBS = {unstarted: "will be participating", in_progress: "is in progress", stopped: "recently participated"}.freeze
   RESULTS_DESCRIPTORS = {unstarted: "Watch for results", in_progress: "Follow along", stopped: "See full results"}.freeze

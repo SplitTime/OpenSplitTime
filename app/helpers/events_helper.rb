@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EventsHelper
   def link_to_event_delete(event)
     url = event_group_event_path(event.event_group, event)

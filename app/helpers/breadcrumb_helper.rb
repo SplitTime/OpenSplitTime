@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module BreadcrumbHelper
   def effort_view_breadcrumbs(presenter, title)
     content_tag(:ul, class: "breadcrumb breadcrumb-ost") do

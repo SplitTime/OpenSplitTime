@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RawTimePairer
   def self.pair(args)
     new(args).pair

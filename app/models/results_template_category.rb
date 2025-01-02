@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ResultsTemplateCategory < ApplicationRecord
   belongs_to :template, optional: false, class_name: "ResultsTemplate", foreign_key: :results_template_id
   belongs_to :category, optional: false, class_name: "ResultsCategory", foreign_key: :results_category_id

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LiveProgressDisplay < LiveEventFramework
   attr_reader :times_container, :past_due_threshold
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :temp do
   desc "Changes imported volunteer_multi records to volunteer_multi_reported"
   task historical_facts_fix_vmulti_duplicates: :environment do

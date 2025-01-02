@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SplitAnalyzerFactory
   def self.analyzer(split_analyzable)
     if grouped_splits?(split_analyzable)

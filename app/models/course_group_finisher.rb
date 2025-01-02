@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseGroupFinisher < ::ApplicationRecord
   include PersonalInfo
   include Searchable

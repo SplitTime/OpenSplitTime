@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LotteriesController < ApplicationController
   # Rails 7.0 is unable to generate a local URL for ActiveStorage using Disk service
   # unless ActiveStorage::Current.url_options is set

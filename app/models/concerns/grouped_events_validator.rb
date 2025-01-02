@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class GroupedEventsValidator < ActiveModel::Validator
   def validate(event_group)
     @event_group = event_group

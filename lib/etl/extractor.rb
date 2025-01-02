@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   class Extractor
     def initialize(source_data, extract_strategy_class, options = {})

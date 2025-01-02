@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Persist
   # This class uses update_all to optimize updates wherein the number of records is large and the
   # universe of values for updated columns is small. For example, this class performs

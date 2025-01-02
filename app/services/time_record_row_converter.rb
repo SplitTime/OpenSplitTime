@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class TimeRecordRowConverter
   def self.convert(args)
     new(args).convert

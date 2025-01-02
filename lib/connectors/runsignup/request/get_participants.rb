@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::Runsignup::Request::GetParticipants
   BATCH_SIZE = 200
 

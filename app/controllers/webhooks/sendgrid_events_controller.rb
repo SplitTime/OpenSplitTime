@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Webhooks::SendgridEventsController < ::ApplicationController
   skip_before_action :verify_authenticity_token, if: :valid_webhook_token?
 

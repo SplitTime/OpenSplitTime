@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::Runsignup::FetchEventParticipants
   BATCH_SIZE = 50
 

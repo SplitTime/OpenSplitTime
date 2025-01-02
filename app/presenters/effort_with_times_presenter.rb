@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortWithTimesPresenter < EffortWithLapSplitRows
   DEFAULT_DISPLAY_STYLE = "military_time"
   VALID_DISPLAY_STYLES = %w(military_time elapsed_time absolute_time_local).freeze

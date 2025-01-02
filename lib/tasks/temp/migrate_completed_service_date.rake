@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :temp do
   desc "Migrates lottery_entrants.service_completed_date to lotteries_entrant_service_detail.completed_date"
   task migrate_service_completed_date: :environment do

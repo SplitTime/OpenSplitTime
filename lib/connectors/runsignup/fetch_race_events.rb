@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::Runsignup::FetchRaceEvents
   # @param [String] race_id
   # @param [User] user

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortsTogetherInAid < ::ApplicationQuery
   attribute :effort_id, :integer
   attribute :lap, :integer

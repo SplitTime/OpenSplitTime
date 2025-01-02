@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Docs
   class BasePresenter < ::BasePresenter
     attr_reader :params, :current_user

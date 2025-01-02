@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::ServicesController < ApplicationController
   respond_to :turbo_stream
 

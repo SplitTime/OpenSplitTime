@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LapSplit
   include Comparable
   attr_accessor :lap, :split

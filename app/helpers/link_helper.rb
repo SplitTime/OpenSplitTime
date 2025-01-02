@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module LinkHelper
   def link_to_monitor_mode(event_group)
     return_path = if event_group.blank?

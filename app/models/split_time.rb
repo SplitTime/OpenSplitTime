@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SplitTime < ApplicationRecord
   enum data_status: [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true

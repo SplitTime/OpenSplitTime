@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # The raw_time_row must have an effort attached to it.
 # Each raw_time should already have a new_split_time attached to it,
 # for example, as a result of the EnrichRawTimeRow service.

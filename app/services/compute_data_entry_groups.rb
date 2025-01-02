@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ComputeDataEntryGroups
   def self.perform(event_group, options = {})
     new(event_group, options).perform

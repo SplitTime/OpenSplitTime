@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Transformers::Async
   class HistoricalFactsStrategy < Etl::Transformers::BaseTransformer
     def initialize(parsed_structs, options)

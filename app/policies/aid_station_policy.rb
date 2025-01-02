@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AidStationPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def post_initialize

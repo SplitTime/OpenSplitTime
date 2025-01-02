@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::SyncCalculations
   def self.perform!(lottery)
     new(lottery).perform!

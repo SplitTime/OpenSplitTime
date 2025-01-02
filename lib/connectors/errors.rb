@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Connectors::Errors
   class Base < RuntimeError; end
   class MissingCredentials < Base; end

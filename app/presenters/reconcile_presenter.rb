@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ReconcilePresenter < BasePresenter
   attr_reader :event_group, :view_context
   delegate :available_live?,

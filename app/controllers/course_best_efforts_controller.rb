@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseBestEffortsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :set_organization

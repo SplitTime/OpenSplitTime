@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module LotteryHelper
   def link_to_division_delete(division)
     url = organization_lottery_lottery_division_path(division.organization, division.lottery, division)

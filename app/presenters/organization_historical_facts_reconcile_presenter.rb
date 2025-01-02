@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
   # @param [Organization] organization
   # @param [ActionView::Base] view_context

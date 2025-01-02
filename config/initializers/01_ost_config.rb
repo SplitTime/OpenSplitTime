@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module OstConfig
   def self.admin_email
     ENV["ADMIN_EMAIL"] || "test@example.com"

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Interactors
   class ShiftEventStartTime
     include Interactors::Errors

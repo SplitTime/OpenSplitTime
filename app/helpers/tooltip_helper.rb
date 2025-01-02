@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module TooltipHelper
   def tooltip(text, placement: :top)
     options = { tabindex: -1,

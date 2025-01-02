@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortProjectionsView < EffortWithLapSplitRows
   delegate :simple?, :multiple_sub_splits?, to: :event
   delegate :effort_count, :effort_years, to: :projected_effort

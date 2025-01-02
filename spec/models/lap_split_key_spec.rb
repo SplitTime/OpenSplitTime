@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe LapSplitKey, type: :model do
   describe "initialization" do
     it "initializes with a lap and a split_id" do

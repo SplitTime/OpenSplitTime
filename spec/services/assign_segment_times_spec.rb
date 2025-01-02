@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe AssignSegmentTimes do
   describe ".perform" do
     subject { AssignSegmentTimes.perform(ordered_split_times, source_attribute) }

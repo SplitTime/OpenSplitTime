@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ProgressMonitorablesHelper
   def progress_monitorable_status_component(progress_monitorable)
     return unless progress_monitorable.status?

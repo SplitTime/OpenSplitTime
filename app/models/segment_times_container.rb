@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class SegmentTimesContainer
   VALID_CALC_MODELS = [:terrain, :stats, :focused].freeze
 

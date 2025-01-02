@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortAnalysisRow
   attr_reader :split_times, :typical_split_times
 

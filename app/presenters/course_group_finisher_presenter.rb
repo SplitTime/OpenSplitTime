@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseGroupFinisherPresenter < ::SimpleDelegator
   delegate :course_group, :full_name, to: :course_group_finisher
   delegate :person, :full_name, to: :course_group_finisher

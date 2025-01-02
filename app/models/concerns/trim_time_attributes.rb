@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Used for models with one or more datetime attributes
 # that need to be trimmed to integer seconds.
 

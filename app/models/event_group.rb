@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroup < ApplicationRecord
   enum data_entry_grouping_strategy: [:ungrouped, :location_grouped], _default: :location_grouped
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SplitsHelper
   def link_to_event_split_delete(event, split)
     if split.start? || split.finish?

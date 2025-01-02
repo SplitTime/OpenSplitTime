@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Used for models for which a topic may be generated on a pub-sub service
 # such as AWS SNS. A Subscribable model must implement #generate_new_topic_resource?
 # and must have a topic_resource_key attribute.

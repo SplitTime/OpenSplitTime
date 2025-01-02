@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module StrongConfirmHelper
   def link_to_strong_confirm(name, path_on_confirm, options)
     params = {

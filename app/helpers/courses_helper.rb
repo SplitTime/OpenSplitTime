@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CoursesHelper
   def link_to_event_setup_course(event)
     url = setup_course_event_group_event_path(event.event_group, event)

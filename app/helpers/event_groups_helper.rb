@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EventGroupsHelper
   def button_to_event_group_disable_live(view_object)
     button_to "Disable Live Entry",

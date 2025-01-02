@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventParameters < BaseParameters
   def self.permitted
     [

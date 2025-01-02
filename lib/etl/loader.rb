@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   class Loader
     def initialize(proto_records, load_strategy_class, options)

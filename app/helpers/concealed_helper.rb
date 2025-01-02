@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ConcealedHelper
   def name_with_concealed_indicator(name, concealed)
     icon_name = concealed ? "eye-slash" : "eye"

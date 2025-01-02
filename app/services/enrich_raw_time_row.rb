@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # event_group should be loaded with :events
 # raw_time_row may be a bare minimum raw_time without any attributes
 # This service mutates the given raw_time_row by adding laps, fixing problems with stopped_here,

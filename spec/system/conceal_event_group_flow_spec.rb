@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 # Skipped pending resolution of transactional fixtures issue. The changes to the database are rolled back

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class MyStuffPresenter < BasePresenter
   attr_reader :current_user
 

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Postgres returns an array_agg field as a comma-delimited String
 # surrounded by curly braces, like "{1,2,3}".
 #

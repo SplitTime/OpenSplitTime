@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EffortSplitData
   attr_reader :effort_slug, :lap_name, :split_name, :absolute_times_local
 

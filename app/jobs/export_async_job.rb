@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ExportAsyncJob < ApplicationJob
   # def perform(user_id, controller_name, resource_class_name, sql_string)
   def perform(export_job_id)

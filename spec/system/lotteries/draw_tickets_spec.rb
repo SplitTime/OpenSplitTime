@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe "draw tickets from the lottery draw_tickets page", js: true do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Connectors::Runsignup::Request::GetRace
   # @param [String] race_id
   def initialize(race_id:)

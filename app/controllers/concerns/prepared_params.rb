@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class PreparedParams
   SPECIAL_FILTER_FIELDS = %i[editable search].freeze
   BOOLEAN_FILTER_ATTRIBUTES = %i[ready_to_start].freeze

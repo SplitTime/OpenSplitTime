@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "../../app/queries/base_query"
 
 RSpec.describe BaseQuery do

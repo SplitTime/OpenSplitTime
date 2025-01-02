@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module SubscriptionsHelper
   def subscription_status_badge(subscription)
     if subscription.resource_key.blank?

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This class handles logic for redirects from the routes.rb file.
 # Requests calling this class should follow a pattern that looks like:
 # get "/courses(/*path)" => redirect(::NamespaceRedirector.new("courses"))

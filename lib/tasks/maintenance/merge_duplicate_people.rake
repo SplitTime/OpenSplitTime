@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Merges all duplicate people in the database"
   task merge_duplicate_people: :environment do

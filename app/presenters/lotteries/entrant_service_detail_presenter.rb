@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::EntrantServiceDetailPresenter < SimpleDelegator
   def next_entrant_for_review
     return @next_entrant_for_review if defined?(@next_entrant_for_review)

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Transformers::Async
   class UltrasignupHistoricalFactsStrategy < Etl::Transformers::BaseTransformer
     JUNK_VALUES = ["no", "n", "n/a", "na", "none"].freeze

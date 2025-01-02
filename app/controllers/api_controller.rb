@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApiController < ::ApplicationController
   include Rails::Pagination
   skip_forgery_protection

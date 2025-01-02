@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl::Transformers::Async
   class EffortsWithTimesStrategy < Etl::Transformers::BaseTransformer
     DEFAULT_START_KEY = "start"

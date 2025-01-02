@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DeleteTopicResourceKeyJob < ApplicationJob
   MockResource = Struct.new(:topic_resource_key, :slug, keyword_init: true)
 

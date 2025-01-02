@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module UsersHelper
   def link_to_delete_user(user)
     url = user_path(user, referrer_path: request.params)

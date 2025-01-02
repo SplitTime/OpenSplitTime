@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This Struct is a lightweight alternative to SplitTime when many objects are needed.
 # The time zone parsing methods in Rails are slow and create an unacceptable delay
 # when working with many objects, particularly in a full spread view.

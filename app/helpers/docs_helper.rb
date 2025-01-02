@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DocsHelper
   def build_sidebar_menu(presenter)
     items = presenter.items

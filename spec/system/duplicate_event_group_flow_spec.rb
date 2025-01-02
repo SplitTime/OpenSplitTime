@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "rails_helper"
 
 RSpec.describe "create a duplicate event group using the duplicate event group page", type: :system do

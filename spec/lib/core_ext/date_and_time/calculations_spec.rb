@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require_relative "../../../rails_helper"
 require "core_ext/date_and_time/calculations"
 

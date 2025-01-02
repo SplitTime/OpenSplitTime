@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class HistoricalFactAutoReconciler
   PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone].freeze
   RESULT_KINDS = ["dns", "dnf", "finished"].freeze

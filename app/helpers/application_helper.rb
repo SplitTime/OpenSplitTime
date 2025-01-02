@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "font_awesome6/rails/icon_helper"
 
 module ApplicationHelper

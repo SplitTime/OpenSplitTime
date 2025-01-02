@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Results
   class SetEffortPerformanceData
     def self.perform!(effort_id)

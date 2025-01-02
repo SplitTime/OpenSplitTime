@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module UserSettings
   class CredentialsPresenter
     def initialize(user)

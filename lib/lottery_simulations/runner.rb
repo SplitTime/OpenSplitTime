@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module LotterySimulations
   class Runner
     include ::Interactors::Errors

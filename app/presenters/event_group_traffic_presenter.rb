@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupTrafficPresenter < BasePresenter
   include TimeFormats
   include SplitAnalyzable

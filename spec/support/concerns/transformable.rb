@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.shared_examples_for "transformable" do
   subject { described_class.new(attributes) }
 

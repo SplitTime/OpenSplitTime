@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Etl
   module Errors
     def bad_url_error(url, error)

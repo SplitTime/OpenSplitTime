@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Cloudflare
   class TurnstileVerifier
     TURNSTILE_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"

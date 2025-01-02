@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
   before_action :set_event_group, except: [:index, :new, :create]

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class DuplicateEventGroup
   include ActiveModel::Model
   include ActiveModel::Attributes

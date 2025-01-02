@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Connectors::RattlesnakeRamble::Models
   RaceEntry = Struct.new(
     :bib_number,

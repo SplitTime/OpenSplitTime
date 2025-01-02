@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe ProgressNotifier do
   subject { ProgressNotifier.new(topic_arn: topic_arn, effort_data: effort_data, sns_client: sns_client) }
   let(:topic_arn) { "arn:aws:sns:us-west-2:998989370925:d-follow_joe-lastname-1" }

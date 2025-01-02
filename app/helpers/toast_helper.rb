@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ToastHelper
   def toast_icon_from_type(type)
     case type

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Docs
   class GettingStartedPresenter < Docs::BasePresenter
     def category

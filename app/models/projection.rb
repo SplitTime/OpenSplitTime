@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Projection < ::ApplicationQuery
   EVENT_LOOKBACK_COUNT = 5
   OVERALL_EFFORT_LIMIT = 100

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IntendedTimeCalculator
   def self.absolute_time_local(args)
     new(args).absolute_time_local

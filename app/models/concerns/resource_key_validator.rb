@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ResourceKeyValidator < ActiveModel::Validator
   def validate(subscription)
     @subscription = subscription

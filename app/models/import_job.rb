@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ImportJob < ApplicationRecord
   belongs_to :user
   belongs_to :parent, polymorphic: true

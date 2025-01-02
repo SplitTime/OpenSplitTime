@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class LotterySimulation < ApplicationRecord
   belongs_to :simulation_run, class_name: "LotterySimulationRun", foreign_key: "lottery_simulation_run_id"
 

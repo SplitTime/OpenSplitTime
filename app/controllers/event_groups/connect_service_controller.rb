@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module EventGroups
   class ConnectServiceController < ApplicationController
     before_action :authenticate_user!

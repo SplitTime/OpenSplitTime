@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CourseGroupFinisherParameters < BaseParameters
   def self.csv_export_attributes
     %w[

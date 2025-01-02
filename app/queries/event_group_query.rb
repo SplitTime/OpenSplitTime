@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class EventGroupQuery < BaseQuery
   def self.not_expected_bibs(event_group_id, split_name)
     parameterized_split_name = split_name.parameterize

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Deletes duplicate historical facts"
   task delete_duplicate_historical_facts: :environment do

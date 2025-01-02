@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lottery < ApplicationRecord
   extend FriendlyId
   include Delegable

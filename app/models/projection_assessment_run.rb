@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProjectionAssessmentRun < ApplicationRecord
   belongs_to :event
   has_many :assessments, class_name: "ProjectionAssessment", dependent: :destroy

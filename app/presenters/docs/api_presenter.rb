@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Docs
   class ApiPresenter < Docs::BasePresenter
     def category

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Lotteries::Calculations::Base < ApplicationRecord
   include PgSearch::Model
 

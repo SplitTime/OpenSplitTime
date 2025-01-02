@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ConnectServicePresenter < BasePresenter
   DEFAULT_CANDIDATE_SEPARATION_LIMIT = 7.days
   INTERNAL_SERVICES = [

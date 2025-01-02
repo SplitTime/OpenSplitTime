@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 TimePoint = Struct.new(:lap, :split_id, :bitkey) do
   include TimePointMethods
 

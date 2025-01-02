@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 namespace :maintenance do
   desc "Changes people emails to match historical facts emails for lottery applicants"
   task historical_facts_conform_applicant_emails: :environment do

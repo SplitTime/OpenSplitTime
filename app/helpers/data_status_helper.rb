@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module DataStatusHelper
   STATUS_INDICATOR_ATTRIBUTES = {
     bad: { icon: "circle-xmark", class: "text-danger" },

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProgressNotifier < BaseNotifier
   def post_initialize(args)
     @effort_data = args[:effort_data]

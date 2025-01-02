@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module CarmenHelper
   SORTED_COUNTRIES_FOR_SELECT = Geodata::SORTED_COUNTRIES.map { |country| [country.name, country.code] }.freeze
 

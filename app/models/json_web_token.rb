@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class JsonWebToken
   def self.encode(payload, duration: nil)
     duration ||= OstConfig.jwt_duration

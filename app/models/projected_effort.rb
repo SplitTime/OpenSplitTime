@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProjectedEffort
   def initialize(args)
     ArgsValidator.validate(params: args,

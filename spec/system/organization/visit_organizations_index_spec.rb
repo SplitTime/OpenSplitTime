@@ -25,6 +25,7 @@ RSpec.describe "Visit the organizations index" do
 
     verify_public_links_present
     verify_concealed_links_absent
+    verify_new_link_absent
   end
 
   scenario "The user is a non-admin user is neither owner nor steward of any concealed organization" do
@@ -33,6 +34,7 @@ RSpec.describe "Visit the organizations index" do
 
     verify_public_links_present
     verify_concealed_links_absent
+    verify_new_link_present_and_functional
   end
 
   scenario "The user is a non-admin user that created a concealed organization" do
@@ -42,6 +44,7 @@ RSpec.describe "Visit the organizations index" do
     verify_public_links_present
     verify_link_present(concealed_organization_1)
     verify_content_absent(concealed_organization_2)
+    verify_new_link_present_and_functional
   end
 
   scenario "The user is a non-admin user that is a steward of a concealed organization" do
@@ -51,6 +54,7 @@ RSpec.describe "Visit the organizations index" do
     verify_public_links_present
     verify_link_present(concealed_organization_2)
     verify_content_absent(concealed_organization_1)
+    verify_new_link_present_and_functional
   end
 
   scenario "The user is an admin user" do
@@ -59,6 +63,7 @@ RSpec.describe "Visit the organizations index" do
 
     verify_public_links_present
     concealed_organizations.each(&method(:verify_link_present))
+    verify_new_link_present_and_functional
   end
 
   def verify_public_links_present
@@ -68,5 +73,15 @@ RSpec.describe "Visit the organizations index" do
 
   def verify_concealed_links_absent
     concealed_organizations.each(&method(:verify_content_absent))
+  end
+
+  def verify_new_link_present_and_functional
+    expect(page).to have_link("Create a new organization")
+    click_link("Create a new organization")
+    expect(page).to have_current_path(new_organization_path)
+  end
+
+  def verify_new_link_absent
+    expect(page).not_to have_link("Create a new organization")
   end
 end

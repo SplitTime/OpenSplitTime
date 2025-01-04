@@ -33,8 +33,17 @@ module Etl
       event_entrants_with_elapsed_times: EFFORT_ATTRIBUTES,
       event_entrants_with_military_times: EFFORT_ATTRIBUTES,
       event_group_entrants: EFFORT_ATTRIBUTES,
+      historical_facts: [
+        *PERSON_ATTRIBUTES,
+        "Address",
+        "Kind",
+        "Quantity",
+        "Comments",
+        "Year",
+        "External ID",
+      ],
       lottery_entrants: PERSON_ATTRIBUTES,
-    }.freeze
+    }.with_indifferent_access.freeze
 
     def self.headers(format, parent)
       new(format, parent).headers

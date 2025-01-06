@@ -115,7 +115,8 @@ module Etl::Transformers::Async
       if count.present?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :lottery_ticket_count_legacy
-        proto_record[:year] = 2024
+        proto_record[:quantity] = count
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end

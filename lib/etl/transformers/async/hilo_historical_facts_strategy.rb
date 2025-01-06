@@ -55,7 +55,7 @@ module Etl::Transformers::Async
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :lottery_application
         proto_record[:year] = 2025
-        proto_record[:comments] = struct[:Reg_Number]
+        proto_record[:external_id] = struct[:Reg_Number]
 
         proto_records << proto_record
       end

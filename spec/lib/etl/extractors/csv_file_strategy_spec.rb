@@ -98,10 +98,7 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
         expect(raw_data.size).to eq(5)
         expect(raw_data).to all be_a(OpenStruct)
 
-        record = raw_data.fifth.to_h
-
-        puts record
-
+        record = raw_data.first.to_h
         expect(record.keys).to match_array(expected_array)
         expect(record[:Reg_Number]).to eq(1234)
       end

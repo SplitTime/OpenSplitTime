@@ -262,7 +262,7 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
           proto_record.attributes[:kind] == :lottery_application && proto_record.attributes[:year] == 2025
         end
         expect(current_year_application_proto_records.count).to eq(3)
-        expect(current_year_application_proto_records.map { |pr| pr[:comments]}).to eq([1234, 2345, 3456])
+        expect(current_year_application_proto_records.map { |pr| pr[:external_id]}).to eq([1234, 2345, 3456])
       end
 
       it "returns one proto_record for each prior year application" do

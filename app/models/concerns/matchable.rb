@@ -18,34 +18,34 @@ module Matchable
   end
 
   # @return [Person, nil]
-  def definitive_matching_person
-    return unless birthdate.present? || email.present? || phone.present?
+  def definitive_matching_person_by_email
+    return unless email.present?
 
-    potential_matches = Person.last_name_matches_exact(last_name).gender_matches(gender)
-    potential_matches = potential_matches.where.not(id: id) if self.is_a?(Person)
+    definitive_matches = potential_matches.first_name_matches(first_name).email_matches(email)
+    definitive_matches.one? ? definitive_matches.first : nil
+  end
 
-    definitive_matches = potential_matches
-      .first_name_matches_exact(first_name).where.not(birthdate: nil).where(birthdate: birthdate)
-      .or(potential_matches.where.not(email: nil).email_matches(email))
-      .or(potential_matches.where.not(phone: nil).phone_matches(phone))
-      .distinct
+  # @return [Person, nil]
+  def definitive_matching_person_by_phone
+    return unless phone.present?
+
+    definitive_matches = potential_matches.first_name_matches(first_name).phone_matches(phone)
+    definitive_matches.one? ? definitive_matches.first : nil
+  end
+
+  # @return [Person, nil]
+  def definitive_matching_person_by_birthdate
+    return unless birthdate.present?
+
+    definitive_matches = potential_matches.first_name_matches(first_name).where(birthdate: birthdate)
     definitive_matches.one? ? definitive_matches.first : nil
   end
 
   # @return [Person, nil]
   def exact_matching_person # Suitable for automated matcher
-    potential_matches = Person.last_name_matches_exact(last_name)
-      .first_name_matches_exact(first_name)
-      .gender_matches(gender)
-    potential_matches = potential_matches.where.not(id: id) if self.is_a?(Person)
-
-    name_gender_age_match = potential_matches.age_matches(current_age)
-    exact_match = if name_gender_age_match.present?
-      name_gender_age_match
-    else
-      potential_matches.state_matches(state_code)
-    end
-    exact_match.one? ? exact_match.first : nil # Convert single match to object; return nil if more than one match
+    name_gender_age_match = potential_matches.first_name_matches_exact(first_name).age_matches(current_age)
+    exact_matches = name_gender_age_match.present? ? name_gender_age_match : potential_matches.state_matches(state_code)
+    exact_matches.one? ? exact_matches.first : nil # Return nil if more than one match
   end
 
   # @return [Person, nil]
@@ -73,5 +73,13 @@ module Matchable
 
   def people_with_same_name
     Person.last_name_matches(last_name).first_name_matches(first_name)
+  end
+
+  private
+
+  def potential_matches
+    result = Person.last_name_matches_exact(last_name).gender_matches(gender)
+    result = result.where.not(id: id) if self.is_a?(Person)
+    result
   end
 end

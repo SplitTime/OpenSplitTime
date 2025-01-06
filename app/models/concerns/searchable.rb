@@ -10,8 +10,8 @@ module Searchable
     scope :gender_matches, -> (param) { where("#{table_name}.gender = ?", gender_int(param)) }
     scope :country_matches, -> (param) { where(arel_table["country_code"].matches(country_code_for(param).to_s)) }
     scope :state_matches, -> (param) { where(arel_table["state_code"].matches(state_code_for(param).to_s)) }
-    scope :email_matches, -> (param) { where(arel_table["email"].matches("%#{param}%")) }
-    scope :email_matches_or_nil, -> (param) { where(arel_table["email"].matches("%#{param}%")).or(where(email: nil)) }
+    scope :email_matches, -> (param) { where(arel_table["email"].matches(param)) }
+    scope :email_matches_or_nil, -> (param) { where(arel_table["email"].matches(param)).or(where(email: nil)) }
     scope :phone_matches, -> (param) { where(arel_table["phone"].matches("%#{param}%")) }
     scope :phone_matches_or_nil, -> (param) { where(arel_table["phone"].matches("%#{param}%")).or(where(phone: nil)) }
     scope :first_name_matches, -> (param) { where(arel_table["first_name"].matches("%#{param}%")) }

@@ -19,7 +19,9 @@ class HistoricalFactAutoReconciler
       matching_person_id ||= person_id_from_related_facts(fact)
 
       matching_person = person_from_id(matching_person_id) ||
-        fact.definitive_matching_person ||
+        fact.definitive_matching_person_by_email ||
+        fact.definitive_matching_person_by_phone ||
+        fact.definitive_matching_person_by_birthdate ||
         fact.exact_matching_person
 
       person = if matching_person.present?
@@ -63,7 +65,7 @@ class HistoricalFactAutoReconciler
   def person_id_from_effort(fact)
     return unless fact.kind.in?(RESULT_KINDS)
 
-    key = [fact.first_name, fact.last_name, fact.comments.to_i]
+    key = [fact.first_name, fact.last_name, fact.year]
     effort = indexed_effort_structs[key]
 
     if effort.present?

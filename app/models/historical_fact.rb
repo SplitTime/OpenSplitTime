@@ -1,20 +1,24 @@
 class HistoricalFact < ApplicationRecord
   enum kind: {
     dns: 0,
-    volunteer_year: 1,
-    volunteer_year_major: 2,
-    volunteer_multi: 3,
-    qualifier_finish: 4,
-    emergency_contact: 5,
-    previous_name: 6,
-    lottery_ticket_count_legacy: 7,
-    lottery_division_legacy: 8,
     dnf: 9,
     finished: 10,
     lottery_application: 11,
+    volunteer_year: 1,
+    volunteer_year_major: 2,
+    volunteer_multi: 3,
+    volunteer_multi_reported: 14,
+    volunteer_hours: 17,
+    trail_work_hours: 18,
+    qualifier_finish: 4,
+    emergency_contact: 5,
+    previous_email: 15,
+    previous_name: 6,
     ever_finished: 12,
     dns_since_finish: 13,
-    volunteer_multi_reported: 14,
+    lottery_ticket_count_legacy: 7,
+    lottery_division_legacy: 8,
+    ticket_reset_legacy: 16,
   }
 
   include Auditable
@@ -33,6 +37,12 @@ class HistoricalFact < ApplicationRecord
   belongs_to :person, optional: true
 
   attr_writer :creator
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :gender, presence: true
+  validates :kind, presence: true
+
 
   before_save :fill_personal_info_hash
 

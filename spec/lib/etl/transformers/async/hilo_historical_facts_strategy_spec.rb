@@ -286,11 +286,12 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
           proto_record.attributes[:kind] == :lottery_ticket_count_legacy
         end
         expect(reset_proto_records.count).to eq(5)
-        expect(reset_proto_records.map { |pr| pr[:year] }).to all eq(2024)
+        expect(reset_proto_records.map { |pr| pr[:year] }).to all eq(2025)
+        expect(reset_proto_records.map { |pr| pr[:quantity] }).to eq([1,2,2,0,2])
       end
 
       it "returns one proto_record for each entrant having volunteer points" do
-        volunteer_hour_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_hours }
+        volunteer_hour_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :volunteer_points }
         expect(volunteer_hour_proto_records.count).to eq(1)
         proto_record = volunteer_hour_proto_records.first
         expect(proto_record[:quantity]).to eq(10)

@@ -27,7 +27,7 @@ module Etl::Transformers::Async
         record_prior_year_applications(struct)
         record_prior_year_resets(struct)
         record_legacy_ticket_count(struct)
-        record_volunteer_hours(struct)
+        record_volunteer_points(struct)
         record_trail_work_hours(struct)
       rescue StandardError => e
         import_job.increment!(:failed_count)
@@ -115,19 +115,21 @@ module Etl::Transformers::Async
       if count.present?
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :lottery_ticket_count_legacy
-        proto_record[:year] = 2024
+        proto_record[:quantity] = count
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end
     end
 
-    def record_volunteer_hours(struct)
+    def record_volunteer_points(struct)
       hours = struct[:Vol_Points]
 
       if hours.present? && hours.positive?
         proto_record = base_proto_record.deep_dup
-        proto_record[:kind] = :volunteer_hours
+        proto_record[:kind] = :volunteer_points
         proto_record[:quantity] = hours
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end
@@ -140,6 +142,7 @@ module Etl::Transformers::Async
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :trail_work_hours
         proto_record[:quantity] = hours
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end

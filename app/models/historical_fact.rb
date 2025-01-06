@@ -8,7 +8,7 @@ class HistoricalFact < ApplicationRecord
     volunteer_year_major: 2,
     volunteer_multi: 3,
     volunteer_multi_reported: 14,
-    volunteer_hours: 17,
+    volunteer_points: 17,
     trail_work_hours: 18,
     qualifier_finish: 4,
     emergency_contact: 5,

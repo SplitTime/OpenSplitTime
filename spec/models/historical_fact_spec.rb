@@ -16,6 +16,13 @@ RSpec.describe HistoricalFact, type: :model do
   it { is_expected.to strip_attribute(:country_code).collapse_spaces }
   it { is_expected.to strip_attribute(:comments).collapse_spaces }
 
+  it "ensures enum values are unique" do
+    values = described_class.kinds.values
+    duplicates = values.select { |value| values.count(value) > 1 }.uniq
+
+    expect(duplicates).to be_empty, "Duplicate values found in `kind` enum: #{duplicates}"
+  end
+
   describe "callbacks" do
     subject { build(:historical_fact) }
 

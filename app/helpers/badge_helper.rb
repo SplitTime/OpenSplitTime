@@ -57,6 +57,14 @@ module BadgeHelper
       title = "VMulti"
       color = :success
       tooltip_text = "Multiple years of volunteer work (as of the year shown)"
+    when "volunteer_hours"
+      title = "VHours"
+      color = :success
+      tooltip_text = "Hours of volunteer work (in the year shown)"
+    when "trail_work_hours"
+      title = "TWHours"
+      color = :success
+      tooltip_text = "Hours of trail work (in the year shown)"
     when "qualifier_finish"
       title = "Qualifier"
       color = :secondary
@@ -69,6 +77,10 @@ module BadgeHelper
       title = "PrevName"
       color = :secondary
       tooltip_text = "Provided previous name"
+    when "previous_email"
+      title = "PrevEmail"
+      color = :secondary
+      tooltip_text = "Provided previous email"
     when "lottery_ticket_count_legacy"
       title = "Tickets"
       color = :dark
@@ -77,6 +89,10 @@ module BadgeHelper
       title = "Division"
       color = :dark
       tooltip_text = "Legacy division determination"
+    when "ticket_reset_legacy"
+      title = "Reset"
+      color = :dark
+      tooltip_text = "Legacy ticket reset determination"
     when "lottery_application"
       title = "LottApp"
       color = :danger

@@ -56,6 +56,10 @@ module Etl
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::HardrockHistoricalFactsStrategy
         self.load_strategy = Loaders::Async::InsertStrategy
+      when :hilo_historical_facts
+        self.extract_strategy = Extractors::CsvFileStrategy
+        self.transform_strategy = Transformers::Async::HiloHistoricalFactsStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
       when :ultrasignup_historical_facts
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::UltrasignupHistoricalFactsStrategy

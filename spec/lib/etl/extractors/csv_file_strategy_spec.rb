@@ -79,6 +79,31 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
       end
     end
 
+    context "when a hilo historical facts file is provided" do
+      let(:file) { file_fixture("hilo_historical_facts.csv") }
+      let(:expected_array) do
+        [
+          :Master_ID, :First_Name, :Last_Name, :Full_name, :Email, :Gender, :Birthdate, :Address, :City, :State, :Country,
+          :Result_2017, :Result_2018, :Result_2019, :Result_2021, :Result_2022, :Result_2023, :Result_2024,
+          :Total_DNF, :Total_Finishes,
+          :App_2020, :App_2021, :App_2022, :App_2023, :App_2024,
+          :Reset_2020, :Reset_2021, :Reset_2022, :Reset_2023, :Reset_2024,
+          :Count_2020, :Count_2021, :Count_2022, :Count_2023, :Count_2024, :Total_Count,
+          :"2025_App?", :Reg_Number, :TW_Boost, :Vol_Points
+        ]
+      end
+
+      it "returns raw data in OpenStruct format with expected keys" do
+        expect(subject.errors).to be_empty
+        expect(raw_data.size).to eq(5)
+        expect(raw_data).to all be_a(OpenStruct)
+
+        record = raw_data.first.to_h
+        expect(record.keys).to match_array(expected_array)
+        expect(record[:Reg_Number]).to eq(1234)
+      end
+    end
+
     context "when an ultrasignup historical facts file is provided" do
       let(:file) { file_fixture("ultrasignup_historical_facts.csv") }
       let(:expected_array) do

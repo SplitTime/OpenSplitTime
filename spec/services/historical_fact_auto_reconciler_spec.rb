@@ -10,8 +10,8 @@ RSpec.describe HistoricalFactAutoReconciler do
 
   describe "#reconcile" do
     context "for historical facts that match with a result in an organization effort" do
-      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: effort_1.first_name, last_name: effort_1.last_name, gender: effort_1.gender, kind: :dnf, comments: "2016") }
-      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: effort_2.first_name, last_name: effort_2.last_name, gender: effort_2.gender, kind: :finished, comments: "2016") }
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: effort_1.first_name, last_name: effort_1.last_name, gender: effort_1.gender, kind: :dnf, year: 2016) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: effort_2.first_name, last_name: effort_2.last_name, gender: effort_2.gender, kind: :finished, year: 2016) }
 
       it "assigns the fact to the person_id in the effort" do
         subject.reconcile

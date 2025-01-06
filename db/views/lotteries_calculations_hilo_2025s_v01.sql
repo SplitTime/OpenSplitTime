@@ -12,6 +12,7 @@ with applicants as (
                    select organization_id, person_id, max(year) as year
                    from historical_facts
                    where kind = 16
+                     and person_id is not null
                    group by organization_id, person_id
                    ),
 
@@ -22,6 +23,7 @@ with applicants as (
                    where historical_facts.kind = 11
                      and historical_facts.year < 2025
                      and historical_facts.year > coalesce(last_reset_year.year, 0)
+                     and person_id is not null
                    group by historical_facts.organization_id, historical_facts.person_id
                    ),
 
@@ -41,7 +43,7 @@ with applicants as (
                    ),
 
      volunteer_hour_count as (
-                   select historical_facts.organization_id, historical_facts.person_id, sum(historical_facts.quantity) as volunteer_hour_count
+                   select historical_facts.organization_id, historical_facts.person_id, least(sum(historical_facts.quantity), 30) as volunteer_hour_count
                    from historical_facts
                    where kind = 17
                      and year <= 2025
@@ -49,7 +51,7 @@ with applicants as (
                    ),
 
      trail_work_hour_count as (
-                   select historical_facts.organization_id, historical_facts.person_id, sum(historical_facts.quantity) as trail_work_hour_count
+                   select historical_facts.organization_id, historical_facts.person_id, least(sum(historical_facts.quantity), 80) as trail_work_hour_count
                    from historical_facts
                    where kind = 18
                      and year <= 2025
@@ -61,7 +63,7 @@ with applicants as (
                           applicants.person_id,
                           applicants.external_id,
                           applicants.gender,
-                          coalesce(applications_since_last_reset_count, 0)::int  as application_count,
+                          coalesce(applications_since_last_reset_count, 0)::int          as application_count,
                           case
                               when finish_year_count is null then 0
                               when finish_year_count = 0 then 0
@@ -69,9 +71,9 @@ with applicants as (
                               when finish_year_count = 2 then 1
                               when finish_year_count = 3 then 1.5
                               else 0.5
-                              end                                                as weighted_finish_count,
-                          (min(coalesce(volunteer_hour_count, 0) / 8), 4)::int   as volunteer_shifts,
-                          (min(coalesce(trail_work_hour_count, 0) / 8), 10)::int as trail_work_shifts
+                              end                                                        as weighted_finish_count,
+                          (coalesce(volunteer_hour_count.volunteer_hour_count, 0) / 8)   as volunteer_shifts,
+                          (coalesce(trail_work_hour_count.trail_work_hour_count, 0) / 8) as trail_work_shifts
                    from applicants
                             natural left join applications_since_last_reset_count
                             natural left join finish_year_count
@@ -92,5 +94,9 @@ select row_number() over () as id,
        weighted_finish_count,
        volunteer_shifts,
        trail_work_shifts,
-       (pow(2, application_count + weighted_finish_count) + (2 * ln(volunteer_shifts + trail_work_shifts)))::int as ticket_count
-from all_counts;
+       (
+           pow(2, application_count + weighted_finish_count + 1)
+               + (2 * ln(volunteer_shifts + trail_work_shifts + 1))
+           )::int           as ticket_count
+from all_counts
+order by ticket_count desc;

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_31_053645) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -1082,5 +1082,92 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_31_053645) do
           END AS division,
       1 AS ticket_count
      FROM applicants;
+  SQL
+  create_view "lotteries_calculations_hilo_2025s", sql_definition: <<-SQL
+      WITH applicants AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              historical_facts.external_id,
+              historical_facts.gender
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2025))
+          ), last_reset_year AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              max(historical_facts.year) AS year
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 16) AND (historical_facts.person_id IS NOT NULL))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), applications_since_last_reset_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS applications_since_last_reset_count
+             FROM (historical_facts
+               LEFT JOIN last_reset_year USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year < 2025) AND (historical_facts.year > COALESCE(last_reset_year.year, 0)) AND (historical_facts.person_id IS NOT NULL))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), finish_year_count AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              count(*) AS finish_year_count
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.finished AND (events.course_id IN ( SELECT courses.id
+                     FROM courses
+                    WHERE ((courses.name)::text ~~* 'high lonesome 100'::text))) AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), volunteer_hour_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              LEAST(sum(historical_facts.quantity), (30)::bigint) AS volunteer_hour_count
+             FROM historical_facts
+            WHERE (historical_facts.kind = 17)
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), trail_work_hour_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              LEAST(sum(historical_facts.quantity), (80)::bigint) AS trail_work_hour_count
+             FROM historical_facts
+            WHERE (historical_facts.kind = 18)
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), all_counts AS (
+           SELECT applicants.organization_id,
+              applicants.person_id,
+              applicants.external_id,
+              applicants.gender,
+              (COALESCE(applications_since_last_reset_count.applications_since_last_reset_count, (0)::bigint))::integer AS application_count,
+                  CASE
+                      WHEN (finish_year_count.finish_year_count IS NULL) THEN (0)::numeric
+                      WHEN (finish_year_count.finish_year_count = 0) THEN (0)::numeric
+                      WHEN (finish_year_count.finish_year_count = 1) THEN 0.5
+                      WHEN (finish_year_count.finish_year_count = 2) THEN (1)::numeric
+                      WHEN (finish_year_count.finish_year_count = 3) THEN 1.5
+                      ELSE 0.5
+                  END AS weighted_finish_count,
+              (COALESCE(volunteer_hour_count.volunteer_hour_count, (0)::bigint) / 8) AS volunteer_shifts,
+              (COALESCE(trail_work_hour_count.trail_work_hour_count, (0)::bigint) / 8) AS trail_work_shifts
+             FROM ((((applicants
+               LEFT JOIN applications_since_last_reset_count USING (organization_id, person_id))
+               LEFT JOIN finish_year_count USING (organization_id, person_id))
+               LEFT JOIN volunteer_hour_count USING (organization_id, person_id))
+               LEFT JOIN trail_work_hour_count USING (organization_id, person_id))
+          )
+   SELECT row_number() OVER () AS id,
+      organization_id,
+      person_id,
+      external_id,
+      gender,
+          CASE
+              WHEN (gender = 0) THEN 'Male'::text
+              ELSE 'Female'::text
+          END AS division,
+      application_count,
+      weighted_finish_count,
+      volunteer_shifts,
+      trail_work_shifts,
+      (((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_shifts + trail_work_shifts) + 1))::double precision))))::integer AS ticket_count
+     FROM all_counts
+    ORDER BY ((((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_shifts + trail_work_shifts) + 1))::double precision))))::integer) DESC;
   SQL
 end

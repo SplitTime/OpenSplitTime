@@ -1117,19 +1117,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
                      FROM courses
                     WHERE ((courses.name)::text ~~* 'high lonesome 100'::text))) AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
             GROUP BY event_groups.organization_id, efforts.person_id
-          ), volunteer_hour_count AS (
+          ), volunteer_point_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
-              LEAST(sum(historical_facts.quantity), (30)::bigint) AS volunteer_hour_count
+              LEAST(sum(historical_facts.quantity), (30)::bigint) AS volunteer_point_count
              FROM historical_facts
-            WHERE (historical_facts.kind = 17)
+            WHERE ((historical_facts.kind = 17) AND (historical_facts.year <= 2025))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), trail_work_hour_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
               LEAST(sum(historical_facts.quantity), (80)::bigint) AS trail_work_hour_count
              FROM historical_facts
-            WHERE (historical_facts.kind = 18)
+            WHERE ((historical_facts.kind = 18) AND (historical_facts.year <= 2025))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), all_counts AS (
            SELECT applicants.organization_id,
@@ -1145,12 +1145,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
                       WHEN (finish_year_count.finish_year_count = 3) THEN 1.5
                       ELSE 0.5
                   END AS weighted_finish_count,
-              (COALESCE(volunteer_hour_count.volunteer_hour_count, (0)::bigint) / 8) AS volunteer_shifts,
+              COALESCE(volunteer_point_count.volunteer_point_count, (0)::bigint) AS volunteer_points,
               (COALESCE(trail_work_hour_count.trail_work_hour_count, (0)::bigint) / 8) AS trail_work_shifts
              FROM ((((applicants
                LEFT JOIN applications_since_last_reset_count USING (organization_id, person_id))
                LEFT JOIN finish_year_count USING (organization_id, person_id))
-               LEFT JOIN volunteer_hour_count USING (organization_id, person_id))
+               LEFT JOIN volunteer_point_count USING (organization_id, person_id))
                LEFT JOIN trail_work_hour_count USING (organization_id, person_id))
           )
    SELECT row_number() OVER () AS id,
@@ -1164,10 +1164,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
           END AS division,
       application_count,
       weighted_finish_count,
-      volunteer_shifts,
+      volunteer_points,
       trail_work_shifts,
-      (((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_shifts + trail_work_shifts) + 1))::double precision))))::integer AS ticket_count
+      (((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_points + trail_work_shifts) + 1))::double precision))))::integer AS ticket_count
      FROM all_counts
-    ORDER BY ((((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_shifts + trail_work_shifts) + 1))::double precision))))::integer) DESC;
+    ORDER BY ((((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_points + trail_work_shifts) + 1))::double precision))))::integer) DESC;
   SQL
 end

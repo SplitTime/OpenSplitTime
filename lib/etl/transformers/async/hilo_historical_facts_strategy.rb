@@ -128,6 +128,7 @@ module Etl::Transformers::Async
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :volunteer_hours
         proto_record[:quantity] = hours
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end
@@ -140,6 +141,7 @@ module Etl::Transformers::Async
         proto_record = base_proto_record.deep_dup
         proto_record[:kind] = :trail_work_hours
         proto_record[:quantity] = hours
+        proto_record[:year] = 2025
 
         proto_records << proto_record
       end

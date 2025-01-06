@@ -42,8 +42,8 @@ with applicants as (
                    group by organization_id, person_id
                    ),
 
-     volunteer_hour_count as (
-                   select historical_facts.organization_id, historical_facts.person_id, least(sum(historical_facts.quantity), 30) as volunteer_hour_count
+     volunteer_point_count as (
+                   select historical_facts.organization_id, historical_facts.person_id, least(sum(historical_facts.quantity), 30) as volunteer_point_count
                    from historical_facts
                    where kind = 17
                      and year <= 2025
@@ -72,12 +72,12 @@ with applicants as (
                               when finish_year_count = 3 then 1.5
                               else 0.5
                               end                                                        as weighted_finish_count,
-                          (coalesce(volunteer_hour_count.volunteer_hour_count, 0) / 8)   as volunteer_shifts,
-                          (coalesce(trail_work_hour_count.trail_work_hour_count, 0) / 8) as trail_work_shifts
+                          coalesce(volunteer_point_count, 0)   as volunteer_points,
+                          (coalesce(trail_work_hour_count, 0) / 8) as trail_work_shifts
                    from applicants
                             natural left join applications_since_last_reset_count
                             natural left join finish_year_count
-                            natural left join volunteer_hour_count
+                            natural left join volunteer_point_count
                             natural left join trail_work_hour_count
                    )
 
@@ -92,11 +92,11 @@ select row_number() over () as id,
            end              as division,
        application_count,
        weighted_finish_count,
-       volunteer_shifts,
+       volunteer_points,
        trail_work_shifts,
        (
            pow(2, application_count + weighted_finish_count + 1)
-               + (2 * ln(volunteer_shifts + trail_work_shifts + 1))
+               + (2 * ln(volunteer_points + trail_work_shifts + 1))
            )::int           as ticket_count
 from all_counts
 order by ticket_count desc;

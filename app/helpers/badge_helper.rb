@@ -57,7 +57,7 @@ module BadgeHelper
       title = "VMulti"
       color = :success
       tooltip_text = "Multiple years of volunteer work (as of the year shown)"
-    when "volunteer_hours"
+    when "volunteer_points"
       title = "VHours"
       color = :success
       tooltip_text = "Hours of volunteer work (in the year shown)"

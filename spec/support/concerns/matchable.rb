@@ -72,7 +72,7 @@ RSpec.shared_examples_for "matchable" do
     end
   end
 
-  describe "#definitive_matching_person" do
+  describe "#definitive_matching_person_by_birthdate" do
     it "returns a record for which first and last names and gender and birthdate match" do
       subject_attributes =
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", email: "jane@jetson.com", phone: "3035551212" }
@@ -85,9 +85,21 @@ RSpec.shared_examples_for "matchable" do
         { first_name: "Jane", last_name: "Jetson", gender: "male", birthdate: "1967-07-01" },
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1999-07-01" },
       ]
-      verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
+      verify_definitive_matching_person_by_birthdate(subject_attributes, matching_attributes, differing_attributes)
     end
 
+    it "returns nil if more than one record is turned up" do
+      subject_attributes = { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01" }
+      matching_attributes = nil
+      differing_attributes = [
+        { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", state_code: "NM" },
+        { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", state_code: "CO" },
+      ]
+      verify_definitive_matching_person_by_birthdate(subject_attributes, matching_attributes, differing_attributes)
+    end
+  end
+
+  describe "#definitive_matching_person_by_email" do
     it "returns a record for which last name and gender and email match" do
       subject_attributes =
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", email: "jane@jetson.com", phone: "3035551212" }
@@ -99,9 +111,11 @@ RSpec.shared_examples_for "matchable" do
         { first_name: "Jane", last_name: "Jetson", gender: "male", email: "jane@jetson.com" },
         { first_name: "Jane", last_name: "Jetson", gender: "female", email: "jane@gmail.com" },
       ]
-      verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
+      verify_definitive_matching_person_by_email(subject_attributes, matching_attributes, differing_attributes)
     end
+  end
 
+  describe "#definitive_matching_person_by_phone" do
     it "returns a record for which last name and gender and phone match" do
       subject_attributes =
         { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", email: "jane@jetson.com", phone: "3035551212" }
@@ -113,27 +127,35 @@ RSpec.shared_examples_for "matchable" do
         { first_name: "Jane", last_name: "Jetson", gender: "male", phone: "3035551212" },
         { first_name: "Jane", last_name: "Jetson", gender: "female", phone: "8887776666" },
       ]
-      verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
+      verify_definitive_matching_person_by_phone(subject_attributes, matching_attributes, differing_attributes)
     end
+  end
 
-    it "returns nil if more than one record is turned up" do
-      subject_attributes = { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01" }
-      matching_attributes = nil
-      differing_attributes = [
-        { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", state_code: "NM" },
-        { first_name: "Jane", last_name: "Jetson", gender: "female", birthdate: "1967-07-01", state_code: "CO" },
-      ]
-      verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
-    end
+  def verify_definitive_matching_person_by_birthdate(subject_attributes, matching_attributes, differing_attributes)
+    subject = described_class.new(subject_attributes)
+    matching_person = matching_attributes ? create(:person, matching_attributes) : nil
+    differing_people = differing_attributes.map { |attribute_set| create(:person, attribute_set) }
+    person = subject.definitive_matching_person_by_birthdate
+    expect(person).to eq(matching_person)
+    differing_people.each { |differing_person| expect(person).not_to eq(differing_person) }
+  end
 
-    def verify_definitive_matching_person(subject_attributes, matching_attributes, differing_attributes)
-      subject = described_class.new(subject_attributes)
-      matching_person = matching_attributes ? create(:person, matching_attributes) : nil
-      differing_people = differing_attributes.map { |attribute_set| create(:person, attribute_set) }
-      person = subject.definitive_matching_person
-      expect(person).to eq(matching_person)
-      differing_people.each { |differing_person| expect(person).not_to eq(differing_person) }
-    end
+  def verify_definitive_matching_person_by_email(subject_attributes, matching_attributes, differing_attributes)
+    subject = described_class.new(subject_attributes)
+    matching_person = matching_attributes ? create(:person, matching_attributes) : nil
+    differing_people = differing_attributes.map { |attribute_set| create(:person, attribute_set) }
+    person = subject.definitive_matching_person_by_email
+    expect(person).to eq(matching_person)
+    differing_people.each { |differing_person| expect(person).not_to eq(differing_person) }
+  end
+
+  def verify_definitive_matching_person_by_phone(subject_attributes, matching_attributes, differing_attributes)
+    subject = described_class.new(subject_attributes)
+    matching_person = matching_attributes ? create(:person, matching_attributes) : nil
+    differing_people = differing_attributes.map { |attribute_set| create(:person, attribute_set) }
+    person = subject.definitive_matching_person_by_phone
+    expect(person).to eq(matching_person)
+    differing_people.each { |differing_person| expect(person).not_to eq(differing_person) }
   end
 
   describe "#exact_matching_person" do

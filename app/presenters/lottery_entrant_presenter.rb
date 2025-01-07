@@ -6,6 +6,10 @@ class LotteryEntrantPresenter < SimpleDelegator
     :volunteer_year,
     :volunteer_year_major,
     :volunteer_multi,
+    :lottery_application,
+    :volunteer_points,
+    :trail_work_hours,
+    :ticket_reset_legacy,
   ].freeze
 
   # @return [Object, nil]
@@ -24,6 +28,18 @@ class LotteryEntrantPresenter < SimpleDelegator
     division.name.include?("Finishers")
   end
 
+  # @return [Boolean]
+  def ticket_calculation_partial_renderable?
+    calculation.present? && calculation_table_present?
+  end
+
+  # @return [String, nil]
+  def ticket_calculation_partial_name
+    return if lottery.calculation_class.nil?
+
+    "lottery_entrants/ticket_calculation_tables/#{lottery.calculation_class.underscore}"
+  end
+
   # @return [ActiveRecord::Relation<HistoricalFact>]
   def relevant_historical_facts
     historical_facts.where(kind: RELEVANT_KINDS).ordered_within_person
@@ -38,6 +54,18 @@ class LotteryEntrantPresenter < SimpleDelegator
   end
 
   private
+
+  # @return [Boolean]
+  def calculation_table_present?
+    partial_path.present? && File.exist?(partial_path)
+  end
+
+  # @return [Path, nil]
+  def partial_path
+    return if lottery.calculation_class.nil?
+
+    Rails.root.join("app", "views", "lottery_entrants", "ticket_calculation_tables", "_#{lottery.calculation_class.underscore}.html.erb")
+  end
 
   # @param [User] user
   # @return [Boolean]

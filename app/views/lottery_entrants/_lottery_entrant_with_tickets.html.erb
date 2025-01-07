@@ -32,9 +32,9 @@
           </div>
         <% end %>
 
-        <% if presenter.calculation.present? %>
+        <% if presenter.ticket_calculation_partial_renderable? %>
           <hr/>
-          <%= render partial: "ticket_calculations_table", locals: { presenter: presenter } %>
+          <%= render partial: presenter.ticket_calculation_partial_name, locals: { presenter: presenter } %>
         <% end %>
 
         <% if presenter.relevant_historical_facts.any? %>

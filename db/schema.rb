@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_07_011022) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_07_132834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -1091,20 +1091,40 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_011022) do
               historical_facts.gender
              FROM historical_facts
             WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2025))
-          ), last_reset_year AS (
+          ), high_lonesome_course_ids AS (
+           SELECT courses.id
+             FROM courses
+            WHERE ((courses.name)::text ~~* 'high lonesome 100'::text)
+          ), last_legacy_reset_year AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
-              max(historical_facts.year) AS last_reset_year
+              max(historical_facts.year) AS last_legacy_reset_year
              FROM historical_facts
             WHERE ((historical_facts.kind = 16) AND (historical_facts.person_id IS NOT NULL))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), last_start_year AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              max(EXTRACT(year FROM events.scheduled_start_time)) AS last_start_year
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.started AND (events.course_id IN ( SELECT high_lonesome_course_ids.id
+                     FROM high_lonesome_course_ids)))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), last_reset_year AS (
+           SELECT last_legacy_reset_year.organization_id,
+              last_legacy_reset_year.person_id,
+              GREATEST((last_legacy_reset_year.last_legacy_reset_year)::numeric, last_start_year.last_start_year) AS last_reset_year
+             FROM (last_legacy_reset_year
+               LEFT JOIN last_start_year USING (organization_id, person_id))
           ), applications_since_last_reset_count AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
               count(*) AS applications_since_last_reset_count
              FROM (historical_facts
                LEFT JOIN last_reset_year USING (organization_id, person_id))
-            WHERE ((historical_facts.kind = 11) AND (historical_facts.year < 2025) AND (historical_facts.year > COALESCE(last_reset_year.last_reset_year, 0)) AND (historical_facts.person_id IS NOT NULL))
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year < 2025) AND ((historical_facts.year)::numeric > COALESCE(last_reset_year.last_reset_year, (0)::numeric)) AND (historical_facts.person_id IS NOT NULL))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), finish_year_count AS (
            SELECT event_groups.organization_id,
@@ -1113,9 +1133,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_011022) do
              FROM ((efforts
                JOIN events ON ((events.id = efforts.event_id)))
                JOIN event_groups ON ((event_groups.id = events.event_group_id)))
-            WHERE (efforts.finished AND (events.course_id IN ( SELECT courses.id
-                     FROM courses
-                    WHERE ((courses.name)::text ~~* 'high lonesome 100'::text))) AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
+            WHERE (efforts.finished AND (events.course_id IN ( SELECT high_lonesome_course_ids.id
+                     FROM high_lonesome_course_ids)) AND (EXTRACT(year FROM events.scheduled_start_time) < (2025)::numeric))
             GROUP BY event_groups.organization_id, efforts.person_id
           ), volunteer_point_count AS (
            SELECT historical_facts.organization_id,
@@ -1170,7 +1189,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_011022) do
       volunteer_points,
       trail_work_shifts,
       (((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_points + trail_work_shifts) + 1))::double precision))))::integer AS ticket_count
-     FROM all_counts
-    ORDER BY ((((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_points + trail_work_shifts) + 1))::double precision))))::integer) DESC;
+     FROM all_counts;
   SQL
 end

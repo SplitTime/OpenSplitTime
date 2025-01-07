@@ -8,7 +8,9 @@ class LotteryEntrant < ApplicationRecord
   belongs_to :person, optional: true
   belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
-  has_many :historical_facts, through: :person
+  has_many :historical_facts, ->(entrant) { where(organization: entrant.organization) }, through: :person
+  has_one :lottery, through: :division
+  has_one :organization, through: :lottery
   has_one :division_ranking, class_name: "Lotteries::DivisionRanking"
   has_one :service_detail, class_name: "Lotteries::EntrantServiceDetail"
 
@@ -57,8 +59,6 @@ class LotteryEntrant < ApplicationRecord
     search_names_and_locations(param)
   end
 
-  delegate :lottery, to: :division
-  delegate :organization, to: :lottery
   delegate :draw_status, :accepted?, :waitlisted?, to: :division_ranking
 
   # @return [String]

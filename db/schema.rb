@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_07_011022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -1094,7 +1094,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
           ), last_reset_year AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
-              max(historical_facts.year) AS year
+              max(historical_facts.year) AS last_reset_year
              FROM historical_facts
             WHERE ((historical_facts.kind = 16) AND (historical_facts.person_id IS NOT NULL))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
@@ -1104,7 +1104,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
               count(*) AS applications_since_last_reset_count
              FROM (historical_facts
                LEFT JOIN last_reset_year USING (organization_id, person_id))
-            WHERE ((historical_facts.kind = 11) AND (historical_facts.year < 2025) AND (historical_facts.year > COALESCE(last_reset_year.year, 0)) AND (historical_facts.person_id IS NOT NULL))
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year < 2025) AND (historical_facts.year > COALESCE(last_reset_year.last_reset_year, 0)) AND (historical_facts.person_id IS NOT NULL))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
           ), finish_year_count AS (
            SELECT event_groups.organization_id,
@@ -1136,6 +1136,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
               applicants.person_id,
               applicants.external_id,
               applicants.gender,
+              last_reset_year.last_reset_year,
               (COALESCE(applications_since_last_reset_count.applications_since_last_reset_count, (0)::bigint))::integer AS application_count,
                   CASE
                       WHEN (finish_year_count.finish_year_count IS NULL) THEN (0)::numeric
@@ -1147,7 +1148,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
                   END AS weighted_finish_count,
               COALESCE(volunteer_point_count.volunteer_point_count, (0)::bigint) AS volunteer_points,
               (COALESCE(trail_work_hour_count.trail_work_hour_count, (0)::bigint) / 8) AS trail_work_shifts
-             FROM ((((applicants
+             FROM (((((applicants
+               LEFT JOIN last_reset_year USING (organization_id, person_id))
                LEFT JOIN applications_since_last_reset_count USING (organization_id, person_id))
                LEFT JOIN finish_year_count USING (organization_id, person_id))
                LEFT JOIN volunteer_point_count USING (organization_id, person_id))
@@ -1162,6 +1164,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_06_154408) do
               WHEN (gender = 0) THEN 'Male'::text
               ELSE 'Female'::text
           END AS division,
+      last_reset_year,
       application_count,
       weighted_finish_count,
       volunteer_points,

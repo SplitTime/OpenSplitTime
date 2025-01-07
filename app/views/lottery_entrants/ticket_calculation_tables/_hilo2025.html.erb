@@ -1,0 +1,71 @@
+<%# locals: (presenter:) %>
+
+<% if presenter.calculation.last_reset_year.present? %>
+  <span class="fw-bold">Your last reset year was <%= presenter.calculation.last_reset_year %>.</span>
+<% end %>
+<p>Your ticket count components are calculated as follows:</p>
+
+<div class="mx-4">
+  <table class="table table-sm">
+    <tbody>
+    <tr>
+      <td><%= presenter.calculation.application_count %></td>
+      <td>N: Number of lottery applications prior to this year <%= "since your last reset" if presenter.calculation.last_reset_year.present? %></td>
+    </tr>
+    <tr>
+      <td><%= presenter.calculation.weighted_finish_count %></td>
+      <td>K: Weighted count for previous finishes (0 = 0, 1 = 0.5, 2 = 1.0, 3 = 1.5, 4+ = 0.5)</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Plus 1</td>
+    </tr>
+    <tr class="fw-bold">
+      <td><%= presenter.calculation.application_count + presenter.calculation.weighted_finish_count + 1 %></td>
+      <td>Finishes and applications component (N + K + 1)</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-sm">
+    <tbody>
+    <tr>
+      <td><%= presenter.calculation.volunteer_points %></td>
+      <td>V: Volunteer points for your work at previous Freestone events</td>
+    </tr>
+    <tr>
+      <td><%= presenter.calculation.trail_work_shifts %></td>
+      <td>T: Trail work boost shifts</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Plus 1</td>
+    </tr>
+    <tr class="fw-bold">
+      <td><%= presenter.calculation.volunteer_points + presenter.calculation.trail_work_shifts + 1 %></td>
+      <td>Volunteer and trail work component (V + T + 1)</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-sm">
+    <tbody>
+    <tr>
+      <td><%= 2 ** (presenter.calculation.application_count + presenter.calculation.weighted_finish_count + 1) %></td>
+      <td>2 ^ Finishes and applications component</td>
+    </tr>
+    <tr>
+      <td><%= 2 * Math.log(presenter.calculation.volunteer_points + presenter.calculation.trail_work_shifts + 1) %></td>
+      <td>2 * ln(Volunteer and trail work component)</td>
+    </tr>
+    <tr class="fw-bold">
+      <td><%= presenter.calculation.ticket_count %></td>
+      <td>Total Ticket Count</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<p><span class="fw-bold">Your tickets are calculated using the following formula: 2 ^ Finishes and applications component + 2 * ln(Volunteer and trail work component)</span>
+</p>
+<p>Ticket counts are rounded down to the nearest whole ticket.</p>

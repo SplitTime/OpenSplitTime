@@ -302,6 +302,7 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
         expect(trail_work_proto_records.count).to eq(1)
         proto_record = trail_work_proto_records.first
         expect(proto_record[:quantity]).to eq(8)
+        expect(proto_record[:year]).to eq(2025)
       end
     end
 

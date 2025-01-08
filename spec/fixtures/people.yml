@@ -7,8 +7,8 @@ bruno_fadel:
   birthdate: '1988-05-11'
   city:
   state_code: CA
-  email:
-  phone:
+  email: bruno@gmail.com
+  phone: 3035551212
   created_by: 1
   country_code: US
   user_id:
@@ -25,8 +25,8 @@ robby_gerlach:
   birthdate: '1970-05-18'
   city:
   state_code: VA
-  email:
-  phone:
+  email: robby@yahoo.com
+  phone: 3034441212
   created_by: 1
   country_code: US
   user_id:

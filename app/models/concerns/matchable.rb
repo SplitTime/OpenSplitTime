@@ -44,8 +44,7 @@ module Matchable
   # @return [Person, nil]
   def exact_matching_person # Suitable for automated matcher
     name_gender_age_match = potential_matches.first_name_matches_exact(first_name).age_matches(current_age)
-    exact_matches = name_gender_age_match.present? ? name_gender_age_match : potential_matches.state_matches(state_code)
-    exact_matches.one? ? exact_matches.first : nil # Return nil if more than one match
+    name_gender_age_match.one? ? name_gender_age_match.first : nil # Return nil if more than one match
   end
 
   # @return [Person, nil]

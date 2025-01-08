@@ -74,7 +74,7 @@ class HistoricalFact < ApplicationRecord
   end
 
   def related_facts
-    organization.historical_facts.where(personal_info_hash: personal_info_hash)
+    organization.historical_facts.where(personal_info_hash: personal_info_hash).where.not(id: id)
   end
 
   def reconciled?

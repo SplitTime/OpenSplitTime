@@ -40,7 +40,7 @@ module Etl
       alias lottery parent
 
       def divisions_by_name
-        lottery.divisions.index_by { |division| division.name.parameterize }
+        @divisions_by_name ||= lottery.divisions.index_by { |division| division.name.parameterize }
       end
 
       def validate_setup

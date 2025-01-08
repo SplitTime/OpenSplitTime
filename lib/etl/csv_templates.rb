@@ -74,7 +74,7 @@ module Etl
       when :event_group_entrants
         parent.multiple_events? ? ["Event Name"] : []
       when :lottery_entrants
-        ["Division Name", "Number of Tickets"]
+        ["Division Name", "Number of Tickets", "Pre-selected"]
       else
         []
       end

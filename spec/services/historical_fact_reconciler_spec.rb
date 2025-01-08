@@ -5,9 +5,9 @@ RSpec.describe HistoricalFactReconciler do
   let(:parent) { organizations(:hardrock) }
   let(:personal_info_hash) { fact_1.personal_info_hash }
   let(:person_id) { person.id }
-  let(:person) { people(:bruno_fadel) }
-  let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person.first_name, last_name: person.last_name, gender: person.gender, email: "bruno@enchanted.com", kind: :dnf, comments: "2016") }
-  let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person.first_name, last_name: person.last_name, gender: person.gender, phone: "3035551212", kind: :finished, comments: "2016") }
+  let(:person) { people(:brinda_fisher) }
+  let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person.first_name, last_name: person.last_name, gender: person.gender, email: "bruno@enchanted.com", kind: :dnf, year: 2016) }
+  let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person.first_name, last_name: person.last_name, gender: person.gender, phone: "3035551212", kind: :finished, year: 2016) }
 
   describe "#reconcile" do
     context "when the person exists" do

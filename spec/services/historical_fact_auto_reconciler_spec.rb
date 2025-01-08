@@ -34,9 +34,9 @@ RSpec.describe HistoricalFactAutoReconciler do
       end
     end
 
-    context "for historical facts that are definitive matches with a person" do
-      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, birthdate: person_1.birthdate, kind: :dns, comments: "2018") }
-      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, birthdate: person_2.birthdate, kind: :dns, comments: "2019") }
+    context "for historical facts that are definitive matches by name and birthdate with a person" do
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, birthdate: person_1.birthdate, kind: :dns, year: 2018) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, birthdate: person_2.birthdate, kind: :dns, year: 2019) }
 
       it "assigns the fact to the person" do
         subject.reconcile
@@ -46,9 +46,21 @@ RSpec.describe HistoricalFactAutoReconciler do
       end
     end
 
-    context "for historical facts that are exact but not definitive matches with a person" do
-      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, state_code: person_1.state_code, kind: :dns, comments: "2018") }
-      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, state_code: person_2.state_code, kind: :dns, comments: "2019") }
+    context "for historical facts that are definitive matches by name and phone number with a person" do
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, phone: person_1.phone, kind: :dns, year: 2018) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, phone: person_2.phone, kind: :dns, year: 2019) }
+
+      it "assigns the fact to the person" do
+        subject.reconcile
+
+        expect(fact_1.reload.person).to eq(person_1)
+        expect(fact_2.reload.person).to eq(person_2)
+      end
+    end
+
+    context "for historical facts that are definitive matches by name and email with a person" do
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, email: person_1.email, kind: :dns, year: 2018) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, email: person_2.email, kind: :dns, year: 2019) }
 
       it "assigns the fact to the person" do
         subject.reconcile
@@ -59,8 +71,8 @@ RSpec.describe HistoricalFactAutoReconciler do
     end
 
     context "for historical facts that have no close matches with existing people" do
-      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: "Barney", last_name: "Fife", gender: "male", kind: :dns, comments: "2018") }
-      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: "Andy", last_name: "Griffith", gender: "male", kind: :dns, comments: "2019") }
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: "Barney", last_name: "Fife", gender: "male", kind: :dns, year: 2018) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: "Andy", last_name: "Griffith", gender: "male", kind: :dns, year: 2019) }
 
       it "creates a new person and assigns the person to the fact" do
         expect { subject.reconcile }.to change(Person, :count).by(2)
@@ -74,8 +86,8 @@ RSpec.describe HistoricalFactAutoReconciler do
     end
 
     context "for historical facts that are ambiguous matches with one or more people" do
-      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, kind: :dns, comments: "2018") }
-      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, kind: :dns, comments: "2019") }
+      let!(:fact_1) { create(:historical_fact, organization: parent, first_name: person_1.first_name, last_name: person_1.last_name, gender: person_1.gender, kind: :dns, year: 2018) }
+      let!(:fact_2) { create(:historical_fact, organization: parent, first_name: person_2.first_name, last_name: person_2.last_name, gender: person_2.gender, kind: :dns, year: 2019) }
 
       it "does not create a new person and does not assign the facts to any person" do
         expect { subject.reconcile }.not_to change(Person, :count)

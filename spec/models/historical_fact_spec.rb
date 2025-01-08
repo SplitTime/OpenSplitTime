@@ -122,5 +122,23 @@ RSpec.describe HistoricalFact, type: :model do
         end
       end
     end
+
+    describe "#related_facts" do
+      let(:result) { subject.related_facts }
+
+      context "when related facts exist" do
+        subject { historical_facts(:historical_fact_0001) }
+
+        it "returns all facts that have the same personal_info_hash" do
+          expect(result.count).to eq(4)
+          expect(result.map(&:personal_info_hash)).to all be_present
+          expect(result.map(&:personal_info_hash)).to all eq(subject.personal_info_hash)
+        end
+
+        it "does not include the subject" do
+          expect(result.pluck(:id)).not_to include(subject.id)
+        end
+      end
+    end
   end
 end

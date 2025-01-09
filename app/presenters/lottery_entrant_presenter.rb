@@ -50,7 +50,7 @@ class LotteryEntrantPresenter < SimpleDelegator
   def service_manageable_by_user?(user)
     return false if user.nil?
 
-    user.admin? || user.steward_of?(organization) || belongs_to_user?(user)
+    user.authorized_to_manage_service?(organization, __getobj__)
   end
 
   # @return [Array<Integer>]

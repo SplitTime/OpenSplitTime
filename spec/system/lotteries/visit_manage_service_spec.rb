@@ -2,10 +2,12 @@ require "rails_helper"
 
 RSpec.describe "visit the manage service view", js: true do
   let(:admin) { users(:admin_user) }
+  let(:owner) { users(:third_user) }
   let(:steward) { users(:fifth_user) }
   let(:user) { users(:fourth_user) }
 
   before do
+    organization.update(created_by: owner.id)
     organization.stewards << steward
   end
 
@@ -18,6 +20,13 @@ RSpec.describe "visit the manage service view", js: true do
 
   scenario "user who is an admin" do
     login_as admin, scope: :user
+    visit_page
+
+    expect(page).to have_current_path(organization_lottery_entrant_service_detail_path(organization, lottery, entrant))
+  end
+
+  scenario "user who is an owner" do
+    login_as owner, scope: :user
     visit_page
 
     expect(page).to have_current_path(organization_lottery_entrant_service_detail_path(organization, lottery, entrant))

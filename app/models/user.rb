@@ -79,78 +79,101 @@ class User < ApplicationRecord
           "#{search_param}%", "#{search_param}%", "%#{search_param}%")
   end
 
+  # @return [String]
   def to_s
     slug
   end
 
+  # @return [[Symbol, [Symbol, Date], [Symbol, Date, String]]]
   def slug_candidates
     [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime("%H:%M:%S")]]
   end
 
+  # @return [Boolean]
   def should_generate_new_friendly_id?
     slug.blank? || first_name_changed? || last_name_changed?
   end
 
+  # @return [Boolean]
   def associated_with_entrant?(lottery_entrant)
     ::LotteryEntrant.belonging_to_user(self).include?(lottery_entrant)
   end
 
+  # @return [Boolean]
   def authorized_for_lotteries?(resource)
     admin? || owner_of?(resource) || lottery_steward_of?(resource)
   end
 
+  # @return [Boolean]
   def authorized_fully?(resource)
     admin? || resource.new_record? || owner_of?(resource)
   end
 
+  # @return [Boolean]
   def authorized_to_edit?(resource)
     authorized_fully?(resource) || steward_of?(resource)
   end
 
+  # @return [Boolean]
   def authorized_to_claim?(person)
     return false if has_avatar?
 
     admin? || (last_name == person.last_name) || (first_name == person.first_name)
   end
 
+  # @return [Boolean]
   def authorized_to_edit_personal?(effort)
     admin? || (effort.person ? (avatar == effort.person) : authorized_to_edit?(effort))
   end
 
+  # @return [Boolean]
+  def authorized_to_manage_service?(organization, lottery_entrant)
+    admin? || owner_of?(organization) || steward_of?(organization) || associated_with_entrant?(lottery_entrant)
+  end
+
+  # @return [Boolean]
   def lottery_steward_of?(resource)
     return false unless resource.respond_to?(:stewards)
 
     resource.stewards.where(stewardships: {level: :lottery_manager}).include?(self)
   end
 
+  # @return [Boolean]
   def owner_of?(resource)
     resource.respond_to?(:owner_id) ? resource.owner_id == id : false
   end
 
+  # @return [Boolean]
   def steward_of?(resource)
     resource.respond_to?(:stewards) ? resource.stewards.include?(self) : false
   end
 
+  # @return [Array<Integer>]
   def delegated_organization_ids
     Organization.authorized_for(self).pluck(:id)
   end
 
+  # @return [Array<Integer>]
   def owned_organization_ids
     Organization.owned_by(self).pluck(:id)
   end
 
+  # @return [String]
   def full_name
     [first_name, last_name].join(" ")
   end
 
+  # @return [Boolean]
   def has_avatar?
     avatar.present?
   end
 
+  # @return [Boolean]
   def has_credentials_for?(service_identifier)
     credentials.for_service(service_identifier).exists?
   end
 
+  # @return [Boolean]
   def all_credentials_for?(service_identifier)
     service = Connectors::Service::BY_IDENTIFIER[service_identifier]
     return false if service.blank?
@@ -158,6 +181,7 @@ class User < ApplicationRecord
     credentials.for_service(service_identifier).pluck(:key).sort == service.credential_keys.sort
   end
 
+  # @return [Boolean]
   def from_omniauth?
     provider? && uid?
   end

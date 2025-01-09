@@ -53,6 +53,11 @@ class LotteryEntrantPresenter < SimpleDelegator
     user.admin? || user.steward_of?(organization) || belongs_to_user?(user)
   end
 
+  # @return [Array<Integer>]
+  def ticket_reference_numbers
+    @ticket_reference_numbers ||= tickets.pluck(:reference_number)
+  end
+
   private
 
   # @return [Boolean]

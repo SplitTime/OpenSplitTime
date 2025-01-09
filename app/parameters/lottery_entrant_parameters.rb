@@ -5,8 +5,9 @@ class LotteryEntrantParameters < BaseParameters
       first_name
       last_name
       gender
-      email
       birthdate
+      email
+      phone
       city
       state
       country
@@ -41,6 +42,7 @@ class LotteryEntrantParameters < BaseParameters
       :last_name,
       :lottery_division_id,
       :number_of_tickets,
+      :phone,
       :pre_selected,
       :state_code,
       :withdrawn,

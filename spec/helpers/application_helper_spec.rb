@@ -1,6 +1,50 @@
 require "rails_helper"
 
 RSpec.describe ApplicationHelper do
+  describe "#link_to" do
+    context "when `disabled: true` is used" do
+      it "adds the 'disabled' class and replaces href with '#'" do
+        output = helper.link_to("Disabled Link", "/some_path", class: "btn", disabled: true)
+        expect(output).to eq('<a class="btn disabled" href="#">Disabled Link</a>')
+      end
+
+      it "works with a block and modifies the correct argument" do
+        output = helper.link_to("/some_path", class: "btn", disabled: true) do
+          "Block Content"
+        end
+        expect(output).to eq('<a class="btn disabled" href="#">Block Content</a>')
+      end
+    end
+
+    context "when `disabled: false` is used" do
+      it "does not modify the class or href" do
+        output = helper.link_to("Active Link", "/some_path", class: "btn", disabled: false)
+        expect(output).to eq('<a class="btn" href="/some_path">Active Link</a>')
+      end
+
+      it "does not modify arguments when a block is given" do
+        output = helper.link_to("/some_path", class: "btn", disabled: false) do
+          "Block Content"
+        end
+        expect(output).to eq('<a class="btn" href="/some_path">Block Content</a>')
+      end
+    end
+
+    context "when `disabled` is not specified" do
+      it "renders a normal link without the 'disabled' class or href modification" do
+        output = helper.link_to("Normal Link", "/some_path", class: "btn")
+        expect(output).to eq('<a class="btn" href="/some_path">Normal Link</a>')
+      end
+
+      it "renders a normal link with a block without the 'disabled' class or href modification" do
+        output = helper.link_to("/some_path", class: "btn") do
+          "Block Content"
+        end
+        expect(output).to eq('<a class="btn" href="/some_path">Block Content</a>')
+      end
+    end
+  end
+
   describe "time_format_hhmmss" do
     it "returns appropriate blanks when given a nil parameter" do
       expect(helper.time_format_hhmmss(nil)).to eq("--:--:--")

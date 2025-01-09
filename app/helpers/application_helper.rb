@@ -26,6 +26,30 @@ module ApplicationHelper
     end
   end
 
+  # Monkey patch link_to so we can do disabled: true in bootstrap
+  def link_to(name = nil, options = nil, html_options = nil, &block)
+    if block_given?
+      effective_html_options = options
+    else
+      effective_html_options = html_options
+    end
+
+    effective_html_options ||= {}
+
+    if effective_html_options.delete(:disabled)
+      effective_html_options[:class] = Array(effective_html_options[:class]) << "disabled"
+      effective_html_options[:href] = "#"
+    end
+
+    if block_given?
+      options = effective_html_options
+    else
+      html_options = effective_html_options
+    end
+
+    super(name, options, html_options, &block)
+  end
+
   def pluralize_with_delimiter(count, singular, plural = nil)
     pluralize(number_with_delimiter(count), singular, plural)
   end

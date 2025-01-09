@@ -69,7 +69,7 @@ class Lottery < ApplicationRecord
 
     sql = LotteryTicketQuery.insert_lottery_tickets
     sanitized_sql = ActiveRecord::Base.sanitize_sql([sql, { lottery_id: id, beginning_reference_number: beginning_reference_number }])
-    ActiveRecord::Base.connection.execute(sanitized_sql, "Lottery Ticket Bulk Insert")
+    ActiveRecord::Base.connection.execute(sanitized_sql, "LotteryTicket Bulk Insert")
   end
 
   def start_time

@@ -52,9 +52,9 @@
         <% if presenter.lottery.preview? %>
           <div class="h5 ms-2 text-center">Tickets will appear here once the lottery is live</div>
         <% else %>
-          <% presenter.tickets.each do |ticket| %>
-            <div class="col-6 col-sm-3 col-md-2 text-center">
-              <h4><span class="badge bg-primary text-center font-monospace p-3"><%= "##{ticket.reference_number}" %></span></h4>
+          <% presenter.ticket_reference_numbers.each do |reference_number| %>
+            <div class="col-4 col-sm-3 col-md-2 col-xl-1 text-center">
+              <h4><span class="badge bg-primary text-center font-monospace fs-6 p-3"><%= "##{reference_number}" %></span></h4>
             </div>
           <% end %>
         <% end %>

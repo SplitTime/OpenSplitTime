@@ -4,12 +4,12 @@
   <div class="col-md-12">
     <%= form_with(model: [@lottery_entrant.organization, @lottery_entrant.lottery, @lottery_entrant], html: { class: "form-horizontal" }) do |f| %>
       <div class="row">
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-md-5">
           <%= f.label :first_name, class: "mb-1 required" %>
           <%= f.text_field :first_name, class: "form-control", placeholder: "Beni", autofocus: true %>
         </div>
 
-        <div class="mb-3 col-md-4">
+        <div class="mb-3 col-md-5">
           <%= f.label :last_name, class: "mb-1 required" %>
           <%= f.text_field :last_name, class: "form-control", placeholder: "Hana" %>
         </div>
@@ -19,19 +19,26 @@
           <%= f.select :gender, LotteryEntrant.genders.keys.map { |gender| [gender.titleize, gender] },
                        { prompt: true }, { class: "form-control" } %>
         </div>
+      </div>
 
+      <div class="row">
         <div class="mb-3 col-md-2">
-          <%= f.label "Birthdate", class: "mb-1 required" %>
-          <%= f.text_field :birthdate, class: "form-control", placeholder: "mm/dd/yyyy" %>
+          <%= f.label "Birthdate", class: "mb-1" %>
+          <%= f.date_field :birthdate, class: "form-control", placeholder: "mm/dd/yyyy" %>
+        </div>
+
+        <div class="mb-3 col-md-5">
+          <%= f.label :email, class: "mb-1" %>
+          <%= f.text_field :email, class: "form-control", placeholder: "name@example.com" %>
+        </div>
+
+        <div class="mb-3 col-md-5">
+          <%= f.label :phone, class: "mb-1" %>
+          <%= f.text_field :phone, class: "form-control", placeholder: "303-555-1212" %>
         </div>
       </div>
 
       <div class="row">
-        <div class="mb-3 col-md-3">
-          <%= f.label :city, class: "mb-1" %>
-          <%= f.text_field :city, class: "form-control", placeholder: "City" %>
-        </div>
-
         <div class="mb-3 col-md-4">
           <%= f.label :country_code, "Country", class: "mb-1" %>
           <%= carmen_country_select :lottery_entrant, :country_code %>
@@ -41,6 +48,11 @@
           <%= f.label :state_code, "State", class: "mb-1" %><br/>
           <%= render partial: "carmen/subregion_select",
                      locals: { model: :lottery_entrant, parent_region: f.object.country_code } %>
+        </div>
+
+        <div class="mb-3 col-md-3">
+          <%= f.label :city, class: "mb-1" %>
+          <%= f.text_field :city, class: "form-control", placeholder: "City" %>
         </div>
       </div>
 

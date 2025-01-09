@@ -63,34 +63,13 @@ class Lottery < ApplicationRecord
     end
   end
 
-  def generate_ticket_hashes(beginning_reference_number: 10_000)
-    entrant_structs = entrants.struct_pluck(:id, :number_of_tickets)
-
-    ticket_hashes = entrant_structs.flat_map do |struct|
-      Array.new(struct.number_of_tickets) do
-        {
-          lottery_id: id,
-          lottery_entrant_id: struct.id,
-          created_at: Time.current,
-          updated_at: Time.current
-        }
-      end
-    end
-
-    ticket_hashes.shuffle!
-    ticket_hashes.each_with_index do |ticket_hash, i|
-      ticket_hash[:reference_number] = beginning_reference_number + i
-    end
-
-    ticket_hashes
-  end
-
   def delete_and_insert_tickets!(beginning_reference_number: 10_000)
     draws.delete_all
     tickets.delete_all
 
-    ticket_hashes = generate_ticket_hashes(beginning_reference_number: beginning_reference_number)
-    LotteryTicket.insert_all(ticket_hashes)
+    sql = LotteryTicketQuery.insert_lottery_tickets
+    sanitized_sql = ActiveRecord::Base.sanitize_sql([sql, { lottery_id: id, beginning_reference_number: beginning_reference_number }])
+    ActiveRecord::Base.connection.execute(sanitized_sql, "Lottery Ticket Bulk Insert")
   end
 
   def start_time

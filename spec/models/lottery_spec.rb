@@ -44,20 +44,6 @@ RSpec.describe Lottery, type: :model do
     end
   end
 
-  describe "#generate_ticket_hashes" do
-    let(:result) { subject.generate_ticket_hashes }
-    let(:default_reference_number) { 10_000 }
-
-    it "returns an array the size of the aggregate sum of all tickets" do
-      expect(result.size).to eq(4)
-    end
-
-    it "returns hashes with expected information" do
-      expect(result.first[:lottery_id]).to eq(subject.id)
-      expect(result.first[:reference_number]).to eq(default_reference_number)
-    end
-  end
-
   describe "#delete_and_insert_tickets!" do
     let(:execute_method) { subject.delete_and_insert_tickets! }
 

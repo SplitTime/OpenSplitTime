@@ -4,7 +4,7 @@ class Lotteries::EntrantServiceDetailPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin? || user.associated_with_entrant?(lottery_entrant) || user.steward_of?(organization)
+    user.authorized_to_manage_service?(organization, lottery_entrant)
   end
 
   def edit?

@@ -58,6 +58,9 @@ application.register("highlight", HighlightController)
 import InputmaskController from "./inputmask_controller"
 application.register("inputmask", InputmaskController)
 
+import LinkDisableController from "./link_disable_controller"
+application.register("link-disable", LinkDisableController)
+
 import LiveEntry__EffortTableController from "./live_entry/effort_table_controller"
 application.register("live-entry--effort-table", LiveEntry__EffortTableController)
 

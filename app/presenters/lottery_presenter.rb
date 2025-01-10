@@ -19,6 +19,11 @@ class LotteryPresenter < BasePresenter
     @ordered_divisions ||= divisions.ordered_by_name
   end
 
+  # @return [ActiveRecord::Relation<LotteryEntrant>]
+  def mismatched_entrants
+    @mismatched_entrants ||= entrants.having_mismatched_tickets
+  end
+
   # @return [ActiveRecord::Relation<LotteryDraw>]
   def lottery_draws_ordered
     lottery_draws

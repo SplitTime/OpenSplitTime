@@ -36,7 +36,7 @@
           <td class="text-center"><%= presenter.entrants.sum(:number_of_tickets) %></td>
           <td class="text-center">
             <span class="ms-3"><%= presenter.tickets.count %></span>
-            <% if presenter.entrants.sum(:number_of_tickets) == presenter.tickets.count %>
+            <% if presenter.mismatched_entrants.none? %>
               <span><%= fa_icon(
                           "circle-check",
                           type: "regular",
@@ -53,7 +53,7 @@
                           class: "text-warning",
                           data: {
                             controller: "tooltip",
-                            bs_title: "Generated tickets and allocated tickets do not match",
+                            bs_title: "Generated tickets and allocated tickets for at least one Entrant in this Lottery do not match",
                           },
                         ) %></span>
             <% end %>

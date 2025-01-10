@@ -43,24 +43,39 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     expect(entrant.last_name).to eq("NewLastName")
   end
 
-  scenario "The user attempts to delete an entrant" do
+  scenario "The user deletes an entrant that has not been drawn" do
     login_as steward, scope: :user
     visit_page
 
-    entrant = lottery.entrants.find_by(last_name: "Carter")
+    entrant = lottery.entrants.find_by(first_name: "Maud", last_name: "Boyer")
+    fill_in "filter_search", with: entrant.last_name
+    click_on "lottery-entrant-admin-lookup-submit"
+
+    expect do
+      click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
+      page.accept_confirm
+      expect(page).to have_content("The entrant was deleted.")
+    end.to change(LotteryEntrant, :count).by(-1)
+  end
+
+  scenario "The user attempts to delete an entrant that has already been drawn" do
+    login_as steward, scope: :user
+    visit_page
+
+    entrant = lottery.entrants.find_by(first_name: "Denisha", last_name: "Carter")
     fill_in "filter_search", with: entrant.last_name
     click_on "lottery-entrant-admin-lookup-submit"
 
     within page.find("##{dom_id(entrant)}") do
       expect(page).to have_content(entrant.full_name)
       expect(page).to have_content(entrant.division.name)
-      expect {
+      expect do
         click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
         page.accept_confirm
-      }.not_to change(LotteryEntrant, :count)
+      end.not_to change(LotteryEntrant, :count)
     end
 
-    expect(page).to have_content("A lottery entrant cannot be deleted unless all of the entrant's tickets and draws have been deleted first.")
+    expect(page).to have_content("A lottery entrant cannot be deleted after having been drawn.")
 
     click_link("Delete tickets")
     fill_in "confirm", with: "DELETE TICKETS"
@@ -72,11 +87,11 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     fill_in "filter_search", with: entrant.last_name
     click_on "lottery-entrant-admin-lookup-submit"
 
-    expect {
+    expect do
       click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
       page.accept_confirm
       expect(page).to have_content("The entrant was deleted.")
-    }.to change(LotteryEntrant, :count).by(-1)
+    end.to change(LotteryEntrant, :count).by(-1)
   end
 
   scenario "The user reveals pre-selected entrants" do

@@ -26,6 +26,13 @@ class LotteryEntrant < ApplicationRecord
   scope :not_withdrawn, -> { where(withdrawn: [false, nil]) }
   scope :withdrawn, -> { where(withdrawn: true) }
 
+  scope :having_mismatched_tickets, -> do
+    from(left_joins(:tickets)
+      .select("lottery_entrants.*, COUNT(lottery_tickets.id) AS generated_tickets_count")
+      .group("lottery_entrants.id")
+      .having("COUNT(lottery_tickets.id) != lottery_entrants.number_of_tickets"), :lottery_entrants)
+  end
+
   scope :pending_completed_form_review, -> do
     joins(service_detail: :completed_form_attachment)
       .not_withdrawn
@@ -36,7 +43,7 @@ class LotteryEntrant < ApplicationRecord
   scope :pre_selected, -> { where(pre_selected: true) }
   scope :with_division_name, -> { from(select("lottery_entrants.*, lottery_divisions.name as division_name").joins(:division), :lottery_entrants) }
   scope :with_policy_scope_attributes, lambda {
-    from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: {lottery: :organization}), :lottery_entrants)
+    from(select("lottery_entrants.*, organizations.concealed, organizations.id as organization_id").joins(division: { lottery: :organization }), :lottery_entrants)
   }
 
   validates_presence_of :first_name, :last_name, :gender, :number_of_tickets

@@ -10,14 +10,45 @@
                  main_text: "Tickets have not been generated",
                  detail_paragraphs: "You will need to generate tickets before going live with your Lottery. Click the \"Generate tickets\" button above when your entrants and ticket counts are finalized.",
                } %>
-  <% elsif presenter.tickets.count != presenter.entrants.sum(:number_of_tickets) %>
+  <% elsif presenter.mismatched_entrants.any? %>
     <%= render partial: "shared/callout_with_link",
                locals: {
                  callout_color: "warning",
                  icon_color: "danger",
                  icon_name: "exclamation-triangle",
-                 main_text: "Generated tickets do not match the total ticket count",
-                 detail_paragraphs: "Your generated tickets do not match tickets allocated for your entrants. Click the \"Delete tickets\" button above and then re-generate tickets to correct this problem.",
+                 main_text: "One or more entrants have mismatched tickets",
+                 detail_paragraphs: [
+                   "Your generated tickets do not match tickets allocated for one or more of your entrants.",
+                   "If Tickets Generated is correct, edit the Entrant in the Entrant Lookup card below to change the number of Tickets Allocated.",
+                   "If Tickets Allocated is correct, click the \"Delete tickets\" button above and then re-generate tickets to correct this problem.",
+                 ]
                } %>
+    <div class="card mt-4">
+      <div class="card-header">
+        <%= fa_icon("exclamation-triangle", type: :regular, class: "text-danger", size: "2x") %>
+        <span class="h3 fw-bold mx-2">Mismatched Entrants</span>
+        <span class="h5 text-muted">Fix these before drawing tickets</span>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+          <tr class="fw-bold">
+            <th>Name</th>
+            <th class="text-center">Tickets Allocated</th>
+            <th class="text-center">Tickets Generated</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% presenter.mismatched_entrants.each do |entrant| %>
+          <tr>
+            <td><%= entrant.full_name %></td>
+            <td class="text-center"><%= entrant.number_of_tickets %></td>
+            <td class="text-center"><%= entrant.generated_tickets_count %></td>
+          </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   <% end %>
 </div>

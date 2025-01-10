@@ -127,8 +127,9 @@
           <th class="text-center">Wait List Slots</th>
           <th class="text-center">Entrants</th>
           <th class="text-center">Pre-selected</th>
-          <th class="text-center">Tickets</th>
-          <th class="text-center">Draws</th>
+          <th class="text-center">Tickets<br/>Allocated</th>
+          <th class="text-center">Tickets<br/>Generated</th>
+          <th class="text-center">Tickets<br/>Drawn</th>
           <th></th>
         </tr>
         </thead>
@@ -140,6 +141,7 @@
           <td class="text-center"><%= @presenter.ordered_divisions.sum(&:maximum_wait_list) %></td>
           <td class="text-center"><%= @presenter.entrants.count %></td>
           <td class="text-center"><%= @presenter.entrants.pre_selected.count %></td>
+          <td class="text-center"><%= @presenter.entrants.sum(:number_of_tickets) %></td>
           <td class="text-center"><%= @presenter.tickets.count %></td>
           <td class="text-center"><%= @presenter.draws.count %></td>
           <td></td>

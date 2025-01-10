@@ -4,6 +4,7 @@
   <td class="text-center"><%= division.maximum_wait_list %></td>
   <td class="text-center"><%= division.entrants.count %></td>
   <td class="text-center"><%= division.entrants.pre_selected.count %></td>
+  <td class="text-center"><%= division.entrants.sum(:number_of_tickets) %></td>
   <td class="text-center"><%= division.tickets.count %></td>
   <td class="text-center"><%= division.draws.count %></td>
   <td class="text-center">

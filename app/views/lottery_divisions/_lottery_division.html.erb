@@ -1,10 +1,36 @@
+<%# locals: (division:) %>
+
 <tr id="<%= dom_id(division) %>">
   <td><%= division.name %></td>
   <td class="text-center"><%= division.maximum_entries %></td>
   <td class="text-center"><%= division.maximum_wait_list %></td>
   <td class="text-center"><%= division.entrants.count %></td>
   <td class="text-center"><%= division.entrants.pre_selected.count %></td>
-  <td class="text-center"><%= division.tickets.count %></td>
+  <td class="text-center"><%= division.entrants.sum(:number_of_tickets) %></td>
+  <td class="text-center">
+    <span class="ms-3"><%= division.tickets.count %></span>
+    <% if division.entrants.sum(:number_of_tickets) == division.tickets.count %>
+              <span><%= fa_icon(
+                          "circle-check",
+                          type: "regular",
+                          class: "text-success",
+                          data: {
+                            controller: "tooltip",
+                            bs_title: "Generated tickets and allocated tickets match",
+                          },
+                          ) %></span>
+    <% else %>
+      <span><%= fa_icon(
+                  "circle-exclamation",
+                  type: "regular",
+                  class: "text-warning",
+                  data: {
+                    controller: "tooltip",
+                    bs_title: "Generated tickets and allocated tickets do not match",
+                  },
+                ) %></span>
+    <% end %>
+  </td>
   <td class="text-center"><%= division.draws.count %></td>
   <td class="text-center">
     <%= link_to_division_edit(division) %>

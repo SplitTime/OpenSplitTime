@@ -1,49 +1,51 @@
 <%# locals: (presenter:) %>
 
-<div class="card mt-4">
-  <div class="card-header">
-    <div class="row">
-      <div class="col">
-        <span class="h3 fw-bold me-2">Entrant Lookup</span>
-        <span class="h5 text-muted"><%= pluralize_with_delimiter(presenter.lottery.entrants.count, 'entrant') %></span>
-      </div>
-    </div>
-  </div>
-  <div class="card-body table-responsive">
-    <aside class="container ost-toolbar">
+<div id="<%= dom_id(presenter.lottery, :setup_entrant_lookup_card) %>">
+  <div class="card mt-4">
+    <div class="card-header">
       <div class="row">
-        <div class="col-12 col-md-6">
-          <%= render "lottery_entrants/entrant_lookup_admin", presenter: presenter %>
+        <div class="col">
+          <span class="h3 fw-bold me-2">Entrant Lookup</span>
+          <span class="h5 text-muted"><%= pluralize_with_delimiter(presenter.lottery.entrants.count, 'entrant') %></span>
         </div>
       </div>
-    </aside>
-
-    <div class="container">
-      <% if presenter.lottery_entrants_default_none.present? %>
-        <%= render partial: "lottery_entrants/lottery_entrant_admin",
-                   collection: presenter.lottery_entrants_default_none,
-                   as: :record %>
-      <% else %>
-        <div class="card bg-light mt-2">
-          <div class="card-body">
-            <h6 class="fw-bold">
-              <% if presenter.params[:search].blank? %>
-                Find someone by entering a name, state, or country
-              <% elsif presenter.params[:search].length < 3 %>
-                Search parameter is too short
-              <% else %>
-                No entrants match this search
-              <% end %>
-            </h6>
+    </div>
+    <div class="card-body table-responsive">
+      <aside class="container ost-toolbar">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <%= render "lottery_entrants/entrant_lookup_admin", presenter: presenter %>
           </div>
         </div>
-      <% end %>
-    </div>
-    <hr/>
-    <div>
-      <%= link_to fa_icon("plus", text: "Add"),
-                  new_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery),
-                  id: "add-lottery-entrant", class: "btn btn-success" %>
+      </aside>
+
+      <div class="container">
+        <% if presenter.lottery_entrants_default_none.present? %>
+          <%= render partial: "lottery_entrants/lottery_entrant_admin",
+                     collection: presenter.lottery_entrants_default_none,
+                     as: :record %>
+        <% else %>
+          <div class="card bg-light mt-2">
+            <div class="card-body">
+              <h6 class="fw-bold">
+                <% if presenter.params[:search].blank? %>
+                  Find someone by entering a name, state, or country
+                <% elsif presenter.params[:search].length < 3 %>
+                  Search parameter is too short
+                <% else %>
+                  No entrants match this search
+                <% end %>
+              </h6>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <hr/>
+      <div>
+        <%= link_to fa_icon("plus", text: "Add"),
+                    new_organization_lottery_lottery_entrant_path(presenter.organization, presenter.lottery),
+                    id: "add-lottery-entrant", class: "btn btn-success" %>
+      </div>
     </div>
   </div>
 </div>

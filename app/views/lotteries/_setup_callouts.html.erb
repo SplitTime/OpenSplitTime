@@ -1,0 +1,23 @@
+<%# locals: (presenter:) %>
+
+<div id="<%= dom_id(presenter.lottery, :setup_callouts) %>">
+  <% if presenter.tickets.count.zero? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "warning",
+                 icon_color: "warning",
+                 icon_name: "exclamation-triangle",
+                 main_text: "Tickets have not been generated",
+                 detail_paragraphs: "You will need to generate tickets before going live with your Lottery. Click the \"Generate tickets\" button above when your entrants and ticket counts are finalized.",
+               } %>
+  <% elsif presenter.tickets.count != presenter.entrants.sum(:number_of_tickets) %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "warning",
+                 icon_color: "danger",
+                 icon_name: "exclamation-triangle",
+                 main_text: "Generated tickets do not match the total ticket count",
+                 detail_paragraphs: "Your generated tickets do not match tickets allocated for your entrants. Click the \"Delete tickets\" button above and then re-generate tickets to correct this problem.",
+               } %>
+  <% end %>
+</div>

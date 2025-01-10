@@ -9,3 +9,11 @@
 <%= turbo_stream.replace dom_id(@lottery, :setup_pre_selected_entrants_card),
                          partial: "lotteries/setup_pre_selected_entrants_card",
                          locals: { presenter: @lottery_presenter } %>
+
+<%= turbo_stream.replace dom_id(@lottery, :setup_divisions_card),
+                         partial: "lotteries/setup_divisions_card",
+                         locals: { presenter: @lottery_presenter } %>
+
+<%= turbo_stream.replace dom_id(@lottery, :setup_callouts),
+                         partial: "lotteries/setup_callouts",
+                         locals: { presenter: @lottery_presenter } %>

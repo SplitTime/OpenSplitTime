@@ -1,41 +1,42 @@
 <%# locals: (presenter:) %>
 
-<div class="card mt-4">
-  <div class="card-header">
-    <div class="row">
-      <div class="col">
-        <span class="h3 fw-bold me-2">Divisions</span>
-        <span class="h5 text-muted"><%= pluralize(presenter.divisions.size, 'division') %></span>
+<div id="<%= dom_id(presenter.lottery, :setup_divisions_card) %>">
+  <div class="card mt-4">
+    <div class="card-header">
+      <div class="row">
+        <div class="col">
+          <span class="h3 fw-bold me-2">Divisions</span>
+          <span class="h5 text-muted"><%= pluralize(presenter.divisions.size, 'division') %></span>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card-body table-responsive">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>Name</th>
-        <th class="text-center">Winner Slots</th>
-        <th class="text-center">Wait List Slots</th>
-        <th class="text-center">Entrants</th>
-        <th class="text-center">Pre-selected</th>
-        <th class="text-center">Tickets<br/>Allocated</th>
-        <th class="text-center">Tickets<br/>Generated</th>
-        <th class="text-center">Tickets<br/>Drawn</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody id="lottery_divisions">
-      <%= render partial: "lottery_divisions/lottery_division", collection: presenter.ordered_divisions, as: :division %>
-      <tr class="fw-bold bg-light">
-        <td>Totals</td>
-        <td class="text-center"><%= presenter.ordered_divisions.sum(&:maximum_entries) %></td>
-        <td class="text-center"><%= presenter.ordered_divisions.sum(&:maximum_wait_list) %></td>
-        <td class="text-center"><%= presenter.entrants.count %></td>
-        <td class="text-center"><%= presenter.entrants.pre_selected.count %></td>
-        <td class="text-center"><%= presenter.entrants.sum(:number_of_tickets) %></td>
-        <td class="text-center">
-          <span class="ms-3"><%= presenter.tickets.count %></span>
-          <% if presenter.entrants.sum(:number_of_tickets) == presenter.tickets.count %>
+    <div class="card-body table-responsive">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th class="text-center">Winner Slots</th>
+          <th class="text-center">Wait List Slots</th>
+          <th class="text-center">Entrants</th>
+          <th class="text-center">Pre-selected</th>
+          <th class="text-center">Tickets<br/>Allocated</th>
+          <th class="text-center">Tickets<br/>Generated</th>
+          <th class="text-center">Tickets<br/>Drawn</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody id="lottery_divisions">
+        <%= render partial: "lottery_divisions/lottery_division", collection: presenter.ordered_divisions, as: :division %>
+        <tr class="fw-bold bg-light">
+          <td>Totals</td>
+          <td class="text-center"><%= presenter.ordered_divisions.sum(&:maximum_entries) %></td>
+          <td class="text-center"><%= presenter.ordered_divisions.sum(&:maximum_wait_list) %></td>
+          <td class="text-center"><%= presenter.entrants.count %></td>
+          <td class="text-center"><%= presenter.entrants.pre_selected.count %></td>
+          <td class="text-center"><%= presenter.entrants.sum(:number_of_tickets) %></td>
+          <td class="text-center">
+            <span class="ms-3"><%= presenter.tickets.count %></span>
+            <% if presenter.entrants.sum(:number_of_tickets) == presenter.tickets.count %>
               <span><%= fa_icon(
                           "circle-check",
                           type: "regular",
@@ -44,8 +45,8 @@
                             controller: "tooltip",
                             bs_title: "Generated tickets and allocated tickets match",
                           },
-                          ) %></span>
-          <% else %>
+                        ) %></span>
+            <% else %>
               <span><%= fa_icon(
                           "circle-exclamation",
                           type: "regular",
@@ -54,20 +55,21 @@
                             controller: "tooltip",
                             bs_title: "Generated tickets and allocated tickets do not match",
                           },
-                          ) %></span>
-          <% end %>
-        </td>
-        <td class="text-center"><%= presenter.draws.count %></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td colspan="7">
-          <%= link_to fa_icon("plus", text: "Add"),
-                      new_organization_lottery_lottery_division_path(presenter.organization, presenter.lottery),
-                      id: "add-lottery-division", class: "btn btn-success" %>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+                        ) %></span>
+            <% end %>
+          </td>
+          <td class="text-center"><%= presenter.draws.count %></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="7">
+            <%= link_to fa_icon("plus", text: "Add"),
+                        new_organization_lottery_lottery_division_path(presenter.organization, presenter.lottery),
+                        id: "add-lottery-division", class: "btn btn-success" %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

@@ -9,7 +9,7 @@
   <td class="text-center"><%= division.entrants.sum(:number_of_tickets) %></td>
   <td class="text-center">
     <span class="ms-3"><%= division.tickets.count %></span>
-    <% if division.entrants.sum(:number_of_tickets) == division.tickets.count %>
+    <% if division.entrants.having_mismatched_tickets.none? %>
               <span><%= fa_icon(
                           "circle-check",
                           type: "regular",
@@ -26,7 +26,7 @@
                   class: "text-warning",
                   data: {
                     controller: "tooltip",
-                    bs_title: "Generated tickets and allocated tickets do not match",
+                    bs_title: "Generated tickets and allocated tickets for at least one Entrant in this Division do not match",
                   },
                 ) %></span>
     <% end %>

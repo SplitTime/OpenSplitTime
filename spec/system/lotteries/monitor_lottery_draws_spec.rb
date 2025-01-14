@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "monitor lottery draws", js: true do
+  include ActionView::RecordIdentifier
   include ActiveJob::TestHelper
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
@@ -17,7 +18,7 @@ RSpec.describe "monitor lottery draws", js: true do
     visit_page
 
     perform_enqueued_jobs do
-      within("#lottery_draws") do
+      within(page.find("##{dom_id(lottery, :lottery_draws)}")) do
         expect(page).to have_selector("div.card", count: 7)
         sleep 1
         division.draw_ticket!
@@ -30,7 +31,7 @@ RSpec.describe "monitor lottery draws", js: true do
     visit_page
 
     perform_enqueued_jobs do
-      within("#lottery_draws") do
+      within(page.find("##{dom_id(lottery, :lottery_draws)}")) do
         expect(page).to have_selector("div.card", count: 7)
         sleep 1
         entrant.draw_ticket!

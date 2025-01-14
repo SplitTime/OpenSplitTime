@@ -25,14 +25,14 @@ RSpec.describe "draw tickets from the lottery draw_tickets page", js: true do
     perform_enqueued_jobs do
       expect do
         within(page.find("##{dom_id(division_with_draws, :draw_tickets_header)}")) { click_link("Draw a Ticket") }
-        within(page.find("##{dom_id(division_with_draws, :lottery_draws)}")) do
+        within(page.find("##{dom_id(division_with_draws, :lottery_draws_admin)}")) do
           expect(page).to have_selector("div.card", count: 3)
         end
       end.to change { division_with_draws.draws.count }.from(2).to(3)
 
       expect do
         within(page.find("##{dom_id(division_without_draws, :draw_tickets_header)}")) { click_link("Draw a Ticket") }
-        within(page.find("##{dom_id(division_without_draws, :lottery_draws)}")) do
+        within(page.find("##{dom_id(division_without_draws, :lottery_draws_admin)}")) do
           expect(page).to have_selector("div.card", count: 1)
         end
       end.to change { division_without_draws.draws.count }.from(0).to(1)
@@ -51,7 +51,7 @@ RSpec.describe "draw tickets from the lottery draw_tickets page", js: true do
           click_button("Toggle Dropdown")
           click_link("Draw Veola Cassin")
         end
-        within(page.find("##{dom_id(division_without_draws, :lottery_draws)}")) do
+        within(page.find("##{dom_id(division_without_draws, :lottery_draws_admin)}")) do
           expect(page).to have_selector("div.card", count: 1)
         end
       end.to change { division_without_draws.draws.count }.from(0).to(1)

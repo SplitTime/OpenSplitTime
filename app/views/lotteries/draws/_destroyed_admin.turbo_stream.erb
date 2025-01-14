@@ -2,6 +2,6 @@
 
 <%= turbo_stream.remove dom_id(lottery_draw) %>
 
-<%= turbo_stream.replace dom_id(lottery_division, :lottery_progress_bars_admin),
-                         partial: "lottery_divisions/tickets_progress_bars",
-                         locals: { lottery_division: lottery_division, show_pre_selected: true } %>
+<%= turbo_stream.replace dom_id(lottery_division, :draw_tickets_header),
+                         partial: "lottery_divisions/draw_tickets_header",
+                         locals: { lottery_division: lottery_division } %>

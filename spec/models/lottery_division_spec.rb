@@ -10,12 +10,51 @@ RSpec.describe LotteryDivision, type: :model do
 
   describe "scopes" do
     describe ".with_drawn_tickets_count" do
-      let(:result) { described_class.with_drawn_tickets_count }
-      it "returns each division with drawn ticket counts" do
-        expect(result.count).to eq(LotteryDivision.count)
+      let(:result) { existing_scope.with_drawn_tickets_count }
 
-        elses_division = result.find { |division| division.name == "Elses" }
-        expect(elses_division.drawn_tickets_count).to eq()
+      context "when existing scope is all divisions" do
+        let(:existing_scope) { described_class }
+
+        it "returns all divisions in the existing scope" do
+          expect(result.count).to eq(described_class.count)
+        end
+
+        it "adds a drawn_tickets_count attribute to each division" do
+          expect(result).to all respond_to(:drawn_tickets_count)
+        end
+      end
+
+      context "when existing scope is the divisions of a single lottery" do
+        let(:existing_scope) { lottery.divisions }
+
+        context "when draws exist" do
+          let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+
+          it "returns each division with drawn ticket counts" do
+            division1 = result.find { |division| division.name == "Elses" }
+            division2 = result.find { |division| division.name == "Never Ever Evers" }
+            division3 = result.find { |division| division.name == "Veterans" }
+
+            expect(division1.drawn_tickets_count).to eq(2)
+            expect(division2.drawn_tickets_count).to eq(5)
+            expect(division3.drawn_tickets_count).to eq(0)
+          end
+        end
+
+        context "when draws do not exist" do
+          let(:lottery) { lotteries(:lottery_without_tickets) }
+
+          it "returns each division with 0" do
+            result.each do |division|
+              expect(division.drawn_tickets_count).to eq(0)
+            end
+          end
+        end
+      end
+
+      context "when existing scope is empty" do
+        let(:existing_scope) { described_class.none }
+        it { expect(result).to be_empty }
       end
     end
   end

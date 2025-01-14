@@ -6,7 +6,7 @@ class LotteryEntrant < ApplicationRecord
   include CapitalizeAttributes
 
   belongs_to :person, optional: true
-  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id"
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :historical_facts, ->(entrant) { where(organization: entrant.organization) }, through: :person
   has_one :lottery, through: :division
@@ -78,6 +78,7 @@ class LotteryEntrant < ApplicationRecord
   end
 
   def draw_ticket!
+    # In case the entrant is drawn by another process
     return if drawn?
 
     selected_ticket_index = rand(tickets.count)

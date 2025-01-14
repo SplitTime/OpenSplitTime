@@ -7,6 +7,7 @@ lottery_without_tickets:
   slug: lottery-without-tickets
   concealed:
   status: 0
+  calculation_class:
 lottery_with_tickets_and_draws:
   id: 4
   organization_id: 4
@@ -15,3 +16,4 @@ lottery_with_tickets_and_draws:
   slug: lottery-with-tickets-and-draws
   concealed:
   status: 1
+  calculation_class:

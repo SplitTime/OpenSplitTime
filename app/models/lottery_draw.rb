@@ -16,8 +16,8 @@ class LotteryDraw < ApplicationRecord
   validates_uniqueness_of :lottery_ticket_id
 
   before_create :add_position
-  after_create_commit :broadcast_lottery_draw_create
-  after_destroy_commit :broadcast_lottery_draw_destroy
+  after_create_commit :broadcast_lottery_draw_created
+  after_destroy_commit :broadcast_lottery_draw_destroyed
 
   delegate :entrant, :reference_number, to: :ticket
   delegate :first_name, :last_name, :gender, :birthdate, :city, :state_code, :state_name, :country_code, :country_name,
@@ -38,13 +38,13 @@ class LotteryDraw < ApplicationRecord
     self.position = division.draws.prior_to_draw(self).count + 1
   end
 
-  def broadcast_lottery_draw_create
-    broadcast_prepend_to lottery, :lottery_draws, target: "lottery_draws"
-    broadcast_prepend_to division, :lottery_draws, target: "lottery_draws_lottery_division_#{division.id}", partial: "lottery_draws/lottery_draw_admin"
+  def broadcast_lottery_draw_created
+    broadcast_render_later_to lottery, :lottery_draws, partial: "lotteries/draws/created", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_later_to division, :lottery_draws_admin, partial: "lotteries/draws/created_admin", locals: { lottery_draw: self, lottery_division: division }
   end
 
-  def broadcast_lottery_draw_destroy
-    broadcast_remove_to lottery, :lottery_draws
-    broadcast_remove_to division, :lottery_draws
+  def broadcast_lottery_draw_destroyed
+    broadcast_render_to lottery, :lottery_draws, partial: "lotteries/draws/destroyed", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_to division, :lottery_draws_admin, partial: "lotteries/draws/destroyed_admin", locals: { lottery_draw: self, lottery_division: division }
   end
 end

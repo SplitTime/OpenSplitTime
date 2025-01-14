@@ -96,7 +96,6 @@
       <hr/>
       <div class="row">
         <% @presenter.ordered_divisions.each do |division| %>
-          <%= turbo_stream_from division, :lottery_header, class: "d-none" %>
           <div class="col-12 col-md-6 col-lg-4 col-xl pb-3">
             <h5 class="fw-bold"><%= division.name %></h5>
             <%= render partial: "lottery_divisions/tickets_progress_bars", locals: { lottery_division: division, show_pre_selected: false } %>
@@ -105,7 +104,7 @@
       </div>
       <hr/>
 
-      <div id="lottery_draws">
+      <div id="<%= dom_id(@presenter.lottery, :lottery_draws) %>">
         <%= render partial: "lottery_draws/lottery_draw", collection: @presenter.lottery_draws_ordered %>
       </div>
     <% else %>

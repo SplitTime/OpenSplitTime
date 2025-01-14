@@ -17,8 +17,6 @@ class LotteryDivision < ApplicationRecord
     from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   }
 
-  after_touch :broadcast_lottery_draw_header
-
   delegate :organization, to: :lottery
 
   def accepted_entrants
@@ -56,18 +54,5 @@ class LotteryDivision < ApplicationRecord
 
   def withdrawn_entrants
     entrants.withdrawn
-  end
-
-  private
-
-  def broadcast_lottery_draw_header
-    broadcast_replace_to self, :lottery_draw_header,
-                         target: "draw_tickets_header_lottery_division_#{id}",
-                         partial: "lottery_divisions/draw_tickets_header",
-                         locals: { lottery_division: self }
-    broadcast_replace_to self, :lottery_header,
-                         target: "lottery_header_lottery_division_#{id}",
-                         partial: "lottery_divisions/tickets_progress_bars",
-                         locals: { lottery_division: self, show_pre_selected: false }
   end
 end

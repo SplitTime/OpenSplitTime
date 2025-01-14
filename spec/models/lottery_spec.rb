@@ -6,41 +6,23 @@ RSpec.describe Lottery, type: :model do
   it { is_expected.to strip_attribute(:name) }
   it { is_expected.to capitalize_attribute(:name) }
 
-  describe "#create_draw_for_ticket!" do
-    subject { lotteries(:lottery_with_tickets_and_draws) }
-    let(:result) { subject.create_draw_for_ticket!(ticket) }
+  describe "#delete_all_draws!" do
+    let(:execute_method) { subject.delete_all_draws! }
 
-    context "when the ticket exists and has not been drawn" do
-      let(:ticket) { subject.tickets.not_drawn.first }
-      it "creates a draw" do
-        expect { result }.to change { LotteryDraw.count }.by(1)
-      end
-
-      it "returns the draw" do
-        expect(result).to be_a(LotteryDraw)
+    context "when no draws exist" do
+      it "does nothing" do
+        expect { execute_method }.not_to change { subject.draws.count }
       end
     end
 
-    context "when the ticket exists but has already been drawn" do
-      let(:ticket) { subject.tickets.drawn.first }
-      it "does not create a draw" do
-        expect { result }.not_to change { LotteryDraw.count }
-      end
+    context "when draws exist" do
+      subject { lotteries(:lottery_with_tickets_and_draws) }
 
-      it "returns nil" do
-        expect(result).to be_nil
-      end
-    end
-
-    context "when the ticket does not exist" do
-      let(:ticket) { nil }
-      it "does not create a draw" do
-        expect { result }.not_to change { LotteryDraw.count }
-      end
-
-      it "returns nil" do
-        expect(result).to be_nil
-      end
+      it "deletes all draws" do
+        expect(subject.draws.count).not_to eq(0)
+        expect { execute_method }.to change { subject.draws.count }.by(-subject.draws.count)
+        expect(subject.draws.count).to eq(0)
+        end
     end
   end
 

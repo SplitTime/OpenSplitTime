@@ -10,7 +10,6 @@ class Lottery < ApplicationRecord
   has_many :entrants, through: :divisions
   has_many :entrant_service_details, through: :entrants, class_name: "Lotteries::EntrantServiceDetail", source: :service_detail
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
-  has_many :draws, class_name: "LotteryDraw", dependent: :destroy
   has_many :simulation_runs, class_name: "LotterySimulationRun", dependent: :destroy
 
   has_one_attached :service_form
@@ -27,14 +26,14 @@ class Lottery < ApplicationRecord
 
   scope :with_policy_scope_attributes, -> { all }
 
-  def create_draw_for_ticket!(ticket)
-    return if ticket.nil? || ticket.drawn?
-
-    draws.create!(ticket: ticket)
-  end
-
   def delete_all_draws!
     draws.delete_all
+  end
+
+  # Cannot create this relationship using has_many because Rails gives a
+  # ActiveRecord::HasManyThroughCantAssociateThroughHasOneOrManyReflection
+  def draws
+    LotteryDraw.where(division: divisions)
   end
 
   def generate_entrants!
@@ -59,7 +58,7 @@ class Lottery < ApplicationRecord
   end
 
   def delete_and_insert_tickets!(beginning_reference_number: 10_000)
-    draws.delete_all
+    delete_all_draws!
     tickets.delete_all
 
     sql = LotteryTicketQuery.insert_lottery_tickets

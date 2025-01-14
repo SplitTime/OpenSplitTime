@@ -8,7 +8,7 @@ bruno_fadel:
   city:
   state_code: CA
   email: bruno@gmail.com
-  phone: 3035551212
+  phone: '3035551212'
   created_by: 1
   country_code: US
   user_id:
@@ -26,7 +26,7 @@ robby_gerlach:
   city:
   state_code: VA
   email: robby@yahoo.com
-  phone: 3034441212
+  phone: '3034441212'
   created_by: 1
   country_code: US
   user_id:

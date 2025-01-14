@@ -21,6 +21,7 @@ historical_fact_0001:
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2019
+  external_id:
 historical_fact_0002:
   id: 159
   person_id: 2187
@@ -43,6 +44,7 @@ historical_fact_0002:
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
+  external_id:
 historical_fact_0003:
   id: 160
   person_id: 2187
@@ -65,6 +67,7 @@ historical_fact_0003:
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
+  external_id:
 historical_fact_0004:
   id: 161
   person_id: 2187
@@ -87,6 +90,7 @@ historical_fact_0004:
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
+  external_id:
 historical_fact_0005:
   id: 162
   person_id: 2188
@@ -109,6 +113,7 @@ historical_fact_0005:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2016
+  external_id:
 historical_fact_0006:
   id: 163
   person_id: 2188
@@ -131,6 +136,7 @@ historical_fact_0006:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2017
+  external_id:
 historical_fact_0007:
   id: 164
   person_id: 2188
@@ -153,6 +159,7 @@ historical_fact_0007:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2018
+  external_id:
 historical_fact_0008:
   id: 165
   person_id: 2188
@@ -175,6 +182,7 @@ historical_fact_0008:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2019
+  external_id:
 historical_fact_0009:
   id: 166
   person_id: 2188
@@ -197,6 +205,7 @@ historical_fact_0009:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
+  external_id:
 historical_fact_0010:
   id: 167
   person_id: 2188
@@ -219,6 +228,7 @@ historical_fact_0010:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
+  external_id:
 historical_fact_0011:
   id: 168
   person_id: 2188
@@ -241,6 +251,7 @@ historical_fact_0011:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
+  external_id:
 historical_fact_0012:
   id: 169
   person_id: 2189
@@ -263,6 +274,7 @@ historical_fact_0012:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2015
+  external_id:
 historical_fact_0013:
   id: 170
   person_id: 2189
@@ -285,6 +297,7 @@ historical_fact_0013:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2016
+  external_id:
 historical_fact_0014:
   id: 171
   person_id: 2189
@@ -307,6 +320,7 @@ historical_fact_0014:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
+  external_id:
 historical_fact_0015:
   id: 172
   person_id: 2189
@@ -329,6 +343,7 @@ historical_fact_0015:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
+  external_id:
 historical_fact_0016:
   id: 173
   person_id: 2189
@@ -351,6 +366,7 @@ historical_fact_0016:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
+  external_id:
 historical_fact_0017:
   id: 174
   person_id: 2190
@@ -373,6 +389,7 @@ historical_fact_0017:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2022
+  external_id:
 historical_fact_0018:
   id: 175
   person_id: 2190
@@ -395,6 +412,7 @@ historical_fact_0018:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
+  external_id:
 historical_fact_0019:
   id: 176
   person_id: 2190
@@ -417,6 +435,7 @@ historical_fact_0019:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
+  external_id:
 historical_fact_0020:
   id: 177
   person_id: 2190
@@ -439,6 +458,7 @@ historical_fact_0020:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
+  external_id:
 historical_fact_0021:
   id: 178
   person_id: 2190
@@ -461,6 +481,7 @@ historical_fact_0021:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
+  external_id:
 historical_fact_0022:
   id: 179
   person_id: 2190
@@ -483,6 +504,7 @@ historical_fact_0022:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
+  external_id:
 historical_fact_0023:
   id: 180
   person_id: 2191
@@ -505,6 +527,7 @@ historical_fact_0023:
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2023
+  external_id:
 historical_fact_0024:
   id: 181
   person_id: 2191
@@ -527,6 +550,7 @@ historical_fact_0024:
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2023
+  external_id:
 historical_fact_0025:
   id: 182
   person_id: 69
@@ -549,6 +573,7 @@ historical_fact_0025:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2014
+  external_id:
 historical_fact_0026:
   id: 183
   person_id: 69
@@ -571,6 +596,7 @@ historical_fact_0026:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2015
+  external_id:
 historical_fact_0027:
   id: 184
   person_id: 69
@@ -593,6 +619,7 @@ historical_fact_0027:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2016
+  external_id:
 historical_fact_0028:
   id: 185
   person_id: 69
@@ -615,6 +642,7 @@ historical_fact_0028:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2017
+  external_id:
 historical_fact_0029:
   id: 186
   person_id: 69
@@ -637,6 +665,7 @@ historical_fact_0029:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2018
+  external_id:
 historical_fact_0030:
   id: 187
   person_id: 69
@@ -659,6 +688,7 @@ historical_fact_0030:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2019
+  external_id:
 historical_fact_0031:
   id: 188
   person_id: 69
@@ -681,6 +711,7 @@ historical_fact_0031:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
+  external_id:
 historical_fact_0032:
   id: 189
   person_id: 69
@@ -703,6 +734,7 @@ historical_fact_0032:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
+  external_id:
 historical_fact_0033:
   id: 190
   person_id: 69
@@ -725,6 +757,7 @@ historical_fact_0033:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
+  external_id:
 historical_fact_0034:
   id: 191
   person_id: 79
@@ -747,6 +780,7 @@ historical_fact_0034:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2003
+  external_id:
 historical_fact_0035:
   id: 192
   person_id: 79
@@ -769,6 +803,7 @@ historical_fact_0035:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2004
+  external_id:
 historical_fact_0036:
   id: 193
   person_id: 79
@@ -791,6 +826,7 @@ historical_fact_0036:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2005
+  external_id:
 historical_fact_0037:
   id: 194
   person_id: 79
@@ -813,6 +849,7 @@ historical_fact_0037:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2006
+  external_id:
 historical_fact_0038:
   id: 195
   person_id: 79
@@ -835,6 +872,7 @@ historical_fact_0038:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2007
+  external_id:
 historical_fact_0039:
   id: 196
   person_id: 79
@@ -857,6 +895,7 @@ historical_fact_0039:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2008
+  external_id:
 historical_fact_0040:
   id: 197
   person_id: 79
@@ -879,6 +918,7 @@ historical_fact_0040:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2009
+  external_id:
 historical_fact_0041:
   id: 198
   person_id: 79
@@ -901,6 +941,7 @@ historical_fact_0041:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2010
+  external_id:
 historical_fact_0042:
   id: 199
   person_id: 79
@@ -923,6 +964,7 @@ historical_fact_0042:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2011
+  external_id:
 historical_fact_0043:
   id: 200
   person_id: 79
@@ -945,6 +987,7 @@ historical_fact_0043:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2012
+  external_id:
 historical_fact_0044:
   id: 201
   person_id: 79
@@ -967,6 +1010,7 @@ historical_fact_0044:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2013
+  external_id:
 historical_fact_0045:
   id: 202
   person_id: 79
@@ -989,6 +1033,7 @@ historical_fact_0045:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2014
+  external_id:
 historical_fact_0046:
   id: 203
   person_id: 79
@@ -1011,6 +1056,7 @@ historical_fact_0046:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
+  external_id:
 historical_fact_0047:
   id: 204
   person_id: 79
@@ -1033,6 +1079,7 @@ historical_fact_0047:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
+  external_id:
 historical_fact_0048:
   id: 205
   person_id: 79
@@ -1055,6 +1102,7 @@ historical_fact_0048:
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
+  external_id:
 historical_fact_0049:
   id: 206
   person_id: 81
@@ -1077,6 +1125,7 @@ historical_fact_0049:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2013
+  external_id:
 historical_fact_0050:
   id: 207
   person_id: 81
@@ -1099,6 +1148,7 @@ historical_fact_0050:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2015
+  external_id:
 historical_fact_0051:
   id: 208
   person_id: 81
@@ -1121,6 +1171,7 @@ historical_fact_0051:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2014
+  external_id:
 historical_fact_0052:
   id: 209
   person_id: 81
@@ -1143,6 +1194,7 @@ historical_fact_0052:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2017
+  external_id:
 historical_fact_0053:
   id: 210
   person_id: 81
@@ -1165,6 +1217,7 @@ historical_fact_0053:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2018
+  external_id:
 historical_fact_0054:
   id: 211
   person_id: 81
@@ -1187,6 +1240,7 @@ historical_fact_0054:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2019
+  external_id:
 historical_fact_0055:
   id: 212
   person_id: 81
@@ -1209,6 +1263,7 @@ historical_fact_0055:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2021
+  external_id:
 historical_fact_0056:
   id: 213
   person_id: 81
@@ -1231,6 +1286,7 @@ historical_fact_0056:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2022
+  external_id:
 historical_fact_0057:
   id: 214
   person_id: 81
@@ -1253,6 +1309,7 @@ historical_fact_0057:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
+  external_id:
 historical_fact_0058:
   id: 215
   person_id: 81
@@ -1275,6 +1332,7 @@ historical_fact_0058:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
+  external_id:
 historical_fact_0059:
   id: 216
   person_id: 81
@@ -1297,6 +1355,7 @@ historical_fact_0059:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
+  external_id:
 historical_fact_0060:
   id: 217
   person_id: 81
@@ -1319,6 +1378,7 @@ historical_fact_0060:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
+  external_id:
 historical_fact_0061:
   id: 218
   person_id: 2195
@@ -1341,6 +1401,7 @@ historical_fact_0061:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2015
+  external_id:
 historical_fact_0062:
   id: 219
   person_id: 2195
@@ -1363,6 +1424,7 @@ historical_fact_0062:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2016
+  external_id:
 historical_fact_0063:
   id: 220
   person_id: 2195
@@ -1385,6 +1447,7 @@ historical_fact_0063:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2017
+  external_id:
 historical_fact_0064:
   id: 221
   person_id: 2195
@@ -1407,6 +1470,7 @@ historical_fact_0064:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2018
+  external_id:
 historical_fact_0065:
   id: 222
   person_id: 2195
@@ -1429,6 +1493,7 @@ historical_fact_0065:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
+  external_id:
 historical_fact_0066:
   id: 223
   person_id: 2195
@@ -1451,6 +1516,7 @@ historical_fact_0066:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
+  external_id:
 historical_fact_0067:
   id: 224
   person_id: 2195
@@ -1473,6 +1539,7 @@ historical_fact_0067:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
+  external_id:
 historical_fact_0068:
   id: 225
   person_id: 2196
@@ -1495,6 +1562,7 @@ historical_fact_0068:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2015
+  external_id:
 historical_fact_0069:
   id: 226
   person_id: 2196
@@ -1517,6 +1585,7 @@ historical_fact_0069:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2016
+  external_id:
 historical_fact_0070:
   id: 227
   person_id: 2196
@@ -1539,6 +1608,7 @@ historical_fact_0070:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2017
+  external_id:
 historical_fact_0071:
   id: 228
   person_id: 2196
@@ -1561,6 +1631,7 @@ historical_fact_0071:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
+  external_id:
 historical_fact_0072:
   id: 229
   person_id: 2196
@@ -1583,6 +1654,7 @@ historical_fact_0072:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
+  external_id:
 historical_fact_0073:
   id: 230
   person_id: 2196
@@ -1605,6 +1677,7 @@ historical_fact_0073:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
+  external_id:
 historical_fact_0074:
   id: 233
   person_id: 53
@@ -1627,6 +1700,7 @@ historical_fact_0074:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2012
+  external_id:
 historical_fact_0075:
   id: 234
   person_id: 53
@@ -1649,6 +1723,7 @@ historical_fact_0075:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2015
+  external_id:
 historical_fact_0076:
   id: 235
   person_id: 53
@@ -1671,6 +1746,7 @@ historical_fact_0076:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2016
+  external_id:
 historical_fact_0077:
   id: 236
   person_id: 53
@@ -1693,6 +1769,7 @@ historical_fact_0077:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2017
+  external_id:
 historical_fact_0078:
   id: 237
   person_id: 53
@@ -1715,6 +1792,7 @@ historical_fact_0078:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2018
+  external_id:
 historical_fact_0079:
   id: 238
   person_id: 53
@@ -1737,6 +1815,7 @@ historical_fact_0079:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
+  external_id:
 historical_fact_0080:
   id: 239
   person_id: 53
@@ -1759,6 +1838,7 @@ historical_fact_0080:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
+  external_id:
 historical_fact_0081:
   id: 240
   person_id: 53
@@ -1781,6 +1861,7 @@ historical_fact_0081:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
+  external_id:
 historical_fact_0082:
   id: 245
   person_id: 2187
@@ -1803,6 +1884,7 @@ historical_fact_0082:
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2024
+  external_id:
 historical_fact_0083:
   id: 246
   person_id: 2188
@@ -1825,6 +1907,7 @@ historical_fact_0083:
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2024
+  external_id:
 historical_fact_0084:
   id: 247
   person_id: 2189
@@ -1847,6 +1930,7 @@ historical_fact_0084:
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2024
+  external_id:
 historical_fact_0085:
   id: 248
   person_id: 2190
@@ -1869,6 +1953,7 @@ historical_fact_0085:
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2024
+  external_id:
 historical_fact_0086:
   id: 249
   person_id: 2191
@@ -1891,6 +1976,7 @@ historical_fact_0086:
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2024
+  external_id:
 historical_fact_0087:
   id: 250
   person_id: 69
@@ -1913,6 +1999,7 @@ historical_fact_0087:
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2024
+  external_id:
 historical_fact_0088:
   id: 251
   person_id: 81
@@ -1935,6 +2022,7 @@ historical_fact_0088:
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2024
+  external_id:
 historical_fact_0089:
   id: 252
   person_id: 2195
@@ -1957,6 +2045,7 @@ historical_fact_0089:
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2024
+  external_id:
 historical_fact_0090:
   id: 253
   person_id: 2196
@@ -1979,6 +2068,7 @@ historical_fact_0090:
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2024
+  external_id:
 historical_fact_0091:
   id: 254
   person_id: 53
@@ -2001,3 +2091,4 @@ historical_fact_0091:
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2024
+  external_id:

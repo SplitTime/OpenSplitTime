@@ -213,6 +213,7 @@ RSpec.describe LotteryEntrant, type: :model do
   describe "#draw_ticket!" do
     subject { lottery.entrants.find_by(last_name: "Crona") }
     let(:lottery) { lotteries(:lottery_without_tickets) }
+    let(:division) { lottery.divisions.first }
     let(:execute_method) { subject.draw_ticket! }
 
     context "when the entrant has no tickets" do
@@ -239,7 +240,7 @@ RSpec.describe LotteryEntrant, type: :model do
     context "when the entrant has already been drawn" do
       before do
         lottery.delete_and_insert_tickets!
-        lottery.draws.create(ticket: subject.tickets.first)
+        division.draws.create(ticket: subject.tickets.first)
       end
 
       it "does not create a draw" do
@@ -255,6 +256,7 @@ RSpec.describe LotteryEntrant, type: :model do
   describe "#drawn?" do
     subject { lottery.entrants.find_by(last_name: "Crona") }
     let(:lottery) { lotteries(:lottery_without_tickets) }
+    let(:division) { lottery.divisions.first }
     let(:result) { subject.drawn? }
 
     context "when the entrant has no tickets" do
@@ -269,7 +271,7 @@ RSpec.describe LotteryEntrant, type: :model do
     context "when the entrant has been drawn" do
       before do
         lottery.delete_and_insert_tickets!
-        lottery.draws.create(ticket: subject.tickets.first)
+        division.draws.create(ticket: subject.tickets.first)
       end
 
       it { expect(result).to eq(true) }

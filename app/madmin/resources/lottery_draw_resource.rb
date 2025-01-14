@@ -7,7 +7,7 @@ class LotteryDrawResource < Madmin::Resource
   attribute :position
 
   # Associations
-  attribute :lottery
+  attribute :division
   attribute :ticket
 
   # Uncomment this to customize the display name of records in the admin area.

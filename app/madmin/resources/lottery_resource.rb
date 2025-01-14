@@ -16,7 +16,6 @@ class LotteryResource < Madmin::Resource
   attribute :divisions
   attribute :entrants
   attribute :tickets
-  attribute :draws
   attribute :simulation_runs
   attribute :slugs
 

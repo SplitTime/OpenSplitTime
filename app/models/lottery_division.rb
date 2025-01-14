@@ -3,6 +3,7 @@ class LotteryDivision < ApplicationRecord
   include CapitalizeAttributes
 
   belongs_to :lottery
+  has_many :draws, class_name: "LotteryDraw", dependent: :destroy
   has_many :entrants, class_name: "LotteryEntrant", dependent: :destroy
   has_many :tickets, through: :entrants
 
@@ -27,17 +28,19 @@ class LotteryDivision < ApplicationRecord
     entrants.not_drawn.empty?
   end
 
+  def create_draw_for_ticket!(ticket)
+    return if ticket.nil? || ticket.drawn?
+
+    draws.create!(ticket: ticket)
+  end
+
   def draw_ticket!
     drawn_entrants = entrants.drawn
     eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)
     selected_ticket_index = rand(eligible_tickets.count)
     selected_ticket = eligible_tickets.ordered_by_reference_number.offset(selected_ticket_index).first
 
-    lottery.create_draw_for_ticket!(selected_ticket)
-  end
-
-  def draws
-    lottery.draws.for_division(self)
+    create_draw_for_ticket!(selected_ticket)
   end
 
   def full?

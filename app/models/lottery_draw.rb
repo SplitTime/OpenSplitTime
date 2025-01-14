@@ -1,6 +1,10 @@
 class LotteryDraw < ApplicationRecord
-  belongs_to :lottery
+
+  self.ignored_columns = ["lottery_id"]
+
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: :lottery_division_id
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
+  has_one :lottery, through: :division
 
   scope :for_division, ->(division) { joins(ticket: :entrant).where(lottery_entrants: { division: division }) }
   scope :in_drawn_order, -> { reorder(created_at: :asc) }
@@ -22,7 +26,7 @@ class LotteryDraw < ApplicationRecord
   delegate :entrant, :reference_number, to: :ticket
   delegate :first_name, :last_name, :gender, :birthdate, :city, :state_code, :state_name, :country_code, :country_name,
            :bio, :flexible_geolocation, :full_name, to: :entrant, prefix: true
-  delegate :division, :number_of_tickets, to: :entrant
+  delegate :number_of_tickets, to: :entrant
 
   def entrant_division_name
     entrant.division_name

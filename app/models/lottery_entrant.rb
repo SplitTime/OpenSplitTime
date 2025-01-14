@@ -84,7 +84,7 @@ class LotteryEntrant < ApplicationRecord
     selected_ticket_index = rand(tickets.count)
     selected_ticket = tickets.offset(selected_ticket_index).first
 
-    lottery.create_draw_for_ticket!(selected_ticket)
+    division.create_draw_for_ticket!(selected_ticket)
   end
 
   # @return [Boolean]

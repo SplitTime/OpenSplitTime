@@ -16,7 +16,7 @@ class LotteryPresenter < BasePresenter
 
   # @return [ActiveRecord::Relation<LotteryDivision>]
   def ordered_divisions
-    @ordered_divisions ||= divisions.ordered_by_name
+    @ordered_divisions ||= divisions.with_progress_data.ordered_by_name
   end
 
   # @return [ActiveRecord::Relation<LotteryEntrant>]

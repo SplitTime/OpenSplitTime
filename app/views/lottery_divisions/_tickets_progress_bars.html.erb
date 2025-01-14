@@ -1,28 +1,30 @@
 <%# locals: (lottery_division:, show_pre_selected:) %>
 
-<div id="<%= dom_id(lottery_division, :lottery_progress_bars_admin) %>" class="card mt-3">
+<% presenter = Lotteries::DivisionPresenter.new(lottery_division) %>
+
+<div id="<%= dom_id(presenter.__getobj__, :lottery_progress_bars_admin) %>" class="card mt-3">
   <div class="card-body">
     <div class="row">
       <div class="col-8">
         <h6 class="fw-bold">Accepted</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{lottery_division.accepted_entrants.count}/#{lottery_division.maximum_entries})" %></h6>
+        <h6 class="text-end"><%= "(#{presenter.accepted_tickets_drawn}/#{presenter.maximum_entries})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: lottery_division.maximum_entries, current_value: lottery_division.accepted_entrants.count, color: "success") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_entries, current_value: presenter.accepted_tickets_drawn, color: "success") %>
     </div>
     <div class="row mt-2">
       <div class="col-8">
         <h6 class="fw-bold">Wait List</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{lottery_division.waitlisted_entrants.count}/#{lottery_division.maximum_wait_list})" %></h6>
+        <h6 class="text-end"><%= "(#{presenter.waitlisted_tickets_drawn}/#{presenter.maximum_wait_list})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: lottery_division.maximum_wait_list, current_value: lottery_division.waitlisted_entrants.count, color: "warning") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_wait_list, current_value: presenter.waitlisted_tickets_drawn, color: "warning") %>
     </div>
     <% if show_pre_selected %>
       <div class="row mt-2">

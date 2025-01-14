@@ -14,6 +14,15 @@ class LotteryDivision < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false, scope: :lottery
 
   scope :ordered_by_name, -> { order(:name) }
+  scope :with_progress_data, -> {
+    from(left_joins(lottery: { draws: { ticket: :entrant } })
+      .select(
+        'lottery_divisions.*',
+        'SUM(CASE WHEN lottery_entrants.lottery_division_id = lottery_divisions.id THEN 1 ELSE 0 END) AS tickets_drawn'
+      )
+      .group('lottery_divisions.id'), :lottery_divisions)
+  }
+
   scope :with_policy_scope_attributes, lambda {
     from(select("lottery_divisions.*, organizations.concealed, organizations.id as organization_id").joins(lottery: :organization), :lottery_divisions)
   }

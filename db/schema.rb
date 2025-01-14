@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_01_07_132834) do
+ActiveRecord::Schema[7.1].define(version: 2025_01_14_061736) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -384,6 +384,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_132834) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
+    t.bigint "lottery_division_id"
+    t.index ["lottery_division_id"], name: "index_lottery_draws_on_lottery_division_id"
     t.index ["lottery_id"], name: "index_lottery_draws_on_lottery_id"
     t.index ["lottery_ticket_id"], name: "index_lottery_draws_on_lottery_ticket_id", unique: true
   end
@@ -789,6 +791,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_01_07_132834) do
   add_foreign_key "lotteries", "organizations"
   add_foreign_key "lottery_divisions", "lotteries"
   add_foreign_key "lottery_draws", "lotteries"
+  add_foreign_key "lottery_draws", "lottery_divisions"
   add_foreign_key "lottery_draws", "lottery_tickets"
   add_foreign_key "lottery_entrants", "lottery_divisions"
   add_foreign_key "lottery_entrants", "people"

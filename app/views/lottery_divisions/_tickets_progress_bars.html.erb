@@ -9,22 +9,22 @@
         <h6 class="fw-bold">Accepted</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{presenter.accepted_tickets_drawn}/#{presenter.maximum_entries})" %></h6>
+        <h6 class="text-end"><%= "(#{presenter.accepted_drawn_tickets_count}/#{presenter.maximum_entries})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_entries, current_value: presenter.accepted_tickets_drawn, color: "success") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_entries, current_value: presenter.accepted_drawn_tickets_count, color: "success") %>
     </div>
     <div class="row mt-2">
       <div class="col-8">
         <h6 class="fw-bold">Wait List</h6>
       </div>
       <div class="col-4">
-        <h6 class="text-end"><%= "(#{presenter.waitlisted_tickets_drawn}/#{presenter.maximum_wait_list})" %></h6>
+        <h6 class="text-end"><%= "(#{presenter.waitlisted_drawn_tickets_count}/#{presenter.maximum_wait_list})" %></h6>
       </div>
     </div>
     <div class="progress">
-      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_wait_list, current_value: presenter.waitlisted_tickets_drawn, color: "warning") %>
+      <%= bootstrap_progress_bar(min_value: 0, max_value: presenter.maximum_wait_list, current_value: presenter.waitlisted_drawn_tickets_count, color: "warning") %>
     </div>
     <% if show_pre_selected %>
       <div class="row mt-2">

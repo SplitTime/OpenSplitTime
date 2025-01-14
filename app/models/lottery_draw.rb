@@ -6,7 +6,6 @@ class LotteryDraw < ApplicationRecord
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
   has_one :lottery, through: :division
 
-  scope :for_division, ->(division) { joins(ticket: :entrant).where(lottery_entrants: { division: division }) }
   scope :in_drawn_order, -> { reorder(created_at: :asc) }
   scope :include_entrant_and_division, -> { includes(ticket: { entrant: :division }) }
   scope :prior_to_draw, ->(draw) { where("lottery_draws.created_at < ?", draw.created_at) }
@@ -43,8 +42,8 @@ class LotteryDraw < ApplicationRecord
   end
 
   def broadcast_lottery_draw_created
-    broadcast_render_later_to lottery, :lottery_draws, partial: "lotteries/draws/created", locals: { lottery_draw: self, lottery_division: division }
-    broadcast_render_later_to division, :lottery_draws_admin, partial: "lotteries/draws/created_admin", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_to lottery, :lottery_draws, partial: "lotteries/draws/created", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_to division, :lottery_draws_admin, partial: "lotteries/draws/created_admin", locals: { lottery_draw: self, lottery_division: division }
   end
 
   def broadcast_lottery_draw_destroyed

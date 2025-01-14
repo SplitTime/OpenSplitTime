@@ -8,6 +8,18 @@ RSpec.describe LotteryDivision, type: :model do
   it { is_expected.to strip_attribute(:name) }
   it { is_expected.to capitalize_attribute(:name) }
 
+  describe "scopes" do
+    describe ".with_drawn_tickets_count" do
+      let(:result) { described_class.with_drawn_tickets_count }
+      it "returns each division with drawn ticket counts" do
+        expect(result.count).to eq(LotteryDivision.count)
+
+        elses_division = result.find { |division| division.name == "Elses" }
+        expect(elses_division.drawn_tickets_count).to eq()
+      end
+    end
+  end
+
   describe "#all_entrants_drawn?" do
     let(:result) { subject.all_entrants_drawn? }
     let(:division_name) { "Elses" }

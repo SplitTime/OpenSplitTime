@@ -4,9 +4,9 @@ class LotteryPresenter < BasePresenter
   attr_reader :lottery, :params
   delegate :action_name, :controller_name, to: :view_context
 
-  delegate :calculation_class?, :concealed?, :divisions, :draws, :entrants, :name, :organization, :scheduled_start_date, :status,
+  delegate :calculation_class?, :concealed?, :divisions, :entrants, :name, :organization, :scheduled_start_date, :status,
            :tickets, :to_param, :service_form, to: :lottery
-  delegate :entrants, :tickets, to: :lottery, prefix: true
+  delegate :draws, :entrants, :tickets, to: :lottery, prefix: true
 
   def initialize(lottery, view_context)
     @lottery = lottery

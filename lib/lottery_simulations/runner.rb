@@ -31,7 +31,7 @@ module LotterySimulations
     attr_accessor :simulation
 
     delegate :lottery, :requested_count, to: :simulation_run
-    delegate :divisions, :entrants, :tickets, to: :lottery
+    delegate :divisions, :draws, :entrants, :tickets, to: :lottery
 
     def start_simulation_run
       simulation_run.start!

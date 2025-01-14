@@ -27,9 +27,13 @@ class Lottery < ApplicationRecord
   scope :with_policy_scope_attributes, -> { all }
 
   def delete_all_draws!
-    divisions.each do |division|
-      division.draws.delete_all
-    end
+    draws.delete_all
+  end
+
+  # Cannot create this relationship using has_many because Rails gives a
+  # ActiveRecord::HasManyThroughCantAssociateThroughHasOneOrManyReflection
+  def draws
+    LotteryDraw.where(division: divisions)
   end
 
   def generate_entrants!

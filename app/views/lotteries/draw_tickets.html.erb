@@ -14,12 +14,11 @@
   <div class="row horizontal-scroll">
   <% if @presenter.lottery_tickets.present? %>
       <% @presenter.ordered_divisions.each do |division| %>
-        <%= turbo_stream_from division, :lottery_draws, class: "d-none" %>
-        <%= turbo_stream_from division, :lottery_draw_header, class: "d-none" %>
+        <%= turbo_stream_from division, :lottery_draws_admin, class: "d-none" %>
         <div class="col-12 col-md-6 col-lg-4 col-xl">
           <%= render partial: "lottery_divisions/draw_tickets_header", locals: { lottery_division: division } %>
           <hr/>
-          <div id="<%= dom_id(division, :lottery_draws) %>">
+          <div id="<%= dom_id(division, :lottery_draws_admin) %>">
             <%= render partial: "lottery_draws/lottery_draw_admin", collection: division.draws.with_entrant_and_ticket.most_recent_first, as: :lottery_draw %>
           </div>
           <hr/>

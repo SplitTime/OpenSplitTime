@@ -2,7 +2,7 @@ class LotteryDraw < ApplicationRecord
 
   self.ignored_columns = ["lottery_id"]
 
-  belongs_to :division, class_name: "LotteryDivision", foreign_key: :lottery_division_id
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: :lottery_division_id, touch: true
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
   has_one :lottery, through: :division
 

@@ -3,33 +3,35 @@
 <% if presenter.viewable_results? %>
   <% if presenter.lottery_draws.exists? %>
     <% presenter.ordered_divisions.each do |division| %>
-      <div class="card">
-        <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
-        <div class="card-body">
-          <h5>Accepted</h5>
-          <% if division.accepted_entrants.any? %>
-            <ol>
-              <%= render partial: "entrant_for_results", collection: division.accepted_entrants.includes(:service_detail), as: :entrant %>
-            </ol>
-          <% else %>
-            <p>No entrants have been drawn yet</p>
-          <% end %>
+      <% cache division do %>
+        <div class="card">
+          <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
+          <div class="card-body">
+            <h5>Accepted</h5>
+            <% if division.accepted_entrants.any? %>
+              <ol>
+                <%= render partial: "entrant_for_results", collection: division.accepted_entrants.includes(:service_detail), as: :entrant %>
+              </ol>
+            <% else %>
+              <p>No entrants have been drawn yet</p>
+            <% end %>
 
-          <% if division.waitlisted_entrants.any? %>
-            <h5>Wait List</h5>
-            <ol>
-              <%= render partial: "entrant_for_results", collection: division.waitlisted_entrants.includes(:service_detail), as: :entrant %>
-            </ol>
-          <% end %>
+            <% if division.waitlisted_entrants.any? %>
+              <h5>Wait List</h5>
+              <ol>
+                <%= render partial: "entrant_for_results", collection: division.waitlisted_entrants.includes(:service_detail), as: :entrant %>
+              </ol>
+            <% end %>
 
-          <% if division.withdrawn_entrants.any? %>
-            <h5>Withdrawn</h5>
-            <ol>
-              <%= render partial: "entrant_for_results", collection: division.withdrawn_entrants.includes(:service_detail), as: :entrant %>
-            </ol>
-          <% end %>
+            <% if division.withdrawn_entrants.any? %>
+              <h5>Withdrawn</h5>
+              <ol>
+                <%= render partial: "entrant_for_results", collection: division.withdrawn_entrants.includes(:service_detail), as: :entrant %>
+              </ol>
+            <% end %>
+          </div>
         </div>
-      </div>
+      <% end %>
       <br/>
     <% end %>
   <% else %>

@@ -6,7 +6,7 @@ class LotteryEntrant < ApplicationRecord
   include CapitalizeAttributes
 
   belongs_to :person, optional: true
-  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id"
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id", touch: true
   has_many :tickets, class_name: "LotteryTicket", dependent: :destroy
   has_many :historical_facts, ->(entrant) { where(organization: entrant.organization) }, through: :person
   has_one :lottery, through: :division

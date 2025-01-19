@@ -2,7 +2,7 @@ class LotteryDivision < ApplicationRecord
   include Delegable
   include CapitalizeAttributes
 
-  belongs_to :lottery
+  belongs_to :lottery, touch: true
   has_many :draws, class_name: "LotteryDraw", dependent: :destroy
   has_many :entrants, class_name: "LotteryEntrant", dependent: :destroy
   has_many :tickets, through: :entrants

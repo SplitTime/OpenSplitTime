@@ -3,7 +3,7 @@ module ExportHelper
     path = export_async_organization_course_group_best_efforts_path(
       view_object.organization,
       view_object.course_group,
-      filter: view_object.request[:filter]
+      filter: view_object.request.query_parameters[:filter]
     )
 
     button_to(path, method: :post, class: "btn btn-md btn-success") do
@@ -15,8 +15,8 @@ module ExportHelper
     path = export_async_organization_course_group_finishers_path(
       view_object.organization,
       view_object.course_group,
-      filter: view_object.request[:filter],
-      sort: view_object.request[:sort]
+      filter: view_object.request.query_parameters[:filter],
+      sort: view_object.request.query_parameters[:sort]
     )
 
     button_to(path, method: :post, class: "btn btn-md btn-success") do

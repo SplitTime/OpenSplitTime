@@ -5,7 +5,7 @@ RSpec.describe "Create a new organization" do
   let(:admin) { users(:admin_user) }
 
   scenario "The user is a visitor" do
-    visit_path
+    visit_page
 
     expect(page).to have_current_path(root_path)
     expect(page).to have_text("You need to sign in or sign up before continuing")
@@ -13,19 +13,19 @@ RSpec.describe "Create a new organization" do
 
   scenario "The user is a non-admin user" do
     login_as user, scope: :user
-    visit_path
+    visit_page
 
     verify_organization_creation
   end
 
   scenario "The user is an admin user" do
     login_as admin, scope: :user
-    visit_path
+    visit_page
 
     verify_organization_creation
   end
 
-  def visit_path
+  def visit_page
     visit new_organization_path
   end
 

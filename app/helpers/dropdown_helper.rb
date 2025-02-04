@@ -33,7 +33,7 @@ module DropdownHelper
   def connection_services_dropdown_menu(view_object)
     dropdown_items = view_object.available_connection_services.map do |service|
       { name: service.name,
-        link: event_group_connect_service_path(view_object.event_group, service.identifier),
+        link: event_group_connect_service_path(view_object.event_group, service),
         disabled: service.identifier.in?(view_object.existing_service_identifiers) }
     end
 

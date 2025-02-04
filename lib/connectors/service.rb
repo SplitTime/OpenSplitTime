@@ -38,5 +38,9 @@ module Connectors
       "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleEntries,
       "runsignup" => Interactors::SyncRunsignupParticipants,
     }
+
+    def to_param
+      identifier
+    end
   end
 end

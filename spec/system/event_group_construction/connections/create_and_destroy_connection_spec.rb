@@ -47,8 +47,10 @@ RSpec.describe "Create new connection", type: :system, js: true do
       expect(page).not_to have_text("Credentials are missing")
 
       fill_in "connection[source_id]", with: valid_runsignup_id
-      expect { click_button "Save" }.to change(Connection, :count).by(1)
-      expect(page).to have_link("Remove")
+      expect do
+        click_button "Save"
+        expect(page).to have_link("Remove")
+      end.to change(Connection, :count).by(1)
     end
 
     context "when a connection already exists" do

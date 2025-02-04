@@ -11,14 +11,15 @@ RSpec.describe "Visit an organization courses page and try various features" do
     organization.stewards << steward
   end
 
-  let(:organization) { organizations(:dirty_30_running) }
-  let(:concealed_course) { courses(:sum_55k_course) }
-  let(:visible_course) { courses(:d30_50k_course) }
+  let(:organization) { organizations(:hardrock) }
+  let(:concealed_course) { courses(:hardrock_cw) }
+  let(:visible_course) { courses(:hardrock_ccw) }
+  let(:course_group) { course_groups(:both_directions) }
 
   let(:outside_organization) { organizations(:running_up_for_air) }
   let(:outside_course) { courses(:rufa_course) }
 
-  before { concealed_course.update(concealed: true) }
+  before { concealed_course.update!(concealed: true) }
 
   scenario "The user is a visitor" do
     visit_page
@@ -69,20 +70,33 @@ RSpec.describe "Visit an organization courses page and try various features" do
     expect(page).to have_content("Courses")
     expect(page).to have_content("Events")
 
-    expect(page).to have_content(visible_course.name)
+    within("#courses") do
+      expect(page).to have_content(visible_course.name)
+    end
+
+    within("#course_groups") do
+      expect(page).to have_content(course_group.name)
+    end
   end
 
   def verify_outside_content_absent
-    expect(page).not_to have_content(outside_course.name)
+    within("#courses") do
+      expect(page).not_to have_content(outside_course.name)
+    end
   end
 
   def verify_concealed_content_absent
     expect(page).not_to have_content("Stewards")
-    expect(page).not_to have_content(concealed_course.name)
+
+    within("#courses") do
+      expect(page).not_to have_content(concealed_course.name)
+    end
   end
 
   def verify_concealed_links_present
-    expect(page).to have_content(concealed_course.name)
+    within("#courses") do
+      expect(page).to have_content(concealed_course.name)
+    end
   end
 
   def visit_page

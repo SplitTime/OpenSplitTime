@@ -17,15 +17,13 @@
 
   <%= render partial: "event_groups/connect_service/#{connect_service_presenter.service_identifier}/event_group_card",
              locals: {
-               event_group_setup_presenter: event_group_setup_presenter,
-               connect_service_presenter: connect_service_presenter
+               connect_service_presenter: connect_service_presenter,
              } %>
 
   <div id="<%= dom_id(event_group_setup_presenter.event_group, :connect_service_events_list) %>">
     <%= render partial: "events_list",
                locals: {
-                 event_group_setup_presenter: event_group_setup_presenter,
-                 connect_service_presenter: connect_service_presenter
+                 connect_service_presenter: connect_service_presenter,
                } %>
   </div>
 </article>

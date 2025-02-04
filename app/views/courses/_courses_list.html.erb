@@ -1,17 +1,18 @@
-<%# Requires parameter courses %>
+<%# locals: (courses:) %>
 
-<table class="table table-centered table-fixed-sm table-striped">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Splits</th>
-    <th>Events</th>
-    <th class="text-center">GPX</th>
-    <th class="text-end">Average Finish Time</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% courses.each do |course| %>
+<div id="courses">
+  <table class="table table-centered table-fixed-sm table-striped">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Splits</th>
+      <th>Events</th>
+      <th class="text-center">GPX</th>
+      <th class="text-end">Average Finish Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% courses.each do |course| %>
       <tr>
         <td><strong><%= link_to course.name, organization_course_path(course.organization, course) %></strong></td>
         <td><%= pluralize(course.splits.size, "split") %></td>
@@ -19,6 +20,7 @@
         <td class="text-center"><%= fa_icon("circle-check", class: "text-success") if course.gpx.attached? %></td>
         <td class="text-end"><%= TimeConversion.seconds_to_hms(course.average_finish_seconds) %></td>
       </tr>
-  <% end %>
-  </tbody>
-</table>
+    <% end %>
+    </tbody>
+  </table>
+</div>

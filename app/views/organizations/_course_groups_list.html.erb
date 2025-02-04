@@ -1,35 +1,39 @@
-<table class="table table-centered table-fixed-sm table-striped">
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Courses</th>
-    <th class="text-center">Unique Finishers</th>
-    <th class="text-center">Total Finishes</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% course_groups.each do |course_group| %>
+<%# locals: (course_groups:) %>
+
+<div id="course_groups">
+  <table class="table table-centered table-fixed-sm table-striped">
+    <thead>
     <tr>
-      <td class="fw-bold">
-        <%= link_to course_group.name, organization_course_group_path(course_group.organization, course_group) %>
-      </td>
-      <td><%= course_group.courses.pluck(:name).join(", ") %></td>
-      <td class="text-center">
-        <%= CourseGroupFinisher.for_course_groups(course_group).count %>
-      </td>
-      <td class="text-center">
-        <%= Effort.where(event: course_group.events).finished.count %>
-      </td>
-      <td class="text-end">
-        <%= link_to "All-time best",
-                    organization_course_group_best_efforts_path(course_group.organization, course_group),
-                    class: "btn btn-primary" %>
-        <%= link_to "All finishers",
-                    organization_course_group_finishers_path(course_group.organization, course_group),
-                    class: "btn btn-primary" %>
-      </td>
+      <th>Name</th>
+      <th>Courses</th>
+      <th class="text-center">Unique Finishers</th>
+      <th class="text-center">Total Finishes</th>
+      <th></th>
     </tr>
-  <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+    <% course_groups.each do |course_group| %>
+      <tr>
+        <td class="fw-bold">
+          <%= link_to course_group.name, organization_course_group_path(course_group.organization, course_group) %>
+        </td>
+        <td><%= course_group.courses.pluck(:name).join(", ") %></td>
+        <td class="text-center">
+          <%= CourseGroupFinisher.for_course_groups(course_group).count %>
+        </td>
+        <td class="text-center">
+          <%= Effort.where(event: course_group.events).finished.count %>
+        </td>
+        <td class="text-end">
+          <%= link_to "All-time best",
+                      organization_course_group_best_efforts_path(course_group.organization, course_group),
+                      class: "btn btn-primary" %>
+          <%= link_to "All finishers",
+                      organization_course_group_finishers_path(course_group.organization, course_group),
+                      class: "btn btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

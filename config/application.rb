@@ -27,6 +27,10 @@ module OpenSplitTime
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path
     end
 
+    # Make encrypted attributes from Rails 7.0 compatible with Rails 7.1
+    Rails.application.config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    Rails.application.config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.

@@ -35,6 +35,9 @@ class Credential < ApplicationRecord
 
   scope :for_service, ->(service_identifier) { where(service_identifier: service_identifier) }
 
+  # This method is meant to be scoped to the credentials of a single user, e.g.
+  # user.credentials.fetch("runsignup", "api_key")
+
   # @param [String,Symbol] service_identifier
   # @param [String,Symbol] key
   # @return [String, nil]

@@ -30,15 +30,22 @@ module Connectors
       ]
     end
 
-    self::BY_IDENTIFIER = all.index_by(&:identifier).with_indifferent_access
-    self::IDENTIFIERS = self::BY_IDENTIFIER.keys
+    self::BY_IDENTIFIER = all.index_by(&:identifier).with_indifferent_access.freeze
+    self::IDENTIFIERS = self::BY_IDENTIFIER.keys.freeze
 
     self::SYNCING_INTERACTORS = {
       "internal_lottery" => Interactors::SyncLotteryEntrants,
       "rattlesnake_ramble" => Interactors::SyncRattlesnakeRambleEntries,
       "runsignup" => Interactors::SyncRunsignupParticipants,
-    }
+    }.freeze
 
+    # @param [String] identifier
+    # @return [Connectors::Service]
+    def self.find(identifier)
+      all.find { |service| service.identifier == identifier }
+    end
+
+    # @return [String]
     def to_param
       identifier
     end

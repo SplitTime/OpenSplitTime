@@ -119,6 +119,10 @@ class RawTime < ApplicationRecord
     absolute_time.present? || entered_time.present?
   end
 
+  def api_v1_url
+    Rails.application.routes.url_helpers.send("api_v1_event_group_raw_time_path", event_group_id, self)
+  end
+
   private
 
   def broadcast_raw_time_create

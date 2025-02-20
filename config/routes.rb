@@ -311,6 +311,7 @@ Rails.application.routes.draw do
         end
       end
       resources :event_groups, only: [:index, :show, :create, :update, :destroy] do
+        resources :raw_times, only: [:index, :show]
         member do
           post :enrich_raw_time_row
           get :not_expected

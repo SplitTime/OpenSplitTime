@@ -21,7 +21,7 @@ module Api
       private
 
       def set_event_group
-        @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.find(params[:event_group_id])
+        @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:event_group_id])
       end
 
       def authorize_event_group

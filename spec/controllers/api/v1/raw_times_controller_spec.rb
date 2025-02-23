@@ -18,26 +18,40 @@ RSpec.describe Api::V1::RawTimesController do
     let(:sort) { nil }
 
     via_login_and_jwt do
-      context "when an existing event group is provided" do
-        context "with no filter or sort" do
-          it "returns a 200 response" do
-            make_request
-            expect(response.status).to eq(200)
-          end
+      context "when an existing event group id is provided" do
+        it "returns a 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+        end
 
-          it "returns the first page of raw_times in the event group" do
-            make_request
-            parsed_response = JSON.parse(response.body)
-            expect(parsed_response["data"].size).to eq(25)
-            expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
-          end
+        it "returns the first page of raw_times in the event group" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"].size).to eq(25)
+          expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
+        end
 
-          it "includes a link to the next page and to the last page in the header" do
-            make_request
-            header = response.header
-            expect(header["Link"]).to include("rel=\"next\"")
-            expect(header["Link"]).to include("rel=\"last\"")
-          end
+        it "includes a link to the next page and to the last page in the header" do
+          make_request
+          header = response.header
+          expect(header["Link"]).to include("rel=\"next\"")
+          expect(header["Link"]).to include("rel=\"last\"")
+        end
+      end
+
+      context "when the event group slug is provided instead of id" do
+        let(:event_group_id) { event_group.slug }
+
+        it "returns a 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+        end
+
+        it "returns the first page of raw_times in the event group" do
+          make_request
+          parsed_response = JSON.parse(response.body)
+          expect(parsed_response["data"].size).to eq(25)
+          expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
         end
       end
     end

@@ -26,9 +26,24 @@
     <hr/>
     <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/event_groups</code>
     <hr/>
-    <p>Records are returned in batches of 25. Links are included to obtain additional batches.</p>
+    <p>Records are returned in batches of 25. Links are included in the response header to obtain additional batches.</p>
     <p>Remember that individual records are generally more useful and
       <strong>response times will generally be faster for individual record queries than for index queries</strong>.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">Index Queries Scoped to a Parent Record</h4>
+  <div class="card-body">
+    <p>In addition to standard index queries, you may query for records scoped to an individual parent record. Currently, this feature is available
+      for Raw Times scoped to an event group.</p>
+    <p>Query for Raw Times by passing a GET request to the endpoint shown below and including your API key as a
+      bearer authorization in the request header:</p>
+    <hr/>
+    <code>$ curl -H "Authorization: bearer your.api.key" https://www.opensplittime.org/api/v1/event_groups/hardrock-100-2024/raw_times</code>
+    <hr/>
+    <p>Records are returned in batches of 25. Links are included in the response header to obtain additional batches.</p>
   </div>
 </div>
 <br/>

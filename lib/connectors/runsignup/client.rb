@@ -28,13 +28,13 @@ class Connectors::Runsignup::Client
 
   # @return [String]
   def make_request
-    self.response = ::RestClient.get(url, { params: params })
-    self.response_code = response.code
+    self.response = ::Faraday.get(url, params)
+    self.response_code = response.status
 
     response.body
-  rescue RestClient::Exception => e
-    self.response_code = e.http_code
-    self.raw_error_message = e.message
+  rescue Faraday::Error => e
+    self.response_code = e.response[:status]
+    self.raw_error_message = e.response[:body]
   rescue SocketError
     self.raw_error_message = "The service did not respond; please check your internet connection"
   ensure

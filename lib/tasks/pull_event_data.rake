@@ -101,15 +101,17 @@ namespace :pull_event do
 
     begin
       upload_response = Faraday.post(upload_url, upload_params, upload_headers)
+      upload_response_body = upload_response.body.presence || "{}"
+      parsed_upload_response = JSON.parse(upload_response_body)
+      response_status = upload_response.status
     rescue Faraday::Error => e
-      upload_response = e.response[:body]
+      parsed_upload_response = e.response[:body]
+      response_status = e.response[:status]
     end
 
-    upload_response_body = upload_response.is_a?(Faraday::Response) ? upload_response.body.presence || "{}" : upload_response
-    parsed_upload_response = JSON.parse(upload_response_body)
     elapsed_time = (Time.current - start_time).round(2)
 
-    if upload_response.code == 201
+    if response_status == 201
       puts "Completed pull_event:from_uri for event: #{event.name} from #{source_uri} in #{elapsed_time} seconds\n"
     else
       puts "ERROR during pull_event:from_uri for event: #{event.name} from #{source_uri}\n"

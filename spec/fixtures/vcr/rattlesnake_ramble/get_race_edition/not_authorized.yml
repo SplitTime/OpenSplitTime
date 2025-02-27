@@ -7,73 +7,12 @@ http_interactions:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept:
-      - "*/*"
       User-Agent:
-      - Faraday v2.12.2 (darwin22 arm64) ruby/3.2.2p53
+      - Faraday v2.12.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Host:
-      - www.rattlesnakeramble.org
-  response:
-    status:
-      code: 301
-      message: Moved Permanently
-    headers:
-      Server:
-      - Cowboy
-      Date:
-      - Sun, 10 Sep 2023 02:55:52 GMT
-      Connection:
-      - keep-alive
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      X-Download-Options:
-      - noopen
-      X-Permitted-Cross-Domain-Policies:
-      - none
-      Referrer-Policy:
-      - strict-origin-when-cross-origin
-      Location:
-      - https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user%40example.com&user%5Bpassword%5D=password
-      Content-Type:
-      - text/html; charset=utf-8
-      Cache-Control:
-      - no-cache
-      X-Request-Id:
-      - 4198084e-ef89-4ca6-996e-b66d94e0eb6e
-      X-Runtime:
-      - '0.007300'
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubDomains
-      Transfer-Encoding:
-      - chunked
-      Via:
-      - 1.1 vegur
-    body:
-      encoding: UTF-8
-      string: <html><body>You are being <a href="https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user%40example.com&amp;user%5Bpassword%5D=password">redirected</a>.</body></html>
-    http_version:
-  recorded_at: Sun, 10 Sep 2023 02:55:53 GMT
-- request:
-    method: get
-    uri: https://www.rattlesnakeramble.org/race_editions/full-course-on-2017-09-09.json?user%5Bemail%5D=user@example.com&user%5Bpassword%5D=password
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
       Accept:
       - "*/*"
-      User-Agent:
-      - Faraday v2.12.2 (darwin22 arm64) ruby/3.2.2p53
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Host:
-      - www.rattlesnakeramble.org
   response:
     status:
       code: 401
@@ -82,13 +21,19 @@ http_interactions:
       Server:
       - Cowboy
       Date:
-      - Sun, 10 Sep 2023 02:55:53 GMT
+      - Thu, 27 Feb 2025 16:56:06 GMT
+      Report-To:
+      - '{"group":"heroku-nel","max_age":3600,"endpoints":[{"url":"https://nel.heroku.com/reports?ts=1740675366&sid=67ff5de4-ad2b-4112-9289-cf96be89efed&s=ya%2B1MEDBRaMNajQitFrnojPs4iciURZ%2B6E3Mrplmmzw%3D"}]}'
+      Reporting-Endpoints:
+      - heroku-nel=https://nel.heroku.com/reports?ts=1740675366&sid=67ff5de4-ad2b-4112-9289-cf96be89efed&s=ya%2B1MEDBRaMNajQitFrnojPs4iciURZ%2B6E3Mrplmmzw%3D
+      Nel:
+      - '{"report_to":"heroku-nel","max_age":3600,"success_fraction":0.005,"failure_fraction":0.05,"response_headers":["Via"]}'
       Connection:
       - keep-alive
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
-      - 1; mode=block
+      - '0'
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -102,9 +47,9 @@ http_interactions:
       Cache-Control:
       - no-cache
       X-Request-Id:
-      - f92bb178-4133-489e-9a5b-c29dc5e6dd5d
+      - b217fa85-6d15-48f8-957b-875f5f345b68
       X-Runtime:
-      - '0.013676'
+      - '0.069611'
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
@@ -115,5 +60,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"errors":["Invalid email or password"]}'
     http_version:
-  recorded_at: Sun, 10 Sep 2023 02:55:53 GMT
+  recorded_at: Thu, 27 Feb 2025 16:56:06 GMT
 recorded_with: VCR 4.0.0

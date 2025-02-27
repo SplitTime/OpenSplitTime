@@ -7,14 +7,12 @@ http_interactions:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept:
-      - "*/*"
       User-Agent:
-      - Faraday v2.12.2 (darwin22 arm64) ruby/3.2.2p53
+      - Faraday v2.12.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Host:
-      - www.rattlesnakeramble.org
+      Accept:
+      - "*/*"
   response:
     status:
       code: 200
@@ -23,13 +21,19 @@ http_interactions:
       Server:
       - Cowboy
       Date:
-      - Sun, 10 Sep 2023 02:20:15 GMT
+      - Thu, 27 Feb 2025 16:53:02 GMT
+      Report-To:
+      - '{"group":"heroku-nel","max_age":3600,"endpoints":[{"url":"https://nel.heroku.com/reports?ts=1740675183&sid=67ff5de4-ad2b-4112-9289-cf96be89efed&s=S02hsUG32gg0NCDxBpHZ67OSyHv7tbkFEBaYZVDBZPA%3D"}]}'
+      Reporting-Endpoints:
+      - heroku-nel=https://nel.heroku.com/reports?ts=1740675183&sid=67ff5de4-ad2b-4112-9289-cf96be89efed&s=S02hsUG32gg0NCDxBpHZ67OSyHv7tbkFEBaYZVDBZPA%3D
+      Nel:
+      - '{"report_to":"heroku-nel","max_age":3600,"success_fraction":0.005,"failure_fraction":0.05,"response_headers":["Via"]}'
       Connection:
       - keep-alive
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
-      - 1; mode=block
+      - '0'
       X-Content-Type-Options:
       - nosniff
       X-Download-Options:
@@ -41,13 +45,13 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Etag:
-      - W/"0f0910a4256ef73683c6408b217b0ea3"
+      - W/"ba6b19cf321d37610e4291a24d7169e9"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 8b95aaf6-d14a-4f0a-a878-a863cf47c68d
+      - d6a3c3c0-281b-4ca4-a3d6-c998201d61e1
       X-Runtime:
-      - '0.232354'
+      - '0.439190'
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
@@ -72,5 +76,5 @@ http_interactions:
         Trail Race - Odd Years"},{"id":14,"date":"2023-09-16","race_name":"Rattlesnake
         Ramble Kids Race"}]'
     http_version:
-  recorded_at: Sun, 10 Sep 2023 02:20:15 GMT
+  recorded_at: Thu, 27 Feb 2025 16:53:03 GMT
 recorded_with: VCR 4.0.0

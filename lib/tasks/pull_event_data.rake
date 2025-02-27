@@ -80,12 +80,12 @@ namespace :pull_event do
     puts "Fetching data from #{source_uri}"
 
     begin
-      source_response = RestClient.get(source_uri)
-    rescue RestClient::ExceptionWithResponse => e
-      source_response = e.response
+      source_response = Faraday.get(source_uri)
+    rescue Faraday::Error => e
+      source_response = e.response[:status]
     end
 
-    unless source_response.code == 200
+    unless source_response.status == 200
       abort("Aborted: Response failed from #{source_uri} with status #{source_response.code}\nHeaders: #{source_response.headers}\nBody: #{source_response.body}")
     end
     puts "Received data from #{source_uri}"
@@ -100,16 +100,18 @@ namespace :pull_event do
     puts "Uploading data to #{upload_url}"
 
     begin
-      upload_response = RestClient.post(upload_url, upload_params, upload_headers)
-    rescue RestClient::ExceptionWithResponse => e
-      upload_response = e.response
+      upload_response = Faraday.post(upload_url, upload_params, upload_headers)
+      upload_response_body = upload_response.body.presence || "{}"
+      parsed_upload_response = JSON.parse(upload_response_body)
+      response_status = upload_response.status
+    rescue Faraday::Error => e
+      parsed_upload_response = e.response[:body]
+      response_status = e.response[:status]
     end
 
-    upload_response_body = upload_response.body.presence || "{}"
-    parsed_upload_response = JSON.parse(upload_response_body)
     elapsed_time = (Time.current - start_time).round(2)
 
-    if upload_response.code == 201
+    if response_status == 201
       puts "Completed pull_event:from_uri for event: #{event.name} from #{source_uri} in #{elapsed_time} seconds\n"
     else
       puts "ERROR during pull_event:from_uri for event: #{event.name} from #{source_uri}\n"

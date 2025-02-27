@@ -5,7 +5,7 @@ module Cloudflare
     # @param [String] token
     # @return [Boolean]
     def self.token_valid?(token)
-      http_client = ::RestClient
+      http_client = ::Faraday
       params = {
         response: token,
         secret: ::OstConfig.cloudflare_turnstile_secret_key,

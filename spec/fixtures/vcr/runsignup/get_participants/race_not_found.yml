@@ -7,14 +7,12 @@ http_interactions:
       encoding: US-ASCII
       string: ''
     headers:
-      Accept:
-      - "*/*"
       User-Agent:
-      - Faraday v2.12.2 (darwin22 arm64) ruby/3.1.3p185
+      - Faraday v2.12.2
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Host:
-      - runsignup.com
+      Accept:
+      - "*/*"
   response:
     status:
       code: 200
@@ -23,7 +21,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 21 Feb 2023 16:34:06 GMT
+      - Thu, 27 Feb 2025 15:26:47 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -42,5 +40,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"error":{"error_code":201,"error_msg":"Race not found."}}'
     http_version:
-  recorded_at: Tue, 21 Feb 2023 16:34:06 GMT
+  recorded_at: Thu, 27 Feb 2025 15:26:47 GMT
 recorded_with: VCR 4.0.0

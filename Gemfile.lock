@@ -255,9 +255,6 @@ GEM
       ffi (~> 1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.6)
-    googleapis-common-protos-types (1.18.0)
-      google-protobuf (>= 3.18, < 5.a)
     hashdiff (1.1.2)
     hashie (5.0.0)
     heapy (0.2.0)
@@ -356,22 +353,6 @@ GEM
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    opentelemetry-api (1.5.0)
-    opentelemetry-common (0.22.0)
-      opentelemetry-api (~> 1.0)
-    opentelemetry-instrumentation-base (0.23.0)
-      opentelemetry-api (~> 1.0)
-      opentelemetry-common (~> 0.21)
-      opentelemetry-registry (~> 0.1)
-    opentelemetry-registry (0.4.0)
-      opentelemetry-api (~> 1.1)
-    opentelemetry-sdk (1.8.0)
-      opentelemetry-api (~> 1.1)
-      opentelemetry-common (~> 0.20)
-      opentelemetry-registry (~> 0.2)
-      opentelemetry-semantic_conventions
-    opentelemetry-semantic_conventions (1.11.0)
-      opentelemetry-api (~> 1.0)
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
@@ -525,14 +506,6 @@ GEM
       railties (>= 4.0.0)
     scout_apm (5.4.0)
       parser
-    scout_apm_logging (1.0.2)
-      google-protobuf (~> 3.0)
-      googleapis-common-protos-types
-      opentelemetry-api
-      opentelemetry-common
-      opentelemetry-instrumentation-base
-      opentelemetry-sdk (>= 1.2)
-      scout_apm
     securerandom (0.4.1)
     selenium-webdriver (4.29.1)
       base64 (~> 0.2)
@@ -691,7 +664,6 @@ DEPENDENCIES
   rubocop (~> 0.49)
   scenic (>= 1.5.4)
   scout_apm (<= 5.4.0)
-  scout_apm_logging
   selenium-webdriver
   sendgrid-ruby
   sentry-rails

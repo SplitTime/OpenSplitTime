@@ -515,14 +515,14 @@ GEM
       websocket (~> 1.0)
     sendgrid-ruby (6.7.0)
       ruby_http_client (~> 3.4)
-    sentry-rails (5.22.4)
+    sentry-rails (5.22.1)
       railties (>= 5.0)
-      sentry-ruby (~> 5.22.4)
-    sentry-ruby (5.22.4)
+      sentry-ruby (~> 5.22.1)
+    sentry-ruby (5.22.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.22.4)
-      sentry-ruby (~> 5.22.4)
+    sentry-sidekiq (5.22.1)
+      sentry-ruby (~> 5.22.1)
       sidekiq (>= 3.0)
     shortener (1.0.1)
       voight_kampff (~> 2.0)
@@ -666,9 +666,9 @@ DEPENDENCIES
   scout_apm (<= 5.4.0)
   selenium-webdriver
   sendgrid-ruby
-  sentry-rails
-  sentry-ruby
-  sentry-sidekiq
+  sentry-rails (<= 5.22.1)
+  sentry-ruby (<= 5.22.1)
+  sentry-sidekiq (<= 5.22.1)
   shortener
   sidekiq (< 8.0)
   sidekiq-cron

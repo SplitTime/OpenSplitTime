@@ -10,7 +10,6 @@ class Webhooks::SendgridEventsController < ::ApplicationController
       sendgrid_event.event_type = row[:type]
 
       unless sendgrid_event.save
-        Sentry.capture_message("Failed to save Analytics::SendgridEvent", extra: { sendgrid_event: sendgrid_event, errors: sendgrid_event.errors.full_messages })
         status = :unprocessable_entity
         break
       end
@@ -18,7 +17,6 @@ class Webhooks::SendgridEventsController < ::ApplicationController
 
     head status
   rescue ActionController::ParameterMissing => error
-    Sentry.capture_message("Sendgrid webhook parameter missing", extra: { error: error })
     head :unprocessable_entity
   end
 

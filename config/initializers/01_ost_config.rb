@@ -113,10 +113,6 @@ module OstConfig
     Rails.application.credentials.dig(:sendgrid, :webhook_verification_key)
   end
 
-  def self.sentry_dsn
-    Rails.application.credentials.dig(:sentry, :dsn)
-  end
-
   def self.shortened_uri
     ENV["SHORTENED_URI"] || base_uri
   end

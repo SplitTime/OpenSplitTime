@@ -155,7 +155,6 @@ module Api
 
           # If data_status contains an invalid attribute, don't fail
           unless attributes[:data_status].nil? || attributes[:data_status].in?(RawTime.data_statuses.keys)
-            Sentry.capture_message("Invalid data_status in raw_times_data: #{attributes[:data_status]}")
             attributes[:data_status] = nil
           end
 

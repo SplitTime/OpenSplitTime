@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_current_user
   before_action :set_paper_trail_whodunnit
-  before_action :set_sentry_context
   before_action :sample_requests_for_scout_apm
   after_action :store_user_location!, if: :storable_location?
   helper_method :prepared_params
@@ -142,11 +141,6 @@ class ApplicationController < ActionController::Base
     else
       flash.now[:warning] = [flash.now[:warning], response.message_with_error_report].compact.join("\n").presence
     end
-  end
-
-  def set_sentry_context
-    ::Sentry.set_user(id: current_user&.id)
-    ::Sentry.set_extras(params: params.to_unsafe_h, url: request.url)
   end
 
   def sample_requests_for_scout_apm

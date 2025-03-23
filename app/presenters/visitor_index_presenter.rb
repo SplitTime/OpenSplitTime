@@ -4,7 +4,7 @@ class VisitorIndexPresenter < BasePresenter
   end
 
   def recent_event_groups(number)
-    EventGroup.visible.by_group_start_time.limit(number)
+    EventGroup.having_efforts.visible.by_group_start_time.limit(number)
   end
 
   def upcoming_courses(number)

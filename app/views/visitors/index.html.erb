@@ -3,8 +3,6 @@
 <% content_for(:container_type) do %>skip
 <% end %>
 
-<%= render partial: "hardrock_lottery_link" %>
-
 <div class="homepage">
   <div class="row first position-relative">
     <div class="over-text">
@@ -43,11 +41,9 @@
     <div class="over-text">
       <h2>Search the Archives</h2>
       <p>Browse and play with endurance event data like you've never done before. Analyze your efforts, discover
-        your best segments, and find your peers. Much more is yet to come as the community gathers its data here.<br/>
-        <strong>You can find every Hardrock effort ever run.</strong></p>
+        your best segments, and find your peers.<br/>
       <br/>
       <%= link_to "Find Someone", people_path, class: "btn btn-info cta" %>
-      <%= link_to "Search Hardrock Archives", organization_path("hardrock"), class: "btn btn-info cta" %>
     </div>
     <div class="gradient"></div>
     <div class="position-absolute bottom-0 end-0">

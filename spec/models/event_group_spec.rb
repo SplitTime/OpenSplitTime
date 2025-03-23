@@ -151,6 +151,52 @@ RSpec.describe EventGroup, type: :model do
     end
   end
 
+  describe "scopes" do
+    describe ".having_efforts" do
+      context "for an event group that has no events" do
+        let(:event_group) { create(:event_group) }
+
+        it "does not include the event group" do
+          expect(EventGroup.having_efforts).not_to include(event_group)
+        end
+      end
+
+      context "for an event group that has events but no efforts" do
+        let(:event) { create(:event) }
+        let(:event_group) { event.event_group }
+
+        it "does not include the event group" do
+          expect(EventGroup.having_efforts).not_to include(event_group)
+        end
+      end
+
+      context "for an event group that has one event with efforts" do
+        let(:event_group) { event_groups(:hardrock_2014) }
+
+        it "includes the event group" do
+          expect(EventGroup.having_efforts).to include(event_group).once
+        end
+      end
+
+      context "for an event group that has multiple events, all having efforts" do
+        let(:event_group) { event_groups(:ramble) }
+
+        it "includes the event group" do
+          expect(EventGroup.having_efforts).to include(event_group).once
+        end
+      end
+
+      context "for an event group that has multiple events, only some of which have efforts" do
+        let(:event_group) { event_groups(:sum) }
+        before { event_group.events.first.efforts.destroy_all }
+
+        it "includes the event group" do
+          expect(EventGroup.having_efforts).to include(event_group).once
+        end
+      end
+    end
+  end
+
   describe "#multiple_laps?" do
     subject { build_stubbed(:event_group, events: events) }
     let(:event_1) { build_stubbed(:event, laps_required: 1) }

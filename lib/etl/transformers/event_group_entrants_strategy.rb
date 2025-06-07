@@ -56,6 +56,11 @@ module Etl
       def validate_setup
         errors << missing_parent_error("EventGroup") unless event_group.present?
         errors << missing_records_error unless proto_records.present?
+        return if single_event.present?
+
+        event_group.events.each do |event|
+          errors << missing_short_name_error(event) if event.short_name.blank?
+        end
       end
 
       def map_and_validate_keys!

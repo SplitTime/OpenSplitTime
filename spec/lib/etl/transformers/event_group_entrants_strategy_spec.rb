@@ -159,6 +159,17 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
         end
       end
 
+      context "when an event is missing a short name" do
+        before { event_24_hour.update!(short_name: nil) }
+
+        it "returns a single descriptive error without transforming rows" do
+          subject.transform
+          expect(subject.errors.first.dig(:detail, :messages).first).to match(/No short name was found for Event ID #/)
+          expect(subject.errors.first.dig(:detail, :row_index)).to be_nil
+          expect(subject.errors.size).to eq(1)
+          end
+      end
+
       context "when the transform fails" do
         before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" }
         it "returns proto records (which will be in an untransformed or partially transformed state)" do

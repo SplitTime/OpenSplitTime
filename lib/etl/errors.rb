@@ -79,6 +79,11 @@ module Etl
         detail: { messages: ["No records were provided for this import"] } }
     end
 
+    def missing_short_name_error(event)
+      { title: "Short name is missing",
+        detail: { messages: ["Imports for a group having multiple events require that a short name be provided for each event. No short name was found for Event ID ##{event.id}"] } }
+    end
+
     def missing_split_error
       { title: "Split is missing",
         detail: { messages: ["This import requires that a split be provided"] } }

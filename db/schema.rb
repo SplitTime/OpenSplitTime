@@ -476,7 +476,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_17_001307) do
     t.integer "created_by"
     t.boolean "concealed", default: true
     t.string "slug", null: false
-    t.boolean "good_standing", default: false
+    t.date "good_standing_through"
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end
 

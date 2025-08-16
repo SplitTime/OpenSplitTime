@@ -128,6 +128,11 @@ RSpec.describe RawTime, type: :model do
         expect(subject).to eq("08:00:00")
       end
     end
+
+    context "when entered_time is an invalid datetime format" do
+      let(:entered_time) { "2025-16-08 05:01:55.61" } # Day and month are switched
+      it { expect(subject).to be_nil }
+    end
   end
 
   describe "#data_status" do

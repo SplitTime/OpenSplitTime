@@ -52,7 +52,7 @@ class TimeConversion
   # Pads with `0` where needed, i.e. "5:33" => 05:33:00.
   # Also converts timestamps like "2022-07-15 15:45:00-0600" to military times i.e. "15:45:00".
   #
-  # Returns nil when the argument does not match either pattern.
+  # Returns nil when the argument does not match any valid pattern.
   def self.user_entered_to_military(time_string)
     return if time_string.blank? || time_string.length < 3
 
@@ -66,8 +66,10 @@ class TimeConversion
     return new_string if valid_military?(new_string)
     return if invalid_military?(new_string)
 
-    datetime = time_string.to_datetime rescue Date::Error
+    datetime = time_string.to_datetime
     return absolute_to_hms(datetime) if datetime.present?
+  rescue Date::Error
+    nil
   end
 
   def self.invalid_military?(military)

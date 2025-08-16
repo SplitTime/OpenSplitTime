@@ -6,8 +6,8 @@ RSpec.configure do |config|
   # chrome_headless is the default driver for system tests
   # use chrome_visible for debugging
   config.before(:each, type: :system, js: true) do
-    driven_by :chrome_headless
-    # driven_by :chrome_visible
+    driven_by :better_cuprite
+    # driven_by :better_cuprite_visible
 
     download_path = Rails.root.join("tmp/downloads")
     page.driver.browser.download_path = download_path

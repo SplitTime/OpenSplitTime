@@ -77,10 +77,10 @@ end
 
 group :test do
   gem "capybara"
+  gem "cuprite"
   gem "factory_bot_rails", require: false
   gem "pry"
   gem "vcr", "~> 4.0"
-  gem "selenium-webdriver"
   gem "webmock", "~> 3.5"
 end
 

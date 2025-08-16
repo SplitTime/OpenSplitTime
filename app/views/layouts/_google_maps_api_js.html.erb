@@ -1,3 +1,81 @@
+<% unless Rails.env.test? %>
 <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places" +
                              "&callback=Function.prototype" +
                              "&key=#{::OstConfig.google_maps_api_key}" %>
+<% else %>
+  <!-- Test env: provide a minimal stub so any code that references google.maps.places won't crash -->
+  <script>
+    (function () {
+      if (!window.google) window.google = {};
+      var g = window.google;
+      if (!g.maps) g.maps = {};
+      var maps = g.maps;
+
+      // Events
+      maps.event = {
+        addListener: function () { return { remove: function () {} }; },
+        addListenerOnce: function () { return { remove: function () {} }; },
+        trigger: function () {}
+      };
+
+      // Core value classes
+      maps.Point = function (x, y) { this.x = x; this.y = y; };
+      maps.Size  = function (w, h) { this.width = w; this.height = h; };
+      maps.LatLng = function (lat, lng) {
+        this.lat = function () { return lat; };
+        this.lng = function () { return lng; };
+      };
+      maps.LatLngBounds = function () {};
+      maps.LatLngBounds.prototype.extend = function () {};
+      maps.LatLngBounds.prototype.getCenter = function () { return new maps.LatLng(0, 0); };
+
+      // Map
+      maps.Map = function (el, opts) {
+        this.__el = el; this.__opts = opts || {};
+      };
+      maps.Map.prototype.setCenter = function () {};
+      maps.Map.prototype.setZoom = function () {};
+      maps.Map.prototype.fitBounds = function () {};
+      maps.Map.prototype.getBounds = function () { return new maps.LatLngBounds(); };
+
+      // Marker
+      maps.Marker = function (opts) {
+        this.__opts = opts || {};
+        this.__position = opts && opts.position ? opts.position : new maps.LatLng(0, 0);
+        this.__map = opts && opts.map ? opts.map : null;
+        this.__label = null;
+      };
+      maps.Marker.prototype.setMap = function (map) { this.__map = map || null; };
+      maps.Marker.prototype.setPosition = function (pos) { this.__position = pos; };
+      maps.Marker.prototype.getPosition = function () { return this.__position; };
+      maps.Marker.prototype.setIcon = function () {};
+      maps.Marker.prototype.setLabel = function (label) { this.__label = label; };
+      maps.Marker.prototype.setZIndex = function () {};
+      maps.Marker.prototype.addListener = function () { return { remove: function () {} }; };
+
+      // Polyline/Polygon
+      maps.Polyline = function (opts) { this.__opts = opts || {}; };
+      maps.Polyline.prototype.setMap = function () {};
+      maps.Polygon = function (opts) { this.__opts = opts || {}; };
+      maps.Polygon.prototype.setMap = function () {};
+
+      // InfoWindow
+      maps.InfoWindow = function (opts) { this.__opts = opts || {}; };
+      maps.InfoWindow.prototype.open = function () {};
+      maps.InfoWindow.prototype.close = function () {};
+      maps.InfoWindow.prototype.setContent = function () {};
+
+      // Symbols (some apps reference these)
+      maps.SymbolPath = { CIRCLE: 0, BACKWARD_CLOSED_ARROW: 1, FORWARD_CLOSED_ARROW: 2 };
+
+      // Places (Autocomplete minimal)
+      if (!maps.places) maps.places = {};
+      maps.places.Autocomplete = function () {
+        this.addListener = function () { return { remove: function () {} }; };
+        this.getPlace = function () { return {}; };
+      };
+
+      maps.__stubbed = true;
+    }());
+  </script>
+<% end %>

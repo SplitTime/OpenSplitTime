@@ -66,11 +66,11 @@ RSpec.describe "Import entrants from the event group setup view", type: :system,
   end
 
   def validate_import_job_created
-    find(".dropzone").drop(file_fixture("test_efforts_utf_8.csv"))
     expect do
-      click_button "Import"
-      sleep 1
+      upload_to_dropzone("test_efforts_utf_8.csv")
+      click_button("Import")
     end.to change(ImportJob, :count).by(1)
+
     expect(current_path).to eq(import_jobs_path)
   end
 end

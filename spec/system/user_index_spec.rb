@@ -15,11 +15,12 @@ RSpec.describe "visit the user index page", js: true do
   scenario "An admin deletes a user" do
     login_as admin, scope: :user
 
-    visit users_path
-    verify_all_users_listed
-    button = find_button(id: "delete_user_#{user.id}")
-    button.click
-    page.accept_confirm
+    page.accept_confirm do
+      visit users_path
+      verify_all_users_listed
+      button = find_button(id: "delete_user_#{user.id}")
+      button.click
+    end
 
     verify_content_absent(user, :full_name)
   end

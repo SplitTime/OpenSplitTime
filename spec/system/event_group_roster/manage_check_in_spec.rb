@@ -65,8 +65,9 @@ RSpec.describe "manage check-ins from the event group roster page", js: true do
 
       button = page.find("#check_in_all")
       expect do
-        button.click
-        page.accept_confirm
+        page.accept_confirm do
+          button.click
+        end
         wait_for_spinner_to_stop
       end.to change { effort_1.reload.checked_in }.from(false).to(true).and change { effort_2.reload.checked_in }.from(false).to(true)
     end
@@ -79,8 +80,9 @@ RSpec.describe "manage check-ins from the event group roster page", js: true do
 
       button = page.find("#check_out_all")
       expect do
-        button.click
-        page.accept_confirm
+        page.accept_confirm do
+          button.click
+        end
         wait_for_spinner_to_stop
       end.to change { effort_1.reload.checked_in }.from(true).to(false).and change { effort_2.reload.checked_in }.from(true).to(false)
     end

@@ -71,8 +71,9 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
         within("##{dom_id(entrant, :event_group_setup)}") do
           button = page.find("button.dropdown-toggle")
           button.click
-          click_link "Delete"
-          accept_confirm
+          accept_confirm do
+            click_link "Delete"
+          end
         end
 
         expect(page).not_to have_content(entrant.full_name)

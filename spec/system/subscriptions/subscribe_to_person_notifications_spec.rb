@@ -11,16 +11,20 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   scenario "The user is not logged in and subscribes to email" do
     visit_page
 
-    within("##{dom_id(person, :email)}") { click_button("email") }
-    page.accept_confirm("You must be signed in to subscribe to notifications")
+    page.accept_confirm("You must be signed in to subscribe to notifications") do
+      within("##{dom_id(person, :email)}") { click_button("email") }
+    end
+
     expect(page).to have_current_path(person_path(person))
   end
 
   scenario "The user is not logged in and subscribes to sms" do
     visit_page
 
-    within("##{dom_id(person, :sms)}") { click_button("sms") }
-    page.accept_confirm("You must be signed in to subscribe to notifications")
+    page.accept_confirm("You must be signed in to subscribe to notifications") do
+      within("##{dom_id(person, :sms)}") { click_button("sms") }
+    end
+
     expect(page).to have_current_path(person_path(person))
   end
 
@@ -28,8 +32,10 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
     login_as user, scope: :user
     visit_page
 
-    within("##{dom_id(person, :email)}") { click_button("email") }
-    accept_confirm
+    accept_confirm do
+      within("##{dom_id(person, :email)}") { click_button("email") }
+    end
+
     expect(page).to have_current_path(person_path(person))
     expect(page).to have_content("You have subscribed to email notifications for #{person.full_name}.")
   end
@@ -38,8 +44,9 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
     login_as user, scope: :user
     visit_page
 
-    within("##{dom_id(person, :sms)}") { click_button("sms") }
-    accept_confirm
+    accept_confirm do
+      within("##{dom_id(person, :sms)}") { click_button("sms") }
+    end
     expect(page).to have_current_path(user_settings_preferences_path)
     expect(page).to have_content("Please add a mobile phone number to receive sms text notifications.")
   end
@@ -49,8 +56,9 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
     login_as user, scope: :user
     visit_page
 
-    within("##{dom_id(person, :sms)}") { click_button("sms") }
-    accept_confirm
+    accept_confirm do
+      within("##{dom_id(person, :sms)}") { click_button("sms") }
+    end
     expect(page).to have_current_path(person_path(person))
     expect(page).to have_content("You have subscribed to sms notifications for #{person.full_name}.")
   end

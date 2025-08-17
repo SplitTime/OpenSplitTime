@@ -15,8 +15,9 @@ RSpec.describe "reconcile entrants from the reconcile view", js: true do
     visit_page
 
     expect do
-      click_button "Go Public"
-      page.accept_alert
+      page.accept_alert do
+        click_button "Go Public"
+      end
       expect(page).to have_button("Take Private")
     end.to change { event_group.reload.concealed }.from(true).to(false)
   end
@@ -28,8 +29,9 @@ RSpec.describe "reconcile entrants from the reconcile view", js: true do
     visit_page
 
     expect do
-      click_button "Take Private"
-      page.accept_alert
+      page.accept_alert do
+        click_button "Take Private"
+      end
       expect(page).to have_button("Go Public")
     end.to change { event_group.reload.concealed }.from(false).to(true)
   end
@@ -41,8 +43,9 @@ RSpec.describe "reconcile entrants from the reconcile view", js: true do
     visit_page
 
     expect do
-      click_button "Enable Live Entry"
-      page.accept_alert
+      page.accept_alert do
+        click_button "Enable Live Entry"
+      end
       expect(page).to have_button("Disable Live Entry")
     end.to change { event_group.reload.available_live }.from(false).to(true)
   end
@@ -54,8 +57,9 @@ RSpec.describe "reconcile entrants from the reconcile view", js: true do
     visit_page
 
     expect do
-      click_button "Disable Live Entry"
-      page.accept_alert
+      page.accept_alert do
+        click_button "Disable Live Entry"
+      end
       expect(page).to have_button("Enable Live Entry")
     end.to change { event_group.reload.available_live }.from(true).to(false)
   end

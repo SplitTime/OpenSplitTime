@@ -72,9 +72,8 @@ RSpec.describe "manage lottery service form upload and download", js: true do
   end
 
   def attach_file_and_validate
-    find(".dropzone").drop(file_fixture("service_form.pdf"))
+    upload_to_dropzone("service_form.pdf")
     click_button "Attach"
-    sleep 1
     expect(lottery.service_form.attached?).to eq(true)
   end
 end

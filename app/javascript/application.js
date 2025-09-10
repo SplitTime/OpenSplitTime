@@ -78,3 +78,7 @@ myDefaultAllowList.th = [];
 myDefaultAllowList.tbody = [];
 myDefaultAllowList.thead = [];
 myDefaultAllowList.div = [];
+
+// LocalTime
+import LocalTime from "local-time"
+LocalTime.start()

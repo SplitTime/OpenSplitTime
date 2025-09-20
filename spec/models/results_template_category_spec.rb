@@ -9,6 +9,17 @@ RSpec.describe ResultsTemplateCategory do
     end
   end
 
+  describe "#create" do
+    let!(:new_rtc) { ResultsTemplateCategory.create!(category: ResultsCategory.first, template: ResultsTemplate.first) }
+
+    it "is valid when it has both a results category and a results template" do
+      expect(new_rtc).to be_valid
+      expect(new_rtc.category).to eq(ResultsCategory.first)
+      expect(new_rtc.template).to eq(ResultsTemplate.first)
+      expect(new_rtc.position).to be_present
+    end
+  end
+
   describe "methods" do
     describe "#category_description" do
       it "returns the description of the associated results_category" do

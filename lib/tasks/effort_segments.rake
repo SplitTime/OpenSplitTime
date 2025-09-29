@@ -14,6 +14,8 @@ namespace :effort_segments do
 
     efforts.find_each do |effort|
       progress_bar.increment!
+      # First delete existing effort_segments to remove any obsolete ones
+      effort.delete_effort_segments
       effort.set_effort_segments
     rescue ActiveRecordError => e
       puts "Could not set effort segments for effort #{effort.id}:"

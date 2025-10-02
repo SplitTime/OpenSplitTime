@@ -33,7 +33,7 @@ common: &defaults
   # - Valid Options: true, false
   monitor: true
   errors_enabled: true
-  errors_ignored_exceptions: [ActiveRecord::RecordNotFound]
+  errors_ignored_exceptions: [ActiveRecord::RecordNotFound, ActionController::RoutingError]
 
 production:
   <<: *defaults

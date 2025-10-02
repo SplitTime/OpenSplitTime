@@ -99,7 +99,7 @@ class ApplicationController < ActionController::Base
   end
 
   def internal_server_error_json
-    render json: {errors: ["internal server error"]}, status: :internal_server_error
+    render json: { errors: ["internal server error"] }, status: :internal_server_error
   end
 
   def not_acceptable_head
@@ -107,11 +107,11 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_found_json
-    render json: {errors: ["record not found"]}, status: :not_found
+    render json: { errors: ["record not found"] }, status: :not_found
   end
 
-  def unprocessable_entity_json
-    render json: {errors: ["unprocessable entity"]}, status: :unprocessable_content
+  def unprocessable_content_json
+    render json: { errors: ["unprocessable content"] }, status: :unprocessable_content
   end
 
   def user_not_authorized
@@ -148,19 +148,19 @@ class ApplicationController < ActionController::Base
   end
 
   def jsonapi_error_object(record)
-    {title: "#{record.class} could not be #{past_tense[action_name]}",
-     detail: {attributes: record.attributes.compact.transform_keys { |key| key.camelize(:lower) },
-              messages: record.errors.full_messages}}
+    { title: "#{record.class} could not be #{past_tense[action_name]}",
+      detail: { attributes: record.attributes.compact.transform_keys { |key| key.camelize(:lower) },
+                messages: record.errors.full_messages } }
   end
 
   def child_records_error_object(record, child_record_model)
     klass = record.class
     child_records = record.send(child_record_model)
     human_child_model_name = child_record_model.to_s.humanize(capitalize: false)
-    {title: "#{klass} could not be #{past_tense[action_name]}",
-     detail: {messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " +
-                           "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
-                           child_records.first(20).map(&:to_s).join(", ").to_s]}}
+    { title: "#{klass} could not be #{past_tense[action_name]}",
+      detail: { messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " +
+                             "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
+                             child_records.first(20).map(&:to_s).join(", ").to_s] } }
   end
 
   def redirect_numeric_to_friendly(resource, id_param)

@@ -56,7 +56,7 @@ module Api
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
-          render json: {errors: errors}, status: :unprocessable_entity
+          render json: {errors: errors}, status: :unprocessable_content
         else
           ::Etl::EventImportProcess.perform!(@event, importer)
           render json: {}, status: :created

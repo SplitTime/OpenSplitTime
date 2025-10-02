@@ -46,7 +46,7 @@ class EventsController < ApplicationController
       redirect_to setup_course_event_group_event_path(@event_group, @event)
     else
       @presenter = ::EventSetupPresenter.new(@event, view_context)
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -64,7 +64,7 @@ class EventsController < ApplicationController
       end
     else
       @presenter = ::EventSetupPresenter.new(@event, view_context)
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 
@@ -137,7 +137,7 @@ class EventsController < ApplicationController
       end
     else
       set_flash_message(response)
-      redirect_to setup_event_group_path(redirect_id), status: :unprocessable_entity
+      redirect_to setup_event_group_path(redirect_id), status: :unprocessable_content
     end
 
   end

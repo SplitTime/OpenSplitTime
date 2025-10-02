@@ -111,7 +111,7 @@ class ApplicationController < ActionController::Base
   end
 
   def unprocessable_entity_json
-    render json: {errors: ["unprocessable entity"]}, status: :unprocessable_entity
+    render json: {errors: ["unprocessable entity"]}, status: :unprocessable_content
   end
 
   def user_not_authorized

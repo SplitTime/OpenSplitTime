@@ -10,14 +10,14 @@ class Webhooks::SendgridEventsController < ::ApplicationController
       sendgrid_event.event_type = row[:type]
 
       unless sendgrid_event.save
-        status = :unprocessable_entity
+        status = :unprocessable_content
         break
       end
     end
 
     head status
   rescue ActionController::ParameterMissing => error
-    head :unprocessable_entity
+    head :unprocessable_content
   end
 
   private

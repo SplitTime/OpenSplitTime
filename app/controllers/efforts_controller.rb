@@ -61,9 +61,9 @@ class EffortsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/new_modal", locals: { effort: effort }), status: :unprocessable_entity
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/new_modal", locals: { effort: effort }), status: :unprocessable_content
         end
       end
     end
@@ -83,7 +83,7 @@ class EffortsController < ApplicationController
             redirect_to entrants_event_group_path(@effort.event_group)
           end
         else
-          render :edit, status: :unprocessable_entity
+          render :edit, status: :unprocessable_content
         end
       end
 
@@ -103,7 +103,7 @@ class EffortsController < ApplicationController
           presenter = ::EventGroupRosterPresenter.new(effort.event_group, view_context)
           render :update, locals: { effort: effort, presenter: presenter }
         else
-          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/edit_modal", locals: { effort: effort }), status: :unprocessable_entity
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/edit_modal", locals: { effort: effort }), status: :unprocessable_content
         end
       end
     end
@@ -190,8 +190,8 @@ class EffortsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.turbo_stream { render :start_form, locals: { effort: @effort }, status: :unprocessable_entity, alert: response.message }
-        format.html { redirect_to effort_path(@effort), status: :unprocessable_entity, alert: response.message }
+        format.turbo_stream { render :start_form, locals: { effort: @effort }, status: :unprocessable_content, alert: response.message }
+        format.html { redirect_to effort_path(@effort), status: :unprocessable_content, alert: response.message }
       end
     end
   end
@@ -210,7 +210,7 @@ class EffortsController < ApplicationController
           effort_show_view = ::EffortShowView.new(@effort)
           render :unstart, locals: { effort_presenter: effort_show_view, roster_presenter: roster_presenter }
         else
-          redirect_to effort_path(@effort), status: :unprocessable_entity
+          redirect_to effort_path(@effort), status: :unprocessable_content
         end
       end
     end
@@ -277,7 +277,7 @@ class EffortsController < ApplicationController
       redirect_to effort_path(effort)
     else
       @presenter = EffortWithTimesPresenter.new(effort, params: params)
-      render :edit_split_times, display_style: params[:display_style], status: :unprocessable_entity
+      render :edit_split_times, display_style: params[:display_style], status: :unprocessable_content
     end
   end
 
@@ -306,7 +306,7 @@ class EffortsController < ApplicationController
       mini_table = EffortsMiniTable.new(params[:effort_ids])
       render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
     else
-      head :unprocessable_entity
+      head :unprocessable_content
     end
   end
 

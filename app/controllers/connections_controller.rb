@@ -20,7 +20,7 @@ class ConnectionsController < ApplicationController
 
   def create
     head :not_found and return if service.blank?
-    head :unprocessable_entity and return if source_type.blank?
+    head :unprocessable_content and return if source_type.blank?
 
     @connection = @destination.connections.new(permitted_params)
     set_connection_attributes

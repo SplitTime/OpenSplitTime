@@ -34,7 +34,7 @@ class OrganizationsController < ApplicationController
     if @organization.save
       redirect_to new_organization_event_group_path(@organization)
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -44,7 +44,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(permitted_params)
       redirect_to @organization
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 

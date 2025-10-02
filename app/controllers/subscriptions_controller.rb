@@ -35,7 +35,7 @@ class SubscriptionsController < ApplicationController
       render :create, locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
     else
       if @subscription.subscribable.is_a?(Event)
-        render :new, locals: { subscription: @subscription }, status: :unprocessable_entity
+        render :new, locals: { subscription: @subscription }, status: :unprocessable_content
       else
         flash.now[:danger] = @subscription.errors.full_messages.to_sentence
         render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")

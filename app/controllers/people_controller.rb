@@ -30,7 +30,7 @@ class PeopleController < ApplicationController
     if @person.update(permitted_params)
       redirect_to @person
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 

@@ -26,7 +26,7 @@ class CourseGroupsController < ApplicationController
     if @course_group.save
       redirect_to organization_course_group_path(@organization, @course_group)
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -37,7 +37,7 @@ class CourseGroupsController < ApplicationController
     if @course_group.update(permitted_params)
       redirect_to organization_course_group_path(@organization, @course_group)
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 

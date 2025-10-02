@@ -101,6 +101,10 @@ module OstConfig
     end
   end
 
+  def self.scout_apm_key
+    Rails.application.credentials.dig(:scout, :agent_key)
+  end
+
   def self.scout_apm_sample_rate
     ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
   end

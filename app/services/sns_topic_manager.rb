@@ -1,6 +1,9 @@
 require "aws-sdk-sns"
 
 class SnsTopicManager
+  class TopicNotCreatedError < StandardError; end
+  class TopicNotDeletedError < StandardError; end
+
   def self.generate(args)
     new(**args).generate
   end
@@ -24,12 +27,8 @@ class SnsTopicManager
       Rails.logger.info "  Created SNS topic for #{resource.slug}"
       response.topic_arn.include?("arn:aws:sns") ? response.topic_arn : "#{response.topic_arn}:#{SecureRandom.uuid}"
     else
-      Rails.logger.error "  Unable to generate SNS topic for #{resource.slug}"
-      nil
+      raise TopicNotCreatedError, "Unable to generate SNS topic for #{resource.slug}"
     end
-  rescue Aws::SNS::Errors::ServiceError => e
-    Rails.logger.error "  Topic could not be generated: #{e.message}"
-    nil
   end
 
   def delete
@@ -41,12 +40,8 @@ class SnsTopicManager
           Rails.logger.info "  Deleted SNS topic #{topic_arn}"
           topic_arn
         else
-          Rails.logger.error "  Unable to delete SNS topic #{topic_arn}"
-          nil
+          raise TopicNotDeletedError, "Unable to delete SNS topic for #{resource.slug}"
         end
-      rescue Aws::SNS::Errors::ServiceError => e
-        Rails.logger.error "  Topic could not be deleted: #{e.message}"
-        nil
       end
 
     else

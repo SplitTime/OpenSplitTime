@@ -22,7 +22,7 @@ class LotteryDivisionsController < ApplicationController
     if @lottery_division.save
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -32,7 +32,7 @@ class LotteryDivisionsController < ApplicationController
     if @lottery_division.update(permitted_params)
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 
@@ -48,7 +48,7 @@ class LotteryDivisionsController < ApplicationController
           flash.now[:danger] = @lottery_division.errors.full_messages.join("\n")
         end
 
-        render "destroy", status: :unprocessable_entity
+        render "destroy", status: :unprocessable_content
       end
     end
   end

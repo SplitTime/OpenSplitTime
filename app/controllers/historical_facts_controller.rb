@@ -36,7 +36,7 @@ class HistoricalFactsController < ApplicationController
         "form_modal",
         partial: "historical_facts/new_modal",
         locals: { fact: @historical_fact }),
-             status: :unprocessable_entity
+             status: :unprocessable_content
     end
   end
 
@@ -50,7 +50,7 @@ class HistoricalFactsController < ApplicationController
         "form_modal",
         partial: "historical_facts/edit_modal",
         locals: { fact: @historical_fact }),
-             status: :unprocessable_entity
+             status: :unprocessable_content
     end
   end
 

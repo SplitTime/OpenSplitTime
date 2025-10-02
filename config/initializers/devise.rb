@@ -254,7 +254,7 @@ Devise.setup do |config|
   end
 
   # Match the behavior expected by Turbo
-  config.responder.error_status = :unprocessable_entity
+  config.responder.error_status = :unprocessable_content
   config.responder.redirect_status = :see_other
 
   # ==> Mountable engine configurations

@@ -28,7 +28,7 @@ class Lotteries::EntrantServiceDetailsController < ApplicationController
           presenter = Lotteries::EntrantServiceDetailPresenter.new(@service_detail)
           render :update, locals: { presenter: presenter }
         else
-          render :update_failed, locals: { service_detail: @service_detail }, status: :unprocessable_entity
+          render :update_failed, locals: { service_detail: @service_detail }, status: :unprocessable_content
         end
       end
     end

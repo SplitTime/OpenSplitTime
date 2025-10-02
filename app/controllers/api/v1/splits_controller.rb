@@ -6,12 +6,12 @@ module Api
       def destroy
         authorize @resource
         if @resource.split_times.present?
-          render json: {errors: [child_records_error_object(@resource, :split_times)]}, status: :unprocessable_entity
+          render json: {errors: [child_records_error_object(@resource, :split_times)]}, status: :unprocessable_content
         else
           if @resource.destroy
             render json: @resource
           else
-            render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_entity
+            render json: {errors: [jsonapi_error_object(@resource)]}, status: :unprocessable_content
           end
         end
       end

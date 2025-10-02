@@ -22,7 +22,7 @@ module Api
         errors = importer.errors + importer.invalid_records.map { |record| jsonapi_error_object(record) }
 
         if errors.present?
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: errors }, status: :unprocessable_content
         else
           ::Etl::EventGroupImportProcess.perform!(@resource, importer)
           if limited_response
@@ -82,7 +82,7 @@ module Api
 
           render json: { data: { rawTimeRow: enriched_row.serialize } }, status: :ok
         else
-          render json: { errors: [{ title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}" }] }, status: :unprocessable_entity
+          render json: { errors: [{ title: "Request must be in the form of {data: {rawTimeRow: {rawTimes: [{...}]}}}" }] }, status: :unprocessable_content
         end
       end
 
@@ -122,7 +122,7 @@ module Api
 
           render json: { data: { rawTimeRows: problem_rows.map(&:serialize) } }, status: :created
         else
-          render json: { errors: errors }, status: :unprocessable_entity
+          render json: { errors: errors }, status: :unprocessable_content
         end
       end
 
@@ -133,7 +133,7 @@ module Api
         response = FindNotExpectedBibs.perform(event_group, params[:split_name])
 
         if response.errors.present?
-          render json: { errors: response.errors }, status: :unprocessable_entity
+          render json: { errors: response.errors }, status: :unprocessable_content
         else
           render json: { data: { bib_numbers: response.bib_numbers } }, status: :ok
         end

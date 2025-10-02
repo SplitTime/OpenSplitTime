@@ -56,7 +56,7 @@ module Api
       private
 
       def render_errors(resource)
-        render json: {errors: [jsonapi_error_object(resource)]}, status: :unprocessable_entity
+        render json: {errors: [jsonapi_error_object(resource)]}, status: :unprocessable_content
       end
 
       def serialize_and_render(resource, options = {})

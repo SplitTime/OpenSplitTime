@@ -39,7 +39,7 @@ class LotteriesController < ApplicationController
     if @lottery.save
       redirect_to setup_organization_lottery_path(@organization, @lottery)
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -49,7 +49,7 @@ class LotteriesController < ApplicationController
     if @lottery.update(permitted_params)
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Lottery updated"
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 

@@ -106,7 +106,7 @@ RSpec.describe Api::V1::EffortsController do
         let(:params) { {data: {type: type, attributes: invalid_attributes}} }
         let(:invalid_attributes) { {"eventId" => event.id, "firstName" => "Johnny"} }
 
-        it "returns a jsonapi error object and status code unprocessable entity" do
+        it "returns a jsonapi error object and status code 422" do
           make_request
           expect(response.body).to be_jsonapi_errors
           expect(response.status).to eq(422)

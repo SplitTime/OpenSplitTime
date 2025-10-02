@@ -44,7 +44,7 @@ class CoursesController < ApplicationController
         redirect_to organization_courses_path(@organization)
       end
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -54,7 +54,7 @@ class CoursesController < ApplicationController
     if @course.update(permitted_params)
       redirect_to organization_course_path(@organization, @course), notice: "Course updated"
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 

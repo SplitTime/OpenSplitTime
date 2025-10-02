@@ -27,7 +27,7 @@ class LotteryEntrantsController < ApplicationController
     if @lottery_entrant.save
       redirect_to setup_organization_lottery_path(@lottery_entrant.organization, @lottery_entrant.lottery, entrant_id: @lottery_entrant.id)
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -39,7 +39,7 @@ class LotteryEntrantsController < ApplicationController
         format.turbo_stream { @lottery_presenter = LotteryPresenter.new(@lottery, view_context) }
       end
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
@@ -49,13 +49,13 @@ class LotteryEntrantsController < ApplicationController
       format.turbo_stream do
         if @lottery_entrant.tickets.drawn.any?
           flash.now[:warning] = "A lottery entrant cannot be deleted after having been drawn."
-          render "destroy", status: :unprocessable_entity
+          render "destroy", status: :unprocessable_content
         elsif @lottery_entrant.destroy
           flash[:success] = "The entrant was deleted."
           redirect_to setup_organization_lottery_path(@organization, @lottery)
         else
           flash.now[:danger] = @lottery_entrant.errors.full_messages.join("\n")
-          render "destroy", status: :unprocessable_entity
+          render "destroy", status: :unprocessable_content
         end
       end
     end

@@ -40,7 +40,7 @@ class CourseGroupFinishersController < ApplicationController
       redirect_to export_jobs_path
     else
       flash[:danger] = "Unable to create export job: #{export_job.errors.full_messages.join(', ')}"
-      redirect_to request.referrer || export_jobs_path, status: :unprocessable_entity
+      redirect_to request.referrer || export_jobs_path, status: :unprocessable_content
     end
   end
 

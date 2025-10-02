@@ -43,7 +43,7 @@ class SplitsController < ApplicationController
         format.turbo_stream { @presenter = EventSetupCoursePresenter.new(@event, view_context) }
       end
     else
-      render "new", status: :unprocessable_entity
+      render "new", status: :unprocessable_content
     end
   end
 
@@ -59,7 +59,7 @@ class SplitsController < ApplicationController
         end
       end
     else
-      render "edit", status: :unprocessable_entity
+      render "edit", status: :unprocessable_content
     end
   end
 
@@ -72,7 +72,7 @@ class SplitsController < ApplicationController
         format.turbo_stream { render turbo_stream: turbo_stream.remove(helpers.dom_id(@split, helpers.dom_id(@event))) }
       end
     else
-      redirect_to setup_course_event_group_event_path(@event.event_group, @event), status: :unprocessable_entity
+      redirect_to setup_course_event_group_event_path(@event.event_group, @event), status: :unprocessable_content
     end
   end
 

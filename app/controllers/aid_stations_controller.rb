@@ -18,7 +18,7 @@ class AidStationsController < ApplicationController
         end
       end
     else
-      redirect_to event_group_event_course_setup_path(@event.event_group, @event), status: :unprocessable_entity
+      redirect_to event_group_event_course_setup_path(@event.event_group, @event), status: :unprocessable_content
     end
   end
 

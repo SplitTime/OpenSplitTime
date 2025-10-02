@@ -8,8 +8,8 @@ class ErrorsController < ApplicationController
 
   def unprocessable_entity
     respond_to do |format|
-      format.html { render status: :unprocessable_entity }
-      format.json { unprocessable_entity_json }
+      format.html { render status: :unprocessable_content }
+      format.json { unprocessable_content_json }
     end
   end
 

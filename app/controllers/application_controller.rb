@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include ::Pundit::Authorization
   include ::Turbo::Redirection
 
+  BOT_USER_AGENT_REGEX = /meta-externalagent|facebookexternalhit|WhatsApp|Twitterbot|Googlebot/i
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
@@ -9,6 +11,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user
   before_action :set_paper_trail_whodunnit
   before_action :sample_requests_for_scout_apm
+  before_action :skip_session_for_bots
   after_action :store_user_location!, if: :storable_location?
   helper_method :prepared_params
 
@@ -168,6 +171,12 @@ class ApplicationController < ActionController::Base
       redirect_to request.params.merge(id: resource.friendly_id), status: 301
     end
   end
+
+  def skip_session_for_bots
+    ua = request.user_agent.to_s
+    request.session_options[:skip] = true if ua.match?(BOT_USER_AGENT_REGEX)
+  end
+
 
   # This should really be a helper method
   def past_tense

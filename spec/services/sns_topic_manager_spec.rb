@@ -44,18 +44,26 @@ RSpec.describe SnsTopicManager do
         expect { result }.to raise_error("Resource must be provided")
       end
     end
+
+    context "when create_topic fails with an Aws error" do
+      before { sns_client.stub_responses(:create_topic, "Aws::SNS::Errors::ServiceError") }
+
+      it "raises an error" do
+        expect { result }.to raise_error(Aws::SNS::Errors::ServiceError)
+      end
+    end
   end
 
   describe "#delete" do
     let(:result) { subject.delete }
+    let(:topic_arn) { "arn:aws:sns:123" }
+
     before { allow(sns_client).to receive(:delete_topic).and_call_original }
 
     context "when the resource has a topic_resource_key" do
       before { resource.update(topic_resource_key: topic_arn) }
 
       context "beginning with 'arn:aws:sns'" do
-        let(:topic_arn) { "arn:aws:sns:123" }
-
         it "attempts to delete the topic" do
           expect(sns_client).to receive(:delete_topic).with(topic_arn: topic_arn)
           result
@@ -75,6 +83,14 @@ RSpec.describe SnsTopicManager do
         end
 
         it { expect(result).to be_nil }
+      end
+
+      context "when delete_topic fails with an Aws error" do
+        before { sns_client.stub_responses(:delete_topic, "Aws::SNS::Errors::ServiceError") }
+
+        it "raises an error" do
+          expect { result }.to raise_error(Aws::SNS::Errors::ServiceError)
+        end
       end
     end
 

@@ -3,7 +3,7 @@ class Stewardship < ApplicationRecord
 
   belongs_to :user
   belongs_to :organization
-  enum level: [:volunteer, :lottery_manager]
+  enum :level, [:volunteer, :lottery_manager]
 
   delegate :full_name, :email, to: :user
 

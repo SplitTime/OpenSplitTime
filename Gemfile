@@ -2,6 +2,8 @@ ruby "3.4.6"
 
 source "https://rubygems.org"
 
+gem "rails", "~> 7.2.0"
+
 gem "activerecord-import"
 gem "active_storage_validations", ">= 0.9.2"
 gem "acts_as_list", "~> 0.9"
@@ -46,7 +48,6 @@ gem "pretender", "~> 0.3", ">= 0.3.4"
 gem "progress_bar"
 gem "puma"
 gem "pundit"
-gem "rails", "~> 7.1.0"
 gem "redis", "~> 4.0"
 gem "scenic", ">= 1.5.4"
 gem "scout_apm"

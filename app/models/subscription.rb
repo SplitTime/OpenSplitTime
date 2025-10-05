@@ -3,7 +3,7 @@ require "aws-sdk-sns"
 class Subscription < ApplicationRecord
   has_paper_trail
 
-  enum protocol: [:email, :sms, :http, :https]
+  enum :protocol, [:email, :sms, :http, :https]
   belongs_to :user
   belongs_to :subscribable, polymorphic: true
 

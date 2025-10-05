@@ -3,7 +3,7 @@ class Lotteries::Calculations::Base < ApplicationRecord
 
   self.abstract_class = true
 
-  enum gender: {
+  enum :gender, {
     male: 0,
     female: 1,
     nonbinary: 2,

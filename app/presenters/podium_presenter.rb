@@ -33,10 +33,11 @@ class PodiumPresenter < BasePresenter
 
   # @return [Symbol]
   def sort_method
-    params[:sort].keys.first&.to_sym || :category
+    requested_method = params[:sort].keys.first&.to_sym
+    requested_method.in?(sort_methods) ? requested_method || :category : :category
   end
 
-  # @return [String]
+  # @return [String, nil]
   def template_name
     template&.name
   end

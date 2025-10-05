@@ -1,5 +1,5 @@
 class SplitTime < ApplicationRecord
-  enum data_status: [:bad, :questionable, :good, :confirmed]
+  enum :data_status, [:bad, :questionable, :good, :confirmed]
   strip_attributes collapse_spaces: true
 
   # See app/concerns/data_status_methods for related scopes and methods

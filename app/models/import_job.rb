@@ -13,7 +13,7 @@ class ImportJob < ApplicationRecord
   attribute :failed_count, default: 0
   attribute :ignored_count, default: 0
 
-  enum status: {
+  enum :status, {
     waiting: 0,
     extracting: 1,
     transforming: 2,

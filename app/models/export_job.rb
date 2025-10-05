@@ -7,7 +7,7 @@ class ExportJob < ApplicationRecord
   scope :most_recent_first, -> { reorder(created_at: :desc) }
   scope :owned_by, ->(user) { where(user: user) }
 
-  enum status: {
+  enum :status, {
     waiting: 0,
     processing: 1,
     finished: 4,

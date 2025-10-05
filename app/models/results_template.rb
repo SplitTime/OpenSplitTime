@@ -1,7 +1,7 @@
 class ResultsTemplate < ApplicationRecord
   extend FriendlyId
 
-  enum aggregation_method: [:inclusive, :strict]
+  enum :aggregation_method, [:inclusive, :strict]
   friendly_id :name, use: [:slugged, :history]
 
   belongs_to :organization, optional: true

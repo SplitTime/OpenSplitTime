@@ -19,7 +19,7 @@ class Lottery < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
 
   attribute :concealed, default: -> { true }
-  enum status: [:preview, :live, :finished], _default: :preview
+  enum :status, [:preview, :live, :finished], default: :preview
 
   validates_presence_of :name, :scheduled_start_date
   validates_uniqueness_of :name, case_sensitive: false, scope: :organization

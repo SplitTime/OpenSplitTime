@@ -6,7 +6,7 @@ class LotterySimulationRun < ApplicationRecord
 
   scope :most_recent_first, -> { reorder(created_at: :desc) }
 
-  enum status: {
+  enum :status, {
     waiting: 0,
     processing: 1,
     finished: 2,

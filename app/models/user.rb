@@ -7,9 +7,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
 
-  enum role: [:user, :admin]
-  enum pref_distance_unit: [:miles, :kilometers]
-  enum pref_elevation_unit: [:feet, :meters]
+  enum :role, [:user, :admin]
+  enum :pref_distance_unit, [:miles, :kilometers]
+  enum :pref_elevation_unit, [:feet, :meters]
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name

@@ -1,5 +1,5 @@
 class HistoricalFact < ApplicationRecord
-  enum kind: {
+  enum :kind, {
     dns: 0,
     dnf: 9,
     finished: 10,

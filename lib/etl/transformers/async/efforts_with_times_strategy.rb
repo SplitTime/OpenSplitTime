@@ -25,8 +25,8 @@ module Etl::Transformers::Async
         transform_time_data!(proto_record)
         proto_record.slice_permitted!
       rescue StandardError => e
-        import_job.increment!(:failed_count)
         errors << transform_failed_error(e, row_index)
+        import_job.increment!(:failed_count)
       end
 
       proto_records
@@ -59,7 +59,7 @@ module Etl::Transformers::Async
     end
 
     def convert_ultrasignup_times(proto_record)
-      case proto_record[:status]
+      case proto_record[:status].to_s
       when "2"
         proto_record[:times][-1] = nil
       when "3"

@@ -1,0 +1,4 @@
+"bib","place","first_name","last_name","age","gender","time","address","zip","city","state","country","email","dob","status"
+"723","1","Mabel","Jones","27","F","17:50:15","90 Barger Drive","92888","Boise","ID","USA","mabel@example.com","01/01/1985","1"
+"711","","Jamie","Fowler","36","F","0","","","Anchorage","AK","","","","2"
+"817","","Billy","Watanabe","63","M","0","PO Box 111","34343","Chicago","IL","USA","billy@example.com","12/01/1955","3"

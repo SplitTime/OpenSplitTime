@@ -261,18 +261,18 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
       let(:event) { events(:ramble) }
       let(:structs) do
         [
-          OpenStruct.new(bib: "723", place: "1", first_name: "Chris", last_name: "Dickey", age: 34, gender: "m", time: "00:20:05",
-                         address: "123 Elm Street", zip: "84848", city: "Barnsfield", state: "CO", country: "USA",
-                         email: "dickey@example.com", dob: "05/01/1991", status: "1"),
-          OpenStruct.new(bib: "724", place: "2", first_name: "Jane", last_name: "Amelia", age: 35, gender: "f", time: "00:22:31",
-                         address: "123 Maple Ave.", zip: "84899", city: "Wolcott", state: "UT", country: "USA",
-                         email: "jane@example.com", dob: "03/01/1990", status: "1"),
-          OpenStruct.new(bib: "725", place: nil, first_name: "Alfred", last_name: "Neumann", age: 80, gender: "m", time: "0",
-                         address: "123 Madness Ave.", zip: "84800", city: "Idaho Falls", state: "ID", country: "USA",
-                         email: "alfred@example.com", dob: "01/01/1945", status: "2"),
-          OpenStruct.new(bib: "726", place: "", first_name: "Slept", last_name: "Late", age: 19, gender: "m", time: "0",
-                         address: "123 Sleepy Hollow", zip: "85800", city: "Phoenix", state: "AZ", country: "USA",
-                         email: "slept@example.com", dob: "09/01/2007", status: "3"),
+          OpenStruct.new(bib: 723, place: 1, first_name: "Chris", last_name: "Dickey", age: 34, gender: "m", time: "00:20:05",
+                         address: "123 Elm Street", zip: 84848, city: "Barnsfield", state: "CO", country: "USA",
+                         email: "dickey@example.com", dob: "05/01/1991", status: 1),
+          OpenStruct.new(bib: 724, place: 2, first_name: "Jane", last_name: "Amelia", age: 35, gender: "f", time: "00:22:31",
+                         address: "123 Maple Ave.", zip: 84899, city: "Wolcott", state: "UT", country: "USA",
+                         email: "jane@example.com", dob: "03/01/1990", status: 1),
+          OpenStruct.new(bib: 725, place: nil, first_name: "Alfred", last_name: "Neumann", age: 80, gender: "m", time: 0,
+                         address: "123 Madness Ave.", zip: 84800, city: "Idaho Falls", state: "ID", country: "USA",
+                         email: "alfred@example.com", dob: "01/01/1945", status: 2),
+          OpenStruct.new(bib: 726, place: "", first_name: "Slept", last_name: "Late", age: 19, gender: "m", time: 0,
+                         address: "123 Sleepy Hollow", zip: 85800, city: "Phoenix", state: "AZ", country: "USA",
+                         email: "slept@example.com", dob: "09/01/2007", status: 3),
         ]
       end
 

@@ -43,6 +43,11 @@ module Etl
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::EventGroupEntrantsStrategy
         self.load_strategy = Loaders::Async::InsertStrategy
+      when :event_entrants_with_elapsed_times
+        self.extract_strategy = Extractors::CsvFileStrategy
+        self.transform_strategy = Transformers::Async::EffortsWithTimesStrategy
+        self.load_strategy = Loaders::Async::InsertStrategy
+        self.custom_options = { time_format: :elapsed }
       when :event_entrants_with_military_times
         self.extract_strategy = Extractors::CsvFileStrategy
         self.transform_strategy = Transformers::Async::EffortsWithTimesStrategy

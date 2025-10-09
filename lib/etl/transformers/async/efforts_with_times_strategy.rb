@@ -40,6 +40,7 @@ module Etl::Transformers::Async
       add_missing_start_keys(proto_record)
       fill_missing_start_times(proto_record)
       extract_times(proto_record)
+      convert_ultrasignup_times(proto_record) if ultrasignup_import?
       transform_times(proto_record)
       proto_record.create_split_time_children!(time_points, time_attribute: time_attribute)
       proto_record.set_split_time_stop!
@@ -55,6 +56,17 @@ module Etl::Transformers::Async
 
     def extract_times(proto_record)
       proto_record[:times] = time_keys.map { |key| proto_record.delete_field(key) }
+    end
+
+    def convert_ultrasignup_times(proto_record)
+      case proto_record[:status]
+      when "2"
+        proto_record[:times][-1] = nil
+      when "3"
+        proto_record[:times] = [nil, nil]
+      else
+        return
+      end
     end
 
     def transform_times(proto_record)
@@ -112,6 +124,10 @@ module Etl::Transformers::Async
 
     def finish_times_only?
       start_key.nil? && finish_key.present?
+    end
+
+    def ultrasignup_import?
+      finish_times_only? && attribute_keys.include?(:status)
     end
 
     def validate_setup

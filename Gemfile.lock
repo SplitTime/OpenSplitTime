@@ -89,7 +89,7 @@ GEM
     api-pagination (6.0.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1168.0)
+    aws-partitions (1.1170.0)
     aws-record (2.14.0)
       aws-sdk-dynamodb (~> 1, >= 1.85.0)
     aws-sdk-core (3.233.0)
@@ -144,7 +144,7 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.0)
     bindex (0.8.1)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
@@ -222,7 +222,7 @@ GEM
       rails-i18n
     diff-lcs (1.6.2)
     drb (2.2.3)
-    erb (5.0.2)
+    erb (5.0.3)
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
@@ -279,7 +279,7 @@ GEM
     jmespath (1.6.2)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.15.0)
+    json (2.15.1)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
     jwt (3.1.2)
@@ -308,7 +308,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (5.26.0)
     msgpack (1.8.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
@@ -317,7 +317,7 @@ GEM
       activesupport (>= 5.2.0)
     net-http (0.6.0)
       uri
-    net-imap (0.5.11)
+    net-imap (0.5.12)
       date
       net-protocol
     net-pop (0.1.2)
@@ -392,7 +392,7 @@ GEM
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    pp (0.6.2)
+    pp (0.6.3)
       prettyprint
     pretender (0.6.0)
       actionpack (>= 7.1)
@@ -414,8 +414,8 @@ GEM
       activesupport (>= 3.0.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (3.1.16)
-    rack-protection (4.1.1)
+    rack (3.1.17)
+    rack-protection (4.2.0)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -596,7 +596,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode (0.4.4.5)
     unicode-display_width (1.8.0)
-    uri (1.0.3)
+    uri (1.0.4)
     useragent (0.16.11)
     vcr (4.0.0)
     version_gem (1.1.9)

@@ -7,9 +7,12 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
     {
       import_job: import_job,
       parent: event,
+      time_format: time_format,
     }
   end
   let(:import_job) { build_stubbed(:import_job, parent_type: "Event", parent_id: event&.id) }
+  let(:event) { events(:ramble) }
+  let(:time_format) { :elapsed }
   let(:proto_records) { subject.transform }
   let(:keys) { proto_records.first.to_h.keys }
   let(:children) { subject_proto_record.children }
@@ -127,8 +130,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
 
     context "when given valid data using military times" do
       let(:event) { events(:rufa_2016) }
-      before { event.update(laps_required: 1) }
-      let(:options) { { parent: event, time_format: :military } }
+      let(:time_format) { :military }
       let(:structs) do
         [
           OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
@@ -158,6 +160,8 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         ]
       end
 
+      before { event.update(laps_required: 1) }
+
       it "returns proto_records, assigns event_id, and returns correct keys" do
         expect(proto_records.size).to eq(structs.size)
         expect(proto_records).to all be_a(ProtoRecord)
@@ -186,9 +190,8 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
       end
     end
 
-    context "when given only finish times" do
+    context "when given only finish times in generic format" do
       let(:event) { events(:ramble) }
-      let(:options) { { parent: event, time_format: :elapsed } }
       let(:structs) do
         [
           OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
@@ -254,8 +257,88 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
       end
     end
 
+    context "when given only finish times in ultrasignup format" do
+      let(:event) { events(:ramble) }
+      let(:structs) do
+        [
+          OpenStruct.new(bib: "723", place: "1", first_name: "Chris", last_name: "Dickey", age: 34, gender: "m", time: "00:20:05",
+                         address: "123 Elm Street", zip: "84848", city: "Barnsfield", state: "CO", country: "USA",
+                         email: "dickey@example.com", dob: "05/01/1991", status: "1"),
+          OpenStruct.new(bib: "724", place: "2", first_name: "Jane", last_name: "Amelia", age: 35, gender: "f", time: "00:22:31",
+                         address: "123 Maple Ave.", zip: "84899", city: "Wolcott", state: "UT", country: "USA",
+                         email: "jane@example.com", dob: "03/01/1990", status: "1"),
+          OpenStruct.new(bib: "725", place: nil, first_name: "Alfred", last_name: "Neumann", age: 80, gender: "m", time: "0",
+                         address: "123 Madness Ave.", zip: "84800", city: "Idaho Falls", state: "ID", country: "USA",
+                         email: "alfred@example.com", dob: "01/01/1945", status: "2"),
+          OpenStruct.new(bib: "726", place: "", first_name: "Slept", last_name: "Late", age: 19, gender: "m", time: "0",
+                         address: "123 Sleepy Hollow", zip: "85800", city: "Phoenix", state: "AZ", country: "USA",
+                         email: "slept@example.com", dob: "09/01/2007", status: "3"),
+        ]
+      end
+
+      it "does not raise an error" do
+        expect { subject.transform }.not_to raise_error
+      end
+
+      it "transforms without error" do
+        subject.transform
+        expect(subject.errors).to be_empty
+      end
+
+      it "returns proto_records, assigns event_id, and returns correct keys" do
+        expect(proto_records.size).to eq(structs.size)
+        expect(proto_records).to all be_a(ProtoRecord)
+
+        %i[age event_id first_name gender last_name state_code country_code].each do |expected_key|
+          expect(keys).to include(expected_key)
+        end
+
+        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+      end
+
+      context "for a complete proto_record" do
+        let(:subject_proto_record) { proto_records.first }
+
+        it "returns an array of children with expected attributes" do
+          time_points = event.required_time_points
+          expect(children.size).to eq(2)
+          expect(children.map(&:record_type)).to all eq(:split_time)
+          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
+          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
+          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1])
+        end
+
+        it "assigns time attributes properly" do
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1205].map { |e| start_time + e })
+        end
+      end
+
+      context "for another complete proto_record" do
+        let(:subject_proto_record) { proto_records.second }
+
+        it "assigns time attributes properly" do
+          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1351].map { |e| start_time + e })
+        end
+      end
+
+      context "for a proto record that started but did not finish" do
+        let(:subject_proto_record) { proto_records.third }
+        it "assigns a start but not a finish time" do
+          expect(children.size).to eq(1)
+          expect(children.first[:absolute_time]).to eq(start_time)
+        end
+      end
+
+      context "for a proto record that did not start" do
+        let(:subject_proto_record) { proto_records.last }
+        it "does not assign a start or finish time" do
+          expect(children.size).to eq(0)
+        end
+      end
+    end
+
     context "when an event has unlimited laps" do
-      let(:options) { { parent: event } }
       let(:event) { events(:rufa_2016) }
       let(:structs) do
         [
@@ -332,6 +415,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
     end
 
     context "when an unpermitted time_format is provided" do
+      let(:time_format) { :unpermitted_format }
       let(:structs) do
         [
           OpenStruct.new(Overall_rank: 10, Gender_rank: 10, First_name: "Chris", Last_name: "Dickey", Gender: "male", Age: 43, State_code: "CO", Country_code: "US",
@@ -339,8 +423,6 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
                          Finish: "22:24:07"),
         ]
       end
-      let(:options) { { parent: event, time_format: :random_format } }
-      let(:event) { events(:ramble) }
 
       it "returns an error" do
         expect(subject.errors.size).to eq(1)
@@ -350,8 +432,6 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
 
     context "when no structs are provided" do
       let(:structs) { [] }
-      let(:options) { { parent: event } }
-      let(:event) { events(:ramble) }
 
       it "returns an empty array of proto_records without returning an error" do
         expect(proto_records).to eq([])

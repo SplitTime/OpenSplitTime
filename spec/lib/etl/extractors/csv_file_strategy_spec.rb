@@ -50,6 +50,42 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
       end
     end
 
+    context "when a simple ultrasignup efforts export file is provided" do
+      let(:file) { file_fixture("ultrasignup_efforts_simple_export.csv") }
+      let(:expected_array) do
+        [:address, :age, :bib, :city, :country, :dob, :email, :first_name, :gender, :last_name, :place, :state, :status, :time, :zip]
+      end
+      let(:expected_attributes) do
+        {
+          address: "90 Barger Drive",
+          age: 27,
+          bib: 723,
+          city: "Boise",
+          country: "USA",
+          dob: "01/01/1985",
+          email: "mabel@example.com",
+          first_name: "Mabel",
+          gender: "F",
+          last_name: "Jones",
+          place: 1,
+          state: "ID",
+          status: 1,
+          time: "17:50:15",
+          zip: 92888
+        }
+      end
+
+      it "returns raw data in OpenStruct format with expected keys" do
+        expect(subject.errors).to be_empty
+        expect(raw_data.size).to eq(3)
+        expect(raw_data).to all be_a(OpenStruct)
+
+        record = raw_data.first.to_h
+        expect(record.keys).to match_array(expected_array)
+        expect(record.to_h).to eq(expected_attributes)
+      end
+    end
+
     context "when a hardrock historical facts file is provided" do
       let(:file) { file_fixture("hardrock_historical_facts.csv") }
       let(:expected_array) do

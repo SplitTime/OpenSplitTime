@@ -18,8 +18,6 @@ class CourseGroupsController < ApplicationController
   end
 
   def create
-    convert_checkbox_course_ids
-
     @course_group = @organization.course_groups.new(permitted_params)
     authorize @course_group
 
@@ -32,7 +30,6 @@ class CourseGroupsController < ApplicationController
 
   def update
     authorize @course_group
-    convert_checkbox_course_ids
 
     if @course_group.update(permitted_params)
       redirect_to organization_course_group_path(@organization, @course_group)
@@ -54,12 +51,6 @@ class CourseGroupsController < ApplicationController
   end
 
   private
-
-  def convert_checkbox_course_ids
-    if params.dig(:course_group, :course_ids).is_a?(::ActionController::Parameters)
-      params[:course_group][:course_ids] = params.dig(:course_group, :course_ids).select { |_, value| value == "1" }.keys
-    end
-  end
 
   def set_course_group
     @course_group = ::CourseGroup.friendly.find(params[:id])

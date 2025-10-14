@@ -23,14 +23,14 @@
         </div>
       </div>
 
-      <% @course_group.organization.courses.sort_by(&:name).each do |course| %>
-        <div class="mb-3">
-          <div class="col-sm-8">
-            <%= f.check_box "course_ids[#{course.id}]", checked: @course_group.courses.include?(course) %>
-            <%= f.label :courses, course.name %>
+      <div class="mb-3">
+        <%= f.collection_check_boxes :course_ids, @course_group.organization.courses.order(:name), :id, :name do |b| %>
+          <div class="form-check mb-1">
+            <%= b.check_box(class: "form-check-input") %>
+            <%= b.label(class: "form-check-label") %>
           </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
 
       <div class="mb-3">
         <div class="col">

@@ -406,6 +406,58 @@ RSpec.describe PreparedParams do
     end
   end
 
+  describe "#page" do
+    let(:result) { subject.page }
+    let(:params) { ActionController::Parameters.new(page: page) }
+
+    context "when page is nil" do
+      let(:page) { nil }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is an empty string" do
+      let(:page) { "" }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is integer 0" do
+      let(:page) { 0 }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is string '0'" do
+      let(:page) { "0" }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is integer 1" do
+      let(:page) { 1 }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is string '1'" do
+      let(:page) { "1" }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is integer 2" do
+      let(:page) { 2 }
+      it { expect(result).to eq(2) }
+    end
+
+    context "when page is string '2'" do
+      let(:page) { "2" }
+      it { expect(result).to eq(2) }
+    end
+
+    context "when page contains non-numeric characters" do
+      let(:page) { "3' ORDER BY 1-- sxXD"}
+      it "uses standard Ruby logic to convert to an integer" do
+        expect(result).to eq(3)
+      end
+    end
+  end
+
   describe "#search" do
     let(:params) { ActionController::Parameters.new(filter: {search: search_param}) }
 

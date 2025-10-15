@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
     @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
     @people = @people.search(prepared_params[:search])
     @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
-    @people = @people.paginate(page: params[:page], per_page: 25)
+    @people = @people.paginate(page: prepared_params[:page], per_page: 25)
 
     session[:return_to] = people_path
   end

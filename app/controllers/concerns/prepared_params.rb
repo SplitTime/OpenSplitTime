@@ -1,6 +1,7 @@
 class PreparedParams
   SPECIAL_FILTER_FIELDS = %i[editable search].freeze
   BOOLEAN_FILTER_ATTRIBUTES = %i[ready_to_start].freeze
+  FIRST_PAGE = 1
 
   def initialize(params, permitted, permitted_query = nil)
     @params = params
@@ -45,6 +46,11 @@ class PreparedParams
 
   def original_params
     params
+  end
+
+  def page
+    result = params[:page]&.to_i || FIRST_PAGE
+    result == 0 ? FIRST_PAGE : result
   end
 
   def search

@@ -10,7 +10,7 @@ class EventGroupsController < ApplicationController
       .search(params[:search])
       .by_group_start_time
       .preload(:events)
-      .paginate(page: params[:page], per_page: 25)
+      .paginate(page: prepared_params[:page], per_page: 25)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
     session[:return_to] = event_groups_path
   end

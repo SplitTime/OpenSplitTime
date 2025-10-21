@@ -23,4 +23,16 @@ module ExportHelper
       fa_icon("file-csv", text: "Export CSV")
     end
   end
+
+  def button_to_historical_facts_export_async(view_object)
+    path = export_async_organization_historical_facts_path(
+      view_object.organization,
+      filter: view_object.request.query_parameters[:filter],
+      sort: view_object.request.query_parameters[:sort]
+    )
+
+    button_to(path, method: :post, class: "btn btn-success text-nowrap") do
+      fa_icon("file-csv", text: "Export CSV")
+    end
+  end
 end

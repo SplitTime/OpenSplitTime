@@ -43,6 +43,10 @@ class HistoricalFactPolicy < ApplicationPolicy
     index?
   end
 
+  def export_async?
+    index?
+  end
+
   def auto_reconcile?
     index?
   end

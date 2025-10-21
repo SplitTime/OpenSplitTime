@@ -59,6 +59,31 @@ class HistoricalFactsController < ApplicationController
     @historical_fact.destroy
   end
 
+  # POST /organizations/1/historical_facts/export_async
+  def export_async
+    @presenter = ::OrganizationHistoricalFactsPresenter.new(@organization, view_context)
+    uri = URI(request.referrer)
+    source_url = [uri.path, uri.query].compact.join("?")
+    sql_string = @presenter.filtered_historical_facts_unpaginated.to_sql
+
+    export_job = current_user.export_jobs.new(
+      controller_name: controller_name,
+      resource_class_name: "HistoricalFact",
+      source_url: source_url,
+      sql_string: sql_string,
+      status: :waiting,
+    )
+
+    if export_job.save
+      ::ExportAsyncJob.perform_later(export_job.id)
+      flash[:success] = "Export in progress."
+      redirect_to export_jobs_path
+    else
+      flash[:danger] = "Unable to create export job: #{export_job.errors.full_messages.join(', ')}"
+      redirect_to request.referrer || export_jobs_path, status: :unprocessable_content
+    end
+  end
+
   # PATCH /organizations/1/historical_facts/auto_reconcile
   def auto_reconcile
     HistoricalFactsAutoReconcileJob.perform_later(@organization, current_user: current_user)

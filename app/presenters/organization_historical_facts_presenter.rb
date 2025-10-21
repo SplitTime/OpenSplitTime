@@ -24,13 +24,17 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   def filtered_historical_facts
     return @filtered_historical_facts if defined?(@filtered_historical_facts)
 
-    @filtered_historical_facts = historical_facts
+    @filtered_historical_facts = filtered_historical_facts_unpaginated
+      .paginate(page: page, per_page: per_page)
+  end
+
+  def filtered_historical_facts_unpaginated
+    historical_facts
       .where(filter_hash)
       .by_kind(param_kinds)
       .by_reconciled(param_reconciled)
       .search(search_text)
       .order(sort_hash.presence || DEFAULT_ORDER)
-      .paginate(page: page, per_page: per_page)
   end
 
   def filtered_historical_facts_count

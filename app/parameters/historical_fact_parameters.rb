@@ -1,4 +1,23 @@
 class HistoricalFactParameters < BaseParameters
+  def self.csv_export_attributes
+    %w[
+      kind
+      year
+      quantity
+      comments
+      first_name
+      last_name
+      gender
+      birthdate
+      address
+      city
+      state_code
+      country_code
+      email
+      phone
+    ]
+  end
+
   def self.permitted
     [
       :first_name,

@@ -228,6 +228,7 @@ Rails.application.routes.draw do
       collection { patch :auto_reconcile }
       collection { get :reconcile }
       collection { patch :match }
+      collection { post :export_async }
     end
 
     resources :lotteries do

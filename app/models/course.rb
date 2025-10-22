@@ -30,7 +30,7 @@ class Course < ApplicationRecord
   validates_uniqueness_of :name, case_sensitive: false
   validates :gpx,
             content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],
-            size: {less_than: 500.kilobytes, message: "must be less than 0.5 MB"}
+            size: { less_than: 1.megabyte, message: "must be less than 1 MB" }
 
   def to_s
     slug

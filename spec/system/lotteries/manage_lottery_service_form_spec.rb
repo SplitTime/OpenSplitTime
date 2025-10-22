@@ -57,9 +57,10 @@ RSpec.describe "manage lottery service form upload and download", js: true do
       expect(page).to have_current_path(page_path)
 
       click_button "Remove"
-      expect(page).to have_current_path(page_path)
+
       expect(page).not_to have_link("Download")
       expect(page).not_to have_button("Remove")
+      expect(page).to have_current_path(page_path)
     end
   end
 
@@ -75,6 +76,6 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     find(".dropzone").drop(file_fixture("service_form.pdf"))
     click_button "Attach"
     sleep 1
-    expect(lottery.service_form.attached?).to eq(true)
+    expect(lottery.reload.service_form.attached?).to eq(true)
   end
 end

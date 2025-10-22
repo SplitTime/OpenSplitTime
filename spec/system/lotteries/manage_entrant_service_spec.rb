@@ -111,6 +111,6 @@ RSpec.describe "manage entrant service form upload and download", js: true do
     find(".dropzone").drop(file_fixture("potato3.jpg"))
     click_button "Attach"
     sleep 1
-    expect(entrant.service_detail.completed_form.attached?).to eq(true)
+    expect(entrant.reload.service_detail.completed_form.attached?).to eq(true)
   end
 end

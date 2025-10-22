@@ -38,7 +38,7 @@ class EventGroup < ApplicationRecord
 
   validates :entrant_photos,
             content_type: { in: %w[image/png image/jpeg], message: "must be png or jpeg files"},
-            size: {less_than: 1.megabyte, message: "must be less than 1 megabyte"}
+            size: {less_than: 1.megabyte, message: "must be less than 1 MB"}
 
   accepts_nested_attributes_for :events
 

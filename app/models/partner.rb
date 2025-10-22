@@ -11,8 +11,8 @@ class Partner < ApplicationRecord
   end
 
   validates :banner,
-            content_type: %w[image/png image/jpeg],
-            size: {less_than: 500.kilobytes}
+            content_type: { in: %w[image/png image/jpeg], message: "must be a jpeg or png file" },
+            size: { less_than: 1.megabyte, message: "must be less than 1 MB" }
 
   validates_presence_of :partnerable, :name, :weight
 

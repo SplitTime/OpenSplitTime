@@ -24,8 +24,8 @@ class ImportJob < ApplicationRecord
 
   validates_presence_of :parent_type, :parent_id, :format
   validates :files,
-            size: { less_than: 1.megabyte },
-            content_type: { in: %w[text/csv text/plain], message: "must be a CSV file" }
+            content_type: { in: %w[text/csv text/plain], message: "must be a CSV file" },
+            size: { less_than: 1.megabyte, message: "must be less than 1 MB" }
 
   alias_attribute :owner_id, :user_id
 

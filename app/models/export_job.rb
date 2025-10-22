@@ -23,6 +23,6 @@ class ExportJob < ApplicationRecord
   end
 
   def start!
-    update(started_at: ::Time.current)
+    update(status: :processing, started_at: ::Time.current)
   end
 end

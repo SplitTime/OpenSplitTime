@@ -56,8 +56,10 @@ class IntervalSplitCutoffAnalysis < ::ApplicationQuery
           stopped_here_effort_ids as (
               select distinct st.effort_id, st.lap
               from split_times st
+                left join finish_effort_segments fes using (effort_id, lap) 
               where st.split_id = #{split.id}
                 and st.stopped_here is true
+                and fes.elapsed_seconds is null
           ),
           
           all_effort_segments as (

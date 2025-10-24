@@ -34,6 +34,17 @@ RSpec.describe IntervalSplitCutoffAnalysis, type: :model do
       end
     end
 
+    context "for a finish split" do
+      let(:split) { splits(:hardrock_ccw_finish) }
+
+      it "does not count stopped_here efforts as dnfs" do
+        subject_isca = subject[0]
+        expect(subject_isca.total_count).to eq(1)
+        expect(subject_isca.stopped_here_count).to eq(0)
+        expect(subject_isca.finished_count).to eq(1)
+      end
+    end
+
     context "when the query would return too many rows" do
       let(:split) { splits(:hardrock_ccw_telluride) }
       let(:band_width) { 1.minute }

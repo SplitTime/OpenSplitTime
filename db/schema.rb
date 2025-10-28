@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_17_001307) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -864,33 +864,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_17_001307) do
        JOIN event_groups eg ON ((eg.id = ev.event_group_id)))
        JOIN courses c ON ((c.id = ev.course_id)));
   SQL
-  create_view "lottery_division_ticket_stats", sql_definition: <<-SQL
-      WITH entrant_list AS (
-           SELECT DISTINCT ON (lottery_entrants.id) lottery_divisions.name AS division_name,
-              lottery_entrants.lottery_division_id AS division_id,
-              lottery_tickets.lottery_id,
-              lottery_entrants.first_name,
-              lottery_entrants.last_name,
-              lottery_entrants.number_of_tickets,
-              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" <= lottery_divisions.maximum_entries)) AS accepted,
-              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" > lottery_divisions.maximum_entries)) AS waitlisted
-             FROM (((lottery_entrants
-               JOIN lottery_divisions ON ((lottery_divisions.id = lottery_entrants.lottery_division_id)))
-               JOIN lottery_tickets ON ((lottery_tickets.lottery_entrant_id = lottery_entrants.id)))
-               LEFT JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
-            ORDER BY lottery_entrants.id, lottery_draws.id
-          )
-   SELECT lottery_id,
-      division_id,
-      division_name,
-      number_of_tickets,
-      count(*) FILTER (WHERE accepted) AS accepted_entrants_count,
-      count(*) FILTER (WHERE waitlisted) AS waitlisted_entrants_count,
-      count(*) AS entrants_count
-     FROM entrant_list
-    GROUP BY lottery_id, division_id, division_name, number_of_tickets
-    ORDER BY lottery_id, division_id, division_name, number_of_tickets;
-  SQL
   create_view "course_group_finishers", sql_definition: <<-SQL
       SELECT ((cg.id || ':'::text) || p.id) AS id,
       p.id AS person_id,
@@ -1037,55 +1010,127 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_17_001307) do
           END)::integer AS ticket_count
      FROM all_counts;
   SQL
-  create_view "lotteries_division_rankings", sql_definition: <<-SQL
-      WITH ranked_draws AS (
-           SELECT lottery_tickets.lottery_entrant_id,
-              rank() OVER division_window AS division_rank
-             FROM ((lottery_tickets
-               JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
-               JOIN lottery_entrants lottery_entrants_1 ON ((lottery_entrants_1.id = lottery_tickets.lottery_entrant_id)))
-            WINDOW division_window AS (PARTITION BY lottery_entrants_1.lottery_division_id ORDER BY
-                  CASE
-                      WHEN ((lottery_entrants_1.withdrawn IS FALSE) OR (lottery_entrants_1.withdrawn IS NULL)) THEN 0
-                      WHEN (lottery_entrants_1.withdrawn IS TRUE) THEN 1
-                      ELSE NULL::integer
-                  END, lottery_draws.created_at)
-          )
-   SELECT lottery_entrants.id AS lottery_entrant_id,
-      lottery_divisions.name AS division_name,
-      ranked_draws.division_rank,
-          CASE
-              WHEN lottery_entrants.withdrawn THEN 4
-              WHEN (ranked_draws.division_rank <= lottery_divisions.maximum_entries) THEN 0
-              WHEN (ranked_draws.division_rank <= (lottery_divisions.maximum_entries + lottery_divisions.maximum_wait_list)) THEN 1
-              WHEN (ranked_draws.division_rank IS NOT NULL) THEN 2
-              ELSE 3
-          END AS draw_status
-     FROM ((lottery_entrants
-       LEFT JOIN ranked_draws ON ((ranked_draws.lottery_entrant_id = lottery_entrants.id)))
-       JOIN lottery_divisions ON ((lottery_entrants.lottery_division_id = lottery_divisions.id)));
-  SQL
-  create_view "lotteries_calculations_single_ticket_2025s", sql_definition: <<-SQL
+  create_view "lotteries_calculations_hardrock_2026s", sql_definition: <<-SQL
       WITH applicants AS (
            SELECT historical_facts.organization_id,
               historical_facts.person_id,
               any_value(historical_facts.external_id) AS external_id,
-              any_value(historical_facts.gender) AS gender
-             FROM historical_facts
-            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2024))
+              any_value(historical_facts.gender) AS gender,
+              COALESCE(bool_or(((event_groups.organization_id = historical_facts.organization_id) AND (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) < (2021)::numeric))))), false) AS finisher
+             FROM (((historical_facts
+               LEFT JOIN efforts ON ((efforts.person_id = historical_facts.person_id)))
+               LEFT JOIN events ON ((events.id = efforts.event_id)))
+               LEFT JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2025))
             GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), last_start_year AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              max(EXTRACT(year FROM events.scheduled_start_time)) AS year
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE efforts.started
+            GROUP BY event_groups.organization_id, efforts.person_id
+            ORDER BY efforts.person_id
+          ), dns_since_last_start_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS dns_since_last_start_count
+             FROM (historical_facts
+               LEFT JOIN last_start_year USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 0) AND (historical_facts.year < 2026) AND ((historical_facts.year)::numeric > COALESCE(last_start_year.year, (0)::numeric)))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), last_reset_year AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              max(EXTRACT(year FROM events.scheduled_start_time)) AS year
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.finished OR (efforts.started AND (EXTRACT(year FROM events.scheduled_start_time) > (2022)::numeric)))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), dns_since_last_reset_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS dns_since_last_reset_count
+             FROM (historical_facts
+               LEFT JOIN last_reset_year USING (organization_id, person_id))
+            WHERE ((historical_facts.kind = 0) AND (historical_facts.year < 2026) AND ((historical_facts.year)::numeric > COALESCE(last_reset_year.year, (0)::numeric)))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), finish_year_count AS (
+           SELECT event_groups.organization_id,
+              efforts.person_id,
+              count(*) AS finish_year_count
+             FROM ((efforts
+               JOIN events ON ((events.id = efforts.event_id)))
+               JOIN event_groups ON ((event_groups.id = events.event_group_id)))
+            WHERE (efforts.finished AND (EXTRACT(year FROM events.scheduled_start_time) < (2026)::numeric))
+            GROUP BY event_groups.organization_id, efforts.person_id
+          ), vmulti_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              historical_facts.quantity AS vmulti_year_count
+             FROM historical_facts
+            WHERE (historical_facts.kind = 3)
+          ), volunteer_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(DISTINCT historical_facts.year) AS volunteer_year_count
+             FROM historical_facts
+            WHERE ((historical_facts.kind = ANY (ARRAY[1, 2])) AND (historical_facts.year < 2026))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), major_volunteer_year_count AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              count(*) AS major_volunteer_year_count
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 2) AND (historical_facts.year = 2025))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          ), all_counts AS (
+           SELECT applicants.organization_id,
+              applicants.person_id,
+              applicants.external_id,
+              applicants.finisher,
+              applicants.gender,
+              (
+                  CASE
+                      WHEN applicants.finisher THEN COALESCE(dns_since_last_start_count.dns_since_last_start_count, (0)::bigint)
+                      ELSE COALESCE(dns_since_last_reset_count.dns_since_last_reset_count, (0)::bigint)
+                  END)::integer AS dns_ticket_count,
+              (COALESCE(finish_year_count.finish_year_count, (0)::bigint))::integer AS finish_ticket_count,
+              (((COALESCE(volunteer_year_count.volunteer_year_count, (0)::bigint) + COALESCE(vmulti_year_count.vmulti_year_count, 0)) / 3))::integer AS volunteer_ticket_count,
+              (COALESCE(major_volunteer_year_count.major_volunteer_year_count, (0)::bigint))::integer AS volunteer_major_ticket_count
+             FROM ((((((applicants
+               LEFT JOIN dns_since_last_start_count USING (organization_id, person_id))
+               LEFT JOIN dns_since_last_reset_count USING (organization_id, person_id))
+               LEFT JOIN finish_year_count USING (organization_id, person_id))
+               LEFT JOIN vmulti_year_count USING (organization_id, person_id))
+               LEFT JOIN volunteer_year_count USING (organization_id, person_id))
+               LEFT JOIN major_volunteer_year_count USING (organization_id, person_id))
           )
    SELECT row_number() OVER () AS id,
       organization_id,
       person_id,
       external_id,
       gender,
+      finisher,
           CASE
-              WHEN (gender = 0) THEN 'Male'::text
-              ELSE 'Female'::text
+              WHEN ((gender = 0) AND finisher) THEN 'Male Finishers'::text
+              WHEN (gender = 0) THEN 'Male Nevers'::text
+              WHEN finisher THEN 'Female Finishers'::text
+              ELSE 'Female Nevers'::text
           END AS division,
-      1 AS ticket_count
-     FROM applicants;
+      dns_ticket_count,
+      finish_ticket_count,
+      volunteer_ticket_count,
+      volunteer_major_ticket_count,
+      (
+          CASE
+              WHEN finisher THEN (((((dns_ticket_count + finish_ticket_count) + volunteer_ticket_count) + volunteer_major_ticket_count) + 1))::double precision
+              ELSE pow((2)::double precision, (((dns_ticket_count + volunteer_ticket_count) + volunteer_major_ticket_count))::double precision)
+          END)::integer AS ticket_count
+     FROM all_counts;
   SQL
   create_view "lotteries_calculations_hilo_2025s", sql_definition: <<-SQL
       WITH applicants AS (
@@ -1194,5 +1239,82 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_17_001307) do
       trail_work_shifts,
       (((pow((2)::numeric, (((application_count)::numeric + weighted_finish_count) + (1)::numeric)))::double precision + ((2)::double precision * ln((((volunteer_points + trail_work_shifts) + 1))::double precision))))::integer AS ticket_count
      FROM all_counts;
+  SQL
+  create_view "lotteries_calculations_single_ticket_2025s", sql_definition: <<-SQL
+      WITH applicants AS (
+           SELECT historical_facts.organization_id,
+              historical_facts.person_id,
+              any_value(historical_facts.external_id) AS external_id,
+              any_value(historical_facts.gender) AS gender
+             FROM historical_facts
+            WHERE ((historical_facts.kind = 11) AND (historical_facts.year = 2024))
+            GROUP BY historical_facts.organization_id, historical_facts.person_id
+          )
+   SELECT row_number() OVER () AS id,
+      organization_id,
+      person_id,
+      external_id,
+      gender,
+          CASE
+              WHEN (gender = 0) THEN 'Male'::text
+              ELSE 'Female'::text
+          END AS division,
+      1 AS ticket_count
+     FROM applicants;
+  SQL
+  create_view "lotteries_division_rankings", sql_definition: <<-SQL
+      WITH ranked_draws AS (
+           SELECT lottery_tickets.lottery_entrant_id,
+              rank() OVER division_window AS division_rank
+             FROM ((lottery_tickets
+               JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
+               JOIN lottery_entrants lottery_entrants_1 ON ((lottery_entrants_1.id = lottery_tickets.lottery_entrant_id)))
+            WINDOW division_window AS (PARTITION BY lottery_entrants_1.lottery_division_id ORDER BY
+                  CASE
+                      WHEN ((lottery_entrants_1.withdrawn IS FALSE) OR (lottery_entrants_1.withdrawn IS NULL)) THEN 0
+                      WHEN (lottery_entrants_1.withdrawn IS TRUE) THEN 1
+                      ELSE NULL::integer
+                  END, lottery_draws.created_at)
+          )
+   SELECT lottery_entrants.id AS lottery_entrant_id,
+      lottery_divisions.name AS division_name,
+      ranked_draws.division_rank,
+          CASE
+              WHEN lottery_entrants.withdrawn THEN 4
+              WHEN (ranked_draws.division_rank <= lottery_divisions.maximum_entries) THEN 0
+              WHEN (ranked_draws.division_rank <= (lottery_divisions.maximum_entries + lottery_divisions.maximum_wait_list)) THEN 1
+              WHEN (ranked_draws.division_rank IS NOT NULL) THEN 2
+              ELSE 3
+          END AS draw_status
+     FROM ((lottery_entrants
+       LEFT JOIN ranked_draws ON ((ranked_draws.lottery_entrant_id = lottery_entrants.id)))
+       JOIN lottery_divisions ON ((lottery_entrants.lottery_division_id = lottery_divisions.id)));
+  SQL
+  create_view "lottery_division_ticket_stats", sql_definition: <<-SQL
+      WITH entrant_list AS (
+           SELECT DISTINCT ON (lottery_entrants.id) lottery_divisions.name AS division_name,
+              lottery_entrants.lottery_division_id AS division_id,
+              lottery_tickets.lottery_id,
+              lottery_entrants.first_name,
+              lottery_entrants.last_name,
+              lottery_entrants.number_of_tickets,
+              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" <= lottery_divisions.maximum_entries)) AS accepted,
+              ((lottery_draws.id IS NOT NULL) AND (lottery_draws."position" > lottery_divisions.maximum_entries)) AS waitlisted
+             FROM (((lottery_entrants
+               JOIN lottery_divisions ON ((lottery_divisions.id = lottery_entrants.lottery_division_id)))
+               JOIN lottery_tickets ON ((lottery_tickets.lottery_entrant_id = lottery_entrants.id)))
+               LEFT JOIN lottery_draws ON ((lottery_draws.lottery_ticket_id = lottery_tickets.id)))
+            ORDER BY lottery_entrants.id, lottery_draws.id
+          )
+   SELECT lottery_id,
+      division_id,
+      division_name,
+      number_of_tickets,
+      count(*) FILTER (WHERE accepted) AS accepted_entrants_count,
+      count(*) FILTER (WHERE waitlisted) AS waitlisted_entrants_count,
+      count(*) AS entrants_count
+     FROM entrant_list
+    GROUP BY lottery_id, division_id, division_name, number_of_tickets
+    ORDER BY lottery_id, division_id, division_name, number_of_tickets;
   SQL
 end

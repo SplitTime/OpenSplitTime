@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_09_185146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -546,6 +546,35 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
     t.index ["projection_assessment_run_id"], name: "index_projection_assessments_on_projection_assessment_run_id"
   end
 
+  create_table "race_result_webhooks", force: :cascade do |t|
+    t.string "rr_event_id", null: false
+    t.string "webhook_id", null: false
+    t.string "trigger_type", null: false
+    t.datetime "webhook_timestamp", null: false
+    t.jsonb "payload", default: {}, null: false
+    t.string "source_ip"
+    t.text "user_agent"
+    t.string "request_method", default: "POST"
+    t.string "status", default: "received", null: false
+    t.text "error_message"
+    t.datetime "processed_at"
+    t.bigint "event_id"
+    t.bigint "effort_id"
+    t.bigint "split_time_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["effort_id"], name: "index_race_result_webhooks_on_effort_id"
+    t.index ["event_id"], name: "index_race_result_webhooks_on_event_id"
+    t.index ["payload"], name: "index_race_result_webhooks_on_payload", using: :gin
+    t.index ["rr_event_id", "webhook_timestamp"], name: "idx_on_rr_event_id_webhook_timestamp_d39c42fa6b"
+    t.index ["rr_event_id"], name: "index_race_result_webhooks_on_rr_event_id"
+    t.index ["split_time_id"], name: "index_race_result_webhooks_on_split_time_id"
+    t.index ["status"], name: "index_race_result_webhooks_on_status"
+    t.index ["trigger_type"], name: "index_race_result_webhooks_on_trigger_type"
+    t.index ["webhook_id"], name: "index_race_result_webhooks_on_webhook_id", unique: true
+    t.index ["webhook_timestamp"], name: "index_race_result_webhooks_on_webhook_timestamp"
+  end
+
   create_table "raw_times", force: :cascade do |t|
     t.bigint "event_group_id", null: false
     t.bigint "split_time_id"
@@ -805,6 +834,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
   add_foreign_key "projection_assessment_runs", "events"
   add_foreign_key "projection_assessments", "efforts"
   add_foreign_key "projection_assessments", "projection_assessment_runs"
+  add_foreign_key "race_result_webhooks", "efforts"
+  add_foreign_key "race_result_webhooks", "events"
+  add_foreign_key "race_result_webhooks", "split_times"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"
   add_foreign_key "results_categories", "organizations"

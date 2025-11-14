@@ -68,13 +68,19 @@ gem "will_paginate", "~> 3.3"
 
 group :development do
   gem "better_errors", ">= 2.3"
-  gem "derailed_benchmarks"
+  #gem "derailed_benchmarks"
+  gem "derailed_benchmarks", require: false
   gem "listen"
   gem "rails-erd"
   gem "rails_real_favicon", ">= 0.1.0"
   gem "spring"
   gem "web-console", "~> 3.7", ">= 3.7.0"
 end
+
+gem 'sys-proctable', platforms: [:mingw, :x64_mingw, :mswin] 
+gem 'wdm', '>= 0.1.0', platforms: [:windows]
+gem 'pagy', '~> 8.0'
+
 
 group :test do
   gem "capybara"
@@ -93,3 +99,7 @@ group :development, :test do
   gem "rubocop", "~> 0.49"
   gem "spring-commands-rspec"
 end
+
+gem "tzinfo-data", "~> 1.2025"
+
+gem "fiddle", "~> 1.1"

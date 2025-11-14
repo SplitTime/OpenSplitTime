@@ -239,6 +239,7 @@ GEM
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
     ffaker (2.25.0)
+    ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
@@ -247,6 +248,7 @@ GEM
     ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
+    fiddle (1.1.8)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
     fugit (1.12.0)
@@ -308,6 +310,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.26.0)
     msgpack (1.8.0)
     multi_xml (0.7.2)
@@ -327,6 +330,9 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.10)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-musl)
@@ -374,7 +380,7 @@ GEM
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (9.4.0)
+    pagy (8.6.3)
     paper_trail (16.0.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
@@ -594,6 +600,8 @@ GEM
       railties (>= 7.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2025.2)
+      tzinfo (>= 1.0.0)
     unicode (0.4.4.5)
     unicode-display_width (1.8.0)
     uri (1.0.4)
@@ -630,6 +638,7 @@ PLATFORMS
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
+  ruby
   x86_64-darwin
   x86_64-linux
   x86_64-linux-gnu
@@ -666,6 +675,7 @@ DEPENDENCIES
   factory_bot_rails
   faraday
   ffaker
+  fiddle (~> 1.1)
   friendly_id
   fx (>= 0.6.2)
   image_processing
@@ -680,6 +690,7 @@ DEPENDENCIES
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 1.0.0)
+  pagy (~> 8.0)
   paper_trail
   pg
   pg_search
@@ -711,9 +722,12 @@ DEPENDENCIES
   stimulus-rails
   strip_attributes
   structpluck
+  sys-proctable
   terser
   turbo-rails
+  tzinfo-data (~> 1.2025)
   vcr (~> 4.0)
+  wdm (>= 0.1.0)
   web-console (~> 3.7, >= 3.7.0)
   webmock (~> 3.5)
   will_paginate (~> 3.3)

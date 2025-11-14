@@ -122,9 +122,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
     t.index ["user_id"], name: "index_credentials_on_user_id"
   end
 
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
-  end
-
   create_table "effort_segments", id: false, force: :cascade do |t|
     t.integer "course_id"
     t.integer "begin_split_id"
@@ -562,9 +559,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
     t.integer "created_by"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "parameterized_split_name", null: false
+    t.string "parameterized_split_name"
     t.string "remarks"
-    t.integer "sortable_bib_number", null: false
+    t.integer "sortable_bib_number"
     t.integer "data_status"
     t.integer "matchable_bib_number"
     t.boolean "disassociated_from_effort"
@@ -591,9 +588,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
   create_table "results_template_categories", force: :cascade do |t|
     t.bigint "results_template_id"
     t.bigint "results_category_id"
+    t.integer "position"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.integer "position"
     t.boolean "fixed_position"
     t.index ["results_category_id"], name: "index_results_template_categories_on_results_category_id"
     t.index ["results_template_id"], name: "index_results_template_categories_on_results_template_id"
@@ -824,7 +821,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
        LANGUAGE sql
        IMMUTABLE STRICT
       AS $function$
-      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E' +')))), ' ')
+      SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
       $function$
   SQL
 

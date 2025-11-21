@@ -1,69 +1,80 @@
-# frozen_string_literal: true
-
-# Location: app/controllers/webhooks/race_result_webhooks_controller.rb
-# Endpoints:
-#   POST /webhooks/race_result_webhooks         -> create
-#   GET  /webhooks/race_result_webhooks/status  -> status
-
 class Webhooks::RaceResultWebhooksController < ::ApplicationController
-  # Webhooks are POSTed by an external system; disable CSRF for this controller.
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token #, if: :valid_webhook_token?
 
-  # POST /webhooks/race_result_webhooks
   def create
-    webhook_params = extract_webhook_params
+    status = :ok
+    response_body= nil
 
-    # Persist/log the webhook (model method you already implemented)
-    webhook = RaceResultWebhook.log_webhook(webhook_params)
+    payload = extract_webhook_params
+    raw_time= build_raw_time_from_payload(payload)
 
-    if webhook
-      # If/when you add async processing:
-      # RaceResult::WebhookProcessorJob.perform_later(webhook.id)
-
-      Rails.logger.info("RaceResult webhook received: #{webhook.id}")
-      Rails.logger.info(
-        "Webhook details: Event ID: #{webhook.event_id}, " \
-        "Trigger: #{webhook.trigger_type}, " \
-        "Timestamp: #{webhook.webhook_timestamp}"
-      )
-
-      render json: {
-        status: 'success',
-        message: 'Webhook received successfully',
-        webhook_id: webhook.id,
+    if raw_time.save
+      Rails.logger.info("RaceResult webhook received, RawTime Created: #{raw_time.id}"\
+      "Event_group_id=#{raw_time.event_group_id}, bib=#{raw_time.bib_number}, " \
+        "split=#{raw_time.split_name}, bitkey=#{raw_time.bitkey})"
+        )
+      response_body = {
+        status:      'success',
+        message:     'Webhook received successfully',
+        raw_time_id: raw_time.id,
         received_at: Time.current.iso8601
-      }, status: :ok
+      }
+
     else
-      render json: {
-        status: 'error',
-        message: 'Failed to log webhook data'
-      }, status: :unprocessable_entity
+      Rails.logger.warn(
+        "[RaceResultWebhook] Failed to create RawTime: #{raw_time.errors.full_messages.join(', ')}")
+
+      status        = :unprocessable_entity
+      response_body = {
+        status:  'error',
+        message: 'Failed to create raw time',
+        errors:  raw_time.errors.full_messages
+      }
     end
+
+    
+    render json: response_body, status: status
+  rescue JSON::ParserError => e
+    Rails.logger.error("Error parsing RaceResult webhook JSON: #{e.message}")
+
+    render json: {
+      status:  'error',
+      message: 'Invalid JSON',
+      error:   e.message
+    }, status: :bad_request
   rescue StandardError => e
     Rails.logger.error("Error processing RaceResult webhook: #{e.message}")
     Rails.logger.error(e.backtrace.join("\n"))
 
     render json: {
-      status: 'error',
+      status:  'error',
       message: 'Internal server error',
-      error: e.message
+      error:   e.message
     }, status: :internal_server_error
   end
 
-  # GET /webhooks/race_result_webhooks/status
-  # Lightweight health check for the receiver
+  # GET /status 
   def status
     render json: {
-      status: 'operational',
-      service: 'RaceResult Webhook Receiver',
-      version: '1.0.0',
+      status:    'operational',
+      service:   'RaceResult Webhook Receiver',
+      version:   '1.0.0',
       timestamp: Time.current.iso8601
     }
   end
 
   private
 
-  # Prefer raw-body JSON; fall back to strong-params if body isn't JSON.
+  def raceresult_event_params
+    [
+      :event_group_id,
+      :raw_data,
+      :participant,
+      :source_ip,
+      :user_agent
+    ]
+  end
+
   def extract_webhook_params
     raw_body = request.body.read
     request.body.rewind
@@ -75,7 +86,6 @@ class Webhooks::RaceResultWebhooksController < ::ApplicationController
         {}
       end
 
-    # Attach request metadata
     parsed_payload.merge(
       source_ip: request.remote_ip,
       user_agent: request.user_agent
@@ -85,13 +95,43 @@ class Webhooks::RaceResultWebhooksController < ::ApplicationController
     webhook_params_with_metadata
   end
 
-  # Fallback for form-encoded or non-JSON posts
   def webhook_params_with_metadata
-    # Permit everything at the boundary; downstream model should validate/shape.
     permitted = params.except(:controller, :action, :format).permit!.to_h
+
     permitted.merge(
-      source_ip: request.remote_ip,
+      source_ip:  request.remote_ip,
       user_agent: request.user_agent
+    ).with_indifferent_access
+  end
+
+  def build_raw_time_from_payload(payload)
+    raw_data    = payload[:raw_data]    || {}
+    participant = payload[:participant] || {}
+
+    event_group_id = payload[:event_group_id] || params[:event_group_id]
+    event_group    = EventGroup.find_by(id: event_group_id)
+
+    absolute_time = parse_absolute_time(raw_data[:absolute_time])
+
+    RawTime.new(
+      event_group:   event_group,
+      bib_number:    participant[:bib_number] || raw_data[:bib_number],
+      split_name:    raw_data[:split_name] || 'RaceResult',
+      bitkey:        (raw_data[:bitkey] || 1), 
+      lap:           (raw_data[:lap] || 1),
+
+      # RawTime validations require entered_time, split_name, bitkey, bib_number, source, event_group
+      entered_time:  absolute_time&.strftime('%H:%M:%S'),
+      absolute_time: absolute_time,
+      source:        'raceresult_webhook'
     )
+  end
+
+  def parse_absolute_time(value)
+    return nil if value.blank?
+
+    Time.parse(value)
+  rescue ArgumentError
+    nil
   end
 end

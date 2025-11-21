@@ -55,7 +55,6 @@ Rails.application.routes.draw do
   namespace :webhooks do
     resources :sendgrid_events, only: [:create]
 
-    # NEW: RaceResult webhook
     resources :race_result_webhooks, only: [:create] do
       collection do
         get :status
@@ -346,17 +345,6 @@ Rails.application.routes.draw do
       post "auth", to: "authentication#create"
     end
   end
-
-  # # config/routes.rb
-  # namespace :api do
-  #   namespace :v1 do
-  #     resources :race_result_webhooks, only: [:create] do
-  #       collection do
-  #         get :status
-  #       end
-  #     end
-  #   end
-  # end
 
   get "/courses(/*path)" => redirect(::NamespaceRedirector.new("courses"))
   get "/s/:id" => "shortener/shortened_urls#show"

@@ -109,6 +109,10 @@ module BadgeHelper
       title = "VMultiRep"
       color = :secondary
       tooltip_text = "Reported how many years of volunteer service"
+    when "ticket_count_reported"
+      title = "TicketCountRep"
+      color = :secondary
+      tooltip_text = "Reported self-calculated ticket count"
     else
       raise ArgumentError, "Can't build a badge; unknown status: #{kind}"
     end

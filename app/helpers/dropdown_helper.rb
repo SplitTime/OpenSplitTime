@@ -471,6 +471,8 @@ module DropdownHelper
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hilo_historical_facts }) },
       { name: "Ultrasignup format",
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_historical_facts }) },
+      { name: "Bear 100 format",
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :bear_100_historical_facts }) },
       { name: "Ultrasignup order id compare",
         link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_order_id_compare }) },
     ]

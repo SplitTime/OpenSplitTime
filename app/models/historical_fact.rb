@@ -19,6 +19,7 @@ class HistoricalFact < ApplicationRecord
     lottery_ticket_count_legacy: 7,
     lottery_division_legacy: 8,
     ticket_reset_legacy: 16,
+    ticket_count_reported: 19
   }
 
   include Auditable

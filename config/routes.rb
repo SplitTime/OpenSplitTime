@@ -54,6 +54,12 @@ Rails.application.routes.draw do
 
   namespace :webhooks do
     resources :sendgrid_events, only: [:create]
+
+    resources :race_result_webhooks, only: [:create] do
+      collection do
+        get :status
+      end
+    end
   end
 
   namespace :user_settings do

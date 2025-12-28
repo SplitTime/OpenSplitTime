@@ -43,7 +43,7 @@ RSpec.describe "manage tickets and draws on the lottery setup page", js: true do
   end
 
   scenario "The user generates tickets" do
-    lottery.draws.delete_all
+    lottery.delete_all_draws!
     lottery.tickets.delete_all
     login_as steward, scope: :user
     visit_page

@@ -372,7 +372,7 @@ historical_fact_0017:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -395,7 +395,7 @@ historical_fact_0018:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -418,7 +418,7 @@ historical_fact_0019:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -441,7 +441,7 @@ historical_fact_0020:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -464,7 +464,7 @@ historical_fact_0021:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -487,7 +487,7 @@ historical_fact_0022:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -510,7 +510,7 @@ historical_fact_0023:
   person_id: 2191
   first_name: Freddy
   last_name: Maggio
-  birthdate: '1995-06-21'
+  birthdate: 1995-06-21
   gender: 0
   address: 9876 Damian Valley
   city: Port Kandice
@@ -533,7 +533,7 @@ historical_fact_0024:
   person_id: 2191
   first_name: Freddy
   last_name: Maggio
-  birthdate: '1995-06-21'
+  birthdate: 1995-06-21
   gender: 0
   address: 9876 Damian Valley
   city: Port Kandice
@@ -556,7 +556,7 @@ historical_fact_0025:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -579,7 +579,7 @@ historical_fact_0026:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -602,7 +602,7 @@ historical_fact_0027:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -625,7 +625,7 @@ historical_fact_0028:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -648,7 +648,7 @@ historical_fact_0029:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -671,7 +671,7 @@ historical_fact_0030:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -694,7 +694,7 @@ historical_fact_0031:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -717,7 +717,7 @@ historical_fact_0032:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -740,7 +740,7 @@ historical_fact_0033:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -1108,7 +1108,7 @@ historical_fact_0049:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1131,7 +1131,7 @@ historical_fact_0050:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1154,7 +1154,7 @@ historical_fact_0051:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1177,7 +1177,7 @@ historical_fact_0052:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1200,7 +1200,7 @@ historical_fact_0053:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1223,7 +1223,7 @@ historical_fact_0054:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1246,7 +1246,7 @@ historical_fact_0055:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1269,7 +1269,7 @@ historical_fact_0056:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1292,7 +1292,7 @@ historical_fact_0057:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1315,7 +1315,7 @@ historical_fact_0058:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1338,7 +1338,7 @@ historical_fact_0059:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1361,7 +1361,7 @@ historical_fact_0060:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown
@@ -1936,7 +1936,7 @@ historical_fact_0085:
   person_id: 2190
   first_name: Bethany
   last_name: Sanford
-  birthdate: '1988-05-01'
+  birthdate: 1988-05-01
   gender: 1
   address: 123 rue des Frères Lumières
   city: Villefranche Sur Saône
@@ -1959,7 +1959,7 @@ historical_fact_0086:
   person_id: 2191
   first_name: Freddy
   last_name: Maggio
-  birthdate: '1995-06-21'
+  birthdate: 1995-06-21
   gender: 0
   address: 9876 Damian Valley
   city: Port Kandice
@@ -1982,7 +1982,7 @@ historical_fact_0087:
   person_id: 69
   first_name: Carmine
   last_name: Adams
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   gender: 0
   address: 2575 Mariela Brook
   city: Kassulkemouth
@@ -2005,7 +2005,7 @@ historical_fact_0088:
   person_id: 81
   first_name: Rachelle
   last_name: Eichmann
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   gender: 1
   address: '028 Kunze Freeway'
   city: Tamartown

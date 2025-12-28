@@ -3,7 +3,7 @@ lottery_without_tickets:
   id: 3
   organization_id: 4
   name: Lottery Without Tickets
-  scheduled_start_date: '2022-12-06'
+  scheduled_start_date: 2022-12-06
   slug: lottery-without-tickets
   concealed:
   status: 0
@@ -12,7 +12,7 @@ lottery_with_tickets_and_draws:
   id: 4
   organization_id: 4
   name: Lottery With Tickets And Draws
-  scheduled_start_date: '2020-11-11'
+  scheduled_start_date: 2020-11-11
   slug: lottery-with-tickets-and-draws
   concealed:
   status: 1

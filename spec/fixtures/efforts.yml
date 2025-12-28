@@ -13,7 +13,7 @@ hardrock_2015_tuan_jacobs:
   last_name: Jacobs
   gender: 0
   country_code: ES
-  birthdate: '1998-03-19'
+  birthdate: 1998-03-19
   data_status: 2
   beacon_url:
   report_url:
@@ -53,7 +53,7 @@ hardrock_2015_erich_larson:
   last_name: Larson
   gender: 0
   country_code: US
-  birthdate: '1979-07-10'
+  birthdate: 1979-07-10
   data_status: 2
   beacon_url:
   report_url:
@@ -93,7 +93,7 @@ hardrock_2015_leif_carter:
   last_name: Carter
   gender: 0
   country_code: ES
-  birthdate: '1960-02-01'
+  birthdate: 1960-02-01
   data_status: 2
   beacon_url:
   report_url:
@@ -133,7 +133,7 @@ hardrock_2015_carmine_adams:
   last_name: Adams
   gender: 0
   country_code: US
-  birthdate: '1997-05-25'
+  birthdate: 1997-05-25
   data_status: 1
   beacon_url:
   report_url:
@@ -173,7 +173,7 @@ hardrock_2015_garry_kuhlman:
   last_name: Kuhlman
   gender: 0
   country_code: US
-  birthdate: '1969-10-10'
+  birthdate: 1969-10-10
   data_status: 2
   beacon_url:
   report_url:
@@ -213,7 +213,7 @@ hardrock_2015_darius_jacobson:
   last_name: Jacobson
   gender: 0
   country_code: US
-  birthdate: '1985-03-21'
+  birthdate: 1985-03-21
   data_status: 2
   beacon_url:
   report_url:
@@ -253,7 +253,7 @@ hardrock_2015_santa_green:
   last_name: Green
   gender: 1
   country_code: US
-  birthdate: '1977-10-27'
+  birthdate: 1977-10-27
   data_status: 2
   beacon_url:
   report_url:
@@ -293,7 +293,7 @@ hardrock_2015_gilberto_mckenzie:
   last_name: McKenzie
   gender: 0
   country_code: US
-  birthdate: '1970-06-02'
+  birthdate: 1970-06-02
   data_status: 2
   beacon_url:
   report_url:
@@ -333,7 +333,7 @@ hardrock_2015_vince_willms:
   last_name: Willms
   gender: 0
   country_code: US
-  birthdate: '1964-10-22'
+  birthdate: 1964-10-22
   data_status: 2
   beacon_url:
   report_url:
@@ -373,7 +373,7 @@ hardrock_2015_cedric_windler:
   last_name: Windler
   gender: 0
   country_code: US
-  birthdate: '1979-07-10'
+  birthdate: 1979-07-10
   data_status: 2
   beacon_url:
   report_url:
@@ -413,7 +413,7 @@ hardrock_2015_chris_rempel:
   last_name: Rempel
   gender: 0
   country_code: US
-  birthdate: '1988-12-28'
+  birthdate: 1988-12-28
   data_status: 2
   beacon_url:
   report_url:
@@ -453,7 +453,7 @@ hardrock_2015_robby_gerlach:
   last_name: Gerlach
   gender: 0
   country_code: US
-  birthdate: '1970-05-18'
+  birthdate: 1970-05-18
   data_status: 2
   beacon_url:
   report_url:
@@ -493,7 +493,7 @@ hardrock_2015_rachelle_eichmann:
   last_name: Eichmann
   gender: 1
   country_code: US
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   data_status: 2
   beacon_url:
   report_url:
@@ -533,7 +533,7 @@ hardrock_2015_elden_morissette:
   last_name: Morissette
   gender: 0
   country_code: US
-  birthdate: '1972-11-21'
+  birthdate: 1972-11-21
   data_status: 2
   beacon_url:
   report_url:
@@ -573,7 +573,7 @@ hardrock_2015_leroy_leffler:
   last_name: Leffler
   gender: 0
   country_code: US
-  birthdate: '1967-06-18'
+  birthdate: 1967-06-18
   data_status: 2
   beacon_url:
   report_url:
@@ -613,7 +613,7 @@ hardrock_2015_samara_vandervort:
   last_name: Vandervort
   gender: 1
   country_code: US
-  birthdate: '1992-12-15'
+  birthdate: 1992-12-15
   data_status: 0
   beacon_url:
   report_url:
@@ -653,7 +653,7 @@ hardrock_2015_robt_wintheiser:
   last_name: Wintheiser
   gender: 0
   country_code: US
-  birthdate: '1957-09-14'
+  birthdate: 1957-09-14
   data_status: 2
   beacon_url:
   report_url:
@@ -693,7 +693,7 @@ hardrock_2015_demetrius_moen:
   last_name: Moen
   gender: 0
   country_code: US
-  birthdate: '1975-06-06'
+  birthdate: 1975-06-06
   data_status: 2
   beacon_url:
   report_url:
@@ -733,7 +733,7 @@ hardrock_2015_vern_buckridge:
   last_name: Buckridge
   gender: 0
   country_code: US
-  birthdate: '1981-10-15'
+  birthdate: 1981-10-15
   data_status: 2
   beacon_url:
   report_url:
@@ -773,7 +773,7 @@ hardrock_2015_donte_spencer:
   last_name: Spencer
   gender: 0
   country_code: US
-  birthdate: '1984-07-14'
+  birthdate: 1984-07-14
   data_status: 2
   beacon_url:
   report_url:
@@ -813,7 +813,7 @@ hardrock_2015_bruno_fadel:
   last_name: Fadel
   gender: 0
   country_code: US
-  birthdate: '1988-05-11'
+  birthdate: 1988-05-11
   data_status: 2
   beacon_url:
   report_url:
@@ -853,7 +853,7 @@ hardrock_2015_gus_walker:
   last_name: Walker
   gender: 0
   country_code: US
-  birthdate: '1960-11-23'
+  birthdate: 1960-11-23
   data_status: 0
   beacon_url:
   report_url:
@@ -893,7 +893,7 @@ hardrock_2015_susanna_abshire:
   last_name: Abshire
   gender: 1
   country_code: US
-  birthdate: '1980-08-17'
+  birthdate: 1980-08-17
   data_status: 0
   beacon_url:
   report_url:
@@ -933,7 +933,7 @@ hardrock_2015_leandro_cole:
   last_name: Cole
   gender: 0
   country_code: US
-  birthdate: '1970-06-26'
+  birthdate: 1970-06-26
   data_status: 0
   beacon_url:
   report_url:
@@ -1013,7 +1013,7 @@ hardrock_2015_raphael_swift:
   last_name: Swift
   gender: 0
   country_code: US
-  birthdate: '1974-07-14'
+  birthdate: 1974-07-14
   data_status: 0
   beacon_url:
   report_url:
@@ -1053,7 +1053,7 @@ hardrock_2015_bad_status:
   last_name: Status
   gender: 0
   country_code: US
-  birthdate: '1994-04-18'
+  birthdate: 1994-04-18
   data_status: 0
   beacon_url:
   report_url:
@@ -1093,7 +1093,7 @@ hardrock_2015_irvin_harber:
   last_name: Harber
   gender: 0
   country_code: US
-  birthdate: '1996-07-05'
+  birthdate: 1996-07-05
   data_status: 2
   beacon_url:
   report_url:
@@ -1133,7 +1133,7 @@ hardrock_2015_cassondra_nienow:
   last_name: Nienow
   gender: 1
   country_code: US
-  birthdate: '1958-09-07'
+  birthdate: 1958-09-07
   data_status: 2
   beacon_url:
   report_url:
@@ -1173,7 +1173,7 @@ hardrock_2015_donn_mckenzie:
   last_name: McKenzie
   gender: 0
   country_code: US
-  birthdate: '1998-12-29'
+  birthdate: 1998-12-29
   data_status: 2
   beacon_url:
   report_url:
@@ -1213,7 +1213,7 @@ ramble_finished_first:
   last_name: First
   gender: 0
   country_code:
-  birthdate: '1957-02-04'
+  birthdate: 1957-02-04
   data_status: 2
   beacon_url:
   report_url:
@@ -1253,7 +1253,7 @@ ramble_finished_second:
   last_name: Second
   gender: 1
   country_code:
-  birthdate: '1994-08-16'
+  birthdate: 1994-08-16
   data_status: 2
   beacon_url:
   report_url:
@@ -1293,7 +1293,7 @@ ramble_start_only:
   last_name: Only
   gender: 1
   country_code:
-  birthdate: '1968-07-11'
+  birthdate: 1968-07-11
   data_status: 2
   beacon_url:
   report_url:
@@ -1333,7 +1333,7 @@ ramble_not_started:
   last_name: Started
   gender: 0
   country_code:
-  birthdate: '1989-03-22'
+  birthdate: 1989-03-22
   data_status: 2
   beacon_url:
   report_url:
@@ -1413,7 +1413,7 @@ hardrock_2014_finished_with_stop:
   last_name: With Stop
   gender: 0
   country_code: US
-  birthdate: '1974-03-03'
+  birthdate: 1974-03-03
   data_status:
   beacon_url:
   report_url:
@@ -1453,7 +1453,7 @@ hardrock_2014_finished_without_stop:
   last_name: Without Stop
   gender: 0
   country_code: US
-  birthdate: '1989-06-12'
+  birthdate: 1989-06-12
   data_status:
   beacon_url:
   report_url:
@@ -1493,7 +1493,7 @@ hardrock_2014_claudio_wunsch:
   last_name: Wunsch
   gender: 0
   country_code: US
-  birthdate: '1981-04-17'
+  birthdate: 1981-04-17
   data_status:
   beacon_url:
   report_url:
@@ -1533,7 +1533,7 @@ hardrock_2014_rachelle_eichmann:
   last_name: Eichmann
   gender: 1
   country_code: US
-  birthdate: '1992-01-11'
+  birthdate: 1992-01-11
   data_status:
   beacon_url:
   report_url:
@@ -1573,7 +1573,7 @@ hardrock_2014_keith_metz:
   last_name: Metz
   gender: 0
   country_code: US
-  birthdate: '1971-11-06'
+  birthdate: 1971-11-06
   data_status:
   beacon_url:
   report_url:
@@ -1613,7 +1613,7 @@ hardrock_2014_major_green:
   last_name: Green
   gender: 0
   country_code: US
-  birthdate: '1955-09-29'
+  birthdate: 1955-09-29
   data_status:
   beacon_url:
   report_url:
@@ -1653,7 +1653,7 @@ hardrock_2014_humberto_adams:
   last_name: Adams
   gender: 0
   country_code: US
-  birthdate: '1990-04-25'
+  birthdate: 1990-04-25
   data_status:
   beacon_url:
   report_url:
@@ -1693,7 +1693,7 @@ hardrock_2014_omer_yundt:
   last_name: Yundt
   gender: 0
   country_code: US
-  birthdate: '1974-06-23'
+  birthdate: 1974-06-23
   data_status:
   beacon_url:
   report_url:
@@ -1733,7 +1733,7 @@ hardrock_2014_pat_schaden:
   last_name: Schaden
   gender: 0
   country_code: US
-  birthdate: '1960-09-09'
+  birthdate: 1960-09-09
   data_status: 2
   beacon_url:
   report_url:
@@ -1773,7 +1773,7 @@ hardrock_2014_clarence_goyette:
   last_name: Goyette
   gender: 0
   country_code: US
-  birthdate: '1961-09-18'
+  birthdate: 1961-09-18
   data_status:
   beacon_url:
   report_url:
@@ -1813,7 +1813,7 @@ hardrock_2014_irvin_corkery:
   last_name: Corkery
   gender: 0
   country_code: US
-  birthdate: '1991-11-01'
+  birthdate: 1991-11-01
   data_status:
   beacon_url:
   report_url:
@@ -1853,7 +1853,7 @@ hardrock_2014_willis_murray:
   last_name: Murray
   gender: 0
   country_code: US
-  birthdate: '1998-02-04'
+  birthdate: 1998-02-04
   data_status:
   beacon_url:
   report_url:
@@ -1893,7 +1893,7 @@ hardrock_2014_ken_bradtke:
   last_name: Bradtke
   gender: 0
   country_code: US
-  birthdate: '1966-07-21'
+  birthdate: 1966-07-21
   data_status:
   beacon_url:
   report_url:
@@ -1933,7 +1933,7 @@ hardrock_2014_progress_sherman:
   last_name: Sherman
   gender: 0
   country_code: US
-  birthdate: '1977-12-15'
+  birthdate: 1977-12-15
   data_status: 2
   beacon_url:
   report_url:
@@ -1973,7 +1973,7 @@ hardrock_2014_multiple_stops:
   last_name: Stops
   gender: 1
   country_code: US
-  birthdate: '1954-03-21'
+  birthdate: 1954-03-21
   data_status:
   beacon_url:
   report_url:
@@ -2053,7 +2053,7 @@ hardrock_2014_drop_ouray:
   last_name: Ouray
   gender: 1
   country_code: US
-  birthdate: '1974-01-05'
+  birthdate: 1974-01-05
   data_status: 2
   beacon_url:
   report_url:
@@ -2093,7 +2093,7 @@ hardrock_2014_not_started:
   last_name: Started
   gender: 0
   country_code: US
-  birthdate: '1986-03-23'
+  birthdate: 1986-03-23
   data_status: 2
   beacon_url:
   report_url:
@@ -2133,7 +2133,7 @@ rufa_2016_finished_first:
   last_name: First
   gender: 0
   country_code:
-  birthdate: '1980-07-03'
+  birthdate: 1980-07-03
   data_status: 2
   beacon_url:
   report_url:
@@ -2173,7 +2173,7 @@ rufa_2016_finished_second:
   last_name: Second
   gender: 0
   country_code:
-  birthdate: '1983-04-21'
+  birthdate: 1983-04-21
   data_status: 2
   beacon_url:
   report_url:
@@ -2213,7 +2213,7 @@ rufa_2016_progress_lap1:
   last_name: Lap1
   gender: 0
   country_code:
-  birthdate: '1991-01-16'
+  birthdate: 1991-01-16
   data_status: 2
   beacon_url:
   report_url:
@@ -2253,7 +2253,7 @@ rufa_2016_not_started:
   last_name: Started
   gender: 1
   country_code:
-  birthdate: '1958-03-21'
+  birthdate: 1958-03-21
   data_status: 2
   beacon_url:
   report_url:
@@ -2293,7 +2293,7 @@ rufa_2017_24h_finished_first:
   last_name: First
   gender: 1
   country_code: US
-  birthdate: '1969-04-04'
+  birthdate: 1969-04-04
   data_status: 2
   beacon_url:
   report_url:
@@ -2333,7 +2333,7 @@ rufa_2017_24h_progress_lap6:
   last_name: Lap6
   gender: 0
   country_code: US
-  birthdate: '1983-03-13'
+  birthdate: 1983-03-13
   data_status: 2
   beacon_url:
   report_url:
@@ -2373,7 +2373,7 @@ rufa_2017_24h_multiple_stops:
   last_name: Stops
   gender: 1
   country_code: US
-  birthdate: '1973-11-14'
+  birthdate: 1973-11-14
   data_status: 2
   beacon_url:
   report_url:
@@ -2413,7 +2413,7 @@ rufa_2017_24h_finished_last:
   last_name: Last
   gender: 0
   country_code: US
-  birthdate: '1976-05-03'
+  birthdate: 1976-05-03
   data_status: 2
   beacon_url:
   report_url:
@@ -2453,7 +2453,7 @@ rufa_2017_24h_not_started:
   last_name: Started
   gender: 0
   country_code: US
-  birthdate: '1986-03-23'
+  birthdate: 1986-03-23
   data_status: 2
   beacon_url:
   report_url:
@@ -2493,7 +2493,7 @@ rufa_2017_24h_progress_lap1:
   last_name: Lap1
   gender: 0
   country_code: US
-  birthdate: '1967-03-21'
+  birthdate: 1967-03-21
   data_status: 1
   beacon_url:
   report_url:
@@ -2533,7 +2533,7 @@ hardrock_2016_lavon_paucek:
   last_name: Paucek
   gender: 1
   country_code: NZ
-  birthdate: '1974-07-29'
+  birthdate: 1974-07-29
   data_status: 2
   beacon_url:
   report_url:
@@ -2573,7 +2573,7 @@ hardrock_2016_vesta_borer:
   last_name: Borer
   gender: 1
   country_code: US
-  birthdate: '1995-04-24'
+  birthdate: 1995-04-24
   data_status: 2
   beacon_url:
   report_url:
@@ -2613,7 +2613,7 @@ hardrock_2016_kory_kulas:
   last_name: Kulas
   gender: 0
   country_code: US
-  birthdate: '1974-01-25'
+  birthdate: 1974-01-25
   data_status: 2
   beacon_url:
   report_url:
@@ -2653,7 +2653,7 @@ hardrock_2016_shad_hirthe:
   last_name: Hirthe
   gender: 0
   country_code: US
-  birthdate: '1975-09-05'
+  birthdate: 1975-09-05
   data_status: 2
   beacon_url:
   report_url:
@@ -2693,7 +2693,7 @@ hardrock_2016_douglas_vandervort:
   last_name: Vandervort
   gender: 0
   country_code: US
-  birthdate: '1964-02-16'
+  birthdate: 1964-02-16
   data_status: 2
   beacon_url:
   report_url:
@@ -2733,7 +2733,7 @@ hardrock_2016_missing_telluride_out:
   last_name: Telluride Out
   gender: 0
   country_code: US
-  birthdate: '1996-02-11'
+  birthdate: 1996-02-11
   data_status: 2
   beacon_url:
   report_url:
@@ -2773,7 +2773,7 @@ hardrock_2016_junior_lesch:
   last_name: Lesch
   gender: 0
   country_code: US
-  birthdate: '1967-02-21'
+  birthdate: 1967-02-21
   data_status: 2
   beacon_url:
   report_url:
@@ -2813,7 +2813,7 @@ hardrock_2016_eddy_goldner:
   last_name: Goldner
   gender: 0
   country_code: US
-  birthdate: '1997-07-26'
+  birthdate: 1997-07-26
   data_status: 2
   beacon_url:
   report_url:
@@ -2853,7 +2853,7 @@ hardrock_2016_progress_sherman:
   last_name: Sherman
   gender: 0
   country_code: US
-  birthdate: '1982-07-28'
+  birthdate: 1982-07-28
   data_status: 0
   beacon_url:
   report_url:
@@ -2893,7 +2893,7 @@ hardrock_2016_benito_moen:
   last_name: Moen
   gender: 0
   country_code: US
-  birthdate: '1964-01-16'
+  birthdate: 1964-01-16
   data_status: 2
   beacon_url:
   report_url:
@@ -2933,7 +2933,7 @@ hardrock_2016_kendall_koch:
   last_name: Koch
   gender: 0
   country_code: US
-  birthdate: '1976-02-05'
+  birthdate: 1976-02-05
   data_status: 2
   beacon_url:
   report_url:
@@ -2973,7 +2973,7 @@ hardrock_2016_charlie_mueller:
   last_name: Mueller
   gender: 0
   country_code: US
-  birthdate: '1989-06-10'
+  birthdate: 1989-06-10
   data_status: 2
   beacon_url:
   report_url:
@@ -3053,7 +3053,7 @@ hardrock_2016_rene_mclaughlin:
   last_name: McLaughlin
   gender: 0
   country_code: US
-  birthdate: '1984-04-30'
+  birthdate: 1984-04-30
   data_status: 2
   beacon_url:
   report_url:
@@ -3093,7 +3093,7 @@ hardrock_2016_dropped_grouse:
   last_name: Grouse
   gender: 0
   country_code: US
-  birthdate: '1969-05-13'
+  birthdate: 1969-05-13
   data_status: 2
   beacon_url:
   report_url:
@@ -3133,7 +3133,7 @@ hardrock_2016_mervin_smitham:
   last_name: Smitham
   gender: 0
   country_code: US
-  birthdate: '1991-10-08'
+  birthdate: 1991-10-08
   data_status: 2
   beacon_url:
   report_url:
@@ -3173,7 +3173,7 @@ hardrock_2016_rhett_auer:
   last_name: Auer
   gender: 0
   country_code: US
-  birthdate: '1974-11-07'
+  birthdate: 1974-11-07
   data_status: 2
   beacon_url:
   report_url:
@@ -3213,7 +3213,7 @@ hardrock_2016_hoyt_macejkovic:
   last_name: Macejkovic
   gender: 0
   country_code: US
-  birthdate: '1960-07-23'
+  birthdate: 1960-07-23
   data_status: 2
   beacon_url:
   report_url:
@@ -3253,7 +3253,7 @@ hardrock_2016_start_only:
   last_name: Only
   gender: 0
   country_code: US
-  birthdate: '1990-04-23'
+  birthdate: 1990-04-23
   data_status: 2
   beacon_url:
   report_url:
@@ -3293,7 +3293,7 @@ ggd30_50k_finished_first:
   last_name: First
   gender: 0
   country_code:
-  birthdate: '1973-05-25'
+  birthdate: 1973-05-25
   data_status:
   beacon_url:
   report_url:
@@ -3333,7 +3333,7 @@ ggd30_50k_bad_finish:
   last_name: Finish
   gender: 0
   country_code:
-  birthdate: '1995-07-25'
+  birthdate: 1995-07-25
   data_status: 0
   beacon_url:
   report_url:
@@ -3373,7 +3373,7 @@ ggd30_50k_progress_aid4:
   last_name: Aid4
   gender: 1
   country_code:
-  birthdate: '1982-03-29'
+  birthdate: 1982-03-29
   data_status:
   beacon_url:
   report_url:
@@ -3413,7 +3413,7 @@ ggd30_50k_progress_aid3:
   last_name: Aid3
   gender: 0
   country_code:
-  birthdate: '1986-03-04'
+  birthdate: 1986-03-04
   data_status: 2
   beacon_url:
   report_url:
@@ -3493,7 +3493,7 @@ ggd30_50k_start_only:
   last_name: Only
   gender: 1
   country_code:
-  birthdate: '1985-11-14'
+  birthdate: 1985-11-14
   data_status:
   beacon_url:
   report_url:
@@ -3533,7 +3533,7 @@ ggd30_50k_not_started:
   last_name: Started
   gender: 0
   country_code:
-  birthdate: '1986-03-23'
+  birthdate: 1986-03-23
   data_status:
   beacon_url:
   report_url:
@@ -3573,7 +3573,7 @@ ggd30_12m_start_only:
   last_name: Only
   gender: 1
   country_code: US
-  birthdate: '1989-09-09'
+  birthdate: 1989-09-09
   data_status:
   beacon_url:
   report_url:
@@ -3613,7 +3613,7 @@ ggd30_12m_finished_second:
   last_name: Second
   gender: 1
   country_code: US
-  birthdate: '1973-07-23'
+  birthdate: 1973-07-23
   data_status:
   beacon_url:
   report_url:
@@ -3653,7 +3653,7 @@ ggd30_12m_finished_first:
   last_name: First
   gender: 0
   country_code: FR
-  birthdate: '1993-06-05'
+  birthdate: 1993-06-05
   data_status:
   beacon_url:
   report_url:
@@ -3693,7 +3693,7 @@ ggd30_12m_not_started:
   last_name: Started
   gender: 1
   country_code: US
-  birthdate: '1995-03-06'
+  birthdate: 1995-03-06
   data_status: 2
   beacon_url:
   report_url:
@@ -3733,7 +3733,7 @@ sum_55k_finished_first:
   last_name: First
   gender: 0
   country_code: US
-  birthdate: '1973-08-18'
+  birthdate: 1973-08-18
   data_status: 2
   beacon_url:
   report_url:
@@ -3773,7 +3773,7 @@ sum_55k_finished_second:
   last_name: Second
   gender: 1
   country_code: US
-  birthdate: '1973-07-23'
+  birthdate: 1973-07-23
   data_status: 2
   beacon_url:
   report_url:
@@ -3813,7 +3813,7 @@ sum_55k_not_started:
   last_name: Started
   gender: 2
   country_code: US
-  birthdate: '1981-03-31'
+  birthdate: 1981-03-31
   data_status: 2
   beacon_url:
   report_url:
@@ -3853,7 +3853,7 @@ sum_55k_progress_rolling:
   last_name: Rolling
   gender: 1
   country_code: US
-  birthdate: '1962-04-23'
+  birthdate: 1962-04-23
   data_status: 2
   beacon_url:
   report_url:
@@ -3893,7 +3893,7 @@ sum_55k_drop_bandera:
   last_name: Bandera
   gender: 1
   country_code: US
-  birthdate: '1998-08-31'
+  birthdate: 1998-08-31
   data_status: 2
   beacon_url:
   report_url:
@@ -3933,7 +3933,7 @@ sum_55k_start_only:
   last_name: Only
   gender: 0
   country_code: US
-  birthdate: '1967-10-27'
+  birthdate: 1967-10-27
   data_status: 2
   beacon_url:
   report_url:
@@ -3973,7 +3973,7 @@ sum_100k_drop_anvil:
   last_name: Anvil
   gender: 0
   country_code: US
-  birthdate: '1988-09-29'
+  birthdate: 1988-09-29
   data_status: 2
   beacon_url:
   report_url:
@@ -4013,7 +4013,7 @@ sum_100k_progress_cascade:
   last_name: Cascade
   gender: 0
   country_code: US
-  birthdate: '1997-05-20'
+  birthdate: 1997-05-20
   data_status: 2
   beacon_url:
   report_url:
@@ -4053,7 +4053,7 @@ rufa_2017_12h_finished_first:
   last_name: First
   gender: 0
   country_code: US
-  birthdate: '1997-01-25'
+  birthdate: 1997-01-25
   data_status:
   beacon_url:
   report_url:
@@ -4093,7 +4093,7 @@ rufa_2017_12h_finished_lap6:
   last_name: Lap6
   gender: 0
   country_code: US
-  birthdate: '1963-03-07'
+  birthdate: 1963-03-07
   data_status:
   beacon_url:
   report_url:
@@ -4133,7 +4133,7 @@ rufa_2017_12h_progress_lap5_partial:
   last_name: Lap5 Partial
   gender: 0
   country_code: US
-  birthdate: '1988-09-15'
+  birthdate: 1988-09-15
   data_status: 2
   beacon_url:
   report_url:
@@ -4213,7 +4213,7 @@ rufa_2017_12h_start_only:
   last_name: Only
   gender: 0
   country_code: US
-  birthdate: '1972-12-19'
+  birthdate: 1972-12-19
   data_status: 2
   beacon_url:
   report_url:
@@ -4253,7 +4253,7 @@ rufa_2017_12h_not_started:
   last_name: Started
   gender: 1
   country_code: US
-  birthdate: '1967-05-17'
+  birthdate: 1967-05-17
   data_status: 2
   beacon_url:
   report_url:
@@ -4293,7 +4293,7 @@ sum_100k_un_started:
   last_name: Started
   gender: 1
   country_code: US
-  birthdate: '1988-09-01'
+  birthdate: 1988-09-01
   data_status:
   beacon_url:
   report_url:
@@ -4413,7 +4413,7 @@ ggd30_50k_finished_second:
   last_name: Second
   gender: 1
   country_code:
-  birthdate: '1975-07-25'
+  birthdate: 1975-07-25
   data_status: 2
   beacon_url:
   report_url:
@@ -4453,7 +4453,7 @@ ggd30_12m_series_finisher:
   last_name: Finisher
   gender: 0
   country_code: US
-  birthdate: '1983-03-03'
+  birthdate: 1983-03-03
   data_status: 2
   beacon_url:
   report_url:
@@ -4493,7 +4493,7 @@ sum_55k_series_finisher:
   last_name: Finisher
   gender: 0
   country_code:
-  birthdate: '1983-03-03'
+  birthdate: 1983-03-03
   data_status: 2
   beacon_url:
   report_url:
@@ -4533,7 +4533,7 @@ sum_55k_slow_finisher:
   last_name: Finisher
   gender: 2
   country_code:
-  birthdate: '1953-03-03'
+  birthdate: 1953-03-03
   data_status: 2
   beacon_url:
   report_url:
@@ -4573,7 +4573,7 @@ ggd30_12m_slow_finisher:
   last_name: Finisher
   gender: 0
   country_code:
-  birthdate: '1953-03-03'
+  birthdate: 1953-03-03
   data_status: 2
   beacon_url:
   report_url:

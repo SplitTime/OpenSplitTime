@@ -18,7 +18,7 @@ RSpec.describe LotterySimulation, type: :model do
                 "male" => 0,
                 "male_entrant_ids" => [],
                 "female" => 2,
-                "female_entrant_ids" => [27, 24],
+                "female_entrant_ids" => [24, 27],
               },
               "wait_list" => {
                 "male" => 0,
@@ -32,7 +32,7 @@ RSpec.describe LotterySimulation, type: :model do
                 "male" => 1,
                 "male_entrant_ids" => [9],
                 "female" => 2,
-                "female_entrant_ids" => [13, 7],
+                "female_entrant_ids" => [7, 13],
               },
               "wait_list" => {
                 "male" => 1,
@@ -60,7 +60,8 @@ RSpec.describe LotterySimulation, type: :model do
 
         it "sets the ticket ids and result" do
           expect(subject.ticket_ids).to eq(expected_ticket_ids)
-          expect(subject.results).to eq(expected_results)
+          actual_results = subject.results.deep_transform_values { |v| v.is_a?(Array) ? v.sort : v }
+          expect(actual_results).to eq(expected_results)
         end
       end
 

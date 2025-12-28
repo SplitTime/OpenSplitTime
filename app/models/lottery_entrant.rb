@@ -21,8 +21,8 @@ class LotteryEntrant < ApplicationRecord
   scope :accepted, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :accepted }) }
   scope :waitlisted, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :waitlisted }) }
   scope :drawn_beyond_waitlist, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :drawn_beyond_waitlist }) }
-  scope :not_drawn, -> { joins(:division_ranking).where(lotteries_division_rankings: { draw_status: :not_drawn }) }
-  scope :drawn, -> { joins(:division_ranking).where.not(lotteries_division_rankings: { draw_status: :not_drawn }) }
+  scope :not_drawn, -> { where(drawn_at: nil) }
+  scope :drawn, -> { where.not(drawn_at: nil) }
   scope :not_withdrawn, -> { where(withdrawn: [false, nil]) }
   scope :withdrawn, -> { where(withdrawn: true) }
 

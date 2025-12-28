@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_28_165524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -411,6 +411,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_28_150618) do
     t.bigint "person_id"
     t.string "email"
     t.string "phone"
+    t.integer "division_rank"
+    t.integer "draw_status"
     t.index ["lottery_division_id", "first_name", "last_name", "birthdate"], name: "index_lottery_index_on_unique_key_attributes", unique: true
     t.index ["lottery_division_id"], name: "index_lottery_entrants_on_lottery_division_id"
     t.index ["person_id"], name: "index_lottery_entrants_on_person_id"

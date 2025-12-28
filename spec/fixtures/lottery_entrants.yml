@@ -19,6 +19,7 @@ lottery_entrant_0001:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:45:20.190595000 Z
 lottery_entrant_0002:
   id: 5
   lottery_division_id: 1
@@ -39,6 +40,7 @@ lottery_entrant_0002:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0003:
   id: 6
   lottery_division_id: 2
@@ -59,6 +61,7 @@ lottery_entrant_0003:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0004:
   id: 7
   lottery_division_id: 1
@@ -79,6 +82,7 @@ lottery_entrant_0004:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:29:20.183865000 Z
 lottery_entrant_0005:
   id: 8
   lottery_division_id: 2
@@ -99,6 +103,7 @@ lottery_entrant_0005:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0006:
   id: 9
   lottery_division_id: 1
@@ -119,6 +124,7 @@ lottery_entrant_0006:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:43:20.186126000 Z
 lottery_entrant_0007:
   id: 10
   lottery_division_id: 2
@@ -139,6 +145,7 @@ lottery_entrant_0007:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0008:
   id: 11
   lottery_division_id: 1
@@ -159,6 +166,7 @@ lottery_entrant_0008:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:46:20.188331000 Z
 lottery_entrant_0009:
   id: 12
   lottery_division_id: 2
@@ -179,6 +187,7 @@ lottery_entrant_0009:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0010:
   id: 13
   lottery_division_id: 1
@@ -199,6 +208,7 @@ lottery_entrant_0010:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:24:20.181722000 Z
 lottery_entrant_0011:
   id: 21
   lottery_division_id: 6
@@ -219,6 +229,7 @@ lottery_entrant_0011:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0012:
   id: 22
   lottery_division_id: 7
@@ -239,6 +250,7 @@ lottery_entrant_0012:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0013:
   id: 23
   lottery_division_id: 7
@@ -259,6 +271,7 @@ lottery_entrant_0013:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0014:
   id: 24
   lottery_division_id: 8
@@ -279,6 +292,7 @@ lottery_entrant_0014:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 17:25:58.420681000 Z
 lottery_entrant_0015:
   id: 25
   lottery_division_id: 8
@@ -299,6 +313,7 @@ lottery_entrant_0015:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0016:
   id: 26
   lottery_division_id: 8
@@ -319,6 +334,7 @@ lottery_entrant_0016:
   person_id:
   email:
   phone:
+  drawn_at:
 lottery_entrant_0017:
   id: 27
   lottery_division_id: 8
@@ -339,6 +355,7 @@ lottery_entrant_0017:
   person_id:
   email:
   phone:
+  drawn_at: 2021-10-02 16:28:20.202115000 Z
 lottery_entrant_0018:
   id: 28
   lottery_division_id: 8
@@ -359,3 +376,4 @@ lottery_entrant_0018:
   person_id:
   email:
   phone:
+  drawn_at:

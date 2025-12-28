@@ -20,6 +20,9 @@ class LotteryDraw < ApplicationRecord
   validates_uniqueness_of :lottery_ticket_id
 
   before_create :add_position
+  after_create_commit :set_entrant_drawn_at
+  after_destroy_commit :unset_entrant_drawn_at
+
   after_create_commit :broadcast_lottery_draw_created
   after_destroy_commit :broadcast_lottery_draw_destroyed
 
@@ -40,6 +43,19 @@ class LotteryDraw < ApplicationRecord
 
   def add_position
     self.position = division.draws.prior_to_draw(self).count + 1
+  end
+
+  def set_entrant_drawn_at
+    entrant.update_columns(drawn_at: created_at) unless entrant.drawn_at?
+  end
+
+  def unset_entrant_drawn_at
+    remaining_draw_time = LotteryDraw
+      .joins(:ticket)
+      .where(lottery_tickets: { lottery_entrant_id: entrant.id })
+      .minimum(:created_at)
+
+    entrant.update_columns(drawn_at: remaining_draw_time)
   end
 
   def broadcast_lottery_draw_created

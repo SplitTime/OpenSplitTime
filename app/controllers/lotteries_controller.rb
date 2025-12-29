@@ -159,7 +159,7 @@ class LotteriesController < ApplicationController
   # DELETE /organizations/:organization_id/lotteries/:id/delete_entrants
   def delete_entrants
     begin
-      if @lottery.draws.delete_all &&
+      if @lottery.delete_all_draws! &&
         @lottery.tickets.delete_all &&
         @lottery.divisions.each { |division| division.entrants.delete_all }
         flash[:success] = "Deleted all lottery entrants, tickets, and draws"
@@ -210,7 +210,7 @@ class LotteriesController < ApplicationController
 
   # DELETE /organizations/:organization_id/lotteries/:id/delete_tickets
   def delete_tickets
-    if @lottery.draws.delete_all && @lottery.tickets.delete_all
+    if @lottery.delete_all_draws! && @lottery.tickets.delete_all
       flash[:success] = "Deleted all lottery tickets and draws"
     else
       flash[:danger] = "Unable to delete all lottery tickets and draws"

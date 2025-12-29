@@ -55,7 +55,7 @@ RSpec.describe "manage divisions on the lottery setup page", js: true do
   end
 
   scenario "The user deletes a division when no tickets or draws exist" do
-    lottery.draws.delete_all
+    lottery.delete_all_draws!
     lottery.tickets.delete_all
 
     login_as steward, scope: :user

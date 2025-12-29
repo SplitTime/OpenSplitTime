@@ -19,10 +19,13 @@ RSpec.describe Lottery, type: :model do
       subject { lotteries(:lottery_with_tickets_and_draws) }
 
       it "deletes all draws" do
-        expect(subject.draws.count).not_to eq(0)
-        expect { execute_method }.to change { subject.draws.count }.by(-subject.draws.count)
-        expect(subject.draws.count).to eq(0)
-        end
+        initial_count = subject.draws.count
+        expect(initial_count).to be_positive
+        expect(subject.entrants.pluck(:drawn_at).compact).to be_present
+
+        expect { execute_method }.to change { subject.draws.count }.from(initial_count).to(0)
+        expect(subject.entrants.pluck(:drawn_at).compact).to be_empty
+      end
     end
   end
 

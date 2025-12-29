@@ -35,8 +35,7 @@ class LotteryDivision < ApplicationRecord
   end
 
   def draw_ticket!
-    drawn_entrants = entrants.drawn
-    eligible_tickets = tickets.where.not(lottery_entrant_id: drawn_entrants)
+    eligible_tickets = tickets.where(lottery_entrants: { drawn_at: nil, withdrawn: [false, nil] })
     selected_ticket_index = rand(eligible_tickets.count)
     selected_ticket = eligible_tickets.ordered_by_reference_number.offset(selected_ticket_index).first
 

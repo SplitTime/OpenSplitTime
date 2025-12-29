@@ -31,6 +31,7 @@ class Lottery < ApplicationRecord
 
   def delete_all_draws!
     draws.delete_all
+    entrants.update_all(drawn_at: nil)
   end
 
   # Cannot create this relationship using has_many because Rails gives a

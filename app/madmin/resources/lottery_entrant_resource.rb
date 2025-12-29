@@ -16,6 +16,7 @@ class LotteryEntrantResource < Madmin::Resource
   attribute :country_name
   attribute :pre_selected
   attribute :external_id
+  attribute :drawn_at
   attribute :withdrawn
 
   # Associations

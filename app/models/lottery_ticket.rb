@@ -2,6 +2,7 @@ class LotteryTicket < ApplicationRecord
   include PgSearch::Model
 
   belongs_to :lottery
+  belongs_to :division, class_name: "LotteryDivision", foreign_key: "lottery_division_id"
   belongs_to :entrant, class_name: "LotteryEntrant", foreign_key: "lottery_entrant_id"
   has_one :draw, class_name: "LotteryDraw", dependent: :destroy
 

@@ -6,6 +6,7 @@ class LotteryTicketQuery < BaseQuery
     <<~SQL.squish
       with ticket_data as (
                               select e.id                                    as lottery_entrant_id,
+                                     d.id                                    as lottery_division_id,
                                      d.lottery_id                            as lottery_id,
                                      generate_series(1, e.number_of_tickets) as ticket_number,
                                      now()                                   as created_at,
@@ -26,9 +27,10 @@ class LotteryTicketQuery < BaseQuery
                               from shuffled_tickets st
                               )
       insert
-      into lottery_tickets (lottery_id, lottery_entrant_id, reference_number, created_at, updated_at)
+      into lottery_tickets (lottery_id, lottery_entrant_id, lottery_division_id, reference_number, created_at, updated_at)
       select lottery_id,
              lottery_entrant_id,
+             lottery_division_id,
              reference_number,
              created_at,
              updated_at

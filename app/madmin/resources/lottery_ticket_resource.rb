@@ -1,6 +1,7 @@
 class LotteryTicketResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
+  attribute :lottery_division_id
   attribute :lottery_entrant_id
   attribute :reference_number
   attribute :created_at, form: false
@@ -8,6 +9,7 @@ class LotteryTicketResource < Madmin::Resource
 
   # Associations
   attribute :lottery
+  attribute :division
   attribute :entrant
   attribute :draw
 

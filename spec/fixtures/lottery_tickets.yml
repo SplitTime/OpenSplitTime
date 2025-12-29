@@ -4,128 +4,154 @@ lottery_ticket_0001:
   lottery_entrant_id: 28
   lottery_id: 4
   reference_number: 10000
+  lottery_division_id: 8
 lottery_ticket_0002:
   id: 2
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10001
+  lottery_division_id: 1
 lottery_ticket_0003:
   id: 3
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10002
+  lottery_division_id: 8
 lottery_ticket_0004:
   id: 4
   lottery_entrant_id: 12
   lottery_id: 4
   reference_number: 10003
+  lottery_division_id: 2
 lottery_ticket_0005:
   id: 5
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10004
+  lottery_division_id: 2
 lottery_ticket_0006:
   id: 6
   lottery_entrant_id: 24
   lottery_id: 4
   reference_number: 10005
+  lottery_division_id: 8
 lottery_ticket_0007:
   id: 7
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10006
+  lottery_division_id: 1
 lottery_ticket_0008:
   id: 8
   lottery_entrant_id: 25
   lottery_id: 4
   reference_number: 10007
+  lottery_division_id: 8
 lottery_ticket_0009:
   id: 9
   lottery_entrant_id: 4
   lottery_id: 4
   reference_number: 10008
+  lottery_division_id: 1
 lottery_ticket_0010:
   id: 10
   lottery_entrant_id: 7
   lottery_id: 4
   reference_number: 10009
+  lottery_division_id: 1
 lottery_ticket_0011:
   id: 11
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10010
+  lottery_division_id: 1
 lottery_ticket_0012:
   id: 12
   lottery_entrant_id: 26
   lottery_id: 4
   reference_number: 10011
+  lottery_division_id: 8
 lottery_ticket_0013:
   id: 13
   lottery_entrant_id: 11
   lottery_id: 4
   reference_number: 10012
+  lottery_division_id: 1
 lottery_ticket_0014:
   id: 14
   lottery_entrant_id: 8
   lottery_id: 4
   reference_number: 10013
+  lottery_division_id: 2
 lottery_ticket_0015:
   id: 15
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10014
+  lottery_division_id: 8
 lottery_ticket_0016:
   id: 16
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10015
+  lottery_division_id: 1
 lottery_ticket_0017:
   id: 17
   lottery_entrant_id: 9
   lottery_id: 4
   reference_number: 10016
+  lottery_division_id: 1
 lottery_ticket_0018:
   id: 18
   lottery_entrant_id: 13
   lottery_id: 4
   reference_number: 10017
+  lottery_division_id: 1
 lottery_ticket_0019:
   id: 19
   lottery_entrant_id: 27
   lottery_id: 4
   reference_number: 10018
+  lottery_division_id: 8
 lottery_ticket_0020:
   id: 20
   lottery_entrant_id: 11
   lottery_id: 4
   reference_number: 10019
+  lottery_division_id: 1
 lottery_ticket_0021:
   id: 21
   lottery_entrant_id: 10
   lottery_id: 4
   reference_number: 10020
+  lottery_division_id: 2
 lottery_ticket_0022:
   id: 22
   lottery_entrant_id: 24
   lottery_id: 4
   reference_number: 10021
+  lottery_division_id: 8
 lottery_ticket_0023:
   id: 23
   lottery_entrant_id: 5
   lottery_id: 4
   reference_number: 10022
+  lottery_division_id: 1
 lottery_ticket_0024:
   id: 24
   lottery_entrant_id: 10
   lottery_id: 4
   reference_number: 10023
+  lottery_division_id: 2
 lottery_ticket_0025:
   id: 25
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10024
+  lottery_division_id: 2
 lottery_ticket_0026:
   id: 26
   lottery_entrant_id: 6
   lottery_id: 4
   reference_number: 10025
+  lottery_division_id: 2

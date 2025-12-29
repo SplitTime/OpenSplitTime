@@ -6,6 +6,7 @@ hardrock:
   created_by: 1
   concealed: false
   slug: hardrock
+  good_standing_through:
 rattlesnake_ramble:
   id: 6
   name: Rattlesnake Ramble
@@ -13,6 +14,7 @@ rattlesnake_ramble:
   created_by: 1
   concealed: false
   slug: rattlesnake-ramble
+  good_standing_through:
 running_up_for_air:
   id: 14
   name: Running Up For Air
@@ -20,6 +22,7 @@ running_up_for_air:
   created_by: 1
   concealed: false
   slug: running-up-for-air
+  good_standing_through:
 dirty_30_running:
   id: 15
   name: Dirty 30 Running
@@ -27,3 +30,4 @@ dirty_30_running:
   created_by: 1
   concealed: false
   slug: dirty-30-running
+  good_standing_through:

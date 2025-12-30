@@ -38,7 +38,7 @@ class LotteryDivision < ApplicationRecord
     # Start with LotteryTicket.where(lottery_division_id: id) instead of using tickets.where(...).
     # Starting with #tickets results in a query that relies on lottery_entrants.lottery_division_id,
     # which doesn't take advantage of the index on lottery_tickets (lottery_division_id, reference_number)
-    eligible_tickets = LotteryTicket.joins(:entrant).where(lottery_tickets: { lottery_division_id: id }, lottery_entrants: { drawn_at: nil, withdrawn: [false, nil] })
+    eligible_tickets = LotteryTicket.joins(:entrant).where(lottery_tickets: { lottery_division_id: id }, lottery_entrants: { drawn_at: nil, withdrawn: false })
     selected_ticket_index = rand(eligible_tickets.count)
     selected_ticket = eligible_tickets.ordered_by_reference_number.offset(selected_ticket_index).first
 

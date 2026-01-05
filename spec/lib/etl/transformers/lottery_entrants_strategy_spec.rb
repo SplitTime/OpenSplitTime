@@ -27,6 +27,7 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
         Tickets: 4,
         Division_name: division_name_1,
         Pre_selected: "true",
+        External_ID: "abc123",
       ),
       OpenStruct.new(
         first: person_2.first_name,
@@ -35,7 +36,8 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
         state: "NY",
         number_of_tickets: 1,
         division_name: division_name_2,
-        Pre_selected: nil
+        Pre_selected: nil,
+        External_ID: "def456",
       ),
     ]
   end
@@ -55,7 +57,7 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
 
     it "returns rows with effort headers transformed to match the lottery entrant schema" do
       expect(first_proto_record.to_h.keys)
-        .to match_array(%i[first_name last_name gender state_code country_code number_of_tickets lottery_division_id pre_selected])
+        .to match_array(%i[first_name last_name gender state_code country_code number_of_tickets lottery_division_id pre_selected external_id])
     end
 
     it "assigns the expected divisions" do
@@ -71,6 +73,7 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
       expect(first_proto_record[:country_code]).to eq("US")
       expect(first_proto_record[:number_of_tickets]).to eq(4)
       expect(first_proto_record[:pre_selected]).to eq("true")
+      expect(first_proto_record[:external_id]).to eq("abc123")
 
       expect(second_proto_record[:first_name]).to eq(person_2.first_name)
       expect(second_proto_record[:last_name]).to eq(person_2.last_name)
@@ -79,6 +82,7 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
       expect(second_proto_record[:country_code]).to eq("US")
       expect(second_proto_record[:number_of_tickets]).to eq(1)
       expect(second_proto_record[:pre_selected]).to eq(nil)
+      expect(second_proto_record[:external_id]).to eq("def456")
     end
 
     it "does not return errors" do

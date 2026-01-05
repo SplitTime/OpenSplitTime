@@ -19,7 +19,7 @@ class LotteryEntrantParameters < BaseParameters
 
   def self.mapping
     lottery_entrant_mapping = {
-      "external": :external_id,
+      external: :external_id,
       tickets: :number_of_tickets,
       "#_of_tickets": :number_of_tickets,
       "#_tickets": :number_of_tickets,

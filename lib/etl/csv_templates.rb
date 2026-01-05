@@ -42,7 +42,10 @@ module Etl
         "Year",
         "External ID",
       ],
-      lottery_entrants: PERSON_ATTRIBUTES,
+      lottery_entrants: [
+        *PERSON_ATTRIBUTES,
+        "External ID",
+      ]
     }.with_indifferent_access.freeze
 
     def self.headers(format, parent)

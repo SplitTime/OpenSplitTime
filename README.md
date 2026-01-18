@@ -9,79 +9,11 @@ Our software engine is open source. If you have a suggestion for the site, or yo
 
 OpenSplitTime is developed and maintained by endurance athletes for endurance athletes.
 
-Ruby on Rails
--------------
+---
 
-This application requires:
+*Please refer to WindowsSetupGuide.md file for installation of OpenSplitTime to your windows system.*
 
-- Ruby 3.4
-- Rails 7.2
-
-Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
-
-Getting Started
----------------
-### Setup Local Environment
-
-**Homebrew (MacOS)**
-1. Install [Homebrew](http://brew.sh/).
-
-**Ruby**
-
-1. Clone the repository to your local machine by [forking the repo](https://help.github.com/articles/fork-a-repo/)
-2. Install rbenv:
-
-> ### Using Homebrew on MacOS
-> - Install Homebrew http://brew.sh/
-> - `$ brew update`
-> - `$ brew install rbenv`
-
-> ### Using Debian/Ubuntu (Instructions from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04))
-> - Install dependencies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm5 libgdbm-dev`
-> - Clone the rbenv repository `$ git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
-> - Add to path `$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
-> - Enable automatic loading `$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc`
-> - Apply changes to current terminal `$ source ~/.bashrc`
-> - Add ruby-build plugin `$ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build`
-
-3. `$ cd` into your local `OpenSplitTime` directory
-4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install <current ruby version>`
-6. `$ rbenv rehash` then restart the terminal session
-
-**Rails, Gems, Databases**
-
-1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
-2. Install Postgres and Redis
-
-> ### Using Homebrew on MacOS
-> `$ brew install postgres redis`
-
-> ### Using Debian/Ubuntu
->  - `$ sudo apt install postgresql libpq-dev redis-server`
->  - Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
-
-3. `$ bundle install`
-
-*if running into weird errors first try `$ rbenv rehash` and restart your terminal*
-
-**Javascript Runtime + Yarn**
-
-1. Install Node.js v16 (the latest LTS as of mid-2022). We recommend using [`nvm`](https://github.com/nvm-sh/nvm). Otherwise:
-- Using MacOS: You can download the package installer from nodejs.org.
-- Using Debian/Ubuntu: `wget -qO- https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs`
-
-2. Install Yarn
-
-After ensuring you're using the right version of Node.js (with `node --version`): `npm install -g yarn`
-
-**Database**
-
-1. Start your local DB `$ brew services restart postgres && brew services restart redis` or run the Postgres App
-2. `$ rails db:setup` to create the database
-3. `$ rails db:from_fixtures` to load seed data from test fixtures files
-4. `$ rails s` to start the server
-5. Type `localhost:3000` in a browser
+---
 
 *Test Users*
 

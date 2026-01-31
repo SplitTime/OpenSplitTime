@@ -183,6 +183,34 @@ RSpec.describe Effort, type: :model do
         end
       end
     end
+
+    describe "manages effort_segments" do
+      subject { efforts(:hardrock_2014_progress_sherman) }
+      let!(:last_split_time) { subject.split_times.last }
+
+      before { subject.set_effort_segments }
+
+      context "when split_time is created" do
+        it "creates new effort segments for the split time" do
+          expect do
+            create(:split_time, effort: subject, split: splits(:hardrock_cw_cunningham), absolute_time: last_split_time.absolute_time + 3.hours, bitkey: SubSplit::IN_BITKEY)
+          end.to change { subject.effort_segments.count }.from(36).to(45)
+          
+        end
+      end
+
+      context "when split_time is deleted" do
+        it "destroys effort segments for the split time" do
+          expect do
+            last_split_time.destroy
+          end.to change { subject.effort_segments.count }.from(36).to(28)
+        end
+      end
+
+      context "when course is changed" do
+
+      end
+    end
   end
 
   describe "relations" do
@@ -190,7 +218,7 @@ RSpec.describe Effort, type: :model do
       before { EffortSegment.set_for_effort(effort) }
 
       context "when an effort has no effort_segments" do
-        let(:effort) { efforts(:sum_100k_un_started)}
+        let(:effort) { efforts(:sum_100k_un_started) }
 
         it "destroys the effort" do
           expect { effort.destroy }.to change(Effort, :count).by(-1)

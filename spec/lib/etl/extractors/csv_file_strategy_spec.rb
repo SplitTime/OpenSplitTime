@@ -58,8 +58,8 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
       let(:expected_attributes) do
         {
           address: "90 Barger Drive",
-          age: 27,
-          bib: 723,
+          age: "27",
+          bib: "723",
           city: "Boise",
           country: "USA",
           dob: "01/01/1985",
@@ -67,11 +67,11 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
           first_name: "Mabel",
           gender: "F",
           last_name: "Jones",
-          place: 1,
+          place: "1",
           state: "ID",
-          status: 1,
+          status: "1",
           time: "17:50:15",
-          zip: 92888
+          zip: "92888"
         }
       end
 

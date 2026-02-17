@@ -293,6 +293,10 @@ class Effort < ApplicationRecord
   end
 
   def set_effort_segments
+    # Delete all existing effort_segments for the effort first,
+    # otherwise we risk getting duplicates when something changes
+    result = EffortSegment.delete_for_effort(self)
+    raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
     result = EffortSegment.set_for_effort(self)
     raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("INSERT")
   end

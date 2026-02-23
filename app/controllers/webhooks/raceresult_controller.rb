@@ -8,7 +8,7 @@ module Webhooks
       raw = request.raw_post.strip
       return render json: { error: "No data" }, status: :bad_request if raw.blank?
       
-      ProcessRaceresultWebhook.call(raw)
+      Interactors::Webhooks::ProcessRaceresultWebhook.call(raw)
       head :created
     rescue JSON::ParserError
       render json: { error: "Invalid JSON" }, status: :unprocessable_entity

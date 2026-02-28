@@ -10,17 +10,17 @@ module Webhooks
       # check if we have data
       return render json: { error: "No data" }, status: :bad_request if raw.blank?
 
-      # Log the raw data      
-      puts "--- RAW DATA ---"
-      puts JSON.pretty_generate(JSON.parse(raw))
-      data = JSON.parse(raw)      
+      data = JSON.parse(raw)
 
-      # extract and process the data
+      # Extract and process the data
       processed = process_data(data)
 
-      # Log the clean version
-      puts "--- PROCESSED DATA ---"
-      puts JSON.pretty_generate(processed)
+      # Optional debug logging (kept out of test output)
+      if Rails.env.development?
+        Rails.logger.debug { "[Raceresult webhook] RAW DATA:\n#{JSON.pretty_generate(data)}" }
+        Rails.logger.debug { "[Raceresult webhook] PROCESSED DATA:\n#{JSON.pretty_generate(processed)}" }
+      end
+
       render json: { data: processed }, status: :ok
 
     rescue JSON::ParserError

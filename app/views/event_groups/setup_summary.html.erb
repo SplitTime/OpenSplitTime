@@ -50,15 +50,13 @@
                    collection: @presenter.filtered_efforts,
                    as: :effort,
                    locals: { presenter: @presenter } %>
-
-        <% if @presenter.next_page_url.present? %>
-          <%= turbo_frame_tag "entrants_page_#{@presenter.page + 1}", src: @presenter.next_page_url, loading: :lazy do %>
-            <tr>
-              <td colspan="7" class="text-center text-muted">Loading more entrants…</td>
-            </tr>
-          <% end %>
-        <% end %>
         </tbody>
+      </table>
+
+      <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
+
+      <table class="table table-condensed table-striped d-none">
+        <tbody id="entrants">
       </table>
     </div>
   </div>

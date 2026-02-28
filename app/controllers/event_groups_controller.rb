@@ -102,13 +102,9 @@ class EventGroupsController < ApplicationController
     authorize @event_group
     @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
 
-    # Infinite scroll pagination for entrants: subsequent pages are requested as Turbo Frames.
-    if turbo_frame_request?
-      render partial: "setup_summary_entrants_page", locals: { presenter: @presenter }
-    else
-      respond_to do |format|
-        format.html
-      end
+    respond_to do |format|
+      format.html
+      format.turbo_stream
     end
   end
 

@@ -78,7 +78,15 @@ module Interactors
         effort = event.efforts.where("first_name ilike ? and last_name ilike ?", participant.first_name, participant.last_name)
                       .where(birthdate: participant.birthdate)
                       .first_or_initialize
-        RELEVANT_ATTRIBUTES.each { |attr| effort.send("#{attr}=", participant.send(attr)) }
+
+        RELEVANT_ATTRIBUTES.each do |attr|
+          value = participant.send(attr)
+
+          # Preserve OST-assigned bib numbers when Runsignup does not have one.
+          next if attr == "bib_number" && value.blank? && effort.bib_number.present?
+
+          effort.send("#{attr}=", value)
+        end
 
         add_effort_to_response(effort)
         update_effort(effort) unless preview_only

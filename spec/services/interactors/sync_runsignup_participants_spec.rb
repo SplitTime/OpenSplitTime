@@ -15,39 +15,21 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
     Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
   end
 
-  let(:participant_attributes) do
-    {
+  let(:participant) do
+    Connectors::Runsignup::Models::Participant.new(
       first_name: "Last",
       last_name: "Minute",
       birthdate: Date.new(1990, 1, 1),
       gender: "male",
+      bib_number: participant_bib_number,
       city: "Denver",
       state_code: "CO",
       country_code: "US",
       email: "last.minute@example.com",
       phone: "3035551212",
       scheduled_start_time_local: event.scheduled_start_time_local,
-    }
-  end
-
-  let(:participant_struct) do
-    Struct.new(
-      :first_name,
-      :last_name,
-      :birthdate,
-      :gender,
-      :bib_number,
-      :city,
-      :state_code,
-      :country_code,
-      :email,
-      :phone,
-      :scheduled_start_time_local,
-      keyword_init: true,
     )
   end
-
-  let(:participant) { participant_struct.new(**participant_attributes, bib_number: participant_bib_number) }
 
   let!(:effort) do
     create(:effort,

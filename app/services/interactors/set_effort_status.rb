@@ -31,7 +31,7 @@ module Interactors
     def set_split_time_status(split_time)
       set_subject_attributes(split_time)
       subject_split_time.data_status = if beyond_drop?
-                                         "bad"
+                                         "questionable"
                                        elsif subject_segment.zero_start?
                                          "good"
                                        else

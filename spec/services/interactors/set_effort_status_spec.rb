@@ -95,10 +95,10 @@ RSpec.describe Interactors::SetEffortStatus do
     context "when a split_time has stopped_here: true" do
       before { subject_split_times.third.update(stopped_here: true) }
 
-      it 'sets data_status of all subsequent split_times to "bad"' do
+      it 'sets data_status of all subsequent split_times to "questionable"' do
         subject.perform
-        expect(subject_split_times.map(&:data_status)).to eq(%w[good good good] + ["bad"] * 9)
-        expect(effort.data_status).to eq("bad")
+        expect(subject_split_times.map(&:data_status)).to eq(%w[good good good] + ["questionable"] * 9)
+        expect(effort.data_status).to eq("questionable")
       end
     end
 

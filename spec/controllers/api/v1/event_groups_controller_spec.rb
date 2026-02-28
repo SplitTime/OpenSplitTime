@@ -878,6 +878,37 @@ RSpec.describe Api::V1::EventGroupsController do
       end
     end
 
+    context "when effort is stopped/dropped and times come in after the stop" do
+      let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "18:00:00", split_name: "Cunningham", sub_split_kind: "in", source: "OSTR (abcd)" } }
+      let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "18:05:00", split_name: "Cunningham", sub_split_kind: "out", source: "OSTR (abcd)" } }
+      let(:force_submit) { false }
+
+      before do
+        # Mark an existing split_time as the stop point (effort becomes dropped)
+        effort_1.ordered_split_times.third.update!(stopped_here: true)
+      end
+
+      via_login_and_jwt do
+        it "creates split_times and marks them questionable rather than bad" do
+          prior_raw_time_count = RawTime.count
+          prior_split_time_count = SplitTime.count
+
+          response = make_request
+          expect(response.status).to eq(201)
+          result = JSON.parse(response.body)
+          expect(result.dig("data", "rawTimeRows")).to eq([])
+
+          expect(RawTime.count).to eq(prior_raw_time_count + 2)
+          expect(SplitTime.count).to eq(prior_split_time_count + 2)
+
+          effort_1.reload
+          cunningham_split_times = effort_1.split_times.select { |st| st.split&.base_name == "Cunningham" }
+          expect(cunningham_split_times.size).to eq(2)
+          expect(cunningham_split_times.map(&:data_status).uniq).to eq(["questionable"])
+        end
+      end
+    end
+
     context "when the bib number does not belong at the split" do
       let(:raw_time_attributes_1) { { bib_number: bib_number_1, entered_time: "09:00:00", split_name: "Aid 2", sub_split_kind: "in", source: "Live Entry (1)" } }
       let(:raw_time_attributes_2) { { bib_number: bib_number_1, entered_time: "09:05:00", split_name: "Aid 2", sub_split_kind: "out", source: "Live Entry (1)" } }

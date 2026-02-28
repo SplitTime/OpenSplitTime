@@ -104,7 +104,7 @@ class EventGroupsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream { render "summary", locals: { presenter: @presenter } }
+      format.turbo_stream
     end
   end
 

@@ -693,6 +693,7 @@ DEPENDENCIES
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 1.0.0)
+  ostruct
   pagy (~> 9.4)
   paper_trail
   pg

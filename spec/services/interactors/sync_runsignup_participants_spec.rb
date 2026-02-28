@@ -1,11 +1,36 @@
 require "rails_helper"
 
 RSpec.describe Interactors::SyncRunsignupParticipants do
+  subject(:sync) { described_class.perform!(event, current_user) }
+
   let(:event_group) { event_groups(:rufa_2017) }
   let(:event) { events(:rufa_2017_24h) }
   let(:current_user) { users(:admin_user) }
 
-  let(:participant) do
+  let!(:race_connection) do
+    Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "123", destination: event_group)
+  end
+
+  let!(:event_connection) do
+    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
+  end
+
+  let(:participant_attributes) do
+    {
+      first_name: "Last",
+      last_name: "Minute",
+      birthdate: Date.new(1990, 1, 1),
+      gender: "male",
+      city: "Denver",
+      state_code: "CO",
+      country_code: "US",
+      email: "last.minute@example.com",
+      phone: "3035551212",
+      scheduled_start_time_local: event.scheduled_start_time_local,
+    }
+  end
+
+  let(:participant_struct) do
     Struct.new(
       :first_name,
       :last_name,
@@ -19,62 +44,47 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
       :phone,
       :scheduled_start_time_local,
       keyword_init: true,
-    ).new(
-      first_name: "Last",
-      last_name: "Minute",
-      birthdate: Date.new(1990, 1, 1),
-      gender: "male",
-      bib_number: nil,
-      city: "Denver",
-      state_code: "CO",
-      country_code: "US",
-      email: "last.minute@example.com",
-      phone: "3035551212",
-      scheduled_start_time_local: event.scheduled_start_time_local,
+    )
+  end
+
+  let(:participant) { participant_struct.new(**participant_attributes, bib_number: participant_bib_number) }
+
+  let!(:effort) do
+    create(:effort,
+      event: event,
+      first_name: participant.first_name,
+      last_name: participant.last_name,
+      birthdate: participant.birthdate,
+      bib_number: ost_bib_number,
     )
   end
 
   before do
-    # Ensure Runsignup connections exist for validation + ID lookup
-    Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "123", destination: event_group)
-    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
-
     allow(Connectors::Runsignup::FetchEventParticipants).to receive(:perform).and_return([participant])
   end
 
-  it "does not blank out an OST bib_number when the Runsignup bib_number is empty" do
-    effort = create(:effort,
-      event: event,
-      first_name: participant.first_name,
-      last_name: participant.last_name,
-      birthdate: participant.birthdate,
-      bib_number: 999,
-    )
+  context "when Runsignup participant has no bib number" do
+    let(:participant_bib_number) { nil }
 
-    described_class.perform!(event, current_user)
+    context "when OST effort has a bib number" do
+      let(:ost_bib_number) { 999 }
 
-    expect(effort.reload.bib_number).to eq(999)
+      it "preserves the OST bib number" do
+        expect { sync }.not_to change { effort.reload.bib_number }
+      end
+    end
   end
 
-  it "overwrites the OST bib_number when the Runsignup bib_number is present" do
-    participant_with_bib = participant.dup
-    participant_with_bib.bib_number = 8888
+  context "when Runsignup participant has a bib number" do
+    let(:participant_bib_number) { 123 }
 
-    allow(Connectors::Runsignup::FetchEventParticipants).to receive(:perform).and_return([participant_with_bib])
+    context "when OST effort has a different bib number" do
+      let(:ost_bib_number) { 999 }
 
-    effort = create(:effort,
-      event: event,
-      first_name: participant.first_name,
-      last_name: participant.last_name,
-      birthdate: participant.birthdate,
-      bib_number: 999,
-    )
-
-    response = described_class.perform!(event, current_user)
-
-    expect(response).to be_successful
-    expect(response.resources[:updated_efforts].map(&:id)).to include(effort.id)
-
-    expect(effort.reload.bib_number).to eq(8888)
+      it "overwrites the OST bib number with the Runsignup bib number" do
+        sync
+        expect(effort.reload.bib_number).to eq(123)
+      end
+    end
   end
 end

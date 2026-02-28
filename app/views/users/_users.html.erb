@@ -15,23 +15,8 @@
         </tr>
         </thead>
 
-        <tbody>
-        <% view_object.users.each do |user| %>
-          <tr class="align-middle">
-            <td><%= link_to user.full_name, user %></td>
-            <td><%= user.email %></td>
-            <td><%= day_time_full_format(user.confirmed_at) %></td>
-            <td><% user.avatar ? link_to(user.avatar.full_name, person_path(user.avatar)) : "[None]" %></td>
-            <td>
-              <%= form_for(user) do |f| %>
-                <%= f.select(:role, User.roles.keys.map { |role| [role.titleize, role] }) %>
-                <%= f.submit "Change Role", :class => "btn btn-outline-primary ms-2" %>
-              <% end %>
-            </td>
-            <td><%= link_to_delete_user(user) unless user == current_user %></td>
-            <td><%= button_to_impersonate(user) unless user == current_user %></td>
-          </tr>
-        <% end %>
+        <tbody id="users_list">
+        <%= render partial: "user_row", collection: view_object.users, as: :user %>
         </tbody>
       </table>
     </div>

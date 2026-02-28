@@ -10,15 +10,7 @@
     <% end %>
   </tr>
   </thead>
-  <tbody>
-  <% @people.each do |person| %>
-      <tr>
-        <td><strong><%= link_to person.full_name, person_path(person) %></strong></td>
-        <td><%= person.bio %></td>
-        <td><%= person.flexible_geolocation %></td>
-        <td><%= pluralize(person.effort_count, 'effort') %></td>
-        <td><%= person.concealed? %></td>
-      </tr>
-  <% end %>
+  <tbody id="people_list">
+  <%= render partial: "person_row", collection: @people, as: :person %>
   </tbody>
 </table>

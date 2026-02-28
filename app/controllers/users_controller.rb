@@ -13,9 +13,10 @@ class UsersController < ApplicationController
         .order(prepared_params[:sort])
     paginated_users = users.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
 
-    @presenter = UsersCollectionPresenter.new(paginated_users, prepared_params, current_user)
+    @presenter = UsersCollectionPresenter.new(paginated_users, view_context)
     respond_to do |format|
       format.html
+      format.turbo_stream
       format.csv do
         csv_stream = render_to_string(partial: "users", formats: :csv, locals: {users: users})
         send_data(csv_stream, type: "text/csv", filename: "users-#{Date.today}.csv")

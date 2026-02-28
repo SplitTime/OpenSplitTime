@@ -1,0 +1,8 @@
+<%= turbo_stream.append "people_list",
+                        partial: "person_row",
+                        collection: @people,
+                        as: :person %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @next_page_url } %>

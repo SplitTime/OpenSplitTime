@@ -12,8 +12,14 @@ class PeopleController < ApplicationController
     @people = @people.search(prepared_params[:search])
     @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
     @people = @people.paginate(page: prepared_params[:page], per_page: 25)
+    @next_page_url = url_for(request.params.merge(page: prepared_params[:page] + 1)) if @people.size == 25
 
     session[:return_to] = people_path
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def show

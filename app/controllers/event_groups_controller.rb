@@ -11,7 +11,7 @@ class EventGroupsController < ApplicationController
       .by_group_start_time
       .preload(:events)
       .paginate(page: prepared_params[:page], per_page: 25)
-    @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, params, current_user)
+    @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, view_context)
     session[:return_to] = event_groups_path
   end
 

@@ -68,5 +68,14 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
         expect(effort.reload.bib_number).to eq(123)
       end
     end
+
+    context "when OST effort has no bib number" do
+      let(:ost_bib_number) { nil }
+
+      it "assigns the Runsignup bib number to the OST effort" do
+        sync
+        expect(effort.reload.bib_number).to eq(123)
+      end
+    end
   end
 end

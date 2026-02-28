@@ -29,7 +29,10 @@
 }
 
 .btn-input-group {
-    @include button-outline-variant($input-group-addon-border-color);
+    // Bootstrap 5.3 uses CSS variables for some border colors (e.g. var(--bs-border-color)),
+    // which are not compatible with Sass color functions used in button-outline-variant.
+    // Use a concrete Sass color token instead.
+    @include button-outline-variant($gray-300);
 }
 
 .dropdown-toggle {

@@ -67,7 +67,7 @@ Getting Started
 
 **Javascript Runtime + Yarn**
 
-1. Install Node.js v16 (the latest LTS as of mid-2022). We recommend using [`nvm`](https://github.com/nvm-sh/nvm). Otherwise:
+1. Install Node.js v22 (current LTS). We recommend using [`nvm`](https://github.com/nvm-sh/nvm). Otherwise:
 - Using MacOS: You can download the package installer from nodejs.org.
 - Using Debian/Ubuntu: `wget -qO- https://deb.nodesource.com/setup_16.x | sudo -E bash - && sudo apt-get install -y nodejs`
 

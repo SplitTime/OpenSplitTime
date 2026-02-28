@@ -29,7 +29,7 @@ module Interactors
     def perform!
       unless errors.present?
         ActiveRecord::Base.transaction do
-          raw_times.each { |raw_time| create_and_update_resources(raw_time) }
+          valid_raw_times.each { |raw_time| create_and_update_resources(raw_time) }
           update_effort(effort, upserted_split_times)
           if errors.present?
             upserted_split_times.clear
@@ -49,6 +49,10 @@ module Interactors
 
     delegate :events, to: :event_group
     delegate :raw_times, :effort, to: :raw_time_row
+
+    def valid_raw_times
+      @valid_raw_times ||= raw_times.select(&:new_split_time)
+    end
 
     def create_and_update_resources(raw_time)
       new_split_time = raw_time.new_split_time
@@ -83,8 +87,10 @@ module Interactors
     def validate_setup
       errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
       errors << missing_effort_error unless raw_time_row.effort
-      unless raw_times.all?(&:new_split_time)
-        errors << missing_new_split_time_error(raw_times.reject(&:new_split_time).first)
+      # Allow raw_times without new_split_times (e.g., "Out" raw_time for "In"-only splits)
+      # but error if NONE of the raw_times have new_split_times
+      if raw_times.present? && raw_times.none?(&:new_split_time)
+        errors << missing_new_split_time_error(raw_times.first)
       end
     end
   end

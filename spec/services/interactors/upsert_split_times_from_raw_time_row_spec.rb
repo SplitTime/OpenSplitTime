@@ -48,6 +48,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
 
   describe "#initialize" do
     let(:raw_times) { [raw_time_1, raw_time_2] }
+
     before do
       raw_time_1.new_split_time = new_split_time_1
       raw_time_2.new_split_time = new_split_time_2
@@ -81,6 +82,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
       let(:raw_times) { [raw_time_2, raw_time_3] }
       let(:new_split_time_1) { SplitTime.new(absolute_time: start_time + 5000, effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey) }
       let(:new_split_time_2) { SplitTime.new(absolute_time: start_time + 5100, effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: out_bitkey) }
+
       before do
         raw_time_2.new_split_time = new_split_time_1
         raw_time_3.new_split_time = new_split_time_2
@@ -108,6 +110,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
       let(:raw_times) { [raw_time_4, raw_time_5] }
       let(:new_split_time_2) { SplitTime.new(absolute_time: start_time + 25_000, effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: in_bitkey, pacer: true) }
       let(:new_split_time_3) { SplitTime.new(absolute_time: start_time + 26_000, effort_id: effort.id, lap: 1, split_id: split_3.id, bitkey: out_bitkey, pacer: true) }
+
       before do
         raw_time_4.new_split_time = new_split_time_2
         raw_time_5.new_split_time = new_split_time_3
@@ -125,6 +128,25 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
         subject_split_times = SplitTime.last(5)
         expect(subject_split_times.map(&:absolute_time)).to match_array([0, 10_000, 11_000, 25_000, 26_000].map { |e| start_time + e })
         expect(subject_split_times.map(&:pacer)).to match_array([nil, nil, nil, true, true])
+      end
+    end
+
+    context "when a raw_time has no new_split_time (e.g., invalid sub_split kind for the split)" do
+      let(:raw_times) { [raw_time_2, raw_time_3] }
+      let(:new_split_time_1) { SplitTime.new(absolute_time: start_time + 5000, effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey) }
+
+      before do
+        raw_time_2.new_split_time = new_split_time_1
+        raw_time_3.new_split_time = nil
+        effort.reload
+      end
+
+      it "ignores the raw_time without a new_split_time and still upserts the valid split_time" do
+        expect { response }.to change { SplitTime.count }.by(0)
+        expect(response).to be_successful
+
+        split_time_2.reload
+        expect(split_time_2.absolute_time).to eq(start_time + 5000)
       end
     end
   end

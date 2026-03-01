@@ -34,13 +34,20 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def filtered_roster_efforts
-    @filtered_roster_efforts ||= event_group_efforts
+    @filtered_roster_efforts ||= begin
+      relation = event_group_efforts
         .from(roster_efforts, "efforts")
         .where(filter_hash)
         .search(search_text)
         .order(sort_hash.presence || {bib_number: :asc})
-        .select { |effort| matches_criteria?(effort) }
-        .paginate(page: page, per_page: per_page)
+
+      relation = apply_checked_in_filter(relation)
+      relation = apply_started_filter(relation)
+      relation = apply_unreconciled_filter(relation)
+      relation = apply_problem_filter(relation)
+
+      relation.paginate(page: page, per_page: per_page)
+    end
   end
 
   def filtered_roster_efforts_count
@@ -80,51 +87,47 @@ class EventGroupRosterPresenter < BasePresenter
   attr_reader :params, :view_context
   delegate :current_user, :request, to: :view_context, private: true
 
-  def matches_criteria?(effort)
-    matches_checked_in_criteria?(effort) && matches_start_criteria?(effort) && matches_unreconciled_criteria?(effort) && matches_problem_criteria?(effort)
-  end
-
-  def matches_checked_in_criteria?(effort)
+  def apply_checked_in_filter(relation)
     case params[:checked_in]&.to_boolean
     when true
-      effort.checked_in
+      relation.where(checked_in: true)
     when false
-      !effort.checked_in
-    else # value is nil so do not filter
-      true
+      relation.where(checked_in: [false, nil])
+    else
+      relation
     end
   end
 
-  def matches_start_criteria?(effort)
+  def apply_started_filter(relation)
     case params[:started]&.to_boolean
     when true
-      effort.started?
+      relation.where(started: true)
     when false
-      !effort.started?
-    else # value is nil so do not filter
-      true
+      relation.where(started: [false, nil])
+    else
+      relation
     end
   end
 
-  def matches_unreconciled_criteria?(effort)
+  def apply_unreconciled_filter(relation)
     case params[:unreconciled]&.to_boolean
     when true
-      effort.unreconciled?
+      relation.where(person_id: nil)
     when false
-      !effort.unreconciled?
-    else # value is nil so do not filter
-      true
+      relation.where.not(person_id: nil)
+    else
+      relation
     end
   end
 
-  def matches_problem_criteria?(effort)
+  def apply_problem_filter(relation)
     case params[:problem]&.to_boolean
     when true
-      !effort.valid_status?
+      relation.invalid_status
     when false
-      effort.valid_status?
-    else # value is nil so do not filter
-      true
+      relation.valid_status
+    else
+      relation
     end
   end
 end

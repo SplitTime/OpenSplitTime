@@ -1,0 +1,9 @@
+<%= turbo_stream.append "event_groups_list",
+                        partial: "event_group_row",
+                        collection: @presenter.event_groups,
+                        as: :event_group,
+                        locals: { presenter: @presenter } %>
+
+<%= turbo_stream.replace "pager",
+                         partial: "shared/pager",
+                         locals: { next_page_url: @presenter.next_page_url } %>

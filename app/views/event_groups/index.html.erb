@@ -31,11 +31,9 @@
 </aside>
 
 <article class="ost-article container">
-  <nav>
-    <%= will_paginate(@presenter.event_groups, inner_window: 2, outer_window: 0) %>
-  </nav>
   <% if @presenter.event_groups.present? %>
     <%= render "list_event_groups", presenter: @presenter, event_groups: @presenter.event_groups %>
+    <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
   <% else %>
     <br/>
     <% if params[:search].blank? %>
@@ -44,7 +42,4 @@
       <p><strong>No events match this search</strong></p>
     <% end %>
   <% end %>
-  <nav>
-    <%= will_paginate(@presenter.event_groups, inner_window: 2, outer_window: 0) %>
-  </nav>
 </article>

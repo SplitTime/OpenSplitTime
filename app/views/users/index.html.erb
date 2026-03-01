@@ -33,22 +33,12 @@
 <article class="ost-article container">
   <div class="row">
     <div class="col-xs-8">
-      <%= will_paginate(@presenter.users) %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-8">
       <% if @presenter.users.present? %>
         <%= render "users", view_object: @presenter %>
+        <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
       <% else %>
         <h4><%= "No users match this search" if params.dig(:filter, :search) %></h4>
       <% end %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-8">
-      <%= will_paginate(@presenter.users) %>
     </div>
   </div>
 </article>

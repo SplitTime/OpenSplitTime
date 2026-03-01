@@ -54,16 +54,6 @@ module ApplicationHelper
     pluralize(number_with_delimiter(count), singular, plural)
   end
 
-  # change the default link renderer for will_paginate
-  def will_paginate(collection_or_options = nil, options = {})
-    if collection_or_options.is_a? Hash
-      options = collection_or_options
-      collection_or_options = nil
-    end
-    options = options.merge renderer: WillPaginate::ActionView::Bootstrap4LinkRenderer unless options[:renderer]
-    super(*[collection_or_options, options].compact)
-  end
-
   # Devise helpers
 
   def resource_name

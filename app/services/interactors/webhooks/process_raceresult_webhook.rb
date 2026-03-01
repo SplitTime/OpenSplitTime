@@ -6,6 +6,7 @@ module Interactors::Webhooks
     end
 
     def initialize(raw)
+      raise ArgumentError, "Raw data cannot be blank" if raw.blank?
       @raw = raw
     end
 
@@ -27,6 +28,7 @@ module Interactors::Webhooks
 
     def parse_raw
       parts = raw.split(';')
+      raise ArgumentError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
       self.raw_attributes = JSON.parse(parts.first)
       self.event_group_name = parts.last
     end
@@ -38,18 +40,20 @@ module Interactors::Webhooks
     def process_data
       self.processed_attributes = {
         bib: raw_attributes["Bib"],
-        utc_time: raw_attributes["UTCTime"],
+        utc_time: raw_attributes.dig("Passing", "UTCTime"),
         device_id: raw_attributes.dig("Passing", "DeviceID"),
         timing_point: raw_attributes["TimingPoint"],
         id: raw_attributes["ID"]
       }
+      raise ArgumentError, "Missing required field: Bib" if processed_attributes[:bib].nil?
+      raise ArgumentError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].nil?
     end
 
     def build_raw_time
       self.raw_time = RawTime.new(
         event_group: event_group,
-        bib_number: processed[:bib],
-        split_name: processed[:timing_point],
+        bib_number: processed_attributes[:bib],
+        split_name: processed_attributes[:timing_point],
         entered_time: processed_attributes[:utc_time],
         bitkey: SubSplit::IN_BITKEY,
         source: "raceresult_webhook",

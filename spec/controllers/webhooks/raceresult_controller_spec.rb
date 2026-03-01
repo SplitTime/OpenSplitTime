@@ -1,42 +1,27 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Webhooks::Raceresults", type: :request do
-  describe "POST /webhooks/raceresult" do
-    let(:valid_payload) do
-      {
-        "ID" => 115,
-        "TimingPoint" => "5K",
-        "Bib" => 69,
-        "Passing" => {
-          "DeviceID" => "D-55570",
-          "UTCTime" => "2026-02-15T22:25:18.989-06:00"
-        }
-      }.to_json
+RSpec.describe Webhooks::RaceresultController do
+  describe "#receive" do
+    subject(:make_request) { post :receive, body: raw_payload }
+
+    let(:raw_payload) do
+      '{"ID":162,"PID":3,"TimingPoint":"Start","Result":-10,"Time":49602.611,"Invalid":false,"Passing":{"Transponder":"69","Position":{"Latitude":39.941129,"Longitude":-104.934041,"Altitude":0,"Flag":"S"},"Hits":2,"RSSI":-77,"Battery":0,"Temperature":0,"WUC":0,"LoopID":0,"Channel":0,"InternalData":"2151f7","StatusFlags":0,"DeviceID":"D-55570","DeviceName":"D-55570","OrderID":210084,"Port":2,"IsMarker":false,"FileNo":32,"PassingNo":1,"Customer":99963,"Received":"2026-03-01T20:46:43.77Z","UTCTime":"2026-03-01T13:46:42.611-06:00"},"Bib":69};hardrock-2016'
     end
 
-    it "extracts specific fields and returns 200 OK" do
-      post "/webhooks/raceresult", params: valid_payload, headers: { "CONTENT_TYPE" => "application/json" }
+    context "when the request is valid" do
+      before { allow(Interactors::Webhooks::ProcessRaceresultWebhook).to receive(:call) }
 
-      expect(response).to have_http_status(:ok)
-      
-      json_response = JSON.parse(response.body)["data"]
-      expect(json_response["bib"]).to eq(69)
-      expect(json_response["timing_point"]).to eq("5K")
-      expect(json_response["device_id"]).to eq("D-55570")
-    end
+      it "returns a successful 201 response" do
+        make_request
 
-    it "returns 400 Bad Request when the body is empty" do
-      post "/webhooks/raceresult", params: "", headers: { "CONTENT_TYPE" => "application/json" }
-      expect(response).to have_http_status(:bad_request)
-    end
+        expect(response.status).to eq(201)
+      end
 
-    it "handles missing nested fields gracefully (dig test)" do
-      payload_without_passing = { "ID" => 1, "Bib" => 10 }.to_json
-      post "/webhooks/raceresult", params: payload_without_passing
-      
-      json_response = JSON.parse(response.body)["data"]
-      expect(json_response["utc_time"]).to be_nil
-      expect(json_response["device_id"]).to be_nil
+      it "passes raw payload to the interactor" do
+        make_request
+
+        expect(Interactors::Webhooks::ProcessRaceresultWebhook).to have_received(:call).with(raw_payload)
+      end
     end
   end
 end

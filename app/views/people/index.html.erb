@@ -31,9 +31,9 @@
 </aside>
 
 <article class="ost-article container">
-  <% if @people.present? %>
-    <%= render "people_list" %>
-    <%= render "shared/pager", next_page_url: @next_page_url %>
+  <% if @presenter.people.present? %>
+    <%= render "people_list", presenter: @presenter %>
+    <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
   <% else %>
     <br/>
     <% if prepared_params[:search].blank? %>

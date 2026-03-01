@@ -8,12 +8,11 @@ class PeopleController < ApplicationController
     # set it if a search param exists
     params[:sort] ||= "last_name,first_name" unless prepared_params[:search].present?
 
-    @people = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
-    @people = @people.search(prepared_params[:search])
-    @people = @people.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
-    @people = @people.paginate(page: prepared_params[:page], per_page: 25)
-    @next_page_url = url_for(request.params.merge(page: prepared_params[:page] + 1)) if @people.size == 25
+    people_scope = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
+    people_scope = people_scope.search(prepared_params[:search])
+    people_scope = people_scope.order(prepared_params[:sort_text]) if prepared_params[:sort_text].present?
 
+    @presenter = PeopleCollectionPresenter.new(people_scope, view_context)
     session[:return_to] = people_path
 
     respond_to do |format|

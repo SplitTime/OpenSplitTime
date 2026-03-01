@@ -1,3 +1,5 @@
+<%# locals: (presenter:) -%>
+
 <table class="table table-striped">
   <thead>
   <tr>
@@ -11,6 +13,6 @@
   </tr>
   </thead>
   <tbody id="people_list">
-  <%= render partial: "person_row", collection: @people, as: :person %>
+  <%= render partial: "person_row", collection: presenter.people, as: :person %>
   </tbody>
 </table>

@@ -11,12 +11,11 @@ class UsersController < ApplicationController
         .where(prepared_params[:filter])
         .search(prepared_params[:search])
         .order(prepared_params[:sort])
-    paginated_users = users.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
 
-    @presenter = UsersCollectionPresenter.new(paginated_users, view_context)
+    @presenter = UsersCollectionPresenter.new(users, view_context)
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream if prepared_params[:page].to_i > 1
       format.csv do
         csv_stream = render_to_string(partial: "users", formats: :csv, locals: {users: users})
         send_data(csv_stream, type: "text/csv", filename: "users-#{Date.today}.csv")

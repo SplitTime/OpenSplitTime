@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UsersCollectionPresenter < BasePresenter
-  DEFAULT_PER_PAGE = 25
-
   attr_reader :users
 
   def initialize(users_scope, view_context)
@@ -12,17 +10,11 @@ class UsersCollectionPresenter < BasePresenter
   end
 
   def users
-    @users ||= users_scope
-                 .paginate(page: page, per_page: per_page)
+    @users ||= users_scope.paginate(page: page, per_page: per_page)
   end
 
   def users_count
     @users_count ||= users.size
-  end
-
-  def per_page
-    result = params[:per_page]&.to_i || DEFAULT_PER_PAGE
-    result == 0 ? DEFAULT_PER_PAGE : result
   end
 
   def next_page_url

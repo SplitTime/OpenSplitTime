@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class EventGroupsCollectionPresenter < BasePresenter
-  DEFAULT_PER_PAGE = 25
-
   attr_reader :event_groups
 
   def initialize(event_groups_scope, view_context)
@@ -12,8 +10,7 @@ class EventGroupsCollectionPresenter < BasePresenter
   end
 
   def event_groups
-    @event_groups ||= event_groups_scope
-                        .paginate(page: page, per_page: per_page)
+    @event_groups ||= event_groups_scope.paginate(page: page, per_page: per_page)
   end
 
   def event_groups_count
@@ -22,11 +19,6 @@ class EventGroupsCollectionPresenter < BasePresenter
 
   def show_visibility_columns?
     current_user&.admin? || current_user&.stewardships.present?
-  end
-
-  def per_page
-    result = params[:per_page]&.to_i || DEFAULT_PER_PAGE
-    result == 0 ? DEFAULT_PER_PAGE : result
   end
 
   def next_page_url

@@ -1,11 +1,11 @@
 class RawTimeQuery < BaseQuery
   def self.with_relations(existing_scope, args = {})
-    existing_scope = existing_scope_sql(existing_scope)
+    existing_scope_subquery = existing_scope_sql(existing_scope)
     order_sql = sql_order_from_hash(args[:sort], permitted_column_names, "sortable_bib_number")
 
-    <<-SQL.squish
-      with existing_scope as (
-             #{existing_scope}
+    <<~SQL.squish
+      (with existing_scope as (
+             #{existing_scope_subquery}
            ),
 
            raw_times_scoped AS (
@@ -41,6 +41,9 @@ class RawTimeQuery < BaseQuery
                on rs.parameterized_base_name = r.parameterized_split_name
               and rs.course_id = re.course_id
       order by #{order_sql}, r.id
+      )
+      
+      as raw_times
     SQL
   end
 

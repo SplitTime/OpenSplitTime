@@ -54,6 +54,8 @@ class EventGroupRawTimesPresenter < BasePresenter
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
       raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
     end
+    
+    @filtered_raw_times
   end
 
   def filtered_raw_times_count

@@ -68,6 +68,7 @@ class Effort < ApplicationRecord
   after_save :set_performance_data
   after_touch :set_performance_data
   after_update_commit :broadcast_update
+  after_commit :compress_photo_async, on: [:create, :update], if: :photo_needs_compression?
 
   pg_search_scope :search_bib, against: :bib_number, using: { tsearch: { any_word: true } }
   scope :bib_not_hardcoded, -> { where(bib_number_hardcoded: [false, nil]) }
@@ -331,5 +332,15 @@ class Effort < ApplicationRecord
 
   def set_performance_data
     ::Results::SetEffortPerformanceData.perform!(id)
+  end
+
+  def photo_needs_compression?
+    photo.attached? &&
+      photo.blob.byte_size > Images::MIN_SIZE_KB.kilobytes &&
+      photo.blob.metadata[Images::COMPRESSED_METADATA_KEY] != true
+  end
+
+  def compress_photo_async
+    Images::CompressSinglePhotoJob.perform_later(photo.id)
   end
 end

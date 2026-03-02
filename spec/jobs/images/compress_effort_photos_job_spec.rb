@@ -2,12 +2,12 @@
 
 require "rails_helper"
 
-RSpec.describe CompressEffortPhotosJob do
+RSpec.describe Images::CompressEffortPhotosJob do
   subject(:job) { described_class.new }
 
   let(:perform_job) { job.perform(batch_size: batch_size, min_size_kb: min_size_kb) }
   let(:batch_size) { 10 }
-  let(:min_size_kb) { 100 }
+  let(:min_size_kb) { Images::MIN_SIZE_KB }
 
   let(:effort) { create(:effort) }
 
@@ -31,42 +31,18 @@ RSpec.describe CompressEffortPhotosJob do
         blob
       end
 
-      it "replaces the original blob with a compressed version" do
-        original_blob_id = original_blob.id
-        original_size = original_blob.byte_size
+      it "calls Images::CompressPhoto for the attachment" do
+        expect(Images::CompressPhoto).to receive(:call).once
 
-        relation = described_class.new.send(:find_photos_to_compress, min_size_kb)
-        expect(relation.count).to eq(1)
-        expect(described_class.new.send(:already_compressed?, original_blob)).to eq(false)
-
-        attachment = ActiveStorage::Attachment.find_by!(name: "photo", record_type: "Effort", record_id: effort.id)
-
-        expect { job.send(:compress_photo, attachment) }.not_to raise_error
-
-        effort.reload
-        new_blob = effort.photo.blob
-
-        expect(new_blob.id).not_to eq(original_blob_id)
-        expect(new_blob).to be_present
-        expect(new_blob.byte_size).to be < original_size
-        expect(new_blob.metadata[described_class::COMPRESSED_METADATA_KEY]).to eq(true)
-      end
-    end
-
-    context "when a PNG photo is attached" do
-      let!(:original_blob) do
-        blob = ActiveStorage::Blob.create_and_upload!(
-          io: file_fixture("banner.png").open,
-          filename: "banner.png",
-          content_type: "image/png"
-        )
-        blob.update_column(:byte_size, 150.kilobytes)
-        effort.photo.attach(blob)
-        blob
+        perform_job
       end
 
-      it "processes PNG files" do
-        expect { perform_job }.not_to raise_error
+      it "skips already compressed photos" do
+        original_blob.update!(metadata: original_blob.metadata.merge(Images::COMPRESSED_METADATA_KEY => true))
+
+        expect(Images::CompressPhoto).not_to receive(:call)
+
+        perform_job
       end
     end
 
@@ -82,10 +58,9 @@ RSpec.describe CompressEffortPhotosJob do
       end
 
       it "does not process the photo" do
-        expect { perform_job }.not_to raise_error
+        expect(Images::CompressPhoto).not_to receive(:call)
 
-        effort.reload
-        expect(effort.photo.blob.id).to eq(original_blob.id)
+        perform_job
       end
     end
 
@@ -112,6 +87,28 @@ RSpec.describe CompressEffortPhotosJob do
           .count
 
         expect(photos_before).to eq(5)
+
+        expect { perform_job }.not_to raise_error
+      end
+    end
+
+    context "when compression fails for a photo" do
+      let!(:original_blob) do
+        blob = ActiveStorage::Blob.create_and_upload!(
+          io: file_fixture("potato3.jpg").open,
+          filename: "potato3.jpg",
+          content_type: "image/jpeg"
+        )
+        effort.photo.attach(blob)
+        blob
+      end
+
+      before do
+        allow(Images::CompressPhoto).to receive(:call).and_raise(StandardError.new("Compression failed"))
+      end
+
+      it "logs the error and continues" do
+        expect(Rails.logger).to receive(:error).with(/Failed to compress photo/)
 
         expect { perform_job }.not_to raise_error
       end

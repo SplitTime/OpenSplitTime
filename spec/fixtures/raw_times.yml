@@ -11,9 +11,9 @@ raw_time_0001:
   with_pacer:
   stopped_here:
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2017-07-08 22:38:12.817174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: pole-creek
   remarks:
   sortable_bib_number: 102
@@ -33,9 +33,9 @@ raw_time_0002:
   with_pacer:
   stopped_here:
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2017-07-08 22:38:12.817174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: pole-creek
   remarks:
   sortable_bib_number: 103
@@ -55,9 +55,9 @@ raw_time_0003:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 130
@@ -77,9 +77,9 @@ raw_time_0004:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 130
@@ -99,9 +99,9 @@ raw_time_0005:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 999
@@ -121,9 +121,9 @@ raw_time_0006:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 999
@@ -143,9 +143,9 @@ raw_time_0007:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -165,9 +165,9 @@ raw_time_0008:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -187,9 +187,9 @@ raw_time_0009:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -209,9 +209,9 @@ raw_time_0010:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -231,9 +231,9 @@ raw_time_0011:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 999
@@ -253,9 +253,9 @@ raw_time_0012:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 999
@@ -275,9 +275,9 @@ raw_time_0013:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: molas-pass-aid1
   remarks:
   sortable_bib_number: 999
@@ -297,9 +297,9 @@ raw_time_0014:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
   sortable_bib_number: 999
@@ -319,9 +319,9 @@ raw_time_0015:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
   sortable_bib_number: 999
@@ -341,9 +341,9 @@ raw_time_0016:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
   sortable_bib_number: 999
@@ -363,9 +363,9 @@ raw_time_0017:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
   sortable_bib_number: 999
@@ -385,9 +385,9 @@ raw_time_0018:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -407,9 +407,9 @@ raw_time_0019:
   with_pacer: false
   stopped_here:
   source: ost-live-entry
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -429,9 +429,9 @@ raw_time_0020:
   with_pacer:
   stopped_here:
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by:
+  creator_id:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -451,9 +451,9 @@ raw_time_0021:
   with_pacer:
   stopped_here:
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  created_by:
+  creator_id:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 999
@@ -473,9 +473,9 @@ raw_time_0022:
   with_pacer:
   stopped_here:
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-07-27 03:39:21.949460000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 999
@@ -495,9 +495,9 @@ raw_time_0023:
   with_pacer: false
   stopped_here: false
   source: ost-live-entry
-  reviewed_by:
+  reviewer_id:
   reviewed_at:
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -517,9 +517,9 @@ raw_time_0024:
   with_pacer: false
   stopped_here: false
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-07-27 03:40:08.987644000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: start
   remarks: ''
   sortable_bib_number: 777
@@ -539,9 +539,9 @@ raw_time_0025:
   with_pacer: false
   stopped_here: false
   source: internal
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-07-27 03:24:12.907737000 Z
-  created_by:
+  creator_id:
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 777
@@ -561,9 +561,9 @@ raw_time_0026:
   with_pacer: false
   stopped_here: false
   source: another
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-11-14 05:48:02.521295000 Z
-  created_by:
+  creator_id:
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -583,9 +583,9 @@ raw_time_0027:
   with_pacer: false
   stopped_here: false
   source: another
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-11-14 05:48:25.812628000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
@@ -605,9 +605,9 @@ raw_time_0028:
   with_pacer: false
   stopped_here: false
   source: another
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-11-14 05:48:27.582171000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
   sortable_bib_number: 130
@@ -627,9 +627,9 @@ raw_time_0029:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-11-14 05:48:22.553830000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 130
@@ -649,9 +649,9 @@ raw_time_0030:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-12-09 02:24:15.750492000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: bandera-mine-aid5
   remarks:
   sortable_bib_number: 103
@@ -671,9 +671,9 @@ raw_time_0031:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-12-09 02:25:03.158304000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -693,9 +693,9 @@ raw_time_0032:
   with_pacer: false
   stopped_here: true
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-12-09 02:26:54.169992000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -715,9 +715,9 @@ raw_time_0033:
   with_pacer: false
   stopped_here: true
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2018-12-15 17:29:59.171376000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: anvil-cg-aid6
   remarks:
   sortable_bib_number: 103
@@ -737,9 +737,9 @@ raw_time_0034:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2019-01-25 00:23:15.068615000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -759,9 +759,9 @@ raw_time_0035:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2019-01-25 00:23:15.075358000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -781,9 +781,9 @@ raw_time_0036:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2019-01-25 00:23:57.468470000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -803,9 +803,9 @@ raw_time_0037:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2019-01-25 00:23:57.472413000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: rolling-pass-aid2
   remarks:
   sortable_bib_number: 101
@@ -825,9 +825,9 @@ raw_time_0038:
   with_pacer: false
   stopped_here: false
   source: Live Entry (1)
-  reviewed_by: 1
+  reviewer_id: 1
   reviewed_at: 2019-01-25 00:25:12.563910000 Z
-  created_by: 1
+  creator_id: 1
   parameterized_split_name: start
   remarks:
   sortable_bib_number: 114

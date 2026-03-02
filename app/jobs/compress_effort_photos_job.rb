@@ -54,15 +54,9 @@ class CompressEffortPhotosJob < ApplicationJob
     processed = nil
 
     begin
-      # Download original
       tempfile = download_blob(blob)
-
-      # Compress using image_processing
       processed = compress_image(tempfile)
-
       new_blob = upload_compressed_blob(processed, blob.filename, original_size)
-
-      # Atomic replacement
       replace_blob(attachment, blob, new_blob)
 
       Rails.logger.info("CompressEffortPhotosJob: Compressed photo #{attachment.id}: #{original_size} → #{new_blob.byte_size} bytes (#{reduction_percent(original_size, new_blob.byte_size)}% reduction)")

@@ -9,7 +9,9 @@ class RawTimeResource < Madmin::Resource
   attribute :with_pacer
   attribute :stopped_here
   attribute :source
+  attribute :reviewer
   attribute :reviewed_at
+  attribute :creator
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :parameterized_split_name
@@ -26,8 +28,6 @@ class RawTimeResource < Madmin::Resource
   attribute :versions
   attribute :event_group
   attribute :split_time
-  attribute :reviewer
-  attribute :creator
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

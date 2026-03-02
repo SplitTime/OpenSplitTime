@@ -6,8 +6,6 @@ module Images
   # Handles downloading, compressing, uploading, and replacing the blob.
   #
   class CompressPhoto
-    attr_reader :attachment
-
     def self.call(attachment)
       new(attachment).call
     end
@@ -23,6 +21,8 @@ module Images
     end
 
     private
+
+    attr_reader :attachment
 
     def already_compressed?
       attachment.blob.metadata[Images::COMPRESSED_METADATA_KEY] == true

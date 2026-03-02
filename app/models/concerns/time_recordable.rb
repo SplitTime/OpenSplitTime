@@ -7,8 +7,6 @@ module TimeRecordable
     validate :absolute_or_entered_time
   end
 
-  attr_writer :creator, :reviewer
-
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
       errors.add(:base, "Either absolute_time or entered_time must be present")
@@ -57,17 +55,5 @@ module TimeRecordable
     else
       source
     end
-  end
-
-  def creator
-    return @creator if defined?(@creator)
-
-    @creator = User.find_by(id: created_by) if created_by
-  end
-
-  def reviewer
-    return @reviewer if defined?(@reviewer)
-
-    @reviewer = User.find_by(id: reviewed_by) if reviewed_by
   end
 end

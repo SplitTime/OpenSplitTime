@@ -11,7 +11,7 @@ module Auditable
   private
 
   def add_created_by
-    if User.current.present? && User.current.persisted?
+    if User.current
       self.created_by ||= User.current.id
     elsif self.created_by.nil? && Rails.env != "test"
       warn "WARNING: #{self.class} was validated with no user assigned to created_by, and Auditable " +

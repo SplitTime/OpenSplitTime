@@ -429,14 +429,15 @@ RSpec.describe Api::V1::EventGroupsController do
       end
 
       context "when there is a duplicate raw_time in the database" do
-        before do
-          create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
-                 entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source)
-        end
-
         context "when unique_key is set" do
           via_login_and_jwt do
             let(:unique_key) { %w[enteredTime splitName bitkey bibNumber source withPacer stoppedHere] }
+            
+            before do
+              create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
+                     entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
+                     created_by: request_spec_admin.id)
+            end
 
             it "saves the non-duplicate raw_time to the database and updates the duplicate raw_time" do
               expect { make_request }.to change { RawTime.count }.by(1)
@@ -449,6 +450,12 @@ RSpec.describe Api::V1::EventGroupsController do
         context "when unique_key is not set" do
           via_login_and_jwt do
             let(:unique_key) { nil }
+            
+            before do
+              create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
+                     entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
+                     created_by: request_spec_admin.id)
+            end
 
             it "saves both raw_times to the database" do
               expect { make_request }.to change { RawTime.count }.by(2)
@@ -477,10 +484,10 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:current_user) { controller.current_user }
 
     context "when unreviewed raw_times are available" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, entered_time: "2017-07-01 11:22:33-0600", split_name: "Finish") }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, entered_time: "2017-07-01 12:23:34-0600", split_name: "Finish") }
-
       via_login_and_jwt do
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, effort: effort_1, bib_number: effort_1.bib_number, entered_time: "2017-07-01 11:22:33-0600", split_name: "Finish", created_by: request_spec_admin.id) }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, effort: effort_2, bib_number: effort_2.bib_number, entered_time: "2017-07-01 12:23:34-0600", split_name: "Finish", created_by: request_spec_admin.id) }
+
         it "marks the raw_times as having been reviewed and returns raw_time_rows with entered_times" do
           response = make_request
           expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
@@ -498,10 +505,10 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when unreviewed raw_times have in and out times that can be paired" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 11:22:33", split_name: "Telluride", sub_split_kind: "in") }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Telluride", sub_split_kind: "out") }
-
       via_login_and_jwt do
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 11:22:33", split_name: "Telluride", sub_split_kind: "in", created_by: request_spec_admin.id) }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Telluride", sub_split_kind: "out", created_by: request_spec_admin.id) }
+
         it "marks the raw_times as having been reviewed and returns them in a single raw_time_row" do
           response = make_request
           expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
@@ -520,10 +527,10 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when unreviewed raw_times do not match existing bib numbers" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "999", absolute_time: "2017-07-01 11:22:33", split_name: "Telluride", sub_split_kind: "in") }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "999", absolute_time: "2017-07-01 12:23:34", split_name: "Telluride", sub_split_kind: "out") }
-
       via_login_and_jwt do
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "999", absolute_time: "2017-07-01 11:22:33", split_name: "Telluride", sub_split_kind: "in", created_by: request_spec_admin.id) }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "999", absolute_time: "2017-07-01 12:23:34", split_name: "Telluride", sub_split_kind: "out", created_by: request_spec_admin.id) }
+
         it "marks the raw_times as having been reviewed and returns a raw_time_row with event and effort attributes set to nil" do
           response = make_request
           expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
@@ -541,10 +548,10 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when unreviewed raw_times do not match existing split names" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Nonexistent", sub_split_kind: "in") }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 12:23:34", split_name: "Nonexistent", sub_split_kind: "out") }
-
       via_login_and_jwt do
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Nonexistent", sub_split_kind: "in", created_by: request_spec_admin.id) }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 12:23:34", split_name: "Nonexistent", sub_split_kind: "out", created_by: request_spec_admin.id) }
+
         it "marks the raw_times as having been reviewed and returns a raw_time_row with event and effort attributes loaded" do
           response = make_request
           expect(RawTime.last(2).pluck(:reviewed_by)).to all eq(current_user.id)
@@ -562,10 +569,11 @@ RSpec.describe Api::V1::EventGroupsController do
     end
 
     context "when no unreviewed raw_times are available" do
-      let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Finish", reviewed_by: 1, reviewed_at: Time.now) }
-      let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Finish", reviewed_by: 1, reviewed_at: Time.now) }
-
       via_login_and_jwt do
+        let!(:reviewer_user) { users(:third_user) }
+        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.now) }
+        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.now) }
+
         it "returns an empty array" do
           response = make_request
           result = JSON.parse(response.body)

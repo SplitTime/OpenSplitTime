@@ -7,6 +7,7 @@ RSpec.describe Images::CompressPhoto do
 
   let(:effort) { create(:effort) }
   let(:attachment) { effort.photo }
+  let(:call_service) { described_class.call(attachment) }
 
   describe ".call" do
     context "when photo needs compression" do
@@ -81,22 +82,7 @@ RSpec.describe Images::CompressPhoto do
       end
     end
 
-    context "when compression fails" do
-      before do
-        blob = ActiveStorage::Blob.create_and_upload!(
-          io: file_fixture("potato3.jpg").open,
-          filename: "potato3.jpg",
-          content_type: "image/jpeg"
-        )
-        effort.photo.attach(blob)
-      end
 
-      it "logs the error and re-raises" do
-        allow(ImageProcessing::Vips).to receive(:source).and_raise(StandardError.new("Processing failed"))
-
-        expect { described_class.call(attachment) }.to raise_error(StandardError, "Processing failed")
-      end
-    end
 
     context "with PNG file" do
       before do

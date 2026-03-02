@@ -4,12 +4,10 @@ module Images
   # Service to compress a single photo attachment.
   #
   # Handles downloading, compressing, uploading, and replacing the blob.
-  # Used by both the backfill job and single-photo preprocessing job.
-  #
-  # Usage:
-  #   Images::CompressPhoto.call(attachment)
   #
   class CompressPhoto
+    attr_reader :attachment
+
     def self.call(attachment)
       new(attachment).call
     end
@@ -22,23 +20,19 @@ module Images
       return if already_compressed?
 
       compress_and_replace
-    rescue StandardError => e
-      Rails.logger.error("Images::CompressPhoto: Failed to compress photo #{@attachment.id}: #{e.message}")
-      Rails.logger.error(e.backtrace.join("\n"))
-      raise
     end
 
     private
 
     def already_compressed?
-      @attachment.blob.metadata[Images::COMPRESSED_METADATA_KEY] == true
+      attachment.blob.metadata[Images::COMPRESSED_METADATA_KEY] == true
     end
 
     def compress_and_replace
-      blob = @attachment.blob
+      blob = attachment.blob
       original_size = blob.byte_size
 
-      Rails.logger.info("Images::CompressPhoto: Compressing photo #{@attachment.id} (#{blob.filename}, #{original_size} bytes)")
+      Rails.logger.info("Images::CompressPhoto: Compressing photo #{attachment.id} (#{blob.filename}, #{original_size} bytes)")
 
       tempfile = nil
       processed = nil
@@ -49,7 +43,7 @@ module Images
         new_blob = upload_compressed_blob(processed, blob.filename, original_size)
         replace_blob(blob, new_blob)
 
-        Rails.logger.info("Images::CompressPhoto: Compressed photo #{@attachment.id}: #{original_size} → #{new_blob.byte_size} bytes (#{reduction_percent(original_size, new_blob.byte_size)}% reduction)")
+        Rails.logger.info("Images::CompressPhoto: Compressed photo #{attachment.id}: #{original_size} → #{new_blob.byte_size} bytes (#{reduction_percent(original_size, new_blob.byte_size)}% reduction)")
       ensure
         cleanup_tempfiles(tempfile, processed)
       end
@@ -92,7 +86,7 @@ module Images
 
     def replace_blob(old_blob, new_blob)
       old_blob_id = old_blob.id
-      @attachment.update!(blob: new_blob)
+      attachment.update!(blob: new_blob)
       ActiveStorage::Blob.find(old_blob_id).purge
     end
 

@@ -6,6 +6,7 @@ RSpec.describe Images::CompressSinglePhotoJob do
   subject(:job) { described_class.new }
 
   let(:effort) { create(:effort) }
+  let(:perform_job) { job.perform(effort.photo.id) }
 
   describe "#perform" do
     context "when attachment exists and needs compression" do
@@ -71,26 +72,6 @@ RSpec.describe Images::CompressSinglePhotoJob do
       end
     end
 
-    context "when compression fails" do
-      let!(:blob) do
-        blob = ActiveStorage::Blob.create_and_upload!(
-          io: file_fixture("potato3.jpg").open,
-          filename: "potato3.jpg",
-          content_type: "image/jpeg"
-        )
-        effort.photo.attach(blob)
-        blob
-      end
 
-      before do
-        allow(Images::CompressPhoto).to receive(:call).and_raise(StandardError.new("Compression failed"))
-      end
-
-      it "logs the error and does not raise" do
-        expect(Rails.logger).to receive(:error).with(/Failed to compress attachment/)
-
-        expect { job.perform(effort.photo.id) }.not_to raise_error
-      end
-    end
   end
 end

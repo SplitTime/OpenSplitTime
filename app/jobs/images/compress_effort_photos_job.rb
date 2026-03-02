@@ -20,8 +20,6 @@ module Images
         next if already_compressed?(attachment.blob)
 
         Images::CompressPhoto.call(attachment)
-      rescue StandardError => e
-        Rails.logger.error("Images::CompressEffortPhotosJob: Failed to compress photo #{attachment.id}: #{e.message}")
       end
     end
 

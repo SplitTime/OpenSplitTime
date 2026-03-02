@@ -92,26 +92,6 @@ RSpec.describe Images::CompressEffortPhotosJob do
       end
     end
 
-    context "when compression fails for a photo" do
-      let!(:original_blob) do
-        blob = ActiveStorage::Blob.create_and_upload!(
-          io: file_fixture("potato3.jpg").open,
-          filename: "potato3.jpg",
-          content_type: "image/jpeg"
-        )
-        effort.photo.attach(blob)
-        blob
-      end
 
-      before do
-        allow(Images::CompressPhoto).to receive(:call).and_raise(StandardError.new("Compression failed"))
-      end
-
-      it "logs the error and continues" do
-        expect(Rails.logger).to receive(:error).with(/Failed to compress photo/)
-
-        expect { perform_job }.not_to raise_error
-      end
-    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_30_042459) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_02_153602) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -563,9 +563,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_30_042459) do
     t.boolean "with_pacer", default: false
     t.boolean "stopped_here", default: false
     t.string "source", null: false
-    t.integer "reviewed_by"
+    t.integer "reviewer_id"
     t.datetime "reviewed_at", precision: nil
-    t.integer "created_by"
+    t.integer "creator_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "parameterized_split_name", null: false
@@ -575,8 +575,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_30_042459) do
     t.integer "matchable_bib_number"
     t.boolean "disassociated_from_effort"
     t.integer "entered_lap"
+    t.index ["creator_id"], name: "index_raw_times_on_creator_id"
     t.index ["event_group_id"], name: "index_raw_times_on_event_group_id"
     t.index ["parameterized_split_name"], name: "index_raw_times_on_parameterized_split_name"
+    t.index ["reviewer_id"], name: "index_raw_times_on_reviewer_id"
     t.index ["split_time_id"], name: "index_raw_times_on_split_time_id"
   end
 
@@ -813,6 +815,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_30_042459) do
   add_foreign_key "projection_assessments", "projection_assessment_runs"
   add_foreign_key "raw_times", "event_groups"
   add_foreign_key "raw_times", "split_times"
+  add_foreign_key "raw_times", "users", column: "creator_id", on_delete: :nullify
+  add_foreign_key "raw_times", "users", column: "reviewer_id", on_delete: :nullify
   add_foreign_key "results_categories", "organizations"
   add_foreign_key "results_template_categories", "results_categories"
   add_foreign_key "results_template_categories", "results_templates"

@@ -2,12 +2,10 @@ module TimeRecordable
   extend ActiveSupport::Concern
 
   included do
-    scope :unreviewed, -> { where(reviewed_by: nil).where(split_time: nil) }
+    scope :unreviewed, -> { where(reviewer_id: nil).where(split_time: nil) }
     scope :unmatched, -> { where(split_time: nil) }
     validate :absolute_or_entered_time
   end
-
-  attr_writer :creator, :reviewer
 
   def absolute_or_entered_time
     if absolute_time.blank? && entered_time.blank?
@@ -53,21 +51,9 @@ module TimeRecordable
     if source.start_with?("ost-remote")
       "OSTR (#{source.last(4)})"
     elsif source.start_with?("ost-live-entry")
-      "Live Entry (#{created_by})"
+      "Live Entry (#{creator_id})"
     else
       source
     end
-  end
-
-  def creator
-    return @creator if defined?(@creator)
-
-    @creator = User.find_by(id: created_by) if created_by
-  end
-
-  def reviewer
-    return @reviewer if defined?(@reviewer)
-
-    @reviewer = User.find_by(id: reviewed_by) if reviewed_by
   end
 end

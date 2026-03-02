@@ -37,12 +37,17 @@ class EventGroupRawTimesPresenter < BasePresenter
         .with_relation_ids(sort: sort_hash)
         .select { |raw_time| matches_criteria?(raw_time) }
         .paginate(page: page, per_page: per_page)
+    
+    # Preload associations for the paginated subset to avoid N+1 queries
+    ActiveRecord::Associations::Preloader.new(
+      records: @filtered_raw_times,
+      associations: [:creator, :reviewer]
+    ).call
+    
     @filtered_raw_times.each do |raw_time|
       raw_time.effort = raw_time.has_effort_id? ? indexed_efforts[raw_time.effort_id] : nil
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
       raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
-      raw_time.creator = raw_time.created_by? ? indexed_users[raw_time.created_by] : nil
-      raw_time.reviewer = raw_time.reviewed_by? ? indexed_users[raw_time.reviewed_by] : nil
     end
   end
 
@@ -82,14 +87,6 @@ class EventGroupRawTimesPresenter < BasePresenter
     @indexed_splits ||= event_group.events.flat_map(&:splits).uniq.index_by(&:id)
   end
 
-  def indexed_users
-    @indexed_users ||= User.where(id: user_ids).index_by(&:id)
-  end
-
-  def user_ids
-    @user_ids ||= filtered_raw_times.flat_map { |raw_time| [raw_time.created_by, raw_time.reviewed_by] }.compact.uniq
-  end
-
   def matches_criteria?(raw_time)
     matches_stopped_criteria?(raw_time) && matches_reviewed_criteria?(raw_time) && matches_matched_criteria?(raw_time)
   end
@@ -108,9 +105,9 @@ class EventGroupRawTimesPresenter < BasePresenter
   def matches_reviewed_criteria?(raw_time)
     case params[:reviewed]&.to_boolean
     when true
-      raw_time.reviewed_by.present?
+      raw_time.reviewer.present?
     when false
-      raw_time.reviewed_by.blank?
+      raw_time.reviewer.blank?
     else # value is nil so do not filter
       true
     end

@@ -15,6 +15,8 @@ class RawTime < ApplicationRecord
 
   belongs_to :event_group
   belongs_to :split_time, optional: true
+  belongs_to :creator, class_name: "User", optional: true, foreign_key: "created_by"
+  belongs_to :reviewer, class_name: "User", optional: true, foreign_key: "reviewed_by"
 
   delegate :organization, :stewards, to: :event_group
 

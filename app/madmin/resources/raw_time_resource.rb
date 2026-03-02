@@ -9,9 +9,9 @@ class RawTimeResource < Madmin::Resource
   attribute :with_pacer
   attribute :stopped_here
   attribute :source
-  attribute :reviewed_by
+  attribute :reviewer
   attribute :reviewed_at
-  attribute :created_by
+  attribute :creator
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :parameterized_split_name

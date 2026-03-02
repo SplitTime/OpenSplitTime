@@ -102,11 +102,7 @@ class CompressEffortPhotosJob < ApplicationJob
 
   def replace_blob(attachment, old_blob, new_blob)
     old_blob_id = old_blob.id
-
-    # Update attachment to point to new blob
     attachment.update!(blob: new_blob)
-
-    # Purge old blob (deletes from S3)
     ActiveStorage::Blob.find(old_blob_id).purge
   end
 

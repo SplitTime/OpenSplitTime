@@ -7,6 +7,8 @@ FactoryBot.define do
     bib_number { rand(1..999).to_s }
     absolute_time { FFaker::Time.datetime }
     source { "ost-test" }
+    creator { nil }
+    reviewer { nil }
 
     after(:build, :stub) do |raw_time|
       raw_time.run_callbacks(:validation)

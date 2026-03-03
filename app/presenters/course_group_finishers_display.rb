@@ -18,15 +18,9 @@ class CourseGroupFinishersDisplay < BasePresenter
   def filtered_finishers
     return @filtered_finishers if defined?(@filtered_finishers)
 
-    # Use high count estimate to avoid expensive COUNT query (original behavior with total_entries: 0)
-    @pagy, results = pagy_from_scope(
-      filtered_finishers_unpaginated,
-      items: per_page,
-      page: page,
-      count: 10_000  # High estimate to skip COUNT query
-    )
-    
-    @filtered_finishers = results.to_a
+    # This page shows all finishers without pagination (original behavior with total_entries: 0)
+    # Skipping pagination avoids expensive COUNT query
+    @filtered_finishers = filtered_finishers_unpaginated.to_a
   end
 
   def filtered_finishers_unpaginated

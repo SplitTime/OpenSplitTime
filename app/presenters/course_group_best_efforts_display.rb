@@ -16,15 +16,9 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   def filtered_segments
     return @filtered_segments if defined?(@filtered_segments)
 
-    # Use high count estimate to avoid expensive COUNT query (original behavior with total_entries: 0)
-    @pagy, results = pagy_from_scope(
-      filtered_segments_unpaginated,
-      items: per_page,
-      page: page,
-      count: 10_000  # High estimate to skip COUNT query
-    )
-    
-    @filtered_segments = results.to_a
+    # This page shows all segments without pagination (original behavior with total_entries: 0)
+    # Skipping pagination avoids expensive COUNT query
+    @filtered_segments = filtered_segments_unpaginated.to_a
   end
 
   def filtered_segments_unpaginated

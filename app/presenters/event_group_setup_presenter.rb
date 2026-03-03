@@ -66,6 +66,10 @@ class EventGroupSetupPresenter < BasePresenter
     @filtered_efforts_count ||= filtered_efforts.size
   end
 
+  def filtered_efforts_total_count
+    @filtered_efforts_total_count ||= pagy.count
+  end
+
   def event_group_name
     event_group.name
   end

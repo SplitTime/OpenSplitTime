@@ -19,18 +19,12 @@ class CourseBestEffortsDisplay < BasePresenter
   def filtered_segments
     return @filtered_segments if defined?(@filtered_segments)
 
-    # Use high count estimate to avoid expensive COUNT query (original behavior with total_entries: 0)
-    # Pagination logic will check actual result size to determine if next page exists
-    @pagy, results = pagy_from_scope(
-      BestEffortSegment.from(ranked_segments, :best_effort_segments)
+    # This page shows all segments without pagination (original behavior with total_entries: 0)
+    # Skipping pagination avoids expensive COUNT query
+    @filtered_segments = BestEffortSegment.from(ranked_segments, :best_effort_segments)
         .where(effort_id: filtered_efforts)
-        .order(:overall_rank),
-      items: per_page,
-      page: page,
-      count: 10_000  # High estimate to skip COUNT query
-    )
-    
-    @filtered_segments = results.to_a
+        .order(:overall_rank)
+        .to_a
   end
 
   def filtered_segments_count

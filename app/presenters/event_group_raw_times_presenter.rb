@@ -33,9 +33,14 @@ class EventGroupRawTimesPresenter < BasePresenter
   def filtered_raw_times
     return @filtered_raw_times if defined?(@filtered_raw_times)
 
-    @filtered_raw_times = raw_times.where(filter_hash).search(search_text)
+    relation = raw_times.where(filter_hash).search(search_text)
+
+    relation = apply_stopped_filter(relation)
+    relation = apply_reviewed_filter(relation)
+    relation = apply_matched_filter(relation)
+
+    @filtered_raw_times = relation
         .with_relation_ids(sort: sort_hash)
-        .select { |raw_time| matches_criteria?(raw_time) }
         .paginate(page: page, per_page: per_page)
     
     # Preload associations for the paginated subset to avoid N+1 queries
@@ -49,6 +54,8 @@ class EventGroupRawTimesPresenter < BasePresenter
       raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
       raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
     end
+    
+    @filtered_raw_times
   end
 
   def filtered_raw_times_count
@@ -87,40 +94,36 @@ class EventGroupRawTimesPresenter < BasePresenter
     @indexed_splits ||= event_group.events.flat_map(&:splits).uniq.index_by(&:id)
   end
 
-  def matches_criteria?(raw_time)
-    matches_stopped_criteria?(raw_time) && matches_reviewed_criteria?(raw_time) && matches_matched_criteria?(raw_time)
-  end
-
-  def matches_stopped_criteria?(raw_time)
+  def apply_stopped_filter(relation)
     case params[:stopped]&.to_boolean
     when true
-      raw_time.stopped_here
+      relation.where(stopped_here: true)
     when false
-      !raw_time.stopped_here
-    else # value is nil so do not filter
-      true
+      relation.where(stopped_here: [false, nil])
+    else
+      relation
     end
   end
 
-  def matches_reviewed_criteria?(raw_time)
+  def apply_reviewed_filter(relation)
     case params[:reviewed]&.to_boolean
     when true
-      raw_time.reviewer.present?
+      relation.where.not(reviewed_by: nil)
     when false
-      raw_time.reviewer.blank?
-    else # value is nil so do not filter
-      true
+      relation.where(reviewed_by: nil)
+    else
+      relation
     end
   end
 
-  def matches_matched_criteria?(raw_time)
+  def apply_matched_filter(relation)
     case params[:matched]&.to_boolean
     when true
-      raw_time.split_time_id.present?
+      relation.where.not(split_time_id: nil)
     when false
-      raw_time.split_time_id.blank?
-    else # value is nil so do not filter
-      true
+      relation.where(split_time_id: nil)
+    else
+      relation
     end
   end
 end

@@ -38,11 +38,8 @@ class RawTime < ApplicationRecord
   scope :with_policy_scope_attributes, lambda {
     from(select("raw_times.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :raw_times)
   }
-
-  def self.with_relation_ids(args = {})
-    query = RawTimeQuery.with_relations(self, args)
-    find_by_sql(query)
-  end
+  
+  scope :with_relation_ids, ->(args = {}) { from(RawTimeQuery.with_relations(self, args)) }
 
   def self.search(search_text)
     return all unless search_text.present?

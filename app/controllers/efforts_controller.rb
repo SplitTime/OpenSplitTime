@@ -9,7 +9,7 @@ class EffortsController < ApplicationController
                  .where(prepared_params[:filter])
     respond_to do |format|
       format.html do
-        @efforts = @efforts.paginate(page: prepared_params[:page], per_page: prepared_params[:per_page] || 25)
+        @pagy, @efforts = pagy(@efforts, items: prepared_params[:per_page] || 25, page: prepared_params[:page])
       end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)

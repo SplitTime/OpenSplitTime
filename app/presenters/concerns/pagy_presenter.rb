@@ -15,7 +15,9 @@ module PagyPresenter
   def pagy_from_scope(scope, items: 25, page: 1, count: nil)
     # Calculate count if not provided
     # This is useful when the scope has GROUP BY or other aggregations
-    count ||= scope.count
+    # Remove ordering before counting to avoid SQL errors with complex SELECT clauses
+    # that use aliases in ORDER BY
+    count ||= scope.reorder(nil).count(:all)
 
     # Handle grouped queries that return a Hash instead of Integer
     count = count.values.sum if count.is_a?(Hash)

@@ -2,6 +2,7 @@
 
 # Pagy pagination support for presenters
 # Include this module to add pagy pagination methods to presenters
+# Compatible with pagy 9.x and 43.x
 module PagyPresenter
   # Paginate a scope using Pagy
   # Returns [pagy, records]
@@ -19,6 +20,7 @@ module PagyPresenter
     # Handle grouped queries that return a Hash instead of Integer
     count = count.values.sum if count.is_a?(Hash)
 
+    # Pagy.new API is compatible with both 9.x and 43.x
     pagy = Pagy.new(count: count, page: page, items: items)
     records = scope.offset(pagy.offset).limit(pagy.limit)
     

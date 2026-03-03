@@ -97,8 +97,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     split_times.max_by(&:lap)&.lap || 1
   end
 
-  def per_page
-    params[:per_page]&.to_i || ranked_efforts.size
+  def filtered_ranked_efforts
+    return @filtered_ranked_efforts if defined?(@filtered_ranked_efforts)
+
+    # The spread endpoint should return all efforts without pagination
+    @filtered_ranked_efforts = ranked_efforts.where(filter_hash).search(search_text)
+  end
+
+  def filtered_ranked_efforts_count
+    filtered_ranked_efforts.size
   end
 
   def split_times

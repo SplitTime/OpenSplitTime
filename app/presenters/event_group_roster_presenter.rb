@@ -1,5 +1,7 @@
 class EventGroupRosterPresenter < BasePresenter
-  attr_reader :event_group
+  include PagyPresenter
+
+  attr_reader :event_group, :pagy
   delegate :available_live, :concealed?, :multiple_events?, :name, :organization, :scheduled_start_time_local,
            :to_param, :unreconciled_efforts, to: :event_group
 
@@ -34,20 +36,21 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def filtered_roster_efforts
-    @filtered_roster_efforts ||= begin
-      relation = event_group_efforts
-        .from(roster_efforts, "efforts")
-        .where(filter_hash)
-        .search(search_text)
-        .order(sort_hash.presence || {bib_number: :asc})
+    return @filtered_roster_efforts if defined?(@filtered_roster_efforts)
 
-      relation = apply_checked_in_filter(relation)
-      relation = apply_started_filter(relation)
-      relation = apply_unreconciled_filter(relation)
-      relation = apply_problem_filter(relation)
+    relation = event_group_efforts
+      .from(roster_efforts, "efforts")
+      .where(filter_hash)
+      .search(search_text)
+      .order(sort_hash.presence || {bib_number: :asc})
 
-      relation.paginate(page: page, per_page: per_page)
-    end
+    relation = apply_checked_in_filter(relation)
+    relation = apply_started_filter(relation)
+    relation = apply_unreconciled_filter(relation)
+    relation = apply_problem_filter(relation)
+
+    @pagy, @filtered_roster_efforts = pagy_from_scope(relation, items: per_page, page: page)
+    @filtered_roster_efforts
   end
 
   def filtered_roster_efforts_count
@@ -55,11 +58,11 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def filtered_roster_efforts_total_count
-    @filtered_roster_efforts_total_count ||= filtered_roster_efforts.total_entries
+    @filtered_roster_efforts_total_count ||= pagy.count
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_roster_efforts_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def events

@@ -1,5 +1,7 @@
 class EventGroupRawTimesPresenter < BasePresenter
-  attr_reader :event_group, :request
+  include PagyPresenter
+
+  attr_reader :event_group, :request, :pagy
 
   delegate :to_param, to: :event_group
 
@@ -39,9 +41,11 @@ class EventGroupRawTimesPresenter < BasePresenter
     relation = apply_reviewed_filter(relation)
     relation = apply_matched_filter(relation)
 
-    @filtered_raw_times = relation
-        .with_relation_ids(sort: sort_hash)
-        .paginate(page: page, per_page: per_page)
+    @pagy, @filtered_raw_times = pagy_from_scope(
+      relation.with_relation_ids(sort: sort_hash),
+      items: per_page,
+      page: page
+    )
     
     # Preload associations for the paginated subset to avoid N+1 queries
     ActiveRecord::Associations::Preloader.new(
@@ -63,11 +67,11 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def filtered_raw_times_unpaginated_count
-    filtered_raw_times.total_entries
+    pagy.count
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_raw_times_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def split_name

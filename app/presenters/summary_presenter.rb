@@ -1,12 +1,15 @@
 class SummaryPresenter < EventWithEffortsPresenter
   def filtered_ranked_efforts
-    @filtered_ranked_efforts ||=
-      ranked_efforts
-        .finish_info_subquery
-        .where(filter_hash)
-        .where(finished: finished_filter)
-        .search(search_text)
-        .paginate(page: page, per_page: per_page)
+    return @filtered_ranked_efforts if defined?(@filtered_ranked_efforts)
+
+    scope = ranked_efforts
+      .finish_info_subquery
+      .where(filter_hash)
+      .where(finished: finished_filter)
+      .search(search_text)
+
+    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, items: per_page, page: page)
+    @filtered_ranked_efforts
   end
 
   def summary_title

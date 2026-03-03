@@ -24,8 +24,12 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   def filtered_historical_facts
     return @filtered_historical_facts if defined?(@filtered_historical_facts)
 
-    @filtered_historical_facts = filtered_historical_facts_unpaginated
-      .paginate(page: page, per_page: per_page)
+    @pagy, @filtered_historical_facts = pagy_from_scope(
+      filtered_historical_facts_unpaginated,
+      items: per_page,
+      page: page
+    )
+    @filtered_historical_facts
   end
 
   def filtered_historical_facts_unpaginated
@@ -42,11 +46,11 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   end
 
   def filtered_historical_facts_unpaginated_count
-    filtered_historical_facts.total_entries
+    pagy.count
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_historical_facts_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def kind

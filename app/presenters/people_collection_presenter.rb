@@ -19,7 +19,7 @@ class PeopleCollectionPresenter < BasePresenter
   end
 
   def people_count
-    @people_count ||= people.size
+    @people_count ||= pagy.count
   end
 
   def next_page_url

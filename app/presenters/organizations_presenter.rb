@@ -14,15 +14,12 @@ class OrganizationsPresenter < BasePresenter
   def records_from_context
     return @records_from_context if defined?(@records_from_context)
 
-    base_scope = OrganizationPolicy::Scope.new(current_user, Organization).viewable
-    scope = base_scope
+    scope = OrganizationPolicy::Scope.new(current_user, Organization)
+        .viewable
         .order(:name)
         .with_visible_event_count
 
-    # Count on base scope (without grouping) to get total number of organizations
-    total_count = base_scope.count
-
-    @pagy, @records_from_context = pagy_from_scope(scope, items: per_page, page: page, count: total_count)
+    @pagy, @records_from_context = pagy_from_scope(scope, items: per_page, page: page)
     @records_from_context
   end
 

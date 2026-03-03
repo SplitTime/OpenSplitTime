@@ -8,9 +8,6 @@ class EffortsController < ApplicationController
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
                  .where(prepared_params[:filter])
     respond_to do |format|
-      format.html do
-        @pagy, @efforts = pagy(@efforts, items: prepared_params[:per_page] || 25, page: prepared_params[:page])
-      end
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
         filename = if prepared_params[:filter] == { "id" => "0" }

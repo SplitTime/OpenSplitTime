@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class EventGroupsCollectionPresenter < BasePresenter
-  attr_reader :event_groups
+  include PagyPresenter
+
+  attr_reader :event_groups, :pagy
 
   def initialize(event_groups_scope, view_context)
     @event_groups_scope = event_groups_scope
@@ -10,7 +12,10 @@ class EventGroupsCollectionPresenter < BasePresenter
   end
 
   def event_groups
-    @event_groups ||= event_groups_scope.paginate(page: page, per_page: per_page)
+    return @event_groups if defined?(@event_groups)
+
+    @pagy, @event_groups = pagy_from_scope(event_groups_scope, items: per_page, page: page)
+    @event_groups
   end
 
   def event_groups_count
@@ -22,7 +27,7 @@ class EventGroupsCollectionPresenter < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if event_groups_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   private

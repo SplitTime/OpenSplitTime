@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include ::Pundit::Authorization
   include ::Turbo::Redirection
+  include Pagy::Backend
 
   BOT_USER_AGENT_REGEX = /meta-externalagent|facebookexternalhit|WhatsApp|Twitterbot|Googlebot/i
 

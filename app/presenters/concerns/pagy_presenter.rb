@@ -24,7 +24,9 @@ module PagyPresenter
 
     # Pagy.new API is compatible with both 9.x and 43.x
     pagy = Pagy.new(count: count, page: page, items: items)
-    records = scope.offset(pagy.offset).limit(pagy.items)
+    # In Pagy v9, the attribute is .limit; in v43+ it's .items
+    limit = pagy.respond_to?(:items) ? pagy.items : pagy.limit
+    records = scope.offset(pagy.offset).limit(limit)
     
     [pagy, records]
   end

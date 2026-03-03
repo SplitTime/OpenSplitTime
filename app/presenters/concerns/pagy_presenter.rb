@@ -24,7 +24,7 @@ module PagyPresenter
 
     # Pagy.new API is compatible with both 9.x and 43.x
     pagy = Pagy.new(count: count, page: page, items: items)
-    records = scope.offset(pagy.offset).limit(pagy.limit)
+    records = scope.offset(pagy.offset).limit(pagy.items)
     
     [pagy, records]
   end

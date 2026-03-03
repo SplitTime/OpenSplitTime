@@ -1,7 +1,9 @@
 class EventGroupSetupPresenter < BasePresenter
+  include PagyPresenter
+
   CANDIDATE_SEPARATION_LIMIT = 7.days
 
-  attr_reader :event_group
+  attr_reader :event_group, :pagy
   delegate :available_live?,
            :connections,
            :concealed?,
@@ -49,11 +51,15 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def filtered_efforts
-    @filtered_efforts ||= event_group_efforts
-                            .where(filter_hash)
-                            .search(search_text)
-                            .order(sort_hash.presence || { bib_number: :asc })
-                            .paginate(page: page, per_page: per_page)
+    return @filtered_efforts if defined?(@filtered_efforts)
+
+    scope = event_group_efforts
+              .where(filter_hash)
+              .search(search_text)
+              .order(sort_hash.presence || { bib_number: :asc })
+
+    @pagy, @filtered_efforts = pagy_from_scope(scope, items: per_page, page: page)
+    @filtered_efforts
   end
 
   def filtered_efforts_count

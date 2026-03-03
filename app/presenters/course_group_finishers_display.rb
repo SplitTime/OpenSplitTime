@@ -1,9 +1,10 @@
 class CourseGroupFinishersDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
+  include PagyPresenter
 
   DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
 
-  attr_reader :course_group, :view_context, :request
+  attr_reader :course_group, :view_context, :request, :pagy
 
   delegate :name, :organization, :to_param, to: :course_group
 
@@ -15,9 +16,17 @@ class CourseGroupFinishersDisplay < BasePresenter
   end
 
   def filtered_finishers
-    @filtered_finishers ||= filtered_finishers_unpaginated
-                              .paginate(page: page, per_page: per_page, total_entries: 0)
-                              .to_a
+    return @filtered_finishers if defined?(@filtered_finishers)
+
+    # Use high count estimate to avoid expensive COUNT query (original behavior with total_entries: 0)
+    @pagy, results = pagy_from_scope(
+      filtered_finishers_unpaginated,
+      items: per_page,
+      page: page,
+      count: 10_000  # High estimate to skip COUNT query
+    )
+    
+    @filtered_finishers = results.to_a
   end
 
   def filtered_finishers_unpaginated

@@ -1,7 +1,8 @@
 class CourseGroupBestEffortsDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
+  include PagyPresenter
 
-  attr_reader :course_group, :view_context, :request
+  attr_reader :course_group, :view_context, :request, :pagy
 
   delegate :name, :organization, :to_param, to: :course_group
 
@@ -13,9 +14,17 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   end
 
   def filtered_segments
-    @filtered_segments ||= filtered_segments_unpaginated
-                             .paginate(page: page, per_page: per_page, total_entries: 0)
-                             .to_a
+    return @filtered_segments if defined?(@filtered_segments)
+
+    # Use high count estimate to avoid expensive COUNT query (original behavior with total_entries: 0)
+    @pagy, results = pagy_from_scope(
+      filtered_segments_unpaginated,
+      items: per_page,
+      page: page,
+      count: 10_000  # High estimate to skip COUNT query
+    )
+    
+    @filtered_segments = results.to_a
   end
 
   def filtered_segments_unpaginated

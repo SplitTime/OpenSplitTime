@@ -1,5 +1,7 @@
 class EventGroupPresenter < BasePresenter
-  attr_reader :event_group
+  include PagyPresenter
+
+  attr_reader :event_group, :pagy
 
   delegate :to_param, to: :event_group
 
@@ -21,15 +23,15 @@ class EventGroupPresenter < BasePresenter
   end
 
   def filtered_ranked_efforts
-    @filtered_ranked_efforts ||=
-      ranked_efforts.where(filter_hash)
-                    .search(search_text)
-                    .select { |effort| matches_criteria?(effort) }
-                    .paginate(page: page, per_page: per_page)
+    return @filtered_ranked_efforts if defined?(@filtered_ranked_efforts)
+
+    scope = ranked_efforts.where(filter_hash).search(search_text)
+    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, items: per_page, page: page)
+    @filtered_ranked_efforts
   end
 
   def filtered_ranked_efforts_count
-    filtered_ranked_efforts.total_entries
+    pagy.count
   end
 
   def efforts_count

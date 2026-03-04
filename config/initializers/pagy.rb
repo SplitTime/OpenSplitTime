@@ -1,6 +1,7 @@
 # Pagy Configuration
 # See https://ddnexus.github.io/pagy/
 
+require "pagy/extras/countless"
 require "pagy/extras/overflow"
 
 Pagy::DEFAULT[:limit] = 25

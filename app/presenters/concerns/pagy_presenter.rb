@@ -20,4 +20,14 @@ module PagyPresenter
 
     [pagy, records]
   end
+
+  # Paginate without running a COUNT query.
+  # Fetches limit + 1 to determine if a next page exists.
+  # Returns [Pagy::Countless, Array].
+  def pagy_countless_from_scope(scope, limit: 25, page: 1)
+    pagy = Pagy::Countless.new(page: page, limit: limit)
+    records = scope.offset(pagy.offset).limit(pagy.limit + 1).to_a
+    pagy.finalize(records.size)
+    [pagy, records.first(pagy.limit)]
+  end
 end

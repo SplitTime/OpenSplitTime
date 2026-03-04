@@ -19,18 +19,14 @@ class CourseBestEffortsDisplay < BasePresenter
   def filtered_segments
     return @filtered_segments if defined?(@filtered_segments)
 
-    # Use a very high count to skip the expensive COUNT query (replicates total_entries: 0 behavior)
-    # Pagination still works based on per_page parameter
-    @pagy, results = pagy_from_scope(
+    @pagy, @filtered_segments = pagy_countless_from_scope(
       BestEffortSegment.from(ranked_segments, :best_effort_segments)
         .where(effort_id: filtered_efforts)
         .order(:overall_rank),
       limit: per_page,
-      page: page,
-      count: 100_000  # High enough to never affect pagination
+      page: page
     )
-    
-    @filtered_segments = results.to_a
+    @filtered_segments
   end
 
   def filtered_segments_count

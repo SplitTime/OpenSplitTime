@@ -29,6 +29,7 @@ rackup      DefaultRackup if defined?(DefaultRackup)
 port ENV.fetch("PORT", 3000)
 environment ENV.fetch("RACK_ENV", "development")
 
+# `before_worker_boot` generates a warning if concurrency is set to 0.
 if ENV.fetch("WEB_CONCURRENCY", 0).to_i > 0
   before_worker_boot do
     ActiveRecord::Base.establish_connection

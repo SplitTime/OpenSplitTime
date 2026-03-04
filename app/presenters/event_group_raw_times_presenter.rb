@@ -43,7 +43,7 @@ class EventGroupRawTimesPresenter < BasePresenter
 
     @pagy, @filtered_raw_times = pagy_from_scope(
       relation.with_relation_ids(sort: sort_hash),
-      items: per_page,
+      limit: per_page,
       page: page
     )
     

@@ -14,7 +14,7 @@ class EventGroupsCollectionPresenter < BasePresenter
   def event_groups
     return @event_groups if defined?(@event_groups)
 
-    @pagy, @event_groups = pagy_from_scope(event_groups_scope, items: per_page, page: page)
+    @pagy, @event_groups = pagy_from_scope(event_groups_scope, limit: per_page, page: page)
     @event_groups
   end
 

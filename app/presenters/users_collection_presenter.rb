@@ -14,7 +14,7 @@ class UsersCollectionPresenter < BasePresenter
   def users
     return @users if defined?(@users)
 
-    @pagy, @users = pagy_from_scope(users_scope, items: per_page, page: page)
+    @pagy, @users = pagy_from_scope(users_scope, limit: per_page, page: page)
     @users
   end
 

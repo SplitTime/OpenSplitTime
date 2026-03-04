@@ -58,7 +58,7 @@ class EventGroupSetupPresenter < BasePresenter
               .search(search_text)
               .order(sort_hash.presence || { bib_number: :asc })
 
-    @pagy, @filtered_efforts = pagy_from_scope(scope, items: per_page, page: page)
+    @pagy, @filtered_efforts = pagy_from_scope(scope, limit: per_page, page: page)
     @filtered_efforts
   end
 

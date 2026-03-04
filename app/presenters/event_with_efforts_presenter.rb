@@ -37,7 +37,7 @@ class EventWithEffortsPresenter < BasePresenter
       .where(filter_hash)
       .search(search_text)
 
-    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, items: per_page, page: page)
+    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, limit: per_page, page: page)
     @filtered_ranked_efforts
   end
 

@@ -22,7 +22,7 @@ class CourseGroupFinishersDisplay < BasePresenter
     # Pagination still works based on per_page parameter
     @pagy, results = pagy_from_scope(
       filtered_finishers_unpaginated,
-      items: per_page,
+      limit: per_page,
       page: page,
       count: 100_000  # High enough to never affect pagination
     )

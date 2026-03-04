@@ -25,7 +25,7 @@ class CourseBestEffortsDisplay < BasePresenter
       BestEffortSegment.from(ranked_segments, :best_effort_segments)
         .where(effort_id: filtered_efforts)
         .order(:overall_rank),
-      items: per_page,
+      limit: per_page,
       page: page,
       count: 100_000  # High enough to never affect pagination
     )

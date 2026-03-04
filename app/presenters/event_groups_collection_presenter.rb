@@ -27,6 +27,7 @@ class EventGroupsCollectionPresenter < BasePresenter
   end
 
   def next_page_url
+    event_groups
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

@@ -23,6 +23,7 @@ class UsersCollectionPresenter < BasePresenter
   end
 
   def next_page_url
+    users
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

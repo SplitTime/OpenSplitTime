@@ -19,10 +19,12 @@ class PeopleCollectionPresenter < BasePresenter
   end
 
   def people_count
+    people
     @people_count ||= pagy.count
   end
 
   def next_page_url
+    people
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

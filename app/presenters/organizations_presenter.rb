@@ -8,6 +8,7 @@ class OrganizationsPresenter < BasePresenter
   end
 
   def next_page_url
+    records_from_context
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
@@ -29,6 +30,7 @@ class OrganizationsPresenter < BasePresenter
   delegate :current_user, :params, :request, to: :view_context, private: true
 
   def records_from_context_count
+    records_from_context
     @records_from_context_count ||= pagy.count
   end
 end

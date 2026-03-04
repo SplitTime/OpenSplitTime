@@ -58,10 +58,12 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def filtered_roster_efforts_total_count
+    filtered_roster_efforts
     @filtered_roster_efforts_total_count ||= pagy.count
   end
 
   def next_page_url
+    filtered_roster_efforts
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

@@ -67,10 +67,12 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def filtered_raw_times_unpaginated_count
+    filtered_raw_times
     pagy.count
   end
 
   def next_page_url
+    filtered_raw_times
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

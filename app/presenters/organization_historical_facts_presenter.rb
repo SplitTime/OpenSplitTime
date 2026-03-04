@@ -46,10 +46,12 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
   end
 
   def filtered_historical_facts_unpaginated_count
+    filtered_historical_facts
     pagy.count
   end
 
   def next_page_url
+    filtered_historical_facts
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 

@@ -29,10 +29,11 @@ rackup      DefaultRackup if defined?(DefaultRackup)
 port ENV.fetch("PORT", 3000)
 environment ENV.fetch("RACK_ENV", "development")
 
-before_worker_boot do
-  # Worker specific setup for Rails 4.1+
-  # See: https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
-  ActiveRecord::Base.establish_connection
+# `before_worker_boot` generates a warning if concurrency is set to 0.
+if ENV.fetch("WEB_CONCURRENCY", 0).to_i > 0
+  before_worker_boot do
+    ActiveRecord::Base.establish_connection
+  end
 end
 
 # Set a long timeout in development and test environments

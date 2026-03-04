@@ -1,4 +1,6 @@
 class EventGroupSetupPresenter < BasePresenter
+  include PagyPresenter
+
   CANDIDATE_SEPARATION_LIMIT = 7.days
 
   attr_reader :event_group
@@ -49,15 +51,23 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def filtered_efforts
-    @filtered_efforts ||= event_group_efforts
-                            .where(filter_hash)
-                            .search(search_text)
-                            .order(sort_hash.presence || { bib_number: :asc })
-                            .paginate(page: page, per_page: per_page)
+    return @filtered_efforts if defined?(@filtered_efforts)
+
+    scope = event_group_efforts
+              .where(filter_hash)
+              .search(search_text)
+              .order(sort_hash.presence || { bib_number: :asc })
+
+    @pagy, @filtered_efforts = pagy_from_scope(scope, limit: per_page, page: page)
+    @filtered_efforts
   end
 
   def filtered_efforts_count
     @filtered_efforts_count ||= filtered_efforts.size
+  end
+
+  def filtered_efforts_total_count
+    @filtered_efforts_total_count ||= pagy.count
   end
 
   def event_group_name
@@ -77,7 +87,7 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_efforts_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def organization_name
@@ -123,4 +133,9 @@ class EventGroupSetupPresenter < BasePresenter
 
   attr_reader :params, :view_context
   delegate :current_user, :request, to: :view_context, private: true
+
+  def pagy
+    filtered_efforts
+    @pagy
+  end
 end

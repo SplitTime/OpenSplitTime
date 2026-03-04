@@ -1,4 +1,6 @@
 class LotteryPresenter < BasePresenter
+  include PagyPresenter
+
   DEFAULT_SORT_HASH = { division_name: :asc, last_name: :asc }.freeze
 
   attr_reader :lottery, :params
@@ -48,7 +50,10 @@ class LotteryPresenter < BasePresenter
 
   # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_paginated
-    @lottery_entrants_paginated ||= lottery_entrants_filtered.paginate(page: page, per_page: per_page)
+    return @lottery_entrants_paginated if defined?(@lottery_entrants_paginated)
+
+    @pagy, @lottery_entrants_paginated = pagy_from_scope(lottery_entrants_filtered, limit: per_page, page: page)
+    @lottery_entrants_paginated
   end
 
   def pre_selected_entrant_count
@@ -63,7 +68,7 @@ class LotteryPresenter < BasePresenter
 
   # @return [String, nil]
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   # @return [ActiveRecord::Relation<Partner>]
@@ -149,6 +154,11 @@ class LotteryPresenter < BasePresenter
 
   attr_reader :view_context
   delegate :current_user, :request, to: :view_context, private: true
+
+  def pagy
+    lottery_entrants_paginated
+    @pagy
+  end
 
   # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_filtered

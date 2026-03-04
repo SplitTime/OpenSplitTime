@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PeopleCollectionPresenter < BasePresenter
+  include PagyPresenter
+
   attr_reader :people
 
   def initialize(people_scope, view_context)
@@ -10,20 +12,28 @@ class PeopleCollectionPresenter < BasePresenter
   end
 
   def people
-    @people ||= people_scope.paginate(page: page, per_page: per_page)
+    return @people if defined?(@people)
+
+    @pagy, @people = pagy_from_scope(people_scope, limit: per_page, page: page)
+    @people
   end
 
   def people_count
-    @people_count ||= people.size
+    @people_count ||= pagy.count
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if people_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   private
 
   attr_reader :people_scope, :params, :view_context
+
+  def pagy
+    people
+    @pagy
+  end
 
   delegate :request, to: :view_context, private: true
 end

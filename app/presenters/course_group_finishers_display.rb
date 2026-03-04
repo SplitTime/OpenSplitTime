@@ -1,5 +1,6 @@
 class CourseGroupFinishersDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
+  include PagyPresenter
 
   DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
 
@@ -15,9 +16,14 @@ class CourseGroupFinishersDisplay < BasePresenter
   end
 
   def filtered_finishers
-    @filtered_finishers ||= filtered_finishers_unpaginated
-                              .paginate(page: page, per_page: per_page, total_entries: 0)
-                              .to_a
+    return @filtered_finishers if defined?(@filtered_finishers)
+
+    @pagy, @filtered_finishers = pagy_countless_from_scope(
+      filtered_finishers_unpaginated,
+      limit: per_page,
+      page: page
+    )
+    @filtered_finishers
   end
 
   def filtered_finishers_unpaginated
@@ -64,12 +70,17 @@ class CourseGroupFinishersDisplay < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_finishers_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   private
 
   attr_reader :params
+
+  def pagy
+    filtered_finishers
+    @pagy
+  end
 
   def events
     @events ||= course_group.events

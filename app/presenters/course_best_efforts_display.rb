@@ -1,5 +1,6 @@
 class CourseBestEffortsDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
+  include PagyPresenter
 
   attr_reader :course, :view_context, :request
 
@@ -16,11 +17,19 @@ class CourseBestEffortsDisplay < BasePresenter
   end
 
   def filtered_segments
-    @filtered_segments ||= BestEffortSegment.from(ranked_segments, :best_effort_segments)
-                             .where(effort_id: filtered_efforts)
-                             .order(:overall_rank)
-                             .paginate(page: page, per_page: per_page, total_entries: 0)
-                             .to_a
+    return @filtered_segments if defined?(@filtered_segments)
+
+    scope = BestEffortSegment.from(ranked_segments, :best_effort_segments)
+      .where(effort_id: filtered_efforts)
+      .order(:overall_rank)
+
+    @pagy, @filtered_segments = pagy_countless_from_scope(
+      scope,
+      limit: per_page,
+      page: page
+    )
+
+    @filtered_segments
   end
 
   def filtered_segments_count
@@ -78,7 +87,7 @@ class CourseBestEffortsDisplay < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_segments_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def ordered_splits
@@ -96,6 +105,11 @@ class CourseBestEffortsDisplay < BasePresenter
   private
 
   attr_reader :params
+
+  def pagy
+    filtered_segments
+    @pagy
+  end
 
   def events
     @events ||= course.events

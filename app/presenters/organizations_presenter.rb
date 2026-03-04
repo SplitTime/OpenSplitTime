@@ -1,4 +1,6 @@
 class OrganizationsPresenter < BasePresenter
+  include PagyPresenter
+
   attr_reader :organizations
 
   def initialize(view_context)
@@ -6,15 +8,19 @@ class OrganizationsPresenter < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if records_from_context_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def records_from_context
-    @records_from_context ||= OrganizationPolicy::Scope.new(current_user, Organization)
+    return @records_from_context if defined?(@records_from_context)
+
+    scope = OrganizationPolicy::Scope.new(current_user, Organization)
         .viewable
         .order(:name)
         .with_visible_event_count
-        .paginate(page: page, per_page: per_page)
+
+    @pagy, @records_from_context = pagy_from_scope(scope, limit: per_page, page: page)
+    @records_from_context
   end
 
   private
@@ -22,7 +28,12 @@ class OrganizationsPresenter < BasePresenter
   attr_reader :view_context
   delegate :current_user, :params, :request, to: :view_context, private: true
 
+  def pagy
+    records_from_context
+    @pagy
+  end
+
   def records_from_context_count
-    @records_from_context_count ||= ::Organization.from(records_from_context).count
+    @records_from_context_count ||= pagy.count
   end
 end

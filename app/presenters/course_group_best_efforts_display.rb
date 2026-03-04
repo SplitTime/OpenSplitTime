@@ -1,5 +1,6 @@
 class CourseGroupBestEffortsDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
+  include PagyPresenter
 
   attr_reader :course_group, :view_context, :request
 
@@ -13,9 +14,14 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   end
 
   def filtered_segments
-    @filtered_segments ||= filtered_segments_unpaginated
-                             .paginate(page: page, per_page: per_page, total_entries: 0)
-                             .to_a
+    return @filtered_segments if defined?(@filtered_segments)
+
+    @pagy, @filtered_segments = pagy_countless_from_scope(
+      filtered_segments_unpaginated,
+      limit: per_page,
+      page: page
+    )
+    @filtered_segments
   end
 
   def filtered_segments_unpaginated
@@ -67,12 +73,17 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_segments_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   private
 
   attr_reader :params
+
+  def pagy
+    filtered_segments
+    @pagy
+  end
 
   def events
     @events ||= course_group.events

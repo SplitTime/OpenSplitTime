@@ -2,7 +2,7 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   include ActionView::Helpers::TextHelper
   include PagyPresenter
 
-  attr_reader :course_group, :view_context, :request, :pagy
+  attr_reader :course_group, :view_context, :request
 
   delegate :name, :organization, :to_param, to: :course_group
 
@@ -83,6 +83,11 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   private
 
   attr_reader :params
+
+  def pagy
+    filtered_segments
+    @pagy
+  end
 
   def events
     @events ||= course_group.events

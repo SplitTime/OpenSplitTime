@@ -1,7 +1,7 @@
 class EventGroupRawTimesPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :event_group, :request, :pagy
+  attr_reader :event_group, :request
 
   delegate :to_param, to: :event_group
 
@@ -63,16 +63,14 @@ class EventGroupRawTimesPresenter < BasePresenter
   end
 
   def filtered_raw_times_count
-    filtered_raw_times.size
+    @filtered_raw_times_count ||= filtered_raw_times.size
   end
 
   def filtered_raw_times_unpaginated_count
-    filtered_raw_times
     pagy.count
   end
 
   def next_page_url
-    filtered_raw_times
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
@@ -87,6 +85,11 @@ class EventGroupRawTimesPresenter < BasePresenter
   private
 
   attr_reader :view_context, :params
+
+  def pagy
+    filtered_raw_times
+    @pagy
+  end
 
   def indexed_efforts
     @indexed_efforts ||= event_group.efforts.index_by(&:id)

@@ -1,14 +1,13 @@
 class OrganizationsPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :organizations, :pagy
+  attr_reader :organizations
 
   def initialize(view_context)
     @view_context = view_context
   end
 
   def next_page_url
-    records_from_context
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
@@ -29,8 +28,12 @@ class OrganizationsPresenter < BasePresenter
   attr_reader :view_context
   delegate :current_user, :params, :request, to: :view_context, private: true
 
-  def records_from_context_count
+  def pagy
     records_from_context
+    @pagy
+  end
+
+  def records_from_context_count
     @records_from_context_count ||= pagy.count
   end
 end

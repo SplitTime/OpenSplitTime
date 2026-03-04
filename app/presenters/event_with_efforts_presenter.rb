@@ -3,7 +3,7 @@ class EventWithEffortsPresenter < BasePresenter
 
   DEFAULT_ORDER_CRITERIA = { overall_rank: :asc, bib_number: :asc }
 
-  attr_reader :event, :pagy
+  attr_reader :event
 
   delegate :course_groups, to: :course
   delegate :id, :name, :course, :course_id, :simple?, :beacon_url, :home_time_zone, :finish_split,
@@ -68,6 +68,11 @@ class EventWithEffortsPresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
+  def pagy
+    filtered_ranked_efforts
+    @pagy
+  end
 
   def ranked_efforts
     @ranked_efforts ||= event_efforts.ranking_subquery.finish_info_subquery.order(order_criteria)

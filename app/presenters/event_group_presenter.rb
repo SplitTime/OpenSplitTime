@@ -1,7 +1,7 @@
 class EventGroupPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :event_group, :pagy
+  attr_reader :event_group
 
   delegate :to_param, to: :event_group
 
@@ -100,6 +100,11 @@ class EventGroupPresenter < BasePresenter
   private
 
   attr_reader :params, :current_user
+
+  def pagy
+    filtered_ranked_efforts
+    @pagy
+  end
 
   def order_criteria
     sort_hash.presence || DEFAULT_ORDER_CRITERIA

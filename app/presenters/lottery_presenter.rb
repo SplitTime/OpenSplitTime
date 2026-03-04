@@ -3,7 +3,7 @@ class LotteryPresenter < BasePresenter
 
   DEFAULT_SORT_HASH = { division_name: :asc, last_name: :asc }.freeze
 
-  attr_reader :lottery, :params, :pagy
+  attr_reader :lottery, :params
   delegate :action_name, :controller_name, to: :view_context
 
   delegate :calculation_class?, :concealed?, :divisions, :entrants, :name, :organization, :scheduled_start_date, :status,
@@ -68,7 +68,7 @@ class LotteryPresenter < BasePresenter
 
   # @return [String, nil]
   def next_page_url
-    view_context.url_for(request.params.merge(page: pagy.next)) if pagy&.next
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   # @return [ActiveRecord::Relation<Partner>]
@@ -154,6 +154,11 @@ class LotteryPresenter < BasePresenter
 
   attr_reader :view_context
   delegate :current_user, :request, to: :view_context, private: true
+
+  def pagy
+    lottery_entrants_paginated
+    @pagy
+  end
 
   # @return [ActiveRecord::Relation<LotteryEntrant>]
   def lottery_entrants_filtered

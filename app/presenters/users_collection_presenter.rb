@@ -3,7 +3,7 @@
 class UsersCollectionPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :users, :pagy
+  attr_reader :users
 
   def initialize(users_scope, view_context)
     @users_scope = users_scope
@@ -19,17 +19,21 @@ class UsersCollectionPresenter < BasePresenter
   end
 
   def users_count
-    @users_count ||= users.size
+    @users_count ||= pagy.count
   end
 
   def next_page_url
-    users
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   private
 
   attr_reader :users_scope, :params, :view_context
+
+  def pagy
+    users
+    @pagy
+  end
 
   delegate :current_user, :request, to: :view_context, private: true
 end

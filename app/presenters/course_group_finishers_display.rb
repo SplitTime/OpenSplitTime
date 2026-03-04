@@ -4,7 +4,7 @@ class CourseGroupFinishersDisplay < BasePresenter
 
   DEFAULT_ORDER = { last_name: :asc, first_name: :asc, finish_count: :desc }
 
-  attr_reader :course_group, :view_context, :request, :pagy
+  attr_reader :course_group, :view_context, :request
 
   delegate :name, :organization, :to_param, to: :course_group
 
@@ -80,6 +80,11 @@ class CourseGroupFinishersDisplay < BasePresenter
   private
 
   attr_reader :params
+
+  def pagy
+    filtered_finishers
+    @pagy
+  end
 
   def events
     @events ||= course_group.events

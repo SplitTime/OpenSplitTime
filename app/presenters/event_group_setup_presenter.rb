@@ -3,7 +3,7 @@ class EventGroupSetupPresenter < BasePresenter
 
   CANDIDATE_SEPARATION_LIMIT = 7.days
 
-  attr_reader :event_group, :pagy
+  attr_reader :event_group
   delegate :available_live?,
            :connections,
            :concealed?,
@@ -87,7 +87,7 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def next_page_url
-    view_context.url_for(request.params.merge(page: page + 1)) if filtered_efforts_count == per_page
+    view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
   def organization_name
@@ -133,4 +133,9 @@ class EventGroupSetupPresenter < BasePresenter
 
   attr_reader :params, :view_context
   delegate :current_user, :request, to: :view_context, private: true
+
+  def pagy
+    filtered_efforts
+    @pagy
+  end
 end

@@ -1,7 +1,7 @@
 class EventGroupRosterPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :event_group, :pagy
+  attr_reader :event_group
   delegate :available_live, :concealed?, :multiple_events?, :name, :organization, :scheduled_start_time_local,
            :to_param, :unreconciled_efforts, to: :event_group
 
@@ -42,7 +42,7 @@ class EventGroupRosterPresenter < BasePresenter
       .from(roster_efforts, "efforts")
       .where(filter_hash)
       .search(search_text)
-      .order(sort_hash.presence || {bib_number: :asc})
+      .order(sort_hash.presence || { bib_number: :asc })
 
     relation = apply_checked_in_filter(relation)
     relation = apply_started_filter(relation)
@@ -58,12 +58,10 @@ class EventGroupRosterPresenter < BasePresenter
   end
 
   def filtered_roster_efforts_total_count
-    filtered_roster_efforts
     @filtered_roster_efforts_total_count ||= pagy.count
   end
 
   def next_page_url
-    filtered_roster_efforts
     view_context.url_for(request.params.merge(page: pagy.next)) if pagy.next
   end
 
@@ -90,6 +88,11 @@ class EventGroupRosterPresenter < BasePresenter
   private
 
   attr_reader :params, :view_context
+
+  def pagy
+    filtered_roster_efforts
+    @pagy
+  end
   delegate :current_user, :request, to: :view_context, private: true
 
   def apply_checked_in_filter(relation)

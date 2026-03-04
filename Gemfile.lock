@@ -150,8 +150,6 @@ GEM
     bindex (0.8.1)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
-    bootstrap-will_paginate (1.0.0)
-      will_paginate
     brakeman (8.0.2)
       racc
     builder (3.3.0)
@@ -630,7 +628,6 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.4)
@@ -659,7 +656,6 @@ DEPENDENCIES
   aws-sdk-sns (~> 1)
   better_errors (>= 2.3)
   bootsnap
-  bootstrap-will_paginate
   brakeman
   bundler-audit
   capitalize_attributes (>= 0.2)
@@ -731,7 +727,6 @@ DEPENDENCIES
   vcr (~> 4.0)
   web-console (~> 3.7, >= 3.7.0)
   webmock (~> 3.5)
-  will_paginate (~> 3.3)
 
 RUBY VERSION
   ruby 4.0.1p0

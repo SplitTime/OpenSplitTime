@@ -14,7 +14,6 @@ gem "aws-sdk-rails", "~> 3"
 gem "aws-sdk-s3", "~> 1", require: false
 gem "aws-sdk-sns", "~> 1", require: false
 gem "bootsnap"
-gem "bootstrap-will_paginate"
 gem "capitalize_attributes", ">= 0.2"
 gem "carmen"
 gem "chartkick"
@@ -67,7 +66,6 @@ gem "strip_attributes"
 gem "structpluck"
 gem "terser"
 gem "turbo-rails"
-gem "will_paginate", "~> 3.3"
 
 group :development do
   gem "better_errors", ">= 2.3"

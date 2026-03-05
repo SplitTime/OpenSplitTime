@@ -14,7 +14,7 @@ module PagyPresenter
     count ||= scope.reorder(nil).count(:all)
     count = count.values.sum if count.is_a?(Hash)
 
-    pagy = Pagy.new(count: count, page: page, limit: limit)
+    pagy = Pagy::Offset.new(count: count, page: page, limit: limit)
     records = scope.offset(pagy.offset).limit(pagy.limit)
 
     [pagy, records]
@@ -24,11 +24,10 @@ module PagyPresenter
   # Fetches limit + 1 to determine if a next page exists.
   # Returns [Pagy::Countless, Array].
   def pagy_countless_from_scope(scope, limit: 25, page: 1)
-    # Pagy::Countless only supports :empty_page or :exception overflow options
+    # Pagy::Offset::Countless only supports :empty_page or :exception overflow options
     # (not :last_page which is the global default)
-    pagy = Pagy::Countless.new(page: page, limit: limit, overflow: :empty_page)
-    records = scope.offset(pagy.offset).limit(pagy.limit + 1).to_a
-    pagy.finalize(records.size)
-    [pagy, records.first(pagy.limit)]
+    pagy = Pagy::Offset::Countless.new(page: page, limit: limit, overflow: :empty_page)
+    records = pagy.records(scope)
+    [pagy, records]
   end
 end

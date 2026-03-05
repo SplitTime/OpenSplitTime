@@ -2,7 +2,7 @@ ruby "4.0.1"
 
 source "https://rubygems.org"
 
-gem "rails", "~> 7.2.0"
+gem "rails", "~> 8.0.0"
 
 gem "activerecord-import"
 gem "active_storage_validations", ">= 0.9.2"
@@ -81,7 +81,7 @@ group :test do
   gem "capybara"
   gem "factory_bot_rails", require: false
   gem "pry"
-  gem "vcr", "~> 4.0"
+  gem "vcr", "~> 6.4"
   gem "selenium-webdriver"
   gem "webmock", "~> 3.5"
 end

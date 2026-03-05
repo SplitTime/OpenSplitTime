@@ -4,7 +4,6 @@
 # Include this module to add pagy pagination methods to presenters
 module PagyPresenter
   # Paginate a scope using Pagy
-  # Returns [pagy, records]
   #
   # @param scope [ActiveRecord::Relation] The scope to paginate
   # @param limit [Integer] Items per page (default: 25)

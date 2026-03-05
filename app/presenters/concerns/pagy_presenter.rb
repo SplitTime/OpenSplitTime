@@ -4,7 +4,6 @@
 # Include this module to add pagy pagination methods to presenters
 module PagyPresenter
   # Paginate a scope using Pagy
-  # Returns [pagy, records]
   #
   # @param scope [ActiveRecord::Relation] The scope to paginate
   # @param limit [Integer] Items per page (default: 25)
@@ -25,7 +24,9 @@ module PagyPresenter
   # Fetches limit + 1 to determine if a next page exists.
   # Returns [Pagy::Countless, Array].
   def pagy_countless_from_scope(scope, limit: 25, page: 1)
-    pagy = Pagy::Countless.new(page: page, limit: limit)
+    # Pagy::Countless only supports :empty_page or :exception overflow options
+    # (not :last_page which is the global default)
+    pagy = Pagy::Countless.new(page: page, limit: limit, overflow: :empty_page)
     records = scope.offset(pagy.offset).limit(pagy.limit + 1).to_a
     pagy.finalize(records.size)
     [pagy, records.first(pagy.limit)]

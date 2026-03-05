@@ -25,7 +25,7 @@
     "sass": "^1.64.1",
     "simple-datatables": "^7.2.0",
     "stimulus-use": "^0.51.1",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.8"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.7.4",

@@ -86,7 +86,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     allowable (1.1.0)
     american_date (1.3.0)
-    api-pagination (6.0.0)
+    api-pagination (7.0.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
     aws-partitions (1.1214.0)
@@ -271,6 +271,10 @@ GEM
     image_processing (1.14.0)
       mini_magick (>= 4.9.5, < 6)
       ruby-vips (>= 2.0.17, < 3)
+    importmap-rails (2.2.3)
+      actionpack (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      railties (>= 6.0.0)
     io-console (0.8.2)
     irb (1.17.0)
       pp (>= 0.6.0)
@@ -294,9 +298,13 @@ GEM
     loofah (2.25.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    madmin (1.2.11)
+    madmin (2.3.2)
+      importmap-rails
       pagy (>= 3.5)
-      rails (>= 6.0.3)
+      propshaft
+      rails (>= 7.0.0)
+      stimulus-rails
+      turbo-rails
     mail (2.9.0)
       logger
       mini_mime (>= 0.1.1)
@@ -379,7 +387,10 @@ GEM
     options (2.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    pagy (9.4.0)
+    pagy (43.3.1)
+      json
+      uri
+      yaml
     paper_trail (17.0.0)
       activerecord (>= 7.1)
       request_store (~> 1.4)
@@ -406,6 +417,10 @@ GEM
     progress_bar (1.3.4)
       highline (>= 1.6)
       options (~> 2.3.0)
+    propshaft (1.3.1)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
     pry (0.16.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -627,6 +642,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yaml (0.4.0)
     zeitwerk (2.7.5)
 
 PLATFORMS
@@ -647,7 +663,7 @@ DEPENDENCIES
   acts_as_list (~> 0.9)
   allowable (~> 1.1)
   american_date
-  api-pagination (~> 6.0)
+  api-pagination (~> 7.0)
   aws-sdk-rails (~> 3)
   aws-sdk-s3 (~> 1)
   aws-sdk-sns (~> 1)
@@ -680,14 +696,14 @@ DEPENDENCIES
   jwt
   listen
   local_time
-  madmin (~> 1.2)
+  madmin (~> 2.0)
   name_of_person
   normalize_country
   omniauth-facebook (>= 8.0.0)
   omniauth-google-oauth2 (>= 0.8.0)
   omniauth-rails_csrf_protection (>= 1.0.0)
   ostruct
-  pagy (~> 9.4)
+  pagy
   paper_trail
   pg
   pg_search

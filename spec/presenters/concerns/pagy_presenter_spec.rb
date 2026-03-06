@@ -11,10 +11,16 @@ RSpec.describe PagyPresenter do
       def initialize(view_context)
         @view_context = view_context
       end
+
+      # Delegate request to view_context (like real presenters do)
+      def request
+        view_context.request
+      end
     end
   end
 
-  let(:view_context) { double("view_context") }
+  let(:request) { double("request") }
+  let(:view_context) { double("view_context", request: request) }
   subject { test_presenter_class.new(view_context) }
 
   describe "#pagy_from_scope" do
@@ -54,7 +60,7 @@ RSpec.describe PagyPresenter do
       end
 
       it "sums the count values" do
-        pagy, _records = subject.pagy_from_scope(scope)
+        pagy, _records = subject.pagy_from_scope(scope, limit: 25, page: 1)
 
         expect(pagy.count).to eq(60)
       end

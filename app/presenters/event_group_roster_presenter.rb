@@ -49,7 +49,7 @@ class EventGroupRosterPresenter < BasePresenter
     relation = apply_unreconciled_filter(relation)
     relation = apply_problem_filter(relation)
 
-    @pagy, @filtered_roster_efforts = pagy_from_scope(relation, request, limit_key: 'per_page')
+    @pagy, @filtered_roster_efforts = pagy_from_scope(relation, request)
     @filtered_roster_efforts
   end
 

@@ -26,7 +26,7 @@ class EventGroupPresenter < BasePresenter
     return @filtered_ranked_efforts if defined?(@filtered_ranked_efforts)
 
     scope = ranked_efforts.where(filter_hash).search(search_text)
-    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, request, limit_key: 'per_page')
+    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, request)
     @filtered_ranked_efforts
   end
 

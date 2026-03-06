@@ -28,8 +28,7 @@ class OrganizationHistoricalFactsPresenter < OrganizationPresenter
 
     @pagy, @filtered_historical_facts = pagy_from_scope(
       filtered_historical_facts_unpaginated,
-      request,
-      limit_key: 'per_page'
+      request
     )
     @filtered_historical_facts
   end

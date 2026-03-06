@@ -52,7 +52,7 @@ class LotteryPresenter < BasePresenter
   def lottery_entrants_paginated
     return @lottery_entrants_paginated if defined?(@lottery_entrants_paginated)
 
-    @pagy, @lottery_entrants_paginated = pagy_from_scope(lottery_entrants_filtered, request, limit_key: 'per_page')
+    @pagy, @lottery_entrants_paginated = pagy_from_scope(lottery_entrants_filtered, request)
     @lottery_entrants_paginated
   end
 

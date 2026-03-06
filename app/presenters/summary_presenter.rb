@@ -8,7 +8,7 @@ class SummaryPresenter < EventWithEffortsPresenter
       .where(finished: finished_filter)
       .search(search_text)
 
-    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, request, limit_key: 'per_page')
+    @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, request)
     @filtered_ranked_efforts
   end
 

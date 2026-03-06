@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'pagy/classes/request'
-require 'pagy/toolbox/paginators/offset'
-require 'pagy/toolbox/paginators/countless'
+require "pagy/classes/request"
+require "pagy/toolbox/paginators/offset"
+require "pagy/toolbox/paginators/countless"
 
 # Pagy pagination support for presenters
 # Include this module to add pagy pagination methods to presenters
@@ -22,8 +22,8 @@ module PagyPresenter
     count ||= scope.reorder(nil).count(:all)
     count = count.values.sum if count.is_a?(Hash)
 
-    # Merge Pagy defaults with our options
-    pagy_options = Pagy::OPTIONS.merge(options)
+    # Merge Pagy defaults with our options, setting limit_key to "per_page"
+    pagy_options = Pagy::OPTIONS.merge(limit_key: "per_page").merge(options)
     
     # Always wrap request in Pagy::Request (handles both Hash and ActionDispatch::Request)
     pagy_options[:request] = Pagy::Request.new(pagy_options.merge(request: request))
@@ -43,8 +43,8 @@ module PagyPresenter
   # @param options [Hash] Additional pagy options
   # @return [Array<Pagy::Countless, ActiveRecord::Relation>]
   def pagy_countless_from_scope(scope, request, **options)
-    # Merge Pagy defaults with our options
-    pagy_options = Pagy::OPTIONS.merge(options)
+    # Merge Pagy defaults with our options, setting limit_key to "per_page"
+    pagy_options = Pagy::OPTIONS.merge(limit_key: "per_page").merge(options)
     
     # Always wrap request in Pagy::Request (handles both Hash and ActionDispatch::Request)
     pagy_options[:request] = Pagy::Request.new(pagy_options.merge(request: request))

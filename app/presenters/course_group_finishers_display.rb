@@ -21,7 +21,7 @@ class CourseGroupFinishersDisplay < BasePresenter
     @pagy, @filtered_finishers = pagy_countless_from_scope(
       filtered_finishers_unpaginated,
       request,
-      limit_key: 'per_page'
+      limit: per_page
     )
     @filtered_finishers
   end

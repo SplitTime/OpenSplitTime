@@ -43,8 +43,7 @@ class EventGroupRawTimesPresenter < BasePresenter
 
     @pagy, @filtered_raw_times = pagy_from_scope(
       relation.with_relation_ids(sort: sort_hash),
-      request,
-      limit_key: 'per_page'
+      request
     )
     
     # Preload associations for the paginated subset to avoid N+1 queries

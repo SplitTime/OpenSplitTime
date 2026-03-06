@@ -19,7 +19,7 @@ class OrganizationsPresenter < BasePresenter
         .order(:name)
         .with_visible_event_count
 
-    @pagy, @records_from_context = pagy_from_scope(scope, limit: per_page, page: page)
+    @pagy, @records_from_context = pagy_from_scope(scope, request, limit_key: 'per_page')
     @records_from_context
   end
 

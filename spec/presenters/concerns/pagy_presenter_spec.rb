@@ -19,7 +19,7 @@ RSpec.describe PagyPresenter do
     end
   end
 
-  let(:request) { double("request") }
+  let(:request) { { params: { 'page' => '1', 'limit' => '25' } } }
   let(:view_context) { double("view_context", request: request) }
   subject { test_presenter_class.new(view_context) }
 
@@ -35,7 +35,8 @@ RSpec.describe PagyPresenter do
     end
 
     it "returns a pagy instance and paginated records" do
-      pagy, records = subject.pagy_from_scope(scope, limit: 25, page: 2)
+      request_with_page_2 = { params: { 'page' => '2', 'limit' => '25' } }
+      pagy, records = subject.pagy_from_scope(scope, request_with_page_2)
 
       expect(pagy).to be_a(Pagy::Offset)
       expect(pagy.count).to eq(100)
@@ -48,7 +49,7 @@ RSpec.describe PagyPresenter do
       it "does not query the scope for count" do
         expect(scope).not_to receive(:count)
 
-        subject.pagy_from_scope(scope, limit: 25, page: 1, count: 50)
+        subject.pagy_from_scope(scope, request, count: 50)
       end
     end
 
@@ -60,7 +61,7 @@ RSpec.describe PagyPresenter do
       end
 
       it "sums the count values" do
-        pagy, _records = subject.pagy_from_scope(scope, limit: 25, page: 1)
+        pagy, _records = subject.pagy_from_scope(scope, request)
 
         expect(pagy.count).to eq(60)
       end
@@ -78,7 +79,7 @@ RSpec.describe PagyPresenter do
     end
 
     it "returns a Pagy::Offset::Countless instance and paginated records" do
-      pagy, paginated_records = subject.pagy_countless_from_scope(scope, limit: 25, page: 1)
+      pagy, paginated_records = subject.pagy_countless_from_scope(scope, request)
 
       expect(pagy).to be_a(Pagy::Offset::Countless)
       expect(pagy.page).to eq(1)
@@ -90,12 +91,12 @@ RSpec.describe PagyPresenter do
       # Pagy::Offset::Countless only supports :empty_page or :exception
       # This test ensures we explicitly override the overflow option
       expect do
-        subject.pagy_countless_from_scope(scope, limit: 25, page: 1)
+        subject.pagy_countless_from_scope(scope, request)
       end.not_to raise_error
     end
 
     it "uses :empty_page overflow option for Pagy::Offset::Countless" do
-      pagy, _records = subject.pagy_countless_from_scope(scope, limit: 25, page: 1)
+      pagy, _records = subject.pagy_countless_from_scope(scope, request)
 
       expect(pagy.options[:overflow]).to eq(:empty_page)
     end
@@ -104,7 +105,8 @@ RSpec.describe PagyPresenter do
       let(:records) { [] }
 
       it "returns an empty page without raising an error" do
-        pagy, paginated_records = subject.pagy_countless_from_scope(scope, limit: 25, page: 999)
+        request_page_999 = { params: { 'page' => '999', 'limit' => '25' } }
+        pagy, paginated_records = subject.pagy_countless_from_scope(scope, request_page_999)
 
         expect(pagy).to be_a(Pagy::Offset::Countless)
         expect(paginated_records).to be_empty

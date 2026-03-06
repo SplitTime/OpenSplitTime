@@ -25,8 +25,8 @@ class CourseBestEffortsDisplay < BasePresenter
 
     @pagy, @filtered_segments = pagy_countless_from_scope(
       scope,
-      limit: per_page,
-      page: page
+      request,
+      limit_key: 'per_page'
     )
 
     @filtered_segments

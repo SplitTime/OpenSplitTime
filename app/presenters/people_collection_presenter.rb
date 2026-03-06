@@ -14,7 +14,7 @@ class PeopleCollectionPresenter < BasePresenter
   def people
     return @people if defined?(@people)
 
-    @pagy, @people = pagy_from_scope(people_scope, limit: per_page, page: page)
+    @pagy, @people = pagy_from_scope(people_scope, request, limit_key: 'per_page')
     @people
   end
 

@@ -25,12 +25,8 @@ module PagyPresenter
     # Merge Pagy defaults with our options
     pagy_options = Pagy::OPTIONS.merge(options)
     
-    # Wrap request in Pagy::Request if it's a hash
-    pagy_options[:request] = if request.is_a?(Hash)
-                                Pagy::Request.new(pagy_options.merge(request: request))
-                              else
-                                request
-                              end
+    # Always wrap request in Pagy::Request (handles both Hash and ActionDispatch::Request)
+    pagy_options[:request] = Pagy::Request.new(pagy_options.merge(request: request))
     
     # Add count to options
     pagy_options[:count] = count
@@ -50,12 +46,8 @@ module PagyPresenter
     # Merge Pagy defaults with our options
     pagy_options = Pagy::OPTIONS.merge(options)
     
-    # Wrap request in Pagy::Request if it's a hash
-    pagy_options[:request] = if request.is_a?(Hash)
-                                Pagy::Request.new(pagy_options.merge(request: request))
-                              else
-                                request
-                              end
+    # Always wrap request in Pagy::Request (handles both Hash and ActionDispatch::Request)
+    pagy_options[:request] = Pagy::Request.new(pagy_options.merge(request: request))
     
     # Pagy::Offset::Countless only supports :empty_page or :exception overflow options
     # (not :last_page which is the global default)

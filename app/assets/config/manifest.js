@@ -2,3 +2,4 @@
 //= link_tree ../fonts
 //= link_tree ../images
 //= link favicon/browserconfig.xml
+//= link madmin_manifest

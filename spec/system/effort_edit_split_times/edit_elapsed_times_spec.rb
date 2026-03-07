@@ -74,9 +74,12 @@ RSpec.describe "edit elapsed times from an edit split times page" do
       input = page.find("#effort_split_times_attributes_1_elapsed_time")
 
       expected_values.each do |input_value, expected_value|
-        input.set("")
+        # Clear masked input using JavaScript, then type with send_keys
+        page.execute_script("arguments[0].value = '';", input)
+        input.click
         input.native.send_keys(input_value)
         input.native.send_keys(:tab)
+        sleep(0.1) # Allow mask to process
 
         expect(input.value).to eq(expected_value)
       end

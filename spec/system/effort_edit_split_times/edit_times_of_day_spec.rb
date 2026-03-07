@@ -65,9 +65,12 @@ RSpec.describe "edit military times from an edit split times page" do
       }
 
       expected_values.each do |input_value, expected_value|
-        input.set("")
+        # Clear masked input using JavaScript, then type with send_keys
+        page.execute_script("arguments[0].value = '';", input)
+        input.click
         input.native.send_keys(input_value)
         input.native.send_keys(:tab)
+        sleep(0.1) # Allow mask to process
 
         expect(input.value).to eq(expected_value)
       end
@@ -77,7 +80,9 @@ RSpec.describe "edit military times from an edit split times page" do
       login_as steward, scope: :user
       visit_page
 
-      input.set("")
+      # Clear masked input using JavaScript, then type with send_keys
+      page.execute_script("arguments[0].value = '';", input)
+      input.click
       input.native.send_keys("920")
       input.native.send_keys(:return)
 

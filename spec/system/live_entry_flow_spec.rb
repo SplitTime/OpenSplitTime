@@ -39,6 +39,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in time_in_field, with: "08:00"
       expect(slider_effort_name).to have_content(effort_1.full_name)
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -46,6 +47,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_2.bib_number
       fill_in time_in_field, with: "09:00"
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)
@@ -76,6 +78,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_1.bib_number
       fill_in time_in_field, with: "19:00:00"
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -84,6 +87,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in time_in_field, with: "13:00:00"
       fill_in time_out_field, with: "13:20:00"
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)
@@ -108,6 +112,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_1.bib_number
       fill_in time_in_field, with: "08:45:45"
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).not_to have_content(effort_2.full_name)
@@ -115,6 +120,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       fill_in bib_number_field, with: effort_2.bib_number
       fill_in time_in_field, with: "09:00:00"
       add_button.click
+      sleep(0.5)
 
       expect(local_workspace).to have_content(effort_1.full_name)
       expect(local_workspace).to have_content(effort_2.full_name)

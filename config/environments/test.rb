@@ -39,8 +39,10 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
-  # Disable caching for Action Mailer templates even if Action Controller
-  # caching is enabled.
+  # Disable analysis and previews in system tests
+  config.active_storage.analyzers = []
+  config.active_storage.previewers = []
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.

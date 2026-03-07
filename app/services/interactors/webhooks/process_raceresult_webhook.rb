@@ -1,13 +1,17 @@
 module Interactors::Webhooks
   class ProcessRaceresultWebhook
+    include Interactors::Errors
+
+    class ParsingError < StandardError; end
+
     # The raw data is expected to be in the format: JSON_DATA;EVENT_GROUP_NAME
     def self.call(raw)
       new(raw).call
     end
 
     def initialize(raw)
-      raise ArgumentError, "Raw data cannot be blank" if raw.blank?
       @raw = raw
+      @errors = []
     end
 
     def call
@@ -18,26 +22,30 @@ module Interactors::Webhooks
       save_raw_time
       submit_raw_time
 
-      raw_time
+      Interactors::Response.new(errors, "", [raw_time])
+    rescue ParsingError => e
+      errors << raceresult_parsing_error(e.message)
+      Interactors::Response.new(errors, "", [])
     end
 
     private
 
     attr_reader :raw
-    attr_accessor :raw_attributes, :processed_attributes, :raw_time, :event_group_name, :event_group
+    attr_accessor :raw_attributes, :processed_attributes, :raw_time, :event_group_name, :event_group, :errors
 
     def parse_raw
       parts = raw.split(';')
-      raise ArgumentError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
-      raise ArgumentError, "JSON data cannot be blank" if parts.first.blank?
+      raise ParsingError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
+      raise ParsingError, "JSON data cannot be blank" if parts.first.blank?
       self.raw_attributes = JSON.parse(parts.first)  # Automatically raises JSON::ParserError if invalid
-      raise ArgumentError, "JSON data cannot be empty" if raw_attributes.blank?
+      raise ParsingError, "JSON data cannot be empty" if raw_attributes.blank?
       self.event_group_name = parts.last.to_s.strip
-      raise ArgumentError, "Event group name cannot be blank" if event_group_name.blank?
+      raise ParsingError, "Event group name cannot be blank" if event_group_name.blank?
     end
 
     def find_event_group
-      self.event_group = EventGroup.find_by!(name: event_group_name)
+      self.event_group = EventGroup.find_by(name: event_group_name)
+      raise ParsingError, "Event group not found: #{event_group_name}" unless event_group
     end
 
     def process_data
@@ -48,10 +56,10 @@ module Interactors::Webhooks
         timing_point: raw_attributes["TimingPoint"],
         id: raw_attributes["ID"]
       }
-      raise ArgumentError, "Missing required field: Bib" if processed_attributes[:bib].blank?
-      raise ArgumentError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].blank?
-      raise ArgumentError, "Missing required field: Passing.UTCTime" if processed_attributes[:utc_time].blank?
-      raise ArgumentError, "Missing required field: ID" if processed_attributes[:id].blank?
+      raise ParsingError, "Missing required field: Bib" if processed_attributes[:bib].blank?
+      raise ParsingError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].blank?
+      raise ParsingError, "Missing required field: Passing.UTCTime" if processed_attributes[:utc_time].blank?
+      raise ParsingError, "Missing required field: ID" if processed_attributes[:id].blank?
     end
 
     def build_raw_time

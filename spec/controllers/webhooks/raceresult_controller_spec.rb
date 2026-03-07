@@ -9,7 +9,7 @@ RSpec.describe Webhooks::RaceresultController do
     end
 
     context "when the request is valid" do
-      before { allow(Interactors::Webhooks::ProcessRaceresultWebhook).to receive(:call) }
+      before { allow(Interactors::Webhooks::ProcessRaceresultWebhook).to receive(:call).and_return(Interactors::Response.new([], "", [])) }
 
       it "returns a successful 201 response" do
         make_request

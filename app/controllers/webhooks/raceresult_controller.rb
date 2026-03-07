@@ -15,6 +15,8 @@ module Webhooks
       render json: { error: "Invalid JSON" }, status: :unprocessable_entity
     rescue ActiveRecord::RecordNotFound
       render json: { error: "Event group not found" }, status: :unprocessable_entity
+    rescue ArgumentError => e
+      render json: { error: e.message }, status: :unprocessable_entity
     end
   end
 end

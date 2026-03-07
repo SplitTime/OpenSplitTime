@@ -29,8 +29,11 @@ module Interactors::Webhooks
     def parse_raw
       parts = raw.split(';')
       raise ArgumentError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
-      self.raw_attributes = JSON.parse(parts.first)
-      self.event_group_name = parts.last
+      raise ArgumentError, "JSON data cannot be blank" if parts.first.blank?
+      self.raw_attributes = JSON.parse(parts.first)  # Automatically raises JSON::ParserError if invalid
+      raise ArgumentError, "JSON data cannot be empty" if raw_attributes.blank?
+      self.event_group_name = parts.last.to_s.strip
+      raise ArgumentError, "Event group name cannot be blank" if event_group_name.blank?
     end
 
     def find_event_group
@@ -45,8 +48,10 @@ module Interactors::Webhooks
         timing_point: raw_attributes["TimingPoint"],
         id: raw_attributes["ID"]
       }
-      raise ArgumentError, "Missing required field: Bib" if processed_attributes[:bib].nil?
-      raise ArgumentError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].nil?
+      raise ArgumentError, "Missing required field: Bib" if processed_attributes[:bib].blank?
+      raise ArgumentError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].blank?
+      raise ArgumentError, "Missing required field: Passing.UTCTime" if processed_attributes[:utc_time].blank?
+      raise ArgumentError, "Missing required field: ID" if processed_attributes[:id].blank?
     end
 
     def build_raw_time

@@ -1,4 +1,6 @@
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<% if ::OstConfig.cloudflare_turnstile_site_key.present? %>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<% end %>
 
 <% content_for :title do %>
   <% "OpenSplitTime: Sign Up" %>

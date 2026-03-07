@@ -11,16 +11,20 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
   xscenario "The user is not logged in and subscribes to sms" do
     visit_page
 
-    within("##{dom_id(effort, :sms)}") { click_button("sms") }
-    page.accept_confirm("You must be signed in to subscribe to notifications")
+    page.accept_confirm("You must be signed in to subscribe to notifications") do
+      within("##{dom_id(effort, :sms)}") { click_button("sms") }
+    end
+
     expect(page).to have_current_path(effort_path(effort))
   end
 
   scenario "The user is not logged in and subscribes to email" do
     visit_page
 
-    within("##{dom_id(effort, :email)}") { click_button("email") }
-    page.accept_confirm("You must be signed in to subscribe to notifications")
+    page.accept_confirm("You must be signed in to subscribe to notifications") do
+      within("##{dom_id(effort, :email)}") { click_button("email") }
+    end
+
     expect(page).to have_current_path(effort_path(effort))
   end
 
@@ -28,8 +32,9 @@ RSpec.describe "User subscribes to an effort's progress notifications", type: :s
     login_as user, scope: :user
     visit_page
 
-    within("##{dom_id(effort, :email)}") { click_button("email") }
-    accept_confirm
+    accept_confirm do
+      within("##{dom_id(effort, :email)}") { click_button("email") }
+    end
     expect(page).to have_current_path(effort_path(effort))
     expect(page).to have_content("You have subscribed to email notifications for #{effort.full_name}.")
   end

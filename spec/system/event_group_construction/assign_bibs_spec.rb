@@ -31,8 +31,9 @@ RSpec.describe "assign bibs in event group construction", js: true do
     click_button "Auto Assign"
 
     expect do
-      click_link "Hardrock"
-      accept_confirm
+      accept_confirm do
+        click_link "Hardrock"
+      end
       expect(page).to have_field("event_group_bib_for_#{event.efforts.find_by(last_name: "First").id}", with: "100")
     end.to change { event.efforts.pluck(:bib_number) }.from([nil, nil, nil, nil]).to(array_including([100, 101, 102, 103]))
 

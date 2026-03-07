@@ -46,8 +46,9 @@ RSpec.describe "manage divisions on the lottery setup page", js: true do
     visit_page
 
     expect {
-      click_link(href: organization_lottery_lottery_division_path(organization, lottery, division))
-      page.accept_confirm
+      page.accept_confirm do
+        click_link(href: organization_lottery_lottery_division_path(organization, lottery, division))
+      end
       expect(page).to have_content("A lottery division cannot be deleted unless all tickets and draws have been deleted first.")
     }.not_to change(LotteryDivision, :count)
 
@@ -55,15 +56,16 @@ RSpec.describe "manage divisions on the lottery setup page", js: true do
   end
 
   scenario "The user deletes a division when no tickets or draws exist" do
-    lottery.delete_all_draws!
+    lottery.draws.delete_all
     lottery.tickets.delete_all
 
     login_as steward, scope: :user
     visit_page
 
     expect {
-      click_link(href: organization_lottery_lottery_division_path(organization, lottery, division))
-      page.accept_confirm
+      page.accept_confirm do
+        click_link(href: organization_lottery_lottery_division_path(organization, lottery, division))
+      end
       expect(page).to have_content("The division was deleted.")
     }.to change(LotteryDivision, :count).by(-1)
 

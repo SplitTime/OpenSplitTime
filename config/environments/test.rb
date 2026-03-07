@@ -43,6 +43,8 @@ Rails.application.configure do
   config.active_storage.analyzers = []
   config.active_storage.previewers = []
 
+  # Disable caching for Action Mailer templates even if Action Controller
+  # caching is enabled.
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.

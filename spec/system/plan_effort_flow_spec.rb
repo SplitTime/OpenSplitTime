@@ -68,13 +68,7 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
     input = page.find("#expected_time")
 
     expected_values.each do |input_value, expected_value|
-      # Clear masked input using JavaScript, then type with send_keys
-      page.execute_script("arguments[0].value = '';", input)
-      input.click
-      input.native.send_keys(input_value)
-      input.native.send_keys(:tab)
-      sleep(0.1) # Allow mask to process
-
+      clear_masked_input_and_type(input, input_value)
       expect(input.value).to eq(expected_value)
     end
   end

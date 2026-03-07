@@ -79,12 +79,4 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     click_button "Attach"
     expect(lottery.service_form.attached?).to eq(true)
   end
-
-  def wait_for_download(file_path, timeout: 5)
-    Timeout.timeout(timeout) do
-      sleep 0.1 until File.exist?(file_path)
-    end
-  rescue Timeout::Error
-    # File didn't download in time
-  end
 end

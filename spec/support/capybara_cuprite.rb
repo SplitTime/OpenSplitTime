@@ -1,6 +1,7 @@
 # spec/support/capybara_cuprite.rb
 require "capybara/rspec"
 require "capybara/cuprite"
+require "fileutils"
 
 Capybara.default_max_wait_time = 5
 Capybara.disable_animation = true if Capybara.respond_to?(:disable_animation)
@@ -28,18 +29,25 @@ def find_chrome_binary
 end
 
 CHROME_BINARY = find_chrome_binary
+DOWNLOAD_PATH = Rails.root.join("tmp/downloads").to_s
 
 Capybara.register_driver :better_cuprite do |app|
+  # Configure Chrome browser options
+  browser_options = ENV["CI"] ? { "no-sandbox" => nil } : {}
+  
   options = {
     headless: ENV.fetch("HEADLESS", "true") == "true",
     window_size: [1500, 1200],
-    browser_options: ENV["CI"] ? { "no-sandbox" => nil } : {},
+    browser_options: browser_options,
     process_timeout: 30,
     timeout: 15,
     js_errors: true,
   }
   
   options[:browser_path] = CHROME_BINARY if File.exist?(CHROME_BINARY)
+  
+  # Ensure download directory exists
+  FileUtils.mkdir_p(DOWNLOAD_PATH)
   
   Capybara::Cuprite::Driver.new(app, options)
 end
@@ -55,6 +63,9 @@ Capybara.register_driver :better_cuprite_visible do |app|
   }
   
   options[:browser_path] = CHROME_BINARY if File.exist?(CHROME_BINARY)
+  
+  # Ensure download directory exists
+  FileUtils.mkdir_p(DOWNLOAD_PATH)
   
   Capybara::Cuprite::Driver.new(app, options)
 end

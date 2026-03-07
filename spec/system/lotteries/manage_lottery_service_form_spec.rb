@@ -46,6 +46,9 @@ RSpec.describe "manage lottery service form upload and download", js: true do
       click_link "Download"
       downloaded_file = download_path.join("service_form.pdf")
 
+      # Wait for download to complete (async operation)
+      wait_for_download(downloaded_file)
+
       expect(File.exist?(downloaded_file)).to be true
       expect(page).to have_current_path(page_path)
     end
@@ -75,5 +78,13 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     upload_to_dropzone("service_form.pdf")
     click_button "Attach"
     expect(lottery.service_form.attached?).to eq(true)
+  end
+
+  def wait_for_download(file_path, timeout: 5)
+    Timeout.timeout(timeout) do
+      sleep 0.1 until File.exist?(file_path)
+    end
+  rescue Timeout::Error
+    # File didn't download in time
   end
 end

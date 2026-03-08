@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 import { Tooltip } from "bootstrap"
 
-// Patch Bootstrap Tooltip to prevent crash when transition callback
-// fires on elements that Turbo has already removed from the DOM.
-const origIsWithActiveTrigger = Tooltip.prototype._isWithActiveTrigger
-Tooltip.prototype._isWithActiveTrigger = function () {
-  if (!this._activeTrigger) return false
-  return origIsWithActiveTrigger.call(this)
+// Patch Bootstrap Tooltip to prevent crashes when transition callbacks
+// fire on elements that Turbo has already removed from the DOM.
+const origHide = Tooltip.prototype._hide
+Tooltip.prototype._hide = function (...args) {
+  if (!this._element || !this._element.isConnected) return
+  origHide.call(this, ...args)
 }
 
 export default class extends Controller {

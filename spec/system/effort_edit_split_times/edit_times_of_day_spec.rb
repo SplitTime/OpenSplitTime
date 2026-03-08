@@ -74,9 +74,7 @@ RSpec.describe "edit military times from an edit split times page" do
       login_as steward, scope: :user
       visit_page
 
-      page.execute_script("arguments[0].value = '';", input)
-      input.click
-      input.native.send_keys("920")
+      clear_masked_input_and_type(input, "920")
       input.native.send_keys(:return)
 
       expect(page).to have_current_path(effort_path(effort))

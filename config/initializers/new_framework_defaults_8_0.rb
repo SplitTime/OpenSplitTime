@@ -14,8 +14,10 @@
 # If set to `:zone`, `to_time` methods will use the timezone of their receivers.
 # If set to `:offset`, `to_time` methods will use the UTC offset.
 # If `false`, `to_time` methods will convert to the local system UTC offset instead.
+# NOTE: This setting is now configured in config/application.rb to ensure it's set early enough
+#       to prevent deprecation warnings.
 #++
-Rails.application.config.active_support.to_time_preserves_timezone = :zone
+# Rails.application.config.active_support.to_time_preserves_timezone = :zone
 
 ###
 # When both `If-Modified-Since` and `If-None-Match` are provided by the client

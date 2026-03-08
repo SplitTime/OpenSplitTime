@@ -1,6 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 import { Tooltip } from "bootstrap"
 
+// Patch Bootstrap Tooltip to prevent crash when transition callback
+// fires on elements that Turbo has already removed from the DOM.
+const origIsWithActiveTrigger = Tooltip.prototype._isWithActiveTrigger
+Tooltip.prototype._isWithActiveTrigger = function () {
+  if (!this._activeTrigger) return false
+  return origIsWithActiveTrigger.call(this)
+}
+
 export default class extends Controller {
   connect() {
     this.tooltip = new Tooltip(this.element)
@@ -8,9 +16,6 @@ export default class extends Controller {
 
   disconnect() {
     if (this.tooltip) {
-      // Nullify internal state before disposal to prevent errors
-      // when Bootstrap's transition callback fires on removed elements
-      this.tooltip._activeTrigger = {}
       this.tooltip.tip?.remove()
       this.tooltip.dispose()
       this.tooltip = null

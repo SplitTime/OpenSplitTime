@@ -10,8 +10,8 @@ RSpec.describe SyncTrackPointsJob do
     expect { job }.to change(ActiveJob::Base.queue_adapter.enqueued_jobs, :size).by(1)
   end
 
-  it "uses the default queue" do
-    expect(SyncTrackPointsJob.new.queue_name).to eq("default")
+  it "uses the solid_default queue" do
+    expect(SyncTrackPointsJob.new.queue_name).to eq("solid_default")
   end
 
   it "executes perform" do

@@ -1,5 +1,5 @@
 class SetTopicResourceKeyJob < ApplicationJob
-  queue_as :default
+  queue_as :solid_default
 
   def perform(record)
     record.assign_topic_resource

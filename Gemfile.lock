@@ -179,9 +179,6 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    cronex (0.15.0)
-      tzinfo
-      unicode (>= 0.4.4.5)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
     csv (3.3.5)
@@ -600,11 +597,6 @@ GEM
       logger
       rack (>= 2.2.4, < 3.3)
       redis-client (>= 0.23.0, < 1)
-    sidekiq-cron (2.3.1)
-      cronex (>= 0.13.0)
-      fugit (~> 1.8, >= 1.11.1)
-      globalid (>= 1.0.1)
-      sidekiq (>= 6.5.0)
     sitemap_generator (6.3.0)
       builder (~> 3.0)
     smarter_csv (1.15.1)
@@ -647,7 +639,6 @@ GEM
       railties (>= 7.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unicode (0.4.4.5)
     unicode-display_width (1.8.0)
     uri (1.1.1)
     useragent (0.16.11)
@@ -760,7 +751,6 @@ DEPENDENCIES
   sendgrid-ruby
   shortener
   sidekiq (< 8.0)
-  sidekiq-cron
   sitemap_generator
   smarter_csv
   solid_queue

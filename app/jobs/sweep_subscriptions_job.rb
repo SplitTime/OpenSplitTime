@@ -1,5 +1,5 @@
 class SweepSubscriptionsJob < ApplicationJob
-  queue_as :default
+  queue_as :solid_default
 
   def perform
     start_time = Time.current

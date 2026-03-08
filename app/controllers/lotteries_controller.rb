@@ -118,6 +118,12 @@ class LotteriesController < ApplicationController
           csv_stream = render_to_string(partial: "lotteries/results/ultrasignup", formats: :csv, locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
+        when :ultrasignup_with_waitlist
+          entrants = @lottery.divisions.flat_map { |division| division.accepted_entrants + division.waitlisted_entrants }
+          filename = "#{@lottery.name}-export-for-ultrasignup-with-waitlist-#{Time.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup_with_waitlist", formats: :csv, locals: { records: entrants })
+
+          send_data(csv_stream, type: "text/csv", filename: filename)
         else
           entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
           builder = ::CsvBuilder.new(::LotteryEntrant, entrants)

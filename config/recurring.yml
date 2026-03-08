@@ -13,3 +13,7 @@ production:
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
+  sweep_orphaned_blobs:
+    class: SweepOrphanedBlobsJob
+    queue: solid_default
+    schedule: at 8am every day

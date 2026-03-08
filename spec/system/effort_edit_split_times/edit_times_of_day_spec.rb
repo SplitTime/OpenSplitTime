@@ -65,10 +65,7 @@ RSpec.describe "edit military times from an edit split times page" do
       }
 
       expected_values.each do |input_value, expected_value|
-        input.set("")
-        input.native.send_keys(input_value)
-        input.native.send_keys(:tab)
-
+        clear_masked_input_and_type(input, input_value)
         expect(input.value).to eq(expected_value)
       end
     end
@@ -77,8 +74,7 @@ RSpec.describe "edit military times from an edit split times page" do
       login_as steward, scope: :user
       visit_page
 
-      input.set("")
-      input.native.send_keys("920")
+      clear_masked_input_and_type(input, "920")
       input.native.send_keys(:return)
 
       expect(page).to have_current_path(effort_path(effort))

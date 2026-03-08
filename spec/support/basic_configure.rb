@@ -3,14 +3,23 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  # chrome_headless is the default driver for system tests
-  # use chrome_visible for debugging
+  # better_cuprite is the default driver for system tests
+  # use better_cuprite_visible for debugging
   config.before(:each, type: :system, js: true) do
-    driven_by :chrome_headless
-    # driven_by :chrome_visible
+    driven_by :better_cuprite
+    # driven_by :better_cuprite_visible
 
     download_path = Rails.root.join("tmp/downloads")
-    page.driver.browser.download_path = download_path
     FileUtils.mkdir_p(download_path)
+    
+    # Configure Chrome downloads via CDP
+    if page.driver.respond_to?(:browser) && page.driver.browser.respond_to?(:command)
+      page.driver.browser.command("Browser.setDownloadBehavior", 
+        behavior: "allow",
+        downloadPath: download_path.to_s
+      )
+    end
   end
+
+  config.filter_gems_from_backtrace("capybara", "cuprite", "ferrum")
 end

@@ -42,6 +42,9 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       click_link "Download"
       downloaded_file = download_path.join("service_form.pdf")
 
+      # Wait for download to complete (async operation)
+      wait_for_download(downloaded_file)
+
       expect(File.exist?(downloaded_file)).to be true
       expect(page).to have_current_path(page_path)
     end
@@ -108,9 +111,8 @@ RSpec.describe "manage entrant service form upload and download", js: true do
   end
 
   def attach_file_and_validate
-    find(".dropzone").drop(file_fixture("potato3.jpg"))
+    upload_to_dropzone("potato3.jpg")
     click_button "Attach"
-    sleep 1
-    expect(entrant.reload.service_detail.completed_form.attached?).to eq(true)
+    expect(entrant.service_detail.completed_form.attached?).to eq(true)
   end
 end

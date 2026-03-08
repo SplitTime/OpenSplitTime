@@ -32,9 +32,11 @@
     <%= f.label :password_confirmation %>
   </div>
 
-  <div class="mt-4 text-center">
-    <div class="cf-turnstile" data-sitekey="<%= ::OstConfig.cloudflare_turnstile_site_key %>" data-theme="light"></div>
-  </div>
+  <% if ::OstConfig.cloudflare_turnstile_site_key.present? %>
+    <div class="mt-4 text-center">
+      <div class="cf-turnstile" data-sitekey="<%= ::OstConfig.cloudflare_turnstile_site_key %>" data-theme="light"></div>
+    </div>
+  <% end %>
 
   <div class="my-3 d-grid">
     <%= f.submit t("devise.registrations.new.sign_up"), class: "btn btn-primary btn-lg" %>

@@ -15,7 +15,6 @@ RSpec.describe "manage split times from an effort show page", js: true do
   let(:split) { splits(:hardrock_ccw_ouray) }
   let(:split_time) { effort.split_times.find_by(split: split, bitkey: SubSplit::IN_BITKEY) }
 
-
   scenario "Confirm a questionable split time" do
     login_as steward, scope: :user
     visit_page
@@ -61,14 +60,15 @@ RSpec.describe "manage split times from an effort show page", js: true do
     cell = page.find("##{dom_id(split, :delete)}")
 
     expect do
-      within(cell) do
-        form = page.first("form")
-        within(form) do
-          button = page.first("button")
-          button.click
+      page.accept_confirm do
+        within(cell) do
+          form = page.first("form")
+          within(form) do
+            button = page.first("button")
+            button.click
+          end
         end
       end
-      page.accept_confirm
       wait_for_spinner_to_stop
     end.to change { effort.reload.split_times.count }.by(-1)
   end

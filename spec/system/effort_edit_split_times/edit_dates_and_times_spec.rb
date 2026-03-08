@@ -65,10 +65,7 @@ RSpec.describe "edit dates and times from an edit split times page" do
       input = page.find("#effort_split_times_attributes_0_absolute_time_local")
 
       expected_values.each do |input_value, expected_value|
-        input.set("")
-        input.native.send_keys(input_value)
-        input.native.send_keys(:tab)
-
+        clear_masked_input_and_type(input, input_value)
         expect(input.value).to eq(expected_value)
       end
     end

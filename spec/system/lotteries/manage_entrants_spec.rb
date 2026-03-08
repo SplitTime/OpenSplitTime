@@ -52,8 +52,9 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     click_on "lottery-entrant-admin-lookup-submit"
 
     expect do
-      click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
-      page.accept_confirm
+      page.accept_confirm do
+        click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
+      end
       expect(page).to have_content("The entrant was deleted.")
     end.to change(LotteryEntrant, :count).by(-1)
   end
@@ -70,8 +71,9 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
       expect(page).to have_content(entrant.full_name)
       expect(page).to have_content(entrant.division.name)
       expect do
-        click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
-        page.accept_confirm
+        page.accept_confirm do
+          click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
+        end
       end.not_to change(LotteryEntrant, :count)
     end
 
@@ -88,8 +90,9 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     click_on "lottery-entrant-admin-lookup-submit"
 
     expect do
-      click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
-      page.accept_confirm
+      page.accept_confirm do
+        click_link(href: organization_lottery_lottery_entrant_path(organization, lottery, entrant))
+      end
       expect(page).to have_content("The entrant was deleted.")
     end.to change(LotteryEntrant, :count).by(-1)
   end
@@ -113,8 +116,9 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
 
     click_button("Entrants")
     expect do
-      click_link("Generate entrants")
-      page.accept_confirm
+      page.accept_confirm do
+        click_link("Generate entrants")
+      end
       expect(page).to have_content("Generated lottery entrants")
     end.to change { lottery.entrants.count }
   end

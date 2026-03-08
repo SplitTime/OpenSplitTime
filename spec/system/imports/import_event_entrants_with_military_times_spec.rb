@@ -33,7 +33,7 @@ RSpec.describe "Import event efforts with military times", type: :system, js: tr
   end
 
   def validate_import_job_created
-    find(".dropzone").drop(file_fixture("test_efforts_utf_8.csv"))
+    upload_to_dropzone("test_efforts_utf_8.csv")
     expect do
       click_button "Import"
       sleep 1

@@ -45,8 +45,10 @@ RSpec.describe "rebuild times from an effort audit page", js: true do
     expect(page).not_to have_content("Sat 08:00:00")
 
     expect(page).to have_link("Rebuild Times")
-    click_link("Rebuild Times")
-    page.accept_confirm
+
+    page.accept_confirm do
+      click_link("Rebuild Times")
+    end
 
     expect(page).to have_current_path(audit_effort_path(effort))
     expect(page).to have_content("Rebuild completed.")

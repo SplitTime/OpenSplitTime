@@ -36,7 +36,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       expect(subject_efforts.map(&:split_times)).to all be_empty
 
       fill_in bib_number_field, with: effort_1.bib_number
-      fill_in time_in_field, with: "08:00"
+      fill_in_masked_time(time_in_field, "08:00")
       expect(slider_effort_name).to have_content(effort_1.full_name)
       add_button.click
       sleep(0.5)
@@ -45,7 +45,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       expect(local_workspace).not_to have_content(effort_2.full_name)
 
       fill_in bib_number_field, with: effort_2.bib_number
-      fill_in time_in_field, with: "09:00"
+      fill_in_masked_time(time_in_field, "09:00")
       add_button.click
       sleep(0.5)
 
@@ -76,7 +76,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       select ordered_splits_1[5].base_name, from: "js-station-select"
 
       fill_in bib_number_field, with: effort_1.bib_number
-      fill_in time_in_field, with: "19:00:00"
+      fill_in_masked_time(time_in_field, "19:00:00")
       add_button.click
       sleep(0.5)
 
@@ -84,8 +84,8 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       expect(local_workspace).not_to have_content(effort_2.full_name)
 
       fill_in bib_number_field, with: effort_2.bib_number
-      fill_in time_in_field, with: "13:00:00"
-      fill_in time_out_field, with: "13:20:00"
+      fill_in_masked_time(time_in_field, "13:00:00")
+      fill_in_masked_time(time_out_field, "13:20:00")
       add_button.click
       sleep(0.5)
 
@@ -93,11 +93,10 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       expect(local_workspace).to have_content(effort_2.full_name)
 
       submit_all_efforts
+      verify_workspace_is_empty
 
       expect(effort_1.reload.split_times.size).to eq(8)
       expect(effort_2.reload.split_times.size).to eq(7)
-
-      verify_workspace_is_empty
     end
 
     scenario "Add and discard times" do
@@ -110,7 +109,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       select ordered_splits_1[5].base_name, from: "js-station-select"
 
       fill_in bib_number_field, with: effort_1.bib_number
-      fill_in time_in_field, with: "08:45:45"
+      fill_in_masked_time(time_in_field, "08:45:45")
       add_button.click
       sleep(0.5)
 
@@ -118,7 +117,7 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
       expect(local_workspace).not_to have_content(effort_2.full_name)
 
       fill_in bib_number_field, with: effort_2.bib_number
-      fill_in time_in_field, with: "09:00:00"
+      fill_in_masked_time(time_in_field, "09:00:00")
       add_button.click
       sleep(0.5)
 
@@ -152,7 +151,6 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
 
   def submit_all_efforts
     submit_all_button.click
-    sleep(1)
   end
 
   def submit_time_row(index)
@@ -165,6 +163,11 @@ RSpec.describe "Live entry app flow", type: :system, js: true do
     expect(page).to have_button("js-delete-all-warning", disabled: true)
     wait_for_css
     discard_all_button.click
+  end
+
+  def fill_in_masked_time(field_id, value)
+    input = find_by_id(field_id)
+    clear_masked_input_and_type(input, value)
   end
 
   def verify_workspace_is_empty

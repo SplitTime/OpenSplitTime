@@ -3,11 +3,17 @@ import { Tooltip } from "bootstrap"
 
 export default class extends Controller {
   connect() {
-    new Tooltip(this.element)
+    this.tooltip = new Tooltip(this.element)
   }
 
   disconnect() {
-    const tooltip = Tooltip.getInstance(this.element)
-    tooltip.dispose()
+    if (this.tooltip) {
+      // Nullify internal state before disposal to prevent errors
+      // when Bootstrap's transition callback fires on removed elements
+      this.tooltip._activeTrigger = {}
+      this.tooltip.tip?.remove()
+      this.tooltip.dispose()
+      this.tooltip = null
+    }
   }
 }

@@ -1,5 +1,6 @@
 class SweepOrphanedBlobsJob < ApplicationJob
-  queue_as :default
+  self.queue_adapter = :solid_queue
+  queue_as :solid_default
 
   def perform
     start_time = Time.current

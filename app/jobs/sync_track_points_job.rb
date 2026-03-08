@@ -1,5 +1,5 @@
 class SyncTrackPointsJob < ApplicationJob
-  queue_as :default
+  queue_as :solid_default
 
   def perform(course_id)
     course = ::Course.find_by(id: course_id)

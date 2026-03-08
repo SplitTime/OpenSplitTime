@@ -32,7 +32,7 @@
     "webpack-dev-server": "^4.5.0"
   },
   "engines": {
-    "node": "16.x"
+    "node": "24.x"
   },
   "scripts": {
     "build": "esbuild app/javascript/application.js --bundle --sourcemap --outdir=app/assets/builds",

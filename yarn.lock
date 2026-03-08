@@ -137,18 +137,18 @@
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
 
-"@hotwired/turbo-rails@^7.0.1":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-7.3.0.tgz#422c21752509f3edcd6c7b2725bbe9e157815f51"
-  integrity sha512-fvhO64vp/a2UVQ3jue9WTc2JisMv9XilIC7ViZmXAREVwiQ2S4UC7Go8f9A1j4Xu7DBI6SbFdqILk5ImqVoqyA==
+"@hotwired/turbo-rails@^8.0.23":
+  version "8.0.23"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo-rails/-/turbo-rails-8.0.23.tgz#7a84ad041cb0f3e5d9ff97d1a1f0291550a93fc9"
+  integrity sha512-iBILwda3qmQC7FYM70+4s6kEQ7Fx9dJ6+yGxjPyrz9a5JDx1+y7OAA5TA7GGVOZJoicMLrKGdFDNorl40X35lw==
   dependencies:
-    "@hotwired/turbo" "^7.3.0"
-    "@rails/actioncable" "^7.0"
+    "@hotwired/turbo" "^8.0.23"
+    "@rails/actioncable" ">=7.0"
 
-"@hotwired/turbo@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.3.0.tgz#2226000fff1aabda9fd9587474565c9929dbf15d"
-  integrity sha512-Dcu+NaSvHLT7EjrDrkEmH4qET2ZJZ5IcCWmNXxNQTBwlnE5tBZfN6WxZ842n5cHV52DH/AKNirbPBtcEXDLW4g==
+"@hotwired/turbo@^8.0.23":
+  version "8.0.23"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.23.tgz#a6eebc9ab4a5faadae265a4cbec8cfcb5731e77c"
+  integrity sha512-GZ7cijxEZ6Ig71u7rD6LHaRv/wcE/hNsc+nEfiWOkLNqUgLOwo5MNGWOy5ZV9ZUDSiQx1no7YxjTNnT4O6//cQ==
 
 "@kurkle/color@^0.3.0":
   version "0.3.4"
@@ -270,22 +270,22 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@rails/actioncable@^7.0", "@rails/actioncable@^7.0.2-2":
-  version "7.2.300"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.2.300.tgz#5bf24ffded6dd659d8b42cc67fb68fb51767b989"
-  integrity sha512-bmrp+HgCPd2BlhDfJ81hJ6Nvd6yh0B2hIW8ThOmUdOr3L+sFjU1glpBmn+MoQF2K0HLvnWCGqF3TxT/S0jj3QA==
+"@rails/actioncable@>=7.0", "@rails/actioncable@^8.1.200":
+  version "8.1.200"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-8.1.200.tgz#acecf74ab4846144eefdbc16618786df0cebedf9"
+  integrity sha512-on0DSb7AFUkq1ocxivDNQhhGW/RQpY91zvRVyyaEWP4gOOZWy33P/UyxjQk74IENWNrTqs8+zOGHwTjiiFruRw==
 
-"@rails/activestorage@^6.0.5":
-  version "6.1.710"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.1.710.tgz#bc914716f642ba233f033b7765a44dc3bfb626f5"
-  integrity sha512-hLXxAtn7hSWXkTzMGOmQmjuzJ0FzVw8j/Zi8DGS+DG9x4uPQjl+ZEVdty7pFcsBCjkpejtk0TChcBQlLW8sgOg==
+"@rails/activestorage@^8.1.200":
+  version "8.1.200"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-8.1.200.tgz#335fe28c4652b636a5d65069c96ff33507e574e8"
+  integrity sha512-bPZqv447REBd1NQfba//FjgUqbUd93zKh7+BWhh3vRZ7Nm+RUgm6c5GbWctmik/rMHjsruTHhusYGyoKyf60pg==
   dependencies:
-    spark-md5 "^3.0.0"
+    spark-md5 "^3.0.1"
 
-"@rails/request.js@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@rails/request.js/-/request.js-0.0.8.tgz#5e2e8da15013b1af7f04d759e4e9d1cff981865c"
-  integrity sha512-ysHYZDl+XjBwFVXz7EI7XW+ZWiTFY8t7TrC/ahpAPt0p7NE4DZxm1nJQY9gmF4PBf+4pAYa+D/rLIGmrn1ZMvg==
+"@rails/request.js@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@rails/request.js/-/request.js-0.0.13.tgz#3c7cbd0303ea9ef51bd3e7acaab86e9324efc52f"
+  integrity sha512-7MXmjFOPuaxpjG8brqKJG0EfIe9ak6R0wRnjCBtRuADNFbdlRxETdKx1T5NVU4Ato3iZOkEpeSUEuLboL3tCGA==
 
 "@swc/helpers@^0.2.13":
   version "0.2.14"
@@ -650,11 +650,6 @@ has-flag@^3.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
   integrity sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==
 
-hotkeys-js@>=3:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-4.0.2.tgz#89cb3876fa872240caeef486a1e7b9872bb415fc"
-  integrity sha512-fJNEO88zWwoXEGJuvjSbunKSexaT1VbC1S9wIzMA2BfOZ5KPiQj2wTqxDeXd110/4akiAuQIsE3TSbNvGgCyQg==
-
 ignore-by-default@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ignore-by-default/-/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
@@ -976,17 +971,15 @@ slash@^5.0.0:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
 
-spark-md5@^3.0.0:
+spark-md5@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/spark-md5/-/spark-md5-3.0.2.tgz#7952c4a30784347abcee73268e473b9c0167e3fc"
   integrity sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==
 
-stimulus-use@^0.51.1:
-  version "0.51.3"
-  resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.51.3.tgz#d7ac671aff8d0db253296dec89d38aa6f4b27e2a"
-  integrity sha512-V4YETxMFL4/bpmcqlwFtaOaJg9sLF+XlWsvXrsoWVA5jffsqe7uAvV6gGPPQta7Hgx01vovA0yNsWUe2eU9Jmw==
-  dependencies:
-    hotkeys-js ">=3"
+stimulus-use@^0.52.3:
+  version "0.52.3"
+  resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.52.3.tgz#d6f35fa93277274957a2ed98a7b04b4d702cb1d6"
+  integrity sha512-stZ5dID6FUrGCR/ChWUa0FT5Z8iqkzT6lputOAb50eF+Ayg7RzJj4U/HoRlp2NV333QfvoRidru9HLbom4hZVw==
 
 string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"

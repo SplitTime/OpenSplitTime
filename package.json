@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
-    "@hotwired/turbo-rails": "^7.0.1",
+    "@hotwired/turbo-rails": "^8.0.23",
     "@popperjs/core": "^2.11.8",
-    "@rails/actioncable": "^7.0.2-2",
-    "@rails/activestorage": "^6.0.5",
-    "@rails/request.js": "^0.0.8",
+    "@rails/actioncable": "^8.1.200",
+    "@rails/activestorage": "^8.1.200",
+    "@rails/request.js": "^0.0.13",
     "autoprefixer": "^10.4.14",
     "bootstrap": "5.2.3",
     "bootstrap-icons": "^1.10.5",
@@ -22,7 +22,7 @@
     "postcss-cli": "^10.1.0",
     "sass": "^1.64.1",
     "simple-datatables": "^7.2.0",
-    "stimulus-use": "^0.51.1",
+    "stimulus-use": "^0.52.3",
     "underscore": "^1.13.8"
   },
   "devDependencies": {},

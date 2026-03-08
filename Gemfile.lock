@@ -296,6 +296,17 @@ GEM
     json (2.18.1)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
+    judoscale-rails (1.13.2)
+      judoscale-ruby (= 1.13.2)
+      railties
+    judoscale-ruby (1.13.2)
+      logger
+    judoscale-sidekiq (1.13.2)
+      judoscale-ruby (= 1.13.2)
+      sidekiq (>= 5.0)
+    judoscale-solid_queue (1.13.2)
+      judoscale-ruby (= 1.13.2)
+      solid_queue (>= 1.0)
     jwt (3.1.2)
       base64
     listen (3.10.0)
@@ -714,6 +725,9 @@ DEPENDENCIES
   image_processing
   jsbundling-rails
   jsonapi-serializer
+  judoscale-rails
+  judoscale-sidekiq
+  judoscale-solid_queue
   jwt
   listen
   local_time

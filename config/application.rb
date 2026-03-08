@@ -10,7 +10,10 @@ Bundler.require(*Rails.groups)
 module OpenSplitTime
   class Application < Rails::Application
     # Initialize configuration defaults for a specific Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.0
+
+    # Opt in to Rails 8.1 behavior for to_time to preserve timezone instead of just offset
+    config.active_support.to_time_preserves_timezone = :zone
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

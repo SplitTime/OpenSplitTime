@@ -81,7 +81,10 @@ class EffortAnalysisRow
   def segment_over_under_percent
     return nil unless segment_time_over_under.present? && segment_time_typical.present?
 
-    segment_time_over_under.to_f / segment_time_typical.to_f
+    typical = segment_time_typical.to_f
+    return nil if typical.zero?
+
+    segment_time_over_under.to_f / typical
   end
 
   private

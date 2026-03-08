@@ -95,7 +95,15 @@ class EffortAnalysisView < EffortWithLapSplitRows
   end
 
   def sorted_analysis_rows
-    analysis_rows.select(&:segment_over_under_percent).sort_by(&:segment_over_under_percent)
+    analysis_rows
+      .select do |row|
+        value = row.segment_over_under_percent
+        next false if value.nil?
+        next false if value.respond_to?(:nan?) && value.nan?
+
+        true
+      end
+      .sort_by(&:segment_over_under_percent)
   end
 
   def course

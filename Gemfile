@@ -57,6 +57,8 @@ gem "sendgrid-ruby"
 gem "shortener"
 gem "sidekiq", "< 8.0"
 gem "sidekiq-cron"
+gem "solid_queue"
+gem "mission_control-jobs"
 gem "sitemap_generator"
 gem "smarter_csv", require: false
 gem "sprockets-rails"

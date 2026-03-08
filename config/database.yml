@@ -3,6 +3,7 @@ default: &default
   encoding: utf8
   pool: 5
   timeout: 5000
+  <% if RUBY_PLATFORM =~ /darwin/ %>gssencmode: disable<% end %>
 
 development:
   <<: *default

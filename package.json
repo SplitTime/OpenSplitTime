@@ -12,7 +12,7 @@
     "chart.js": "^3.8.0",
     "chartkick": "^4.2.0",
     "dropzone": "^6.0.0-beta.2",
-    "esbuild": "^0.18.17",
+    "esbuild": "^0.27.3",
     "flatpickr": "^4.6.13",
     "inputmask": "^5.0.8",
     "local-time": "^3.0.3",

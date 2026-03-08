@@ -98,10 +98,7 @@ class EffortAnalysisView < EffortWithLapSplitRows
     analysis_rows
       .select do |row|
         value = row.segment_over_under_percent
-        next false if value.nil?
-        next false if value.respond_to?(:nan?) && value.nan?
-
-        true
+        value.present? && !(value.respond_to?(:nan?) && value.nan?)
       end
       .sort_by(&:segment_over_under_percent)
   end

@@ -6,6 +6,7 @@ module Images
   # Triggered by after_commit callback when an effort photo is uploaded.
   #
   class CompressSinglePhotoJob < ApplicationJob
+    self.queue_adapter = :solid_queue
     queue_as :solid_default
 
     def perform(attachment_id)

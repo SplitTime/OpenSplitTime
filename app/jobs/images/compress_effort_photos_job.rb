@@ -11,6 +11,7 @@ module Images
   #   Images::CompressEffortPhotosJob.perform_now(batch_size: 20, min_size_kb: 200)
   #
   class CompressEffortPhotosJob < ApplicationJob
+    self.queue_adapter = :solid_queue
     queue_as :solid_default
 
     def perform(batch_size: 10, min_size_kb: Images::MIN_SIZE_KB)

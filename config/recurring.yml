@@ -21,4 +21,4 @@ production:
   sweep_subscriptions:
     class: SweepSubscriptionsJob
     queue: solid_default
-    schedule: at 7am on the 1st of every month
+    schedule: every month on the 1st at 7am

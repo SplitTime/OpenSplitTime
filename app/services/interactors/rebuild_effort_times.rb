@@ -69,6 +69,8 @@ module Interactors
           raw_times: chunk,
         )
       end
+
+      validate_lap_limits
     end
 
     def set_effort_status
@@ -106,6 +108,26 @@ module Interactors
 
     def valid_sub_splits
       event.time_points_through(1).map(&:sub_split).to_set
+    end
+
+    def validate_lap_limits
+      return if event.laps_unlimited?
+
+      invalid_split_times = effort.split_times.select { |st| st.lap > event.laps_required }
+      if invalid_split_times.any?
+        max_lap = invalid_split_times.map(&:lap).max
+        errors << lap_limit_exceeded_error(event.laps_required, max_lap, invalid_split_times.size)
+      end
+    end
+
+    def lap_limit_exceeded_error(required, found, count)
+      {
+        title: "Rebuild would exceed lap limit",
+        detail: {
+          messages: ["The rebuild would create #{count} split time(s) in lap #{found}, but this event only permits #{required} lap(s). There may be duplicate or incorrect raw times."]
+        },
+        code: :lap_limit_exceeded
+      }
     end
   end
 end

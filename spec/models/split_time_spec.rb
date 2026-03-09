@@ -140,6 +140,41 @@ RSpec.describe SplitTime, kind: :model do
           expect(split_time.errors[:split_id]).to include("the effort.event.course_id does not resolve with the split.course_id")
         end
       end
+
+      context "when lap exceeds event's laps_required" do
+        let(:event) { effort.event }
+        let(:split_time) do
+          effort.split_times.new(
+            lap: event.laps_required + 1,
+            split: existing_split_time.split,
+            bitkey: existing_split_time.bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
+
+        it "is not valid" do
+          expect(split_time).not_to be_valid
+          expect(split_time.errors[:lap]).to include("cannot exceed event's required laps (#{event.laps_required})")
+        end
+      end
+
+      context "when event has unlimited laps" do
+        let(:event) { effort.event }
+        let(:split_time) do
+          effort.split_times.new(
+            lap: 999,
+            split: existing_split_time.split,
+            bitkey: existing_split_time.bitkey,
+            absolute_time: existing_split_time.absolute_time + 5.minutes,
+          )
+        end
+
+        before { event.update!(laps_required: 0) }
+
+        it "is valid" do
+          expect(split_time).to be_valid
+        end
+      end
     end
   end
 

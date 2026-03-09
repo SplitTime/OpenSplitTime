@@ -176,6 +176,35 @@ RSpec.describe Interactors::RebuildEffortTimes do
           expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
       end
+
+      context "when raw_times would exceed lap limit" do
+        let(:event) { effort.event }
+        
+        before do
+          # Set the event to only allow 2 laps (current effort has split times up to lap 3)
+          # This will cause the rebuild to try to create lap 3 split times which exceeds the limit
+          event.update!(laps_required: 2)
+          
+          # The existing setup already has raw_times that will create lap 3 split times
+          # No additional raw times needed - the test setup already provides them
+        end
+
+        it "returns an error and does not save the effort" do
+          response = subject.perform!
+          expect(response).not_to be_successful
+          expect(response.errors.size).to eq(1)
+          expect(response.errors.first[:title]).to eq("Rebuild would exceed lap limit")
+          expect(response.errors.first[:detail][:messages].first).to include("lap 3")
+          expect(response.errors.first[:detail][:messages].first).to include("permits 2 lap(s)")
+        end
+
+        it "does not persist the invalid split times" do
+          original_count = effort.split_times.count
+          subject.perform!
+          effort.reload
+          expect(effort.split_times.count).to eq(original_count)
+        end
+      end
     end
   end
 end

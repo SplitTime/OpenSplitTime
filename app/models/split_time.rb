@@ -66,6 +66,7 @@ class SplitTime < ApplicationRecord
   validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
                                      message: "only one of any given time_point permitted within an effort"
   validate :course_is_consistent
+  validate :lap_within_event_limit
 
   def self.null_record
     @null_record ||= SplitTime.new
@@ -90,6 +91,15 @@ class SplitTime < ApplicationRecord
     if effort&.event && split && (effort.event.course_id != split.course_id)
       errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
       errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
+    end
+  end
+
+  def lap_within_event_limit
+    return unless effort&.event
+    return if effort.event.laps_unlimited?
+
+    if lap && lap > effort.event.laps_required
+      errors.add(:lap, "cannot exceed event's required laps (#{effort.event.laps_required})")
     end
   end
 

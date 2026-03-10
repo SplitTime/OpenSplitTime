@@ -24,6 +24,12 @@ module OpenSplitTime
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.active_storage.variant_processor = :mini_magick
+    
+    # Configure ActiveStorage to use Solid Queue for background jobs
+    # Part of Sidekiq → Solid Queue migration (Issue #1600)
+    config.active_storage.queues.analysis = :solid_default  # AnalyzeJob
+    config.active_storage.queues.purge = :solid_default     # PurgeJob
+    config.active_storage.queues.mirror = :solid_default    # MirrorJob (not used)
 
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path

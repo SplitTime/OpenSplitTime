@@ -95,6 +95,8 @@ group :development, :test do
   gem "bundler-audit"
   gem "rspec"
   gem "rspec-rails", ">= 4.0.2"
-  gem "rubocop", "~> 0.49"
+  gem "rubocop"
+  gem "rubocop-rails"
+  gem "rubocop-rspec"
   gem "spring-commands-rspec"
 end

@@ -8,6 +8,7 @@ module ActiveStorage
   # - If yes: compress it synchronously, then analyze the compressed blob
   # - If no: run normal analysis
   class AnalyzeJob < ActiveStorage::BaseJob
+    self.queue_adapter = :solid_queue
     queue_as { ActiveStorage.queues[:analysis] }
 
     discard_on ActiveRecord::RecordNotFound

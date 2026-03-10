@@ -11,7 +11,7 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
       let(:env) { { "PATH_INFO" => "/events/123", "REMOTE_ADDR" => "192.168.1.1" } }
 
       it "passes the request through to the app" do
-        status, headers, body = middleware.call(env)
+        status, _headers, body = middleware.call(env)
         expect(status).to eq(200)
         expect(body).to eq(["OK"])
       end
@@ -21,7 +21,7 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
       let(:env) { { "PATH_INFO" => "/events/Test%20%C3%A9v%C3%A8nement", "REMOTE_ADDR" => "192.168.1.1" } }
 
       it "passes the request through to the app" do
-        status, headers, body = middleware.call(env)
+        status, _headers, body = middleware.call(env)
         expect(status).to eq(200)
         expect(body).to eq(["OK"])
       end
@@ -37,8 +37,8 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
         expect(body).to eq(["Bad Request: Invalid UTF-8 in request path"])
       end
 
-      it "logs the rejected request" do
-        expect(Rails.logger).to receive(:warn).with(/Rejected invalid UTF-8 request/)
+      it "does not pass the request through to the app" do
+        expect(app).not_to receive(:call)
         middleware.call(env)
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
       let(:env) { { "PATH_INFO" => "/%ff%fe%fd", "REMOTE_ADDR" => "192.168.1.1" } }
 
       it "returns 400 Bad Request" do
-        status, headers, body = middleware.call(env)
+        status, _headers, _body = middleware.call(env)
         expect(status).to eq(400)
       end
     end
@@ -56,7 +56,7 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
       let(:env) { { "REQUEST_PATH" => "/%c0/", "REMOTE_ADDR" => "192.168.1.1" } }
 
       it "returns 400 Bad Request" do
-        status, headers, body = middleware.call(env)
+        status, _headers, _body = middleware.call(env)
         expect(status).to eq(400)
       end
     end

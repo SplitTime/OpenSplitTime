@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe NotifyProgressJob do
   include BitkeyDefinitions
 
-  subject { NotifyProgressJob.new }
+  subject { described_class.new }
+
   let(:perform_notification) { subject.perform(effort_id, split_time_ids) }
 
   let(:effort_id) { effort.id }
@@ -24,8 +25,6 @@ RSpec.describe NotifyProgressJob do
         travel_to(notification_split_times.last.absolute_time + 1.hour)
       end
 
-      after { travel_back }
-
       context "when no farther notification exists" do
         it "sends a message to ProgressNotifier" do
           expect(ProgressNotifier).to receive(:publish).and_return(successful_response)
@@ -33,7 +32,7 @@ RSpec.describe NotifyProgressJob do
         end
 
         it "creates notifications" do
-          expect { perform_notification }.to change { Notification.count }.by(1)
+          expect { perform_notification }.to change(Notification, :count).by(1)
           notification = Notification.last
           expect(notification.effort_id).to eq(effort.id)
           expect(notification.distance).to eq(notification_split_times.last.total_distance)
@@ -54,7 +53,7 @@ RSpec.describe NotifyProgressJob do
         end
 
         it "does not create notifications" do
-          expect { perform_notification }.not_to change { Notification.count }
+          expect { perform_notification }.not_to(change(Notification, :count))
         end
       end
 
@@ -69,7 +68,7 @@ RSpec.describe NotifyProgressJob do
         end
 
         it "does not create notifications" do
-          expect { perform_notification }.not_to change { Notification.count }
+          expect { perform_notification }.not_to(change(Notification, :count))
         end
       end
 
@@ -84,7 +83,7 @@ RSpec.describe NotifyProgressJob do
         end
 
         it "creates notifications" do
-          expect { perform_notification }.to change { Notification.count }.by(1)
+          expect { perform_notification }.to change(Notification, :count).by(1)
           notification = Notification.last
           expect(notification.effort_id).to eq(effort.id)
           expect(notification.distance).to eq(notification_split_times.last.total_distance)
@@ -100,15 +99,13 @@ RSpec.describe NotifyProgressJob do
         travel_to(notification_split_times.last.absolute_time + 24.hours)
       end
 
-      after { travel_back }
-
       it "does not send a message to ProgressNotifier" do
         expect(ProgressNotifier).not_to receive(:publish)
         perform_notification
       end
 
       it "does not create notifications" do
-        expect { perform_notification }.not_to change { Notification.count }
+        expect { perform_notification }.not_to(change(Notification, :count))
       end
     end
 
@@ -118,15 +115,13 @@ RSpec.describe NotifyProgressJob do
         travel_to(notification_split_times.last.absolute_time + 1.hour)
       end
 
-      after { travel_back }
-
       it "does not send a message to ProgressNotifier" do
         expect(ProgressNotifier).not_to receive(:publish)
         perform_notification
       end
 
       it "does not create notifications" do
-        expect { perform_notification }.not_to change { Notification.count }
+        expect { perform_notification }.not_to(change(Notification, :count))
       end
     end
   end

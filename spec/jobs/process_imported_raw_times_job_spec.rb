@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe ProcessImportedRawTimesJob do
   include BitkeyDefinitions
 
-  subject { ProcessImportedRawTimesJob.new }
+  subject { described_class.new }
+
   let(:perform_process) { subject.perform(event_group, raw_times) }
 
   let(:course) { courses(:hardrock_cw) }
@@ -27,11 +28,11 @@ RSpec.describe ProcessImportedRawTimesJob do
         let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in, pacer: true, stopped_here: false) }
 
         it "saves the raw_times to the database, matches the duplicate raw_time with the existing split_time, and creates a new split_time" do
-          expect { perform_process }.to change { SplitTime.count }.by(1)
+          expect { perform_process }.to change(SplitTime, :count).by(1)
           new_split_time = SplitTime.last
           raw_times.each(&:reload)
 
-          expect(raw_times.map(&:split_time_id)).to match_array([split_time.id, new_split_time.id])
+          expect(raw_times.map(&:split_time_id)).to contain_exactly(split_time.id, new_split_time.id)
         end
       end
 
@@ -42,7 +43,7 @@ RSpec.describe ProcessImportedRawTimesJob do
         let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
         it "does not match any raw_time with the existing split_time" do
-          expect { perform_process }.to change { SplitTime.count }.by(0)
+          expect { perform_process }.not_to(change(SplitTime, :count))
           raw_times.each(&:reload)
 
           expect(raw_times.map(&:split_time_id)).to all be_nil
@@ -60,8 +61,8 @@ RSpec.describe ProcessImportedRawTimesJob do
           expect(event.permit_notifications?).to be(true)
 
           expected_rt_args = ["event_groups:#{event_group.id}",
-                              {event: "raw_times_available",
-                               detail: {unreviewed: 2, unmatched: 2}}]
+                              { event: "raw_times_available",
+                                detail: { unreviewed: 2, unmatched: 2 } }]
           expect(::ActionCable.server).to receive(:broadcast).with(*expected_rt_args)
           perform_process
         end
@@ -69,15 +70,16 @@ RSpec.describe ProcessImportedRawTimesJob do
 
       context "when event_group.permit_notifications? is true" do
         before { event_group.update(available_live: true, concealed: false) }
+
         let!(:person) { effort.person }
 
         it "creates new split_times matching the raw_times" do
-          expect { perform_process }.to change { SplitTime.count }.by(2)
+          expect { perform_process }.to change(SplitTime, :count).by(2)
           split_times = SplitTime.last(2)
           raw_times.each(&:reload)
 
-          expect(split_times.map(&:absolute_time_local)).to match_array([absolute_time_in, absolute_time_out])
-          expect(split_times.map(&:bitkey)).to match_array([in_bitkey, out_bitkey])
+          expect(split_times.map(&:absolute_time_local)).to contain_exactly(absolute_time_in, absolute_time_out)
+          expect(split_times.map(&:bitkey)).to contain_exactly(in_bitkey, out_bitkey)
 
           expect(raw_times.map(&:split_time_id)).to match_array(split_times.map(&:id))
         end
@@ -114,7 +116,7 @@ RSpec.describe ProcessImportedRawTimesJob do
                           absolute_time: nil, entered_time: absolute_time_out, with_pacer: "true", stopped_here: "true", source: source)
       end
 
-      include_examples "processes raw times as expected"
+      it_behaves_like "processes raw times as expected"
 
       it "sets absolute times without changing entered times" do
         perform_process

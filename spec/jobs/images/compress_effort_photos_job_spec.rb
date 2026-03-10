@@ -81,17 +81,15 @@ RSpec.describe Images::CompressEffortPhotosJob do
 
       it "uses find_each batching" do
         photos_before = ActiveStorage::Attachment
-          .where(name: "photo", record_type: "Effort")
-          .joins(:blob)
-          .where("active_storage_blobs.byte_size > ?", min_size_kb.kilobytes)
-          .count
+                        .where(name: "photo", record_type: "Effort")
+                        .joins(:blob)
+                        .where("active_storage_blobs.byte_size > ?", min_size_kb.kilobytes)
+                        .count
 
         expect(photos_before).to eq(5)
 
         expect { perform_job }.not_to raise_error
       end
     end
-
-
   end
 end

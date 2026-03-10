@@ -28,7 +28,8 @@ module OpenSplitTime
     config.active_storage.variant_processor = :mini_magick
     
     # Configure ActiveStorage queue names
-    # With queue_name_prefix = "solid", these become :solid_storage
+    # Both use the same lower-priority :storage queue
+    # With queue_name_prefix = "solid", this becomes :solid_storage
     config.active_storage.queues.analysis = :storage
     config.active_storage.queues.purge = :storage
 

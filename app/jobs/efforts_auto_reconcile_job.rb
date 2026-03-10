@@ -1,6 +1,5 @@
 class EffortsAutoReconcileJob < ApplicationJob
-  self.queue_adapter = :solid_queue
-  queue_as :solid_default
+  queue_as :default
 
   def perform(parent, options = {})
     ArgsValidator.validate(subject: parent, params: options,

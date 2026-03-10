@@ -23,19 +23,15 @@ module OpenSplitTime
     config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+    # With queue_name_prefix = "solid", this becomes :solid_mailers
+    config.action_mailer.deliver_later_queue_name = :mailers
     config.active_storage.variant_processor = :mini_magick
     
-    # Configure ActiveStorage to use Solid Queue for background jobs
-    # Part of Sidekiq → Solid Queue migration (Issue #1600)
-    config.active_storage.queues.analysis = :solid_default  # AnalyzeJob
-    config.active_storage.queues.purge = :solid_default     # PurgeJob
-
-    # Ensure these jobs run on Solid Queue, not Sidekiq
-    config.after_initialize do
-      SolidQueue::RecurringJob.queue_adapter = :solid_queue
-      ActiveStorage::AnalyzeJob.queue_adapter = :solid_queue
-      ActiveStorage::PurgeJob.queue_adapter = :solid_queue
-    end
+    # Configure ActiveStorage queue names
+    # Both use the same lower-priority :storage queue
+    # With queue_name_prefix = "solid", this becomes :solid_storage
+    config.active_storage.queues.analysis = :storage
+    config.active_storage.queues.purge = :storage
 
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path

@@ -1,6 +1,5 @@
 class NotifyEventUpdateJob < ApplicationJob
-  self.queue_adapter = :solid_queue
-  queue_as :solid_default
+  queue_as :default
 
   def perform(event_id)
     @event_id = event_id

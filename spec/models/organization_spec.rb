@@ -35,6 +35,7 @@ RSpec.describe Organization, type: :model do
 
     context "without an owner" do
       let(:owner_id) { nil }
+      before { allow(User).to receive(:current).and_return(nil) }
       it "is invalid" do
         expect(subject).to be_invalid
         expect(subject.errors[:owner_id]).to include("does not exist")

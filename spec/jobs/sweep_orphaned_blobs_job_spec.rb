@@ -1,18 +1,16 @@
 require "rails_helper"
 
-RSpec.describe SyncTrackPointsJob do
+RSpec.describe SweepOrphanedBlobsJob do
   include ActiveJob::TestHelper
 
-  subject(:job) { described_class.perform_later(course.id) }
-  let(:course) { courses(:sum_100k_course) }
+  subject(:job) { described_class.perform_later }
 
   it "queues the job" do
     expect { job }.to change(described_class.queue_adapter.enqueued_jobs, :size).by(1)
   end
 
   it "executes perform" do
-    expect(::Interactors::SetTrackPoints).to receive(:perform!).with(course)
-    perform_enqueued_jobs { job }
+    expect { perform_enqueued_jobs { job } }.not_to raise_error
   end
 
   after do

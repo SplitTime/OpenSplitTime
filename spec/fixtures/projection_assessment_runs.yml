@@ -1,0 +1,9 @@
+projection_assessment_run_one:
+  event_id: 14
+  completed_lap: 1
+  completed_split_id: 46
+  completed_bitkey: 1
+  projected_lap: 1
+  projected_split_id: 47
+  projected_bitkey: 1
+  status: 0

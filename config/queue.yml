@@ -3,10 +3,19 @@ default: &default
     - polling_interval: 1
       batch_size: 500
   workers:
-    - queues: solid_*  # Only process queues with 'solid_' prefix (parallel with Sidekiq)
+    # High priority: default queue for most jobs
+    - queues:
+        - solid_default
+        - solid_mailers
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
+    # Lower priority: storage operations (analysis, purge)
+    - queues:
+        - solid_storage
+      threads: 1
+      processes: 1
+      polling_interval: 1
 
 development:
   <<: *default

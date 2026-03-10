@@ -23,6 +23,8 @@ RSpec.describe "Visit the cutoff analysis page", js: true do
       SplitTime.delete_all
       Effort.delete_all
       AidStation.delete_all
+      ProjectionAssessment.delete_all
+      ProjectionAssessmentRun.delete_all
       Event.delete_all
     end
 

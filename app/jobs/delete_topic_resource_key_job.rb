@@ -1,5 +1,5 @@
 class DeleteTopicResourceKeyJob < ApplicationJob
-  MockResource = Struct.new(:topic_resource_key, :slug, keyword_init: true)
+  MockResource = Struct.new(:topic_resource_key, :slug)
 
   queue_as :default
 

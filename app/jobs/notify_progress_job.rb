@@ -30,7 +30,7 @@ class NotifyProgressJob < ApplicationJob
   delegate :topic_resource_key, to: :effort
 
   def effort
-    @effort ||= Effort.where(id: effort_id).includes(:event, split_times: {split: :course}).first
+    @effort ||= Effort.where(id: effort_id).includes(:event, split_times: { split: :course }).first
   end
 
   def split_times
@@ -60,7 +60,7 @@ class NotifyProgressJob < ApplicationJob
   def farther_notification_exists?
     farthest_notification &&
       ([farthest_notification.distance, farthest_notification.bitkey] <=>
-          [farthest_split_time.total_distance, farthest_split_time.bitkey]) > 0
+          [farthest_split_time.total_distance, farthest_split_time.bitkey]).positive?
   end
 
   def farthest_notification

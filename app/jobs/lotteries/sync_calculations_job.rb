@@ -1,9 +1,11 @@
-class Lotteries::SyncCalculationsJob < ApplicationJob
-  queue_as :default
+module Lotteries
+  class SyncCalculationsJob < ApplicationJob
+    queue_as :default
 
-  def perform(lottery, current_user:)
-    set_current_user(current_user: current_user)
+    def perform(lottery, current_user:)
+      set_current_user(current_user: current_user)
 
-    Lotteries::SyncCalculations.perform!(lottery)
+      Lotteries::SyncCalculations.perform!(lottery)
+    end
   end
 end

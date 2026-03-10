@@ -7,9 +7,9 @@ class NotifyEventUpdateJob < ApplicationJob
 
     response = EventUpdateNotifier.publish(topic_arn: topic_resource_key, event: event)
 
-    unless response.successful?
-      raise "Failed to send event update notification for #{event.name} (#{event.id}): #{response.message_with_error_report}"
-    end
+    return if response.successful?
+
+    raise "Failed to send event update notification for #{event.name} (#{event.id}): #{response.message_with_error_report}"
   end
 
   private
@@ -19,6 +19,8 @@ class NotifyEventUpdateJob < ApplicationJob
   delegate :topic_resource_key, to: :event
 
   def event
-    @event ||= Event.find_by(id: event_id)
+    return @event if defined?(@event)
+
+    @event = Event.find_by(id: event_id)
   end
 end

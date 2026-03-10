@@ -30,6 +30,13 @@ module OpenSplitTime
     config.active_storage.queues.analysis = :solid_default  # AnalyzeJob
     config.active_storage.queues.purge = :solid_default     # PurgeJob
 
+    # Ensure these jobs run on Solid Queue, not Sidekiq
+    config.after_initialize do
+      SolidQueue::RecurringJob.queue_adapter = :solid_queue
+      ActiveStorage::AnalyzeJob.queue_adapter = :solid_queue
+      ActiveStorage::PurgeJob.queue_adapter = :solid_queue
+    end
+
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path
     end

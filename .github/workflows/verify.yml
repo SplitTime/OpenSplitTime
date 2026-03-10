@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
@@ -41,6 +43,24 @@ jobs:
       - name: Run security checks
         run: |
           bin/bundle-audit check --update
+
+      - name: Run rubocop on changed files
+        run: |
+          # Get list of changed Ruby files from the PR
+          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[].path' | grep -E '\.(rb|rake)$|Rakefile$|Gemfile$' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No Ruby files changed, skipping rubocop"
+            exit 0
+          fi
+          
+          echo "Running rubocop on changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Run rubocop on changed files (pass them as arguments)
+          echo "$CHANGED_FILES" | xargs bundle exec rubocop
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   tests:
     name: Tests

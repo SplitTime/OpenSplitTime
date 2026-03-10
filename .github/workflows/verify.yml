@@ -42,6 +42,25 @@ jobs:
         run: |
           bin/bundle-audit check --update
 
+      - name: Run rubocop on changed files
+        run: |
+          # Fetch the base branch to compare against
+          git fetch origin ${{ github.base_ref }}
+          
+          # Get list of changed Ruby files
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACM origin/${{ github.base_ref }}...HEAD | grep -E '\.(rb|rake)$|Rakefile|Gemfile' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No Ruby files changed, skipping rubocop"
+            exit 0
+          fi
+          
+          echo "Running rubocop on changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Run rubocop on changed files
+          bundle exec rubocop $CHANGED_FILES
+
   tests:
     name: Tests
     runs-on: ubuntu-latest

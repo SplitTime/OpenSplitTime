@@ -23,12 +23,14 @@ module OpenSplitTime
     config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+    # With queue_name_prefix = "solid", this becomes :solid_mailers
+    config.action_mailer.deliver_later_queue_name = :mailers
     config.active_storage.variant_processor = :mini_magick
     
     # Configure ActiveStorage queue names
-    # With queue_name_prefix = "solid", these become :solid_analysis and :solid_purge
-    config.active_storage.queues.analysis = :analysis
-    config.active_storage.queues.purge = :purge
+    # With queue_name_prefix = "solid", these become :solid_storage
+    config.active_storage.queues.analysis = :storage
+    config.active_storage.queues.purge = :storage
 
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path

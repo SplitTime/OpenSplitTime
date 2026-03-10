@@ -1,48 +1,43 @@
 # frozen_string_literal: true
 
 module ActiveStorage
-  # Override Rails' built-in AnalyzeJob to handle race condition with photo compression.
+  # Override Rails' built-in AnalyzeJob to compress photos before analysis.
   #
-  # ## The Problem
-  #
-  # When photos are uploaded, two jobs are enqueued:
-  # 1. ActiveStorage::AnalyzeJob (this job) - analyzes the blob for metadata
-  # 2. Images::CompressSinglePhotoJob - compresses and replaces the blob
-  #
-  # If CompressSinglePhotoJob runs first, it creates a new compressed blob and purges
-  # the original from S3. When AnalyzeJob then tries to download the original blob,
-  # it fails with Aws::S3::Errors::NotFound.
-  #
-  # ## The Solution
-  #
-  # This override:
-  # 1. Checks if the blob needs compression (will be handled by CompressSinglePhotoJob)
-  # 2. If yes: skips analysis (not needed, compression job sets metadata)
-  # 3. If no: runs normal analysis via super
-  # 4. Gracefully handles NotFound if blob was already compressed and purged
-  #
+  # Rails automatically enqueues AnalyzeJob when a blob is attached. We override it to:
+  # - Check if the blob needs compression (file size > Images::MIN_SIZE_KB)
+  # - If yes: compress it synchronously, then analyze the compressed blob
+  # - If no: run normal analysis
   class AnalyzeJob < ActiveStorage::BaseJob
     queue_as { ActiveStorage.queues[:analysis] }
 
     discard_on ActiveRecord::RecordNotFound
-    discard_on Aws::S3::Errors::NotFound # Blob was compressed and purged
+    retry_on ActiveStorage::IntegrityError, attempts: 10, wait: :polynomially_longer
 
     def perform(blob)
-      # Skip analysis if blob will be compressed (compression job sets its own metadata)
       if blob_needs_compression?(blob)
-        Rails.logger.info("ActiveStorage::AnalyzeJob: Skipping analysis for blob #{blob.id} (will be compressed)")
-        return
+        compress_and_analyze(blob)
+      else
+        blob.analyze
       end
-
-      # Run standard analysis
-      blob.analyze
     end
 
     private
 
     def blob_needs_compression?(blob)
-      blob.byte_size > Images::MIN_SIZE_KB.kilobytes &&
+      blob.image? &&
+        blob.byte_size > Images::MIN_SIZE_KB.kilobytes &&
         blob.metadata[Images::COMPRESSED_METADATA_KEY] != true
+    end
+
+    def compress_and_analyze(blob)
+      attachment = blob.attachments.first
+      return unless attachment
+
+      Images::CompressPhoto.call(attachment)
+      attachment.blob.analyze
+    rescue Vips::Error => e
+      ScoutApm::Error.capture(e)
+      blob.analyze
     end
   end
 end

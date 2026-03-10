@@ -46,6 +46,11 @@ module OpenSplitTime
     config.time_zone = "UTC"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    # Reject requests with invalid UTF-8 encoding early in the Rack stack
+    # This prevents ActionController::BadRequest errors from bot traffic
+    require_relative "../lib/middleware/reject_invalid_utf8"
+    config.middleware.insert_before 0, Middleware::RejectInvalidUtf8
+
     Dir[Rails.root.join("lib/core_ext/**/*.rb")].each { |file| require file }
   end
 end

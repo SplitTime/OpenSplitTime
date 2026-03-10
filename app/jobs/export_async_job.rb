@@ -1,6 +1,5 @@
 class ExportAsyncJob < ApplicationJob
-  self.queue_adapter = :solid_queue
-  queue_as :solid_default
+  queue_as :default
 
   # def perform(user_id, controller_name, resource_class_name, sql_string)
   def perform(export_job_id)

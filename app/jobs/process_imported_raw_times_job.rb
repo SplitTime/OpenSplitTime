@@ -1,8 +1,7 @@
 class ProcessImportedRawTimesJob < ApplicationJob
   include BackgroundNotifiable
 
-  self.queue_adapter = :solid_queue
-  queue_as :solid_default
+  queue_as :default
 
   def perform(event_group, raw_times)
     updated_raw_times = ::RawTimes::SetAbsoluteTimeAndLap.perform(event_group, raw_times)

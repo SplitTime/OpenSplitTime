@@ -1,6 +1,5 @@
 class NotifyParticipationJob < ApplicationJob
-  self.queue_adapter = :solid_queue
-  queue_as :solid_default
+  queue_as :default
 
   def perform(effort_id)
     @effort_id = effort_id

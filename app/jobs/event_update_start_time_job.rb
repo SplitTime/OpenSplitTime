@@ -2,7 +2,8 @@ class EventUpdateStartTimeJob < ApplicationJob
   queue_as :default
 
   def perform(event, options)
-    ArgsValidator.validate(subject: event, subject_class: Event, params: options, required: [:new_start_time, :current_user],
+    ArgsValidator.validate(subject: event, subject_class: Event, params: options,
+                           required: [:new_start_time, :current_user],
                            exclusive: [:new_start_time, :current_user], class: self)
 
     set_current_user(options)

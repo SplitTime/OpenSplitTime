@@ -11,9 +11,14 @@ class NotifyParticipationJob < ApplicationJob
 
     return unless response.successful?
 
-    notification = Notification.new(kind: :participation, effort: effort, follower_ids: person.followers.ids,
-                                    subject: response.resources[:subject], notice_text: response.resources[:notice_text],
-                                    topic_resource_key: topic_resource_key)
+    notification = Notification.new(
+      kind: :participation,
+      effort: effort,
+      follower_ids: person.followers.ids,
+      subject: response.resources[:subject],
+      notice_text: response.resources[:notice_text],
+      topic_resource_key: topic_resource_key
+    )
     return if notification.save
 
     logger.error "  Unable to create notification for #{effort} at #{event}"

@@ -77,6 +77,10 @@ module OstConfig
     ENV["FULL_URI"] || "http://localhost:3000"
   end
 
+  def self.heroku_app_name
+    ENV["HEROKU_APP_NAME"]
+  end
+
   def self.google_maps_api_key
     Rails.application.credentials.dig(:google, :maps, :api_key)
   end

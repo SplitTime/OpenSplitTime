@@ -21,6 +21,9 @@ Layout/LineLength:
 Metrics:
   Enabled: false
 
+Naming/AccessorMethodName:
+  Enabled: false
+
 Naming/PredicateMethod:
   Enabled: false
 

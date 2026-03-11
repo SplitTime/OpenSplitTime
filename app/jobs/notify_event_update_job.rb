@@ -9,7 +9,8 @@ class NotifyEventUpdateJob < ApplicationJob
 
     return if response.successful?
 
-    raise "Failed to send event update notification for #{event.name} (#{event.id}): #{response.message_with_error_report}"
+    raise "Failed to send event update notification for #{event.name} (#{event.id}): " \
+          "#{response.message_with_error_report}"
   end
 
   private

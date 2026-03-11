@@ -9,7 +9,7 @@ RSpec.describe NotifyProgressJob do
 
   let(:effort_id) { effort.id }
   let(:event) { events(:rufa_2017_24h) }
-  let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
+  let(:effort) { efforts(:rufa_2017_24h_progress_lap6) } # rubocop:disable Naming/VariableNumber
   let(:splits) { event.splits }
 
   describe "#perform" do
@@ -27,8 +27,9 @@ RSpec.describe NotifyProgressJob do
 
       context "when no farther notification exists" do
         it "sends a message to ProgressNotifier" do
-          expect(ProgressNotifier).to receive(:publish).and_return(successful_response)
+          allow(ProgressNotifier).to receive(:publish).and_return(successful_response)
           perform_notification
+          expect(ProgressNotifier).to have_received(:publish)
         end
 
         it "creates notifications" do
@@ -78,8 +79,9 @@ RSpec.describe NotifyProgressJob do
         end
 
         it "sends a message to ProgressNotifier" do
-          expect(ProgressNotifier).to receive(:publish).and_return(successful_response)
+          allow(ProgressNotifier).to receive(:publish).and_return(successful_response)
           perform_notification
+          expect(ProgressNotifier).to have_received(:publish)
         end
 
         it "creates notifications" do

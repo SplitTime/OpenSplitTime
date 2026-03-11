@@ -47,14 +47,13 @@ RSpec.describe Images::CompressEffortPhotosJob do
     end
 
     context "when there are photos smaller than the minimum size" do
-      let!(:original_blob) do
+      before do
         blob = ActiveStorage::Blob.create_and_upload!(
           io: file_fixture("banner.png").open,
           filename: "banner.png",
           content_type: "image/png"
         )
         effort.photo.attach(blob)
-        blob
       end
 
       it "does not process the photo" do

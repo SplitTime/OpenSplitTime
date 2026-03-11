@@ -19,7 +19,8 @@ RSpec.describe EventUpdateStartTimeJob do
 
   it "calls Interactors::ShiftEventStartTime with the correct arguments" do
     result = Interactors::Response.new(errors: [])
-    expect(Interactors::ShiftEventStartTime).to receive(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" }).and_return(result)
+    allow(Interactors::ShiftEventStartTime).to receive(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" }).and_return(result)
     perform_enqueued_jobs { job }
+    expect(Interactors::ShiftEventStartTime).to have_received(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" })
   end
 end

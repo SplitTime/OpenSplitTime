@@ -19,7 +19,7 @@ RSpec.describe ProcessImportedRawTimesJob do
   let(:split_name) { ordered_splits.second.base_name }
   let(:source) { "ost-remote-1234" }
 
-  let(:raw_times) { [raw_time_1, raw_time_2] }
+  let(:raw_times) { [raw_time_in, raw_time_out] }
 
   describe "#perform" do
     shared_examples "processes raw times as expected" do
@@ -40,7 +40,7 @@ RSpec.describe ProcessImportedRawTimesJob do
         let(:effort) { create(:effort, bib_number: 333, event: event) }
         let(:split) { ordered_splits.first }
         let(:absolute_time_local) { time_zone.parse(absolute_time_in) }
-        let!(:split_time) { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
+        before { create(:split_time, effort: effort, split: split, bitkey: in_bitkey, absolute_time_local: absolute_time_in + 2.minutes, pacer: true, stopped_here: false) }
 
         it "does not match any raw_time with the existing split_time" do
           expect { perform_process }.not_to(change(SplitTime, :count))
@@ -70,8 +70,6 @@ RSpec.describe ProcessImportedRawTimesJob do
 
       context "when event_group.permit_notifications? is true" do
         before { event_group.update(available_live: true, concealed: false) }
-
-        let!(:person) { effort.person }
 
         it "creates new split_times matching the raw_times" do
           expect { perform_process }.to change(SplitTime, :count).by(2)
@@ -107,11 +105,11 @@ RSpec.describe ProcessImportedRawTimesJob do
     end
 
     context "when raw times have entered times but no absolute times" do
-      let(:raw_time_1) do
+      let(:raw_time_in) do
         create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: "in",
                           absolute_time: nil, entered_time: absolute_time_in, with_pacer: "true", stopped_here: "false", source: source)
       end
-      let(:raw_time_2) do
+      let(:raw_time_out) do
         create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, sub_split_kind: "out",
                           absolute_time: nil, entered_time: absolute_time_out, with_pacer: "true", stopped_here: "true", source: source)
       end

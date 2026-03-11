@@ -21,6 +21,9 @@ Layout/LineLength:
 Metrics:
   Enabled: false
 
+Naming/AccessorMethodName:
+  Enabled: false
+
 Naming/PredicateMethod:
   Enabled: false
 
@@ -51,6 +54,8 @@ Rails/SkipsModelValidations:
 Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: false
+  Exclude:
+    - "config/initializers/01_ost_config.rb"
 
 Rails/RedundantPresenceValidationOnBelongsTo:
   Enabled: true
@@ -65,6 +70,9 @@ RSpec/EmptyLineAfterFinalLet:
   Enabled: false
 
 RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MessageChain:
   Enabled: false
 
 RSpec/MessageSpies:

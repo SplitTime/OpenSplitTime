@@ -1,12 +1,13 @@
 # This Interactor will delete all split_times from an effort and attempt to rebuild split_times
 # using only the raw_time records.
 
-# Note: This tool is destructive and will not be beneficial unless a fairly complete
+# NOTE: This tool is destructive and will not be beneficial unless a fairly complete
 # record of raw_times exists!
 
 module Interactors
   class RebuildEffortTimes
     include Interactors::Errors
+
     THRESHOLD_TIME = 5.minutes
 
     def self.perform!(effort:)
@@ -22,11 +23,11 @@ module Interactors
     end
 
     def perform!
-      unless errors.present?
+      if errors.blank?
         ActiveRecord::Base.transaction do
           destroy_split_times
-          build_split_times unless errors.present?
-          set_effort_status unless errors.present?
+          build_split_times if errors.blank?
+          set_effort_status if errors.blank?
           errors << resource_error_object(effort) unless errors.present? || effort.save
           raise ActiveRecord::Rollback if errors.present?
         end
@@ -40,6 +41,7 @@ module Interactors
     private
 
     attr_reader :effort, :existing_start_time, :response
+
     delegate :event_group, :event, to: :effort
     delegate :errors, to: :response, private: true
 
@@ -78,11 +80,11 @@ module Interactors
     end
 
     def duplicate_raw_time_chunks
-      relevant_raw_times.chunk_while { |i, j| time_is_duplicate?(i, j) }
+      relevant_raw_times.chunk_while { |time_1, time_2| time_is_duplicate?(time_1, time_2) }
     end
 
-    def time_is_duplicate?(i, j)
-      (i.sub_split == j.sub_split) && ((i.absolute_time - j.absolute_time).abs < THRESHOLD_TIME)
+    def time_is_duplicate?(time_1, time_2)
+      (time_1.sub_split == time_2.sub_split) && ((time_1.absolute_time - time_2.absolute_time).abs < THRESHOLD_TIME)
     end
 
     def relevant_raw_times
@@ -91,9 +93,9 @@ module Interactors
 
     def ordered_raw_times
       @raw_times = RawTime.where(event_group_id: event_group.id, matchable_bib_number: effort.bib_number)
-        .with_relation_ids
-        .select(&:absolute_time)
-        .sort_by(&:absolute_time)
+                          .with_relation_ids
+                          .select(&:absolute_time)
+                          .sort_by(&:absolute_time)
     end
 
     def validate_setup
@@ -107,17 +109,17 @@ module Interactors
     end
 
     def valid_sub_splits
-      event.time_points_through(1).map(&:sub_split).to_set
+      event.time_points_through(1).to_set(&:sub_split)
     end
 
     def validate_lap_limits
       return if event.laps_unlimited?
 
       invalid_split_times = effort.split_times.select { |st| st.lap > event.laps_required }
-      if invalid_split_times.any?
-        max_lap = invalid_split_times.map(&:lap).max
-        errors << lap_limit_exceeded_error(event.laps_required, max_lap, invalid_split_times.size)
-      end
+      return unless invalid_split_times.any?
+
+      max_lap = invalid_split_times.map(&:lap).max
+      errors << lap_limit_exceeded_error(event.laps_required, max_lap, invalid_split_times.size)
     end
 
     def lap_limit_exceeded_error(required, found, count)
@@ -125,8 +127,8 @@ module Interactors
         title: "Rebuild would exceed lap limit",
         detail: {
           messages: ["The rebuild would create #{count} split time(s) in lap #{found}, " \
-                       "but this event only permits #{required} lap(s). There may be incorrect raw times. " \
-                       "Disassociate any raw times that do not belong to this effort and rebuild again."]
+                     "but this event only permits #{required} lap(s). There may be incorrect raw times. " \
+                     "Disassociate any raw times that do not belong to this effort and rebuild again."]
         },
         code: :lap_limit_exceeded
       }

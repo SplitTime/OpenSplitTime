@@ -39,6 +39,9 @@ Rails/Delegate:
 Rails/DynamicFindBy:
   Enabled: false
 
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 Rails/InverseOf:
   Enabled: false
 

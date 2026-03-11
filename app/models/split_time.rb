@@ -1,5 +1,10 @@
 class SplitTime < ApplicationRecord
-  enum :data_status, [:bad, :questionable, :good, :confirmed]
+  enum :data_status, {
+    :bad => 0,
+    :questionable => 1,
+    :good => 2,
+    :confirmed => 3
+  }
   strip_attributes collapse_spaces: true
 
   # See app/concerns/data_status_methods for related scopes and methods
@@ -33,44 +38,43 @@ class SplitTime < ApplicationRecord
     order_string = "split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey"
     joins(:split).order(order_string)
   }
-  scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
-  scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
+  scope :finish, -> { includes(:split).where(splits: { kind: Split.kinds[:finish] }) }
+  scope :start, -> { includes(:split).where(splits: { kind: Split.kinds[:start] }) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
   scope :in, -> { where(sub_split_bitkey: SubSplit::IN_BITKEY) }
   scope :with_time_point_rank, -> { from(SplitTimeQuery.with_time_point_rank(self)) }
 
   scope :with_time_from_start, lambda {
     select("split_times.*, extract(epoch from split_times.absolute_time - sst.absolute_time) as time_from_start")
-        .joins(SplitTimeQuery.starting_split_times(scope: {efforts: {id: current_scope.map(&:effort_id).uniq}}))
+      .joins(SplitTimeQuery.starting_split_times(scope: { efforts: { id: current_scope.map(&:effort_id).uniq } }))
   }
 
   scope :with_policy_scope_attributes, lambda {
     select_string = "split_times.*, event_groups.organization_id, event_groups.concealed"
-    from(select(select_string).joins(effort: {event: :event_group}), :split_times)
+    from(select(select_string).joins(effort: { event: :event_group }), :split_times)
   }
 
   scope :with_time_record_matchers, lambda {
-    joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number")
+    joins(effort: { event: :event_group }).select("split_times.*, event_groups.home_time_zone, efforts.bib_number")
   }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter
 
   scope :recorded_at_aid, lambda { |aid_station_id|
-                            includes(split: :aid_stations).includes(:effort)
-                                .where(aid_stations: {id: aid_station_id})
+                            includes(split: :aid_stations).includes(:effort).where(aid_stations: { id: aid_station_id })
                           }
 
   before_validation :destroy_if_blank
   before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
-  after_save :sync_elapsed_seconds
-  after_save :set_effort_segments
   after_destroy :sync_elapsed_seconds
   after_destroy :delete_effort_segments
+  after_save :sync_elapsed_seconds
+  after_save :set_effort_segments
 
-  validates_presence_of :effort, :split, :sub_split_bitkey, :absolute_time, :lap
-  validates_uniqueness_of :split_id, scope: [:effort_id, :sub_split_bitkey, :lap],
-                                     message: "only one of any given time_point permitted within an effort"
+  validates :sub_split_bitkey, :absolute_time, :lap, presence: true
+  validates :split_id, uniqueness: { scope: [:effort_id, :sub_split_bitkey, :lap],
+                                     message: "only one of any given time_point permitted within an effort" }
   validate :course_is_consistent
   validate :lap_within_event_limit
 
@@ -79,7 +83,7 @@ class SplitTime < ApplicationRecord
   end
 
   def self.confirmed!
-    all.each(&:confirmed!)
+    find_each(&:confirmed!)
   end
 
   def self.effort_times(args)

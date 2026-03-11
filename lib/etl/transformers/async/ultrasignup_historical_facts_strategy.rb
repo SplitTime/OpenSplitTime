@@ -21,7 +21,7 @@ module Etl
           return [] if errors.present?
 
           parsed_structs.each.with_index(1) do |struct, row_index|
-            set_base_proto_record(struct)
+            build_base_proto_record(struct)
             record_lottery_application(struct)
             record_volunteer_reported(struct)
             record_current_qualifier(struct)
@@ -42,7 +42,7 @@ module Etl
         attr_reader :parsed_structs, :options, :import_job, :proto_records
         attr_accessor :base_proto_record
 
-        def set_base_proto_record(struct)
+        def build_base_proto_record(struct)
           self.base_proto_record = ProtoRecord.new(**struct.to_h)
 
           base_proto_record.transform_as(:historical_fact, organization: organization)

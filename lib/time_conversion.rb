@@ -42,9 +42,10 @@ class TimeConversion
   def self.to_hms(hours, minutes, seconds)
     hundredths = (seconds % 1 * 100).to_i
     if seconds.is_a?(Integer)
-      format("%02d:%02d:%02d", hours, minutes, seconds)
+      format("%<hours>02d:%<minutes>02d:%<seconds>02d", hours: hours, minutes: minutes, seconds: seconds)
     else
-      format("%02d:%02d:%02d.%02d", hours, minutes, seconds, hundredths)
+      format("%<hours>02d:%<minutes>02d:%<seconds>02d.%<hundredths>02d",
+             hours: hours, minutes: minutes, seconds: seconds, hundredths: hundredths)
     end
   end
 

@@ -8,7 +8,7 @@ module Connectors
         verify_credentials_present!
       end
 
-      def get_race_editions
+      def race_editions
         self.request = Connectors::RattlesnakeRamble::Request::GetRaceEditions.new
         make_request
       end

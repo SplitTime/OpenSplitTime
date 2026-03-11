@@ -11,7 +11,7 @@ module Images
   #   Images::CompressEffortPhotosJob.perform_now(batch_size: 20, min_size_kb: 200)
   #
   class CompressEffortPhotosJob < ApplicationJob
-    queue_as :solid_default
+    queue_as :default
 
     def perform(batch_size: 10, min_size_kb: Images::MIN_SIZE_KB)
       attachments = find_photos_to_compress(min_size_kb)

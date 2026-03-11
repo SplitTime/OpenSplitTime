@@ -1,0 +1,4 @@
+lottery_simulation_run_one:
+  lottery_id: 3
+  requested_count: 2
+  status: 0

@@ -23,7 +23,15 @@ module OpenSplitTime
     config.exceptions_app = routes
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+    # With queue_name_prefix = "solid", this becomes :solid_mailers
+    config.action_mailer.deliver_later_queue_name = :mailers
     config.active_storage.variant_processor = :mini_magick
+    
+    # Configure ActiveStorage queue names
+    # Both use the same lower-priority :storage queue
+    # With queue_name_prefix = "solid", this becomes :solid_storage
+    config.active_storage.queues.analysis = :storage
+    config.active_storage.queues.purge = :storage
 
     if ::OstConfig.credentials_env?
       Rails.application.config.credentials.content_path = ::OstConfig.credentials_content_path
@@ -45,6 +53,11 @@ module OpenSplitTime
     #
     config.time_zone = "UTC"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Reject requests with invalid UTF-8 encoding early in the Rack stack
+    # This prevents ActionController::BadRequest errors from bot traffic
+    require_relative "../lib/middleware/reject_invalid_utf8"
+    config.middleware.insert_before 0, Middleware::RejectInvalidUtf8
 
     Dir[Rails.root.join("lib/core_ext/**/*.rb")].each { |file| require file }
   end

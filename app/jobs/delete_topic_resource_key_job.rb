@@ -1,7 +1,7 @@
 class DeleteTopicResourceKeyJob < ApplicationJob
-  MockResource = Struct.new(:topic_resource_key, :slug, keyword_init: true)
+  MockResource = Struct.new(:topic_resource_key, :slug)
 
-  queue_as :solid_default
+  queue_as :default
 
   def perform(topic_resource_key, topic_manager_string: "SnsTopicManager")
     topic_manager = topic_manager_string.constantize

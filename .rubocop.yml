@@ -1,81 +1,134 @@
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.7
   Exclude:
-   - "bin/*"
-   - "db/schema.rb"
-   - "vendor/bundle/**/*"
-
-Layout/EndOfLine:
-  EnforcedStyle: lf
-
-Layout/HeredocIndentation:
-  Enabled: true
+    - "vendor/**/*"
+    - "spec/fixtures/**/*"
+    - "tmp/**/*"
+    - ".git/**/*"
+    - "bin/*"
+    - "db/**/*"
+  TargetRubyVersion: 4.0
+  SuggestExtensions: false
 
 Layout/LineLength:
-  Max: 120
   Exclude:
-    - "spec/**/*.rb"
+    - "spec/**/*"
 
-Layout/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-  IndentationWidth: 4
-
-Layout/SpaceInLambdaLiteral:
+Metrics:
   Enabled: false
 
-Layout/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
+Naming/AccessorMethodName:
+  Enabled: false
 
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - "spec/**/*.rb"
-
-Metrics/AbcSize:
-  Exclude:
-    - "spec/**/*.rb"
-
-Metrics/BlockLength:
-  Exclude:
-    - "Rakefile"
-    - "**/*.rake"
-    - "spec/**/*.rb"
-
-Metrics/CyclomaticComplexity:
-  Exclude:
-    - "spec/**/*.rb"
-
-Metrics/MethodLength:
-  Exclude:
-    - "spec/**/*.rb"
-
-Metrics/ModuleLength:
-  Exclude:
-    - "spec/**/*.rb"
+Naming/PredicateMethod:
+  Enabled: false
 
 Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Lint/MissingSuper:
+  Enabled: true
+
+Rails/Delegate:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/EnvironmentVariableAccess:
+  Enabled: true
+  AllowReads: false
+  Exclude:
+    - "config/initializers/01_ost_config.rb"
+
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: true
+
+Rails/RequestReferer:
+  Enabled: false
+
+RSpec/BeEq:
+  Enabled: false
+
+RSpec/EmptyLineAfterFinalLet:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MessageChain:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/NoExpectationExample:
   Enabled: false
 
 Style/Documentation:
+  Enabled: false
+
+Style/OneClassPerFile:
   Enabled: false
 
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
 Style/FrozenStringLiteralComment:
-  EnforcedStyle: always
-
-Style/IfUnlessModifier:
   Enabled: false
 
-Style/SlicingWithRange:
+Style/SafeNavigation:
+  Enabled: true
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/RedundantConstantBase:
   Enabled: false
 
 Style/StringLiterals:
+  Enabled: true
   EnforcedStyle: double_quotes
 
 Style/SymbolArray:
   Enabled: false
 
+Style/WordArray:
+  Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
+
 Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Enabled: false

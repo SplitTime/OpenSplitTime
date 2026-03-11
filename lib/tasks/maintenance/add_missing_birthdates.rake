@@ -23,7 +23,8 @@ namespace :maintenance do
       else
         other_effort_birthdates = person.efforts.where.not(id: effort.id).pluck(:birthdate).compact.uniq
         if other_effort_birthdates.many?
-          problem_efforts << "Found conflicting birthdates for effort #{effort.slug}: #{other_effort_birthdates.join(', ')}"
+          problem_efforts << "Found conflicting birthdates for effort #{effort.slug}: " \
+                             "#{other_effort_birthdates.join(', ')}"
         elsif other_effort_birthdates.one?
           effort.update(birthdate: other_effort_birthdates.first)
         else

@@ -31,7 +31,8 @@ namespace :db do
                   elsif table_name == "split_times"
                     effort = Effort.find(record["effort_id"])
                     split = Split.find(record["split_id"])
-                    "#{effort.slug.underscore}_#{split.name(record['sub_split_bitkey']).parameterize.underscore}_#{record['lap']}"
+                    split_name = split.name(record["sub_split_bitkey"]).parameterize.underscore
+                    "#{effort.slug.underscore}_#{split_name}_#{record['lap']}"
                   else
                     "#{table_name.singularize}_#{suffix}"
                   end

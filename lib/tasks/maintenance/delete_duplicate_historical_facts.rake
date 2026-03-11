@@ -3,7 +3,9 @@ namespace :maintenance do
   task delete_duplicate_historical_facts: :environment do
     puts "Attempting to delete duplicate historical facts"
 
-    subquery = HistoricalFact.select("id, row_number() over (partition by personal_info_hash, kind, year order by id) as rank")
+    subquery = HistoricalFact.select(
+      "id, row_number() over (partition by personal_info_hash, kind, year order by id) as rank"
+    )
     duplicate_ids = HistoricalFact.select(:id).from(subquery, :historical_facts).where("rank > ?", 1).pluck(:id)
 
     puts "Found #{duplicate_ids.size} duplicate facts"

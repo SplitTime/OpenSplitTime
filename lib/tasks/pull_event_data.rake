@@ -88,7 +88,10 @@ namespace :pull_event do
     end
 
     unless source_response.status == 200
-      abort("Aborted: Response failed from #{source_uri} with status #{source_response.code}\nHeaders: #{source_response.headers}\nBody: #{source_response.body}")
+      abort(
+        "Aborted: Response failed from #{source_uri} with status #{source_response.code}\n" \
+        "Headers: #{source_response.headers}\nBody: #{source_response.body}"
+      )
     end
     puts "Received data from #{source_uri}"
 
@@ -121,7 +124,8 @@ namespace :pull_event do
         puts "Error: #{error['title']}"
         if error["detail"].present?
           error["detail"].each do |detail_key, detail_value|
-            puts "  #{detail_key.titlecase}: #{detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value}"
+            formatted_value = detail_value.respond_to?(:join) ? detail_value.join("\n") : detail_value
+            puts "  #{detail_key.titlecase}: #{formatted_value}"
           end
         else
           puts "  No error detail available."

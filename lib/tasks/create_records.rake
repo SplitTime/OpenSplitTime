@@ -160,7 +160,9 @@ namespace :create_records do
                                created_by: user_id)
 
         prior_time_from_start = time_from_start
-        raw_time_description = "bib: #{raw_time.bib_number}, lap: #{raw_time.lap}, split: #{raw_time.split_name} (#{raw_time.sub_split_kind}) at #{raw_time.absolute_time}"
+        raw_time_description = "bib: #{raw_time.bib_number}, lap: #{raw_time.lap}, " \
+                               "split: #{raw_time.split_name} (#{raw_time.sub_split_kind}) " \
+                               "at #{raw_time.absolute_time}"
         missed = rand(100) > 97
 
         if missed
@@ -185,7 +187,9 @@ namespace :create_records do
 
     sorted_raw_times.each do |raw_time|
       if raw_time.save
-        raw_time_description = "bib: #{raw_time.bib_number}, lap: #{raw_time.lap}, split: #{raw_time.split_name} (#{raw_time.sub_split_kind}) at #{raw_time.absolute_time}"
+        raw_time_description = "bib: #{raw_time.bib_number}, lap: #{raw_time.lap}, " \
+                               "split: #{raw_time.split_name} (#{raw_time.sub_split_kind}) " \
+                               "at #{raw_time.absolute_time}"
         puts "Saved raw time for #{raw_time_description}"
         saved_raw_times_count += 1
       else

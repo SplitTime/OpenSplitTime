@@ -3,7 +3,9 @@ namespace :maintenance do
   task assign_people_to_users: :environment do
     puts "Attempting to assign people to users where name and email exactly match"
 
-    people_with_matching_users = ::Person.select("people.*, users.id matching_user_id").joins("inner join users using(first_name, last_name, email)").where(user_id: nil)
+    people_with_matching_users = ::Person.select("people.*, users.id matching_user_id")
+                                           .joins("inner join users using(first_name, last_name, email)")
+                                           .where(user_id: nil)
     people_count = Person.from(people_with_matching_users, "people").count
 
     puts "Found #{people_count} people that should be assigned to users"

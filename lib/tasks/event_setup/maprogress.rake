@@ -2,17 +2,17 @@ namespace :event_setup do
   desc "creates links to maprogress for an event and its efforts"
   task :maprogress, [:event_id, :maprogress_id] => :environment do |_, args|
     event_id = args[:event_id]
-    abort "No event id given" unless event_id.present?
+    abort "No event id given" if event_id.blank?
 
     maprogress_id = args[:maprogress_id]
-    abort "No maprogress id given" unless maprogress_id.present?
+    abort "No maprogress id given" if maprogress_id.blank?
 
     ActiveRecord::Base.logger = nil
 
     begin
       event = ::Event.friendly.find(event_id)
     rescue ActiveRecord::RecordNotFound
-      abort "Event not found: #{event_id}" unless event.present?
+      abort "Event not found: #{event_id}" if event.blank?
     end
 
     puts "Found event #{event_id}"

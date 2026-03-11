@@ -21,16 +21,16 @@ module PersonalInfo
 
   def birthday_notice
     days = days_away_from_birthday
-    return nil unless days.present?
+    return nil if days.blank?
 
     text = case days
-    when 0
-      "today"
-    when 1
-      "tomorrow"
-    when -1
-      "yesterday"
-    end
+           when 0
+             "today"
+           when 1
+             "tomorrow"
+           when -1
+             "yesterday"
+           end
 
     text ||= days.positive? ? "#{days} days from now" : "#{days.abs} days ago"
 
@@ -55,7 +55,7 @@ module PersonalInfo
   end
 
   def days_away_from_birthday
-    return nil unless birthdate.present?
+    return nil if birthdate.blank?
 
     current_date = Time.current.in_time_zone(home_time_zone).to_date
     closest_anniversary = birthdate.closest_anniversary(current_date)
@@ -63,21 +63,21 @@ module PersonalInfo
   end
 
   def flexible_geolocation
-    [city, flexible_state, flexible_country].select(&:present?).join(", ")
+    [city, flexible_state, flexible_country].compact_blank.join(", ")
   end
 
   def full_bio
-    [bio, flexible_geolocation].select(&:present?).join(" • ")
+    [bio, flexible_geolocation].compact_blank.join(" • ")
   end
 
   def full_name
-    [first_name, last_name].select(&:present?).join(" ")
+    [first_name, last_name].compact_blank.join(" ")
   end
 
   alias name full_name
 
   def personal_info
-    [full_name, bio, flexible_geolocation].select(&:present?).join(" – ")
+    [full_name, bio, flexible_geolocation].compact_blank.join(" – ")
   end
 
   def state

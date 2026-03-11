@@ -5,8 +5,8 @@ namespace :maintenance do
 
     ActiveJob::Base.logger.silence do
       orphaned_people = ::Person.left_joins(:efforts, :historical_facts)
-        .where(efforts: { person_id: nil }, historical_facts: { person_id: nil })
-        .distinct
+                                .where(efforts: { person_id: nil }, historical_facts: { person_id: nil })
+                                .distinct
       orphan_count = orphaned_people.count
 
       puts "Found #{orphan_count} orphaned people"

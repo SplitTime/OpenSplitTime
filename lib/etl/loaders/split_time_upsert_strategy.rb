@@ -44,7 +44,8 @@ module Etl
       end
 
       def prepare_attributes(proto_split_time, effort)
-        time_point = TimePoint.new(proto_split_time[:lap], proto_split_time[:split_id], proto_split_time[:sub_split_bitkey])
+        time_point = TimePoint.new(proto_split_time[:lap], proto_split_time[:split_id],
+                                   proto_split_time[:sub_split_bitkey])
         existing_split_time = effort.split_times.find { |st| st.time_point == time_point }
 
         proto_split_time[:id] = existing_split_time.id if existing_split_time&.id

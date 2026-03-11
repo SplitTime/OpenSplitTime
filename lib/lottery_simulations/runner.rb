@@ -97,7 +97,7 @@ module LotterySimulations
 
         ticket_count_needed.times do |i|
           division.draw_ticket!
-          simulation_run.set_elapsed_time! if i % UPDATE_INTERVAL == 0
+          simulation_run.set_elapsed_time! if (i % UPDATE_INTERVAL).zero?
         end
       end
     end

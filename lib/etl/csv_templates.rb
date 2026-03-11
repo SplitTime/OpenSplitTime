@@ -11,12 +11,12 @@ module Etl
       "City",
       "State",
       "Country",
-    ]
+    ].freeze
 
     EFFORT_ATTRIBUTES = [
       *PERSON_ATTRIBUTES,
       "Bib Number",
-    ]
+    ].freeze
 
     FIXED_HEADERS_BY_FORMAT = {
       event_course_splits: [

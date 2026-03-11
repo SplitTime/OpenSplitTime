@@ -1,18 +1,24 @@
-class Connectors::RattlesnakeRamble::Request::GetRaceEdition
-  # @param [String] race_edition_id
-  def initialize(race_edition_id:)
-    @race_edition_id = race_edition_id.to_i
-  end
+module Connectors
+  module RattlesnakeRamble
+    module Request
+      class GetRaceEdition
+        # @param [String] race_edition_id
+        def initialize(race_edition_id:)
+          @race_edition_id = race_edition_id.to_i
+        end
 
-  attr_reader :race_edition_id
+        attr_reader :race_edition_id
 
-  # @return [String]
-  def url_postfix
-    "/race_editions/#{race_edition_id}"
-  end
+        # @return [String]
+        def url_postfix
+          "/race_editions/#{race_edition_id}"
+        end
 
-  # @return [Hash{Symbol->Symbol | Integer}]
-  def specific_params
-    {}
+        # @return [Hash{Symbol->Symbol | Integer}]
+        def specific_params
+          {}
+        end
+      end
+    end
   end
 end

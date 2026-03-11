@@ -5,7 +5,7 @@ module Etl
         @proto_records = parsed_structs.map { |struct| ProtoRecord.new(struct) }
         @options = options
         @errors = []
-        add_section_times! if time_keys.size.zero?
+        add_section_times! if time_keys.empty?
         validate_setup
       end
 
@@ -15,7 +15,7 @@ module Etl
         proto_records.each do |proto_record|
           transform_time_data!(proto_record)
           proto_record.record_type = :effort
-          proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
+          proto_record.map_keys!({ name: :full_name, sex: :gender, bib: :bib_number })
           proto_record.normalize_gender!
           proto_record.split_field!(:full_name, :first_name, :last_name)
           proto_record.slice_permitted!
@@ -44,7 +44,8 @@ module Etl
         extract_times!(proto_record)
         transform_times!(proto_record)
         add_empty_times!(proto_record) if finish_times_only?
-        proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?, time_attribute: :absolute_time)
+        proto_record.create_split_time_children!(time_points, preserve_nils: preserve_nils?,
+                                                              time_attribute: :absolute_time)
         mark_for_destruction!(proto_record)
         set_stop!(proto_record)
       end
@@ -54,10 +55,10 @@ module Etl
           proto_record[:status_indicator] = proto_record[:time]
           proto_record[:time] = nil
         end
-        unless proto_record[:section1_split] =~ TimeConversion::HMS_FORMAT
-          proto_record[:status_indicator] ||= proto_record[:section1_split]
-          proto_record[:section1_split] = proto_record[:status_indicator].in?(%w[DNF DSQ]) ? "00:00" : nil
-        end
+        return if proto_record[:section1_split] =~ TimeConversion::HMS_FORMAT
+
+        proto_record[:status_indicator] ||= proto_record[:section1_split]
+        proto_record[:section1_split] = proto_record[:status_indicator].in?(%w[DNF DSQ]) ? "00:00" : nil
       end
 
       def extract_times!(proto_record)
@@ -68,7 +69,7 @@ module Etl
         segment_seconds = proto_record[:segment_times].map { |hms_time| TimeConversion.hms_to_seconds(hms_time) }
         start_seconds = segment_seconds.any?(&:present?) ? 0.0 : nil
         finish_time = TimeConversion.hms_to_seconds(proto_record[:time])
-        finish_seconds = finish_time == 0 ? nil : finish_time
+        finish_seconds = finish_time.zero? ? nil : finish_time
         start_calcs = calcs_from_start(segment_seconds, start_seconds)
         finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
         proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }
@@ -96,7 +97,7 @@ module Etl
 
       def calcs_from_finish(segment_seconds, finish_seconds)
         calcs = segment_seconds.each_index.map do |i|
-          right_partial_array = segment_seconds[i..-1]
+          right_partial_array = segment_seconds[i..]
           (finish_seconds - right_partial_array.sum).round(2) if finish_seconds && right_partial_array.all?(&:present?)
         end
         calcs[0] = nil
@@ -111,22 +112,22 @@ module Etl
 
       def set_stop!(proto_record)
         stop_indicators = %w[DNF DSQ]
-        if stop_indicators.include?(proto_record[:status_indicator])
-          stopped_child_record = proto_record.children.reverse.find { |pr| pr[:absolute_time].present? }
-          (stopped_child_record[:stopped_here] = true) if stopped_child_record
-        end
+        return unless stop_indicators.include?(proto_record[:status_indicator])
+
+        stopped_child_record = proto_record.children.rfind { |pr| pr[:absolute_time].present? }
+        (stopped_child_record[:stopped_here] = true) if stopped_child_record
       end
 
       # Because of the way they are built, keys for all structs are identical,
       # so use the first as a template for all.
       def time_keys
         @time_keys ||= proto_records.first.to_h.keys
-            .select { |key| key.to_s.start_with?("section") }
-            .sort_by { |key| key[/\d+/].to_i }
+                                    .select { |key| key.to_s.start_with?("section") }
+                                    .sort_by { |key| key[/\d+/].to_i }
       end
 
       def global_attributes
-        {event_id: event.id}
+        { event_id: event.id }
       end
 
       def time_points
@@ -142,11 +143,11 @@ module Etl
       end
 
       def validate_setup
-        errors << missing_event_error and return unless event.present?
+        errors << missing_event_error and return if event.blank?
 
-        if !event.laps_unlimited? && !finish_times_only? && (time_keys.size + 1 != time_points.size)
-          errors << split_mismatch_error(event, time_points.size, time_keys.size + 1)
-        end
+        return unless !event.laps_unlimited? && !finish_times_only? && (time_keys.size + 1 != time_points.size)
+
+        errors << split_mismatch_error(event, time_points.size, time_keys.size + 1)
       end
     end
   end

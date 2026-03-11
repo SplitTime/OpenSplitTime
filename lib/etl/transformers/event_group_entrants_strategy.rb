@@ -19,7 +19,7 @@ module Etl
           event = single_event
 
           if event.nil?
-            parameterized_event_name = proto_record.has_key?(:event_name) ? proto_record.delete_field(:event_name)&.to_s&.parameterize : nil
+            parameterized_event_name = proto_record.key?(:event_name) ? proto_record.delete_field(:event_name)&.to_s&.parameterize : nil
             event = events_by_short_name[parameterized_event_name]
           end
 
@@ -54,8 +54,8 @@ module Etl
       end
 
       def validate_setup
-        errors << missing_parent_error("EventGroup") unless event_group.present?
-        errors << missing_records_error unless proto_records.present?
+        errors << missing_parent_error("EventGroup") if event_group.blank?
+        errors << missing_records_error if proto_records.blank?
         return if errors.present? || single_event.present?
 
         event_group.events.each do |event|
@@ -71,9 +71,9 @@ module Etl
 
         return if errors.present? || single_event.present?
 
-        unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("event_name")
-          errors << missing_key_error("Event name OR Distance")
-        end
+        return if proto_records.first.keys.map { |key| key.to_s.underscore }.include?("event_name")
+
+        errors << missing_key_error("Event name OR Distance")
       end
     end
   end

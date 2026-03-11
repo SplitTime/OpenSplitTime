@@ -27,7 +27,7 @@ module FontAwesome6
 
       def arr_with_fa(array)
         array = handle_input(array)
-        array.split(" ").map { |s| prepend_fa(s) }
+        array.split.map { |s| prepend_fa(s) }
       end
 
       private

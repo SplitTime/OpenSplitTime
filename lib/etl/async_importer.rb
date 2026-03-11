@@ -29,7 +29,8 @@ module Etl
 
     attr_reader :import_job
     attr_writer :errors
-    attr_accessor :extract_strategy, :transform_strategy, :load_strategy, :custom_options, :extracted_structs, :transformed_protos
+    attr_accessor :extract_strategy, :transform_strategy, :load_strategy, :custom_options, :extracted_structs,
+                  :transformed_protos
 
     delegate :files, :format, :parent, to: :import_job
 
@@ -124,7 +125,7 @@ module Etl
     end
 
     def validate_setup
-      errors << missing_parent_error unless parent.present?
+      errors << missing_parent_error if parent.blank?
     end
   end
 end

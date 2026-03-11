@@ -19,25 +19,35 @@ module Etl
     def import
       case format
       when :race_result_full
-        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy, Loaders::InsertStrategy, { delete_blank_times: true }.merge(options))
+        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
+                    Loaders::InsertStrategy, { delete_blank_times: true }.merge(options))
       when :race_result_entrants
-        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultEntrantsStrategy, Loaders::UpsertStrategy, { delete_blank_times: false, unique_key: [:event_id, :bib_number] }.merge(options))
+        import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultEntrantsStrategy,
+                    Loaders::UpsertStrategy, { delete_blank_times: false, unique_key: [:event_id, :bib_number] }.merge(options))
       when :race_result_api_times
-        import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy, Loaders::SplitTimeUpsertStrategy, { delete_blank_times: true }.merge(options))
+        import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy,
+                    Loaders::SplitTimeUpsertStrategy, { delete_blank_times: true }.merge(options))
       when :adilas_bear_times
-        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy, Loaders::InsertStrategy, options)
+        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy,
+                    Loaders::InsertStrategy, options)
       when :adilas_bear_times_update
-        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy, Loaders::SplitTimeUpsertStrategy, options)
+        import_with(source_data, Extractors::AdilasBearHtmlStrategy, Transformers::AdilasBearStrategy,
+                    Loaders::SplitTimeUpsertStrategy, options)
       when :its_your_race_times
-        import_with(source_data, Extractors::ItsYourRaceHtmlStrategy, Transformers::ElapsedIncrementalAidStrategy, Loaders::InsertStrategy, options)
+        import_with(source_data, Extractors::ItsYourRaceHtmlStrategy, Transformers::ElapsedIncrementalAidStrategy,
+                    Loaders::InsertStrategy, options)
       when :csv_splits
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, { model: :split }.merge(default_unique_key(:split)).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy,
+                    Loaders::UpsertStrategy, { model: :split }.merge(default_unique_key(:split)).merge(options))
       when :csv_raw_times
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, { model: :raw_time }.merge(default_unique_key(:raw_time)).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy,
+                    Loaders::UpsertStrategy, { model: :raw_time }.merge(default_unique_key(:raw_time)).merge(options))
       when :csv_efforts
-        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy, Loaders::UpsertStrategy, { model: :effort }.merge(default_unique_key(:effort)).merge(options))
+        import_with(source_data, Extractors::CsvFileStrategy, Transformers::GenericResourcesStrategy,
+                    Loaders::UpsertStrategy, { model: :effort }.merge(default_unique_key(:effort)).merge(options))
       when :jsonapi_batch
-        import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy, Loaders::UpsertStrategy, options)
+        import_with(source_data, Extractors::PassThroughStrategy, Transformers::JsonapiBatchStrategy,
+                    Loaders::UpsertStrategy, options)
       else
         errors << format_not_recognized_error(format)
       end

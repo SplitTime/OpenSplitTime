@@ -2,6 +2,7 @@ module Etl
   module Loaders
     class BaseLoader
       include Etl::Errors
+
       attr_reader :saved_records, :invalid_records, :destroyed_records, :ignored_records, :errors
 
       def initialize(proto_records, options)
@@ -45,7 +46,7 @@ module Etl
       def validate_setup
         errors << missing_current_user_error unless current_user_id
         proto_records.each.with_index do |proto_record, row_index|
-          errors << invalid_proto_record_error(proto_record, row_index) unless proto_record.record_class.present?
+          errors << invalid_proto_record_error(proto_record, row_index) if proto_record.record_class.blank?
         end
       end
     end

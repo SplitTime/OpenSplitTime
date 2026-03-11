@@ -56,11 +56,13 @@ module ProjectionAssessments
 
     def assess_effort
       self.current_assessment = assessment_run.assessments.new(effort: current_effort)
-      current_completed_split_time = current_effort.split_times.find_by(lap: completed_lap, split_id: completed_split_id, bitkey: completed_bitkey)
+      current_completed_split_time = current_effort.split_times.find_by(lap: completed_lap,
+                                                                        split_id: completed_split_id, bitkey: completed_bitkey)
       return unless current_completed_split_time
 
       completed_absolute_time = current_completed_split_time.absolute_time
-      current_projected_split_time = current_effort.split_times.find_by(lap: projected_lap, split_id: projected_split_id, bitkey: projected_bitkey)
+      current_projected_split_time = current_effort.split_times.find_by(lap: projected_lap,
+                                                                        split_id: projected_split_id, bitkey: projected_bitkey)
       projected_absolute_time = current_projected_split_time&.absolute_time
 
       projection = Projection.execute_query(

@@ -12,11 +12,11 @@ namespace :sitemap do
     resource = ::Aws::S3::Resource.new(client: client)
     bucket = resource.bucket(::OstConfig.aws_s3_bucket_public)
 
-    Dir.entries(File.join(Rails.root, "tmp", "sitemaps")).each do |file_name|
+    Dir.entries(Rails.root.join("tmp/sitemaps").to_s).each do |file_name|
       next if %w[. .. .DS_Store].include?(file_name)
 
       bucket_path = "sitemaps/#{file_name}"
-      file_path = File.join(Rails.root, "tmp", "sitemaps", file_name)
+      file_path = Rails.root.join("tmp", "sitemaps", file_name)
 
       begin
         obj = bucket.object(bucket_path)

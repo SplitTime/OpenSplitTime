@@ -1,5 +1,5 @@
 module Connectors
-  Service = Struct.new(:identifier, :name, :credential_keys, :resource_map, keyword_init: true) do
+  Service = Struct.new(:identifier, :name, :credential_keys, :resource_map) do
     def self.all
       [
         new(

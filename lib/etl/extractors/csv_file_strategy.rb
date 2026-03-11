@@ -34,9 +34,7 @@ module Etl
 
         rows = SmarterCSV.process(file, IMPORT_OPTIONS)
         rows.map do |row|
-          if valid_csv_row?(row)
-            OpenStruct.new(row)
-          end
+          OpenStruct.new(row) if valid_csv_row?(row)
         end.compact
       rescue SmarterCSV::SmarterCSVException, ::CSV::MalformedCSVError => e
         errors << smarter_csv_error(e)
@@ -49,25 +47,25 @@ module Etl
 
       def file
         @file ||=
-          begin
-            if source_data.is_a?(::ActionDispatch::Http::UploadedFile)
-              File.open(source_data.tempfile.path)
-            elsif source_data.is_a?(::Pathname)
-              File.open(source_data)
-            elsif source_data.is_a?(::File)
-              source_data
-            elsif source_data.is_a?(::ActiveStorage::Attached) || source_data.is_a?(::ActiveStorage::Attachment)
-              StringIO.new(source_data.download, "r:utf-8")
-            else
-              errors << invalid_file_error(source_data)
-            end
+          case source_data
+          when ::ActionDispatch::Http::UploadedFile
+            File.open(source_data.tempfile.path)
+          when ::Pathname
+            File.open(source_data)
+          when ::File
+            source_data
+          when ::ActiveStorage::Attached, ::ActiveStorage::Attachment
+            StringIO.new(source_data.download, "r:utf-8")
+          else
+            errors << invalid_file_error(source_data)
           end
       end
 
       # @param [Hash] row
       # @return [Boolean]
       def valid_csv_row?(row)
-        return false unless row.present?
+        return false if row.blank?
+
         # Reject HTML rows
         first_value = row.first.last.to_s
         return false if first_value.start_with?("<") && first_value.end_with?(">")

@@ -13,11 +13,13 @@ module Etl
     end
 
     def file_too_large_error(file)
-      { title: "File too large", detail: { messages: ["File #{file} is #{file.size / 1.kilobyte} KB, but maximum file size is 500 KB"] } }
+      { title: "File too large",
+        detail: { messages: ["File #{file} is #{file.size / 1.kilobyte} KB, but maximum file size is 500 KB"] } }
     end
 
     def file_type_incorrect_error(file)
-      { title: "File type incorrect", detail: { messages: ["File #{file} must have a .csv extension and must be a CSV file"] } }
+      { title: "File type incorrect",
+        detail: { messages: ["File #{file} must have a .csv extension and must be a CSV file"] } }
     end
 
     def format_not_recognized_error(format)
@@ -33,7 +35,8 @@ module Etl
     end
 
     def invalid_proto_record_error(proto_record, row_index)
-      { title: "Invalid proto record", detail: { row_index: row_index, messages: ["Invalid proto record: #{proto_record}"] } }
+      { title: "Invalid proto record",
+        detail: { row_index: row_index, messages: ["Invalid proto record: #{proto_record}"] } }
     end
 
     def jsonapi_error_object(record)
@@ -59,8 +62,8 @@ module Etl
 
     def missing_fields_error(raw_data)
       { title: "Invalid fields",
-        detail: { messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
-                               "or the ['list']['fields'] key or its values"] } }
+        detail: { messages: ["The provided file #{raw_data} has a problem with the ['list'] key " \
+                             "or the ['list']['fields'] key or its values"] } }
     end
 
     def missing_key_error(*keys)
@@ -141,8 +144,8 @@ module Etl
 
     def split_mismatch_error(event, time_points_size, time_keys_size)
       { title: "Split mismatch error",
-        detail: { messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
-                               "but the provided data contemplates #{time_keys_size} time points."] } }
+        detail: { messages: ["#{event} expects #{time_points_size} time points (including the start split) " \
+                             "but the provided data contemplates #{time_keys_size} time points."] } }
     end
 
     def transform_failed_error(error_text, row_index)

@@ -40,7 +40,7 @@ module Exporter
 
       # filename is in the form of "course_group_best_efforts-1668309553.csv"
       filename = "#{controller_name.underscore.pluralize}-#{Time.current.to_i}-#{resources.count}.csv"
-      full_path = ::File.join(Rails.root.join("tmp"), filename)
+      full_path = Rails.root.join("tmp", filename)
       file = ::File.open(full_path, "w")
 
       ::Exporter::ExportService.new(resource_class, resources, export_attributes).csv_to_file(file)

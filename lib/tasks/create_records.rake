@@ -76,7 +76,7 @@ namespace :create_records do
     event_group_id = args.event_group_id
     event_group = EventGroup.friendly.find(event_group_id)
     abort "Event group #{event_group_id} not found" unless event_group
-    effort_count = args.effort_count.present? ? args.effort_count.to_i : nil
+    effort_count = args.effort_count.presence&.to_i
     laps = args.laps.present? ? args.laps.to_i : 1
 
     puts "Building test data:"
@@ -84,13 +84,15 @@ namespace :create_records do
     indexed_events = events.index_by(&:id)
     puts "Found #{pluralize(events.size, 'event')}: #{events.map(&:name).to_sentence}"
 
-    grouped_time_points = events.map do |event|
+    grouped_time_points = events.to_h do |event|
       [event.id, event.required_time_points.presence || event.time_points_through(laps)]
-    end.to_h
+    end
     all_time_points = grouped_time_points.values.flatten
     puts "Built #{all_time_points.size} time points"
 
-    grouped_segments = grouped_time_points.transform_values { |time_points| SegmentsBuilder.segments(time_points: time_points) }
+    grouped_segments = grouped_time_points.transform_values do |time_points|
+      SegmentsBuilder.segments(time_points: time_points)
+    end
     all_segments = grouped_segments.values.flatten.uniq
     stats_container = SegmentTimesContainer.new(calc_model: :stats)
     stats_complete = all_segments.map { |segment| stats_container.segment_time(segment) }.all?
@@ -99,11 +101,11 @@ namespace :create_records do
     puts "Computed expected segment times"
 
     splits = events.flat_map(&:splits).uniq
-    indexed_split_names = splits.map { |split| [split.id, split.base_name] }.to_h
+    indexed_split_names = splits.to_h { |split| [split.id, split.base_name] }
     all_split_names = indexed_split_names.values
     puts "Found #{pluralize(all_split_names.size, 'split name')}: #{all_split_names.to_sentence}"
 
-    grouped_bib_numbers = events.map { |event| [event.id, event.efforts.map { |effort| effort.bib_number.to_s }] }.to_h
+    grouped_bib_numbers = events.to_h { |event| [event.id, event.efforts.map { |effort| effort.bib_number.to_s }] }
     all_bib_numbers = grouped_bib_numbers.values.flatten
     puts "Found #{pluralize(all_bib_numbers.size, 'bib number')}"
 
@@ -122,7 +124,7 @@ namespace :create_records do
       laps_required = event.laps_required
       speed_factor = rand(0.75..1.5)
 
-      laps_completed = laps_required == 0 ? 1 + rand(laps - 1) : laps_required
+      laps_completed = laps_required.zero? ? 1 + rand(laps - 1) : laps_required
       time_points = event.time_points_through(laps_completed)
       stopped = rand(10) > 7
       completed_count = rand(time_points.size - 1)
@@ -132,7 +134,7 @@ namespace :create_records do
 
       completed_segments.each.with_index(1) do |segment, i|
         bib_entry_error = rand(100) > 97
-        incorrect_bib_number = rand(10) > 8 ? bib_number.first + "*" : rand(9).to_s + bib_number[1..-1]
+        incorrect_bib_number = rand(10) > 8 ? "#{bib_number.first}*" : rand(9).to_s + bib_number[1..]
         entered_bib_number = bib_entry_error ? incorrect_bib_number : bib_number
 
         time_point = segment.end_point
@@ -162,10 +164,10 @@ namespace :create_records do
         missed = rand(100) > 97
 
         if missed
-          puts "Simulated missed " + raw_time_description
+          puts "Simulated missed #{raw_time_description}"
         else
           built_raw_times << raw_time
-          puts "Built raw time for " + raw_time_description
+          puts "Built raw time for #{raw_time_description}"
         end
       end
     end
@@ -184,7 +186,7 @@ namespace :create_records do
     sorted_raw_times.each do |raw_time|
       if raw_time.save
         raw_time_description = "bib: #{raw_time.bib_number}, lap: #{raw_time.lap}, split: #{raw_time.split_name} (#{raw_time.sub_split_kind}) at #{raw_time.absolute_time}"
-        puts "Saved raw time for " + raw_time_description
+        puts "Saved raw time for #{raw_time_description}"
         saved_raw_times_count += 1
       else
         puts "Could not save #{raw_time}"

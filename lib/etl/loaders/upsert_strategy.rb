@@ -36,7 +36,9 @@ module Etl
         temp_resource.assign_attributes(proto_record.to_h) # Use the class to cast attributes and convert virtual attributes
 
         joined_attributes = proto_record.to_h.keys | (unique_key || [])
-        attributes = joined_attributes.map { |attribute_name| [attribute_name, temp_resource.send(attribute_name)] }.to_h
+        attributes = joined_attributes.index_with do |attribute_name|
+          temp_resource.send(attribute_name)
+        end
 
         unique_attrs = attributes.slice(*unique_key)
 

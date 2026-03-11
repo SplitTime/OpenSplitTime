@@ -24,9 +24,9 @@ module Etl
       end
 
       def transform_name_extensions!(proto_record)
-        if proto_record[:name_extension]
-          proto_record[:bitkey] = SubSplit.bitkey(proto_record.delete_field(:name_extension))
-        end
+        return unless proto_record[:name_extension]
+
+        proto_record[:bitkey] = SubSplit.bitkey(proto_record.delete_field(:name_extension))
       end
 
       private

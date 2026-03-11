@@ -1,9 +1,12 @@
-module Connectors::Runsignup::Models
-  Event = Struct.new(
-    :id,
-    :name,
-    :start_time,
-    :end_time,
-    keyword_init: true
-  )
+module Connectors
+  module Runsignup
+    module Models
+      Event = Struct.new(
+        :id,
+        :name,
+        :start_time,
+        :end_time
+      )
+    end
+  end
 end

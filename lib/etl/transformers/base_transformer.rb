@@ -2,6 +2,7 @@ module Etl
   module Transformers
     class BaseTransformer
       include Etl::Errors
+
       attr_reader :errors
 
       private

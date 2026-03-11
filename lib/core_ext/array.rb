@@ -17,7 +17,7 @@ module CoreExt
       return [] unless i
 
       i -= 1 if inclusive
-      self[(i + 1)..-1]
+      self[(i + 1)..]
     end
 
     def element_before(index_element)

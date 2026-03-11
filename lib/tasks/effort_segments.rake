@@ -28,8 +28,7 @@ namespace :effort_segments do
     puts "Deleting orphaned effort segments"
 
     ActiveRecord::Base.logger.silence do
-
-      query = <<~SQL
+      query = <<~SQL.squish
         delete from effort_segments
         where not exists
               (select id from efforts where id = effort_segments.effort_id)

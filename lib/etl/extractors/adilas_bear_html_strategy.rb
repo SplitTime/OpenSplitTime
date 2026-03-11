@@ -2,6 +2,7 @@ module Etl
   module Extractors
     class AdilasBearHtmlStrategy
       include Etl::Errors
+
       attr_reader :errors
 
       def initialize(source_data, options)
@@ -21,7 +22,8 @@ module Etl
       attr_reader :html, :options
 
       def row
-        {full_name: full_name, bib_number: bib_number, gender: gender, age: age, city: city, state_code: state_code, times: times, dnf: dnf?}
+        { full_name: full_name, bib_number: bib_number, gender: gender, age: age, city: city, state_code: state_code,
+          times: times, dnf: dnf? }
       end
 
       def full_name
@@ -65,7 +67,7 @@ module Etl
       end
 
       def times
-        times_card.css(".row").each_slice(2).map { |row| times_from_row(row) }.to_h
+        times_card.css(".row").each_slice(2).to_h { |row| times_from_row(row) }
       end
 
       def dnf?

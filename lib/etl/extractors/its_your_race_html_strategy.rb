@@ -2,6 +2,7 @@ module Etl
   module Extractors
     class ItsYourRaceHtmlStrategy
       include Etl::Errors
+
       attr_reader :errors
 
       def initialize(source_data, options)
@@ -21,7 +22,7 @@ module Etl
       attr_reader :html, :options
 
       def row
-        {full_name: full_name, gender: gender, age: age, city: city, state_code: state_code, times: times}
+        { full_name: full_name, gender: gender, age: age, city: city, state_code: state_code, times: times }
       end
 
       def full_name
@@ -37,7 +38,7 @@ module Etl
       end
 
       def city
-        bio.split(",").first.split[5..-1].join(" ")
+        bio.split(",").first.split[5..].join(" ")
       end
 
       def state_code

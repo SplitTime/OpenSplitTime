@@ -1,6 +1,6 @@
 module Cloudflare
   class TurnstileVerifier
-    TURNSTILE_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+    TURNSTILE_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify".freeze
 
     # @param [String] token
     # @return [Boolean]

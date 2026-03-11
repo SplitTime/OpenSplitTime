@@ -33,7 +33,8 @@ module Etl
       def fetch_record(proto_record)
         plural_model_class = proto_record.record_type.to_s.pluralize
         temp_resource = parent.send(plural_model_class).new
-        temp_resource.assign_attributes(proto_record.to_h) # Use the class to cast attributes and convert virtual attributes
+        # Use the class to cast attributes and convert virtual attributes
+        temp_resource.assign_attributes(proto_record.to_h)
 
         joined_attributes = proto_record.to_h.keys | (unique_key || [])
         attributes = joined_attributes.index_with do |attribute_name|

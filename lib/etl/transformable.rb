@@ -38,7 +38,11 @@ module Etl
       start_offset = self[:start_offset].to_s.gsub(/[^\d:-]/, "")
       return if start_offset.blank?
 
-      seconds = start_offset =~ TimeConversion::HMS_FORMAT ? TimeConversion.hms_to_seconds(start_offset) : start_offset.to_i
+      seconds = if start_offset =~ TimeConversion::HMS_FORMAT
+                  TimeConversion.hms_to_seconds(start_offset)
+                else
+                  start_offset.to_i
+                end
       self[:scheduled_start_time] ||= event_start_time + seconds
     end
 
@@ -72,7 +76,8 @@ module Etl
       time_attribute = options[:time_attribute] || :time_from_start
       times_array = time_attribute.to_s.sub("time", "times").to_sym
 
-      split_time_attributes = self[times_array].zip(time_points).select(&:last).map.with_index do |(time, time_point), i|
+      split_time_attributes = self[times_array].zip(time_points).select(&:last)
+                                                .map.with_index do |(time, time_point), i|
         { record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id,
           sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i }
       end

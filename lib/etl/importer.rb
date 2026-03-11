@@ -22,8 +22,9 @@ module Etl
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultSplitTimesStrategy,
                     Loaders::InsertStrategy, { delete_blank_times: true }.merge(options))
       when :race_result_entrants
+        loader_options = { delete_blank_times: false, unique_key: [:event_id, :bib_number] }.merge(options)
         import_with(source_data, Extractors::RaceResultStrategy, Transformers::RaceResultEntrantsStrategy,
-                    Loaders::UpsertStrategy, { delete_blank_times: false, unique_key: [:event_id, :bib_number] }.merge(options))
+                    Loaders::UpsertStrategy, loader_options)
       when :race_result_api_times
         import_with(source_data, Extractors::RaceResultApiStrategy, Transformers::RaceResultApiSplitTimesStrategy,
                     Loaders::SplitTimeUpsertStrategy, { delete_blank_times: true }.merge(options))

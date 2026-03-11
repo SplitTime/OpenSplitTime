@@ -19,7 +19,9 @@ module Etl
           event = single_event
 
           if event.nil?
-            parameterized_event_name = proto_record.key?(:event_name) ? proto_record.delete_field(:event_name)&.to_s&.parameterize : nil
+            parameterized_event_name = if proto_record.key?(:event_name)
+                                         proto_record.delete_field(:event_name)&.to_s&.parameterize
+                                       end
             event = events_by_short_name[parameterized_event_name]
           end
 

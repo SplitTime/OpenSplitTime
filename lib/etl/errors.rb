@@ -83,8 +83,15 @@ module Etl
     end
 
     def missing_short_name_error(event)
-      { title: "Short name is missing",
-        detail: { messages: ["Imports for a group having multiple events require that a short name be provided for each event. No short name was found for Event ID ##{event.id}"] } }
+      {
+        title: "Short name is missing",
+        detail: {
+          messages: [
+            "Imports for a group having multiple events require that a short name be provided for each event. " \
+            "No short name was found for Event ID ##{event.id}"
+          ]
+        }
+      }
     end
 
     def missing_split_error
@@ -93,8 +100,15 @@ module Etl
     end
 
     def missing_start_key_error
-      { title: "Start key is missing",
-        detail: { messages: ['This import requires a column titled "start" or "start offset" to indicate at what point split times begin'] } }
+      {
+        title: "Start key is missing",
+        detail: {
+          messages: [
+            'This import requires a column titled "start" or "start offset" ' \
+            "to indicate at what point split times begin"
+          ]
+        }
+      }
     end
 
     def missing_table_error
@@ -119,7 +133,11 @@ module Etl
 
     def resource_not_found_error(resource_class, provided_resource_name, row_index)
       humanized_resource_class = resource_class.to_s.underscore.humanize
-      message = provided_resource_name.present? ? "#{humanized_resource_class} could not be found: #{provided_resource_name}" : "#{humanized_resource_class} was not provided"
+      message = if provided_resource_name.present?
+                  "#{humanized_resource_class} could not be found: #{provided_resource_name}"
+                else
+                  "#{humanized_resource_class} was not provided"
+                end
       { title: "#{humanized_resource_class} not found", detail: { row_index: row_index, messages: [message] } }
     end
 
@@ -154,8 +172,15 @@ module Etl
     end
 
     def value_not_permitted_error(option, permitted_values, provided_value)
-      { title: "Argument value is not permitted",
-        detail: { messages: ["Values for #{option} must be within #{permitted_values.to_sentence} but #{provided_value} was provided"] } }
+      {
+        title: "Argument value is not permitted",
+        detail: {
+          messages: [
+            "Values for #{option} must be within #{permitted_values.to_sentence} " \
+            "but #{provided_value} was provided"
+          ]
+        }
+      }
     end
   end
 end

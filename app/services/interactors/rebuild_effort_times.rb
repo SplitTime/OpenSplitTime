@@ -91,9 +91,9 @@ module Interactors
 
     def ordered_raw_times
       @raw_times = RawTime.where(event_group_id: event_group.id, matchable_bib_number: effort.bib_number)
-                     .with_relation_ids
-                     .select(&:absolute_time)
-                     .sort_by(&:absolute_time)
+        .with_relation_ids
+        .select(&:absolute_time)
+        .sort_by(&:absolute_time)
     end
 
     def validate_setup
@@ -124,7 +124,9 @@ module Interactors
       {
         title: "Rebuild would exceed lap limit",
         detail: {
-          messages: ["The rebuild would create #{count} split time(s) in lap #{found}, but this event only permits #{required} lap(s). There may be duplicate or incorrect raw times."]
+          messages: ["The rebuild would create #{count} split time(s) in lap #{found}, " \
+                       "but this event only permits #{required} lap(s). There may be incorrect raw times. " \
+                       "Disassociate any raw times that do not belong to this effort and rebuild again."]
         },
         code: :lap_limit_exceeded
       }

@@ -29,7 +29,10 @@ class SplitTime < ApplicationRecord
   attribute :matching_raw_time_id, :integer
   attribute :effort_ids_ahead, :integer_array_from_string
 
-  scope :ordered, -> { joins(:split).order("split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey") }
+  scope :ordered, lambda {
+    order_string = "split_times.effort_id, split_times.lap, splits.distance_from_start, split_times.sub_split_bitkey"
+    joins(:split).order(order_string)
+  }
   scope :finish, -> { includes(:split).where(splits: {kind: Split.kinds[:finish]}) }
   scope :start, -> { includes(:split).where(splits: {kind: Split.kinds[:start]}) }
   scope :out, -> { where(sub_split_bitkey: SubSplit::OUT_BITKEY) }
@@ -42,10 +45,13 @@ class SplitTime < ApplicationRecord
   }
 
   scope :with_policy_scope_attributes, lambda {
-    from(select("split_times.*, event_groups.organization_id, event_groups.concealed").joins(effort: {event: :event_group}), :split_times)
+    select_string = "split_times.*, event_groups.organization_id, event_groups.concealed"
+    from(select(select_string).joins(effort: {event: :event_group}), :split_times)
   }
 
-  scope :with_time_record_matchers, -> { joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number") }
+  scope :with_time_record_matchers, lambda {
+    joins(effort: {event: :event_group}).select("split_times.*, event_groups.home_time_zone, efforts.bib_number")
+  }
 
   # SplitTime::recorded_at_aid functions properly only when called on split_times within an event
   # Otherwise it includes split_times from aid_stations other than the given parameter
@@ -73,7 +79,7 @@ class SplitTime < ApplicationRecord
   end
 
   def self.confirmed!
-    all.each { |resource| resource.confirmed! }
+    all.each(&:confirmed!)
   end
 
   def self.effort_times(args)
@@ -88,19 +94,19 @@ class SplitTime < ApplicationRecord
   end
 
   def course_is_consistent
-    if effort&.event && split && (effort.event.course_id != split.course_id)
-      errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
-      errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
-    end
+    return unless effort&.event && split && (effort.event.course_id != split.course_id)
+
+    errors.add(:effort_id, "the effort.event.course_id does not resolve with the split.course_id")
+    errors.add(:split_id, "the effort.event.course_id does not resolve with the split.course_id")
   end
 
   def lap_within_event_limit
     return unless effort&.event
     return if effort.event.laps_unlimited?
 
-    if lap && lap > effort.event.laps_required
-      errors.add(:lap, "cannot exceed event's required laps (#{effort.event.laps_required})")
-    end
+    return unless lap && lap > effort.event.laps_required
+
+    errors.add(:lap, "cannot exceed event's required laps (#{effort.event.laps_required})")
   end
 
   def lap_split
@@ -141,7 +147,7 @@ class SplitTime < ApplicationRecord
   end
 
   def time_from_start
-    return attributes["time_from_start"] if attributes.has_key?("time_from_start")
+    return attributes["time_from_start"] if attributes.key?("time_from_start")
     return designated_seconds_from_start if designated_seconds_from_start.present?
     return nil unless absolute_time
     return 0 if starting_split_time?
@@ -168,7 +174,8 @@ class SplitTime < ApplicationRecord
   def military_time=(military_time)
     @military_time = military_time
     self.absolute_time = if military_time.present? && effort.present?
-                           IntendedTimeCalculator.absolute_time_local(military_time: military_time, effort: effort, time_point: time_point)
+                           IntendedTimeCalculator.absolute_time_local(military_time: military_time, effort: effort,
+                                                                      time_point: time_point)
                          end
   end
 

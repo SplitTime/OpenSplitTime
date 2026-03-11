@@ -54,6 +54,8 @@ Rails/SkipsModelValidations:
 Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: false
+  Exclude:
+    - "config/initializers/01_ost_config.rb"
 
 Rails/RedundantPresenceValidationOnBelongsTo:
   Enabled: true

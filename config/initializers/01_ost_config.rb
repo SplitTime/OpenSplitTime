@@ -1,6 +1,6 @@
 module OstConfig
   def self.admin_email
-    ENV["ADMIN_EMAIL"] || "test@example.com"
+    ENV.fetch("ADMIN_EMAIL", "test@example.com")
   end
 
   def self.aws_access_key_id
@@ -24,7 +24,7 @@ module OstConfig
   end
 
   def self.base_uri
-    ENV["BASE_URI"] || "localhost:3000"
+    ENV.fetch("BASE_URI", "localhost:3000")
   end
 
   # All variations of "false", "f", "off", "0", "", and nil
@@ -32,7 +32,7 @@ module OstConfig
   # For a complete list of values that will evaluate to false,
   # see ::ActiveModel::Type::Boolean::FALSE_VALUES
   def self.cast_to_boolean(value)
-    return false unless value.present?
+    return false if value.blank?
 
     ::ActiveModel::Type::Boolean.new.cast(value)
   end
@@ -58,7 +58,7 @@ module OstConfig
   end
 
   def self.credentials_env
-    ENV["CREDENTIALS_ENV"]
+    ENV.fetch("CREDENTIALS_ENV", nil)
   end
 
   def self.credentials_env?
@@ -74,11 +74,11 @@ module OstConfig
   end
 
   def self.full_uri
-    ENV["FULL_URI"] || "http://localhost:3000"
+    ENV.fetch("FULL_URI", "http://localhost:3000")
   end
 
   def self.heroku_app_name
-    ENV["HEROKU_APP_NAME"]
+    ENV.fetch("HEROKU_APP_NAME", nil)
   end
 
   def self.google_maps_api_key
@@ -99,9 +99,9 @@ module OstConfig
 
   def self.redis_url
     if Rails.env.production? && base_uri == "ost-stage.herokuapp.com"
-      ENV["REDIS_TLS_URL"] || ENV["REDIS_URL"]
+      ENV.fetch("REDIS_TLS_URL", nil) || ENV.fetch("REDIS_URL", nil)
     else
-      ENV["REDIS_URL"] || "redis://localhost:6379/1"
+      ENV.fetch("REDIS_URL", "redis://localhost:6379/1")
     end
   end
 
@@ -110,7 +110,7 @@ module OstConfig
   end
 
   def self.scout_apm_sample_rate
-    ENV["SCOUT_APM_SAMPLE_RATE"]&.to_f || 1.0
+    ENV.fetch("SCOUT_APM_SAMPLE_RATE", nil)&.to_f || 1.0
   end
 
   def self.sendgrid_api_key
@@ -122,6 +122,6 @@ module OstConfig
   end
 
   def self.shortened_uri
-    ENV["SHORTENED_URI"] || base_uri
+    ENV.fetch("SHORTENED_URI", base_uri)
   end
 end

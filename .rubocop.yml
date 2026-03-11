@@ -29,6 +29,8 @@ Naming/PredicateMethod:
 
 Naming/VariableNumber:
   EnforcedStyle: snake_case
+  Exclude:
+    - "spec/**/*"
 
 Lint/MissingSuper:
   Enabled: true
@@ -92,6 +94,10 @@ RSpec/NamedSubject:
 
 RSpec/NestedGroups:
   Enabled: false
+
+RSpec/IndexedLet:
+  Exclude:
+    - "spec/**/*"
 
 RSpec/NoExpectationExample:
   Enabled: false

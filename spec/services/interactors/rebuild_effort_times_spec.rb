@@ -4,6 +4,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
   include BitkeyDefinitions
 
   subject { described_class.new(effort: effort) }
+
   let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
   let(:ordered_split_times) { effort.ordered_split_times }
   let(:ordered_split_ids) { effort.event.ordered_splits.map(&:id) }
@@ -34,7 +35,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
           ordered_split_times[i].update(absolute_time: time)
         end
 
-        ordered_split_times[1..-1].map do |st|
+        ordered_split_times.from(1).map do |st|
           RawTime.create!(
             event_group: effort.event_group,
             bib_number: effort.bib_number,
@@ -66,7 +67,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
         it "matches raw_times with the newly created split_times" do
           subject.perform!
           raw_times = RawTime.where(source: "rebuild_effort_test")
-          expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
+          expect(effort.ordered_split_times.from(1).map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
 
         it "sets data status for the effort and all split times" do
@@ -107,7 +108,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
           subject.perform!
           raw_times = RawTime.where(source: "rebuild_effort_test")
           expect(raw_times.pluck(:split_time_id)).to all be_present
-          expect(raw_times.pluck(:split_time_id)).to match_array(effort.ordered_split_times[1..-1].map(&:id) + [effort.ordered_split_times[1].id])
+          expect(raw_times.pluck(:split_time_id)).to match_array(effort.ordered_split_times.from(1).map(&:id) + [effort.ordered_split_times[1].id])
         end
       end
 
@@ -143,7 +144,7 @@ RSpec.describe Interactors::RebuildEffortTimes do
         it "matches raw_times with the newly created split_times" do
           subject.perform!
           raw_times = RawTime.where(source: "rebuild_effort_test")
-          expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
+          expect(effort.ordered_split_times.from(1).map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
 
         it "sets data status for the effort and all split times" do
@@ -173,18 +174,18 @@ RSpec.describe Interactors::RebuildEffortTimes do
         it "matches raw_times with the newly created split_times" do
           subject.perform!
           raw_times = RawTime.where(source: "rebuild_effort_test")
-          expect(effort.ordered_split_times[1..-1].map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
+          expect(effort.ordered_split_times.from(1).map(&:id)).to eq(raw_times.sort_by(&:absolute_time).map(&:split_time_id))
         end
       end
 
       context "when raw_times would exceed lap limit" do
         let(:event) { effort.event }
-        
+
         before do
           # Set the event to only allow 2 laps (current effort has split times up to lap 3)
           # This will cause the rebuild to try to create lap 3 split times which exceeds the limit
           event.update!(laps_required: 2)
-          
+
           # The existing setup already has raw_times that will create lap 3 split times
           # No additional raw times needed - the test setup already provides them
         end

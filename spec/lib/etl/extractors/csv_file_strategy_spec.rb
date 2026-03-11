@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Etl::Extractors::CsvFileStrategy do
-  subject { Etl::Extractors::CsvFileStrategy.new(file, options) }
+  subject { described_class.new(file, options) }
+
   let(:options) { {} }
 
   describe "#extract" do
@@ -215,7 +216,7 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
       end
 
       it "returns expected parsed structs" do
-        expect(raw_data.map { |struct| struct[:Order_ID] }).to match_array([123, 456, 789])
+        expect(raw_data.pluck(:Order_ID)).to contain_exactly(123, 456, 789)
       end
     end
 
@@ -224,7 +225,7 @@ RSpec.describe Etl::Extractors::CsvFileStrategy do
 
       it "returns headers converted to symbols" do
         record = raw_data.first.to_h
-        expect(record.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :'bib_#'])
+        expect(record.keys).to eq([:first_name, :LAST, :sex, :age, :city, :state, :country, :"bib_#"])
       end
     end
 

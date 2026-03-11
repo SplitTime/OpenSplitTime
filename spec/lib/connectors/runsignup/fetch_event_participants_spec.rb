@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
   subject { described_class.new(race_id: race_id, event_id: event_id, user: user) }
 
-  let(:race_id) { 85675 }
-  let(:event_id) { 661702 }
+  let(:race_id) { 85_675 }
+  let(:event_id) { 661_702 }
 
   include_context "user_with_credentials"
 

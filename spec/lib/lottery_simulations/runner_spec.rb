@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe LotterySimulations::Runner do
   subject { described_class.new(simulation_run) }
+
   let(:simulation_run) { create(:lottery_simulation_run, lottery: lottery, requested_count: 2) }
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
 
@@ -79,6 +80,7 @@ RSpec.describe LotterySimulations::Runner do
 
     context "when draws already exist" do
       before { subject.perform! }
+
       it "does not create any simulations" do
         expect(simulation_run.simulations.count).to eq(0)
       end

@@ -19,13 +19,13 @@ RSpec.describe Etl::Transformers::Async::NullStrategy do
       let(:structs) do
         [
           OpenStruct.new(
-            :Order_ID => 26861,
+            :Order_ID => 26_861,
             :First_Name => "Emanuel",
             :Last_Name => "Nicolas",
             :gender => "M",
           ),
           OpenStruct.new(
-            :Order_ID => 26864,
+            :Order_ID => 26_864,
             :First_Name => "Dave",
             :Last_Name => "Conroy",
             :gender => "M",
@@ -53,7 +53,7 @@ RSpec.describe Etl::Transformers::Async::NullStrategy do
 
       it "passes through all values without change" do
         proto_record = proto_records.first
-        expect(proto_record[:Order_ID]).to eq(26861)
+        expect(proto_record[:Order_ID]).to eq(26_861)
         expect(proto_record[:First_Name]).to eq("Emanuel")
         expect(proto_record[:Last_Name]).to eq("Nicolas")
         expect(proto_record[:gender]).to eq("M")

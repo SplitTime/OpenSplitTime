@@ -19,7 +19,7 @@ RSpec.describe ::Connectors::Runsignup::Client do
 
   describe "#get_race" do
     let(:result) { subject.get_race(race_id) }
-    let(:race_id) { 85675 }
+    let(:race_id) { 85_675 }
 
     context "when the race is found" do
       it "returns a json blob with race and event information" do
@@ -28,22 +28,22 @@ RSpec.describe ::Connectors::Runsignup::Client do
 
           race = parsed_result["race"]
           expect(race).to be_present
-          expect(race.dig("race_id")).to eq(race_id)
-          expect(race.dig("name")).to eq("Running Up For Air")
+          expect(race["race_id"]).to eq(race_id)
+          expect(race["name"]).to eq("Running Up For Air")
 
           events = parsed_result.dig("race", "events")
           expect(events).to be_present
           expect(events.count).to eq(3)
 
           event = events.first
-          expect(event.dig("event_id")).to eq(661702)
-          expect(event.dig("name")).to eq("24 hr")
+          expect(event["event_id"]).to eq(661_702)
+          expect(event["name"]).to eq("24 hr")
         end
       end
     end
 
     context "when the race is not found" do
-      let(:race_id) { 9999999 }
+      let(:race_id) { 9_999_999 }
       it "raises an error" do
         VCR.use_cassette("runsignup/get_race/not_found") do
           expect { result }.to raise_error Connectors::Errors::NotFound
@@ -54,8 +54,8 @@ RSpec.describe ::Connectors::Runsignup::Client do
 
   describe "#get_participants" do
     let(:result) { subject.get_participants(race_id, event_id, page) }
-    let(:race_id) { 85675 }
-    let(:event_id) { 661702 }
+    let(:race_id) { 85_675 }
+    let(:event_id) { 661_702 }
     let(:page) { 1 }
 
     context "when credentials are valid" do
@@ -73,7 +73,7 @@ RSpec.describe ::Connectors::Runsignup::Client do
             expect(participants.size).to eq(2)
 
             participant = participants.first
-            expect(participant.dig("bib_num")).to eq(3)
+            expect(participant["bib_num"]).to eq(3)
             expect(participant.dig("user", "first_name")).to eq("Bubba")
             expect(participant.dig("user", "last_name")).to eq("Gump")
           end
@@ -81,7 +81,7 @@ RSpec.describe ::Connectors::Runsignup::Client do
       end
 
       context "when the race is not found" do
-        let(:race_id) { 9999999 }
+        let(:race_id) { 9_999_999 }
         it "raises an error" do
           VCR.use_cassette("runsignup/get_participants/race_not_found") do
             expect { result }.to raise_error Connectors::Errors::NotFound
@@ -90,7 +90,7 @@ RSpec.describe ::Connectors::Runsignup::Client do
       end
 
       context "when the event is not found" do
-        let(:event_id) { 9999999 }
+        let(:event_id) { 9_999_999 }
         it "raises an error" do
           VCR.use_cassette("runsignup/get_participants/event_not_found") do
             expect { result }.to raise_error Connectors::Errors::NotFound

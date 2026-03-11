@@ -111,7 +111,7 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
             :City => "Bednarshire",
             :State => "VA",
             :Country => "USA",
-            :"Phone_#" => 7797152514,
+            :"Phone_#" => 7_797_152_514,
             :Previous_names_applied_under => "No",
             :Emergency_Contact => nil,
             :Emergency_Phone => nil,
@@ -217,10 +217,10 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
             :City => "Littleberg",
             :State => "NOR",
             :Country => "NOR",
-            :"Phone_#" => 4747239760,
+            :"Phone_#" => 4_747_239_760,
             :Previous_names_applied_under => "N/A",
             :Emergency_Contact => "Shellie Krajcik",
-            :Emergency_Phone => 4747239722,
+            :Emergency_Phone => 4_747_239_722,
             :"#_Years_Vol_Claimed" => 0,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => "",
@@ -323,10 +323,10 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
             :City => "Pfannerstillberg",
             :State => "WA",
             :Country => "USA",
-            :"Phone_#" => 8952939469,
+            :"Phone_#" => 8_952_939_469,
             :Previous_names_applied_under => "NA",
             :Emergency_Contact => "Sonja Christiansen",
-            :Emergency_Phone => 8615039757,
+            :Emergency_Phone => 8_615_039_757,
             :"#_Years_Vol_Claimed" => 0,
             :Vol_Diff => 0,
             :"#_Years_Claimed_Applied_in_Past" => 0,
@@ -456,7 +456,7 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
-        expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
+        expect(proto_records.pluck(:organization_id)).to all eq(organization.id)
 
         %i[first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)
@@ -476,7 +476,7 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns one proto_record for each DNS with the year set" do
         dns_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns }
         expect(dns_proto_records.count).to eq(12)
-        expect(dns_proto_records.map { |pr| pr[:year] }).to match_array([2015, 2016, 2016, 2017, 2017, 2018, 2018, 2019, 2019, 2019, 2021, 2022])
+        expect(dns_proto_records.pluck(:year)).to contain_exactly(2015, 2016, 2016, 2017, 2017, 2018, 2018, 2019, 2019, 2019, 2021, 2022)
       end
 
       it "returns one proto_record for each DNF" do
@@ -488,7 +488,7 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns one proto_record for each finish" do
         finished_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :finished }
         expect(finished_proto_records.count).to eq(2)
-        expect(finished_proto_records.map { |pr| pr[:year] }).to match_array([2015, 2016])
+        expect(finished_proto_records.pluck(:year)).to contain_exactly(2015, 2016)
       end
 
       it "returns one proto_record for each multi-year volunteer fact" do
@@ -502,13 +502,13 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns one proto_record for each reported 2024 qualifier" do
         reported_qualifier_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :qualifier_finish }
         expect(reported_qualifier_proto_records.count).to eq(2)
-        expect(reported_qualifier_proto_records.map { |pr| pr[:comments] }).to match_array(["2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100"])
+        expect(reported_qualifier_proto_records.pluck(:comments)).to contain_exactly("2023 SEPT: Grindstone 100 Mile", "2023 SEPT: Bear 100")
       end
 
       it "returns one proto_record for each provided emergency contact, ignoring '0'" do
         emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :emergency_contact }
         expect(emergency_contact_proto_records.count).to eq(2)
-        expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757"])
+        expect(emergency_contact_proto_records.pluck(:comments)).to contain_exactly("Shellie Krajcik, 4747239722", "Sonja Christiansen, 8615039757")
       end
 
       it "returns one proto_record for each provided previous name" do
@@ -520,13 +520,13 @@ RSpec.describe Etl::Transformers::Async::HardrockHistoricalFactsStrategy do
       it "returns one proto_record per struct for legacy ticket count" do
         legacy_ticket_count_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :lottery_ticket_count_legacy }
         expect(legacy_ticket_count_proto_records.count).to eq(structs.count)
-        expect(legacy_ticket_count_proto_records.map { |pr| pr[:quantity] }).to eq([2, 16, 4, 8])
+        expect(legacy_ticket_count_proto_records.pluck(:quantity)).to eq([2, 16, 4, 8])
       end
 
       it "returns one proto_record per struct for legacy division" do
         legacy_division_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :lottery_division_legacy }
         expect(legacy_division_proto_records.count).to eq(structs.count)
-        expect(legacy_division_proto_records.map { |pr| pr[:comments] }).to eq(["Never", "Never", "Never", "Else"])
+        expect(legacy_division_proto_records.pluck(:comments)).to eq(["Never", "Never", "Never", "Else"])
       end
     end
 

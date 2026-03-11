@@ -12,6 +12,7 @@ RSpec.describe ::Type::IntegerArrayFromString do
 
   describe "#cast" do
     subject { ::TestDummy::QueryModel.new(ids: ids) }
+
     context "when given a Postgres-style array" do
       let(:ids) { "{1001,1003,1005}" }
       it "casts ids as an array" do

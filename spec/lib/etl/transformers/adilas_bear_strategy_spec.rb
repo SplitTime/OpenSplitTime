@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Etl::Transformers::AdilasBearStrategy do
-  subject { Etl::Transformers::AdilasBearStrategy.new(struct, options) }
+  subject { described_class.new(struct, options) }
 
   let(:struct) { OpenStruct.new(attributes) }
-  let(:attributes) { {full_name: "Linda McFadden", bib_number: "187", gender: "F", age: "54", city: "Modesto", state_code: "CA", times: times, dnf: dnf} }
+  let(:attributes) { { full_name: "Linda McFadden", bib_number: "187", gender: "F", age: "54", city: "Modesto", state_code: "CA", times: times, dnf: dnf } }
   let(:dnf) { true }
-  let(:options) { {parent: event} }
+  let(:options) { { parent: event } }
 
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
@@ -29,10 +29,10 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
   describe "#transform" do
     context "when time data is in expected order and contains no holes" do
       let(:times) do
-        {0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
-         1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
-         2 => ["9/23/2016 12:30:29 pm", "9/24/2016 1:49:11 pm"],
-         3 => ["9/23/2016 1:49:11 pm", "... ..."]}
+        { 0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
+          1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
+          2 => ["9/23/2016 12:30:29 pm", "9/24/2016 1:49:11 pm"],
+          3 => ["9/23/2016 1:49:11 pm", "... ..."] }
       end
       let(:time_points) { event.required_time_points.first(7) }
 
@@ -43,7 +43,7 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
 
       it "transforms effort headers to match the database" do
         expect(first_proto_record.to_h.keys.sort)
-            .to match_array(%i[age bib_number event_id first_name gender last_name city state_code country_code])
+          .to match_array(%i[age bib_number event_id first_name gender last_name city state_code country_code])
       end
 
       it 'returns genders transformed to "male" or "female"' do
@@ -63,10 +63,10 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
         records = first_proto_record.children
         expect(records.size).to eq(7)
         expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10_150, 10_150, 23_427, 23_429, 114_551, 28_151].map { |e| start_time + e })
+        expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+        expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+        expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+        expect(records.pluck(:absolute_time)).to eq([0, 10_150, 10_150, 23_427, 23_429, 114_551, 28_151].map { |e| start_time + e })
       end
 
       context "when dnf is true" do
@@ -74,8 +74,8 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
 
         it "sets [:stopped_here] attribute on the final child record" do
           records = first_proto_record.children
-          expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, true])
+          expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+          expect(records.pluck(:stopped_here)).to eq([nil, nil, nil, nil, nil, nil, true])
         end
       end
 
@@ -84,18 +84,18 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
 
         it "does not set [:stopped_here] attribute on the final child record" do
           records = first_proto_record.children
-          expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(nil)
-          expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, nil, nil, nil])
+          expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(nil)
+          expect(records.pluck(:stopped_here)).to eq([nil, nil, nil, nil, nil, nil, nil])
         end
       end
     end
 
     context "when time data is not in expected order and contains holes" do
       let(:times) do
-        {0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
-         2 => ["9/23/2016 12:30:29 pm", "9/23/2016 1:49:11 pm"],
-         1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
-         4 => ["9/23/2016 3:49:11 pm", "... ..."]}
+        { 0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
+          2 => ["9/23/2016 12:30:29 pm", "9/23/2016 1:49:11 pm"],
+          1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
+          4 => ["9/23/2016 3:49:11 pm", "... ..."] }
       end
       let(:time_points) { event.required_time_points[0..5] + event.required_time_points[8..8] }
 
@@ -103,25 +103,25 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
         records = first_proto_record.children
         expect(records.size).to eq(7)
         expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10_150, 10_150, 23_427, 23_429, 28_151, 35_351].map { |e| start_time + e })
+        expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+        expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+        expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+        expect(records.pluck(:absolute_time)).to eq([0, 10_150, 10_150, 23_427, 23_429, 28_151, 35_351].map { |e| start_time + e })
       end
 
       it "sets [:stopped_here] attribute on the final child record" do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 6 + [true])
+        expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+        expect(records.pluck(:stopped_here)).to eq(([nil] * 6) + [true])
       end
     end
 
     context "when time data is behind by up to 7 days, resulting in negative times from start" do
       let(:times) do
-        {0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
-         1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
-         2 => ["9/16/2016 12:30:29 pm", "9/18/2016 1:49:11 pm"],
-         3 => ["9/23/2016 3:49:11 pm", "... ..."]}
+        { 0 => ["9/23/2016 6:00:00 am", "9/23/2016 8:49:10 am"],
+          1 => ["9/23/2016 8:49:10 am", "9/23/2016 12:30:27 pm"],
+          2 => ["9/16/2016 12:30:29 pm", "9/18/2016 1:49:11 pm"],
+          3 => ["9/23/2016 3:49:11 pm", "... ..."] }
       end
       let(:time_points) { event.required_time_points.first(7) }
 
@@ -129,10 +129,10 @@ RSpec.describe Etl::Transformers::AdilasBearStrategy do
         records = first_proto_record.children
         expect(records.size).to eq(7)
         expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:absolute_time] }).to eq([0, 10_150, 10_150, 23_427, 23_429, 28_151, 35_351].map { |e| start_time + e })
+        expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+        expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+        expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+        expect(records.pluck(:absolute_time)).to eq([0, 10_150, 10_150, 23_427, 23_429, 28_151, 35_351].map { |e| start_time + e })
       end
     end
   end

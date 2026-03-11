@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe ::NamespaceRedirector do
   subject { described_class.new(model) }
+
   let(:model) { "courses" }
 
   describe "#call" do

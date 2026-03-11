@@ -7,21 +7,25 @@ RSpec.describe String do
 
     context "when the string is entirely digits" do
       subject { "1234" }
+
       it { expect(result).to eq(true) }
     end
 
     context "when the string represents a decimal" do
       subject { "1234.56" }
+
       it { expect(result).to eq(true) }
     end
 
     context "when the string is partially digits" do
       subject { "hello1234" }
+
       it { expect(result).to eq(false) }
     end
 
     context "when the string contains no digits" do
       subject { "hello" }
+
       it { expect(result).to eq(false) }
     end
   end

@@ -27,8 +27,8 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
           expect(race_editions).to be_a(Array)
 
           race_edition = race_editions.first
-          expect(race_edition.dig("id")).to eq(1)
-          expect(race_edition.dig("race_name")).to eq("Rattlesnake Ramble Trail Race - Odd Years")
+          expect(race_edition["id"]).to eq(1)
+          expect(race_edition["race_name"]).to eq("Rattlesnake Ramble Trail Race - Odd Years")
         end
       end
     end
@@ -60,7 +60,7 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
             expect(race_entries.size).to eq(2)
 
             entry = race_entries.first
-            expect(entry.dig("bib_number")).to eq(3)
+            expect(entry["bib_number"]).to eq(3)
             expect(entry.dig("racer", "first_name")).to eq("Bubba")
             expect(entry.dig("racer", "last_name")).to eq("Gump")
           end
@@ -68,7 +68,7 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
       end
 
       context "when the race is not found" do
-        let(:race_edition_id) { 9999999 }
+        let(:race_edition_id) { 9_999_999 }
         it "raises an error" do
           VCR.use_cassette("rattlesnake_ramble/get_race_edition/not_found") do
             expect { result }.to raise_error Connectors::Errors::NotFound

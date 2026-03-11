@@ -1,27 +1,27 @@
 require "rails_helper"
 
 RSpec.describe Etl::Transformers::JsonapiBatchStrategy do
-  subject { Etl::Transformers::JsonapiBatchStrategy.new(parsed_structs, options) }
+  subject { described_class.new(parsed_structs, options) }
 
   let(:course) { build_stubbed(:course, id: 10) }
   let(:event) { build_stubbed(:event, id: 1, course: course) }
-  let(:options) { {parent: event} }
+  let(:options) { { parent: event } }
   let(:proto_records) { subject.transform }
   let(:clean_parsed_structs) do
     [
       OpenStruct.new(type: "raw_time",
-                     attributes: {"bibNumber" => "101", "splitName" => "Aid 1", "bitkey" => 1,
-                                  "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => false}),
+                     attributes: { "bibNumber" => "101", "splitName" => "Aid 1", "bitkey" => 1,
+                                   "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => false }),
       OpenStruct.new(type: "raw_time",
-                     attributes: {"bibNumber" => "101", "splitName" => "Aid 1", "bitkey" => 64,
-                                  "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => true})
+                     attributes: { "bibNumber" => "101", "splitName" => "Aid 1", "bitkey" => 64,
+                                   "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => true })
     ]
   end
   let(:dirty_parsed_structs) do
     [
       OpenStruct.new(type: "raw_time",
-                     attributes: {"bibNumber" => "101", "splitName" => "Aid 1", "name_extension" => "in",
-                                  "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => false})
+                     attributes: { "bibNumber" => "101", "splitName" => "Aid 1", "name_extension" => "in",
+                                   "absoluteTime" => "10:45:45-06:00", "withPacer" => true, "stoppedHere" => false })
     ]
   end
   let(:first_proto_record) { proto_records.first }
@@ -42,7 +42,7 @@ RSpec.describe Etl::Transformers::JsonapiBatchStrategy do
 
       it "moves all attributes into the ProtoRecord attributes struct" do
         expect(first_proto_record.to_h.keys)
-            .to match_array(%i[absolute_time bib_number bitkey split_name stopped_here with_pacer])
+          .to match_array(%i[absolute_time bib_number bitkey split_name stopped_here with_pacer])
       end
     end
 
@@ -63,10 +63,10 @@ RSpec.describe Etl::Transformers::JsonapiBatchStrategy do
       let(:parsed_structs) do
         [
           OpenStruct.new(
-            {type: "efforts",
-             attributes: {"first_name" => "Schuyler",
-                          "last_name" => "Argon",
-                          "scheduled_start_offset" => "900"}}
+            { type: "efforts",
+              attributes: { "first_name" => "Schuyler",
+                            "last_name" => "Argon",
+                            "scheduled_start_offset" => "900" } }
           )
         ]
       end

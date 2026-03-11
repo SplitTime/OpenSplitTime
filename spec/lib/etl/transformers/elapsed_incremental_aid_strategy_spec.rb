@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Etl::Transformers::ElapsedIncrementalAidStrategy do
-  subject { Etl::Transformers::ElapsedIncrementalAidStrategy.new(struct, options) }
+  subject { described_class.new(struct, options) }
 
   let(:struct) { OpenStruct.new(attributes) }
-  let(:attributes) { {full_name: "William Abel", gender: "male", age: "41", city: "Byron", state_code: "IL", times: times} }
-  let(:options) { {parent: event} }
+  let(:attributes) { { full_name: "William Abel", gender: "male", age: "41", city: "Byron", state_code: "IL", times: times } }
+  let(:options) { { parent: event } }
 
   let(:proto_records) { subject.transform }
   let(:first_proto_record) { proto_records.first }
@@ -27,8 +27,8 @@ RSpec.describe Etl::Transformers::ElapsedIncrementalAidStrategy do
   describe "#transform" do
     context "when time data is in expected order and contains no holes" do
       let(:times) do
-        {"DF In" => "3:27:40.00", "DF Out" => "05:24.00", "FB In" => "7:18:29.00", "FB Out" => "05:01.00",
-         "Jaws In" => "13:02:36.00", "Jaws Out" => "16:18.00", "Finish" => "27:44:15.52"}
+        { "DF In" => "3:27:40.00", "DF Out" => "05:24.00", "FB In" => "7:18:29.00", "FB Out" => "05:01.00",
+          "Jaws In" => "13:02:36.00", "Jaws Out" => "16:18.00", "Finish" => "27:44:15.52" }
       end
       let(:time_points) { event.required_time_points }
 
@@ -39,7 +39,7 @@ RSpec.describe Etl::Transformers::ElapsedIncrementalAidStrategy do
 
       it "transforms effort headers to match the database" do
         expect(first_proto_record.to_h.keys.sort)
-            .to match_array(%i[age event_id first_name gender last_name city state_code country_code])
+          .to match_array(%i[age event_id first_name gender last_name city state_code country_code])
       end
 
       it 'returns genders transformed to "male" or "female"' do
@@ -59,49 +59,49 @@ RSpec.describe Etl::Transformers::ElapsedIncrementalAidStrategy do
         records = first_proto_record.children
         expect(records.size).to eq(8)
         expect(records.map(&:record_type)).to all eq(:split_time)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:absolute_time] }).to eq([0.0, 12_460.0, 12_784.0, 26_309.0, 26_610.0, 46_956.0, 47_934.0, 99_855.52].map { |e| start_time + e })
+        expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+        expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+        expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+        expect(records.pluck(:absolute_time)).to eq([0.0, 12_460.0, 12_784.0, 26_309.0, 26_610.0, 46_956.0, 47_934.0, 99_855.52].map { |e| start_time + e })
       end
 
       it "sets [:stopped_here] attribute on the final child record" do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 7 + [true])
+        expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+        expect(records.pluck(:stopped_here)).to eq(([nil] * 7) + [true])
       end
     end
 
     context "when time data contains holes" do
       let(:times) do
-        {"DF In" => "3:27:40.00", "DF Out" => "05:24.00", "FB In" => "7:18:29.00", "FB Out" => "--",
-         "Jaws In" => "--", "Jaws Out" => "--", "Finish" => "27:44:15.52"}
+        { "DF In" => "3:27:40.00", "DF Out" => "05:24.00", "FB In" => "7:18:29.00", "FB Out" => "--",
+          "Jaws In" => "--", "Jaws Out" => "--", "Finish" => "27:44:15.52" }
       end
-      let(:time_points) { event.required_time_points[0..3] + event.required_time_points[-1..-1] }
+      let(:time_points) { event.required_time_points[0..3] + event.required_time_points[-1..] }
 
       it "returns an array of children with times in expected order, skipping time_points that have no associated times" do
         records = first_proto_record.children
         expect(records.size).to eq(5)
         expect(records.map(&:record_type)).to eq([:split_time] * records.size)
-        expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-        expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-        expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-        expect(records.map { |pr| pr[:absolute_time] }).to eq([0.0, 12_460.0, 12_784.0, 26_309.0, 99_855.52].map { |e| start_time + e })
+        expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+        expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+        expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+        expect(records.pluck(:absolute_time)).to eq([0.0, 12_460.0, 12_784.0, 26_309.0, 99_855.52].map { |e| start_time + e })
       end
 
       it "sets [:stopped_here] attribute on the final child record" do
         records = first_proto_record.children
-        expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-        expect(records.map { |pr| pr[:stopped_here] }).to eq([nil] * 4 + [true])
+        expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+        expect(records.pluck(:stopped_here)).to eq(([nil] * 4) + [true])
       end
     end
 
     context "when time data has no time information" do
       let(:times) do
-        {"DF In" => "--", "DF Out" => "--", "FB In" => "--", "FB Out" => "--",
-         "Jaws In" => "--", "Jaws Out" => "--", "Finish" => "--"}
+        { "DF In" => "--", "DF Out" => "--", "FB In" => "--", "FB Out" => "--",
+          "Jaws In" => "--", "Jaws Out" => "--", "Finish" => "--" }
       end
-      let(:time_points) { event.required_time_points[0..3] + event.required_time_points[-1..-1] }
+      let(:time_points) { event.required_time_points[0..3] + event.required_time_points[-1..] }
 
       it "returns an empty array of children" do
         records = first_proto_record.children

@@ -2,7 +2,10 @@ module EventsHelper
   def link_to_event_delete(event)
     url = event_group_event_path(event.event_group, event)
     tooltip = "Delete this event"
-    options = { data: { turbo_confirm: "This will delete the event, together with all related entrants. Are you sure you want to proceed?",
+    confirm_message = "This will delete the event, together with all related entrants. " \
+                      "Are you sure you want to proceed?"
+
+    options = { data: { turbo_confirm: confirm_message,
                         turbo_method: :delete,
                         controller: :tooltip,
                         bs_placement: :bottom,

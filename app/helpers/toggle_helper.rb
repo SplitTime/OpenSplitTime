@@ -69,13 +69,16 @@ module ToggleHelper
 
   def button_to_check_out_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group)
+    confirm_message = "This will check out all unstarted entrants, making them ineligible to start. " \
+                      "Do you want to proceed?"
+
     html_options = {
       id: "check_out_all",
       class: "btn btn-outline-secondary",
       method: "patch",
       params: { efforts: { checked_in: false }, button: :check_out_all },
       data: {
-        turbo_confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
+        turbo_confirm: confirm_message,
         turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
         controller: "tooltip",
         bs_placement: :bottom,

@@ -18,7 +18,8 @@ module StrongConfirmHelper
     list_items = to_sentence(noteworthy_associations.map do |e|
       e.to_s.humanize.downcase
     end + ["other related information"])
-    message = "This will permanently delete the #{resource.name&.upcase} #{resource.class.model_name.human.downcase} with all of its #{list_items}."
+    resource_name = "#{resource.name&.upcase} #{resource.class.model_name.human.downcase}"
+    message = "This will permanently delete the #{resource_name} with all of its #{list_items}."
     message += "\n#{additional_warning}" if additional_warning.present?
 
     link_to_strong_confirm name, path_on_confirm,

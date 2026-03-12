@@ -11,7 +11,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
       expect { subject }.not_to raise_error
     end
 
-    context "if no effort is provided" do
+    context "when no effort is provided" do
       let(:effort) { nil }
 
       it "raises an error" do
@@ -19,7 +19,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
       end
     end
 
-    context "if no new_event is provided" do
+    context "when no new_event is provided" do
       let(:new_event) { nil }
 
       it "raises an error" do

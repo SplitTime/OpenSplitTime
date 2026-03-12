@@ -11,7 +11,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       expect { subject }.not_to raise_error
     end
 
-    context "if no event is provided" do
+    context "when no event is provided" do
       let(:event) { nil }
 
       it "raises an error" do
@@ -19,7 +19,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
     end
 
-    context "if no new_course is provided" do
+    context "when no new_course is provided" do
       let(:new_course) { nil }
 
       it "raises an error" do
@@ -76,10 +76,9 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
 
       it "rebuilds effort_segments for all efforts in the event" do
-        call_count = 0
-        allow_any_instance_of(Effort).to receive(:set_effort_segments) { call_count += 1 }
+        allow(EffortSegment).to receive(:set_for_effort).and_call_original
         subject.perform!
-        expect(call_count).to eq(efforts.count)
+        expect(EffortSegment).to have_received(:set_for_effort).exactly(efforts.count).times
       end
 
       it "makes no changes and returns an unsuccessful response with errors if names do not coincide" do

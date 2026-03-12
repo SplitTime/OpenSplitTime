@@ -17,7 +17,7 @@
   <%= turbo_frame_tag :course_info, data: { "event-setup-target" => "courseInfoFrame" } do %>
     <div class="row">
       <div class="col-12">
-        <%= form_with(model: [presenter.organization, presenter.course], html: { class: "form-horizontal", role: "form" }) do |form| %>
+        <%= form_with(model: [presenter.organization, presenter.new_course], html: { class: "form-horizontal", role: "form" }) do |form| %>
           <div class="card card-body bg-light border-0">
             <div class="row">
               <div class="mb-3 col">
@@ -35,7 +35,7 @@
               </div>
             </div>
 
-            <div class="<%= presenter.course.persisted? ? 'd-none' : '' %>" data-event-setup-target="courseForm">
+            <div class="<%= presenter.event.course_id.present? ? 'd-none' : '' %>" data-event-setup-target="courseForm">
               <div class="row">
                 <div class="mb-3 col">
                   <div class="row">

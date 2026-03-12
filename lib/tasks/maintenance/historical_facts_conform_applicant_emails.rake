@@ -4,9 +4,9 @@ namespace :maintenance do
     puts "Conforming people emails to match historical facts emails for lottery applicants"
 
     people = Person.joins(:historical_facts)
-      .where(historical_facts: { kind: :lottery_application} )
-      .where("historical_facts.email is not null and historical_facts.email <> people.email")
-      .distinct
+                   .where(historical_facts: { kind: :lottery_application })
+                   .where("historical_facts.email is not null and historical_facts.email <> people.email")
+                   .distinct
     person_count = people.count
 
     puts "Found #{person_count} people to update"

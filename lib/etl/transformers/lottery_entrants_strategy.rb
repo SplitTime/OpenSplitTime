@@ -44,14 +44,13 @@ module Etl
       end
 
       def validate_setup
-        errors << missing_parent_error("Lottery") unless lottery.present?
-        errors << missing_records_error unless proto_records.present?
+        errors << missing_parent_error("Lottery") if lottery.blank?
+        errors << missing_records_error if proto_records.blank?
 
-        if proto_records.present?
-          unless proto_records.first.keys.map { |key| key.to_s.underscore }.include?("division_name")
-            errors << missing_key_error("Division name")
-          end
-        end
+        return if proto_records.blank?
+        return if proto_records.first.keys.map { |key| key.to_s.underscore }.include?("division_name")
+
+        errors << missing_key_error("Division name")
       end
     end
   end

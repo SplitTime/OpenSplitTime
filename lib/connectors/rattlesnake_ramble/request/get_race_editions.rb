@@ -1,11 +1,17 @@
-class Connectors::RattlesnakeRamble::Request::GetRaceEditions
-  # @return [String]
-  def url_postfix
-    "/race_editions"
-  end
+module Connectors
+  module RattlesnakeRamble
+    module Request
+      class GetRaceEditions
+        # @return [String]
+        def url_postfix
+          "/race_editions"
+        end
 
-  # @return [Hash]
-  def specific_params
-    {}
+        # @return [Hash]
+        def specific_params
+          {}
+        end
+      end
+    end
   end
 end

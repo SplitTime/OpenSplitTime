@@ -2,6 +2,7 @@ module Etl
   module Extractors
     class PassThroughStrategy
       include Etl::Errors
+
       attr_reader :errors
 
       def initialize(raw_data, options)

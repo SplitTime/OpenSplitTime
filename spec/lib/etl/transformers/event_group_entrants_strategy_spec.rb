@@ -21,7 +21,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
     ]
   end
 
-  let(:options) { {parent: parent, import_job: import_job} }
+  let(:options) { { parent: parent, import_job: import_job } }
   let(:parent) { event_group }
   let(:import_job) { create(:import_job, parent_type: "EventGroup", parent_id: event_group.id, format: :event_group_entrants) }
 
@@ -39,7 +39,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
       ]
     end
 
-    context "in an event group with multiple events" do
+    describe "in an event group with multiple events" do
       let(:event_group) { event_groups(:rufa_2017) }
       let(:event_24_hour) { events("rufa_2017_24h") }
       let(:event_12_hour) { events("rufa_2017_12h") }
@@ -114,8 +114,8 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
         let(:struct_2_event_name) { "Half Marathon" }
         let(:parsed_structs) do
           [
-            OpenStruct.new(:Order_ID=>1234567, :Registration_Date=>"12/15/2022 7:00:10 AM", :distance=>struct_1_event_name, :Quantity=>1, :Price=>85.0, :Price_Option=>"Half Marathon - $85", :order_type=>"Credit Card", :Coupon=>0.0, :First_Name=>"Joe", :Last_Name=>"Jackson", :gender=>"M", :Identified_Gender=>"", :Age=>40, :AgeGroup=>"", :DOB=>"12/05/1982", :Email=>"jackson@gmail.com", :Address=>"222 Main Street", :City=>"Durango", :State=>"CO", :Zip=>80020, :Country=>"USA", :Phone=>3035551234, :Removed=>"False", :Bib=>12, :Captain=>"No", :team_name=>"", :emergency_name=>"Jane Jackson", :emergency_phone=>3035552345, :statement_id=>89410, :item_discount=>0.0, :order_tax=>0.23, :ultrasignup_fee=>6.57, :order_total=>94.8, :BBQ_Ticket_Meat_9=>"", :BBQ_Ticket_Veggie_9=>"", :Race_logo_20=>"", :Mens_Large_15=>"", :Mens_Large_20=>"", :Mens_Medium_15=>"", :Mens_Medium_20=>"", :Mens_Small_15=>"", :Mens_Small_20=>"", :Mens_XLarge_15=>"", :Mens_XLarge_20=>"", :Mens_XXL_15=>"", :One_Size_25=>"", :Sticker_3=>1, :Unisex_2XL_35=>"", :Unisex_Large_35=>"", :Unisex_Medium_35=>"", :Unisex_Small_35=>"", :Unisex_XL_35=>"", :Womens_Large_15=>"", :Womens_Large_20=>"", :Womens_Medium_15=>"", :Womens_Medium_20=>"", :Womens_Small_15=>"", :Womens_Small_20=>"", :Womens_XLarge_15=>"", :Womens_XLarge_20=>"", :Announcer_Notes=>"", :BBQ_Preference=>"Meat", :Is_this_your_first_attempt_at_this_distance=>"No", :Shirt_Size=>"Men's Medium", :What_name_would_you_like_printed_on_your_bib=>"Joe"),
-            OpenStruct.new(:Order_ID=>1234568, :Registration_Date=>"12/15/2022 9:00:20 AM", :distance=>struct_2_event_name, :Quantity=>1, :Price=>95.0, :Price_Option=>"Marathon - Registration $95", :order_type=>"Credit Card", :Coupon=>0.0, :First_Name=>"Antonio", :Last_Name=>"Banderas", :gender=>"M", :Identified_Gender=>"X", :Age=>35, :AgeGroup=>"", :DOB=>"08/15/1988", :Email=>"antonio@gmail.com", :Address=>"43 Main Avenue, Unit 4", :City=>"San Quentin", :State=>"CO", :Zip=>80003, :Country=>"USA", :Phone=>3035556788, :Removed=>"False", :Bib=>13, :Captain=>"No", :team_name=>"", :emergency_name=>"Jimmy Banderas", :emergency_phone=>3035554456, :statement_id=>89410, :item_discount=>0.0, :order_tax=>0.0, :ultrasignup_fee=>6.96, :order_total=>101.96, :BBQ_Ticket_Meat_9=>"", :BBQ_Ticket_Veggie_9=>"", :Race_logo_20=>"", :Mens_Large_15=>"", :Mens_Large_20=>"", :Mens_Medium_15=>"", :Mens_Medium_20=>"", :Mens_Small_15=>"", :Mens_Small_20=>"", :Mens_XLarge_15=>"", :Mens_XLarge_20=>"", :Mens_XXL_15=>"", :One_Size_25=>"", :Sticker_3=>"", :Unisex_2XL_35=>"", :Unisex_Large_35=>"", :Unisex_Medium_35=>"", :Unisex_Small_35=>"", :Unisex_XL_35=>"", :Womens_Large_15=>"", :Womens_Large_20=>"", :Womens_Medium_15=>"", :Womens_Medium_20=>"", :Womens_Small_15=>"", :Womens_Small_20=>"", :Womens_XLarge_15=>"", :Womens_XLarge_20=>"", :Announcer_Notes=>"Greek", :BBQ_Preference=>"Meat", :Is_this_your_first_attempt_at_this_distance=>"No", :Shirt_Size=>"Men's Medium", :What_name_would_you_like_printed_on_your_bib=>"Antonio")
+            OpenStruct.new(:Order_ID => 1_234_567, :Registration_Date => "12/15/2022 7:00:10 AM", :distance => struct_1_event_name, :Quantity => 1, :Price => 85.0, :Price_Option => "Half Marathon - $85", :order_type => "Credit Card", :Coupon => 0.0, :First_Name => "Joe", :Last_Name => "Jackson", :gender => "M", :Identified_Gender => "", :Age => 40, :AgeGroup => "", :DOB => "12/05/1982", :Email => "jackson@gmail.com", :Address => "222 Main Street", :City => "Durango", :State => "CO", :Zip => 80_020, :Country => "USA", :Phone => 3_035_551_234, :Removed => "False", :Bib => 12, :Captain => "No", :team_name => "", :emergency_name => "Jane Jackson", :emergency_phone => 3_035_552_345, :statement_id => 89_410, :item_discount => 0.0, :order_tax => 0.23, :ultrasignup_fee => 6.57, :order_total => 94.8, :BBQ_Ticket_Meat_9 => "", :BBQ_Ticket_Veggie_9 => "", :Race_logo_20 => "", :Mens_Large_15 => "", :Mens_Large_20 => "", :Mens_Medium_15 => "", :Mens_Medium_20 => "", :Mens_Small_15 => "", :Mens_Small_20 => "", :Mens_XLarge_15 => "", :Mens_XLarge_20 => "", :Mens_XXL_15 => "", :One_Size_25 => "", :Sticker_3 => 1, :Unisex_2XL_35 => "", :Unisex_Large_35 => "", :Unisex_Medium_35 => "", :Unisex_Small_35 => "", :Unisex_XL_35 => "", :Womens_Large_15 => "", :Womens_Large_20 => "", :Womens_Medium_15 => "", :Womens_Medium_20 => "", :Womens_Small_15 => "", :Womens_Small_20 => "", :Womens_XLarge_15 => "", :Womens_XLarge_20 => "", :Announcer_Notes => "", :BBQ_Preference => "Meat", :Is_this_your_first_attempt_at_this_distance => "No", :Shirt_Size => "Men's Medium", :What_name_would_you_like_printed_on_your_bib => "Joe"),
+            OpenStruct.new(:Order_ID => 1_234_568, :Registration_Date => "12/15/2022 9:00:20 AM", :distance => struct_2_event_name, :Quantity => 1, :Price => 95.0, :Price_Option => "Marathon - Registration $95", :order_type => "Credit Card", :Coupon => 0.0, :First_Name => "Antonio", :Last_Name => "Banderas", :gender => "M", :Identified_Gender => "X", :Age => 35, :AgeGroup => "", :DOB => "08/15/1988", :Email => "antonio@gmail.com", :Address => "43 Main Avenue, Unit 4", :City => "San Quentin", :State => "CO", :Zip => 80_003, :Country => "USA", :Phone => 3_035_556_788, :Removed => "False", :Bib => 13, :Captain => "No", :team_name => "", :emergency_name => "Jimmy Banderas", :emergency_phone => 3_035_554_456, :statement_id => 89_410, :item_discount => 0.0, :order_tax => 0.0, :ultrasignup_fee => 6.96, :order_total => 101.96, :BBQ_Ticket_Meat_9 => "", :BBQ_Ticket_Veggie_9 => "", :Race_logo_20 => "", :Mens_Large_15 => "", :Mens_Large_20 => "", :Mens_Medium_15 => "", :Mens_Medium_20 => "", :Mens_Small_15 => "", :Mens_Small_20 => "", :Mens_XLarge_15 => "", :Mens_XLarge_20 => "", :Mens_XXL_15 => "", :One_Size_25 => "", :Sticker_3 => "", :Unisex_2XL_35 => "", :Unisex_Large_35 => "", :Unisex_Medium_35 => "", :Unisex_Small_35 => "", :Unisex_XL_35 => "", :Womens_Large_15 => "", :Womens_Large_20 => "", :Womens_Medium_15 => "", :Womens_Medium_20 => "", :Womens_Small_15 => "", :Womens_Small_20 => "", :Womens_XLarge_15 => "", :Womens_XLarge_20 => "", :Announcer_Notes => "Greek", :BBQ_Preference => "Meat", :Is_this_your_first_attempt_at_this_distance => "No", :Shirt_Size => "Men's Medium", :What_name_would_you_like_printed_on_your_bib => "Antonio")
           ]
         end
 
@@ -143,7 +143,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
           expect(first_proto_record[:country_code]).to eq("US")
           expect(first_proto_record[:bib_number]).to eq(12)
           expect(first_proto_record[:emergency_contact]).to eq("Jane Jackson")
-          expect(first_proto_record[:emergency_phone]).to eq(3035552345)
+          expect(first_proto_record[:emergency_phone]).to eq(3_035_552_345)
           expect(first_proto_record[:comments]).to eq("")
 
           expect(second_proto_record[:first_name]).to eq("Antonio")
@@ -154,7 +154,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
           expect(second_proto_record[:country_code]).to eq("US")
           expect(second_proto_record[:bib_number]).to eq(13)
           expect(second_proto_record[:emergency_contact]).to eq("Jimmy Banderas")
-          expect(second_proto_record[:emergency_phone]).to eq(3035554456)
+          expect(second_proto_record[:emergency_phone]).to eq(3_035_554_456)
           expect(second_proto_record[:comments]).to eq("Greek")
         end
       end
@@ -167,11 +167,12 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
           expect(subject.errors.first.dig(:detail, :messages).first).to match(/No short name was found for Event ID #/)
           expect(subject.errors.first.dig(:detail, :row_index)).to be_nil
           expect(subject.errors.size).to eq(1)
-          end
+        end
       end
 
       context "when the transform fails" do
-        before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" }
+        before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" } # rubocop:disable RSpec/AnyInstance
+
         it "returns proto records (which will be in an untransformed or partially transformed state)" do
           expect(proto_records.size).to eq(2)
         end
@@ -223,7 +224,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
       end
     end
 
-    context "in an event group with a single event" do
+    describe "in an event group with a single event" do
       let(:event_group) { event_groups(:hardrock_2015) }
       let(:event) { event_group.events.first }
 

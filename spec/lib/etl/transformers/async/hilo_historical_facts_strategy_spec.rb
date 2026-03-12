@@ -238,7 +238,7 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
-        expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
+        expect(proto_records.pluck(:organization_id)).to all eq(organization.id)
 
         %i[first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)
@@ -262,7 +262,7 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
           proto_record.attributes[:kind] == :lottery_application && proto_record.attributes[:year] == 2025
         end
         expect(current_year_application_proto_records.count).to eq(3)
-        expect(current_year_application_proto_records.map { |pr| pr[:external_id]}).to eq([1234, 2345, 3456])
+        expect(current_year_application_proto_records.pluck(:external_id)).to eq([1234, 2345, 3456])
       end
 
       it "returns one proto_record for each prior year application" do
@@ -270,7 +270,7 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
           proto_record.attributes[:kind] == :lottery_application && proto_record.attributes[:year] < 2025
         end
         expect(prior_year_application_proto_records.count).to eq(8)
-        expect(prior_year_application_proto_records.map { |pr| pr[:year]}).to eq([2024, 2023, 2024, 2022, 2024, 2024, 2020, 2021])
+        expect(prior_year_application_proto_records.pluck(:year)).to eq([2024, 2023, 2024, 2022, 2024, 2024, 2020, 2021])
       end
 
       it "returns one proto_record for each reset" do
@@ -286,8 +286,8 @@ RSpec.describe Etl::Transformers::Async::HiloHistoricalFactsStrategy do
           proto_record.attributes[:kind] == :lottery_ticket_count_legacy
         end
         expect(reset_proto_records.count).to eq(5)
-        expect(reset_proto_records.map { |pr| pr[:year] }).to all eq(2025)
-        expect(reset_proto_records.map { |pr| pr[:quantity] }).to eq([1,2,2,0,2])
+        expect(reset_proto_records.pluck(:year)).to all eq(2025)
+        expect(reset_proto_records.pluck(:quantity)).to eq([1, 2, 2, 0, 2])
       end
 
       it "returns one proto_record for each entrant having volunteer points" do

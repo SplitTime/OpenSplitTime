@@ -70,56 +70,56 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           expect(keys).to include(expected_key)
         end
 
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with imposed_order attributes" do
           time_points = event.required_time_points
           expect(children.size).to eq(7)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 10_134, 10_219, 38_043, 38_600, 69_519, 80_647].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5, 6])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([0, 10_134, 10_219, 38_043, 38_600, 69_519, 80_647].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 1, 2, 3, 4, 5, 6])
         end
       end
 
-      context "for an incomplete proto_record" do
+      context "when the proto_record is incomplete" do
         let(:subject_proto_record) { proto_records.second }
 
         it "returns an expected array of children" do
-          time_points = event.required_time_points[0..0] + event.required_time_points[3..-1]
+          time_points = event.required_time_points[0..0] + event.required_time_points[3..]
           expect(children.size).to eq(5)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 34_824, 35_446, 60_516, 70_742].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 3, 4, 5, 6])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([0, 34_824, 35_446, 60_516, 70_742].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 3, 4, 5, 6])
         end
       end
 
-      context "for a proto_record with no finish time" do
+      context "when the proto_record has no finish time" do
         let(:subject_proto_record) { proto_records.fourth }
 
         it "returns an array of children correctly and sets [:stopped_here] attribute" do
           time_points = event.required_time_points.first(3)
           expect(children.size).to eq(3)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 9983, 10_064].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2])
-          expect(children.map { |pr| pr[:stopped_here] }).to eq([nil, nil, true])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([0, 9983, 10_064].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 1, 2])
+          expect(children.pluck(:stopped_here)).to eq([nil, nil, true])
         end
       end
 
-      context "for a proto_record that has no times" do
+      context "when the proto_record has no times" do
         let(:subject_proto_record) { proto_records.fifth }
 
         it "returns an empty array of child records" do
@@ -170,22 +170,22 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           expect(keys).to include(expected_key)
         end
 
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children" do
           time_points = event.required_time_points
           expect(children.size).to eq(3)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:military_time] }).to eq(%w[10:00:00 20:34:03 08:24:07])
-          expect(children.map { |pr| pr[:absolute_time] }).to all be_nil
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:military_time)).to eq(%w[10:00:00 20:34:03 08:24:07])
+          expect(children.pluck(:absolute_time)).to all be_nil
+          expect(children.pluck(:imposed_order)).to eq([0, 1, 2])
         end
       end
     end
@@ -220,36 +220,36 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           expect(keys).to include(expected_key)
         end
 
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with expected attributes" do
           time_points = event.required_time_points
           expect(children.size).to eq(2)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:imposed_order)).to eq([0, 1])
         end
 
         it "assigns time attributes properly" do
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1205].map { |e| start_time + e })
+          expect(children.pluck(:absolute_time)).to eq([0, 1205].map { |e| start_time + e })
         end
       end
 
-      context "for another complete proto_record" do
+      context "with another complete proto_record" do
         let(:subject_proto_record) { proto_records.second }
 
         it "assigns time attributes properly" do
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 3610].map { |e| start_time + e })
+          expect(children.pluck(:absolute_time)).to eq([0, 3610].map { |e| start_time + e })
         end
       end
 
-      context "for a proto record that has no finish time" do
+      context "when the proto_record has no finish time" do
         let(:subject_proto_record) { proto_records.last }
         it "does not assign a start or finish time" do
           expect(children.size).to eq(0)
@@ -262,16 +262,16 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
       let(:structs) do
         [
           OpenStruct.new(bib: 723, place: 1, first_name: "Chris", last_name: "Dickey", age: 34, gender: "m", time: "00:20:05",
-                         address: "123 Elm Street", zip: 84848, city: "Barnsfield", state: "CO", country: "USA",
+                         address: "123 Elm Street", zip: 84_848, city: "Barnsfield", state: "CO", country: "USA",
                          email: "dickey@example.com", dob: "05/01/1991", status: 1),
           OpenStruct.new(bib: 724, place: 2, first_name: "Jane", last_name: "Amelia", age: 35, gender: "f", time: "00:22:31",
-                         address: "123 Maple Ave.", zip: 84899, city: "Wolcott", state: "UT", country: "USA",
+                         address: "123 Maple Ave.", zip: 84_899, city: "Wolcott", state: "UT", country: "USA",
                          email: "jane@example.com", dob: "03/01/1990", status: 1),
           OpenStruct.new(bib: 725, place: nil, first_name: "Alfred", last_name: "Neumann", age: 80, gender: "m", time: 0,
-                         address: "123 Madness Ave.", zip: 84800, city: "Idaho Falls", state: "ID", country: "USA",
+                         address: "123 Madness Ave.", zip: 84_800, city: "Idaho Falls", state: "ID", country: "USA",
                          email: "alfred@example.com", dob: "01/01/1945", status: 2),
           OpenStruct.new(bib: 726, place: "", first_name: "Slept", last_name: "Late", age: 19, gender: "m", time: 0,
-                         address: "123 Sleepy Hollow", zip: 85800, city: "Phoenix", state: "AZ", country: "USA",
+                         address: "123 Sleepy Hollow", zip: 85_800, city: "Phoenix", state: "AZ", country: "USA",
                          email: "slept@example.com", dob: "09/01/2007", status: 3),
         ]
       end
@@ -293,36 +293,36 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           expect(keys).to include(expected_key)
         end
 
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with expected attributes" do
           time_points = event.required_time_points
           expect(children.size).to eq(2)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:imposed_order)).to eq([0, 1])
         end
 
         it "assigns time attributes properly" do
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1205].map { |e| start_time + e })
+          expect(children.pluck(:absolute_time)).to eq([0, 1205].map { |e| start_time + e })
         end
       end
 
-      context "for another complete proto_record" do
+      context "with another complete proto_record" do
         let(:subject_proto_record) { proto_records.second }
 
         it "assigns time attributes properly" do
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 1351].map { |e| start_time + e })
+          expect(children.pluck(:absolute_time)).to eq([0, 1351].map { |e| start_time + e })
         end
       end
 
-      context "for a proto record that started but did not finish" do
+      context "when the proto_record started but did not finish" do
         let(:subject_proto_record) { proto_records.third }
         it "assigns a start but not a finish time" do
           expect(children.size).to eq(1)
@@ -330,7 +330,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto record that did not start" do
+      context "when the proto_record did not start" do
         let(:subject_proto_record) { proto_records.last }
         it "does not assign a start or finish time" do
           expect(children.size).to eq(0)
@@ -364,25 +364,25 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           expect(keys).to include(expected_key)
         end
 
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children" do
           time_points = event.time_points_through(2)
           expect(children.size).to eq(6)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 34_824, 56_342, 57_600, 72_000, 86_399].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4, 5])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([0, 34_824, 56_342, 57_600, 72_000, 86_399].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 1, 2, 3, 4, 5])
         end
       end
 
-      context "for an incomplete proto_record" do
+      context "when the proto_record is incomplete" do
         let(:subject_proto_record) { proto_records.second }
 
         it "returns an array of children" do
@@ -390,26 +390,26 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
           time_points = [complete_time_points.first, complete_time_points.third, complete_time_points.last]
           expect(children.size).to eq(3)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([0, 54_000, 72_061].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 2, 5])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([0, 54_000, 72_061].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 2, 5])
         end
       end
 
-      context "for a dnf proto_record" do
+      context "when the proto_record is a dnf" do
         let(:subject_proto_record) { proto_records.third }
 
         it "returns an array of children" do
           time_points = event.time_points_through(2).first(5)
           expect(children.size).to eq(5)
           expect(children.map(&:record_type)).to all eq(:split_time)
-          expect(children.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(children.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(children.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(children.map { |pr| pr[:absolute_time] }).to eq([3600, 31_224, 49_142, 50_400, 64_800].map { |e| start_time + e })
-          expect(children.map { |pr| pr[:imposed_order] }).to eq([0, 1, 2, 3, 4])
+          expect(children.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(children.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(children.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(children.pluck(:absolute_time)).to eq([3600, 31_224, 49_142, 50_400, 64_800].map { |e| start_time + e })
+          expect(children.pluck(:imposed_order)).to eq([0, 1, 2, 3, 4])
         end
       end
     end

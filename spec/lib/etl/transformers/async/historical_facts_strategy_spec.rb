@@ -32,7 +32,7 @@ RSpec.describe Etl::Transformers::Async::HistoricalFactsStrategy do
             kind: "volunteer_year",
             comments: "Aid station work at Cunningham",
             year: 2024,
-            ),
+          ),
           OpenStruct.new(
             first_name: "Eloise",
             last_name: "Stokey",
@@ -58,7 +58,7 @@ RSpec.describe Etl::Transformers::Async::HistoricalFactsStrategy do
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
-        expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
+        expect(proto_records.pluck(:organization_id)).to all eq(organization.id)
 
         %i[first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)

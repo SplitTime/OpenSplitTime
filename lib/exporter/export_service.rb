@@ -24,6 +24,7 @@ module Exporter
         batch.each { |record| open_file.write serialized_record(record) }
 
         break if batch.empty?
+
         page += 1
       end
     end

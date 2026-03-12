@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
   subject { described_class.new(parsed_structs, options) }
-  let(:options) { {parent: event}.merge(delete_blank_times_option).merge(ignore_time_indices_option) }
+
+  let(:options) { { parent: event }.merge(delete_blank_times_option).merge(ignore_time_indices_option) }
   let(:delete_blank_times_option) { {} }
   let(:ignore_time_indices_option) { {} }
   let(:proto_records) { subject.transform }
@@ -16,7 +17,6 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
     context "when event is present and splits count matches split fields count" do
       let(:event) { events(:ggd30_50k) }
-      before { event.update(scheduled_start_time_local: "2018-10-31 07:00:00") }
       let(:time_points) { event.required_time_points }
       let(:parsed_structs) do
         [
@@ -62,12 +62,12 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
                          rr_id: "250")
         ]
       end
-
       let(:expected_times) { times_with_zone(expected_time_strings) }
+      before { event.update(scheduled_start_time_local: "2018-10-31 07:00:00") }
 
       it "returns the same number of ProtoRecords as it is given OpenStructs" do
         expect(proto_records.size).to eq(4)
-        expect(proto_records.all? { |row| row.is_a?(ProtoRecord) }).to eq(true)
+        expect(proto_records.all?(ProtoRecord)).to eq(true)
       end
 
       it "returns rows with effort headers transformed to match the database" do
@@ -75,7 +75,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
       end
 
       it "assigns event.id to :event_id key" do
-        expect(proto_records.map { |pr| pr[:event_id] }).to all eq(event.id)
+        expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
       context "when all times are present" do
@@ -93,15 +93,15 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
         it "sorts split headers and returns an array of children" do
           expect(records.size).to eq(7)
           expect(records.map(&:record_type)).to all eq(:split_time)
-          expect(records.map { |pr| pr[:lap] }).to eq(time_points.map(&:lap))
-          expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-          expect(records.map { |pr| pr[:sub_split_bitkey] }).to eq(time_points.map(&:bitkey))
-          expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+          expect(records.pluck(:lap)).to eq(time_points.map(&:lap))
+          expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+          expect(records.pluck(:sub_split_bitkey)).to eq(time_points.map(&:bitkey))
+          expect(records.pluck(:absolute_time)).to eq(expected_times)
         end
       end
 
       context "when options[:delete_blank_times] is true" do
-        let(:delete_blank_times_option) { {delete_blank_times: true} }
+        let(:delete_blank_times_option) { { delete_blank_times: true } }
 
         context "when end times are not present" do
           let(:records) { third_proto_record.children }
@@ -116,8 +116,8 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
           end
           it "returns expected absolute_times array and marks blank records for destruction" do
             expect(records.size).to eq(7)
-            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
-            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+            expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
+            expect(records.pluck(:absolute_time)).to eq(expected_times)
             expect(records.map(&:record_action)).to eq([nil, nil, nil, nil, nil, :destroy, :destroy])
           end
         end
@@ -135,7 +135,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
           end
 
           it "returns expected absolute_times" do
-            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+            expect(records.pluck(:absolute_time)).to eq(expected_times)
             expect(records.map(&:record_action)).to eq([nil, nil, nil, nil, :destroy, nil, nil])
           end
         end
@@ -149,11 +149,11 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
           end
 
           it "returns expected times_from_start array" do
-            expect(records.map { |pr| pr[:absolute_time] }).to all eq(nil)
+            expect(records.pluck(:absolute_time)).to all eq(nil)
           end
 
           it "returns expected split_id array" do
-            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id))
+            expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id))
           end
 
           it "destroys all records" do
@@ -165,21 +165,21 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
           let(:records) { third_proto_record.children }
 
           it "sets [:stopped_here] attribute on the final child record" do
-            expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-            expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true, nil, nil])
+            expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+            expect(records.pluck(:stopped_here)).to eq([nil, nil, nil, nil, true, nil, nil])
           end
         end
 
         context 'when [:status] is "OK" or "DNS"' do
           it "does not set [:stopped_here] attribute" do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(first_proto_record.children.pluck(:stopped_here)).to all be_nil
+            expect(second_proto_record.children.pluck(:stopped_here)).to all be_nil
+            expect(last_proto_record.children.pluck(:stopped_here)).to all be_nil
           end
         end
 
         context "when time indices are to be ignored" do
-          let(:ignore_time_indices_option) { {ignore_time_indices: [4]} }
+          let(:ignore_time_indices_option) { { ignore_time_indices: [4] } }
           let(:expected_split_ids) { (time_points[0..3] + time_points[5..6]).map(&:split_id) }
 
           context "when all times are present" do
@@ -195,7 +195,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index as instructed" do
               expect(records.size).to eq(6)
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+              expect(records.pluck(:absolute_time)).to eq(expected_times)
             end
 
             it "does not mark any records for destruction" do
@@ -203,7 +203,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
           end
 
@@ -220,7 +220,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index as instructed" do
               expect(records.size).to eq(6)
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+              expect(records.pluck(:absolute_time)).to eq(expected_times)
             end
 
             it "does not mark any records for destruction" do
@@ -228,7 +228,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
           end
 
@@ -237,11 +237,11 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index as instructed" do
               expect(records.size).to eq(6)
-              expect(records.map { |pr| pr[:absolute_time] }).to all eq(nil)
+              expect(records.pluck(:absolute_time)).to all eq(nil)
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
 
             it "marks all records for destruction" do
@@ -252,7 +252,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
       end
 
       context "when options[:delete_blank_times] is false" do
-        let(:delete_blank_times_option) { {delete_blank_times: false} }
+        let(:delete_blank_times_option) { { delete_blank_times: false } }
 
         context "when some times are not present" do
           let(:records) { third_proto_record.children }
@@ -266,8 +266,8 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
           it "returns expected absolute_times array" do
             expect(records.size).to eq(5)
-            expect(records.map { |pr| pr[:split_id] }).to eq(time_points.map(&:split_id).first(5))
-            expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+            expect(records.pluck(:split_id)).to eq(time_points.map(&:split_id).first(5))
+            expect(records.pluck(:absolute_time)).to eq(expected_times)
           end
         end
 
@@ -283,21 +283,21 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
           let(:records) { third_proto_record.children }
 
           it "sets [:stopped_here] attribute on the final child record" do
-            expect(records.reverse.find { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
-            expect(records.map { |pr| pr[:stopped_here] }).to eq([nil, nil, nil, nil, true])
+            expect(records.rfind { |pr| pr[:absolute_time].present? }[:stopped_here]).to eq(true)
+            expect(records.pluck(:stopped_here)).to eq([nil, nil, nil, nil, true])
           end
         end
 
         context 'when [:status] is "OK" or "DNS"' do
           it "does not set [:stopped_here] attribute" do
-            expect(first_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(second_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
-            expect(last_proto_record.children.map { |pr| pr[:stopped_here] }).to all be_nil
+            expect(first_proto_record.children.pluck(:stopped_here)).to all be_nil
+            expect(second_proto_record.children.pluck(:stopped_here)).to all be_nil
+            expect(last_proto_record.children.pluck(:stopped_here)).to all be_nil
           end
         end
 
         context "when time indices are to be ignored" do
-          let(:ignore_time_indices_option) { {ignore_time_indices: [4]} }
+          let(:ignore_time_indices_option) { { ignore_time_indices: [4] } }
           let(:expected_split_ids) { (time_points[0..3] + time_points[5..6]).map(&:split_id) }
 
           context "when all times are present" do
@@ -313,7 +313,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index as instructed" do
               expect(records.size).to eq(6)
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+              expect(records.pluck(:absolute_time)).to eq(expected_times)
             end
 
             it "does not mark any records for destruction" do
@@ -321,7 +321,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
           end
 
@@ -338,7 +338,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index as instructed" do
               expect(records.size).to eq(6)
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+              expect(records.pluck(:absolute_time)).to eq(expected_times)
             end
 
             it "does not mark any records for destruction" do
@@ -346,7 +346,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
           end
 
@@ -362,7 +362,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
 
             it "ignores the index and also the missing segment times" do
               expect(records.size).to eq(4)
-              expect(records.map { |pr| pr[:absolute_time] }).to eq(expected_times)
+              expect(records.pluck(:absolute_time)).to eq(expected_times)
             end
 
             it "does not mark any records for destruction" do
@@ -370,7 +370,7 @@ RSpec.describe Etl::Transformers::RaceResultApiSplitTimesStrategy do
             end
 
             it "returns expected split_id array" do
-              expect(records.map { |pr| pr[:split_id] }).to eq(expected_split_ids)
+              expect(records.pluck(:split_id)).to eq(expected_split_ids)
             end
           end
 

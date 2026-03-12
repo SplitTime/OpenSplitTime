@@ -47,12 +47,14 @@ module Etl
 
       def add_missing_hours
         proto_record[:times].transform_values! do |time_string|
-          time_string.split(":").size == 2 ? "00:" + time_string : time_string
+          time_string.split(":").size == 2 ? "00:#{time_string}" : time_string
         end
       end
 
       def parse_times
-        proto_record[:integer_times] = proto_record[:times].transform_values { |time_string| TimeConversion.hms_to_seconds(time_string) }
+        proto_record[:integer_times] = proto_record[:times].transform_values do |time_string|
+          TimeConversion.hms_to_seconds(time_string)
+        end
       end
 
       def add_incremental_times
@@ -64,16 +66,20 @@ module Etl
       end
 
       def calculate_times_from_start
-        proto_record[:times_from_start] = proto_record[:ordered_splits].map { |split| proto_record[:integer_times][split] }
+        proto_record[:times_from_start] = proto_record[:ordered_splits].map do |split|
+          proto_record[:integer_times][split]
+        end
         proto_record[:times_from_start].unshift(0) if proto_record[:times_from_start].any?(&:present?)
       end
 
       def calculate_absolute_times
-        proto_record[:absolute_times] = proto_record[:times_from_start].map { |seconds| seconds ? event.scheduled_start_time + seconds : nil }
+        proto_record[:absolute_times] = proto_record[:times_from_start].map do |seconds|
+          seconds ? event.scheduled_start_time + seconds : nil
+        end
       end
 
       def global_attributes
-        {event_id: event.id}
+        { event_id: event.id }
       end
 
       def time_points
@@ -85,7 +91,7 @@ module Etl
       end
 
       def validate_setup
-        errors << missing_event_error unless event.present?
+        errors << missing_event_error if event.blank?
       end
     end
   end

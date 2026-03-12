@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe Etl::AsyncImporter do
-  subject { Etl::AsyncImporter.new(import_job) }
+  subject { described_class.new(import_job) }
+
   let(:import_job) do
     create(
       :import_job,
@@ -30,7 +31,7 @@ RSpec.describe Etl::AsyncImporter do
 
   context "when a lottery entrant import file is valid and format is recognized" do
     it "creates new lottery entrants" do
-      expect { subject.import! }.to change { ::LotteryEntrant.count }.by(3)
+      expect { subject.import! }.to change(::LotteryEntrant, :count).by(3)
     end
 
     it "assigns expected attributes and divisions" do
@@ -62,7 +63,7 @@ RSpec.describe Etl::AsyncImporter do
     context "when the import file has rows that will not transform" do
       let(:source_data) { file_fixture("test_lottery_entrants_transform_problems.csv") }
       it "does not create new lottery entrants for those rows" do
-        expect { subject.import! }.not_to change { ::LotteryEntrant.count }
+        expect { subject.import! }.not_to(change(::LotteryEntrant, :count))
       end
 
       it "sets import job attributes properly" do
@@ -81,7 +82,7 @@ RSpec.describe Etl::AsyncImporter do
     context "when all rows transform but some will not load" do
       let(:source_data) { file_fixture("test_lottery_entrants_load_problems.csv") }
       it "does not create new lottery entrants" do
-        expect { subject.import! }.to change { ::LotteryEntrant.count }.by(1)
+        expect { subject.import! }.to change(::LotteryEntrant, :count).by(1)
       end
 
       it "sets import job attributes properly" do
@@ -107,7 +108,7 @@ RSpec.describe Etl::AsyncImporter do
     let(:source_data) { file_fixture("test_efforts_nonbinary.csv") }
 
     it "creates new efforts" do
-      expect { subject.import! }.to change { ::Effort.count }.by(3)
+      expect { subject.import! }.to change(::Effort, :count).by(3)
     end
 
     it "assigns expected attributes and events" do
@@ -151,7 +152,7 @@ RSpec.describe Etl::AsyncImporter do
     end
 
     it "creates new historical_facts" do
-      expect { subject.import! }.to change { ::HistoricalFact.count }.by(83)
+      expect { subject.import! }.to change(::HistoricalFact, :count).by(83)
     end
 
     it "assigns expected attributes" do
@@ -180,7 +181,7 @@ RSpec.describe Etl::AsyncImporter do
     let(:import_job) { build(:import_job, parent: nil) }
 
     it "does not import any records" do
-      expect { subject.import! }.not_to change { ::LotteryEntrant.count }
+      expect { subject.import! }.not_to(change(::LotteryEntrant, :count))
     end
 
     it "sets status and an error message on the import job" do
@@ -193,7 +194,7 @@ RSpec.describe Etl::AsyncImporter do
   context "when the format is not recognized" do
     let(:format) { :non_existent }
     it "does not import any records" do
-      expect { subject.import! }.not_to change { ::LotteryEntrant.count }
+      expect { subject.import! }.not_to(change(::LotteryEntrant, :count))
     end
 
     it "sets status and an error message on the import job" do

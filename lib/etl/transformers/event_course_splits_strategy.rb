@@ -30,8 +30,8 @@ module Etl
       alias event parent
 
       def validate_setup
-        errors << missing_parent_error("Event") unless event.present?
-        errors << missing_records_error unless proto_records.present?
+        errors << missing_parent_error("Event") if event.blank?
+        errors << missing_records_error if proto_records.blank?
       end
     end
   end

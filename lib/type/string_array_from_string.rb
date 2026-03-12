@@ -9,10 +9,10 @@ module Type
     # @return [Array<String>]
     def cast(value)
       return super if value.is_a?(Enumerable)
-      return [] unless value.present?
+      return [] if value.blank?
 
       stripped_value = value.to_s.match(/\A{(.*)}\z/)[1]
-      return [] unless stripped_value.present?
+      return [] if stripped_value.blank?
 
       stripped_value.split(",")
     end

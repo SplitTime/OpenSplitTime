@@ -9,7 +9,7 @@ task :merge_organizations, [:disappearing_organization_id, :surviving_organizati
 
   puts "This will merge #{disappearing_organization.name} into #{surviving_organization.name}"
   puts "Are you sure you want to do this? (y/n)"
-  answer = STDIN.gets.chomp
+  answer = $stdin.gets.chomp
   abort unless answer.downcase == "y"
 
   relevant_models = [

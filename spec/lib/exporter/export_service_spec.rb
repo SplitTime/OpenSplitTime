@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe ::Exporter::ExportService do
   subject { described_class.new(resource_class, resources, export_attributes) }
+
   let(:resource_class) { ::Organization }
-  let(:resources) { ::Organization.all.order(:name) }
+  let(:resources) { ::Organization.order(:name) }
   let(:export_attributes) { [:name, :slug, :concealed] }
 
   describe "#csv_to_file" do

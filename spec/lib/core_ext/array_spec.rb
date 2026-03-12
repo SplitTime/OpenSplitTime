@@ -114,6 +114,7 @@ RSpec.describe Array do
 
     context 'when the "inclusive" parameter is not provided' do
       subject { array.elements_before(element) }
+
       let(:array) { %w[cat bird sheep ferret coyote] }
       let(:element) { "ferret" }
 
@@ -224,6 +225,7 @@ RSpec.describe Array do
 
     context 'when the "inclusive" parameter is not provided' do
       subject { array.elements_after(element) }
+
       let(:array) { %w[cat bird sheep ferret coyote] }
       let(:element) { "ferret" }
 

@@ -1,14 +1,6 @@
 require "rails_helper"
 
 RSpec.describe TimeConversion do
-  before(:context) do
-    ENV["TZ"] = "UTC"
-  end
-
-  after(:context) do
-    ENV["TZ"] = nil
-  end
-
   describe ".hms_to_seconds" do
     let(:result) { described_class.hms_to_seconds(hms_elapsed) }
 
@@ -91,12 +83,12 @@ RSpec.describe TimeConversion do
       it { expect(result).to eq("01:15:45") }
     end
 
-    context "for times in excess of 24 hours" do
+    context "when the time exceeds 24 hours" do
       let(:seconds) { 100_000 }
       it { expect(result).to eq("27:46:40") }
     end
 
-    context "for times in excess of 100 hours" do
+    context "when the time exceeds 100 hours" do
       let(:seconds) { 500_000 }
       it { expect(result).to eq("138:53:20") }
     end
@@ -165,7 +157,7 @@ RSpec.describe TimeConversion do
       it { expect(result).to eq("02:30:00") }
     end
 
-    context "substitutes zeros for non-numeric characters at the end of the string" do
+    context "when non-numeric characters are at the end of the string" do
       let(:time_string) { "12:30:ss" }
       it { expect(result).to eq("12:30:00") }
     end

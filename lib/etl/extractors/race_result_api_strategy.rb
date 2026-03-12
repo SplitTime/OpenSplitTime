@@ -1,9 +1,10 @@
 module Etl
   module Extractors
     class RaceResultApiStrategy
-      NAME_WITHOUT_BIB_REGEX = /[^ #0-9\.].*/
+      NAME_WITHOUT_BIB_REGEX = /[^ #0-9.].*/
 
       include Etl::Errors
+
       attr_reader :errors
 
       def initialize(raw_data, options)
@@ -26,7 +27,9 @@ module Etl
       end
 
       def attribute_pairs(data_row)
-        time_pairs = time_indices.map.with_index { |time_index, i| ["time_#{i}".to_sym, data_row[time_index].gsub("Time: ", "")] }.to_h
+        time_pairs = time_indices.map.with_index do |time_index, i|
+          [:"time_#{i}", data_row[time_index].gsub("Time: ", "")]
+        end.to_h
         bib = data_row[0]
         name = data_row[1].match(NAME_WITHOUT_BIB_REGEX).to_a.first
         name = name.titleize
@@ -38,8 +41,8 @@ module Etl
         @time_indices ||= data_fields.map.with_index(1) { |header, i| time_index(header, i) }.compact
       end
 
-      def time_index(header, i)
-        i if header["expression"].include?('"Time: "')
+      def time_index(header, index)
+        index if header["expression"].include?('"Time: "')
       end
 
       def data_rows
@@ -51,8 +54,8 @@ module Etl
       end
 
       def validate_raw_data
-        errors << missing_data_error(raw_data) unless data_rows.present?
-        errors << missing_fields_error(raw_data) unless data_fields.present?
+        errors << missing_data_error(raw_data) if data_rows.blank?
+        errors << missing_fields_error(raw_data) if data_fields.blank?
       end
     end
   end

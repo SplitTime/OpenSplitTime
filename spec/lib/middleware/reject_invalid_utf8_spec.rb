@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Middleware::RejectInvalidUtf8 do
-  let(:app) { ->(env) { [200, {}, ["OK"]] } }
+  let(:app) { ->(_env) { [200, {}, ["OK"]] } }
   let(:middleware) { described_class.new(app) }
 
   describe "#call" do

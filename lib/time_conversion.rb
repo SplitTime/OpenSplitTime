@@ -1,9 +1,9 @@
 class TimeConversion
-  HMS_FORMAT = /\A-?\d+:\d{2}(:\d{2})?(\.\d+)?\z/.freeze
-  MILITARY_FORMAT = /\A([0-1]\d|2[0-3]|[0-9]):([0-5]\d)(:[0-5]\d)?\z/.freeze
+  HMS_FORMAT = /\A-?\d+:\d{2}(:\d{2})?(\.\d+)?\z/
+  MILITARY_FORMAT = /\A([0-1]\d|2[0-3]|[0-9]):([0-5]\d)(:[0-5]\d)?\z/
 
   def self.hms_to_seconds(hms)
-    return nil unless hms.present?
+    return nil if hms.blank?
     raise ArgumentError, "Improper hms time format: #{hms}" unless hms =~ HMS_FORMAT
 
     negative = hms.start_with?("-")
@@ -12,13 +12,13 @@ class TimeConversion
     numeric_method = milliseconds_present ? :to_f : :to_i
     units = %w[hours minutes seconds]
     seconds = components.zip(units).map { |component, unit| component.send(numeric_method).send(unit) }
-        .sum.send(numeric_method)
+                                   .sum.send(numeric_method)
     negative ? -seconds : seconds
   end
 
   def self.seconds_to_hms(seconds_elapsed, options = {})
     return "" unless seconds_elapsed
-    return "--:--:--" if options[:blank_zero] && seconds_elapsed == 0
+    return "--:--:--" if options[:blank_zero] && seconds_elapsed.zero?
 
     to_hms(seconds_elapsed / 1.hour,
            (seconds_elapsed / 1.minute) % 1.minute,
@@ -26,9 +26,9 @@ class TimeConversion
   end
 
   def self.absolute_to_hms(absolute)
-    return "" unless absolute.present?
+    return "" if absolute.blank?
 
-    I18n.localize(absolute, format: :military)
+    I18n.l(absolute, format: :military)
   end
 
   def self.components_to_absolute(components)
@@ -42,9 +42,10 @@ class TimeConversion
   def self.to_hms(hours, minutes, seconds)
     hundredths = (seconds % 1 * 100).to_i
     if seconds.is_a?(Integer)
-      format("%02d:%02d:%02d", hours, minutes, seconds)
+      format("%<hours>02d:%<minutes>02d:%<seconds>02d", hours: hours, minutes: minutes, seconds: seconds)
     else
-      format("%02d:%02d:%02d.%02d", hours, minutes, seconds, hundredths)
+      format("%<hours>02d:%<minutes>02d:%<seconds>02d.%<hundredths>02d",
+             hours: hours, minutes: minutes, seconds: seconds, hundredths: hundredths)
     end
   end
 
@@ -67,7 +68,7 @@ class TimeConversion
     return if invalid_military?(new_string)
 
     datetime = time_string.to_datetime
-    return absolute_to_hms(datetime) if datetime.present?
+    absolute_to_hms(datetime) if datetime.present?
   rescue Date::Error
     nil
   end

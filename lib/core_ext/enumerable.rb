@@ -1,7 +1,7 @@
 module CoreExt
   module Enumerable
-    def count_by(&block)
-      Hash[group_by(&block).map { |k, v| [k, v.size] }]
+    def count_by(&)
+      group_by(&).to_h { |k, v| [k, v.size] }
     end
 
     def count_each

@@ -21,10 +21,10 @@ module Etl
 
     def process_splits
       splits = grouped_records[Split]
-      if splits.present?
-        existing_splits = event.splits.to_set
-        splits.each { |split| event.splits << split unless existing_splits.include?(split) }
-      end
+      return if splits.blank?
+
+      existing_splits = event.splits.to_set
+      splits.each { |split| event.splits << split unless existing_splits.include?(split) }
     end
 
     def process_efforts
@@ -34,11 +34,11 @@ module Etl
 
     def process_split_times
       split_times = grouped_records[SplitTime]
-      if split_times.present?
-        updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
-        Interactors::UpdateEffortsStatus.perform!(updated_efforts)
-        BulkProgressNotifier.notify(split_times) if event.permit_notifications?
-      end
+      return if split_times.blank?
+
+      updated_efforts = event.efforts.where(id: split_times.map(&:effort_id).uniq).includes(split_times: :split)
+      Interactors::UpdateEffortsStatus.perform!(updated_efforts)
+      BulkProgressNotifier.notify(split_times) if event.permit_notifications?
     end
 
     def grouped_records

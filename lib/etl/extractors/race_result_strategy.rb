@@ -2,6 +2,7 @@ module Etl
   module Extractors
     class RaceResultStrategy
       include Etl::Errors
+
       attr_reader :errors
 
       def initialize(raw_data, options)
@@ -47,8 +48,8 @@ module Etl
       end
 
       def validate_raw_data
-        errors << missing_data_error(raw_data) unless data_rows.present?
-        errors << missing_fields_error(raw_data) unless data_fields.present?
+        errors << missing_data_error(raw_data) if data_rows.blank?
+        errors << missing_fields_error(raw_data) if data_fields.blank?
       end
     end
   end

@@ -64,7 +64,7 @@ RSpec.describe Etl::CsvTemplates do
       end
     end
 
-    context "for event_group_entrants" do
+    describe "for event_group_entrants" do
       let(:format) { :event_group_entrants }
       let(:parent) { event_groups(:hardrock_2015) }
 

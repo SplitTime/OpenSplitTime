@@ -13,7 +13,7 @@ module Etl
 
         proto_records.each do |proto_record|
           proto_record.record_type = :effort
-          proto_record.map_keys!({name: :full_name, sex: :gender, bib: :bib_number})
+          proto_record.map_keys!({ name: :full_name, sex: :gender, bib: :bib_number })
           proto_record.normalize_gender!
           remove_name_classifications(proto_record)
           proto_record.split_field!(:full_name, :first_name, :last_name)
@@ -36,11 +36,11 @@ module Etl
       end
 
       def global_attributes
-        {event_id: event.id}
+        { event_id: event.id }
       end
 
       def validate_setup
-        errors << missing_event_error unless event.present?
+        errors << missing_event_error if event.blank?
       end
     end
   end

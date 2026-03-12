@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Etl::Importer do
-  subject { Etl::Importer.new(source_data, data_format, options) }
+  subject { described_class.new(source_data, data_format, options) }
 
   context "when importing efforts using :csv_efforts" do
     let(:source_data) { file_fixture("test_efforts_utf_8.csv") }
     let(:data_format) { :csv_efforts }
-    let(:options) { {parent: event, current_user_id: 1} }
+    let(:options) { { parent: event, current_user_id: 1 } }
     let(:event) { create(:event) }
 
     it "creates new efforts within the given event" do
@@ -22,7 +22,7 @@ RSpec.describe Etl::Importer do
   context "when importing splits using :csv_splits into a course with no existing splits" do
     let(:source_data) { file_fixture("test_splits.csv") }
     let(:data_format) { :csv_splits }
-    let(:options) { {parent: event, current_user_id: 1} }
+    let(:options) { { parent: event, current_user_id: 1 } }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
 
@@ -32,14 +32,14 @@ RSpec.describe Etl::Importer do
       expect(subject.errors).to be_empty
       course.reload
       expect(course.splits.size).to eq(4)
-      expect(course.splits.map(&:base_name)).to match_array(["Start", "Aid 1", "Aid 2", "Finish"])
+      expect(course.splits.map(&:base_name)).to contain_exactly("Start", "Aid 1", "Aid 2", "Finish")
     end
   end
 
   context "when importing splits using :csv_splits into a course with existing start and finish splits" do
     let(:source_data) { file_fixture("test_splits.csv") }
     let(:data_format) { :csv_splits }
-    let(:options) { {parent: event, current_user_id: 1} }
+    let(:options) { { parent: event, current_user_id: 1 } }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do
@@ -53,14 +53,14 @@ RSpec.describe Etl::Importer do
       expect(subject.errors).to be_empty
       course.reload
       expect(course.splits.size).to eq(4)
-      expect(course.splits.map(&:base_name)).to match_array(["Start", "Aid 1", "Aid 2", "Finish"])
+      expect(course.splits.map(&:base_name)).to contain_exactly("Start", "Aid 1", "Aid 2", "Finish")
     end
   end
 
   context "when importing minimal splits using :csv_splits into a course with existing start and finish splits" do
     let(:source_data) { file_fixture("test_splits_minimal.csv") }
     let(:data_format) { :csv_splits }
-    let(:options) { {parent: event, current_user_id: 1} }
+    let(:options) { { parent: event, current_user_id: 1 } }
     let(:event) { create(:event, course: course) }
     let(:course) { create(:course) }
     before do
@@ -74,7 +74,7 @@ RSpec.describe Etl::Importer do
       expect(subject.errors).to be_empty
       course.reload
       expect(course.splits.size).to eq(4)
-      expect(course.splits.map(&:base_name)).to match_array(["Start", "Aid 1", "Aid 2", "Finish"])
+      expect(course.splits.map(&:base_name)).to contain_exactly("Start", "Aid 1", "Aid 2", "Finish")
     end
   end
 end

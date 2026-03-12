@@ -58,7 +58,7 @@ module Etl
       end
 
       def global_attributes
-        {event_id: event.id}
+        { event_id: event.id }
       end
 
       def time_zone
@@ -70,7 +70,7 @@ module Etl
       end
 
       def validate_setup
-        errors << missing_event_error unless event.present?
+        errors << missing_event_error if event.blank?
       end
     end
   end

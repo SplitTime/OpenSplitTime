@@ -13,11 +13,13 @@ module Etl
     end
 
     def file_too_large_error(file)
-      { title: "File too large", detail: { messages: ["File #{file} is #{file.size / 1.kilobyte} KB, but maximum file size is 500 KB"] } }
+      { title: "File too large",
+        detail: { messages: ["File #{file} is #{file.size / 1.kilobyte} KB, but maximum file size is 500 KB"] } }
     end
 
     def file_type_incorrect_error(file)
-      { title: "File type incorrect", detail: { messages: ["File #{file} must have a .csv extension and must be a CSV file"] } }
+      { title: "File type incorrect",
+        detail: { messages: ["File #{file} must have a .csv extension and must be a CSV file"] } }
     end
 
     def format_not_recognized_error(format)
@@ -33,7 +35,8 @@ module Etl
     end
 
     def invalid_proto_record_error(proto_record, row_index)
-      { title: "Invalid proto record", detail: { row_index: row_index, messages: ["Invalid proto record: #{proto_record}"] } }
+      { title: "Invalid proto record",
+        detail: { row_index: row_index, messages: ["Invalid proto record: #{proto_record}"] } }
     end
 
     def jsonapi_error_object(record)
@@ -59,8 +62,8 @@ module Etl
 
     def missing_fields_error(raw_data)
       { title: "Invalid fields",
-        detail: { messages: ["The provided file #{raw_data} has a problem with the ['list'] key " +
-                               "or the ['list']['fields'] key or its values"] } }
+        detail: { messages: ["The provided file #{raw_data} has a problem with the ['list'] key " \
+                             "or the ['list']['fields'] key or its values"] } }
     end
 
     def missing_key_error(*keys)
@@ -80,8 +83,15 @@ module Etl
     end
 
     def missing_short_name_error(event)
-      { title: "Short name is missing",
-        detail: { messages: ["Imports for a group having multiple events require that a short name be provided for each event. No short name was found for Event ID ##{event.id}"] } }
+      {
+        title: "Short name is missing",
+        detail: {
+          messages: [
+            "Imports for a group having multiple events require that a short name be provided for each event. " \
+            "No short name was found for Event ID ##{event.id}"
+          ]
+        }
+      }
     end
 
     def missing_split_error
@@ -90,8 +100,15 @@ module Etl
     end
 
     def missing_start_key_error
-      { title: "Start key is missing",
-        detail: { messages: ['This import requires a column titled "start" or "start offset" to indicate at what point split times begin'] } }
+      {
+        title: "Start key is missing",
+        detail: {
+          messages: [
+            'This import requires a column titled "start" or "start offset" ' \
+            "to indicate at what point split times begin"
+          ]
+        }
+      }
     end
 
     def missing_table_error
@@ -116,7 +133,11 @@ module Etl
 
     def resource_not_found_error(resource_class, provided_resource_name, row_index)
       humanized_resource_class = resource_class.to_s.underscore.humanize
-      message = provided_resource_name.present? ? "#{humanized_resource_class} could not be found: #{provided_resource_name}" : "#{humanized_resource_class} was not provided"
+      message = if provided_resource_name.present?
+                  "#{humanized_resource_class} could not be found: #{provided_resource_name}"
+                else
+                  "#{humanized_resource_class} was not provided"
+                end
       { title: "#{humanized_resource_class} not found", detail: { row_index: row_index, messages: [message] } }
     end
 
@@ -141,8 +162,8 @@ module Etl
 
     def split_mismatch_error(event, time_points_size, time_keys_size)
       { title: "Split mismatch error",
-        detail: { messages: ["#{event} expects #{time_points_size} time points (including the start split) " +
-                               "but the provided data contemplates #{time_keys_size} time points."] } }
+        detail: { messages: ["#{event} expects #{time_points_size} time points (including the start split) " \
+                             "but the provided data contemplates #{time_keys_size} time points."] } }
     end
 
     def transform_failed_error(error_text, row_index)
@@ -151,8 +172,15 @@ module Etl
     end
 
     def value_not_permitted_error(option, permitted_values, provided_value)
-      { title: "Argument value is not permitted",
-        detail: { messages: ["Values for #{option} must be within #{permitted_values.to_sentence} but #{provided_value} was provided"] } }
+      {
+        title: "Argument value is not permitted",
+        detail: {
+          messages: [
+            "Values for #{option} must be within #{permitted_values.to_sentence} " \
+            "but #{provided_value} was provided"
+          ]
+        }
+      }
     end
   end
 end

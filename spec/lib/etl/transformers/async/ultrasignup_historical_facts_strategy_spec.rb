@@ -19,7 +19,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
       let(:structs) do
         [
           OpenStruct.new(
-            :Order_ID => 26861,
+            :Order_ID => 26_861,
             :Registration_Date => "2024-10-05",
             :distance => "100 Mile",
             :Quantity => 1,
@@ -38,7 +38,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Address => "7463 Carmella Lakes",
             :City => "North Donna",
             :State => "CO",
-            :Zip => 80202,
+            :Zip => 80_202,
             :Country => "UZ",
             :Phone => "(796)778-1767 x7154",
             :Removed => "No",
@@ -73,7 +73,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Years_volunteered => 3
           ),
           OpenStruct.new(
-            :Order_ID => 26861,
+            :Order_ID => 26_861,
             :Registration_Date => "2024-10-05",
             :distance => "100 Mile",
             :Quantity => 1,
@@ -92,7 +92,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Address => "14181 Calvin Cove",
             :City => "Zacktown",
             :State => "MS",
-            :Zip => 80202,
+            :Zip => 80_202,
             :Country => "DE",
             :Phone => "453-682-9576",
             :Removed => "No",
@@ -127,7 +127,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Years_volunteered => 0
           ),
           OpenStruct.new(
-            :Order_ID => 26868,
+            :Order_ID => 26_868,
             :Registration_Date => "2024-10-05",
             :distance => "100 Mile",
             :Quantity => 1,
@@ -146,15 +146,15 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Address => "678 Allée du bois",
             :City => "ARNAS",
             :State => "",
-            :Zip => 80202,
+            :Zip => 80_202,
             :Country => "FRA",
-            :Phone => 33688547410,
+            :Phone => 33_688_547_410,
             :Removed => "No",
             :Bib => "",
             :Captain => "no",
             :team_name => "",
             :emergency_name => "Françoise Benoit",
-            :emergency_phone => 33682847631,
+            :emergency_phone => 33_682_847_631,
             :statement_id => "",
             :item_discount => "",
             :order_tax => 0.0,
@@ -181,7 +181,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Years_volunteered => 0
           ),
           OpenStruct.new(
-            :Order_ID => 26891,
+            :Order_ID => 26_891,
             :Registration_Date => "2024-10-05",
             :distance => "100 Mile",
             :Quantity => 1,
@@ -200,15 +200,15 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
             :Address => "54 Majestic Valley Road, Aneia",
             :City => "Johannesburg",
             :State => "Gauteng",
-            :Zip => 80202,
+            :Zip => 80_202,
             :Country => "ZAF",
-            :Phone => 27833123123,
+            :Phone => 27_833_123_123,
             :Removed => "No",
             :Bib => "",
             :Captain => "no",
             :team_name => "",
             :emergency_name => "Promo",
-            :emergency_phone => 27724373177,
+            :emergency_phone => 27_724_373_177,
             :statement_id => "",
             :item_discount => "",
             :order_tax => 0.0,
@@ -245,7 +245,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
       it "returns proto_records and correct keys" do
         expect(proto_records).to be_present
         expect(proto_records).to all be_a(ProtoRecord)
-        expect(proto_records.map { |pr| pr[:organization_id] }).to all eq(organization.id)
+        expect(proto_records.pluck(:organization_id)).to all eq(organization.id)
 
         %i[external_id first_name last_name gender birthdate address state_code country_code email].each do |expected_key|
           expect(keys).to include(expected_key)
@@ -257,7 +257,7 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
         expect(lottery_application_proto_records.size).to eq(structs.size)
         proto_record = lottery_application_proto_records.first
         expect(proto_record[:comments]).to eq("Ultrasignup")
-        expect(proto_record[:external_id]).to eq(26861)
+        expect(proto_record[:external_id]).to eq(26_861)
       end
 
       it "returns one proto_record for each multi-year volunteer fact" do
@@ -272,32 +272,32 @@ RSpec.describe Etl::Transformers::Async::UltrasignupHistoricalFactsStrategy do
       it "returns one proto_record for each reported qualifier" do
         qualifier_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :qualifier_finish }
         expect(qualifier_proto_records.count).to eq(4)
-        expect(qualifier_proto_records.map { |pr| pr[:comments] })
-          .to match_array(["2023 AUG: Bigfoot 200", "2023 Nov: Ultra-Trail Cape Town", "2023 OCT: Diagonale des Fous (Reunion Is)", "2023 SEPT: Tor de Geants (Italy)"])
+        expect(qualifier_proto_records.pluck(:comments))
+          .to contain_exactly("2023 AUG: Bigfoot 200", "2023 Nov: Ultra-Trail Cape Town", "2023 OCT: Diagonale des Fous (Reunion Is)", "2023 SEPT: Tor de Geants (Italy)")
       end
 
       it "returns one proto_record for each provided emergency contact" do
         emergency_contact_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :emergency_contact }
         expect(emergency_contact_proto_records.count).to eq(3)
-        expect(emergency_contact_proto_records.map { |pr| pr[:comments] }).to match_array(["Carleen Paucek", "Françoise Benoit, 33682847631", "Promo, 27724373177"])
+        expect(emergency_contact_proto_records.pluck(:comments)).to contain_exactly("Carleen Paucek", "Françoise Benoit, 33682847631", "Promo, 27724373177")
       end
 
       it "returns one proto_record for each provided previous name, ignoring junk and identical names" do
         previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :previous_name }
         expect(previous_name_proto_records.count).to eq(3)
-        expect(previous_name_proto_records.map { |pr| pr[:comments] }).to match_array(["David Conroy", "Marie Antoinette", "Maria Sanjust"])
+        expect(previous_name_proto_records.pluck(:comments)).to contain_exactly("David Conroy", "Marie Antoinette", "Maria Sanjust")
       end
 
       it "returns one proto_record per struct for ever finished" do
         previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :ever_finished }
         expect(previous_name_proto_records.count).to eq(4)
-        expect(previous_name_proto_records.map { |pr| pr[:comments] }).to match_array(["no", "no", "no", "yes"])
+        expect(previous_name_proto_records.pluck(:comments)).to contain_exactly("no", "no", "no", "yes")
       end
 
       it "returns one proto_record per struct for DNS since finish" do
         previous_name_proto_records = proto_records.select { |proto_record| proto_record.attributes[:kind] == :dns_since_finish }
         expect(previous_name_proto_records.count).to eq(4)
-        expect(previous_name_proto_records.map { |pr| pr[:quantity] }).to match_array([0,0,1,3])
+        expect(previous_name_proto_records.pluck(:quantity)).to contain_exactly(0, 0, 1, 3)
       end
     end
 

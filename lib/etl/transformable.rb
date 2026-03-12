@@ -1,5 +1,8 @@
 module Etl
   module Transformable
+    GENDER_MAP = { "m" => "male", "f" => "female", "x" => "nonbinary", "n" => "nonbinary" }.freeze
+    SPLIT_TYPE_MAP = { "s" => "start", "i" => "intermediate", "f" => "finish" }.freeze
+
     def add_country_from_state_code!
       state_code = self[:state_code]
       return unless state_code&.size == 2
@@ -19,7 +22,7 @@ module Etl
     end
 
     def align_split_distance!(split_distances)
-      return unless self[:distance_from_start].present?
+      return if self[:distance_from_start].blank?
 
       match_threshold = 10
       matching_distance = split_distances.find do |distance|
@@ -33,26 +36,30 @@ module Etl
     end
 
     def convert_start_offset!(event_start_time)
-      return unless has_key?(:start_offset)
+      return unless key?(:start_offset)
 
       start_offset = self[:start_offset].to_s.gsub(/[^\d:-]/, "")
-      return unless start_offset.present?
+      return if start_offset.blank?
 
-      seconds = start_offset =~ TimeConversion::HMS_FORMAT ? TimeConversion.hms_to_seconds(start_offset) : start_offset.to_i
+      seconds = if start_offset =~ TimeConversion::HMS_FORMAT
+                  TimeConversion.hms_to_seconds(start_offset)
+                else
+                  start_offset.to_i
+                end
       self[:scheduled_start_time] ||= event_start_time + seconds
     end
 
     def clear_zero_values!(*attributes)
       attributes.each do |attribute|
-        return unless has_key?(attribute)
-        return unless self[attribute] == "0" || self[attribute] == 0
+        next unless key?(attribute)
+        next unless self[attribute].in?(["0", 0])
 
         self[attribute] = nil
       end
     end
 
     def convert_split_distance!
-      return unless self[:distance].present?
+      return if self[:distance].blank?
 
       temp_split = Split.new
       temp_split.distance = delete_field(:distance)
@@ -72,8 +79,10 @@ module Etl
       time_attribute = options[:time_attribute] || :time_from_start
       times_array = time_attribute.to_s.sub("time", "times").to_sym
 
-      split_time_attributes = self[times_array].zip(time_points).select(&:last).map.with_index do |(time, time_point), i|
-        {record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id, sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i}
+      split_time_attributes = self[times_array].zip(time_points).select(&:last)
+                                               .map.with_index do |(time, time_point), i|
+        { record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id,
+          sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i }
       end
 
       split_time_attributes.each do |attributes|
@@ -91,14 +100,12 @@ module Etl
     def fill_blank_values!(attributes)
       existing_keys = to_h.keys.to_set
       attributes.each do |key, value|
-        if existing_keys.include?(key)
-          self[key] = value if self[key].blank?
-        end
+        self[key] = value if existing_keys.include?(key) && self[key].blank?
       end
     end
 
     def localize_datetime!(local_key, utc_key, time_zone_name)
-      return unless has_key?(local_key)
+      return unless key?(local_key)
 
       local_time = delete_field(local_key) || ""
       time_zone = ActiveSupport::TimeZone[time_zone_name || ""]
@@ -107,7 +114,10 @@ module Etl
     end
 
     def map_event_name_key!
-      self[:event_name] = delete_field(:distance) if attributes.respond_to?(:distance) && !attributes.respond_to?(:event_name)
+      return unless attributes.respond_to?(:distance) && !attributes.respond_to?(:event_name)
+
+      self[:event_name] =
+        delete_field(:distance)
     end
 
     def map_keys!(map)
@@ -121,7 +131,7 @@ module Etl
     end
 
     def normalize_country_code!
-      return unless self[:country_code].present?
+      return if self[:country_code].blank?
 
       country_data = self[:country_code].to_s.downcase.strip
       country = Carmen::Country.coded(country_data) || Carmen::Country.named(country_data)
@@ -143,39 +153,29 @@ module Etl
     end
 
     def normalize_gender!
-      return unless has_key?(:gender)
+      return unless key?(:gender)
 
-      self[:gender] = if self[:gender].presence.respond_to?(:downcase)
-                        case self[:gender].downcase.first
-                        when "m"
-                          "male"
-                        when "f"
-                          "female"
-                        when "x"
-                          "nonbinary"
-                        when "n"
-                          "nonbinary"
-                        end
-                      end
+      unless self[:gender].presence.respond_to?(:downcase)
+        self[:gender] = nil
+        return
+      end
+
+      self[:gender] = GENDER_MAP[self[:gender].downcase.first]
     end
 
     def normalize_split_kind!
-      return unless has_key?(:kind)
+      return unless key?(:kind)
 
-      self[:kind] = if self[:kind].presence.respond_to?(:downcase)
-                      case self[:kind].downcase.first
-                      when "s"
-                        "start"
-                      when "i"
-                        "intermediate"
-                      when "f"
-                        "finish"
-                      end
-                    end
+      unless self[:kind].presence.respond_to?(:downcase)
+        self[:kind] = nil
+        return
+      end
+
+      self[:kind] = SPLIT_TYPE_MAP[self[:kind].downcase.first]
     end
 
     def normalize_state_code!
-      return unless self[:state_code].present?
+      return if self[:state_code].blank?
 
       state_data = self[:state_code].to_s.strip
       country = Carmen::Country.coded(self[:country_code])
@@ -192,30 +192,30 @@ module Etl
 
     def remove_redundant_state_code!
       state_data = self[:state_code].to_s.strip
-      return unless state_data.present?
+      return if state_data.blank?
 
       country_data = self[:country_code].to_s.strip
       country = Carmen::Country.coded(country_data)
 
-      if country.present? && state_data == country_data
-        self[:state_code] = nil
-      end
+      return unless country.present? && state_data == country_data
+
+      self[:state_code] = nil
     end
 
     def set_split_time_stop!
-      stopped_child_record = children.reverse.find { |pr| pr[:absolute_time].present? }
+      stopped_child_record = children.rfind { |pr| pr[:absolute_time].present? }
       (stopped_child_record[:stopped_here] = true) if stopped_child_record
     end
 
     def slice_permitted!(permitted_params = nil)
       permitted_params ||= params_class.permitted.to_set
-      to_h.keys.each do |key|
+      to_h.each_key do |key|
         delete_field(key) unless permitted_params.include?(key)
       end
     end
 
     def split_field!(old_field, first_field, second_field, split_char = " ")
-      return unless self[old_field].present?
+      return if self[old_field].blank?
 
       old_value = delete_field(old_field)
       values = old_value.to_s.split(split_char)
@@ -234,13 +234,13 @@ module Etl
     end
 
     def transfer_identified_gender!
-      return unless self[:identified_gender].present?
+      return if self[:identified_gender].blank?
 
       self[:gender] = delete_field(:identified_gender)
     end
 
     def underscore_keys!
-      to_h.keys.each do |key|
+      to_h.each_key do |key|
         underscored_key = key.to_s.underscore.to_sym
         self[underscored_key] = delete_field(key) if underscored_key != key
       end
@@ -256,9 +256,9 @@ module Etl
     end
 
     def modernize_date(date)
-      if date.year <= Date.today.year % 100
+      if date.year <= Time.zone.today.year % 100
         date + 2000.years
-      elsif date.year <= Date.today.year % 100 + 100
+      elsif date.year <= (Time.zone.today.year % 100) + 100
         date + 1900.years
       else
         date

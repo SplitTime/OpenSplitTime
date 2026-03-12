@@ -25,7 +25,7 @@ RSpec.describe ProjectionAssessments::Runner do
       expect(assessment_run.assessments.count).to eq(event.efforts.count)
     end
 
-    context "for an effort that has completed and projected split_times" do
+    context "when the effort has completed and projected split_times" do
       let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
 
       it "sets expected attributes" do
@@ -36,7 +36,7 @@ RSpec.describe ProjectionAssessments::Runner do
       end
     end
 
-    context "for an effort that has a completed split_time but no projected split_time" do
+    context "when the effort has a completed split_time but no projected split_time" do
       let(:effort) { efforts(:hardrock_2016_rhett_auer) }
 
       it "sets expected attributes" do
@@ -47,7 +47,7 @@ RSpec.describe ProjectionAssessments::Runner do
       end
     end
 
-    context "for an effort that has no completed split_time" do
+    context "when the effort has no completed split_time" do
       let(:effort) { efforts(:hardrock_2016_start_only) }
 
       it "sets expected attributes" do

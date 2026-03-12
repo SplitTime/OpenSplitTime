@@ -90,7 +90,8 @@ RSpec.describe ::Etl::Transformers::LotteryEntrantsStrategy do
     end
 
     context "when the transform fails" do
-      before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" }
+      before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" } # rubocop:disable RSpec/AnyInstance
+
       it "returns proto records (which will be in an untransformed or partially transformed state)" do
         expect(proto_records.size).to eq(2)
       end

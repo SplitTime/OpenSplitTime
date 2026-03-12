@@ -39,7 +39,7 @@ module FontAwesome6
         tmp = []
         tmp << icon_type(type)
         tmp += arr_with_fa(icon_name)
-        tmp += css_class.split(" ") if css_class.present?
+        tmp += css_class.split if css_class.present?
         tmp += arr_with_fa(size) if size.present?
         tmp.uniq.compact.join(" ")
       end
@@ -49,10 +49,10 @@ module FontAwesome6
       end
 
       def text_content_tag
-        fa6_text_css_class = right ? 'fa6-text-r' : 'fa6-text'
+        fa6_text_css_class = right ? "fa6-text-r" : "fa6-text"
         content_tag(
           :span, @text,
-          class: "#{fa6_text_css_class}#{' ' unless sizes.blank?}#{sizes}",
+          class: "#{fa6_text_css_class}#{' ' if sizes.present?}#{sizes}",
           style: @style,
         )
       end

@@ -10,7 +10,7 @@ class CustomFailure < ::Devise::FailureApp
   end
 
   # Redirect to the root path if user is not authenticated
-  def route(scope)
+  def route(_scope)
     :root_path
   end
 end

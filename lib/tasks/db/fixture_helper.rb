@@ -46,7 +46,6 @@ module FixtureHelper
     effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
   }.freeze
 
-
   ATTRIBUTES_TO_IGNORE = [
     :created_at,
     :confirmation_sent_at,

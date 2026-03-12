@@ -5,8 +5,8 @@ task :remove_bot_users, [:model] => :environment do
   puts "Searching for suspected bot users"
 
   suspected_bot_users = User.where("created_at > ?", 2.months.ago)
-      .where("length(first_name) > ? and length(last_name) > ?", 7, 7)
-      .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
+                            .where("length(first_name) > ? and length(last_name) > ?", 7, 7)
+                            .where("initcap(first_name) != first_name and initcap(last_name) != last_name")
 
   puts "Preparing to remove #{suspected_bot_users.count} users:\n"
   suspected_bot_users.pluck(:first_name, :last_name).map { |names| names.join(" ") }.each do |full_name|
@@ -14,7 +14,7 @@ task :remove_bot_users, [:model] => :environment do
   end
   puts "\nProceed? (y/N)"
 
-  answer = STDIN.gets.chomp
+  answer = $stdin.gets.chomp
   abort "Aborting." unless answer.upcase == "Y"
 
   start_time = Time.current

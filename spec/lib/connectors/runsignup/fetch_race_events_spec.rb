@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe ::Connectors::Runsignup::FetchRaceEvents do
   subject { described_class.new(race_id: race_id, user: user) }
-  let(:race_id) { 85675 }
+
+  let(:race_id) { 85_675 }
 
   include_context "user_with_credentials"
 
@@ -60,9 +61,9 @@ RSpec.describe ::Connectors::Runsignup::FetchRaceEvents do
 
       let(:expected_result) do
         [
-          ::Connectors::Runsignup::Models::Event.new(id: 661702, name: "24 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 18:00"),
-          ::Connectors::Runsignup::Models::Event.new(id: 661703, name: "12 hr", start_time: "2/11/2023 06:00", end_time: "2/11/2023 18:00"),
-          ::Connectors::Runsignup::Models::Event.new(id: 661817, name: "6 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 00:00"),
+          ::Connectors::Runsignup::Models::Event.new(id: 661_702, name: "24 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 18:00"),
+          ::Connectors::Runsignup::Models::Event.new(id: 661_703, name: "12 hr", start_time: "2/11/2023 06:00", end_time: "2/11/2023 18:00"),
+          ::Connectors::Runsignup::Models::Event.new(id: 661_817, name: "6 hr", start_time: "2/10/2023 18:00", end_time: "2/11/2023 00:00"),
         ]
       end
 

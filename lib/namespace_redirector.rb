@@ -7,7 +7,7 @@ class NamespaceRedirector
   end
 
   def call(params, _request)
-    raise ArgumentError, "Params must include a path" unless params[:path].present?
+    raise ArgumentError, "Params must include a path" if params[:path].blank?
 
     case model
     when "courses"

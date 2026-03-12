@@ -29,13 +29,11 @@ module Middleware
     private
 
     def valid_utf8_after_decode?(string)
-      begin
-        decoded = URI.decode_www_form_component(string)
-        decoded.force_encoding("UTF-8").valid_encoding?
-      rescue ArgumentError
-        # URI.decode_www_form_component can raise ArgumentError for invalid sequences
-        false
-      end
+      decoded = URI.decode_www_form_component(string)
+      decoded.force_encoding("UTF-8").valid_encoding?
+    rescue ArgumentError
+      # URI.decode_www_form_component can raise ArgumentError for invalid sequences
+      false
     end
 
     def bad_request_response

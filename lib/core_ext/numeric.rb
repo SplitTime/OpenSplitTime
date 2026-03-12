@@ -8,7 +8,8 @@ module CoreExt
       end
     end
 
-    def numericize # Parallel to String#numericize
+    # Parallel to String#numericize
+    def numericize
       self
     end
   end

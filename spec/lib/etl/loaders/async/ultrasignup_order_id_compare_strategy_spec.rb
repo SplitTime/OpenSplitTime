@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Etl::Loaders::Async::UltrasignupOrderIdCompareStrategy do
   subject { described_class.new(proto_records, options) }
+
   let(:options) { { import_job: import_job } }
   let!(:import_job) { create(:import_job, parent: organization, format: :test_format) }
   let(:organization) { organizations(:hardrock) }
@@ -12,13 +13,13 @@ RSpec.describe Etl::Loaders::Async::UltrasignupOrderIdCompareStrategy do
         [
           ProtoRecord.new(
             Order_ID: "123",
-            ),
+          ),
           ProtoRecord.new(
             Order_ID: "456",
-            ),
+          ),
           ProtoRecord.new(
             Order_ID: "789",
-            ),
+          ),
         ]
       end
 
@@ -54,13 +55,13 @@ RSpec.describe Etl::Loaders::Async::UltrasignupOrderIdCompareStrategy do
         [
           ProtoRecord.new(
             Order_ID: "123",
-            ),
+          ),
           ProtoRecord.new(
             Order_ID: "456",
-            ),
+          ),
           ProtoRecord.new(
             Order_ID: "456",
-            ),
+          ),
         ]
       end
 

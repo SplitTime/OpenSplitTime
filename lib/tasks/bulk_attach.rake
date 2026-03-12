@@ -1,6 +1,8 @@
 namespace :bulk_attach do
   desc "For a collection of resources, attach files in bulk"
-  task :resources, [:model, :resource_ids, :attachment_attribute, :path_prefix, :key_attribute, :path_postfix] => :environment do |_, args|
+  task :resources,
+       [:model, :resource_ids, :attachment_attribute, :path_prefix, :key_attribute,
+        :path_postfix] => :environment do |_, args|
     start_time = Time.current
     abort "No model specified" unless args.model
     abort "No resource_ids specified" unless args.resource_ids
@@ -23,7 +25,7 @@ namespace :bulk_attach do
         puts "Assigning #{url} to #{current_resource}"
 
         filename = File.basename(URI.parse(url).path)
-        file = URI.open(url)
+        file = URI.open(url) # rubocop:disable Security/Open
 
         if resource.send(attachment_attribute).attach(io: file, filename: filename)
           puts "Attached #{attachment_attribute} for #{current_resource}"

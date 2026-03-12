@@ -11,7 +11,7 @@ class ProtoRecord
     @record_type = args[:record_type]&.to_sym
     @record_action = args[:record_action]&.to_sym
     @children = Array.wrap(args[:children]) || []
-    @attributes = OpenStruct.new(args.to_h.except(nil, :record_type, :record_action, :children))
+    @attributes = OpenStruct.new(args.to_h.except(nil, :record_type, :record_action, :children)) # rubocop:disable Style/OpenStructUse
     validate_setup
   end
 
@@ -42,16 +42,19 @@ class ProtoRecord
     new_proto_record
   end
 
-  def has_key?(key)
-    attributes.to_h.has_key?(key)
+  def key?(key)
+    attributes.to_h.key?(key)
   end
+  alias has_key? key?
 
   def keys
     attributes.to_h.keys
   end
 
   def record_class
-    record_type&.to_s&.classify&.constantize
+    return if record_type.blank?
+
+    record_type.to_s.classify.constantize
   end
 
   def params_class
@@ -132,12 +135,14 @@ class ProtoRecord
   end
 
   def child_attributes
-    children.group_by(&:record_type).map { |record_type, proto_records| ["#{record_type.to_s.pluralize}_attributes", proto_records.map(&:to_h)] }.to_h
+    children.group_by(&:record_type).to_h do |record_type, proto_records|
+      ["#{record_type.to_s.pluralize}_attributes", proto_records.map(&:to_h)]
+    end
   end
 
   def validate_setup
-    unless children.all? { |child| child.is_a?(ProtoRecord) }
-      raise ArgumentError, "children of a ProtoRecord must be ProtoRecords"
-    end
+    return if children.all?(ProtoRecord)
+
+    raise ArgumentError, "children of a ProtoRecord must be ProtoRecords"
   end
 end

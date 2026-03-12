@@ -18,12 +18,8 @@ namespace :sitemap do
       bucket_path = "sitemaps/#{file_name}"
       file_path = Rails.root.join("tmp", "sitemaps", file_name)
 
-      begin
-        obj = bucket.object(bucket_path)
-        obj.upload_file(file_path, acl: "public-read")
-      rescue Exception => e
-        raise e
-      end
+      obj = bucket.object(bucket_path)
+      obj.upload_file(file_path, acl: "public-read")
       puts "Saved #{file_name} to S3"
     end
   end

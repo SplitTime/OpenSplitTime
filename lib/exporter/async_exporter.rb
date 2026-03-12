@@ -41,12 +41,13 @@ module Exporter
       # filename is in the form of "course_group_best_efforts-1668309553.csv"
       filename = "#{controller_name.underscore.pluralize}-#{Time.current.to_i}-#{resources.count}.csv"
       full_path = Rails.root.join("tmp", filename)
-      file = ::File.open(full_path, "w")
+      ::File.open(full_path, "w") do |file|
+        ::Exporter::ExportService.new(resource_class, resources, export_attributes).csv_to_file(file)
+      end
 
-      ::Exporter::ExportService.new(resource_class, resources, export_attributes).csv_to_file(file)
-      file.close
-
-      export_job.file.attach(:io => ::File.open(full_path), :filename => filename, :content_type => "text/csv")
+      ::File.open(full_path) do |file|
+        export_job.file.attach(:io => file, :filename => filename, :content_type => "text/csv")
+      end
     end
 
     def set_finish_attributes

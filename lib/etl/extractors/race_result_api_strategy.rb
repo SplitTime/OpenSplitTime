@@ -41,8 +41,8 @@ module Etl
         @time_indices ||= data_fields.map.with_index(1) { |header, i| time_index(header, i) }.compact
       end
 
-      def time_index(header, i)
-        i if header["expression"].include?('"Time: "')
+      def time_index(header, index)
+        index if header["expression"].include?('"Time: "')
       end
 
       def data_rows

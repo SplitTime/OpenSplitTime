@@ -69,7 +69,7 @@ module Etl
         segment_seconds = proto_record[:segment_times].map { |hms_time| TimeConversion.hms_to_seconds(hms_time) }
         start_seconds = segment_seconds.any?(&:present?) ? 0.0 : nil
         finish_time = TimeConversion.hms_to_seconds(proto_record[:time])
-        finish_seconds = finish_time.zero? ? nil : finish_time
+        finish_seconds = finish_time&.zero? ? nil : finish_time
         start_calcs = calcs_from_start(segment_seconds, start_seconds)
         finish_calcs = calcs_from_finish(segment_seconds, finish_seconds)
         proto_record[:times_from_start] = start_calcs.zip(finish_calcs).map { |pair| pair.compact.first }

@@ -17,8 +17,8 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
     end
   end
 
-  describe "#get_race_editions" do
-    let(:result) { subject.get_race_editions }
+  describe "#fetch_race_editions" do
+    let(:result) { subject.fetch_race_editions }
 
     context "when credentials are valid" do
       it "returns a json blob with an array of race editions" do
@@ -42,8 +42,8 @@ RSpec.describe ::Connectors::RattlesnakeRamble::Client do
     end
   end
 
-  describe "#get_race_edition" do
-    let(:result) { subject.get_race_edition(race_edition_id) }
+  describe "#fetch_race_edition" do
+    let(:result) { subject.fetch_race_edition(race_edition_id) }
     let(:race_edition_id) { 1 }
 
     context "when credentials are valid" do

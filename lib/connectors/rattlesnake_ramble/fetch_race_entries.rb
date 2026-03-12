@@ -20,7 +20,7 @@ module Connectors
 
       # @return [Array<::Connectors::RattlesnakeRamble::Models::RaceEntry>]
       def perform
-        body = client.get_race_edition(race_edition_id)
+        body = client.fetch_race_edition(race_edition_id)
         parsed_body = JSON.parse(body)
 
         raw_race_entries = parsed_body["race_entries"]

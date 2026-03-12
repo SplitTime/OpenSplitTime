@@ -1,5 +1,8 @@
 module Etl
   module Transformable
+    GENDER_MAP = { "m" => "male", "f" => "female", "x" => "nonbinary", "n" => "nonbinary" }.freeze
+    SPLIT_TYPE_MAP = { "s" => "start", "i" => "intermediate", "f" => "finish" }.freeze
+
     def add_country_from_state_code!
       state_code = self[:state_code]
       return unless state_code&.size == 2
@@ -48,8 +51,8 @@ module Etl
 
     def clear_zero_values!(*attributes)
       attributes.each do |attribute|
-        return unless key?(attribute)
-        return unless ["0", 0].include?(self[attribute])
+        next unless key?(attribute)
+        next unless self[attribute].in?(["0", 0])
 
         self[attribute] = nil
       end
@@ -77,7 +80,7 @@ module Etl
       times_array = time_attribute.to_s.sub("time", "times").to_sym
 
       split_time_attributes = self[times_array].zip(time_points).select(&:last)
-                                                .map.with_index do |(time, time_point), i|
+                                               .map.with_index do |(time, time_point), i|
         { record_type: :split_time, lap: time_point.lap, split_id: time_point.split_id,
           sub_split_bitkey: time_point.bitkey, time_attribute => time, imposed_order: i }
       end
@@ -151,34 +154,16 @@ module Etl
 
     def normalize_gender!
       return unless key?(:gender)
+      return unless self[:gender].presence.respond_to?(:downcase)
 
-      self[:gender] = if self[:gender].presence.respond_to?(:downcase)
-                        case self[:gender].downcase.first
-                        when "m"
-                          "male"
-                        when "f"
-                          "female"
-                        when "x"
-                          "nonbinary"
-                        when "n"
-                          "nonbinary"
-                        end
-                      end
+      self[:gender] = GENDER_MAP[self[:gender].downcase.first]
     end
 
     def normalize_split_kind!
       return unless key?(:kind)
+      return unless self[:kind].presence.respond_to?(:downcase)
 
-      self[:kind] = if self[:kind].presence.respond_to?(:downcase)
-                      case self[:kind].downcase.first
-                      when "s"
-                        "start"
-                      when "i"
-                        "intermediate"
-                      when "f"
-                        "finish"
-                      end
-                    end
+      self[:kind] = SPLIT_TYPE_MAP[self[:kind].downcase.first]
     end
 
     def normalize_state_code!

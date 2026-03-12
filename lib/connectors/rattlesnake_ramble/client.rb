@@ -8,12 +8,12 @@ module Connectors
         verify_credentials_present!
       end
 
-      def race_editions
+      def fetch_race_editions
         self.request = Connectors::RattlesnakeRamble::Request::GetRaceEditions.new
         make_request
       end
 
-      def get_race_edition(race_edition_id)
+      def fetch_race_edition(race_edition_id)
         self.request = Connectors::RattlesnakeRamble::Request::GetRaceEdition.new(race_edition_id: race_edition_id)
         make_request
       end
@@ -78,6 +78,7 @@ module Connectors
         when 404
           raise Connectors::Errors::NotFound, "Resource not found"
         when 200
+          nil # success, no action needed
         else
           raise Connectors::Errors::BadRequest, [response_code, raw_error_message].compact.join(": ")
         end

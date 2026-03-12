@@ -28,12 +28,12 @@ Naming/PredicateMethod:
   Enabled: false
 
 Naming/VariableNumber:
-  EnforcedStyle: snake_case
-  Exclude:
-    - "spec/**/*"
+  Enabled: false
 
 Lint/MissingSuper:
   Enabled: true
+  Exclude:
+    - "lib/etl/transformers/**/*"
 
 Rails/Delegate:
   Enabled: false
@@ -144,3 +144,7 @@ Style/TrailingCommaInArrayLiteral:
 
 Style/TrailingCommaInHashLiteral:
   Enabled: false
+
+Style/OpenStructUse:
+  Exclude:
+    - "lib/etl/extractors/**/*"

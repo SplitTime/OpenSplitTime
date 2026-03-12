@@ -1,7 +1,8 @@
 require "action_view/helpers/text_helper"
-include ActionView::Helpers::TextHelper
 
 namespace :create_records do
+  include ActionView::Helpers::TextHelper
+
   desc "Create random efforts for testing"
   task :efforts, [:event_group_id, :effort_count] => :environment do |_, args|
     process_start_time = Time.current

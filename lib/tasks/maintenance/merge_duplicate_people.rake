@@ -4,10 +4,10 @@ namespace :maintenance do
     puts "Attempting to merge all duplicate people in the database"
 
     email_counts = ::Person.select("first_name, last_name, email, count(email) as duplicates")
-                             .group("first_name, last_name, email")
+                           .group("first_name, last_name, email")
     duplicate_structs = ::Person.where("duplicates > ?", 1)
-                                  .from(email_counts, "people")
-                                  .struct_pluck(:email, :first_name, :last_name)
+                                .from(email_counts, "people")
+                                .struct_pluck(:email, :first_name, :last_name)
     duplicate_count = duplicate_structs.size
 
     puts "Found #{duplicate_count} duplicated people"

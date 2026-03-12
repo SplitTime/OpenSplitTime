@@ -25,7 +25,7 @@ namespace :bulk_attach do
         puts "Assigning #{url} to #{current_resource}"
 
         filename = File.basename(URI.parse(url).path)
-        file = URI.open(url)
+        file = URI.open(url) # rubocop:disable Security/Open
 
         if resource.send(attachment_attribute).attach(io: file, filename: filename)
           puts "Attached #{attachment_attribute} for #{current_resource}"

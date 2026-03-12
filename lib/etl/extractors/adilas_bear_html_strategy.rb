@@ -63,7 +63,7 @@ module Etl
       end
 
       def runner_info_container
-        @runner_info_container ||= html.search('[text()*="Runner Information"]')&.first&.parent&.parent&.parent
+        @runner_info_container ||= html.search('[text()*="Runner Information"]')&.first&.parent&.parent&.parent # rubocop:disable Style/SafeNavigationChainLength
       end
 
       def times

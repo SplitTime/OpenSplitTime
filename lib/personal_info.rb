@@ -107,9 +107,7 @@ module PersonalInfo
   end
 
   def flexible_country
-    if city.nil? && state_code.nil?
-      country&.name
-    elsif state_code && %w[US CA].include?(country_code)
+    if state_code.present? && country_code.in?(%w[US CA])
       nil
     else
       country&.name

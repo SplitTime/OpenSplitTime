@@ -38,6 +38,14 @@ module Interactors
         validate_resource(event)
         split_times.each(&method(:validate_resource))
         raise ActiveRecord::Rollback if errors.present?
+        # Rebuild effort_segments for all efforts after changing course
+        rebuild_effort_segments
+      end
+    end
+
+    def rebuild_effort_segments
+      event.efforts.find_each do |effort|
+        effort.set_effort_segments
       end
     end
 

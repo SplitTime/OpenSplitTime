@@ -79,9 +79,7 @@ module CoursesHelper
                   else
                     [time_format_hhmm(row.time_in_aid)]
                   end
-    lap_time = if !@presenter.multiple_laps?
-                 []
-               elsif row.finish?
+    lap_time = if @presenter.multiple_laps? && row.finish?
                  [lap_time_text(@presenter, row)]
                else
                  []

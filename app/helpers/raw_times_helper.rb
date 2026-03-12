@@ -8,8 +8,6 @@ module RawTimesHelper
   end
 
   def link_to_raw_time_split(raw_time)
-    if raw_time.split
-    end
     raw_time.split_name
   end
 

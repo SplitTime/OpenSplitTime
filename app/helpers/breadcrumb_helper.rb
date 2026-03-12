@@ -3,7 +3,9 @@ module BreadcrumbHelper
     content_tag(:ul, class: "breadcrumb breadcrumb-ost") do
       concat content_tag(:li, link_to("Organizations", organizations_path), class: "breadcrumb-item")
       concat content_tag(:li,
-                         link_to(presenter.event_group.organization.name, organization_path(presenter.event_group.organization)), class: "breadcrumb-item")
+                         link_to(presenter.event_group.organization.name,
+                                 organization_path(presenter.event_group.organization)),
+                         class: "breadcrumb-item")
       if presenter.event_group.multiple_events?
         concat content_tag(:li, link_to(presenter.event_group.name, event_group_path(presenter.event_group)),
                            class: "breadcrumb-item")

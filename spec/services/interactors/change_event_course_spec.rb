@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Interactors::ChangeEventCourse do
-  subject { Interactors::ChangeEventCourse.new(event: event, new_course: new_course) }
+  subject { described_class.new(event: event, new_course: new_course) }
 
   describe "#initialization" do
     let(:event) { build_stubbed(:event) }
@@ -11,7 +11,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       expect { subject }.not_to raise_error
     end
 
-    context "if no event is provided" do
+    context "when no event is provided" do
       let(:event) { nil }
 
       it "raises an error" do
@@ -19,7 +19,7 @@ RSpec.describe Interactors::ChangeEventCourse do
       end
     end
 
-    context "if no new_course is provided" do
+    context "when no new_course is provided" do
       let(:new_course) { nil }
 
       it "raises an error" do
@@ -75,11 +75,17 @@ RSpec.describe Interactors::ChangeEventCourse do
         end
       end
 
+      it "rebuilds effort_segments for all efforts in the event" do
+        allow(EffortSegment).to receive(:set_for_effort).and_call_original
+        subject.perform!
+        expect(EffortSegment).to have_received(:set_for_effort).exactly(efforts.count).times
+      end
+
       it "makes no changes and returns an unsuccessful response with errors if names do not coincide" do
         existing_aid_stations = event.aid_stations
         existing_splits = event.splits
         split = new_course.ordered_splits.second
-        split.update(base_name: split.base_name + "123")
+        split.update(base_name: "#{split.base_name}123")
         new_course.reload
         response = subject.perform!
         event.reload

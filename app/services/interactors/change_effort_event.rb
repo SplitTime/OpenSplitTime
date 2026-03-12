@@ -7,7 +7,8 @@ module Interactors
     end
 
     def initialize(args)
-      ArgsValidator.validate(params: args, required: [:effort, :new_event], exclusive: [:effort, :new_event], class: self.class)
+      ArgsValidator.validate(params: args, required: [:effort, :new_event], exclusive: [:effort, :new_event],
+                             class: self.class)
       @effort = args[:effort]
       @new_event = args[:new_event]
       @old_event ||= effort.event
@@ -18,7 +19,7 @@ module Interactors
     end
 
     def perform!
-      unless errors.present?
+      if errors.blank?
         effort.event = new_event
         split_times.each { |st| st.split = old_new_split_map[st.split_id] }
         save_changes
@@ -39,15 +40,18 @@ module Interactors
           errors << resource_error_object(effort)
           raise ActiveRecord::Rollback
         end
+        effort.set_effort_segments
       end
     end
 
     def maximum_lap
-      @maximum_lap ||= new_event.laps_required == 0 ? Float::INFINITY : new_event.laps_required
+      @maximum_lap ||= new_event.laps_required.zero? ? Float::INFINITY : new_event.laps_required
     end
 
     def old_new_split_map
-      @old_new_split_map ||= existing_splits.map { |existing_split| [existing_split.id, matching_new_split(existing_split)] }.to_h
+      @old_new_split_map ||= existing_splits.to_h do |existing_split|
+        [existing_split.id, matching_new_split(existing_split)]
+      end
     end
 
     def matching_new_split(existing_split)

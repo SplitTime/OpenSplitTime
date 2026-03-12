@@ -7,7 +7,8 @@ module Interactors
     end
 
     def initialize(args)
-      ArgsValidator.validate(params: args, required: [:event, :new_course], exclusive: [:event, :new_course], class: self.class)
+      ArgsValidator.validate(params: args, required: [:event, :new_course], exclusive: [:event, :new_course],
+                             class: self.class)
       @event = args[:event]
       @new_course = args[:new_course]
       @old_course = event.course
@@ -18,7 +19,7 @@ module Interactors
     end
 
     def perform!
-      unless errors.present?
+      if errors.blank?
         event.course = new_course
         event.splits = new_course.splits
         split_times.each { |st| st.split = old_new_split_map[st.split_id] }
@@ -38,7 +39,13 @@ module Interactors
         validate_resource(event)
         split_times.each(&method(:validate_resource))
         raise ActiveRecord::Rollback if errors.present?
+
+        rebuild_effort_segments
       end
+    end
+
+    def rebuild_effort_segments
+      event.efforts.find_each(&:set_effort_segments)
     end
 
     def save_without_validation(resource)
@@ -50,7 +57,9 @@ module Interactors
     end
 
     def old_new_split_map
-      @old_new_split_map ||= existing_splits.map { |existing_split| [existing_split.id, matching_new_split(existing_split)] }.to_h
+      @old_new_split_map ||= existing_splits.to_h do |existing_split|
+        [existing_split.id, matching_new_split(existing_split)]
+      end
     end
 
     def matching_new_split(existing_split)
@@ -70,9 +79,9 @@ module Interactors
         errors << split_name_mismatch_error(event, new_course) and return
       end
 
-      unless split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
-        errors << sub_split_mismatch_error(event, new_course)
-      end
+      return if split_times.all? { |st| st.bitkey.in?(old_new_split_map[st.split_id].sub_split_bitkeys) }
+
+      errors << sub_split_mismatch_error(event, new_course)
     end
   end
 end

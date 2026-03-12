@@ -69,8 +69,6 @@ module TimeClusterHelper
     return "" unless time
 
     case display_style.to_sym
-    when :segment, :else
-      time_format_hhmmss(time)
     when :ampm
       day_time_format_hhmmss(time)
     when :military

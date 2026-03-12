@@ -46,8 +46,11 @@ module EventGroupsHelper
   end
 
   def link_to_export_raw_times(view_object, split_name, csv_template)
-    link_to "Export", export_raw_times_event_group_path(view_object.event_group, split_name: split_name, csv_template: csv_template, format: :csv),
-            class: "btn btn-md btn-success"
+    path = export_raw_times_event_group_path(view_object.event_group,
+                                             split_name: split_name,
+                                             csv_template: csv_template,
+                                             format: :csv)
+    link_to "Export", path, class: "btn btn-md btn-success"
   end
 
   def lap_and_time_builder(bib_row)

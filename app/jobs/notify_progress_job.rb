@@ -10,10 +10,16 @@ class NotifyProgressJob < ApplicationJob
     response = ProgressNotifier.publish(topic_arn: topic_resource_key, effort_data: progress_data)
 
     if response.successful?
-      notification = Notification.new(kind: :progress, effort: effort, distance: farthest_split_time.total_distance,
-                                      bitkey: farthest_split_time.bitkey, follower_ids: followers.ids,
-                                      subject: response.resources[:subject], notice_text: response.resources[:notice_text],
-                                      topic_resource_key: effort.topic_resource_key)
+      notification = Notification.new(
+        kind: :progress,
+        effort: effort,
+        distance: farthest_split_time.total_distance,
+        bitkey: farthest_split_time.bitkey,
+        follower_ids: followers.ids,
+        subject: response.resources[:subject],
+        notice_text: response.resources[:notice_text],
+        topic_resource_key: effort.topic_resource_key
+      )
       unless notification.save
         logger.error "  Unable to create notification for #{st.effort} at #{st.total_distance}"
         logger.error "  #{notification.errors.full_messages}"
@@ -30,7 +36,7 @@ class NotifyProgressJob < ApplicationJob
   delegate :topic_resource_key, to: :effort
 
   def effort
-    @effort ||= Effort.where(id: effort_id).includes(:event, split_times: {split: :course}).first
+    @effort ||= Effort.where(id: effort_id).includes(:event, split_times: { split: :course }).first
   end
 
   def split_times
@@ -60,7 +66,7 @@ class NotifyProgressJob < ApplicationJob
   def farther_notification_exists?
     farthest_notification &&
       ([farthest_notification.distance, farthest_notification.bitkey] <=>
-          [farthest_split_time.total_distance, farthest_split_time.bitkey]) > 0
+        [farthest_split_time.total_distance, farthest_split_time.bitkey]).positive?
   end
 
   def farthest_notification

@@ -123,11 +123,10 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
       let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.first[:bib_number]) }
-      let!(:split_time_1) do
+
+      before do
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
                             bitkey: first_child[:sub_split_bitkey], absolute_time: start_time)
-      end
-      let!(:split_time_2) do
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000)
       end
@@ -153,23 +152,16 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       let(:fourth_child) { valid_proto_records.second.children.fourth }
       let(:fifth_child) { valid_proto_records.second.children.fifth }
       let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.second[:bib_number]) }
-      let!(:split_time_1) do
+
+      before do
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
                             bitkey: first_child[:sub_split_bitkey], absolute_time: start_time)
-      end
-      let!(:split_time_2) do
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000)
-      end
-      let!(:split_time_3) do
         create(:split_time, effort: existing_effort, lap: third_child[:lap], split_id: third_child[:split_id],
                             bitkey: third_child[:sub_split_bitkey], absolute_time: start_time + 2000)
-      end
-      let!(:split_time_4) do
         create(:split_time, effort: existing_effort, lap: fourth_child[:lap], split_id: fourth_child[:split_id],
                             bitkey: fourth_child[:sub_split_bitkey], absolute_time: start_time + 3000)
-      end
-      let!(:split_time_5) do
         create(:split_time, effort: existing_effort, lap: fifth_child[:lap], split_id: fifth_child[:split_id],
                             bitkey: fifth_child[:sub_split_bitkey], absolute_time: start_time + 4000)
       end
@@ -189,11 +181,10 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       let(:first_child) { valid_proto_records.first.children.first }
       let(:second_child) { valid_proto_records.first.children.second }
       let!(:existing_effort) { create(:effort, event: event, bib_number: valid_proto_records.second[:bib_number]) }
-      let!(:split_time_1) do
+
+      before do
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
                             bitkey: first_child[:sub_split_bitkey], absolute_time: start_time)
-      end
-      let!(:split_time_2) do
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000, stopped_here: true)
       end
@@ -216,11 +207,10 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       let(:first_child) { proto_with_invalid_child.first.children.first }
       let(:second_child) { proto_with_invalid_child.first.children.second }
       let!(:existing_effort) { create(:effort, event: event, bib_number: proto_with_invalid_child.first[:bib_number]) }
-      let!(:split_time_1) do
+
+      before do
         create(:split_time, effort: existing_effort, lap: first_child[:lap], split_id: first_child[:split_id],
                             bitkey: first_child[:sub_split_bitkey], absolute_time: start_time)
-      end
-      let!(:split_time_2) do
         create(:split_time, effort: existing_effort, lap: second_child[:lap], split_id: second_child[:split_id],
                             bitkey: second_child[:sub_split_bitkey], absolute_time: start_time + 1000)
       end
@@ -232,7 +222,7 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       it "includes invalid records in the invalid_records array" do
         subject.load_records
         expect(subject.invalid_records.size).to eq(1)
-        expect(subject.invalid_records.first.errors.full_messages).to include("Split times split can't be blank")
+        expect(subject.invalid_records.first.errors.full_messages).to include("Split times split must exist")
       end
     end
   end

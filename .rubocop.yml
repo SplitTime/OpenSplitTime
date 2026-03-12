@@ -21,11 +21,16 @@ Layout/LineLength:
 Metrics:
   Enabled: false
 
+Naming/AccessorMethodName:
+  Enabled: false
+
 Naming/PredicateMethod:
   Enabled: false
 
 Naming/VariableNumber:
   EnforcedStyle: snake_case
+  Exclude:
+    - "spec/**/*"
 
 Lint/MissingSuper:
   Enabled: true
@@ -34,6 +39,9 @@ Rails/Delegate:
   Enabled: false
 
 Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
   Enabled: false
 
 Rails/InverseOf:
@@ -51,6 +59,8 @@ Rails/SkipsModelValidations:
 Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: false
+  Exclude:
+    - "config/initializers/01_ost_config.rb"
 
 Rails/RedundantPresenceValidationOnBelongsTo:
   Enabled: true
@@ -61,10 +71,16 @@ Rails/RequestReferer:
 RSpec/BeEq:
   Enabled: false
 
+RSpec/ChangeByZero:
+  Enabled: false
+
 RSpec/EmptyLineAfterFinalLet:
   Enabled: false
 
 RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MessageChain:
   Enabled: false
 
 RSpec/MessageSpies:
@@ -81,6 +97,10 @@ RSpec/NamedSubject:
 
 RSpec/NestedGroups:
   Enabled: false
+
+RSpec/IndexedLet:
+  Exclude:
+    - "spec/**/*"
 
 RSpec/NoExpectationExample:
   Enabled: false

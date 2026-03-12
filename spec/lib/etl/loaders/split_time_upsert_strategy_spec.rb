@@ -231,7 +231,7 @@ RSpec.describe Etl::Loaders::SplitTimeUpsertStrategy do
       it "includes invalid records in the invalid_records array" do
         subject.load_records
         expect(subject.invalid_records.size).to eq(1)
-        expect(subject.invalid_records.first.errors.full_messages).to include("Split times split can't be blank")
+        expect(subject.invalid_records.first.errors.full_messages).to include("Split times split must exist")
       end
     end
   end

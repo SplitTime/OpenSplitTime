@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Interactors::ChangeEffortEvent do
-  subject { Interactors::ChangeEffortEvent.new(effort: effort, new_event: new_event) }
+  subject { described_class.new(effort: effort, new_event: new_event) }
 
   describe "#initialization" do
     let(:effort) { efforts(:sum_55k_finished_first) }
@@ -67,9 +67,14 @@ RSpec.describe Interactors::ChangeEffortEvent do
         expect(effort.ordered_split_times.map(&:time_point)).to match_array(time_points)
       end
 
+      it "rebuilds effort_segments for the effort" do
+        expect(effort).to receive(:set_effort_segments)
+        subject.perform!
+      end
+
       it "raises an error if split names do not coincide" do
         split = new_event.ordered_splits.second
-        split.update(base_name: split.base_name + "123")
+        split.update(base_name: "#{split.base_name}123")
         new_event.reload
         response = subject.perform!
         expect(response).not_to be_successful
@@ -104,7 +109,7 @@ RSpec.describe Interactors::ChangeEffortEvent do
         response = subject.perform!
         expect(response).not_to be_successful
         expect(response.errors.first[:detail][:messages])
-            .to include("Bib number #{effort.bib_number} already exists for #{existing_effort.full_name}")
+          .to include("Bib number #{effort.bib_number} already exists for #{existing_effort.full_name}")
       end
     end
   end

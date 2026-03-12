@@ -29,6 +29,8 @@ Naming/PredicateMethod:
 
 Naming/VariableNumber:
   EnforcedStyle: snake_case
+  Exclude:
+    - "spec/**/*"
 
 Lint/MissingSuper:
   Enabled: true
@@ -37,6 +39,9 @@ Rails/Delegate:
   Enabled: false
 
 Rails/DynamicFindBy:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
   Enabled: false
 
 Rails/InverseOf:
@@ -66,6 +71,9 @@ Rails/RequestReferer:
 RSpec/BeEq:
   Enabled: false
 
+RSpec/ChangeByZero:
+  Enabled: false
+
 RSpec/EmptyLineAfterFinalLet:
   Enabled: false
 
@@ -89,6 +97,10 @@ RSpec/NamedSubject:
 
 RSpec/NestedGroups:
   Enabled: false
+
+RSpec/IndexedLet:
+  Exclude:
+    - "spec/**/*"
 
 RSpec/NoExpectationExample:
   Enabled: false

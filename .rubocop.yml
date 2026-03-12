@@ -71,6 +71,9 @@ Rails/RequestReferer:
 RSpec/BeEq:
   Enabled: false
 
+RSpec/ChangeByZero:
+  Enabled: false
+
 RSpec/EmptyLineAfterFinalLet:
   Enabled: false
 

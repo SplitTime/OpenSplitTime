@@ -6,7 +6,7 @@ RSpec.describe ::Etl::Extractors::ItsYourRaceHtmlStrategy do
 
   let(:source_data) do
     ::VCR.use_cassette("itsyourrace/#{url.split('/').last}") do
-      ::URI.open(url)
+      ::URI.open(url) # rubocop:disable Security/Open
     end
   end
   let(:options) { {} }

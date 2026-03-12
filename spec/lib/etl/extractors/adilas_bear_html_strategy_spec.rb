@@ -5,7 +5,7 @@ RSpec.describe ::Etl::Extractors::AdilasBearHtmlStrategy do
 
   let(:source_data) do
     ::VCR.use_cassette("adilas/#{url.split('?').last}") do
-      ::URI.open(url)
+      ::URI.open(url) # rubocop:disable Security/Open
     end
   end
   let(:options) { {} }

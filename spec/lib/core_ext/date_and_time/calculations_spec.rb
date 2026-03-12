@@ -25,34 +25,30 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
     end
 
     shared_examples "works for all date classes" do |example|
-      anniversary_date = example[:anniversary_date]
-      compare_date = example[:compare_date]
-      expected = example[:expected]
-
       context "when arguments are Date objects" do
-        context "for anniversary date #{anniversary_date} and compare date #{compare_date}" do
+        describe "for anniversary date #{example[:anniversary_date]} and compare date #{example[:compare_date]}" do
           it_behaves_like "returns the expected result",
-                          anniversary_date.to_date,
-                          compare_date.to_date,
-                          expected.to_date
+                          example[:anniversary_date].to_date,
+                          example[:compare_date].to_date,
+                          example[:expected].to_date
         end
       end
 
       context "when arguments are Datetime objects" do
-        context "for anniversary date #{anniversary_date} and compare date #{compare_date}" do
+        describe "for anniversary date #{example[:anniversary_date]} and compare date #{example[:compare_date]}" do
           it_behaves_like "returns the expected result",
-                          anniversary_date.to_datetime,
-                          compare_date.to_datetime,
-                          expected.to_date
+                          example[:anniversary_date].to_datetime,
+                          example[:compare_date].to_datetime,
+                          example[:expected].to_date
         end
       end
 
       context "when arguments are ActiveSupport::TimeWithZone objects" do
-        context "for anniversary date #{anniversary_date} and compare date #{compare_date}" do
+        describe "for anniversary date #{example[:anniversary_date]} and compare date #{example[:compare_date]}" do
           it_behaves_like "returns the expected result",
-                          Date.parse(anniversary_date).in_time_zone("Arizona"),
-                          Date.parse(compare_date).in_time_zone("Arizona"),
-                          expected.to_date
+                          Date.parse(example[:anniversary_date]).in_time_zone("Arizona"),
+                          Date.parse(example[:compare_date]).in_time_zone("Arizona"),
+                          example[:expected].to_date
         end
       end
     end
@@ -67,14 +63,14 @@ RSpec.describe ::CoreExt::DateAndTime::Calculations do
                    { anniversary_date: "2000-02-29", compare_date: "1900-02-01", expected: "1900-02-28" }
                  ]
 
-      context "not specified" do
+      describe "not specified" do
         let(:options) { {} }
         examples.each do |example|
           it_behaves_like "works for all date classes", example
         end
       end
 
-      context ":february" do
+      describe ":february" do
         let(:options) { { leap_year: :february } }
         examples.each do |example|
           it_behaves_like "works for all date classes", example

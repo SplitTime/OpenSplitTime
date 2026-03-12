@@ -27,7 +27,8 @@ RSpec.describe Etl::Loaders::UpsertStrategy do
 
     context "when data is valid and one or more matching records exist" do
       let(:proto_records) { valid_proto_records }
-      let!(:split) { create(:split, course_id: course.id, distance_from_start: 5000, base_name: "Old Name") }
+
+      before { create(:split, course_id: course.id, distance_from_start: 5000, base_name: "Old Name") }
 
       it "creates non-matching records and updates matching records" do
         expect { subject.load_records }.to change(Split, :count).by(2)
@@ -37,8 +38,9 @@ RSpec.describe Etl::Loaders::UpsertStrategy do
     end
 
     context "when any proto_record is invalid" do
-      let!(:split) { create(:split, course_id: course.id, distance_from_start: 5000, base_name: "Old Name") }
       let(:proto_records) { valid_proto_records + invalid_proto_records }
+
+      before { create(:split, course_id: course.id, distance_from_start: 5000, base_name: "Old Name") }
 
       it "creates no new records and makes invalid records available in the invalid_records array" do
         expect { subject.load_records }.not_to(change(Split, :count))

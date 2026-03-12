@@ -73,7 +73,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with imposed_order attributes" do
@@ -88,7 +88,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for an incomplete proto_record" do
+      context "when the proto_record is incomplete" do
         let(:subject_proto_record) { proto_records.second }
 
         it "returns an expected array of children" do
@@ -103,7 +103,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto_record with no finish time" do
+      context "when the proto_record has no finish time" do
         let(:subject_proto_record) { proto_records.fourth }
 
         it "returns an array of children correctly and sets [:stopped_here] attribute" do
@@ -119,7 +119,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto_record that has no times" do
+      context "when the proto_record has no times" do
         let(:subject_proto_record) { proto_records.fifth }
 
         it "returns an empty array of child records" do
@@ -173,7 +173,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children" do
@@ -223,7 +223,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with expected attributes" do
@@ -241,7 +241,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for another complete proto_record" do
+      context "with another complete proto_record" do
         let(:subject_proto_record) { proto_records.second }
 
         it "assigns time attributes properly" do
@@ -249,7 +249,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto record that has no finish time" do
+      context "when the proto_record has no finish time" do
         let(:subject_proto_record) { proto_records.last }
         it "does not assign a start or finish time" do
           expect(children.size).to eq(0)
@@ -296,7 +296,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children with expected attributes" do
@@ -314,7 +314,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for another complete proto_record" do
+      context "with another complete proto_record" do
         let(:subject_proto_record) { proto_records.second }
 
         it "assigns time attributes properly" do
@@ -322,7 +322,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto record that started but did not finish" do
+      context "when the proto_record started but did not finish" do
         let(:subject_proto_record) { proto_records.third }
         it "assigns a start but not a finish time" do
           expect(children.size).to eq(1)
@@ -330,7 +330,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a proto record that did not start" do
+      context "when the proto_record did not start" do
         let(:subject_proto_record) { proto_records.last }
         it "does not assign a start or finish time" do
           expect(children.size).to eq(0)
@@ -367,7 +367,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         expect(proto_records.pluck(:event_id)).to all eq(event.id)
       end
 
-      context "for a complete proto_record" do
+      context "when the proto_record is complete" do
         let(:subject_proto_record) { proto_records.first }
 
         it "returns an array of children" do
@@ -382,7 +382,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for an incomplete proto_record" do
+      context "when the proto_record is incomplete" do
         let(:subject_proto_record) { proto_records.second }
 
         it "returns an array of children" do
@@ -398,7 +398,7 @@ RSpec.describe Etl::Transformers::Async::EffortsWithTimesStrategy do
         end
       end
 
-      context "for a dnf proto_record" do
+      context "when the proto_record is a dnf" do
         let(:subject_proto_record) { proto_records.third }
 
         it "returns an array of children" do

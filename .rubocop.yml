@@ -148,3 +148,4 @@ Style/TrailingCommaInHashLiteral:
 Style/OpenStructUse:
   Exclude:
     - "lib/etl/extractors/**/*"
+    - "spec/lib/etl/**/*"

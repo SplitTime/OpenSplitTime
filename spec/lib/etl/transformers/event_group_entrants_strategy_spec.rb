@@ -39,7 +39,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
       ]
     end
 
-    context "in an event group with multiple events" do
+    describe "in an event group with multiple events" do
       let(:event_group) { event_groups(:rufa_2017) }
       let(:event_24_hour) { events("rufa_2017_24h") }
       let(:event_12_hour) { events("rufa_2017_12h") }
@@ -171,7 +171,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
       end
 
       context "when the transform fails" do
-        before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" }
+        before { allow_any_instance_of(::ProtoRecord).to receive(:transform_as).and_raise NoMethodError, "No method #xyz for proto record" } # rubocop:disable RSpec/AnyInstance
 
         it "returns proto records (which will be in an untransformed or partially transformed state)" do
           expect(proto_records.size).to eq(2)
@@ -224,7 +224,7 @@ RSpec.describe ::Etl::Transformers::EventGroupEntrantsStrategy do
       end
     end
 
-    context "in an event group with a single event" do
+    describe "in an event group with a single event" do
       let(:event_group) { event_groups(:hardrock_2015) }
       let(:event) { event_group.events.first }
 

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe ::Type::StringArrayFromString do
-  module TestDummy
-    class QueryModel
+  let(:query_model_class) do
+    Class.new do
       include ::ActiveModel::Model
       include ::ActiveModel::Attributes
 
@@ -11,7 +11,7 @@ RSpec.describe ::Type::StringArrayFromString do
   end
 
   describe "#cast" do
-    subject { ::TestDummy::QueryModel.new(names: names) }
+    subject { query_model_class.new(names: names) }
 
     context "when given a Postgres-style array" do
       let(:names) { "{hello,there,world}" }

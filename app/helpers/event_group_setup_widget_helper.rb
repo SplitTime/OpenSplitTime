@@ -42,7 +42,7 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_event_group(presenter)
-    type = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w(setup new)) ? :solid : :regular
+    type = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w[setup new]) ? :solid : :regular
     path = presenter.event_group.new_record? ? new_organization_event_group_path(presenter.organization) : setup_event_group_path(presenter.event_group)
     tooltip = "Event Group Overview"
     icon_name = "calendars"

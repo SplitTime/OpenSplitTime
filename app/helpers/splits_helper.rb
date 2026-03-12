@@ -26,10 +26,10 @@ module SplitsHelper
     tooltip = "Start and Finish splits cannot be deleted."
 
     content_tag(:span, data: {
-      controller: "tooltip",
-      bs_placement: :left,
-      bs_original_title: tooltip,
-    }) do
+                  controller: "tooltip",
+                  bs_placement: :left,
+                  bs_original_title: tooltip,
+                }) do
       link_to fa_icon("trash"), "#", class: "btn btn-sm btn-outline-danger disabled"
     end
   end

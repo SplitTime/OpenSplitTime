@@ -65,46 +65,46 @@ module EffortsHelper
   end
 
   def effort_row_confirm_buttons(row)
-    if row.absolute_times_local.compact.present?
-      row.time_data_statuses.each_with_index do |data_status, i|
-        split_time_id = row.split_time_ids[i]
-        new_data_status = data_status == "confirmed" ? nil : "confirmed"
-        button_class = data_status == "confirmed" ? "success" : "outline-success"
-        split_time_data = { split_time: { data_status: new_data_status } }
-        url = split_time_id.blank? ? "#" : split_time_path(split_time_id)
-        html_options = {
-          disabled: split_time_id.blank?,
-          class: "btn btn-sm btn-#{button_class} mx-1",
-          method: :patch,
-          params: split_time_data,
-          data: {
-            turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-          },
-        }
+    return if row.absolute_times_local.compact.blank?
 
-        button = button_to(url, html_options) { fa_icon("thumbs-up") }
-        concat button
-      end
+    row.time_data_statuses.each_with_index do |data_status, i|
+      split_time_id = row.split_time_ids[i]
+      new_data_status = data_status == "confirmed" ? nil : "confirmed"
+      button_class = data_status == "confirmed" ? "success" : "outline-success"
+      split_time_data = { split_time: { data_status: new_data_status } }
+      url = split_time_id.blank? ? "#" : split_time_path(split_time_id)
+      html_options = {
+        disabled: split_time_id.blank?,
+        class: "btn btn-sm btn-#{button_class} mx-1",
+        method: :patch,
+        params: split_time_data,
+        data: {
+          turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+        },
+      }
+
+      button = button_to(url, html_options) { fa_icon("thumbs-up") }
+      concat button
     end
   end
 
   def effort_row_delete_buttons(row)
-    if row.split_time_ids.compact.present?
-      row.split_time_ids.each do |id|
-        url = id.blank? ? "#" : split_time_path(id)
-        html_options = {
-          disabled: id.blank?,
-          class: "btn btn-sm btn-outline-danger mx-1",
-          method: :delete,
-          data: {
-            turbo_confirm: "This action cannot be undone. OK to proceed?",
-            turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-          },
-        }
+    return if row.split_time_ids.compact.blank?
 
-        button = button_to(url, html_options) { fa_icon("trash") }
-        concat button
-      end
+    row.split_time_ids.each do |id|
+      url = id.blank? ? "#" : split_time_path(id)
+      html_options = {
+        disabled: id.blank?,
+        class: "btn btn-sm btn-outline-danger mx-1",
+        method: :delete,
+        data: {
+          turbo_confirm: "This action cannot be undone. OK to proceed?",
+          turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+        },
+      }
+
+      button = button_to(url, html_options) { fa_icon("trash") }
+      concat button
     end
   end
 
@@ -116,11 +116,11 @@ module EffortsHelper
   end
 
   def effort_start_time_string(presenter)
-    if presenter.calculated_start_time
-      content_tag(:h6) do
-        concat content_tag(:strong, "Start Time: ")
-        concat l(@presenter.calculated_start_time_local, format: :full_day_time_and_zone)
-      end
+    return unless presenter.calculated_start_time
+
+    content_tag(:h6) do
+      concat content_tag(:strong, "Start Time: ")
+      concat l(@presenter.calculated_start_time_local, format: :full_day_time_and_zone)
     end
   end
 

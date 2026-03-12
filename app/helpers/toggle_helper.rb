@@ -101,9 +101,9 @@ module ToggleHelper
     args = case protocol
            when "email"
              { icon_name: "envelope",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " +
-                 "(You will need to click a link in a confirmation email that will be sent to you " +
-                 "from AWS Notifications.)",
+               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " \
+                                "(You will need to click a link in a confirmation email that will be sent to you " \
+                                "from AWS Notifications.)",
                unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
            when "sms"
              { icon_name: "mobile-alt",
@@ -113,13 +113,13 @@ module ToggleHelper
              {}
            end
 
-    if subscribable.topic_resource_key.present?
-      args.merge!(subscribable: subscribable, protocol: protocol)
-      if current_user
-        link_to_toggle_subscription(args)
-      else
-        button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
-      end
+    return if subscribable.topic_resource_key.blank?
+
+    args.merge!(subscribable: subscribable, protocol: protocol)
+    if current_user
+      link_to_toggle_subscription(args)
+    else
+      button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
     end
   end
 
@@ -162,6 +162,6 @@ module ToggleHelper
       }
     }
 
-    button_to(url, html_options) { fa_icon(icon, text: "#{protocol}") }
+    button_to(url, html_options) { fa_icon(icon, text: protocol.to_s) }
   end
 end

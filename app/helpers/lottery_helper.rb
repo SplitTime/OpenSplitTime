@@ -46,7 +46,7 @@ module LotteryHelper
   end
 
   def options_for_calculation_class(lottery)
-    directory_path = Rails.root.join("app", "models", "lotteries", "calculations")
+    directory_path = Rails.root.join("app/models/lotteries/calculations")
     files = Dir.glob("#{directory_path}/*")
     class_names = files.map { |file| file.split("/").last.split(".").first.classify }
     class_names.delete("Base")

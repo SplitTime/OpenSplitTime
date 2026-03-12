@@ -2,8 +2,8 @@ module SpreadHelper
   STYLES_WITH_START_TIME = %w[ampm military].freeze
 
   def clustered_header(header_data)
-    title = header_data[:title].html_safe + tag(:br)
-    extensions = header_data[:extensions].present? ? header_data[:extensions].join(" / ").html_safe + tag(:br) : ""
+    title = header_data[:title].html_safe + tag.br
+    extensions = header_data[:extensions].present? ? header_data[:extensions].join(" / ").html_safe + tag.br : ""
     distance = header_data[:distance].present? ? "(#{pdu('singular').titlecase} #{d(header_data[:distance])})" : ""
     title + extensions + distance
   end
@@ -39,7 +39,7 @@ module SpreadHelper
   end
 
   def spread_relevant_elements(array)
-    STYLES_WITH_START_TIME.include?(@presenter.display_style) ? array : array[1..-1] || []
+    STYLES_WITH_START_TIME.include?(@presenter.display_style) ? array : array[1..] || []
   end
 
   def spread_export_headers

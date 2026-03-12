@@ -11,7 +11,8 @@ module DocsHelper
           active = topic_matches && page_matches ? "active" : nil
           class_text = ["list-group-item list-group-item-action bg-light", active].compact.join(" ")
 
-          concat(link_to(page, {controller: :visitors, action: presenter.category, topic: topic, page: i}, class: class_text))
+          concat(link_to(page, { controller: :visitors, action: presenter.category, topic: topic, page: i },
+                         class: class_text))
         end
       end
     end

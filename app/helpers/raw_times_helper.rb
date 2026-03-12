@@ -9,10 +9,8 @@ module RawTimesHelper
 
   def link_to_raw_time_split(raw_time)
     if raw_time.split
-      raw_time.split_name
-    else
-      raw_time.split_name
     end
+    raw_time.split_name
   end
 
   def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:, confirm: nil)

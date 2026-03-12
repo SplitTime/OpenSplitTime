@@ -154,14 +154,22 @@ module Etl
 
     def normalize_gender!
       return unless key?(:gender)
-      return unless self[:gender].presence.respond_to?(:downcase)
+
+      unless self[:gender].presence.respond_to?(:downcase)
+        self[:gender] = nil
+        return
+      end
 
       self[:gender] = GENDER_MAP[self[:gender].downcase.first]
     end
 
     def normalize_split_kind!
       return unless key?(:kind)
-      return unless self[:kind].presence.respond_to?(:downcase)
+
+      unless self[:kind].presence.respond_to?(:downcase)
+        self[:kind] = nil
+        return
+      end
 
       self[:kind] = SPLIT_TYPE_MAP[self[:kind].downcase.first]
     end

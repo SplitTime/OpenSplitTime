@@ -664,6 +664,71 @@ RSpec.shared_examples_for "transformable" do
     end
   end
 
+  describe "#normalize_split_kind!" do
+    context "when existing kind starts with 'S'" do
+      let(:attributes) { { kind: "Start" } }
+
+      it "changes the value to 'start'" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq("start")
+      end
+    end
+
+    context "when existing kind starts with 'I'" do
+      let(:attributes) { { kind: "Int" } }
+
+      it "changes the value to 'intermediate'" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq("intermediate")
+      end
+    end
+
+    context "when existing kind starts with 'F'" do
+      let(:attributes) { { kind: "Finish" } }
+
+      it "changes the value to 'finish'" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq("finish")
+      end
+    end
+
+    context "when existing kind starts with an unrecognized letter" do
+      let(:attributes) { { kind: "Hello" } }
+
+      it "changes the value to nil" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq(nil)
+      end
+    end
+
+    context "when existing kind is not a string" do
+      let(:attributes) { { kind: 1 } }
+
+      it "changes the value to nil" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq(nil)
+      end
+    end
+
+    context "when existing kind is an empty string" do
+      let(:attributes) { { kind: "" } }
+
+      it "changes the value to nil" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq(nil)
+      end
+    end
+
+    context "when existing kind does not exist" do
+      let(:attributes) { { first_name: "Joe" } }
+
+      it "does not set a value" do
+        subject.normalize_split_kind!
+        expect(subject[:kind]).to eq(nil)
+      end
+    end
+  end
+
   describe "#normalize_state_code" do
     context "when no country is provided for context" do
       let(:attributes) { { state_code: "State Of Confusion" } }

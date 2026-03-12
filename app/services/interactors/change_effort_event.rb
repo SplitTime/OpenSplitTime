@@ -40,7 +40,6 @@ module Interactors
           errors << resource_error_object(effort)
           raise ActiveRecord::Rollback
         end
-        # Rebuild effort_segments after changing event to ensure they reflect the new course
         effort.set_effort_segments
       end
     end

@@ -33,6 +33,7 @@ Naming/VariableNumber:
 Lint/MissingSuper:
   Enabled: true
   Exclude:
+    - "app/presenters/**/*"
     - "lib/etl/transformers/**/*"
 
 Rails/Delegate:

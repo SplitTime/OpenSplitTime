@@ -2,6 +2,7 @@ class EventSetupPresenter < BasePresenter
   include ::UnitConversions
 
   attr_reader :event, :view_context
+
   delegate :event_group, :new_record?, :organization, :to_param, to: :event
   delegate :id, to: :event, prefix: true
   delegate :available_live?, :concealed?, to: :event_group
@@ -22,12 +23,16 @@ class EventSetupPresenter < BasePresenter
     event.course || organization.courses.new.add_basic_splits!
   end
 
+  def new_course
+    organization.courses.new.add_basic_splits!
+  end
+
   def start_split
-    course.splits.find(&:start?)
+    new_course.splits.find(&:start?)
   end
 
   def finish_split
-    course.splits.find(&:finish?)
+    new_course.splits.find(&:finish?)
   end
 
   def courses_for_select
@@ -39,7 +44,7 @@ class EventSetupPresenter < BasePresenter
   end
 
   def distance_component(course)
-    {"data-distance" => (course.distance && meters_to_preferred_distance(course.distance).round(1))}
+    { "data-distance" => course.distance && meters_to_preferred_distance(course.distance).round(1) }
   end
 
   def event_group_name

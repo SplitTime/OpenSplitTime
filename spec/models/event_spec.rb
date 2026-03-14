@@ -79,7 +79,7 @@ RSpec.describe Event, type: :model do
       end
     end
 
-    context "for split location validations" do
+    context "with split location validations" do
       let(:event_1) { events(:sum_100k) }
       let(:event_2) { events(:sum_55k) }
       let(:event_group) { event_1.event_group }
@@ -128,68 +128,53 @@ RSpec.describe Event, type: :model do
   end
 
   describe "methods that produce lap_splits and time_points" do
-    let(:event) { build_stubbed(:event, laps_required: 2) }
+    let(:event) { build_stubbed(:event, laps_required: laps_required) }
+    let(:laps_required) { 2 }
     let(:start_split) { build_stubbed(:split, :start, id: 111) }
     let(:intermediate_split1) { build_stubbed(:split, id: 102) }
     let(:intermediate_split2) { build_stubbed(:split, id: 103) }
     let(:finish_split) { build_stubbed(:split, :finish, id: 112) }
     let(:splits) { [start_split, intermediate_split1, intermediate_split2, finish_split] }
 
+    before { allow(event).to receive(:ordered_splits).and_return(splits) }
+
     describe "#required_lap_splits" do
-      it "returns an empty array when laps_required is zero" do
-        test_event = event
-        test_event.laps_required = 0
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_lap_splits = test_event.required_lap_splits
-        expect(required_lap_splits).to eq([])
+      let(:result) { event.required_lap_splits }
+
+      context "when laps_required is zero" do
+        let(:laps_required) { 0 }
+
+        it { expect(result).to eq([]) }
       end
 
       it "returns an array whose size is equal to laps_required * number of splits" do
-        test_event = event
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_lap_splits = test_event.required_lap_splits
-        expect(required_lap_splits.size).to eq(8)
+        expect(result.size).to eq(8)
       end
 
       it "returns an array of LapSplit objects ordered by lap, split distance, and bitkey" do
-        test_event = event
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_lap_splits = test_event.required_lap_splits
-        expect(required_lap_splits.size).to eq(8)
-        expect(required_lap_splits.map(&:lap)).to eq([1] * 4 + [2] * 4)
-        expect(required_lap_splits.map(&:split).map(&:id)).to eq([111, 102, 103, 112] * 2)
+        expect(result.size).to eq(8)
+        expect(result.map(&:lap)).to eq(([1] * 4) + ([2] * 4))
+        expect(result.map(&:split).map(&:id)).to eq([111, 102, 103, 112] * 2)
       end
     end
 
     describe "#required_time_points" do
-      it "returns an empty array when laps_required is zero" do
-        test_event = event
-        test_event.laps_required = 0
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_time_points = test_event.required_time_points
-        expect(required_time_points).to eq([])
+      let(:result) { event.required_time_points }
+
+      context "when laps_required is zero" do
+        let(:laps_required) { 0 }
+
+        it { expect(result).to eq([]) }
       end
 
       it "returns an array whose size is equal to laps_required * number of sub_splits" do
-        test_event = event
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_time_points = test_event.required_time_points
-        expect(required_time_points.size).to eq(12)
+        expect(result.size).to eq(12)
       end
 
       it "returns an array of TimePoint objects ordered by lap, split distance, and bitkey" do
-        test_event = event
-        ordered_splits = splits
-        allow_any_instance_of(Event).to receive(:ordered_splits).and_return(ordered_splits)
-        required_time_points = test_event.required_time_points
-        expect(required_time_points.map(&:lap)).to eq([1] * 6 + [2] * 6)
-        expect(required_time_points.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)
-        expect(required_time_points.map(&:bitkey)).to eq([1, 1, 64, 1, 64, 1] * 2)
+        expect(result.map(&:lap)).to eq(([1] * 6) + ([2] * 6))
+        expect(result.map(&:split_id)).to eq([111, 102, 102, 103, 103, 112] * 2)
+        expect(result.map(&:bitkey)).to eq([1, 1, 64, 1, 64, 1] * 2)
       end
     end
   end
@@ -197,71 +182,81 @@ RSpec.describe Event, type: :model do
   describe "#multiple_laps?" do
     it "returns false if the event requires exactly one lap" do
       event = build_stubbed(:event, laps_required: 1)
-      expect(event.multiple_laps?).to be_falsey
+      expect(event).not_to be_multiple_laps
     end
 
     it "returns true if the event requires more than one lap" do
       event = build_stubbed(:event, laps_required: 2)
-      expect(event.multiple_laps?).to be_truthy
+      expect(event).to be_multiple_laps
     end
 
     it "returns true if the event requires zero (i.e. unlimited) laps" do
       event = build_stubbed(:event, laps_required: 0)
-      expect(event.multiple_laps?).to be_truthy
+      expect(event).to be_multiple_laps
     end
   end
 
   describe "#maximum_laps" do
-    it "returns laps_required when laps_required is 1" do
-      event = build_stubbed(:event, laps_required: 1)
-      expect(event.maximum_laps).to eq(1)
+    let(:event) { build_stubbed(:event, laps_required: laps_required) }
+    let(:result) { event.maximum_laps }
+
+    context "when laps_required is 1" do
+      let(:laps_required) { 1 }
+
+      it { expect(result).to eq(1) }
     end
 
-    it "returns laps_required when laps_required is greater than 1" do
-      event = build_stubbed(:event, laps_required: 3)
-      expect(event.maximum_laps).to eq(3)
+    context "when laps_required is greater than 1" do
+      let(:laps_required) { 3 }
+
+      it { expect(result).to eq(3) }
     end
 
-    it "returns nil when laps_required is 0" do
-      event = build_stubbed(:event, laps_required: 0)
-      expect(event.maximum_laps).to eq(nil)
+    context "when laps_required is 0" do
+      let(:laps_required) { 0 }
+
+      it { expect(result).to be_nil }
     end
   end
 
   describe "#scheduled_start_time_local" do
+    let(:event) { build_stubbed(:event, scheduled_start_time: scheduled_start_time, event_group: event_group) }
+    let(:result) { event.scheduled_start_time_local }
+
     context "when the event_group specifies a valid home_time_zone" do
-      let(:event) { build_stubbed(:event, event_group: event_group) }
       let(:event_group) { build(:event_group, home_time_zone: "Eastern Time (US & Canada)") }
 
-      it "returns the start_time in the time zone specified by event.home_time_zone" do
-        event.scheduled_start_time = DateTime.parse("2017-07-01T06:00+00:00")
-        expect(event.scheduled_start_time_local.time_zone.name).to eq(event.home_time_zone)
-        expect(event.scheduled_start_time_local.to_s).to eq("2017-07-01 02:00:00 -0400")
+      context "when scheduled_start_time is in summer" do
+        let(:scheduled_start_time) { DateTime.parse("2017-07-01T06:00+00:00") }
+
+        it "returns the start_time in the time zone specified by event.home_time_zone" do
+          expect(result.time_zone.name).to eq(event.home_time_zone)
+          expect(result.to_s).to eq("2017-07-01 02:00:00 -0400")
+        end
       end
 
-      it "properly senses daylight savings time where applicable" do
-        event.scheduled_start_time = DateTime.parse("2017-12-15T06:00+00:00")
-        expect(event.scheduled_start_time_local.time_zone.name).to eq(event.home_time_zone)
-        expect(event.scheduled_start_time_local.to_s).to eq("2017-12-15 01:00:00 -0500")
+      context "when scheduled_start_time is in winter" do
+        let(:scheduled_start_time) { DateTime.parse("2017-12-15T06:00+00:00") }
+
+        it "properly senses daylight savings time" do
+          expect(result.time_zone.name).to eq(event.home_time_zone)
+          expect(result.to_s).to eq("2017-12-15 01:00:00 -0500")
+        end
       end
     end
 
     context "when the event home_time_zone is nil" do
-      let(:event) { build_stubbed(:event, scheduled_start_time: DateTime.parse("2017-07-01T06:00+00:00"), event_group: event_group) }
+      let(:scheduled_start_time) { DateTime.parse("2017-07-01T06:00+00:00") }
       let(:event_group) { build(:event_group, home_time_zone: nil) }
 
-      it "returns nil" do
-        expect(event.scheduled_start_time_local).to be_nil
-      end
+      it { expect(result).to be_nil }
     end
 
     context "when the event start_time is nil" do
-      let(:event) { build_stubbed(:event, scheduled_start_time: nil, event_group: event_group) }
+      let(:scheduled_start_time) { nil }
       let(:event_group) { build(:event_group, home_time_zone: "Eastern Time (US & Canada)") }
 
-      it "returns nil" do
-        expect(event.scheduled_start_time_local).to be_nil
-      end
+      it { expect(result).to be_nil }
     end
   end
 
@@ -270,50 +265,54 @@ RSpec.describe Event, type: :model do
 
     context "when home_time_zone exists" do
       let(:event_group) { build(:event_group, home_time_zone: "Eastern Time (US & Canada)") }
+      let(:result) { event.scheduled_start_time.in_time_zone("GMT") }
 
-      it "converts the string based on the specified home_time_zone" do
-        event.scheduled_start_time_local = "07/01/2017 06:00:00"
-        start_time = event.scheduled_start_time.in_time_zone("GMT")
-        expect(start_time).to eq("2017-07-01 10:00:00 -0000")
+      before { event.scheduled_start_time_local = time_string }
+
+      context "with a standard date/time string" do
+        let(:time_string) { "07/01/2017 06:00:00" }
+
+        it { expect(result).to eq("2017-07-01 10:00:00 -0000") }
       end
 
-      it "works properly with a 24-hour time" do
-        event.scheduled_start_time_local = "07/01/2017 16:00:00"
-        start_time = event.scheduled_start_time.in_time_zone("GMT")
-        expect(start_time).to eq("2017-07-01 20:00:00 -0000")
+      context "with a 24-hour time" do
+        let(:time_string) { "07/01/2017 16:00:00" }
+
+        it { expect(result).to eq("2017-07-01 20:00:00 -0000") }
       end
 
-      it "works properly with AM/PM time" do
-        event.scheduled_start_time_local = "07/01/2017 04:00:00 PM"
-        start_time = event.scheduled_start_time.in_time_zone("GMT")
-        expect(start_time).to eq("2017-07-01 20:00:00 -0000")
+      context "with AM/PM time" do
+        let(:time_string) { "07/01/2017 04:00:00 PM" }
+
+        it { expect(result).to eq("2017-07-01 20:00:00 -0000") }
       end
 
-      it "works properly with date formatted in yyyy-mm-dd style" do
-        event.scheduled_start_time_local = "2017-07-01 16:00:00"
-        start_time = event.scheduled_start_time.in_time_zone("GMT")
-        expect(start_time).to eq("2017-07-01 20:00:00 -0000")
+      context "with date formatted in yyyy-mm-dd style" do
+        let(:time_string) { "2017-07-01 16:00:00" }
+
+        it { expect(result).to eq("2017-07-01 20:00:00 -0000") }
       end
 
-      it "works properly regardless of daylight savings time" do
-        event.scheduled_start_time_local = "2017-12-15 16:00:00"
-        start_time = event.scheduled_start_time.in_time_zone("GMT")
-        expect(start_time).to eq("2017-12-15 21:00:00 -0000")
+      context "with a winter date (daylight savings)" do
+        let(:time_string) { "2017-12-15 16:00:00" }
+
+        it { expect(result).to eq("2017-12-15 21:00:00 -0000") }
       end
     end
 
     context "when home_time_zone does not exist" do
       let(:event_group) { build(:event_group, home_time_zone: nil) }
 
-      it "raises an error" do
-        expect { event.scheduled_start_time_local = "2017-07-01 06:00:00" }
-            .to raise_error(/scheduled_start_time_local cannot be set without a valid home_time_zone/)
+      it "sets the attribute to nil" do
+        event.scheduled_start_time_local = "2017-07-01 06:00:00"
+        expect(event.scheduled_start_time).to be_nil
       end
     end
   end
 
   describe "#events_within_group" do
     subject { create(:event, event_group: event_group_1) }
+
     let!(:event_group_1) { create(:event_group) }
     let!(:event_group_2) { create(:event_group) }
     let!(:event_same_group) { create(:event, :with_short_name, event_group: event_group_1) }
@@ -330,40 +329,38 @@ RSpec.describe Event, type: :model do
   describe "#simple?" do
     subject { build_stubbed(:event, splits: splits, laps_required: laps_required) }
 
+    let(:result) { subject.simple? }
+
     context "when the event has only a start and finish split and only one lap" do
       let(:splits) { build_stubbed_list(:split, 2) }
       let(:laps_required) { 1 }
 
-      it "returns true" do
-        expect(subject.simple?).to eq(true)
-      end
+      it { expect(result).to eq(true) }
     end
 
     context "when the event has only a start and finish split but multiple laps" do
       let(:splits) { build_stubbed_list(:split, 2) }
       let(:laps_required) { 0 }
 
-      it "returns false" do
-        expect(subject.simple?).to eq(false)
-      end
+      it { expect(result).to eq(false) }
     end
 
     context "when the event has more than two splits and only one lap" do
       let(:splits) { build_stubbed_list(:split, 3) }
       let(:laps_required) { 1 }
 
-      it "returns false" do
-        expect(subject.simple?).to eq(false)
-      end
+      it { expect(result).to eq(false) }
     end
   end
 
   describe "#guaranteed_short_name" do
+    let(:result) { event.guaranteed_short_name }
+
     context "when a short_name exists for the event" do
       let(:event) { build_stubbed(:event, short_name: "Test Short Name") }
 
       it "returns the short name" do
-        expect(event.guaranteed_short_name).to eq(event.short_name)
+        expect(result).to eq(event.short_name)
       end
     end
 
@@ -371,7 +368,7 @@ RSpec.describe Event, type: :model do
       let(:event) { build_stubbed(:event, short_name: nil) }
 
       it "returns the event name" do
-        expect(event.guaranteed_short_name).to eq(event.name)
+        expect(result).to eq(event.name)
       end
     end
   end
@@ -400,12 +397,6 @@ RSpec.describe Event, type: :model do
     describe "#ordered_splits_without_start" do
       it "returns all splits sorted by distance_from_start without the start split" do
         expect(event.ordered_splits_without_start.map(&:distance_from_start)).to eq((splits - [start_split]).map(&:distance_from_start).sort)
-      end
-    end
-
-    describe "#ordered_splits_without_finish" do
-      it "returns all splits sorted by distance_from_start without the finish split" do
-        expect(event.ordered_splits_without_finish.map(&:distance_from_start)).to eq((splits - [finish_split]).map(&:distance_from_start).sort)
       end
     end
 

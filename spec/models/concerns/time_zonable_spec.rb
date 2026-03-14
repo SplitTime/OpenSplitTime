@@ -12,7 +12,8 @@ RSpec.describe TimeZonable do
 
       zonable_attributes :start_time, :finish_time
 
-      def home_time_zone; end
+      def home_time_zone
+      end
     end
   end
 
@@ -21,7 +22,7 @@ RSpec.describe TimeZonable do
     let(:start_time_local) { "2023-05-05 08:30:40" }
     let(:finish_time_local) { "2023-05-05 10:30:40" }
 
-    before { allow_any_instance_of(dummy_class).to receive(:home_time_zone).and_return(home_time_zone) }
+    before { allow(dummy_instance).to receive(:home_time_zone).and_return(home_time_zone) }
 
     context "when home_time_zone is available and valid" do
       let(:home_time_zone) { "Mountain Time (US & Canada)" }

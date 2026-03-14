@@ -1,4 +1,4 @@
-<%= render 'shared/errors', obj: @course %>
+<%= render "shared/errors", obj: @course %>
 
 <div class="row">
   <div class="col-md-12">
@@ -21,19 +21,21 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <div class="control-label col-sm-2">
-          <%= f.label :next_start_time, 'Start time of next event (if known)' %>
+      <% if @course.events.any? %>
+        <div class="mb-3">
+          <div class="control-label col-sm-2">
+            <%= f.label :next_start_time, "Start time of next event (if known)" %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.datetimepicker_field :next_start_time_local %>
+          </div>
         </div>
-        <div class="col-sm-8">
-          <%= f.datetimepicker_field :next_start_time_local %>
-        </div>
-      </div>
+      <% end %>
 
       <% if @course.gpx.attached? %>
         <div class="mb-3">
           <div class="control-label col-sm-2">
-            <%= f.label 'Existing gpx file' %>
+            <%= f.label "Existing gpx file" %>
           </div>
           <div class="col-sm-8">
             <%= "#{@course.gpx.filename}, #{(@course.gpx.byte_size / 1.0.megabyte).round(2)} MB" %>
@@ -43,16 +45,16 @@
 
       <div class="mb-3">
         <div class="control-label col-sm-2">
-          <%= f.label @course.gpx.attached? ? 'Change gpx file' : 'Add gpx file' %>
+          <%= f.label @course.gpx.attached? ? "Change gpx file" : "Add gpx file" %>
         </div>
         <div class="col-sm-8">
-          <%= f.file_field :gpx, class: 'form-control' %>
+          <%= f.file_field :gpx, class: "form-control" %>
         </div>
       </div>
 
       <% if @course.new_record? %>
         <%= f.fields_for :splits, @course.splits.new do |builder| %>
-          <%= builder.hidden_field :base_name, value: 'Start' %>
+          <%= builder.hidden_field :base_name, value: "Start" %>
           <%= builder.hidden_field :distance_from_start, value: 0 %>
           <%= builder.hidden_field :sub_split_bitmap, value: 1 %>
           <%= builder.hidden_field :kind, value: :start %>
@@ -60,12 +62,12 @@
           <%= builder.hidden_field :vert_loss_from_start, value: 0 %>
         <% end %>
         <%= f.fields_for :splits, @course.splits.new do |builder| %>
-          <%= builder.hidden_field :base_name, value: 'Finish' %>
+          <%= builder.hidden_field :base_name, value: "Finish" %>
           <%= builder.hidden_field :sub_split_bitmap, value: 1 %>
           <%= builder.hidden_field :kind, value: :finish %>
           <div class="mb-3">
             <div class="control-label col-sm-2">
-              <%= builder.label :distance_in_preferred_units, 'Course distance' %>
+              <%= builder.label :distance_in_preferred_units, "Course distance" %>
             </div>
             <div class="col-sm-8">
               <%= builder.text_field :distance_in_preferred_units, class: "form-control", placeholder: pdu %>
@@ -73,7 +75,7 @@
           </div>
           <div class="mb-3">
             <div class="control-label col-sm-2">
-              <%= builder.label :vert_gain_in_preferred_units, 'Total vertical gain' %>
+              <%= builder.label :vert_gain_in_preferred_units, "Total vertical gain" %>
             </div>
             <div class="col-sm-8">
               <%= builder.text_field :vert_gain_in_preferred_units, class: "form-control", placeholder: peu %>
@@ -81,7 +83,7 @@
           </div>
           <div class="mb-3">
             <div class="control-label col-sm-2">
-              <%= builder.label :vert_loss_in_preferred_units, 'Total vertical loss' %>
+              <%= builder.label :vert_loss_in_preferred_units, "Total vertical loss" %>
             </div>
             <div class="col-sm-8">
               <%= builder.text_field :vert_loss_in_preferred_units, class: "form-control", placeholder: peu %>
@@ -92,12 +94,12 @@
 
       <div class="mb-3">
         <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit(@course.new_record? ? "Create Course" : "Update Course", class: 'btn btn-primary btn-large') %>
+          <%= f.submit(@course.new_record? ? "Create Course" : "Update Course", class: "btn btn-primary btn-large") %>
         </div>
       </div>
 
       <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', @course.new_record? ? organization_courses_path(@course.organization) : organization_course_path(@course.organization, @course) %></span>
+        <span class="brackets"><%= link_to "Cancel", @course.new_record? ? organization_courses_path(@course.organization) : organization_course_path(@course.organization, @course) %></span>
       </div>
 
     <% end %>

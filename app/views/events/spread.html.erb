@@ -69,14 +69,14 @@
         <th><%= link_to_reversing_sort_heading("Category", "gender,age", @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading("From", :state_code, @presenter.existing_sort) %></th>
         <th>Status</th>
-        <% spread_relevant_elements(@presenter.split_header_data).each do |header| %>
+        <% spread_relevant_elements(@presenter, @presenter.split_header_data).each do |header| %>
           <th class="text-nowrap text-center">
             <%= clustered_header(header) %>
           </th>
         <% end %>
         <% if @presenter.show_segment_totals? %>
           <th class="text-center text-nowrap">
-            <%= clustered_segment_total_header %>
+            <%= clustered_segment_total_header(@presenter) %>
           </th>
         <% end %>
       </tr>
@@ -91,7 +91,7 @@
           <td class="text-nowrap"><%= row.bio_historic %></td>
           <td class="text-nowrap"><%= row.flexible_geolocation %></td>
           <td class="text-nowrap"><%= row.effort_status %></td>
-          <% spread_relevant_elements(row.time_clusters).each do |cluster| %>
+          <% spread_relevant_elements(@presenter, row.time_clusters).each do |cluster| %>
             <td class="text-nowrap text-center">
               <%= time_cluster_display_data(cluster, @presenter.display_style) %>
             </td>

@@ -1,8 +1,8 @@
 require "csv"
 
 ::CSV.generate do |csv|
-  csv << spread_export_headers
+  csv << spread_export_headers(@presenter)
   @presenter.effort_times_rows.each do |row|
-    csv << time_row_export_row(row)
+    csv << time_row_export_row(@presenter, row)
   end
 end

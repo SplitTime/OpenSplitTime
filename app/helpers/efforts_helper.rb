@@ -120,7 +120,7 @@ module EffortsHelper
 
     content_tag(:h6) do
       concat content_tag(:strong, "Start Time: ")
-      concat l(@presenter.calculated_start_time_local, format: :full_day_time_and_zone)
+      concat l(presenter.calculated_start_time_local, format: :full_day_time_and_zone)
     end
   end
 

@@ -1,8 +1,9 @@
 module Lotteries
   module EntrantServiceDetailsHelper
     def button_to_remove_completed_service_form(presenter)
-      url = remove_completed_form_organization_lottery_entrant_service_detail_path(presenter.organization,
-                                                                                   presenter.lottery, presenter.__getobj__)
+      url = remove_completed_form_organization_lottery_entrant_service_detail_path(
+        presenter.organization, presenter.lottery, presenter.__getobj__
+      )
       options = {
         method: :delete,
         class: "btn btn-outline-danger",

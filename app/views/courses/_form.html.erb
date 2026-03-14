@@ -21,14 +21,16 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <div class="control-label col-sm-2">
-          <%= f.label :next_start_time, 'Start time of next event (if known)' %>
+      <% if @course.events.any? %>
+        <div class="mb-3">
+          <div class="control-label col-sm-2">
+            <%= f.label :next_start_time, 'Start time of next event (if known)' %>
+          </div>
+          <div class="col-sm-8">
+            <%= f.datetimepicker_field :next_start_time_local %>
+          </div>
         </div>
-        <div class="col-sm-8">
-          <%= f.datetimepicker_field :next_start_time_local %>
-        </div>
-      </div>
+      <% end %>
 
       <% if @course.gpx.attached? %>
         <div class="mb-3">

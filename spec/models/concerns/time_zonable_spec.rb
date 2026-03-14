@@ -82,18 +82,24 @@ RSpec.describe TimeZonable do
     context "when home_time_zone is not available" do
       let(:home_time_zone) { nil }
 
-      it "raises an error" do
-        expect { dummy_instance.start_time_local = start_time_local }.to raise_error(ArgumentError)
-        expect { dummy_instance.finish_time_local = finish_time_local }.to raise_error(ArgumentError)
+      it "blanks out the attribute" do
+        dummy_instance.start_time_local = start_time_local
+        expect(dummy_instance.start_time).to be_nil
+
+        dummy_instance.finish_time_local = finish_time_local
+        expect(dummy_instance.finish_time).to be_nil
       end
     end
 
     context "when home_time_zone is not valid" do
       let(:home_time_zone) { "invalid" }
 
-      it "raises an error" do
-        expect { dummy_instance.start_time_local = start_time_local }.to raise_error(ArgumentError)
-        expect { dummy_instance.finish_time_local = finish_time_local }.to raise_error(ArgumentError)
+      it "blanks out the attribute" do
+        dummy_instance.start_time_local = start_time_local
+        expect(dummy_instance.start_time).to be_nil
+
+        dummy_instance.finish_time_local = finish_time_local
+        expect(dummy_instance.finish_time).to be_nil
       end
     end
   end

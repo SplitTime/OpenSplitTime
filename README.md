@@ -95,13 +95,9 @@ After you setup/seed your database, you should have four test users:
 | user  | fifthuser@example.com  | password |
 ```
 
-**Sidekiq**
+**Solid Queue**
 
-OpenSplitTime relies on Sidekiq for background jobs, and Sidekiq needs Redis. Make sure your Redis server (installed above) is started. Run your Sidekiq server from the command line:
-
-`$ sidekiq`
-
-You'll know you did it right when you see the awesome ASCII art.
+OpenSplitTime uses Solid Queue for background jobs. Solid Queue is database-backed, so no additional services are needed beyond PostgreSQL. Jobs will be processed automatically when you start the server with `bin/dev`.
 
 **ChromeDriver**
 

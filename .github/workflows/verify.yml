@@ -57,8 +57,16 @@ jobs:
           echo "Running rubocop on changed files:"
           echo "$CHANGED_FILES"
           
+          # Filter out deleted files
+          EXISTING_FILES=$(echo "$CHANGED_FILES" | while read -r f; do [ -f "$f" ] && echo "$f"; done || true)
+
+          if [ -z "$EXISTING_FILES" ]; then
+            echo "No existing Ruby files to lint, skipping rubocop"
+            exit 0
+          fi
+
           # Run rubocop on changed files (pass them as arguments)
-          echo "$CHANGED_FILES" | xargs bundle exec rubocop
+          echo "$EXISTING_FILES" | xargs bundle exec rubocop
         env:
           GH_TOKEN: ${{ github.token }}
 

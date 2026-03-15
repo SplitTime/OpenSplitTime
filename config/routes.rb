@@ -21,11 +21,6 @@ Rails.application.routes.draw do
   get "/422", to: "errors#unprocessable_entity"
   get "/500", to: "errors#internal_server_error"
 
-  require "sidekiq/web"
-  authenticate :user, ->(u) { u.admin? } do
-    mount Sidekiq::Web => "/sidekiq"
-  end
-
   authenticate :user, ->(u) { u.admin? } do
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
@@ -45,7 +40,7 @@ Rails.application.routes.draw do
   end
 
   scope :my_stuff, controller: :my_stuff, as: :my_stuff do
-    get '/', action: :index
+    get "/", action: :index
     get :events
     get :event_series
     get :interests
@@ -170,7 +165,8 @@ Rails.application.routes.draw do
   end
 
   resources :events, only: [:show] do
-    resources :connector_services, only: [], module: "events/connectors", controller: "services", param: "service_identifier" do
+    resources :connector_services, only: [], module: "events/connectors", controller: "services",
+                                   param: "service_identifier" do
       member do
         get :preview_sync
         post :sync
@@ -280,7 +276,9 @@ Rails.application.routes.draw do
   resources :split_times, only: [:update, :destroy]
   resources :toasts, only: [:create]
 
-  get "/sitemap.xml.gz", to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"), as: :sitemap
+  get "/sitemap.xml.gz",
+      to: redirect("https://#{::OstConfig.aws_s3_bucket_public}.s3.amazonaws.com/sitemaps/sitemap.xml.gz"),
+      as: :sitemap
 
   namespace :admin do
     get "dashboard", to: "dashboard#show"
@@ -350,12 +348,12 @@ Rails.application.routes.draw do
   # Handle unmatched routes with 404, but allow routes from
   # active storage, action mailbox, and turbo to pass through
   match "*unmatched", to: "application#route_not_found", via: :all,
-        constraints: lambda { |request|
-          request.path.exclude?("rails/active_storage") &&
-            request.path.exclude?("rails/action_mailbox") &&
-            request.path.exclude?("rails/conductor") &&
-            request.path.exclude?("recede_historical_location") &&
-            request.path.exclude?("resume_historical_location") &&
-            request.path.exclude?("refresh_historical_location")
-        }
+                      constraints: lambda { |request|
+                        request.path.exclude?("rails/active_storage") &&
+                          request.path.exclude?("rails/action_mailbox") &&
+                          request.path.exclude?("rails/conductor") &&
+                          request.path.exclude?("recede_historical_location") &&
+                          request.path.exclude?("resume_historical_location") &&
+                          request.path.exclude?("refresh_historical_location")
+                      }
 end

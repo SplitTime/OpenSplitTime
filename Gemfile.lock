@@ -301,9 +301,6 @@ GEM
       railties
     judoscale-ruby (1.13.2)
       logger
-    judoscale-sidekiq (1.13.2)
-      judoscale-ruby (= 1.13.2)
-      sidekiq (>= 5.0)
     judoscale-solid_queue (1.13.2)
       judoscale-ruby (= 1.13.2)
       solid_queue (>= 1.0)
@@ -533,8 +530,6 @@ GEM
       psych (>= 4.0.0)
       tsort
     redis (4.8.1)
-    redis-client (0.26.4)
-      connection_pool
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
@@ -610,12 +605,6 @@ GEM
       ruby_http_client (~> 3.4)
     shortener (1.0.2)
       voight_kampff (~> 2.0)
-    sidekiq (7.3.10)
-      base64
-      connection_pool (>= 2.3.0, < 3)
-      logger
-      rack (>= 2.2.4, < 3.3)
-      redis-client (>= 0.23.0, < 1)
     sitemap_generator (6.3.0)
       builder (~> 3.0)
     smarter_csv (1.15.1)
@@ -738,7 +727,6 @@ DEPENDENCIES
   jsbundling-rails
   jsonapi-serializer
   judoscale-rails
-  judoscale-sidekiq
   judoscale-solid_queue
   jwt
   listen
@@ -773,7 +761,6 @@ DEPENDENCIES
   scout_apm
   sendgrid-ruby
   shortener
-  sidekiq (< 8.0)
   sitemap_generator
   smarter_csv
   solid_queue

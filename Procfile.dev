@@ -1,5 +1,4 @@
 web: unset PORT && env RUBY_DEBUG_OPEN=true bin/rails server
-sidekiq: bundle exec sidekiq
 solid_queue: bundle exec rake solid_queue:start
 js: yarn build:watch
 css: yarn watch:css

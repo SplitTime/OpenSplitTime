@@ -7,7 +7,7 @@ module DropdownHelper
     content_tag container_tag, class: [container_class, options[:class]].join(" ") do
       toggle_tag = options[:button] ? :button : :a
       button_type = options[:button_type] || "outline-secondary"
-      toggle_class = (options[:button] ? "btn btn-#{button_type}" : "") + " dropdown-toggle"
+      toggle_class = "#{"btn btn-#{button_type}" if options[:button]} dropdown-toggle"
       concat content_tag(toggle_tag, class: toggle_class, data: { bs_toggle: "dropdown" }) {
         active_name = items.find { |item| item[:active] }&.dig(:name)
         safe_concat [title, active_name].compact.join(" / ")
@@ -49,7 +49,8 @@ module DropdownHelper
     dropdown_items = view_object.ready_efforts.count_by(&:assumed_start_time_local).sort.map do |time, effort_count|
       {
         name: "(#{effort_count}) scheduled at #{l(time, format: :full_day_military_and_zone)}",
-        link: start_efforts_form_event_group_path(view_object.event_group, effort_count: effort_count, scheduled_start_time_local: time),
+        link: start_efforts_form_event_group_path(view_object.event_group, effort_count: effort_count,
+                                                                           scheduled_start_time_local: time),
         data: { turbo_frame: "form_modal" }
       }
     end
@@ -110,7 +111,7 @@ module DropdownHelper
         active: action_name == "spread" },
       { name: "Summary",
         link: summary_event_path(view_object.event),
-        active: action_name == "summary" && !(params[:finished] == "true") },
+        active: action_name == "summary" && params[:finished] != "true" },
       { name: "Finishers",
         link: summary_event_path(view_object.event, finished: true),
         active: action_name == "summary" && params[:finished] == "true" },
@@ -191,8 +192,10 @@ module DropdownHelper
 
   def raw_time_filter_dropdown
     items = [{ icon_name: "hand-paper", type: :solid, text: "Stopped", stopped: true, reviewed: nil, matched: nil },
-             { icon_name: "cloud-download-alt", type: :solid, text: "Reviewed", stopped: nil, reviewed: true, matched: nil },
-             { icon_name: "cloud-upload-alt", type: :solid, text: "Unreviewed", stopped: nil, reviewed: false, matched: nil },
+             { icon_name: "cloud-download-alt", type: :solid, text: "Reviewed", stopped: nil, reviewed: true,
+               matched: nil },
+             { icon_name: "cloud-upload-alt", type: :solid, text: "Unreviewed", stopped: nil, reviewed: false,
+               matched: nil },
              { icon_name: "check-square", type: :solid, text: "Matched", stopped: nil, reviewed: nil, matched: true },
              { icon_name: "square", type: :solid, text: "Unmatched", stopped: nil, reviewed: nil, matched: false },
              { icon_name: "asterisk", type: :solid, text: "All", stopped: nil, reviewed: nil, matched: nil }]
@@ -408,8 +411,9 @@ module DropdownHelper
         link: set_stops_event_path(event),
         data: {
           turbo_method: :put,
-          turbo_confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " +
-            "at the last aid station for which times are available. Are you sure you want to proceed?" } },
+          turbo_confirm: "NOTE: For every effort that is unfinished, this will flag the effort as having stopped " \
+                         "at the last aid station for which times are available. Are you sure you want to proceed?"
+        } },
       { name: "Shift start time",
         link: edit_start_time_event_path(event),
         visible: current_user.admin?,
@@ -464,17 +468,23 @@ module DropdownHelper
   def historical_facts_import_dropdown(view_object)
     dropdown_items = [
       { name: "Standard format",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :historical_facts }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :historical_facts }) },
       { name: "Hardrock legacy format",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hardrock_historical_facts }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :hardrock_historical_facts }) },
       { name: "Hilo legacy format",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :hilo_historical_facts }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :hilo_historical_facts }) },
       { name: "Ultrasignup format",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_historical_facts }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :ultrasignup_historical_facts }) },
       { name: "Bear 100 format",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :bear_100_historical_facts }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :bear_100_historical_facts }) },
       { name: "Ultrasignup order id compare",
-        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id, format: :ultrasignup_order_id_compare }) },
+        link: new_import_job_path(import_job: { parent_type: "Organization", parent_id: view_object.organization.id,
+                                                format: :ultrasignup_order_id_compare }) },
     ]
 
     build_dropdown_menu("Import", dropdown_items, button: true)
@@ -486,7 +496,8 @@ module DropdownHelper
 
       {
         name: ["Entrants with elapsed times", event_suffix].compact.join(" "),
-        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id, format: :event_entrants_with_elapsed_times }),
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id,
+                                                format: :event_entrants_with_elapsed_times }),
       }
     end
     military_time_event_items = view_object.events.map do |event|
@@ -494,13 +505,15 @@ module DropdownHelper
 
       {
         name: ["Entrants with military times", event_suffix].compact.join(" "),
-        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id, format: :event_entrants_with_military_times }),
+        link: new_import_job_path(import_job: { parent_type: "Event", parent_id: event.id,
+                                                format: :event_entrants_with_military_times }),
       }
     end
 
     dropdown_items = [
       { name: "Event Group Entrants",
-        link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants }) },
+        link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id,
+                                                format: :event_group_entrants }) },
       { role: :separator },
       *elapsed_time_event_items,
       { role: :separator },
@@ -519,7 +532,8 @@ module DropdownHelper
         method: :patch },
       { role: :separator },
       { name: "Import entrants",
-        link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id, format: :event_group_entrants }) }
+        link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id,
+                                                format: :event_group_entrants }) }
     ]
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end

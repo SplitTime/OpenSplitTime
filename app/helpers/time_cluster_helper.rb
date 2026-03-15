@@ -37,13 +37,7 @@ module TimeClusterHelper
     case display_style.to_sym
     when :segment
       cluster.aid_time_recordable? ? [cluster.segment_time, cluster.time_in_aid] : [cluster.segment_time]
-    when :ampm
-      cluster.absolute_times_local
-    when :ampm_with_seconds
-      cluster.absolute_times_local
-    when :ampm_without_seconds
-      cluster.absolute_times_local
-    when :military
+    when :ampm, :ampm_with_seconds, :ampm_without_seconds, :military
       cluster.absolute_times_local
     when :early_estimate
       cluster.absolute_estimates_early_local
@@ -62,29 +56,25 @@ module TimeClusterHelper
       cluster.finish? ? day_time_format_hhmmss(time) : day_time_format(time)
     when :ampm_with_seconds
       day_time_format_hhmmss(time)
-    when :ampm_without_seconds
+    when :ampm_without_seconds, :early_estimate, :late_estimate
       day_time_format(time)
     when :military
       cluster.finish? ? day_time_military_format_hhmmss(time) : day_time_military_format(time)
-    when :early_estimate
-      day_time_format(time)
-    when :late_estimate
-      day_time_format(time)
     else
       cluster.finish? ? time_format_hhmmss(time) : time_format_hhmm(time)
     end
   end
 
   def cluster_export_formatted_time(time, _cluster, display_style)
+    return "" unless time
+
     case display_style.to_sym
-    when :segment
-      time ? time_format_hhmmss(time) : ""
     when :ampm
-      time ? day_time_format_hhmmss(time) : ""
+      day_time_format_hhmmss(time)
     when :military
-      time ? day_time_military_format_hhmmss(time) : ""
+      day_time_military_format_hhmmss(time)
     else
-      time ? time_format_hhmmss(time) : ""
+      time_format_hhmmss(time)
     end
   end
 end

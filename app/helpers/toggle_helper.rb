@@ -69,13 +69,16 @@ module ToggleHelper
 
   def button_to_check_out_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group)
+    confirm_message = "This will check out all unstarted entrants, making them ineligible to start. " \
+                      "Do you want to proceed?"
+
     html_options = {
       id: "check_out_all",
       class: "btn btn-outline-secondary",
       method: "patch",
       params: { efforts: { checked_in: false }, button: :check_out_all },
       data: {
-        turbo_confirm: "This will check out all unstarted entrants, making them ineligible to start. Do you want to proceed?",
+        turbo_confirm: confirm_message,
         turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
         controller: "tooltip",
         bs_placement: :bottom,
@@ -101,9 +104,9 @@ module ToggleHelper
     args = case protocol
            when "email"
              { icon_name: "envelope",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " +
-                 "(You will need to click a link in a confirmation email that will be sent to you " +
-                 "from AWS Notifications.)",
+               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " \
+                                "(You will need to click a link in a confirmation email that will be sent to you " \
+                                "from AWS Notifications.)",
                unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
            when "sms"
              { icon_name: "mobile-alt",
@@ -113,13 +116,13 @@ module ToggleHelper
              {}
            end
 
-    if subscribable.topic_resource_key.present?
-      args.merge!(subscribable: subscribable, protocol: protocol)
-      if current_user
-        link_to_toggle_subscription(args)
-      else
-        button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
-      end
+    return if subscribable.topic_resource_key.blank?
+
+    args.merge!(subscribable: subscribable, protocol: protocol)
+    if current_user
+      link_to_toggle_subscription(args)
+    else
+      button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
     end
   end
 
@@ -162,6 +165,6 @@ module ToggleHelper
       }
     }
 
-    button_to(url, html_options) { fa_icon(icon, text: "#{protocol}") }
+    button_to(url, html_options) { fa_icon(icon, text: protocol.to_s) }
   end
 end

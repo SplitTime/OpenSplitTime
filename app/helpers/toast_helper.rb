@@ -7,8 +7,6 @@ module ToastHelper
       "circle-exclamation"
     when "warning"
       "exclamation-triangle"
-    when "info"
-      "info-circle"
     else
       "info-circle"
     end

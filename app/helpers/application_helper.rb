@@ -27,12 +27,12 @@ module ApplicationHelper
   end
 
   # Monkey patch link_to so we can do disabled: true in bootstrap
-  def link_to(name = nil, options = nil, html_options = nil, &block)
-    if block_given?
-      effective_html_options = options
-    else
-      effective_html_options = html_options
-    end
+  def link_to(name = nil, options = nil, html_options = nil, &)
+    effective_html_options = if block_given?
+                               options
+                             else
+                               html_options
+                             end
 
     effective_html_options ||= {}
 
@@ -47,7 +47,7 @@ module ApplicationHelper
       html_options = effective_html_options
     end
 
-    super(name, options, html_options, &block)
+    super
   end
 
   def pluralize_with_delimiter(count, singular, plural = nil)

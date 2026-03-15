@@ -8,11 +8,7 @@ module RawTimesHelper
   end
 
   def link_to_raw_time_split(raw_time)
-    if raw_time.split
-      raw_time.split_name
-    else
-      raw_time.split_name
-    end
+    raw_time.split_name
   end
 
   def button_to_raw_time_manage(url:, params:, method:, button_id:, button_type:, tooltip:, icon:, confirm: nil)
@@ -61,6 +57,10 @@ module RawTimesHelper
   end
 
   def button_to_raw_time_delete(raw_time)
+    confirm_message = "We recommend that you keep a complete list of all time records, " \
+                      "even those that are duplicated or incorrect. " \
+                      "Are you sure you want to delete this record?"
+
     button_to_raw_time_manage(
       url: raw_time_path(raw_time, referrer_path: request.params),
       params: nil,
@@ -69,7 +69,7 @@ module RawTimesHelper
       button_type: "outline-danger",
       tooltip: "Delete raw time",
       icon: "trash",
-      confirm: "We recommend that you keep a complete list of all time records, even those that are duplicated or incorrect. Are you sure you want to delete this record?"
+      confirm: confirm_message
     )
   end
 

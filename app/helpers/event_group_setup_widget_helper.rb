@@ -1,6 +1,9 @@
 module EventGroupSetupWidgetHelper
   def link_to_setup_widget_course(presenter, event)
-    type = presenter.controller_name == "events" && presenter.action_name == "setup_course" && presenter.event == event ? :solid : :regular
+    active = presenter.controller_name == "events" &&
+             presenter.action_name == "setup_course" &&
+             presenter.event == event
+    type = active ? :solid : :regular
     path = setup_course_event_group_event_path(event.event_group, event)
     tooltip = event.course.name
     icon = fa_icon("map-marked-alt",
@@ -42,8 +45,13 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_event_group(presenter)
-    type = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w(setup new)) ? :solid : :regular
-    path = presenter.event_group.new_record? ? new_organization_event_group_path(presenter.organization) : setup_event_group_path(presenter.event_group)
+    active = presenter.controller_name == "event_groups" && presenter.action_name.in?(%w[setup new])
+    type = active ? :solid : :regular
+    path = if presenter.event_group.new_record?
+             new_organization_event_group_path(presenter.organization)
+           else
+             setup_event_group_path(presenter.event_group)
+           end
     tooltip = "Event Group Overview"
     icon_name = "calendars"
     icon = fa_icon(icon_name,
@@ -55,7 +63,10 @@ module EventGroupSetupWidgetHelper
   end
 
   def link_to_setup_widget_event(presenter, event)
-    type = presenter.controller_name == "events" && presenter.action_name == "edit" && presenter.event == event ? :solid : :regular
+    active = presenter.controller_name == "events" &&
+             presenter.action_name == "edit" &&
+             presenter.event == event
+    type = active ? :solid : :regular
     path = edit_event_group_event_path(event.event_group, event)
     tooltip = event.guaranteed_short_name
     icon = fa_icon("calendar-check",

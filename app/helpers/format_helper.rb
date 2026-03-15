@@ -1,6 +1,6 @@
 module FormatHelper
   def pretty_duration(seconds)
-    return "--:--" unless seconds.present?
+    return "--:--" if seconds.blank?
 
     parse_string = seconds < 3600 ? "%M:%S" : "%H:%M:%S"
     Time.at(seconds).utc.strftime(parse_string)

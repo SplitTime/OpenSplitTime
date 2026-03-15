@@ -26,15 +26,15 @@ RSpec.describe ::NamespaceRedirector do
 
     context "when path is empty string" do
       let(:path) { "" }
-      it "raises an error" do
-        expect { result }.to raise_error ArgumentError
+      it "redirects to root" do
+        expect(result).to eq("/")
       end
     end
 
     context "when path is nil" do
       let(:path) { nil }
-      it "raises an error" do
-        expect { result }.to raise_error ArgumentError
+      it "redirects to root" do
+        expect(result).to eq("/")
       end
     end
   end

@@ -56,6 +56,24 @@ RSpec.describe Api::V1::EventsController do
           expect(response.status).to eq(404)
         end
       end
+
+      context "when an unsupported relationship is requested via include" do
+        let(:params) { {id: event.id, include: "organization"} }
+
+        it "returns a 422 unprocessable entity response" do
+          make_request
+          expect(response.status).to eq(422)
+        end
+
+        it "returns a JSON:API formatted error" do
+          make_request
+          expect(parsed_response["errors"]).to be_an(Array)
+          expect(parsed_response["errors"].first["status"]).to eq("422")
+          expect(parsed_response["errors"].first["title"]).to eq("Unsupported Include")
+          expect(parsed_response["errors"].first["detail"]).to include("organization")
+          expect(parsed_response["errors"].first["source"]["parameter"]).to eq("include")
+        end
+      end
     end
   end
 

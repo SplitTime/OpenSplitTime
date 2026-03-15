@@ -1,5 +1,6 @@
 class ApiController < ::ApplicationController
   include Rails::Pagination
+
   skip_forgery_protection
   before_action :authenticate_user!
   after_action :verify_authorized
@@ -13,7 +14,7 @@ class ApiController < ::ApplicationController
   end
 
   def user_not_authorized
-    render json: {errors: ["not authorized"]}, status: :unauthorized
+    render json: { errors: ["not authorized"] }, status: :unauthorized
   end
 
   def unsupported_include(exception)
@@ -22,13 +23,13 @@ class ApiController < ::ApplicationController
         status: "422",
         title: "Unsupported Include",
         detail: exception.message,
-        source: {parameter: "include"}
+        source: { parameter: "include" }
       }]
-    }, status: :unprocessable_entity
+    }, status: :unprocessable_content
   end
 
   def live_entry_unavailable(resource)
-    {reportText: "Live entry for #{resource.name} is currently unavailable. " +
-      "Please enable live entry access through the admin/settings page."}
+    { reportText: "Live entry for #{resource.name} is currently unavailable. " \
+                  "Please enable live entry access through the admin/settings page." }
   end
 end
